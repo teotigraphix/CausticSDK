@@ -17,9 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.application.project;
-
-import java.io.File;
+package com.teotigraphix.caustic.internal.command.workspace;
 
 import android.util.Log;
 
@@ -29,19 +27,17 @@ import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 import com.teotigraphix.caustic.song.IWorkspace;
 
-public class SaveProjectAsCommand extends OSCCommandBase {
+public class StartupWorkspaceCommand extends OSCCommandBase {
+
     @Inject
     IWorkspace workspace;
 
     @Override
     public void execute(OSCMessage message) {
-        String reletivePath = message.getParameters().get(0);
-        File absoluteFile = workspace.getFileService().getProjectFile(reletivePath);
         try {
-            workspace.getProject().saveAs(absoluteFile);
+            workspace.startAndRun();
         } catch (CausticException e) {
-            Log.e("SaveProjectCommand", "workspace.getProject().save()", e);
+            Log.e("StartupWorkspaceCommand", "workspace.startAndRun()", e);
         }
     }
-
 }

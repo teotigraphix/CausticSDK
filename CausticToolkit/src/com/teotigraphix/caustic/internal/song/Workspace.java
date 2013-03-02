@@ -57,9 +57,14 @@ public class Workspace implements IWorkspace {
 
     private static final String APP_NAME = "app.name";
 
+    private static final String APP_TEST_NAME = "app.test.name";
+
     private static final String STARTUP_PREFS = "startup_preferences";
 
     private static final String CONFIG_PROPERTIES = "config.properties";
+
+    // XXX this is temp until I find an easy way to Mock this
+    public static boolean TEST_MODE = false;
 
     private boolean mRunning = false;
 
@@ -341,7 +346,8 @@ public class Workspace implements IWorkspace {
             throw new CausticException("Properties failed to load.", e);
         }
 
-        setupApplicationDirectory(getProperties().get(APP_NAME).toString());
+        String appName = TEST_MODE ? APP_TEST_NAME : APP_NAME;
+        setupApplicationDirectory(getProperties().get(appName).toString());
 
         // will install on first run or call update in the installer
         // if the application has already been installed

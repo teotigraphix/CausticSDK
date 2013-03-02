@@ -17,27 +17,33 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.application.startup;
+package com.teotigraphix.caustic.internal.command.workspace;
 
 import android.util.Log;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.controller.IApplicationPreferences;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 import com.teotigraphix.caustic.song.IWorkspace;
 
-public class StartupWorkspaceCommand extends OSCCommandBase {
+public class WorkspaceShutdownCommand extends OSCCommandBase {
 
     @Inject
     IWorkspace workspace;
 
+    @Inject
+    IApplicationPreferences applicationPreferences;
+
     @Override
     public void execute(OSCMessage message) {
         try {
-            workspace.startAndRun();
+            workspace.save();
+            applicationPreferences.quickSave();
+            workspace.stopAndShutdown();
         } catch (CausticException e) {
-            Log.e("StartupWorkspaceCommand", "workspace.startAndRun()", e);
+            Log.e("WorkspaceShutdownCommand", "", e);
         }
     }
 }

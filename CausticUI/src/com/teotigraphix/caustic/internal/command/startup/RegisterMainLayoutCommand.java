@@ -17,26 +17,36 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.application.project;
+package com.teotigraphix.caustic.internal.command.startup;
+
+import android.app.Activity;
 
 import com.google.inject.Inject;
+import com.teotigraphix.android.components.support.MainLayout;
+import com.teotigraphix.android.service.ITouchService;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
-import com.teotigraphix.caustic.song.IWorkspace;
-import com.teotigraphix.common.IMemento;
 
 /**
- * Restores a loaded from in the workspace from its {@link IMemento} if the file
- * exists on disk.
+ * Registers the {@link ITouchService} with the {@link MainLayout}.
+ * <ul>
+ * <li>param[0] - Interger; the Resource id of the {@link MainLayout}.</li>
+ * </ul>
  */
-public class RestoreProjectCommand extends OSCCommandBase {
+public class RegisterMainLayoutCommand extends OSCCommandBase {
 
     @Inject
-    IWorkspace workspace;
+    Activity activity;
+
+    @Inject
+    ITouchService touchService;
 
     @Override
     public void execute(OSCMessage message) {
-        workspace.restoreProjectState();
+        // need the Activity and the R.id.main_layout passed
+        int resourceId = Integer.parseInt(message.getParameters().get(0));
+        MainLayout layout = (MainLayout)activity.findViewById(resourceId);
+        layout.setTouchService(touchService);
     }
 
 }

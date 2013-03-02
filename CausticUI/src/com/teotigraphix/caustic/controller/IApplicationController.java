@@ -19,7 +19,11 @@
 
 package com.teotigraphix.caustic.controller;
 
+import android.content.SharedPreferences;
+
 import com.google.inject.ImplementedBy;
+import com.teotigraphix.android.components.support.MainLayout;
+import com.teotigraphix.android.service.ITouchService;
 import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.internal.controller.application.ApplicationController;
 import com.teotigraphix.caustic.router.IRouterClient;
@@ -31,6 +35,12 @@ import com.teotigraphix.common.IMemento;
 public interface IApplicationController extends IRouterClient {
 
     public static final String DEVICE_ID = "application";
+
+    /**
+     * Registers the {@link MainLayout} with the instance of the
+     * {@link ITouchService}.
+     */
+    public static final String REGISTER_MAIN_LAYOUT = "register_main_layout";
 
     /**
      * Starts the workspace.
@@ -51,8 +61,6 @@ public interface IApplicationController extends IRouterClient {
      */
     public static final String START_WORKSPACE = "start_workspace";
 
-    public static final String REGISTER_MAIN_LAYOUT = "register_main_layout";
-
     /**
      * Loads a project from the workspace.
      * <p>
@@ -64,6 +72,10 @@ public interface IApplicationController extends IRouterClient {
      */
     public static final String LOAD_PROJECT = "load_project";
 
+    /**
+     * Restores the project's memento state after {@link #LOAD_PROJECT} has been
+     * run.
+     */
     public static final String RESTORE_PROJECT = "restore_project";
 
     /**
@@ -83,4 +95,16 @@ public interface IApplicationController extends IRouterClient {
      * </ul>
      */
     public static final String SAVE_PROJECT_AS = "save_project_as";
+
+    /**
+     * Calls a save on the workspace, allows the {@link IApplicationPreferences}
+     * to save itself and it's clients in the {@link SharedPreferences} editor.
+     */
+    public static final String WORKSPACE_SAVE_QUICK = "workspace_save_quick";
+
+    /**
+     * Shuts the workspace down and saves ALL workspace, preference and project
+     * state.
+     */
+    public static final String WORKSPACE_SHUTDOWN = "workspace_shutdown";
 }

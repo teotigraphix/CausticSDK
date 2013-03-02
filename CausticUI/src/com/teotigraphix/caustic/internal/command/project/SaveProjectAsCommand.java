@@ -17,36 +17,31 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.application.startup;
+package com.teotigraphix.caustic.internal.command.project;
 
-import android.app.Activity;
+import java.io.File;
+
+import android.util.Log;
 
 import com.google.inject.Inject;
-import com.teotigraphix.android.components.support.MainLayout;
-import com.teotigraphix.android.service.ITouchService;
 import com.teotigraphix.caustic.controller.OSCMessage;
+import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
+import com.teotigraphix.caustic.song.IWorkspace;
 
-/**
- * Registers the {@link ITouchService} with the {@link MainLayout}.
- * <ul>
- * <li>param[0] - Interger; the Resource id of the {@link MainLayout}.</li>
- * </ul>
- */
-public class RegisterMainLayoutCommand extends OSCCommandBase {
-
+public class SaveProjectAsCommand extends OSCCommandBase {
     @Inject
-    Activity activity;
-
-    @Inject
-    ITouchService touchService;
+    IWorkspace workspace;
 
     @Override
     public void execute(OSCMessage message) {
-        // need the Activity and the R.id.main_layout passed
-        int resourceId = Integer.parseInt(message.getParameters().get(0));
-        MainLayout layout = (MainLayout)activity.findViewById(resourceId);
-        layout.setTouchService(touchService);
+        String reletivePath = message.getParameters().get(0);
+        File absoluteFile = workspace.getFileService().getProjectFile(reletivePath);
+        try {
+            workspace.getProject().saveAs(absoluteFile);
+        } catch (CausticException e) {
+            Log.e("SaveProjectCommand", "workspace.getProject().save()", e);
+        }
     }
 
 }

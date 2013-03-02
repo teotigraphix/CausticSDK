@@ -17,33 +17,34 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller.application;
+package com.teotigraphix.caustic.internal.command.project;
 
-import roboguice.inject.ContextSingleton;
+import java.io.File;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.controller.IApplicationController;
-import com.teotigraphix.caustic.internal.command.project.LoadProjectCommand;
-import com.teotigraphix.caustic.internal.router.BaseRouterClient;
+import com.teotigraphix.caustic.controller.OSCMessage;
+import com.teotigraphix.caustic.internal.command.OSCCommandBase;
+import com.teotigraphix.caustic.song.IWorkspace;
 
-@ContextSingleton
-public class ApplicationController extends BaseRouterClient implements IApplicationController {
+/**
+ * Loads a project from the workspace.
+ * <p>
+ * <strong>Param0:</strong> absolute_path.
+ * 
+ * @see IApplicationController#COMMAND_LOAD_PROJECT
+ * @see RestoreProjectCommand
+ */
+public class LoadProjectCommand extends OSCCommandBase {
 
     @Inject
-    ApplicationControllerHandlers applicationControllerHandlers;
+    IWorkspace workspace;
 
     @Override
-    public final String getName() {
-        return DEVICE_ID;
+    public void execute(OSCMessage message) {
+        // will NOT load the initial memento state of the project XML,
+        // only loads the project into the workspace
+        String absolutePath = message.getParameters().get(0);
+        workspace.loadProject(new File(absolutePath));
     }
-
-    public ApplicationController() {
-    }
-
-    @Override
-    protected void registerCommands() {
-        super.registerCommands();
-        addCommand(LOAD_PROJECT, LoadProjectCommand.class);
-    }
-
 }

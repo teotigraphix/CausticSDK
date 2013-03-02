@@ -17,6 +17,17 @@ public interface IApplicationPreferences {
     //List<PartConfig> getConfiguration(String name);
 
     /**
+     * Saves a snapshot of the project for backup while recording the
+     * preferences to the {@link SharedPreferences} of the project.
+     * <p>
+     * Any preferences that are to be persisted through a users session will be
+     * saved during this call to the preferences editor.
+     * <p>
+     * XXX put a see for the event dispatched
+     */
+    void quickSave();
+
+    /**
      * Called from {@link IWorkspace#startAndRun()} boot().
      * <p>
      * The method responsible for calling; {@link IApplicationRuntime#boot()}

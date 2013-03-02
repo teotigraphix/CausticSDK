@@ -17,34 +17,27 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.application.project;
+package com.teotigraphix.caustic.internal.command.project;
 
-import java.io.File;
+import android.util.Log;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.controller.OSCMessage;
+import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 import com.teotigraphix.caustic.song.IWorkspace;
 
-/**
- * Loads a project from the workspace.
- * <p>
- * <strong>Param0:</strong> absolute_path.
- * 
- * @see IApplicationController#COMMAND_LOAD_PROJECT
- * @see RestoreProjectCommand
- */
-public class LoadProjectCommand extends OSCCommandBase {
+public class SaveProjectCommand extends OSCCommandBase {
 
     @Inject
     IWorkspace workspace;
 
     @Override
     public void execute(OSCMessage message) {
-        // will NOT load the initial memento state of the project XML,
-        // only loads the project into the workspace
-        String absolutePath = message.getParameters().get(0);
-        workspace.loadProject(new File(absolutePath));
+        try {
+            workspace.getProject().save();
+        } catch (CausticException e) {
+            Log.e("SaveProjectCommand", "workspace.getProject().save()", e);
+        }
     }
 }

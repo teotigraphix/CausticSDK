@@ -17,27 +17,26 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.application.project;
-
-import android.util.Log;
+package com.teotigraphix.caustic.internal.command.project;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.controller.OSCMessage;
-import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 import com.teotigraphix.caustic.song.IWorkspace;
+import com.teotigraphix.common.IMemento;
 
-public class SaveProjectCommand extends OSCCommandBase {
+/**
+ * Restores a loaded from in the workspace from its {@link IMemento} if the file
+ * exists on disk.
+ */
+public class RestoreProjectCommand extends OSCCommandBase {
 
     @Inject
     IWorkspace workspace;
 
     @Override
     public void execute(OSCMessage message) {
-        try {
-            workspace.getProject().save();
-        } catch (CausticException e) {
-            Log.e("SaveProjectCommand", "workspace.getProject().save()", e);
-        }
+        workspace.restoreProjectState();
     }
+
 }
