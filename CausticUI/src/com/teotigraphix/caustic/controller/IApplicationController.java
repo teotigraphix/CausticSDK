@@ -74,4 +74,13 @@ public interface IApplicationController extends IRouterClient {
      */
     public static final String SAVE_PROJECT = "save_project";
 
+    /**
+     * Saves the current file as a new file on disk, while reloading the saved
+     * file.
+     * <ul>
+     * <li><strong>param[0]</strong> the relative path from the project/
+     * directory.</li>
+     * </ul>
+     */
+    public static final String SAVE_PROJECT_AS = "save_project_as";
 }
