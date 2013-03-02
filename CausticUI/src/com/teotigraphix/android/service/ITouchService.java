@@ -20,6 +20,7 @@
 package com.teotigraphix.android.service;
 
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.inject.ImplementedBy;
@@ -36,4 +37,6 @@ public interface ITouchService {
     void addTouchListener(ITouchListener listener);
 
     void removeTouchListener(ITouchListener listener);
+
+    boolean hasTouchListener(View listener);
 }

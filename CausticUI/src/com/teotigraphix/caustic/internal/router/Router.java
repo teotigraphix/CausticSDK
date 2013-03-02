@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller;
+package com.teotigraphix.caustic.internal.router;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,10 +33,10 @@ import com.teotigraphix.caustic.command.ICommand;
 import com.teotigraphix.caustic.command.ICommandHistory;
 import com.teotigraphix.caustic.command.IOSCCommand;
 import com.teotigraphix.caustic.command.IUndoCommand;
-import com.teotigraphix.caustic.controller.IOSCAware;
-import com.teotigraphix.caustic.controller.IRouter;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticException;
+import com.teotigraphix.caustic.router.IOSCAware;
+import com.teotigraphix.caustic.router.IRouter;
 import com.teotigraphix.caustic.song.IWorkspace;
 
 /**

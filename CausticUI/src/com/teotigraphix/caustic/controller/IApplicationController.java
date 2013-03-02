@@ -21,9 +21,10 @@ package com.teotigraphix.caustic.controller;
 
 import com.google.inject.ImplementedBy;
 import com.teotigraphix.caustic.internal.controller.application.ApplicationController;
+import com.teotigraphix.caustic.router.IRouterClient;
 
 @ImplementedBy(ApplicationController.class)
-public interface IApplicationController extends IControllerRouter {
+public interface IApplicationController extends IRouterClient {
 
     public static final String DEVICE_ID = "application";
 

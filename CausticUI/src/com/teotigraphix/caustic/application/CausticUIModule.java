@@ -22,9 +22,12 @@ package com.teotigraphix.caustic.application;
 import com.google.inject.Binder;
 import com.teotigraphix.android.internal.service.TouchService;
 import com.teotigraphix.android.service.ITouchService;
-import com.teotigraphix.caustic.controller.IRouter;
+import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.internal.actvity.CausticModule;
-import com.teotigraphix.caustic.internal.controller.Router;
+import com.teotigraphix.caustic.internal.application.ApplicationModel;
+import com.teotigraphix.caustic.internal.controller.application.ApplicationController;
+import com.teotigraphix.caustic.internal.router.Router;
+import com.teotigraphix.caustic.router.IRouter;
 
 public class CausticUIModule extends CausticModule {
 
@@ -33,6 +36,10 @@ public class CausticUIModule extends CausticModule {
         super.configure(binder);
         binder.bind(ITouchService.class).to(TouchService.class);
         binder.bind(IRouter.class).to(Router.class);
+        // overridable
+        binder.bind(IApplicationModel.class).to(ApplicationModel.class);
+        binder.bind(IApplicationController.class).to(ApplicationController.class);
+        //binder.bind(IApplicationPreferences.class).to(ApplicationPreferences.class);
     }
 
 }

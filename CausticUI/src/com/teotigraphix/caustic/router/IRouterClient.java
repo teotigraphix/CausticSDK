@@ -17,8 +17,9 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.controller;
+package com.teotigraphix.caustic.router;
 
+import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticError;
 import com.teotigraphix.caustic.core.CausticException;
 
@@ -30,7 +31,7 @@ import com.teotigraphix.caustic.core.CausticException;
  * create, inject and execute it.
  * </p>
  */
-public interface IControllerRouter {
+public interface IRouterClient {
 
     /**
      * Initializes the router, typically called before any user interface has

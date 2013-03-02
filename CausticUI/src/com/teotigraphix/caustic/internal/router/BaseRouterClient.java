@@ -17,25 +17,28 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller;
+package com.teotigraphix.caustic.internal.router;
 
 import roboguice.event.Observes;
+import android.util.Log;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.command.ICommand;
-import com.teotigraphix.caustic.controller.IControllerRouter;
-import com.teotigraphix.caustic.controller.IRouter;
-import com.teotigraphix.caustic.controller.IRouter.OnRegisterControllerCommandsEvent;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticError;
 import com.teotigraphix.caustic.core.CausticException;
+import com.teotigraphix.caustic.router.IRouter;
+import com.teotigraphix.caustic.router.IRouter.OnRegisterControllerCommandsEvent;
+import com.teotigraphix.caustic.router.IRouterClient;
 
-public abstract class BaseController implements IControllerRouter {
+public abstract class BaseRouterClient implements IRouterClient {
+
+    private static final String TAG = "BaseRouterClient";
 
     @Inject
     IRouter router;
 
-    public BaseController() {
+    public BaseRouterClient() {
         // /Controller/Device/Control [Data, ...]
         // /Tones/application/foocontrol [42 foo bar]
     }
@@ -86,6 +89,7 @@ public abstract class BaseController implements IControllerRouter {
     }
 
     void onRegisterControllerCommandsEvent(@Observes OnRegisterControllerCommandsEvent event) {
+        Log.d(TAG, "onRegisterControllerCommandsEvent() -> registerCommands()");
         registerCommands();
     }
 

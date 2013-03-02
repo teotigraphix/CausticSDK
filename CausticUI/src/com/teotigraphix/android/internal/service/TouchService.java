@@ -22,6 +22,7 @@ package com.teotigraphix.android.internal.service;
 import java.util.ArrayList;
 
 import roboguice.inject.ContextSingleton;
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,6 +42,7 @@ public class TouchService implements ITouchService {
 
     final Rect rect = new Rect();
 
+    @SuppressLint("Recycle")
     final MotionEvent cloneMotionEvent = MotionEvent.obtain(0, 0, MotionEvent.ACTION_MOVE, 0, 0, 0);
 
     final static int maxFingers = 10;
@@ -67,6 +69,11 @@ public class TouchService implements ITouchService {
     //  ITouchService API :: Methods
     // 
     //--------------------------------------------------------------------------
+
+    @Override
+    public boolean hasTouchListener(View listener) {
+        return mListeners.contains(listener);
+    }
 
     @Override
     public void addTouchListener(ITouchListener listener) {
@@ -273,4 +280,5 @@ public class TouchService implements ITouchService {
             lastX = lastY = -1;
         }
     }
+
 }

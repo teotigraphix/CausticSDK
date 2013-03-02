@@ -17,10 +17,11 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.controller;
+package com.teotigraphix.caustic.router;
 
 import com.teotigraphix.caustic.command.ICommand;
 import com.teotigraphix.caustic.command.ICommandHistory;
+import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticException;
 
 /**

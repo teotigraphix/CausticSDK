@@ -21,11 +21,15 @@ package com.teotigraphix.caustic.internal.controller.application;
 
 import roboguice.inject.ContextSingleton;
 
+import com.google.inject.Inject;
 import com.teotigraphix.caustic.controller.IApplicationController;
-import com.teotigraphix.caustic.internal.controller.BaseController;
+import com.teotigraphix.caustic.internal.router.BaseRouterClient;
 
 @ContextSingleton
-public class ApplicationController extends BaseController implements IApplicationController {
+public class ApplicationController extends BaseRouterClient implements IApplicationController {
+
+    @Inject
+    ApplicationControllerHandlers applicationControllerHandlers;
 
     @Override
     public final String getName() {

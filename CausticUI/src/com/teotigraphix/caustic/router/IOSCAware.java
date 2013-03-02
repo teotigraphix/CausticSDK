@@ -17,10 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.controller;
+package com.teotigraphix.caustic.router;
 
-public interface IRouterController {
-    void execute(OSCMessage message);
+import com.teotigraphix.caustic.controller.OSCMessage;
 
-    void sendCommand(String control, Object... args);
+public interface IOSCAware {
+    OSCMessage getMessage();
+
+    void setMessage(OSCMessage value);
 }

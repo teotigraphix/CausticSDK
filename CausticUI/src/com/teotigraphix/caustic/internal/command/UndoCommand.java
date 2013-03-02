@@ -21,8 +21,8 @@ package com.teotigraphix.caustic.internal.command;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.command.ICommandHistory;
-import com.teotigraphix.caustic.controller.IOSCAware;
 import com.teotigraphix.caustic.controller.OSCMessage;
+import com.teotigraphix.caustic.router.IOSCAware;
 
 /**
  * This command handles adding itself to the provided/injected CommandHistory.

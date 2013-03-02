@@ -20,8 +20,10 @@
 package com.teotigraphix.caustic.application;
 
 import roboguice.event.EventManager;
+import android.app.Activity;
 
 import com.google.inject.ImplementedBy;
+import com.teotigraphix.caustic.controller.IApplicationPreferences;
 import com.teotigraphix.caustic.internal.application.ApplicationModel;
 import com.teotigraphix.caustic.song.IWorkspace;
 
@@ -32,6 +34,8 @@ public interface IApplicationModel {
 
     void setIsInitialized();
 
+    Activity getActivity();
+
     /**
      * Returns the single workspace within the application.
      */
@@ -41,4 +45,6 @@ public interface IApplicationModel {
      * Returns the workspaces single event dispatching manager.
      */
     EventManager getEventManager();
+
+    IApplicationPreferences getApplicationPreferences();
 }

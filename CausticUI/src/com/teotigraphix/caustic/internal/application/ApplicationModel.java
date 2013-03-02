@@ -21,8 +21,11 @@ package com.teotigraphix.caustic.internal.application;
 
 import roboguice.event.EventManager;
 import roboguice.inject.ContextSingleton;
+import android.app.Activity;
 
+import com.google.inject.Inject;
 import com.teotigraphix.caustic.application.IApplicationModel;
+import com.teotigraphix.caustic.controller.IApplicationPreferences;
 import com.teotigraphix.caustic.song.IWorkspace;
 
 @ContextSingleton
@@ -31,6 +34,9 @@ public class ApplicationModel implements IApplicationModel {
     private boolean mIsInitialized = false;
 
     private IWorkspace workspace;
+
+    @Inject
+    IApplicationPreferences applicationPreferences;
 
     @Override
     public boolean isInitilized() {
@@ -44,6 +50,11 @@ public class ApplicationModel implements IApplicationModel {
     }
 
     @Override
+    public Activity getActivity() {
+        return workspace.getActivity();
+    }
+
+    @Override
     public IWorkspace getWorkspace() {
         return workspace;
     }
@@ -51,6 +62,11 @@ public class ApplicationModel implements IApplicationModel {
     @Override
     public EventManager getEventManager() {
         return workspace.getEventManager();
+    }
+
+    @Override
+    public IApplicationPreferences getApplicationPreferences() {
+        return applicationPreferences;
     }
 
 }
