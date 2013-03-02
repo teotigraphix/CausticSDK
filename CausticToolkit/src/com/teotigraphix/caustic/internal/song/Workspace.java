@@ -61,6 +61,8 @@ public class Workspace implements IWorkspace {
 
     private static final String CONFIG_PROPERTIES = "config.properties";
 
+    private boolean mRunning = false;
+
     @SuppressWarnings("unused")
     private ICausticConfiguration mConfiguration;
 
@@ -83,6 +85,15 @@ public class Workspace implements IWorkspace {
     @Override
     public EventManager getEventManager() {
         return eventManager;
+    }
+
+    //----------------------------------
+    // isRunning
+    //----------------------------------
+
+    @Override
+    public boolean isRunning() {
+        return mRunning;
     }
 
     //----------------------------------
@@ -243,20 +254,18 @@ public class Workspace implements IWorkspace {
         try {
             install();
         } catch (CausticException e) {
-            // for now just rethrow
             throw e;
         }
 
         try {
             boot();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new CausticException("IOException in IWorkspace.boot()", e);
         }
 
         run();
 
-        eventManager.fire(new OnWorkspaceRunEvent(this));
+        mRunning = true;
     }
 
     @Override
@@ -291,17 +300,19 @@ public class Workspace implements IWorkspace {
 
         setProject(project);
 
+        return project;
+    }
+
+    @Override
+    public void restoreProjectState() {
         try {
             // only will load a project if the XML file exists in the filesystem
             // the project DOES NOT call restore on the IRack, just loads it's
             // own properties
-            project.load(projectFile);
-        } catch (CausticException e) {
-            // TODO Auto-generated catch block
+            mProject.restore();
+        } catch (CausticError e) {
             e.printStackTrace();
         }
-
-        return project;
     }
 
     @Override
@@ -318,6 +329,7 @@ public class Workspace implements IWorkspace {
     }
 
     private void closeProject(IProject project) {
+        ((Project)project).close();
         //eventManager.fire(new OnProjectCloseEvent(project));
     }
 

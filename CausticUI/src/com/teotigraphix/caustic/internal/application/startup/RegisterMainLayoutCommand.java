@@ -17,32 +17,36 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller.application;
+package com.teotigraphix.caustic.internal.application.startup;
 
-import java.io.File;
+import android.app.Activity;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustic.application.IApplicationModel;
-import com.teotigraphix.caustic.controller.IApplicationController;
+import com.teotigraphix.android.components.support.MainLayout;
+import com.teotigraphix.android.service.ITouchService;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 
 /**
- * Loads a project from the workspace.
- * <p>
- * <strong>Param0:</strong> absolute_path.
- * 
- * @see IApplicationController#COMMAND_LOAD_PROJECT
+ * Registers the {@link ITouchService} with the {@link MainLayout}.
+ * <ul>
+ * <li>param[0] - Interger; the Resource id of the {@link MainLayout}.</li>
+ * </ul>
  */
-public class LoadProjectCommand extends OSCCommandBase {
+public class RegisterMainLayoutCommand extends OSCCommandBase {
 
     @Inject
-    IApplicationModel applicationModel;
+    Activity activity;
+
+    @Inject
+    ITouchService touchService;
 
     @Override
     public void execute(OSCMessage message) {
-        // will load the initial memento state of the project XML
-        String path = message.getParameters().get(0);
-        applicationModel.getWorkspace().loadProject(new File(path));
+        // need the Activity and the R.id.main_layout passed
+        int resourceId = Integer.parseInt(message.getParameters().get(0));
+        MainLayout layout = (MainLayout)activity.findViewById(resourceId);
+        layout.setTouchService(touchService);
     }
+
 }

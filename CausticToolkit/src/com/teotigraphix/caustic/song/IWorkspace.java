@@ -45,6 +45,14 @@ import com.teotigraphix.caustic.service.IFileService;
  */
 public interface IWorkspace {
 
+    /**
+     * Whether the {@link IWorkspace#startAndRun()} has successfully completed
+     * its install, boot, run sequence.
+     * <p>
+     * This will return true after the method is finished executing.
+     */
+    boolean isRunning();
+
     //----------------------------------
     // applicationRoot
     //----------------------------------
@@ -137,6 +145,11 @@ public interface IWorkspace {
      *         <code>/sdcard/MyApp/projects</code> directory.
      */
     IProject loadProject(File projectFile);
+
+    /**
+     * Restores the project's memento state.
+     */
+    void restoreProjectState();
 
     /**
      * Saves the current {@link IProject} to disk.
@@ -235,4 +248,5 @@ public interface IWorkspace {
             super(workspace);
         }
     }
+
 }

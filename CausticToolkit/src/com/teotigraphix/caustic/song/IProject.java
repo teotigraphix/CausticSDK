@@ -54,6 +54,16 @@ public interface IProject extends IPersist, IRestore {
 
     IMemento getState();
 
+    /**
+     * Whether the file has been loaded into the project.
+     */
+    boolean isRestored();
+
+    /**
+     * Returns invalid(<code>false</code>) when the project has been closed.
+     */
+    boolean isValid();
+
     //--------------------------------------------------------------------------
     //
     // Properties

@@ -17,33 +17,27 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller.application;
+package com.teotigraphix.caustic.internal.application.project;
 
-import roboguice.inject.ContextSingleton;
+import android.util.Log;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustic.controller.IApplicationController;
-import com.teotigraphix.caustic.internal.application.project.LoadProjectCommand;
-import com.teotigraphix.caustic.internal.router.BaseRouterClient;
+import com.teotigraphix.caustic.controller.OSCMessage;
+import com.teotigraphix.caustic.core.CausticException;
+import com.teotigraphix.caustic.internal.command.OSCCommandBase;
+import com.teotigraphix.caustic.song.IWorkspace;
 
-@ContextSingleton
-public class ApplicationController extends BaseRouterClient implements IApplicationController {
+public class SaveProjectCommand extends OSCCommandBase {
 
     @Inject
-    ApplicationControllerHandlers applicationControllerHandlers;
+    IWorkspace workspace;
 
     @Override
-    public final String getName() {
-        return DEVICE_ID;
+    public void execute(OSCMessage message) {
+        try {
+            workspace.getProject().save();
+        } catch (CausticException e) {
+            Log.e("SaveProjectCommand", "workspace.getProject().save()", e);
+        }
     }
-
-    public ApplicationController() {
-    }
-
-    @Override
-    protected void registerCommands() {
-        super.registerCommands();
-        addCommand(LOAD_PROJECT, LoadProjectCommand.class);
-    }
-
 }

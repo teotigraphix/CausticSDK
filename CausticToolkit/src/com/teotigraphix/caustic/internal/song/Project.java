@@ -50,6 +50,20 @@ public class Project implements IProject {
 
     public static final String VERSION = "1.0";
 
+    private boolean restored = false;
+
+    private boolean valid = true;
+
+    @Override
+    public boolean isRestored() {
+        return restored;
+    }
+
+    @Override
+    public boolean isValid() {
+        return valid;
+    }
+
     private IMemento mMemento;
 
     @Override
@@ -237,7 +251,21 @@ public class Project implements IProject {
 
     @Override
     public void restore() {
-        //mWorkspace.getRack().restore();
+        if (restored)
+            return;
+
+        if (!getFile().exists())
+            return;
+
+        IMemento state;
+        try {
+            state = RuntimeUtils.loadMemento(getFile());
+            paste(state);
+        } catch (IOException e) {
+            throw new CausticError("Error loading project state", e);
+        }
+
+        restored = true;
     }
 
     //--------------------------------------------------------------------------
@@ -270,26 +298,6 @@ public class Project implements IProject {
         if (index < 0 || index > mSongs.size() - 1)
             return null;
         return mSongs.get(index);
-    }
-
-    /**
-     * Loads a project file and it's XML memento.
-     * 
-     * @param file The full path to the file to load.
-     * @throws CausticException
-     */
-    void load(File file) throws CausticException {
-        if (!file.exists())
-            return;
-
-        // load memento
-        IMemento state;
-        try {
-            state = RuntimeUtils.loadMemento(file);
-            paste(state);
-        } catch (IOException e) {
-            throw new CausticException("Error loading project state", e);
-        }
     }
 
     @Override
@@ -335,6 +343,10 @@ public class Project implements IProject {
 
     @Override
     public void startup() {
+    }
+
+    public void close() {
+        valid = false;
     }
 
     //----------------------------------

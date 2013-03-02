@@ -17,33 +17,26 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller.application;
-
-import roboguice.inject.ContextSingleton;
+package com.teotigraphix.caustic.internal.application.project;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustic.controller.IApplicationController;
-import com.teotigraphix.caustic.internal.application.project.LoadProjectCommand;
-import com.teotigraphix.caustic.internal.router.BaseRouterClient;
+import com.teotigraphix.caustic.controller.OSCMessage;
+import com.teotigraphix.caustic.internal.command.OSCCommandBase;
+import com.teotigraphix.caustic.song.IWorkspace;
+import com.teotigraphix.common.IMemento;
 
-@ContextSingleton
-public class ApplicationController extends BaseRouterClient implements IApplicationController {
+/**
+ * Restores a loaded from in the workspace from its {@link IMemento} if the file
+ * exists on disk.
+ */
+public class RestoreProjectCommand extends OSCCommandBase {
 
     @Inject
-    ApplicationControllerHandlers applicationControllerHandlers;
+    IWorkspace workspace;
 
     @Override
-    public final String getName() {
-        return DEVICE_ID;
-    }
-
-    public ApplicationController() {
-    }
-
-    @Override
-    protected void registerCommands() {
-        super.registerCommands();
-        addCommand(LOAD_PROJECT, LoadProjectCommand.class);
+    public void execute(OSCMessage message) {
+        workspace.restoreProjectState();
     }
 
 }

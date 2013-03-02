@@ -20,15 +20,38 @@
 package com.teotigraphix.caustic.controller;
 
 import com.google.inject.ImplementedBy;
+import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.internal.controller.application.ApplicationController;
 import com.teotigraphix.caustic.router.IRouterClient;
+import com.teotigraphix.caustic.song.IProject;
+import com.teotigraphix.caustic.song.IWorkspace;
+import com.teotigraphix.common.IMemento;
 
 @ImplementedBy(ApplicationController.class)
 public interface IApplicationController extends IRouterClient {
 
     public static final String DEVICE_ID = "application";
 
+    /**
+     * Starts the workspace.
+     * <p>
+     * All {@link IApplicationRuntime} calls are dependent on the applications
+     * implementation of it's own runtime.
+     * <p>
+     * It's up to the calling client to dispatch any events that signify the
+     * {@link IWorkspace} is in a state of running.
+     * <ul>
+     * <li>Installs the application if not installed.</li>
+     * <li>Loads the properties file <code>config.properties</code></li>
+     * <li>Sets application root.</li>
+     * <li>Installs the runtime.</li>
+     * <li>Boots the runtime.</li>
+     * <li>Runs the runtime.</li>
+     * </ul>
+     */
     public static final String START_WORKSPACE = "start_workspace";
+
+    public static final String REGISTER_MAIN_LAYOUT = "register_main_layout";
 
     /**
      * Loads a project from the workspace.
@@ -39,8 +62,16 @@ public interface IApplicationController extends IRouterClient {
      * <li><strong>Param0:</strong> absolute_path to save image.</li>
      * </ul>
      */
-    public static final String COMMAND_LOAD_PROJECT = "load_project";
+    public static final String LOAD_PROJECT = "load_project";
 
-    public static final String REGISTER_MAIN_LAYOUT = "register_main_layout";
+    public static final String RESTORE_PROJECT = "restore_project";
+
+    /**
+     * Saves a project's {@link IMemento} state to disk.
+     * <p>
+     * This will use the current {@link IProject#getFile()} for the location of
+     * the save.
+     */
+    public static final String SAVE_PROJECT = "save_project";
 
 }
