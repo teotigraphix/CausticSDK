@@ -95,4 +95,5 @@ public interface IRouter {
      * will register their commands against the main {@link IRouter} instance.
      */
     void initialize();
+
 }

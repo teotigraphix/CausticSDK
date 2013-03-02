@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import roboguice.RoboGuice;
+import roboguice.event.EventManager;
 import roboguice.inject.ContextSingleton;
 import android.app.Activity;
 import android.util.Log;
@@ -37,7 +38,6 @@ import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.router.IOSCAware;
 import com.teotigraphix.caustic.router.IRouter;
-import com.teotigraphix.caustic.song.IWorkspace;
 
 /**
  * The default implementation of the {@link IRouter} interface.
@@ -56,11 +56,16 @@ public class Router implements IRouter {
     @Inject
     ICommandHistory history;
 
+    //@Inject
+    //IWorkspace workspace;
+
     @Inject
-    IWorkspace workspace;
+    EventManager eventManager;
 
     @Inject
     Activity activity;
+
+    private String mName;
 
     @Override
     public ICommandHistory getHistory() {
@@ -75,7 +80,11 @@ public class Router implements IRouter {
 
     @Override
     public String getName() {
-        return workspace.getApplicationName();
+        return mName; //workspace.getApplicationName();
+    }
+
+    public void setName(String value) {
+        mName = value;
     }
 
     //--------------------------------------------------------------------------
@@ -98,7 +107,7 @@ public class Router implements IRouter {
 
     @Override
     public void initialize() {
-        workspace.getEventManager().fire(new OnRegisterControllerCommandsEvent(this));
+        eventManager.fire(new OnRegisterControllerCommandsEvent(this));
     }
 
     @Override

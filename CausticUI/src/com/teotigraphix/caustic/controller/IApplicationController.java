@@ -28,6 +28,8 @@ public interface IApplicationController extends IRouterClient {
 
     public static final String DEVICE_ID = "application";
 
+    public static final String START_WORKSPACE = "start_workspace";
+
     /**
      * Loads a project from the workspace.
      * <p>
@@ -38,5 +40,7 @@ public interface IApplicationController extends IRouterClient {
      * </ul>
      */
     public static final String COMMAND_LOAD_PROJECT = "load_project";
+
+    public static final String REGISTER_MAIN_LAYOUT = "register_main_layout";
 
 }

@@ -206,9 +206,9 @@ public class OSCMessage {
         }
     }
 
-    public OSCMessage(String control, Object data) {
+    public OSCMessage(String device, String control) {
+        this.device = device;
         this.control = control;
-        this.data = data;
     }
 
     //--------------------------------------------------------------------------
@@ -338,10 +338,6 @@ public class OSCMessage {
 
     public final static OSCMessage create(String device, String control, Object... args) {
         return new OSCMessage(device, control, args);
-    }
-
-    public final static OSCMessage create(String control, Object data) {
-        return new OSCMessage(control, data);
     }
 
     public final static OSCMessage create(String control) {
