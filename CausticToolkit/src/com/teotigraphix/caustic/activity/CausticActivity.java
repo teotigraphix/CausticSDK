@@ -133,7 +133,7 @@ public abstract class CausticActivity extends RoboActivity {
         super.onRestart();
     }
 
-    private void createModule(Bundle state) {
+    protected void createModule(Bundle state) {
         Module module = createApplicationModule();
         if (module != null) {
             loadApplicationModule(getApplication(), module);

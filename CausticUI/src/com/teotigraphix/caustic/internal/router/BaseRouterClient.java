@@ -28,7 +28,7 @@ import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticError;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.router.IRouter;
-import com.teotigraphix.caustic.router.IRouter.OnRegisterControllerCommandsEvent;
+import com.teotigraphix.caustic.router.IRouter.OnRegisterRouterCommandsEvent;
 import com.teotigraphix.caustic.router.IRouterClient;
 
 public abstract class BaseRouterClient implements IRouterClient {
@@ -88,8 +88,8 @@ public abstract class BaseRouterClient implements IRouterClient {
         router.put(message, command);
     }
 
-    void onRegisterControllerCommandsEvent(@Observes OnRegisterControllerCommandsEvent event) {
-        Log.d(TAG, "onRegisterControllerCommandsEvent() -> registerCommands()");
+    void onRegisterRouterCommandsEvent(@Observes OnRegisterRouterCommandsEvent event) {
+        Log.d(TAG, "onRegisterRouterCommandsEvent() -> registerCommands()");
         registerCommands();
     }
 

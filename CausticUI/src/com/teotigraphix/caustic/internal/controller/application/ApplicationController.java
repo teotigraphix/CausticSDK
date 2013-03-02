@@ -21,16 +21,14 @@ package com.teotigraphix.caustic.internal.controller.application;
 
 import roboguice.inject.ContextSingleton;
 
-import com.google.inject.Inject;
 import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.internal.command.project.LoadProjectCommand;
+import com.teotigraphix.caustic.internal.command.startup.RegisterMainLayoutCommand;
+import com.teotigraphix.caustic.internal.command.workspace.StartupWorkspaceCommand;
 import com.teotigraphix.caustic.internal.router.BaseRouterClient;
 
 @ContextSingleton
 public class ApplicationController extends BaseRouterClient implements IApplicationController {
-
-    @Inject
-    ApplicationControllerHandlers applicationControllerHandlers;
 
     @Override
     public final String getName() {
@@ -43,7 +41,8 @@ public class ApplicationController extends BaseRouterClient implements IApplicat
     @Override
     protected void registerCommands() {
         super.registerCommands();
+        addCommand(REGISTER_MAIN_LAYOUT, RegisterMainLayoutCommand.class);
+        addCommand(START_WORKSPACE, StartupWorkspaceCommand.class);
         addCommand(LOAD_PROJECT, LoadProjectCommand.class);
     }
-
 }

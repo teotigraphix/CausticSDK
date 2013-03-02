@@ -73,7 +73,7 @@ public interface IRouter {
      */
     void sendCommand(String message) throws CausticException;
 
-    public static class OnRegisterControllerCommandsEvent {
+    public static class OnRegisterRouterCommandsEvent {
 
         private IRouter controller;
 
@@ -81,7 +81,7 @@ public interface IRouter {
             return controller;
         }
 
-        public OnRegisterControllerCommandsEvent(IRouter controller) {
+        public OnRegisterRouterCommandsEvent(IRouter controller) {
             this.controller = controller;
         }
     }
@@ -91,7 +91,7 @@ public interface IRouter {
      * responsible for calling this method.
      * <p>
      * When the method is called, the {@link IRouter} will fire the
-     * {@link OnRegisterControllerCommandsEvent}, this is when sub controllers
+     * {@link OnRegisterRouterCommandsEvent}, this is when sub controllers
      * will register their commands against the main {@link IRouter} instance.
      */
     void initialize();

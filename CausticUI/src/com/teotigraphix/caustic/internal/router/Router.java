@@ -38,6 +38,7 @@ import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.router.IOSCAware;
 import com.teotigraphix.caustic.router.IRouter;
+import com.teotigraphix.caustic.song.IWorkspace;
 
 /**
  * The default implementation of the {@link IRouter} interface.
@@ -56,8 +57,8 @@ public class Router implements IRouter {
     @Inject
     ICommandHistory history;
 
-    //@Inject
-    //IWorkspace workspace;
+    @Inject
+    IWorkspace workspace;
 
     @Inject
     EventManager eventManager;
@@ -80,7 +81,9 @@ public class Router implements IRouter {
 
     @Override
     public String getName() {
-        return mName; //workspace.getApplicationName();
+        if (mName == null)
+            return workspace.getApplicationName();
+        return mName;
     }
 
     public void setName(String value) {
@@ -107,7 +110,7 @@ public class Router implements IRouter {
 
     @Override
     public void initialize() {
-        eventManager.fire(new OnRegisterControllerCommandsEvent(this));
+        eventManager.fire(new OnRegisterRouterCommandsEvent(this));
     }
 
     @Override
