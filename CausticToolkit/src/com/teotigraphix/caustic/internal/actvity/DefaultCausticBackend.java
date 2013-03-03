@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustic.internal.actvity;
 
-import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.activity.ICausticBackend;
 import com.teotigraphix.caustic.internal.part.PartRackFactory;
 import com.teotigraphix.caustic.internal.part.SoundGenerator;
@@ -33,18 +32,13 @@ public abstract class DefaultCausticBackend implements ICausticBackend {
 
     @Override
     public IRack createRack(IWorkspace workpace) {
-        return RackUtils.createRack(workpace.getActivity(), returnCausticCoreKey(),
+        return RackUtils.createRack(workpace.getApplication(), returnCausticCoreKey(),
                 new PartRackFactory());
     }
 
     @Override
     public ISoundGenerator createSoundGenerator(IWorkspace workpace) {
         return new SoundGenerator(workpace);
-    }
-
-    @Override
-    public IApplicationRuntime createApplicationRuntime(IWorkspace workpace) {
-        return new DefaultApplicationRuntime(workpace);
     }
 
     @Override

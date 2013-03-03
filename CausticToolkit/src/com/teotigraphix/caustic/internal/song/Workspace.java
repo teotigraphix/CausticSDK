@@ -24,12 +24,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import roboguice.RoboGuice;
-import roboguice.event.EventManager;
 import android.app.Activity;
+import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.teotigraphix.caustic.activity.IApplicationConfig;
 import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.activity.ICausticBackend;
@@ -53,39 +53,33 @@ import com.teotigraphix.common.utils.RuntimeUtils;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
+@Singleton
 public class Workspace implements IWorkspace {
 
     private static final String STARTUP_PREFS = "startup_preferences";
 
     private static final String CONFIG_PROPERTIES = "config.properties";
 
-    private boolean mRunning = false;
+    @Inject
+    ICausticConfiguration configuration;
 
-    @SuppressWarnings("unused")
-    private ICausticConfiguration mConfiguration;
+    @Inject
+    IApplicationConfig applicationConfig;
+
+    @Inject
+    IFileService mFileService;
+
+    @Inject
+    IApplicationRuntime applicationRuntime;
+
+    private boolean mRunning = false;
 
     private ICausticBackend mBackend;
 
     private IApplicationRuntime mRuntime;
 
-    private void setRuntime(IApplicationRuntime value) {
-        RoboGuice.injectMembers(mActivity, value);
+    public void setRuntime(IApplicationRuntime value) {
         mRuntime = value;
-    }
-
-    @Inject
-    IApplicationConfig applicationConfig;
-
-    //----------------------------------
-    // eventManager
-    //----------------------------------
-
-    @Inject
-    EventManager eventManager;
-
-    @Override
-    public EventManager getEventManager() {
-        return eventManager;
     }
 
     //----------------------------------
@@ -118,25 +112,27 @@ public class Workspace implements IWorkspace {
 
     @Override
     public String getApplicationName() {
-        if (mApplicationRoot == null)
-            return null;
-        return mApplicationRoot.getName();
+        return mApplicationName;
+    }
+
+    public void setApplicationName(String value) {
+        mApplicationName = value;
     }
 
     //----------------------------------
     //  activity
     //----------------------------------
 
-    private Activity mActivity;
+    private Application mApplication;
 
     @Override
-    public final Activity getActivity() {
-        return mActivity;
+    public final Application getApplication() {
+        return mApplication;
     }
 
     @Override
     public SharedPreferences getPreferences() {
-        return mActivity.getSharedPreferences(STARTUP_PREFS, Activity.MODE_PRIVATE);
+        return mApplication.getSharedPreferences(STARTUP_PREFS, Activity.MODE_PRIVATE);
     }
 
     //----------------------------------
@@ -160,7 +156,7 @@ public class Workspace implements IWorkspace {
     private OnSongStateChangeListener listener = new OnSongStateChangeListener() {
         @Override
         public void onSongStateChanged(IRackSong song, SongStateChangeKind kind) {
-            eventManager.fire(new OnRackStateChangedEvent(song, kind));
+            //eventManager.fire(new OnRackStateChangedEvent(song, kind));
         }
     };
 
@@ -179,7 +175,7 @@ public class Workspace implements IWorkspace {
         //IProject oldProject = mProject;
         mProject = (Project)value;
         // XXX this is temp until I create an injector service
-        RoboGuice.injectMembers(mActivity, mProject);
+        // RoboGuice.injectMembers(mApplication, mProject);
         //eventManager.fire(new OnWorkspaceProjectChangeEvent(this, mProject, oldProject));
     }
 
@@ -217,30 +213,34 @@ public class Workspace implements IWorkspace {
     // fileService
     //----------------------------------
 
-    @Inject
-    IFileService mFileService;
+    private String mApplicationName;
 
     @Override
     public IFileService getFileService() {
         return mFileService;
     }
 
+    public void setFileService(IFileService value) {
+        mFileService = value;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Workspace(Activity activity) {
-        mActivity = activity;
+    @Inject
+    public Workspace(Application application) {
+        mApplication = application;
     }
 
-    public void configure(ICausticConfiguration configuration) {
-        mConfiguration = configuration;
+    public void initialize() {
+        setApplicationName(applicationConfig.getApplicationName());
 
         mBackend = configuration.createBackend();
 
         setRack(mBackend.createRack(this));
         setGenerator(mBackend.createSoundGenerator(this));
-        setRuntime(mBackend.createApplicationRuntime(this));
+        setRuntime(applicationRuntime);
     }
 
     //--------------------------------------------------------------------------
@@ -270,7 +270,7 @@ public class Workspace implements IWorkspace {
     public void stopAndShutdown() throws CausticException {
         // notifies clients, the client is responsible for calling save() before this method
         // if it wants to save the workspace and project state to disk
-        eventManager.fire(new OnWorkspaceShutdownEvent(this));
+        //eventManager.fire(new OnWorkspaceShutdownEvent(this));
     }
 
     @Override
@@ -323,7 +323,7 @@ public class Workspace implements IWorkspace {
 
     @Override
     public void save() throws CausticException {
-        eventManager.fire(new OnWorkspaceQuickSaveEvent(this));
+        //eventManager.fire(new OnWorkspaceQuickSaveEvent(this));
     }
 
     private void closeProject(IProject project) {
@@ -339,7 +339,7 @@ public class Workspace implements IWorkspace {
             throw new CausticException("Properties failed to load.", e);
         }
 
-        setupApplicationDirectory(applicationConfig.getApplicationName());
+        setupApplicationDirectory(mApplicationName);
 
         // will install on first run or call update in the installer
         // if the application has already been installed
@@ -360,16 +360,16 @@ public class Workspace implements IWorkspace {
 
     private Properties loadProperties() throws IOException {
         ///data/data/com.teotigraphix.caustic.test/files
-        File target = mActivity.getFilesDir();
+        File target = mApplication.getFilesDir();
         // copy the properties file to the private directory
-        RuntimeUtils.copyFileOrDir(mActivity, target.getAbsolutePath(), CONFIG_PROPERTIES);
+        RuntimeUtils.copyFileOrDir(mApplication, target.getAbsolutePath(), CONFIG_PROPERTIES);
 
         if (!new File(target, CONFIG_PROPERTIES).exists()) {
             throw new IOException("config.properties file was not copied");
         }
 
         //load the properties
-        FileInputStream in = RuntimeUtils.loadPrivateFile(mActivity, CONFIG_PROPERTIES);
+        FileInputStream in = RuntimeUtils.loadPrivateFile(mApplication, CONFIG_PROPERTIES);
         Properties properties = new Properties();
         properties.load(in);
         in.close();

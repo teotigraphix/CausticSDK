@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
+import com.google.inject.Inject;
 import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.service.IFileService;
 import com.teotigraphix.caustic.song.IWorkspace;
@@ -37,21 +38,17 @@ public class DefaultApplicationRuntime implements IApplicationRuntime {
 
     private static final String PREF_VERSION = "version";
 
-    private IWorkspace workspace;
+    @Inject
+    protected IWorkspace workspace;
 
-    protected IWorkspace getWorkspace() {
-        return workspace;
-    }
-
-    public DefaultApplicationRuntime(IWorkspace workspace) {
-        this.workspace = workspace;
+    public DefaultApplicationRuntime() {
     }
 
     @Override
     public boolean install() throws IOException {
-        Editor edit = getWorkspace().getPreferences().edit();
+        Editor edit = workspace.getPreferences().edit();
         // use the preferences to figure out if the app has been installed
-        boolean installed = getWorkspace().getPreferences().getBoolean(PROPERTY_INSTALLED, false);
+        boolean installed = workspace.getPreferences().getBoolean(PROPERTY_INSTALLED, false);
 
         if (!installed) {
             // copy all first run assets, an application will give a 
@@ -68,14 +65,13 @@ public class DefaultApplicationRuntime implements IApplicationRuntime {
 
     boolean update() {
         // check if the private data preferences has been created
-        SharedPreferences settings = getWorkspace().getPreferences();
+        SharedPreferences settings = workspace.getPreferences();
 
         Editor edit = settings.edit();
         // startup.clearPreferences();
 
         float lastVersion = settings.getFloat(PREF_VERSION, 0f);
-        float version = Float.valueOf((String)getWorkspace().getProperties()
-                .get(CONFIG_APP_VERSION));
+        float version = Float.valueOf((String)workspace.getProperties().get(CONFIG_APP_VERSION));
         if (lastVersion < version) {
             // updating
             update(lastVersion, version);

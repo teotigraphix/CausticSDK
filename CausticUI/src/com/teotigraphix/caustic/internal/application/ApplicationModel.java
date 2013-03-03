@@ -51,7 +51,7 @@ public class ApplicationModel implements IApplicationModel {
 
     @Override
     public Activity getActivity() {
-        return workspace.getActivity();
+        return null;//workspace.getActivity();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ApplicationModel implements IApplicationModel {
 
     @Override
     public EventManager getEventManager() {
-        return workspace.getEventManager();
+        return null; //workspace.getEventManager();
     }
 
     @Override

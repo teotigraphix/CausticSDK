@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.teotigraphix.caustic.command.CommandExecutionException;
 import com.teotigraphix.caustic.command.ICommand;
 import com.teotigraphix.caustic.command.ICommandHistory;
@@ -50,7 +51,7 @@ import com.teotigraphix.caustic.song.IWorkspace;
 @ContextSingleton
 public class Router implements IRouter {
 
-    private static final String TAG = "Controller";
+    private static final String TAG = "Router";
 
     private Map<String, Class<?>> commands = new HashMap<String, Class<?>>();
 
@@ -65,6 +66,9 @@ public class Router implements IRouter {
 
     @Inject
     Activity activity;
+
+    @Inject
+    Injector injector;
 
     private String mName;
 
@@ -174,6 +178,7 @@ public class Router implements IRouter {
             return;
         }
 
+        //injector.injectMembers(instance);
         RoboGuice.injectMembers(activity, instance);
 
         if (instance instanceof IOSCAware) {

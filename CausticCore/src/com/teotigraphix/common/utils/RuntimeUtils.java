@@ -195,7 +195,7 @@ public class RuntimeUtils {
      * @return
      * @throws FileNotFoundException
      */
-    public static final FileInputStream loadPrivateFile(Activity activity, String fileName)
+    public static final FileInputStream loadPrivateFile(Context activity, String fileName)
             throws FileNotFoundException {
         return activity.openFileInput(fileName);
     }
@@ -262,7 +262,7 @@ public class RuntimeUtils {
      * @param target
      * @param source
      */
-    public static final void copyFileOrDir(Activity activity, String target, String source) {
+    public static final void copyFileOrDir(Context activity, String target, String source) {
         AssetManager assetManager = activity.getAssets();
         String assets[] = null;
         try {
@@ -283,7 +283,7 @@ public class RuntimeUtils {
         }
     }
 
-    private static final void copyFile(Activity activity, String target, String filename) {
+    private static final void copyFile(Context activity, String target, String filename) {
         AssetManager assetManager = activity.getAssets();
 
         InputStream in = null;

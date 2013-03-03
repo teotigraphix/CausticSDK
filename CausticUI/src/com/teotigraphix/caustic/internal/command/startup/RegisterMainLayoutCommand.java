@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustic.internal.command.startup;
 
+import roboguice.inject.ContextSingleton;
 import android.app.Activity;
 
 import com.google.inject.Inject;
@@ -33,6 +34,7 @@ import com.teotigraphix.caustic.internal.command.OSCCommandBase;
  * <li>param[0] - Interger; the Resource id of the {@link MainLayout}.</li>
  * </ul>
  */
+@ContextSingleton
 public class RegisterMainLayoutCommand extends OSCCommandBase {
 
     @Inject

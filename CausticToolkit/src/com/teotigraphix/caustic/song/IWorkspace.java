@@ -22,8 +22,8 @@ package com.teotigraphix.caustic.song;
 import java.io.File;
 import java.util.Properties;
 
-import roboguice.event.EventManager;
 import android.app.Activity;
+import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.teotigraphix.caustic.core.CausticException;
@@ -79,12 +79,13 @@ public interface IWorkspace {
      * 
      * @return
      */
-    Activity getActivity();
+    //Activity getActivity();
+    Application getApplication();
 
     /**
      * Returns the workspaces single event dispatching manager.
      */
-    EventManager getEventManager();
+    // EventManager getEventManager();
 
     /**
      * The application's rack reference that is global passed the

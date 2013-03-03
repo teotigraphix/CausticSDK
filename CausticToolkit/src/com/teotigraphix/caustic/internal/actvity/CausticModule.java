@@ -21,19 +21,17 @@ package com.teotigraphix.caustic.internal.actvity;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.google.inject.Singleton;
 import com.teotigraphix.caustic.activity.ICausticEngineCore;
-import com.teotigraphix.caustic.activity.WorkspaceProvider;
 import com.teotigraphix.caustic.internal.service.FileService;
 import com.teotigraphix.caustic.service.IFileService;
-import com.teotigraphix.caustic.song.IWorkspace;
 
 public class CausticModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(IFileService.class).to(FileService.class);
-        binder.bind(ICausticEngineCore.class).to(CausticEngineCore.class);
-        binder.bind(IWorkspace.class).toProvider(WorkspaceProvider.class);
+        binder.bind(IFileService.class).to(FileService.class).in(Singleton.class);
+        binder.bind(ICausticEngineCore.class).to(CausticEngineCore.class).in(Singleton.class);
     }
 
 }

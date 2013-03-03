@@ -34,7 +34,7 @@ public interface ICausticBackend {
 
     ISoundGenerator createSoundGenerator(IWorkspace workpace);
 
-    IApplicationRuntime createApplicationRuntime(IWorkspace workpace);
+    //IApplicationRuntime createApplicationRuntime(IWorkspace workpace);
 
     ProjectData createProjectData();
 }

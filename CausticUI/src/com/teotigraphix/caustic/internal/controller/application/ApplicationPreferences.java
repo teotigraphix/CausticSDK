@@ -21,7 +21,6 @@ package com.teotigraphix.caustic.internal.controller.application;
 
 import java.io.File;
 
-import roboguice.inject.ContextSingleton;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
@@ -32,7 +31,6 @@ import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.song.IProject;
 import com.teotigraphix.caustic.song.IWorkspace;
 
-@ContextSingleton
 public class ApplicationPreferences implements IApplicationPreferences {
 
     private static final String TAG = "ApplicationPreferences";
