@@ -26,7 +26,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 
-import com.google.inject.ImplementedBy;
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.controller.IRackController;
 import com.teotigraphix.caustic.core.CausticException;
@@ -36,7 +35,6 @@ import com.teotigraphix.caustic.rack.IRack;
 import com.teotigraphix.caustic.rack.IRackSong;
 import com.teotigraphix.common.utils.RuntimeUtils;
 
-@ImplementedBy(IRackController.class)
 public class RackController implements IRackController {
 
     private static final String CAUSTIC_EXT = ".caustic";
@@ -52,15 +50,18 @@ public class RackController implements IRackController {
         mRack = rack;
     }
 
+    @Override
     public void loadSong(String songName, OnRackSongLoadListener l) {
         File file = RuntimeUtils.getCausticSongFile(songName);
         doLoadSong(file, l);
     }
 
+    @Override
     public void loadSong(File file, OnRackSongLoadListener l) {
         doLoadSong(file, l);
     }
 
+    @Override
     public boolean isLoading() {
         return (mLoadTask != null && mLoadTask.getStatus() == Status.RUNNING);
     }
@@ -82,6 +83,7 @@ public class RackController implements IRackController {
             mRack = rack;
         }
 
+        @Override
         protected Void doInBackground(String... songs) {
             try {
                 mSong = mRack.loadSong(songs[0]);

@@ -23,8 +23,11 @@ import java.io.File;
 
 import android.content.Context;
 
+import com.google.inject.ImplementedBy;
+import com.teotigraphix.caustic.internal.controller.RackController;
 import com.teotigraphix.caustic.rack.IRackSong;
 
+@ImplementedBy(RackController.class)
 public interface IRackController {
 
     void showSongChooser(final Context context, OnRackSongLoadListener l);
