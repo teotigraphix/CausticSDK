@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2012 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,23 +17,19 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.actvity;
+package com.teotigraphix.caustic.activity;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.teotigraphix.caustic.activity.ICausticEngineCore;
-import com.teotigraphix.caustic.activity.WorkspaceProvider;
-import com.teotigraphix.caustic.internal.service.FileService;
 import com.teotigraphix.caustic.service.IFileService;
-import com.teotigraphix.caustic.song.IWorkspace;
 
-public class CausticModule implements Module {
+public interface IApplicationConfig {
 
-    @Override
-    public void configure(Binder binder) {
-        binder.bind(IFileService.class).to(FileService.class);
-        binder.bind(ICausticEngineCore.class).to(CausticEngineCore.class);
-        binder.bind(IWorkspace.class).toProvider(WorkspaceProvider.class);
+    /**
+     * Returns the application's directory name used with the
+     * {@link IFileService}.
+     */
+    String getApplicationName();
+
+    public static class Test {
+        public static boolean TEST_MODE = false;
     }
-
 }

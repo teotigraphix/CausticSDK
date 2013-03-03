@@ -21,8 +21,13 @@ package com.teotigraphix.caustic.internal.service;
 
 import java.io.File;
 
+import android.app.Application;
+import android.util.Log;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.teotigraphix.caustic.activity.IApplicationConfig;
 import com.teotigraphix.caustic.service.IFileService;
-import com.teotigraphix.caustic.song.IWorkspace;
 import com.teotigraphix.common.utils.RuntimeUtils;
 
 /**
@@ -32,6 +37,7 @@ import com.teotigraphix.common.utils.RuntimeUtils;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
+@Singleton
 public class FileService implements IFileService {
 
     private static final String SONGS = "songs";
@@ -109,13 +115,14 @@ public class FileService implements IFileService {
         return mPrivateDirectory;
     }
 
-    public FileService(IWorkspace workspace, String applicationName) {
-
-        mPrivateDirectory = workspace.getActivity().getFilesDir();
+    @Inject
+    public FileService(Application application, IApplicationConfig applicationConfig) {
+        Log.e("FileService", applicationConfig.getApplicationName());
+        mPrivateDirectory = application.getFilesDir();
 
         mPublicDirectory = RuntimeUtils.getExternalStorageDirectory();
 
-        mApplicationDirectory = RuntimeUtils.getDirectory(applicationName);
+        mApplicationDirectory = RuntimeUtils.getDirectory(applicationConfig.getApplicationName());
         if (!mApplicationDirectory.exists())
             mApplicationDirectory.mkdirs();
 

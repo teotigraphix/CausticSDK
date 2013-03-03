@@ -30,12 +30,12 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.activity.IApplicationConfig;
 import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.activity.ICausticBackend;
 import com.teotigraphix.caustic.activity.ICausticConfiguration;
 import com.teotigraphix.caustic.core.CausticError;
 import com.teotigraphix.caustic.core.CausticException;
-import com.teotigraphix.caustic.internal.service.FileService;
 import com.teotigraphix.caustic.part.ISoundGenerator;
 import com.teotigraphix.caustic.rack.IRack;
 import com.teotigraphix.caustic.rack.IRack.OnSongStateChangeListener;
@@ -55,16 +55,9 @@ import com.teotigraphix.common.utils.RuntimeUtils;
  */
 public class Workspace implements IWorkspace {
 
-    private static final String APP_NAME = "app.name";
-
-    private static final String APP_TEST_NAME = "app.test.name";
-
     private static final String STARTUP_PREFS = "startup_preferences";
 
     private static final String CONFIG_PROPERTIES = "config.properties";
-
-    // XXX this is temp until I find an easy way to Mock this
-    public static boolean TEST_MODE = false;
 
     private boolean mRunning = false;
 
@@ -79,6 +72,9 @@ public class Workspace implements IWorkspace {
         RoboGuice.injectMembers(mActivity, value);
         mRuntime = value;
     }
+
+    @Inject
+    IApplicationConfig applicationConfig;
 
     //----------------------------------
     // eventManager
@@ -221,15 +217,12 @@ public class Workspace implements IWorkspace {
     // fileService
     //----------------------------------
 
-    private IFileService mFileService;
+    @Inject
+    IFileService mFileService;
 
     @Override
     public IFileService getFileService() {
         return mFileService;
-    }
-
-    void setFileService(FileService value) {
-        mFileService = value;
     }
 
     //--------------------------------------------------------------------------
@@ -346,8 +339,7 @@ public class Workspace implements IWorkspace {
             throw new CausticException("Properties failed to load.", e);
         }
 
-        String appName = TEST_MODE ? APP_TEST_NAME : APP_NAME;
-        setupApplicationDirectory(getProperties().get(appName).toString());
+        setupApplicationDirectory(applicationConfig.getApplicationName());
 
         // will install on first run or call update in the installer
         // if the application has already been installed
@@ -390,8 +382,6 @@ public class Workspace implements IWorkspace {
     }
 
     private void setupApplicationDirectory(String applicationName) {
-        setFileService(new FileService(this, applicationName));
-
         // setup the applicationRoot
         File applicationDirectory = mFileService.getApplicationDirectory();
         if (!applicationDirectory.exists()) {

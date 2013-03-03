@@ -15,6 +15,7 @@
         android:targetPackage="com.teotigraphix.caustic.test" />
 
     <application
+        android:name="com.teotigraphix.caustic.test.CausticSDKApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
