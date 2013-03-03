@@ -19,14 +19,10 @@
 
 package com.teotigraphix.caustic.activity;
 
-import roboguice.RoboGuice;
 import roboguice.activity.RoboActivity;
-import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.inject.Inject;
-import com.google.inject.Module;
 import com.singlecellsoftware.causticcore.CausticCore;
 import com.teotigraphix.caustic.core.ICausticEngine;
 
@@ -74,15 +70,15 @@ import com.teotigraphix.caustic.core.ICausticEngine;
  */
 public abstract class CausticActivity extends RoboActivity {
 
-    private static final String TAG = "CausticActivity";
+    //private static final String TAG = "CausticActivity";
 
     @Inject
     ICausticEngineCore core;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        createModule(savedInstanceState);
-        Log.d(TAG, "onCreate()");
+        //createModule(savedInstanceState);
+        //Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         core.onCreate(savedInstanceState);
     }
@@ -95,58 +91,41 @@ public abstract class CausticActivity extends RoboActivity {
     @Override
     protected void onStart() {
         core.onStart();
-        Log.d(TAG, "onStart()");
+        //Log.d(TAG, "onStart()");
         super.onStart();
     }
 
     @Override
     protected void onStop() {
         core.onStop();
-        Log.d(TAG, "onStop()");
+        //Log.d(TAG, "onStop()");
         super.onStop();
     }
 
     @Override
     protected void onPause() {
         core.onPause();
-        Log.d(TAG, "onPause()");
+        //Log.d(TAG, "onPause()");
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         core.onResume();
-        Log.d(TAG, "onResume()");
+        //Log.d(TAG, "onResume()");
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy()");
+        //Log.d(TAG, "onDestroy()");
         super.onDestroy();
     }
 
     @Override
     protected void onRestart() {
         core.onRestart();
-        Log.d(TAG, "onRestart()");
+        //Log.d(TAG, "onRestart()");
         super.onRestart();
-    }
-
-    protected void createModule(Bundle state) {
-        Module module = createApplicationModule();
-        if (module != null) {
-            loadApplicationModule(getApplication(), module);
-        }
-    }
-
-    /**
-     * Subclass to supply the Applications's config module.
-     */
-    abstract protected Module createApplicationModule();
-
-    private void loadApplicationModule(Application application, Module module) {
-        RoboGuice.setBaseApplicationInjector(application, RoboGuice.DEFAULT_STAGE,
-                RoboGuice.newDefaultRoboModule(application), module);
     }
 }
