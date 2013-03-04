@@ -230,7 +230,7 @@ public class Project implements IProject {
             mData.copy(memento.createChild("data"));
         }
 
-        mWorkspace.getRack().copy(memento.createChild("rack"));
+        //XXX mWorkspace.getRack().copy(memento.createChild("rack"));
 
         saveSongs(memento.createChild("songs"));
     }

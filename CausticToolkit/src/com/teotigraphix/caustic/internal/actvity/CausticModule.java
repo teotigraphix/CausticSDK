@@ -22,7 +22,6 @@ package com.teotigraphix.caustic.internal.actvity;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustic.activity.ICausticEngineCore;
 import com.teotigraphix.caustic.internal.service.FileService;
 import com.teotigraphix.caustic.service.IFileService;
 
@@ -31,7 +30,7 @@ public class CausticModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(IFileService.class).to(FileService.class).in(Singleton.class);
-        binder.bind(ICausticEngineCore.class).to(CausticEngineCore.class).in(Singleton.class);
+        //binder.bind(ICausticEngineCore.class).to(CausticEngineCore.class).in(Singleton.class);
     }
 
 }

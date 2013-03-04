@@ -26,7 +26,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustic.controller.IApplicationPreferences;
+import com.teotigraphix.caustic.activity.IApplicationPreferences;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.song.IProject;
 import com.teotigraphix.caustic.song.IWorkspace;
@@ -74,7 +74,7 @@ public class ApplicationPreferences implements IApplicationPreferences {
     public void quickSave() {
         Log.d(TAG, "quickSave()");
 
-        SharedPreferences settings = workspace.getPreferences();
+        SharedPreferences settings = workspace.getSharedPreferences();
         Editor edit = settings.edit();
 
         // XXX create an event that all clients of the EventManager can listen

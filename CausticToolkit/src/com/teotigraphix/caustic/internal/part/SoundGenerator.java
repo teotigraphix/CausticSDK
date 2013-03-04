@@ -149,7 +149,7 @@ public class SoundGenerator implements ISoundGenerator {
      */
     public SoundGenerator(IWorkspace workspace) {
         mWorkspace = workspace;
-        mWorkspace.getRack().addOnMachineChangeListener(mOnMachineChangeListener);
+        // XXX mWorkspace.getRack().addOnMachineChangeListener(mOnMachineChangeListener);
         mToneLibrary = new ToneLibrary(mWorkspace);
         mPatchLibrary = new PatchLibrary(mWorkspace);
     }
@@ -364,6 +364,7 @@ public class SoundGenerator implements ISoundGenerator {
         }
     };
 
+    @SuppressWarnings("unused")
     private OnMachineChangeListener mOnMachineChangeListener = new OnMachineChangeListener() {
         @Override
         public void onMachineChanged(IMachine machine, MachineChangeKind kind) {

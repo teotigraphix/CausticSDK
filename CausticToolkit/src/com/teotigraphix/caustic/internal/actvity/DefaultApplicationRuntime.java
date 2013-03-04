@@ -25,7 +25,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
-import com.google.inject.Inject;
 import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.service.IFileService;
 import com.teotigraphix.caustic.song.IWorkspace;
@@ -34,21 +33,19 @@ import com.teotigraphix.common.utils.RuntimeUtils;
 public class DefaultApplicationRuntime implements IApplicationRuntime {
     private static final String PROPERTY_INSTALLED = "installed";
 
-    private static final String CONFIG_APP_VERSION = "app.version";
-
     private static final String PREF_VERSION = "version";
 
-    @Inject
     protected IWorkspace workspace;
 
-    public DefaultApplicationRuntime() {
+    public DefaultApplicationRuntime(IWorkspace workspace) {
+        this.workspace = workspace;
     }
 
     @Override
     public boolean install() throws IOException {
-        Editor edit = workspace.getPreferences().edit();
+        Editor edit = workspace.getSharedPreferences().edit();
         // use the preferences to figure out if the app has been installed
-        boolean installed = workspace.getPreferences().getBoolean(PROPERTY_INSTALLED, false);
+        boolean installed = workspace.getSharedPreferences().getBoolean(PROPERTY_INSTALLED, false);
 
         if (!installed) {
             // copy all first run assets, an application will give a 
@@ -65,13 +62,13 @@ public class DefaultApplicationRuntime implements IApplicationRuntime {
 
     boolean update() {
         // check if the private data preferences has been created
-        SharedPreferences settings = workspace.getPreferences();
+        SharedPreferences settings = workspace.getSharedPreferences();
 
         Editor edit = settings.edit();
         // startup.clearPreferences();
 
         float lastVersion = settings.getFloat(PREF_VERSION, 0f);
-        float version = Float.valueOf((String)workspace.getProperties().get(CONFIG_APP_VERSION));
+        float version = workspace.getApplicationConfiguration().getVersion();
         if (lastVersion < version) {
             // updating
             update(lastVersion, version);

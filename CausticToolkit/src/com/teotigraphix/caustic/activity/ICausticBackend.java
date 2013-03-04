@@ -19,22 +19,17 @@
 
 package com.teotigraphix.caustic.activity;
 
-import roboguice.inject.ContextSingleton;
-
 import com.teotigraphix.caustic.internal.song.ProjectData;
 import com.teotigraphix.caustic.part.ISoundGenerator;
 import com.teotigraphix.caustic.rack.IRack;
 import com.teotigraphix.caustic.song.IWorkspace;
 
-@ContextSingleton
 public interface ICausticBackend {
     int returnCausticCoreKey();
 
     IRack createRack(IWorkspace workpace);
 
     ISoundGenerator createSoundGenerator(IWorkspace workpace);
-
-    //IApplicationRuntime createApplicationRuntime(IWorkspace workpace);
 
     ProjectData createProjectData();
 }

@@ -22,7 +22,7 @@ package com.teotigraphix.caustic.internal.command.workspace;
 import android.util.Log;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustic.controller.IApplicationPreferences;
+import com.teotigraphix.caustic.activity.IApplicationPreferences;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;

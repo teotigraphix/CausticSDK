@@ -26,7 +26,7 @@ import android.util.Log;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustic.activity.IApplicationConfig;
+import com.teotigraphix.caustic.activity.IApplicationConfiguration;
 import com.teotigraphix.caustic.service.IFileService;
 import com.teotigraphix.common.utils.RuntimeUtils;
 
@@ -116,7 +116,7 @@ public class FileService implements IFileService {
     }
 
     @Inject
-    public FileService(Application application, IApplicationConfig applicationConfig) {
+    public FileService(Application application, IApplicationConfiguration applicationConfig) {
         Log.e("FileService", applicationConfig.getApplicationName());
         mPrivateDirectory = application.getFilesDir();
 

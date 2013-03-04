@@ -24,11 +24,10 @@ import android.content.SharedPreferences;
 import com.google.inject.ImplementedBy;
 import com.teotigraphix.android.components.support.MainLayout;
 import com.teotigraphix.android.service.ITouchService;
-import com.teotigraphix.caustic.activity.IApplicationRuntime;
+import com.teotigraphix.caustic.activity.IApplicationPreferences;
 import com.teotigraphix.caustic.internal.controller.application.ApplicationController;
 import com.teotigraphix.caustic.router.IRouterClient;
 import com.teotigraphix.caustic.song.IProject;
-import com.teotigraphix.caustic.song.IWorkspace;
 import com.teotigraphix.common.IMemento;
 
 @ImplementedBy(ApplicationController.class)
@@ -59,7 +58,7 @@ public interface IApplicationController extends IRouterClient {
      * <li>Runs the runtime.</li>
      * </ul>
      */
-    public static final String START_WORKSPACE = "start_workspace";
+    //public static final String START_WORKSPACE = "start_workspace";
 
     /**
      * Loads a project from the workspace.

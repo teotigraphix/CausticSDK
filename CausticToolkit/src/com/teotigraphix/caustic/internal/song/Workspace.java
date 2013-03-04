@@ -20,20 +20,18 @@
 package com.teotigraphix.caustic.internal.song;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustic.activity.IApplicationConfig;
+import com.teotigraphix.caustic.activity.IApplicationConfiguration;
+import com.teotigraphix.caustic.activity.IApplicationPreferences;
 import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.activity.ICausticBackend;
-import com.teotigraphix.caustic.activity.ICausticConfiguration;
 import com.teotigraphix.caustic.core.CausticError;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.part.ISoundGenerator;
@@ -44,7 +42,6 @@ import com.teotigraphix.caustic.rack.IRackSong;
 import com.teotigraphix.caustic.service.IFileService;
 import com.teotigraphix.caustic.song.IProject;
 import com.teotigraphix.caustic.song.IWorkspace;
-import com.teotigraphix.common.utils.RuntimeUtils;
 
 /**
  * The default implementation of the {@link IWorkspace} API.
@@ -58,37 +55,69 @@ public class Workspace implements IWorkspace {
 
     private static final String STARTUP_PREFS = "startup_preferences";
 
-    private static final String CONFIG_PROPERTIES = "config.properties";
-
-    @Inject
-    ICausticConfiguration configuration;
-
-    @Inject
-    IApplicationConfig applicationConfig;
-
-    @Inject
-    IFileService mFileService;
-
-    @Inject
-    IApplicationRuntime applicationRuntime;
-
-    private boolean mRunning = false;
-
     private ICausticBackend mBackend;
 
     private IApplicationRuntime mRuntime;
 
-    public void setRuntime(IApplicationRuntime value) {
-        mRuntime = value;
+    //--------------------------------------------------------------------------
+    // Application Level Model
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // applicationConfiguration
+    //----------------------------------
+
+    private IApplicationConfiguration mApplicationConfiguration;
+
+    @Override
+    public IApplicationConfiguration getApplicationConfiguration() {
+        return mApplicationConfiguration;
     }
+
+    //----------------------------------
+    // applicationPreferences
+    //----------------------------------
+
+    private IApplicationPreferences mApplicationPreferences;
+
+    @Override
+    public IApplicationPreferences getApplicationPreferences() {
+        return mApplicationPreferences;
+    }
+
+    //--------------------------------------------------------------------------
+    // IWorkspace API
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // isRunning
     //----------------------------------
 
+    private boolean mRunning = false;
+
     @Override
     public boolean isRunning() {
         return mRunning;
+    }
+
+    //----------------------------------
+    // application
+    //----------------------------------
+
+    private Application mApplication;
+
+    @Override
+    public final Application getApplication() {
+        return mApplication;
+    }
+
+    //----------------------------------
+    // applicationName
+    //----------------------------------
+
+    @Override
+    public String getApplicationName() {
+        return mApplicationConfiguration.getApplicationName();
     }
 
     //----------------------------------
@@ -107,32 +136,24 @@ public class Workspace implements IWorkspace {
     }
 
     //----------------------------------
-    // applicationName
+    // fileService
+    //----------------------------------
+
+    @Inject
+    IFileService fileService;
+
+    @Override
+    public IFileService getFileService() {
+        return fileService;
+    }
+
+    //----------------------------------
+    // sharedPreferences
     //----------------------------------
 
     @Override
-    public String getApplicationName() {
-        return mApplicationName;
-    }
-
-    public void setApplicationName(String value) {
-        mApplicationName = value;
-    }
-
-    //----------------------------------
-    //  activity
-    //----------------------------------
-
-    private Application mApplication;
-
-    @Override
-    public final Application getApplication() {
-        return mApplication;
-    }
-
-    @Override
-    public SharedPreferences getPreferences() {
-        return mApplication.getSharedPreferences(STARTUP_PREFS, Activity.MODE_PRIVATE);
+    public SharedPreferences getSharedPreferences() {
+        return mApplication.getSharedPreferences(STARTUP_PREFS, Application.MODE_PRIVATE);
     }
 
     //----------------------------------
@@ -180,21 +201,6 @@ public class Workspace implements IWorkspace {
     }
 
     //----------------------------------
-    // properties
-    //----------------------------------
-
-    private Properties mProperties;
-
-    @Override
-    public Properties getProperties() {
-        return mProperties;
-    }
-
-    void setProperties(Properties value) {
-        mProperties = value;
-    }
-
-    //----------------------------------
     // soundGenerator
     //----------------------------------
 
@@ -209,38 +215,17 @@ public class Workspace implements IWorkspace {
         mGenerator = value;
     }
 
-    //----------------------------------
-    // fileService
-    //----------------------------------
-
-    private String mApplicationName;
-
-    @Override
-    public IFileService getFileService() {
-        return mFileService;
-    }
-
-    public void setFileService(IFileService value) {
-        mFileService = value;
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     @Inject
-    public Workspace(Application application) {
+    public Workspace(Application application, IApplicationConfiguration applicationConfiguration,
+            IApplicationPreferences applicationPreferences) {
+        Log.d("Workspace", "Workspace()");
         mApplication = application;
-    }
-
-    public void initialize() {
-        setApplicationName(applicationConfig.getApplicationName());
-
-        mBackend = configuration.createBackend();
-
-        setRack(mBackend.createRack(this));
-        setGenerator(mBackend.createSoundGenerator(this));
-        setRuntime(applicationRuntime);
+        mApplicationConfiguration = applicationConfiguration;
+        mApplicationPreferences = applicationPreferences;
     }
 
     //--------------------------------------------------------------------------
@@ -249,6 +234,12 @@ public class Workspace implements IWorkspace {
 
     @Override
     public void startAndRun() throws CausticException {
+        Log.d("Workspace", "startAndRun()");
+        mBackend = mApplicationConfiguration.createBackend();
+        mRuntime = mApplicationConfiguration.createRuntime(this);
+        //setRack(mBackend.createRack(this));
+        setGenerator(mBackend.createSoundGenerator(this));
+
         try {
             install();
         } catch (CausticException e) {
@@ -268,9 +259,12 @@ public class Workspace implements IWorkspace {
 
     @Override
     public void stopAndShutdown() throws CausticException {
-        // notifies clients, the client is responsible for calling save() before this method
-        // if it wants to save the workspace and project state to disk
-        //eventManager.fire(new OnWorkspaceShutdownEvent(this));
+        Log.d("Workspace", "stopAndShutdown()");
+        // Clear out ALL state created in startAndRun()
+        mBackend = null;
+        mRuntime = null;
+        mRunning = false;
+        mGenerator = null;
     }
 
     @Override
@@ -332,14 +326,7 @@ public class Workspace implements IWorkspace {
     }
 
     protected void install() throws CausticException {
-        // load the config.properties on every startup to check for changes
-        try {
-            mProperties = loadProperties();
-        } catch (IOException e) {
-            throw new CausticException("Properties failed to load.", e);
-        }
-
-        setupApplicationDirectory(mApplicationName);
+        setupApplicationDirectory(getApplicationName());
 
         // will install on first run or call update in the installer
         // if the application has already been installed
@@ -358,32 +345,13 @@ public class Workspace implements IWorkspace {
         mRuntime.run();
     }
 
-    private Properties loadProperties() throws IOException {
-        ///data/data/com.teotigraphix.caustic.test/files
-        File target = mApplication.getFilesDir();
-        // copy the properties file to the private directory
-        RuntimeUtils.copyFileOrDir(mApplication, target.getAbsolutePath(), CONFIG_PROPERTIES);
-
-        if (!new File(target, CONFIG_PROPERTIES).exists()) {
-            throw new IOException("config.properties file was not copied");
-        }
-
-        //load the properties
-        FileInputStream in = RuntimeUtils.loadPrivateFile(mApplication, CONFIG_PROPERTIES);
-        Properties properties = new Properties();
-        properties.load(in);
-        in.close();
-
-        return properties;
-    }
-
     public void clearPreferences() {
-        getPreferences().edit().clear().commit();
+        getSharedPreferences().edit().clear().commit();
     }
 
     private void setupApplicationDirectory(String applicationName) {
         // setup the applicationRoot
-        File applicationDirectory = mFileService.getApplicationDirectory();
+        File applicationDirectory = fileService.getApplicationDirectory();
         if (!applicationDirectory.exists()) {
             throw new CausticError("Application directory '"
                     + applicationDirectory.getAbsolutePath() + "' failed to create");

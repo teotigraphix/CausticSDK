@@ -23,7 +23,7 @@ import roboguice.event.EventManager;
 import android.app.Activity;
 
 import com.google.inject.ImplementedBy;
-import com.teotigraphix.caustic.controller.IApplicationPreferences;
+import com.teotigraphix.caustic.activity.IApplicationPreferences;
 import com.teotigraphix.caustic.internal.application.ApplicationModel;
 import com.teotigraphix.caustic.song.IWorkspace;
 

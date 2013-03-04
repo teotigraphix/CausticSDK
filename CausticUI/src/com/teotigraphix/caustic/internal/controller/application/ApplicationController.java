@@ -24,8 +24,9 @@ import roboguice.inject.ContextSingleton;
 import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.internal.command.project.LoadProjectCommand;
 import com.teotigraphix.caustic.internal.command.startup.RegisterMainLayoutCommand;
-import com.teotigraphix.caustic.internal.command.workspace.StartupWorkspaceCommand;
 import com.teotigraphix.caustic.internal.router.BaseRouterClient;
+
+// XXX These should be ActivityControllers now
 
 @ContextSingleton
 public class ApplicationController extends BaseRouterClient implements IApplicationController {
@@ -42,7 +43,6 @@ public class ApplicationController extends BaseRouterClient implements IApplicat
     protected void registerCommands() {
         super.registerCommands();
         addCommand(REGISTER_MAIN_LAYOUT, RegisterMainLayoutCommand.class);
-        addCommand(START_WORKSPACE, StartupWorkspaceCommand.class);
         addCommand(LOAD_PROJECT, LoadProjectCommand.class);
     }
 }

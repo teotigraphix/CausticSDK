@@ -24,8 +24,8 @@ import roboguice.inject.ContextSingleton;
 import android.app.Activity;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.activity.IApplicationPreferences;
 import com.teotigraphix.caustic.application.IApplicationModel;
-import com.teotigraphix.caustic.controller.IApplicationPreferences;
 import com.teotigraphix.caustic.song.IWorkspace;
 
 @ContextSingleton

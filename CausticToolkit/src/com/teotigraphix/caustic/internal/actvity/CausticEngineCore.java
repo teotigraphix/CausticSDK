@@ -22,11 +22,9 @@ package com.teotigraphix.caustic.internal.actvity;
 import android.os.Bundle;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.teotigraphix.caustic.activity.ICausticEngineCore;
 import com.teotigraphix.caustic.song.IWorkspace;
 
-@Singleton
 public class CausticEngineCore implements ICausticEngineCore {
 
     @Inject

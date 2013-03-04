@@ -1,11 +1,10 @@
 
-package com.teotigraphix.caustic.controller;
+package com.teotigraphix.caustic.activity;
 
 import java.io.File;
 
 import android.content.SharedPreferences;
 
-import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.song.IWorkspace;
 
 public interface IApplicationPreferences {
@@ -33,7 +32,7 @@ public interface IApplicationPreferences {
      * The method responsible for calling; {@link IApplicationRuntime#boot()}
      * implementation of the application.
      * 
-     * @param preferences The {@link IWorkspace#getPreferences()} instance.
+     * @param preferences The {@link IWorkspace#getSharedPreferences()} instance.
      */
     void bootPreferences(SharedPreferences preferences);
 

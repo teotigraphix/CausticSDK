@@ -20,12 +20,13 @@
 package com.teotigraphix.caustic.song;
 
 import java.io.File;
-import java.util.Properties;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
 
+import com.teotigraphix.caustic.activity.IApplicationConfiguration;
+import com.teotigraphix.caustic.activity.IApplicationPreferences;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.part.IPart;
@@ -52,6 +53,18 @@ public interface IWorkspace {
      * This will return true after the method is finished executing.
      */
     boolean isRunning();
+
+    //----------------------------------
+    // applicationConfiguration
+    //----------------------------------
+
+    IApplicationConfiguration getApplicationConfiguration();
+
+    //----------------------------------
+    // applicationPreferences
+    //----------------------------------
+
+    IApplicationPreferences getApplicationPreferences();
 
     //----------------------------------
     // applicationRoot
@@ -101,7 +114,7 @@ public interface IWorkspace {
     /**
      * The {@link Activity#getSharedPreferences(String, int)} editor.
      */
-    SharedPreferences getPreferences();
+    SharedPreferences getSharedPreferences();
 
     //----------------------------------
     // properties
@@ -110,7 +123,7 @@ public interface IWorkspace {
     /**
      * Returns the <code>workspace.properties</code> properties.
      */
-    Properties getProperties();
+    // Properties getProperties();
 
     /**
      * The {@link IWorkspace} centric file service.

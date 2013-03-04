@@ -39,9 +39,7 @@ public class CausticUIModule extends CausticModule {
         binder.bind(ITouchService.class).to(TouchService.class);
         binder.bind(IRouter.class).to(Router.class);
         // overridable
-        //binder.bind(IApplicationModel.class).to(ApplicationModel.class);
         binder.bind(IApplicationController.class).to(ApplicationController.class);
-        //binder.bind(IApplicationPreferences.class).to(ApplicationPreferences.class);
         binder.bind(IWorkspace.class).to(Workspace.class).in(Singleton.class);
 
     }

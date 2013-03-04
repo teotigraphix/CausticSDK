@@ -20,14 +20,31 @@
 package com.teotigraphix.caustic.activity;
 
 import com.teotigraphix.caustic.service.IFileService;
+import com.teotigraphix.caustic.song.IWorkspace;
 
-public interface IApplicationConfig {
+public interface IApplicationConfiguration {
+
+    float getVersion();
+
+    int getVersionMajor();
+
+    int getVersionMinor();
+
+    int getVersionRevision();
 
     /**
      * Returns the application's directory name used with the
      * {@link IFileService}.
      */
     String getApplicationName();
+
+    IApplicationRuntime createRuntime(IWorkspace workspace);
+
+    /**
+     * Creates the backend factory that is responsible for making instances the
+     * {@link IWorkspace} and sub components will use during the application.
+     */
+    ICausticBackend createBackend();
 
     public static class Test {
         public static boolean TEST_MODE = false;
