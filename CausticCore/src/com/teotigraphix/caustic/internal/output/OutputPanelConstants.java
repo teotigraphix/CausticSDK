@@ -26,7 +26,8 @@ package com.teotigraphix.caustic.internal.output;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class OutputPanelConstants {
+public final class OutputPanelConstants
+{
 
     //--------------------------------------------------------------------------
     //

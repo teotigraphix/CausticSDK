@@ -44,7 +44,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IMachine extends IDevice, IPersist {
+public interface IMachine extends IDevice, IPersist
+{
 
     //--------------------------------------------------------------------------
     //

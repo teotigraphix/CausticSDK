@@ -29,7 +29,8 @@ import com.teotigraphix.caustic.rack.IRack;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IDispose {
+public interface IDispose
+{
 
     //--------------------------------------------------------------------------
     //

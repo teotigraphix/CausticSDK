@@ -28,20 +28,25 @@ import com.teotigraphix.common.internal.XMLMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class MementoUtil {
-    public final static int booleanToInt(boolean value) {
+public final class MementoUtil
+{
+    public final static int booleanToInt(boolean value)
+    {
         return !value ? 0 : 1;
     }
 
-    public final static boolean intToBoolean(int value) {
+    public final static boolean intToBoolean(int value)
+    {
         return value == 0 ? false : true;
     }
 
-    public final static boolean floatToBoolean(float value) {
+    public final static boolean floatToBoolean(float value)
+    {
         return value == 0f ? false : true;
     }
 
-    public final static void copy(IPersist from, IPersist to, String rootTag) {
+    public final static void copy(IPersist from, IPersist to, String rootTag)
+    {
         IMemento memento = XMLMemento.createWriteRoot(rootTag);
         from.copy(memento);
         to.paste(memento);

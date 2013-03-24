@@ -37,7 +37,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PCMSampler extends MachineComponent implements IPCMSampler {
+public class PCMSampler extends MachineComponent implements IPCMSampler
+{
 
     private static final String ATT_CHANNEL = "channel";
 
@@ -48,7 +49,8 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     private Map<Integer, IPCMSamplerChannel> mSamples;
 
     @Override
-    public void setDevice(IDevice value) {
+    public void setDevice(IDevice value)
+    {
         super.setDevice(value);
         createChannels();
     }
@@ -60,8 +62,10 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     //--------------------------------------------------------------------------
 
     @Override
-    public String getSampleIndicies() {
-        return PCMSamplerMessage.QUERY_SAMPLE_INDICIES.queryString(getEngine(), getMachineIndex());
+    public String getSampleIndicies()
+    {
+        return PCMSamplerMessage.QUERY_SAMPLE_INDICIES.queryString(getEngine(),
+                getMachineIndex());
     }
 
     //----------------------------------
@@ -75,21 +79,25 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     private IPCMSynthSamplerListener mListener;
 
     @Override
-    public int getActiveIndex() {
+    public int getActiveIndex()
+    {
         return mActiveIndex;
     }
 
     @Override
-    public void setActiveIndex(int value) {
+    public void setActiveIndex(int value)
+    {
         if (value == mActiveIndex)
             return;
         if (value < 0 || value >= NUM_SAMPLER_CHANNELS)
-            throw newRangeException(PCMSamplerMessage.SAMPLE_INDEX.toString(), "0..63", value);
+            throw newRangeException(PCMSamplerMessage.SAMPLE_INDEX.toString(),
+                    "0..63", value);
 
         mActiveIndex = value;
         mCurrentSample = getPCMSample(mActiveIndex);
 
-        PCMSamplerMessage.SAMPLE_INDEX.send(getEngine(), getMachineIndex(), mActiveIndex);
+        PCMSamplerMessage.SAMPLE_INDEX.send(getEngine(), getMachineIndex(),
+                mActiveIndex);
 
         fireSampleChanged(mActiveIndex, mCurrentSample);
     }
@@ -99,14 +107,17 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     //----------------------------------
 
     @Override
-    public IPCMSamplerChannel getActiveChannel() {
+    public IPCMSamplerChannel getActiveChannel()
+    {
         return mCurrentSample;
     }
 
     @Override
-    public String getSampleName(int channel) {
+    public String getSampleName(int channel)
+    {
         setActiveIndex(channel);
-        return PCMSamplerMessage.QUERY_SAMPLE_NAME.queryString(getEngine(), getMachineIndex());
+        return PCMSamplerMessage.QUERY_SAMPLE_NAME.queryString(getEngine(),
+                getMachineIndex());
     }
 
     //--------------------------------------------------------------------------
@@ -118,7 +129,8 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     /**
      * Constructor.
      */
-    public PCMSampler(IMachine machine) {
+    public PCMSampler(IMachine machine)
+    {
         super(machine);
     }
 
@@ -129,14 +141,16 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     //--------------------------------------------------------------------------
 
     @Override
-    public void setChannelSamplePoints(int channel, int start, int end) {
+    public void setChannelSamplePoints(int channel, int start, int end)
+    {
         setActiveIndex(channel);
         getActiveChannel().setStart(start);
         getActiveChannel().setEnd(end);
     }
 
     @Override
-    public void setChannelKeys(int channel, int low, int high, int root) {
+    public void setChannelKeys(int channel, int low, int high, int root)
+    {
         setActiveIndex(channel);
         getActiveChannel().setLowKey(low);
         getActiveChannel().setHighKey(high);
@@ -144,7 +158,9 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     }
 
     @Override
-    public void setChannelProperties(int channel, float level, int tune, PlayMode mode) {
+    public void setChannelProperties(int channel, float level, int tune,
+            PlayMode mode)
+    {
         setActiveIndex(channel);
         getActiveChannel().setLevel(level);
         getActiveChannel().setTune(tune);
@@ -152,7 +168,8 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     }
 
     @Override
-    public IPCMSamplerChannel loadChannel(int index, String path) {
+    public IPCMSamplerChannel loadChannel(int index, String path)
+    {
         setActiveIndex(index);
         IPCMSamplerChannel result = getActiveChannel();
         loadSample(path);
@@ -167,7 +184,8 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     //--------------------------------------------------------------------------
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         // the OSC for the sampler is kindof weird in that you have to
         // set the active index first and then issue commands. During the
         // restore, this index gets changed, we need to put it back where it was
@@ -177,7 +195,8 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
             return;
 
         String[] split = samples.split(" ");
-        for (int i = 0; i < split.length; i++) {
+        for (int i = 0; i < split.length; i++)
+        {
             mSamples.get(Integer.parseInt(split[i])).restore();
         }
         setActiveIndex(old);
@@ -190,19 +209,25 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
-        for (IPCMSamplerChannel sample : mSamples.values()) {
-            if (sample.hasSample()) {
+    public void copy(IMemento memento)
+    {
+        for (IPCMSamplerChannel sample : mSamples.values())
+        {
+            if (sample.hasSample())
+            {
                 sample.copy(memento.createChild(TAG_SAMPLE));
             }
         }
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         IMemento[] samples = memento.getChildren(TAG_SAMPLE);
-        for (IMemento sample : samples) {
-            IPCMSamplerChannel pcm = getPCMSample(sample.getInteger(ATT_CHANNEL));
+        for (IMemento sample : samples)
+        {
+            IPCMSamplerChannel pcm = getPCMSample(sample
+                    .getInteger(ATT_CHANNEL));
             pcm.paste(sample);
         }
     }
@@ -213,24 +238,32 @@ public class PCMSampler extends MachineComponent implements IPCMSampler {
     //
     //--------------------------------------------------------------------------
 
-    void loadSample(String absolutPath) {
-        PCMSamplerMessage.SAMPLE_LOAD.send(getEngine(), getMachineIndex(), absolutPath);
+    void loadSample(String absolutPath)
+    {
+        PCMSamplerMessage.SAMPLE_LOAD.send(getEngine(), getMachineIndex(),
+                absolutPath);
     }
 
-    protected final IPCMSamplerChannel getPCMSample(int index) {
+    protected final IPCMSamplerChannel getPCMSample(int index)
+    {
         return mSamples.get(index);
     }
 
-    protected final void fireSampleChanged(int channel, IPCMSamplerChannel sample) {
-        if (mListener != null) {
+    protected final void fireSampleChanged(int channel,
+            IPCMSamplerChannel sample)
+    {
+        if (mListener != null)
+        {
             mListener.onChannelChanged(channel, sample);
         }
     }
 
-    protected void createChannels() {
+    protected void createChannels()
+    {
         int numChannels = 64;
         mSamples = new TreeMap<Integer, IPCMSamplerChannel>();
-        for (int i = 0; i < numChannels; i++) {
+        for (int i = 0; i < numChannels; i++)
+        {
             PCMSamplerChannel sample = new PCMSamplerChannel(this);
             sample.setIndex(i);
             mSamples.put(i, sample);

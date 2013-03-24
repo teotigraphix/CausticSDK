@@ -33,7 +33,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MixerDelay extends EffectComponent implements IMixerDelay {
+public class MixerDelay extends EffectComponent implements IMixerDelay
+{
 
     //--------------------------------------------------------------------------
     //
@@ -48,16 +49,19 @@ public class MixerDelay extends EffectComponent implements IMixerDelay {
     private int mTime = 7;
 
     @Override
-    public int getTime() {
+    public int getTime()
+    {
         return mTime;
     }
 
-    int getTime(boolean restore) {
-        return (int)MixerMessage.DELAY_UNIT_TIME.query(getEngine());
+    int getTime(boolean restore)
+    {
+        return (int) MixerMessage.DELAY_UNIT_TIME.query(getEngine());
     }
 
     @Override
-    public void setTime(int value) {
+    public void setTime(int value)
+    {
         if (value == mTime)
             return;
         if (value < 1 || value > 9)
@@ -73,16 +77,19 @@ public class MixerDelay extends EffectComponent implements IMixerDelay {
     private float mFeedback = 0.5f;
 
     @Override
-    public float getFeedback() {
+    public float getFeedback()
+    {
         return mFeedback;
     }
 
-    float getFeedback(boolean restore) {
+    float getFeedback(boolean restore)
+    {
         return MixerMessage.DELAY_UNIT_FEEDBACK.query(getEngine());
     }
 
     @Override
-    public void setFeedback(float value) {
+    public void setFeedback(float value)
+    {
         if (value == mFeedback)
             return;
         if (value < 0f || value > 5f)
@@ -98,16 +105,19 @@ public class MixerDelay extends EffectComponent implements IMixerDelay {
     private boolean mStereo = false;
 
     @Override
-    public boolean isStereo() {
+    public boolean isStereo()
+    {
         return mStereo;
     }
 
-    boolean isStereo(boolean restore) {
+    boolean isStereo(boolean restore)
+    {
         return MixerMessage.DELAY_UNIT_STEREO.query(getEngine()) == 1f;
     }
 
     @Override
-    public void setStereo(boolean value) {
+    public void setStereo(boolean value)
+    {
         if (value == mStereo)
             return;
         mStereo = value;
@@ -123,7 +133,8 @@ public class MixerDelay extends EffectComponent implements IMixerDelay {
     /**
      * Constructor.
      */
-    public MixerDelay(IDevice device) {
+    public MixerDelay(IDevice device)
+    {
         super(device);
         setName(EffectConstants.TAG_DELAY);
     }
@@ -135,21 +146,24 @@ public class MixerDelay extends EffectComponent implements IMixerDelay {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         memento.putFloat(EffectConstants.ATT_FEEDBACK, getFeedback());
         memento.putInteger(EffectConstants.ATT_STEREO, isStereo() ? 1 : 0);
         memento.putInteger(EffectConstants.ATT_TIME, getTime());
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         setFeedback(memento.getFloat(EffectConstants.ATT_FEEDBACK));
         setStereo(memento.getInteger(EffectConstants.ATT_STEREO) == 1);
         setTime(memento.getInteger(EffectConstants.ATT_TIME));
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         setFeedback(getFeedback(true));
         setStereo(isStereo(true));

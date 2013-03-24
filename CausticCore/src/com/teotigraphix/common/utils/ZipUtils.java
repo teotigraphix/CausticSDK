@@ -31,26 +31,33 @@ import java.util.zip.ZipInputStream;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class ZipUtils {
+public final class ZipUtils
+{
 
-    public static final void readZip(InputStream is) throws IOException {
+    public static final void readZip(InputStream is) throws IOException
+    {
 
         ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
-        try {
+        try
+        {
             @SuppressWarnings("unused")
             ZipEntry ze;
-            while ((ze = zis.getNextEntry()) != null) {
+            while ((ze = zis.getNextEntry()) != null)
+            {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
                 int count;
-                while ((count = zis.read(buffer)) != -1) {
+                while ((count = zis.read(buffer)) != -1)
+                {
                     baos.write(buffer, 0, count);
                 }
                 // String filename = ze.getName();
                 // byte[] bytes = baos.toByteArray();
                 // do something with 'filename' and 'bytes'...
             }
-        } finally {
+        }
+        finally
+        {
             zis.close();
         }
 

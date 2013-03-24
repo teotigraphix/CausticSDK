@@ -20,7 +20,6 @@
 package com.teotigraphix.caustic.internal.song;
 
 import java.io.File;
-import java.io.IOException;
 
 import android.app.Application;
 import android.content.SharedPreferences;
@@ -30,7 +29,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustic.activity.IApplicationConfiguration;
 import com.teotigraphix.caustic.activity.IApplicationPreferences;
-import com.teotigraphix.caustic.activity.IApplicationRuntime;
 import com.teotigraphix.caustic.activity.ICausticBackend;
 import com.teotigraphix.caustic.core.CausticError;
 import com.teotigraphix.caustic.core.CausticException;
@@ -56,8 +54,6 @@ public class Workspace implements IWorkspace {
     private static final String STARTUP_PREFS = "startup_preferences";
 
     private ICausticBackend mBackend;
-
-    private IApplicationRuntime mRuntime;
 
     //--------------------------------------------------------------------------
     // Application Level Model
@@ -139,12 +135,11 @@ public class Workspace implements IWorkspace {
     // fileService
     //----------------------------------
 
-    @Inject
-    IFileService fileService;
+    IFileService mFileService;
 
     @Override
     public IFileService getFileService() {
-        return fileService;
+        return mFileService;
     }
 
     //----------------------------------
@@ -235,24 +230,14 @@ public class Workspace implements IWorkspace {
     @Override
     public void startAndRun() throws CausticException {
         Log.d("Workspace", "startAndRun()");
+
+        mFileService = mApplicationConfiguration.createFileService(mApplication);
         mBackend = mApplicationConfiguration.createBackend();
-        mRuntime = mApplicationConfiguration.createRuntime(this);
+
+        setupApplicationDirectory(mApplicationConfiguration.getApplicationName());
+
         //setRack(mBackend.createRack(this));
         setGenerator(mBackend.createSoundGenerator(this));
-
-        try {
-            install();
-        } catch (CausticException e) {
-            throw e;
-        }
-
-        try {
-            boot();
-        } catch (IOException e) {
-            throw new CausticException("IOException in IWorkspace.boot()", e);
-        }
-
-        run();
 
         mRunning = true;
     }
@@ -262,9 +247,20 @@ public class Workspace implements IWorkspace {
         Log.d("Workspace", "stopAndShutdown()");
         // Clear out ALL state created in startAndRun()
         mBackend = null;
-        mRuntime = null;
         mRunning = false;
         mGenerator = null;
+    }
+
+    @Override
+    public void start() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void stop() {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -325,33 +321,13 @@ public class Workspace implements IWorkspace {
         //eventManager.fire(new OnProjectCloseEvent(project));
     }
 
-    protected void install() throws CausticException {
-        setupApplicationDirectory(getApplicationName());
-
-        // will install on first run or call update in the installer
-        // if the application has already been installed
-        try {
-            mRuntime.install();
-        } catch (IOException e) {
-            throw new CausticException("Exception when installing", e);
-        }
-    }
-
-    protected void boot() throws IOException {
-        mRuntime.boot();
-    }
-
-    protected void run() {
-        mRuntime.run();
-    }
-
     public void clearPreferences() {
         getSharedPreferences().edit().clear().commit();
     }
 
     private void setupApplicationDirectory(String applicationName) {
         // setup the applicationRoot
-        File applicationDirectory = fileService.getApplicationDirectory();
+        File applicationDirectory = mFileService.getApplicationDirectory();
         if (!applicationDirectory.exists()) {
             throw new CausticError("Application directory '"
                     + applicationDirectory.getAbsolutePath() + "' failed to create");

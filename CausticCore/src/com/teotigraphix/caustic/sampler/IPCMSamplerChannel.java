@@ -32,7 +32,9 @@ import com.teotigraphix.common.IRestore;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPCMSamplerChannel extends IMachineComponent, IPersist, IRestore {
+public interface IPCMSamplerChannel extends IMachineComponent, IPersist,
+        IRestore
+{
 
     //--------------------------------------------------------------------------
     //

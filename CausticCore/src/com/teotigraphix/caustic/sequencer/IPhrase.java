@@ -32,7 +32,8 @@ import com.teotigraphix.common.IRestore;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPhrase extends IPersist, IRestore {
+public interface IPhrase extends IPersist, IRestore
+{
 
     IPatternSequencer getSequencer();
 
@@ -248,7 +249,8 @@ public interface IPhrase extends IPersist, IRestore {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum Resolution {
+    public enum Resolution
+    {
 
         /**
          * A whole note.
@@ -285,7 +287,8 @@ public interface IPhrase extends IPersist, IRestore {
          */
         SIXTYFOURTH(0.015625f); // 1 / 0.015625f = 64
 
-        Resolution(float value) {
+        Resolution(float value)
+        {
             mValue = value;
         }
 
@@ -297,24 +300,28 @@ public interface IPhrase extends IPersist, IRestore {
          * 
          * @param resolution The note resolution.
          * @return The number of steps in a measure for the given phrase
-         *         resolution.
+         * resolution.
          */
-        public final static int toSteps(Resolution resolution) {
-            return (int)(1 / resolution.getValue());
+        public final static int toSteps(Resolution resolution)
+        {
+            return (int) (1 / resolution.getValue());
         }
 
-        public float getValue() {
+        public float getValue()
+        {
             return mValue;
         }
 
         private static int beatsInMeasure = 4;
 
-        public static int toStep(float beat, Resolution resolution) {
+        public static int toStep(float beat, Resolution resolution)
+        {
             // (beat(5) / 0.0625) / 4
-            return (int)(beat / resolution.getValue()) / beatsInMeasure;
+            return (int) (beat / resolution.getValue()) / beatsInMeasure;
         }
 
-        public static float toBeat(float step, Resolution resolution) {
+        public static float toBeat(float step, Resolution resolution)
+        {
             return (step * resolution.getValue()) * beatsInMeasure;
         }
     }
@@ -329,7 +336,8 @@ public interface IPhrase extends IPersist, IRestore {
 
     void removePhraseListener(IPhraseListener value);
 
-    public interface IPhraseListener {
+    public interface IPhraseListener
+    {
 
         /**
          * Dispatched when the phrase length has changed.
@@ -371,7 +379,8 @@ public interface IPhrase extends IPersist, IRestore {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum TriggerChangeKind {
+    public enum TriggerChangeKind
+    {
 
         /**
          * The trigger index kind.

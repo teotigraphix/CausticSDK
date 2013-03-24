@@ -32,7 +32,9 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public abstract class LFOComponent extends MachineComponent implements ILFOComponent {
+public abstract class LFOComponent extends MachineComponent implements
+        ILFOComponent
+{
 
     protected CausticMessage mDepthMessage;
 
@@ -51,16 +53,19 @@ public abstract class LFOComponent extends MachineComponent implements ILFOCompo
     protected int mRate = 1;
 
     @Override
-    public int getRate() {
+    public int getRate()
+    {
         return mRate;
     }
 
-    public int getRate(boolean restore) {
-        return (int)mRateMessage.query(getEngine(), getMachineIndex());
+    public int getRate(boolean restore)
+    {
+        return (int) mRateMessage.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setRate(int value) {
+    public void setRate(int value)
+    {
         if (value == mRate)
             return;
         if (value < 0 || value > 12)
@@ -76,16 +81,19 @@ public abstract class LFOComponent extends MachineComponent implements ILFOCompo
     private float mDepth = 0.0f;
 
     @Override
-    public float getDepth() {
+    public float getDepth()
+    {
         return mDepth;
     }
 
-    public float getDepth(boolean restore) {
+    public float getDepth(boolean restore)
+    {
         return mDepthMessage.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setDepth(float value) {
+    public void setDepth(float value)
+    {
         if (value == mDepth)
             return;
         if (value < 0f || value > 1f)
@@ -103,24 +111,28 @@ public abstract class LFOComponent extends MachineComponent implements ILFOCompo
     /**
      * Constructor.
      */
-    public LFOComponent(IMachine machine) {
+    public LFOComponent(IMachine machine)
+    {
         super(machine);
     }
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         memento.putInteger(FilterConstants.ATT_RATE, getRate());
         memento.putFloat(FilterConstants.ATT_DEPTH, getDepth());
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         setRate(memento.getInteger(FilterConstants.ATT_RATE));
         setDepth(memento.getFloat(FilterConstants.ATT_DEPTH));
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         setDepth(getDepth(true));
         setRate(getRate(true));

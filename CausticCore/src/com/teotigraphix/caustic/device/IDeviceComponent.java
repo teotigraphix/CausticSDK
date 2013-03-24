@@ -37,7 +37,8 @@ import com.teotigraphix.common.IRestore;
  * @see IEffectComponent
  * @see IPatternSequencer
  */
-public interface IDeviceComponent extends IDeviceAware, IRestore, IDispose {
+public interface IDeviceComponent extends IDeviceAware, IRestore, IDispose
+{
 
     //--------------------------------------------------------------------------
     //

@@ -37,6 +37,8 @@ import com.teotigraphix.common.IRestore;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IMachineComponent extends IDeviceAware, IPersist, IRestore, IDispose {
+public interface IMachineComponent extends IDeviceAware, IPersist, IRestore,
+        IDispose
+{
 
 }

@@ -33,7 +33,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MixerReverb extends EffectComponent implements IMixerReverb {
+public class MixerReverb extends EffectComponent implements IMixerReverb
+{
 
     //--------------------------------------------------------------------------
     //
@@ -48,16 +49,19 @@ public class MixerReverb extends EffectComponent implements IMixerReverb {
     private float mRoom = 0.75f;
 
     @Override
-    public float getRoom() {
+    public float getRoom()
+    {
         return mRoom;
     }
 
-    float getRoom(boolean restore) {
+    float getRoom(boolean restore)
+    {
         return MixerMessage.REVERB_UNIT_ROOM.query(getEngine());
     }
 
     @Override
-    public void setRoom(float value) {
+    public void setRoom(float value)
+    {
         if (value == mRoom)
             return;
         if (value < 0f || value > 1f)
@@ -73,16 +77,19 @@ public class MixerReverb extends EffectComponent implements IMixerReverb {
     private float mDamping = 0.2f;
 
     @Override
-    public float getDamping() {
+    public float getDamping()
+    {
         return mDamping;
     }
 
-    float getDamping(boolean restore) {
+    float getDamping(boolean restore)
+    {
         return MixerMessage.REVERB_UNIT_DAMPING.query(getEngine());
     }
 
     @Override
-    public void setDamping(float value) {
+    public void setDamping(float value)
+    {
         if (value == mDamping)
             return;
         if (value < 0f || value > 1f)
@@ -98,16 +105,19 @@ public class MixerReverb extends EffectComponent implements IMixerReverb {
     private boolean mStereo = false;
 
     @Override
-    public boolean isStereo() {
+    public boolean isStereo()
+    {
         return mStereo;
     }
 
-    boolean isStereo(boolean restore) {
+    boolean isStereo(boolean restore)
+    {
         return MixerMessage.REVERB_UNIT_STEREO.query(getEngine()) == 1f;
     }
 
     @Override
-    public void setStereo(boolean value) {
+    public void setStereo(boolean value)
+    {
         if (value == mStereo)
             return;
         mStereo = value;
@@ -123,7 +133,8 @@ public class MixerReverb extends EffectComponent implements IMixerReverb {
     /**
      * Constructor.
      */
-    public MixerReverb(IDevice device) {
+    public MixerReverb(IDevice device)
+    {
         super(device);
         setName(EffectConstants.TAG_REVERB);
     }
@@ -135,21 +146,24 @@ public class MixerReverb extends EffectComponent implements IMixerReverb {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         memento.putFloat(EffectConstants.ATT_DAMPING, getDamping());
         memento.putFloat(EffectConstants.ATT_ROOM, getRoom());
         memento.putInteger(EffectConstants.ATT_STEREO, isStereo() ? 1 : 0);
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         setDamping(memento.getFloat(EffectConstants.ATT_DAMPING));
         setRoom(memento.getFloat(EffectConstants.ATT_ROOM));
         setStereo(memento.getInteger(EffectConstants.ATT_STEREO) == 1);
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         setDamping(getDamping(true));
         setRoom(getRoom(true));

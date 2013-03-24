@@ -31,7 +31,8 @@ import com.teotigraphix.caustic.filter.ILFOComponent.WaveForm;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SubSynthOscMessage extends CausticMessage {
+public class SubSynthOscMessage extends CausticMessage
+{
 
     //--------------------------------------------------------------------------
     // ISubSynthOsc1
@@ -241,7 +242,8 @@ public class SubSynthOscMessage extends CausticMessage {
     public static final SubSynthOscMessage OSC2_WAVEFORM = new SubSynthOscMessage(
             "/caustic/${0}/osc2_waveform ${1}");
 
-    SubSynthOscMessage(String message) {
+    SubSynthOscMessage(String message)
+    {
         super(message);
     }
 

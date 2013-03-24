@@ -32,7 +32,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public abstract class Device implements IDevice {
+public abstract class Device implements IDevice
+{
 
     //--------------------------------------------------------------------------
     //
@@ -55,12 +56,15 @@ public abstract class Device implements IDevice {
     private ICausticEngine mEngine;
 
     @Override
-    public final ICausticEngine getEngine() {
+    public final ICausticEngine getEngine()
+    {
         return mEngine;
     }
 
-    public final void setEngine(ICausticEngine engine) {
-        if (mEngine != null) {
+    public final void setEngine(ICausticEngine engine)
+    {
+        if (mEngine != null)
+        {
             disposeEngine(mEngine);
         }
         mEngine = engine;
@@ -80,11 +84,13 @@ public abstract class Device implements IDevice {
     private int mIndex;
 
     @Override
-    public final int getIndex() {
+    public final int getIndex()
+    {
         return mIndex;
     }
 
-    public final void setIndex(int value) {
+    public final void setIndex(int value)
+    {
         mIndex = value;
     }
 
@@ -95,11 +101,13 @@ public abstract class Device implements IDevice {
     private String mId;
 
     @Override
-    public final String getId() {
+    public final String getId()
+    {
         return mId;
     }
 
-    public final void setId(String value) {
+    public final void setId(String value)
+    {
         mId = value;
     }
 
@@ -110,12 +118,14 @@ public abstract class Device implements IDevice {
     private String mName;
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return mName;
     }
 
     @Override
-    public void setName(String value) {
+    public void setName(String value)
+    {
         mName = value;
     }
 
@@ -128,7 +138,8 @@ public abstract class Device implements IDevice {
     /**
      * Constructor.
      */
-    public Device() {
+    public Device()
+    {
     }
 
     //--------------------------------------------------------------------------
@@ -138,12 +149,14 @@ public abstract class Device implements IDevice {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         mPersistable.copy(memento);
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         mPersistable.paste(memento);
     }
 
@@ -154,7 +167,8 @@ public abstract class Device implements IDevice {
     //--------------------------------------------------------------------------
 
     @Override
-    public void restore() {
+    public void restore()
+    {
     }
 
     //--------------------------------------------------------------------------
@@ -164,7 +178,8 @@ public abstract class Device implements IDevice {
     //--------------------------------------------------------------------------
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         disposeEngine(mEngine);
     }
 
@@ -183,7 +198,8 @@ public abstract class Device implements IDevice {
      * 
      * @see #createPersistable()
      */
-    protected void initializeEngine(ICausticEngine engine) {
+    protected void initializeEngine(ICausticEngine engine)
+    {
         mPersistable = createPersistable();
     }
 
@@ -196,21 +212,25 @@ public abstract class Device implements IDevice {
      * 
      * @param engine The old engine to be disposed.
      */
-    protected void disposeEngine(ICausticEngine engine) {
+    protected void disposeEngine(ICausticEngine engine)
+    {
         mPersistable = null;
     }
 
     /**
      * Subclasses return their persistable to save and restore state with.
      */
-    protected IPersist createPersistable() {
+    protected IPersist createPersistable()
+    {
         return new IPersist() {
             @Override
-            public void copy(IMemento memento) {
+            public void copy(IMemento memento)
+            {
             }
 
             @Override
-            public void paste(IMemento memento) {
+            public void paste(IMemento memento)
+            {
             }
         };
     }
@@ -223,7 +243,9 @@ public abstract class Device implements IDevice {
      * @param value The value that is throwing the range exception.
      * @return A new {@link IllegalArgumentException}.
      */
-    protected final RuntimeException newRangeException(String control, String range, Object value) {
+    protected final RuntimeException newRangeException(String control,
+            String range, Object value)
+    {
         return ExceptionUtils.newRangeException(control, range, value);
     }
 

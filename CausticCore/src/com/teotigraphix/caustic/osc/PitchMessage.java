@@ -30,7 +30,8 @@ import com.teotigraphix.caustic.filter.IPitchTuner;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PitchMessage extends CausticMessage {
+public class PitchMessage extends CausticMessage
+{
 
     /**
      * Message: <code>/caustic/[machine_index]/pitch_octave [value]</code>
@@ -90,7 +91,8 @@ public class PitchMessage extends CausticMessage {
     public static final PitchMessage PITCH_CENTS = new PitchMessage(
             "/caustic/${0}/pitch_cents ${1}");
 
-    PitchMessage(String message) {
+    PitchMessage(String message)
+    {
         super(message);
     }
 }

@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import android.util.Log;
-
 import com.teotigraphix.caustic.internal.util.PatternUtils;
 import com.teotigraphix.caustic.sequencer.IPatternSequencer;
 import com.teotigraphix.caustic.sequencer.IPhrase;
@@ -58,7 +56,8 @@ import com.teotigraphix.common.utils.MementoUtil;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Phrase implements IPhrase {
+public class Phrase implements IPhrase
+{
 
     private static final String ATT_ACTIVE = "active";
 
@@ -86,12 +85,14 @@ public class Phrase implements IPhrase {
     private IPatternSequencer mSequencer;
 
     @Override
-    public IPatternSequencer getSequencer() {
+    public IPatternSequencer getSequencer()
+    {
         return mSequencer;
     }
 
     @Override
-    public void setSequencer(IPatternSequencer value) {
+    public void setSequencer(IPatternSequencer value)
+    {
         mSequencer = value;
     }
 
@@ -100,7 +101,8 @@ public class Phrase implements IPhrase {
     //----------------------------------
 
     @Override
-    public String getId() {
+    public String getId()
+    {
         return PatternUtils.toString(mBank, mIndex);
     }
 
@@ -111,12 +113,14 @@ public class Phrase implements IPhrase {
     private boolean mActive;
 
     @Override
-    public final boolean isActive() {
+    public final boolean isActive()
+    {
         return mActive;
     }
 
     @Override
-    public final void setActive(boolean value) {
+    public final void setActive(boolean value)
+    {
         mActive = value;
     }
 
@@ -127,7 +131,8 @@ public class Phrase implements IPhrase {
     private int mBank;
 
     @Override
-    public final int getBank() {
+    public final int getBank()
+    {
         return mBank;
     }
 
@@ -138,7 +143,8 @@ public class Phrase implements IPhrase {
     private int mIndex;
 
     @Override
-    public final int getIndex() {
+    public final int getIndex()
+    {
         return mIndex;
     }
 
@@ -149,21 +155,25 @@ public class Phrase implements IPhrase {
     private String mStringData;
 
     @Override
-    public final String getStringData() {
+    public final String getStringData()
+    {
         return mStringData;
     }
 
-    public final void setStringData(String value) {
+    public final void setStringData(String value)
+    {
         mStringData = value;
         if (mStringData == null)
             return;
         initializeData(mStringData);
     }
 
-    private void initializeData(String data) {
+    private void initializeData(String data)
+    {
         // push the notes into the machines sequencer
         String[] notes = data.split("\\|");
-        for (String noteData : notes) {
+        for (String noteData : notes)
+        {
             String[] split = noteData.split(" ");
 
             float start = Float.valueOf(split[0]);
@@ -185,20 +195,25 @@ public class Phrase implements IPhrase {
     private Resolution mResolution = Resolution.SIXTEENTH;
 
     @Override
-    public Resolution getResolution() {
+    public Resolution getResolution()
+    {
         return mResolution;
     }
 
     @Override
-    public void setResolution(Resolution value) {
+    public void setResolution(Resolution value)
+    {
         if (value == mResolution)
             return;
 
         Resolution oldValue = mResolution;
         mResolution = value;
-        if (value.getValue() < oldValue.getValue()) {
+        if (value.getValue() < oldValue.getValue())
+        {
             PhraseUtils.expandResolution(this, oldValue, value);
-        } else {
+        }
+        else
+        {
             PhraseUtils.contractResolution(this, oldValue, value);
         }
 
@@ -212,16 +227,19 @@ public class Phrase implements IPhrase {
     private int mLength = 1;
 
     @Override
-    public int getLength() {
+    public int getLength()
+    {
         return mLength;
     }
 
     @Override
-    public void setLength(int value) {
+    public void setLength(int value)
+    {
         if (value == mLength)
             return;
 
-        if (!PatternMeasures.isValid(value)) {
+        if (!PatternMeasures.isValid(value))
+        {
             return;
         }
 
@@ -244,7 +262,8 @@ public class Phrase implements IPhrase {
     private int mPosition = 0;
 
     @Override
-    public int getPosition() {
+    public int getPosition()
+    {
         return mPosition;
     }
 
@@ -253,7 +272,8 @@ public class Phrase implements IPhrase {
     // based on the resolution, this way the client is in total control
     // of the result with on method call
     @Override
-    public void setPosition(int value) {
+    public void setPosition(int value)
+    {
         if (value == mPosition)
             return;
 
@@ -271,7 +291,8 @@ public class Phrase implements IPhrase {
     //----------------------------------
 
     @Override
-    public int getNumSteps() {
+    public int getNumSteps()
+    {
         return mStepMap.size();
     }
 
@@ -280,12 +301,14 @@ public class Phrase implements IPhrase {
     //----------------------------------
 
     @Override
-    public Map<Integer, Map<Integer, ITrigger>> getStepMap() {
+    public Map<Integer, Map<Integer, ITrigger>> getStepMap()
+    {
         return Collections.unmodifiableMap(mStepMap);
     }
 
     @Override
-    public boolean hasTriggers() {
+    public boolean hasTriggers()
+    {
         return mHasTriggers;
     }
 
@@ -296,12 +319,14 @@ public class Phrase implements IPhrase {
     private PhraseData mData;
 
     @Override
-    public PhraseData getData() {
+    public PhraseData getData()
+    {
         return mData;
     }
 
     @Override
-    public void setData(PhraseData value) {
+    public void setData(PhraseData value)
+    {
         mData = value;
     }
 
@@ -311,7 +336,8 @@ public class Phrase implements IPhrase {
     //
     //--------------------------------------------------------------------------
 
-    public Phrase(int bank, int index) {
+    public Phrase(int bank, int index)
+    {
         mStepMap = new TreeMap<Integer, Map<Integer, ITrigger>>();
 
         mBank = bank;
@@ -327,41 +353,51 @@ public class Phrase implements IPhrase {
     //--------------------------------------------------------------------------
 
     @Override
-    public final ITrigger getTriggerAtStep(int step, int pitch) {
+    public final ITrigger getTriggerAtStep(int step, int pitch)
+    {
         Map<Integer, ITrigger> triggers = mStepMap.get(step);
         Trigger trigger = null;
-        try {
-            trigger = (Trigger)triggers.get(pitch);
-        } catch (Exception e) {
-            Log.e("Phrase", "no triggers at step " + step + ":" + pitch);
+        try
+        {
+            trigger = (Trigger) triggers.get(pitch);
+        }
+        catch (Exception e)
+        {
+            //XXX  Log.e("Phrase", "no triggers at step " + step + ":" + pitch);
         }
 
         return trigger;
     }
 
     @Override
-    public final ITrigger getTriggerAtBeat(float beat, int pitch) {
+    public final ITrigger getTriggerAtBeat(float beat, int pitch)
+    {
         int step = Resolution.toStep(beat, getResolution());
         return getTriggerAtStep(step, pitch);
     }
 
     @Override
-    public Collection<ITrigger> getTriggersAtStep(int step) {
+    public Collection<ITrigger> getTriggersAtStep(int step)
+    {
         Map<Integer, ITrigger> triggers = mStepMap.get(step);
         return triggers.values();
     }
 
     @Override
-    public Collection<ITrigger> getTriggersAtBeat(float beat) {
+    public Collection<ITrigger> getTriggersAtBeat(float beat)
+    {
         int step = Resolution.toStep(beat, getResolution());
         return getTriggersAtStep(step);
     }
 
     @Override
-    public Collection<ITrigger> getTriggers() {
+    public Collection<ITrigger> getTriggers()
+    {
         ArrayList<ITrigger> result = new ArrayList<ITrigger>();
-        for (Map<Integer, ITrigger> map : mStepMap.values()) {
-            for (ITrigger trigger : map.values()) {
+        for (Map<Integer, ITrigger> map : mStepMap.values())
+        {
+            for (ITrigger trigger : map.values())
+            {
                 result.add(trigger);
             }
         }
@@ -369,30 +405,34 @@ public class Phrase implements IPhrase {
     }
 
     @Override
-    public void clear() {
+    public void clear()
+    {
         mStepMap.clear();
         mHasTriggers = false;
 
         int numSteps = PhraseUtils.getNumSteps(this);
-        for (int i = 0; i < numSteps; i++) {
+        for (int i = 0; i < numSteps; i++)
+        {
             // a TreeMap will sort the keys numerically
             mStepMap.put(i, new TreeMap<Integer, ITrigger>());
         }
     }
 
-    void addNote(int pitch, float start, float end, float velocity, int flags) {
+    void addNote(int pitch, float start, float end, float velocity, int flags)
+    {
         mHasTriggers = true;
 
-        Trigger trigger = PhraseUtils.initializeNoteTrigger(this, start, pitch, end, velocity,
-                flags);
+        Trigger trigger = PhraseUtils.initializeNoteTrigger(this, start, pitch,
+                end, velocity, flags);
         // make the trigger selected (on)
         trigger.setSelected(true);
 
         fireTriggerDataChange(trigger, TriggerChangeKind.RESET);
     }
 
-    void removeNote(int pitch, float start) {
-        Trigger trigger = (Trigger)getTriggerAtBeat(start, pitch);
+    void removeNote(int pitch, float start)
+    {
+        Trigger trigger = (Trigger) getTriggerAtBeat(start, pitch);
         if (trigger == null)
             return;
 
@@ -402,26 +442,29 @@ public class Phrase implements IPhrase {
         fireTriggerDataChange(trigger, TriggerChangeKind.RESET);
     }
 
-    void triggerOn(int step, int pitch, float gate, float velocity, int flags) {
+    void triggerOn(int step, int pitch, float gate, float velocity, int flags)
+    {
         mHasTriggers = true;
 
         // either create or return an existing trigger for the step and pitch
         // if returning an existing trigger, the method will have updated
         // the gate and velocity
-        Trigger trigger = PhraseUtils.initializeStepTrigger(this, step, pitch, gate, velocity,
-                flags);
+        Trigger trigger = PhraseUtils.initializeStepTrigger(this, step, pitch,
+                gate, velocity, flags);
         // make the trigger selected (on)
         trigger.setSelected(true);
 
         fireTriggerDataChange(trigger, TriggerChangeKind.RESET);
     }
 
-    void triggerOff(int step, int pitch) {
+    void triggerOff(int step, int pitch)
+    {
         triggerOff(step, pitch, false);
     }
 
-    void triggerOff(int step, int pitch, boolean polyphonic) {
-        Trigger trigger = (Trigger)getTriggerAtStep(step, pitch);
+    void triggerOff(int step, int pitch, boolean polyphonic)
+    {
+        Trigger trigger = (Trigger) getTriggerAtStep(step, pitch);
         if (trigger == null)
             return;
 
@@ -430,10 +473,13 @@ public class Phrase implements IPhrase {
         // we are in step sequencer and need to keep the trigger around
         // because the step key was just toggled off, but could be toggled
         // back on (selected) using this existing trigger and it's data
-        if (polyphonic) {
+        if (polyphonic)
+        {
             trigger.setSelected(false);
             PhraseUtils.removeStepTrigger(this, step, pitch);
-        } else {
+        }
+        else
+        {
             trigger.setSelected(false);
         }
 
@@ -447,8 +493,10 @@ public class Phrase implements IPhrase {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
-        if (mData != null) {
+    public void copy(IMemento memento)
+    {
+        if (mData != null)
+        {
             mData.copy(memento.createChild(TAG_DATA));
         }
 
@@ -458,16 +506,20 @@ public class Phrase implements IPhrase {
         memento.putInteger(ATT_INDEX, getIndex());
         memento.putInteger(ATT_ACTIVE, MementoUtil.booleanToInt(isActive()));
 
-        for (Map<Integer, ITrigger> pitchMap : getStepMap().values()) {
-            for (ITrigger trigger : pitchMap.values()) {
+        for (Map<Integer, ITrigger> pitchMap : getStepMap().values())
+        {
+            for (ITrigger trigger : pitchMap.values())
+            {
                 trigger.copy(memento.createChild(TAG_TRIGGER));
             }
         }
     }
 
     @Override
-    public void paste(IMemento memento) {
-        if (mData != null) {
+    public void paste(IMemento memento)
+    {
+        if (mData != null)
+        {
             mData.paste(memento.getChild(TAG_DATA));
         }
 
@@ -479,7 +531,8 @@ public class Phrase implements IPhrase {
         setActive(MementoUtil.intToBoolean(memento.getInteger(ATT_ACTIVE)));
 
         IMemento[] triggers = memento.getChildren(TAG_TRIGGER);
-        for (int i = 0; i < triggers.length; i++) {
+        for (int i = 0; i < triggers.length; i++)
+        {
             mHasTriggers = true;
 
             IMemento trigger = triggers[i];
@@ -496,7 +549,8 @@ public class Phrase implements IPhrase {
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         // the length has to be restored but we don't know what the
         // resolution was in a restore, any ideas? could scan the trigger
         // distances to find the smallest value but that is not full proof
@@ -513,21 +567,24 @@ public class Phrase implements IPhrase {
     private final List<IPhraseListener> mPhraseListeners = new ArrayList<IPhraseListener>();
 
     @Override
-    public final void addPhraseListener(IPhraseListener value) {
+    public final void addPhraseListener(IPhraseListener value)
+    {
         if (mPhraseListeners.contains(value))
             return;
         mPhraseListeners.add(value);
     }
 
     @Override
-    public final void removePhraseListener(IPhraseListener value) {
+    public final void removePhraseListener(IPhraseListener value)
+    {
         if (!mPhraseListeners.contains(value))
             return;
         mPhraseListeners.remove(value);
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return PatternUtils.toString(mBank, mIndex);
     }
 
@@ -537,26 +594,35 @@ public class Phrase implements IPhrase {
     //
     //--------------------------------------------------------------------------
 
-    protected final void fireLengthChange(int length) {
-        for (IPhraseListener listener : mPhraseListeners) {
+    protected final void fireLengthChange(int length)
+    {
+        for (IPhraseListener listener : mPhraseListeners)
+        {
             listener.onLengthChange(this, length);
         }
     }
 
-    protected final void firePositionChange(int position) {
-        for (IPhraseListener listener : mPhraseListeners) {
+    protected final void firePositionChange(int position)
+    {
+        for (IPhraseListener listener : mPhraseListeners)
+        {
             listener.onPositionChange(this, position);
         }
     }
 
-    protected final void fireResolutionChange(Resolution resolution) {
-        for (IPhraseListener listener : mPhraseListeners) {
+    protected final void fireResolutionChange(Resolution resolution)
+    {
+        for (IPhraseListener listener : mPhraseListeners)
+        {
             listener.onResolutionChange(this, resolution);
         }
     }
 
-    protected final void fireTriggerDataChange(ITrigger trigger, TriggerChangeKind kind) {
-        for (IPhraseListener listener : mPhraseListeners) {
+    protected final void fireTriggerDataChange(ITrigger trigger,
+            TriggerChangeKind kind)
+    {
+        for (IPhraseListener listener : mPhraseListeners)
+        {
             listener.onTriggerDataChange(trigger, kind);
         }
     }
@@ -601,15 +667,18 @@ public class Phrase implements IPhrase {
     // or
     // filter_cutoff:0.3|filter_resonance:1.3
     // /caustic/[machine_index]/filter_cutoff 0.3
-    public void putKeyFrame(float beat, String key, float value) {
+    public void putKeyFrame(float beat, String key, float value)
+    {
         keyframes.put(beat, new KeyFrame(beat, key, value));
     }
 
-    public boolean hasKeyFrame(float beat, String key) {
+    public boolean hasKeyFrame(float beat, String key)
+    {
         return keyframes.containsKey(beat);
     }
 
-    public float getKeyFrameFloat(float beat, String key) {
+    public float getKeyFrameFloat(float beat, String key)
+    {
         if (!keyframes.containsKey(beat))
             return Float.NaN;
         // KeyFrame frame = keyframes.get(beat);
@@ -617,7 +686,8 @@ public class Phrase implements IPhrase {
         return keyframes.get(beat).getValue();
     }
 
-    public static class KeyFrame {
+    public static class KeyFrame
+    {
 
         private final float mBeat;
 
@@ -625,19 +695,23 @@ public class Phrase implements IPhrase {
 
         private final String mKey;
 
-        public final float getBeat() {
+        public final float getBeat()
+        {
             return mBeat;
         }
 
-        public final float getValue() {
+        public final float getValue()
+        {
             return mValue;
         }
 
-        public final String getKey() {
+        public final String getKey()
+        {
             return mKey;
         }
 
-        public KeyFrame(float beat, String key, float value) {
+        public KeyFrame(float beat, String key, float value)
+        {
             mBeat = beat;
             mKey = key;
             mValue = value;

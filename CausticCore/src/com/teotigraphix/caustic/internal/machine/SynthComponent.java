@@ -31,7 +31,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SynthComponent extends MachineComponent implements ISynthComponent {
+public class SynthComponent extends MachineComponent implements ISynthComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -46,20 +47,25 @@ public class SynthComponent extends MachineComponent implements ISynthComponent 
     private int mPolyphony = 4;
 
     @Override
-    public int getPolyphony() {
+    public int getPolyphony()
+    {
         return mPolyphony;
     }
 
-    public int getPolyphony(boolean restore) {
-        return (int)SynthMessage.POLYPHONY.query(getEngine(), getMachineIndex());
+    public int getPolyphony(boolean restore)
+    {
+        return (int) SynthMessage.POLYPHONY.query(getEngine(),
+                getMachineIndex());
     }
 
     @Override
-    public void setPolyphony(int value) {
+    public void setPolyphony(int value)
+    {
         if (value == mPolyphony)
             return;
         if (value < 1 || value > 16)
-            throw newRangeException(SynthMessage.POLYPHONY.toString(), "1..16", value);
+            throw newRangeException(SynthMessage.POLYPHONY.toString(), "1..16",
+                    value);
         mPolyphony = value;
         SynthMessage.POLYPHONY.send(getEngine(), getMachineIndex(), mPolyphony);
     }
@@ -73,7 +79,8 @@ public class SynthComponent extends MachineComponent implements ISynthComponent 
     /**
      * Constructor.
      */
-    public SynthComponent(IMachine machine) {
+    public SynthComponent(IMachine machine)
+    {
         super(machine);
     }
 
@@ -84,23 +91,29 @@ public class SynthComponent extends MachineComponent implements ISynthComponent 
     //--------------------------------------------------------------------------
 
     @Override
-    public void noteOn(int pitch) {
+    public void noteOn(int pitch)
+    {
         noteOn(pitch, 1f);
     }
 
     @Override
-    public void noteOn(int pitch, float velocity) {
-        SynthMessage.NOTE.send(getEngine(), getMachineIndex(), pitch, 1, velocity);
+    public void noteOn(int pitch, float velocity)
+    {
+        SynthMessage.NOTE.send(getEngine(), getMachineIndex(), pitch, 1,
+                velocity);
     }
 
     @Override
-    public void noteOff(int pitch) {
+    public void noteOff(int pitch)
+    {
         SynthMessage.NOTE.send(getEngine(), getMachineIndex(), pitch, 0);
     }
 
     @Override
-    public void notePreview(int pitch, boolean oneshot) {
-        SynthMessage.NOTE_PREVIEW.send(getEngine(), getMachineIndex(), pitch, oneshot);
+    public void notePreview(int pitch, boolean oneshot)
+    {
+        SynthMessage.NOTE_PREVIEW.send(getEngine(), getMachineIndex(), pitch,
+                oneshot);
     }
 
     //--------------------------------------------------------------------------
@@ -110,19 +123,22 @@ public class SynthComponent extends MachineComponent implements ISynthComponent 
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         super.copy(memento);
         memento.putInteger(SynthConstants.ATT_POLYPHONY, getPolyphony());
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         super.paste(memento);
         setPolyphony(memento.getInteger(SynthConstants.ATT_POLYPHONY));
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         setPolyphony(getPolyphony(true));
     }

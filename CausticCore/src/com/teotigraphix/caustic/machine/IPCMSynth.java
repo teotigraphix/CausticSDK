@@ -33,7 +33,8 @@ import com.teotigraphix.caustic.sampler.IPCMSampler;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPCMSynth extends ISynth {
+public interface IPCMSynth extends ISynth
+{
 
     /**
      * Returns the {@link IPCMSynth}s implemented {@link IVolumeEnvelope}

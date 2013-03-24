@@ -30,7 +30,9 @@ import com.teotigraphix.caustic.internal.device.DeviceComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class EffectComponent extends DeviceComponent implements IEffectComponent {
+public class EffectComponent extends DeviceComponent implements
+        IEffectComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -41,7 +43,8 @@ public class EffectComponent extends DeviceComponent implements IEffectComponent
     /**
      * Constructor.
      */
-    public EffectComponent(IDevice device) {
+    public EffectComponent(IDevice device)
+    {
         super(device);
     }
 

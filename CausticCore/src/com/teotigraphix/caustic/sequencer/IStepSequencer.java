@@ -24,7 +24,8 @@ package com.teotigraphix.caustic.sequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IStepSequencer extends IPatternSequencer {
+public interface IStepSequencer extends IPatternSequencer
+{
 
     /**
      * Will trigger a step within the phrase to selected and update that
@@ -58,8 +59,8 @@ public interface IStepSequencer extends IPatternSequencer {
      * @param step The step trigger to turn off.
      * @param pitch The pitch of the step.
      * @param remove Whether to remove the step IE monophonic synths would need
-     *            to pass <code>false</code> since they only want one trigger
-     *            registered as each step.
+     * to pass <code>false</code> since they only want one trigger registered as
+     * each step.
      */
     void triggerOff(int step, int pitch, boolean remove);
 

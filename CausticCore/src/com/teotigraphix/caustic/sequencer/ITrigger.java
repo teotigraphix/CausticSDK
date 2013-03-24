@@ -33,7 +33,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ITrigger extends IPersist {
+public interface ITrigger extends IPersist
+{
 
     //--------------------------------------------------------------------------
     //

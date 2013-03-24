@@ -1,4 +1,3 @@
-
 package com.teotigraphix.caustic.internal.sequencer;
 
 import java.util.Map;
@@ -7,10 +6,13 @@ import com.teotigraphix.caustic.sequencer.IPatternSequencer;
 import com.teotigraphix.caustic.sequencer.IPhrase;
 import com.teotigraphix.caustic.sequencer.ITrigger;
 
-public class PatternSequencerUtils {
+public class PatternSequencerUtils
+{
 
-    public static IPhrase addEmptyPhrase(IPatternSequencer sequencer, int bank, int pattern) {
-        return addPhrase((PatternSequencer)sequencer, bank, pattern, null);
+    public static IPhrase addEmptyPhrase(IPatternSequencer sequencer, int bank,
+            int pattern)
+    {
+        return addPhrase((PatternSequencer) sequencer, bank, pattern, null);
     }
 
     /**
@@ -21,7 +23,8 @@ public class PatternSequencerUtils {
      * @param bank The bank index.
      * @param pattern The pattern index.
      */
-    static Phrase addPhrase(PatternSequencer sequencer, int bank, int pattern) {
+    static Phrase addPhrase(PatternSequencer sequencer, int bank, int pattern)
+    {
         return addPhrase(sequencer, bank, pattern, null);
     }
 
@@ -44,13 +47,18 @@ public class PatternSequencerUtils {
      * @param pattern The pattern index.
      * @param data The serialized String data to initialize the new phrase with.
      */
-    static Phrase addPhrase(PatternSequencer sequencer, int bank, int pattern, String data) {
+    static Phrase addPhrase(PatternSequencer sequencer, int bank, int pattern,
+            String data)
+    {
         Phrase phrase = null;
 
         Map<Integer, IPhrase> bankMap = sequencer.getBankMap(bank);
-        if (bankMap.containsKey(pattern)) {
-            phrase = (Phrase)bankMap.get(pattern);
-        } else {
+        if (bankMap.containsKey(pattern))
+        {
+            phrase = (Phrase) bankMap.get(pattern);
+        }
+        else
+        {
             phrase = new Phrase(bank, pattern);
             bankMap.put(phrase.getIndex(), phrase);
             phraseAdd(sequencer, phrase);
@@ -62,18 +70,21 @@ public class PatternSequencerUtils {
         return phrase;
     }
 
-    static Phrase removePhrase(PatternSequencer sequencer, int bank, int pattern) {
-        Phrase phrase = (Phrase)sequencer.getBankMap(bank).remove(pattern);
+    static Phrase removePhrase(PatternSequencer sequencer, int bank, int pattern)
+    {
+        Phrase phrase = (Phrase) sequencer.getBankMap(bank).remove(pattern);
         phraseRemove(sequencer, phrase);
         return phrase;
     }
 
-    static void phraseAdd(PatternSequencer sequencer, IPhrase phrase) {
+    static void phraseAdd(PatternSequencer sequencer, IPhrase phrase)
+    {
         phrase.setSequencer(sequencer);
         phrase.addPhraseListener(sequencer);
     }
 
-    static private void phraseRemove(PatternSequencer sequencer, IPhrase phrase) {
+    static private void phraseRemove(PatternSequencer sequencer, IPhrase phrase)
+    {
         phrase.removePhraseListener(sequencer);
         phrase.setSequencer(null);
     }

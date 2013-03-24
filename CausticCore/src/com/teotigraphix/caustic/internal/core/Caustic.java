@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustic.internal.core;
 
-import android.util.Log;
-
 import com.singlecellsoftware.causticcore.CausticCore;
 import com.singlecellsoftware.causticcore.CausticEventListener;
 
@@ -31,6 +29,7 @@ import com.singlecellsoftware.causticcore.CausticEventListener;
  */
 public class Caustic extends CausticCore {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "Caustic";
 
     private boolean mDebug;
@@ -50,7 +49,7 @@ public class Caustic extends CausticCore {
     @Override
     public float SendOSCMessage(String msg) {
         if (!mDebug) {
-            Log.d(TAG, msg);
+          //XXX Log.d(TAG, msg);
             return super.SendOSCMessage(msg);
         } else {
             System.out.println(msg);

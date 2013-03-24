@@ -26,7 +26,8 @@ package com.teotigraphix.caustic.internal.filter;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class FilterConstants {
+public final class FilterConstants
+{
 
     //--------------------------------------------------------------------------
     //

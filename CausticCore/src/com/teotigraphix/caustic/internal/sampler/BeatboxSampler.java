@@ -36,7 +36,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BeatboxSampler extends MachineComponent implements IBeatboxSampler {
+public class BeatboxSampler extends MachineComponent implements IBeatboxSampler
+{
 
     private static final String TAG_INDEX = "index";
 
@@ -46,12 +47,14 @@ public class BeatboxSampler extends MachineComponent implements IBeatboxSampler 
 
     private final Map<Integer, IBeatboxSamplerChannel> mMap;
 
-    public BeatboxSampler(IMachine machine) {
+    public BeatboxSampler(IMachine machine)
+    {
         super(machine);
 
         mMap = new TreeMap<Integer, IBeatboxSamplerChannel>();
 
-        for (int i = 0; i < NUM_CHANNELS; i++) {
+        for (int i = 0; i < NUM_CHANNELS; i++)
+        {
             BeatboxSamplerChannel channel = new BeatboxSamplerChannel(this);
             channel.setIndex(i);
             mMap.put(i, channel);
@@ -65,19 +68,23 @@ public class BeatboxSampler extends MachineComponent implements IBeatboxSampler 
     //--------------------------------------------------------------------------
 
     @Override
-    public String getSampleName(int channel) {
-        return BeatboxSamplerMessage.QUERY_CHANNEL_SAMPLE_NAME.queryString(getEngine(),
-                getMachineIndex(), channel);
+    public String getSampleName(int channel)
+    {
+        return BeatboxSamplerMessage.QUERY_CHANNEL_SAMPLE_NAME.queryString(
+                getEngine(), getMachineIndex(), channel);
     }
 
     @Override
-    public IBeatboxSamplerChannel getChannel(int index) {
+    public IBeatboxSamplerChannel getChannel(int index)
+    {
         return mMap.get(index);
     }
 
     @Override
-    public IBeatboxSamplerChannel loadChannel(int index, String path) {
-        BeatboxSamplerMessage.CHANNEL_LOAD.send(getEngine(), getMachineIndex(), index, path);
+    public IBeatboxSamplerChannel loadChannel(int index, String path)
+    {
+        BeatboxSamplerMessage.CHANNEL_LOAD.send(getEngine(), getMachineIndex(),
+                index, path);
         return getChannel(index);
     }
 
@@ -88,19 +95,25 @@ public class BeatboxSampler extends MachineComponent implements IBeatboxSampler 
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
-        for (IBeatboxSamplerChannel sample : mMap.values()) {
-            if (sample.hasSample()) {
+    public void copy(IMemento memento)
+    {
+        for (IBeatboxSamplerChannel sample : mMap.values())
+        {
+            if (sample.hasSample())
+            {
                 sample.copy(memento.createChild(TAG_CHANNEL));
             }
         }
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         IMemento[] samples = memento.getChildren(TAG_CHANNEL);
-        for (IMemento sample : samples) {
-            IBeatboxSamplerChannel channel = getChannel(sample.getInteger(TAG_INDEX));
+        for (IMemento sample : samples)
+        {
+            IBeatboxSamplerChannel channel = getChannel(sample
+                    .getInteger(TAG_INDEX));
             channel.paste(sample);
         }
     }
@@ -112,8 +125,10 @@ public class BeatboxSampler extends MachineComponent implements IBeatboxSampler 
     //--------------------------------------------------------------------------
 
     @Override
-    public void restore() {
-        for (IBeatboxSamplerChannel channel : mMap.values()) {
+    public void restore()
+    {
+        for (IBeatboxSamplerChannel channel : mMap.values())
+        {
             channel.restore();
         }
     }

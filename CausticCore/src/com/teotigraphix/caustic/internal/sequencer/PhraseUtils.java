@@ -31,7 +31,8 @@ import com.teotigraphix.caustic.sequencer.ITrigger;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PhraseUtils {
+public class PhraseUtils
+{
 
     // private static int mDefaultPitch = 60;
     //
@@ -41,11 +42,13 @@ public class PhraseUtils {
 
     private static int mBeatsInMeasure = 4;
 
-    static void contractResolution(Phrase phrase, Resolution oldValue, Resolution value) {
+    static void contractResolution(Phrase phrase, Resolution oldValue,
+            Resolution value)
+    {
         float large = Math.max(oldValue.getValue(), value.getValue());
         float small = Math.min(oldValue.getValue(), value.getValue());
 
-        int span = (int)(large / small);
+        int span = (int) (large / small);
 
         Map<Integer, Map<Integer, ITrigger>> result = new TreeMap<Integer, Map<Integer, ITrigger>>();
         int i = 0;
@@ -53,28 +56,35 @@ public class PhraseUtils {
 
         int steps = phrase.mStepMap.size();
 
-        for (int j = 0; j < steps; j++) {
-            if (count == span - 1) {
+        for (int j = 0; j < steps; j++)
+        {
+            if (count == span - 1)
+            {
                 Map<Integer, ITrigger> map = phrase.mStepMap.get(j);
                 result.put(i, map);
-                for (Entry<Integer, ITrigger> pitch : map.entrySet()) {
-                    ((Trigger)pitch.getValue()).setIndex(i);
+                for (Entry<Integer, ITrigger> pitch : map.entrySet())
+                {
+                    ((Trigger) pitch.getValue()).setIndex(i);
                 }
                 i++;
                 count = 0;
-            } else {
+            }
+            else
+            {
                 count++;
             }
         }
         phrase.mStepMap = result;
     }
 
-    static void expandResolution(Phrase phrase, Resolution oldValue, Resolution value) {
+    static void expandResolution(Phrase phrase, Resolution oldValue,
+            Resolution value)
+    {
 
         float large = Math.max(oldValue.getValue(), value.getValue());
         float small = Math.min(oldValue.getValue(), value.getValue());
 
-        int span = (int)((large / small) - 1);
+        int span = (int) ((large / small) - 1);
 
         Map<Integer, Map<Integer, ITrigger>> result = new TreeMap<Integer, Map<Integer, ITrigger>>();
         int i = 0;
@@ -82,19 +92,24 @@ public class PhraseUtils {
 
         int steps = Resolution.toSteps(value) * phrase.getLength();
 
-        for (int j = 0; j < steps; j++) {
-            if (count == 0) {
+        for (int j = 0; j < steps; j++)
+        {
+            if (count == 0)
+            {
                 Map<Integer, ITrigger> nmap = new TreeMap<Integer, ITrigger>();
                 result.put(j, nmap);
 
                 count = span;
                 i++;
-            } else {
+            }
+            else
+            {
                 Map<Integer, ITrigger> map = phrase.mStepMap.get(i);
 
                 result.put(j, map);
-                for (Entry<Integer, ITrigger> pitch : map.entrySet()) {
-                    ((Trigger)pitch.getValue()).setIndex(j);
+                for (Entry<Integer, ITrigger> pitch : map.entrySet())
+                {
+                    ((Trigger) pitch.getValue()).setIndex(j);
                 }
                 count--;
             }
@@ -103,21 +118,27 @@ public class PhraseUtils {
         phrase.mStepMap = result;
     }
 
-    static void updateLength(Phrase phrase, int oldValue, int newValue) {
+    static void updateLength(Phrase phrase, int oldValue, int newValue)
+    {
 
-        if (newValue > oldValue) {
+        if (newValue > oldValue)
+        {
             int oldNumSteps = getNumStepsPerLength(phrase) * oldValue;
             int numSteps = getNumSteps(phrase);
-            for (int i = oldNumSteps; i < numSteps; i++) {
+            for (int i = oldNumSteps; i < numSteps; i++)
+            {
                 TreeMap<Integer, ITrigger> pitchMap = new TreeMap<Integer, ITrigger>();
                 phrase.mStepMap.put(i, pitchMap);
             }
-        } else {
+        }
+        else
+        {
             // truncate
             // simply create a new map with extra triggers tossed
             int numSteps = getNumSteps(phrase);
             int oldNumSteps = getNumStepsPerLength(phrase) * oldValue;
-            for (int i = oldNumSteps; i > numSteps - 1; i--) {
+            for (int i = oldNumSteps; i > numSteps - 1; i--)
+            {
                 // (mschmalle) when a trigger is removed triggerOff() ?
                 // or not worry because the length was set and the core should
                 // truncate automatically?
@@ -138,7 +159,8 @@ public class PhraseUtils {
      * @param pitch The pitch of the new trigger.
      * @return A new Trigger instance.
      */
-    static ITrigger createStepTrigger(Phrase phrase, int index, int pitch) {
+    static ITrigger createStepTrigger(Phrase phrase, int index, int pitch)
+    {
         Trigger result = new Trigger();
 
         result.setIndex(index);
@@ -150,22 +172,26 @@ public class PhraseUtils {
         return result;
     }
 
-    static ITrigger removeBeatTrigger(Phrase phrase, float beat, int pitch) {
+    static ITrigger removeBeatTrigger(Phrase phrase, float beat, int pitch)
+    {
         int step = Resolution.toStep(beat, phrase.getResolution());
         return removeStepTrigger(phrase, step, pitch);
     }
 
-    static ITrigger removeStepTrigger(Phrase phrase, int step, int pitch) {
+    static ITrigger removeStepTrigger(Phrase phrase, int step, int pitch)
+    {
         Map<Integer, ITrigger> map = phrase.mStepMap.get(step);
         return map.remove(pitch);
     }
 
-    static void initTriggerData(Phrase phrase, ITrigger trigger) {
+    static void initTriggerData(Phrase phrase, ITrigger trigger)
+    {
         // trigger.setData(null);
     }
 
-    static Trigger initializeNoteTrigger(Phrase phrase, float start, int pitch, float end,
-            float velocity, int flags) {
+    static Trigger initializeNoteTrigger(Phrase phrase, float start, int pitch,
+            float end, float velocity, int flags)
+    {
         int step = Resolution.toStep(start, phrase.getResolution());
         float gate = end - start;
         return initializeStepTrigger(phrase, step, pitch, gate, velocity, flags);
@@ -182,20 +208,22 @@ public class PhraseUtils {
      * 
      * @param step The step where the trigger exists or will be created.
      * @param pitch The pitch of the trigger used to find an existing trigger,
-     *            or create a new trigger.
+     * or create a new trigger.
      * @param gate The gate time of the trigger in beats that is calculated from
-     *            the step value.
+     * the step value.
      * @param velocity The velocity of the trigger.
      * @return An existing or newly created trigger.
      */
-    static Trigger initializeStepTrigger(Phrase phrase, int step, int pitch, float gate,
-            float velocity, int flags) {
+    static Trigger initializeStepTrigger(Phrase phrase, int step, int pitch,
+            float gate, float velocity, int flags)
+    {
         // if the phrase is mono, if a trigger matches the step
         // it will be returned regardless of the pitch, since the mono is
         // just updating the pitch, gate and velocity
-        Trigger trigger = (Trigger)phrase.getTriggerAtStep(step, pitch);
-        if (trigger == null) {
-            trigger = (Trigger)createStepTrigger(phrase, step, pitch);
+        Trigger trigger = (Trigger) phrase.getTriggerAtStep(step, pitch);
+        if (trigger == null)
+        {
+            trigger = (Trigger) createStepTrigger(phrase, step, pitch);
             // try and find the <pitch,ITrigger> map located at the index
             Map<Integer, ITrigger> pitchMap = phrase.mStepMap.get(step);
 
@@ -209,21 +237,26 @@ public class PhraseUtils {
         return trigger;
     }
 
-    public static int getNumBeats(Phrase phrase) {
+    public static int getNumBeats(Phrase phrase)
+    {
         return phrase.getLength() * mBeatsInMeasure;
     }
 
-    public static int getNumStepsPerLength(Phrase phrase) {
+    public static int getNumStepsPerLength(Phrase phrase)
+    {
         return Resolution.toSteps(phrase.getResolution());
     }
 
-    public static int getNumSteps(Phrase phrase) {
+    public static int getNumSteps(Phrase phrase)
+    {
         return (phrase.getLength() * Resolution.toSteps(phrase.getResolution()));
     }
 
-    static ITrigger addTrigger(Phrase phrase, Trigger trigger) {
-        ITrigger result = initializeStepTrigger(phrase, trigger.getIndex(), trigger.getPitch(),
-                trigger.getGate(), trigger.getVelocity(), trigger.getFlags());
+    static ITrigger addTrigger(Phrase phrase, Trigger trigger)
+    {
+        ITrigger result = initializeStepTrigger(phrase, trigger.getIndex(),
+                trigger.getPitch(), trigger.getGate(), trigger.getVelocity(),
+                trigger.getFlags());
         return result;
     }
 }

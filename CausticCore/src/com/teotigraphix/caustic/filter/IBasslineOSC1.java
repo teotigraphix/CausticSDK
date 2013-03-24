@@ -30,7 +30,8 @@ import com.teotigraphix.caustic.osc.BasslineOscMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IBasslineOSC1 extends IMachineComponent {
+public interface IBasslineOSC1 extends IMachineComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -114,7 +115,8 @@ public interface IBasslineOSC1 extends IMachineComponent {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum Waveform {
+    public enum Waveform
+    {
 
         /**
          * A saw wave (0).
@@ -131,11 +133,13 @@ public interface IBasslineOSC1 extends IMachineComponent {
         /**
          * Returns the integer value of the {@link Waveform}.
          */
-        public int getValue() {
+        public int getValue()
+        {
             return mValue;
         }
 
-        Waveform(int value) {
+        Waveform(int value)
+        {
             mValue = value;
         }
 
@@ -144,8 +148,10 @@ public interface IBasslineOSC1 extends IMachineComponent {
          * 
          * @param type The int type.
          */
-        public static Waveform toType(Integer type) {
-            for (Waveform result : values()) {
+        public static Waveform toType(Integer type)
+        {
+            for (Waveform result : values())
+            {
                 if (result.getValue() == type)
                     return result;
             }
@@ -155,7 +161,8 @@ public interface IBasslineOSC1 extends IMachineComponent {
         /**
          * @see #toType(Integer)
          */
-        public static Waveform toType(Float type) {
+        public static Waveform toType(Float type)
+        {
             return toType(type.intValue());
         }
     }

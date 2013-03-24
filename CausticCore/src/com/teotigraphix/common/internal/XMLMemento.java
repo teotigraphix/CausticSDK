@@ -44,7 +44,8 @@ import com.teotigraphix.common.IMemento;
  *
  * @see IMemento
  */
-public final class XMLMemento implements IMemento {
+public final class XMLMemento implements IMemento
+{
     private Document factory;
 
     private Element element;
@@ -57,11 +58,12 @@ public final class XMLMemento implements IMemento {
      * </p>
      * 
      * @param reader the <code>Reader</code> used to create the memento's
-     *            document
+     * document
      * @return a memento on the first <code>Element</code> for reading the
-     *         document
+     * document
      */
-    public static XMLMemento createReadRoot(Reader reader) {
+    public static XMLMemento createReadRoot(Reader reader)
+    {
         return createReadRoot(reader, null);
     }
 
@@ -70,44 +72,55 @@ public final class XMLMemento implements IMemento {
      * a memento on the first <code>Element</code> for reading the document.
      * 
      * @param reader the <code>Reader</code> used to create the memento's
-     *            document
+     * document
      * @param baseDir the directory used to resolve relative file names in the
-     *            XML document. This directory must exist and include the
-     *            trailing separator. The directory format, including the
-     *            separators, must be valid for the platform. Can be
-     *            <code>null</code> if not needed.
+     * XML document. This directory must exist and include the trailing
+     * separator. The directory format, including the separators, must be valid
+     * for the platform. Can be <code>null</code> if not needed.
      * @return a memento on the first <code>Element</code> for reading the
-     *         document
+     * document
      * @throws WorkbenchException if IO problems, invalid format, or no element.
      */
     @SuppressWarnings("unused")
-    public static XMLMemento createReadRoot(Reader reader, String baseDir) {
+    public static XMLMemento createReadRoot(Reader reader, String baseDir)
+    {
 
         String errorMessage = null;
         Exception exception = null;
 
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try
+        {
+            DocumentBuilderFactory factory = DocumentBuilderFactory
+                    .newInstance();
             DocumentBuilder parser = factory.newDocumentBuilder();
             InputSource source = new InputSource(reader);
-            if (baseDir != null) {
+            if (baseDir != null)
+            {
                 source.setSystemId(baseDir);
             }
             Document document = parser.parse(source);
             NodeList list = document.getChildNodes();
-            for (int i = 0; i < list.getLength(); i++) {
+            for (int i = 0; i < list.getLength(); i++)
+            {
                 Node node = list.item(i);
-                if (node instanceof Element) {
-                    return new XMLMemento(document, (Element)node);
+                if (node instanceof Element)
+                {
+                    return new XMLMemento(document, (Element) node);
                 }
             }
-        } catch (ParserConfigurationException e) {
+        }
+        catch (ParserConfigurationException e)
+        {
             exception = e;
             // errorMessage = WorkbenchMessages.XMLMemento_parserConfigError;
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             exception = e;
             // errorMessage = WorkbenchMessages.XMLMemento_ioError;
-        } catch (SAXException e) {
+        }
+        catch (SAXException e)
+        {
             exception = e;
             // errorMessage = WorkbenchMessages.XMLMemento_formatError;
         }
@@ -130,14 +143,19 @@ public final class XMLMemento implements IMemento {
      * @param type the element node type to create on the document
      * @return the root memento for writing a document
      */
-    public static XMLMemento createWriteRoot(String type) {
+    public static XMLMemento createWriteRoot(String type)
+    {
         Document document;
-        try {
-            document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        try
+        {
+            document = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder().newDocument();
             Element element = document.createElement(type);
             document.appendChild(element);
             return new XMLMemento(document, element);
-        } catch (ParserConfigurationException e) {
+        }
+        catch (ParserConfigurationException e)
+        {
             // throw new Error(e);
             throw new Error(e.getMessage());
         }
@@ -153,7 +171,8 @@ public final class XMLMemento implements IMemento {
      * @param document the document for the memento
      * @param element the element node for the memento
      */
-    public XMLMemento(Document document, Element element) {
+    public XMLMemento(Document document, Element element)
+    {
         super();
         this.factory = document;
         this.element = element;
@@ -163,7 +182,8 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public IMemento createChild(String type) {
+    public IMemento createChild(String type)
+    {
         Element child = factory.createElement(type);
         element.appendChild(child);
         return new XMLMemento(factory, child);
@@ -173,7 +193,8 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public IMemento createChild(String type, String id) {
+    public IMemento createChild(String type, String id)
+    {
         Element child = factory.createElement(type);
         child.setAttribute(TAG_ID, id == null ? "" : id); //$NON-NLS-1$
         element.appendChild(child);
@@ -183,9 +204,10 @@ public final class XMLMemento implements IMemento {
     /*
      * (non-Javadoc) Method declared in IMemento.
      */
-    public IMemento copyChild(IMemento child) {
-        Element childElement = ((XMLMemento)child).element;
-        Element newElement = (Element)factory.importNode(childElement, true);
+    public IMemento copyChild(IMemento child)
+    {
+        Element childElement = ((XMLMemento) child).element;
+        Element newElement = (Element) factory.importNode(childElement, true);
         element.appendChild(newElement);
         return new XMLMemento(factory, newElement);
     }
@@ -194,21 +216,26 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public IMemento getChild(String type) {
+    public IMemento getChild(String type)
+    {
 
         // Get the nodes.
         NodeList nodes = element.getChildNodes();
         int size = nodes.getLength();
-        if (size == 0) {
+        if (size == 0)
+        {
             return null;
         }
 
         // Find the first node which is a child of this node.
-        for (int nX = 0; nX < size; nX++) {
+        for (int nX = 0; nX < size; nX++)
+        {
             Node node = nodes.item(nX);
-            if (node instanceof Element) {
-                Element element = (Element)node;
-                if (element.getNodeName().equals(type)) {
+            if (node instanceof Element)
+            {
+                Element element = (Element) node;
+                if (element.getNodeName().equals(type))
+                {
                     return new XMLMemento(factory, element);
                 }
             }
@@ -223,22 +250,27 @@ public final class XMLMemento implements IMemento {
      */
     @Override
     @SuppressWarnings("rawtypes")
-    public IMemento[] getChildren(String type) {
+    public IMemento[] getChildren(String type)
+    {
 
         // Get the nodes.
         NodeList nodes = element.getChildNodes();
         int size = nodes.getLength();
-        if (size == 0) {
+        if (size == 0)
+        {
             return new IMemento[0];
         }
 
         // Extract each node with given type.
         ArrayList list = new ArrayList(size);
-        for (int nX = 0; nX < size; nX++) {
+        for (int nX = 0; nX < size; nX++)
+        {
             Node node = nodes.item(nX);
-            if (node instanceof Element) {
-                Element element = (Element)node;
-                if (element.getNodeName().equals(type)) {
+            if (node instanceof Element)
+            {
+                Element element = (Element) node;
+                if (element.getNodeName().equals(type))
+                {
                     list.add(element);
                 }
             }
@@ -247,8 +279,9 @@ public final class XMLMemento implements IMemento {
         // Create a memento for each node.
         size = list.size();
         IMemento[] results = new IMemento[size];
-        for (int x = 0; x < size; x++) {
-            results[x] = new XMLMemento(factory, (Element)list.get(x));
+        for (int x = 0; x < size; x++)
+        {
+            results[x] = new XMLMemento(factory, (Element) list.get(x));
         }
         return results;
     }
@@ -257,15 +290,20 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public Float getFloat(String key) {
+    public Float getFloat(String key)
+    {
         Attr attr = element.getAttributeNode(key);
-        if (attr == null) {
+        if (attr == null)
+        {
             return null;
         }
         String strValue = attr.getValue();
-        try {
+        try
+        {
             return Float.valueOf(strValue);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             //WorkbenchPlugin.log("Memento problem - Invalid float for key: " //$NON-NLS-1$
             //        + key + " value: " + strValue, e); //$NON-NLS-1$
             return null;
@@ -276,7 +314,8 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public String getId() {
+    public String getId()
+    {
         return element.getAttribute(TAG_ID);
     }
 
@@ -284,15 +323,20 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public Integer getInteger(String key) {
+    public Integer getInteger(String key)
+    {
         Attr attr = element.getAttributeNode(key);
-        if (attr == null) {
+        if (attr == null)
+        {
             return null;
         }
         String strValue = attr.getValue();
-        try {
+        try
+        {
             return Integer.valueOf(strValue);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             // WorkbenchPlugin
             //        .log("Memento problem - invalid integer for key: " + key //$NON-NLS-1$
             //                + " value: " + strValue, e); //$NON-NLS-1$
@@ -304,9 +348,11 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public String getString(String key) {
+    public String getString(String key)
+    {
         Attr attr = element.getAttributeNode(key);
-        if (attr == null) {
+        if (attr == null)
+        {
             return null;
         }
         return attr.getValue();
@@ -316,9 +362,11 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public String getTextData() {
+    public String getTextData()
+    {
         Text textNode = getTextNode();
-        if (textNode != null) {
+        if (textNode != null)
+        {
             return textNode.getData();
         }
         return null;
@@ -329,19 +377,23 @@ public final class XMLMemento implements IMemento {
      * Text node.
      * 
      * @return the Text node of the memento, or <code>null</code> if the memento
-     *         has no Text node.
+     * has no Text node.
      */
-    private Text getTextNode() {
+    private Text getTextNode()
+    {
         // Get the nodes.
         NodeList nodes = element.getChildNodes();
         int size = nodes.getLength();
-        if (size == 0) {
+        if (size == 0)
+        {
             return null;
         }
-        for (int nX = 0; nX < size; nX++) {
+        for (int nX = 0; nX < size; nX++)
+        {
             Node node = nodes.item(nX);
-            if (node instanceof Text) {
-                return (Text)node;
+            if (node instanceof Text)
+            {
+                return (Text) node;
             }
         }
         // a Text node was not found
@@ -353,11 +405,13 @@ public final class XMLMemento implements IMemento {
      * 
      * @param copyText true if the first text node should be copied
      */
-    private void putElement(Element element, boolean copyText) {
+    private void putElement(Element element, boolean copyText)
+    {
         NamedNodeMap nodeMap = element.getAttributes();
         int size = nodeMap.getLength();
-        for (int i = 0; i < size; i++) {
-            Attr attr = (Attr)nodeMap.item(i);
+        for (int i = 0; i < size; i++)
+        {
+            Attr attr = (Attr) nodeMap.item(i);
             putString(attr.getName(), attr.getValue());
         }
 
@@ -367,13 +421,17 @@ public final class XMLMemento implements IMemento {
         // Note that text data will be added as the first child (see
         // putTextData)
         boolean needToCopyText = copyText;
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++)
+        {
             Node node = nodes.item(i);
-            if (node instanceof Element) {
-                XMLMemento child = (XMLMemento)createChild(node.getNodeName());
-                child.putElement((Element)node, true);
-            } else if (node instanceof Text && needToCopyText) {
-                putTextData(((Text)node).getData());
+            if (node instanceof Element)
+            {
+                XMLMemento child = (XMLMemento) createChild(node.getNodeName());
+                child.putElement((Element) node, true);
+            }
+            else if (node instanceof Text && needToCopyText)
+            {
+                putTextData(((Text) node).getData());
                 needToCopyText = false;
             }
         }
@@ -383,7 +441,8 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public void putFloat(String key, float f) {
+    public void putFloat(String key, float f)
+    {
         element.setAttribute(key, String.valueOf(f));
     }
 
@@ -391,7 +450,8 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public void putInteger(String key, int n) {
+    public void putInteger(String key, int n)
+    {
         element.setAttribute(key, String.valueOf(n));
     }
 
@@ -399,19 +459,22 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public void putMemento(IMemento memento) {
+    public void putMemento(IMemento memento)
+    {
         // Do not copy the element's top level text node (this would overwrite
         // the existing text).
         // Text nodes of children are copied.
-        putElement(((XMLMemento)memento).element, false);
+        putElement(((XMLMemento) memento).element, false);
     }
 
     /*
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public void putString(String key, String value) {
-        if (value == null) {
+    public void putString(String key, String value)
+    {
+        if (value == null)
+        {
             return;
         }
         element.setAttribute(key, value);
@@ -421,18 +484,25 @@ public final class XMLMemento implements IMemento {
      * (non-Javadoc) Method declared in IMemento.
      */
     @Override
-    public void putTextData(String data) {
+    public void putTextData(String data)
+    {
         Text textNode = getTextNode();
-        if (textNode == null) {
+        if (textNode == null)
+        {
             textNode = factory.createTextNode(data);
             // Always add the text node as the first child (fixes bug 93718)
             Node firstChild = element.getFirstChild();
-            if (firstChild != null) {
+            if (firstChild != null)
+            {
                 element.insertBefore(textNode, firstChild);
-            } else {
+            }
+            else
+            {
                 element.appendChild(textNode);
             }
-        } else {
+        }
+        else
+        {
             textNode.setData(data);
         }
     }
@@ -442,14 +512,18 @@ public final class XMLMemento implements IMemento {
      * 
      * @param writer the writer used to save the memento's document
      * @throws IOException if there is a problem serializing the document to the
-     *             stream.
+     * stream.
      */
     @Override
-    public void save(Writer writer) throws IOException {
+    public void save(Writer writer) throws IOException
+    {
         DOMWriter out = new DOMWriter(writer);
-        try {
+        try
+        {
             out.print(element);
-        } finally {
+        }
+        finally
+        {
             out.close();
         }
     }
@@ -458,7 +532,8 @@ public final class XMLMemento implements IMemento {
      * A simple XML writer. Using this instead of the javax.xml.transform
      * classes allows compilation against JCL Foundation (bug 80053).
      */
-    private static final class DOMWriter extends PrintWriter {
+    private static final class DOMWriter extends PrintWriter
+    {
 
         private int tab;
 
@@ -470,7 +545,8 @@ public final class XMLMemento implements IMemento {
          * 
          * @param output the output writer
          */
-        public DOMWriter(Writer output) {
+        public DOMWriter(Writer output)
+        {
             super(output);
             tab = 0;
             println(XML_VERSION);
@@ -481,33 +557,41 @@ public final class XMLMemento implements IMemento {
          * 
          * @param element the element to print
          */
-        public void print(Element element) {
+        public void print(Element element)
+        {
             // Ensure extra whitespace is not emitted next to a Text node,
             // as that will result in a situation where the restored text data
             // is not the
             // same as the saved text data.
             boolean hasChildren = element.hasChildNodes();
             startTag(element, hasChildren);
-            if (hasChildren) {
+            if (hasChildren)
+            {
                 tab++;
                 boolean prevWasText = false;
                 NodeList children = element.getChildNodes();
-                for (int i = 0; i < children.getLength(); i++) {
+                for (int i = 0; i < children.getLength(); i++)
+                {
                     Node node = children.item(i);
-                    if (node instanceof Element) {
-                        if (!prevWasText) {
+                    if (node instanceof Element)
+                    {
+                        if (!prevWasText)
+                        {
                             println();
                             printTabulation();
                         }
-                        print((Element)children.item(i));
+                        print((Element) children.item(i));
                         prevWasText = false;
-                    } else if (node instanceof Text) {
+                    }
+                    else if (node instanceof Text)
+                    {
                         print(getEscaped(node.getNodeValue()));
                         prevWasText = true;
                     }
                 }
                 tab--;
-                if (!prevWasText) {
+                if (!prevWasText)
+                {
                     println();
                     printTabulation();
                 }
@@ -515,7 +599,8 @@ public final class XMLMemento implements IMemento {
             }
         }
 
-        private void printTabulation() {
+        private void printTabulation()
+        {
             // Indenting is disabled, as it can affect the result of
             // getTextData().
             // In 3.0, elements were separated by a newline but not indented.
@@ -527,13 +612,15 @@ public final class XMLMemento implements IMemento {
                 super.print("\t"); //$NON-NLS-1$
         }
 
-        private void startTag(Element element, boolean hasChildren) {
+        private void startTag(Element element, boolean hasChildren)
+        {
             StringBuffer sb = new StringBuffer();
             sb.append("<"); //$NON-NLS-1$
             sb.append(element.getTagName());
             NamedNodeMap attributes = element.getAttributes();
-            for (int i = 0; i < attributes.getLength(); i++) {
-                Attr attribute = (Attr)attributes.item(i);
+            for (int i = 0; i < attributes.getLength(); i++)
+            {
+                Attr attribute = (Attr) attributes.item(i);
                 sb.append(" "); //$NON-NLS-1$
                 sb.append(attribute.getName());
                 sb.append("=\""); //$NON-NLS-1$
@@ -544,7 +631,8 @@ public final class XMLMemento implements IMemento {
             print(sb.toString());
         }
 
-        private void endTag(Element element) {
+        private void endTag(Element element)
+        {
             StringBuffer sb = new StringBuffer();
             sb.append("</"); //$NON-NLS-1$
             sb.append(element.getNodeName());
@@ -552,65 +640,78 @@ public final class XMLMemento implements IMemento {
             print(sb.toString());
         }
 
-        private static void appendEscapedChar(StringBuffer buffer, char c) {
+        private static void appendEscapedChar(StringBuffer buffer, char c)
+        {
             String replacement = getReplacement(c);
-            if (replacement != null) {
+            if (replacement != null)
+            {
                 buffer.append('&');
                 buffer.append(replacement);
                 buffer.append(';');
-            } else {
+            }
+            else
+            {
                 buffer.append(c);
             }
         }
 
-        private static String getEscaped(String s) {
+        private static String getEscaped(String s)
+        {
             StringBuffer result = new StringBuffer(s.length() + 10);
-            for (int i = 0; i < s.length(); ++i) {
+            for (int i = 0; i < s.length(); ++i)
+            {
                 appendEscapedChar(result, s.charAt(i));
             }
             return result.toString();
         }
 
-        private static String getReplacement(char c) {
+        private static String getReplacement(char c)
+        {
             // Encode special XML characters into the equivalent character
             // references.
             // The first five are defined by default for all XML documents.
             // The next three (#xD, #xA, #x9) are encoded to avoid them
             // being converted to spaces on deserialization
             // (fixes bug 93720)
-            switch (c) {
-                case '<':
-                    return "lt"; //$NON-NLS-1$
-                case '>':
-                    return "gt"; //$NON-NLS-1$
-                case '"':
-                    return "quot"; //$NON-NLS-1$
-                case '\'':
-                    return "apos"; //$NON-NLS-1$
-                case '&':
-                    return "amp"; //$NON-NLS-1$
-                case '\r':
-                    return "#x0D"; //$NON-NLS-1$
-                case '\n':
-                    return "#x0A"; //$NON-NLS-1$
-                case '\u0009':
-                    return "#x09"; //$NON-NLS-1$
+            switch (c)
+            {
+            case '<':
+                return "lt"; //$NON-NLS-1$
+            case '>':
+                return "gt"; //$NON-NLS-1$
+            case '"':
+                return "quot"; //$NON-NLS-1$
+            case '\'':
+                return "apos"; //$NON-NLS-1$
+            case '&':
+                return "amp"; //$NON-NLS-1$
+            case '\r':
+                return "#x0D"; //$NON-NLS-1$
+            case '\n':
+                return "#x0A"; //$NON-NLS-1$
+            case '\u0009':
+                return "#x09"; //$NON-NLS-1$
             }
             return null;
         }
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         StringWriter writer = new StringWriter();
-        try {
+        try
+        {
             save(writer);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
         }
         return replaceJunk(writer.toString());
     }
 
-    public static final String replaceJunk(String data) {
+    public static final String replaceJunk(String data)
+    {
         data = data.replaceAll("&#x0A;", "\n");
         data = data.replaceAll("&#x09;", "\t");
         return data;

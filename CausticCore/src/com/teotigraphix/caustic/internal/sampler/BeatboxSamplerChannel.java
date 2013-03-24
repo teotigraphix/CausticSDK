@@ -32,7 +32,9 @@ import com.teotigraphix.caustic.sampler.IBeatboxSamplerChannel;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxSamplerChannel {
+public class BeatboxSamplerChannel extends MachineComponent implements
+        IBeatboxSamplerChannel
+{
 
     private boolean mIsSelected;
 
@@ -63,7 +65,8 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //--------------------------------------------------------------------------
 
     @Override
-    public boolean hasSample() {
+    public boolean hasSample()
+    {
         return mName != null;
     }
 
@@ -72,11 +75,13 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public int getIndex() {
+    public int getIndex()
+    {
         return mIndex;
     }
 
-    public void setIndex(int value) {
+    public void setIndex(int value)
+    {
         mIndex = value;
     }
 
@@ -85,11 +90,13 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return mName;
     }
 
-    public void setName(String value) {
+    public void setName(String value)
+    {
         mName = value;
     }
 
@@ -98,12 +105,14 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public boolean isSelected() {
+    public boolean isSelected()
+    {
         return mIsSelected;
     }
 
     @Override
-    public void setSelected(boolean value) {
+    public void setSelected(boolean value)
+    {
         mIsSelected = value;
     }
 
@@ -112,17 +121,19 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public boolean isMute() {
+    public boolean isMute()
+    {
         return mIsMute;
     }
 
     @Override
-    public void setMute(boolean value) {
+    public void setMute(boolean value)
+    {
         if (value == mIsMute)
             return;
         mIsMute = value;
-        BeatboxSamplerMessage.CHANNEL_MUTE.send(getEngine(), getMachineIndex(), mIndex, mIsMute ? 1
-                : 0);
+        BeatboxSamplerMessage.CHANNEL_MUTE.send(getEngine(), getMachineIndex(),
+                mIndex, mIsMute ? 1 : 0);
     }
 
     //----------------------------------
@@ -130,17 +141,19 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public boolean isSolo() {
+    public boolean isSolo()
+    {
         return mIsSolo;
     }
 
     @Override
-    public void setSolo(boolean value) {
+    public void setSolo(boolean value)
+    {
         if (value == mIsSolo)
             return;
         mIsSolo = value;
-        BeatboxSamplerMessage.CHANNEL_SOLO.send(getEngine(), getMachineIndex(), mIndex, mIsSolo ? 1
-                : 0);
+        BeatboxSamplerMessage.CHANNEL_SOLO.send(getEngine(), getMachineIndex(),
+                mIndex, mIsSolo ? 1 : 0);
     }
 
     //----------------------------------
@@ -148,16 +161,19 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public float getTune() {
+    public float getTune()
+    {
         return mTune;
     }
 
     @Override
-    public void setTune(float value) {
+    public void setTune(float value)
+    {
         if (value == mTune)
             return;
         mTune = value;
-        BeatboxSamplerMessage.CHANNEL_TUNE.send(getEngine(), getMachineIndex(), mIndex, mTune);
+        BeatboxSamplerMessage.CHANNEL_TUNE.send(getEngine(), getMachineIndex(),
+                mIndex, mTune);
     }
 
     //----------------------------------
@@ -165,16 +181,19 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public float getPunch() {
+    public float getPunch()
+    {
         return mPunch;
     }
 
     @Override
-    public void setPunch(float value) {
+    public void setPunch(float value)
+    {
         if (value == mPunch)
             return;
         mPunch = value;
-        BeatboxSamplerMessage.CHANNEL_PUNCH.send(getEngine(), getMachineIndex(), mIndex, mPunch);
+        BeatboxSamplerMessage.CHANNEL_PUNCH.send(getEngine(),
+                getMachineIndex(), mIndex, mPunch);
     }
 
     //----------------------------------
@@ -182,16 +201,19 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public float getDecay() {
+    public float getDecay()
+    {
         return mDecay;
     }
 
     @Override
-    public void setDecay(float value) {
+    public void setDecay(float value)
+    {
         if (value == mDecay)
             return;
         mDecay = value;
-        BeatboxSamplerMessage.CHANNEL_DECAY.send(getEngine(), getMachineIndex(), mIndex, mDecay);
+        BeatboxSamplerMessage.CHANNEL_DECAY.send(getEngine(),
+                getMachineIndex(), mIndex, mDecay);
     }
 
     //----------------------------------
@@ -199,16 +221,19 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public float getPan() {
+    public float getPan()
+    {
         return mPan;
     }
 
     @Override
-    public void setPan(float value) {
+    public void setPan(float value)
+    {
         if (value == mPan)
             return;
         mPan = value;
-        BeatboxSamplerMessage.CHANNEL_PAN.send(getEngine(), getMachineIndex(), mIndex, mPan);
+        BeatboxSamplerMessage.CHANNEL_PAN.send(getEngine(), getMachineIndex(),
+                mIndex, mPan);
     }
 
     //----------------------------------
@@ -216,36 +241,47 @@ public class BeatboxSamplerChannel extends MachineComponent implements IBeatboxS
     //----------------------------------
 
     @Override
-    public float getVolume() {
+    public float getVolume()
+    {
         return mVolume;
     }
 
     @Override
-    public void setVolume(float value) {
+    public void setVolume(float value)
+    {
         if (value == mVolume)
             return;
         mVolume = value;
-        BeatboxSamplerMessage.CHANNEL_VOLUME.send(getEngine(), getMachineIndex(), mIndex, mVolume);
+        BeatboxSamplerMessage.CHANNEL_VOLUME.send(getEngine(),
+                getMachineIndex(), mIndex, mVolume);
     }
 
-    public BeatboxSamplerChannel(IBeatboxSampler sampler) {
-        super((IMachine)sampler.getDevice());
+    public BeatboxSamplerChannel(IBeatboxSampler sampler)
+    {
+        super((IMachine) sampler.getDevice());
         mSampler = sampler;
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         mName = mSampler.getSampleName(mIndex);
         if (mName == null)
             return;
 
-        mDecay = BeatboxSamplerMessage.CHANNEL_DECAY.query(getEngine(), getMachineIndex(), mIndex);
-        mPan = BeatboxSamplerMessage.CHANNEL_PAN.query(getEngine(), getMachineIndex(), mIndex);
-        mPunch = BeatboxSamplerMessage.CHANNEL_PUNCH.query(getEngine(), getMachineIndex(), mIndex);
-        mTune = BeatboxSamplerMessage.CHANNEL_TUNE.query(getEngine(), getMachineIndex(), mIndex);
-        mVolume = BeatboxSamplerMessage.CHANNEL_VOLUME
-                .query(getEngine(), getMachineIndex(), mIndex);
-        mIsMute = BeatboxSamplerMessage.CHANNEL_MUTE.query(getEngine(), getMachineIndex(), mIndex) == 1f;
-        mIsSolo = BeatboxSamplerMessage.CHANNEL_SOLO.query(getEngine(), getMachineIndex(), mIndex) == 1f;
+        mDecay = BeatboxSamplerMessage.CHANNEL_DECAY.query(getEngine(),
+                getMachineIndex(), mIndex);
+        mPan = BeatboxSamplerMessage.CHANNEL_PAN.query(getEngine(),
+                getMachineIndex(), mIndex);
+        mPunch = BeatboxSamplerMessage.CHANNEL_PUNCH.query(getEngine(),
+                getMachineIndex(), mIndex);
+        mTune = BeatboxSamplerMessage.CHANNEL_TUNE.query(getEngine(),
+                getMachineIndex(), mIndex);
+        mVolume = BeatboxSamplerMessage.CHANNEL_VOLUME.query(getEngine(),
+                getMachineIndex(), mIndex);
+        mIsMute = BeatboxSamplerMessage.CHANNEL_MUTE.query(getEngine(),
+                getMachineIndex(), mIndex) == 1f;
+        mIsSolo = BeatboxSamplerMessage.CHANNEL_SOLO.query(getEngine(),
+                getMachineIndex(), mIndex) == 1f;
     }
 }

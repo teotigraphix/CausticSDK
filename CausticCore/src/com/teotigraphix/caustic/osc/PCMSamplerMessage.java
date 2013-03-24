@@ -33,7 +33,8 @@ import com.teotigraphix.caustic.sampler.IPCMSamplerChannel;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PCMSamplerMessage extends CausticMessage {
+public class PCMSamplerMessage extends CausticMessage
+{
 
     /**
      * Message: <code>/caustic/[machine_index]/sample_index [value]</code>
@@ -262,7 +263,8 @@ public class PCMSamplerMessage extends CausticMessage {
     public static final PCMSamplerMessage QUERY_SAMPLE_INDICIES = new PCMSamplerMessage(
             "/caustic/${0}/sample_indices");
 
-    PCMSamplerMessage(String message) {
+    PCMSamplerMessage(String message)
+    {
         super(message);
     }
 }

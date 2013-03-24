@@ -33,7 +33,8 @@ import com.teotigraphix.caustic.filter.IPCMSynthLFO1.LFOTarget;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PCMSynthLFOMessage extends CausticMessage {
+public class PCMSynthLFOMessage extends CausticMessage
+{
 
     /**
      * Message: <code>/caustic/[machine_index]/lfo_depth [value]</code>
@@ -111,7 +112,8 @@ public class PCMSynthLFOMessage extends CausticMessage {
     public static final PCMSynthLFOMessage LFO_WAVEFORM = new PCMSynthLFOMessage(
             "/caustic/${0}/lfo_waveform ${1}");
 
-    PCMSynthLFOMessage(String message) {
+    PCMSynthLFOMessage(String message)
+    {
         super(message);
     }
 }

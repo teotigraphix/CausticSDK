@@ -30,7 +30,8 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MachineMessage extends CausticMessage {
+public class MachineMessage extends CausticMessage
+{
 
     /**
      * Message: <code>/caustic/[machine_index]/load_preset [preset_path]</code>
@@ -90,9 +91,11 @@ public class MachineMessage extends CausticMessage {
      * 
      * @see IMachine#getPresetName()
      */
-    public static final MachineMessage QUERY_PRESET = new MachineMessage("/caustic/${0}/preset");
+    public static final MachineMessage QUERY_PRESET = new MachineMessage(
+            "/caustic/${0}/preset");
 
-    MachineMessage(String message) {
+    MachineMessage(String message)
+    {
         super(message);
     }
 }

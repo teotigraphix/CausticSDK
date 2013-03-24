@@ -19,7 +19,6 @@
 
 package com.teotigraphix.common.utils;
 
-import android.util.Log;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -41,44 +40,53 @@ import java.util.zip.ZipOutputStream;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Compress {
+public class Compress
+{
     private static final int BUFFER = 2048;
 
     private Collection<File> _files;
 
     private String _zipFile;
 
-    public Compress(Collection<File> files, String zipFile) {
+    public Compress(Collection<File> files, String zipFile)
+    {
         _files = files;
         _zipFile = zipFile;
     }
 
-    public void zip() {
-        try {
+    public void zip()
+    {
+        try
+        {
             BufferedInputStream origin = null;
             FileOutputStream dest = new FileOutputStream(_zipFile);
 
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
+                    dest));
 
             byte data[] = new byte[BUFFER];
 
-            for (File file : _files) {
+            for (File file : _files)
+            {
 
-                Log.v("Compress", "Adding: " + file.getAbsolutePath());
+                //XXX Log.v("Compress", "Adding: " + file.getAbsolutePath());
                 FileInputStream fi = new FileInputStream(file.getAbsolutePath());
                 origin = new BufferedInputStream(fi, BUFFER);
                 ZipEntry entry = new ZipEntry(file.getAbsolutePath().substring(
                         file.getAbsolutePath().lastIndexOf("/") + 1));
                 out.putNextEntry(entry);
                 int count;
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                while ((count = origin.read(data, 0, BUFFER)) != -1)
+                {
                     out.write(data, 0, count);
                 }
                 origin.close();
             }
 
             out.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }

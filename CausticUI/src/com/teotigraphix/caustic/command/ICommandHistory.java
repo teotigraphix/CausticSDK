@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustic.command;
 
-import com.google.inject.ImplementedBy;
 import com.teotigraphix.caustic.internal.command.CommandHistory;
 
 /**
@@ -30,7 +29,6 @@ import com.teotigraphix.caustic.internal.command.CommandHistory;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-@ImplementedBy(CommandHistory.class)
 public interface ICommandHistory {
 
     /**

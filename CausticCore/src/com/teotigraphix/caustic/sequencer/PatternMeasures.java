@@ -30,7 +30,8 @@ import com.teotigraphix.caustic.sequencer.IPatternSequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public enum PatternMeasures {
+public enum PatternMeasures
+{
 
     /**
      * A 1 measure pattern.
@@ -54,14 +55,16 @@ public enum PatternMeasures {
 
     private final int mValue;
 
-    PatternMeasures(int value) {
+    PatternMeasures(int value)
+    {
         mValue = value;
     }
 
     /**
      * Returns the integer value of the measure.
      */
-    public int getValue() {
+    public int getValue()
+    {
         return mValue;
     }
 
@@ -71,8 +74,10 @@ public enum PatternMeasures {
      * 
      * @param value The number of measures to test.
      */
-    public static boolean isValid(int value) {
-        for (PatternMeasures item : values()) {
+    public static boolean isValid(int value)
+    {
+        for (PatternMeasures item : values())
+        {
             if (item.getValue() == value)
                 return true;
         }
@@ -84,19 +89,21 @@ public enum PatternMeasures {
      * 
      * @param value The number of measures.
      */
-    public static PatternMeasures toValue(int value) {
-        switch (value) {
-            case 1:
-                return ONE;
-            case 2:
-                return TWO;
-            case 4:
-                return FOUR;
-            case 8:
-                return EIGHT;
+    public static PatternMeasures toValue(int value)
+    {
+        switch (value)
+        {
+        case 1:
+            return ONE;
+        case 2:
+            return TWO;
+        case 4:
+            return FOUR;
+        case 8:
+            return EIGHT;
 
-            default:
-                return ONE;
+        default:
+            return ONE;
         }
     }
 }

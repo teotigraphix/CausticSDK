@@ -91,8 +91,8 @@ public interface IRouter {
      * responsible for calling this method.
      * <p>
      * When the method is called, the {@link IRouter} will fire the
-     * {@link OnRegisterRouterCommandsEvent}, this is when sub controllers
-     * will register their commands against the main {@link IRouter} instance.
+     * {@link OnRegisterRouterCommandsEvent}, this is when sub controllers will
+     * register their commands against the main {@link IRouter} instance.
      */
     void initialize();
 

@@ -32,16 +32,19 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class RackState implements IPersist {
+public class RackState implements IPersist
+{
 
     Rack mRack;
 
-    public RackState(Rack rack) {
+    public RackState(Rack rack)
+    {
         mRack = rack;
     }
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         IMemento state = null;
 
         // save the mixer panel
@@ -59,36 +62,49 @@ public class RackState implements IPersist {
         saveMachines(memento.createChild(RackConsants.TAG_MACHINES));
     }
 
-    private void saveMachines(IMemento memento) {
-        for (IMachine machine : mRack.getMachineMap().values()) {
+    private void saveMachines(IMemento memento)
+    {
+        for (IMachine machine : mRack.getMachineMap().values())
+        {
             saveMachine(machine, memento.createChild(RackConsants.TAG_MACHINE));
         }
     }
 
-    private void saveMachine(IMachine machine, IMemento memento) {
+    private void saveMachine(IMachine machine, IMemento memento)
+    {
         machine.copy(memento);
     }
 
     @Override
-    public void paste(IMemento memento) {
-        try {
+    public void paste(IMemento memento)
+    {
+        try
+        {
             loadMachines(memento.getChild(RackConsants.TAG_MACHINES));
-        } catch (CausticException e) {
+        }
+        catch (CausticException e)
+        {
             e.printStackTrace();
         }
 
-        mRack.getMixerPanel().paste(memento.getChild(RackConsants.TAG_MIXER_PANEL));
-        mRack.getOutputPanel().paste(memento.getChild(RackConsants.TAG_OUTPUT_PANEL));
-        mRack.getSequencer().paste(memento.getChild(RackConsants.TAG_SEQUENCER));
+        mRack.getMixerPanel().paste(
+                memento.getChild(RackConsants.TAG_MIXER_PANEL));
+        mRack.getOutputPanel().paste(
+                memento.getChild(RackConsants.TAG_OUTPUT_PANEL));
+        mRack.getSequencer()
+                .paste(memento.getChild(RackConsants.TAG_SEQUENCER));
     }
 
-    private void loadMachines(IMemento memento) throws CausticException {
-        for (IMemento machine : memento.getChildren(RackConsants.TAG_MACHINE)) {
+    private void loadMachines(IMemento memento) throws CausticException
+    {
+        for (IMemento machine : memento.getChildren(RackConsants.TAG_MACHINE))
+        {
             loadMachine(machine);
         }
     }
 
-    private void loadMachine(IMemento memento) throws CausticException {
+    private void loadMachine(IMemento memento) throws CausticException
+    {
         String name = memento.getString(RackConsants.ATT_ID);
         int index = memento.getInteger(RackConsants.ATT_INDEX);
         String type = memento.getString(RackConsants.ATT_TYPE);
@@ -96,11 +112,13 @@ public class RackState implements IPersist {
         // fist try to see if it's already created
         IMachine machine = mRack.getMachine(index);
 
-        if (machine == null) {
+        if (machine == null)
+        {
             machine = mRack.addMachineAt(index, name, type, false);
         }
 
-        if (machine == null) {
+        if (machine == null)
+        {
             throw new CausticException("Could not create IMachine in IRack");
         }
 

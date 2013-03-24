@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.event.EventManager;
-import roboguice.inject.ContextSingleton;
 
-import com.google.inject.Inject;
 import com.teotigraphix.caustic.command.ICommandHistory;
 import com.teotigraphix.caustic.command.IUndoCommand;
 
@@ -34,11 +32,9 @@ import com.teotigraphix.caustic.command.IUndoCommand;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-@ContextSingleton
 public class CommandHistory implements ICommandHistory {
 
-    @Inject
-    EventManager eventManager;
+    private EventManager eventManager;
 
     private int mCursor;
 
@@ -77,7 +73,8 @@ public class CommandHistory implements ICommandHistory {
         return mCommands.get(mCursor - 1);
     }
 
-    public CommandHistory() {
+    public CommandHistory(EventManager eventManager) {
+        this.eventManager = eventManager;
         mCommands = new ArrayList<IUndoCommand>();
         mCursor = 0;
     }

@@ -26,7 +26,8 @@ package com.teotigraphix.caustic.rack;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IRackAware {
+public interface IRackAware
+{
 
     //--------------------------------------------------------------------------
     //

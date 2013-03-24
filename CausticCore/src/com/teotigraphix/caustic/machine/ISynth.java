@@ -28,7 +28,8 @@ package com.teotigraphix.caustic.machine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ISynth extends IMachine {
+public interface ISynth extends IMachine
+{
 
     //--------------------------------------------------------------------------
     //

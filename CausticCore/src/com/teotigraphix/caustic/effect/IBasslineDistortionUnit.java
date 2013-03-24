@@ -29,7 +29,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IBasslineDistortionUnit extends IEffectComponent, IPersist {
+public interface IBasslineDistortionUnit extends IEffectComponent, IPersist
+{
 
     //--------------------------------------------------------------------------
     //
@@ -111,7 +112,8 @@ public interface IBasslineDistortionUnit extends IEffectComponent, IPersist {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum Program {
+    public enum Program
+    {
 
         /**
 		 * 
@@ -140,23 +142,28 @@ public interface IBasslineDistortionUnit extends IEffectComponent, IPersist {
 
         private int mValue;
 
-        Program(int value) {
+        Program(int value)
+        {
             mValue = value;
         }
 
-        public int getValue() {
+        public int getValue()
+        {
             return mValue;
         }
 
-        public static Program toType(Integer type) {
-            for (Program p : values()) {
+        public static Program toType(Integer type)
+        {
+            for (Program p : values())
+            {
                 if (p.getValue() == type)
                     return p;
             }
             return null;
         }
 
-        public static Program toType(Float type) {
+        public static Program toType(Float type)
+        {
             return toType(type.intValue());
         }
     }

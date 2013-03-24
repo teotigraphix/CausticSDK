@@ -41,7 +41,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IRackFactory {
+public interface IRackFactory
+{
 
     //--------------------------------------------------------------------------
     //
@@ -85,7 +86,8 @@ public interface IRackFactory {
      * @return The new machine instance of type.
      * @throws CausticException
      */
-    IMachine create(String machineId, MachineType machineType) throws CausticException;
+    IMachine create(String machineId, MachineType machineType)
+            throws CausticException;
 
     /**
      * Creates the IPersistable that will load and restore the state of the

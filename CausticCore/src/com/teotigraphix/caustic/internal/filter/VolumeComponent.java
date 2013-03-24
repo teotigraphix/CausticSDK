@@ -33,7 +33,9 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class VolumeComponent extends MachineComponent implements IVolumeComponent {
+public class VolumeComponent extends MachineComponent implements
+        IVolumeComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -48,24 +50,32 @@ public class VolumeComponent extends MachineComponent implements IVolumeComponen
     private float mOut = 1.0f;
 
     @Override
-    public float getOut() {
+    public float getOut()
+    {
         return mOut;
     }
 
-    public float getOut(boolean restore) {
+    public float getOut(boolean restore)
+    {
         return VolumeMessage.VOLUME_OUT.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setOut(float value) {
+    public void setOut(float value)
+    {
         if (value == mOut)
             return;
-        if (getDevice() instanceof IPCMSynth) {
+        if (getDevice() instanceof IPCMSynth)
+        {
             if (value < 0 || value > 8.0f)
-                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..8.0", value);
-        } else {
+                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(),
+                        "0..8.0", value);
+        }
+        else
+        {
             if (value < 0 || value > 2.0f)
-                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..2.0", value);
+                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(),
+                        "0..2.0", value);
         }
         mOut = value;
         VolumeMessage.VOLUME_OUT.send(getEngine(), getMachineIndex(), value);
@@ -80,7 +90,8 @@ public class VolumeComponent extends MachineComponent implements IVolumeComponen
     /**
      * Constructor.
      */
-    public VolumeComponent(IMachine machine) {
+    public VolumeComponent(IMachine machine)
+    {
         super(machine);
     }
 
@@ -91,19 +102,22 @@ public class VolumeComponent extends MachineComponent implements IVolumeComponen
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         super.copy(memento);
         memento.putFloat(FilterConstants.ATT_OUT, mOut);
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         super.paste(memento);
         setOut(memento.getFloat(FilterConstants.ATT_OUT));
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         setOut(getOut(true));
     }

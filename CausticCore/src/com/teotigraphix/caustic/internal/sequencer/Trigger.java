@@ -33,7 +33,8 @@ import com.teotigraphix.common.utils.MementoUtil;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Trigger implements ITrigger {
+public class Trigger implements ITrigger
+{
 
     private static final String SPACE = " ";
 
@@ -56,11 +57,13 @@ public class Trigger implements ITrigger {
     private IPhrase mPhrase;
 
     @Override
-    public IPhrase getPhrase() {
+    public IPhrase getPhrase()
+    {
         return mPhrase;
     }
 
-    void setPhrase(IPhrase value) {
+    void setPhrase(IPhrase value)
+    {
         mPhrase = value;
     }
 
@@ -71,11 +74,13 @@ public class Trigger implements ITrigger {
     private int mIndex = -1;
 
     @Override
-    public int getIndex() {
+    public int getIndex()
+    {
         return mIndex;
     }
 
-    void setIndex(int value) {
+    void setIndex(int value)
+    {
         mIndex = value;
     }
 
@@ -86,11 +91,13 @@ public class Trigger implements ITrigger {
     private int mPitch = 60;
 
     @Override
-    public int getPitch() {
+    public int getPitch()
+    {
         return mPitch;
     }
 
-    void setPitch(int value) {
+    void setPitch(int value)
+    {
         mPitch = value;
     }
 
@@ -101,11 +108,13 @@ public class Trigger implements ITrigger {
     private float mGate = 1f;
 
     @Override
-    public float getGate() {
+    public float getGate()
+    {
         return mGate;
     }
 
-    void setGate(float value) {
+    void setGate(float value)
+    {
         mGate = value;
     }
 
@@ -116,11 +125,13 @@ public class Trigger implements ITrigger {
     private float mVelcoity = 1.0f;
 
     @Override
-    public float getVelocity() {
+    public float getVelocity()
+    {
         return mVelcoity;
     }
 
-    void setVelocity(float value) {
+    void setVelocity(float value)
+    {
         mVelcoity = value;
     }
 
@@ -131,11 +142,13 @@ public class Trigger implements ITrigger {
     private int mFlags = 0;
 
     @Override
-    public int getFlags() {
+    public int getFlags()
+    {
         return mFlags;
     }
 
-    void setFlags(int value) {
+    void setFlags(int value)
+    {
         mFlags = value;
     }
 
@@ -146,11 +159,13 @@ public class Trigger implements ITrigger {
     private boolean mSelected = false;
 
     @Override
-    public boolean getSelected() {
+    public boolean getSelected()
+    {
         return mSelected;
     }
 
-    void setSelected(boolean value) {
+    void setSelected(boolean value)
+    {
         mSelected = value;
     }
 
@@ -161,11 +176,13 @@ public class Trigger implements ITrigger {
     private TriggerData mData;
 
     @Override
-    public TriggerData getData() {
+    public TriggerData getData()
+    {
         return mData;
     }
 
-    void setData(TriggerData value) {
+    void setData(TriggerData value)
+    {
         mData = value;
     }
 
@@ -178,7 +195,8 @@ public class Trigger implements ITrigger {
     /**
      * Constructor.
      */
-    public Trigger() {
+    public Trigger()
+    {
     }
 
     //--------------------------------------------------------------------------
@@ -193,12 +211,15 @@ public class Trigger implements ITrigger {
      */
 
     @Override
-    public void copy(IMemento memento) {
-        if (mData != null) {
+    public void copy(IMemento memento)
+    {
+        if (mData != null)
+        {
             mData.copy(memento.createChild(TAG_DATA));
         }
 
-        memento.putInteger(ATT_SELECTED, MementoUtil.booleanToInt(getSelected()));
+        memento.putInteger(ATT_SELECTED,
+                MementoUtil.booleanToInt(getSelected()));
 
         float start = Resolution.toBeat(mIndex, mPhrase.getResolution());
         float end = start + mGate;
@@ -218,8 +239,10 @@ public class Trigger implements ITrigger {
     }
 
     @Override
-    public void paste(IMemento memento) {
-        if (mData != null) {
+    public void paste(IMemento memento)
+    {
+        if (mData != null)
+        {
             mData.paste(memento.getChild(TAG_DATA));
         }
 
@@ -250,7 +273,8 @@ public class Trigger implements ITrigger {
     // }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "[" + mIndex + "]P:" + mPitch + "S:" + mSelected;
     }
 }

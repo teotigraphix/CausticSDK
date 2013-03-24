@@ -26,7 +26,8 @@ package com.teotigraphix.caustic.core;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ICausticEngineLifesCycle {
+public interface ICausticEngineLifesCycle
+{
 
     /**
      * Called from an <code>Activity#onStart()</code> method.
@@ -83,7 +84,8 @@ public interface ICausticEngineLifesCycle {
      * 
      * @param state The new {@link LifeCycleState}.
      */
-    public interface OnLifeCycleChangeListener {
+    public interface OnLifeCycleChangeListener
+    {
         void onLifeCycleChange(LifeCycleState state);
     }
 
@@ -96,7 +98,8 @@ public interface ICausticEngineLifesCycle {
      * @since 1.0
      * @see ICausticEngine#setOnLifeCycleChangeListener()
      */
-    public enum LifeCycleState {
+    public enum LifeCycleState
+    {
 
         /**
          * When the Android application's onStart() method is called.

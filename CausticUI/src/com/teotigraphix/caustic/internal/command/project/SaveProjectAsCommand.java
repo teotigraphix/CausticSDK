@@ -30,6 +30,7 @@ import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 import com.teotigraphix.caustic.song.IWorkspace;
 
 public class SaveProjectAsCommand extends OSCCommandBase {
+
     @Inject
     IWorkspace workspace;
 

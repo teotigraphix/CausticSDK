@@ -21,8 +21,6 @@ package com.teotigraphix.caustic.internal.core;
 
 import java.util.logging.Logger;
 
-import android.content.Context;
-
 import com.singlecellsoftware.causticcore.CausticEventListener;
 import com.teotigraphix.caustic.core.ICausticEngine;
 import com.teotigraphix.caustic.core.ICausticEngineLifesCycle;

@@ -24,7 +24,8 @@ package com.teotigraphix.caustic.internal.machine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class SynthConstants {
+public final class SynthConstants
+{
 
     public static final String ATT_POLYPHONY = "polyphony";
 

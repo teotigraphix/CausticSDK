@@ -32,7 +32,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Effect extends EffectComponent implements IEffect {
+public class Effect extends EffectComponent implements IEffect
+{
 
     //--------------------------------------------------------------------------
     //
@@ -47,11 +48,13 @@ public class Effect extends EffectComponent implements IEffect {
     private int mIndex;
 
     @Override
-    public int getIndex() {
+    public int getIndex()
+    {
         return mIndex;
     }
 
-    protected void setIndex(int value) {
+    protected void setIndex(int value)
+    {
         mIndex = value;
     }
 
@@ -62,7 +65,8 @@ public class Effect extends EffectComponent implements IEffect {
     private EffectType mType;
 
     @Override
-    public EffectType getType() {
+    public EffectType getType()
+    {
         return mType;
     }
 
@@ -71,22 +75,26 @@ public class Effect extends EffectComponent implements IEffect {
      * 
      * @param value The {@link EffectType} of the effect.
      */
-    protected void setType(EffectType value) {
+    protected void setType(EffectType value)
+    {
         mType = value;
     }
 
     private IMachine mMachine;
 
     @Override
-    public IMachine getMachine() {
+    public IMachine getMachine()
+    {
         return mMachine;
     }
 
     @Override
-    public void setMachine(IMachine value) {
+    public void setMachine(IMachine value)
+    {
         setName(null);
         mMachine = value;
-        if (mMachine != null) {
+        if (mMachine != null)
+        {
             setName(mMachine.getId());
         }
     }
@@ -97,7 +105,8 @@ public class Effect extends EffectComponent implements IEffect {
     //
     //--------------------------------------------------------------------------
 
-    public Effect(int index, IDevice device) {
+    public Effect(int index, IDevice device)
+    {
         super(device); // device IEffectPanel
         setIndex(index);
     }
@@ -109,20 +118,23 @@ public class Effect extends EffectComponent implements IEffect {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         memento.putInteger(EffectConstants.ATT_TYPE, getType().getValue());
         memento.putInteger(EffectConstants.ATT_INDEX, getIndex());
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         setType(EffectType.toType(memento.getInteger(EffectConstants.ATT_TYPE)));
         setIndex(memento.getInteger(EffectConstants.ATT_INDEX));
         // setMachineIndex();// not needed ?
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         super.dispose();
         setMachine(null);
     }
@@ -139,8 +151,10 @@ public class Effect extends EffectComponent implements IEffect {
      * @param control
      * @return
      */
-    protected final float get(String control) {
-        return EffectRackMessage.GET.query(getEngine(), getDeviceIndex(), getIndex(), control);
+    protected final float get(String control)
+    {
+        return EffectRackMessage.GET.query(getEngine(), getDeviceIndex(),
+                getIndex(), control);
     }
 
     /**
@@ -149,16 +163,21 @@ public class Effect extends EffectComponent implements IEffect {
      * @param control
      * @param value
      */
-    protected final void set(String control, float value) {
-        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(), control, value);
+    protected final void set(String control, float value)
+    {
+        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(),
+                control, value);
     }
 
-    protected final void set(String control, int value) {
-        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(), control, value);
+    protected final void set(String control, int value)
+    {
+        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(),
+                control, value);
     }
 
     @Override
-    protected int getDeviceIndex() {
+    protected int getDeviceIndex()
+    {
         if (mMachine != null)
             return mMachine.getIndex();
         return -1;

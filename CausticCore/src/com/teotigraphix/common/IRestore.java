@@ -31,7 +31,8 @@ package com.teotigraphix.common;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IRestore {
+public interface IRestore
+{
 
     //--------------------------------------------------------------------------
     //

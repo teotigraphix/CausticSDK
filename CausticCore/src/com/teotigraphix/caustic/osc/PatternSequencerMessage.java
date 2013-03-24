@@ -30,7 +30,8 @@ import com.teotigraphix.caustic.sequencer.IPatternSequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PatternSequencerMessage extends CausticMessage {
+public class PatternSequencerMessage extends CausticMessage
+{
 
     /**
      * Message:
@@ -235,7 +236,8 @@ public class PatternSequencerMessage extends CausticMessage {
     public static final PatternSequencerMessage QUERY_NOTE_DATA = new PatternSequencerMessage(
             "/caustic/${0}/pattern_sequencer/note_data");
 
-    PatternSequencerMessage(String message) {
+    PatternSequencerMessage(String message)
+    {
         super(message);
     }
 }

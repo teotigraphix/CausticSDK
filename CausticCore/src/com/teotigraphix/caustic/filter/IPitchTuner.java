@@ -30,7 +30,8 @@ import com.teotigraphix.caustic.osc.FilterMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPitchTuner extends IMachineComponent {
+public interface IPitchTuner extends IMachineComponent
+{
 
     //--------------------------------------------------------------------------
     //

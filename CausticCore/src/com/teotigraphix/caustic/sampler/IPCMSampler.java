@@ -31,7 +31,8 @@ import com.teotigraphix.common.IRestore;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPCMSampler extends IMachineComponent, IPersist, IRestore {
+public interface IPCMSampler extends IMachineComponent, IPersist, IRestore
+{
 
     //--------------------------------------------------------------------------
     //
@@ -156,7 +157,8 @@ public interface IPCMSampler extends IMachineComponent, IPersist, IRestore {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum PlayMode {
+    public enum PlayMode
+    {
 
         /**
          * Plays the full sample each time a note is played.
@@ -200,11 +202,13 @@ public interface IPCMSampler extends IMachineComponent, IPersist, IRestore {
         /**
          * Returns the int value of the play mode.
          */
-        public int getValue() {
+        public int getValue()
+        {
             return mValue;
         }
 
-        PlayMode(int value) {
+        PlayMode(int value)
+        {
             mValue = value;
         }
 
@@ -213,8 +217,10 @@ public interface IPCMSampler extends IMachineComponent, IPersist, IRestore {
          * 
          * @param type The play mode integer value.
          */
-        public static PlayMode toType(Integer type) {
-            for (PlayMode result : values()) {
+        public static PlayMode toType(Integer type)
+        {
+            for (PlayMode result : values())
+            {
                 if (result.getValue() == type)
                     return result;
             }
@@ -230,7 +236,8 @@ public interface IPCMSampler extends IMachineComponent, IPersist, IRestore {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public interface IPCMSynthSamplerListener {
+    public interface IPCMSynthSamplerListener
+    {
 
         /**
          * Dispatched when a channel has been changed in the {@link IPCMSampler}

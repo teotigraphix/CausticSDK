@@ -29,7 +29,8 @@ import com.teotigraphix.caustic.rack.IRackSong;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class RackSong implements IRackSong {
+public class RackSong implements IRackSong
+{
 
     //--------------------------------------------------------------------------
     //
@@ -44,12 +45,14 @@ public class RackSong implements IRackSong {
     private String mName;
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return mName;
     }
 
     @Override
-    public void setName(String value) {
+    public void setName(String value)
+    {
         mName = value;
     }
 
@@ -60,40 +63,48 @@ public class RackSong implements IRackSong {
     private String mPath;
 
     @Override
-    public String getPath() {
+    public String getPath()
+    {
         return mPath;
     }
 
     @Override
-    public void setPath(String value) {
+    public void setPath(String value)
+    {
         mPath = value;
     }
 
     @Override
-    public File getFile() {
+    public File getFile()
+    {
         if (mPath == null)
             return null;
         return new File(mPath);
     }
 
-    RackSong(String name) {
+    RackSong(String name)
+    {
         setName(name);
     }
 
     @Override
-    public void create(IRack rack) {
+    public void create(IRack rack)
+    {
     }
 
     @Override
-    public void load() {
+    public void load()
+    {
     }
 
     @Override
-    public void save(String name) {
+    public void save(String name)
+    {
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         setName(null);
     }
 }

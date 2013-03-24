@@ -26,7 +26,8 @@ package com.teotigraphix.caustic.mixer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public enum MixerEffectType {
+public enum MixerEffectType
+{
 
     /**
      * The {@link IDelayEffect}.

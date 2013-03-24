@@ -27,7 +27,8 @@ package com.teotigraphix.caustic.effect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPhaserEffect extends IEffect {
+public interface IPhaserEffect extends IEffect
+{
 
     //--------------------------------------------------------------------------
     //

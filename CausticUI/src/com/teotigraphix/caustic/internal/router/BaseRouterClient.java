@@ -33,12 +33,13 @@ import com.teotigraphix.caustic.router.IRouterClient;
 
 public abstract class BaseRouterClient implements IRouterClient {
 
-    private static final String TAG = "BaseRouterClient";
+    private static String TAG = "BaseRouterClient";
 
     @Inject
     IRouter router;
 
     public BaseRouterClient() {
+        TAG = getClass().getSimpleName();
         // /Controller/Device/Control [Data, ...]
         // /Tones/application/foocontrol [42 foo bar]
     }
@@ -85,20 +86,18 @@ public abstract class BaseRouterClient implements IRouterClient {
      */
     protected void addCommand(String control, Class<?> command) {
         String message = "/" + router.getName() + "/" + getName() + "/" + control;
+        Log.d(TAG, "addCommand() " + message + "[" + command.toString() + "]");
         router.put(message, command);
     }
 
     void onRegisterRouterCommandsEvent(@Observes OnRegisterRouterCommandsEvent event) {
-        Log.d(TAG, "onRegisterRouterCommandsEvent() -> registerCommands()");
+        Log.d(TAG, "onRegisterRouterCommandsEvent()");
         registerCommands();
     }
 
-    protected void registerCommands() {
-    }
+    protected abstract void registerCommands();
 
     @Override
     public void initialize() throws CausticException {
-        // TODO Auto-generated method stub
-
     }
 }

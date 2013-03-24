@@ -45,7 +45,8 @@ import java.io.Writer;
  * @see IPersistableElement
  * @see IElementFactory
  */
-public interface IMemento {
+public interface IMemento
+{
     /**
      * Special reserved key used to store the memento id (value
      * <code>"org.eclipse.ui.id"</code>).
@@ -105,7 +106,7 @@ public interface IMemento {
      * 
      * @param key the key
      * @return the value, or <code>null</code> if the key was not found or was
-     *         found but was not a floating point number
+     * found but was not a floating point number
      */
     public Float getFloat(String key);
 
@@ -122,7 +123,7 @@ public interface IMemento {
      * 
      * @param key the key
      * @return the value, or <code>null</code> if the key was not found or was
-     *         found but was not an integer
+     * found but was not an integer
      */
     public Integer getInteger(String key);
 
@@ -139,7 +140,7 @@ public interface IMemento {
      * only one Text node.
      * 
      * @return the data of the Text node of the memento, or <code>null</code> if
-     *         the memento has no Text node.
+     * the memento has no Text node.
      * @since 2.0
      */
     public String getTextData();

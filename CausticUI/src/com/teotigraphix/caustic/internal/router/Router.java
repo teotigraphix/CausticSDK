@@ -29,7 +29,6 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.teotigraphix.caustic.command.CommandExecutionException;
 import com.teotigraphix.caustic.command.ICommand;
 import com.teotigraphix.caustic.command.ICommandHistory;
@@ -37,6 +36,7 @@ import com.teotigraphix.caustic.command.IOSCCommand;
 import com.teotigraphix.caustic.command.IUndoCommand;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.core.CausticException;
+import com.teotigraphix.caustic.internal.command.CommandHistory;
 import com.teotigraphix.caustic.router.IOSCAware;
 import com.teotigraphix.caustic.router.IRouter;
 import com.teotigraphix.caustic.song.IWorkspace;
@@ -55,22 +55,19 @@ public class Router implements IRouter {
 
     private Map<String, Class<?>> commands = new HashMap<String, Class<?>>();
 
-    @Inject
-    ICommandHistory history;
+    // a command history is held within the Activity scope
+    private ICommandHistory history;
 
+    // Singleton
     @Inject
     IWorkspace workspace;
 
+    // events are dispatched in the Activity scope
     @Inject
     EventManager eventManager;
 
     @Inject
     Activity activity;
-
-    @Inject
-    Injector injector;
-
-    private String mName;
 
     @Override
     public ICommandHistory getHistory() {
@@ -85,13 +82,7 @@ public class Router implements IRouter {
 
     @Override
     public String getName() {
-        if (mName == null)
-            return workspace.getApplicationName();
-        return mName;
-    }
-
-    public void setName(String value) {
-        mName = value;
+        return workspace.getApplicationName();
     }
 
     //--------------------------------------------------------------------------
@@ -104,6 +95,7 @@ public class Router implements IRouter {
      * Constructor.
      */
     public Router() {
+        history = new CommandHistory(eventManager);
     }
 
     //--------------------------------------------------------------------------
@@ -178,7 +170,6 @@ public class Router implements IRouter {
             return;
         }
 
-        //injector.injectMembers(instance);
         RoboGuice.injectMembers(activity, instance);
 
         if (instance instanceof IOSCAware) {

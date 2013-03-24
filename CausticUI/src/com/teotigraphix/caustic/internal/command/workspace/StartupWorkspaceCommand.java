@@ -19,8 +19,11 @@
 
 package com.teotigraphix.caustic.internal.command.workspace;
 
+import android.util.Log;
+
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.controller.OSCMessage;
+import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 import com.teotigraphix.caustic.song.IWorkspace;
 
@@ -31,10 +34,10 @@ public class StartupWorkspaceCommand extends OSCCommandBase {
 
     @Override
     public void execute(OSCMessage message) {
-        //        try {
-        //            workspace.startAndRun();
-        //        } catch (CausticException e) {
-        //            Log.e("StartupWorkspaceCommand", "workspace.startAndRun()", e);
-        //        }
+        try {
+            workspace.startAndRun();
+        } catch (CausticException e) {
+            Log.e("StartupWorkspaceCommand", "workspace.startAndRun()", e);
+        }
     }
 }

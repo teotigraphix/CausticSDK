@@ -24,7 +24,8 @@ package com.teotigraphix.caustic.internal.machine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class MachineConstants {
+public final class MachineConstants
+{
 
     public static final String SUBSYNTH_ID = "subsynth";
 

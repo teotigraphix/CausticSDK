@@ -29,7 +29,8 @@ import com.teotigraphix.caustic.osc.VolumeMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IVolumeComponent extends IMachineComponent {
+public interface IVolumeComponent extends IMachineComponent
+{
 
     //--------------------------------------------------------------------------
     //

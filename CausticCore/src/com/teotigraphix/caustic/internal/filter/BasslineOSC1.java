@@ -30,7 +30,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BasslineOSC1 extends MachineComponent implements IBasslineOSC1 {
+public class BasslineOSC1 extends MachineComponent implements IBasslineOSC1
+{
 
     //--------------------------------------------------------------------------
     //
@@ -45,21 +46,25 @@ public class BasslineOSC1 extends MachineComponent implements IBasslineOSC1 {
     private float mAccent = 0.5f;
 
     @Override
-    public float getAccent() {
+    public float getAccent()
+    {
         return mAccent;
     }
 
-    public float getAccent(boolean restore) {
+    public float getAccent(boolean restore)
+    {
         return BasslineOscMessage.ACCENT.query(getEngine(), getMachineIndex());
 
     }
 
     @Override
-    public void setAccent(float value) {
+    public void setAccent(float value)
+    {
         if (value == mAccent)
             return;
         if (value < 0f || value > 1f)
-            throw newRangeException(BasslineOscMessage.ACCENT.toString(), "0..1", value);
+            throw newRangeException(BasslineOscMessage.ACCENT.toString(),
+                    "0..1", value);
         mAccent = value;
         BasslineOscMessage.ACCENT.send(getEngine(), getMachineIndex(), mAccent);
     }
@@ -71,22 +76,28 @@ public class BasslineOSC1 extends MachineComponent implements IBasslineOSC1 {
     private float mPulseWidth = 0.5f;
 
     @Override
-    public float getPulseWidth() {
+    public float getPulseWidth()
+    {
         return mPulseWidth;
     }
 
-    public float getPulseWidth(boolean restore) {
-        return BasslineOscMessage.PULSE_WIDTH.query(getEngine(), getMachineIndex());
+    public float getPulseWidth(boolean restore)
+    {
+        return BasslineOscMessage.PULSE_WIDTH.query(getEngine(),
+                getMachineIndex());
     }
 
     @Override
-    public void setPulseWidth(float value) {
+    public void setPulseWidth(float value)
+    {
         if (value == mPulseWidth)
             return;
         if (value < 0.05f || value > 0.5f)
-            throw newRangeException(BasslineOscMessage.PULSE_WIDTH.toString(), "0.05..0.5", value);
+            throw newRangeException(BasslineOscMessage.PULSE_WIDTH.toString(),
+                    "0.05..0.5", value);
         mPulseWidth = value;
-        BasslineOscMessage.PULSE_WIDTH.send(getEngine(), getMachineIndex(), mPulseWidth);
+        BasslineOscMessage.PULSE_WIDTH.send(getEngine(), getMachineIndex(),
+                mPulseWidth);
     }
 
     //----------------------------------
@@ -96,20 +107,25 @@ public class BasslineOSC1 extends MachineComponent implements IBasslineOSC1 {
     private int mTune = 0;
 
     @Override
-    public int getTune() {
+    public int getTune()
+    {
         return mTune;
     }
 
-    public int getTune(boolean restore) {
-        return (int)BasslineOscMessage.TUNE.query(getEngine(), getMachineIndex());
+    public int getTune(boolean restore)
+    {
+        return (int) BasslineOscMessage.TUNE.query(getEngine(),
+                getMachineIndex());
     }
 
     @Override
-    public void setTune(int value) {
+    public void setTune(int value)
+    {
         if (value == mTune)
             return;
         if (value < -12 || value > 12)
-            throw newRangeException(BasslineOscMessage.TUNE.toString(), "-12..12", value);
+            throw newRangeException(BasslineOscMessage.TUNE.toString(),
+                    "-12..12", value);
         mTune = value;
         BasslineOscMessage.TUNE.send(getEngine(), getMachineIndex(), mTune);
     }
@@ -121,20 +137,25 @@ public class BasslineOSC1 extends MachineComponent implements IBasslineOSC1 {
     private Waveform mWaveForm = Waveform.SAW;
 
     @Override
-    public Waveform getWaveForm() {
+    public Waveform getWaveForm()
+    {
         return mWaveForm;
     }
 
-    public Waveform getWaveForm(boolean restore) {
-        return Waveform.toType(BasslineOscMessage.WAVEFORM.query(getEngine(), getMachineIndex()));
+    public Waveform getWaveForm(boolean restore)
+    {
+        return Waveform.toType(BasslineOscMessage.WAVEFORM.query(getEngine(),
+                getMachineIndex()));
     }
 
     @Override
-    public void setWaveForm(Waveform value) {
+    public void setWaveForm(Waveform value)
+    {
         if (value == mWaveForm)
             return;
         mWaveForm = value;
-        BasslineOscMessage.WAVEFORM.send(getEngine(), getMachineIndex(), mWaveForm.getValue());
+        BasslineOscMessage.WAVEFORM.send(getEngine(), getMachineIndex(),
+                mWaveForm.getValue());
     }
 
     //--------------------------------------------------------------------------
@@ -146,30 +167,36 @@ public class BasslineOSC1 extends MachineComponent implements IBasslineOSC1 {
     /**
      * Constructor.
      */
-    public BasslineOSC1(IMachine machine) {
+    public BasslineOSC1(IMachine machine)
+    {
         super(machine);
     }
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         super.copy(memento);
-        memento.putInteger(FilterConstants.ATT_WAVEFORM, getWaveForm().getValue());
+        memento.putInteger(FilterConstants.ATT_WAVEFORM, getWaveForm()
+                .getValue());
         memento.putFloat(FilterConstants.ATT_PULSEWIDTH, getPulseWidth());
         memento.putInteger(FilterConstants.ATT_TUNE, getTune());
         memento.putFloat(FilterConstants.ATT_ACCENT, getAccent());
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         super.paste(memento);
-        setWaveForm(Waveform.toType(memento.getInteger(FilterConstants.ATT_WAVEFORM)));
+        setWaveForm(Waveform.toType(memento
+                .getInteger(FilterConstants.ATT_WAVEFORM)));
         setPulseWidth(memento.getFloat(FilterConstants.ATT_PULSEWIDTH));
         setTune(memento.getInteger(FilterConstants.ATT_TUNE));
         setAccent(memento.getFloat(FilterConstants.ATT_ACCENT));
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         setAccent(getAccent(true));
         setPulseWidth(getPulseWidth(true));

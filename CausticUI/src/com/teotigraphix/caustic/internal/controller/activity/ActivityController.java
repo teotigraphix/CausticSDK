@@ -17,31 +17,27 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller.application;
+package com.teotigraphix.caustic.internal.controller.activity;
 
 import roboguice.inject.ContextSingleton;
+import android.app.Activity;
 
-import com.teotigraphix.caustic.controller.IApplicationController;
+import com.teotigraphix.caustic.controller.IActivityController;
 import com.teotigraphix.caustic.internal.command.project.LoadProjectCommand;
 import com.teotigraphix.caustic.internal.command.startup.RegisterMainLayoutCommand;
 import com.teotigraphix.caustic.internal.router.BaseRouterClient;
 
-// XXX These should be ActivityControllers now
-
+/**
+ * Base class for all controllers decorating an {@link Activity}.
+ */
 @ContextSingleton
-public class ApplicationController extends BaseRouterClient implements IApplicationController {
+public abstract class ActivityController extends BaseRouterClient implements IActivityController {
 
-    @Override
-    public final String getName() {
-        return DEVICE_ID;
-    }
-
-    public ApplicationController() {
+    public ActivityController() {
     }
 
     @Override
     protected void registerCommands() {
-        super.registerCommands();
         addCommand(REGISTER_MAIN_LAYOUT, RegisterMainLayoutCommand.class);
         addCommand(LOAD_PROJECT, LoadProjectCommand.class);
     }

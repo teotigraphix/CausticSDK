@@ -53,7 +53,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IRack extends IDevice, IPersist {
+public interface IRack extends IDevice, IPersist
+{
 
     //--------------------------------------------------------------------------
     //
@@ -215,7 +216,8 @@ public interface IRack extends IDevice, IPersist {
      * @param type The {@link MachineType} to be created.
      * @throws CausticException An exception happened when creating the machine.
      */
-    IMachine addMachineAt(int index, String name, MachineType type) throws CausticException;
+    IMachine addMachineAt(int index, String name, MachineType type)
+            throws CausticException;
 
     //
     // /**
@@ -317,7 +319,8 @@ public interface IRack extends IDevice, IPersist {
      * A single listener that will be notified when the {@link ISong} in the
      * {@link IRack} goes through it's {@link SongStateChangeKind}s.
      */
-    public interface OnSongStateChangeListener {
+    public interface OnSongStateChangeListener
+    {
 
         /**
          * A callback for the {@link ISong}s {@link SongStateChangeKind}.
@@ -331,7 +334,8 @@ public interface IRack extends IDevice, IPersist {
     /**
      * The state changes an {@link ISong} will experience in the {@link IRack}.
      */
-    public enum SongStateChangeKind {
+    public enum SongStateChangeKind
+    {
 
         /**
          * The {@link ISong} has just been added to the {@link IRack}.
@@ -385,7 +389,8 @@ public interface IRack extends IDevice, IPersist {
      * A single listener that will be notified when the {@link Imachine} in the
      * {@link IRack} goes through it's {@link MachineChangeKind}s.
      */
-    public interface OnMachineChangeListener {
+    public interface OnMachineChangeListener
+    {
 
         /**
          * A callback for a machine change in the {@link IRack}.
@@ -399,7 +404,8 @@ public interface IRack extends IDevice, IPersist {
     /**
      * The changes an {@link IMachine} will experience in the {@link IRack}.
      */
-    public enum MachineChangeKind {
+    public enum MachineChangeKind
+    {
 
         /**
          * An {@link IMachine} has been added to the {@link IRack}.

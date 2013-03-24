@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustic.output;
 
-import com.singlecellsoftware.causticcore.CausticCore;
+import com.teotigraphix.caustic.CausticCore;
 import com.teotigraphix.caustic.device.IDevice;
 import com.teotigraphix.caustic.osc.OutputPanelMessage;
 import com.teotigraphix.caustic.rack.IRackAware;
@@ -35,7 +35,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IOutputPanel extends IDevice, IPersist, IRackAware {
+public interface IOutputPanel extends IDevice, IPersist, IRackAware
+{
 
     //--------------------------------------------------------------------------
     //
@@ -117,7 +118,8 @@ public interface IOutputPanel extends IDevice, IPersist, IRackAware {
      * 
      * @see IOutputPanel#getMode()
      */
-    public enum Mode {
+    public enum Mode
+    {
 
         /**
          * The pattern mode for the outputpanel.
@@ -131,14 +133,16 @@ public interface IOutputPanel extends IDevice, IPersist, IRackAware {
 
         private final int mValue;
 
-        Mode(int value) {
+        Mode(int value)
+        {
             mValue = value;
         }
 
         /**
          * Returns the int value.
          */
-        public int getValue() {
+        public int getValue()
+        {
             return mValue;
         }
 
@@ -147,14 +151,16 @@ public interface IOutputPanel extends IDevice, IPersist, IRackAware {
          * 
          * @param value The int value.
          */
-        public static final Mode toType(int value) {
+        public static final Mode toType(int value)
+        {
             return (value == 0) ? PATTERN : SONG;
         }
 
         /**
          * @see #toType(int)
          */
-        public static final Mode toType(float value) {
+        public static final Mode toType(float value)
+        {
             return (value == 0.0f) ? PATTERN : SONG;
         }
     }

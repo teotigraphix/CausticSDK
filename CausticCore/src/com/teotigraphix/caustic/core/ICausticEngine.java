@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustic.core;
 
-import com.singlecellsoftware.causticcore.CausticCore;
 import com.singlecellsoftware.causticcore.CausticEventListener;
+import com.teotigraphix.caustic.CausticCore;
 
 /**
  * The {@link ICausticEngine} API is the basic interface that communicates with
@@ -33,7 +33,8 @@ import com.singlecellsoftware.causticcore.CausticEventListener;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ICausticEngine extends ICausticEngineLifesCycle {
+public interface ICausticEngine extends ICausticEngineLifesCycle
+{
 
     //--------------------------------------------------------------------------
     //
@@ -57,7 +58,7 @@ public interface ICausticEngine extends ICausticEngineLifesCycle {
      * 
      * @param message The String OSC message.
      * @return A String message or <code>null</code> if the message returned and
-     *         empty String <code>""</code>.
+     * empty String <code>""</code>.
      * @since 1.0
      */
     String queryMessage(String message);
@@ -109,7 +110,8 @@ public interface ICausticEngine extends ICausticEngineLifesCycle {
     //
     //--------------------------------------------------------------------------
 
-    public interface OnOSCMessageListener {
+    public interface OnOSCMessageListener
+    {
         void onOSCMessage(String message);
     }
 

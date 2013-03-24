@@ -38,7 +38,8 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IMixerPanel extends IDevice, IPersist, IRackAware {
+public interface IMixerPanel extends IDevice, IPersist, IRackAware
+{
 
     /**
      * The device name.

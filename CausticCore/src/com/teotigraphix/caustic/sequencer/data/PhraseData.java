@@ -27,14 +27,17 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PhraseData implements IPersist {
+public class PhraseData implements IPersist
+{
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
     }
 
 }

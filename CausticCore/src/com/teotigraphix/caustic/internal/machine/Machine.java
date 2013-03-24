@@ -35,7 +35,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public abstract class Machine extends Device implements IMachine {
+public abstract class Machine extends Device implements IMachine
+{
 
     private String mAbsolutePresetPath;
 
@@ -52,12 +53,14 @@ public abstract class Machine extends Device implements IMachine {
     private IRackFactory mFactory;
 
     @Override
-    public IRackFactory getFactory() {
+    public IRackFactory getFactory()
+    {
         return mFactory;
     }
 
     @Override
-    public void setFactory(IRackFactory value) {
+    public void setFactory(IRackFactory value)
+    {
         mFactory = value;
     }
 
@@ -68,11 +71,13 @@ public abstract class Machine extends Device implements IMachine {
     private IPatternSequencer mSequencer;
 
     @Override
-    public final IPatternSequencer getSequencer() {
+    public final IPatternSequencer getSequencer()
+    {
         return mSequencer;
     }
 
-    public final void setSequencer(IPatternSequencer value) {
+    public final void setSequencer(IPatternSequencer value)
+    {
         mSequencer = value;
     }
 
@@ -89,11 +94,13 @@ public abstract class Machine extends Device implements IMachine {
     private MachineType mType;
 
     @Override
-    public final MachineType getType() {
+    public final MachineType getType()
+    {
         return mType;
     }
 
-    public final void setType(MachineType type) {
+    public final void setType(MachineType type)
+    {
         mType = type;
     }
 
@@ -102,12 +109,14 @@ public abstract class Machine extends Device implements IMachine {
     //----------------------------------
 
     @Override
-    public String getPresetName() {
+    public String getPresetName()
+    {
         return MachineMessage.QUERY_PRESET.queryString(getEngine(), getIndex());
     }
 
     @Override
-    public String getPresetPath() {
+    public String getPresetPath()
+    {
         return mAbsolutePresetPath;
     }
 
@@ -120,7 +129,8 @@ public abstract class Machine extends Device implements IMachine {
     /**
      * Constructor.
      */
-    public Machine() {
+    public Machine()
+    {
         super();
     }
 
@@ -131,13 +141,15 @@ public abstract class Machine extends Device implements IMachine {
     //--------------------------------------------------------------------------
 
     @Override
-    public void loadPreset(String path) {
+    public void loadPreset(String path)
+    {
         mAbsolutePresetPath = path;
         MachineMessage.LOAD_PRESET.send(getEngine(), getIndex(), path);
     }
 
     @Override
-    public void savePreset(String name) {
+    public void savePreset(String name)
+    {
         // calculate the preset path
         MachineMessage.SAVE_PRESET.send(getEngine(), getIndex(), name);
     }
@@ -149,7 +161,8 @@ public abstract class Machine extends Device implements IMachine {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         memento.putString(MachineConstants.ATT_ID, getId());
         memento.putString(MachineConstants.ATT_NAME, getName());
         memento.putInteger(MachineConstants.ATT_INDEX, getIndex());
@@ -165,10 +178,12 @@ public abstract class Machine extends Device implements IMachine {
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         // mSequencer.paste(memento.getChild(MachineConstants.TAG_SEQUENCER));
         setName(memento.getString(MachineConstants.ATT_NAME));
-        mAbsolutePresetPath = memento.getString(MachineConstants.ATT_PRESET_PATH);
+        mAbsolutePresetPath = memento
+                .getString(MachineConstants.ATT_PRESET_PATH);
     }
 
     //--------------------------------------------------------------------------
@@ -178,7 +193,8 @@ public abstract class Machine extends Device implements IMachine {
     //--------------------------------------------------------------------------
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         mSequencer.restore();
     }
 
@@ -189,7 +205,8 @@ public abstract class Machine extends Device implements IMachine {
     //--------------------------------------------------------------------------
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         super.dispose();
         if (mSequencer != null)
             mSequencer.dispose();
@@ -203,7 +220,8 @@ public abstract class Machine extends Device implements IMachine {
     //--------------------------------------------------------------------------
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Machine [" + getIndex() + "]" + getId() + ":" + getType();
     }
 
@@ -219,7 +237,8 @@ public abstract class Machine extends Device implements IMachine {
      * @see #createComponents()
      */
     @Override
-    protected void initializeEngine(ICausticEngine engine) {
+    protected void initializeEngine(ICausticEngine engine)
+    {
         super.initializeEngine(engine);
         createComponents();
     }
@@ -235,7 +254,8 @@ public abstract class Machine extends Device implements IMachine {
      * 
      * @see #setSequencer(IPatternSequencer)
      */
-    protected void createComponents() {
+    protected void createComponents()
+    {
         setSequencer(mFactory.createPatternSequencer(this));
     }
 }

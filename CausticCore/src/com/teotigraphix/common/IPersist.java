@@ -44,7 +44,8 @@ package com.teotigraphix.common;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPersist {
+public interface IPersist
+{
 
     //--------------------------------------------------------------------------
     //
@@ -57,7 +58,7 @@ public interface IPersist {
      * .
      * 
      * @param memento The {@link IMemento} the parent has given it's child to
-     *            copy persistable data into.
+     * copy persistable data into.
      */
     void copy(IMemento memento);
 
@@ -66,7 +67,7 @@ public interface IPersist {
      * .
      * 
      * @param memento The {@link IMemento} the parent has given it's child to
-     *            paste persistable data from.
+     * paste persistable data from.
      */
     void paste(IMemento memento);
 }

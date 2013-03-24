@@ -142,12 +142,32 @@ public interface IWorkspace {
     /**
      * Called the start the workspace when ready to load and start running
      * services.
+     * <p>
+     * Called from an {@link Activity} <code>onCreate()</code>.
      * 
      * @throws CausticException
      */
     void startAndRun() throws CausticException;
 
+    /**
+     * Called to stop and shut down the workspace, this is when the application
+     * goes into the background from any activity.
+     * <p>
+     * Called from an {@link Activity} <code>onDestroy()</code>.
+     * 
+     * @throws CausticException
+     */
     void stopAndShutdown() throws CausticException;
+
+    /**
+     * Called from an {@link Activity} <code>onStart()</code>.
+     */
+    void start();
+
+    /**
+     * Called from an {@link Activity} <code>onStop()</code>.
+     */
+    void stop();
 
     /**
      * Creates a new {@link IProject} within the

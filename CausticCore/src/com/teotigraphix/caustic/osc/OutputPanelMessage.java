@@ -30,7 +30,8 @@ import com.teotigraphix.caustic.output.IOutputPanel;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class OutputPanelMessage extends CausticMessage {
+public class OutputPanelMessage extends CausticMessage
+{
 
     /**
      * Message: <code>/caustic/outputpanel/bpm [value]</code>
@@ -89,7 +90,8 @@ public class OutputPanelMessage extends CausticMessage {
     public static final OutputPanelMessage PLAY = new OutputPanelMessage(
             "/caustic/outputpanel/play ${0}");
 
-    OutputPanelMessage(String message) {
+    OutputPanelMessage(String message)
+    {
         super(message);
     }
 }

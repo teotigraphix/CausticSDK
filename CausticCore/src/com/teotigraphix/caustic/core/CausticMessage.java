@@ -29,7 +29,8 @@ package com.teotigraphix.caustic.core;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class CausticMessage {
+public class CausticMessage
+{
 
     private static final String MESSAGE_POSTFIX = "}";
 
@@ -39,7 +40,8 @@ public class CausticMessage {
 
     private String mMessageHead;
 
-    public CausticMessage(String message) {
+    public CausticMessage(String message)
+    {
         mMessage = message;
         mMessageHead = mMessage.split(" ")[0];
     }
@@ -53,11 +55,13 @@ public class CausticMessage {
      * @return A float value if the CausticCore returned
      * @see ICausticEngine#sendMessage(String)
      */
-    public final float send(ICausticEngine engine, Object... args) {
+    public final float send(ICausticEngine engine, Object... args)
+    {
         StringBuffer sb = new StringBuffer();
         String message = mMessage;
         int i = 0;
-        for (Object arg : args) {
+        for (Object arg : args)
+        {
             sb.append(MESSAGE_PREFIX);
             sb.append(i++);
             sb.append(MESSAGE_POSTFIX);
@@ -76,11 +80,13 @@ public class CausticMessage {
      * @return A String value of the query.
      * @see ICausticEngine#sendMessage(String)
      */
-    public final float query(ICausticEngine engine, Object... args) {
+    public final float query(ICausticEngine engine, Object... args)
+    {
         StringBuffer sb = new StringBuffer();
         String message = mMessageHead;
         int i = 0;
-        for (Object arg : args) {
+        for (Object arg : args)
+        {
             sb.append(MESSAGE_PREFIX);
             sb.append(i++);
             sb.append(MESSAGE_POSTFIX);
@@ -99,11 +105,13 @@ public class CausticMessage {
      * @return A String value of the query.
      * @see ICausticEngine#queryMessage(String)
      */
-    public final String queryString(ICausticEngine engine, Object... args) {
+    public final String queryString(ICausticEngine engine, Object... args)
+    {
         StringBuffer sb = new StringBuffer();
         String message = mMessage;
         int i = 0;
-        for (Object arg : args) {
+        for (Object arg : args)
+        {
             sb.append(MESSAGE_PREFIX);
             sb.append(i++);
             sb.append(MESSAGE_POSTFIX);
@@ -114,7 +122,8 @@ public class CausticMessage {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return mMessage;
     }
 }

@@ -33,7 +33,8 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class DeviceComponent implements IDeviceComponent {
+public class DeviceComponent implements IDeviceComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -48,11 +49,13 @@ public class DeviceComponent implements IDeviceComponent {
     private String mName;
 
     @Override
-    public String getName() {
+    public String getName()
+    {
         return mName;
     }
 
-    protected void setName(String value) {
+    protected void setName(String value)
+    {
         mName = value;
     }
 
@@ -74,16 +77,19 @@ public class DeviceComponent implements IDeviceComponent {
     private ICausticEngine mEngine;
 
     @Override
-    public IDevice getDevice() {
+    public IDevice getDevice()
+    {
         return mDevice;
     }
 
-    public void setDevice(IDevice value) {
+    public void setDevice(IDevice value)
+    {
         mDevice = value;
-        if (mDevice != null) {
+        if (mDevice != null)
+        {
             mEngine = mDevice.getEngine();
             if (mDevice instanceof IMachine)
-                mDeviceIndex = ((IMachine)mDevice).getIndex();
+                mDeviceIndex = ((IMachine) mDevice).getIndex();
         }
     }
 
@@ -95,9 +101,10 @@ public class DeviceComponent implements IDeviceComponent {
      * <p>
      * Will be {@code null} if the {@link #getDevice()} is null.
      */
-    protected int getDeviceIndex() {
+    protected int getDeviceIndex()
+    {
         if (mDevice instanceof IMachine)
-            return ((IMachine)mDevice).getIndex();
+            return ((IMachine) mDevice).getIndex();
         return -1;
     }
 
@@ -111,7 +118,8 @@ public class DeviceComponent implements IDeviceComponent {
     // engine
     //----------------------------------
 
-    protected ICausticEngine getEngine() {
+    protected ICausticEngine getEngine()
+    {
         return mEngine;
     }
 
@@ -124,7 +132,8 @@ public class DeviceComponent implements IDeviceComponent {
     /**
      * Constructor.
      */
-    public DeviceComponent(IDevice device) {
+    public DeviceComponent(IDevice device)
+    {
         setDevice(device);
     }
 
@@ -135,11 +144,13 @@ public class DeviceComponent implements IDeviceComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void restore() {
+    public void restore()
+    {
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         mDevice = null;
         mEngine = null;
     }
@@ -158,7 +169,9 @@ public class DeviceComponent implements IDeviceComponent {
      * @param value The value that is throwing the range exception.
      * @return A new {@link IllegalArgumentException}.
      */
-    protected final RuntimeException newRangeException(String control, String range, Object value) {
+    protected final RuntimeException newRangeException(String control,
+            String range, Object value)
+    {
         return ExceptionUtils.newRangeException(control, range, value);
     }
 

@@ -26,7 +26,8 @@ package com.teotigraphix.caustic.internal.rack;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class RackConsants {
+public final class RackConsants
+{
     public static final String RACK_PATH = "/caustic/";
 
     public static final String DEVICE_ID = "rack";

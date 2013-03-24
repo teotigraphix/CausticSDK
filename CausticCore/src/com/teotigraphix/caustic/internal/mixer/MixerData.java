@@ -31,7 +31,8 @@ import com.teotigraphix.common.utils.MementoUtil;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MixerData implements IPersist, IRestore {
+public class MixerData implements IPersist, IRestore
+{
 
     public float bass = 0f;
 
@@ -57,18 +58,22 @@ public class MixerData implements IPersist, IRestore {
 
     MixerPanel mPanel;
 
-    MixerData(MixerPanel panel) {
+    MixerData(MixerPanel panel)
+    {
         mPanel = panel;
     }
 
-    MixerData(MixerPanel panel, IDevice device) {
+    MixerData(MixerPanel panel, IDevice device)
+    {
         mPanel = panel;
         index = device.getIndex();
     }
 
     @Override
-    public void restore() {
-        if (index != -1) {
+    public void restore()
+    {
+        if (index != -1)
+        {
             mPanel.setBass(index, mPanel.getBass(index, true));
             mPanel.setMid(index, mPanel.getMid(index, true));
             mPanel.setHigh(index, mPanel.getHigh(index, true));
@@ -80,7 +85,9 @@ public class MixerData implements IPersist, IRestore {
             mPanel.setStereoWidth(index, mPanel.getStereoWidth(index, true));
             mPanel.setMute(index, mPanel.isMute(index, true));
             mPanel.setSolo(index, mPanel.isSolo(index, true));
-        } else {
+        }
+        else
+        {
             mPanel.setMasterBass(mPanel.getMasterBass(true));
             mPanel.setMasterMid(mPanel.getMasterMid(true));
             mPanel.setMasterHigh(mPanel.getMasterHigh(true));
@@ -89,10 +96,12 @@ public class MixerData implements IPersist, IRestore {
     }
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         memento.putInteger(MixerPanelConstants.ATT_ID, index);
 
-        if (index != -1) {
+        if (index != -1)
+        {
             memento.putFloat(IMixerPanel.CONTROL_EQ_BASS, bass);
             memento.putFloat(IMixerPanel.CONTROL_EQ_MID, mid);
             memento.putFloat(IMixerPanel.CONTROL_EQ_HIGH, high);
@@ -103,9 +112,13 @@ public class MixerData implements IPersist, IRestore {
             memento.putFloat(IMixerPanel.CONTROL_PAN, pan);
             memento.putFloat(IMixerPanel.CONTROL_STEREO_WIDTH, stereoWidth);
 
-            memento.putInteger(IMixerPanel.CONTROL_MUTE, MementoUtil.booleanToInt(mute));
-            memento.putInteger(IMixerPanel.CONTROL_SOLO, MementoUtil.booleanToInt(solo));
-        } else {
+            memento.putInteger(IMixerPanel.CONTROL_MUTE,
+                    MementoUtil.booleanToInt(mute));
+            memento.putInteger(IMixerPanel.CONTROL_SOLO,
+                    MementoUtil.booleanToInt(solo));
+        }
+        else
+        {
             memento.putFloat(IMixerPanel.CONTROL_EQ_BASS, bass);
             memento.putFloat(IMixerPanel.CONTROL_EQ_MID, mid);
             memento.putFloat(IMixerPanel.CONTROL_EQ_HIGH, high);
@@ -115,10 +128,12 @@ public class MixerData implements IPersist, IRestore {
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         index = memento.getInteger(MixerPanelConstants.ATT_ID);
 
-        if (index != -1) {
+        if (index != -1)
+        {
             float bass = memento.getFloat(IMixerPanel.CONTROL_EQ_BASS);
             mPanel.setBass(index, bass);
             float mid = memento.getFloat(IMixerPanel.CONTROL_EQ_MID);
@@ -134,14 +149,19 @@ public class MixerData implements IPersist, IRestore {
             mPanel.setReverbSend(index, reverb);
             float pan = memento.getFloat(IMixerPanel.CONTROL_PAN);
             mPanel.setPan(index, pan);
-            float stereoWidth = memento.getFloat(IMixerPanel.CONTROL_STEREO_WIDTH);
+            float stereoWidth = memento
+                    .getFloat(IMixerPanel.CONTROL_STEREO_WIDTH);
             mPanel.setStereoWidth(index, stereoWidth);
 
-            boolean mute = MementoUtil.intToBoolean(memento.getInteger(IMixerPanel.CONTROL_MUTE));
+            boolean mute = MementoUtil.intToBoolean(memento
+                    .getInteger(IMixerPanel.CONTROL_MUTE));
             mPanel.setMute(index, mute);
-            boolean solo = MementoUtil.intToBoolean(memento.getInteger(IMixerPanel.CONTROL_SOLO));
+            boolean solo = MementoUtil.intToBoolean(memento
+                    .getInteger(IMixerPanel.CONTROL_SOLO));
             mPanel.setSolo(index, solo);
-        } else {
+        }
+        else
+        {
             float bass = memento.getFloat(IMixerPanel.CONTROL_EQ_BASS);
             mPanel.setMasterBass(bass);
             float mid = memento.getFloat(IMixerPanel.CONTROL_EQ_MID);

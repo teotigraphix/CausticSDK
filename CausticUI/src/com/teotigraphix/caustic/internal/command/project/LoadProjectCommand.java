@@ -22,7 +22,7 @@ package com.teotigraphix.caustic.internal.command.project;
 import java.io.File;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustic.controller.IApplicationController;
+import com.teotigraphix.caustic.controller.IActivityController;
 import com.teotigraphix.caustic.controller.OSCMessage;
 import com.teotigraphix.caustic.internal.command.OSCCommandBase;
 import com.teotigraphix.caustic.song.IWorkspace;
@@ -32,7 +32,7 @@ import com.teotigraphix.caustic.song.IWorkspace;
  * <p>
  * <strong>Param0:</strong> absolute_path.
  * 
- * @see IApplicationController#COMMAND_LOAD_PROJECT
+ * @see IActivityController#COMMAND_LOAD_PROJECT
  * @see RestoreProjectCommand
  */
 public class LoadProjectCommand extends OSCCommandBase {

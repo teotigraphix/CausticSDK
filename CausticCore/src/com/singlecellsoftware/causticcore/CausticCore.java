@@ -145,7 +145,7 @@ public class CausticCore {
     public CausticCore() {
     }
 
-    public void initialize(Context ctx, int nKey) {
+    public void initialize(Object ctx, int nKey) {
         try {
             System.loadLibrary("caustic");
         } catch (Exception e) {
@@ -153,7 +153,7 @@ public class CausticCore {
         }
 
         // This must be called before any other functions, to unlock Core functionality 
-        nativeEnableOSC(ctx, nKey);
+        nativeEnableOSC((Context)ctx, nKey);
 
         m_byResponseString = new byte[4096];
         nativeSetStorageRootDir(Environment.getExternalStorageDirectory().getPath() + "/");

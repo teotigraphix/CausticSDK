@@ -22,7 +22,8 @@ package com.teotigraphix.caustic.machine;
 /**
  * IRack machine types.
  */
-public enum MachineType {
+public enum MachineType
+{
 
     /**
      * The subsynth machine.
@@ -46,15 +47,18 @@ public enum MachineType {
 
     private final String mValue;
 
-    MachineType(String value) {
+    MachineType(String value)
+    {
         mValue = value;
     }
 
-    public String getValue() {
+    public String getValue()
+    {
         return mValue;
     }
 
-    public static MachineType fromString(String value) {
+    public static MachineType fromString(String value)
+    {
         if (value.equals(SUBSYNTH.getValue()))
             return SUBSYNTH;
         else if (value.equals(PCMSYNTH.getValue()))

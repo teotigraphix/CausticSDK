@@ -29,7 +29,8 @@ package com.teotigraphix.caustic.device;
  * @see IDeviceComponent
  * @see IMachineComponent
  */
-public interface IDeviceAware {
+public interface IDeviceAware
+{
 
     //--------------------------------------------------------------------------
     //

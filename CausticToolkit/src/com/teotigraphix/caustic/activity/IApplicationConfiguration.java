@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustic.activity;
 
+import android.content.Context;
+
 import com.teotigraphix.caustic.service.IFileService;
 import com.teotigraphix.caustic.song.IWorkspace;
 
@@ -32,11 +34,17 @@ public interface IApplicationConfiguration {
 
     int getVersionRevision();
 
+    boolean isTestMode();
+
+    void setTestMode();
+
     /**
      * Returns the application's directory name used with the
      * {@link IFileService}.
      */
     String getApplicationName();
+
+    IFileService createFileService(Context context);
 
     IApplicationRuntime createRuntime(IWorkspace workspace);
 
@@ -45,8 +53,4 @@ public interface IApplicationConfiguration {
      * {@link IWorkspace} and sub components will use during the application.
      */
     ICausticBackend createBackend();
-
-    public static class Test {
-        public static boolean TEST_MODE = false;
-    }
 }

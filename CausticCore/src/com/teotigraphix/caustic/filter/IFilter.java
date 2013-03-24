@@ -29,7 +29,8 @@ import com.teotigraphix.caustic.osc.FilterMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IFilter extends IFilterComponent {
+public interface IFilter extends IFilterComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -178,7 +179,8 @@ public interface IFilter extends IFilterComponent {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum FilterType {
+    public enum FilterType
+    {
 
         //--------------------------------------------------------------------------
         //
@@ -236,11 +238,13 @@ public interface IFilter extends IFilterComponent {
         /**
          * The Integer value for the filter type.
          */
-        public int getValue() {
+        public int getValue()
+        {
             return mValue;
         }
 
-        FilterType(int value) {
+        FilterType(int value)
+        {
             mValue = value;
         }
 
@@ -250,8 +254,10 @@ public interface IFilter extends IFilterComponent {
          * 
          * @param type The filter type.
          */
-        public static FilterType toType(Integer type) {
-            for (FilterType result : values()) {
+        public static FilterType toType(Integer type)
+        {
+            for (FilterType result : values())
+            {
                 if (result.getValue() == type)
                     return result;
             }
@@ -261,7 +267,8 @@ public interface IFilter extends IFilterComponent {
         /**
          * @see #toType(Integer)
          */
-        public static FilterType toType(Float type) {
+        public static FilterType toType(Float type)
+        {
             return toType(type.intValue());
         }
     }

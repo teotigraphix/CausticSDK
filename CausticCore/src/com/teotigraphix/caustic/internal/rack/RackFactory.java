@@ -63,33 +63,40 @@ import com.teotigraphix.common.IPersist;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class RackFactory implements IRackFactory {
+public class RackFactory implements IRackFactory
+{
 
-    public RackFactory() {
+    public RackFactory()
+    {
     }
 
     @Override
-    public IMixerPanel createMixerPanel() {
+    public IMixerPanel createMixerPanel()
+    {
         return new MixerPanel();
     }
 
     @Override
-    public IEffectsRack createEffectRack() {
+    public IEffectsRack createEffectRack()
+    {
         return new EffectsRack();
     }
 
     @Override
-    public IOutputPanel createOutputPanel() {
+    public IOutputPanel createOutputPanel()
+    {
         return new OutputPanel();
     }
 
     @Override
-    public ISequencer createSequencer() {
+    public ISequencer createSequencer()
+    {
         return new Sequencer();
     }
 
     @Override
-    public IPatternSequencer createPatternSequencer(IMachine machine) {
+    public IPatternSequencer createPatternSequencer(IMachine machine)
+    {
         PatternSequencer instance = null;
         if (machine.getType().equals(MachineType.BASSLINE))
             instance = new StepSequencer(machine);
@@ -102,7 +109,9 @@ public class RackFactory implements IRackFactory {
     }
 
     @Override
-    public IMachine create(String machineId, MachineType machineType) throws CausticException {
+    public IMachine create(String machineId, MachineType machineType)
+            throws CausticException
+    {
         IMachine machine = null;
 
         if (machineType == MachineType.SUBSYNTH)
@@ -118,49 +127,55 @@ public class RackFactory implements IRackFactory {
     }
 
     @Override
-    public IPersist createPersistable(IRack rack) {
-        return new RackState((Rack)rack);
+    public IPersist createPersistable(IRack rack)
+    {
+        return new RackState((Rack) rack);
     }
 
     @Override
-    public IEffectComponent createMixerEffect(IMixerPanel mixer, MixerEffectType type) {
-        switch (type) {
-            case DELAY:
-                return new MixerDelay(mixer);
-            case REVERB:
-                return new MixerReverb(mixer);
+    public IEffectComponent createMixerEffect(IMixerPanel mixer,
+            MixerEffectType type)
+    {
+        switch (type)
+        {
+        case DELAY:
+            return new MixerDelay(mixer);
+        case REVERB:
+            return new MixerReverb(mixer);
         }
         return null;
     }
 
     @Override
-    public IEffect createEffect(IEffectsRack panel, int index, EffectType type) {
+    public IEffect createEffect(IEffectsRack panel, int index, EffectType type)
+    {
         IEffect effect = null;
-        switch (type) {
-            case DISTORTION:
-                effect = new DistortionEffect(index, panel);
-                break;
-            case COMPRESSOR:
-                effect = new CompressorEffect(index, panel);
-                break;
-            case BITCRUSHER:
-                effect = new BitcrusherEffect(index, panel);
-                break;
-            case FLANGER:
-                effect = new FlangerEffect(index, panel);
-                break;
-            case PHASER:
-                effect = new PhaserEffect(index, panel);
-                break;
-            case CHORUS:
-                effect = new ChorusEffect(index, panel);
-                break;
-            case AUTOWAH:
-                effect = new AutowahEffect(index, panel);
-                break;
-            case PARAMETRICEQ:
-                effect = new ParametricEQEffect(index, panel);
-                break;
+        switch (type)
+        {
+        case DISTORTION:
+            effect = new DistortionEffect(index, panel);
+            break;
+        case COMPRESSOR:
+            effect = new CompressorEffect(index, panel);
+            break;
+        case BITCRUSHER:
+            effect = new BitcrusherEffect(index, panel);
+            break;
+        case FLANGER:
+            effect = new FlangerEffect(index, panel);
+            break;
+        case PHASER:
+            effect = new PhaserEffect(index, panel);
+            break;
+        case CHORUS:
+            effect = new ChorusEffect(index, panel);
+            break;
+        case AUTOWAH:
+            effect = new AutowahEffect(index, panel);
+            break;
+        case PARAMETRICEQ:
+            effect = new ParametricEQEffect(index, panel);
+            break;
         }
 
         return effect;

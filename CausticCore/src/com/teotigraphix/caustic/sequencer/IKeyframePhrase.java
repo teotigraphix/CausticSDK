@@ -24,7 +24,8 @@ package com.teotigraphix.caustic.sequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IKeyframePhrase {
+public interface IKeyframePhrase
+{
 
     void putKeyFrameValue(String key, Object value);
 

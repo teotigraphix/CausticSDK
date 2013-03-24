@@ -31,7 +31,8 @@ import com.teotigraphix.caustic.osc.PCMSynthLFOMessage;
  * @since 1.0
  */
 
-public interface IPCMSynthLFO1 extends ILFOComponent {
+public interface IPCMSynthLFO1 extends ILFOComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -80,7 +81,8 @@ public interface IPCMSynthLFO1 extends ILFOComponent {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum LFOTarget {
+    public enum LFOTarget
+    {
 
         /**
          * No LFO.
@@ -104,14 +106,16 @@ public interface IPCMSynthLFO1 extends ILFOComponent {
 
         private final int mValue;
 
-        LFOTarget(int value) {
+        LFOTarget(int value)
+        {
             mValue = value;
         }
 
         /**
          * Returns int the value of the FLO.
          */
-        public int getValue() {
+        public int getValue()
+        {
             return mValue;
         }
 
@@ -120,8 +124,10 @@ public interface IPCMSynthLFO1 extends ILFOComponent {
          * 
          * @param type The int type.
          */
-        public static LFOTarget toType(Integer type) {
-            for (LFOTarget result : values()) {
+        public static LFOTarget toType(Integer type)
+        {
+            for (LFOTarget result : values())
+            {
                 if (result.getValue() == type)
                     return result;
             }
@@ -131,7 +137,8 @@ public interface IPCMSynthLFO1 extends ILFOComponent {
         /**
          * @see LFOTarget#toType(Integer)
          */
-        public static LFOTarget toType(Float type) {
+        public static LFOTarget toType(Float type)
+        {
             return toType(type.intValue());
         }
     }

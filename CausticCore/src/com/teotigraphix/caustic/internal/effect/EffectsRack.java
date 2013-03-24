@@ -1,12 +1,8 @@
-
 package com.teotigraphix.caustic.internal.effect;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import android.annotation.SuppressLint;
-import android.util.Log;
 
 import com.teotigraphix.caustic.effect.IEffect;
 import com.teotigraphix.caustic.effect.IEffect.EffectType;
@@ -21,8 +17,9 @@ import com.teotigraphix.caustic.rack.IRack.OnMachineChangeListener;
 import com.teotigraphix.common.IMemento;
 import com.teotigraphix.common.IPersist;
 
-@SuppressLint("UseSparseArrays")
-public class EffectsRack extends Device implements IEffectsRack, OnMachineChangeListener {
+public class EffectsRack extends Device implements IEffectsRack,
+        OnMachineChangeListener
+{
 
     private static final String DEVICE_ID = "effects_rack";
 
@@ -43,26 +40,31 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     private boolean skipCreateMessage = false;
 
     @Override
-    public IRack getRack() {
+    public IRack getRack()
+    {
         return mRack;
     }
 
     @Override
-    public void setRack(IRack value) {
-        if (mRack != null) {
+    public void setRack(IRack value)
+    {
+        if (mRack != null)
+        {
             mRack.removeOnMachineChangeListener(this);
             setEngine(null);
         }
         mRack = value;
 
-        if (mRack != null) {
+        if (mRack != null)
+        {
             mRack.addOnMachineChangeListener(this);
             setEngine(mRack.getEngine());
         }
     }
 
     @Override
-    public boolean hasEffectsFor(IMachine machine) {
+    public boolean hasEffectsFor(IMachine machine)
+    {
         boolean exists = mEffectDataMap.containsKey(machine.getIndex());
         if (!exists)
             return false;
@@ -71,12 +73,15 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     }
 
     @Override
-    public Map<Integer, EffectData> getEffects() {
+    public Map<Integer, EffectData> getEffects()
+    {
         // only returns entries that contain IEffect instances
         Map<Integer, EffectData> map = new HashMap<Integer, EffectData>();
 
-        for (EffectData data : mEffectDataMap.values()) {
-            if (!data.isEmpty()) {
+        for (EffectData data : mEffectDataMap.values())
+        {
+            if (!data.isEmpty())
+            {
                 map.put(data.getIndex(), data);
             }
         }
@@ -84,11 +89,13 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     }
 
     @Override
-    public Map<Integer, IEffect> getEffectsFor(IMachine machine) {
+    public Map<Integer, IEffect> getEffectsFor(IMachine machine)
+    {
         Map<Integer, IEffect> result = new HashMap<Integer, IEffect>();
 
         Map<Integer, EffectData> map = getEffects();
-        if (map.containsKey(machine.getIndex())) {
+        if (map.containsKey(machine.getIndex()))
+        {
             result = map.get(machine.getIndex()).getEffects();
         }
         return result;
@@ -103,7 +110,8 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     /**
      * Constructor.
      */
-    public EffectsRack() {
+    public EffectsRack()
+    {
         super();
         setId(DEVICE_ID);
         mEffectDataMap = new HashMap<Integer, EffectData>();
@@ -116,20 +124,24 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
-        for (Entry<Integer, EffectData> entry : mEffectDataMap.entrySet()) {
+    public void copy(IMemento memento)
+    {
+        for (Entry<Integer, EffectData> entry : mEffectDataMap.entrySet())
+        {
             EffectData data = entry.getValue();
-            IMemento machine = memento
-                    .createChild(CoreConstants.TAG_MACHINE, data.mMachine.getId());
+            IMemento machine = memento.createChild(CoreConstants.TAG_MACHINE,
+                    data.mMachine.getId());
             machine.putInteger("index", data.mMachine.getIndex());
             data.copy(machine);
         }
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         IMemento[] machines = memento.getChildren(CoreConstants.TAG_MACHINE);
-        for (IMemento child : machines) {
+        for (IMemento child : machines)
+        {
             // create the effect and pass the effect, save state
             // as with the mixer, the machine has to exist here
             EffectData info = mEffectDataMap.get(child.getInteger("index"));
@@ -143,34 +155,43 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     //
     //--------------------------------------------------------------------------
 
-    public void addMachine(IMachine machine) {
+    public void addMachine(IMachine machine)
+    {
         EffectData info = new EffectData(machine);
         mEffectDataMap.put(machine.getIndex(), info);
     }
 
-    public void removeMachine(IMachine machine) {
+    public void removeMachine(IMachine machine)
+    {
         mEffectDataMap.remove(machine.getIndex());
     }
 
     @Override
-    public void onMachineChanged(IMachine machine, MachineChangeKind kind) {
-        if (kind == MachineChangeKind.ADDED || kind == MachineChangeKind.LOADED) {
+    public void onMachineChanged(IMachine machine, MachineChangeKind kind)
+    {
+        if (kind == MachineChangeKind.ADDED || kind == MachineChangeKind.LOADED)
+        {
             addMachine(machine);
-        } else if (kind == MachineChangeKind.REMOVED) {
+        }
+        else if (kind == MachineChangeKind.REMOVED)
+        {
             removeMachine(machine);
         }
     }
 
-    private IEffect put(int index, int machineIndex, EffectType type) {
+    private IEffect put(int index, int machineIndex, EffectType type)
+    {
         IMachine machine = getRack().getMachine(machineIndex);
         return putEffect(machine, index, type);
     }
 
     @Override
-    public IEffect putEffect(IMachine machine, int slot, EffectType type) {
+    public IEffect putEffect(IMachine machine, int slot, EffectType type)
+    {
 
-        if (type == null) {
-            Log.e("EffectsRack ", "[" + machine.getId() + "] type is null");
+        if (type == null)
+        {
+            //XXX Log.e("EffectsRack ", "[" + machine.getId() + "] type is null");
             return null;
         }
 
@@ -187,14 +208,17 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
         effect.setMachine(machine);
         info.put(slot, effect);
 
-        if (!skipCreateMessage) {
-            EffectRackMessage.CREATE.send(getEngine(), machine.getIndex(), slot, type.getValue());
+        if (!skipCreateMessage)
+        {
+            EffectRackMessage.CREATE.send(getEngine(), machine.getIndex(),
+                    slot, type.getValue());
         }
         return effect;
     }
 
     @Override
-    public IEffect removeEffect(IMachine machine, int slot) {
+    public IEffect removeEffect(IMachine machine, int slot)
+    {
         EffectData info = mEffectDataMap.get(machine.getIndex());
         if (info == null)
             return null;
@@ -205,7 +229,8 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     }
 
     @Override
-    public IEffect getEffect(IMachine machine, int slot) {
+    public IEffect getEffect(IMachine machine, int slot)
+    {
         EffectData info = mEffectDataMap.get(machine.getIndex());
         // already have an effect need a remove command in OSC
         if (!info.contains(slot))
@@ -214,61 +239,78 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
         return info.get(slot);
     }
 
-    public class EffectData implements IPersist {
+    public class EffectData implements IPersist
+    {
         private IMachine mMachine;
 
         final Map<Integer, IEffect> effects = new HashMap<Integer, IEffect>();
 
-        EffectData(IMachine machine) {
+        EffectData(IMachine machine)
+        {
             mMachine = machine;
         }
 
-        public Map<Integer, IEffect> getEffects() {
+        public Map<Integer, IEffect> getEffects()
+        {
             return effects;
         }
 
-        public int getIndex() {
+        public int getIndex()
+        {
             return mMachine.getIndex();
         }
 
-        public boolean isEmpty() {
+        public boolean isEmpty()
+        {
             return effects.isEmpty();
         }
 
-        public boolean contains(int index) {
+        public boolean contains(int index)
+        {
             return effects.containsKey(index);
         }
 
-        void put(int index, IEffect effect) {
+        void put(int index, IEffect effect)
+        {
             effects.put(index, effect);
         }
 
-        public IEffect get(int index) {
+        public IEffect get(int index)
+        {
             return effects.get(index);
         }
 
-        public IEffect remove(int index) {
+        public IEffect remove(int index)
+        {
             return effects.remove(index);
         }
 
         @Override
-        public void copy(IMemento memento) {
-            for (Entry<Integer, IEffect> entry : effects.entrySet()) {
+        public void copy(IMemento memento)
+        {
+            for (Entry<Integer, IEffect> entry : effects.entrySet())
+            {
                 IEffect effect = entry.getValue();
-                saveChannel(effect, memento.createChild(EffectConstants.TAG_EFFECT));
+                saveChannel(effect,
+                        memento.createChild(EffectConstants.TAG_EFFECT));
             }
         }
 
-        private void saveChannel(IEffect effect, IMemento memento) {
+        private void saveChannel(IEffect effect, IMemento memento)
+        {
             effect.copy(memento);
         }
 
         @Override
-        public void paste(IMemento memento) {
-            for (IMemento child : memento.getChildren(EffectConstants.TAG_EFFECT)) {
-                IEffect effect = EffectsRack.this.put(child.getInteger(EffectConstants.ATT_INDEX),
-                        memento.getInteger(EffectConstants.ATT_INDEX),
-                        EffectType.toType(child.getInteger(EffectConstants.ATT_TYPE)));
+        public void paste(IMemento memento)
+        {
+            for (IMemento child : memento
+                    .getChildren(EffectConstants.TAG_EFFECT))
+            {
+                IEffect effect = EffectsRack.this.put(child
+                        .getInteger(EffectConstants.ATT_INDEX), memento
+                        .getInteger(EffectConstants.ATT_INDEX), EffectType
+                        .toType(child.getInteger(EffectConstants.ATT_TYPE)));
                 effect.paste(child);
                 // (mschmalle)  implement loadChannel()
             }
@@ -276,40 +318,52 @@ public class EffectsRack extends Device implements IEffectsRack, OnMachineChange
     }
 
     @Override
-    public void copyChannel(IMachine machine, IMemento memento) {
+    public void copyChannel(IMachine machine, IMemento memento)
+    {
         memento.putInteger("index", machine.getIndex());
         IEffect e1 = getEffect(machine, 0);
-        if (e1 != null) {
+        if (e1 != null)
+        {
             e1.copy(memento.createChild("effect"));
         }
         IEffect e2 = getEffect(machine, 1);
-        if (e2 != null) {
+        if (e2 != null)
+        {
             e2.copy(memento.createChild("effect"));
         }
     }
 
     @Override
-    public void pasteChannel(IMachine machine, IMemento memento) {
+    public void pasteChannel(IMachine machine, IMemento memento)
+    {
         EffectData data = mEffectDataMap.get(machine.getIndex());
         data.paste(memento);
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         skipCreateMessage = true;
         // loop through exsiting machines
         // find effects for slot 0, 1 load them up
-        for (IMachine machine : getRack().getMachineMap().values()) {
-            int effect0 = (int)EffectRackMessage.TYPE.send(getEngine(), machine.getIndex(), 0);
-            int effect1 = (int)EffectRackMessage.TYPE.send(getEngine(), machine.getIndex(), 1);
+        for (IMachine machine : getRack().getMachineMap().values())
+        {
+            int effect0 = (int) EffectRackMessage.TYPE.send(getEngine(),
+                    machine.getIndex(), 0);
+            int effect1 = (int) EffectRackMessage.TYPE.send(getEngine(),
+                    machine.getIndex(), 1);
 
-            if (effect0 >= 0) {
-                IEffect effect = putEffect(machine, 0, EffectType.toType(effect0));
+            if (effect0 >= 0)
+            {
+                IEffect effect = putEffect(machine, 0,
+                        EffectType.toType(effect0));
                 effect.restore();
             }
-            if (effect1 >= 0) {
-                IEffect effect = putEffect(machine, 1, EffectType.toType(effect1));
+            if (effect1 >= 0)
+            {
+                IEffect effect = putEffect(machine, 1,
+                        EffectType.toType(effect1));
                 effect.restore();
             }
         }

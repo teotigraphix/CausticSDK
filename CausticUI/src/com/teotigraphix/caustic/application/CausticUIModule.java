@@ -23,9 +23,7 @@ import com.google.inject.Binder;
 import com.google.inject.Singleton;
 import com.teotigraphix.android.internal.service.TouchService;
 import com.teotigraphix.android.service.ITouchService;
-import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.internal.actvity.CausticModule;
-import com.teotigraphix.caustic.internal.controller.application.ApplicationController;
 import com.teotigraphix.caustic.internal.router.Router;
 import com.teotigraphix.caustic.internal.song.Workspace;
 import com.teotigraphix.caustic.router.IRouter;
@@ -38,8 +36,7 @@ public class CausticUIModule extends CausticModule {
         super.configure(binder);
         binder.bind(ITouchService.class).to(TouchService.class);
         binder.bind(IRouter.class).to(Router.class);
-        // overridable
-        binder.bind(IApplicationController.class).to(ApplicationController.class);
+
         binder.bind(IWorkspace.class).to(Workspace.class).in(Singleton.class);
 
     }

@@ -33,7 +33,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MachineComponent implements IMachineComponent {
+public class MachineComponent implements IMachineComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -52,32 +53,39 @@ public class MachineComponent implements IMachineComponent {
     private ICausticEngine mEngine;
 
     @Override
-    public IDevice getDevice() {
+    public IDevice getDevice()
+    {
         return mDevice;
     }
 
-    public void setDevice(IDevice value) {
+    public void setDevice(IDevice value)
+    {
         mDeviceName = null;
         mDevice = value;
-        if (mDevice != null) {
+        if (mDevice != null)
+        {
             mDeviceName = mDevice.getId();
             mEngine = mDevice.getEngine();
         }
     }
 
-    protected IMachine getMachine() {
-        return (IMachine)mDevice;
+    protected IMachine getMachine()
+    {
+        return (IMachine) mDevice;
     }
 
-    protected int getMachineIndex() {
+    protected int getMachineIndex()
+    {
         return getMachine().getIndex();
     }
 
-    protected String _getDeviceName() {
+    protected String _getDeviceName()
+    {
         return mDeviceName;
     }
 
-    protected ICausticEngine getEngine() {
+    protected ICausticEngine getEngine()
+    {
         return mEngine;
     }
 
@@ -92,7 +100,8 @@ public class MachineComponent implements IMachineComponent {
      * 
      * @param machine The component's parent IMachine.
      */
-    public MachineComponent(IMachine machine) {
+    public MachineComponent(IMachine machine)
+    {
         setDevice(machine);
     }
 
@@ -103,11 +112,13 @@ public class MachineComponent implements IMachineComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
     }
 
     //--------------------------------------------------------------------------
@@ -117,11 +128,13 @@ public class MachineComponent implements IMachineComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void restore() {
+    public void restore()
+    {
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         setDevice(null);
     }
 
@@ -133,7 +146,9 @@ public class MachineComponent implements IMachineComponent {
      * @param value The value that is throwing the range exception.
      * @return A new {@link IllegalArgumentException}.
      */
-    protected final RuntimeException newRangeException(String control, String range, Object value) {
+    protected final RuntimeException newRangeException(String control,
+            String range, Object value)
+    {
         return ExceptionUtils.newRangeException(control, range, value);
     }
 }

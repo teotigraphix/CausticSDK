@@ -41,7 +41,8 @@ import com.teotigraphix.common.IMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SubSynth extends Synth implements ISubSynth {
+public class SubSynth extends Synth implements ISubSynth
+{
 
     //--------------------------------------------------------------------------
     //
@@ -56,11 +57,13 @@ public class SubSynth extends Synth implements ISubSynth {
     private IVolumeEnvelope mVolume;
 
     @Override
-    public IVolumeEnvelope getVolume() {
+    public IVolumeEnvelope getVolume()
+    {
         return mVolume;
     }
 
-    public void setVolume(IVolumeEnvelope value) {
+    public void setVolume(IVolumeEnvelope value)
+    {
         mVolume = value;
     }
 
@@ -71,11 +74,13 @@ public class SubSynth extends Synth implements ISubSynth {
     private IFilter mFilter;
 
     @Override
-    public IFilter getFilter() {
+    public IFilter getFilter()
+    {
         return mFilter;
     }
 
-    public void setFilter(IFilter value) {
+    public void setFilter(IFilter value)
+    {
         mFilter = value;
     }
 
@@ -86,11 +91,13 @@ public class SubSynth extends Synth implements ISubSynth {
     private ISubSynthOsc1 mOsc1;
 
     @Override
-    public ISubSynthOsc1 getOsc1() {
+    public ISubSynthOsc1 getOsc1()
+    {
         return mOsc1;
     }
 
-    public void setOsc1(ISubSynthOsc1 value) {
+    public void setOsc1(ISubSynthOsc1 value)
+    {
         mOsc1 = value;
     }
 
@@ -101,11 +108,13 @@ public class SubSynth extends Synth implements ISubSynth {
     private ISubSynthOsc2 mOsc2;
 
     @Override
-    public ISubSynthOsc2 getOsc2() {
+    public ISubSynthOsc2 getOsc2()
+    {
         return mOsc2;
     }
 
-    public void setOsc2(ISubSynthOsc2 value) {
+    public void setOsc2(ISubSynthOsc2 value)
+    {
         mOsc2 = value;
     }
 
@@ -116,11 +125,13 @@ public class SubSynth extends Synth implements ISubSynth {
     private ISubSynthLFO1 mLFO1;
 
     @Override
-    public ISubSynthLFO1 getLFO1() {
+    public ISubSynthLFO1 getLFO1()
+    {
         return mLFO1;
     }
 
-    public void setLFO1(ISubSynthLFO1 value) {
+    public void setLFO1(ISubSynthLFO1 value)
+    {
         mLFO1 = value;
     }
 
@@ -131,11 +142,13 @@ public class SubSynth extends Synth implements ISubSynth {
     private ISubSynthLFO2 mLFO2;
 
     @Override
-    public ISubSynthLFO2 getLFO2() {
+    public ISubSynthLFO2 getLFO2()
+    {
         return mLFO2;
     }
 
-    public void setLFO2(ISubSynthLFO2 value) {
+    public void setLFO2(ISubSynthLFO2 value)
+    {
         mLFO2 = value;
     }
 
@@ -148,7 +161,8 @@ public class SubSynth extends Synth implements ISubSynth {
     /**
      * Constructor.
      */
-    public SubSynth(String id) {
+    public SubSynth(String id)
+    {
         super();
         setId(id);
     }
@@ -160,7 +174,8 @@ public class SubSynth extends Synth implements ISubSynth {
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento) {
+    public void copy(IMemento memento)
+    {
         super.copy(memento);
         getVolume().copy(memento.createChild(MachineConstants.TAG_VOLUME));
         getFilter().copy(memento.createChild(MachineConstants.TAG_FILTER));
@@ -171,7 +186,8 @@ public class SubSynth extends Synth implements ISubSynth {
     }
 
     @Override
-    public void paste(IMemento memento) {
+    public void paste(IMemento memento)
+    {
         super.paste(memento);
         getVolume().paste(memento.getChild(MachineConstants.TAG_VOLUME));
         getFilter().paste(memento.getChild(MachineConstants.TAG_FILTER));
@@ -182,7 +198,8 @@ public class SubSynth extends Synth implements ISubSynth {
     }
 
     @Override
-    public void restore() {
+    public void restore()
+    {
         super.restore();
         getVolume().restore();
         getFilter().restore();
@@ -199,7 +216,8 @@ public class SubSynth extends Synth implements ISubSynth {
     //--------------------------------------------------------------------------
 
     @Override
-    protected void createComponents() {
+    protected void createComponents()
+    {
         super.createComponents();
 
         setVolume(new VolumeEnvelope(this));
@@ -211,7 +229,8 @@ public class SubSynth extends Synth implements ISubSynth {
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         super.dispose();
 
         setVolume(null);

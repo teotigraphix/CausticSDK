@@ -28,7 +28,8 @@ import com.teotigraphix.caustic.osc.SubSynthOscMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ISubSynthOsc2 extends IOscillatorComponent {
+public interface ISubSynthOsc2 extends IOscillatorComponent
+{
 
     //--------------------------------------------------------------------------
     //
@@ -130,7 +131,8 @@ public interface ISubSynthOsc2 extends IOscillatorComponent {
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum WaveForm {
+    public enum WaveForm
+    {
 
         /**
          * Inactive oscillator.
@@ -172,11 +174,13 @@ public interface ISubSynthOsc2 extends IOscillatorComponent {
         /**
          * Returns in integer value for the {@link WaveForm}.
          */
-        public int getValue() {
+        public int getValue()
+        {
             return mValue;
         }
 
-        WaveForm(int value) {
+        WaveForm(int value)
+        {
             mValue = value;
         }
 
@@ -185,8 +189,10 @@ public interface ISubSynthOsc2 extends IOscillatorComponent {
          * 
          * @param type The int type.
          */
-        public static WaveForm toType(Integer type) {
-            for (WaveForm result : values()) {
+        public static WaveForm toType(Integer type)
+        {
+            for (WaveForm result : values())
+            {
                 if (result.getValue() == type)
                     return result;
             }
@@ -196,7 +202,8 @@ public interface ISubSynthOsc2 extends IOscillatorComponent {
         /**
          * @see #toType(Integer)
          */
-        public static WaveForm toType(Float type) {
+        public static WaveForm toType(Float type)
+        {
             return toType(type.intValue());
         }
     }

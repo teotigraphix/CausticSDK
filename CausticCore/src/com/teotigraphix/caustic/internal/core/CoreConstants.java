@@ -26,7 +26,8 @@ package com.teotigraphix.caustic.internal.core;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class CoreConstants {
+public final class CoreConstants
+{
 
     public static final String ID = "caustic";
 

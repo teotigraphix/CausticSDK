@@ -38,7 +38,8 @@ import com.teotigraphix.common.IDispose;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IRackSong extends IDispose {
+public interface IRackSong extends IDispose
+{
 
     //--------------------------------------------------------------------------
     //

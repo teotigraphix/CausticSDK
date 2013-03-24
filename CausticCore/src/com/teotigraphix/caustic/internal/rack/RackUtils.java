@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustic.internal.rack;
 
-import android.content.Context;
-
 import com.teotigraphix.caustic.internal.core.CausticEngine;
 import com.teotigraphix.caustic.rack.IRack;
 import com.teotigraphix.caustic.rack.IRackFactory;

@@ -31,7 +31,8 @@ import com.teotigraphix.caustic.filter.ILFOComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BasslineLFOMessage extends CausticMessage {
+public class BasslineLFOMessage extends CausticMessage
+{
 
     /**
      * Message: <code>/caustic/[machine_index]/lfo_depth [value]</code>
@@ -109,7 +110,8 @@ public class BasslineLFOMessage extends CausticMessage {
     public static final BasslineLFOMessage LFO_TARGET = new BasslineLFOMessage(
             "/caustic/${0}/lfo_target ${1}");
 
-    BasslineLFOMessage(String message) {
+    BasslineLFOMessage(String message)
+    {
         super(message);
     }
 }

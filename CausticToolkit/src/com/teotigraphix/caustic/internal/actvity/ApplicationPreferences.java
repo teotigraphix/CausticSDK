@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.internal.controller.application;
+package com.teotigraphix.caustic.internal.actvity;
 
 import java.io.File;
 
