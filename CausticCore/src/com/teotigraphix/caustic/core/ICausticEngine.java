@@ -20,7 +20,6 @@
 package com.teotigraphix.caustic.core;
 
 import com.singlecellsoftware.causticcore.CausticEventListener;
-import com.teotigraphix.caustic.CausticCore;
 
 /**
  * The {@link ICausticEngine} API is the basic interface that communicates with

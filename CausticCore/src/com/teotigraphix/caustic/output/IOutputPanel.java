@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustic.output;
 
-import com.teotigraphix.caustic.CausticCore;
 import com.teotigraphix.caustic.device.IDevice;
 import com.teotigraphix.caustic.osc.OutputPanelMessage;
 import com.teotigraphix.caustic.rack.IRackAware;
