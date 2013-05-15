@@ -20,6 +20,7 @@
 package com.teotigraphix.caustic.internal.device;
 
 import com.teotigraphix.caustic.core.CausticException;
+import com.teotigraphix.caustic.core.ICausticEngine;
 import com.teotigraphix.caustic.device.IDeviceFactory;
 import com.teotigraphix.caustic.effect.IEffect;
 import com.teotigraphix.caustic.effect.IEffect.EffectType;
@@ -48,7 +49,9 @@ import com.teotigraphix.caustic.internal.sequencer.Sequencer;
 import com.teotigraphix.caustic.internal.sequencer.StepSequencer;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.machine.MachineType;
+import com.teotigraphix.caustic.mixer.IMixerDelay;
 import com.teotigraphix.caustic.mixer.IMixerPanel;
+import com.teotigraphix.caustic.mixer.IMixerReverb;
 import com.teotigraphix.caustic.mixer.MixerEffectType;
 import com.teotigraphix.caustic.output.IOutputPanel;
 import com.teotigraphix.caustic.sequencer.IPatternSequencer;
@@ -66,8 +69,11 @@ import com.teotigraphix.caustic.sequencer.ISequencer;
 public class DeviceFactory implements IDeviceFactory
 {
 
-    public DeviceFactory()
+    private final ICausticEngine engine;
+
+    public DeviceFactory(ICausticEngine engine)
     {
+        this.engine = engine;
     }
 
     @Override
@@ -75,6 +81,11 @@ public class DeviceFactory implements IDeviceFactory
     {
         MixerPanel result = new MixerPanel();
         result.setFactory(this);
+        result.setEngine(engine);
+        result.setDelay((IMixerDelay) createMixerEffect(result,
+                MixerEffectType.DELAY));
+        result.setReverb((IMixerReverb) createMixerEffect(result,
+                MixerEffectType.REVERB));
         return result;
     }
 
@@ -83,6 +94,7 @@ public class DeviceFactory implements IDeviceFactory
     {
         EffectsRack result = new EffectsRack();
         result.setFactory(this);
+        result.setEngine(engine);
         return result;
     }
 
@@ -91,6 +103,7 @@ public class DeviceFactory implements IDeviceFactory
     {
         OutputPanel result = new OutputPanel();
         result.setFactory(this);
+        result.setEngine(engine);
         return result;
     }
 
@@ -99,6 +112,7 @@ public class DeviceFactory implements IDeviceFactory
     {
         Sequencer result = new Sequencer();
         result.setFactory(this);
+        result.setEngine(engine);
         return result;
     }
 
@@ -137,9 +151,9 @@ public class DeviceFactory implements IDeviceFactory
             machine = new Beatbox(machineId);
         else if (machineType == MachineType.BASSLINE)
             machine = new Bassline(machineId);
-        
+
         machine.setFactory(this);
-        
+
         return machine;
     }
 
