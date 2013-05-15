@@ -32,8 +32,7 @@ import com.teotigraphix.caustic.filter.IVolumeComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IBassline extends ISynth
-{
+public interface IBassline extends ISynth {
 
     int NONE = 0;
 

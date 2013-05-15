@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class EffectRackMessage extends CausticMessage
-{
+public class EffectRackMessage extends CausticMessage {
 
     /**
      * Message:
@@ -143,8 +142,7 @@ public class EffectRackMessage extends CausticMessage
     public static final BasslineDistortionMessage TYPE = new BasslineDistortionMessage(
             "/caustic/effects_rack/type ${0} ${1}");
 
-    EffectRackMessage(String message)
-    {
+    EffectRackMessage(String message) {
         super(message);
     }
 }

@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.sampler.IPCMSampler.PlayMode;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPCMSamplerChannel extends IMachineComponent, IRestore
-{
+public interface IPCMSamplerChannel extends IMachineComponent, IRestore {
 
     //--------------------------------------------------------------------------
     //

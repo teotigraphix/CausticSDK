@@ -32,8 +32,7 @@ import com.teotigraphix.caustic.sampler.IBeatboxSampler;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Beatbox extends Synth implements IBeatbox
-{
+public class Beatbox extends Synth implements IBeatbox {
 
     //--------------------------------------------------------------------------
     //
@@ -48,13 +47,11 @@ public class Beatbox extends Synth implements IBeatbox
     private IVolumeComponent mVolume;
 
     @Override
-    public IVolumeComponent getVolume()
-    {
+    public IVolumeComponent getVolume() {
         return mVolume;
     }
 
-    public void setVolume(IVolumeComponent value)
-    {
+    public void setVolume(IVolumeComponent value) {
         mVolume = value;
     }
 
@@ -65,13 +62,11 @@ public class Beatbox extends Synth implements IBeatbox
     private IBeatboxSampler mSampler;
 
     @Override
-    public IBeatboxSampler getSampler()
-    {
+    public IBeatboxSampler getSampler() {
         return mSampler;
     }
 
-    public void setSampler(IBeatboxSampler value)
-    {
+    public void setSampler(IBeatboxSampler value) {
         mSampler = value;
     }
 
@@ -84,8 +79,7 @@ public class Beatbox extends Synth implements IBeatbox
     /**
      * Constructor.
      */
-    public Beatbox(String id)
-    {
+    public Beatbox(String id) {
         super();
         setId(id);
     }
@@ -97,16 +91,14 @@ public class Beatbox extends Synth implements IBeatbox
     //--------------------------------------------------------------------------
 
     @Override
-    protected void createComponents()
-    {
+    protected void createComponents() {
         super.createComponents();
         setVolume(new VolumeComponent(this));
         setSampler(new BeatboxSampler(this));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         getSequencer().restore();
         getSampler().restore();
     }

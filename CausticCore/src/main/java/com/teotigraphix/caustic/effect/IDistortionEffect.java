@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.effect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IDistortionEffect extends IEffect
-{
+public interface IDistortionEffect extends IEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -204,8 +203,7 @@ public interface IDistortionEffect extends IEffect
      * @since 1.0
      * @see IDistortionEffect#getProgram();
      */
-    public enum Program
-    {
+    public enum Program {
 
         /**
          * Tube amp simulation.
@@ -229,16 +227,14 @@ public interface IDistortionEffect extends IEffect
 
         private int mValue;
 
-        Program(int value)
-        {
+        Program(int value) {
             mValue = value;
         }
 
         /**
          * Returns the int value for the {@link Program}.
          */
-        public int getValue()
-        {
+        public int getValue() {
             return mValue;
         }
 
@@ -247,10 +243,8 @@ public interface IDistortionEffect extends IEffect
          * 
          * @param value The int program value.
          */
-        public static Program toType(Integer value)
-        {
-            for (Program p : values())
-            {
+        public static Program toType(Integer value) {
+            for (Program p : values()) {
                 if (p.getValue() == value)
                     return p;
             }

@@ -26,8 +26,7 @@ package com.teotigraphix.caustic.internal.mixer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class MixerPanelConstants
-{
+public final class MixerPanelConstants {
 
     //--------------------------------------------------------------------------
     //

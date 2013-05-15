@@ -1,3 +1,4 @@
+
 package com.teotigraphix.caustic.internal.sequencer;
 
 import java.util.ArrayList;
@@ -13,8 +14,7 @@ import com.teotigraphix.caustic.sequencer.IStepPhrase;
 import com.teotigraphix.caustic.sequencer.PatternMeasures;
 import com.teotigraphix.caustic.sequencer.data.StepPhraseData;
 
-public abstract class StepPhraseBase implements IStepPhrase
-{
+public abstract class StepPhraseBase implements IStepPhrase {
     private Map<Integer, Map<Integer, ITrigger>> stepMap;
 
     //----------------------------------
@@ -22,8 +22,7 @@ public abstract class StepPhraseBase implements IStepPhrase
     //----------------------------------
 
     @Override
-    public String getId()
-    {
+    public String getId() {
         return PatternUtils.toString(bank, index);
     }
 
@@ -34,14 +33,12 @@ public abstract class StepPhraseBase implements IStepPhrase
     private StepPhraseData mData;
 
     @Override
-    public StepPhraseData getData()
-    {
+    public StepPhraseData getData() {
         return mData;
     }
 
     @Override
-    public void setData(StepPhraseData value)
-    {
+    public void setData(StepPhraseData value) {
         mData = value;
     }
 
@@ -52,14 +49,12 @@ public abstract class StepPhraseBase implements IStepPhrase
     private boolean mActive;
 
     @Override
-    public final boolean isActive()
-    {
+    public final boolean isActive() {
         return mActive;
     }
 
     @Override
-    public final void setActive(boolean value)
-    {
+    public final void setActive(boolean value) {
         mActive = value;
     }
 
@@ -70,8 +65,7 @@ public abstract class StepPhraseBase implements IStepPhrase
     private int bank;
 
     @Override
-    public final int getBank()
-    {
+    public final int getBank() {
         return bank;
     }
 
@@ -82,8 +76,7 @@ public abstract class StepPhraseBase implements IStepPhrase
     private int index;
 
     @Override
-    public final int getIndex()
-    {
+    public final int getIndex() {
         return index;
     }
 
@@ -94,14 +87,12 @@ public abstract class StepPhraseBase implements IStepPhrase
     private IPatternSequencer sequencer;
 
     @Override
-    public IPatternSequencer getSequencer()
-    {
+    public IPatternSequencer getSequencer() {
         return sequencer;
     }
 
     @Override
-    public void setSequencer(IPatternSequencer value)
-    {
+    public void setSequencer(IPatternSequencer value) {
         sequencer = value;
     }
 
@@ -112,26 +103,22 @@ public abstract class StepPhraseBase implements IStepPhrase
     private String mStringData;
 
     @Override
-    public final String getStringData()
-    {
+    public final String getStringData() {
         return mStringData;
     }
 
     @Override
-    public final void setStringData(String value)
-    {
+    public final void setStringData(String value) {
         mStringData = value;
         if (mStringData == null || mStringData.equals(""))
             return;
         initializeData(mStringData);
     }
 
-    private void initializeData(String data)
-    {
+    private void initializeData(String data) {
         // push the notes into the machines sequencer
         String[] notes = data.split("\\|");
-        for (String noteData : notes)
-        {
+        for (String noteData : notes) {
             String[] split = noteData.split(" ");
 
             float start = Float.valueOf(split[0]);
@@ -153,25 +140,20 @@ public abstract class StepPhraseBase implements IStepPhrase
     private Resolution mResolution = Resolution.SIXTEENTH;
 
     @Override
-    public Resolution getResolution()
-    {
+    public Resolution getResolution() {
         return mResolution;
     }
 
     @Override
-    public void setResolution(Resolution value)
-    {
+    public void setResolution(Resolution value) {
         if (value == mResolution)
             return;
 
         Resolution oldValue = mResolution;
         mResolution = value;
-        if (value.getValue() < oldValue.getValue())
-        {
+        if (value.getValue() < oldValue.getValue()) {
             StepPhraseUtils.expandResolution(this, oldValue, value);
-        }
-        else
-        {
+        } else {
             StepPhraseUtils.contractResolution(this, oldValue, value);
         }
 
@@ -185,19 +167,16 @@ public abstract class StepPhraseBase implements IStepPhrase
     private int mLength = -1;
 
     @Override
-    public int getLength()
-    {
+    public int getLength() {
         return mLength;
     }
 
     @Override
-    public void setLength(int value)
-    {
+    public void setLength(int value) {
         if (value == mLength)
             return;
 
-        if (!PatternMeasures.isValid(value))
-        {
+        if (!PatternMeasures.isValid(value)) {
             return;
         }
 
@@ -220,8 +199,7 @@ public abstract class StepPhraseBase implements IStepPhrase
     private int mPosition = 0;
 
     @Override
-    public int getPosition()
-    {
+    public int getPosition() {
         return mPosition;
     }
 
@@ -230,8 +208,7 @@ public abstract class StepPhraseBase implements IStepPhrase
     // based on the resolution, this way the client is in total control
     // of the result with on method call
     @Override
-    public void setPosition(int value)
-    {
+    public void setPosition(int value) {
         if (value == mPosition)
             return;
 
@@ -249,8 +226,7 @@ public abstract class StepPhraseBase implements IStepPhrase
     //----------------------------------
 
     @Override
-    public int getNumSteps()
-    {
+    public int getNumSteps() {
         return stepMap.size();
     }
 
@@ -259,20 +235,17 @@ public abstract class StepPhraseBase implements IStepPhrase
     //----------------------------------
 
     @Override
-    public Map<Integer, Map<Integer, ITrigger>> getStepMap()
-    {
+    public Map<Integer, Map<Integer, ITrigger>> getStepMap() {
         // Collections.unmodifiableMap
         return stepMap;
     }
 
     // XXX Is this nessecary ?
-    public void setStepMap(Map<Integer, Map<Integer, ITrigger>> value)
-    {
+    public void setStepMap(Map<Integer, Map<Integer, ITrigger>> value) {
         stepMap = value;
     }
 
-    public StepPhraseBase(int bank, int index)
-    {
+    public StepPhraseBase(int bank, int index) {
         stepMap = new TreeMap<Integer, Map<Integer, ITrigger>>();
 
         this.bank = bank;
@@ -301,15 +274,13 @@ public abstract class StepPhraseBase implements IStepPhrase
     public abstract List<ITrigger> getTriggers();
 
     @Override
-    public abstract void addNote(int pitch, float start, float end,
-            float velocity, int flags);
+    public abstract void addNote(int pitch, float start, float end, float velocity, int flags);
 
     @Override
     public abstract void removeNote(int pitch, float start);
 
     @Override
-    public abstract void triggerOn(int step, int pitch, float gate,
-            float velocity, int flags);
+    public abstract void triggerOn(int step, int pitch, float gate, float velocity, int flags);
 
     @Override
     public abstract void triggerOff(int step, int pitch);
@@ -323,16 +294,14 @@ public abstract class StepPhraseBase implements IStepPhrase
     private final List<IStepPhraseListener> mPhraseListeners = new ArrayList<IStepPhraseListener>();
 
     @Override
-    public final void addStepPhraseListener(IStepPhraseListener value)
-    {
+    public final void addStepPhraseListener(IStepPhraseListener value) {
         if (mPhraseListeners.contains(value))
             return;
         mPhraseListeners.add(value);
     }
 
     @Override
-    public final void removeStepPhraseListener(IStepPhraseListener value)
-    {
+    public final void removeStepPhraseListener(IStepPhraseListener value) {
         if (!mPhraseListeners.contains(value))
             return;
         mPhraseListeners.remove(value);
@@ -344,39 +313,32 @@ public abstract class StepPhraseBase implements IStepPhrase
     //
     //--------------------------------------------------------------------------
 
-    protected Map<Integer, ITrigger> getPitchMapAt(int step)
-    {
+    protected Map<Integer, ITrigger> getPitchMapAt(int step) {
         return getStepMap().get(step);
     }
 
-    protected final void fireLengthChange(int length)
-    {
+    protected final void fireLengthChange(int length) {
         for (IStepPhraseListener listener : mPhraseListeners)
             listener.onLengthChange(this, length);
     }
 
-    protected final void firePositionChange(int position)
-    {
+    protected final void firePositionChange(int position) {
         for (IStepPhraseListener listener : mPhraseListeners)
             listener.onPositionChange(this, position);
     }
 
-    protected final void fireResolutionChange(Resolution resolution)
-    {
+    protected final void fireResolutionChange(Resolution resolution) {
         for (IStepPhraseListener listener : mPhraseListeners)
             listener.onResolutionChange(this, resolution);
     }
 
-    protected final void fireTriggerDataChange(ITrigger trigger,
-            TriggerChangeKind kind)
-    {
+    protected final void fireTriggerDataChange(ITrigger trigger, TriggerChangeKind kind) {
         for (IStepPhraseListener listener : mPhraseListeners)
             listener.onTriggerDataChange(trigger, kind);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return PatternUtils.toString(bank, index);
     }
 }

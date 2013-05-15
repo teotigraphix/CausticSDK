@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class VolumeMessage extends CausticMessage
-{
+public class VolumeMessage extends CausticMessage {
 
     //--------------------------------------------------------------------------
     // IVolumeComponent
@@ -135,8 +134,7 @@ public class VolumeMessage extends CausticMessage
     public static final VolumeMessage VOLUME_RELEASE = new VolumeMessage(
             "/caustic/${0}/volume_release ${1}");
 
-    VolumeMessage(String message)
-    {
+    VolumeMessage(String message) {
         super(message);
     }
 }

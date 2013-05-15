@@ -37,8 +37,7 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IMixerPanel extends IDevice, IPersist, IRestore
-{
+public interface IMixerPanel extends IDevice, IPersist, IRestore {
 
     /**
      * The device name.

@@ -30,9 +30,7 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public abstract class OscillatorComponent extends MachineComponent implements
-        IOscillatorComponent
-{
+public abstract class OscillatorComponent extends MachineComponent implements IOscillatorComponent {
 
     //--------------------------------------------------------------------------
     //
@@ -43,8 +41,7 @@ public abstract class OscillatorComponent extends MachineComponent implements
     /**
      * Constructor.
      */
-    public OscillatorComponent(IMachine machine)
-    {
+    public OscillatorComponent(IMachine machine) {
         super(machine);
     }
 }

@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BasslineDistortionMessage extends CausticMessage
-{
+public class BasslineDistortionMessage extends CausticMessage {
 
     /**
      * Message: <code>/caustic/[machine_index]/distortion_amount [value]</code>
@@ -107,8 +106,7 @@ public class BasslineDistortionMessage extends CausticMessage
     public static final BasslineDistortionMessage DISTORTION_PROGRAM = new BasslineDistortionMessage(
             "/caustic/${0}/distortion_program ${1}");
 
-    BasslineDistortionMessage(String message)
-    {
+    BasslineDistortionMessage(String message) {
         super(message);
     }
 

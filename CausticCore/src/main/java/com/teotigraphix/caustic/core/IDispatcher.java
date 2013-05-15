@@ -1,9 +1,9 @@
+
 package com.teotigraphix.caustic.core;
 
 import org.androidtransfuse.event.EventObserver;
 
-public interface IDispatcher
-{
+public interface IDispatcher {
     /**
      * Register the given observer to be triggered if the given event type is
      * triggered.

@@ -32,8 +32,7 @@ import com.teotigraphix.caustic.device.IDeviceComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IPatternSequencer extends IDeviceComponent, IRestore
-{
+public interface IPatternSequencer extends IDeviceComponent, IRestore {
 
     //--------------------------------------------------------------------------
     //
@@ -241,8 +240,7 @@ public interface IPatternSequencer extends IDeviceComponent, IRestore
     /**
      * The listener API for the {@link IPatternSequencer}.
      */
-    public interface IPatternSequencerListener
-    {
+    public interface IPatternSequencerListener {
 
         /**
          * Dispatched when a bank, pattern select occurs in the sequencer

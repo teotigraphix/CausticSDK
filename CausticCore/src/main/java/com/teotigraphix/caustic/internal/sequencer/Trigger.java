@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.sequencer.data.TriggerData;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Trigger implements ITrigger
-{
+public class Trigger implements ITrigger {
     //--------------------------------------------------------------------------
     //
     // ITrigger API :: Properties
@@ -46,13 +45,11 @@ public class Trigger implements ITrigger
     private IStepPhrase stepPhrase;
 
     @Override
-    public IStepPhrase getStepPhrase()
-    {
+    public IStepPhrase getStepPhrase() {
         return stepPhrase;
     }
 
-    void setPhrase(IStepPhrase value)
-    {
+    void setPhrase(IStepPhrase value) {
         stepPhrase = value;
     }
 
@@ -63,13 +60,11 @@ public class Trigger implements ITrigger
     private int index = -1;
 
     @Override
-    public int getIndex()
-    {
+    public int getIndex() {
         return index;
     }
 
-    void setIndex(int value)
-    {
+    void setIndex(int value) {
         index = value;
     }
 
@@ -80,13 +75,11 @@ public class Trigger implements ITrigger
     private int pitch = 60;
 
     @Override
-    public int getPitch()
-    {
+    public int getPitch() {
         return pitch;
     }
 
-    void setPitch(int value)
-    {
+    void setPitch(int value) {
         pitch = value;
     }
 
@@ -97,13 +90,11 @@ public class Trigger implements ITrigger
     private float gate = 0.25f; // 16th note
 
     @Override
-    public float getGate()
-    {
+    public float getGate() {
         return gate;
     }
 
-    void setGate(float value)
-    {
+    void setGate(float value) {
         gate = value;
     }
 
@@ -114,13 +105,11 @@ public class Trigger implements ITrigger
     private float velocity = 0.75f;
 
     @Override
-    public float getVelocity()
-    {
+    public float getVelocity() {
         return velocity;
     }
 
-    void setVelocity(float value)
-    {
+    void setVelocity(float value) {
         velocity = value;
     }
 
@@ -131,13 +120,11 @@ public class Trigger implements ITrigger
     private int flags = 0;
 
     @Override
-    public int getFlags()
-    {
+    public int getFlags() {
         return flags;
     }
 
-    void setFlags(int value)
-    {
+    void setFlags(int value) {
         flags = value;
         accent = ((flags & IBassline.ACCENT) == IBassline.ACCENT);
         slide = ((flags & IBassline.SLIDE) == IBassline.SLIDE);
@@ -150,13 +137,11 @@ public class Trigger implements ITrigger
     private boolean selected = false;
 
     @Override
-    public boolean isSelected()
-    {
+    public boolean isSelected() {
         return selected;
     }
 
-    void setSelected(boolean value)
-    {
+    void setSelected(boolean value) {
         selected = value;
     }
 
@@ -167,14 +152,12 @@ public class Trigger implements ITrigger
     private boolean accent = false;
 
     @Override
-    public void setAccent(boolean value)
-    {
+    public void setAccent(boolean value) {
         accent = value;
     }
 
     @Override
-    public boolean isAccent()
-    {
+    public boolean isAccent() {
         return accent;
     }
 
@@ -185,14 +168,12 @@ public class Trigger implements ITrigger
     private boolean slide = false;
 
     @Override
-    public void setSlide(boolean value)
-    {
+    public void setSlide(boolean value) {
         slide = value;
     }
 
     @Override
-    public boolean isSlide()
-    {
+    public boolean isSlide() {
         return slide;
     }
 
@@ -203,13 +184,11 @@ public class Trigger implements ITrigger
     private TriggerData data;
 
     @Override
-    public TriggerData getData()
-    {
+    public TriggerData getData() {
         return data;
     }
 
-    void setData(TriggerData value)
-    {
+    void setData(TriggerData value) {
         data = value;
     }
 
@@ -222,13 +201,11 @@ public class Trigger implements ITrigger
     /**
      * Constructor.
      */
-    public Trigger()
-    {
+    public Trigger() {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "[Trigger=(" + pitch + ":" + selected + ":" + gate + ")]";
     }
 }

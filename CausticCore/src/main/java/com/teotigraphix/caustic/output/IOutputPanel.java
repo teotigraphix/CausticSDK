@@ -33,8 +33,7 @@ import com.teotigraphix.caustic.osc.OutputPanelMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IOutputPanel extends IDevice, IRestore
-{
+public interface IOutputPanel extends IDevice, IRestore {
 
     //--------------------------------------------------------------------------
     //
@@ -117,8 +116,7 @@ public interface IOutputPanel extends IDevice, IRestore
      * 
      * @see IOutputPanel#getMode()
      */
-    public enum Mode
-    {
+    public enum Mode {
 
         /**
          * The pattern mode for the outputpanel.
@@ -132,16 +130,14 @@ public interface IOutputPanel extends IDevice, IRestore
 
         private final int mValue;
 
-        Mode(int value)
-        {
+        Mode(int value) {
             mValue = value;
         }
 
         /**
          * Returns the int value.
          */
-        public int getValue()
-        {
+        public int getValue() {
             return mValue;
         }
 
@@ -150,16 +146,14 @@ public interface IOutputPanel extends IDevice, IRestore
          * 
          * @param value The int value.
          */
-        public static final Mode toType(int value)
-        {
+        public static final Mode toType(int value) {
             return (value == 0) ? PATTERN : SONG;
         }
 
         /**
          * @see #toType(int)
          */
-        public static final Mode toType(float value)
-        {
+        public static final Mode toType(float value) {
             return (value == 0.0f) ? PATTERN : SONG;
         }
     }

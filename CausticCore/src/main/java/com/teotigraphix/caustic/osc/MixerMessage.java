@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MixerMessage extends CausticMessage
-{
+public class MixerMessage extends CausticMessage {
 
     //----------------------------------
     // Delay
@@ -181,8 +180,7 @@ public class MixerMessage extends CausticMessage
      * @see IMixerPanel#getBass(int)
      * @see IMixerPanel#setBass(int, float)
      */
-    public static final MixerMessage EQ_BASS = new MixerMessage(
-            "/caustic/mixer/${0}/eq_bass ${1}");
+    public static final MixerMessage EQ_BASS = new MixerMessage("/caustic/mixer/${0}/eq_bass ${1}");
 
     /**
      * Message: <code>/caustic/mixer/[machine_index]/eq_mid [value]</code>
@@ -207,8 +205,7 @@ public class MixerMessage extends CausticMessage
      * @see IMixerPanel#getMid(int)
      * @see IMixerPanel#setMid(int, float)
      */
-    public static final MixerMessage EQ_MID = new MixerMessage(
-            "/caustic/mixer/${0}/eq_mid ${1}");
+    public static final MixerMessage EQ_MID = new MixerMessage("/caustic/mixer/${0}/eq_mid ${1}");
 
     /**
      * Message: <code>/caustic/mixer/[machine_index]/eq_high [value]</code>
@@ -233,8 +230,7 @@ public class MixerMessage extends CausticMessage
      * @see IMixerPanel#getHigh(int)
      * @see IMixerPanel#setHigh(int, float)
      */
-    public static final MixerMessage EQ_HIGH = new MixerMessage(
-            "/caustic/mixer/${0}/eq_high ${1}");
+    public static final MixerMessage EQ_HIGH = new MixerMessage("/caustic/mixer/${0}/eq_high ${1}");
 
     /**
      * Message: <code>/caustic/mixer/[machine_index]/delay_send [value]</code>
@@ -290,8 +286,7 @@ public class MixerMessage extends CausticMessage
      * @see IMixerPanel#getPan(int)
      * @see IMixerPanel#setPan(int, float)
      */
-    public static final MixerMessage PAN = new MixerMessage(
-            "/caustic/mixer/${0}/pan ${1}");
+    public static final MixerMessage PAN = new MixerMessage("/caustic/mixer/${0}/pan ${1}");
 
     /**
      * Message: <code>/caustic/mixer/[machine_index]/stereo_width [value]</code>
@@ -328,8 +323,7 @@ public class MixerMessage extends CausticMessage
      * @see IMixerPanel#isMute(int)
      * @see IMixerPanel#setMute(int, boolean)
      */
-    public static final MixerMessage MUTE = new MixerMessage(
-            "/caustic/mixer/${0}/mute ${1}");
+    public static final MixerMessage MUTE = new MixerMessage("/caustic/mixer/${0}/mute ${1}");
 
     /**
      * Message: <code>/caustic/mixer/[machine_index]/solo [value]</code>
@@ -347,8 +341,7 @@ public class MixerMessage extends CausticMessage
      * @see IMixerPanel#isSolo(int)
      * @see IMixerPanel#setSolo(int, boolean)
      */
-    public static final MixerMessage SOLO = new MixerMessage(
-            "/caustic/mixer/${0}/solo ${1}");
+    public static final MixerMessage SOLO = new MixerMessage("/caustic/mixer/${0}/solo ${1}");
 
     /**
      * Message: <code>/caustic/mixer/[machine_index]/eq_volume [value]</code>
@@ -373,11 +366,9 @@ public class MixerMessage extends CausticMessage
      * @see IMixerPanel#getVolume(int)
      * @see IMixerPanel#setVolume(int, float)
      */
-    public static final MixerMessage VOLUME = new MixerMessage(
-            "/caustic/mixer/${0}/volume ${1}");
+    public static final MixerMessage VOLUME = new MixerMessage("/caustic/mixer/${0}/volume ${1}");
 
-    public MixerMessage(String message)
-    {
+    public MixerMessage(String message) {
         super(message);
     }
 

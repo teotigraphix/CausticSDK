@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.sequencer.data.TriggerData;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ITrigger
-{
+public interface ITrigger {
 
     //--------------------------------------------------------------------------
     //
@@ -99,17 +98,17 @@ public interface ITrigger
     //----------------------------------
 
     void setAccent(boolean value);
-    
+
     boolean isAccent();
-    
+
     //----------------------------------
     // slide
     //----------------------------------
 
     void setSlide(boolean value);
-    
+
     boolean isSlide();
-    
+
     //----------------------------------
     // selected
     //----------------------------------
@@ -127,6 +126,5 @@ public interface ITrigger
      * The data associated with the trigger.
      */
     TriggerData getData();
-
 
 }

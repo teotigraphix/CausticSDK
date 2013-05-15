@@ -1,3 +1,4 @@
+
 package com.teotigraphix.caustic.desktop;
 
 import java.io.BufferedReader;
@@ -22,8 +23,7 @@ import com.teotigraphix.caustic.core.XMLMemento;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class RuntimeUtils
-{
+public class RuntimeUtils {
     private static final String CAUSTIC = "caustic";
 
     private static final String CAUSTIC_EXTENSION = ".caustic";
@@ -33,18 +33,17 @@ public class RuntimeUtils
     private static final String CAUSTIC_SAMPLES = "caustic/samples";
 
     private static final String CAUSTIC_SONGS = "caustic/songs";
-    
+
     /**
      * This has to be set at Application startup before ANYTHING happens
      * Android; Environment.getExternalStorageDirectory();
      */
     public static String STORAGE_ROOT = "C:\\Users\\Work\\Documents";
-    
+
     /**
      * /mnt/sdcard/
      */
-    public static final File getExternalStorageDirectory()
-    {
+    public static final File getExternalStorageDirectory() {
         //File file = Environment.getExternalStorageDirectory();
         File file = new File(STORAGE_ROOT);
         return file;
@@ -56,8 +55,7 @@ public class RuntimeUtils
      * 
      * @param path The path to append to the public device directory.
      */
-    public static final File getDirectory(String path)
-    {
+    public static final File getDirectory(String path) {
         File directory = new File(getExternalStorageDirectory(), path);
         return directory;
     }
@@ -68,8 +66,7 @@ public class RuntimeUtils
      * @param applicationDirectory Usually /mnt/sdcard/MyApp
      * @param path The child folder hierarchy.
      */
-    public static File getDirectory(File applicationDirectory, String path)
-    {
+    public static File getDirectory(File applicationDirectory, String path) {
         File directory = new File(applicationDirectory, path);
         return directory;
     }
@@ -81,23 +78,16 @@ public class RuntimeUtils
      * @return THe String read from the stream.
      * @throws IOException
      */
-    public static final String convertStreamToString(InputStream is)
-            throws IOException
-    {
+    public static final String convertStreamToString(InputStream is) throws IOException {
         Writer writer = new StringWriter();
         char[] buffer = new char[1024];
-        try
-        {
-            Reader reader = new BufferedReader(new InputStreamReader(is,
-                    "UTF-8"));
+        try {
+            Reader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             int n;
-            while ((n = reader.read(buffer)) != -1)
-            {
+            while ((n = reader.read(buffer)) != -1) {
                 writer.write(buffer, 0, n);
             }
-        }
-        finally
-        {
+        } finally {
             is.close();
         }
         return writer.toString();
@@ -110,14 +100,12 @@ public class RuntimeUtils
      * @return The String loaded from the File.
      * @throws IOException
      */
-    public static final String loadFile(File file) throws IOException
-    {
+    public static final String loadFile(File file) throws IOException {
         FileReader reader = new FileReader(file);
         BufferedReader br = new BufferedReader(reader);
         StringBuffer s = new StringBuffer();
         String line;
-        while ((line = br.readLine()) != null)
-        {
+        while ((line = br.readLine()) != null) {
             s.append(line);
             s.append("\n");
         }
@@ -132,21 +120,14 @@ public class RuntimeUtils
      * @param data The String data to save.
      * @throws IOException
      */
-    public static final void saveFile(File file, String data)
-            throws IOException
-    {
+    public static final void saveFile(File file, String data) throws IOException {
         FileWriter writer = null;
-        try
-        {
+        try {
             writer = new FileWriter(file);
             writer.write(data);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw e;
-        }
-        finally
-        {
+        } finally {
             writer.close();
         }
     }
@@ -158,8 +139,7 @@ public class RuntimeUtils
      * @return An {@link IMemento} load from the file's String data.
      * @throws IOException
      */
-    public static final IMemento loadMemento(File file) throws IOException
-    {
+    public static final IMemento loadMemento(File file) throws IOException {
         FileReader reader = new FileReader(file);
         IMemento memento = XMLMemento.createReadRoot(reader);
         return memento;
@@ -172,9 +152,7 @@ public class RuntimeUtils
      * @param memento The {@link IMemento} to save to the file.
      * @throws IOException
      */
-    public static final void saveMemento(File file, IMemento memento)
-            throws IOException
-    {
+    public static final void saveMemento(File file, IMemento memento) throws IOException {
         FileWriter writer = new FileWriter(file);
         memento.save(writer);
     }
@@ -188,16 +166,14 @@ public class RuntimeUtils
     /**
      * Returns the <code>/sdcard/caustic</code> directory.
      */
-    public static File getCausticDirectory()
-    {
+    public static File getCausticDirectory() {
         return new File(getExternalStorageDirectory(), CAUSTIC);
     }
 
     /**
      * Returns the <code>/sdcard/caustic/presets</code> directory.
      */
-    public static File getCausticPresetsDirectory()
-    {
+    public static File getCausticPresetsDirectory() {
         return new File(getExternalStorageDirectory(), CAUSTIC_PRESETS);
     }
 
@@ -207,13 +183,12 @@ public class RuntimeUtils
      * .
      * 
      * @param presetType The lowercase preset type (<code>bassline</code>,
-     * <code>beatbox</code>, <code>pcmsynth</code>, <code>subsynth</code>).
+     *            <code>beatbox</code>, <code>pcmsynth</code>,
+     *            <code>subsynth</code>).
      * @param presetName The name of the preset file without the preset
-     * extension.
+     *            extension.
      */
-    public static File getCausticPresetsFile(final String presetType,
-            final String presetName)
-    {
+    public static File getCausticPresetsFile(final String presetType, final String presetName) {
         final StringBuilder sb = new StringBuilder();
         sb.append(presetType);
         sb.append("/");
@@ -226,14 +201,11 @@ public class RuntimeUtils
     /**
      * Returns the <code>/sdcard/caustic/samples</code> directory.
      */
-    public static File getCausticSamplesDirectory()
-    {
+    public static File getCausticSamplesDirectory() {
         return new File(getExternalStorageDirectory(), CAUSTIC_SAMPLES);
     }
 
-    public static File getCausticSamplesFile(final String sampleType,
-            final String sampleName)
-    {
+    public static File getCausticSamplesFile(final String sampleType, final String sampleName) {
         final StringBuilder sb = new StringBuilder();
         sb.append(sampleType);
         sb.append("/");
@@ -245,8 +217,7 @@ public class RuntimeUtils
     /**
      * Returns the <code>/sdcard/caustic/songs</code> directory.
      */
-    public static File getCausticSongsDirectory()
-    {
+    public static File getCausticSongsDirectory() {
         return new File(getExternalStorageDirectory(), CAUSTIC_SONGS);
     }
 
@@ -255,33 +226,25 @@ public class RuntimeUtils
      * {@link #getCausticSongsDirectory()}.
      * 
      * @param songName The song name without the <code>.caustic</code>
-     * extension.
+     *            extension.
      */
-    public static File getCausticSongFile(String songName)
-    {
-        return new File(getCausticSongsDirectory(), songName
-                + CAUSTIC_EXTENSION);
+    public static File getCausticSongFile(String songName) {
+        return new File(getCausticSongsDirectory(), songName + CAUSTIC_EXTENSION);
     }
 
-    public static final void copyDirectory(File src, File dest)
-            throws IOException
-    {
+    public static final void copyDirectory(File src, File dest) throws IOException {
         FileUtils.copyDirectory(src, dest);
     }
 
-    public static final void deleteDirectory(File file) throws IOException
-    {
+    public static final void deleteDirectory(File file) throws IOException {
         FileUtils.deleteDirectory(file);
     }
 
-    public static final String readFileToString(File file) throws IOException
-    {
+    public static final String readFileToString(File file) throws IOException {
         return FileUtils.readFileToString(file);
     }
 
-    public static final FileInputStream openInputStream(File file)
-            throws IOException
-    {
+    public static final FileInputStream openInputStream(File file) throws IOException {
         return FileUtils.openInputStream(file);
     }
 }

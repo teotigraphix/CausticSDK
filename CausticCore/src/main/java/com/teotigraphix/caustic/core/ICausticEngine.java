@@ -30,8 +30,7 @@ package com.teotigraphix.caustic.core;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ICausticEngine
-{
+public interface ICausticEngine {
 
     //--------------------------------------------------------------------------
     //
@@ -55,7 +54,7 @@ public interface ICausticEngine
      * 
      * @param message The String OSC message.
      * @return A String message or <code>null</code> if the message returned and
-     * empty String <code>""</code>.
+     *         empty String <code>""</code>.
      * @since 1.0
      */
     String queryMessage(String message);

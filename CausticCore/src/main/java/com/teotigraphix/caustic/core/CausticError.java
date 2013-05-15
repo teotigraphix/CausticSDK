@@ -26,27 +26,22 @@ package com.teotigraphix.caustic.core;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class CausticError extends RuntimeException
-{
+public class CausticError extends RuntimeException {
 
     private static final long serialVersionUID = -8282828241466601559L;
 
-    public CausticError()
-    {
+    public CausticError() {
     }
 
-    public CausticError(String detailMessage)
-    {
+    public CausticError(String detailMessage) {
         super(detailMessage);
     }
 
-    public CausticError(Throwable throwable)
-    {
+    public CausticError(Throwable throwable) {
         super(throwable);
     }
 
-    public CausticError(String detailMessage, Throwable throwable)
-    {
+    public CausticError(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
     }
 

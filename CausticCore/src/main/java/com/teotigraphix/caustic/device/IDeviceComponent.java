@@ -32,8 +32,7 @@ package com.teotigraphix.caustic.device;
  * @see IEffectComponent
  * @see IPatternSequencer
  */
-public interface IDeviceComponent extends IDeviceAware
-{
+public interface IDeviceComponent extends IDeviceAware {
 
     //--------------------------------------------------------------------------
     //
@@ -49,6 +48,6 @@ public interface IDeviceComponent extends IDeviceAware
      * The name of the device component within it's parent {@link IDevice}.
      */
     String getName();
-    
+
     IDeviceFactory getFactory();
 }

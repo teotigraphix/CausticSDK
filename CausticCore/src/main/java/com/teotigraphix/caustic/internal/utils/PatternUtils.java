@@ -24,30 +24,27 @@ package com.teotigraphix.caustic.internal.utils;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class PatternUtils
-{
+public final class PatternUtils {
 
-    private static final String[] chars = { "A", "B", "C", "D" };
+    private static final String[] chars = {
+            "A", "B", "C", "D"
+    };
 
-    public static final String toPattern(int index)
-    {
+    public static final String toPattern(int index) {
         index++;
         if (index < 10)
             return "0" + Integer.toString(index);
         return Integer.toString(index);
     }
 
-    public static final int toPattern(String patternName)
-    {
+    public static final int toPattern(String patternName) {
         String end = patternName.substring(1);
         int pattern = Integer.valueOf(end);
         return pattern - 1;
     }
 
-    public static final int toBank(String patternName)
-    {
-        for (int i = 0; i < chars.length; i++)
-        {
+    public static final int toBank(String patternName) {
+        for (int i = 0; i < chars.length; i++) {
             String bank = chars[i];
             if (patternName.indexOf(bank) == 0)
                 return i;
@@ -55,13 +52,11 @@ public final class PatternUtils
         return -1;
     }
 
-    public static final String toBank(int bank)
-    {
+    public static final String toBank(int bank) {
         return chars[bank];
     }
 
-    public static final String toString(int bank, int index)
-    {
+    public static final String toString(int bank, int index) {
         return toBank(bank) + toPattern(index);
     }
 }

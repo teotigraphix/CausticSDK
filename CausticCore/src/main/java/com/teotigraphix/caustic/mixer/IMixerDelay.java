@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @since 1.0
  * @see IMixerPanel#getDelay()
  */
-public interface IMixerDelay extends IEffectComponent, IPersist
-{
+public interface IMixerDelay extends IEffectComponent, IPersist {
 
     //--------------------------------------------------------------------------
     //

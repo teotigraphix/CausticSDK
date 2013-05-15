@@ -39,8 +39,7 @@ import com.teotigraphix.caustic.machine.IBassline;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Bassline extends Synth implements IBassline
-{
+public class Bassline extends Synth implements IBassline {
 
     //--------------------------------------------------------------------------
     //
@@ -55,13 +54,11 @@ public class Bassline extends Synth implements IBassline
     private IVolumeComponent mVolume;
 
     @Override
-    public IVolumeComponent getVolume()
-    {
+    public IVolumeComponent getVolume() {
         return mVolume;
     }
 
-    public void setVolume(IVolumeComponent value)
-    {
+    public void setVolume(IVolumeComponent value) {
         mVolume = value;
     }
 
@@ -72,13 +69,11 @@ public class Bassline extends Synth implements IBassline
     private IBasslineDistortionUnit mDistortion;
 
     @Override
-    public IBasslineDistortionUnit getDistortion()
-    {
+    public IBasslineDistortionUnit getDistortion() {
         return mDistortion;
     }
 
-    public void setDistortion(IBasslineDistortionUnit value)
-    {
+    public void setDistortion(IBasslineDistortionUnit value) {
         mDistortion = value;
     }
 
@@ -89,13 +84,11 @@ public class Bassline extends Synth implements IBassline
     private IBasslineLFO1 mLFO1;
 
     @Override
-    public IBasslineLFO1 getLFO1()
-    {
+    public IBasslineLFO1 getLFO1() {
         return mLFO1;
     }
 
-    public void setLFO1(IBasslineLFO1 value)
-    {
+    public void setLFO1(IBasslineLFO1 value) {
         mLFO1 = value;
     }
 
@@ -106,13 +99,11 @@ public class Bassline extends Synth implements IBassline
     private IBasslineFilter mFilter;
 
     @Override
-    public IBasslineFilter getFilter()
-    {
+    public IBasslineFilter getFilter() {
         return mFilter;
     }
 
-    public void setFilter(IBasslineFilter value)
-    {
+    public void setFilter(IBasslineFilter value) {
         mFilter = value;
     }
 
@@ -123,13 +114,11 @@ public class Bassline extends Synth implements IBassline
     private IBasslineOSC1 mOsc1;
 
     @Override
-    public IBasslineOSC1 getOsc1()
-    {
+    public IBasslineOSC1 getOsc1() {
         return mOsc1;
     }
 
-    public void setOsc1(IBasslineOSC1 value)
-    {
+    public void setOsc1(IBasslineOSC1 value) {
         mOsc1 = value;
     }
 
@@ -139,8 +128,7 @@ public class Bassline extends Synth implements IBassline
     //
     //--------------------------------------------------------------------------
 
-    public Bassline(String id)
-    {
+    public Bassline(String id) {
         super();
         setId(id);
     }
@@ -152,8 +140,7 @@ public class Bassline extends Synth implements IBassline
     //--------------------------------------------------------------------------
 
     @Override
-    protected void createComponents()
-    {
+    protected void createComponents() {
         super.createComponents();
         setSynth(new BasslineSynthComponent(this));
         setVolume(new VolumeComponent(this));
@@ -164,32 +151,27 @@ public class Bassline extends Synth implements IBassline
     }
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         getOsc1().copy(memento.createChild(MachineConstants.TAG_OSC));
         getVolume().copy(memento.createChild(MachineConstants.TAG_VOLUME));
-        getDistortion().copy(
-                memento.createChild(MachineConstants.TAG_DISTORTION));
+        getDistortion().copy(memento.createChild(MachineConstants.TAG_DISTORTION));
         getLFO1().copy(memento.createChild(MachineConstants.TAG_LFO));
         getFilter().copy(memento.createChild(MachineConstants.TAG_FILTER));
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
         getOsc1().paste(memento.getChild(MachineConstants.TAG_OSC));
         getVolume().paste(memento.getChild(MachineConstants.TAG_VOLUME));
-        getDistortion()
-                .paste(memento.getChild(MachineConstants.TAG_DISTORTION));
+        getDistortion().paste(memento.getChild(MachineConstants.TAG_DISTORTION));
         getLFO1().paste(memento.getChild(MachineConstants.TAG_LFO));
         getFilter().paste(memento.getChild(MachineConstants.TAG_FILTER));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         getSequencer().restore();
         getOsc1().restore();
         getVolume().restore();

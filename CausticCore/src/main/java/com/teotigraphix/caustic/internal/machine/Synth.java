@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.machine.ISynthComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public abstract class Synth extends Machine implements ISynth
-{
+public abstract class Synth extends Machine implements ISynth {
 
     //--------------------------------------------------------------------------
     //
@@ -46,13 +45,11 @@ public abstract class Synth extends Machine implements ISynth
     private ISynthComponent mSynth;
 
     @Override
-    public final ISynthComponent getSynth()
-    {
+    public final ISynthComponent getSynth() {
         return mSynth;
     }
 
-    public final void setSynth(ISynthComponent value)
-    {
+    public final void setSynth(ISynthComponent value) {
         mSynth = value;
     }
 
@@ -68,13 +65,11 @@ public abstract class Synth extends Machine implements ISynth
 
     private boolean mEnabled = false;
 
-    public final boolean isEnabled()
-    {
+    public final boolean isEnabled() {
         return mEnabled;
     }
 
-    public final void setEnabled(boolean value)
-    {
+    public final void setEnabled(boolean value) {
         if (value == mEnabled)
             return;
         mEnabled = value;
@@ -87,13 +82,11 @@ public abstract class Synth extends Machine implements ISynth
 
     private boolean mMuted = false;
 
-    public boolean isMuted()
-    {
+    public boolean isMuted() {
         return mMuted;
     }
 
-    public void setMuted(boolean value)
-    {
+    public void setMuted(boolean value) {
         if (value == mMuted)
             return;
         mMuted = value;
@@ -106,13 +99,11 @@ public abstract class Synth extends Machine implements ISynth
 
     private boolean mSelected = false;
 
-    public boolean getSelected()
-    {
+    public boolean getSelected() {
         return mSelected;
     }
 
-    public void setSelected(boolean value)
-    {
+    public void setSelected(boolean value) {
         if (value == mSelected)
             return;
         mSelected = value;
@@ -125,13 +116,11 @@ public abstract class Synth extends Machine implements ISynth
 
     private String mPresetBank;
 
-    public final String getPresetBank()
-    {
+    public final String getPresetBank() {
         return mPresetBank;
     }
 
-    public final void setPresetBank(String value)
-    {
+    public final void setPresetBank(String value) {
         if (value == mPresetBank)
             return;
         mPresetBank = value;
@@ -147,8 +136,7 @@ public abstract class Synth extends Machine implements ISynth
     /**
      * Constructor.
      */
-    public Synth()
-    {
+    public Synth() {
         super();
     }
 
@@ -162,29 +150,25 @@ public abstract class Synth extends Machine implements ISynth
      * Creates the synthComponent.
      */
     @Override
-    protected void createComponents()
-    {
+    protected void createComponents() {
         super.createComponents();
         setSynth(new SynthComponent(this));
     }
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         mSynth.copy(memento.createChild(MachineConstants.TAG_SYNTH));
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
         mSynth.paste(memento.getChild(MachineConstants.TAG_SYNTH));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         super.restore();
         mSynth.restore();
     }

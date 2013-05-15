@@ -26,22 +26,18 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BasslineSynthComponent extends SynthComponent
-{
+public class BasslineSynthComponent extends SynthComponent {
 
     @Override
-    public int getPolyphony()
-    {
+    public int getPolyphony() {
         return 1;
     }
 
     @Override
-    public void setPolyphony(int value)
-    {
+    public void setPolyphony(int value) {
     }
 
-    public BasslineSynthComponent(IMachine machine)
-    {
+    public BasslineSynthComponent(IMachine machine) {
         super(machine);
     }
 

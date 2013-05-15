@@ -38,8 +38,7 @@ import com.teotigraphix.caustic.sampler.IPCMSampler;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PCMSynth extends Synth implements IPCMSynth
-{
+public class PCMSynth extends Synth implements IPCMSynth {
 
     /**
      * The device name prefix.
@@ -59,13 +58,11 @@ public class PCMSynth extends Synth implements IPCMSynth
     private IVolumeEnvelope mVolume;
 
     @Override
-    public IVolumeEnvelope getVolume()
-    {
+    public IVolumeEnvelope getVolume() {
         return mVolume;
     }
 
-    public void setVolume(IVolumeEnvelope value)
-    {
+    public void setVolume(IVolumeEnvelope value) {
         mVolume = value;
     }
 
@@ -76,13 +73,11 @@ public class PCMSynth extends Synth implements IPCMSynth
     private IFilter mFilter;
 
     @Override
-    public IFilter getFilter()
-    {
+    public IFilter getFilter() {
         return mFilter;
     }
 
-    public void setFilter(IFilter value)
-    {
+    public void setFilter(IFilter value) {
         mFilter = value;
     }
 
@@ -93,13 +88,11 @@ public class PCMSynth extends Synth implements IPCMSynth
     private IPCMSynthLFO1 mLFO1;
 
     @Override
-    public IPCMSynthLFO1 getLFO1()
-    {
+    public IPCMSynthLFO1 getLFO1() {
         return mLFO1;
     }
 
-    public void setLFO1(IPCMSynthLFO1 value)
-    {
+    public void setLFO1(IPCMSynthLFO1 value) {
         mLFO1 = value;
     }
 
@@ -110,13 +103,11 @@ public class PCMSynth extends Synth implements IPCMSynth
     private IPitchTuner mPitch;
 
     @Override
-    public IPitchTuner getPitch()
-    {
+    public IPitchTuner getPitch() {
         return mPitch;
     }
 
-    public void setPitch(IPitchTuner value)
-    {
+    public void setPitch(IPitchTuner value) {
         mPitch = value;
     }
 
@@ -127,13 +118,11 @@ public class PCMSynth extends Synth implements IPCMSynth
     private IPCMSampler mSampler;
 
     @Override
-    public IPCMSampler getSampler()
-    {
+    public IPCMSampler getSampler() {
         return mSampler;
     }
 
-    public void setSampler(IPCMSampler value)
-    {
+    public void setSampler(IPCMSampler value) {
         mSampler = value;
     }
 
@@ -146,8 +135,7 @@ public class PCMSynth extends Synth implements IPCMSynth
     /**
      * Constructor.
      */
-    public PCMSynth(String id)
-    {
+    public PCMSynth(String id) {
         super();
         setId(id);
     }
@@ -159,8 +147,7 @@ public class PCMSynth extends Synth implements IPCMSynth
     //--------------------------------------------------------------------------
 
     @Override
-    protected void createComponents()
-    {
+    protected void createComponents() {
         super.createComponents();
 
         setSequencer(new PatternSequencer(this));
@@ -172,8 +159,7 @@ public class PCMSynth extends Synth implements IPCMSynth
     }
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         getVolume().copy(memento.createChild(MachineConstants.TAG_VOLUME));
         getFilter().copy(memento.createChild(MachineConstants.TAG_FILTER));
@@ -183,8 +169,7 @@ public class PCMSynth extends Synth implements IPCMSynth
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
         getVolume().paste(memento.getChild(MachineConstants.TAG_VOLUME));
         getFilter().paste(memento.getChild(MachineConstants.TAG_FILTER));
@@ -194,8 +179,7 @@ public class PCMSynth extends Synth implements IPCMSynth
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         super.restore();
         getVolume().restore();
         getFilter().restore();

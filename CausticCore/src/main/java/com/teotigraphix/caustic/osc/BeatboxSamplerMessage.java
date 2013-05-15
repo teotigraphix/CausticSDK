@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BeatboxSamplerMessage extends CausticMessage
-{
+public class BeatboxSamplerMessage extends CausticMessage {
 
     /**
      * Message:
@@ -218,8 +217,7 @@ public class BeatboxSamplerMessage extends CausticMessage
     public static final PCMSamplerMessage QUERY_CHANNEL_SAMPLE_NAME = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/sample_name");
 
-    BeatboxSamplerMessage(String message)
-    {
+    BeatboxSamplerMessage(String message) {
         super(message);
     }
 }

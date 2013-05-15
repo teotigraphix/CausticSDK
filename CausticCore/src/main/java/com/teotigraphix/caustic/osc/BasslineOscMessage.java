@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BasslineOscMessage extends CausticMessage
-{
+public class BasslineOscMessage extends CausticMessage {
 
     /**
      * Message: <code>/caustic/[machine_index]/waveform [value]</code>
@@ -94,8 +93,7 @@ public class BasslineOscMessage extends CausticMessage
      * @see IBasslineOSC1#getTune()
      * @see IBasslineOSC1#setTune(int)
      */
-    public static final BasslineOscMessage TUNE = new BasslineOscMessage(
-            "/caustic/${0}/tune ${1}");
+    public static final BasslineOscMessage TUNE = new BasslineOscMessage("/caustic/${0}/tune ${1}");
 
     /**
      * Message: <code>/caustic/[machine_index]/pulse_width [value]</code>
@@ -119,8 +117,7 @@ public class BasslineOscMessage extends CausticMessage
     public static final BasslineOscMessage PULSE_WIDTH = new BasslineOscMessage(
             "/caustic/${0}/pulse_width ${1}");
 
-    BasslineOscMessage(String message)
-    {
+    BasslineOscMessage(String message) {
         super(message);
     }
 }

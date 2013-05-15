@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SynthMessage extends CausticMessage
-{
+public class SynthMessage extends CausticMessage {
 
     /**
      * Message: <code>/caustic/[machine_index]/polyphony [value]</code>
@@ -49,8 +48,7 @@ public class SynthMessage extends CausticMessage
      * @see ISynthComponent#setPolyphony(int)
      * @see ISynthComponent#getPolyphony()
      */
-    public static final SynthMessage POLYPHONY = new SynthMessage(
-            "/caustic/${0}/polyphony ${1}");
+    public static final SynthMessage POLYPHONY = new SynthMessage("/caustic/${0}/polyphony ${1}");
 
     /**
      * Message: <code>/caustic/[machine_index]/note/[pitch] [mode]</code>
@@ -72,8 +70,7 @@ public class SynthMessage extends CausticMessage
      * @see ISynthComponent#noteOn(int)
      * @see ISynthComponent#noteOff(int)
      */
-    public static final SynthMessage NOTE = new SynthMessage(
-            "/caustic/${0}/note/${1} ${2} ${3}");
+    public static final SynthMessage NOTE = new SynthMessage("/caustic/${0}/note/${1} ${2} ${3}");
 
     /**
      * Message:
@@ -98,8 +95,7 @@ public class SynthMessage extends CausticMessage
     public static final SynthMessage NOTE_PREVIEW = new SynthMessage(
             "/caustic/${0}/note/preview ${1} ${2}");
 
-    SynthMessage(String message)
-    {
+    SynthMessage(String message) {
         super(message);
     }
 }

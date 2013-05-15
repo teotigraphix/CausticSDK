@@ -41,8 +41,7 @@ import com.teotigraphix.caustic.sequencer.ISequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IDeviceFactory
-{
+public interface IDeviceFactory {
 
     //--------------------------------------------------------------------------
     //
@@ -88,8 +87,7 @@ public interface IDeviceFactory
      * @return The new machine instance of type.
      * @throws CausticException
      */
-    IMachine create(String machineId, MachineType machineType)
-            throws CausticException;
+    IMachine create(String machineId, MachineType machineType) throws CausticException;
 
     /**
      * Creates an IMixerPanel effect.

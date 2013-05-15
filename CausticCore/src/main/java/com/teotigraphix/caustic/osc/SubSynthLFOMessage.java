@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SubSynthLFOMessage extends CausticMessage
-{
+public class SubSynthLFOMessage extends CausticMessage {
 
     /**
      * Message: <code>/caustic/[machine_index]/lfo1_depth [value]</code>
@@ -176,8 +175,7 @@ public class SubSynthLFOMessage extends CausticMessage
     public static final SubSynthLFOMessage LFO1_WAVEFORM = new SubSynthLFOMessage(
             "/caustic/${0}/lfo1_waveform ${1}");
 
-    SubSynthLFOMessage(String message)
-    {
+    SubSynthLFOMessage(String message) {
         super(message);
     }
 

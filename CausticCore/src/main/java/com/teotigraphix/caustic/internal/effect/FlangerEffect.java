@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.effect.IFlangerEffect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class FlangerEffect extends Effect implements IFlangerEffect
-{
+public class FlangerEffect extends Effect implements IFlangerEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -46,19 +45,16 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     private float mDepth = 0.9f;
 
     @Override
-    public float getDepth()
-    {
+    public float getDepth() {
         return mDepth;
     }
 
-    public float getDepth(boolean restore)
-    {
+    public float getDepth(boolean restore) {
         return get(CONTROL_DEPTH);
     }
 
     @Override
-    public void setDepth(float value)
-    {
+    public void setDepth(float value) {
         if (value == mDepth)
             return;
         if (value < 0.1f || value > 0.95f)
@@ -74,19 +70,16 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     private float mFeedback = 0.4f;
 
     @Override
-    public float getFeedback()
-    {
+    public float getFeedback() {
         return mFeedback;
     }
 
-    public float getFeedback(boolean restore)
-    {
+    public float getFeedback(boolean restore) {
         return get(CONTROL_FEEDBACK);
     }
 
     @Override
-    public void setFeedback(float value)
-    {
+    public void setFeedback(float value) {
         if (value == mFeedback)
             return;
         if (value < 0.25f || value > 0.8f)
@@ -102,19 +95,16 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     private float mRate = 0.4f;
 
     @Override
-    public float getRate()
-    {
+    public float getRate() {
         return mRate;
     }
 
-    public float getRate(boolean restore)
-    {
+    public float getRate(boolean restore) {
         return get(CONTROL_RATE);
     }
 
     @Override
-    public void setRate(float value)
-    {
+    public void setRate(float value) {
         if (value == mRate)
             return;
         if (value < 0.04f || value > 2.0f)
@@ -130,19 +120,16 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     private float mWet = 0.5f;
 
     @Override
-    public float getWet()
-    {
+    public float getWet() {
         return mWet;
     }
 
-    public float getWet(boolean restore)
-    {
+    public float getWet(boolean restore) {
         return get(CONTROL_WET);
     }
 
     @Override
-    public void setWet(float value)
-    {
+    public void setWet(float value) {
         if (value == mWet)
             return;
         if (value < 0f || value > 1f)
@@ -157,8 +144,7 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     //
     //--------------------------------------------------------------------------
 
-    public FlangerEffect(int index, IDevice device)
-    {
+    public FlangerEffect(int index, IDevice device) {
         super(index, device);
         setType(EffectType.FLANGER);
     }
@@ -170,8 +156,7 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putFloat(CONTROL_DEPTH, getDepth());
         memento.putFloat(CONTROL_FEEDBACK, getFeedback());
         memento.putFloat(CONTROL_RATE, getRate());
@@ -179,8 +164,7 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setDepth(memento.getFloat(CONTROL_DEPTH));
         setFeedback(memento.getFloat(CONTROL_FEEDBACK));
         setRate(memento.getFloat(CONTROL_RATE));
@@ -188,8 +172,7 @@ public class FlangerEffect extends Effect implements IFlangerEffect
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setDepth(getDepth(true));
         setFeedback(getFeedback(true));
         setRate(getRate(true));

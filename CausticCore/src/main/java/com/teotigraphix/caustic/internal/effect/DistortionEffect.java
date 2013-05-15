@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.effect.IDistortionEffect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class DistortionEffect extends Effect implements IDistortionEffect
-{
+public class DistortionEffect extends Effect implements IDistortionEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -46,19 +45,16 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     private Program mProgram = Program.OVERDRIVE;
 
     @Override
-    public Program getProgram()
-    {
+    public Program getProgram() {
         return mProgram;
     }
 
-    public Program getProgram(boolean restore)
-    {
-        return Program.toType((int) get(CONTROL_PROGRAM));
+    public Program getProgram(boolean restore) {
+        return Program.toType((int)get(CONTROL_PROGRAM));
     }
 
     @Override
-    public void setProgram(Program value)
-    {
+    public void setProgram(Program value) {
         if (value == mProgram)
             return;
         mProgram = value;
@@ -72,19 +68,16 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     private float mPreGain;
 
     @Override
-    public float getPreGain()
-    {
+    public float getPreGain() {
         return mPreGain;
     }
 
-    public float getPreGain(boolean restore)
-    {
+    public float getPreGain(boolean restore) {
         return get(CONTROL_PRE);
     }
 
     @Override
-    public void setPreGain(float value)
-    {
+    public void setPreGain(float value) {
         if (value == mPreGain)
             return;
         if (value < 0f || value > 5f)
@@ -100,19 +93,16 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     private float mAmount = 16.3f;
 
     @Override
-    public float getAmount()
-    {
+    public float getAmount() {
         return mAmount;
     }
 
-    public float getAmount(boolean restore)
-    {
+    public float getAmount(boolean restore) {
         return get(CONTROL_AMOUNT);
     }
 
     @Override
-    public void setAmount(float value)
-    {
+    public void setAmount(float value) {
         if (value == mAmount)
             return;
         if (value < 0f || value > 5f)
@@ -128,19 +118,16 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     private float mPostGain;
 
     @Override
-    public float getPostGain()
-    {
+    public float getPostGain() {
         return mPostGain;
     }
 
-    public float getPostGain(boolean restore)
-    {
+    public float getPostGain(boolean restore) {
         return get(CONTROL_POST);
     }
 
     @Override
-    public void setPostGain(float value)
-    {
+    public void setPostGain(float value) {
         if (value == mPostGain)
             return;
         if (value < 0f || value > 5f)
@@ -155,8 +142,7 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     //
     //--------------------------------------------------------------------------
 
-    public DistortionEffect(int index, IDevice device)
-    {
+    public DistortionEffect(int index, IDevice device) {
         super(index, device);
         setType(EffectType.DISTORTION);
     }
@@ -168,8 +154,7 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putFloat(CONTROL_AMOUNT, getAmount());
         memento.putFloat(CONTROL_PRE, getPreGain());
         memento.putInteger(CONTROL_PROGRAM, getProgram().getValue());
@@ -177,8 +162,7 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setAmount(memento.getFloat(CONTROL_AMOUNT));
         setPreGain(memento.getFloat(CONTROL_PRE));
         setProgram(Program.toType(memento.getInteger(CONTROL_PROGRAM)));
@@ -186,8 +170,7 @@ public class DistortionEffect extends Effect implements IDistortionEffect
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setAmount(getAmount(true));
         setPreGain(getPreGain(true));
         setProgram(getProgram(true));

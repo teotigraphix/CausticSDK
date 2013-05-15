@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SequencerMessage extends CausticMessage
-{
+public class SequencerMessage extends CausticMessage {
 
     /**
      * Message:
@@ -215,8 +214,7 @@ public class SequencerMessage extends CausticMessage
     public static final SequencerMessage CLEAR_AUTOMATION = new SequencerMessage(
             "/caustic/sequencer/clear_automation");
 
-    SequencerMessage(String message)
-    {
+    SequencerMessage(String message) {
         super(message);
     }
 }

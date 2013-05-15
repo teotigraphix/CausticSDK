@@ -29,8 +29,7 @@ import com.teotigraphix.caustic.osc.FilterMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BasslineFilter extends FilterComponent implements IBasslineFilter
-{
+public class BasslineFilter extends FilterComponent implements IBasslineFilter {
 
     //--------------------------------------------------------------------------
     //
@@ -45,19 +44,16 @@ public class BasslineFilter extends FilterComponent implements IBasslineFilter
     private float mDecay = 0f;
 
     @Override
-    public float getDecay()
-    {
+    public float getDecay() {
         return mDecay;
     }
 
-    public float getDecay(boolean restore)
-    {
+    public float getDecay(boolean restore) {
         return FilterMessage.FILTER_DECAY.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setDecay(float value)
-    {
+    public void setDecay(float value) {
         if (value == mDecay)
             return;
         if (value < 0f || value > 1f)
@@ -73,27 +69,22 @@ public class BasslineFilter extends FilterComponent implements IBasslineFilter
     private float mEnvMod = 0.99f;
 
     @Override
-    public float getEnvMod()
-    {
+    public float getEnvMod() {
         return mEnvMod;
     }
 
-    public float getEnvMod(boolean restore)
-    {
-        return FilterMessage.FILTER_ENVMOD
-                .query(getEngine(), getMachineIndex());
+    public float getEnvMod(boolean restore) {
+        return FilterMessage.FILTER_ENVMOD.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setEnvMod(float value)
-    {
+    public void setEnvMod(float value) {
         if (value == mEnvMod)
             return;
         if (value < 0f || value > 1f)
             throw newRangeException("filter_envmod", "0..1", value);
         mEnvMod = value;
-        FilterMessage.FILTER_ENVMOD.send(getEngine(), getMachineIndex(),
-                mEnvMod);
+        FilterMessage.FILTER_ENVMOD.send(getEngine(), getMachineIndex(), mEnvMod);
     }
 
     //--------------------------------------------------------------------------
@@ -105,32 +96,28 @@ public class BasslineFilter extends FilterComponent implements IBasslineFilter
     /**
      * Constructor.
      */
-    public BasslineFilter(IMachine machine)
-    {
+    public BasslineFilter(IMachine machine) {
         super(machine);
         mCutoff = 0.4f;
         mResonance = 0.99f;
     }
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         memento.putFloat(FilterConstants.ATT_ENVMOD, getEnvMod());
         memento.putFloat(FilterConstants.ATT_DECAY, getDecay());
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
         setEnvMod(memento.getFloat(FilterConstants.ATT_ENVMOD));
         setDecay(memento.getFloat(FilterConstants.ATT_DECAY));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         super.restore();
         setDecay(getDecay(true));
         setEnvMod(getEnvMod(true));

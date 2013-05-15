@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.effect.ICompressorEffect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class CompressorEffect extends Effect implements ICompressorEffect
-{
+public class CompressorEffect extends Effect implements ICompressorEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -46,19 +45,16 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     private float mAttack = 0.01f;
 
     @Override
-    public float getAttack()
-    {
+    public float getAttack() {
         return mAttack;
     }
 
-    public float getAttack(boolean restore)
-    {
+    public float getAttack(boolean restore) {
         return get(CONTROL_ATTACK);
     }
 
     @Override
-    public void setAttack(float value)
-    {
+    public void setAttack(float value) {
         if (value == mAttack)
             return;
         if (value < 0.00001f || value > 0.2f)
@@ -74,19 +70,16 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     private float mRatio = 1f;
 
     @Override
-    public float getRatio()
-    {
+    public float getRatio() {
         return mRatio;
     }
 
-    public float getRatio(boolean restore)
-    {
+    public float getRatio(boolean restore) {
         return get(CONTROL_RATIO);
     }
 
     @Override
-    public void setRatio(float value)
-    {
+    public void setRatio(float value) {
         if (value == mRatio)
             return;
         if (value < 0f || value > 1.0f)
@@ -102,19 +95,16 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     private float mRelease = 0.05f;
 
     @Override
-    public float getRelease()
-    {
+    public float getRelease() {
         return mRelease;
     }
 
-    public float getRelease(boolean restore)
-    {
+    public float getRelease(boolean restore) {
         return get(CONTROL_RELEASE);
     }
 
     @Override
-    public void setRelease(float value)
-    {
+    public void setRelease(float value) {
         if (value == mRelease)
             return;
         if (value < 0.001f || value > 0.2f)
@@ -130,19 +120,16 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     private int mSidechain = -1;
 
     @Override
-    public int getSidechain()
-    {
+    public int getSidechain() {
         return mSidechain;
     }
 
-    public int getSidechain(boolean restore)
-    {
-        return (int) get(CONTROL_SIDECHAIN);
+    public int getSidechain(boolean restore) {
+        return (int)get(CONTROL_SIDECHAIN);
     }
 
     @Override
-    public void setSidechain(int value)
-    {
+    public void setSidechain(int value) {
         if (value == mSidechain)
             return;
         if (value < 0 || value > 6)
@@ -158,19 +145,16 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     private float mThreshold = 0.1f;
 
     @Override
-    public float getThreshold()
-    {
+    public float getThreshold() {
         return mThreshold;
     }
 
-    public float getThreshold(boolean restore)
-    {
+    public float getThreshold(boolean restore) {
         return get(CONTROL_THRESHOLD);
     }
 
     @Override
-    public void setThreshold(float value)
-    {
+    public void setThreshold(float value) {
         if (value == mThreshold)
             return;
         if (value < 0f || value > 1.0f)
@@ -185,8 +169,7 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     //
     //--------------------------------------------------------------------------
 
-    public CompressorEffect(int index, IDevice device)
-    {
+    public CompressorEffect(int index, IDevice device) {
         super(index, device);
         setType(EffectType.COMPRESSOR);
     }
@@ -196,10 +179,9 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     // IPersistable API :: Methods
     //
     //--------------------------------------------------------------------------
-    
+
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putFloat(CONTROL_ATTACK, getAttack());
         memento.putFloat(CONTROL_RATIO, getRatio());
         memento.putFloat(CONTROL_RELEASE, getRelease());
@@ -208,8 +190,7 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setAttack(memento.getFloat(CONTROL_ATTACK));
         setRatio(memento.getFloat(CONTROL_RATIO));
         setRelease(memento.getFloat(CONTROL_RELEASE));
@@ -218,8 +199,7 @@ public class CompressorEffect extends Effect implements ICompressorEffect
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setAttack(getAttack(true));
         setRatio(getRatio(true));
         setRelease(getRelease(true));

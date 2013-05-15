@@ -24,7 +24,6 @@ package com.teotigraphix.caustic.sequencer.data;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class StepPhraseData
-{
+public class StepPhraseData {
 
 }

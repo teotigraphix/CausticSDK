@@ -32,8 +32,7 @@ import com.teotigraphix.caustic.machine.IMachineComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public abstract class MachineComponent implements IMachineComponent
-{
+public abstract class MachineComponent implements IMachineComponent {
 
     //--------------------------------------------------------------------------
     //
@@ -52,39 +51,32 @@ public abstract class MachineComponent implements IMachineComponent
     private ICausticEngine mEngine;
 
     @Override
-    public IDevice getDevice()
-    {
+    public IDevice getDevice() {
         return mDevice;
     }
 
-    public void setDevice(IDevice value)
-    {
+    public void setDevice(IDevice value) {
         mDeviceName = null;
         mDevice = value;
-        if (mDevice != null)
-        {
+        if (mDevice != null) {
             mDeviceName = mDevice.getId();
             mEngine = mDevice.getEngine();
         }
     }
 
-    protected IMachine getMachine()
-    {
-        return (IMachine) mDevice;
+    protected IMachine getMachine() {
+        return (IMachine)mDevice;
     }
 
-    protected int getMachineIndex()
-    {
+    protected int getMachineIndex() {
         return getMachine().getIndex();
     }
 
-    protected String _getDeviceName()
-    {
+    protected String _getDeviceName() {
         return mDeviceName;
     }
 
-    protected ICausticEngine getEngine()
-    {
+    protected ICausticEngine getEngine() {
         return mEngine;
     }
 
@@ -99,8 +91,7 @@ public abstract class MachineComponent implements IMachineComponent
      * 
      * @param machine The component's parent IMachine.
      */
-    public MachineComponent(IMachine machine)
-    {
+    public MachineComponent(IMachine machine) {
         setDevice(machine);
     }
 
@@ -112,9 +103,7 @@ public abstract class MachineComponent implements IMachineComponent
      * @param value The value that is throwing the range exception.
      * @return A new {@link IllegalArgumentException}.
      */
-    protected final RuntimeException newRangeException(String control,
-            String range, Object value)
-    {
+    protected final RuntimeException newRangeException(String control, String range, Object value) {
         return ExceptionUtils.newRangeException(control, range, value);
     }
 }

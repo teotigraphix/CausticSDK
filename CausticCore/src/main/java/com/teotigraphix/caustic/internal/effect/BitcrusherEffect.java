@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.effect.IBitcrusherEffect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class BitcrusherEffect extends Effect implements IBitcrusherEffect
-{
+public class BitcrusherEffect extends Effect implements IBitcrusherEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -46,19 +45,16 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     private int mDepth = 3;
 
     @Override
-    public int getDepth()
-    {
+    public int getDepth() {
         return mDepth;
     }
 
-    public int getDepth(boolean restore)
-    {
-        return (int) get(CONTROL_DEPTH);
+    public int getDepth(boolean restore) {
+        return (int)get(CONTROL_DEPTH);
     }
 
     @Override
-    public void setDepth(int value)
-    {
+    public void setDepth(int value) {
         if (value == mDepth)
             return;
         if (value < 1 || value > 16)
@@ -74,19 +70,16 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     private float mJitter = 0f;
 
     @Override
-    public float getJitter()
-    {
+    public float getJitter() {
         return mJitter;
     }
 
-    public float getJitter(boolean restore)
-    {
+    public float getJitter(boolean restore) {
         return get(CONTROL_JITTER);
     }
 
     @Override
-    public void setJitter(float value)
-    {
+    public void setJitter(float value) {
         if (value == mJitter)
             return;
         if (value < 0f || value > 1f)
@@ -102,19 +95,16 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     private float mRate = 0.1f;
 
     @Override
-    public float getRate()
-    {
+    public float getRate() {
         return mRate;
     }
 
-    public float getRate(boolean restore)
-    {
+    public float getRate(boolean restore) {
         return get(CONTROL_RATE);
     }
 
     @Override
-    public void setRate(float value)
-    {
+    public void setRate(float value) {
         if (value == mRate)
             return;
         if (value < 0.01f || value > 0.5f)
@@ -130,19 +120,16 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     private float mWet = 1f;
 
     @Override
-    public float getWet()
-    {
+    public float getWet() {
         return mWet;
     }
 
-    public float getWet(boolean restore)
-    {
+    public float getWet(boolean restore) {
         return get(CONTROL_WET);
     }
 
     @Override
-    public void setWet(float value)
-    {
+    public void setWet(float value) {
         if (value == mWet)
             return;
         if (value < 0f || value > 1f)
@@ -157,8 +144,7 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     //
     //--------------------------------------------------------------------------
 
-    public BitcrusherEffect(int index, IDevice device)
-    {
+    public BitcrusherEffect(int index, IDevice device) {
         super(index, device);
         setType(EffectType.BITCRUSHER);
     }
@@ -170,8 +156,7 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putInteger(CONTROL_DEPTH, getDepth());
         memento.putFloat(CONTROL_JITTER, getJitter());
         memento.putFloat(CONTROL_RATE, getRate());
@@ -179,8 +164,7 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setDepth(memento.getInteger(CONTROL_DEPTH));
         setJitter(memento.getFloat(CONTROL_JITTER));
         setRate(memento.getFloat(CONTROL_RATE));
@@ -188,8 +172,7 @@ public class BitcrusherEffect extends Effect implements IBitcrusherEffect
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setDepth(getDepth(true));
         setJitter(getJitter(true));
         setRate(getRate(true));

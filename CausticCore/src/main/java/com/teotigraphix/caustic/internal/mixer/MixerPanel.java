@@ -43,8 +43,7 @@ import com.teotigraphix.caustic.osc.MixerMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MixerPanel extends Device implements IMixerPanel
-{
+public class MixerPanel extends Device implements IMixerPanel {
 
     private static final String MASTER = "master";
 
@@ -66,8 +65,7 @@ public class MixerPanel extends Device implements IMixerPanel
 
     private final MixerData mMasterData = new MixerData(this);
 
-    MixerData getMasterData()
-    {
+    MixerData getMasterData() {
         return mMasterData;
     }
 
@@ -86,14 +84,12 @@ public class MixerPanel extends Device implements IMixerPanel
     private IMixerDelay mDelay;
 
     @Override
-    public IMixerDelay getDelay()
-    {
+    public IMixerDelay getDelay() {
         return mDelay;
     }
 
     @Override
-    public void setDelay(IMixerDelay value)
-    {
+    public void setDelay(IMixerDelay value) {
         mDelay = value;
     }
 
@@ -104,14 +100,12 @@ public class MixerPanel extends Device implements IMixerPanel
     private IMixerReverb mReverb;
 
     @Override
-    public IMixerReverb getReverb()
-    {
+    public IMixerReverb getReverb() {
         return mReverb;
     }
 
     @Override
-    public void setReverb(IMixerReverb value)
-    {
+    public void setReverb(IMixerReverb value) {
         mReverb = value;
     }
 
@@ -120,19 +114,16 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getMasterBass()
-    {
+    public float getMasterBass() {
         return mMasterData.bass;
     }
 
-    float getMasterBass(boolean restore)
-    {
+    float getMasterBass(boolean restore) {
         return MixerMessage.EQ_BASS.query(getEngine(), MASTER);
     }
 
     @Override
-    public void setMasterBass(float value)
-    {
+    public void setMasterBass(float value) {
         if (mMasterData.bass == value)
             return;
         if (value < -1f || value > 1f)
@@ -142,19 +133,16 @@ public class MixerPanel extends Device implements IMixerPanel
     }
 
     @Override
-    public float getMasterMid()
-    {
+    public float getMasterMid() {
         return mMasterData.mid;
     }
 
-    float getMasterMid(boolean restore)
-    {
+    float getMasterMid(boolean restore) {
         return MixerMessage.EQ_MID.query(getEngine(), MASTER);
     }
 
     @Override
-    public void setMasterMid(float value)
-    {
+    public void setMasterMid(float value) {
         if (mMasterData.mid == value)
             return;
         if (value < -1f || value > 1f)
@@ -164,19 +152,16 @@ public class MixerPanel extends Device implements IMixerPanel
     }
 
     @Override
-    public float getMasterHigh()
-    {
+    public float getMasterHigh() {
         return mMasterData.high;
     }
 
-    float getMasterHigh(boolean restore)
-    {
+    float getMasterHigh(boolean restore) {
         return MixerMessage.EQ_HIGH.query(getEngine(), MASTER);
     }
 
     @Override
-    public void setMasterHigh(float value)
-    {
+    public void setMasterHigh(float value) {
         if (mMasterData.high == value)
             return;
         if (value < -1f || value > 1f)
@@ -186,19 +171,16 @@ public class MixerPanel extends Device implements IMixerPanel
     }
 
     @Override
-    public float getMasterVolume()
-    {
+    public float getMasterVolume() {
         return mMasterData.volume;
     }
 
-    float getMasterVolume(boolean restore)
-    {
+    float getMasterVolume(boolean restore) {
         return MixerMessage.VOLUME.query(getEngine(), MASTER);
     }
 
     @Override
-    public void setMasterVolume(float value)
-    {
+    public void setMasterVolume(float value) {
         if (mMasterData.volume == value)
             return;
         if (value < 0f || value > 2f)
@@ -212,22 +194,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getBass(int index)
-    {
+    public float getBass(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return Float.MIN_VALUE;
         return info.bass;
     }
 
-    float getBass(int index, boolean restore)
-    {
+    float getBass(int index, boolean restore) {
         return MixerMessage.EQ_BASS.query(getEngine(), index);
     }
 
     @Override
-    public void setBass(int index, float value)
-    {
+    public void setBass(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.bass == value)
             return;
@@ -242,22 +221,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getMid(int index)
-    {
+    public float getMid(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return Float.MIN_VALUE;
         return info.mid;
     }
 
-    float getMid(int index, boolean restore)
-    {
+    float getMid(int index, boolean restore) {
         return MixerMessage.EQ_MID.query(getEngine(), index);
     }
 
     @Override
-    public void setMid(int index, float value)
-    {
+    public void setMid(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.mid == value)
             return;
@@ -272,22 +248,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getHigh(int index)
-    {
+    public float getHigh(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return Float.MIN_VALUE;
         return info.high;
     }
 
-    float getHigh(int index, boolean restore)
-    {
+    float getHigh(int index, boolean restore) {
         return MixerMessage.EQ_HIGH.query(getEngine(), index);
     }
 
     @Override
-    public void setHigh(int index, float value)
-    {
+    public void setHigh(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.high == value)
             return;
@@ -302,22 +275,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getDelaySend(int index)
-    {
+    public float getDelaySend(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return Float.MIN_VALUE;
         return info.delay;
     }
 
-    float getDelaySend(int index, boolean restore)
-    {
+    float getDelaySend(int index, boolean restore) {
         return MixerMessage.DELAY_SEND.query(getEngine(), index);
     }
 
     @Override
-    public void setDelaySend(int index, float value)
-    {
+    public void setDelaySend(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.delay == value)
             return;
@@ -332,22 +302,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getReverbSend(int index)
-    {
+    public float getReverbSend(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return Float.MIN_VALUE;
         return info.reverb;
     }
 
-    float getReverbSend(int index, boolean restore)
-    {
+    float getReverbSend(int index, boolean restore) {
         return MixerMessage.REVERB_SEND.query(getEngine(), index);
     }
 
     @Override
-    public void setReverbSend(int index, float value)
-    {
+    public void setReverbSend(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.reverb == value)
             return;
@@ -362,22 +329,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getPan(int index)
-    {
+    public float getPan(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return Float.MIN_VALUE;
         return info.pan;
     }
 
-    float getPan(int index, boolean restore)
-    {
+    float getPan(int index, boolean restore) {
         return MixerMessage.PAN.query(getEngine(), index);
     }
 
     @Override
-    public void setPan(int index, float value)
-    {
+    public void setPan(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.pan == value)
             return;
@@ -392,22 +356,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getStereoWidth(int index)
-    {
+    public float getStereoWidth(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return Float.MIN_VALUE;
         return info.stereoWidth;
     }
 
-    float getStereoWidth(int index, boolean restore)
-    {
+    float getStereoWidth(int index, boolean restore) {
         return MixerMessage.STEREO_WIDTH.query(getEngine(), index);
     }
 
     @Override
-    public void setStereoWidth(int index, float value)
-    {
+    public void setStereoWidth(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.stereoWidth == value)
             return;
@@ -422,28 +383,24 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public boolean isMute(int index)
-    {
+    public boolean isMute(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return false;
         return info.mute;
     }
 
-    boolean isMute(int index, boolean restore)
-    {
+    boolean isMute(int index, boolean restore) {
         return MixerMessage.MUTE.query(getEngine(), index) != 0f;
     }
 
     @Override
-    public void setMute(int index, boolean muted)
-    {
+    public void setMute(int index, boolean muted) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.mute == muted)
             return;
         info.mute = muted;
-        MixerMessage.MUTE.send(getEngine(), index, MementoUtil
-                .booleanToInt(muted));
+        MixerMessage.MUTE.send(getEngine(), index, MementoUtil.booleanToInt(muted));
     }
 
     //----------------------------------
@@ -451,28 +408,24 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public boolean isSolo(int index)
-    {
+    public boolean isSolo(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return false;
         return info.solo;
     }
 
-    boolean isSolo(int index, boolean restore)
-    {
+    boolean isSolo(int index, boolean restore) {
         return MixerMessage.SOLO.query(getEngine(), index) != 0f;
     }
 
     @Override
-    public void setSolo(int index, boolean soloed)
-    {
+    public void setSolo(int index, boolean soloed) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.solo == soloed)
             return;
         info.solo = soloed;
-        MixerMessage.SOLO.send(getEngine(), index, MementoUtil
-                .booleanToInt(soloed));
+        MixerMessage.SOLO.send(getEngine(), index, MementoUtil.booleanToInt(soloed));
     }
 
     //----------------------------------
@@ -480,22 +433,19 @@ public class MixerPanel extends Device implements IMixerPanel
     //----------------------------------
 
     @Override
-    public float getVolume(int index)
-    {
+    public float getVolume(int index) {
         MixerData info = getMixerInfo(index);
         if (info == null)
             return -1;
         return info.volume;
     }
 
-    float getVolume(int index, boolean restore)
-    {
+    float getVolume(int index, boolean restore) {
         return MixerMessage.VOLUME.query(getEngine(), index);
     }
 
     @Override
-    public void setVolume(int index, float value)
-    {
+    public void setVolume(int index, float value) {
         MixerData info = getMixerInfo(index);
         if (info == null || info.volume == value)
             return;
@@ -514,8 +464,7 @@ public class MixerPanel extends Device implements IMixerPanel
     /**
      * Constructor.
      */
-    public MixerPanel()
-    {
+    public MixerPanel() {
         setId(MixerPanelConstants.DEVICE_ID);
     }
 
@@ -534,8 +483,7 @@ public class MixerPanel extends Device implements IMixerPanel
      * 
      * @param machine The {@link IMachine}.
      */
-    public void addMachine(IMachine machine)
-    {
+    public void addMachine(IMachine machine) {
         if (hasMachine(machine))
             return;
 
@@ -553,8 +501,7 @@ public class MixerPanel extends Device implements IMixerPanel
      * 
      * @param machine The {@link IMachine}.
      */
-    public void removeMachine(IMachine machine)
-    {
+    public void removeMachine(IMachine machine) {
         if (!hasMachine(machine))
             return;
 
@@ -566,27 +513,25 @@ public class MixerPanel extends Device implements IMixerPanel
      * 
      * @param machine The {@link IMachine}.
      */
-    public boolean hasMachine(IMachine machine)
-    {
+    public boolean hasMachine(IMachine machine) {
         return mMixerInfoMap.containsKey(machine.getIndex());
     }
 
-//    @Override
-//    public void onMachineChanged(IMachine machine, MachineChangeKind kind)
-//    {
-//        if (kind == MachineChangeKind.ADDED || kind == MachineChangeKind.LOADED)
-//        {
-//            addMachine(machine);
-//        }
-//        else if (kind == MachineChangeKind.REMOVED)
-//        {
-//            removeMachine(machine);
-//        }
-//    }
+    //    @Override
+    //    public void onMachineChanged(IMachine machine, MachineChangeKind kind)
+    //    {
+    //        if (kind == MachineChangeKind.ADDED || kind == MachineChangeKind.LOADED)
+    //        {
+    //            addMachine(machine);
+    //        }
+    //        else if (kind == MachineChangeKind.REMOVED)
+    //        {
+    //            removeMachine(machine);
+    //        }
+    //    }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         // super.restore();
 
         getDelay().restore();
@@ -594,8 +539,7 @@ public class MixerPanel extends Device implements IMixerPanel
 
         mMasterData.restore();
 
-        for (MixerData data : mMixerInfoMap.values())
-        {
+        for (MixerData data : mMixerInfoMap.values()) {
             data.restore();
         }
     }
@@ -607,8 +551,7 @@ public class MixerPanel extends Device implements IMixerPanel
     //--------------------------------------------------------------------------
 
     @Override
-    protected void initializeEngine(ICausticEngine engine)
-    {
+    protected void initializeEngine(ICausticEngine engine) {
         super.initializeEngine(engine);
 
         //        setDelay((IMixerDelay) mRack.getFactory().createMixerEffect(this,
@@ -618,8 +561,7 @@ public class MixerPanel extends Device implements IMixerPanel
     }
 
     @Override
-    protected IPersist createPersistable()
-    {
+    protected IPersist createPersistable() {
         return new MixerPanelState(this);
     }
 
@@ -629,52 +571,43 @@ public class MixerPanel extends Device implements IMixerPanel
     //
     //--------------------------------------------------------------------------
 
-    protected void machineRemove(IMachine machine)
-    {
+    protected void machineRemove(IMachine machine) {
         mMixerInfoMap.remove(machine.getIndex());
     }
 
-    protected void machineAdd(IMachine machine)
-    {
+    protected void machineAdd(IMachine machine) {
         MixerData info = new MixerData(this, machine);
         mMixerInfoMap.put(machine.getIndex(), info);
     }
 
-    final MixerData _getMixerInfo(IDevice device)
-    {
+    final MixerData _getMixerInfo(IDevice device) {
         return getMixerInfo(device.getIndex());
     }
 
-    final MixerData getMixerInfo(int machineIndex)
-    {
+    final MixerData getMixerInfo(int machineIndex) {
         return mMixerInfoMap.get(machineIndex);
     }
 
-    final boolean hasMixerInfo(IDevice device)
-    {
+    final boolean hasMixerInfo(IDevice device) {
         return mMixerInfoMap.containsKey(device.getIndex());
     }
 
-    final boolean hasMixerInfo(int machineIndex)
-    {
+    final boolean hasMixerInfo(int machineIndex) {
         return mMixerInfoMap.containsKey(machineIndex);
     }
 
-    final Set<Entry<Integer, MixerData>> getMixerInfoSet()
-    {
+    final Set<Entry<Integer, MixerData>> getMixerInfoSet() {
         return mMixerInfoMap.entrySet();
     }
 
     @Override
-    public void copyChannel(IMachine machine, IMemento memento)
-    {
-        ((MixerPanelState) mPersistable).copyChannel(machine, memento);
+    public void copyChannel(IMachine machine, IMemento memento) {
+        ((MixerPanelState)mPersistable).copyChannel(machine, memento);
     }
 
     @Override
-    public void pasteChannel(IMachine machine, IMemento memento)
-    {
-        ((MixerPanelState) mPersistable).pasteChannel(machine, memento);
+    public void pasteChannel(IMachine machine, IMemento memento) {
+        ((MixerPanelState)mPersistable).pasteChannel(machine, memento);
     }
 
 }

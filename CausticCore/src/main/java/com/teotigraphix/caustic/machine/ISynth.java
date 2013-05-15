@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.core.IRestore;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ISynth extends IMachine, IRestore
-{
+public interface ISynth extends IMachine, IRestore {
 
     //--------------------------------------------------------------------------
     //

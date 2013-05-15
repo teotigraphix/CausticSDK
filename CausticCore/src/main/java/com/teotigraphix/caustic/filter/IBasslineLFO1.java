@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.osc.BasslineLFOMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IBasslineLFO1 extends ILFOComponent
-{
+public interface IBasslineLFO1 extends ILFOComponent {
 
     //--------------------------------------------------------------------------
     //
@@ -80,8 +79,7 @@ public interface IBasslineLFO1 extends ILFOComponent
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum LFOTarget
-    {
+    public enum LFOTarget {
 
         /**
          * No lfo on the bassline oscillator.
@@ -105,16 +103,14 @@ public interface IBasslineLFO1 extends ILFOComponent
 
         private final int mValue;
 
-        LFOTarget(int value)
-        {
+        LFOTarget(int value) {
             mValue = value;
         }
 
         /**
          * Returns the int value for the lfo.
          */
-        public int getValue()
-        {
+        public int getValue() {
             return mValue;
         }
 
@@ -123,10 +119,8 @@ public interface IBasslineLFO1 extends ILFOComponent
          * 
          * @param type The int type.
          */
-        public static LFOTarget toType(Integer type)
-        {
-            for (LFOTarget result : values())
-            {
+        public static LFOTarget toType(Integer type) {
+            for (LFOTarget result : values()) {
                 if (result.getValue() == type)
                     return result;
             }
@@ -136,8 +130,7 @@ public interface IBasslineLFO1 extends ILFOComponent
         /**
          * @see LFOTarget#toType(Integer)
          */
-        public static LFOTarget toType(Float type)
-        {
+        public static LFOTarget toType(Float type) {
             return toType(type.intValue());
         }
     }

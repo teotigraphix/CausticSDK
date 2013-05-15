@@ -28,8 +28,7 @@ import com.teotigraphix.caustic.machine.IMachineComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ILFOComponent extends IMachineComponent
-{
+public interface ILFOComponent extends IMachineComponent {
 
     //--------------------------------------------------------------------------
     //
@@ -72,8 +71,7 @@ public interface ILFOComponent extends IMachineComponent
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum WaveForm
-    {
+    public enum WaveForm {
 
         /**
          * A sine wave (0).
@@ -97,16 +95,14 @@ public interface ILFOComponent extends IMachineComponent
 
         private final int mValue;
 
-        WaveForm(int value)
-        {
+        WaveForm(int value) {
             mValue = value;
         }
 
         /**
          * Returns the integer value of the {@link Waveform}.
          */
-        public int getValue()
-        {
+        public int getValue() {
             return mValue;
         }
 
@@ -115,10 +111,8 @@ public interface ILFOComponent extends IMachineComponent
          * 
          * @param type The int type.
          */
-        public static WaveForm toType(Integer type)
-        {
-            for (WaveForm result : values())
-            {
+        public static WaveForm toType(Integer type) {
+            for (WaveForm result : values()) {
                 if (result.getValue() == type)
                     return result;
             }
@@ -128,8 +122,7 @@ public interface ILFOComponent extends IMachineComponent
         /**
          * @see #toType(Integer)
          */
-        public static WaveForm toType(Float type)
-        {
+        public static WaveForm toType(Float type) {
             return toType(type.intValue());
         }
     }

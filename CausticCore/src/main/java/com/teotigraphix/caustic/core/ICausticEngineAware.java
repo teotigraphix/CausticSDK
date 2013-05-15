@@ -31,8 +31,7 @@ package com.teotigraphix.caustic.core;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ICausticEngineAware
-{
+public interface ICausticEngineAware {
 
     //--------------------------------------------------------------------------
     //

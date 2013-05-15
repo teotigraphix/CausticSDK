@@ -35,8 +35,7 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ISequencer extends IDevice
-{
+public interface ISequencer extends IDevice {
 
     //--------------------------------------------------------------------------
     //
@@ -102,8 +101,7 @@ public interface ISequencer extends IDevice
      * @param end The measure bar to remove to.
      * @throws CausticException Invalid values
      */
-    void removePattern(IMachine machine, int start, int end)
-            throws CausticException;
+    void removePattern(IMachine machine, int start, int end) throws CausticException;
 
     /**
      * Sets loop points for a song loop of patterns.
@@ -143,7 +141,7 @@ public interface ISequencer extends IDevice
      * @param exportPath a full path for the exported file, without extension
      * @param type ExportType - WAV (default), OGG or MID
      * @param quality only needed if you've asked for OGG and goes from
-     * [0..100], defaulting to 70 if none specified.
+     *            [0..100], defaulting to 70 if none specified.
      */
     void exportSong(String exportPath, ExportType type, int quality);
 
@@ -158,7 +156,7 @@ public interface ISequencer extends IDevice
      * Reports the progress of export.
      * 
      * @return 0 to 100, When 100, the export is complete, until then no sound
-     * will play.
+     *         will play.
      */
     float exportSongProgress();
 
@@ -187,8 +185,7 @@ public interface ISequencer extends IDevice
      * @since 1.0
      * @see ISequencer#exportSong(String, ExportType)
      */
-    public enum ExportType
-    {
+    public enum ExportType {
 
         /**
          * Export as a <code>*.wav</code> file.
@@ -207,16 +204,14 @@ public interface ISequencer extends IDevice
 
         private final String mValue;
 
-        ExportType(String value)
-        {
+        ExportType(String value) {
             mValue = value;
         }
 
         /**
          * Returns the String value.
          */
-        public String getValue()
-        {
+        public String getValue() {
             return mValue;
         }
     }
@@ -253,8 +248,7 @@ public interface ISequencer extends IDevice
      * Interface used to notify listeners of the {@link ISequencer}'s beat
      * change during pattern and song mode.
      */
-    public interface OnBeatChangeListener
-    {
+    public interface OnBeatChangeListener {
         /**
          * Dispatched when the sequencer beat changes during a notification from
          * the {@link ICausticEngine}.
@@ -268,8 +262,7 @@ public interface ISequencer extends IDevice
      * Interface used to notify listeners of the {@link ISequencer}'s measure
      * change during pattern and song mode.
      */
-    public interface OnMeasureChangeListener
-    {
+    public interface OnMeasureChangeListener {
         /**
          * Dispatched when the sequencer measure changes during a notification
          * from the {@link ICausticEngine}.
@@ -285,15 +278,14 @@ public interface ISequencer extends IDevice
      * 
      * @see ISequencer#exportSong(String, ExportType)
      */
-    public interface OnSongExportListener
-    {
+    public interface OnSongExportListener {
 
         /**
          * Dispatched during song export.
          * 
          * @param progress The amount of progress made exporting;
-         * <code>(0..100)</code>, when 100 is reached the {@link #onComplete()}
-         * callback is dispatched.
+         *            <code>(0..100)</code>, when 100 is reached the
+         *            {@link #onComplete()} callback is dispatched.
          */
         void onProgess(int progress);
 

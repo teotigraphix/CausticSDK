@@ -33,9 +33,7 @@ import com.teotigraphix.caustic.sampler.IPCMSamplerChannel;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PCMSamplerChannel extends MachineComponent implements
-        IPCMSamplerChannel
-{
+public class PCMSamplerChannel extends MachineComponent implements IPCMSamplerChannel {
 
     private static final String ATT_END = "end";
 
@@ -80,169 +78,139 @@ public class PCMSamplerChannel extends MachineComponent implements
     private int mEnd;
 
     @Override
-    public boolean hasSample()
-    {
+    public boolean hasSample() {
         return mName != null;
     }
 
     @Override
-    public final int getIndex()
-    {
+    public final int getIndex() {
         return mIndex;
     }
 
-    public final void setIndex(int value)
-    {
+    public final void setIndex(int value) {
         mIndex = value;
     }
 
     @Override
-    public final String getName()
-    {
+    public final String getName() {
         return mName;
     }
 
-    public final void setName(String value)
-    {
+    public final void setName(String value) {
         mName = value;
     }
 
     @Override
-    public final float getLevel()
-    {
+    public final float getLevel() {
         return mLevel;
     }
 
     @Override
-    public final void setLevel(float value)
-    {
+    public final void setLevel(float value) {
         if (value == mLevel)
             return;
         mLevel = value;
-        PCMSamplerMessage.SAMPLE_LEVEL.send(getEngine(), getMachineIndex(),
-                mLevel);
+        PCMSamplerMessage.SAMPLE_LEVEL.send(getEngine(), getMachineIndex(), mLevel);
     }
 
     @Override
-    public final int getTune()
-    {
+    public final int getTune() {
         return mTune;
     }
 
     @Override
-    public final void setTune(int value)
-    {
+    public final void setTune(int value) {
         if (value == mTune)
             return;
         mTune = value;
-        PCMSamplerMessage.SAMPLE_TUNE.send(getEngine(), getMachineIndex(),
-                mTune);
+        PCMSamplerMessage.SAMPLE_TUNE.send(getEngine(), getMachineIndex(), mTune);
     }
 
     @Override
-    public final int getRootKey()
-    {
+    public final int getRootKey() {
         return mRootKey;
     }
 
     @Override
-    public final void setRootKey(int value)
-    {
+    public final void setRootKey(int value) {
         if (value == mRootKey)
             return;
         mRootKey = value;
-        PCMSamplerMessage.SAMPLE_ROOTKEY.send(getEngine(), getMachineIndex(),
-                mRootKey);
+        PCMSamplerMessage.SAMPLE_ROOTKEY.send(getEngine(), getMachineIndex(), mRootKey);
     }
 
     @Override
-    public final int getLowKey()
-    {
+    public final int getLowKey() {
         return mLowKey;
     }
 
     @Override
-    public final void setLowKey(int value)
-    {
+    public final void setLowKey(int value) {
         if (value == mLowKey)
             return;
         mLowKey = value;
-        PCMSamplerMessage.SAMPLE_LOWKEY.send(getEngine(), getMachineIndex(),
-                mLowKey);
+        PCMSamplerMessage.SAMPLE_LOWKEY.send(getEngine(), getMachineIndex(), mLowKey);
     }
 
     @Override
-    public final int getHighKey()
-    {
+    public final int getHighKey() {
         return mHighKey;
     }
 
     @Override
-    public final void setHighKey(int value)
-    {
+    public final void setHighKey(int value) {
         if (value == mHighKey)
             return;
         mHighKey = value;
-        PCMSamplerMessage.SAMPLE_HIGHKEY.send(getEngine(), getMachineIndex(),
-                mHighKey);
+        PCMSamplerMessage.SAMPLE_HIGHKEY.send(getEngine(), getMachineIndex(), mHighKey);
     }
 
     @Override
-    public final PlayMode getMode()
-    {
+    public final PlayMode getMode() {
         return mMode;
     }
 
     @Override
-    public final void setMode(PlayMode value)
-    {
+    public final void setMode(PlayMode value) {
         if (value == mMode)
             return;
         mMode = value;
-        PCMSamplerMessage.SAMPLE_MODE.send(getEngine(), getMachineIndex(),
-                mMode.getValue());
+        PCMSamplerMessage.SAMPLE_MODE.send(getEngine(), getMachineIndex(), mMode.getValue());
     }
 
     @Override
-    public final int getStart()
-    {
+    public final int getStart() {
         return mStart;
     }
 
     @Override
-    public final void setStart(int value)
-    {
+    public final void setStart(int value) {
         if (value == mStart)
             return;
         mStart = value;
-        PCMSamplerMessage.SAMPLE_START.send(getEngine(), getMachineIndex(),
-                mStart);
+        PCMSamplerMessage.SAMPLE_START.send(getEngine(), getMachineIndex(), mStart);
     }
 
     @Override
-    public final int getEnd()
-    {
+    public final int getEnd() {
         return mEnd;
     }
 
     @Override
-    public final void setEnd(int value)
-    {
+    public final void setEnd(int value) {
         if (value == mEnd)
             return;
         mEnd = value;
         PCMSamplerMessage.SAMPLE_END.send(getEngine(), getMachineIndex(), mEnd);
     }
 
-    public PCMSamplerChannel(IPCMSampler sampler)
-    {
-        super((IMachine) sampler.getDevice());
+    public PCMSamplerChannel(IPCMSampler sampler) {
+        super((IMachine)sampler.getDevice());
         mSampler = sampler;
     }
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putString(ATT_NAME, mName);
         memento.putFloat(ATT_CHANNEL, mIndex);
         memento.putFloat(ATT_LEVEL, mLevel);
@@ -256,8 +224,7 @@ public class PCMSamplerChannel extends MachineComponent implements
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         int index = memento.getInteger(ATT_CHANNEL);
         if (mIndex != index)
             throw new CausticError("index is not the same");
@@ -275,27 +242,19 @@ public class PCMSamplerChannel extends MachineComponent implements
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         mName = mSampler.getSampleName(mIndex);
         if (mName == null)
             return;
 
-        mLevel = PCMSamplerMessage.SAMPLE_LEVEL.query(getEngine(),
-                getMachineIndex());
-        mTune = (int) PCMSamplerMessage.SAMPLE_TUNE.query(getEngine(),
-                getMachineIndex());
-        mRootKey = (int) PCMSamplerMessage.SAMPLE_ROOTKEY.query(getEngine(),
-                getMachineIndex());
-        mLowKey = (int) PCMSamplerMessage.SAMPLE_LOWKEY.query(getEngine(),
-                getMachineIndex());
-        mHighKey = (int) PCMSamplerMessage.SAMPLE_HIGHKEY.query(getEngine(),
-                getMachineIndex());
-        mMode = PlayMode.toType((int) PCMSamplerMessage.SAMPLE_MODE.query(
-                getEngine(), getMachineIndex()));
-        mStart = (int) PCMSamplerMessage.SAMPLE_START.query(getEngine(),
-                getMachineIndex());
-        mEnd = (int) PCMSamplerMessage.SAMPLE_END.query(getEngine(),
-                getMachineIndex());
+        mLevel = PCMSamplerMessage.SAMPLE_LEVEL.query(getEngine(), getMachineIndex());
+        mTune = (int)PCMSamplerMessage.SAMPLE_TUNE.query(getEngine(), getMachineIndex());
+        mRootKey = (int)PCMSamplerMessage.SAMPLE_ROOTKEY.query(getEngine(), getMachineIndex());
+        mLowKey = (int)PCMSamplerMessage.SAMPLE_LOWKEY.query(getEngine(), getMachineIndex());
+        mHighKey = (int)PCMSamplerMessage.SAMPLE_HIGHKEY.query(getEngine(), getMachineIndex());
+        mMode = PlayMode.toType((int)PCMSamplerMessage.SAMPLE_MODE.query(getEngine(),
+                getMachineIndex()));
+        mStart = (int)PCMSamplerMessage.SAMPLE_START.query(getEngine(), getMachineIndex());
+        mEnd = (int)PCMSamplerMessage.SAMPLE_END.query(getEngine(), getMachineIndex());
     }
 }

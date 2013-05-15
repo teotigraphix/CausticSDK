@@ -32,9 +32,7 @@ import com.teotigraphix.caustic.osc.FilterMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class FilterComponent extends MachineComponent implements
-        IFilterComponent
-{
+public class FilterComponent extends MachineComponent implements IFilterComponent {
 
     //--------------------------------------------------------------------------
     //
@@ -49,28 +47,22 @@ public class FilterComponent extends MachineComponent implements
     protected float mCutoff = 1.0f;
 
     @Override
-    public float getCutoff()
-    {
+    public float getCutoff() {
         return mCutoff;
     }
 
-    public float getCutoff(boolean restore)
-    {
-        return FilterMessage.FILTER_CUTOFF
-                .query(getEngine(), getMachineIndex());
+    public float getCutoff(boolean restore) {
+        return FilterMessage.FILTER_CUTOFF.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setCutoff(float value)
-    {
+    public void setCutoff(float value) {
         if (value == mCutoff)
             return;
         if (value < 0 || value > 1f)
-            throw newRangeException(FilterMessage.FILTER_CUTOFF.toString(),
-                    "0..1", value);
+            throw newRangeException(FilterMessage.FILTER_CUTOFF.toString(), "0..1", value);
         mCutoff = value;
-        FilterMessage.FILTER_CUTOFF.send(getEngine(), getMachineIndex(),
-                mCutoff);
+        FilterMessage.FILTER_CUTOFF.send(getEngine(), getMachineIndex(), mCutoff);
     }
 
     //----------------------------------
@@ -80,28 +72,22 @@ public class FilterComponent extends MachineComponent implements
     protected float mResonance = 0f;
 
     @Override
-    public float getResonance()
-    {
+    public float getResonance() {
         return mResonance;
     }
 
-    public float getResonance(boolean restore)
-    {
-        return FilterMessage.FILTER_RESONANCE.query(getEngine(),
-                getMachineIndex());
+    public float getResonance(boolean restore) {
+        return FilterMessage.FILTER_RESONANCE.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setResonance(float value)
-    {
+    public void setResonance(float value) {
         if (value == mResonance)
             return;
         if (value < 0 || value > 1f)
-            throw newRangeException(FilterMessage.FILTER_RESONANCE.toString(),
-                    "0..1", value);
+            throw newRangeException(FilterMessage.FILTER_RESONANCE.toString(), "0..1", value);
         mResonance = value;
-        FilterMessage.FILTER_RESONANCE.send(getEngine(), getMachineIndex(),
-                mResonance);
+        FilterMessage.FILTER_RESONANCE.send(getEngine(), getMachineIndex(), mResonance);
     }
 
     //--------------------------------------------------------------------------
@@ -113,8 +99,7 @@ public class FilterComponent extends MachineComponent implements
     /**
      * Constructor.
      */
-    public FilterComponent(IMachine machine)
-    {
+    public FilterComponent(IMachine machine) {
         super(machine);
     }
 
@@ -125,22 +110,19 @@ public class FilterComponent extends MachineComponent implements
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putFloat(FilterConstants.ATT_CUTOFF, getCutoff());
         memento.putFloat(FilterConstants.ATT_RESONANCE, getResonance());
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setCutoff(memento.getFloat(FilterConstants.ATT_CUTOFF));
         setResonance(memento.getFloat(FilterConstants.ATT_RESONANCE));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setCutoff(getCutoff(true));
         setResonance(getResonance(true));
     }

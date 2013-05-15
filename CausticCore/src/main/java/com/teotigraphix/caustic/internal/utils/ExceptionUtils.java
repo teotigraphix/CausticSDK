@@ -24,18 +24,15 @@ package com.teotigraphix.caustic.internal.utils;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class ExceptionUtils
-{
+public class ExceptionUtils {
 
     public static final float MIN_VALUE = -1000000.0f;
 
-    public static final RuntimeException newRangeException(String control,
-            String range, Object value)
-    {
+    public static final RuntimeException newRangeException(String control, String range,
+            Object value) {
         if (value.equals(MIN_VALUE))
-            return new IllegalArgumentException("[" + control + "]"
-                    + " Min core value");
-        return new IllegalArgumentException(control + " range [ " + range
-                + " ] value: [" + value + "]");
+            return new IllegalArgumentException("[" + control + "]" + " Min core value");
+        return new IllegalArgumentException(control + " range [ " + range + " ] value: [" + value
+                + "]");
     }
 }

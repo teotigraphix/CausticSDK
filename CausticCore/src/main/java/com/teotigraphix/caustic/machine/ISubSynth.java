@@ -33,8 +33,7 @@ import com.teotigraphix.caustic.filter.IVolumeEnvelope;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ISubSynth extends ISynth
-{
+public interface ISubSynth extends ISynth {
 
     //--------------------------------------------------------------------------
     //

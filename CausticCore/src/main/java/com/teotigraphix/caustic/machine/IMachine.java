@@ -45,8 +45,7 @@ import com.teotigraphix.caustic.sequencer.IPatternSequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IMachine extends IDevice, IRestore, IPersist
-{
+public interface IMachine extends IDevice, IRestore, IPersist {
 
     //--------------------------------------------------------------------------
     //

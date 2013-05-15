@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.osc.EffectRackMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public abstract class Effect extends EffectComponent implements IEffect
-{
+public abstract class Effect extends EffectComponent implements IEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -47,13 +46,11 @@ public abstract class Effect extends EffectComponent implements IEffect
     private int mIndex;
 
     @Override
-    public int getIndex()
-    {
+    public int getIndex() {
         return mIndex;
     }
 
-    protected void setIndex(int value)
-    {
+    protected void setIndex(int value) {
         mIndex = value;
     }
 
@@ -64,8 +61,7 @@ public abstract class Effect extends EffectComponent implements IEffect
     private EffectType mType;
 
     @Override
-    public EffectType getType()
-    {
+    public EffectType getType() {
         return mType;
     }
 
@@ -74,26 +70,22 @@ public abstract class Effect extends EffectComponent implements IEffect
      * 
      * @param value The {@link EffectType} of the effect.
      */
-    protected void setType(EffectType value)
-    {
+    protected void setType(EffectType value) {
         mType = value;
     }
 
     private IMachine mMachine;
 
     @Override
-    public IMachine getMachine()
-    {
+    public IMachine getMachine() {
         return mMachine;
     }
 
     @Override
-    public void setMachine(IMachine value)
-    {
+    public void setMachine(IMachine value) {
         setName(null);
         mMachine = value;
-        if (mMachine != null)
-        {
+        if (mMachine != null) {
             setName(mMachine.getId());
         }
     }
@@ -104,8 +96,7 @@ public abstract class Effect extends EffectComponent implements IEffect
     //
     //--------------------------------------------------------------------------
 
-    public Effect(int index, IDevice device)
-    {
+    public Effect(int index, IDevice device) {
         super(device); // device IEffectPanel
         setIndex(index);
     }
@@ -122,10 +113,8 @@ public abstract class Effect extends EffectComponent implements IEffect
      * @param control
      * @return
      */
-    protected final float get(String control)
-    {
-        return EffectRackMessage.GET.query(getEngine(), getDeviceIndex(),
-                getIndex(), control);
+    protected final float get(String control) {
+        return EffectRackMessage.GET.query(getEngine(), getDeviceIndex(), getIndex(), control);
     }
 
     /**
@@ -134,21 +123,16 @@ public abstract class Effect extends EffectComponent implements IEffect
      * @param control
      * @param value
      */
-    protected final void set(String control, float value)
-    {
-        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(),
-                control, value);
+    protected final void set(String control, float value) {
+        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(), control, value);
     }
 
-    protected final void set(String control, int value)
-    {
-        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(),
-                control, value);
+    protected final void set(String control, int value) {
+        EffectRackMessage.SET.send(getEngine(), getDeviceIndex(), getIndex(), control, value);
     }
 
     @Override
-    protected int getDeviceIndex()
-    {
+    protected int getDeviceIndex() {
         if (mMachine != null)
             return mMachine.getIndex();
         return -1;

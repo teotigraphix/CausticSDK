@@ -32,8 +32,7 @@ import com.teotigraphix.caustic.core.ICausticEngineAware;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IDevice extends ICausticEngineAware
-{
+public interface IDevice extends ICausticEngineAware {
 
     //--------------------------------------------------------------------------
     //
@@ -89,7 +88,7 @@ public interface IDevice extends ICausticEngineAware
      * effects.
      */
     IDeviceFactory getFactory();
-    
+
     void setFactory(IDeviceFactory value);
 
 }

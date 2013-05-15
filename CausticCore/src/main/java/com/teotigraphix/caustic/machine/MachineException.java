@@ -28,27 +28,22 @@ import com.teotigraphix.caustic.core.CausticException;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MachineException extends CausticException
-{
+public class MachineException extends CausticException {
 
     private static final long serialVersionUID = -6693337211434779112L;
 
-    public MachineException()
-    {
+    public MachineException() {
     }
 
-    public MachineException(String message)
-    {
+    public MachineException(String message) {
         super(message);
     }
 
-    public MachineException(Throwable throwable)
-    {
+    public MachineException(Throwable throwable) {
         super(throwable);
     }
 
-    public MachineException(String message, Throwable throwable)
-    {
+    public MachineException(String message, Throwable throwable) {
         super(message, throwable);
     }
 

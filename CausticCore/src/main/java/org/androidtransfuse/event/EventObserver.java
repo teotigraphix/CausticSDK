@@ -1,7 +1,7 @@
+
 package org.androidtransfuse.event;
 
-public interface EventObserver<T>
-{
+public interface EventObserver<T> {
 
     String TRIGGER = "trigger";
 

@@ -32,8 +32,7 @@ import com.teotigraphix.caustic.sequencer.ISequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Sequencer extends Device implements ISequencer
-{
+public class Sequencer extends Device implements ISequencer {
     //--------------------------------------------------------------------------
     //
     // ISequencer API :: Properties
@@ -47,13 +46,11 @@ public class Sequencer extends Device implements ISequencer
     private int mCurrentBeat;
 
     @Override
-    public int getCurrentBeat()
-    {
+    public int getCurrentBeat() {
         return mCurrentBeat;
     }
 
-    void setCurrentBeat(int value)
-    {
+    void setCurrentBeat(int value) {
         mCurrentBeat = value;
         if (mOnBeatChangeListener != null)
             mOnBeatChangeListener.onBeatChanged(mCurrentBeat);
@@ -66,13 +63,11 @@ public class Sequencer extends Device implements ISequencer
     private int mCurrentMeasure;
 
     @Override
-    public int getCurrentMeasure()
-    {
+    public int getCurrentMeasure() {
         return mCurrentMeasure;
     }
 
-    void setCurrentMeasure(int value)
-    {
+    void setCurrentMeasure(int value) {
         mCurrentMeasure = value;
         if (mOnMeasureChangeListener != null)
             mOnMeasureChangeListener.onMeasureChanged(mCurrentMeasure);
@@ -83,8 +78,7 @@ public class Sequencer extends Device implements ISequencer
     //----------------------------------
 
     @Override
-    public int getCurrentMeasureBeat()
-    {
+    public int getCurrentMeasureBeat() {
         return mCurrentBeat % 4;
     }
 
@@ -97,15 +91,13 @@ public class Sequencer extends Device implements ISequencer
     /**
      * Constructor.
      */
-    public Sequencer()
-    {
+    public Sequencer() {
         super();
         setId(SequencerConstants.DEVICE_ID);
     }
 
     @Override
-    protected void initializeEngine(ICausticEngine engine)
-    {
+    protected void initializeEngine(ICausticEngine engine) {
         super.initializeEngine(engine);
         //engine.addCoreEventListener(this);
     }
@@ -117,60 +109,49 @@ public class Sequencer extends Device implements ISequencer
     //--------------------------------------------------------------------------
 
     @Override
-    public void clearAutomation()
-    {
+    public void clearAutomation() {
         SequencerMessage.CLEAR_AUTOMATION.send(getEngine());
     }
 
     @Override
-    public void clearAutomation(IMachine machine)
-    {
-        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getEngine(), machine
-                .getIndex());
+    public void clearAutomation(IMachine machine) {
+        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getEngine(), machine.getIndex());
     }
 
     @Override
-    public void clearPatterns()
-    {
+    public void clearPatterns() {
         SequencerMessage.CLEAR_PATTERNS.send(getEngine());
     }
 
     @Override
-    public void exportSong(String exportPath, ExportType type, int quality)
-    {
+    public void exportSong(String exportPath, ExportType type, int quality) {
         String ftype = "";
         String fquality = "";
-        if (type != null)
-        {
+        if (type != null) {
             ftype = type.getValue();
             fquality = Integer.toString(quality);
         }
-        SequencerMessage.EXPORT_SONG.send(getEngine(), exportPath, ftype,
-                fquality);
+        SequencerMessage.EXPORT_SONG.send(getEngine(), exportPath, ftype, fquality);
         if (mOnSongExportListener != null)
             mOnSongExportListener.onComplete();
     }
 
     @Override
-    public void exportSong(String exportPath, ExportType type)
-    {
-        SequencerMessage.EXPORT_SONG_DEFAULT.send(getEngine(), exportPath, type
-                .getValue());
+    public void exportSong(String exportPath, ExportType type) {
+        SequencerMessage.EXPORT_SONG_DEFAULT.send(getEngine(), exportPath, type.getValue());
         if (mOnSongExportListener != null)
             mOnSongExportListener.onComplete();
     }
 
     @Override
-    public float exportSongProgress()
-    {
+    public float exportSongProgress() {
         // TODO (mschmalle) an AsyncHandler would work at about 100ms update to
         // send the progress event
         return SequencerMessage.EXPORT_PROGRESS.query(getEngine());
     }
 
     @Override
-    public void playPosition(int beat)
-    {
+    public void playPosition(int beat) {
         SequencerMessage.PLAY_POSITION.send(getEngine(), beat);
     }
 
@@ -188,35 +169,28 @@ public class Sequencer extends Device implements ISequencer
      * @param positionInBeats The position in beats to play.
      */
     @Override
-    public void playPositionAt(int bar, int step)
-    {
+    public void playPositionAt(int bar, int step) {
         // the number of beats in the bars
         int beats = (bar * 4);
-        if (step > 0)
-        {
+        if (step > 0) {
             beats += step / 4;
         }
         playPosition(beats);
     }
 
     @Override
-    public void addPattern(IMachine machine, int bank, int pattern, int start,
-            int end)
-    {
-        SequencerMessage.PATTERN_EVENT.send(getEngine(), machine.getIndex(),
-                start, bank, pattern, end);
+    public void addPattern(IMachine machine, int bank, int pattern, int start, int end) {
+        SequencerMessage.PATTERN_EVENT.send(getEngine(), machine.getIndex(), start, bank, pattern,
+                end);
     }
 
     @Override
-    public void removePattern(IMachine machine, int start, int end)
-    {
-        SequencerMessage.PATTERN_EVENT.send(getEngine(), machine.getIndex(),
-                start, -1, -1, end);
+    public void removePattern(IMachine machine, int start, int end) {
+        SequencerMessage.PATTERN_EVENT.send(getEngine(), machine.getIndex(), start, -1, -1, end);
     }
 
     @Override
-    public void setLoopPoints(int startBar, int endBar)
-    {
+    public void setLoopPoints(int startBar, int endBar) {
         SequencerMessage.LOOP_POINTS.send(getEngine(), startBar, endBar);
     }
 
@@ -233,20 +207,17 @@ public class Sequencer extends Device implements ISequencer
     private OnSongExportListener mOnSongExportListener;
 
     @Override
-    public void setOnBeatChangeListener(OnBeatChangeListener l)
-    {
+    public void setOnBeatChangeListener(OnBeatChangeListener l) {
         mOnBeatChangeListener = l;
     }
 
     @Override
-    public void setOnMeasureChangeListener(OnMeasureChangeListener l)
-    {
+    public void setOnMeasureChangeListener(OnMeasureChangeListener l) {
         mOnMeasureChangeListener = l;
     }
 
     @Override
-    public void setOnSongExportListener(OnSongExportListener l)
-    {
+    public void setOnSongExportListener(OnSongExportListener l) {
         mOnSongExportListener = l;
     }
 

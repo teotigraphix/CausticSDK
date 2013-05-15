@@ -28,6 +28,5 @@ import com.teotigraphix.caustic.machine.IMachineComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IOscillatorComponent extends IMachineComponent
-{
+public interface IOscillatorComponent extends IMachineComponent {
 }

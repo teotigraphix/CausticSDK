@@ -32,18 +32,15 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class MixerPanelState implements IPersist
-{
+public class MixerPanelState implements IPersist {
     MixerPanel mMixerPanel;
 
-    public MixerPanelState(MixerPanel mixerPanel)
-    {
+    public MixerPanelState(MixerPanel mixerPanel) {
         mMixerPanel = mixerPanel;
     }
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         saveMasterChannel(memento.createChild("master"));
         // save channels
         saveChannels(memento.createChild(MixerPanelConstants.TAG_CHANNELS));
@@ -52,19 +49,16 @@ public class MixerPanelState implements IPersist
         saveReverb(memento.createChild("reverb"));
     }
 
-    private void saveMasterChannel(IMemento memento)
-    {
+    private void saveMasterChannel(IMemento memento) {
         saveChannel(mMixerPanel.getMasterData(), memento);
     }
 
-    private void loadMasterChannel(IMemento memento)
-    {
+    private void loadMasterChannel(IMemento memento) {
         loadChannel(mMixerPanel.getMasterData(), memento);
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         loadMasterChannel(memento.getChild("master"));
         // !!! The rack or client needs to call addMachine() on the mixer
         // BEFORE the state is loaded.
@@ -74,38 +68,29 @@ public class MixerPanelState implements IPersist
         loadReverb(memento.getChild("reverb"));
     }
 
-    public void copyChannel(IMachine machine, IMemento memento)
-    {
+    public void copyChannel(IMachine machine, IMemento memento) {
         MixerData data = mMixerPanel.getMixerInfo(machine.getIndex());
         saveChannel(data, memento);
     }
 
-    public void pasteChannel(IMachine machine, IMemento memento)
-    {
+    public void pasteChannel(IMachine machine, IMemento memento) {
         MixerData data = mMixerPanel.getMixerInfo(machine.getIndex());
         loadChannel(data, memento);
     }
 
-    protected void saveChannels(IMemento memento)
-    {
-        for (Entry<Integer, MixerData> entry : mMixerPanel.getMixerInfoSet())
-        {
-            saveChannel(entry.getValue(),
-                    memento.createChild(MixerPanelConstants.TAG_CHANNEL));
+    protected void saveChannels(IMemento memento) {
+        for (Entry<Integer, MixerData> entry : mMixerPanel.getMixerInfoSet()) {
+            saveChannel(entry.getValue(), memento.createChild(MixerPanelConstants.TAG_CHANNEL));
         }
     }
 
-    private void saveChannel(MixerData data, IMemento memento)
-    {
+    private void saveChannel(MixerData data, IMemento memento) {
         data.copy(memento);
     }
 
-    protected void loadChannels(IMemento memento)
-    {
-        IMemento[] channels = memento
-                .getChildren(MixerPanelConstants.TAG_CHANNEL);
-        for (IMemento channel : channels)
-        {
+    protected void loadChannels(IMemento memento) {
+        IMemento[] channels = memento.getChildren(MixerPanelConstants.TAG_CHANNEL);
+        for (IMemento channel : channels) {
             int id = channel.getInteger("id");
             if (!mMixerPanel.hasMixerInfo(id))
                 continue;
@@ -115,28 +100,23 @@ public class MixerPanelState implements IPersist
         }
     }
 
-    private void loadChannel(MixerData data, IMemento channel)
-    {
+    private void loadChannel(MixerData data, IMemento channel) {
         data.paste(channel);
     }
 
-    protected void saveDelay(IMemento memento)
-    {
+    protected void saveDelay(IMemento memento) {
         mMixerPanel.getDelay().copy(memento);
     }
 
-    protected void saveReverb(IMemento memento)
-    {
+    protected void saveReverb(IMemento memento) {
         mMixerPanel.getReverb().copy(memento);
     }
 
-    protected void loadDelay(IMemento memento)
-    {
+    protected void loadDelay(IMemento memento) {
         mMixerPanel.getDelay().paste(memento);
     }
 
-    protected void loadReverb(IMemento memento)
-    {
+    protected void loadReverb(IMemento memento) {
         mMixerPanel.getReverb().paste(memento);
     }
 }

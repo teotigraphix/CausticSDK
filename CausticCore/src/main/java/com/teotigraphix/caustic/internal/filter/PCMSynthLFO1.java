@@ -29,8 +29,7 @@ import com.teotigraphix.caustic.osc.PCMSynthLFOMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PCMSynthLFO1 extends LFOComponent implements IPCMSynthLFO1
-{
+public class PCMSynthLFO1 extends LFOComponent implements IPCMSynthLFO1 {
 
     //--------------------------------------------------------------------------
     //
@@ -45,25 +44,21 @@ public class PCMSynthLFO1 extends LFOComponent implements IPCMSynthLFO1
     private LFOTarget mTarget = LFOTarget.NONE;
 
     @Override
-    public LFOTarget getTarget()
-    {
+    public LFOTarget getTarget() {
         return mTarget;
     }
 
-    public LFOTarget getTarget(boolean restore)
-    {
-        return LFOTarget.toType(PCMSynthLFOMessage.LFO_TARGET.query(
-                getEngine(), getMachineIndex()));
+    public LFOTarget getTarget(boolean restore) {
+        return LFOTarget
+                .toType(PCMSynthLFOMessage.LFO_TARGET.query(getEngine(), getMachineIndex()));
     }
 
     @Override
-    public void setTarget(LFOTarget value)
-    {
+    public void setTarget(LFOTarget value) {
         if (value == mTarget)
             return;
         mTarget = value;
-        PCMSynthLFOMessage.LFO_TARGET.send(getEngine(), getMachineIndex(),
-                mTarget.getValue());
+        PCMSynthLFOMessage.LFO_TARGET.send(getEngine(), getMachineIndex(), mTarget.getValue());
     }
 
     //----------------------------------
@@ -73,25 +68,21 @@ public class PCMSynthLFO1 extends LFOComponent implements IPCMSynthLFO1
     private WaveForm mWaveform = WaveForm.SINE;
 
     @Override
-    public WaveForm getWaveform()
-    {
+    public WaveForm getWaveform() {
         return mWaveform;
     }
 
-    public WaveForm getWaveform(boolean restore)
-    {
-        return WaveForm.toType(PCMSynthLFOMessage.LFO_WAVEFORM.query(
-                getEngine(), getMachineIndex()));
+    public WaveForm getWaveform(boolean restore) {
+        return WaveForm.toType(PCMSynthLFOMessage.LFO_WAVEFORM
+                .query(getEngine(), getMachineIndex()));
     }
 
     @Override
-    public void setWaveForm(WaveForm value)
-    {
+    public void setWaveForm(WaveForm value) {
         if (value == mWaveform)
             return;
         mWaveform = value;
-        PCMSynthLFOMessage.LFO_WAVEFORM.send(getEngine(), getMachineIndex(),
-                mWaveform.getValue());
+        PCMSynthLFOMessage.LFO_WAVEFORM.send(getEngine(), getMachineIndex(), mWaveform.getValue());
     }
 
     //--------------------------------------------------------------------------
@@ -103,8 +94,7 @@ public class PCMSynthLFO1 extends LFOComponent implements IPCMSynthLFO1
     /**
      * Constructor.
      */
-    public PCMSynthLFO1(IMachine machine)
-    {
+    public PCMSynthLFO1(IMachine machine) {
         super(machine);
         mDepthMessage = PCMSynthLFOMessage.LFO_DEPTH;
         mRateMessage = PCMSynthLFOMessage.LFO_RATE;
@@ -117,27 +107,21 @@ public class PCMSynthLFO1 extends LFOComponent implements IPCMSynthLFO1
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         memento.putInteger(FilterConstants.ATT_TARGET, getTarget().getValue());
-        memento.putInteger(FilterConstants.ATT_WAVEFORM, getWaveform()
-                .getValue());
+        memento.putInteger(FilterConstants.ATT_WAVEFORM, getWaveform().getValue());
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
-        setWaveForm(WaveForm.toType(memento
-                .getInteger(FilterConstants.ATT_WAVEFORM)));
-        setTarget(LFOTarget.toType(memento
-                .getInteger(FilterConstants.ATT_TARGET)));
+        setWaveForm(WaveForm.toType(memento.getInteger(FilterConstants.ATT_WAVEFORM)));
+        setTarget(LFOTarget.toType(memento.getInteger(FilterConstants.ATT_TARGET)));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         super.restore();
         setTarget(getTarget(true));
         setWaveForm(getWaveform(true));

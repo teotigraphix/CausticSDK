@@ -27,8 +27,7 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IEffect extends IEffectComponent, IPersist
-{
+public interface IEffect extends IEffectComponent, IPersist {
 
     //--------------------------------------------------------------------------
     //
@@ -70,8 +69,7 @@ public interface IEffect extends IEffectComponent, IPersist
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum EffectType
-    {
+    public enum EffectType {
 
         /**
          * Adds distortion to the machine's signal.
@@ -97,20 +95,16 @@ public interface IEffect extends IEffectComponent, IPersist
 
         private int mValue;
 
-        EffectType(int value)
-        {
+        EffectType(int value) {
             mValue = value;
         }
 
-        public int getValue()
-        {
+        public int getValue() {
             return mValue;
         }
 
-        public static EffectType toType(Integer type)
-        {
-            for (EffectType result : values())
-            {
+        public static EffectType toType(Integer type) {
+            for (EffectType result : values()) {
                 if (result.getValue() == type)
                     return result;
             }

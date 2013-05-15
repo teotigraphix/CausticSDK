@@ -1,3 +1,4 @@
+
 package org.androidtransfuse.event;
 
 import java.util.HashSet;
@@ -11,36 +12,31 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @SuppressWarnings("rawtypes")
-public class EventManager
-{
+public class EventManager {
 
     private final ReadWriteLock observersLock = new ReentrantReadWriteLock();
 
     private final ConcurrentMap<Class, Set<EventObserver>> observers = new ConcurrentHashMap<Class, java.util.Set<EventObserver>>();
+
     private final ThreadLocal<ConcurrentLinkedQueue<EventExecution>> executionQueue = new ExecutionQueueThreadLocal();
+
     private final ThreadLocal<Boolean> executing = new BooleanThreadLocal();
 
-    private static final class EventExecution<T>
-    {
+    private static final class EventExecution<T> {
         private final T event;
+
         private final EventObserver<T> observer;
 
-        private EventExecution(T event, EventObserver<T> observer)
-        {
+        private EventExecution(T event, EventObserver<T> observer) {
             this.event = event;
             this.observer = observer;
         }
 
-        public void trigger()
-        {
-            try
-            {
+        public void trigger() {
+            try {
                 observer.trigger(event);
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(
-                        "Exception caught during event trigger", e);
+            } catch (Exception e) {
+                throw new RuntimeException("Exception caught during event trigger", e);
             }
         }
     }
@@ -53,38 +49,27 @@ public class EventManager
      * @param observer event observer
      * @param <T> relating type
      */
-    public <T> void register(Class<T> event, EventObserver<T> observer)
-    {
-        if (event == null)
-        {
-            throw new IllegalArgumentException(
-                    "Null Event type passed to register");
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        if (event == null) {
+            throw new IllegalArgumentException("Null Event type passed to register");
         }
-        if (observer == null)
-        {
-            throw new IllegalArgumentException(
-                    "Null observer passed to register");
+        if (observer == null) {
+            throw new IllegalArgumentException("Null observer passed to register");
         }
         observersLock.writeLock().lock();
-        try
-        {
+        try {
             nullSafeGet(event).add(observer);
-        }
-        finally
-        {
+        } finally {
             observersLock.writeLock().unlock();
         }
     }
 
-    private Set<EventObserver> nullSafeGet(Class<?> clazz)
-    {
+    private Set<EventObserver> nullSafeGet(Class<?> clazz) {
         Set<EventObserver> result = observers.get(clazz);
-        if (result == null)
-        {
+        if (result == null) {
             Set<EventObserver> value = new CopyOnWriteArraySet<EventObserver>();
             result = observers.putIfAbsent(clazz, value);
-            if (result == null)
-            {
+            if (result == null) {
                 result = value;
             }
         }
@@ -98,62 +83,47 @@ public class EventManager
      * @param event object
      */
     @SuppressWarnings("unchecked")
-    public void trigger(Object event)
-    {
+    public void trigger(Object event) {
 
         Set<Class> eventTypes = getAllInheritedClasses(event.getClass());
 
         observersLock.readLock().lock();
-        try
-        {
-            for (Class eventType : eventTypes)
-            {
-                if (observers.containsKey(eventType))
-                {
-                    for (EventObserver eventObserver : observers.get(eventType))
-                    {
-                        executionQueue.get().add(
-                                new EventExecution(event, eventObserver));
+        try {
+            for (Class eventType : eventTypes) {
+                if (observers.containsKey(eventType)) {
+                    for (EventObserver eventObserver : observers.get(eventType)) {
+                        executionQueue.get().add(new EventExecution(event, eventObserver));
                     }
                 }
             }
 
             triggerQueue();
-        }
-        finally
-        {
+        } finally {
             observersLock.readLock().unlock();
         }
     }
 
-    private void triggerQueue()
-    {
+    private void triggerQueue() {
 
         //avoid reentrant events
-        if (executing.get())
-        {
+        if (executing.get()) {
             return;
         }
 
         executing.set(true);
 
-        try
-        {
+        try {
             EventExecution execution = executionQueue.get().poll();
-            while (execution != null)
-            {
+            while (execution != null) {
                 execution.trigger();
                 execution = executionQueue.get().poll();
             }
-        }
-        finally
-        {
+        } finally {
             executing.set(false);
         }
     }
 
-    private Set<Class> getAllInheritedClasses(Class type)
-    {
+    private Set<Class> getAllInheritedClasses(Class type) {
         Set<Class> inheritedClasses = new HashSet<Class>();
 
         addAllInheritedClasses(inheritedClasses, type);
@@ -161,16 +131,13 @@ public class EventManager
         return inheritedClasses;
     }
 
-    private void addAllInheritedClasses(Set<Class> inheritedClasses, Class type)
-    {
+    private void addAllInheritedClasses(Set<Class> inheritedClasses, Class type) {
 
-        if (type != null)
-        {
+        if (type != null) {
             inheritedClasses.add(type);
 
             addAllInheritedClasses(inheritedClasses, type.getSuperclass());
-            for (Class interf : type.getInterfaces())
-            {
+            for (Class interf : type.getInterfaces()) {
                 addAllInheritedClasses(inheritedClasses, interf);
             }
         }
@@ -181,39 +148,29 @@ public class EventManager
      * 
      * @param observer Event Observer
      */
-    public void unregister(EventObserver<?> observer)
-    {
+    public void unregister(EventObserver<?> observer) {
         observersLock.writeLock().lock();
-        try
-        {
-            for (Map.Entry<Class, Set<EventObserver>> entry : observers
-                    .entrySet())
-            {
+        try {
+            for (Map.Entry<Class, Set<EventObserver>> entry : observers.entrySet()) {
                 entry.getValue().remove(observer);
             }
-        }
-        finally
-        {
+        } finally {
             observersLock.writeLock().unlock();
         }
 
     }
 
-    private static class BooleanThreadLocal extends ThreadLocal<Boolean>
-    {
+    private static class BooleanThreadLocal extends ThreadLocal<Boolean> {
         @Override
-        protected Boolean initialValue()
-        {
+        protected Boolean initialValue() {
             return false;
         }
     }
 
     private static class ExecutionQueueThreadLocal extends
-            ThreadLocal<ConcurrentLinkedQueue<EventExecution>>
-    {
+            ThreadLocal<ConcurrentLinkedQueue<EventExecution>> {
         @Override
-        protected ConcurrentLinkedQueue<EventExecution> initialValue()
-        {
+        protected ConcurrentLinkedQueue<EventExecution> initialValue() {
             return new ConcurrentLinkedQueue<EventExecution>();
         }
     }

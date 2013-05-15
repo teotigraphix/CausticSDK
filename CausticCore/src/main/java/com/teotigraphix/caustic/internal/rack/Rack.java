@@ -62,12 +62,10 @@ import com.teotigraphix.caustic.sequencer.ISequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class Rack extends Device implements IRack
-{
+public class Rack extends Device implements IRack {
     EventManager dispatcher;
 
-    public EventManager getDispatcher()
-    {
+    public EventManager getDispatcher() {
         return dispatcher;
     }
 
@@ -95,8 +93,7 @@ public class Rack extends Device implements IRack
     //
     //--------------------------------------------------------------------------
     @Override
-    public boolean isRestored()
-    {
+    public boolean isRestored() {
         return restored;
     }
 
@@ -107,13 +104,11 @@ public class Rack extends Device implements IRack
     private IDeviceFactory factory;
 
     @Override
-    public IDeviceFactory getFactory()
-    {
+    public IDeviceFactory getFactory() {
         return factory;
     }
 
-    public void setFactory(IDeviceFactory value)
-    {
+    public void setFactory(IDeviceFactory value) {
         factory = value;
     }
 
@@ -124,13 +119,11 @@ public class Rack extends Device implements IRack
     private IMixerPanel mMixerPanel;
 
     @Override
-    public IMixerPanel getMixerPanel()
-    {
+    public IMixerPanel getMixerPanel() {
         return mMixerPanel;
     }
 
-    protected void setMixerPanel(IMixerPanel mixerPanel)
-    {
+    protected void setMixerPanel(IMixerPanel mixerPanel) {
         mMixerPanel = mixerPanel;
     }
 
@@ -141,13 +134,11 @@ public class Rack extends Device implements IRack
     private IEffectsRack mEffectsRack;
 
     @Override
-    public IEffectsRack getEffectsRack()
-    {
+    public IEffectsRack getEffectsRack() {
         return mEffectsRack;
     }
 
-    protected void setEffectsRack(IEffectsRack value)
-    {
+    protected void setEffectsRack(IEffectsRack value) {
         mEffectsRack = value;
     }
 
@@ -158,13 +149,11 @@ public class Rack extends Device implements IRack
     private ISequencer mSequencer;
 
     @Override
-    public ISequencer getSequencer()
-    {
+    public ISequencer getSequencer() {
         return mSequencer;
     }
 
-    protected void setSequencer(ISequencer sequencer)
-    {
+    protected void setSequencer(ISequencer sequencer) {
         mSequencer = sequencer;
     }
 
@@ -177,13 +166,11 @@ public class Rack extends Device implements IRack
     private boolean mLoadingMachines;
 
     @Override
-    public IOutputPanel getOutputPanel()
-    {
+    public IOutputPanel getOutputPanel() {
         return mOutputPanel;
     }
 
-    protected void setOutputPanel(IOutputPanel outputPanel)
-    {
+    protected void setOutputPanel(IOutputPanel outputPanel) {
         mOutputPanel = outputPanel;
     }
 
@@ -192,15 +179,12 @@ public class Rack extends Device implements IRack
     //----------------------------------
 
     @Override
-    public int getNumTracks()
-    {
+    public int getNumTracks() {
         return TOTAL_TRACKS;
     }
 
-    void setNumTracks(int value)
-    {
-        throw new UnsupportedOperationException(
-                "Number of tracks cannot currently be set");
+    void setNumTracks(int value) {
+        throw new UnsupportedOperationException("Number of tracks cannot currently be set");
     }
 
     //----------------------------------
@@ -208,21 +192,17 @@ public class Rack extends Device implements IRack
     //----------------------------------
 
     @Override
-    public int getNumMachines()
-    {
+    public int getNumMachines() {
         return getMachineMap().size();
     }
 
     @Override
-    public Map<Integer, IMachine> getTrackMap()
-    {
+    public Map<Integer, IMachine> getTrackMap() {
         Map<Integer, IMachine> result = new HashMap<Integer, IMachine>();
         final int len = getNumTracks();
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             IMachine machine = null;
-            if (hasMachine(i))
-            {
+            if (hasMachine(i)) {
                 machine = getMachine(i);
             }
             result.put(i, machine);
@@ -231,26 +211,21 @@ public class Rack extends Device implements IRack
     }
 
     @Override
-    public Map<Integer, IMachine> getMachineMap()
-    {
+    public Map<Integer, IMachine> getMachineMap() {
         Map<Integer, IMachine> result = new TreeMap<Integer, IMachine>();
-        for (IMachine machine : map.values())
-        {
+        for (IMachine machine : map.values()) {
             result.put(machine.getIndex(), machine);
         }
         return result;
     }
 
     @Override
-    public Map<Integer, String> getMachineNames()
-    {
+    public Map<Integer, String> getMachineNames() {
         Map<Integer, String> result = new HashMap<Integer, String>();
         final int len = getNumTracks();
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             String name = null;
-            if (hasMachine(i))
-            {
+            if (hasMachine(i)) {
                 name = getMachine(i).getId();
             }
             result.put(i, name);
@@ -267,8 +242,7 @@ public class Rack extends Device implements IRack
     /**
      * Constructor.
      */
-    public Rack(IDeviceFactory factory)
-    {
+    public Rack(IDeviceFactory factory) {
         setId("rack");
         setFactory(factory);
     }
@@ -280,20 +254,16 @@ public class Rack extends Device implements IRack
     //--------------------------------------------------------------------------
 
     @Override
-    public void loadSong(String path) throws CausticException
-    {
+    public void loadSong(String path) throws CausticException {
         File songFile = new File(path);
 
         if (!path.endsWith("caustic"))
-            throw new CausticException(
-                    "Loaded song file must be *.caustic format");
+            throw new CausticException("Loaded song file must be *.caustic format");
         if (!songFile.exists())
-            throw new CausticException("Song file does not exist [" + path
-                    + "]");
+            throw new CausticException("Song file does not exist [" + path + "]");
 
         List<IMachine> machines = new ArrayList<IMachine>(map.values());
-        for (IMachine machine : machines)
-        {
+        for (IMachine machine : machines) {
             removeMachineAt(machine.getIndex());
         }
 
@@ -303,64 +273,51 @@ public class Rack extends Device implements IRack
     }
 
     @Override
-    public void saveSong(String name) throws CausticException
-    {
+    public void saveSong(String name) throws CausticException {
         if (name.endsWith("caustic"))
-            throw new CausticException(
-                    "Save song name must not contain .caustic");
+            throw new CausticException("Save song name must not contain .caustic");
         RackMessage.SAVE_SONG.send(getEngine(), name);
         fireSongSaved();
     }
 
     @Override
-    public void destroySong() throws MachineException
-    {
+    public void destroySong() throws MachineException {
         List<IMachine> machines = new ArrayList<IMachine>(map.values());
-        for (IMachine machine : machines)
-        {
+        for (IMachine machine : machines) {
             removeMachineAt(machine.getIndex());
         }
     }
 
     @Override
-    public String queryMachineName(int index)
-    {
-        String result = RackMessage.QUERY_MACHINE_NAME.queryString(getEngine(),
-                index);
+    public String queryMachineName(int index) {
+        String result = RackMessage.QUERY_MACHINE_NAME.queryString(getEngine(), index);
         return result;
     }
 
     @Override
-    public String queryMachineType(int index)
-    {
-        String result = RackMessage.QUERY_MACHINE_TYPE.queryString(getEngine(),
-                index);
+    public String queryMachineType(int index) {
+        String result = RackMessage.QUERY_MACHINE_TYPE.queryString(getEngine(), index);
         return result;
     }
 
-    public IMachine addMachineAt(int index, String name, String type,
-            boolean suppress) throws CausticException
-    {
+    public IMachine addMachineAt(int index, String name, String type, boolean suppress)
+            throws CausticException {
         suppressMessages = suppress;
 
         MachineType machineType = MachineType.fromString(type);
         IMachine machine = null;
-        try
-        {
+        try {
             machine = createMachine(index, machineType, name);
-        } catch (CausticException e)
-        {
+        } catch (CausticException e) {
             throw e;
         }
 
-        if (machine == null)
-        {
-            throw new CausticException("Machine not created {" + name + ":"
-                    + type + "}");
+        if (machine == null) {
+            throw new CausticException("Machine not created {" + name + ":" + type + "}");
         }
 
-        ((EffectsRack) getEffectsRack()).addMachine(machine);
-        ((MixerPanel) getMixerPanel()).addMachine(machine);
+        ((EffectsRack)getEffectsRack()).addMachine(machine);
+        ((MixerPanel)getMixerPanel()).addMachine(machine);
 
         suppressMessages = false;
 
@@ -368,28 +325,22 @@ public class Rack extends Device implements IRack
     }
 
     @Override
-    public IMachine addMachineAt(int index, String name, MachineType type)
-            throws CausticException
-    {
+    public IMachine addMachineAt(int index, String name, MachineType type) throws CausticException {
         return addMachineAt(index, name, type.getValue(), false);
     }
 
     @Override
-    public IMachine addMachine(String name, MachineType type)
-            throws CausticException
-    {
+    public IMachine addMachine(String name, MachineType type) throws CausticException {
         return addMachineAt(nextIndex(), name, type.getValue(), false);
     }
 
     @Override
-    public IMachine removeMachine(IMachine machine) throws MachineException
-    {
+    public IMachine removeMachine(IMachine machine) throws MachineException {
         return removeMachineAt(machine.getIndex());
     }
 
     @Override
-    public IMachine removeMachineAt(int index) throws MachineException
-    {
+    public IMachine removeMachineAt(int index) throws MachineException {
         IMachine machine = map.get(index);
         if (machine == null)
             return null;
@@ -398,27 +349,25 @@ public class Rack extends Device implements IRack
 
         fireMachineRemoved(machine);
 
-        ((Machine) machine).setIndex(-1);
+        ((Machine)machine).setIndex(-1);
 
         //machine.dispose();
 
         RackMessage.REMOVE.send(getEngine(), index);
 
-        ((EffectsRack) getEffectsRack()).removeMachine(machine);
-        ((MixerPanel) getMixerPanel()).removeMachine(machine);
+        ((EffectsRack)getEffectsRack()).removeMachine(machine);
+        ((MixerPanel)getMixerPanel()).removeMachine(machine);
 
         return machine;
     }
 
     @Override
-    public IMachine getMachine(int index)
-    {
+    public IMachine getMachine(int index) {
         return map.get(index);
     }
 
     @Override
-    public boolean hasMachine(int index)
-    {
+    public boolean hasMachine(int index) {
         return map.containsKey(index);
     }
 
@@ -428,35 +377,27 @@ public class Rack extends Device implements IRack
     //
     //--------------------------------------------------------------------------
 
-    private int nextIndex()
-    {
+    private int nextIndex() {
         int index = 0;
         // find the next index that is empty
-        for (index = 0; index < 10; index++)
-        {
-            if (!map.containsKey(index))
-            {
+        for (index = 0; index < 10; index++) {
+            if (!map.containsKey(index)) {
                 break;
             }
         }
         return index;
     }
 
-    private IMachine createMachine(int index, MachineType machineType,
-            String machineId) throws CausticException
-    {
-        if (map.containsKey(index))
-        {
-            throw new CausticException("{" + index
-                    + "} machine is already defined");
+    private IMachine createMachine(int index, MachineType machineType, String machineId)
+            throws CausticException {
+        if (map.containsKey(index)) {
+            throw new CausticException("{" + index + "} machine is already defined");
         }
 
-        Machine machine = (Machine) factory.create(machineId, machineType);
+        Machine machine = (Machine)factory.create(machineId, machineType);
 
-        if (machine == null)
-        {
-            throw new CausticException("{" + machineType
-                    + "} IMachine type not defined");
+        if (machine == null) {
+            throw new CausticException("{" + machineType + "} IMachine type not defined");
         }
 
         createCausticMachine(machineType.getValue(), machineId, index);
@@ -480,15 +421,13 @@ public class Rack extends Device implements IRack
     //--------------------------------------------------------------------------
 
     @Override
-    protected void initializeEngine(ICausticEngine engine)
-    {
+    protected void initializeEngine(ICausticEngine engine) {
         super.initializeEngine(engine);
         initializeRack();
     }
 
     @Override
-    protected void disposeEngine(ICausticEngine engine)
-    {
+    protected void disposeEngine(ICausticEngine engine) {
         super.disposeEngine(engine);
     }
 
@@ -498,57 +437,44 @@ public class Rack extends Device implements IRack
     //
     //--------------------------------------------------------------------------
 
-    protected void initializeRack()
-    {
+    protected void initializeRack() {
         setMixerPanel(factory.createMixerPanel());
         setEffectsRack(factory.createEffectRack());
         setOutputPanel(factory.createOutputPanel());
         setSequencer(factory.createSequencer());
     }
 
-    protected void createCausticMachine(String machineType, String machineName,
-            int index)
-    {
-        if (!suppressMessages)
-        {
-            RackMessage.CREATE.send(getEngine(), machineType, machineName,
-                    index);
+    protected void createCausticMachine(String machineType, String machineName, int index) {
+        if (!suppressMessages) {
+            RackMessage.CREATE.send(getEngine(), machineType, machineName, index);
         }
     }
 
-    protected void songLoaded() throws CausticException
-    {
+    protected void songLoaded() throws CausticException {
         fireSongPreloaded();
 
         // load the machines
-        if (!skipMachinePopulate)
-        {
+        if (!skipMachinePopulate) {
             populateMachines();
         }
 
         fireSongLoaded();
     }
 
-    void populateMachines() throws CausticException
-    {
+    void populateMachines() throws CausticException {
         mLoadingMachines = true;
         final int len = getNumTracks();
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             String name = queryMachineName(i);
             String type = queryMachineType(i);
-            if (name != null && type != null)
-            {
-                try
-                {
+            if (name != null && type != null) {
+                try {
                     IMachine machine = addMachineAt(i, name, type, true);
-                    if (machine == null)
-                    {
-                        throw new CausticException("Error restoring IMachine "
-                                + name + " type:" + type);
+                    if (machine == null) {
+                        throw new CausticException("Error restoring IMachine " + name + " type:"
+                                + type);
                     }
-                } catch (CausticException e)
-                {
+                } catch (CausticException e) {
                     throw e;
                 }
             }
@@ -557,110 +483,86 @@ public class Rack extends Device implements IRack
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         mOutputPanel.restore();
         mMixerPanel.restore();
         mEffectsRack.restore();
-        for (IMachine machine : map.values())
-        {
+        for (IMachine machine : map.values()) {
             machine.restore();
         }
         restored = true;
         fireSongRestored();
     }
 
-    protected final void fireMachineAdded(IMachine machine)
-    {
+    protected final void fireMachineAdded(IMachine machine) {
         MachineChangeKind kind = mLoadingMachines ? MachineChangeKind.LOADED
                 : MachineChangeKind.ADDED;
-        for (OnMachineChangeListener l : mOnMachineChangeListener)
-        {
+        for (OnMachineChangeListener l : mOnMachineChangeListener) {
             l.onMachineChanged(machine, kind);
         }
     }
 
-    protected final void fireMachineRemoved(IMachine machine)
-    {
-        for (OnMachineChangeListener l : mOnMachineChangeListener)
-        {
+    protected final void fireMachineRemoved(IMachine machine) {
+        for (OnMachineChangeListener l : mOnMachineChangeListener) {
             l.onMachineChanged(machine, MachineChangeKind.REMOVED);
         }
     }
 
-    protected final void fireSongAdded()
-    {
+    protected final void fireSongAdded() {
         if (mOnSongStateChangeListener != null)
-            mOnSongStateChangeListener
-                    .onSongStateChanged(SongStateChangeKind.ADDED);
+            mOnSongStateChangeListener.onSongStateChanged(SongStateChangeKind.ADDED);
     }
 
-    protected final void fireSongRemoved()
-    {
+    protected final void fireSongRemoved() {
         if (mOnSongStateChangeListener != null)
-            mOnSongStateChangeListener
-                    .onSongStateChanged(SongStateChangeKind.REMOVED);
+            mOnSongStateChangeListener.onSongStateChanged(SongStateChangeKind.REMOVED);
     }
 
-    protected final void fireSongPreloaded()
-    {
+    protected final void fireSongPreloaded() {
         if (mOnSongStateChangeListener != null)
-            mOnSongStateChangeListener
-                    .onSongStateChanged(SongStateChangeKind.PRELOADED);
+            mOnSongStateChangeListener.onSongStateChanged(SongStateChangeKind.PRELOADED);
     }
 
-    protected final void fireSongLoaded()
-    {
+    protected final void fireSongLoaded() {
         if (mOnSongStateChangeListener != null)
-            mOnSongStateChangeListener
-                    .onSongStateChanged(SongStateChangeKind.LOADED);
+            mOnSongStateChangeListener.onSongStateChanged(SongStateChangeKind.LOADED);
     }
 
-    protected final void fireSongSaved()
-    {
+    protected final void fireSongSaved() {
         if (mOnSongStateChangeListener != null)
-            mOnSongStateChangeListener
-                    .onSongStateChanged(SongStateChangeKind.SAVED);
+            mOnSongStateChangeListener.onSongStateChanged(SongStateChangeKind.SAVED);
     }
 
-    protected final void fireSongRestored()
-    {
+    protected final void fireSongRestored() {
         if (mOnSongStateChangeListener != null)
-            mOnSongStateChangeListener
-                    .onSongStateChanged(SongStateChangeKind.RESTORED);
+            mOnSongStateChangeListener.onSongStateChanged(SongStateChangeKind.RESTORED);
     }
 
     private OnSongStateChangeListener mOnSongStateChangeListener;
 
     @Override
-    public void setOnSongStateChangeListener(OnSongStateChangeListener l)
-    {
+    public void setOnSongStateChangeListener(OnSongStateChangeListener l) {
         mOnSongStateChangeListener = l;
     }
 
     private final ArrayList<OnMachineChangeListener> mOnMachineChangeListener = new ArrayList<IRack.OnMachineChangeListener>();
 
     @Override
-    public void addOnMachineChangeListener(OnMachineChangeListener l)
-    {
-        if (!mOnMachineChangeListener.contains(l))
-        {
+    public void addOnMachineChangeListener(OnMachineChangeListener l) {
+        if (!mOnMachineChangeListener.contains(l)) {
             mOnMachineChangeListener.add(l);
         }
     }
 
     @Override
-    public void removeOnMachineChangeListener(OnMachineChangeListener l)
-    {
-        if (mOnMachineChangeListener.contains(l))
-        {
+    public void removeOnMachineChangeListener(OnMachineChangeListener l) {
+        if (mOnMachineChangeListener.contains(l)) {
             mOnMachineChangeListener.remove(l);
         }
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return map.toString();
     }
 

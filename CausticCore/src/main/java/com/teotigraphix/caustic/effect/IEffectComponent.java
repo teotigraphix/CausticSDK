@@ -31,7 +31,6 @@ import com.teotigraphix.caustic.device.IDeviceComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IEffectComponent extends IDeviceComponent, IRestore, IPersist
-{
+public interface IEffectComponent extends IDeviceComponent, IRestore, IPersist {
 
 }

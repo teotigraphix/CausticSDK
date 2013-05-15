@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @since 1.0
  * @see IMixerPanel#getReverb()
  */
-public interface IMixerReverb extends IEffectComponent, IPersist
-{
+public interface IMixerReverb extends IEffectComponent, IPersist {
 
     //--------------------------------------------------------------------------
     //

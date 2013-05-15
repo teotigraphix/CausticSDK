@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.effect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ICompressorEffect extends IEffect
-{
+public interface ICompressorEffect extends IEffect {
 
     //--------------------------------------------------------------------------
     //

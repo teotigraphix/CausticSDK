@@ -29,8 +29,7 @@ import com.teotigraphix.caustic.sampler.IBeatboxSampler;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IBeatbox extends ISynth
-{
+public interface IBeatbox extends ISynth {
 
     //--------------------------------------------------------------------------
     //

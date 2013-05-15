@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class RackMessage extends CausticMessage
-{
+public class RackMessage extends CausticMessage {
 
     /**
      * Message:
@@ -54,8 +53,7 @@ public class RackMessage extends CausticMessage
      * @see IRack#addMachineAt(int, String, String)
      * @since 1.0
      */
-    public static final RackMessage CREATE = new RackMessage(
-            "/caustic/create ${0} ${1} ${2}");
+    public static final RackMessage CREATE = new RackMessage("/caustic/create ${0} ${1} ${2}");
 
     /**
      * Message: <code>/caustic/remove [machine_index]</code>
@@ -75,8 +73,7 @@ public class RackMessage extends CausticMessage
      * @see IRack#removeMachineAt(int)
      * @since 1.0
      */
-    public static final RackMessage REMOVE = new RackMessage(
-            "/caustic/remove ${0}");
+    public static final RackMessage REMOVE = new RackMessage("/caustic/remove ${0}");
 
     /**
      * Message: <code>/caustic/load_song [file_path]</code>
@@ -97,8 +94,7 @@ public class RackMessage extends CausticMessage
      * @see IRack#loadSong(String)
      * @since 1.0
      */
-    public static final RackMessage LOAD_SONG = new RackMessage(
-            "/caustic/load_song ${0}");
+    public static final RackMessage LOAD_SONG = new RackMessage("/caustic/load_song ${0}");
 
     /**
      * Message: <code>/caustic/save_song [file_name]</code>
@@ -124,8 +120,7 @@ public class RackMessage extends CausticMessage
      * @see RuntimeUtils#getCausticSongsDirectory()
      * @since 1.0
      */
-    public static final RackMessage SAVE_SONG = new RackMessage(
-            "/caustic/save_song ${0}");
+    public static final RackMessage SAVE_SONG = new RackMessage("/caustic/save_song ${0}");
 
     /**
      * Query: <code>/caustic/machine_name [machine_index]</code>
@@ -190,11 +185,9 @@ public class RackMessage extends CausticMessage
      * 
      * @since 1.0
      */
-    public static final RackMessage BLANKRACK = new RackMessage(
-            "/caustic/blankrack");
+    public static final RackMessage BLANKRACK = new RackMessage("/caustic/blankrack");
 
-    RackMessage(String message)
-    {
+    RackMessage(String message) {
         super(message);
     }
 

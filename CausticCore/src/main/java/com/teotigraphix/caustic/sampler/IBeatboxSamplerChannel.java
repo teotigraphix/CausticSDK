@@ -29,8 +29,7 @@ import com.teotigraphix.caustic.machine.IMachineComponent;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IBeatboxSamplerChannel extends IMachineComponent
-{
+public interface IBeatboxSamplerChannel extends IMachineComponent {
 
     //--------------------------------------------------------------------------
     //

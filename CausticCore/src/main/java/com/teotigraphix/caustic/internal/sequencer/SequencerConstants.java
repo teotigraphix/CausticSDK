@@ -26,8 +26,7 @@ package com.teotigraphix.caustic.internal.sequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public final class SequencerConstants
-{
+public final class SequencerConstants {
 
     //--------------------------------------------------------------------------
     //

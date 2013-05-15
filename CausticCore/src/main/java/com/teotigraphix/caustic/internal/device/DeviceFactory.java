@@ -66,32 +66,26 @@ import com.teotigraphix.caustic.sequencer.ISequencer;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class DeviceFactory implements IDeviceFactory
-{
+public class DeviceFactory implements IDeviceFactory {
 
     private final ICausticEngine engine;
 
-    public DeviceFactory(ICausticEngine engine)
-    {
+    public DeviceFactory(ICausticEngine engine) {
         this.engine = engine;
     }
 
     @Override
-    public IMixerPanel createMixerPanel()
-    {
+    public IMixerPanel createMixerPanel() {
         MixerPanel result = new MixerPanel();
         result.setFactory(this);
         result.setEngine(engine);
-        result.setDelay((IMixerDelay) createMixerEffect(result,
-                MixerEffectType.DELAY));
-        result.setReverb((IMixerReverb) createMixerEffect(result,
-                MixerEffectType.REVERB));
+        result.setDelay((IMixerDelay)createMixerEffect(result, MixerEffectType.DELAY));
+        result.setReverb((IMixerReverb)createMixerEffect(result, MixerEffectType.REVERB));
         return result;
     }
 
     @Override
-    public IEffectsRack createEffectRack()
-    {
+    public IEffectsRack createEffectRack() {
         EffectsRack result = new EffectsRack();
         result.setFactory(this);
         result.setEngine(engine);
@@ -99,8 +93,7 @@ public class DeviceFactory implements IDeviceFactory
     }
 
     @Override
-    public IOutputPanel createOutputPanel()
-    {
+    public IOutputPanel createOutputPanel() {
         OutputPanel result = new OutputPanel();
         result.setFactory(this);
         result.setEngine(engine);
@@ -108,8 +101,7 @@ public class DeviceFactory implements IDeviceFactory
     }
 
     @Override
-    public ISequencer createSequencer()
-    {
+    public ISequencer createSequencer() {
         Sequencer result = new Sequencer();
         result.setFactory(this);
         result.setEngine(engine);
@@ -117,16 +109,14 @@ public class DeviceFactory implements IDeviceFactory
     }
 
     @Override
-    public IStepPhrase createStepPhrase(int bank, int index)
-    {
+    public IStepPhrase createStepPhrase(int bank, int index) {
         TriggerMap result = new TriggerMap(bank, index);
         //result.setFactory(this);
         return result;
     }
 
     @Override
-    public IPatternSequencer createPatternSequencer(IMachine machine)
-    {
+    public IPatternSequencer createPatternSequencer(IMachine machine) {
         PatternSequencer instance = null;
         if (machine.getType().equals(MachineType.BASSLINE))
             instance = new StepSequencer(machine);
@@ -138,9 +128,7 @@ public class DeviceFactory implements IDeviceFactory
     }
 
     @Override
-    public IMachine create(String machineId, MachineType machineType)
-            throws CausticException
-    {
+    public IMachine create(String machineId, MachineType machineType) throws CausticException {
         IMachine machine = null;
 
         if (machineType == MachineType.SUBSYNTH)
@@ -158,49 +146,44 @@ public class DeviceFactory implements IDeviceFactory
     }
 
     @Override
-    public IEffectComponent createMixerEffect(IMixerPanel mixer,
-            MixerEffectType type)
-    {
-        switch (type)
-        {
-        case DELAY:
-            return new MixerDelay(mixer);
-        case REVERB:
-            return new MixerReverb(mixer);
+    public IEffectComponent createMixerEffect(IMixerPanel mixer, MixerEffectType type) {
+        switch (type) {
+            case DELAY:
+                return new MixerDelay(mixer);
+            case REVERB:
+                return new MixerReverb(mixer);
         }
         return null;
     }
 
     @Override
-    public IEffect createEffect(IEffectsRack panel, int index, EffectType type)
-    {
+    public IEffect createEffect(IEffectsRack panel, int index, EffectType type) {
         IEffect effect = null;
-        switch (type)
-        {
-        case DISTORTION:
-            effect = new DistortionEffect(index, panel);
-            break;
-        case COMPRESSOR:
-            effect = new CompressorEffect(index, panel);
-            break;
-        case BITCRUSHER:
-            effect = new BitcrusherEffect(index, panel);
-            break;
-        case FLANGER:
-            effect = new FlangerEffect(index, panel);
-            break;
-        case PHASER:
-            effect = new PhaserEffect(index, panel);
-            break;
-        case CHORUS:
-            effect = new ChorusEffect(index, panel);
-            break;
-        case AUTOWAH:
-            effect = new AutowahEffect(index, panel);
-            break;
-        case PARAMETRICEQ:
-            effect = new ParametricEQEffect(index, panel);
-            break;
+        switch (type) {
+            case DISTORTION:
+                effect = new DistortionEffect(index, panel);
+                break;
+            case COMPRESSOR:
+                effect = new CompressorEffect(index, panel);
+                break;
+            case BITCRUSHER:
+                effect = new BitcrusherEffect(index, panel);
+                break;
+            case FLANGER:
+                effect = new FlangerEffect(index, panel);
+                break;
+            case PHASER:
+                effect = new PhaserEffect(index, panel);
+                break;
+            case CHORUS:
+                effect = new ChorusEffect(index, panel);
+                break;
+            case AUTOWAH:
+                effect = new AutowahEffect(index, panel);
+                break;
+            case PARAMETRICEQ:
+                effect = new ParametricEQEffect(index, panel);
+                break;
         }
 
         return effect;

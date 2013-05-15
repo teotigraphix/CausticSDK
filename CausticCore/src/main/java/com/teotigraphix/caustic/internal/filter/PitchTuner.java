@@ -32,8 +32,7 @@ import com.teotigraphix.caustic.osc.PitchMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PitchTuner extends MachineComponent implements IPitchTuner
-{
+public class PitchTuner extends MachineComponent implements IPitchTuner {
 
     //--------------------------------------------------------------------------
     //
@@ -48,20 +47,16 @@ public class PitchTuner extends MachineComponent implements IPitchTuner
     private int mCents = 0;
 
     @Override
-    public int getCents()
-    {
+    public int getCents() {
         return mCents;
     }
 
-    public int getCents(boolean restore)
-    {
-        return (int) PitchMessage.PITCH_CENTS.query(getEngine(),
-                getMachineIndex());
+    public int getCents(boolean restore) {
+        return (int)PitchMessage.PITCH_CENTS.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setCents(int value)
-    {
+    public void setCents(int value) {
         if (value == mCents)
             return;
         if (value < -50 || value > 50)
@@ -77,20 +72,16 @@ public class PitchTuner extends MachineComponent implements IPitchTuner
     private int mOctave = 0;
 
     @Override
-    public int getOctave()
-    {
+    public int getOctave() {
         return mOctave;
     }
 
-    public int getOctave(boolean restore)
-    {
-        return (int) PitchMessage.PITCH_OCTAVE.query(getEngine(),
-                getMachineIndex());
+    public int getOctave(boolean restore) {
+        return (int)PitchMessage.PITCH_OCTAVE.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setOctave(int value)
-    {
+    public void setOctave(int value) {
         if (value == mOctave)
             return;
         if (value < -4 || value > 4)
@@ -106,20 +97,16 @@ public class PitchTuner extends MachineComponent implements IPitchTuner
     private int mSemis = 0;
 
     @Override
-    public int getSemis()
-    {
+    public int getSemis() {
         return mSemis;
     }
 
-    public int getSemis(boolean restore)
-    {
-        return (int) PitchMessage.PITCH_SEMIS.query(getEngine(),
-                getMachineIndex());
+    public int getSemis(boolean restore) {
+        return (int)PitchMessage.PITCH_SEMIS.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setSemis(int value)
-    {
+    public void setSemis(int value) {
         if (value == mSemis)
             return;
         if (value < -12 || value > 12)
@@ -137,8 +124,7 @@ public class PitchTuner extends MachineComponent implements IPitchTuner
     /**
      * Constructor.
      */
-    public PitchTuner(IMachine machine)
-    {
+    public PitchTuner(IMachine machine) {
         super(machine);
     }
 
@@ -147,26 +133,23 @@ public class PitchTuner extends MachineComponent implements IPitchTuner
     // Overridden Public :: Methods
     //
     //--------------------------------------------------------------------------
-    
+
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putInteger(FilterConstants.ATT_CENTS, getCents());
         memento.putInteger(FilterConstants.ATT_OCTAVE, getOctave());
         memento.putInteger(FilterConstants.ATT_SEMIS, getSemis());
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setCents(memento.getInteger(FilterConstants.ATT_CENTS));
         setOctave(memento.getInteger(FilterConstants.ATT_OCTAVE));
         setSemis(memento.getInteger(FilterConstants.ATT_SEMIS));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setCents(getCents(true));
         setOctave(getOctave(true));
         setSemis(getSemis(true));

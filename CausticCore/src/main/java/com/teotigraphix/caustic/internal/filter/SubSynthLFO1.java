@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.osc.SubSynthLFOMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SubSynthLFO1 extends LFOComponent implements ISubSynthLFO1
-{
+public class SubSynthLFO1 extends LFOComponent implements ISubSynthLFO1 {
 
     //--------------------------------------------------------------------------
     //
@@ -47,25 +46,21 @@ public class SubSynthLFO1 extends LFOComponent implements ISubSynthLFO1
     private LFOTarget mTarget = LFOTarget.NONE;
 
     @Override
-    public LFOTarget getTarget()
-    {
+    public LFOTarget getTarget() {
         return mTarget;
     }
 
-    public LFOTarget getTarget(boolean restore)
-    {
-        return LFOTarget.toType(SubSynthLFOMessage.LFO1_TARGET.query(
-                getEngine(), getMachineIndex()));
+    public LFOTarget getTarget(boolean restore) {
+        return LFOTarget.toType(SubSynthLFOMessage.LFO1_TARGET
+                .query(getEngine(), getMachineIndex()));
     }
 
     @Override
-    public void setTarget(LFOTarget value)
-    {
+    public void setTarget(LFOTarget value) {
         if (value == mTarget)
             return;
         mTarget = value;
-        SubSynthLFOMessage.LFO1_TARGET.send(getEngine(), getMachineIndex(),
-                mTarget.getValue());
+        SubSynthLFOMessage.LFO1_TARGET.send(getEngine(), getMachineIndex(), mTarget.getValue());
     }
 
     //----------------------------------
@@ -75,25 +70,21 @@ public class SubSynthLFO1 extends LFOComponent implements ISubSynthLFO1
     private WaveForm mWaveForm = WaveForm.SINE;
 
     @Override
-    public WaveForm getWaveform()
-    {
+    public WaveForm getWaveform() {
         return mWaveForm;
     }
 
-    public WaveForm getWaveform(boolean restore)
-    {
-        return WaveForm.toType(SubSynthLFOMessage.LFO1_WAVEFORM.query(
-                getEngine(), getMachineIndex()));
+    public WaveForm getWaveform(boolean restore) {
+        return WaveForm.toType(SubSynthLFOMessage.LFO1_WAVEFORM.query(getEngine(),
+                getMachineIndex()));
     }
 
     @Override
-    public void setWaveForm(WaveForm value)
-    {
+    public void setWaveForm(WaveForm value) {
         if (value == mWaveForm)
             return;
         mWaveForm = value;
-        SubSynthLFOMessage.LFO1_WAVEFORM.send(getEngine(), getMachineIndex(),
-                mWaveForm.getValue());
+        SubSynthLFOMessage.LFO1_WAVEFORM.send(getEngine(), getMachineIndex(), mWaveForm.getValue());
     }
 
     //--------------------------------------------------------------------------
@@ -105,8 +96,7 @@ public class SubSynthLFO1 extends LFOComponent implements ISubSynthLFO1
     /**
      * Constructor.
      */
-    public SubSynthLFO1(IMachine machine)
-    {
+    public SubSynthLFO1(IMachine machine) {
         super(machine);
         mDepthMessage = SubSynthLFOMessage.LFO1_DEPTH;
         mRateMessage = SubSynthLFOMessage.LFO1_RATE;
@@ -119,27 +109,21 @@ public class SubSynthLFO1 extends LFOComponent implements ISubSynthLFO1
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         memento.putInteger(FilterConstants.ATT_TARGET, getTarget().getValue());
-        memento.putInteger(FilterConstants.ATT_WAVEFORM, getWaveform()
-                .getValue());
+        memento.putInteger(FilterConstants.ATT_WAVEFORM, getWaveform().getValue());
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
-        setWaveForm(WaveForm.toType(memento
-                .getInteger(FilterConstants.ATT_WAVEFORM)));
-        setTarget(LFOTarget.toType(memento
-                .getInteger(FilterConstants.ATT_TARGET)));
+        setWaveForm(WaveForm.toType(memento.getInteger(FilterConstants.ATT_WAVEFORM)));
+        setTarget(LFOTarget.toType(memento.getInteger(FilterConstants.ATT_TARGET)));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         super.restore();
         setTarget(getTarget(true));
         setWaveForm(getWaveform(true));

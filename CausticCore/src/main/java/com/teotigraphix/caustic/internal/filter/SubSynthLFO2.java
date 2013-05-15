@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.osc.SubSynthLFOMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class SubSynthLFO2 extends LFOComponent implements ISubSynthLFO2
-{
+public class SubSynthLFO2 extends LFOComponent implements ISubSynthLFO2 {
 
     //--------------------------------------------------------------------------
     //
@@ -47,25 +46,21 @@ public class SubSynthLFO2 extends LFOComponent implements ISubSynthLFO2
     private LFOTarget mTarget = LFOTarget.NONE;
 
     @Override
-    public LFOTarget getTarget()
-    {
+    public LFOTarget getTarget() {
         return mTarget;
     }
 
-    public LFOTarget getTarget(boolean restore)
-    {
-        return LFOTarget.toType(SubSynthLFOMessage.LFO2_TARGET.query(
-                getEngine(), getMachineIndex()));
+    public LFOTarget getTarget(boolean restore) {
+        return LFOTarget.toType(SubSynthLFOMessage.LFO2_TARGET
+                .query(getEngine(), getMachineIndex()));
     }
 
     @Override
-    public void setTarget(LFOTarget value)
-    {
+    public void setTarget(LFOTarget value) {
         if (value == mTarget)
             return;
         mTarget = value;
-        SubSynthLFOMessage.LFO2_TARGET.send(getEngine(), getMachineIndex(),
-                mTarget.getValue());
+        SubSynthLFOMessage.LFO2_TARGET.send(getEngine(), getMachineIndex(), mTarget.getValue());
     }
 
     //--------------------------------------------------------------------------
@@ -77,8 +72,7 @@ public class SubSynthLFO2 extends LFOComponent implements ISubSynthLFO2
     /**
      * Constructor.
      */
-    public SubSynthLFO2(IMachine machine)
-    {
+    public SubSynthLFO2(IMachine machine) {
         super(machine);
         mDepthMessage = SubSynthLFOMessage.LFO2_DEPTH;
         mRateMessage = SubSynthLFOMessage.LFO2_RATE;
@@ -91,23 +85,19 @@ public class SubSynthLFO2 extends LFOComponent implements ISubSynthLFO2
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         memento.putInteger(FilterConstants.ATT_TARGET, getTarget().getValue());
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
-        setTarget(LFOTarget.toType(memento
-                .getInteger(FilterConstants.ATT_TARGET)));
+        setTarget(LFOTarget.toType(memento.getInteger(FilterConstants.ATT_TARGET)));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         super.restore();
         setTarget(getTarget(true));
     }

@@ -31,8 +31,7 @@ import com.teotigraphix.caustic.osc.VolumeMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
-{
+public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope {
 
     //--------------------------------------------------------------------------
     //
@@ -47,28 +46,22 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     private float mAttack = 0.0f;
 
     @Override
-    public float getAttack()
-    {
+    public float getAttack() {
         return mAttack;
     }
 
-    public float getAttack(boolean restore)
-    {
-        return VolumeMessage.VOLUME_ATTACK
-                .query(getEngine(), getMachineIndex());
+    public float getAttack(boolean restore) {
+        return VolumeMessage.VOLUME_ATTACK.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setAttack(float value)
-    {
+    public void setAttack(float value) {
         if (value == mAttack)
             return;
         if (value < 0 || value > 3.0625f)
-            throw newRangeException(VolumeMessage.VOLUME_ATTACK.toString(),
-                    "0..3.0625", value);
+            throw newRangeException(VolumeMessage.VOLUME_ATTACK.toString(), "0..3.0625", value);
         mAttack = value;
-        VolumeMessage.VOLUME_ATTACK.send(getEngine(), getMachineIndex(),
-                mAttack);
+        VolumeMessage.VOLUME_ATTACK.send(getEngine(), getMachineIndex(), mAttack);
     }
 
     //----------------------------------
@@ -78,24 +71,20 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     private float mDecay = 0.0f;
 
     @Override
-    public float getDecay()
-    {
+    public float getDecay() {
         return mDecay;
     }
 
-    public float getDecay(boolean restore)
-    {
+    public float getDecay(boolean restore) {
         return VolumeMessage.VOLUME_DECAY.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setDecay(float value)
-    {
+    public void setDecay(float value) {
         if (value == mDecay)
             return;
         if (value < 0 || value > 3.0625f)
-            throw newRangeException(VolumeMessage.VOLUME_DECAY.toString(),
-                    "0..3.0625", value);
+            throw newRangeException(VolumeMessage.VOLUME_DECAY.toString(), "0..3.0625", value);
         mDecay = value;
         VolumeMessage.VOLUME_DECAY.send(getEngine(), getMachineIndex(), mDecay);
     }
@@ -107,28 +96,22 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     private float mSustain = 1.0f;
 
     @Override
-    public float getSustain()
-    {
+    public float getSustain() {
         return mSustain;
     }
 
-    public float getSustain(boolean restore)
-    {
-        return VolumeMessage.VOLUME_SUSTAIN.query(getEngine(),
-                getMachineIndex());
+    public float getSustain(boolean restore) {
+        return VolumeMessage.VOLUME_SUSTAIN.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setSustain(float value)
-    {
+    public void setSustain(float value) {
         if (value == mSustain)
             return;
         if (value < 0 || value > 1.0f)
-            throw newRangeException(VolumeMessage.VOLUME_SUSTAIN.toString(),
-                    "0..1.0", value);
+            throw newRangeException(VolumeMessage.VOLUME_SUSTAIN.toString(), "0..1.0", value);
         mSustain = value;
-        VolumeMessage.VOLUME_SUSTAIN.send(getEngine(), getMachineIndex(),
-                mSustain);
+        VolumeMessage.VOLUME_SUSTAIN.send(getEngine(), getMachineIndex(), mSustain);
     }
 
     //----------------------------------
@@ -138,28 +121,22 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     private float mRelease = 0.0f;
 
     @Override
-    public float getRelease()
-    {
+    public float getRelease() {
         return mRelease;
     }
 
-    public float getRelease(boolean restore)
-    {
-        return VolumeMessage.VOLUME_RELEASE.query(getEngine(),
-                getMachineIndex());
+    public float getRelease(boolean restore) {
+        return VolumeMessage.VOLUME_RELEASE.query(getEngine(), getMachineIndex());
     }
 
     @Override
-    public void setRelease(float value)
-    {
+    public void setRelease(float value) {
         if (value == mRelease)
             return;
         if (value < 0 || value > 3.0625f)
-            throw newRangeException(VolumeMessage.VOLUME_RELEASE.toString(),
-                    "0..3.0625", value);
+            throw newRangeException(VolumeMessage.VOLUME_RELEASE.toString(), "0..3.0625", value);
         mRelease = value;
-        VolumeMessage.VOLUME_RELEASE.send(getEngine(), getMachineIndex(),
-                mRelease);
+        VolumeMessage.VOLUME_RELEASE.send(getEngine(), getMachineIndex(), mRelease);
     }
 
     //--------------------------------------------------------------------------
@@ -171,8 +148,7 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     /**
      * Constructor.
      */
-    public VolumeEnvelope(IMachine machine)
-    {
+    public VolumeEnvelope(IMachine machine) {
         super(machine);
     }
 
@@ -183,8 +159,7 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         super.copy(memento);
         memento.putFloat(FilterConstants.ATT_ATTACK, getAttack());
         memento.putFloat(FilterConstants.ATT_DECAY, getDecay());
@@ -193,8 +168,7 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         super.paste(memento);
         setAttack(memento.getFloat(FilterConstants.ATT_ATTACK));
         setDecay(memento.getFloat(FilterConstants.ATT_DECAY));
@@ -203,8 +177,7 @@ public class VolumeEnvelope extends VolumeComponent implements IVolumeEnvelope
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         super.restore();
         setAttack(getAttack(true));
         setDecay(getDecay(true));

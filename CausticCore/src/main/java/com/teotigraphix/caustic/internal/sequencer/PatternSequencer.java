@@ -70,9 +70,8 @@ import com.teotigraphix.caustic.sequencer.IStepPhrase.TriggerChangeKind;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PatternSequencer extends DeviceComponent implements
-        IPatternSequencer, IStepPhraseListener
-{
+public class PatternSequencer extends DeviceComponent implements IPatternSequencer,
+        IStepPhraseListener {
 
     // <bankIndex, <patternIndex, IPhrase>>
     private final Map<Integer, Map<Integer, IStepPhrase>> stepPhraseMap = new TreeMap<Integer, Map<Integer, IStepPhrase>>();
@@ -84,13 +83,10 @@ public class PatternSequencer extends DeviceComponent implements
     //--------------------------------------------------------------------------
 
     @Override
-    public void setBankPattern(int bank, int pattern)
-    {
+    public void setBankPattern(int bank, int pattern) {
         IStepPhrase oldPhrase = getActivePhrase();
-        if (!oldPhrase.hasTriggers())
-        {
-            PatternSequencerUtils.removeStepPhrase(this, oldPhrase.getBank(),
-                    oldPhrase.getIndex());
+        if (!oldPhrase.hasTriggers()) {
+            PatternSequencerUtils.removeStepPhrase(this, oldPhrase.getBank(), oldPhrase.getIndex());
         }
 
         setSelectedBank(bank);
@@ -100,15 +96,13 @@ public class PatternSequencer extends DeviceComponent implements
         IStepPhrase phrase = map.get(selectedPattern);
         // create the phrase, the phrase will be removed if the pattern
         // or bank switches and there is no triggers
-        if (phrase == null)
-        {
+        if (phrase == null) {
             phrase = PatternSequencerUtils.addStepPhrase(this, bank, pattern);
         }
 
         setActiveStepPhrase(phrase);
 
-        if (phrase != null)
-        {
+        if (phrase != null) {
             firePhraseChange(phrase, oldPhrase);
         }
     }
@@ -120,23 +114,18 @@ public class PatternSequencer extends DeviceComponent implements
     private int selectedBank = 0;
 
     @Override
-    public int getSelectedBank()
-    {
+    public int getSelectedBank() {
         return selectedBank;
     }
 
     @Override
-    public int getSelectedBank(boolean restore)
-    {
-        return (int) PatternSequencerMessage.BANK.query(getEngine(),
-                getDeviceIndex());
+    public int getSelectedBank(boolean restore) {
+        return (int)PatternSequencerMessage.BANK.query(getEngine(), getDeviceIndex());
     }
 
-    void setSelectedBank(int value)
-    {
+    void setSelectedBank(int value) {
         if (value < 0 || value > 15)
-            throw newRangeException(PatternSequencerConstants.BANK, "0..15",
-                    value);
+            throw newRangeException(PatternSequencerConstants.BANK, "0..15", value);
         selectedBank = value;
         setBank(selectedBank);
     }
@@ -148,23 +137,18 @@ public class PatternSequencer extends DeviceComponent implements
     private int selectedPattern = 0;
 
     @Override
-    public int getSelectedPattern()
-    {
+    public int getSelectedPattern() {
         return selectedPattern;
     }
 
     @Override
-    public int getSelectedPattern(boolean restore)
-    {
-        return (int) PatternSequencerMessage.PATTERN.query(getEngine(),
-                getDeviceIndex());
+    public int getSelectedPattern(boolean restore) {
+        return (int)PatternSequencerMessage.PATTERN.query(getEngine(), getDeviceIndex());
     }
 
-    void setSelectedPattern(int value)
-    {
+    void setSelectedPattern(int value) {
         if (value < 0 || value > 15)
-            throw newRangeException(PatternSequencerConstants.PATTERN, "0..15",
-                    value);
+            throw newRangeException(PatternSequencerConstants.PATTERN, "0..15", value);
         selectedPattern = value;
         setPattern(selectedPattern);
     }
@@ -174,10 +158,9 @@ public class PatternSequencer extends DeviceComponent implements
     //----------------------------------
 
     @Override
-    public List<String> getPatternListing()
-    {
-        String patterns = PatternSequencerMessage.QUERY_PATTERNS_WITH_DATA
-                .queryString(getEngine(), getDeviceIndex());
+    public List<String> getPatternListing() {
+        String patterns = PatternSequencerMessage.QUERY_PATTERNS_WITH_DATA.queryString(getEngine(),
+                getDeviceIndex());
         if (patterns == null || "".equals(patterns))
             return new ArrayList<String>();
         return Arrays.asList(patterns.split(" "));
@@ -192,8 +175,7 @@ public class PatternSequencer extends DeviceComponent implements
     /**
      * Constructor.
      */
-    public PatternSequencer(IDevice device)
-    {
+    public PatternSequencer(IDevice device) {
         super(device);
         setName(PatternSequencerConstants.COMPONENT_ID);
 
@@ -203,8 +185,8 @@ public class PatternSequencer extends DeviceComponent implements
         stepPhraseMap.put(3, new TreeMap<Integer, IStepPhrase>());
 
         // add the default phrase
-        IStepPhrase active = PatternSequencerUtils.addStepPhrase(this,
-                getSelectedBank(), getSelectedPattern());
+        IStepPhrase active = PatternSequencerUtils.addStepPhrase(this, getSelectedBank(),
+                getSelectedPattern());
         setActiveStepPhrase(active);
     }
 
@@ -215,43 +197,35 @@ public class PatternSequencer extends DeviceComponent implements
     //--------------------------------------------------------------------------
 
     @Override
-    public void clear()
-    {
-        for (int bank = 0; bank < 4; bank++)
-        {
+    public void clear() {
+        for (int bank = 0; bank < 4; bank++) {
             clearBank(bank);
         }
     }
 
     @Override
-    public void clearBank(int index)
-    {
+    public void clearBank(int index) {
         // a bank clear removes all phrases from the bank map
         // the core takes care of deleting the data, we just need to update the
         // model
         getBankMap(index).clear();
-        PatternSequencerMessage.CLEAR_BANK.send(getEngine(), getDeviceIndex(),
-                index);
+        PatternSequencerMessage.CLEAR_BANK.send(getEngine(), getDeviceIndex(), index);
     }
 
     @Override
-    public IStepPhrase clearStepPhrase(int index)
-    {
+    public IStepPhrase clearStepPhrase(int index) {
         if (!hasStepPhrase(selectedBank, index))
             return null;
         // the selected bank will be cleared of phrases
-        IStepPhrase phrase = PatternSequencerUtils.removeStepPhrase(this,
-                getSelectedBank(), index);
+        IStepPhrase phrase = PatternSequencerUtils.removeStepPhrase(this, getSelectedBank(), index);
         if (phrase == null)
             return null;
-        PatternSequencerMessage.CLEAR_PATTERN.send(getEngine(),
-                getDeviceIndex(), index);
+        PatternSequencerMessage.CLEAR_PATTERN.send(getEngine(), getDeviceIndex(), index);
         return phrase;
     }
 
     @Override
-    public IStepPhrase clearStepPhrase(int bank, int index)
-    {
+    public IStepPhrase clearStepPhrase(int bank, int index) {
         if (!hasStepPhrase(bank, index))
             return null;
         final int lastBank = getSelectedBank();
@@ -262,8 +236,7 @@ public class PatternSequencer extends DeviceComponent implements
     }
 
     @Override
-    public boolean hasStepPhrase(final int bank, final int pattern)
-    {
+    public boolean hasStepPhrase(final int bank, final int pattern) {
         final Map<Integer, IStepPhrase> map = getBankMap(bank);
         if (map.size() == 0)
             return false;
@@ -272,31 +245,25 @@ public class PatternSequencer extends DeviceComponent implements
 
     @Deprecated
     @Override
-    public IStepPhrase getTriggerMap()
-    {
+    public IStepPhrase getTriggerMap() {
         return activePhrase;
     }
 
     @Override
-    public IStepPhrase getActiveStepPhrase()
-    {
+    public IStepPhrase getActiveStepPhrase() {
         return activePhrase;
     }
 
     @Override
-    public IStepPhrase getStepPhraseAt(int bank, int pattern)
-    {
+    public IStepPhrase getStepPhraseAt(int bank, int pattern) {
         return getBankMap(bank).get(pattern);
     }
 
     @Override
-    public List<IStepPhrase> getStepPhrases()
-    {
+    public List<IStepPhrase> getStepPhrases() {
         List<IStepPhrase> result = new ArrayList<IStepPhrase>();
-        for (Map<Integer, IStepPhrase> bankMap : stepPhraseMap.values())
-        {
-            for (IStepPhrase phrase : bankMap.values())
-            {
+        for (Map<Integer, IStepPhrase> bankMap : stepPhraseMap.values()) {
+            for (IStepPhrase phrase : bankMap.values()) {
                 result.add(phrase);
             }
         }
@@ -304,20 +271,17 @@ public class PatternSequencer extends DeviceComponent implements
     }
 
     @Override
-    public List<IStepPhrase> getStepPhraseForBank(int bank)
-    {
+    public List<IStepPhrase> getStepPhraseForBank(int bank) {
         List<IStepPhrase> result = new ArrayList<IStepPhrase>();
         Map<Integer, IStepPhrase> bankMap = getBankMap(bank);
-        for (IStepPhrase phrase : bankMap.values())
-        {
+        for (IStepPhrase phrase : bankMap.values()) {
             result.add(phrase);
         }
         return result;
     }
 
     //@Override
-    void addNote(int pitch, float start, float end, float velocity, int flags)
-    {
+    void addNote(int pitch, float start, float end, float velocity, int flags) {
         //        // do some pre checks
         //        if (pitch < 0 || pitch > 255)
         //        {
@@ -357,49 +321,39 @@ public class PatternSequencer extends DeviceComponent implements
     }
 
     //@Override
-    void removeNote(int pitch, float start)
-    {
+    void removeNote(int pitch, float start) {
         //        //ITrigger trigger = getActivePhrase().getTriggerAtBeat(start, pitch);
         //        getActivePhrase().removeNote(pitch, start);
         //        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getEngine(),
         //                getDeviceIndex(), start, pitch);
     }
 
-    protected final String getNoteData(String name)
-    {
-        return PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getEngine(),
-                getDeviceIndex());
+    protected final String getNoteData(String name) {
+        return PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getEngine(), getDeviceIndex());
     }
 
-    final void setBank(int bank)
-    {
+    final void setBank(int bank) {
         PatternSequencerMessage.BANK.send(getEngine(), getDeviceIndex(), bank);
     }
 
-    final void setPattern(int pattern)
-    {
-        PatternSequencerMessage.PATTERN.send(getEngine(), getDeviceIndex(),
-                pattern);
+    final void setPattern(int pattern) {
+        PatternSequencerMessage.PATTERN.send(getEngine(), getDeviceIndex(), pattern);
     }
 
-    protected final Map<Integer, IStepPhrase> getBankMap(int bank)
-    {
+    protected final Map<Integer, IStepPhrase> getBankMap(int bank) {
         return stepPhraseMap.get(bank);
     }
 
     protected IStepPhrase activePhrase;
 
-    public final IStepPhrase getActivePhrase()
-    {
+    public final IStepPhrase getActivePhrase() {
         return activePhrase;
     }
 
     @Override
-    public void setActiveStepPhrase(IStepPhrase value)
-    {
+    public void setActiveStepPhrase(IStepPhrase value) {
         IStepPhrase oldPhrase = activePhrase;
-        if (oldPhrase != null)
-        {
+        if (oldPhrase != null) {
             oldPhrase.setActive(false);
         }
 
@@ -417,35 +371,27 @@ public class PatternSequencer extends DeviceComponent implements
     private final List<IPatternSequencerListener> mPatternSequencerListeners = new ArrayList<IPatternSequencerListener>();
 
     @Override
-    public final void addPatternSequencerListener(
-            IPatternSequencerListener value)
-    {
+    public final void addPatternSequencerListener(IPatternSequencerListener value) {
         if (mPatternSequencerListeners.contains(value))
             return;
         mPatternSequencerListeners.add(value);
     }
 
     @Override
-    public final void removePatternSequencerListener(
-            IPatternSequencerListener value)
-    {
+    public final void removePatternSequencerListener(IPatternSequencerListener value) {
         if (!mPatternSequencerListeners.contains(value))
             return;
         mPatternSequencerListeners.remove(value);
     }
 
-    protected final void firePhraseChange(IStepPhrase phrase,
-            IStepPhrase oldPhrase)
-    {
-        for (IPatternSequencerListener listener : mPatternSequencerListeners)
-        {
+    protected final void firePhraseChange(IStepPhrase phrase, IStepPhrase oldPhrase) {
+        for (IPatternSequencerListener listener : mPatternSequencerListeners) {
             listener.onTriggerMapChange(phrase, oldPhrase);
         }
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
 
         final int oldBank = getSelectedBank(true);
         final int oldPattern = getSelectedPattern(true);
@@ -455,8 +401,7 @@ public class PatternSequencer extends DeviceComponent implements
         if (patterns.size() == 0)
             return;
 
-        for (String pattern : patterns)
-        {
+        for (String pattern : patterns) {
             int bank = PatternUtils.toBank(pattern);
             int index = PatternUtils.toPattern(pattern);
             // (mschmalle) We do not need to send messages since this is a
@@ -465,14 +410,13 @@ public class PatternSequencer extends DeviceComponent implements
             // for note_data the bank and pattern need to be set
             setBankPattern(bank, index);
             String data = getNoteData(name);
-            IStepPhrase phrase = PatternSequencerUtils.addStepPhrase(this,
-                    bank, index, null);
+            IStepPhrase phrase = PatternSequencerUtils.addStepPhrase(this, bank, index, null);
             // the phrase does not implement IRestore, so the legnth needs to be
             // restored here and we don't know anything about the resolution
             // since
             // caustic dosn't save that
-            int length = (int) PatternSequencerMessage.NUM_MEASURES.query(
-                    getEngine(), getDeviceIndex());
+            int length = (int)PatternSequencerMessage.NUM_MEASURES.query(getEngine(),
+                    getDeviceIndex());
             phrase.setLength(length);
             // et the data AFTER the legnth is correct
             phrase.setStringData(data);
@@ -488,8 +432,7 @@ public class PatternSequencer extends DeviceComponent implements
     //--------------------------------------------------------------------------
 
     @Override
-    public void onLengthChange(IStepPhrase phrase, int length)
-    {
+    public void onLengthChange(IStepPhrase phrase, int length) {
         // update the sequencer, check to see we are setting the correct bank,
         // pattern
         // int bank = phrase.
@@ -500,18 +443,15 @@ public class PatternSequencer extends DeviceComponent implements
         int pattern = getSelectedPattern();
         boolean resetBank = false;
         boolean resetPattern = false;
-        if (bank != phrase.getBank())
-        {
+        if (bank != phrase.getBank()) {
             setBank(phrase.getBank());
             resetBank = true;
         }
-        if (pattern != phrase.getIndex())
-        {
+        if (pattern != phrase.getIndex()) {
             setPattern(phrase.getIndex());
             resetPattern = true;
         }
-        PatternSequencerMessage.NUM_MEASURES.send(getEngine(),
-                getDeviceIndex(), length);
+        PatternSequencerMessage.NUM_MEASURES.send(getEngine(), getDeviceIndex(), length);
         if (resetBank)
             setBank(bank);
         if (resetPattern)
@@ -519,18 +459,15 @@ public class PatternSequencer extends DeviceComponent implements
     }
 
     @Override
-    public void onPositionChange(IStepPhrase phrase, int position)
-    {
+    public void onPositionChange(IStepPhrase phrase, int position) {
     }
 
     @Override
-    public void onResolutionChange(IStepPhrase phrase, Resolution resolution)
-    {
+    public void onResolutionChange(IStepPhrase phrase, Resolution resolution) {
     }
 
     @Override
-    public void onTriggerDataChange(ITrigger trigger, TriggerChangeKind kind)
-    {
+    public void onTriggerDataChange(ITrigger trigger, TriggerChangeKind kind) {
         // if (kind.equals(TriggerChangeKind.LOAD)) {
         // float start = Resolution.toBeat(trigger.getIndex(), trigger
         // .getPhrase().getResolution());

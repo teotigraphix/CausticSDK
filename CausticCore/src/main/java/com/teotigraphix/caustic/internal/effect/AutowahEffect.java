@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.effect.IAutowahEffect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class AutowahEffect extends Effect implements IAutowahEffect
-{
+public class AutowahEffect extends Effect implements IAutowahEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -46,19 +45,16 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     private float mCutoff = 2.23f;
 
     @Override
-    public float getCutoff()
-    {
+    public float getCutoff() {
         return mCutoff;
     }
 
-    public float getCutoff(boolean restore)
-    {
+    public float getCutoff(boolean restore) {
         return get(CONTROL_CUTOFF);
     }
 
     @Override
-    public void setCutoff(float value)
-    {
+    public void setCutoff(float value) {
         if (value == mCutoff)
             return;
         if (value < 0.5f || value > 4.0f)
@@ -74,19 +70,16 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     private float mDepth = 1f;
 
     @Override
-    public float getDepth()
-    {
+    public float getDepth() {
         return mDepth;
     }
 
-    public float getDepth(boolean restore)
-    {
+    public float getDepth(boolean restore) {
         return get(CONTROL_DEPTH);
     }
 
     @Override
-    public void setDepth(float value)
-    {
+    public void setDepth(float value) {
         if (value == mDepth)
             return;
         if (value < 0f || value > 1f)
@@ -102,19 +95,16 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     private float mResonance = 0.5f;
 
     @Override
-    public float getResonance()
-    {
+    public float getResonance() {
         return mResonance;
     }
 
-    public float getResonance(boolean restore)
-    {
+    public float getResonance(boolean restore) {
         return get(CONTROL_RESONANCE);
     }
 
     @Override
-    public void setResonance(float value)
-    {
+    public void setResonance(float value) {
         if (value == mResonance)
             return;
         if (value < 0f || value > 1f)
@@ -130,19 +120,16 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     private float mSpeed = 0.4f;
 
     @Override
-    public float getSpeed()
-    {
+    public float getSpeed() {
         return mSpeed;
     }
 
-    public float getSpeed(boolean restore)
-    {
+    public float getSpeed(boolean restore) {
         return get(CONTROL_SPEED);
     }
 
     @Override
-    public void setSpeed(float value)
-    {
+    public void setSpeed(float value) {
         if (value == mSpeed)
             return;
         if (value < 0f || value > 0.5f)
@@ -158,19 +145,16 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     private float mWet = 1f;
 
     @Override
-    public float getWet()
-    {
+    public float getWet() {
         return mWet;
     }
 
-    public float getWet(boolean restore)
-    {
+    public float getWet(boolean restore) {
         return get(CONTROL_WET);
     }
 
     @Override
-    public void setWet(float value)
-    {
+    public void setWet(float value) {
         if (value == mWet)
             return;
         if (value < 0f || value > 1f)
@@ -185,8 +169,7 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     //
     //--------------------------------------------------------------------------
 
-    public AutowahEffect(int index, IDevice device)
-    {
+    public AutowahEffect(int index, IDevice device) {
         super(index, device);
         setType(EffectType.AUTOWAH);
     }
@@ -198,8 +181,7 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putFloat(EffectConstants.ATT_CUTOFF, getCutoff());
         memento.putFloat(EffectConstants.ATT_DEPTH, getDepth());
         memento.putFloat(EffectConstants.ATT_RESONANCE, getResonance());
@@ -208,8 +190,7 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setCutoff(memento.getFloat(EffectConstants.ATT_CUTOFF));
         setDepth(memento.getFloat(EffectConstants.ATT_DEPTH));
         setResonance(memento.getFloat(EffectConstants.ATT_RESONANCE));
@@ -218,8 +199,7 @@ public class AutowahEffect extends Effect implements IAutowahEffect
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setCutoff(getCutoff(true));
         setDepth(getDepth(true));
         setResonance(getResonance(true));

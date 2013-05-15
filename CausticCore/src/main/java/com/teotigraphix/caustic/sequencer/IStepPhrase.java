@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.sequencer.data.StepPhraseData;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IStepPhrase
-{
+public interface IStepPhrase {
     // ADDED 04-26-2013
 
     /**
@@ -300,8 +299,7 @@ public interface IStepPhrase
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum Resolution
-    {
+    public enum Resolution {
 
         /**
          * A whole note.
@@ -338,8 +336,7 @@ public interface IStepPhrase
          */
         SIXTYFOURTH(0.015625f); // 1 / 0.015625f = 64
 
-        Resolution(float value)
-        {
+        Resolution(float value) {
             mValue = value;
         }
 
@@ -351,28 +348,24 @@ public interface IStepPhrase
          * 
          * @param resolution The note resolution.
          * @return The number of steps in a measure for the given phrase
-         * resolution.
+         *         resolution.
          */
-        public final static int toSteps(Resolution resolution)
-        {
-            return (int) (1 / resolution.getValue());
+        public final static int toSteps(Resolution resolution) {
+            return (int)(1 / resolution.getValue());
         }
 
-        public float getValue()
-        {
+        public float getValue() {
             return mValue;
         }
 
         private static int beatsInMeasure = 4;
 
-        public static int toStep(float beat, Resolution resolution)
-        {
+        public static int toStep(float beat, Resolution resolution) {
             // (beat(5) / 0.0625) / 4
-            return (int) (beat / resolution.getValue()) / beatsInMeasure;
+            return (int)(beat / resolution.getValue()) / beatsInMeasure;
         }
 
-        public static float toBeat(float step, Resolution resolution)
-        {
+        public static float toBeat(float step, Resolution resolution) {
             return (step * resolution.getValue()) * beatsInMeasure;
         }
     }
@@ -387,8 +380,7 @@ public interface IStepPhrase
 
     void removeStepPhraseListener(IStepPhraseListener value);
 
-    public interface IStepPhraseListener
-    {
+    public interface IStepPhraseListener {
 
         /**
          * Dispatched when the phrase length has changed.
@@ -430,8 +422,7 @@ public interface IStepPhrase
      * @copyright Teoti Graphix, LLC
      * @since 1.0
      */
-    public enum TriggerChangeKind
-    {
+    public enum TriggerChangeKind {
 
         /**
          * The trigger index kind.

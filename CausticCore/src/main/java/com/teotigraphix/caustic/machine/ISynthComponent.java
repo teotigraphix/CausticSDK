@@ -29,8 +29,7 @@ import com.teotigraphix.caustic.osc.SynthMessage;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ISynthComponent extends IMachineComponent
-{
+public interface ISynthComponent extends IMachineComponent {
 
     //--------------------------------------------------------------------------
     //

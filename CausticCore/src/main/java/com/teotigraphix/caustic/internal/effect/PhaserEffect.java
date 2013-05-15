@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.effect.IPhaserEffect;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PhaserEffect extends Effect implements IPhaserEffect
-{
+public class PhaserEffect extends Effect implements IPhaserEffect {
 
     //--------------------------------------------------------------------------
     //
@@ -46,19 +45,16 @@ public class PhaserEffect extends Effect implements IPhaserEffect
     private float mDepth = 0.8f;
 
     @Override
-    public float getDepth()
-    {
+    public float getDepth() {
         return mDepth;
     }
 
-    public float getDepth(boolean restore)
-    {
+    public float getDepth(boolean restore) {
         return get(CONTROL_DEPTH);
     }
 
     @Override
-    public void setDepth(float value)
-    {
+    public void setDepth(float value) {
         if (value == mDepth)
             return;
         if (value < 0.1f || value > 0.95f)
@@ -74,19 +70,16 @@ public class PhaserEffect extends Effect implements IPhaserEffect
     private float mFeedback = 0.9f;
 
     @Override
-    public float getFeedback()
-    {
+    public float getFeedback() {
         return mFeedback;
     }
 
-    public float getFeedback(boolean restore)
-    {
+    public float getFeedback(boolean restore) {
         return get(CONTROL_FEEDBACK);
     }
 
     @Override
-    public void setFeedback(float value)
-    {
+    public void setFeedback(float value) {
         if (value == mFeedback)
             return;
         if (value < 0.1f || value > 0.95f)
@@ -102,19 +95,16 @@ public class PhaserEffect extends Effect implements IPhaserEffect
     private int mRate = 10;
 
     @Override
-    public int getRate()
-    {
+    public int getRate() {
         return mRate;
     }
 
-    public int getRate(boolean restore)
-    {
-        return (int) get(CONTROL_RATE);
+    public int getRate(boolean restore) {
+        return (int)get(CONTROL_RATE);
     }
 
     @Override
-    public void setRate(int value)
-    {
+    public void setRate(int value) {
         if (value == mRate)
             return;
         if (value < 2 || value > 50)
@@ -129,8 +119,7 @@ public class PhaserEffect extends Effect implements IPhaserEffect
     //
     //--------------------------------------------------------------------------
 
-    public PhaserEffect(int index, IDevice device)
-    {
+    public PhaserEffect(int index, IDevice device) {
         super(index, device);
         setType(EffectType.PHASER);
     }
@@ -142,24 +131,21 @@ public class PhaserEffect extends Effect implements IPhaserEffect
     //--------------------------------------------------------------------------
 
     @Override
-    public void copy(IMemento memento)
-    {
+    public void copy(IMemento memento) {
         memento.putFloat(CONTROL_DEPTH, getDepth());
         memento.putFloat(CONTROL_FEEDBACK, getFeedback());
         memento.putInteger(CONTROL_RATE, getRate());
     }
 
     @Override
-    public void paste(IMemento memento)
-    {
+    public void paste(IMemento memento) {
         setDepth(memento.getFloat(CONTROL_DEPTH));
         setFeedback(memento.getFloat(CONTROL_FEEDBACK));
         setRate(memento.getInteger(CONTROL_RATE));
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setDepth(getDepth(true));
         setFeedback(getFeedback(true));
         setRate(getRate(true));

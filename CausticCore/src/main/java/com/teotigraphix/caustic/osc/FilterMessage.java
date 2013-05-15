@@ -27,8 +27,7 @@ package com.teotigraphix.caustic.osc;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class FilterMessage extends CausticMessage
-{
+public class FilterMessage extends CausticMessage {
 
     //--------------------------------------------------------------------------
     // IFilterComponent
@@ -210,8 +209,7 @@ public class FilterMessage extends CausticMessage
     public static final FilterMessage FILTER_ENVMOD = new FilterMessage(
             "/caustic/${0}/filter_envmod ${1}");
 
-    FilterMessage(String message)
-    {
+    FilterMessage(String message) {
         super(message);
     }
 }

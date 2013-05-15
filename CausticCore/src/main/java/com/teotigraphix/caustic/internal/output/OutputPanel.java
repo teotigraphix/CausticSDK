@@ -30,8 +30,7 @@ import com.teotigraphix.caustic.output.IOutputPanel;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class OutputPanel extends Device implements IOutputPanel
-{
+public class OutputPanel extends Device implements IOutputPanel {
 
     private static final int STOP = 0;
 
@@ -60,19 +59,16 @@ public class OutputPanel extends Device implements IOutputPanel
     private float mBPM = 120.0f;
 
     @Override
-    public float getBPM()
-    {
+    public float getBPM() {
         return mBPM;
     }
 
-    public float getBPM(boolean restore)
-    {
+    public float getBPM(boolean restore) {
         return OutputPanelMessage.BPM.query(getEngine());
     }
 
     @Override
-    public void setBPM(float value)
-    {
+    public void setBPM(float value) {
         if (value == mBPM)
             return;
         if (value < 60.0f || value > 250.0f)
@@ -88,19 +84,16 @@ public class OutputPanel extends Device implements IOutputPanel
     private Mode mMode = Mode.PATTERN;
 
     @Override
-    public Mode getMode()
-    {
+    public Mode getMode() {
         return mMode;
     }
 
-    public Mode getMode(boolean restore)
-    {
+    public Mode getMode(boolean restore) {
         return Mode.toType(OutputPanelMessage.MODE.query(getEngine()));
     }
 
     @Override
-    public void setMode(Mode value)
-    {
+    public void setMode(Mode value) {
         mMode = value;
         OutputPanelMessage.MODE.send(getEngine(), mMode.getValue());
     }
@@ -111,8 +104,7 @@ public class OutputPanel extends Device implements IOutputPanel
     //
     //--------------------------------------------------------------------------
 
-    public OutputPanel()
-    {
+    public OutputPanel() {
         super();
         setId(OutputPanelConstants.DEVICE_ID);
     }
@@ -124,14 +116,12 @@ public class OutputPanel extends Device implements IOutputPanel
     //--------------------------------------------------------------------------
 
     @Override
-    public boolean isPlaying()
-    {
+    public boolean isPlaying() {
         return mIsPlaying;
     }
 
     @Override
-    public void play()
-    {
+    public void play() {
         if (mIsPlaying)
             return;
 
@@ -140,15 +130,13 @@ public class OutputPanel extends Device implements IOutputPanel
     }
 
     @Override
-    public void stop()
-    {
+    public void stop() {
         mIsPlaying = false;
         OutputPanelMessage.PLAY.send(getEngine(), STOP);
     }
 
     @Override
-    public void restore()
-    {
+    public void restore() {
         setBPM(getBPM(true));
         setMode(getMode(true));
     }

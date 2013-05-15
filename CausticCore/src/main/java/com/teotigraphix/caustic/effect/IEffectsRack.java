@@ -34,8 +34,7 @@ import com.teotigraphix.caustic.machine.IMachine;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface IEffectsRack extends IDevice, IPersist, IRestore
-{
+public interface IEffectsRack extends IDevice, IPersist, IRestore {
 
     /**
      * Adds an effec to the effects rack.
@@ -53,7 +52,7 @@ public interface IEffectsRack extends IDevice, IPersist, IRestore
      * @param machine The machine to remove the effect from.
      * @param slot The slot to remove the effect from (0,1).
      * @return The removed {@link IEffect} or <code>null</code> if no effect
-     * exists.
+     *         exists.
      */
     IEffect removeEffect(IMachine machine, int slot);
 
