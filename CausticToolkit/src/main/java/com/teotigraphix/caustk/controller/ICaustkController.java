@@ -26,6 +26,7 @@ import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
+import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
 import com.teotigraphix.caustk.sound.ICaustkSoundSource;
 
 /**
@@ -36,8 +37,10 @@ import com.teotigraphix.caustk.sound.ICaustkSoundSource;
  */
 public interface ICaustkController extends ICausticEngine {
 
+    void registerAPI(Class<? extends IControllerAPI> clazz, IControllerAPI instance);
+
     <T extends IControllerAPI> T api(Class<T> clazz);
-    
+
     ICaustkApplication getApplication();
 
     ICaustkConfiguration getConfiguration();
@@ -49,6 +52,8 @@ public interface ICaustkController extends ICausticEngine {
     ICaustkSoundGenerator getSoundGenerator();
 
     ICaustkSoundSource getSoundSource();
+
+    ICaustkSoundMixer getSoundMixer();
 
     ICommandManager getCommandManager();
 

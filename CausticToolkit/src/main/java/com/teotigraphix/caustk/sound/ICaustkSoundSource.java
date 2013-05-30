@@ -19,7 +19,12 @@
 
 package com.teotigraphix.caustk.sound;
 
+import java.util.Collection;
+
+import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.core.IDispatcher;
+import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.ToneDescriptor;
 
 /**
  * @author Michael Schmalle
@@ -28,4 +33,27 @@ public interface ICaustkSoundSource {
 
     IDispatcher getDispatcher();
 
+    SoundMode getSoundMode();
+
+    void setSoundMode(SoundMode value);
+
+    int getOctave();
+
+    void setOctave(int value);
+
+    int getToneCount();
+
+    Collection<Tone> getTones();
+
+    Tone getTone(int index);
+
+    void noteOn(Tone tone, int pitch, float velocity);
+
+    void noteOff(Tone tone, int pitch);
+
+    Tone create(ToneDescriptor descriptor) throws CausticException;
+
+    public enum SoundMode {
+        KEYBOARD, STEP;
+    }
 }

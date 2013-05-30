@@ -33,7 +33,9 @@ import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.sound.CaustkSoundSource;
 import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
+import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
 import com.teotigraphix.caustk.sound.ICaustkSoundSource;
+import com.teotigraphix.caustk.sound.SoundMixer;
 
 /**
  * @author Michael Schmalle
@@ -46,7 +48,8 @@ public class CaustkController implements ICaustkController {
 
     private Map<Class<? extends IControllerAPI>, IControllerAPI> api = new HashMap<Class<? extends IControllerAPI>, IControllerAPI>();
 
-    protected void registerAPI(Class<? extends IControllerAPI> clazz, IControllerAPI instance) {
+    @Override
+    public void registerAPI(Class<? extends IControllerAPI> clazz, IControllerAPI instance) {
         api.put(clazz, instance);
     }
 
@@ -153,6 +156,17 @@ public class CaustkController implements ICaustkController {
         return soundSource;
     }
 
+    //----------------------------------
+    // soundSource
+    //----------------------------------
+
+    private ICaustkSoundMixer soundMixer;
+
+    @Override
+    public ICaustkSoundMixer getSoundMixer() {
+        return soundMixer;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -197,12 +211,8 @@ public class CaustkController implements ICaustkController {
         commandManager = new CommandManager(this);
 
         soundGenerator = getConfiguration().createSoundGenerator(this);
-
-        soundSource = createSoundSource();
-    }
-
-    protected ICaustkSoundSource createSoundSource() {
-        return new CaustkSoundSource(this);
+        soundSource = new CaustkSoundSource(this);
+        soundMixer = new SoundMixer(this);
     }
 
     @Override
