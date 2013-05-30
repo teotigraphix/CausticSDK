@@ -65,6 +65,7 @@ import com.teotigraphix.caustic.sequencer.ISequencer;
 public class Rack extends Device implements IRack {
     EventManager dispatcher;
 
+    @Override
     public EventManager getDispatcher() {
         return dispatcher;
     }
@@ -108,6 +109,7 @@ public class Rack extends Device implements IRack {
         return factory;
     }
 
+    @Override
     public void setFactory(IDeviceFactory value) {
         factory = value;
     }

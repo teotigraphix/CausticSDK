@@ -75,6 +75,7 @@ public interface IRack extends IDevice, IRestore {
      * Returns the factory that is used to create all top level devices and
      * effects.
      */
+    @Override
     IDeviceFactory getFactory();
 
     /**
