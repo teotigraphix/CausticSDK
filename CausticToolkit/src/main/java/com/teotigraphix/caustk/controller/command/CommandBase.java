@@ -17,18 +17,25 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.tone;
+package com.teotigraphix.caustk.controller.command;
 
-import com.teotigraphix.caustic.machine.IMachine;
-import com.teotigraphix.caustic.machine.IPCMSynth;
+public abstract class CommandBase implements ICommand {
 
-public class PCMSynthTone extends SynthTone {
-    @SuppressWarnings("unused")
-    private IPCMSynth pcmsynth;
+    private CommandContext context;
 
-    public PCMSynthTone(IMachine machine) {
-        super(machine);
-        pcmsynth = (IPCMSynth)machine;
+    @Override
+    public CommandContext getContext() {
+        return context;
     }
+
+    public void setContext(CommandContext value) {
+        context = value;
+    }
+
+    public CommandBase() {
+    }
+
+    @Override
+    public abstract void execute();
 
 }

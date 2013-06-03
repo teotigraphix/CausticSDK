@@ -30,15 +30,25 @@ import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
 import com.teotigraphix.caustk.sound.ICaustkSoundSource;
 
 /**
- * ISoundSourceAPI api = context.api().get(ISoundSourceAPI.class);
- * api.setMasterVolume(0.5f);
- * 
  * @author Michael Schmalle
  */
 public interface ICaustkController extends ICausticEngine {
-
+    
+    /**
+     * 
+     * @param clazz
+     * @param instance
+     */
     void registerAPI(Class<? extends IControllerAPI> clazz, IControllerAPI instance);
-
+    
+    /**
+     * <pre>
+     * ISoundSourceAPI api = context.api().get(ISoundSourceAPI.class);
+     * api.setMasterVolume(0.5f);
+     * </pre>
+     * 
+     * @param clazz
+     */
     <T extends IControllerAPI> T api(Class<T> clazz);
 
     ICaustkApplication getApplication();
