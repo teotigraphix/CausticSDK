@@ -248,6 +248,29 @@ public class Rack extends Device implements IRack {
         setId("rack");
         setFactory(factory);
     }
+    
+    /**
+     * Creates a full rack implementation.
+     * 
+     * @param factory
+     * @param fullRack
+     */
+    public Rack(IDeviceFactory factory, boolean fullRack) {
+        this(factory);
+
+        if (!fullRack)
+            return;
+
+        createFullRack();
+    }
+
+    private void createFullRack() {
+        // create all sub components
+        setOutputPanel(getFactory().createOutputPanel());
+        setMixerPanel(getFactory().createMixerPanel());
+        setEffectsRack(getFactory().createEffectRack());
+        setSequencer(getFactory().createSequencer());
+    }
 
     //--------------------------------------------------------------------------
     //

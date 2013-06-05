@@ -45,10 +45,6 @@ public interface ICaustkConfiguration {
      */
     IDeviceFactory getDeviceFactory(ICausticEngine engine);
 
-    //--------------------------------------------------------------------------
-    // Factory Methods
-    //--------------------------------------------------------------------------
-
     /**
      * Each platform and application needs to implement its sound/part/tone
      * configuration.
@@ -56,6 +52,10 @@ public interface ICaustkConfiguration {
      * Impls will create machines through the {@link SoundSource}.
      */
     ICaustkConfigurator getConfigurator();
+
+    //--------------------------------------------------------------------------
+    // Factory Methods
+    //--------------------------------------------------------------------------
 
     /**
      * The main {@link CaustkController} instance that instrumentates the whole
