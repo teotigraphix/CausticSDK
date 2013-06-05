@@ -3,11 +3,11 @@ package com.teotigraphix.caustk.scene;
 
 import java.io.File;
 
-import com.teotigraphix.caustic.core.CausticException;
-import com.teotigraphix.caustic.internal.rack.Rack;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.rack.IRack;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.system.bank.CausticFileMemoryDescriptor;
+import com.teotigraphix.caustk.system.bank.MemoryLoader;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 
@@ -32,12 +32,14 @@ import com.teotigraphix.caustk.tone.ToneDescriptor;
  */
 public class SceneLoader {
 
-    private Rack loader;
-
     private ICaustkController controller;
+
+    private MemoryLoader memoryLoader;
 
     public SceneLoader(ICaustkController controller) {
         this.controller = controller;
+
+        memoryLoader = new MemoryLoader(controller);
     }
 
     public void load(File file) {
@@ -46,16 +48,15 @@ public class SceneLoader {
     }
 
     private void loadCausticFile(File file) {
-        // creates a full rack with outputpanel, mixerpanel, effectsrack and sequencer
-        loader = new Rack(controller.getConfiguration().getDeviceFactory(controller), true);
-        loader.setEngine(controller);
-        
-        // restore the rack loader with the .caustic file
-        restoreLoader(loader, file);
+
+        CausticFileMemoryDescriptor descriptor = new CausticFileMemoryDescriptor("Foo", file);
+        // passing null for the tone descriptors forces the loader to
+        // create them when it first loads the song file
+        memoryLoader.load(descriptor, null);
 
         // create a new SceneModel and load it with the rack loader
         SceneModel sceneModel = createSceneModel();
-        sceneModel.load(loader);
+        sceneModel.load(descriptor);
 
         // create a new Scene and set its sceneModel
         Scene scene = createScene();
@@ -64,21 +65,8 @@ public class SceneLoader {
         // clear the core sound generator (CausticEngine)
         controller.getSoundGenerator().sendMessage("/caustc/blankrack");
 
-        loader = null;
-
         // load the new Scene using the newly created SceneModel
         loadScene(scene);
-    }
-
-    private void restoreLoader(Rack loader2, File file) {
-
-        try {
-            loader.loadSong(file.getAbsolutePath());
-        } catch (CausticException e) {
-            e.printStackTrace();
-        }
-
-        loader.restore();
     }
 
     private SceneModel createSceneModel() {
