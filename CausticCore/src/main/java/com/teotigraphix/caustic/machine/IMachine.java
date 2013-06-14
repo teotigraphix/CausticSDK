@@ -127,7 +127,8 @@ public interface IMachine extends IDevice, IRestore, IPersist {
      * <p>
      * The Core knows which directory to save to.
      * 
-     * @param name The name of the preset, no path, just the name.
+     * @param name The simple name of the new preset file, without the file
+     *            extension.
      */
     void savePreset(String name);
 }

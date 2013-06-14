@@ -3,8 +3,12 @@ package com.teotigraphix.caustk.system.bank;
 
 import java.util.List;
 
+import com.teotigraphix.caustk.tone.ToneDescriptor;
+
 public class MemoryDescriptor {
     
+    public boolean fullLoad = false;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -35,6 +39,20 @@ public class MemoryDescriptor {
 
     public String getName() {
         return name;
+    }
+
+    //----------------------------------
+    // tones
+    //----------------------------------
+
+    private List<ToneDescriptor> toneDescriptors;
+
+    public List<ToneDescriptor> getToneDescriptors() {
+        return toneDescriptors;
+    }
+
+    public void setToneDescriptors(List<ToneDescriptor> value) {
+        toneDescriptors = value;
     }
 
     //----------------------------------

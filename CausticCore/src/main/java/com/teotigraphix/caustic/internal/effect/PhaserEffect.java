@@ -82,8 +82,8 @@ public class PhaserEffect extends Effect implements IPhaserEffect {
     public void setFeedback(float value) {
         if (value == mFeedback)
             return;
-        if (value < 0.1f || value > 0.95f)
-            throw newRangeException(CONTROL_DEPTH, "0.1..0.95", value);
+        // XXX Phaser BUG if (value < 0.1f || value > 0.95f)
+        //    throw newRangeException(CONTROL_DEPTH, "0.1..0.95", value);
         mFeedback = value;
         set(CONTROL_FEEDBACK, mFeedback);
     }

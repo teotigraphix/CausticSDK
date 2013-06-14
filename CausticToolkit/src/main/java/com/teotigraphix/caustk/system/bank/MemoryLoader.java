@@ -2,13 +2,28 @@
 package com.teotigraphix.caustk.system.bank;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import com.teotigraphix.caustic.core.IMemento;
+import com.teotigraphix.caustic.core.XMLMemento;
+import com.teotigraphix.caustic.internal.effect.EffectsRack;
+import com.teotigraphix.caustic.internal.machine.Bassline;
+import com.teotigraphix.caustic.internal.machine.Beatbox;
+import com.teotigraphix.caustic.internal.machine.Machine;
+import com.teotigraphix.caustic.internal.machine.PCMSynth;
+import com.teotigraphix.caustic.internal.machine.SubSynth;
+import com.teotigraphix.caustic.internal.mixer.MixerDelay;
+import com.teotigraphix.caustic.internal.mixer.MixerPanel;
+import com.teotigraphix.caustic.internal.mixer.MixerReverb;
 import com.teotigraphix.caustic.internal.utils.PatternUtils;
+import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.machine.MachineType;
+import com.teotigraphix.caustic.mixer.MixerEffectType;
 import com.teotigraphix.caustic.osc.OutputPanelMessage;
 import com.teotigraphix.caustic.osc.PatternSequencerMessage;
 import com.teotigraphix.caustic.osc.RackMessage;
@@ -27,6 +42,8 @@ public class MemoryLoader {
     private Map<Integer, MemoryDescriptor> map = new HashMap<Integer, MemoryDescriptor>();
 
     private ICaustkController controller;
+
+    private OnPatchCopy onPatchCopyListener;
 
     public ICaustkController getController() {
         return controller;
@@ -57,8 +74,9 @@ public class MemoryLoader {
      * unserialized from the <code>.caustic</code> song file.
      * 
      * @param descriptor The {@link MemoryDescriptor} used to load the bank.
+     * @throws IOException
      */
-    public void load(MemoryDescriptor descriptor, List<ToneDescriptor> tones) {
+    public void load(MemoryDescriptor descriptor, List<ToneDescriptor> tones) throws IOException {
         // if the file is not null, this descriptor has not been created
         // the patterns, phrases and patches are not in the collections, load it
         if (descriptor instanceof CausticFileMemoryDescriptor) {
@@ -68,7 +86,8 @@ public class MemoryLoader {
         addDescriptor(descriptor);
     }
 
-    private void loadDescriptor(CausticFileMemoryDescriptor descriptor, List<ToneDescriptor> tones) {
+    private void loadDescriptor(CausticFileMemoryDescriptor descriptor, List<ToneDescriptor> tones)
+            throws IOException {
         File file = descriptor.getFile();
         if (!file.exists())
             throw new IllegalArgumentException("MemoryBank not found; " + file.getPath());
@@ -136,14 +155,31 @@ public class MemoryLoader {
                 PatternSequencerMessage.BANK.send(controller, toneIndex, bankIndex);
                 PatternSequencerMessage.PATTERN.send(controller, toneIndex, patternIndex);
 
+                PatternItem pattern = null;
+
                 //----------------------------------------------------------------
                 // Load Pattern
                 //----------------------------------------------------------------
 
-                // add the list of tone patterns to the map
-                PatternItem pattern = findPattern(map, patternName, toneIndex);
-                if (!patterns.contains(pattern))
+                if (descriptor.fullLoad) {
+                    // load one phrase per pattern; load ALL patterns
+                    // as caustic machine patterns
+                    int length = (int)PatternSequencerMessage.NUM_MEASURES.query(controller,
+                            toneIndex);
+                    int tempo = (int)OutputPanelMessage.BPM.query(controller);
+
+                    pattern = new PatternItem(patternName, length, tempo);
+                    pattern.setIndex(toneIndex);
                     patterns.add(pattern);
+
+                } else {
+
+                    // add the list of tone patterns to the map
+                    pattern = findPattern(map, patternName, toneIndex);
+                    if (!patterns.contains(pattern))
+                        patterns.add(pattern);
+
+                }
 
                 //----------------------------------------------------------------
                 // Load Phrase
@@ -151,21 +187,24 @@ public class MemoryLoader {
 
                 // save pattern properties
                 PhraseItem phraseItem = createPhrase(pattern, toneIndex, patches.get(toneIndex));
-
                 phrases.add(phraseItem);
-
                 pattern.addPhraseItem(phraseItem);
             }
         }
 
+        descriptor.setToneDescriptors(tones);
         descriptor.setPatternItems(patterns);
         descriptor.setPhraseItems(phrases);
         descriptor.setPatchItems(patches);
     }
 
-    private PatchItem createPatch(String name, int toneIndex, MachineType machineType) {
-        PatchItem item = new PatchItem(name);
-        item.loadData(controller, toneIndex, machineType);
+    private PatchItem createPatch(String name, int toneIndex, MachineType machineType)
+            throws IOException {
+        String id = UUID.randomUUID().toString();
+        PatchItem item = new PatchItem(name, id);
+        item.setIndex(toneIndex);
+        IMemento memento = copyData(toneIndex, machineType, id, name);
+        item.setMemento(memento);
         return item;
     }
 
@@ -188,6 +227,7 @@ public class MemoryLoader {
         String data = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(controller, toneIndex);
 
         PhraseItem phraseItem = new PhraseItem(data, pattern.getLength(), patch);
+        phraseItem.setIndex(toneIndex);
 
         return phraseItem;
     }
@@ -197,4 +237,138 @@ public class MemoryLoader {
         map.put(descriptor.getIndex(), descriptor);
     }
 
+    //--------------------------------------------------------------------------
+    // 
+    //--------------------------------------------------------------------------
+
+    private Machine createMachine(int machineIndex, MachineType machineType, String id, String name) {
+        Machine machine = null;
+        switch (machineType) {
+            case BASSLINE:
+                machine = new Bassline(id);
+                machine.setType(MachineType.BASSLINE);
+                break;
+            case BEATBOX:
+                machine = new Beatbox(id);
+                machine.setType(MachineType.BEATBOX);
+                break;
+            case PCMSYNTH:
+                machine = new PCMSynth(id);
+                machine.setType(MachineType.PCMSYNTH);
+                break;
+            case SUBSYNTH:
+                machine = new SubSynth(id);
+                machine.setType(MachineType.SUBSYNTH);
+                break;
+        }
+        machine.setName(name);
+        machine.setFactory(controller.getFactory());
+        machine.setEngine(controller);
+        machine.setIndex(machineIndex);
+        return machine;
+    }
+
+    public IMemento copyData(int machineIndex, MachineType machineType, String id, String name)
+            throws IOException {
+        Machine machine = createMachine(machineIndex, machineType, id, name);
+
+        IMemento memento = XMLMemento.createWriteRoot("patch");
+
+        switch (machineType) {
+            case BASSLINE:
+                copyBassline(controller, (Bassline)machine, memento);
+                break;
+            case BEATBOX:
+                copyBeatbox(controller, (Beatbox)machine, memento);
+                break;
+            case PCMSYNTH:
+                copyPCMSynth(controller, (PCMSynth)machine, memento);
+                break;
+            case SUBSYNTH:
+                copySubSynth(controller, (SubSynth)machine, memento);
+                break;
+        }
+
+        copyMixerChannel(controller, machine, memento);
+        copyEffectChannel(controller, machine, memento);
+
+        machine.copy(memento);
+
+        if (onPatchCopyListener != null)
+            onPatchCopyListener.onPatchCopy(machine);
+
+        machine.setEngine(null);
+
+        return memento;
+    }
+
+    void copyBassline(ICaustkController controller, Bassline machine, IMemento memento) {
+        //machine.getSequencer().restore();
+        machine.getOsc1().restore();
+        machine.getVolume().restore();
+        machine.getFilter().restore();
+        machine.getLFO1().restore();
+        machine.getDistortion().restore();
+    }
+
+    void copySubSynth(ICaustkController controller, SubSynth machine, IMemento memento) {
+        //machine.getSequencer().restore();
+        machine.getFilter().restore();
+        machine.getLFO1().restore();
+        machine.getLFO2().restore();
+        machine.getOsc1().restore();
+        machine.getOsc2().restore();
+        machine.getVolume().restore();
+    }
+
+    void copyPCMSynth(ICaustkController controller, PCMSynth machine, IMemento memento) {
+        //machine.getSequencer().restore();
+        machine.getFilter().restore();
+        machine.getLFO1().restore();
+        machine.getPitch().restore();
+        machine.getSampler().restore();
+        machine.getVolume().restore();
+    }
+
+    void copyBeatbox(ICaustkController controller, Beatbox machine, IMemento memento) {
+        //machine.getSequencer().restore();
+        machine.getSampler().restore();
+        machine.getVolume().restore();
+    }
+
+    private void copyMixerChannel(ICaustkController controller, Machine machine, IMemento memento) {
+        MixerPanel panel = (MixerPanel)controller.getFactory().createMixerPanel();
+        panel.setEngine(controller);
+        panel.addMachine(machine);
+
+        MixerDelay delay = (MixerDelay)controller.getFactory().createMixerEffect(panel,
+                MixerEffectType.DELAY);
+        MixerReverb reverb = (MixerReverb)controller.getFactory().createMixerEffect(panel,
+                MixerEffectType.REVERB);
+
+        delay.setDevice(panel);
+        reverb.setDevice(panel);
+
+        panel.setDelay(delay);
+        panel.setReverb(reverb);
+
+        panel.restore();
+        panel.copyChannel(machine, memento);
+    }
+
+    private void copyEffectChannel(ICaustkController controller, Machine machine, IMemento memento) {
+        EffectsRack effectsRack = (EffectsRack)controller.getFactory().createEffectRack();
+        effectsRack.setEngine(controller);
+        effectsRack.addMachine(machine);
+        effectsRack.restore();
+        effectsRack.copyChannel(machine, memento);
+    }
+
+    public void setOnPatchCopyListener(OnPatchCopy l) {
+        onPatchCopyListener = l;
+    }
+
+    public interface OnPatchCopy {
+        void onPatchCopy(IMachine machine);
+    }
 }

@@ -280,8 +280,9 @@ public class PatternSequencer extends DeviceComponent implements IPatternSequenc
         return result;
     }
 
+    // XXX Added back temp for CausticLive
     //@Override
-    void addNote(int pitch, float start, float end, float velocity, int flags) {
+    public void addNote(int pitch, float start, float end, float velocity, int flags) {
         //        // do some pre checks
         //        if (pitch < 0 || pitch > 255)
         //        {
@@ -308,16 +309,14 @@ public class PatternSequencer extends DeviceComponent implements IPatternSequenc
         //                    + velocity + "]");
         //        }
         //
-        //        TriggerMap active = getActivePhrase();
-        //        if (active == null)
-        //        {
-        //            active = PatternSequencerUtils.addPhrase(this, selectedBank,
-        //                    selectedPattern);
-        //            setActiveTriggerMap(active);
-        //        }
-        //        getActivePhrase().addNote(pitch, start, end, velocity, flags);
-        //        PatternSequencerMessage.NOTE_DATA.send(getEngine(), getDeviceIndex(),
-        //                start, pitch, velocity, end, flags);
+        IStepPhrase active = getActivePhrase();
+        if (active == null) {
+            active = PatternSequencerUtils.addEmptyStepPhrase(this, selectedBank, selectedPattern);
+            setActiveStepPhrase(active);
+        }
+        getActivePhrase().addNote(pitch, start, end, velocity, flags);
+        PatternSequencerMessage.NOTE_DATA.send(getEngine(), getDeviceIndex(), start, pitch,
+                velocity, end, flags);
     }
 
     //@Override
@@ -466,17 +465,20 @@ public class PatternSequencer extends DeviceComponent implements IPatternSequenc
     public void onResolutionChange(IStepPhrase phrase, Resolution resolution) {
     }
 
+    // XXX uncommented for CausticLive
     @Override
     public void onTriggerDataChange(ITrigger trigger, TriggerChangeKind kind) {
-        // if (kind.equals(TriggerChangeKind.LOAD)) {
-        // float start = Resolution.toBeat(trigger.getIndex(), trigger
-        // .getPhrase().getResolution());
-        // float end = start + trigger.getGate();
-        // float velocity = trigger.getVelocity();
-        // int flags = 0;
-        //
-        // addNote(trigger.getPitch(), start, end, velocity, flags);
-        // }
+        if (kind.equals(TriggerChangeKind.RESET)) {
+            float start = Resolution.toBeat(trigger.getIndex(), trigger.getStepPhrase()
+                    .getResolution());
+            float end = start + trigger.getGate();
+            float velocity = trigger.getVelocity();
+            int flags = 0;
+
+            //addNote(trigger.getPitch(), start, end, velocity, flags);
+            PatternSequencerMessage.NOTE_DATA.send(getEngine(), getDeviceIndex(), start,
+                    trigger.getPitch(), velocity, end, flags);
+        }
     }
 
 }

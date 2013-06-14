@@ -1,8 +1,14 @@
 
 package com.teotigraphix.caustk.system.bank;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.core.XMLMemento;
+import com.teotigraphix.caustic.desktop.RuntimeUtils;
 import com.teotigraphix.caustic.internal.effect.EffectsRack;
 import com.teotigraphix.caustic.internal.machine.Bassline;
 import com.teotigraphix.caustic.internal.machine.Beatbox;
@@ -12,13 +18,39 @@ import com.teotigraphix.caustic.internal.machine.SubSynth;
 import com.teotigraphix.caustic.internal.mixer.MixerDelay;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.internal.mixer.MixerReverb;
+import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustic.mixer.MixerEffectType;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class PatchItem extends MemorySlotItem {
 
+    private Machine machine;
+
+    /**
+     * The machine is only active
+     * 
+     * @return
+     */
+    public IMachine getMachine() {
+        return machine;
+    }
+
     private String name;
+
+    //----------------------------------
+    // id
+    //----------------------------------
+
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    //    public void setId(String value) {
+    //        id = value;
+    //    }
 
     //----------------------------------
     // memento
@@ -30,36 +62,42 @@ public class PatchItem extends MemorySlotItem {
         return memento;
     }
 
-    /**
-     * @param name The machine name.
-     */
-    public PatchItem(String name) {
-        super();
-        this.name = name;
+    public void setMemento(IMemento value) {
+        memento = value;
     }
 
-    public void loadData(ICaustkController controller, int machineIndex, MachineType machineType) {
-        // all machine components
-        Machine machine = null;
+    /**
+     * @param id The machine name.
+     */
+    public PatchItem(String name, String id) {
+        super();
+        this.name = name;
+        this.id = id;
+    }
+
+    public void copyData(ICaustkController controller, int machineIndex, MachineType machineType)
+            throws IOException {
+        machine = null;
         switch (machineType) {
             case BASSLINE:
-                machine = new Bassline(name);
+                machine = new Bassline(id);
                 machine.setType(MachineType.BASSLINE);
                 break;
             case BEATBOX:
-                machine = new Beatbox(name);
+                machine = new Beatbox(id);
                 machine.setType(MachineType.BEATBOX);
                 break;
             case PCMSYNTH:
-                machine = new PCMSynth(name);
+                machine = new PCMSynth(id);
                 machine.setType(MachineType.PCMSYNTH);
                 break;
             case SUBSYNTH:
-                machine = new SubSynth(name);
+                machine = new SubSynth(id);
                 machine.setType(MachineType.SUBSYNTH);
                 break;
         }
 
+        machine.setName(name);
         machine.setFactory(controller.getFactory());
         machine.setEngine(controller);
         machine.setIndex(machineIndex);
@@ -81,10 +119,22 @@ public class PatchItem extends MemorySlotItem {
                 break;
         }
 
-        machine.copy(memento);
-
         copyMixerChannel(controller, machine, memento);
         copyEffectChannel(controller, machine, memento);
+
+        machine.savePreset(id);
+        // XXX Copy and delete from the presets directory to the project
+        // root dir
+        File presetFile = RuntimeUtils.getCausticPresetsFile(machineType.toString(), id);
+        if (presetFile.exists())
+            throw new IOException("Preset file does not exist");
+
+        File destFile = new File("");
+        FileUtils.copyFile(presetFile, destFile);
+
+        presetFile.delete();
+
+        machine.copy(memento);
 
         machine.setEngine(null);
     }
@@ -144,16 +194,16 @@ public class PatchItem extends MemorySlotItem {
     }
 
     private void copyEffectChannel(ICaustkController controller, Machine machine, IMemento memento) {
-        EffectsRack effect = (EffectsRack)controller.getFactory().createEffectRack();
-        effect.setEngine(controller);
-        effect.addMachine(machine);
-        effect.restore();
-
-        effect.copyChannel(machine, memento);
+        EffectsRack effectsRack = (EffectsRack)controller.getFactory().createEffectRack();
+        effectsRack.setEngine(controller);
+        effectsRack.addMachine(machine);
+        effectsRack.restore();
+        effectsRack.copyChannel(machine, memento);
     }
 
     @Override
     public String toString() {
         return memento.toString();
     }
+
 }

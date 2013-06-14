@@ -25,6 +25,9 @@ import com.teotigraphix.caustic.device.IDeviceFactory;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.library.ILibraryManager;
+import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
 import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
 import com.teotigraphix.caustk.sound.ICaustkSoundSource;
@@ -33,14 +36,13 @@ import com.teotigraphix.caustk.sound.ICaustkSoundSource;
  * @author Michael Schmalle
  */
 public interface ICaustkController extends ICausticEngine {
-    
+
     /**
-     * 
      * @param clazz
      * @param instance
      */
     void registerAPI(Class<? extends IControllerAPI> clazz, IControllerAPI instance);
-    
+
     /**
      * <pre>
      * ISoundSourceAPI api = context.api().get(ISoundSourceAPI.class);
@@ -58,12 +60,18 @@ public interface ICaustkController extends ICausticEngine {
     IDispatcher getDispatcher();
 
     IDeviceFactory getFactory();
-
+    
+    IProjectManager getProjectManager();
+    
+    ILibraryManager getLibraryManager();
+    
     ICaustkSoundGenerator getSoundGenerator();
 
     ICaustkSoundSource getSoundSource();
 
     ICaustkSoundMixer getSoundMixer();
+
+    SystemSequencer getSystemSequencer();
 
     ICommandManager getCommandManager();
 

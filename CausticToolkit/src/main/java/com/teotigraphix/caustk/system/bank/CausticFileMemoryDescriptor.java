@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.system.bank;
 
 import java.io.File;
 
-
 public class CausticFileMemoryDescriptor extends MemoryDescriptor {
 
     //----------------------------------

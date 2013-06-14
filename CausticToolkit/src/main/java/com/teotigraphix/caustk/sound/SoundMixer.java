@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.sound;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.internal.effect.EffectsRack;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.machine.IMachine;
@@ -54,6 +55,18 @@ public class SoundMixer implements ICaustkSoundMixer {
 
     private EffectsRack effectsRack;
 
+    public void pasteMixerChannel(IMachine machine, IMemento memento) {
+        mixerPanel.pasteChannel(machine, memento);
+    }
+    
+    public void pasteEffectChannel(IMachine machine, IMemento memento) {
+        effectsRack.pasteChannel(machine, memento);
+    }
+    
+    public void copyChannel(IMachine machine, IMemento memento) {
+        effectsRack.copyChannel(machine, memento);
+    }
+    
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------

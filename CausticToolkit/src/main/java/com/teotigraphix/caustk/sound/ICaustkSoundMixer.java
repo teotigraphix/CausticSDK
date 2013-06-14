@@ -19,6 +19,15 @@
 
 package com.teotigraphix.caustk.sound;
 
+import com.teotigraphix.caustic.core.IMemento;
+import com.teotigraphix.caustic.machine.IMachine;
+
 public interface ICaustkSoundMixer {
+
+    void pasteEffectChannel(IMachine machine, IMemento memento);
+
+    void copyChannel(IMachine machine, IMemento memento);
+
+    void pasteMixerChannel(IMachine machine, IMemento memento);
 
 }

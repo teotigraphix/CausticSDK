@@ -91,7 +91,7 @@ public class MixerData implements IPersist, IRestore {
     @Override
     public void copy(IMemento memento) {
         memento.putInteger(MixerPanelConstants.ATT_ID, index);
-
+        memento.putInteger("index", index);
         if (index != -1) {
             memento.putFloat(IMixerPanel.CONTROL_EQ_BASS, bass);
             memento.putFloat(IMixerPanel.CONTROL_EQ_MID, mid);

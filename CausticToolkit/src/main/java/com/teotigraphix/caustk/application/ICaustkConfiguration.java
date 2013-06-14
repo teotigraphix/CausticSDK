@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.application;
 
+import java.io.File;
+
 import com.teotigraphix.caustic.core.ICausticEngine;
 import com.teotigraphix.caustic.device.IDeviceFactory;
 import com.teotigraphix.caustic.internal.device.DeviceFactory;
@@ -33,6 +35,8 @@ import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
 public interface ICaustkConfiguration {
 
     String getApplicationId();
+
+    File getApplicationRoot();
 
     /**
      * Returns a {@link DeviceFactory} that creates caustic components.
@@ -78,4 +82,5 @@ public interface ICaustkConfiguration {
      * @return The single instance of the {@link ICaustkSoundGenerator}.
      */
     ICaustkSoundGenerator createSoundGenerator(ICaustkController controller);
+
 }

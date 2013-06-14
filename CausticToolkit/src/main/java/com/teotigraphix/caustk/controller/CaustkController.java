@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,11 @@ import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
+import com.teotigraphix.caustk.library.ILibraryManager;
+import com.teotigraphix.caustk.library.LibraryManager;
+import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.project.ProjectManager;
+import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.sound.CaustkSoundSource;
 import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
 import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
@@ -101,6 +107,28 @@ public class CaustkController implements ICaustkController {
     }
 
     //----------------------------------
+    // projectManager
+    //----------------------------------
+
+    private IProjectManager projectManager;
+
+    @Override
+    public IProjectManager getProjectManager() {
+        return projectManager;
+    }
+
+    //----------------------------------
+    // libraryManager
+    //----------------------------------
+
+    private ILibraryManager libraryManager;
+
+    @Override
+    public ILibraryManager getLibraryManager() {
+        return libraryManager;
+    }
+
+    //----------------------------------
     // commandManager
     //----------------------------------
 
@@ -167,6 +195,17 @@ public class CaustkController implements ICaustkController {
         return soundMixer;
     }
 
+    //----------------------------------
+    // systemSequencer
+    //----------------------------------
+
+    private SystemSequencer systemSequencer;
+
+    @Override
+    public SystemSequencer getSystemSequencer() {
+        return systemSequencer;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -207,12 +246,19 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void initialize() {
+        File applicationRoot = getConfiguration().getApplicationRoot();
+        if (!applicationRoot.exists())
+            applicationRoot.mkdirs();
+        
         // sub composites will add their ICommands in their constructors
+        projectManager = new ProjectManager(this, applicationRoot);
+        libraryManager = new LibraryManager(this);
         commandManager = new CommandManager(this);
 
         soundGenerator = getConfiguration().createSoundGenerator(this);
         soundSource = new CaustkSoundSource(this);
         soundMixer = new SoundMixer(this);
+        systemSequencer = new SystemSequencer(this);
     }
 
     @Override

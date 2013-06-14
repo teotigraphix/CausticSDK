@@ -67,6 +67,7 @@ public class EffectData implements IPersist {
     }
 
     private void saveChannel(IEffect effect, IMemento memento) {
+        memento.putInteger("channel", getIndex());
         memento.putInteger("type", effect.getType().getValue());
         effect.copy(memento);
     }

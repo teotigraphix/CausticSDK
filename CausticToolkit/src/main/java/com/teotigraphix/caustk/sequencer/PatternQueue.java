@@ -53,7 +53,7 @@ public class PatternQueue {
     }
 
     public void addPattern(int bank, int index) {
-        int len = patterns.size();
+        //int len = patterns.size();
         PatternFSM pattern = new PatternFSM(getDispatcher(), bank, index);
         patterns.add(pattern);        
     }

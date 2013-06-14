@@ -80,15 +80,15 @@ public class EffectsRack extends Device implements IEffectsRack {
     public void copy(IMemento memento) {
         for (Entry<Integer, EffectData> entry : mEffectDataMap.entrySet()) {
             EffectData data = entry.getValue();
-            IMemento machine = memento.createChild("machine", data.mMachine.getId());
-            machine.putInteger("index", data.mMachine.getIndex());
-            data.copy(machine);
+            IMemento channel = memento.createChild("channel", data.mMachine.getId());
+            channel.putInteger("index", data.mMachine.getIndex());
+            data.copy(channel);
         }
     }
 
     @Override
     public void paste(IMemento memento) {
-        IMemento[] machines = memento.getChildren("machine");
+        IMemento[] machines = memento.getChildren("channel");
         for (IMemento child : machines) {
             // create the effect and pass the effect, save state
             // as with the mixer, the machine has to exist here
@@ -112,24 +112,9 @@ public class EffectsRack extends Device implements IEffectsRack {
         mEffectDataMap.remove(machine.getIndex());
     }
 
-    //    @Override
-    //    public void onMachineChanged(IMachine machine, MachineChangeKind kind)
-    //    {
-    //        if (kind == MachineChangeKind.ADDED || kind == MachineChangeKind.LOADED)
-    //        {
-    //            addMachine(machine);
-    //        }
-    //        else if (kind == MachineChangeKind.REMOVED)
-    //        {
-    //            removeMachine(machine);
-    //        }
-    //    }
-
     public IEffect put(int index, int machineIndex, EffectType type) {
-        // XXX FIXME SoundSource is NOT in caustic lib
         //IMachine machine = SoundSource.getMachine(machineIndex);
-        //return putEffect(machine, index, type);
-        return null;
+        return putEffect(mEffectDataMap.get(machineIndex).getMachine(), index, type);
     }
 
     @Override
@@ -186,6 +171,7 @@ public class EffectsRack extends Device implements IEffectsRack {
         IEffect e1 = getEffect(machine, 0);
         if (e1 != null) {
             IMemento child1 = memento.createChild("effect");
+            child1.putInteger("slot", 0);
             child1.putInteger("type", e1.getType().getValue());
             child1.putInteger("index", e1.getIndex());
             e1.copy(child1);
@@ -193,6 +179,7 @@ public class EffectsRack extends Device implements IEffectsRack {
         IEffect e2 = getEffect(machine, 1);
         if (e2 != null) {
             IMemento child2 = memento.createChild("effect");
+            child2.putInteger("slot", 1);
             child2.putInteger("type", e2.getType().getValue());
             child2.putInteger("index", e2.getIndex());
             e2.copy(child2);
