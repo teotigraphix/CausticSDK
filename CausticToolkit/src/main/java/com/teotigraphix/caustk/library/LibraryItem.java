@@ -33,4 +33,7 @@ public abstract class LibraryItem {
     public LibraryItem() {
     }
 
+    public boolean hasTag(String tag) {
+        return metadataInfo.getTags().contains(tag);
+    }
 }

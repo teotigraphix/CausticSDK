@@ -7,14 +7,7 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustic.desktop.RuntimeUtils;
-import com.teotigraphix.caustic.machine.IMachine;
-import com.teotigraphix.caustic.osc.RackMessage;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.system.bank.CausticFileMemoryDescriptor;
-import com.teotigraphix.caustk.system.bank.MemoryDescriptor;
-import com.teotigraphix.caustk.system.bank.MemoryLoader;
-import com.teotigraphix.caustk.system.bank.MemoryLoader.OnPatchCopy;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
@@ -26,10 +19,9 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
  */
 public class ProjectManager implements IProjectManager {
 
-    private MemoryLoader memoryLoader;
-
     private XStream projectStream;
 
+    @SuppressWarnings("unused")
     private ICaustkController controller;
 
     private Project project;
@@ -63,17 +55,6 @@ public class ProjectManager implements IProjectManager {
         this.applicationRoot = applicationRoot;
         projectDirectory = new File(applicationRoot, "projects");
 
-        memoryLoader = new MemoryLoader(controller);
-        memoryLoader.setOnPatchCopyListener(new OnPatchCopy() {
-            @Override
-            public void onPatchCopy(IMachine machine) {
-                try {
-                    savePatch(machine);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         projectStream = new XStream(new JettisonMappedXmlDriver());
         projectStream.setMode(XStream.NO_REFERENCES);
     }
@@ -107,6 +88,7 @@ public class ProjectManager implements IProjectManager {
         projectStream.alias("project", Project.class);
 
         project = (Project)projectStream.fromXML(file);
+        
         return project;
     }
 
@@ -118,61 +100,9 @@ public class ProjectManager implements IProjectManager {
         return project;
     }
 
-    /**
-     * Creates a {@link Project} from a <code>.caustic</code> file.
-     * <p>
-     * This method will automatically save the {@link Project} to disk using the
-     * projectFile location. The <code>.ctk</code> file is guaranteed to be on
-     * disk before this method returns.
-     * 
-     * @param songFile
-     * @param projectFile the relative path and name of the <code>.ctk</code>
-     *            file without the <code>project</code> sub directory. This is
-     *            the file path located within the projects app directory.
-     * @return
-     * @throws IOException
-     */
-    public Project create(File songFile, File projectFile) throws IOException {
-        if (!songFile.exists())
-            throw new IOException(".caustic file does not exist");
-
-        project = create(projectFile);
-        project.getInfo().setName(songFile.getName());
-        project.getInfo().setDescription(
-                "Copied and initialized from the " + songFile.getAbsolutePath() + " file.");
-
-        MemoryDescriptor descriptor = createMemoryDescriptor(songFile);
-        descriptor.setIndex(0);
-        // load all patterns, one phrase per pattern
-        descriptor.fullLoad = true;
-
-        // passing null for the tone descriptors forces the loader to
-        // create them when it first loads the song file, will populate
-        // the patch, phrase and pattern items
-        memoryLoader.load(descriptor, null);
-
-        // clear the core sound generator (CausticEngine)
-        RackMessage.BLANKRACK.send(controller);
-
-        loadProject(project, descriptor);
-
-        save();
-
-        return project;
-    }
-
-    public void add(File songFile) {
-        // TODO Auto-generated method stub
-
-    }
-
     //--------------------------------------------------------------------------
     // 
     //--------------------------------------------------------------------------
-
-    private void loadProject(Project project, MemoryDescriptor descriptor) {
-
-    }
 
     private ProjectInfo createInfo() {
         ProjectInfo info = new ProjectInfo();
@@ -184,30 +114,6 @@ public class ProjectManager implements IProjectManager {
         //        info.setDescription("Copied and initialized from the " + songFile.getAbsolutePath()
         //                + " file.");
         return info;
-    }
-
-    private MemoryDescriptor createMemoryDescriptor(File file) {
-        return new CausticFileMemoryDescriptor("Preset", file);
-    }
-
-    //--------------------------------------------------------------------------
-
-    protected void savePatch(IMachine machine) throws IOException {
-        String patchId = machine.getId();
-        machine.savePreset(patchId);
-
-        // XXX Copy and delete from the presets directory to the project
-        // root dir
-
-        File presetFile = RuntimeUtils.getCausticPresetsFile(machine.getType().toString(), patchId);
-        if (!presetFile.exists())
-            throw new IOException("Preset file does not exist");
-
-        File projectRoot = project.getFile().getParentFile();
-
-        File destFile = new File(projectRoot, "presets/" + presetFile.getName());
-        FileUtils.copyFile(presetFile, destFile);
-        presetFile.delete();
     }
 
 }

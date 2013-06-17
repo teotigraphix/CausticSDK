@@ -7,11 +7,11 @@ import java.util.List;
 
 public class MetadataInfo {
 
-    private String name;
+    private String name = "Untitled";
 
-    private String author;
+    private String author = "Unamed";
 
-    private String description;
+    private String description = "";
 
     private Date created;
 
