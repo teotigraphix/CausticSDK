@@ -12,6 +12,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
 import com.teotigraphix.caustic.core.CausticException;
+import com.teotigraphix.caustic.core.IMemento;
+import com.teotigraphix.caustic.core.XMLMemento;
 import com.teotigraphix.caustic.desktop.RuntimeUtils;
 import com.teotigraphix.caustic.internal.rack.Rack;
 import com.teotigraphix.caustic.internal.utils.PatternUtils;
@@ -183,9 +185,9 @@ public class LibraryManager implements ILibraryManager {
         rack.getMixerPanel().restore();
         rack.getEffectsRack().restore();
 
+        //loadLibraryPatches(library, rack);
         loadLibraryScene(library, causticFile, rack);
         loadLibraryPhrases(library, rack);
-        loadLibraryPatches(library, rack);
 
         // clear the core rack
         RackMessage.BLANKRACK.send(controller);
@@ -208,22 +210,22 @@ public class LibraryManager implements ILibraryManager {
         return library;
     }
 
-    private void loadLibraryPatches(Library library, Rack rack) throws IOException {
-        for (int i = 0; i < 6; i++) {
-            IMachine machine = rack.getMachine(i);
-            if (machine != null) {
-                LibraryPatch patch = new LibraryPatch();
-                patch.setMachineType(machine.getType());
-                patch.setMetadataInfo(new MetadataInfo());
-                patch.setId(UUID.randomUUID());
-                TagUtils.addDefaultTags(machine, patch);
-                relocatePresetFile(machine, library, patch);
-                library.addPatch(patch);
-            }
-        }
-    }
+    //    private void loadLibraryPatches(Library library, Rack rack) throws IOException {
+    //        for (int i = 0; i < 6; i++) {
+    //            IMachine machine = rack.getMachine(i);
+    //            if (machine != null) {
+    //                LibraryPatch patch = new LibraryPatch();
+    //                patch.setMachineType(machine.getType());
+    //                patch.setMetadataInfo(new MetadataInfo());
+    //                patch.setId(UUID.randomUUID());
+    //                TagUtils.addDefaultTags(machine, patch);
+    //                relocatePresetFile(machine, library, patch);
+    //                library.addPatch(patch);
+    //            }
+    //        }
+    //    }
 
-    private void loadLibraryScene(Library library, File causticFile, Rack rack) {
+    private void loadLibraryScene(Library library, File causticFile, Rack rack) throws IOException {
         String name = causticFile.getName().replace(".caustic", "");
         LibraryScene scene = new LibraryScene();
         scene.setMetadataInfo(new MetadataInfo());
@@ -233,7 +235,45 @@ public class LibraryManager implements ILibraryManager {
         scene.setId(UUID.randomUUID());
         library.addScene(scene);
 
-        RackInfo rackInfo = LibrarySerializerUtils.createRackInfo(rack);
+        //        HashMap<Integer, LibraryPatch> patches = new HashMap<Integer, LibraryPatch>();
+        //        // XXX HACK
+        //        for (int i = 0; i < 6; i++) {
+        //            LibraryPatch patch = getPatchAt(library, i);
+        //            patches.put(i, patch);
+        //        }
+
+        //        RackInfo rackInfo = LibrarySerializerUtils.createRackInfo(rack, patches);
+
+        //--------------------------------------
+        RackInfo rackInfo = new RackInfo();
+        XMLMemento memento = XMLMemento.createWriteRoot("rack");
+        for (int i = 0; i < 6; i++) {
+            IMachine machine = rack.getMachine(i);
+            LibraryPatch patch = null;
+
+            if (machine != null) {
+                patch = new LibraryPatch();
+                patch.setMachineType(machine.getType());
+                patch.setMetadataInfo(new MetadataInfo());
+                patch.setId(UUID.randomUUID());
+                TagUtils.addDefaultTags(machine, patch);
+                relocatePresetFile(machine, library, patch);
+                library.addPatch(patch);
+
+                IMemento child = memento.createChild("machine");
+                child.putInteger("index", i);
+                child.putInteger("active", machine != null ? 1 : 0);
+
+                if (patch != null)
+                    child.putString("patchId", patch.getId().toString());
+
+                child.putString("id", machine.getId());
+                child.putString("type", machine.getType().getValue());
+            }
+        }
+
+        rackInfo.setData(memento.toString());
+
         scene.setRackInfo(rackInfo);
 
         MixerPanelInfo mixerPanelInfo = LibrarySerializerUtils.createMixerPanelInfo(rack);

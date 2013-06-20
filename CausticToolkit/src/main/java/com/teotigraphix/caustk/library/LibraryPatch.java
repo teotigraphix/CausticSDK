@@ -50,8 +50,14 @@ public class LibraryPatch extends LibraryItem {
     // presetFile
     //----------------------------------
 
+    /**
+     * Returns the file, not the path of the preset {@link File}.
+     * <p>
+     * The file extension is correctly created using the
+     * {@link #getMachineType()}.
+     */
     public File getPresetFile() {
-        return new File(getId().toString());
+        return new File(getId().toString() + "." + machineType.getValue());
     }
 
     //----------------------------------

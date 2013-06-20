@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.sequencer;
 
 import com.teotigraphix.caustic.output.IOutputPanel;
+import com.teotigraphix.caustic.output.IOutputPanel.Mode;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IControllerAPI;
 import com.teotigraphix.caustk.sequencer.SystemSequencer.OnSystemSequencerPlay;
@@ -42,6 +43,10 @@ public class SequencerAPI implements IControllerAPI {
      */
     public void play() {
         controller.getSystemSequencer().play();
+    }
+    
+    public void play(Mode mode) {
+        controller.getSystemSequencer().play(mode);
     }
 
     /**

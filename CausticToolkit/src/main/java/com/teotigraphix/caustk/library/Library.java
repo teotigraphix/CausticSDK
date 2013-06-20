@@ -3,13 +3,17 @@ package com.teotigraphix.caustk.library;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustic.machine.MachineType;
+import com.teotigraphix.caustk.tone.Tone;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
@@ -86,8 +90,8 @@ public class Library {
 
     private Map<UUID, LibraryScene> scenes = new HashMap<UUID, LibraryScene>();
 
-    public Collection<LibraryScene> getScenes() {
-        return scenes.values();
+    public List<LibraryScene> getScenes() {
+        return new ArrayList<LibraryScene>(scenes.values());
     }
 
     public void addScene(LibraryScene patch) {
@@ -141,6 +145,63 @@ public class Library {
         FileUtils.deleteDirectory(directory);
         if (directory.exists())
             throw new IOException("Library " + directory.getAbsolutePath() + " was not deleted.");
+    }
+
+    public LibraryScene findSceneById(UUID id) {
+        for (LibraryScene item : scenes.values()) {
+            if (item.getId().equals(id))
+                return item;
+        }
+        return null;
+    }
+
+    public LibraryPatch findPatchById(UUID uuid) {
+        for (LibraryPatch item : patches.values()) {
+            if (item.getId().equals(uuid))
+                return item;
+        }
+        return null;
+    }
+
+    public LibraryPhrase findPhraseById(UUID uuid) {
+        for (LibraryPhrase item : phrases.values()) {
+            if (item.getId().equals(uuid))
+                return item;
+        }
+        return null;
+    }
+
+    public List<LibraryPhrase> findPhrasesByTag(String tag) {
+        List<LibraryPhrase> result = new ArrayList<LibraryPhrase>();
+        for (LibraryPhrase item : getPhrases()) {
+            if (item.hasTag(tag)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns a {@link File} with the correct absolute path of the preset in
+     * the <code>/MyLibrary/presets</code> directory.
+     * 
+     * @param preset The file name of the preset file.
+     */
+    public File getPresetFile(File preset) {
+        return new File(getPresetsDirectory(), preset.getName());
+    }
+
+    /**
+     * Returns all {@link LibraryPhrase}s in the {@link Library} for the tone's
+     * {@link MachineType}.
+     * 
+     * @param tone The tone used to search.
+     * @return A {@link List} of {@link LibraryPhrase}s that are of the same
+     *         {@link MachineType} as the tone.
+     */
+    public List<LibraryPhrase> findPhrasesForTone(Tone tone) {
+        String type = tone.getMachine().getType().getValue();
+        return findPhrasesByTag(type);
     }
 
 }

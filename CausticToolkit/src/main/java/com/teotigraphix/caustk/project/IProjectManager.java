@@ -17,6 +17,8 @@ public interface IProjectManager {
      */
     Project getProject();
 
+    ProjectPreferences getProjectPreferences();
+
     /**
      * Creates a {@link Project} from a <code>.caustic</code> file.
      * <p>

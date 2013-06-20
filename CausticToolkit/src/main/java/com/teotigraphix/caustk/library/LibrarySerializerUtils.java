@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.core.XMLMemento;
@@ -17,7 +18,7 @@ import com.teotigraphix.caustk.library.vo.RackInfo;
 
 public class LibrarySerializerUtils {
 
-    public static RackInfo createRackInfo(Rack rack) {
+    public static RackInfo createRackInfo(Rack rack, HashMap<Integer, LibraryPatch> patches) {
         RackInfo info = new RackInfo();
         XMLMemento memento = XMLMemento.createWriteRoot("rack");
         for (int i = 0; i < 6; i++) {
@@ -25,6 +26,9 @@ public class LibrarySerializerUtils {
             IMemento child = memento.createChild("machine");
             child.putInteger("index", i);
             child.putInteger("active", machine != null ? 1 : 0);
+            LibraryPatch patch = patches.get(i);
+            if (patch != null)
+                child.putString("patchId", patch.getId().toString());
             if (machine != null) {
                 child.putString("id", machine.getId());
                 child.putString("type", machine.getType().getValue());

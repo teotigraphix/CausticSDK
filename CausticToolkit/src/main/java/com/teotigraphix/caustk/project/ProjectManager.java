@@ -7,11 +7,8 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustic.desktop.RuntimeUtils;
-import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.system.bank.CausticFileMemoryDescriptor;
-import com.teotigraphix.caustk.system.bank.MemoryDescriptor;
+import com.teotigraphix.caustk.utls.JsonFormatter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
@@ -25,9 +22,16 @@ public class ProjectManager implements IProjectManager {
 
     private XStream projectStream;
 
+    @SuppressWarnings("unused")
     private ICaustkController controller;
 
     private Project project;
+
+    private ProjectPreferences projectPreferences;
+
+    public ProjectPreferences getProjectPreferences() {
+        return projectPreferences;
+    }
 
     /**
      * The root application directory, all {@link Project}s are stored in the
@@ -36,6 +40,10 @@ public class ProjectManager implements IProjectManager {
     private File applicationRoot;
 
     private File projectDirectory;
+
+    private File preferencesFile;
+
+    private boolean formatJson = false;
 
     @Override
     public File getApplicationRoot() {
@@ -57,22 +65,42 @@ public class ProjectManager implements IProjectManager {
 
         projectStream = new XStream(new JettisonMappedXmlDriver());
         projectStream.setMode(XStream.NO_REFERENCES);
+
+        preferencesFile = new File(applicationRoot, ".settings");
+        if (!preferencesFile.exists()) {
+            try {
+                preferencesFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            projectPreferences = new ProjectPreferences();
+        } else {
+            projectPreferences = (ProjectPreferences)projectStream.fromXML(preferencesFile);
+        }
+
     }
 
     @Override
     public boolean isProject(File file) {
-        return new File(projectDirectory, file.getPath()).exists();
+        if (file.isAbsolute())
+            return file.exists();
+        return toProjectFile(file).exists();
     }
 
     @Override
     public void save() throws IOException {
-        String data = projectStream.toXML(project);
+        projectPreferences.put(ProjectPreferences.LAST_PROJECT, project.getFile().getPath());
+
+        String data = JsonFormatter.toJson(projectStream, project, formatJson);
         FileUtils.writeStringToFile(project.getFile(), data);
+
+        data = JsonFormatter.toJson(projectStream, projectPreferences, formatJson);
+        FileUtils.writeStringToFile(preferencesFile, data);
     }
 
     @Override
     public Project load(File file) throws IOException {
-        file = new File(projectDirectory, file.getPath());
+        file = toProjectFile(file);
         if (!file.exists())
             throw new IOException("Project file does not exist");
 
@@ -111,4 +139,9 @@ public class ProjectManager implements IProjectManager {
         return info;
     }
 
+    private File toProjectFile(File file) {
+        if (file.isAbsolute())
+            return file;
+        return new File(projectDirectory, file.getPath());
+    }
 }
