@@ -96,5 +96,13 @@ public interface ICaustkController extends ICausticEngine {
     void start();
 
     void close();
+    
+    public class OnControllerSave {
+        
+    }
+    
+    public class OnApplicationClose {
+        
+    }
 
 }

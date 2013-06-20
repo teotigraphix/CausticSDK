@@ -11,6 +11,9 @@ public interface ILibraryManager {
 
     /**
      * Returns the appRoot/libraries directory.
+     * <p>
+     * If this directory does not exist, the directory will be created when the
+     * {@link LibraryManager} has been first instantiated.
      */
     File getLibrariesDirectory();
 
@@ -77,7 +80,8 @@ public interface ILibraryManager {
 
     /**
      * Mainly for testing, deletes all library directories.
-     * @throws IOException 
+     * 
+     * @throws IOException
      */
     void delete() throws IOException;
 

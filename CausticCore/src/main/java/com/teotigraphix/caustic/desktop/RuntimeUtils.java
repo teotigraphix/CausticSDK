@@ -45,6 +45,8 @@ public class RuntimeUtils {
      */
     public static final File getExternalStorageDirectory() {
         //File file = Environment.getExternalStorageDirectory();
+        if (STORAGE_ROOT == null)
+            throw new RuntimeException("STORAGE_ROOT is null, set in RuntimeUtils");
         File file = new File(STORAGE_ROOT);
         return file;
     }

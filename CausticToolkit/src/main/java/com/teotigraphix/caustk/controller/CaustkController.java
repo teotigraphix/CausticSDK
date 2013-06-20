@@ -268,6 +268,7 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void close() {
+        getDispatcher().trigger(new OnControllerSave());
         soundGenerator.close();
     }
 
