@@ -3,7 +3,9 @@ package com.teotigraphix.caustk.library;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -20,6 +22,7 @@ import com.teotigraphix.caustic.osc.RackMessage;
 import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.vo.EffectRackInfo;
+import com.teotigraphix.caustk.library.vo.MetadataInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
 import com.thoughtworks.xstream.XStream;
@@ -65,6 +68,42 @@ public class LibraryManager implements ILibraryManager {
 
         xStream = new XStream(new JettisonMappedXmlDriver());
         xStream.setMode(XStream.NO_REFERENCES);
+    }
+
+    public List<LibraryPatch> findPatchesByTag(String tag) {
+        List<LibraryPatch> result = new ArrayList<LibraryPatch>();
+        for (Library library : registry.getLibraries()) {
+            for (LibraryPatch item : library.getPatches()) {
+                if (item.hasTag(tag)) {
+                    result.add(item);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<LibraryPhrase> findPhrasesByTag(String tag) {
+        List<LibraryPhrase> result = new ArrayList<LibraryPhrase>();
+        for (Library library : registry.getLibraries()) {
+            for (LibraryPhrase item : library.getPhrases()) {
+                if (item.hasTag(tag)) {
+                    result.add(item);
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<LibraryScene> findScenesByTag(String tag) {
+        List<LibraryScene> result = new ArrayList<LibraryScene>();
+        for (Library library : registry.getLibraries()) {
+            for (LibraryScene item : library.getScenes()) {
+                if (item.hasTag(tag)) {
+                    result.add(item);
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -174,7 +213,10 @@ public class LibraryManager implements ILibraryManager {
             IMachine machine = rack.getMachine(i);
             if (machine != null) {
                 LibraryPatch patch = new LibraryPatch();
+                patch.setMachineType(machine.getType());
+                patch.setMetadataInfo(new MetadataInfo());
                 patch.setId(UUID.randomUUID());
+                TagUtils.addDefaultTags(machine, patch);
                 relocatePresetFile(machine, library, patch);
                 library.addPatch(patch);
             }
@@ -182,21 +224,25 @@ public class LibraryManager implements ILibraryManager {
     }
 
     private void loadLibraryScene(Library library, File causticFile, Rack rack) {
-        LibraryScene libraryScene = new LibraryScene();
+        String name = causticFile.getName().replace(".caustic", "");
+        LibraryScene scene = new LibraryScene();
+        scene.setMetadataInfo(new MetadataInfo());
 
         // 8ff156ff36376d2517cef39cdd43876a-PULSAR.caustic
         //String id = LibrarySerializerUtils.toMD5String(causticFile, causticFile.getName());
-        libraryScene.setId(UUID.randomUUID());
-        library.addScene(libraryScene);
+        scene.setId(UUID.randomUUID());
+        library.addScene(scene);
 
         RackInfo rackInfo = LibrarySerializerUtils.createRackInfo(rack);
-        libraryScene.setRackInfo(rackInfo);
+        scene.setRackInfo(rackInfo);
 
         MixerPanelInfo mixerPanelInfo = LibrarySerializerUtils.createMixerPanelInfo(rack);
-        libraryScene.setMixerInfo(mixerPanelInfo);
+        scene.setMixerInfo(mixerPanelInfo);
 
         EffectRackInfo effectRackInfo = LibrarySerializerUtils.createEffectRackInfo(rack);
-        libraryScene.setEffectRackInfo(effectRackInfo);
+        scene.setEffectRackInfo(effectRackInfo);
+
+        TagUtils.addDefaultTags(name, rack, scene);
     }
 
     private void loadLibraryPhrases(Library library, Rack rack) {
@@ -231,12 +277,14 @@ public class LibraryManager implements ILibraryManager {
                             controller, i);
 
                     LibraryPhrase phrase = new LibraryPhrase();
+                    phrase.setMetadataInfo(new MetadataInfo());
                     phrase.setId(UUID.randomUUID());
                     phrase.setLength(length);
                     phrase.setTempo(tempo);
                     phrase.setMachineType(machine.getType());
                     phrase.setNoteData(noteData);
                     phrase.setResolution(calculateResolution(noteData));
+                    TagUtils.addDefaultTags(phrase);
                     library.addPhrase(phrase);
                 }
             }

@@ -1,3 +1,4 @@
+
 package com.teotigraphix.caustk.library;
 
 import com.teotigraphix.caustic.machine.MachineType;
@@ -6,17 +7,17 @@ import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
 public class LibraryPhrase extends LibraryItem {
 
     private Resolution resolution;
-    
+
     private int length;
-    
+
     private String swing;
-    
+
     private String noteData;
-    
+
     private MachineType machineType;
-    
+
     private float tempo;
-    
+
     public final Resolution getResolution() {
         return resolution;
     }
