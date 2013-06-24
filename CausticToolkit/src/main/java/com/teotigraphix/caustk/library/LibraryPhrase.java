@@ -69,4 +69,8 @@ public class LibraryPhrase extends LibraryItem {
         this.tempo = tempo;
     }
 
+    @Override
+    public String toString() {
+        return getMetadataInfo().getName() + ":" + getMetadataInfo().getTags().toString();
+    }
 }

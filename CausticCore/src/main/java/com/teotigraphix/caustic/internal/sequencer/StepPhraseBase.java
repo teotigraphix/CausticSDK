@@ -100,22 +100,22 @@ public abstract class StepPhraseBase implements IStepPhrase {
     // stringData
     //----------------------------------
 
-    private String mStringData;
+    private String noteData;
 
     @Override
-    public final String getStringData() {
-        return mStringData;
+    public final String getNoteData() {
+        return noteData;
     }
 
     @Override
-    public final void setStringData(String value) {
-        mStringData = value;
-        if (mStringData == null || mStringData.equals(""))
+    public final void setNoteData(String value) {
+        noteData = value;
+        if (noteData == null || noteData.equals(""))
             return;
-        initializeData(mStringData);
+        initializeData(noteData);
     }
 
-    private void initializeData(String data) {
+    protected void initializeData(String data) {
         // push the notes into the machines sequencer
         String[] notes = data.split("\\|");
         for (String noteData : notes) {

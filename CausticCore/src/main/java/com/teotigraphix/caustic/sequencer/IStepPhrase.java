@@ -129,9 +129,9 @@ public interface IStepPhrase {
     // stringData
     //----------------------------------
 
-    String getStringData();
+    String getNoteData();
 
-    void setStringData(String data);
+    void setNoteData(String data);
 
     //----------------------------------
     // resolution

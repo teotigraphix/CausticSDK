@@ -58,7 +58,7 @@ public class PatternSequencerUtils {
         }
 
         if (data != null)
-            phrase.setStringData(data);
+            phrase.setNoteData(data);
 
         return phrase;
     }

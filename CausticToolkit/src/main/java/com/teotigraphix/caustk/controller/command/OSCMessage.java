@@ -163,7 +163,7 @@ public class OSCMessage {
     //  parameters
     //----------------------------------
 
-    List<String> mParameters;
+    List<String> parameters;
 
     /**
      * The parameter list if any.
@@ -174,7 +174,23 @@ public class OSCMessage {
         //			StrTokenizer st = new StrTokenizer(data.toString(), ' ', '"');
         //			mParameters = st.getTokenList();
         //		}
-        return mParameters;
+        return parameters;
+    }
+
+    /**
+     * Returns a String parameter if exists, <code>null</code> if the index is
+     * out of bounds.
+     * 
+     * @param index The parameter index.
+     */
+    public String getParameter(int index) {
+        if (!hasParameter(index))
+            return null;
+        return parameters.get(index);
+    }
+
+    public boolean hasParameter(int index) {
+        return index < parameters.size();
     }
 
     //--------------------------------------------------------------------------
@@ -210,11 +226,11 @@ public class OSCMessage {
      * @return
      */
     public final OSCMessage add(Object value) {
-        if (mParameters == null) {
-            mParameters = new ArrayList<String>();
+        if (parameters == null) {
+            parameters = new ArrayList<String>();
             data = null;
         }
-        mParameters.add(value.toString());
+        parameters.add(value.toString());
         if (data != null) {
             StringBuffer sb = new StringBuffer();
             sb.append(data);
@@ -294,7 +310,7 @@ public class OSCMessage {
 
         OSCMessage result = OSCMessage.create(device, control, data);
         result.mController = base;
-        result.mParameters = datas;
+        result.parameters = datas;
 
         return result;
     }

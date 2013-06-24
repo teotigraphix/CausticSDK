@@ -22,7 +22,6 @@ public class ProjectManager implements IProjectManager {
 
     private XStream projectStream;
 
-    @SuppressWarnings("unused")
     private ICaustkController controller;
 
     private Project project;
@@ -93,6 +92,9 @@ public class ProjectManager implements IProjectManager {
 
         String data = JsonFormatter.toJson(projectStream, project, formatJson);
         FileUtils.writeStringToFile(project.getFile(), data);
+        String debug = project.getFile().getAbsolutePath().replace(".clp", "_d.clp");
+        FileUtils.writeStringToFile(new File(debug),
+                JsonFormatter.toJson(projectStream, project, true));
 
         data = JsonFormatter.toJson(projectStream, projectPreferences, formatJson);
         FileUtils.writeStringToFile(preferencesFile, data);
@@ -109,6 +111,9 @@ public class ProjectManager implements IProjectManager {
         projectStream.alias("project", Project.class);
 
         project = (Project)projectStream.fromXML(file);
+
+        controller.getDispatcher().trigger(new IProjectManager.OnProjectLoad(project));
+
         return project;
     }
 
@@ -117,6 +122,7 @@ public class ProjectManager implements IProjectManager {
         project = new Project();
         project.setFile(new File(projectDirectory, projectFile.getPath()));
         project.setInfo(createInfo());
+        controller.getDispatcher().trigger(new IProjectManager.OnProjectCreate(project));
         return project;
     }
 

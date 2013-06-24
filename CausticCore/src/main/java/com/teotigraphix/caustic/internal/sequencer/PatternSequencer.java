@@ -418,7 +418,7 @@ public class PatternSequencer extends DeviceComponent implements IPatternSequenc
                     getDeviceIndex());
             phrase.setLength(length);
             // et the data AFTER the legnth is correct
-            phrase.setStringData(data);
+            phrase.setNoteData(data);
         }
 
         setBankPattern(oldBank, oldPattern);

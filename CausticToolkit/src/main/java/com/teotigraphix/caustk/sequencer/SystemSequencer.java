@@ -232,9 +232,15 @@ public class SystemSequencer implements CausticEventListener {
         }
     }
 
+    /**
+     * @see SystemSequencer#getDispatcher()
+     */
     public static class OnSystemSequencerStop {
     }
 
+    /**
+     * @see SystemSequencer#getDispatcher()
+     */
     public static class OnSystemSequencerPlay {
     }
 
@@ -368,7 +374,11 @@ public class SystemSequencer implements CausticEventListener {
     public static class SystemSequencerPlayCommand extends CommandBase {
         @Override
         public void execute() {
-            getContext().api(SequencerAPI.class).play();
+            String smode = CommandUtils.getString(getContext(), 0);
+            Mode mode = Mode.PATTERN;
+            if (smode != null)
+                mode = Mode.valueOf(smode);
+            getContext().api(SequencerAPI.class).play(mode);
         }
     }
 

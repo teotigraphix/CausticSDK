@@ -31,7 +31,11 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
 public class LibraryManager implements ILibraryManager {
-
+    
+    //--------------------------------------------------------------------------
+    // Variables
+    //--------------------------------------------------------------------------
+    
     private XStream xStream;
 
     private LibraryRegistry registry;
@@ -40,11 +44,41 @@ public class LibraryManager implements ILibraryManager {
 
     private File librariesDirectory;
 
+    private Library selectedLibrary;
+    
+    //--------------------------------------------------------------------------
+    // API
+    //--------------------------------------------------------------------------
+    
+    //----------------------------------
+    // selectedLibrary
+    //----------------------------------
+    
+    public Library getSelectedLibrary() {
+        return selectedLibrary;
+    }
+
+    public void setSelectedLibrary(Library value) {
+        if (value == selectedLibrary)
+            return;
+
+        selectedLibrary = value;
+        controller.getDispatcher().trigger(new OnLibraryManagerSelectedLibraryChange(selectedLibrary));
+    }
+    
+    //----------------------------------
+    // librariesDirectory
+    //----------------------------------
+    
     @Override
     public File getLibrariesDirectory() {
         return librariesDirectory;
     }
-
+    
+    //----------------------------------
+    // libraries
+    //----------------------------------
+    
     @Override
     public int getLibraryCount() {
         return registry.getLibraries().size();
@@ -387,6 +421,9 @@ public class LibraryManager implements ILibraryManager {
 
         Library library = (Library)xStream.fromXML(file);
         registry.addLibrary(library);
+
+        controller.getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));
+
         return library;
     }
 

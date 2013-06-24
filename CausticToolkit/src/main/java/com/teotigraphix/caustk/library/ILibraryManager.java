@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.teotigraphix.caustic.core.CausticException;
+import com.teotigraphix.caustk.controller.ICaustkController;
 
 public interface ILibraryManager {
 
@@ -16,6 +17,14 @@ public interface ILibraryManager {
      * {@link LibraryManager} has been first instantiated.
      */
     File getLibrariesDirectory();
+
+    Library getSelectedLibrary();
+
+    /**
+     * @param value
+     * @see OnLibraryManagerSelectedLibraryChange
+     */
+    void setSelectedLibrary(Library value);
 
     int getLibraryCount();
 
@@ -84,5 +93,43 @@ public interface ILibraryManager {
      * @throws IOException
      */
     void delete() throws IOException;
+
+    /**
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class LibraryEvent {
+
+        private Library library;
+
+        public Library getLibrary() {
+            return library;
+        }
+
+        public LibraryEvent(Library library) {
+            this.library = library;
+        }
+    }
+
+    /**
+     * Dispatched when an individual {@link Library} has been loaded into the
+     * manager.
+     * 
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class OnLibraryManagerLoadComplete extends LibraryEvent {
+        public OnLibraryManagerLoadComplete(Library library) {
+            super(library);
+        }
+    }
+
+    /**
+     * @see ILibraryManager#setSelectedLibrary(Library)
+     * @see ILibraryManager#getSelectedLibrary()
+     */
+    public static class OnLibraryManagerSelectedLibraryChange extends LibraryEvent {
+        public OnLibraryManagerSelectedLibraryChange(Library library) {
+            super(library);
+        }
+    }
 
 }

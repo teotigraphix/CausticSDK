@@ -121,25 +121,25 @@ public class TriggerMap implements IStepPhrase {
     }
 
     //----------------------------------
-    // stringData
+    // noteData
     //----------------------------------
 
-    private String mStringData;
+    private String noteData;
 
     @Override
-    public final String getStringData() {
-        return mStringData;
+    public final String getNoteData() {
+        return noteData;
     }
 
     @Override
-    public final void setStringData(String value) {
-        mStringData = value;
-        if (mStringData == null)
+    public final void setNoteData(String value) {
+        noteData = value;
+        if (noteData == null)
             return;
-        initializeData(mStringData);
+        applyNoteData(noteData);
     }
 
-    private void initializeData(String data) {
+    private void applyNoteData(String data) {
         // push the notes into the machines sequencer
         String[] notes = data.split("\\|");
         for (String noteData : notes) {
