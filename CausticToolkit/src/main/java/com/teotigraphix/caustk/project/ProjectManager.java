@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.utls.JsonFormatter;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
 /**
@@ -74,9 +75,13 @@ public class ProjectManager implements IProjectManager {
             }
             projectPreferences = new ProjectPreferences();
         } else {
-            projectPreferences = (ProjectPreferences)projectStream.fromXML(preferencesFile);
+            if (preferencesFile.exists()) {
+                try {
+                    projectPreferences = (ProjectPreferences)projectStream.fromXML(preferencesFile);
+                } catch (XStreamException e) {
+                }
+            }
         }
-
     }
 
     @Override
