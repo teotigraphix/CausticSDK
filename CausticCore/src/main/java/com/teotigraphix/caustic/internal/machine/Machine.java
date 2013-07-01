@@ -23,10 +23,12 @@ import com.teotigraphix.caustic.core.ICausticEngine;
 import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.device.IDeviceFactory;
 import com.teotigraphix.caustic.internal.device.Device;
+import com.teotigraphix.caustic.internal.sequencer.PatternSequencerFacade;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustic.osc.MachineMessage;
 import com.teotigraphix.caustic.sequencer.IPatternSequencer;
+import com.teotigraphix.caustic.sequencer.IPatternSequencer2;
 
 /**
  * The default implementation of the {@link IMachine} API.
@@ -74,6 +76,21 @@ public abstract class Machine extends Device implements IMachine {
 
     public final void setSequencer(IPatternSequencer value) {
         mSequencer = value;
+    }
+
+    //----------------------------------
+    // patternSequencer
+    //----------------------------------
+
+    private IPatternSequencer2 patternSequencer;
+
+    @Override
+    public final IPatternSequencer2 getPatternSequencer() {
+        return patternSequencer;
+    }
+
+    public final void setPatternSequencer(IPatternSequencer2 value) {
+        patternSequencer = value;
     }
 
     //--------------------------------------------------------------------------
@@ -211,5 +228,6 @@ public abstract class Machine extends Device implements IMachine {
      */
     protected void createComponents() {
         setSequencer(mFactory.createPatternSequencer(this));
+        setPatternSequencer(new PatternSequencerFacade(this));
     }
 }

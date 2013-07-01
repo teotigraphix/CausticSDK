@@ -24,6 +24,7 @@ import com.teotigraphix.caustic.core.IRestore;
 import com.teotigraphix.caustic.device.IDevice;
 import com.teotigraphix.caustic.device.IDeviceFactory;
 import com.teotigraphix.caustic.sequencer.IPatternSequencer;
+import com.teotigraphix.caustic.sequencer.IPatternSequencer2;
 
 /**
  * The IMachine interface is the base interface for all Caustic machines.
@@ -87,6 +88,9 @@ public interface IMachine extends IDevice, IRestore, IPersist {
      * The pattern sequencer used to add note data to the machine.
      */
     IPatternSequencer getSequencer();
+    
+    IPatternSequencer2 getPatternSequencer();
+
 
     //----------------------------------
     // presetName
