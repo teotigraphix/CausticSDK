@@ -125,6 +125,7 @@ public class PatternFSM {
             @Override
             public void call(State<Context> arg0, final Context context) throws Exception {
                 context.isUnQueued = true;
+                context.isQued = false;
                 dispatcher.trigger(new OnStateChange(PatternFSM.this, PatternState.UNQUEUED));
             }
         });
@@ -132,16 +133,31 @@ public class PatternFSM {
             @Override
             public void call(State<Context> arg0, final Context context) throws Exception {
                 onIdle.trigger(context);
+                context.measure = 1;
                 dispatcher.trigger(new OnStateChange(PatternFSM.this, PatternState.STOPPED));
             }
         });
     }
 
     public void nextMeasure() {
-        if (context.isQueued())
-            onPlay.trigger(context);
-        else if (context.isUnQueued())
-            onStop.trigger(context);
+        if (mode == PatternMode.LOOP) {
+            if (context.isQueued()) {
+                onPlay.trigger(context);
+            } else if (context.isUnQueued()) {
+                onStop.trigger(context);
+            } else if (context.isPlaying()) {
+                context.measure++;
+            }    
+
+        } else {
+            // one shot only can play when queued, if playing is stopped
+            if (context.isQueued())
+                onPlay.trigger(context);
+            else if (context.isPlaying()) {
+                onUnQueued.trigger(context);
+                onStop.trigger(context);
+            }
+        }
     }
 
     public void touch() {
@@ -158,14 +174,31 @@ public class PatternFSM {
                 onUnQueued.trigger(context);
             else
                 onQueued.trigger(context);
-        } else if (mode == PatternMode.ONESHOT) {
 
+        } else if (mode == PatternMode.ONESHOT) {
+            // if the onshot is playing, nothing happens since we are
+            // using mesaures to switch on
+            if (context.isPlaying()) {
+                return;
+            }
+
+            if (context.isQueued()) {
+                onUnQueued.trigger(context);
+                onStop.trigger(context);
+            } else {
+                onQueued.trigger(context);
+            }
         }
 
     }
 
     public static class Context extends StatefulContext {
+
         private static final long serialVersionUID = 1L;
+
+        int length = 1;
+
+        int measure = 0;
 
         boolean isIdle = true;
 
@@ -265,7 +298,7 @@ public class PatternFSM {
 
     @Override
     public String toString() {
-        return "PatternFSM[" + index + "]";
+        return "PatternFSM[" + bank + ":" + index + "]";
     }
 
 }

@@ -49,12 +49,44 @@ public class PatternQueue {
     }
 
     protected void onStateChanged(PatternFSM pattern, PatternState state) {
-        System.out.println("StateChange: " + pattern.toString() + " " + state);
+        //System.out.println("StateChange: " + pattern.toString() + " " + state);
     }
 
-    public void addPattern(int bank, int index) {
+    void addPattern(int bank, int index) {
         //int len = patterns.size();
         PatternFSM pattern = new PatternFSM(getDispatcher(), bank, index);
-        patterns.add(pattern);        
+        patterns.add(pattern);
+    }
+
+    public void initialize(int numBanks, int numPatterns) {
+        for (int i = 0; i < numBanks; i++) {
+            for (int j = 0; j < numPatterns; j++) {
+                addPattern(i, j);
+            }
+        }
+    }
+
+    public int getNumPatterns() {
+        return patterns.size();
+    }
+
+    public PatternFSM touch(int bank, int index) {
+        PatternFSM pattern = getPattern(bank, index);
+        pattern.touch();
+        return pattern;
+    }
+
+    public void nextMeasure() {
+        for (PatternFSM pattern : patterns) {
+            pattern.nextMeasure();
+        }
+    }
+
+    private PatternFSM getPattern(int bank, int index) {
+        for (PatternFSM pattern : patterns) {
+            if (pattern.getBank() == bank && pattern.getIndex() == index)
+                return pattern;
+        }
+        return null;
     }
 }
