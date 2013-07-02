@@ -22,10 +22,12 @@ package com.teotigraphix.caustk.sound;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustic.core.IMemento;
+import com.teotigraphix.caustic.effect.IEffectsRack;
 import com.teotigraphix.caustic.internal.effect.EffectsRack;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.mixer.IMixerDelay;
+import com.teotigraphix.caustic.mixer.IMixerPanel;
 import com.teotigraphix.caustic.mixer.IMixerReverb;
 import com.teotigraphix.caustic.mixer.MixerEffectType;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -55,18 +57,32 @@ public class SoundMixer implements ICaustkSoundMixer {
 
     private EffectsRack effectsRack;
 
+    public void pasteMasterChannel(IMemento memento) {
+        mixerPanel.pasteMasterChannel(memento);
+    }
+
     public void pasteMixerChannel(IMachine machine, IMemento memento) {
         mixerPanel.pasteChannel(machine, memento);
     }
-    
+
     public void pasteEffectChannel(IMachine machine, IMemento memento) {
         effectsRack.pasteChannel(machine, memento);
     }
-    
-    public void copyChannel(IMachine machine, IMemento memento) {
+
+    public void copyEffectChannel(IMachine machine, IMemento memento) {
         effectsRack.copyChannel(machine, memento);
     }
-    
+
+    @Override
+    public IMixerPanel getMixerPanel() {
+        return mixerPanel;
+    }
+
+    @Override
+    public IEffectsRack getEffectsRack() {
+        return effectsRack;
+    }
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------

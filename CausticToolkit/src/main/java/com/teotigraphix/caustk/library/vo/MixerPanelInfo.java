@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.library.vo;
 
+import com.teotigraphix.caustic.core.IMemento;
 
 /**
  * The {@link MixerPanelInfo} holds the state of a mixer scene that was saved
@@ -9,6 +10,10 @@ package com.teotigraphix.caustk.library.vo;
 public class MixerPanelInfo extends MementoInfo {
 
     public MixerPanelInfo() {
+    }
+
+    public IMemento getMasterMemento() {
+        return getMemento().getChild("master");
     }
 
 }

@@ -14,8 +14,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustk.tone.Tone;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import com.teotigraphix.caustk.utls.JsonUtils;
 
 /**
  * The {@link Library} is the main serialized json file that gets saved along
@@ -24,7 +23,6 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
  * {@link Library} is a model with add/remove and access to its sub items.
  */
 public class Library {
-    private transient XStream xStream;
 
     protected File getPresetsDirectory() {
         return new File(directory, "presets");
@@ -124,12 +122,10 @@ public class Library {
     }
 
     public Library() {
-        xStream = new XStream(new JettisonMappedXmlDriver());
-        xStream.setMode(XStream.NO_REFERENCES);
     }
 
     public void _save() throws IOException {
-        String data = xStream.toXML(this);
+        String data = JsonUtils.toGson(this, true);
         File file = new File(directory, "library.ctk");
         FileUtils.writeStringToFile(file, data);
     }

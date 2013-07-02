@@ -610,4 +610,8 @@ public class MixerPanel extends Device implements IMixerPanel {
         ((MixerPanelState)mPersistable).pasteChannel(machine, memento);
     }
 
+    public void pasteMasterChannel(IMemento memento) {
+        mMasterData.paste(memento);        
+    }
+
 }

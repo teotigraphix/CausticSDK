@@ -6,6 +6,7 @@ import com.teotigraphix.caustic.core.Dispatcher;
 import com.teotigraphix.caustic.core.IDispatcher;
 import com.teotigraphix.caustic.internal.output.OutputPanel;
 import com.teotigraphix.caustic.internal.sequencer.Sequencer;
+import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.output.IOutputPanel;
 import com.teotigraphix.caustic.output.IOutputPanel.Mode;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -178,6 +179,14 @@ public class SystemSequencer implements CausticEventListener {
         getDispatcher().trigger(new OnSystemSequencerStop());
     }
 
+    public void addPattern(IMachine machine, int bank, int pattern, int start, int end) {
+        sequencer.addPattern(machine, bank, pattern, start, end);
+    }
+
+    public void removePattern(IMachine machine, int start, int end) {
+        sequencer.removePattern(machine, start, end);
+    }
+
     //--------------------------------------------------------------------------
     // Protected Method API
     //--------------------------------------------------------------------------
@@ -190,6 +199,7 @@ public class SystemSequencer implements CausticEventListener {
     private void createSequencer() {
         sequencer = (Sequencer)controller.getFactory().createSequencer();
         sequencer.setEngine(controller);
+
     }
 
     //--------------------------------------------------------------------------

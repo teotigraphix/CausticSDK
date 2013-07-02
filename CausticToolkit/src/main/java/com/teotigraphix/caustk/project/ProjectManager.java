@@ -8,10 +8,7 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.utls.JsonFormatter;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.XStreamException;
-import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import com.teotigraphix.caustk.utls.JsonUtils;
 
 /**
  * The project manager manages the single project loaded for an application.
@@ -20,8 +17,6 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
  * project related files are stored within this directory.
  */
 public class ProjectManager implements IProjectManager {
-
-    private XStream projectStream;
 
     private ICaustkController controller;
 
@@ -63,9 +58,6 @@ public class ProjectManager implements IProjectManager {
         this.applicationRoot = applicationRoot;
         projectDirectory = new File(applicationRoot, "projects");
 
-        projectStream = new XStream(new JettisonMappedXmlDriver());
-        projectStream.setMode(XStream.NO_REFERENCES);
-
         preferencesFile = new File(applicationRoot, ".settings");
         if (!preferencesFile.exists()) {
             try {
@@ -76,10 +68,7 @@ public class ProjectManager implements IProjectManager {
             projectPreferences = new ProjectPreferences();
         } else {
             if (preferencesFile.exists()) {
-                try {
-                    projectPreferences = (ProjectPreferences)projectStream.fromXML(preferencesFile);
-                } catch (XStreamException e) {
-                }
+                projectPreferences = JsonUtils.fromGson(preferencesFile, ProjectPreferences.class);
             }
         }
     }
@@ -95,13 +84,12 @@ public class ProjectManager implements IProjectManager {
     public void save() throws IOException {
         projectPreferences.put(ProjectPreferences.LAST_PROJECT, project.getFile().getPath());
 
-        String data = JsonFormatter.toJson(projectStream, project, formatJson);
+        String data = JsonUtils.toGson(project, formatJson);
         FileUtils.writeStringToFile(project.getFile(), data);
         String debug = project.getFile().getAbsolutePath().replace(".clp", "_d.clp");
-        FileUtils.writeStringToFile(new File(debug),
-                JsonFormatter.toJson(projectStream, project, true));
+        FileUtils.writeStringToFile(new File(debug), JsonUtils.toGson(project, true));
 
-        data = JsonFormatter.toJson(projectStream, projectPreferences, formatJson);
+        data = JsonUtils.toGson(projectPreferences, true);
         FileUtils.writeStringToFile(preferencesFile, data);
     }
 
@@ -111,11 +99,7 @@ public class ProjectManager implements IProjectManager {
         if (!file.exists())
             throw new IOException("Project file does not exist");
 
-        projectStream = new XStream(new JettisonMappedXmlDriver());
-        projectStream.setMode(XStream.NO_REFERENCES);
-        projectStream.alias("project", Project.class);
-
-        project = (Project)projectStream.fromXML(file);
+        project = JsonUtils.fromGson(file, Project.class);
 
         controller.getDispatcher().trigger(new IProjectManager.OnProjectLoad(project));
 

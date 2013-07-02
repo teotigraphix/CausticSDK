@@ -74,13 +74,14 @@ public class EffectData implements IPersist {
 
     @Override
     public void paste(IMemento memento) {
+        int machineIndex = memento.getInteger(EffectConstants.ATT_INDEX);
+        int index = 0; // child.getInteger(EffectConstants.ATT_INDEX)
         for (IMemento child : memento.getChildren(EffectConstants.TAG_EFFECT)) {
-            IEffect effect = ((EffectsRack)effectsRack).put(
-                    child.getInteger(EffectConstants.ATT_INDEX),
-                    memento.getInteger(EffectConstants.ATT_INDEX),
+            IEffect effect = ((EffectsRack)effectsRack).put(index, machineIndex,
                     EffectType.toType(child.getInteger(EffectConstants.ATT_TYPE)));
             effect.paste(child);
             // (mschmalle)  implement loadChannel()
+            index++;
         }
     }
 }

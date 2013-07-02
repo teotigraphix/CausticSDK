@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.library.vo.MetadataInfo;
 
 public interface ILibraryManager {
 
@@ -131,5 +132,7 @@ public interface ILibraryManager {
             super(library);
         }
     }
+
+    LibraryScene createLibraryScene(MetadataInfo info);
 
 }

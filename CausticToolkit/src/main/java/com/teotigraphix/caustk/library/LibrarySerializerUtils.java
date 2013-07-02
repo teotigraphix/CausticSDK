@@ -10,8 +10,10 @@ import java.util.HashMap;
 
 import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.core.XMLMemento;
+import com.teotigraphix.caustic.effect.IEffectsRack;
 import com.teotigraphix.caustic.internal.rack.Rack;
 import com.teotigraphix.caustic.machine.IMachine;
+import com.teotigraphix.caustic.mixer.IMixerPanel;
 import com.teotigraphix.caustk.library.vo.EffectRackInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
@@ -38,20 +40,28 @@ public class LibrarySerializerUtils {
         return info;
     }
 
-    public static MixerPanelInfo createMixerPanelInfo(Rack rack) {
+    public static MixerPanelInfo createMixerPanelInfo(IMixerPanel mixerPanel) {
         MixerPanelInfo info = new MixerPanelInfo();
         XMLMemento memento = XMLMemento.createWriteRoot("mixer");
-        rack.getMixerPanel().copy(memento);
+        mixerPanel.copy(memento);
+        info.setData(memento.toString());
+        return info;
+    }
+
+    public static MixerPanelInfo createMixerPanelInfo(Rack rack) {
+        return createMixerPanelInfo(rack.getMixerPanel());
+    }
+
+    public static EffectRackInfo createEffectRackInfo(IEffectsRack effectsRack) {
+        EffectRackInfo info = new EffectRackInfo();
+        XMLMemento memento = XMLMemento.createWriteRoot("effects");
+        effectsRack.copy(memento);
         info.setData(memento.toString());
         return info;
     }
 
     public static EffectRackInfo createEffectRackInfo(Rack rack) {
-        EffectRackInfo info = new EffectRackInfo();
-        XMLMemento memento = XMLMemento.createWriteRoot("effects");
-        rack.getEffectsRack().copy(memento);
-        info.setData(memento.toString());
-        return info;
+        return createEffectRackInfo(rack.getEffectsRack());
     }
 
     public static String md5(File file) throws NoSuchAlgorithmException, IOException {

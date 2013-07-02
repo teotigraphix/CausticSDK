@@ -27,16 +27,14 @@ import com.teotigraphix.caustk.library.vo.EffectRackInfo;
 import com.teotigraphix.caustk.library.vo.MetadataInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.utls.JsonUtils;
 
 public class LibraryManager implements ILibraryManager {
-    
+
     //--------------------------------------------------------------------------
     // Variables
     //--------------------------------------------------------------------------
-    
-    private XStream xStream;
 
     private LibraryRegistry registry;
 
@@ -45,15 +43,15 @@ public class LibraryManager implements ILibraryManager {
     private File librariesDirectory;
 
     private Library selectedLibrary;
-    
+
     //--------------------------------------------------------------------------
     // API
     //--------------------------------------------------------------------------
-    
+
     //----------------------------------
     // selectedLibrary
     //----------------------------------
-    
+
     public Library getSelectedLibrary() {
         return selectedLibrary;
     }
@@ -63,22 +61,23 @@ public class LibraryManager implements ILibraryManager {
             return;
 
         selectedLibrary = value;
-        controller.getDispatcher().trigger(new OnLibraryManagerSelectedLibraryChange(selectedLibrary));
+        controller.getDispatcher().trigger(
+                new OnLibraryManagerSelectedLibraryChange(selectedLibrary));
     }
-    
+
     //----------------------------------
     // librariesDirectory
     //----------------------------------
-    
+
     @Override
     public File getLibrariesDirectory() {
         return librariesDirectory;
     }
-    
+
     //----------------------------------
     // libraries
     //----------------------------------
-    
+
     @Override
     public int getLibraryCount() {
         return registry.getLibraries().size();
@@ -101,9 +100,6 @@ public class LibraryManager implements ILibraryManager {
             librariesDirectory.mkdirs();
 
         registry = new LibraryRegistry(librariesDirectory);
-
-        xStream = new XStream(new JettisonMappedXmlDriver());
-        xStream.setMode(XStream.NO_REFERENCES);
     }
 
     public List<LibraryPatch> findPatchesByTag(String tag) {
@@ -211,6 +207,7 @@ public class LibraryManager implements ILibraryManager {
             rack.loadSong(causticFile.getAbsolutePath());
         } catch (CausticException e) {
             e.printStackTrace();
+            throw new IOException(e);
         }
 
         // restore the rack
@@ -259,24 +256,50 @@ public class LibraryManager implements ILibraryManager {
     //        }
     //    }
 
+    public LibraryScene createLibraryScene(MetadataInfo info) {
+        LibraryScene scene = new LibraryScene();
+        scene.setMetadataInfo(info);
+        scene.setId(null);
+
+        //--------------------------------------
+        RackInfo rackInfo = new RackInfo();
+        XMLMemento memento = XMLMemento.createWriteRoot("rack");
+        for (int i = 0; i < 6; i++) {
+            Tone tone = controller.getSoundSource().getTone(i);
+            IMachine machine = tone.getMachine();
+            if (machine != null) {
+                IMemento child = memento.createChild("machine");
+                child.putInteger("index", i);
+                child.putInteger("active", machine != null ? 1 : 0);
+                child.putString("id", machine.getId());
+                child.putString("type", machine.getType().getValue());
+            }
+        }
+
+        rackInfo.setData(memento.toString());
+
+        scene.setRackInfo(rackInfo);
+
+        MixerPanelInfo mixerPanelInfo = LibrarySerializerUtils.createMixerPanelInfo(controller
+                .getSoundMixer().getMixerPanel());
+        scene.setMixerInfo(mixerPanelInfo);
+
+        EffectRackInfo effectRackInfo = LibrarySerializerUtils.createEffectRackInfo(controller
+                .getSoundMixer().getEffectsRack());
+        scene.setEffectRackInfo(effectRackInfo);
+
+        //TagUtils.addDefaultTags(name, rack, scene);
+
+        return scene;
+    }
+
     private void loadLibraryScene(Library library, File causticFile, Rack rack) throws IOException {
         String name = causticFile.getName().replace(".caustic", "");
         LibraryScene scene = new LibraryScene();
         scene.setMetadataInfo(new MetadataInfo());
 
-        // 8ff156ff36376d2517cef39cdd43876a-PULSAR.caustic
-        //String id = LibrarySerializerUtils.toMD5String(causticFile, causticFile.getName());
         scene.setId(UUID.randomUUID());
         library.addScene(scene);
-
-        //        HashMap<Integer, LibraryPatch> patches = new HashMap<Integer, LibraryPatch>();
-        //        // XXX HACK
-        //        for (int i = 0; i < 6; i++) {
-        //            LibraryPatch patch = getPatchAt(library, i);
-        //            patches.put(i, patch);
-        //        }
-
-        //        RackInfo rackInfo = LibrarySerializerUtils.createRackInfo(rack, patches);
 
         //--------------------------------------
         RackInfo rackInfo = new RackInfo();
@@ -406,7 +429,7 @@ public class LibraryManager implements ILibraryManager {
 
     @Override
     public void saveLibrary(Library library) throws IOException {
-        String data = xStream.toXML(library);
+        String data = JsonUtils.toGson(library, true);
         File file = new File(library.getDirectory(), "library.ctk");
         FileUtils.writeStringToFile(file, data);
     }
@@ -416,10 +439,7 @@ public class LibraryManager implements ILibraryManager {
         File directory = new File(librariesDirectory, name);
         File file = new File(directory, "library.ctk");
 
-        xStream = new XStream(new JettisonMappedXmlDriver());
-        xStream.setMode(XStream.NO_REFERENCES);
-
-        Library library = (Library)xStream.fromXML(file);
+        Library library = JsonUtils.fromGson(file, Library.class);
         registry.addLibrary(library);
 
         controller.getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));
