@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+import com.teotigraphix.caustk.controller.ISerialize;
 
 public class JsonUtils {
 
@@ -19,6 +20,8 @@ public class JsonUtils {
             builder.setPrettyPrinting();
         }
         Gson gson = builder.create();
+        if (serialized instanceof ISerialize)
+            ((ISerialize)serialized).sleep();
         return gson.toJson(serialized);
     }
 
@@ -35,6 +38,8 @@ public class JsonUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        if (result instanceof ISerialize)
+            ((ISerialize)result).wakeup();
         return result;
     }
 
@@ -49,6 +54,8 @@ public class JsonUtils {
         } catch (JsonIOException e) {
             e.printStackTrace();
         }
+        if (result instanceof ISerialize)
+            ((ISerialize)result).wakeup();
         return result;
     }
 

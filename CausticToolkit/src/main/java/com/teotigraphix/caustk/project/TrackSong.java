@@ -31,6 +31,7 @@ import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ISerialize;
 import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.caustk.library.vo.EffectRackInfo;
 import com.teotigraphix.caustk.library.vo.MetadataInfo;
@@ -48,7 +49,7 @@ import com.teotigraphix.caustk.tone.ToneDescriptor;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class TrackSong extends Song {
+public class TrackSong extends Song implements ISerialize {
 
     private transient ICaustkController controller;
 
@@ -112,7 +113,7 @@ public class TrackSong extends Song {
         List<RackInfoItem> items = rackInfo.getItems();
 
         // loop through the Track instances and get the info item for the index
-        for (Track track : trackMap.values()) {
+        for (Track track : tracks.values()) {
             int index = track.getIndex();
             RackInfoItem item = items.get(index);
 
@@ -165,10 +166,11 @@ public class TrackSong extends Song {
     }
 
     private void createTracks() {
-        trackMap.clear();
+        tracks.clear();
         for (int i = 0; i < numTracks; i++) {
-            Track track = new Track(i);
-            trackMap.put(i, track);
+            Track track = new Track();
+            track.setIndex(i);
+            tracks.put(i, track);
         }
     }
 
@@ -178,7 +180,7 @@ public class TrackSong extends Song {
      * Must be called after a {@link TrackSong} deserialization.
      */
     public void initializeTracks() {
-        for (Track track : trackMap.values()) {
+        for (Track track : tracks.values()) {
             track.setDispatcher(getDispatcher());
             getDispatcher().register(OnTrackPhraseAdd.class, onTrackPhraseHandler);
             getDispatcher().register(OnTrackPhraseRemove.class, onTrackPhraseRemoveHandler);
@@ -217,7 +219,7 @@ public class TrackSong extends Song {
     //  tracks
     //----------------------------------
 
-    private Map<Integer, Track> trackMap = new HashMap<Integer, Track>();
+    private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
     /*
      * The last pattern in the song in All tracks. This is used to easily
@@ -226,7 +228,7 @@ public class TrackSong extends Song {
     private TrackPhrase lastPatternInTracks;
 
     public Collection<Track> getTracks() {
-        return Collections.unmodifiableCollection(trackMap.values());
+        return Collections.unmodifiableCollection(tracks.values());
     }
 
     @Override
@@ -273,7 +275,7 @@ public class TrackSong extends Song {
      * @param index The tack index.
      */
     public Track getTrack(int index) {
-        return trackMap.get(index);
+        return tracks.get(index);
     }
 
     @Override
@@ -290,6 +292,32 @@ public class TrackSong extends Song {
      */
     public void initialize() {
         copyScene(scene);
+    }
+
+    /**
+     * Clears all the tracks {@link TrackPhrase}s.
+     * 
+     * @throws CausticException
+     */
+    public void clearTracks() throws CausticException {
+        for (Track track : tracks.values()) {
+            track.clearPhrases();
+        }
+    }
+
+    @Override
+    public void sleep() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void wakeup() {
+        initializeTracks();
+
+        for (Track track : tracks.values()) {
+            track.wakeup();
+        }
     }
 }
 
