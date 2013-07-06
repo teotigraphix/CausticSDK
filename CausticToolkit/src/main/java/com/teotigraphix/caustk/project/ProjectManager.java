@@ -104,14 +104,16 @@ public class ProjectManager implements IProjectManager {
         Project oldProject = project;
         project.close();
         project = null;
-        controller.getDispatcher().trigger(new OnProjectManagerExit(oldProject));
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.EXIT));
     }
 
     @Override
     public void save() throws IOException {
         sessionPreferences.put("lastProject", project.getFile().getPath());
 
-        controller.getDispatcher().trigger(new OnProjectManagerSave(project));
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
 
         String data = controller.getSerializeService().toString(project);
         FileUtils.writeStringToFile(project.getFile(), data);
@@ -121,7 +123,8 @@ public class ProjectManager implements IProjectManager {
 
         saveProjectPreferences();
 
-        controller.getDispatcher().trigger(new OnProjectManagerSaveComplete(project));
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE_COMPLETE));
     }
 
     private void saveProjectPreferences() throws IOException {
@@ -137,7 +140,8 @@ public class ProjectManager implements IProjectManager {
 
         project = controller.getSerializeService().fromFile(file, Project.class);
         project.open();
-        controller.getDispatcher().trigger(new OnProjectManagerLoad(project));
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
         return project;
     }
 
@@ -147,7 +151,8 @@ public class ProjectManager implements IProjectManager {
         project.setFile(new File(projectDirectory, projectFile.getPath()));
         project.setInfo(createInfo());
         project.open();
-        controller.getDispatcher().trigger(new OnProjectManagerCreate(project));
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
         return project;
     }
 

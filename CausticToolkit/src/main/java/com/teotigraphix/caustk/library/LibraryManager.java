@@ -30,9 +30,8 @@ import com.teotigraphix.caustk.library.vo.MetadataInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
 import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerExit;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerLoad;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerSave;
+import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
+import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class LibraryManager implements ILibraryManager {
@@ -108,27 +107,19 @@ public class LibraryManager implements ILibraryManager {
 
         registry = new LibraryRegistry(librariesDirectory);
 
-        controller.getDispatcher().register(OnProjectManagerLoad.class,
-                new EventObserver<OnProjectManagerLoad>() {
+        controller.getDispatcher().register(OnProjectManagerChange.class,
+                new EventObserver<OnProjectManagerChange>() {
                     @Override
-                    public void trigger(OnProjectManagerLoad object) {
-                        onProjectManagerLoadHandler();
-                    }
-                });
-
-        controller.getDispatcher().register(OnProjectManagerSave.class,
-                new EventObserver<OnProjectManagerSave>() {
-                    @Override
-                    public void trigger(OnProjectManagerSave object) {
-                        onProjectManagerSaveHandler();
-                    }
-                });
-
-        controller.getDispatcher().register(OnProjectManagerExit.class,
-                new EventObserver<OnProjectManagerExit>() {
-                    @Override
-                    public void trigger(OnProjectManagerExit object) {
-                        onProjectManagerExitHandler();
+                    public void trigger(OnProjectManagerChange object) {
+                        if (object.getKind() == ProjectManagerChangeKind.CREATE) {
+                            //onProjectManagerCreateHandler();
+                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
+                            onProjectManagerLoadHandler();
+                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE) {
+                            onProjectManagerSaveHandler();
+                        } else if (object.getKind() == ProjectManagerChangeKind.EXIT) {
+                            onProjectManagerExitHandler();
+                        }
                     }
                 });
     }

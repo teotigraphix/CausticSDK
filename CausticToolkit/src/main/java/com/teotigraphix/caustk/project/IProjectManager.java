@@ -55,7 +55,8 @@ public interface IProjectManager {
     Project load(File file) throws IOException;
 
     /**
-     * Saves a {@link Project} to disk using the project's file location.
+     * Saves the current {@link Project} to disk using the project's file
+     * location.
      * 
      * @throws IOException
      * @see OnProjectManagerSave
@@ -69,8 +70,8 @@ public interface IProjectManager {
      * The {@link #create(File)} or {@link #load(File)} method has to be called
      * again for the project to be active. Calling this method will remove the
      * current {@link Project} instance.
-     * @throws IOException 
      * 
+     * @throws IOException
      * @see OnProjectManagerExit
      */
     void exit() throws IOException;
@@ -99,71 +100,57 @@ public interface IProjectManager {
         }
     }
 
-    /**
-     * Dispatched when a project has been created and is getting registered with
-     * the system for the first time.
-     * 
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnProjectManagerCreate extends ProjectEvent {
-        public OnProjectManagerCreate(Project project) {
-            super(project);
-        }
+    public enum ProjectManagerChangeKind {
+        /**
+         * Dispatched when a project has been created and is getting registered
+         * with the system for the first time.
+         */
+        CREATE,
+
+        /**
+         * Dispatched when a project has been loaded and has been deserialzed.
+         */
+        LOAD,
+
+        /**
+         * No impl.
+         */
+        LOAD_COMPLETE,
+
+        /**
+         * Dispatched when the project manager is about to save state.
+         * <p>
+         * Clients can listen to this event and save their state as necessary.
+         */
+        SAVE,
+
+        /**
+         * Dispatched when the project manager has completely saved all state.
+         */
+        SAVE_COMPLETE,
+
+        /**
+         * Dispatched when the project manager has had its
+         * {@link IProjectManager#exit()} method called.
+         */
+        EXIT;
     }
 
     /**
-     * Dispatched when a project has been loaded and has been deserialzed.
+     * Dispatched when the project manager's state changes.
      * 
      * @see ICaustkController#getDispatcher()
      */
-    public static class OnProjectManagerLoad extends ProjectEvent {
-        public OnProjectManagerLoad(Project project) {
-            super(project);
-        }
-    }
+    public static class OnProjectManagerChange extends ProjectEvent {
+        private ProjectManagerChangeKind kind;
 
-    /**
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnProjectManagerLoadComplete extends ProjectEvent {
-        public OnProjectManagerLoadComplete(Project project) {
-            super(project);
+        public final ProjectManagerChangeKind getKind() {
+            return kind;
         }
-    }
 
-    /**
-     * Dispatched when the project manager is about to save state.
-     * <p>
-     * Clients can listen to this event and save their state as necessary.
-     * 
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnProjectManagerSave extends ProjectEvent {
-        public OnProjectManagerSave(Project project) {
+        public OnProjectManagerChange(Project project, ProjectManagerChangeKind kind) {
             super(project);
-        }
-    }
-
-    /**
-     * Dispatched when the project manager has completely saved all state.
-     * 
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnProjectManagerSaveComplete extends ProjectEvent {
-        public OnProjectManagerSaveComplete(Project project) {
-            super(project);
-        }
-    }
-
-    /**
-     * Dispatched when the project manager has had its
-     * {@link IProjectManager#exit()} method called.
-     * 
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnProjectManagerExit extends ProjectEvent {
-        public OnProjectManagerExit(Project project) {
-            super(project);
+            this.kind = kind;
         }
     }
 }

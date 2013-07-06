@@ -8,10 +8,8 @@ import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerCreate;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerExit;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerLoad;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerSave;
+import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
+import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 
 public class SongManager implements ISongManager {
 
@@ -41,35 +39,19 @@ public class SongManager implements ISongManager {
 
         songDirectory = new File(applicationRoot, "songs");
 
-        controller.getDispatcher().register(OnProjectManagerCreate.class,
-                new EventObserver<OnProjectManagerCreate>() {
+        controller.getDispatcher().register(OnProjectManagerChange.class,
+                new EventObserver<OnProjectManagerChange>() {
                     @Override
-                    public void trigger(OnProjectManagerCreate object) {
-                        onProjectManagerCreateHandler();
-                    }
-                });
-
-        controller.getDispatcher().register(OnProjectManagerLoad.class,
-                new EventObserver<OnProjectManagerLoad>() {
-                    @Override
-                    public void trigger(OnProjectManagerLoad object) {
-                        onProjectManagerLoadHandler();
-                    }
-                });
-
-        controller.getDispatcher().register(OnProjectManagerSave.class,
-                new EventObserver<OnProjectManagerSave>() {
-                    @Override
-                    public void trigger(OnProjectManagerSave object) {
-                        onProjectManagerSaveHandler();
-                    }
-                });
-
-        controller.getDispatcher().register(OnProjectManagerExit.class,
-                new EventObserver<OnProjectManagerExit>() {
-                    @Override
-                    public void trigger(OnProjectManagerExit object) {
-                        onProjectManagerExitHandler();
+                    public void trigger(OnProjectManagerChange object) {
+                        if (object.getKind() == ProjectManagerChangeKind.CREATE) {
+                            onProjectManagerCreateHandler();
+                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
+                            onProjectManagerLoadHandler();
+                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE) {
+                            onProjectManagerSaveHandler();
+                        } else if (object.getKind() == ProjectManagerChangeKind.EXIT) {
+                            onProjectManagerExitHandler();
+                        }
                     }
                 });
     }
