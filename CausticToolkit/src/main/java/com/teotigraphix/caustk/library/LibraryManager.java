@@ -28,7 +28,6 @@ import com.teotigraphix.caustk.library.vo.MetadataInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.utls.JsonUtils;
 
 public class LibraryManager implements ILibraryManager {
 
@@ -453,7 +452,7 @@ public class LibraryManager implements ILibraryManager {
 
     @Override
     public void saveLibrary(Library library) throws IOException {
-        String data = JsonUtils.toGson(library, true);
+        String data = controller.getSerializeService().toString(library);
         File file = new File(library.getDirectory(), "library.ctk");
         FileUtils.writeStringToFile(file, data);
     }
@@ -463,7 +462,7 @@ public class LibraryManager implements ILibraryManager {
         File directory = new File(librariesDirectory, name);
         File file = new File(directory, "library.ctk");
 
-        Library library = JsonUtils.fromGson(file, Library.class);
+        Library library = controller.getSerializeService().fromFile(file, Library.class);
         registry.addLibrary(library);
 
         controller.getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));

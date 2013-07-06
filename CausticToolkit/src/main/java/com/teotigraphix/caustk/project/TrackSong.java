@@ -320,6 +320,11 @@ public class TrackSong extends Song implements ISerialize {
             track.wakeup();
         }
     }
+
+    public String toJson() {
+        commitData();
+        return controller.getSerializeService().toString(this);
+    }
 }
 
 /*

@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.utls;
+package com.teotigraphix.caustk.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +14,7 @@ import com.teotigraphix.caustk.controller.ISerialize;
 
 public class JsonUtils {
 
-    public static String toGson(Object serialized, boolean prettyPrint) {
+    static String toGson(Object serialized, boolean prettyPrint) {
         GsonBuilder builder = new GsonBuilder();
         if (prettyPrint) {
             builder.setPrettyPrinting();
@@ -25,7 +25,7 @@ public class JsonUtils {
         return gson.toJson(serialized);
     }
 
-    public static <T> T fromGson(File file, Class<T> classOfT) {
+    static <T> T fromGson(File file, Class<T> classOfT) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         T result = null;
@@ -43,7 +43,7 @@ public class JsonUtils {
         return result;
     }
 
-    public static <T> T fromGson(String data, Class<T> classOfT) {
+    static <T> T fromGson(String data, Class<T> classOfT) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         T result = null;

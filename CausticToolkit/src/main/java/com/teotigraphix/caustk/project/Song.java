@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.project;
 
 import com.teotigraphix.caustic.core.Dispatcher;
 import com.teotigraphix.caustic.core.IDispatcher;
-import com.teotigraphix.caustk.utls.JsonUtils;
 
 /**
  * @author Michael Schmalle
@@ -72,6 +71,7 @@ public class Song {
     }
 
     void setCurrentMeasure(int value) {
+        @SuppressWarnings("unused")
         int last = currentMeasure;
         currentMeasure = value;
         //        fireMeasureChange(mCurrentMeasure, last);
@@ -185,6 +185,7 @@ public class Song {
     /**
      * Rewinds the playhead to the start of the song, beat 0.
      */
+    @SuppressWarnings("unused")
     public void rewind() {
         int lastBeat = currentBeat;
         int lastMeasure = currentMeasure;
@@ -271,11 +272,6 @@ public class Song {
      * Moves the playhead to the end of the song data.
      */
     //void forward();
-
-    public String toJson() {
-        commitData();
-        return JsonUtils.toGson(this, true);
-    }
 
     protected void commitData() {
         // TODO Auto-generated method stub

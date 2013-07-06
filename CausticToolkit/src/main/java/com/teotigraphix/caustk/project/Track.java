@@ -117,11 +117,13 @@ public class Track implements ISerialize {
         // remove all TrackItem ?
     }
 
+    @SuppressWarnings("unused")
     private TrackItem findTrackItem(LibraryPhrase libraryPhrase) {
         TrackItem trackItem = items.get(libraryPhrase.getId());
         return trackItem;
     }
 
+    @SuppressWarnings("unused")
     private TrackPhrase findTrackPhraseById(UUID id) {
         for (TrackPhrase trackPhrase : registry.values()) {
             if (trackPhrase.getId().equals(id))

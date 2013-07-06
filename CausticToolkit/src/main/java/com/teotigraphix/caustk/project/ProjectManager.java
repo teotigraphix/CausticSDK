@@ -8,7 +8,6 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.utls.JsonUtils;
 
 /**
  * The project manager manages the single project loaded for an application.
@@ -82,8 +81,8 @@ public class ProjectManager implements IProjectManager {
             }
         } else {
             if (sessionPreferencesFile.exists()) {
-                sessionPreferences = JsonUtils.fromGson(sessionPreferencesFile,
-                        SessionPreferences.class);
+                sessionPreferences = controller.getSerializeService().fromFile(
+                        sessionPreferencesFile, SessionPreferences.class);
             }
         }
     }
@@ -105,10 +104,11 @@ public class ProjectManager implements IProjectManager {
 
         controller.getDispatcher().trigger(new OnProjectManagerSave(project));
 
-        String data = JsonUtils.toGson(project, true);
+        String data = controller.getSerializeService().toString(project);
         FileUtils.writeStringToFile(project.getFile(), data);
         String debug = project.getFile().getAbsolutePath().replace(".clp", "_d.clp");
-        FileUtils.writeStringToFile(new File(debug), JsonUtils.toGson(project, true));
+        FileUtils.writeStringToFile(new File(debug),
+                controller.getSerializeService().toString(project));
 
         saveProjectPreferences();
 
@@ -116,7 +116,7 @@ public class ProjectManager implements IProjectManager {
     }
 
     private void saveProjectPreferences() throws IOException {
-        String data = JsonUtils.toGson(sessionPreferences, true);
+        String data = controller.getSerializeService().toString(sessionPreferences);
         FileUtils.writeStringToFile(sessionPreferencesFile, data);
     }
 
@@ -126,7 +126,7 @@ public class ProjectManager implements IProjectManager {
         if (!file.exists())
             throw new IOException("Project file does not exist");
 
-        project = JsonUtils.fromGson(file, Project.class);
+        project = controller.getSerializeService().fromFile(file, Project.class);
         controller.getDispatcher().trigger(new OnProjectManagerLoad(project));
         return project;
     }

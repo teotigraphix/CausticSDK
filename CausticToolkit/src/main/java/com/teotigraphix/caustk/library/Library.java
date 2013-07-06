@@ -14,7 +14,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.utls.JsonUtils;
 
 /**
  * The {@link Library} is the main serialized json file that gets saved along
@@ -122,12 +121,6 @@ public class Library {
     }
 
     public Library() {
-    }
-
-    public void _save() throws IOException {
-        String data = JsonUtils.toGson(this, true);
-        File file = new File(directory, "library.ctk");
-        FileUtils.writeStringToFile(file, data);
     }
 
     /**

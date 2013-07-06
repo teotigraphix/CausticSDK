@@ -9,6 +9,7 @@ import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerLoad;
 
 public class SongManager implements ISongManager {
 
+    @SuppressWarnings("unused")
     private final ICaustkController controller;
 
     SongModel songModel;

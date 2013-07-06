@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ISongManager;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
 import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
 import com.teotigraphix.caustk.sound.ICaustkSoundSource;
@@ -62,6 +63,8 @@ public interface ICaustkController extends ICausticEngine {
 
     IDeviceFactory getFactory();
 
+    ISerializeService getSerializeService();
+    
     IProjectManager getProjectManager();
 
     ISongManager getSongManager();
