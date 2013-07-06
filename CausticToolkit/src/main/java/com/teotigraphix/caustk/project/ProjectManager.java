@@ -99,6 +99,15 @@ public class ProjectManager implements IProjectManager {
     }
 
     @Override
+    public void exit() throws IOException {
+        save();
+        Project oldProject = project;
+        project.close();
+        project = null;
+        controller.getDispatcher().trigger(new OnProjectManagerExit(oldProject));
+    }
+
+    @Override
     public void save() throws IOException {
         sessionPreferences.put("lastProject", project.getFile().getPath());
 
@@ -127,6 +136,7 @@ public class ProjectManager implements IProjectManager {
             throw new IOException("Project file does not exist");
 
         project = controller.getSerializeService().fromFile(file, Project.class);
+        project.open();
         controller.getDispatcher().trigger(new OnProjectManagerLoad(project));
         return project;
     }
@@ -136,6 +146,7 @@ public class ProjectManager implements IProjectManager {
         project = new Project();
         project.setFile(new File(projectDirectory, projectFile.getPath()));
         project.setInfo(createInfo());
+        project.open();
         controller.getDispatcher().trigger(new OnProjectManagerCreate(project));
         return project;
     }
@@ -159,4 +170,5 @@ public class ProjectManager implements IProjectManager {
             return file;
         return new File(projectDirectory, file.getPath());
     }
+
 }

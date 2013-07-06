@@ -2,6 +2,9 @@
 package com.teotigraphix.caustk.service;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
@@ -29,4 +32,9 @@ public class SerializeService implements ISerializeService {
         return JsonUtils.toGson(serialized, true);
     }
 
+    @Override
+    public void save(File target, Object serialized) throws IOException {
+        String data = JsonUtils.toGson(serialized, true);
+        FileUtils.writeStringToFile(target, data);
+    }
 }

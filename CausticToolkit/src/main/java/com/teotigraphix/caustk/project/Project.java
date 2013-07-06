@@ -2,10 +2,19 @@
 package com.teotigraphix.caustk.project;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * The main class that is serialized in a ctk file.
+ * <p>
+ * Since using json as the main serializer, the Project needs to have concrete
+ * references for deserialization to work correct.
+ * <p>
+ * If an application needs specific model added to the project, either create
+ * separate serialized files or subclass {@link Project} and add new API.
+ */
 public class Project {
+
+    private transient boolean isClosed;
 
     //----------------------------------
     // file
@@ -35,27 +44,23 @@ public class Project {
         info = value;
     }
 
-    //----------------------------------
-    // data
-    //----------------------------------
-
-    private Map<String, Object> data = new HashMap<String, Object>();
-
-    public void register(Class<? extends IProjectData> clazz, IProjectData instance) {
-        data.put(clazz.getName(), instance);
-    }
-
-    public <T extends IProjectData> T data(Class<T> clazz) {
-        String name = clazz.getName();
-        Object object = data.get(name);
-        return clazz.cast(object);
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public Project() {
+    }
+
+    public boolean isClosed() {
+        return isClosed;
+    }
+
+    public void open() {
+        isClosed = false;
+    }
+
+    public void close() {
+        isClosed = true;
     }
 
 }

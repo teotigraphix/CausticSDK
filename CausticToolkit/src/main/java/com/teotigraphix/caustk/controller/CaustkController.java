@@ -279,7 +279,7 @@ public class CaustkController implements ICaustkController {
         // sub composites will add their ICommands in their constructors
         serializeService = new SerializeService(this);
         projectManager = new ProjectManager(this, applicationRoot);
-        songManager = new SongManager(this);
+        songManager = new SongManager(this, applicationRoot);
         libraryManager = new LibraryManager(this);
         commandManager = new CommandManager(this);
 

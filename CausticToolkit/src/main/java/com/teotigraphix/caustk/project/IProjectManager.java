@@ -64,6 +64,18 @@ public interface IProjectManager {
     void save() throws IOException;
 
     /**
+     * Saves the project state and exits.
+     * <p>
+     * The {@link #create(File)} or {@link #load(File)} method has to be called
+     * again for the project to be active. Calling this method will remove the
+     * current {@link Project} instance.
+     * @throws IOException 
+     * 
+     * @see OnProjectManagerExit
+     */
+    void exit() throws IOException;
+
+    /**
      * Returns whether the project exists and is a valid caustk project.
      * 
      * @param file The project {@link File} relative to the projects directory
@@ -139,6 +151,18 @@ public interface IProjectManager {
      */
     public static class OnProjectManagerSaveComplete extends ProjectEvent {
         public OnProjectManagerSaveComplete(Project project) {
+            super(project);
+        }
+    }
+
+    /**
+     * Dispatched when the project manager has had its
+     * {@link IProjectManager#exit()} method called.
+     * 
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class OnProjectManagerExit extends ProjectEvent {
+        public OnProjectManagerExit(Project project) {
             super(project);
         }
     }

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.project;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,6 +67,31 @@ public class TrackSong extends Song implements ISerialize {
     //  ITrackSong API :: Properties
     // 
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  file
+    //----------------------------------
+
+    private File file;
+
+    /**
+     * Returns the relative song file path from the base <code>songs</code>
+     * directory.
+     * <p>
+     * Use the {@link ISongManager} to create an absolute file path for this
+     * song.
+     */
+    public final File getFile() {
+        return file;
+    }
+
+    public final void setFile(File value) {
+        file = value;
+    }
+
+    //----------------------------------
+    //  scene
+    //----------------------------------
 
     private LibraryScene scene;
 
