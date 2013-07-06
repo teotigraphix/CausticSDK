@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
@@ -18,6 +19,7 @@ import com.teotigraphix.caustic.desktop.RuntimeUtils;
 import com.teotigraphix.caustic.internal.rack.Rack;
 import com.teotigraphix.caustic.internal.utils.PatternUtils;
 import com.teotigraphix.caustic.machine.IMachine;
+import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustic.osc.OutputPanelMessage;
 import com.teotigraphix.caustic.osc.PatternSequencerMessage;
 import com.teotigraphix.caustic.osc.RackMessage;
@@ -27,6 +29,10 @@ import com.teotigraphix.caustk.library.vo.EffectRackInfo;
 import com.teotigraphix.caustk.library.vo.MetadataInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
+import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerExit;
+import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerLoad;
+import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerSave;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class LibraryManager implements ILibraryManager {
@@ -101,6 +107,70 @@ public class LibraryManager implements ILibraryManager {
             librariesDirectory.mkdirs();
 
         registry = new LibraryRegistry(librariesDirectory);
+
+        controller.getDispatcher().register(OnProjectManagerLoad.class,
+                new EventObserver<OnProjectManagerLoad>() {
+                    @Override
+                    public void trigger(OnProjectManagerLoad object) {
+                        onProjectManagerLoadHandler();
+                    }
+                });
+
+        controller.getDispatcher().register(OnProjectManagerSave.class,
+                new EventObserver<OnProjectManagerSave>() {
+                    @Override
+                    public void trigger(OnProjectManagerSave object) {
+                        onProjectManagerSaveHandler();
+                    }
+                });
+
+        controller.getDispatcher().register(OnProjectManagerExit.class,
+                new EventObserver<OnProjectManagerExit>() {
+                    @Override
+                    public void trigger(OnProjectManagerExit object) {
+                        onProjectManagerExitHandler();
+                    }
+                });
+    }
+
+    protected void onProjectManagerSaveHandler() {
+        saveSessionProperties();
+    }
+
+    protected void onProjectManagerLoadHandler() {
+        load();
+        String id = controller.getProjectManager().getSessionPreferences()
+                .getString("selectedLibrary");
+        if (id != null) {
+            selectedLibrary = registry.getLibrary(id);
+        }
+    }
+
+    private void saveSessionProperties() {
+        // if the project has selected a library, save it
+        if (selectedLibrary != null) {
+            controller.getProjectManager().getSessionPreferences()
+                    .put("selectedLibrary", selectedLibrary.getId());
+        }
+    }
+
+    protected void onProjectManagerExitHandler() {
+        registry = new LibraryRegistry(librariesDirectory);
+        selectedLibrary = null;
+    }
+
+    @Override
+    public Library getLibraryById(UUID id) {
+        return registry.getLibrary(id);
+    }
+
+    @Override
+    public Library getLibraryByName(String name) {
+        for (Library library : registry.getLibraries()) {
+            if (library.getName().equals(name))
+                return library;
+        }
+        return null;
     }
 
     public List<LibraryPatch> findPatchesByTag(String tag) {
@@ -142,6 +212,9 @@ public class LibraryManager implements ILibraryManager {
     /**
      * Saves the {@link Library}s to disk using the libraries directory
      * location.
+     * <p>
+     * Note: This DOES NOT get called from the {@link IProjectManager#save()}
+     * method. The client needs to save a library by calling {@link #save()}.
      * 
      * @throws IOException
      */
@@ -225,6 +298,40 @@ public class LibraryManager implements ILibraryManager {
         RackMessage.BLANKRACK.send(controller);
     }
 
+    private LibraryScene createDefaultScene() throws CausticException {
+        RackMessage.BLANKRACK.send(controller);
+
+        Rack rack = new Rack(controller.getFactory(), true);
+        rack.setEngine(controller);
+
+        // create the default setup
+        rack.addMachine("SubSynth", MachineType.SUBSYNTH);
+        rack.addMachine("PCMSynth1", MachineType.PCMSYNTH);
+        rack.addMachine("PCMSynth2", MachineType.PCMSYNTH);
+        rack.addMachine("Bassline1", MachineType.BASSLINE);
+        rack.addMachine("Bassline2", MachineType.BASSLINE);
+        rack.addMachine("Beatbox", MachineType.BEATBOX);
+
+        //rack.populateMachines();
+        rack.getOutputPanel().restore();
+        rack.getMixerPanel().restore();
+        rack.getEffectsRack().restore();
+
+        LibraryScene libraryScene = new LibraryScene();
+        libraryScene.setId(UUID.randomUUID());
+        MetadataInfo metadataInfo = new MetadataInfo();
+        metadataInfo.addTag("DefaultScene");
+        libraryScene.setMetadataInfo(metadataInfo);
+        libraryScene.setRackInfo(LibrarySerializerUtils.createRackInfo(rack));
+        libraryScene.setMixerInfo(LibrarySerializerUtils.createMixerPanelInfo(controller
+                .getSoundMixer().getMixerPanel()));
+        libraryScene.setEffectRackInfo(LibrarySerializerUtils.createEffectRackInfo(controller
+                .getSoundMixer().getEffectsRack()));
+
+        RackMessage.BLANKRACK.send(controller);
+        return libraryScene;
+    }
+
     @Override
     public Library createLibrary(String name) throws IOException {
         File newDirectory = new File(librariesDirectory, name);
@@ -232,30 +339,24 @@ public class LibraryManager implements ILibraryManager {
         //    throw new CausticException("Library already exists " + newDirectory.getAbsolutePath());
         newDirectory.mkdir();
 
+        // create a default scene for every new Library
+        LibraryScene defaultScene = null;
+        try {
+            defaultScene = createDefaultScene();
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
+
         Library library = new Library();
         library.setId(UUID.randomUUID());
         library.setDirectory(newDirectory);
         library.mkdirs();
 
         registry.addLibrary(library);
+        library.addScene(defaultScene);
 
         return library;
     }
-
-    //    private void loadLibraryPatches(Library library, Rack rack) throws IOException {
-    //        for (int i = 0; i < 6; i++) {
-    //            IMachine machine = rack.getMachine(i);
-    //            if (machine != null) {
-    //                LibraryPatch patch = new LibraryPatch();
-    //                patch.setMachineType(machine.getType());
-    //                patch.setMetadataInfo(new MetadataInfo());
-    //                patch.setId(UUID.randomUUID());
-    //                TagUtils.addDefaultTags(machine, patch);
-    //                relocatePresetFile(machine, library, patch);
-    //                library.addPatch(patch);
-    //            }
-    //        }
-    //    }
 
     @Override
     public LibraryScene createLibraryScene(MetadataInfo info) {
@@ -389,27 +490,6 @@ public class LibraryManager implements ILibraryManager {
             }
         }
     }
-
-    //    
-    //    public static LibraryPhrase createLibraryPhrase() {
-    //        LibraryPhrase phrase = new LibraryPhrase();
-    //        phrase.setMetadataInfo(new MetadataInfo());
-    //        phrase.setId(UUID.randomUUID());
-    //        
-    //        return phrase;
-    //    }
-    //    
-    //    public static LibraryPhrase cloneLibraryPhrase(LibraryPhrase libraryPhrase) {
-    //        LibraryPhrase phrase = new LibraryPhrase();
-    //        phrase.setMetadataInfo(libraryPhrase.getMetadataInfo());
-    //        phrase.setId(libraryPhrase.getId());
-    //        phrase.setLength(libraryPhrase.getLength());
-    //        phrase.setTempo(libraryPhrase.getTempo());
-    //        phrase.setMachineType(libraryPhrase.getMachineType());
-    //        phrase.setNoteData(libraryPhrase.getNoteData());
-    //        phrase.setResolution(libraryPhrase.getResolution());
-    //        return phrase;
-    //    }
 
     private Resolution calculateResolution(String data) {
         // TODO This is totally inefficient, needs to be lazy loaded

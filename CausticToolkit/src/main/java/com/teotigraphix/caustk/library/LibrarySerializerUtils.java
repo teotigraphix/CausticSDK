@@ -14,11 +14,51 @@ import com.teotigraphix.caustic.effect.IEffectsRack;
 import com.teotigraphix.caustic.internal.rack.Rack;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.mixer.IMixerPanel;
+import com.teotigraphix.caustic.rack.IRack;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.vo.EffectRackInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
+import com.teotigraphix.caustk.tone.Tone;
 
 public class LibrarySerializerUtils {
+
+    public static RackInfo createRackInfo(IRack rack) {
+        RackInfo info = new RackInfo();
+        XMLMemento memento = XMLMemento.createWriteRoot("rack");
+        for (IMachine machine : rack.getMachineMap().values()) {
+            if (machine != null) {
+                IMemento child = memento.createChild("machine");
+                child.putInteger("index", machine.getIndex());
+                child.putInteger("active", machine != null ? 1 : 0);
+                child.putString("id", machine.getId());
+                child.putString("type", machine.getType().getValue());
+            }
+        }
+        info.setData(memento.toString());
+        return info;
+    }
+
+    // called from TrackUtils
+    public static RackInfo createRackInfo(ICaustkController controller) {
+        RackInfo info = new RackInfo();
+        XMLMemento memento = XMLMemento.createWriteRoot("rack");
+        if (controller.getSoundSource().getTones().size() > 0) {
+            for (int i = 0; i < 6; i++) {
+                Tone tone = controller.getSoundSource().getTone(i);
+                IMachine machine = tone.getMachine();
+                if (machine != null) {
+                    IMemento child = memento.createChild("machine");
+                    child.putInteger("index", i);
+                    child.putInteger("active", machine != null ? 1 : 0);
+                    child.putString("id", machine.getId());
+                    child.putString("type", machine.getType().getValue());
+                }
+            }
+        }
+        info.setData(memento.toString());
+        return info;
+    }
 
     public static RackInfo createRackInfo(Rack rack, HashMap<Integer, LibraryPatch> patches) {
         RackInfo info = new RackInfo();

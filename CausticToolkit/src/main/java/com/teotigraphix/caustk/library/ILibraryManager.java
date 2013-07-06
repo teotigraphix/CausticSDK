@@ -4,6 +4,7 @@ package com.teotigraphix.caustk.library;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.UUID;
 
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -40,6 +41,12 @@ public interface ILibraryManager {
      * @throws IOException
      */
     Library createLibrary(String name) throws IOException;
+
+    LibraryScene createLibraryScene(MetadataInfo info);
+
+    Library getLibraryByName(String name);
+
+    Library getLibraryById(UUID id);
 
     /**
      * Imports a <code>.caustic</code> song file into the {@link Library}.
@@ -132,7 +139,5 @@ public interface ILibraryManager {
             super(library);
         }
     }
-
-    LibraryScene createLibraryScene(MetadataInfo info);
 
 }

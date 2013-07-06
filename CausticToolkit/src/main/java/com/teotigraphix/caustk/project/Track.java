@@ -10,8 +10,11 @@ import java.util.UUID;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.core.IDispatcher;
 import com.teotigraphix.caustic.internal.utils.PatternUtils;
+import com.teotigraphix.caustic.machine.IMachine;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ISerialize;
 import com.teotigraphix.caustk.library.LibraryPhrase;
+import com.teotigraphix.caustk.tone.Tone;
 
 /*
 
@@ -71,6 +74,14 @@ public class Track implements ISerialize {
 
     public final void setIndex(int value) {
         index = value;
+    }
+
+    public Tone getTone(ICaustkController controller) {
+        return TrackUtils.getTone(controller, this);
+    }
+
+    public IMachine getMachine(ICaustkController controller) {
+        return TrackUtils.getMachine(controller, this);
     }
 
     //--------------------------------------------------------------------------

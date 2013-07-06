@@ -160,6 +160,16 @@ public class Library {
         return null;
     }
 
+    public List<LibraryScene> findScenesByTag(String tag) {
+        List<LibraryScene> result = new ArrayList<LibraryScene>();
+        for (LibraryScene item : getScenes()) {
+            if (item.hasTag(tag)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
     public List<LibraryPatch> findPatchByTag(String tag) {
         List<LibraryPatch> result = new ArrayList<LibraryPatch>();
         for (LibraryPatch item : getPatches()) {
@@ -201,6 +211,15 @@ public class Library {
     public List<LibraryPhrase> findPhrasesForTone(Tone tone) {
         String type = tone.getMachine().getType().getValue();
         return findPhrasesByTag(type);
+    }
+
+    public LibraryScene getDefaultScene() {
+        LibraryScene libraryScene = findScenesByTag("DefaultScene").get(0);
+        return libraryScene;
+    }
+
+    public String getName() {
+        return getDirectory().getName();
     }
 
 }

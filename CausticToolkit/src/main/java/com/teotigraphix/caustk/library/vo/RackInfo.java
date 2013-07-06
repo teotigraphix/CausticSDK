@@ -74,7 +74,9 @@ public class RackInfo extends MementoInfo {
             index = memento.getInteger("index");
             machineType = MachineType.fromString(memento.getString("type"));
             id = memento.getString("id");
-            patchId = UUID.fromString(memento.getString("patchId"));
+            String pid = memento.getString("patchId");
+            if (pid != null)
+                patchId = UUID.fromString(pid);
         }
 
         public ToneDescriptor createDescriptor() {

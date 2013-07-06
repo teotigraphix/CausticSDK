@@ -70,4 +70,8 @@ public class MetadataInfo {
     public MetadataInfo() {
     }
 
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+
 }

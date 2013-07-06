@@ -93,7 +93,7 @@ public class SongManager implements ISongManager {
         if (!file.exists())
             throw new IOException("TrackSong file does not exist");
 
-        trackSong = controller.getSerializeService().fromFile(file, TrackSong.class);
+        deserializeTrackSong(file);
         saveSessionProperties();
         controller.getDispatcher().trigger(new OnSongManagerLoadComplete(trackSong));
         return trackSong;
@@ -129,8 +129,7 @@ public class SongManager implements ISongManager {
         if (path == null) {
             throw new RuntimeException("TrackSong path null");
         } else {
-            trackSong = controller.getSerializeService().fromFile(toSongFile(new File(path)),
-                    TrackSong.class);
+            deserializeTrackSong(toSongFile(new File(path)));
         }
     }
 
@@ -145,6 +144,7 @@ public class SongManager implements ISongManager {
     private TrackSong createTrackSong(File file) {
         TrackSong song = new TrackSong();
         song.setFile(file);
+        song.setController(controller);
         return song;
     }
 
@@ -176,6 +176,11 @@ public class SongManager implements ISongManager {
     private void saveSessionProperties() {
         controller.getProjectManager().getSessionPreferences()
                 .put(PROJECT_SESSION_LAST_SONG, trackSong.getFile().getPath());
+    }
+
+    private void deserializeTrackSong(File file) {
+        trackSong = controller.getSerializeService().fromFile(file, TrackSong.class);
+        trackSong.setController(controller);
     }
 
 }

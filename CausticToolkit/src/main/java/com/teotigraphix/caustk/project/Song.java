@@ -273,8 +273,4 @@ public class Song {
      */
     //void forward();
 
-    protected void commitData() {
-        // TODO Auto-generated method stub
-
-    }
 }

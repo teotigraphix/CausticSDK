@@ -23,27 +23,19 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustic.core.CausticException;
-import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ISerialize;
-import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.caustk.library.vo.EffectRackInfo;
-import com.teotigraphix.caustk.library.vo.MetadataInfo;
 import com.teotigraphix.caustk.library.vo.MixerPanelInfo;
 import com.teotigraphix.caustk.library.vo.RackInfo;
-import com.teotigraphix.caustk.library.vo.RackInfo.RackInfoItem;
 import com.teotigraphix.caustk.project.Track.OnTrackPhraseAdd;
 import com.teotigraphix.caustk.project.Track.OnTrackPhraseRemove;
-import com.teotigraphix.caustk.sound.ICaustkSoundSource;
-import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.ToneDescriptor;
 
 /**
  * @author Michael Schmalle
@@ -69,6 +61,48 @@ public class TrackSong extends Song implements ISerialize {
     //--------------------------------------------------------------------------
 
     //----------------------------------
+    //  rackInfo
+    //----------------------------------
+
+    private RackInfo rackInfo;
+
+    public RackInfo getRackInfo() {
+        return rackInfo;
+    }
+
+    public void setRackInfo(RackInfo value) {
+        rackInfo = value;
+    }
+
+    //----------------------------------
+    //  mixerInfo
+    //----------------------------------
+
+    private MixerPanelInfo mixerInfo;
+
+    public MixerPanelInfo getMixerInfo() {
+        return mixerInfo;
+    }
+
+    public void setMixerInfo(MixerPanelInfo value) {
+        mixerInfo = value;
+    }
+
+    //----------------------------------
+    //  effectRackInfo
+    //----------------------------------
+
+    private EffectRackInfo effectRackInfo;
+
+    public EffectRackInfo getEffectRackInfo() {
+        return effectRackInfo;
+    }
+
+    public void setEffectRackInfo(EffectRackInfo value) {
+        effectRackInfo = value;
+    }
+
+    //----------------------------------
     //  file
     //----------------------------------
 
@@ -87,85 +121,6 @@ public class TrackSong extends Song implements ISerialize {
 
     public final void setFile(File value) {
         file = value;
-    }
-
-    //----------------------------------
-    //  scene
-    //----------------------------------
-
-    private LibraryScene scene;
-
-    public final LibraryScene getScene() {
-        return scene;
-    }
-
-    public final void setScene(LibraryScene value) {
-        RackInfo rackInfo = value.getRackInfo();
-        List<RackInfoItem> items = rackInfo.getItems();
-        // initializes the tracks since we are new
-        setNumTracks(items.size());
-
-        copyScene(value);
-
-        scene = updateLibraryScene();
-    }
-
-    /**
-     * Create a new {@link LibraryScene} that mirrors the current setup.
-     * <p>
-     * This scene is a stateless instance that could be used to revert.
-     */
-    private LibraryScene updateLibraryScene() {
-        LibraryScene scene = controller.getLibraryManager().createLibraryScene(new MetadataInfo());
-        return scene;
-    }
-
-    /**
-     * Copies the {@link LibraryScene} into the core {@link ICaustkSoundSource}
-     * initializing the tones, mixer, effects rack.
-     * 
-     * @param scene The {@link LibraryScene} to copy.
-     */
-    private void copyScene(LibraryScene scene) {
-
-        RackInfo rackInfo = scene.getRackInfo();
-        MixerPanelInfo mixerInfo = scene.getMixerInfo();
-        EffectRackInfo effectRackInfo = scene.getEffectRackInfo();
-
-        // Restore the master channel mixer settings
-        controller.getSoundMixer().pasteMasterChannel(mixerInfo.getMasterMemento());
-
-        // Create the scene Tones
-        List<RackInfoItem> items = rackInfo.getItems();
-
-        // loop through the Track instances and get the info item for the index
-        for (Track track : tracks.values()) {
-            int index = track.getIndex();
-            RackInfoItem item = items.get(index);
-
-            // no machine existed in the scene when created
-            if (!item.isActive())
-                continue;
-
-            // 1) Create the Tone for the Track
-            ToneDescriptor descriptor = item.createDescriptor();
-            Tone tone = null;
-            try {
-                tone = controller.getSoundSource().create(descriptor);
-            } catch (CausticException e) {
-                e.printStackTrace();
-            }
-
-            // 2) Set the mixer settings
-            IMemento[] channels = mixerInfo.getMemento().getChild("channels")
-                    .getChildren("channel");
-
-            controller.getSoundMixer().pasteMixerChannel(tone.getMachine(), channels[index]);
-
-            // 3) Add the effects
-            IMemento[] children = effectRackInfo.getMemento().getChildren("channel");
-            controller.getSoundMixer().pasteEffectChannel(tone.getMachine(), children[index]);
-        }
     }
 
     //----------------------------------
@@ -305,22 +260,6 @@ public class TrackSong extends Song implements ISerialize {
         return tracks.get(index);
     }
 
-    @Override
-    protected void commitData() {
-        super.commitData();
-        scene = updateLibraryScene();
-    }
-
-    /**
-     * Initializes the {@link LibraryScene}s state.
-     * <p>
-     * Only call when deserializing, when using {@link #setScene(LibraryScene)}
-     * this is already called.
-     */
-    public void initialize() {
-        copyScene(scene);
-    }
-
     /**
      * Clears all the tracks {@link TrackPhrase}s.
      * 
@@ -334,23 +273,20 @@ public class TrackSong extends Song implements ISerialize {
 
     @Override
     public void sleep() {
-        // TODO Auto-generated method stub
-
+        TrackUtils.refreshTrackSongInfos(controller, this);
+        for (Track track : tracks.values()) {
+            track.sleep();
+        }
     }
 
     @Override
     public void wakeup() {
         initializeTracks();
-
         for (Track track : tracks.values()) {
             track.wakeup();
         }
     }
 
-    public String toJson() {
-        commitData();
-        return controller.getSerializeService().toString(this);
-    }
 }
 
 /*

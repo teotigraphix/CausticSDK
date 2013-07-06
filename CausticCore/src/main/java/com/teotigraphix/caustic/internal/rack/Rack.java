@@ -486,7 +486,7 @@ public class Rack extends Device implements IRack {
         fireSongLoaded();
     }
 
-    void populateMachines() throws CausticException {
+    public void populateMachines() throws CausticException {
         mLoadingMachines = true;
         final int len = getNumTracks();
         for (int i = 0; i < len; i++) {
