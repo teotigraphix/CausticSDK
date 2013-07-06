@@ -167,6 +167,16 @@ public class Library {
         return null;
     }
 
+    public List<LibraryPatch> findPatchByTag(String tag) {
+        List<LibraryPatch> result = new ArrayList<LibraryPatch>();
+        for (LibraryPatch item : getPatches()) {
+            if (item.hasTag(tag)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
     public List<LibraryPhrase> findPhrasesByTag(String tag) {
         List<LibraryPhrase> result = new ArrayList<LibraryPhrase>();
         for (LibraryPhrase item : getPhrases()) {

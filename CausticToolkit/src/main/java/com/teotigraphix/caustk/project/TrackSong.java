@@ -191,12 +191,12 @@ public class TrackSong extends Song implements ISerialize {
         @Override
         public void trigger(OnTrackPhraseAdd object) {
             Track track = object.getTrack();
-            TrackPhrase trackPhrase = object.getTrackPhrase();
+            TrackItem trackItem = object.getItem();
             IMachine machine = controller.getSoundSource().getTone(track.getIndex()).getMachine();
-            int bank = trackPhrase.getBankIndex();
-            int pattern = trackPhrase.getPatternIndex();
-            int start = trackPhrase.getStartMeasure();
-            int end = trackPhrase.getEndMeasure();
+            int bank = trackItem.getBankIndex();
+            int pattern = trackItem.getPatternIndex();
+            int start = trackItem.getStartMeasure();
+            int end = trackItem.getEndMeasure();
             // add the track to the song sequencer
             controller.getSystemSequencer().addPattern(machine, bank, pattern, start, end);
         }
@@ -206,10 +206,10 @@ public class TrackSong extends Song implements ISerialize {
         @Override
         public void trigger(OnTrackPhraseRemove object) {
             Track track = object.getTrack();
-            TrackPhrase trackPhrase = object.getTrackPhrase();
+            TrackItem trackItem = object.getItem();
             IMachine machine = controller.getSoundSource().getTone(track.getIndex()).getMachine();
-            int start = trackPhrase.getStartMeasure();
-            int end = trackPhrase.getEndMeasure();
+            int start = trackItem.getStartMeasure();
+            int end = trackItem.getEndMeasure();
             // remove the track to the song sequencer
             controller.getSystemSequencer().removePattern(machine, start, end);
         }
@@ -225,7 +225,7 @@ public class TrackSong extends Song implements ISerialize {
      * The last pattern in the song in All tracks. This is used to easily
      * calculate the measure length of the song.
      */
-    private TrackPhrase lastPatternInTracks;
+    private TrackItem lastPatternInTracks;
 
     public Collection<Track> getTracks() {
         return Collections.unmodifiableCollection(tracks.values());
@@ -257,6 +257,7 @@ public class TrackSong extends Song implements ISerialize {
         return (int)total;
     }
 
+    @Override
     public int getCurrentTime() {
         float bpm = getBPM();
         float timeInSec = 60 / bpm;

@@ -2,22 +2,16 @@
 package com.teotigraphix.caustk.project;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.core.IDispatcher;
-import com.teotigraphix.caustic.machine.IMachine;
-import com.teotigraphix.caustic.sequencer.IPatternSequencer2;
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustic.internal.utils.PatternUtils;
 import com.teotigraphix.caustk.controller.ISerialize;
 import com.teotigraphix.caustk.library.LibraryPhrase;
-import com.teotigraphix.caustk.tone.Tone;
 
 /*
 
@@ -40,7 +34,10 @@ A track has;
 public class Track implements ISerialize {
 
     // the phrase map is keyed on the measure start
-    Map<Integer, TrackPhrase> map = new HashMap<Integer, TrackPhrase>();
+    Map<Integer, TrackItem> items = new HashMap<Integer, TrackItem>();
+
+    // A01->TrackPhrase
+    Map<String, TrackPhrase> registry = new HashMap<String, TrackPhrase>();
 
     //----------------------------------
     //  dispatcher
@@ -84,86 +81,49 @@ public class Track implements ISerialize {
         initialize();
     }
 
-    /**
-     * Creates a unique {@link TrackPhrase} from a {@link LibraryPhrase}.
-     * 
-     * @param libraryPhrase The {@link LibraryPhrase} to copy into the track
-     *            phrase.
-     */
-    public TrackPhrase createTrackPhraseFrom(ICaustkController controller,
-            LibraryPhrase libraryPhrase) {
-        TrackPhrase trackPhrase = findTrackPhraseById(libraryPhrase.getId());
+    public TrackPhrase copyTrackPhrase(LibraryPhrase libraryPhrase) {
+        // TrackItem are unique and hold the start and end measures
+        // within a Track. The TrackPhrase is created to hold the referenced note data
+        // and pointer back to the original library phrase
+        // ALL TrackPhrase are copied from a source LibraryPhrase.
 
-        BankPatternSlot slot = null;
-        boolean initializePhrase = trackPhrase == null;
-        if (initializePhrase) {
-            slot = queue.pop();
-        } else {
-            slot = new BankPatternSlot(trackPhrase.getBankIndex(), trackPhrase.getPatternIndex());
-        }
+        // will always create a new instance and get a bank/patter slot off the stack
+        BankPatternSlot slot = queue.pop();
 
-        trackPhrase = new TrackPhrase();
-        trackPhrase.setId(libraryPhrase.getId());
-
-        // a Track can hold 64 different phrases assigned to the native
-        // machines bank and pattern index
-        // The track manages these entries in an in/out queue
-        // when a phrase is added to the track, the bank and pattern are incremented
-        // when a phrase is removed, it's bank and pattern is set in a unused queue
-        // the next phrase to be added will pop the unused items off the queue
-        // when all unused items are used up, the bank and pattern are incremented again
-
+        TrackPhrase trackPhrase = new TrackPhrase();
+        trackPhrase.setId(UUID.randomUUID());
         trackPhrase.setBankIndex(slot.getBank());
         trackPhrase.setPatternIndex(slot.getPattern());
-        trackPhrase.setExplicitLength(libraryPhrase.getLength());
+        trackPhrase.setNumMeasures(libraryPhrase.getLength());
+        trackPhrase.setNoteData(libraryPhrase.getNoteData());
 
-        String noteData = libraryPhrase.getNoteData();
-        trackPhrase.setNoteData(noteData);
-
-        if (initializePhrase) {
-            assignNotes(controller, trackPhrase);
-        }
+        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
+                trackPhrase.getPatternIndex());
+        registry.put(patternName, trackPhrase);
 
         return trackPhrase;
     }
 
-    public void assignNotes(ICaustkController controller, TrackPhrase trackPhrase) {
-        Tone tone = controller.getSoundSource().getTone(getIndex());
-        IMachine machine = tone.getMachine();
-        IPatternSequencer2 sequencer = machine.getPatternSequencer();
+    public void deleteTrackPhrase(TrackPhrase trackPhrase) {
+        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
+                trackPhrase.getPatternIndex());
+        TrackPhrase phrase = registry.get(patternName);
+        if (phrase == null) {
 
-        int lastBank = sequencer.getSelectedBank();
-        int lastPattern = sequencer.getSelectedIndex();
-        sequencer.setSelectedPattern(trackPhrase.getBankIndex(), trackPhrase.getPatternIndex());
+            return;
+        }
 
-        sequencer.setLength(trackPhrase.getExplicitLength());
-
-        applyNoteData(sequencer, trackPhrase.getNoteData());
-
-        sequencer.setSelectedPattern(lastBank, lastPattern);
+        registry.remove(patternName);
+        // remove all TrackItem ?
     }
 
-    private void applyNoteData(IPatternSequencer2 patternSequencer2, String data) {
-        // push the notes into the machines sequencer
-        String[] notes = data.split("\\|");
-        for (String noteData : notes) {
-            String[] split = noteData.split(" ");
-
-            float start = Float.valueOf(split[0]);
-            int pitch = Float.valueOf(split[1]).intValue();
-            float velocity = Float.valueOf(split[2]);
-            float end = Float.valueOf(split[3]);
-            //float gate = end - start;
-            int flags = Float.valueOf(split[4]).intValue();
-            //int step = Resolution.toStep(start, getResolution());
-
-            //triggerOn(step, pitch, gate, velocity, flags);
-            patternSequencer2.addNote(pitch, start, end, velocity, flags);
-        }
+    private TrackItem findTrackItem(LibraryPhrase libraryPhrase) {
+        TrackItem trackItem = items.get(libraryPhrase.getId());
+        return trackItem;
     }
 
     private TrackPhrase findTrackPhraseById(UUID id) {
-        for (TrackPhrase trackPhrase : map.values()) {
+        for (TrackPhrase trackPhrase : registry.values()) {
             if (trackPhrase.getId().equals(id))
                 return trackPhrase;
         }
@@ -172,23 +132,110 @@ public class Track implements ISerialize {
 
     private transient Deque<BankPatternSlot> queue;
 
-    public void addPhrase(int startMeasure, int numMeasures, TrackPhrase trackPhrase)
-            throws CausticException {
-        if (map.containsKey(startMeasure))
-            throw new CausticException("Patterns contain phrase at: " + startMeasure);
-
-        trackPhrase.setStartMeasure(startMeasure);
-        trackPhrase.setEndMeasure(startMeasure + numMeasures);
-        map.put(startMeasure, trackPhrase);
-        getDispatcher().trigger(new OnTrackPhraseAdd(this, trackPhrase));
+    public TrackItem addPhrase(int numLoops, TrackPhrase trackPhrase) throws CausticException {
+        int startMeasure = getNextMeasure();
+        return addPhraseAt(startMeasure, numLoops, trackPhrase);
     }
 
-    public void removePhrase(TrackPhrase trackPhrase) throws CausticException {
-        int measure = trackPhrase.getStartMeasure();
-        if (!map.containsKey(measure))
-            throw new CausticException("Patterns does not contain phrase at: " + measure);
-        map.remove(measure);
-        getDispatcher().trigger(new OnTrackPhraseRemove(this, trackPhrase));
+    /**
+     * Returns the valid next 'last' measure.
+     * <p>
+     * This measure is for patterns being appended to the end of the current
+     * last pattern's measure.
+     */
+    private int getNextMeasure() {
+        int next = 0;
+        for (TrackItem item : items.values()) {
+            if (item.getEndMeasure() > next)
+                next = item.getEndMeasure();
+        }
+        return next;
+    }
+
+    /**
+     * Adds a {@link TrackPhrase} to the {@link Track} by creating a
+     * {@link TrackItem} reference.
+     * 
+     * @param startMeasure The measure the phrase starts on.
+     * @param numLoops The number of times the phrase is repeated. The
+     *            {@link TrackPhrase#getNumMeasures()} is used to calculate the
+     *            number of total measures.
+     * @param trackPhrase The phrase reference which will already have been
+     *            created and registered with the Track. This phrase will have
+     *            an index of 0-63.
+     * @throws CausticException The start or measure span is occupied
+     */
+    public TrackItem addPhraseAt(int startMeasure, int numLoops, TrackPhrase trackPhrase)
+            throws CausticException {
+
+        if (contains(startMeasure))
+            throw new CausticException("Track contain phrase at start: " + startMeasure);
+
+        final int duration = trackPhrase.getNumMeasures() * numLoops;
+        int endMeasure = startMeasure + duration;
+        if (contains(startMeasure, endMeasure))
+            throw new CausticException("Track contain phrase at end: " + endMeasure);
+
+        TrackItem item = new TrackItem();
+        item.setTrackPhraseId(trackPhrase.getId());
+        item.setStartMeasure(startMeasure);
+
+        item.setEndMeasure(startMeasure + duration);
+        item.setNumLoops(numLoops);
+
+        items.put(startMeasure, item);
+
+        getDispatcher().trigger(new OnTrackPhraseAdd(this, item));
+
+        return item;
+    }
+
+    private boolean contains(int startMeasure, int endMeasure) {
+        //        for (int measure = startMeasure; measure < endMeasure; measure++) {
+        //            for (TrackItem item : items.values()) {
+        //                if (item.containsInSpan(measure))
+        //                    return true;
+        //            }
+        //        }
+        return false;
+    }
+
+    public boolean contains(int measure) {
+        for (TrackItem item : items.values()) {
+            if (item.contains(measure))
+                return true;
+        }
+        return false;
+    }
+
+    public void removePhrase(int startMeasure) throws CausticException {
+        if (!items.containsKey(startMeasure))
+            throw new CausticException("Patterns does not contain phrase at: " + startMeasure);
+
+        TrackItem item = items.remove(startMeasure);
+        BankPatternSlot slot = new BankPatternSlot(item.getBankIndex(), item.getPatternIndex());
+        queue.push(slot);
+
+        //getDispatcher().trigger(new OnTrackPhraseRemove(this, trackPhrase));
+    }
+
+    public void _addPhrase(int startMeasure, int numMeasures, TrackPhrase trackPhrase)
+            throws CausticException {
+        //        if (map.containsKey(startMeasure))
+        //            throw new CausticException("Patterns contain phrase at: " + startMeasure);
+        //
+        //        trackPhrase.setStartMeasure(startMeasure);
+        //        trackPhrase.setEndMeasure(startMeasure + numMeasures);
+        //        map.put(startMeasure, trackPhrase);
+        //        getDispatcher().trigger(new OnTrackPhraseAdd(this, trackPhrase));
+    }
+
+    public void _removePhrase(TrackPhrase trackPhrase) throws CausticException {
+        //        int measure = trackPhrase.getStartMeasure();
+        //        if (!map.containsKey(measure))
+        //            throw new CausticException("Patterns does not contain phrase at: " + measure);
+        //        map.remove(measure);
+        //        getDispatcher().trigger(new OnTrackPhraseRemove(this, trackPhrase));
     }
 
     public static class TrackEvent {
@@ -207,41 +254,41 @@ public class Track implements ISerialize {
 
     public static class OnTrackPhraseAdd extends TrackEvent {
 
-        private TrackPhrase trackPhrase;
+        private TrackItem trackItem;
 
-        public OnTrackPhraseAdd(Track track, TrackPhrase trackPhrase) {
+        public OnTrackPhraseAdd(Track track, TrackItem trackItem) {
             super(track);
-            this.trackPhrase = trackPhrase;
+            this.trackItem = trackItem;
         }
 
-        public final TrackPhrase getTrackPhrase() {
-            return trackPhrase;
+        public final TrackItem getItem() {
+            return trackItem;
         }
 
     }
 
     public static class OnTrackPhraseRemove extends TrackEvent {
 
-        private TrackPhrase trackPhrase;
+        private TrackItem trackItem;
 
-        public OnTrackPhraseRemove(Track track, TrackPhrase trackPhrase) {
+        public OnTrackPhraseRemove(Track track, TrackItem trackItem) {
             super(track);
-            this.trackPhrase = trackPhrase;
+            this.trackItem = trackItem;
         }
 
-        public final TrackPhrase getTrackPhrase() {
-            return trackPhrase;
+        public final TrackItem getItem() {
+            return trackItem;
         }
 
     }
 
     public void clearPhrases() throws CausticException {
-        Collection<TrackPhrase> removed = new ArrayList<TrackPhrase>(map.values());
-        Iterator<TrackPhrase> i = removed.iterator();
-        while (i.hasNext()) {
-            TrackPhrase trackPhrase = (TrackPhrase)i.next();
-            removePhrase(trackPhrase);
-        }
+        //        Collection<TrackPhrase> removed = new ArrayList<TrackPhrase>(map.values());
+        //        Iterator<TrackPhrase> i = removed.iterator();
+        //        while (i.hasNext()) {
+        //            TrackPhrase trackPhrase = (TrackPhrase)i.next();
+        //            removePhrase(trackPhrase);
+        //        }
     }
 
     class BankPatternSlot {
@@ -284,7 +331,7 @@ public class Track implements ISerialize {
     }
 
     private TrackPhrase findPhrase(int bankIndex, int patternIndex) {
-        for (TrackPhrase trackPhrase : map.values()) {
+        for (TrackPhrase trackPhrase : registry.values()) {
             if (trackPhrase.getBankIndex() == bankIndex
                     && trackPhrase.getPatternIndex() == patternIndex) {
                 return trackPhrase;
@@ -304,4 +351,5 @@ public class Track implements ISerialize {
         initialize();
 
     }
+
 }

@@ -35,7 +35,9 @@ import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.project.ISongManager;
 import com.teotigraphix.caustk.project.ProjectManager;
+import com.teotigraphix.caustk.project.SongManager;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.sound.CaustkSoundSource;
 import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
@@ -115,6 +117,17 @@ public class CaustkController implements ICaustkController {
     @Override
     public IProjectManager getProjectManager() {
         return projectManager;
+    }
+
+    //----------------------------------
+    // songManager
+    //----------------------------------
+
+    private ISongManager songManager;
+
+    @Override
+    public ISongManager getSongManager() {
+        return songManager;
     }
 
     //----------------------------------
@@ -249,9 +262,10 @@ public class CaustkController implements ICaustkController {
         File applicationRoot = getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
-        
+
         // sub composites will add their ICommands in their constructors
         projectManager = new ProjectManager(this, applicationRoot);
+        songManager = new SongManager(this);
         libraryManager = new LibraryManager(this);
         commandManager = new CommandManager(this);
 

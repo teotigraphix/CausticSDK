@@ -20,13 +20,24 @@ public class ProjectManager implements IProjectManager {
 
     private ICaustkController controller;
 
-    private Project project;
+    private File projectDirectory;
 
-    private ProjectPreferences projectPreferences;
+    private File sessionPreferencesFile;
 
-    public ProjectPreferences getProjectPreferences() {
-        return projectPreferences;
+    //----------------------------------
+    // sessionPreferences
+    //----------------------------------
+
+    private SessionPreferences sessionPreferences;
+
+    @Override
+    public SessionPreferences getSessionPreferences() {
+        return sessionPreferences;
     }
+
+    //----------------------------------
+    // applicationRoot
+    //----------------------------------
 
     /**
      * The root application directory, all {@link Project}s are stored in the
@@ -34,17 +45,18 @@ public class ProjectManager implements IProjectManager {
      */
     private File applicationRoot;
 
-    private File projectDirectory;
-
-    private File preferencesFile;
-
-    private boolean formatJson = false;
-
     @Override
     public File getApplicationRoot() {
         return applicationRoot;
     }
 
+    //----------------------------------
+    // project
+    //----------------------------------
+
+    private Project project;
+
+    @Override
     public Project getProject() {
         return project;
     }
@@ -56,22 +68,29 @@ public class ProjectManager implements IProjectManager {
     public ProjectManager(ICaustkController controller, File applicationRoot) {
         this.controller = controller;
         this.applicationRoot = applicationRoot;
-        projectDirectory = new File(applicationRoot, "projects");
 
-        preferencesFile = new File(applicationRoot, ".settings");
-        if (!preferencesFile.exists()) {
+        projectDirectory = new File(applicationRoot, "projects");
+        sessionPreferencesFile = new File(applicationRoot, ".settings");
+
+        if (!sessionPreferencesFile.exists()) {
             try {
-                preferencesFile.createNewFile();
+                sessionPreferencesFile.createNewFile();
+                sessionPreferences = new SessionPreferences();
+                saveProjectPreferences();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            projectPreferences = new ProjectPreferences();
         } else {
-            if (preferencesFile.exists()) {
-                projectPreferences = JsonUtils.fromGson(preferencesFile, ProjectPreferences.class);
+            if (sessionPreferencesFile.exists()) {
+                sessionPreferences = JsonUtils.fromGson(sessionPreferencesFile,
+                        SessionPreferences.class);
             }
         }
     }
+
+    //--------------------------------------------------------------------------
+    // IProjectManager API
+    //--------------------------------------------------------------------------
 
     @Override
     public boolean isProject(File file) {
@@ -82,15 +101,23 @@ public class ProjectManager implements IProjectManager {
 
     @Override
     public void save() throws IOException {
-        projectPreferences.put(ProjectPreferences.LAST_PROJECT, project.getFile().getPath());
+        sessionPreferences.put("lastProject", project.getFile().getPath());
 
-        String data = JsonUtils.toGson(project, formatJson);
+        controller.getDispatcher().trigger(new OnProjectManagerSave(project));
+
+        String data = JsonUtils.toGson(project, true);
         FileUtils.writeStringToFile(project.getFile(), data);
         String debug = project.getFile().getAbsolutePath().replace(".clp", "_d.clp");
         FileUtils.writeStringToFile(new File(debug), JsonUtils.toGson(project, true));
 
-        data = JsonUtils.toGson(projectPreferences, true);
-        FileUtils.writeStringToFile(preferencesFile, data);
+        saveProjectPreferences();
+
+        controller.getDispatcher().trigger(new OnProjectManagerSaveComplete(project));
+    }
+
+    private void saveProjectPreferences() throws IOException {
+        String data = JsonUtils.toGson(sessionPreferences, true);
+        FileUtils.writeStringToFile(sessionPreferencesFile, data);
     }
 
     @Override
@@ -100,9 +127,7 @@ public class ProjectManager implements IProjectManager {
             throw new IOException("Project file does not exist");
 
         project = JsonUtils.fromGson(file, Project.class);
-
-        controller.getDispatcher().trigger(new IProjectManager.OnProjectLoad(project));
-
+        controller.getDispatcher().trigger(new OnProjectManagerLoad(project));
         return project;
     }
 
@@ -111,13 +136,8 @@ public class ProjectManager implements IProjectManager {
         project = new Project();
         project.setFile(new File(projectDirectory, projectFile.getPath()));
         project.setInfo(createInfo());
-        controller.getDispatcher().trigger(new IProjectManager.OnProjectCreate(project));
+        controller.getDispatcher().trigger(new OnProjectManagerCreate(project));
         return project;
-    }
-
-    public void add(File songFile) {
-        // TODO Auto-generated method stub
-
     }
 
     //--------------------------------------------------------------------------

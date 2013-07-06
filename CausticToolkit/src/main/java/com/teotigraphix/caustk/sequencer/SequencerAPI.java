@@ -44,7 +44,7 @@ public class SequencerAPI implements IControllerAPI {
     public void play() {
         controller.getSystemSequencer().play();
     }
-    
+
     /**
      * @see #play()
      */

@@ -90,6 +90,7 @@ public class CaustkSoundSource implements ICaustkSoundSource {
 
     private final IDispatcher dispatcher;
 
+    @Override
     public IDispatcher getDispatcher() {
         return dispatcher;
     }

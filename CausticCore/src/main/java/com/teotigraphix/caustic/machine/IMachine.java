@@ -88,9 +88,8 @@ public interface IMachine extends IDevice, IRestore, IPersist {
      * The pattern sequencer used to add note data to the machine.
      */
     IPatternSequencer getSequencer();
-    
-    IPatternSequencer2 getPatternSequencer();
 
+    IPatternSequencer2 getPatternSequencer();
 
     //----------------------------------
     // presetName

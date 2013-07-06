@@ -63,6 +63,7 @@ public class CommandManager implements ICommandManager {
      * 
      * @see OnClearComplete
      */
+    @Override
     public void clearHistory() {
         commandHistory.clear();
     }
@@ -72,6 +73,7 @@ public class CommandManager implements ICommandManager {
      * 
      * @see OnRewindComplete
      */
+    @Override
     public int undo() {
         try {
             return commandHistory.rewind(1);
@@ -86,6 +88,7 @@ public class CommandManager implements ICommandManager {
      * 
      * @see OnFastForwardComplete
      */
+    @Override
     public int redo() {
         try {
             return commandHistory.forward(1);
@@ -104,6 +107,7 @@ public class CommandManager implements ICommandManager {
      * @param message The message key that links to the {@link ICommand}.
      * @param command The Class that will be instantiated.
      */
+    @Override
     public void put(String message, Class<?> command) {
         final String controllerMessage = returnControllerMessage(message);
         if (commands.containsKey(controllerMessage))
@@ -126,6 +130,7 @@ public class CommandManager implements ICommandManager {
      *            be created.
      * @see #sendOSCCommand(OSCMessage)
      */
+    @Override
     public void execute(String message, Object... args) {
         try {
             OSCMessage result = OSCMessage.initialize(returnControllerMessage(message));

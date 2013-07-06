@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class LibraryRegistry {
-    
+
     private Map<String, Library> libraries = new TreeMap<String, Library>();
 
     public Collection<Library> getLibraries() {

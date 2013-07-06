@@ -1,6 +1,6 @@
 
 package com.teotigraphix.caustk.project;
 
-public interface IProjectData {
+public interface ISongManager {
 
 }

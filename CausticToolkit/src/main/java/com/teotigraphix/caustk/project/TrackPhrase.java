@@ -3,8 +3,6 @@ package com.teotigraphix.caustk.project;
 
 import java.util.UUID;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
-
 /*
 
 What is a track pattern;
@@ -15,6 +13,23 @@ What is a track pattern;
 */
 
 public class TrackPhrase {
+    //----------------------------------
+    //  numMeasures
+    //----------------------------------
+
+    private int numMeasures;
+
+    public final int getNumMeasures() {
+        return numMeasures;
+    }
+
+    public final void setNumMeasures(int value) {
+        numMeasures = value;
+    }
+
+    //----------------------------------
+    //  id
+    //----------------------------------
 
     private UUID id;
 
@@ -55,49 +70,8 @@ public class TrackPhrase {
     }
 
     //----------------------------------
-    //  patternIndex
+    //  noteData
     //----------------------------------
-
-    private int startMeasure;
-
-    public final int getStartMeasure() {
-        return startMeasure;
-    }
-
-    public final void setStartMeasure(int startMeasure) {
-        this.startMeasure = startMeasure;
-    }
-
-    //----------------------------------
-    //  patternIndex
-    //----------------------------------
-
-    private int endMeasure;
-
-    public final int getEndMeasure() {
-        return endMeasure;
-    }
-
-    public final void setEndMeasure(int endMeasure) {
-        this.endMeasure = endMeasure;
-    }
-
-    private int explicitLength;
-
-    public int getExplicitLength() {
-        return explicitLength;
-    }
-
-    public void setExplicitLength(int explicitLength) {
-        this.explicitLength = explicitLength;
-    }
-
-    public int getLength() {
-        // this allows for virtual lengths in the track
-        // this means that a phrase may be 8 measures but was added as 4 measures
-        // which the start and end would show with this calc
-        return getEndMeasure() - getStartMeasure();
-    }
 
     private String noteData;
 

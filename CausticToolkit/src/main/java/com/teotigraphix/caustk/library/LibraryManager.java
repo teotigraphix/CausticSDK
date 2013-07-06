@@ -52,10 +52,12 @@ public class LibraryManager implements ILibraryManager {
     // selectedLibrary
     //----------------------------------
 
+    @Override
     public Library getSelectedLibrary() {
         return selectedLibrary;
     }
 
+    @Override
     public void setSelectedLibrary(Library value) {
         if (value == selectedLibrary)
             return;
@@ -256,6 +258,7 @@ public class LibraryManager implements ILibraryManager {
     //        }
     //    }
 
+    @Override
     public LibraryScene createLibraryScene(MetadataInfo info) {
         LibraryScene scene = new LibraryScene();
         scene.setMetadataInfo(info);
@@ -387,6 +390,27 @@ public class LibraryManager implements ILibraryManager {
             }
         }
     }
+
+    //    
+    //    public static LibraryPhrase createLibraryPhrase() {
+    //        LibraryPhrase phrase = new LibraryPhrase();
+    //        phrase.setMetadataInfo(new MetadataInfo());
+    //        phrase.setId(UUID.randomUUID());
+    //        
+    //        return phrase;
+    //    }
+    //    
+    //    public static LibraryPhrase cloneLibraryPhrase(LibraryPhrase libraryPhrase) {
+    //        LibraryPhrase phrase = new LibraryPhrase();
+    //        phrase.setMetadataInfo(libraryPhrase.getMetadataInfo());
+    //        phrase.setId(libraryPhrase.getId());
+    //        phrase.setLength(libraryPhrase.getLength());
+    //        phrase.setTempo(libraryPhrase.getTempo());
+    //        phrase.setMachineType(libraryPhrase.getMachineType());
+    //        phrase.setNoteData(libraryPhrase.getNoteData());
+    //        phrase.setResolution(libraryPhrase.getResolution());
+    //        return phrase;
+    //    }
 
     private Resolution calculateResolution(String data) {
         // TODO This is totally inefficient, needs to be lazy loaded

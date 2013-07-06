@@ -6,67 +6,119 @@ import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
 
 public class LibraryPhrase extends LibraryItem {
 
+    //----------------------------------
+    //  bankIndex
+    //----------------------------------
+
+    private int bankIndex;
+
+    public final int getBankIndex() {
+        return bankIndex;
+    }
+
+    public final void setBankIndex(int value) {
+        bankIndex = value;
+    }
+
+    //----------------------------------
+    //  patternIndex
+    //----------------------------------
+
+    private int patternIndex;
+
+    public final int getPatternIndex() {
+        return patternIndex;
+    }
+
+    public final void setPatternIndex(int value) {
+        patternIndex = value;
+    }
+
     private Resolution resolution;
-
-    private int length;
-
-    private String swing;
-
-    private String noteData;
-
-    private MachineType machineType;
-
-    private float tempo;
 
     public final Resolution getResolution() {
         return resolution;
     }
 
-    public final void setResolution(Resolution resolution) {
-        this.resolution = resolution;
+    public final void setResolution(Resolution value) {
+        resolution = value;
     }
+
+    //----------------------------------
+    //  dispatcher
+    //----------------------------------
+
+    private int length;
 
     public final int getLength() {
         return length;
     }
 
-    public final void setLength(int length) {
-        this.length = length;
+    public final void setLength(int value) {
+        length = value;
     }
+
+    //----------------------------------
+    //  dispatcher
+    //----------------------------------
+
+    private String swing;
 
     public final String getSwing() {
         return swing;
     }
 
-    public final void setSwing(String swing) {
-        this.swing = swing;
+    public final void setSwing(String value) {
+        swing = value;
     }
+
+    //----------------------------------
+    //  dispatcher
+    //----------------------------------
+
+    private String noteData;
 
     public final String getNoteData() {
         return noteData;
     }
 
-    public final void setNoteData(String noteData) {
-        this.noteData = noteData;
+    public final void setNoteData(String value) {
+        noteData = value;
     }
+
+    //----------------------------------
+    //  dispatcher
+    //----------------------------------
+
+    private MachineType machineType;
 
     public final MachineType getMachineType() {
         return machineType;
     }
 
-    public final void setMachineType(MachineType machineType) {
-        this.machineType = machineType;
+    public final void setMachineType(MachineType value) {
+        machineType = value;
     }
 
-    public LibraryPhrase() {
-    }
+    //----------------------------------
+    //  tempo
+    //----------------------------------
+
+    private float tempo;
 
     public float getTempo() {
         return tempo;
     }
 
-    public void setTempo(float tempo) {
-        this.tempo = tempo;
+    public void setTempo(float value) {
+        tempo = value;
+    }
+
+    //--------------------------------------------------------------------------
+    //  Constructor
+    //--------------------------------------------------------------------------
+
+    public LibraryPhrase() {
     }
 
     @Override

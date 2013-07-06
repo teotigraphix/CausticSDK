@@ -147,7 +147,7 @@ public class PatternFSM {
                 onStop.trigger(context);
             } else if (context.isPlaying()) {
                 context.measure++;
-            }    
+            }
 
         } else {
             // one shot only can play when queued, if playing is stopped

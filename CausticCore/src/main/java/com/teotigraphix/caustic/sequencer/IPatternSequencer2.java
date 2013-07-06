@@ -216,9 +216,8 @@ public interface IPatternSequencer2 extends IDeviceComponent {
      * @param flags The bit flag holding trigger flags.
      */
     void triggerOn(Resolution resolution, int step, int pitch, float gate, float velocity, int flags);
-    
+
     /**
-     * 
      * @param bankIndex
      * @param patternIndex
      * @param resolution

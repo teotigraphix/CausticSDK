@@ -57,18 +57,22 @@ public class SoundMixer implements ICaustkSoundMixer {
 
     private EffectsRack effectsRack;
 
+    @Override
     public void pasteMasterChannel(IMemento memento) {
         mixerPanel.pasteMasterChannel(memento);
     }
 
+    @Override
     public void pasteMixerChannel(IMachine machine, IMemento memento) {
         mixerPanel.pasteChannel(machine, memento);
     }
 
+    @Override
     public void pasteEffectChannel(IMachine machine, IMemento memento) {
         effectsRack.pasteChannel(machine, memento);
     }
 
+    @Override
     public void copyEffectChannel(IMachine machine, IMemento memento) {
         effectsRack.copyChannel(machine, memento);
     }

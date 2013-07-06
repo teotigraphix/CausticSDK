@@ -248,7 +248,7 @@ public class Rack extends Device implements IRack {
         setId("rack");
         setFactory(factory);
     }
-    
+
     /**
      * Creates a full rack implementation.
      * 

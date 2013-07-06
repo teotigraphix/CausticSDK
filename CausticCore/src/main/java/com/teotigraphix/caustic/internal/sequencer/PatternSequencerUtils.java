@@ -4,6 +4,7 @@ package com.teotigraphix.caustic.internal.sequencer;
 import java.util.Map;
 
 import com.teotigraphix.caustic.sequencer.IPatternSequencer;
+import com.teotigraphix.caustic.sequencer.IPatternSequencer2;
 import com.teotigraphix.caustic.sequencer.IStepPhrase;
 import com.teotigraphix.caustic.sequencer.ITrigger;
 
@@ -77,6 +78,25 @@ public class PatternSequencerUtils {
     static private void stepPhraseRemove(PatternSequencer sequencer, IStepPhrase phrase) {
         phrase.removeStepPhraseListener(sequencer);
         phrase.setSequencer(null);
+    }
+
+    public static void applyNoteData(IPatternSequencer2 sequencer, String noteData) {
+        // push the notes into the machines sequencer
+        String[] notes = noteData.split("\\|");
+        for (String note : notes) {
+            String[] split = note.split(" ");
+
+            float start = Float.valueOf(split[0]);
+            int pitch = Float.valueOf(split[1]).intValue();
+            float velocity = Float.valueOf(split[2]);
+            float end = Float.valueOf(split[3]);
+            //float gate = end - start;
+            int flags = Float.valueOf(split[4]).intValue();
+            //int step = Resolution.toStep(start, getResolution());
+
+            //triggerOn(step, pitch, gate, velocity, flags);
+            sequencer.addNote(pitch, start, end, velocity, flags);
+        }
     }
 
 }

@@ -13,7 +13,7 @@ public class TagUtils {
         info.getTags().add(machine.getId());
         String preset = machine.getPresetName();
         if (preset != null && !preset.isEmpty())
-            info.getTags().add(preset);  
+            info.getTags().add(preset);
     }
 
     public static void addDefaultTags(LibraryPhrase item) {

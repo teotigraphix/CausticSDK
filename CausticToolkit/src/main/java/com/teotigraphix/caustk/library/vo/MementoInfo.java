@@ -7,7 +7,7 @@ import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.core.XMLMemento;
 
 public abstract class MementoInfo {
-    
+
     /**
      * Returns the String {@link IMemento} data that was saved from the current
      * rack scene.

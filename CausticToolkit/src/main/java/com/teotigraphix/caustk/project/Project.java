@@ -39,14 +39,16 @@ public class Project {
     // data
     //----------------------------------
 
-    private Map<Class<? extends IProjectData>, IProjectData> data = new HashMap<Class<? extends IProjectData>, IProjectData>();
+    private Map<String, Object> data = new HashMap<String, Object>();
 
     public void register(Class<? extends IProjectData> clazz, IProjectData instance) {
-        data.put(clazz, instance);
+        data.put(clazz.getName(), instance);
     }
 
     public <T extends IProjectData> T data(Class<T> clazz) {
-        return clazz.cast(data.get(clazz));
+        String name = clazz.getName();
+        Object object = data.get(name);
+        return clazz.cast(object);
     }
 
     //--------------------------------------------------------------------------

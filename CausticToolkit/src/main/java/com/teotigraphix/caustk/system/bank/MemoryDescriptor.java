@@ -6,7 +6,7 @@ import java.util.List;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 
 public class MemoryDescriptor {
-    
+
     public boolean fullLoad = false;
 
     //--------------------------------------------------------------------------
