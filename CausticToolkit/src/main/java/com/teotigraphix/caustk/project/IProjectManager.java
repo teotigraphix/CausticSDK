@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.project;
 
@@ -39,7 +57,8 @@ public interface IProjectManager {
      *            the file path located within the projects app directory.
      * @return
      * @throws IOException
-     * @see OnProjectManagerCreate
+     * @see OnProjectManagerChange
+     * @see ProjectManagerChangeKind#CREATE
      */
     Project create(File projectFile) throws IOException;
 
@@ -50,7 +69,9 @@ public interface IProjectManager {
      * @param file The project <code>.ctk</code> file.
      * @return A fully loaded <code>.ctk</code> project state.
      * @throws IOException Project file does not exist
-     * @see OnProjectManagerLoad
+     * @see OnProjectManagerChange
+     * @see ProjectManagerChangeKind#LOAD
+     * @see ProjectManagerChangeKind#LOAD_COMPLETE
      */
     Project load(File file) throws IOException;
 
@@ -59,8 +80,9 @@ public interface IProjectManager {
      * location.
      * 
      * @throws IOException
-     * @see OnProjectManagerSave
-     * @see OnProjectManagerSaveComplete
+     * @see OnProjectManagerChange
+     * @see ProjectManagerChangeKind#SAVE
+     * @see ProjectManagerChangeKind#SAVE_COMPLETE
      */
     void save() throws IOException;
 
@@ -72,7 +94,8 @@ public interface IProjectManager {
      * current {@link Project} instance.
      * 
      * @throws IOException
-     * @see OnProjectManagerExit
+     * @see OnProjectManagerChange
+     * @see ProjectManagerChangeKind#EXIT
      */
     void exit() throws IOException;
 
@@ -101,6 +124,7 @@ public interface IProjectManager {
     }
 
     public enum ProjectManagerChangeKind {
+        
         /**
          * Dispatched when a project has been created and is getting registered
          * with the system for the first time.
