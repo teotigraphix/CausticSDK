@@ -66,12 +66,6 @@ public class CaustkApplication implements ICaustkApplication {
 
         // all Preset data gets loaded here
         controller = getConfiguration().createController(this);
-
-        // XXX
-        initialize();
-
-        // now we create the parts and the rest of the application audio
-        configure();
     }
 
     //--------------------------------------------------------------------------
@@ -82,6 +76,8 @@ public class CaustkApplication implements ICaustkApplication {
     public void initialize() {
         // creates all sub components of the systemController
         controller.initialize();
+        // now we create the parts and the rest of the application audio
+        configure();
     }
 
     @Override

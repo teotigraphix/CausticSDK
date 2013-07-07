@@ -38,6 +38,12 @@ public interface ICaustkConfiguration {
 
     File getApplicationRoot();
 
+    void setApplicationRoot(File value);
+
+    File getCausticStorage();
+
+    void setCausticStorage(File value);
+
     /**
      * Returns a {@link DeviceFactory} that creates caustic components.
      * <p>

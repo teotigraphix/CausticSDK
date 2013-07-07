@@ -86,8 +86,28 @@ public class ProjectManager implements IProjectManager {
 
     public ProjectManager(ICaustkController controller, File applicationRoot) {
         this.controller = controller;
-        this.applicationRoot = applicationRoot;
+        
+        initialize(controller.getConfiguration().getApplicationRoot());
+        
+        controller.getDispatcher().register(OnControllerSave.class,
+                new EventObserver<OnControllerSave>() {
+                    @Override
+                    public void trigger(OnControllerSave object) {
+                        try {
+                            save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 
+    //-------------------------------------------------------------------------
+    // IProjectManager API
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void initialize(File applicationRoot) {
         projectDirectory = new File(applicationRoot, "projects");
         sessionPreferencesFile = new File(applicationRoot, ".settings");
 
@@ -105,23 +125,7 @@ public class ProjectManager implements IProjectManager {
                         sessionPreferencesFile, SessionPreferences.class);
             }
         }
-
-        controller.getDispatcher().register(OnControllerSave.class,
-                new EventObserver<OnControllerSave>() {
-                    @Override
-                    public void trigger(OnControllerSave object) {
-                        try {
-                            save();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
     }
-
-    //-------------------------------------------------------------------------
-    // IProjectManager API
-    //--------------------------------------------------------------------------
 
     @Override
     public boolean isProject(File file) {

@@ -45,6 +45,11 @@ public interface IProjectManager {
     SessionPreferences getSessionPreferences();
 
     /**
+     * Loads the {@link SessionPreferences} from the application root.
+     */
+    void initialize(File applicationRoot);
+
+    /**
      * Creates a new {@link Project} file.
      * <p>
      * This method will NOT save the {@link Project}. This allows for clients to
@@ -124,7 +129,7 @@ public interface IProjectManager {
     }
 
     public enum ProjectManagerChangeKind {
-        
+
         /**
          * Dispatched when a project has been created and is getting registered
          * with the system for the first time.
@@ -177,4 +182,5 @@ public interface IProjectManager {
             this.kind = kind;
         }
     }
+
 }
