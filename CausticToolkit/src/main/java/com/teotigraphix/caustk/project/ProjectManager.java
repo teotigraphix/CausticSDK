@@ -23,9 +23,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkController.OnControllerSave;
 
 /**
  * The project manager manages the single project loaded for an application.
@@ -103,9 +105,21 @@ public class ProjectManager implements IProjectManager {
                         sessionPreferencesFile, SessionPreferences.class);
             }
         }
+
+        controller.getDispatcher().register(OnControllerSave.class,
+                new EventObserver<OnControllerSave>() {
+                    @Override
+                    public void trigger(OnControllerSave object) {
+                        try {
+                            save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
-    //--------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     // IProjectManager API
     //--------------------------------------------------------------------------
 
@@ -133,11 +147,11 @@ public class ProjectManager implements IProjectManager {
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
 
+        // set modified
+        project.getInfo().setModified(new Date());
+
         String data = controller.getSerializeService().toString(project);
         FileUtils.writeStringToFile(project.getFile(), data);
-        String debug = project.getFile().getAbsolutePath().replace(".clp", "_d.clp");
-        FileUtils.writeStringToFile(new File(debug),
-                controller.getSerializeService().toString(project));
 
         saveProjectPreferences();
 
