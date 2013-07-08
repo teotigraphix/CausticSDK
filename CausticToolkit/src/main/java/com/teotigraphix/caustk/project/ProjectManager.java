@@ -86,9 +86,9 @@ public class ProjectManager implements IProjectManager {
 
     public ProjectManager(ICaustkController controller, File applicationRoot) {
         this.controller = controller;
-        
+
         initialize(controller.getConfiguration().getApplicationRoot());
-        
+
         controller.getDispatcher().register(OnControllerSave.class,
                 new EventObserver<OnControllerSave>() {
                     @Override
@@ -97,6 +97,21 @@ public class ProjectManager implements IProjectManager {
                             save();
                         } catch (IOException e) {
                             e.printStackTrace();
+                        }
+                    }
+                });
+
+        controller.getDispatcher().register(OnProjectManagerChange.class,
+                new EventObserver<OnProjectManagerChange>() {
+
+                    @Override
+                    public void trigger(OnProjectManagerChange object) {
+                        if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
+                            try {
+                                flushProjectFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
@@ -146,21 +161,25 @@ public class ProjectManager implements IProjectManager {
 
     @Override
     public void save() throws IOException {
+        
         sessionPreferences.put("lastProject", project.getFile().getPath());
+        // set modified
+        project.getInfo().setModified(new Date());
 
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
 
-        // set modified
-        project.getInfo().setModified(new Date());
+        // all finalize actions like saving the full data to disk happen in a separate sequence
+        // NO clients should be changing the Project state in this event
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE_COMPLETE));
+    }
 
+    protected void flushProjectFile() throws IOException {
         String data = controller.getSerializeService().toString(project);
         FileUtils.writeStringToFile(project.getFile(), data);
 
         saveProjectPreferences();
-
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE_COMPLETE));
     }
 
     private void saveProjectPreferences() throws IOException {

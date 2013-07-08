@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.project;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The main class that is serialized in a <code>ctk</code> file.
@@ -62,6 +64,59 @@ public class Project {
 
     public void setInfo(ProjectInfo value) {
         info = value;
+    }
+
+    //----------------------------------
+    // map
+    //----------------------------------
+
+    private Map<String, Object> map = new HashMap<String, Object>();
+
+    /**
+     * Adds a key/value pair to the session map.
+     * <p>
+     * The value must be of primitive type.
+     * 
+     * @param key The String key.
+     * @param value The primitive value.
+     */
+    public void put(String key, Object value) {
+        map.put(key, value);
+    }
+
+    /**
+     * Returns a String for the key, <code>null</code> if the key does not
+     * exist.
+     * 
+     * @param key The String key.
+     */
+    public String getString(String key) {
+        if (!map.containsKey(key))
+            return null;
+        return String.valueOf(map.get(key));
+    }
+
+    /**
+     * Returns a Integer for the key, <code>null</code> if the key does not
+     * exist.
+     * 
+     * @param key The String key.
+     */
+    public Integer getInterger(String key) {
+        if (!map.containsKey(key))
+            return null;
+        return Integer.parseInt((String)map.get(key));
+    }
+
+    /**
+     * Returns a Float for the key, <code>null</code> if the key does not exist.
+     * 
+     * @param key The String key.
+     */
+    public Float getFloat(String key) {
+        if (!map.containsKey(key))
+            return null;
+        return Float.parseFloat((String)map.get(key));
     }
 
     //--------------------------------------------------------------------------

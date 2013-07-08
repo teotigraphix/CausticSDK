@@ -46,6 +46,11 @@ public class SerializeService implements ISerializeService {
     }
 
     @Override
+    public String toUnString(Object serialized) {
+        return JsonUtils.toGson(serialized, false);
+    }
+
+    @Override
     public String toString(Object serialized) {
         return JsonUtils.toGson(serialized, true);
     }
@@ -55,4 +60,5 @@ public class SerializeService implements ISerializeService {
         String data = JsonUtils.toGson(serialized, true);
         FileUtils.writeStringToFile(target, data);
     }
+
 }
