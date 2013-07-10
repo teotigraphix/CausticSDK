@@ -33,6 +33,15 @@ public interface IProjectManager {
     File getApplicationRoot();
 
     /**
+     * Returns a directory within the {@link #getApplicationRoot()} directory.
+     * <p>
+     * Will create the directory if it doesn't exist.
+     * 
+     * @param path The simple path of the directory.
+     */
+    File getDirectory(String name);
+
+    /**
      * Returns the current {@link Project} instantiated by {@link #create(File)}
      * or {@link #load(File)}.
      */

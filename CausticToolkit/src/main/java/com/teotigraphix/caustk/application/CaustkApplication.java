@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.application;
 
+import java.io.IOException;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 /**
@@ -78,16 +80,25 @@ public class CaustkApplication implements ICaustkApplication {
         controller.initialize();
         // now we create the parts and the rest of the application audio
         configure();
+        getController().getDispatcher().trigger(new OnApplicationInitialize());
     }
 
     @Override
     public void start() {
         controller.start();
+        getController().getDispatcher().trigger(new OnApplicationStart());
+    }
+
+    @Override
+    public void save() throws IOException {
+        controller.save();
+        getController().getDispatcher().trigger(new OnApplicationSave());
     }
 
     @Override
     public void close() {
         controller.close();
+        getController().getDispatcher().trigger(new OnApplicationClose());
     }
 
     /**

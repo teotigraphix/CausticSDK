@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.application;
 
+import java.io.IOException;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 /**
@@ -48,11 +50,50 @@ public interface ICaustkApplication {
 
     /**
      * Template method; starts the application processing.
+     * 
+     * @see ICaustkController#start()
+     * @see OnApplicationStart
      */
     void start();
 
     /**
      * Closes the application.
+     * 
+     * @see OnApplicationClose
      */
     void close();
+
+    /**
+     * @see OnApplicationSave
+     * @throws IOException
+     */
+    void save() throws IOException;
+
+    /**
+     * @see ICaustkApplication#initialize()
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class OnApplicationInitialize {
+    }
+    
+    /**
+     * @see ICaustkApplication#start()
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class OnApplicationStart {
+    }
+
+    /**
+     * @see ICaustkApplication#start()
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class OnApplicationSave {
+    }
+
+    /**
+     * @see ICaustkApplication#close()
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class OnApplicationClose {
+    }
 }

@@ -102,6 +102,10 @@ public class SongManager implements ISongManager {
     @Override
     public void save() throws IOException {
         saveSessionProperties();
+        
+        if (trackSong == null || trackSong.getTracks().size() == 0) {
+            return;
+        }
 
         File target = toSongFile(trackSong.getFile());
         try {
@@ -128,7 +132,7 @@ public class SongManager implements ISongManager {
                 .getString(PROJECT_SESSION_LAST_SONG);
         if (path == null) {
             throw new RuntimeException("TrackSong path null");
-        } else {
+        } else if (new File(path).exists()) {
             deserializeTrackSong(toSongFile(new File(path)));
         }
     }
@@ -174,6 +178,8 @@ public class SongManager implements ISongManager {
     }
 
     private void saveSessionProperties() {
+        if (trackSong == null)
+            return;
         controller.getProjectManager().getSessionPreferences()
                 .put(PROJECT_SESSION_LAST_SONG, trackSong.getFile().getPath());
     }

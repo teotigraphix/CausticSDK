@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -292,6 +293,11 @@ public class CaustkController implements ICaustkController {
     @Override
     public void start() {
 
+    }
+
+    @Override
+    public void save() throws IOException {
+        projectManager.save();
     }
 
     @Override

@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.controller;
 
+import java.io.IOException;
+
 import com.teotigraphix.caustic.core.ICausticEngine;
 import com.teotigraphix.caustic.core.IDispatcher;
 import com.teotigraphix.caustic.device.IDeviceFactory;
@@ -64,7 +66,7 @@ public interface ICaustkController extends ICausticEngine {
     IDeviceFactory getFactory();
 
     ISerializeService getSerializeService();
-    
+
     IProjectManager getProjectManager();
 
     ISongManager getSongManager();
@@ -100,6 +102,8 @@ public interface ICaustkController extends ICausticEngine {
      * @see ICaustkApplication#start()
      */
     void start();
+
+    void save() throws IOException;
 
     void close();
 

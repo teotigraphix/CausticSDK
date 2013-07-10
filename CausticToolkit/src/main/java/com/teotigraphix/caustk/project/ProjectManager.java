@@ -62,11 +62,20 @@ public class ProjectManager implements IProjectManager {
      * The root application directory, all {@link Project}s are stored in the
      * <code>applicationRoot/projects</code> directory.
      */
-    private File applicationRoot;
+    //private File applicationRoot;
 
     @Override
     public File getApplicationRoot() {
-        return applicationRoot;
+        return controller.getConfiguration().getApplicationRoot();
+    }
+
+    @Override
+    public File getDirectory(String path) {
+        File directory = new File(getApplicationRoot(), path);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        return directory;
     }
 
     //----------------------------------
@@ -161,7 +170,7 @@ public class ProjectManager implements IProjectManager {
 
     @Override
     public void save() throws IOException {
-        
+
         sessionPreferences.put("lastProject", project.getFile().getPath());
         // set modified
         project.getInfo().setModified(new Date());
