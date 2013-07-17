@@ -280,10 +280,10 @@ public class TrackSong extends Song implements ISerialize {
     }
 
     @Override
-    public void wakeup() {
+    public void wakeup(ICaustkController controller) {
         initializeTracks();
         for (Track track : tracks.values()) {
-            track.wakeup();
+            track.wakeup(controller);
         }
     }
 

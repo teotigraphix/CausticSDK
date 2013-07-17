@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.androidtransfuse.event.EventObserver;
 
@@ -38,13 +39,21 @@ import com.teotigraphix.caustic.machine.ISynth;
 import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustic.osc.RackMessage;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.MachineComponent;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
+import com.teotigraphix.caustk.core.components.VolumeComponent;
+import com.teotigraphix.caustk.core.components.bassline.BasslineDistortion;
+import com.teotigraphix.caustk.core.components.bassline.BasslineFilter;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.RhythmSet;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.SynthTone;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.CaustkTone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
+import com.teotigraphix.caustk.tone.ToneType;
 
 public class CaustkSoundSource implements ICaustkSoundSource {
 
@@ -114,6 +123,8 @@ public class CaustkSoundSource implements ICaustkSoundSource {
     //----------------------------------
 
     private static Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
+
+    private static Map<Integer, CaustkTone> tones2 = new HashMap<Integer, CaustkTone>();
 
     @Override
     public int getToneCount() {
@@ -188,21 +199,28 @@ public class CaustkSoundSource implements ICaustkSoundSource {
     }
 
     @Override
+    public CaustkTone createTone(ToneDescriptor descriptor) throws CausticException {
+        CaustkTone tone = createSynthChannel2(nextIndex(), descriptor.getName(),
+                descriptor.getToneType());
+        return tone;
+    }
+
+    @Override
     public Tone create(ToneDescriptor descriptor) throws CausticException {
         Tone tone = null;
         MachineType machineType = descriptor.getMachineType();
         switch (machineType) {
             case BASSLINE:
-                tone = createBassline(descriptor.getId());
+                tone = createBassline(descriptor.getName());
                 break;
             case BEATBOX:
-                tone = createBeatbox(descriptor.getId());
+                tone = createBeatbox(descriptor.getName());
                 break;
             case PCMSYNTH:
-                tone = createPCMSynth(descriptor.getId());
+                tone = createPCMSynth(descriptor.getName());
                 break;
             case SUBSYNTH:
-                tone = createSubSynth(descriptor.getId());
+                tone = createSubSynth(descriptor.getName());
                 break;
             default:
                 break;
@@ -252,8 +270,82 @@ public class CaustkSoundSource implements ICaustkSoundSource {
     // Protected Method API
     //--------------------------------------------------------------------------
 
-    Tone createSynthChannel(String machineId, MachineType machineType) throws CausticException {
-        return createSynthChannel(nextIndex(), machineId, machineType);
+    Tone createSynthChannel(String toneName, MachineType machineType) throws CausticException {
+        return createSynthChannel(nextIndex(), toneName, machineType);
+    }
+
+    CaustkTone createSynthChannel2(int index, String toneName, ToneType toneType)
+            throws CausticException {
+        if (tones2.containsKey(index)) {
+            throw new CausticException("{" + index + "} tone is already defined");
+        }
+
+        RackMessage.CREATE.send(getEngine(), toneType.getValue(), toneName, index);
+
+        CaustkTone tone = null;
+        switch (toneType) {
+            case Bassline:
+                tone = new CaustkTone(getController());
+                tone.setId(UUID.randomUUID());
+                tone.setName(toneName);
+                tone.setToneType(toneType);
+                tone.addComponent(MachineComponent.class, new MachineComponent());
+                tone.addComponent(SynthComponent.class, new SynthComponent());
+                tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+                tone.addComponent(VolumeComponent.class, new VolumeComponent());
+                tone.addComponent(BasslineDistortion.class, new BasslineDistortion());
+                tone.addComponent(BasslineFilter.class, new BasslineDistortion());
+
+                break;
+            case Beatbox:
+                break;
+            case PCMSynth:
+                break;
+            case SubSynth:
+                break;
+            case PadSynth:
+                break;
+            case Organ:
+                break;
+            case Vocoder:
+                break;
+            case EightBitSynth:
+                break;
+            case Modular:
+                break;
+            case FMSynth:
+                break;
+            default:
+                break;
+        }
+
+        //        Machine machine = (Machine)getController().getFactory().create(machineId, toneType);
+        //
+        //        if (machine == null) {
+        //            throw new CausticException("{" + toneType + "} IMachine type not defined");
+        //        }
+        //
+        //        RackMessage.CREATE.send(getEngine(), toneType.getValue(), machineId, index);
+        //
+        //        machine.setIndex(index);
+        //        machine.setType(machineType);
+        //        machine.setEngine(getEngine());
+        //
+        //        Tone tone = null;
+        //
+        //        if (machineType == MachineType.BASSLINE) {
+        //            tone = new BasslineTone((IBassline)machine);
+        //        } else if (machineType == MachineType.BEATBOX) {
+        //            tone = new RhythmSet(machine);
+        //        } else if (machineType == MachineType.PCMSYNTH) {
+        //            tone = new PCMSynthTone(machine);
+        //        } else if (machineType == MachineType.SUBSYNTH) {
+        //            tone = new SubSynthTone(machine);
+        //        }
+        //
+        //        toneAdd(index, tone);
+
+        return tone;
     }
 
     Tone createSynthChannel(int index, String machineId, MachineType machineType)

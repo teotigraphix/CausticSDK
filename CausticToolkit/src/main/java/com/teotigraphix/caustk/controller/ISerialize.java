@@ -19,8 +19,23 @@
 
 package com.teotigraphix.caustk.controller;
 
+import com.teotigraphix.caustk.service.ISerializeService;
+
 public interface ISerialize {
+
+    /**
+     * Called right before serialization with the {@link ISerializeService}.
+     * <p>
+     * If this is a sub instance, it is up to the parent to call this on its
+     * children during it's {@link #sleep()} invocation.
+     */
     void sleep();
 
-    void wakeup();
+    /**
+     * Called right before deserialization with the {@link ISerializeService}.
+     * <p>
+     * If this is a sub instance, it is up to the parent to call this on its
+     * children during it's {@link #wakeup()} invocation.
+     */
+    void wakeup(ICaustkController controller);
 }

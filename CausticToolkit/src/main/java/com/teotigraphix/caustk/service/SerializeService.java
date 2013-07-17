@@ -28,7 +28,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class SerializeService implements ISerializeService {
 
-    @SuppressWarnings("unused")
     private ICaustkController controller;
 
     public SerializeService(ICaustkController controller) {
@@ -37,12 +36,12 @@ public class SerializeService implements ISerializeService {
 
     @Override
     public <T> T fromFile(File file, Class<T> classOfT) {
-        return JsonUtils.fromGson(file, classOfT);
+        return JsonUtils.fromGson(file, classOfT, controller);
     }
 
     @Override
     public <T> T fromString(String data, Class<T> classOfT) {
-        return JsonUtils.fromGson(data, classOfT);
+        return JsonUtils.fromGson(data, classOfT, controller);
     }
 
     @Override

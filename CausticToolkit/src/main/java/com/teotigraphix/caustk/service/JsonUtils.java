@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ISerialize;
 
 public class JsonUtils {
@@ -43,7 +44,7 @@ public class JsonUtils {
         return gson.toJson(serialized);
     }
 
-    static <T> T fromGson(File file, Class<T> classOfT) {
+    static <T> T fromGson(File file, Class<T> classOfT, ICaustkController controller) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         T result = null;
@@ -57,11 +58,11 @@ public class JsonUtils {
             e.printStackTrace();
         }
         if (result instanceof ISerialize)
-            ((ISerialize)result).wakeup();
+            ((ISerialize)result).wakeup(controller);
         return result;
     }
 
-    static <T> T fromGson(String data, Class<T> classOfT) {
+    static <T> T fromGson(String data, Class<T> classOfT, ICaustkController controller) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         T result = null;
@@ -73,7 +74,7 @@ public class JsonUtils {
             e.printStackTrace();
         }
         if (result instanceof ISerialize)
-            ((ISerialize)result).wakeup();
+            ((ISerialize)result).wakeup(controller);
         return result;
     }
 

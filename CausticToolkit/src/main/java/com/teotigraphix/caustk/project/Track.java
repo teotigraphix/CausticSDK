@@ -378,7 +378,7 @@ public class Track implements ISerialize {
     }
 
     @Override
-    public void wakeup() {
+    public void wakeup(ICaustkController controller) {
         initialize();
 
     }

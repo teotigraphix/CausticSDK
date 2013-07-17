@@ -24,6 +24,7 @@ import java.util.Collection;
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.core.IDispatcher;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.CaustkTone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 
 /**
@@ -56,4 +57,6 @@ public interface ICaustkSoundSource {
     public enum SoundMode {
         KEYBOARD, STEP;
     }
+
+    CaustkTone createTone(ToneDescriptor descriptor) throws CausticException;
 }

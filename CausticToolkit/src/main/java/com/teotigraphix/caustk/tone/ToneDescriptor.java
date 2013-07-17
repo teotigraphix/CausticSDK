@@ -32,13 +32,15 @@ public class ToneDescriptor {
         return index;
     }
 
-    private final String id;
+    private final String name;
 
-    public String getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    private final MachineType machineType;
+    private MachineType machineType;
+
+    private ToneType toneType;
 
     public MachineType getMachineType() {
         return machineType;
@@ -46,7 +48,17 @@ public class ToneDescriptor {
 
     public ToneDescriptor(int index, String name, MachineType machineType) {
         this.index = index;
-        this.id = name;
+        this.name = name;
         this.machineType = machineType;
+    }
+
+    public ToneDescriptor(int index, String name, ToneType toneType) {
+        this.index = index;
+        this.name = name;
+        this.toneType = toneType;
+    }
+
+    public ToneType getToneType() {
+        return toneType;
     }
 }
