@@ -24,11 +24,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.teotigraphix.caustic.core.ICausticEngine;
-import com.teotigraphix.caustic.device.IDeviceFactory;
+import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.ISerialize;
+import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 public class Tone implements ISerialize {

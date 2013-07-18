@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.teotigraphix.caustic.internal.sequencer.PatternSequencerConstants;
-import com.teotigraphix.caustic.osc.PatternSequencerMessage;
-import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 
 public class PatternSequencerComponent extends ToneComponent {
 
@@ -71,7 +69,7 @@ public class PatternSequencerComponent extends ToneComponent {
 
     void setSelectedBank(int value) {
         if (value < 0 || value > 15)
-            throw newRangeException(PatternSequencerConstants.BANK, "0..15", value);
+            throw newRangeException("bank", "0..15", value);
         selectedBank = value;
         sendBankOSC(selectedBank);
     }
@@ -92,7 +90,7 @@ public class PatternSequencerComponent extends ToneComponent {
 
     void setSelectedIndex(int value) {
         if (value < 0 || value > 15)
-            throw newRangeException(PatternSequencerConstants.PATTERN, "0..15", value);
+            throw newRangeException("pattern", "0..15", value);
         selectedIndex = value;
         sendcPatternOSC(selectedIndex);
     }
@@ -204,6 +202,82 @@ public class PatternSequencerComponent extends ToneComponent {
 
     @Override
     public void restore() {
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @copyright Teoti Graphix, LLC
+     * @since 1.0
+     */
+    public enum Resolution {
+
+        /**
+         * A whole note.
+         */
+        WHOLE(1f), // 1
+
+        /**
+         * A half note.
+         */
+        HALF(0.5f), // 2
+
+        /**
+         * A quarter note.
+         */
+        QUATER(0.25f), // 4
+
+        /**
+         * An eighth note.
+         */
+        EIGHTH(0.125f), // 8
+
+        /**
+         * A sixteenth note.
+         */
+        SIXTEENTH(0.0625f), // 16
+
+        /**
+         * A thirtysecond note.
+         */
+        THIRTYSECOND(0.03125f), // 32
+
+        /**
+         * A sixtyfourth note.
+         */
+        SIXTYFOURTH(0.015625f); // 1 / 0.015625f = 64
+
+        Resolution(float value) {
+            mValue = value;
+        }
+
+        private float mValue;
+
+        /**
+         * Returns the amount of steps in a measure for the given phrase
+         * resolution.
+         * 
+         * @param resolution The note resolution.
+         * @return The number of steps in a measure for the given phrase
+         *         resolution.
+         */
+        public final static int toSteps(Resolution resolution) {
+            return (int)(1 / resolution.getValue());
+        }
+
+        public float getValue() {
+            return mValue;
+        }
+
+        private static int beatsInMeasure = 4;
+
+        public static int toStep(float beat, Resolution resolution) {
+            // (beat(5) / 0.0625) / 4
+            return (int)(beat / resolution.getValue()) / beatsInMeasure;
+        }
+
+        public static float toBeat(float step, Resolution resolution) {
+            return (step * resolution.getValue()) * beatsInMeasure;
+        }
     }
 
 }

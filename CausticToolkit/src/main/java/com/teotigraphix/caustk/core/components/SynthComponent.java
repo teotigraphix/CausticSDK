@@ -1,10 +1,16 @@
 
 package com.teotigraphix.caustk.core.components;
 
-import com.teotigraphix.caustic.osc.MachineMessage;
-import com.teotigraphix.caustic.osc.SynthMessage;
+import com.teotigraphix.caustk.core.osc.MachineMessage;
+import com.teotigraphix.caustk.core.osc.SynthMessage;
 
 public class SynthComponent extends ToneComponent {
+
+    private transient String absolutePresetPath;
+
+    public String getPresetPath() {
+        return absolutePresetPath;
+    }
 
     //--------------------------------------------------------------------------
     //
@@ -47,6 +53,16 @@ public class SynthComponent extends ToneComponent {
     // API :: Methods
     //
     //--------------------------------------------------------------------------
+
+    public void loadPreset(String path) {
+        absolutePresetPath = path;
+        MachineMessage.LOAD_PRESET.send(getEngine(), getToneIndex(), path);
+    }
+
+    public void savePreset(String name) {
+        // calculate the preset path
+        MachineMessage.SAVE_PRESET.send(getEngine(), getToneIndex(), name);
+    }
 
     public void noteOn(int pitch) {
         noteOn(pitch, 1f);

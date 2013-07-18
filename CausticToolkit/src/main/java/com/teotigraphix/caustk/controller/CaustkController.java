@@ -24,29 +24,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustic.core.Dispatcher;
-import com.teotigraphix.caustic.core.IDispatcher;
-import com.teotigraphix.caustic.device.IDeviceFactory;
+import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
-import com.teotigraphix.caustk.controller.command.CommandManager;
-import com.teotigraphix.caustk.controller.command.ICommand;
-import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.controller.command.OSCMessage;
-import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.library.LibraryManager;
+import com.teotigraphix.caustk.application.IDeviceFactory;
+import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.caustk.project.ISongManager;
 import com.teotigraphix.caustk.project.ProjectManager;
-import com.teotigraphix.caustk.project.SongManager;
-import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.SerializeService;
-import com.teotigraphix.caustk.sound.CaustkSoundSource;
-import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
-import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
-import com.teotigraphix.caustk.sound.ICaustkSoundSource;
-import com.teotigraphix.caustk.sound.SoundMixer;
+import com.teotigraphix.caustk.sound.SoundSource;
+import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.sound.ISoundGenerator;
 
 /**
  * @author Michael Schmalle
@@ -57,15 +46,16 @@ public class CaustkController implements ICaustkController {
     // Public Property API
     //--------------------------------------------------------------------------
 
-    private Map<Class<? extends IControllerAPI>, IControllerAPI> api = new HashMap<Class<? extends IControllerAPI>, IControllerAPI>();
+    private Map<Class<? extends IControllerComponent>, IControllerComponent> api = new HashMap<Class<? extends IControllerComponent>, IControllerComponent>();
 
     @Override
-    public void registerAPI(Class<? extends IControllerAPI> clazz, IControllerAPI instance) {
+    public void addComponent(Class<? extends IControllerComponent> clazz,
+            IControllerComponent instance) {
         api.put(clazz, instance);
     }
 
     @Override
-    public <T extends IControllerAPI> T api(Class<T> clazz) {
+    public <T extends IControllerComponent> T getComponent(Class<T> clazz) {
         return clazz.cast(api.get(clazz));
     }
 
@@ -137,34 +127,34 @@ public class CaustkController implements ICaustkController {
     // songManager
     //----------------------------------
 
-    private ISongManager songManager;
-
-    @Override
-    public ISongManager getSongManager() {
-        return songManager;
-    }
+    //    private ISongManager songManager;
+    //
+    //    @Override
+    //    public ISongManager getSongManager() {
+    //        return songManager;
+    //    }
 
     //----------------------------------
     // libraryManager
     //----------------------------------
 
-    private ILibraryManager libraryManager;
-
-    @Override
-    public ILibraryManager getLibraryManager() {
-        return libraryManager;
-    }
+    //    private ILibraryManager libraryManager;
+    //
+    //    @Override
+    //    public ILibraryManager getLibraryManager() {
+    //        return libraryManager;
+    //    }
 
     //----------------------------------
     // commandManager
     //----------------------------------
 
-    private ICommandManager commandManager;
-
-    @Override
-    public ICommandManager getCommandManager() {
-        return commandManager;
-    }
+    //    private ICommandManager commandManager;
+    //
+    //    @Override
+    //    public ICommandManager getCommandManager() {
+    //        return commandManager;
+    //    }
 
     /**
      * Executes an {@link ICommand} against a registered message.
@@ -174,29 +164,29 @@ public class CaustkController implements ICaustkController {
      *            be created.
      * @see #sendOSCCommand(OSCMessage)
      */
-    @Override
-    public void execute(String message, Object... args) {
-        commandManager.execute(message, args);
-    }
-
-    @Override
-    public void undo() {
-        commandManager.undo();
-    }
-
-    @Override
-    public void redo() {
-        commandManager.redo();
-    }
+    //    @Override
+    //    public void execute(String message, Object... args) {
+    //        commandManager.execute(message, args);
+    //    }
+    //
+    //    @Override
+    //    public void undo() {
+    //        commandManager.undo();
+    //    }
+    //
+    //    @Override
+    //    public void redo() {
+    //        commandManager.redo();
+    //    }
 
     //----------------------------------
     // soundGenerator
     //----------------------------------
 
-    private ICaustkSoundGenerator soundGenerator;
+    private ISoundGenerator soundGenerator;
 
     @Override
-    public ICaustkSoundGenerator getSoundGenerator() {
+    public ISoundGenerator getSoundGenerator() {
         return soundGenerator;
     }
 
@@ -204,10 +194,10 @@ public class CaustkController implements ICaustkController {
     // soundSource
     //----------------------------------
 
-    private ICaustkSoundSource soundSource;
+    private ISoundSource soundSource;
 
     @Override
-    public ICaustkSoundSource getSoundSource() {
+    public ISoundSource getSoundSource() {
         return soundSource;
     }
 
@@ -215,23 +205,23 @@ public class CaustkController implements ICaustkController {
     // soundSource
     //----------------------------------
 
-    private ICaustkSoundMixer soundMixer;
-
-    @Override
-    public ICaustkSoundMixer getSoundMixer() {
-        return soundMixer;
-    }
+    //    private ICaustkSoundMixer soundMixer;
+    //
+    //    @Override
+    //    public ICaustkSoundMixer getSoundMixer() {
+    //        return soundMixer;
+    //    }
 
     //----------------------------------
     // systemSequencer
     //----------------------------------
 
-    private SystemSequencer systemSequencer;
-
-    @Override
-    public SystemSequencer getSystemSequencer() {
-        return systemSequencer;
-    }
+    //    private SystemSequencer systemSequencer;
+    //
+    //    @Override
+    //    public SystemSequencer getSystemSequencer() {
+    //        return systemSequencer;
+    //    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -248,7 +238,7 @@ public class CaustkController implements ICaustkController {
     public CaustkController(ICaustkApplication application) {
         this.application = application;
 
-        factory = getConfiguration().getDeviceFactory(this);
+        factory = getConfiguration().createDeviceFactory(this);
         dispatcher = new Dispatcher();
     }
 
@@ -280,14 +270,15 @@ public class CaustkController implements ICaustkController {
         // sub composites will add their ICommands in their constructors
         serializeService = new SerializeService(this);
         projectManager = new ProjectManager(this, applicationRoot);
-        songManager = new SongManager(this, applicationRoot);
-        libraryManager = new LibraryManager(this);
-        commandManager = new CommandManager(this);
+        //        songManager = new SongManager(this, applicationRoot);
+        //        libraryManager = new LibraryManager(this);
+        //        commandManager = new CommandManager(this);
 
         soundGenerator = getConfiguration().createSoundGenerator(this);
-        soundSource = new CaustkSoundSource(this);
-        soundMixer = new SoundMixer(this);
-        systemSequencer = new SystemSequencer(this);
+        soundGenerator.initialize();
+        soundSource = new SoundSource(this);
+        //        soundMixer = new SoundMixer(this);
+        //        systemSequencer = new SystemSequencer(this);
     }
 
     @Override
@@ -297,7 +288,7 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void save() throws IOException {
-        projectManager.save();
+        //        projectManager.save();
     }
 
     @Override

@@ -1,8 +1,8 @@
 
 package com.teotigraphix.caustk.core.components.bassline;
 
-import com.teotigraphix.caustic.osc.BasslineDistortionMessage;
 import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.core.osc.BasslineDistortionMessage;
 
 public class DistortionComponent extends ToneComponent {
 

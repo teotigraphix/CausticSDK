@@ -1,9 +1,9 @@
 
 package com.teotigraphix.caustk.core.components.subsynth;
 
-import com.teotigraphix.caustic.filter.ILFOComponent.WaveForm;
-import com.teotigraphix.caustic.osc.SubSynthLFOMessage;
 import com.teotigraphix.caustk.core.components.LFOComponentBase;
+import com.teotigraphix.caustk.core.components.subsynth.Osc2Component.WaveForm;
+import com.teotigraphix.caustk.core.osc.SubSynthLFOMessage;
 
 public class LFO1Component extends LFOComponentBase {
 

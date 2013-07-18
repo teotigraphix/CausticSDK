@@ -1,8 +1,8 @@
 
 package com.teotigraphix.caustk.core.components.pcmsynth;
 
-import com.teotigraphix.caustic.osc.PitchMessage;
 import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.core.osc.PitchMessage;
 
 public class PCMTunerComponent extends ToneComponent {
 

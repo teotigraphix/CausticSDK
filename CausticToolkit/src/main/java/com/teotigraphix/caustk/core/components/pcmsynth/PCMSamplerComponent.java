@@ -4,8 +4,8 @@ package com.teotigraphix.caustk.core.components.pcmsynth;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.teotigraphix.caustic.osc.PCMSamplerMessage;
 import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.core.osc.PCMSamplerMessage;
 
 public class PCMSamplerComponent extends ToneComponent {
 

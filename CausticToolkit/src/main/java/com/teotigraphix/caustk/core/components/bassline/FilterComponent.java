@@ -1,8 +1,8 @@
 
 package com.teotigraphix.caustk.core.components.bassline;
 
-import com.teotigraphix.caustic.osc.FilterMessage;
 import com.teotigraphix.caustk.core.components.FilterComponentBase;
+import com.teotigraphix.caustk.core.osc.FilterMessage;
 
 public class FilterComponent extends FilterComponentBase {
 

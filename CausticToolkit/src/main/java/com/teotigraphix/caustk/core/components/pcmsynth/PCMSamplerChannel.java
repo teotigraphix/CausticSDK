@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.core.components.pcmsynth;
 
-import com.teotigraphix.caustic.osc.PCMSamplerMessage;
 import com.teotigraphix.caustk.core.components.ToneComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent.PlayMode;
+import com.teotigraphix.caustk.core.osc.PCMSamplerMessage;
 
 /**
  * @author Michael Schmalle

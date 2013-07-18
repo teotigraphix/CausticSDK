@@ -1,9 +1,9 @@
 
 package com.teotigraphix.caustk.core.components;
 
-import com.teotigraphix.caustic.core.ICausticEngine;
-import com.teotigraphix.caustic.core.IRestore;
-import com.teotigraphix.caustic.internal.utils.ExceptionUtils;
+import com.teotigraphix.caustk.core.ExceptionUtils;
+import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.tone.Tone;
 
 public abstract class ToneComponent implements IRestore {

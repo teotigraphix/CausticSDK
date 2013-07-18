@@ -19,12 +19,11 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.components.VolumeComponent;
-import com.teotigraphix.caustk.sequencer.SystemSequencer;
 
 public class SynthTone extends Tone {
 
@@ -38,6 +37,74 @@ public class SynthTone extends Tone {
 
     public PatternSequencerComponent getPatternSequencer() {
         return getComponent(PatternSequencerComponent.class);
+    }
+
+    //----------------------------------
+    // enabled
+    //----------------------------------
+
+    private boolean mEnabled = false;
+
+    public final boolean isEnabled() {
+        return mEnabled;
+    }
+
+    public final void setEnabled(boolean value) {
+        if (value == mEnabled)
+            return;
+        mEnabled = value;
+        // firePropertyChange(TonePropertyKind.ENABLED, mEnabled);
+    }
+
+    //----------------------------------
+    // muted
+    //----------------------------------
+
+    private boolean mMuted = false;
+
+    public boolean isMuted() {
+        return mMuted;
+    }
+
+    public void setMuted(boolean value) {
+        if (value == mMuted)
+            return;
+        mMuted = value;
+        // firePropertyChange(TonePropertyKind.MUTE, mMuted);
+    }
+
+    //----------------------------------
+    // selected
+    //----------------------------------
+
+    private boolean mSelected = false;
+
+    public boolean getSelected() {
+        return mSelected;
+    }
+
+    public void setSelected(boolean value) {
+        if (value == mSelected)
+            return;
+        mSelected = value;
+        // firePropertyChange(TonePropertyKind.SELECTED, mSelected);
+    }
+
+    //----------------------------------
+    // presetBank
+    //----------------------------------
+
+    private String mPresetBank;
+
+    public final String getPresetBank() {
+        return mPresetBank;
+    }
+
+    public final void setPresetBank(String value) {
+        if (value == mPresetBank)
+            return;
+        mPresetBank = value;
+        // firePropertyChange(TonePropertyKind.PRESET_BANK, mPresetBank);
     }
 
     public SynthTone(ICaustkController controller) {

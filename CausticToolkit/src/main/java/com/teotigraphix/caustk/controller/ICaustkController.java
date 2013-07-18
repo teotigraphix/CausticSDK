@@ -21,20 +21,15 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.IOException;
 
-import com.teotigraphix.caustic.core.ICausticEngine;
-import com.teotigraphix.caustic.core.IDispatcher;
-import com.teotigraphix.caustic.device.IDeviceFactory;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
-import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.library.ILibraryManager;
+import com.teotigraphix.caustk.application.IDeviceFactory;
+import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.caustk.project.ISongManager;
-import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
-import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
-import com.teotigraphix.caustk.sound.ICaustkSoundMixer;
-import com.teotigraphix.caustk.sound.ICaustkSoundSource;
+import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.sound.ISoundGenerator;
 
 /**
  * @author Michael Schmalle
@@ -45,7 +40,7 @@ public interface ICaustkController extends ICausticEngine {
      * @param clazz
      * @param instance
      */
-    void registerAPI(Class<? extends IControllerAPI> clazz, IControllerAPI instance);
+    void addComponent(Class<? extends IControllerComponent> clazz, IControllerComponent instance);
 
     /**
      * <pre>
@@ -55,7 +50,7 @@ public interface ICaustkController extends ICausticEngine {
      * 
      * @param clazz
      */
-    <T extends IControllerAPI> T api(Class<T> clazz);
+    <T extends IControllerComponent> T getComponent(Class<T> clazz);
 
     ICaustkApplication getApplication();
 
@@ -67,27 +62,27 @@ public interface ICaustkController extends ICausticEngine {
 
     ISerializeService getSerializeService();
 
+    ISoundGenerator getSoundGenerator();
+
+    ISoundSource getSoundSource();
+
     IProjectManager getProjectManager();
 
-    ISongManager getSongManager();
+    //    ISongManager getSongManager();
 
-    ILibraryManager getLibraryManager();
+    //    ILibraryManager getLibraryManager();
 
-    ICaustkSoundGenerator getSoundGenerator();
+    //    ICaustkSoundMixer getSoundMixer();
 
-    ICaustkSoundSource getSoundSource();
+    //    SystemSequencer getSystemSequencer();
 
-    ICaustkSoundMixer getSoundMixer();
+    //    ICommandManager getCommandManager();
 
-    SystemSequencer getSystemSequencer();
-
-    ICommandManager getCommandManager();
-
-    void execute(String message, Object... args);
-
-    void undo();
-
-    void redo();
+    //    void execute(String message, Object... args);
+    //
+    //    void undo();
+    //
+    //    void redo();
 
     /**
      * Called to create all sub components of the {@link ICaustkController}.

@@ -1,8 +1,8 @@
 
 package com.teotigraphix.caustk.core.components.bassline;
 
-import com.teotigraphix.caustic.osc.BasslineLFOMessage;
 import com.teotigraphix.caustk.core.components.LFOComponentBase;
+import com.teotigraphix.caustk.core.osc.BasslineLFOMessage;
 
 public class LFO1Component extends LFOComponentBase {
 

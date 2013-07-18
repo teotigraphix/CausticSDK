@@ -1,8 +1,8 @@
 
 package com.teotigraphix.caustk.core.components.subsynth;
 
-import com.teotigraphix.caustic.osc.SubSynthLFOMessage;
 import com.teotigraphix.caustk.core.components.LFOComponentBase;
+import com.teotigraphix.caustk.core.osc.SubSynthLFOMessage;
 
 public class LFO2Component extends LFOComponentBase {
     //--------------------------------------------------------------------------

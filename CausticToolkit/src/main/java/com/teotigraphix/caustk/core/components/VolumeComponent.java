@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.core.components;
 
-import com.teotigraphix.caustic.osc.VolumeMessage;
+import com.teotigraphix.caustk.core.osc.VolumeMessage;
 import com.teotigraphix.caustk.tone.ToneType;
 
 /**

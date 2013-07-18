@@ -21,13 +21,11 @@ package com.teotigraphix.caustk.application;
 
 import java.io.File;
 
-import com.teotigraphix.caustic.core.ICausticEngine;
-import com.teotigraphix.caustic.device.IDeviceFactory;
-import com.teotigraphix.caustic.internal.device.DeviceFactory;
-import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustk.controller.CaustkController;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.sound.ICaustkSoundGenerator;
+import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.caustk.tone.Tone;
 
 /**
  * @author Michael Schmalle
@@ -53,15 +51,7 @@ public interface ICaustkConfiguration {
      * <p>
      * Default returns a {@link GrooveDeviceFactory}.
      */
-    IDeviceFactory getDeviceFactory(ICausticEngine engine);
-
-    /**
-     * Each platform and application needs to implement its sound/part/tone
-     * configuration.
-     * <p>
-     * Impls will create machines through the {@link SoundSource}.
-     */
-    ICaustkConfigurator getConfigurator();
+    IDeviceFactory createDeviceFactory(ICausticEngine engine);
 
     //--------------------------------------------------------------------------
     // Factory Methods
@@ -85,8 +75,8 @@ public interface ICaustkConfiguration {
      * android device.
      * 
      * @param controller The main controller.
-     * @return The single instance of the {@link ICaustkSoundGenerator}.
+     * @return The single instance of the {@link ISoundGenerator}.
      */
-    ICaustkSoundGenerator createSoundGenerator(ICaustkController controller);
+    ISoundGenerator createSoundGenerator(ICaustkController controller);
 
 }

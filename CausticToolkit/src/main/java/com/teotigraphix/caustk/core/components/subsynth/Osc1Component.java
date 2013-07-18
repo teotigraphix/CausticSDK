@@ -1,8 +1,8 @@
 
 package com.teotigraphix.caustk.core.components.subsynth;
 
-import com.teotigraphix.caustic.osc.SubSynthOscMessage;
 import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.core.osc.SubSynthOscMessage;
 
 public class Osc1Component extends ToneComponent {
 
