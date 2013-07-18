@@ -64,14 +64,14 @@ public class LibrarySerializerUtils {
         if (controller.getSoundSource().getTones().size() > 0) {
             for (int i = 0; i < 6; i++) {
                 Tone tone = controller.getSoundSource().getTone(i);
-                IMachine machine = tone.getMachine();
-                if (machine != null) {
-                    IMemento child = memento.createChild("machine");
-                    child.putInteger("index", i);
-                    child.putInteger("active", machine != null ? 1 : 0);
-                    child.putString("id", machine.getId());
-                    child.putString("type", machine.getType().getValue());
-                }
+//                IMachine machine = tone.getMachine();
+//                if (machine != null) {
+//                    IMemento child = memento.createChild("machine");
+//                    child.putInteger("index", i);
+//                    child.putInteger("active", machine != null ? 1 : 0);
+//                    child.putString("id", machine.getId());
+//                    child.putString("type", machine.getType().getValue());
+//                }
             }
         }
         info.setData(memento.toString());

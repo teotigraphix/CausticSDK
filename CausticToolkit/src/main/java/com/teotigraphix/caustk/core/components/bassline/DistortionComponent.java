@@ -1,12 +1,11 @@
 
 package com.teotigraphix.caustk.core.components.bassline;
 
-import com.teotigraphix.caustic.effect.IBasslineDistortionUnit.Program;
 import com.teotigraphix.caustic.osc.BasslineDistortionMessage;
 import com.teotigraphix.caustk.core.components.ToneComponent;
 
-public class BasslineDistortion extends ToneComponent {
-    
+public class DistortionComponent extends ToneComponent {
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------
@@ -106,7 +105,7 @@ public class BasslineDistortion extends ToneComponent {
                 program.getValue());
     }
 
-    public BasslineDistortion() {
+    public DistortionComponent() {
     }
 
     @Override
@@ -117,4 +116,58 @@ public class BasslineDistortion extends ToneComponent {
         setProgram(getProgram(true));
     }
 
+    /**
+     * @author Michael Schmalle
+     * @copyright Teoti Graphix, LLC
+     * @since 1.0
+     */
+    public enum Program {
+
+        /**
+         * 
+         */
+        OFF(0),
+
+        /**
+         * 
+         */
+        OVERDRIVE(1),
+
+        /**
+         * 
+         */
+        SATURATE(2),
+
+        /**
+         * 
+         */
+        FOLDBACK(3),
+
+        /**
+         * 
+         */
+        FUZZ(4);
+
+        private int mValue;
+
+        Program(int value) {
+            mValue = value;
+        }
+
+        public int getValue() {
+            return mValue;
+        }
+
+        public static Program toType(Integer type) {
+            for (Program p : values()) {
+                if (p.getValue() == type)
+                    return p;
+            }
+            return null;
+        }
+
+        public static Program toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
 }

@@ -28,13 +28,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustic.core.IMemento;
-import com.teotigraphix.caustic.core.XMLMemento;
 import com.teotigraphix.caustic.internal.effect.EffectsRack;
-import com.teotigraphix.caustic.internal.machine.Bassline;
 import com.teotigraphix.caustic.internal.machine.Beatbox;
 import com.teotigraphix.caustic.internal.machine.Machine;
 import com.teotigraphix.caustic.internal.machine.PCMSynth;
-import com.teotigraphix.caustic.internal.machine.SubSynth;
 import com.teotigraphix.caustic.internal.mixer.MixerDelay;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.internal.mixer.MixerReverb;
@@ -46,7 +43,10 @@ import com.teotigraphix.caustic.osc.OutputPanelMessage;
 import com.teotigraphix.caustic.osc.PatternSequencerMessage;
 import com.teotigraphix.caustic.osc.RackMessage;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
+import com.teotigraphix.caustk.tone.ToneType;
 
 /**
  * The {@link MemoryLoader} will load a .caustic file from disk load it into
@@ -125,7 +125,7 @@ public class MemoryLoader {
                 String name = RackMessage.QUERY_MACHINE_NAME.queryString(controller, i);
                 String type = RackMessage.QUERY_MACHINE_TYPE.queryString(controller, i);
                 if (name != null && !name.isEmpty() && type != null && !type.isEmpty()) {
-                    tones.add(new ToneDescriptor(i, name, MachineType.fromString(type)));
+                    tones.add(new ToneDescriptor(i, name, ToneType.fromString(type)));
                 }
             }
         }
@@ -147,17 +147,17 @@ public class MemoryLoader {
 
             String name = RackMessage.QUERY_MACHINE_NAME.queryString(controller, toneIndex);
             String type = RackMessage.QUERY_MACHINE_TYPE.queryString(controller, toneIndex);
-            MachineType machineType = MachineType.fromString(type);
+            ToneType toneType = ToneType.fromString(type);
 
-            if (toneDescriptor.getMachineType() != machineType)
-                throw new RuntimeException("Tone MachineType not equal to loaded tone");
+            if (toneDescriptor.getToneType() != toneType)
+                throw new RuntimeException("Tone ToneType not equal to loaded tone");
 
             //------------------------------------------------------------------
             // Load Patch
             //------------------------------------------------------------------
 
             // create the Patch for the Tone preset
-            PatchItem item = createPatch(name, toneIndex, machineType);
+            PatchItem item = createPatch(name, toneIndex, toneType);
             patches.add(item);
 
             // get the patterns
@@ -216,7 +216,7 @@ public class MemoryLoader {
         descriptor.setPatchItems(patches);
     }
 
-    private PatchItem createPatch(String name, int toneIndex, MachineType machineType)
+    private PatchItem createPatch(String name, int toneIndex, ToneType machineType)
             throws IOException {
         String id = UUID.randomUUID().toString();
         PatchItem item = new PatchItem(name, id);
@@ -261,82 +261,83 @@ public class MemoryLoader {
 
     private Machine createMachine(int machineIndex, MachineType machineType, String id, String name) {
         Machine machine = null;
-        switch (machineType) {
-            case BASSLINE:
-                machine = new Bassline(id);
-                machine.setType(MachineType.BASSLINE);
-                break;
-            case BEATBOX:
-                machine = new Beatbox(id);
-                machine.setType(MachineType.BEATBOX);
-                break;
-            case PCMSYNTH:
-                machine = new PCMSynth(id);
-                machine.setType(MachineType.PCMSYNTH);
-                break;
-            case SUBSYNTH:
-                machine = new SubSynth(id);
-                machine.setType(MachineType.SUBSYNTH);
-                break;
-        }
-        machine.setName(name);
-        machine.setFactory(controller.getFactory());
-        machine.setEngine(controller);
-        machine.setIndex(machineIndex);
+        //        switch (machineType) {
+        //            case BASSLINE:
+        //                machine = new Bassline(id);
+        //                machine.setType(MachineType.BASSLINE);
+        //                break;
+        //            case BEATBOX:
+        //                machine = new Beatbox(id);
+        //                machine.setType(MachineType.BEATBOX);
+        //                break;
+        //            case PCMSYNTH:
+        //                machine = new PCMSynth(id);
+        //                machine.setType(MachineType.PCMSYNTH);
+        //                break;
+        //            case SUBSYNTH:
+        //                machine = new SubSynth(id);
+        //                machine.setType(MachineType.SUBSYNTH);
+        //                break;
+        //        }
+        //        machine.setName(name);
+        //        machine.setFactory(controller.getFactory());
+        //        machine.setEngine(controller);
+        //        machine.setIndex(machineIndex);
         return machine;
     }
 
-    public IMemento copyData(int machineIndex, MachineType machineType, String id, String name)
+    public IMemento copyData(int machineIndex, ToneType machineType, String id, String name)
             throws IOException {
-        Machine machine = createMachine(machineIndex, machineType, id, name);
-
-        IMemento memento = XMLMemento.createWriteRoot("patch");
-
-        switch (machineType) {
-            case BASSLINE:
-                copyBassline(controller, (Bassline)machine, memento);
-                break;
-            case BEATBOX:
-                copyBeatbox(controller, (Beatbox)machine, memento);
-                break;
-            case PCMSYNTH:
-                copyPCMSynth(controller, (PCMSynth)machine, memento);
-                break;
-            case SUBSYNTH:
-                copySubSynth(controller, (SubSynth)machine, memento);
-                break;
-        }
-
-        copyMixerChannel(controller, machine, memento);
-        copyEffectChannel(controller, machine, memento);
-
-        machine.copy(memento);
-
-        if (onPatchCopyListener != null)
-            onPatchCopyListener.onPatchCopy(machine);
-
-        machine.setEngine(null);
-
-        return memento;
+        throw new RuntimeException("FIX SINCE YOU MESSED IT UP");
+        //        Machine machine = createMachine(machineIndex, machineType, id, name);
+        //
+        //        IMemento memento = XMLMemento.createWriteRoot("patch");
+        //
+        //        switch (machineType) {
+        //            case BASSLINE:
+        //                copyBassline(controller, (Bassline)machine, memento);
+        //                break;
+        //            case BEATBOX:
+        //                copyBeatbox(controller, (Beatbox)machine, memento);
+        //                break;
+        //            case PCMSYNTH:
+        //                copyPCMSynth(controller, (PCMSynth)machine, memento);
+        //                break;
+        //            case SUBSYNTH:
+        //                copySubSynth(controller, (SubSynth)machine, memento);
+        //                break;
+        //        }
+        //
+        //        copyMixerChannel(controller, machine, memento);
+        //        copyEffectChannel(controller, machine, memento);
+        //
+        //        machine.copy(memento);
+        //
+        //        if (onPatchCopyListener != null)
+        //            onPatchCopyListener.onPatchCopy(machine);
+        //
+        //        machine.setEngine(null);
+        //
+        //        return memento;
     }
 
-    void copyBassline(ICaustkController controller, Bassline machine, IMemento memento) {
+    void copyBassline(ICaustkController controller, BasslineTone tone, IMemento memento) {
         //machine.getSequencer().restore();
-        machine.getOsc1().restore();
-        machine.getVolume().restore();
-        machine.getFilter().restore();
-        machine.getLFO1().restore();
-        machine.getDistortion().restore();
+        tone.getOsc1().restore();
+        tone.getVolume().restore();
+        tone.getFilter().restore();
+        tone.getLFO1().restore();
+        tone.getDistortion().restore();
     }
 
-    void copySubSynth(ICaustkController controller, SubSynth machine, IMemento memento) {
+    void copySubSynth(ICaustkController controller, SubSynthTone tone, IMemento memento) {
         //machine.getSequencer().restore();
-        machine.getFilter().restore();
-        machine.getLFO1().restore();
-        machine.getLFO2().restore();
-        machine.getOsc1().restore();
-        machine.getOsc2().restore();
-        machine.getVolume().restore();
+        tone.getFilter().restore();
+        tone.getLFO1().restore();
+        tone.getLFO2().restore();
+        tone.getOsc1().restore();
+        tone.getOsc2().restore();
+        tone.getVolume().restore();
     }
 
     void copyPCMSynth(ICaustkController controller, PCMSynth machine, IMemento memento) {

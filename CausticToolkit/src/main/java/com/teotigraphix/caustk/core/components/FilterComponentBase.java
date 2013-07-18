@@ -3,7 +3,7 @@ package com.teotigraphix.caustk.core.components;
 
 import com.teotigraphix.caustic.osc.FilterMessage;
 
-public class FilterComponent extends ToneComponent {
+public class FilterComponentBase extends ToneComponent {
 
     //--------------------------------------------------------------------------
     // API :: Properties
@@ -55,7 +55,7 @@ public class FilterComponent extends ToneComponent {
         FilterMessage.FILTER_RESONANCE.send(getEngine(), getToneIndex(), resonance);
     }
 
-    public FilterComponent() {
+    public FilterComponentBase() {
     }
 
     @Override

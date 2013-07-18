@@ -19,16 +19,12 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.machine.IMachine;
-import com.teotigraphix.caustic.machine.IPCMSynth;
+import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class PCMSynthTone extends SynthTone {
-    @SuppressWarnings("unused")
-    private IPCMSynth pcmsynth;
 
-    public PCMSynthTone(IMachine machine) {
-        super(machine);
-        pcmsynth = (IPCMSynth)machine;
+    public PCMSynthTone(ICaustkController controller) {
+        super(controller);
     }
 
 }

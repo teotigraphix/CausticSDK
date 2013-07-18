@@ -19,38 +19,176 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.machine.IMachine;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.UUID;
 
-/**
- * The Tone wraps an {@link IMachine}.
- * <p>
- * Tones are basically the ONLY static instances that are not lightweight in the
- * framework. Unlike Part, Patch, Pattern etc, the Tone is a singleton and only
- * created once at startup(this will change if unlimited machines exist).
- */
-public abstract class Tone {
+import com.teotigraphix.caustic.core.ICausticEngine;
+import com.teotigraphix.caustic.device.IDeviceFactory;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ISerialize;
+import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.service.ISerializeService;
+
+public class Tone implements ISerialize {
+
+    private transient ICaustkController controller;
+
+    /**
+     * Returns the core audio engine interface.
+     */
+    public ICausticEngine getEngine() {
+        return controller;
+    }
+
+    /**
+     * Returns the factory that creates all sub components of the audio system.
+     */
+    public IDeviceFactory getFactory() {
+        return controller.getFactory();
+    }
+
+    public ICaustkController getController() {
+        return controller;
+    }
+
+    private ToneType toneType;
+
+    public final ToneType getToneType() {
+        return toneType;
+    }
+
+    public final void setToneType(ToneType value) {
+        toneType = value;
+    }
+
     //--------------------------------------------------------------------------
-    // Public Property API
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // machine
+    // id
     //----------------------------------
 
-    public abstract IMachine getMachine();
+    private UUID id;
+
+    /**
+     * The tone's unique id within a session.
+     * <p>
+     * This id is assigned at creation of the tone or set when deserialized from
+     * the sleep state (which will be it's original id when created).
+     */
+    public final UUID getId() {
+        return id;
+    }
+
+    public final void setId(UUID value) {
+        id = value;
+    }
 
     //----------------------------------
     // index
     //----------------------------------
 
-    public int getIndex() {
-        return getMachine().getIndex();
+    private int index;
+
+    /**
+     * The index location of the tone loaded into/from the core rack.
+     */
+    public final int getIndex() {
+        return index;
+    }
+
+    public final void setIndex(int value) {
+        index = value;
+    }
+
+    //----------------------------------
+    // name
+    //----------------------------------
+
+    private String name;
+
+    /**
+     * The name loaded into/from the core rack.
+     */
+    public final String getName() {
+        return name;
+    }
+
+    public final void setName(String value) {
+        name = value;
+    }
+
+    //--------------------------------------------------------------------------
+    // Public Component API
+    //--------------------------------------------------------------------------
+
+    private transient Map<Class<? extends ToneComponent>, ToneComponent> internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
+
+    private Map<String, String> components = new HashMap<String, String>();
+
+    public void addComponent(Class<? extends ToneComponent> clazz, ToneComponent instance) {
+        internalComponents.put(clazz, instance);
+        instance.setTone(this);
+    }
+
+    public <T extends ToneComponent> T getComponent(Class<T> clazz) {
+        return clazz.cast(internalComponents.get(clazz));
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Tone() {
+    public Tone(ICaustkController controller) {
+        this.controller = controller;
     }
+
+    /**
+     * Serializes the entire instance minus transient properties.
+     * <p>
+     * Returns the serialized state based on the current implementation of
+     * {@link ISerializeService}.
+     */
+    public String serialize() {
+        return controller.getSerializeService().toString(this);
+    }
+
+    //--------------------------------------------------------------------------
+    // ISerialize API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void sleep() {
+        components = new HashMap<String, String>();
+        for (ToneComponent toneComponent : internalComponents.values()) {
+            String data = toneComponent.serialize();
+            String className = toneComponent.getClass().getName();
+            components.put(className, data);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void wakeup(ICaustkController controller) {
+        // the wakeup() method acts like the Constructor when the instance is deserialized
+        this.controller = controller;
+        internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
+        for (Entry<String, String> entry : components.entrySet()) {
+            String className = entry.getKey();
+            String data = entry.getValue();
+            Class<?> cls = null;
+            try {
+                cls = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            ToneComponent component = (ToneComponent)getController().getSerializeService()
+                    .fromString(data, cls);
+            addComponent((Class<? extends ToneComponent>)cls, component);
+        }
+    }
+
 }

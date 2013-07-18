@@ -19,14 +19,9 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.machine.IMachine;
+import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class RhythmTone extends Tone {
-    @Override
-    public IMachine getMachine() {
-        // XXX Unit test RhythmTone.getMachine() to make sure its return a IMachine
-        return (IMachine)channel.getChannel().getDevice();
-    }
 
     private RhythmChannel channel;
 
@@ -34,7 +29,12 @@ public class RhythmTone extends Tone {
         return channel;
     }
 
-    public RhythmTone(RhythmChannel channel) {
-        this.channel = channel;
+    public void setChannel(RhythmChannel value) {
+        channel = value;
     }
+
+    public RhythmTone(ICaustkController controller) {
+        super(controller);
+    }
+
 }

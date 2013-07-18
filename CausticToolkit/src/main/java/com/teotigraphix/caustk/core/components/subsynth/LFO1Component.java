@@ -1,83 +1,70 @@
-////////////////////////////////////////////////////////////////////////////////
-// Copyright 2011 Michael Schmalle - Teoti Graphix, LLC
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0 
-// 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, 
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and 
-// limitations under the License
-// 
-// Author: Michael Schmalle, Principal Architect
-// mschmalle at teotigraphix dot com
-////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.filter;
+package com.teotigraphix.caustk.core.components.subsynth;
 
+import com.teotigraphix.caustic.filter.ILFOComponent.WaveForm;
 import com.teotigraphix.caustic.osc.SubSynthLFOMessage;
+import com.teotigraphix.caustk.core.components.LFOComponentBase;
 
-/**
- * The ILFOPrimary interface allows a machine to add LFO support with a wave
- * form.
- * 
- * @author Michael Schmalle
- * @copyright Teoti Graphix, LLC
- * @since 1.0
- */
-public interface ISubSynthLFO1 extends ILFOComponent {
+public class LFO1Component extends LFOComponentBase {
 
     //--------------------------------------------------------------------------
-    //
-    // Properties
-    //
+    // API :: Properties
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // waveForm
-    //----------------------------------
-
-    /**
-     * The LFO oscillator waveform.
-     * 
-     * @see SubSynthLFOMessage#LFO1_WAVEFORM
-     */
-    WaveForm getWaveform();
-
-    /**
-     * @see #getWaveform()
-     * @see SubSynthLFOMessage#LFO1_WAVEFORM
-     */
-    void setWaveForm(WaveForm value);
 
     //----------------------------------
     // target
     //----------------------------------
 
-    /**
-     * The target of the LFO (Low Frequency Oscillator).
-     * 
-     * @see SubSynthLFOMessage#LFO1_TARGET
-     */
-    LFOTarget getTarget();
+    private LFOTarget target = LFOTarget.NONE;
 
-    /**
-     * @see #getTarget()
-     * @see SubSynthLFOMessage#LFO1_TARGET
-     */
-    void setTarget(LFOTarget value);
+    public LFOTarget getTarget() {
+        return target;
+    }
 
-    /**
-     * The LFO targets for the SubSynth.
-     * 
-     * @author Michael Schmalle
-     * @copyright Teoti Graphix, LLC
-     * @since 1.0
-     */
+    LFOTarget getTarget(boolean restore) {
+        return LFOTarget.toType(SubSynthLFOMessage.LFO1_TARGET.query(getEngine(), getToneIndex()));
+    }
+
+    public void setTarget(LFOTarget value) {
+        if (value == target)
+            return;
+        target = value;
+        SubSynthLFOMessage.LFO1_TARGET.send(getEngine(), getToneIndex(), target.getValue());
+    }
+
+    //----------------------------------
+    // waveForm
+    //----------------------------------
+
+    private WaveForm waveForm = WaveForm.SINE;
+
+    public WaveForm getWaveform() {
+        return waveForm;
+    }
+
+    WaveForm getWaveform(boolean restore) {
+        return WaveForm.toType(SubSynthLFOMessage.LFO1_WAVEFORM.query(getEngine(), getToneIndex()));
+    }
+
+    public void setWaveForm(WaveForm value) {
+        if (value == waveForm)
+            return;
+        waveForm = value;
+        SubSynthLFOMessage.LFO1_WAVEFORM.send(getEngine(), getToneIndex(), waveForm.getValue());
+    }
+
+    public LFO1Component() {
+        depthMessage = SubSynthLFOMessage.LFO1_DEPTH;
+        rateMessage = SubSynthLFOMessage.LFO1_RATE;
+    }
+
+    @Override
+    public void restore() {
+        super.restore();
+        setTarget(getTarget(true));
+        setWaveForm(getWaveform(true));
+    }
+
     public enum LFOTarget {
 
         /**

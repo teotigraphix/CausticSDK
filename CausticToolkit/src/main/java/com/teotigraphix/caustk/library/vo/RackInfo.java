@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.teotigraphix.caustic.core.IMemento;
-import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
+import com.teotigraphix.caustk.tone.ToneType;
 
 public class RackInfo extends MementoInfo {
 
@@ -81,16 +81,16 @@ public class RackInfo extends MementoInfo {
             return index;
         }
 
-        private MachineType machineType;
+        private ToneType toneType;
 
-        public MachineType getMachineType() {
-            return machineType;
+        public ToneType getToneType() {
+            return toneType;
         }
 
         public RackInfoItem(IMemento memento) {
             active = memento.getInteger("active") == 0 ? false : true;
             index = memento.getInteger("index");
-            machineType = MachineType.fromString(memento.getString("type"));
+            toneType = ToneType.fromString(memento.getString("type"));
             id = memento.getString("id");
             String pid = memento.getString("patchId");
             if (pid != null)
@@ -98,7 +98,7 @@ public class RackInfo extends MementoInfo {
         }
 
         public ToneDescriptor createDescriptor() {
-            ToneDescriptor descriptor = new ToneDescriptor(index, id, machineType);
+            ToneDescriptor descriptor = new ToneDescriptor(index, id, toneType);
             return descriptor;
         }
 

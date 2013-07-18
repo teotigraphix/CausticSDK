@@ -378,13 +378,12 @@ public class LibraryManager implements ILibraryManager {
         XMLMemento memento = XMLMemento.createWriteRoot("rack");
         for (int i = 0; i < 6; i++) {
             Tone tone = controller.getSoundSource().getTone(i);
-            IMachine machine = tone.getMachine();
-            if (machine != null) {
-                IMemento child = memento.createChild("machine");
-                child.putInteger("index", i);
-                child.putInteger("active", machine != null ? 1 : 0);
-                child.putString("id", machine.getId());
-                child.putString("type", machine.getType().getValue());
+            if (tone != null) {
+//                IMemento child = memento.createChild("machine");
+//                child.putInteger("index", i);
+//                //child.putInteger("active", machine != null ? 1 : 0);
+//                child.putString("id", tone.getId());
+//                child.putString("type", tone.getType().getValue());
             }
         }
 

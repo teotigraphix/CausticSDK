@@ -4,7 +4,7 @@ package com.teotigraphix.caustk.core.components;
 import com.teotigraphix.caustic.core.ICausticEngine;
 import com.teotigraphix.caustic.core.IRestore;
 import com.teotigraphix.caustic.internal.utils.ExceptionUtils;
-import com.teotigraphix.caustk.tone.CaustkTone;
+import com.teotigraphix.caustk.tone.Tone;
 
 public abstract class ToneComponent implements IRestore {
 
@@ -12,13 +12,13 @@ public abstract class ToneComponent implements IRestore {
     // tone
     //----------------------------------
 
-    private transient CaustkTone tone;
+    private transient Tone tone;
 
-    public CaustkTone getTone() {
+    public Tone getTone() {
         return tone;
     }
 
-    public void setTone(CaustkTone value) {
+    public void setTone(Tone value) {
         tone = value;
     }
 

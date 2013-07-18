@@ -227,7 +227,7 @@ public class Library {
      *         {@link MachineType} as the tone.
      */
     public List<LibraryPhrase> findPhrasesForTone(Tone tone) {
-        String type = tone.getMachine().getType().getValue();
+        String type = tone.getToneType().getValue();
         return findPhrasesByTag(type);
     }
 

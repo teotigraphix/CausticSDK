@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.core.components;
 
+import com.teotigraphix.caustic.osc.MachineMessage;
 import com.teotigraphix.caustic.osc.SynthMessage;
 
 public class SynthComponent extends ToneComponent {
@@ -10,6 +11,10 @@ public class SynthComponent extends ToneComponent {
     // ISynthComponent API :: Properties
     //
     //--------------------------------------------------------------------------
+
+    public String getPresetName() {
+        return MachineMessage.QUERY_PRESET.queryString(getEngine(), getTone().getIndex());
+    }
 
     //----------------------------------
     // polyphony

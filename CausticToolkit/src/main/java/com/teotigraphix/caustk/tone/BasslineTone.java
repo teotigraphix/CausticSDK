@@ -19,15 +19,32 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.machine.IBassline;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.bassline.DistortionComponent;
+import com.teotigraphix.caustk.core.components.bassline.FilterComponent;
+import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
+import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
 
 public class BasslineTone extends SynthTone {
-    @SuppressWarnings("unused")
-    private IBassline bassline;
 
-    public BasslineTone(IBassline machine) {
-        super(machine);
-        bassline = machine;
+    public FilterComponent getFilter() {
+        return getComponent(FilterComponent.class);
+    }
+
+    public LFO1Component getLFO1() {
+        return getComponent(LFO1Component.class);
+    }
+
+    public OSC1Component getOsc1() {
+        return getComponent(OSC1Component.class);
+    }
+
+    public DistortionComponent getDistortion() {
+        return getComponent(DistortionComponent.class);
+    }
+
+    public BasslineTone(ICaustkController controller) {
+        super(controller);
     }
 
 }

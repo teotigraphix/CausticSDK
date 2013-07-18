@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.machine.MachineType;
-
 /**
  * Each application must define the {@link Tone} instances that will get created
  * at startup.
@@ -38,19 +36,7 @@ public class ToneDescriptor {
         return name;
     }
 
-    private MachineType machineType;
-
     private ToneType toneType;
-
-    public MachineType getMachineType() {
-        return machineType;
-    }
-
-    public ToneDescriptor(int index, String name, MachineType machineType) {
-        this.index = index;
-        this.name = name;
-        this.machineType = machineType;
-    }
 
     public ToneDescriptor(int index, String name, ToneType toneType) {
         this.index = index;

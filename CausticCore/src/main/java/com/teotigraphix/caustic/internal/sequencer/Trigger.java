@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustic.internal.sequencer;
 
-import com.teotigraphix.caustic.machine.IBassline;
 import com.teotigraphix.caustic.sequencer.IStepPhrase;
 import com.teotigraphix.caustic.sequencer.ITrigger;
 import com.teotigraphix.caustic.sequencer.data.TriggerData;
@@ -126,8 +125,8 @@ public class Trigger implements ITrigger {
 
     void setFlags(int value) {
         flags = value;
-        accent = ((flags & IBassline.ACCENT) == IBassline.ACCENT);
-        slide = ((flags & IBassline.SLIDE) == IBassline.SLIDE);
+        accent = ((flags & 1) == 1);
+        slide = ((flags & 2) == 2);
     }
 
     //----------------------------------

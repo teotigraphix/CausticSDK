@@ -19,19 +19,29 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.internal.sequencer.StepSequencer;
-import com.teotigraphix.caustic.machine.IMachine;
+import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
+import com.teotigraphix.caustk.core.components.VolumeComponent;
+import com.teotigraphix.caustk.sequencer.SystemSequencer;
 
 public class SynthTone extends Tone {
-    private IMachine machine;
 
-    @Override
-    public IMachine getMachine() {
-        return machine;
+    public VolumeComponent getVolume() {
+        return getComponent(VolumeComponent.class);
     }
 
-    public SynthTone(IMachine machine) {
-        this.machine = machine;
+    public SynthComponent getSynth() {
+        return getComponent(SynthComponent.class);
+    }
+
+    public PatternSequencerComponent getPatternSequencer() {
+        return getComponent(PatternSequencerComponent.class);
+    }
+
+    public SynthTone(ICaustkController controller) {
+        super(controller);
     }
 
     public void _setLength(int value) {
@@ -55,8 +65,8 @@ public class SynthTone extends Tone {
      * @param flags
      */
     public void _triggerOn(int step, int pitch, float gate, float velocity, int flags) {
-        StepSequencer s = (StepSequencer)machine.getSequencer();
-        s.triggerOn(step, pitch, gate, velocity, flags);
+        getComponent(PatternSequencerComponent.class).triggerOn(Resolution.SIXTEENTH, step, pitch,
+                gate, velocity, flags);
     }
 
     /**
@@ -66,8 +76,7 @@ public class SynthTone extends Tone {
      * @param pitch
      */
     public void _triggerOff(int step, int pitch) {
-        StepSequencer s = (StepSequencer)machine.getSequencer();
-        s.triggerOff(step, pitch);
+        getComponent(PatternSequencerComponent.class).triggerOff(Resolution.SIXTEENTH, step, pitch);
     }
 
 }

@@ -28,7 +28,6 @@ import java.util.Map;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustic.core.CausticException;
-import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ISerialize;
 import com.teotigraphix.caustk.library.vo.EffectRackInfo;
@@ -173,13 +172,13 @@ public class TrackSong extends Song implements ISerialize {
         public void trigger(OnTrackPhraseAdd object) {
             Track track = object.getTrack();
             TrackItem trackItem = object.getItem();
-            IMachine machine = controller.getSoundSource().getTone(track.getIndex()).getMachine();
-            int bank = trackItem.getBankIndex();
-            int pattern = trackItem.getPatternIndex();
-            int start = trackItem.getStartMeasure();
-            int end = trackItem.getEndMeasure();
-            // add the track to the song sequencer
-            controller.getSystemSequencer().addPattern(machine, bank, pattern, start, end);
+            //            IMachine machine = controller.getSoundSource().getTone(track.getIndex()).getMachine();
+            //            int bank = trackItem.getBankIndex();
+            //            int pattern = trackItem.getPatternIndex();
+            //            int start = trackItem.getStartMeasure();
+            //            int end = trackItem.getEndMeasure();
+            //            // add the track to the song sequencer
+            //            controller.getSystemSequencer().addPattern(machine, bank, pattern, start, end);
         }
     };
 
@@ -188,11 +187,11 @@ public class TrackSong extends Song implements ISerialize {
         public void trigger(OnTrackPhraseRemove object) {
             Track track = object.getTrack();
             TrackItem trackItem = object.getItem();
-            IMachine machine = controller.getSoundSource().getTone(track.getIndex()).getMachine();
-            int start = trackItem.getStartMeasure();
-            int end = trackItem.getEndMeasure();
-            // remove the track to the song sequencer
-            controller.getSystemSequencer().removePattern(machine, start, end);
+            //            IMachine machine = controller.getSoundSource().getTone(track.getIndex()).getMachine();
+            //            int start = trackItem.getStartMeasure();
+            //            int end = trackItem.getEndMeasure();
+            //            // remove the track to the song sequencer
+            //            controller.getSystemSequencer().removePattern(machine, start, end);
         }
     };
 

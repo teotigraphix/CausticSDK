@@ -28,14 +28,13 @@ import java.util.TreeMap;
 import com.teotigraphix.caustic.device.IDevice;
 import com.teotigraphix.caustic.internal.device.DeviceComponent;
 import com.teotigraphix.caustic.internal.utils.PatternUtils;
-import com.teotigraphix.caustic.machine.ISubSynth;
 import com.teotigraphix.caustic.osc.PatternSequencerMessage;
 import com.teotigraphix.caustic.sequencer.IPatternSequencer;
-import com.teotigraphix.caustic.sequencer.ITrigger;
 import com.teotigraphix.caustic.sequencer.IStepPhrase;
 import com.teotigraphix.caustic.sequencer.IStepPhrase.IStepPhraseListener;
 import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
 import com.teotigraphix.caustic.sequencer.IStepPhrase.TriggerChangeKind;
+import com.teotigraphix.caustic.sequencer.ITrigger;
 
 /*
 

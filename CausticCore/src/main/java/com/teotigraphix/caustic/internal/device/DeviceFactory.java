@@ -35,18 +35,16 @@ import com.teotigraphix.caustic.internal.effect.EffectsRack;
 import com.teotigraphix.caustic.internal.effect.FlangerEffect;
 import com.teotigraphix.caustic.internal.effect.ParametricEQEffect;
 import com.teotigraphix.caustic.internal.effect.PhaserEffect;
-import com.teotigraphix.caustic.internal.machine.Bassline;
 import com.teotigraphix.caustic.internal.machine.Beatbox;
 import com.teotigraphix.caustic.internal.machine.PCMSynth;
-import com.teotigraphix.caustic.internal.machine.SubSynth;
 import com.teotigraphix.caustic.internal.mixer.MixerDelay;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.internal.mixer.MixerReverb;
 import com.teotigraphix.caustic.internal.output.OutputPanel;
 import com.teotigraphix.caustic.internal.sequencer.PatternSequencer;
-import com.teotigraphix.caustic.internal.sequencer.TriggerMap;
 import com.teotigraphix.caustic.internal.sequencer.Sequencer;
 import com.teotigraphix.caustic.internal.sequencer.StepSequencer;
+import com.teotigraphix.caustic.internal.sequencer.TriggerMap;
 import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustic.mixer.IMixerDelay;
@@ -55,8 +53,8 @@ import com.teotigraphix.caustic.mixer.IMixerReverb;
 import com.teotigraphix.caustic.mixer.MixerEffectType;
 import com.teotigraphix.caustic.output.IOutputPanel;
 import com.teotigraphix.caustic.sequencer.IPatternSequencer;
-import com.teotigraphix.caustic.sequencer.IStepPhrase;
 import com.teotigraphix.caustic.sequencer.ISequencer;
+import com.teotigraphix.caustic.sequencer.IStepPhrase;
 
 /**
  * The default implementation of the {@link DeviceFactory} factory for the Rack
@@ -131,14 +129,10 @@ public class DeviceFactory implements IDeviceFactory {
     public IMachine create(String machineId, MachineType machineType) throws CausticException {
         IMachine machine = null;
 
-        if (machineType == MachineType.SUBSYNTH)
-            machine = new SubSynth(machineId);
-        else if (machineType == MachineType.PCMSYNTH)
+        if (machineType == MachineType.PCMSYNTH)
             machine = new PCMSynth(machineId);
         else if (machineType == MachineType.BEATBOX)
             machine = new Beatbox(machineId);
-        else if (machineType == MachineType.BASSLINE)
-            machine = new Bassline(machineId);
 
         machine.setFactory(this);
 

@@ -19,20 +19,13 @@
 
 package com.teotigraphix.caustk.system.bank;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 import com.teotigraphix.caustic.core.IMemento;
-import com.teotigraphix.caustic.core.XMLMemento;
-import com.teotigraphix.caustic.desktop.RuntimeUtils;
 import com.teotigraphix.caustic.internal.effect.EffectsRack;
-import com.teotigraphix.caustic.internal.machine.Bassline;
 import com.teotigraphix.caustic.internal.machine.Beatbox;
 import com.teotigraphix.caustic.internal.machine.Machine;
 import com.teotigraphix.caustic.internal.machine.PCMSynth;
-import com.teotigraphix.caustic.internal.machine.SubSynth;
 import com.teotigraphix.caustic.internal.mixer.MixerDelay;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.internal.mixer.MixerReverb;
@@ -40,6 +33,8 @@ import com.teotigraphix.caustic.machine.IMachine;
 import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustic.mixer.MixerEffectType;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.SubSynthTone;
 
 public class PatchItem extends MemorySlotItem {
 
@@ -95,85 +90,85 @@ public class PatchItem extends MemorySlotItem {
 
     public void copyData(ICaustkController controller, int machineIndex, MachineType machineType)
             throws IOException {
-        machine = null;
-        switch (machineType) {
-            case BASSLINE:
-                machine = new Bassline(id);
-                machine.setType(MachineType.BASSLINE);
-                break;
-            case BEATBOX:
-                machine = new Beatbox(id);
-                machine.setType(MachineType.BEATBOX);
-                break;
-            case PCMSYNTH:
-                machine = new PCMSynth(id);
-                machine.setType(MachineType.PCMSYNTH);
-                break;
-            case SUBSYNTH:
-                machine = new SubSynth(id);
-                machine.setType(MachineType.SUBSYNTH);
-                break;
-        }
-
-        machine.setName(name);
-        machine.setFactory(controller.getFactory());
-        machine.setEngine(controller);
-        machine.setIndex(machineIndex);
-
-        memento = XMLMemento.createWriteRoot("patch");
-
-        switch (machineType) {
-            case BASSLINE:
-                copyBassline(controller, (Bassline)machine, memento);
-                break;
-            case BEATBOX:
-                copyBeatbox(controller, (Beatbox)machine, memento);
-                break;
-            case PCMSYNTH:
-                copyPCMSynth(controller, (PCMSynth)machine, memento);
-                break;
-            case SUBSYNTH:
-                copySubSynth(controller, (SubSynth)machine, memento);
-                break;
-        }
-
-        copyMixerChannel(controller, machine, memento);
-        copyEffectChannel(controller, machine, memento);
-
-        machine.savePreset(id);
-        // XXX Copy and delete from the presets directory to the project
-        // root dir
-        File presetFile = RuntimeUtils.getCausticPresetsFile(machineType.toString(), id);
-        if (presetFile.exists())
-            throw new IOException("Preset file does not exist");
-
-        File destFile = new File("");
-        FileUtils.copyFile(presetFile, destFile);
-
-        presetFile.delete();
-
-        machine.copy(memento);
-
-        machine.setEngine(null);
+        //        machine = null;
+        //        switch (machineType) {
+        //            case BASSLINE:
+        //                machine = new Bassline(id);
+        //                machine.setType(MachineType.BASSLINE);
+        //                break;
+        //            case BEATBOX:
+        //                machine = new Beatbox(id);
+        //                machine.setType(MachineType.BEATBOX);
+        //                break;
+        //            case PCMSYNTH:
+        //                machine = new PCMSynth(id);
+        //                machine.setType(MachineType.PCMSYNTH);
+        //                break;
+        //            case SUBSYNTH:
+        //                machine = new SubSynth(id);
+        //                machine.setType(MachineType.SUBSYNTH);
+        //                break;
+        //        }
+        //
+        //        machine.setName(name);
+        //        machine.setFactory(controller.getFactory());
+        //        machine.setEngine(controller);
+        //        machine.setIndex(machineIndex);
+        //
+        //        memento = XMLMemento.createWriteRoot("patch");
+        //
+        //        switch (machineType) {
+        //            case BASSLINE:
+        //                copyBassline(controller, (Bassline)machine, memento);
+        //                break;
+        //            case BEATBOX:
+        //                copyBeatbox(controller, (Beatbox)machine, memento);
+        //                break;
+        //            case PCMSYNTH:
+        //                copyPCMSynth(controller, (PCMSynth)machine, memento);
+        //                break;
+        //            case SUBSYNTH:
+        //                copySubSynth(controller, (SubSynth)machine, memento);
+        //                break;
+        //        }
+        //
+        //        copyMixerChannel(controller, machine, memento);
+        //        copyEffectChannel(controller, machine, memento);
+        //
+        //        machine.savePreset(id);
+        //        // XXX Copy and delete from the presets directory to the project
+        //        // root dir
+        //        File presetFile = RuntimeUtils.getCausticPresetsFile(machineType.toString(), id);
+        //        if (presetFile.exists())
+        //            throw new IOException("Preset file does not exist");
+        //
+        //        File destFile = new File("");
+        //        FileUtils.copyFile(presetFile, destFile);
+        //
+        //        presetFile.delete();
+        //
+        //        machine.copy(memento);
+        //
+        //        machine.setEngine(null);
     }
 
-    void copyBassline(ICaustkController controller, Bassline machine, IMemento memento) {
+    void copyBassline(ICaustkController controller, BasslineTone tone, IMemento memento) {
         //machine.getSequencer().restore();
-        machine.getOsc1().restore();
-        machine.getVolume().restore();
-        machine.getFilter().restore();
-        machine.getLFO1().restore();
-        machine.getDistortion().restore();
+        tone.getOsc1().restore();
+        tone.getVolume().restore();
+        tone.getFilter().restore();
+        tone.getLFO1().restore();
+        tone.getDistortion().restore();
     }
 
-    void copySubSynth(ICaustkController controller, SubSynth machine, IMemento memento) {
+    void copySubSynth(ICaustkController controller, SubSynthTone tone, IMemento memento) {
         //machine.getSequencer().restore();
-        machine.getFilter().restore();
-        machine.getLFO1().restore();
-        machine.getLFO2().restore();
-        machine.getOsc1().restore();
-        machine.getOsc2().restore();
-        machine.getVolume().restore();
+        tone.getFilter().restore();
+        tone.getLFO1().restore();
+        tone.getLFO2().restore();
+        tone.getOsc1().restore();
+        tone.getOsc2().restore();
+        tone.getVolume().restore();
     }
 
     void copyPCMSynth(ICaustkController controller, PCMSynth machine, IMemento memento) {

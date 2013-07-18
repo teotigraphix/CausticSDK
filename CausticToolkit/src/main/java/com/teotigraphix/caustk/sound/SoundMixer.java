@@ -190,18 +190,18 @@ public class SoundMixer implements ICaustkSoundMixer {
     private EventObserver<OnSoundSourceToneAdd> addObserver = new EventObserver<OnSoundSourceToneAdd>() {
         @Override
         public void trigger(OnSoundSourceToneAdd object) {
-            IMachine machine = object.getTone().getMachine();
-            mixerPanel.addMachine(machine);
-            effectsRack.addMachine(machine);
+//            IMachine machine = object.getTone().getMachine();
+//            mixerPanel.addMachine(machine);
+//            effectsRack.addMachine(machine);
         }
     };
 
     private EventObserver<OnSoundSourceToneRemove> removeObserver = new EventObserver<OnSoundSourceToneRemove>() {
         @Override
         public void trigger(OnSoundSourceToneRemove object) {
-            IMachine machine = object.getTone().getMachine();
-            mixerPanel.removeMachine(machine);
-            effectsRack.removeMachine(machine);
+//            IMachine machine = object.getTone().getMachine();
+//            mixerPanel.removeMachine(machine);
+//            effectsRack.removeMachine(machine);
         }
     };
 

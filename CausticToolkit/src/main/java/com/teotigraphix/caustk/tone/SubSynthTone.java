@@ -19,17 +19,42 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustic.machine.IMachine;
-import com.teotigraphix.caustic.machine.ISubSynth;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.SynthFilterComponent;
+import com.teotigraphix.caustk.core.components.VolumeEnvelopeComponent;
+import com.teotigraphix.caustk.core.components.subsynth.LFO1Component;
+import com.teotigraphix.caustk.core.components.subsynth.LFO2Component;
+import com.teotigraphix.caustk.core.components.subsynth.Osc1Component;
+import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
 
 public class SubSynthTone extends SynthTone {
 
-    @SuppressWarnings("unused")
-    private ISubSynth subsynth;
+    public VolumeEnvelopeComponent getVolume() {
+        return getComponent(VolumeEnvelopeComponent.class);
+    }
 
-    public SubSynthTone(IMachine machine) {
-        super(machine);
-        subsynth = (ISubSynth)machine;
+    public SynthFilterComponent getFilter() {
+        return getComponent(SynthFilterComponent.class);
+    }
+
+    public Osc1Component getOsc1() {
+        return getComponent(Osc1Component.class);
+    }
+
+    public Osc2Component getOsc2() {
+        return getComponent(Osc2Component.class);
+    }
+
+    public LFO1Component getLFO1() {
+        return getComponent(LFO1Component.class);
+    }
+
+    public LFO2Component getLFO2() {
+        return getComponent(LFO2Component.class);
+    }
+
+    public SubSynthTone(ICaustkController controller) {
+        super(controller);
     }
 
 }

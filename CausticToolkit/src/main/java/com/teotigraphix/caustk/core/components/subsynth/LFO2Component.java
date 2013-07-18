@@ -1,38 +1,13 @@
-////////////////////////////////////////////////////////////////////////////////
-// Copyright 2011 Michael Schmalle - Teoti Graphix, LLC
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0 
-// 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, 
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and 
-// limitations under the License
-// 
-// Author: Michael Schmalle, Principal Architect
-// mschmalle at teotigraphix dot com
-////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustic.filter;
+package com.teotigraphix.caustk.core.components.subsynth;
 
 import com.teotigraphix.caustic.osc.SubSynthLFOMessage;
+import com.teotigraphix.caustk.core.components.LFOComponentBase;
 
-/**
- * The ILFOComponent interface allows a machine to add LFO support.
- * 
- * @author Michael Schmalle
- * @copyright Teoti Graphix, LLC
- * @since 1.0
- */
-public interface ISubSynthLFO2 extends ILFOComponent {
-
+public class LFO2Component extends LFOComponentBase {
     //--------------------------------------------------------------------------
     //
-    // Properties
+    // ILFO2SubSynth API :: Properties
     //
     //--------------------------------------------------------------------------
 
@@ -40,26 +15,34 @@ public interface ISubSynthLFO2 extends ILFOComponent {
     // target
     //----------------------------------
 
-    /**
-     * The target of the LFO (Low Frequency Oscillator).
-     * 
-     * @see SubSynthLFOMessage#LFO2_TARGET
-     */
-    LFOTarget getTarget();
+    private LFOTarget target = LFOTarget.NONE;
 
-    /**
-     * @see #getTarget()
-     * @see SubSynthLFOMessage#LFO2_TARGET
-     */
-    void setTarget(LFOTarget value);
+    public LFOTarget getTarget() {
+        return target;
+    }
 
-    /**
-     * The LFO targets for the SubSynth.
-     * 
-     * @author Michael Schmalle
-     * @copyright Teoti Graphix, LLC
-     * @since 1.0
-     */
+    LFOTarget getTarget(boolean restore) {
+        return LFOTarget.toType(SubSynthLFOMessage.LFO2_TARGET.query(getEngine(), getToneIndex()));
+    }
+
+    public void setTarget(LFOTarget value) {
+        if (value == target)
+            return;
+        target = value;
+        SubSynthLFOMessage.LFO2_TARGET.send(getEngine(), getToneIndex(), target.getValue());
+    }
+
+    public LFO2Component() {
+        depthMessage = SubSynthLFOMessage.LFO2_DEPTH;
+        rateMessage = SubSynthLFOMessage.LFO2_RATE;
+    }
+
+    @Override
+    public void restore() {
+        super.restore();
+        setTarget(getTarget(true));
+    }
+
     public enum LFOTarget {
 
         /**

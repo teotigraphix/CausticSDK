@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.teotigraphix.caustic.machine.IBassline;
 import com.teotigraphix.caustic.sequencer.IStepPhrase.Resolution;
 import com.teotigraphix.caustic.sequencer.ITrigger;
 
@@ -21,9 +20,9 @@ public class StepPhraseUtils {
     public static int createFlags(ITrigger trigger) {
         int result = 0;
         if (trigger.isAccent())
-            result = result | IBassline.ACCENT;
+            result = result | 1;//IBassline.ACCENT;
         if (trigger.isSlide())
-            result = result | IBassline.SLIDE;
+            result = result | 2;//IBassline.SLIDE;
         return result;
     }
 

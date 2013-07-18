@@ -23,9 +23,10 @@ import java.util.Collection;
 
 import com.teotigraphix.caustic.core.CausticException;
 import com.teotigraphix.caustic.core.IDispatcher;
+import com.teotigraphix.caustk.sound.CaustkSoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.CaustkTone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
+import com.teotigraphix.caustk.tone.ToneType;
 
 /**
  * @author Michael Schmalle
@@ -52,11 +53,38 @@ public interface ICaustkSoundSource {
 
     void noteOff(Tone tone, int pitch);
 
-    Tone create(ToneDescriptor descriptor) throws CausticException;
+    /**
+     * @param name
+     * @param toneType
+     * @throws CausticException
+     */
+    Tone createTone(String name, ToneType toneType) throws CausticException;
+
+    /**
+     * @param index
+     * @param name
+     * @param toneType
+     * @throws CausticException
+     */
+    Tone createTone(int index, String name, ToneType toneType) throws CausticException;
+
+    /**
+     * @param descriptor
+     * @throws CausticException
+     * @see OnSoundSourceToneAdd
+     */
+    Tone createTone(ToneDescriptor descriptor) throws CausticException;
+
+    /**
+     * @param index
+     * @see OnSoundSourceToneRemove
+     */
+    void destroyTone(int index);
 
     public enum SoundMode {
         KEYBOARD, STEP;
     }
 
-    CaustkTone createTone(ToneDescriptor descriptor) throws CausticException;
+    void clearAndReset();
+
 }

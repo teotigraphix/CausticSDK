@@ -2,9 +2,9 @@
 package com.teotigraphix.caustk.core.components.bassline;
 
 import com.teotigraphix.caustic.osc.FilterMessage;
-import com.teotigraphix.caustk.core.components.FilterComponent;
+import com.teotigraphix.caustk.core.components.FilterComponentBase;
 
-public class BasslineFilter extends FilterComponent {
+public class FilterComponent extends FilterComponentBase {
 
     //--------------------------------------------------------------------------
     //
@@ -58,7 +58,7 @@ public class BasslineFilter extends FilterComponent {
         FilterMessage.FILTER_ENVMOD.send(getEngine(), getToneIndex(), envMod);
     }
 
-    public BasslineFilter() {
+    public FilterComponent() {
     }
 
     @Override
