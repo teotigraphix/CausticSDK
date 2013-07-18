@@ -35,6 +35,10 @@ public class Tone implements ISerialize {
 
     private transient ICaustkController controller;
 
+    int getComponentCount() {
+        return internalComponents.size();
+    }
+
     /**
      * Returns the core audio engine interface.
      */

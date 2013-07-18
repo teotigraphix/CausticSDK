@@ -50,6 +50,8 @@ public class SoundSourceUtils {
         tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
         tone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
         tone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        tone.addComponent(com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component.class,
+                new com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component());
         tone.addComponent(PCMSamplerComponent.class, new PCMSamplerComponent());
         tone.addComponent(PCMTunerComponent.class, new PCMTunerComponent());
     }

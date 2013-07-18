@@ -32,15 +32,10 @@ import com.teotigraphix.caustk.tone.ToneType;
  */
 public interface ISoundSource {
 
+    /**
+     * The {@link ISoundSource} dispatcher.
+     */
     IDispatcher getDispatcher();
-
-    SoundMode getSoundMode();
-
-    void setSoundMode(SoundMode value);
-
-    int getOctave();
-
-    void setOctave(int value);
 
     int getToneCount();
 
@@ -48,9 +43,13 @@ public interface ISoundSource {
 
     Tone getTone(int index);
 
-    void noteOn(Tone tone, int pitch, float velocity);
+    int getTranspose();
 
-    void noteOff(Tone tone, int pitch);
+    void setTranspose(int value);
+
+    //    void noteOn(Tone tone, int pitch, float velocity);
+    //
+    //    void noteOff(Tone tone, int pitch);
 
     /**
      * @param name
@@ -80,10 +79,10 @@ public interface ISoundSource {
      */
     void destroyTone(int index);
 
-    public enum SoundMode {
-        KEYBOARD, STEP;
-    }
-
+    /**
+     * Clears all {@link Tone}s from the sound source and resets the core audio
+     * rack.
+     */
     void clearAndReset();
 
 }

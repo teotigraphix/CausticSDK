@@ -12,9 +12,7 @@ public class SynthComponent extends ToneComponent {
     }
 
     //--------------------------------------------------------------------------
-    //
-    // ISynthComponent API :: Properties
-    //
+    // API :: Properties
     //--------------------------------------------------------------------------
 
     public String getPresetName() {

@@ -39,10 +39,11 @@ public class PCMSynthTone extends SynthTone {
     public LFO1Component getLFO1() {
         return getComponent(LFO1Component.class);
     }
+
     public PCMTunerComponent getTuner() {
         return getComponent(PCMTunerComponent.class);
     }
-    
+
     public PCMSamplerComponent getSampler() {
         return getComponent(PCMSamplerComponent.class);
     }

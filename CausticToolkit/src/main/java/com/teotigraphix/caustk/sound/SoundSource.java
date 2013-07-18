@@ -33,7 +33,6 @@ import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
@@ -50,38 +49,6 @@ public class SoundSource implements ISoundSource {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // soundMode
-    //----------------------------------
-
-    private SoundMode soundMode;
-
-    @Override
-    public SoundMode getSoundMode() {
-        return soundMode;
-    }
-
-    @Override
-    public void setSoundMode(SoundMode value) {
-        soundMode = value;
-    }
-
-    //----------------------------------
-    // octave
-    //----------------------------------
-
-    private int octave;
-
-    @Override
-    public int getOctave() {
-        return octave;
-    }
-
-    @Override
-    public void setOctave(int value) {
-        octave = value;
-    }
-
-    //----------------------------------
     // dispatcher
     //----------------------------------
 
@@ -90,6 +57,22 @@ public class SoundSource implements ISoundSource {
     @Override
     public IDispatcher getDispatcher() {
         return dispatcher;
+    }
+
+    //----------------------------------
+    // transpose
+    //----------------------------------
+
+    private int transpose;
+
+    @Override
+    public int getTranspose() {
+        return transpose;
+    }
+
+    @Override
+    public void setTranspose(int value) {
+        transpose = value;
     }
 
     //----------------------------------
@@ -130,8 +113,6 @@ public class SoundSource implements ISoundSource {
     public SoundSource(ICaustkController controller) {
         this.controller = controller;
 
-        //        controller.registerAPI(SoundMixerAPI.class, new SoundMixerAPI(controller));
-
         dispatcher = new Dispatcher();
 
         tones = new HashMap<Integer, Tone>();
@@ -148,28 +129,6 @@ public class SoundSource implements ISoundSource {
     //--------------------------------------------------------------------------
     // Public Method API
     //--------------------------------------------------------------------------
-
-    /**
-     * Triggers a note on for the part's tone.
-     * <p>
-     * Using this method automatically adjusts the pitch of the tone based on
-     * the current {@link #getOctave()} of the sound source.
-     * 
-     * @param part
-     * @param pitch
-     * @param velocity
-     */
-    @Override
-    public void noteOn(Tone tone, int pitch, float velocity) {
-        int semitones = getOctave() * 12;
-        tone.getComponent(SynthComponent.class).noteOn(pitch + semitones, velocity);
-    }
-
-    @Override
-    public void noteOff(Tone tone, int pitch) {
-        int semitones = getOctave() * 12;
-        tone.getComponent(SynthComponent.class).noteOff(pitch + semitones);
-    }
 
     @Override
     public Tone createTone(String name, ToneType toneType) throws CausticException {
@@ -201,8 +160,9 @@ public class SoundSource implements ISoundSource {
         getController().getDispatcher().trigger(new OnSoundSourceClear());
 
         ArrayList<Tone> remove = new ArrayList<Tone>(tones.values());
-        for (Tone tone : remove)
+        for (Tone tone : remove) {
             destroyTone(tone);
+        }
 
         RackMessage.BLANKRACK.send(getEngine());
 
@@ -214,9 +174,11 @@ public class SoundSource implements ISoundSource {
     //--------------------------------------------------------------------------
 
     Tone createSynthChannel(int index, String toneName, ToneType toneType) throws CausticException {
-        if (tones.containsKey(index)) {
+        if (index > 13)
+            throw new CausticException("Only 14 machines allowed in a rack");
+
+        if (tones.containsKey(index))
             throw new CausticException("{" + index + "} tone is already defined");
-        }
 
         RackMessage.CREATE.send(getEngine(), toneType.getValue(), toneName, index);
 
@@ -338,7 +300,7 @@ public class SoundSource implements ISoundSource {
 
     private int nextIndex() {
         int index = 0;
-        for (index = 0; index < 10; index++) {
+        for (index = 0; index < 15; index++) {
             if (!tones.containsKey(index))
                 break;
         }
