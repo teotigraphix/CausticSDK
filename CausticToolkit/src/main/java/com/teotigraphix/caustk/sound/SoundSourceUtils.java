@@ -10,10 +10,15 @@ import com.teotigraphix.caustk.core.components.bassline.DistortionComponent;
 import com.teotigraphix.caustk.core.components.bassline.FilterComponent;
 import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
 import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
+import com.teotigraphix.caustk.core.components.beatbox.WavSamplerComponent;
+import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent;
+import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
 import com.teotigraphix.caustk.core.components.subsynth.LFO2Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc1Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
 import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 
 public class SoundSourceUtils {
@@ -38,6 +43,22 @@ public class SoundSourceUtils {
         tone.addComponent(FilterComponent.class, new FilterComponent());
         tone.addComponent(LFO1Component.class, new LFO1Component());
         tone.addComponent(OSC1Component.class, new OSC1Component());
+    }
+
+    public static void setup(PCMSynthTone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        tone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
+        tone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        tone.addComponent(PCMSamplerComponent.class, new PCMSamplerComponent());
+        tone.addComponent(PCMTunerComponent.class, new PCMTunerComponent());
+    }
+
+    public static void setup(BeatboxTone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        tone.addComponent(VolumeComponent.class, new VolumeComponent());
+        tone.addComponent(WavSamplerComponent.class, new WavSamplerComponent());
     }
 
 }

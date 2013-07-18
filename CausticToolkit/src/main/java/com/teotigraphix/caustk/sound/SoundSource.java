@@ -36,6 +36,8 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
@@ -226,8 +228,14 @@ public class SoundSource implements ISoundSource {
                 SoundSourceUtils.setup((BasslineTone)tone);
                 break;
             case Beatbox:
+                tone = new BeatboxTone(getController());
+                initializeTone(tone, toneName, toneType);
+                SoundSourceUtils.setup((BeatboxTone)tone);
                 break;
             case PCMSynth:
+                tone = new PCMSynthTone(getController());
+                initializeTone(tone, toneName, toneType);
+                SoundSourceUtils.setup((PCMSynthTone)tone);
                 break;
             case SubSynth:
                 tone = new SubSynthTone(getController());

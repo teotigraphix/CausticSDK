@@ -6,13 +6,22 @@ import java.util.TreeMap;
 
 import com.teotigraphix.caustk.core.components.ToneComponent;
 import com.teotigraphix.caustk.core.osc.PCMSamplerMessage;
+import com.teotigraphix.caustk.tone.Tone;
 
 public class PCMSamplerComponent extends ToneComponent {
 
     private static final int NUM_SAMPLER_CHANNELS = 64;
 
-    private Map<Integer, PCMSamplerChannel> mSamples;
+    private Map<Integer, PCMSamplerChannel> channels;
 
+    @Override
+    public void setTone(Tone value) {
+        super.setTone(value);
+        if (channels == null) {
+            createChannels();
+        }
+    }
+    
     //--------------------------------------------------------------------------
     //
     // IPCMSampler API :: Properties
@@ -27,26 +36,26 @@ public class PCMSamplerComponent extends ToneComponent {
     // currentChannel
     //----------------------------------
 
-    private int mActiveIndex = 0;
+    private int activeIndex = -1;
 
-    private PCMSamplerChannel mCurrentSample;
+    private PCMSamplerChannel currentSample;
 
     //private IPCMSynthSamplerListener mListener;
 
     public int getActiveIndex() {
-        return mActiveIndex;
+        return activeIndex;
     }
 
     public void setActiveIndex(int value) {
-        if (value == mActiveIndex)
+        if (value == activeIndex)
             return;
         if (value < 0 || value >= NUM_SAMPLER_CHANNELS)
             throw newRangeException(PCMSamplerMessage.SAMPLE_INDEX.toString(), "0..63", value);
 
-        mActiveIndex = value;
-        mCurrentSample = getPCMSample(mActiveIndex);
+        activeIndex = value;
+        currentSample = getPCMSample(activeIndex);
 
-        PCMSamplerMessage.SAMPLE_INDEX.send(getEngine(), getToneIndex(), mActiveIndex);
+        PCMSamplerMessage.SAMPLE_INDEX.send(getEngine(), getToneIndex(), activeIndex);
 
         //        fireSampleChanged(mActiveIndex, mCurrentSample);
     }
@@ -56,7 +65,7 @@ public class PCMSamplerComponent extends ToneComponent {
     //----------------------------------
 
     public PCMSamplerChannel getActiveChannel() {
-        return mCurrentSample;
+        return currentSample;
     }
 
     public String getSampleName(int channel) {
@@ -65,7 +74,6 @@ public class PCMSamplerComponent extends ToneComponent {
     }
 
     public PCMSamplerComponent() {
-        // TODO Auto-generated constructor stub
     }
 
     //--------------------------------------------------------------------------
@@ -106,13 +114,13 @@ public class PCMSamplerComponent extends ToneComponent {
         // set the active index first and then issue commands. During the
         // restore, this index gets changed, we need to put it back where it was
         int old = getActiveIndex();
-        String samples = getSampleIndicies();
-        if (samples == null || samples.equals(""))
+        String indicies = getSampleIndicies();
+        if (indicies == null || indicies.equals(""))
             return;
 
-        String[] split = samples.split(" ");
+        String[] split = indicies.split(" ");
         for (int i = 0; i < split.length; i++) {
-            mSamples.get(Integer.parseInt(split[i])).restore();
+            channels.get(Integer.parseInt(split[i])).restore();
         }
         setActiveIndex(old);
     }
@@ -126,7 +134,7 @@ public class PCMSamplerComponent extends ToneComponent {
     }
 
     protected final PCMSamplerChannel getPCMSample(int index) {
-        return mSamples.get(index);
+        return channels.get(index);
     }
 
     protected final void fireSampleChanged(int channel, PCMSamplerChannel sample) {
@@ -137,14 +145,15 @@ public class PCMSamplerComponent extends ToneComponent {
 
     protected void createChannels() {
         int numChannels = 64;
-        mSamples = new TreeMap<Integer, PCMSamplerChannel>();
+        channels = new TreeMap<Integer, PCMSamplerChannel>();
         for (int i = 0; i < numChannels; i++) {
-            PCMSamplerChannel sample = new PCMSamplerChannel(this);
-            sample.setIndex(i);
-            mSamples.put(i, sample);
+            PCMSamplerChannel channel = new PCMSamplerChannel(this);
+            channel.setTone(getTone());
+            channel.setIndex(i);
+            channels.put(i, channel);
         }
         // do this manually at startup
-        mCurrentSample = getPCMSample(mActiveIndex);
+        currentSample = getPCMSample(activeIndex);
     }
 
     public enum PlayMode {

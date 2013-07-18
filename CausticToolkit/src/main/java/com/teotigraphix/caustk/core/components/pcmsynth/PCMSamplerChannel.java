@@ -30,30 +30,30 @@ import com.teotigraphix.caustk.core.osc.PCMSamplerMessage;
  */
 public class PCMSamplerChannel extends ToneComponent {
 
-    private PCMSamplerComponent mSampler;
+    private PCMSamplerComponent sampler;
 
     private int mIndex;
 
-    private String mName;
+    private String name;
 
-    private float mLevel = 1.0f;
+    private float level = 1.0f;
 
-    private int mTune;
+    private int tune;
 
-    private int mRootKey;
+    private int rootKey;
 
-    private int mLowKey;
+    private int lowKey;
 
-    private int mHighKey;
+    private int highKey;
 
-    private PlayMode mMode;
+    private PlayMode mode;
 
-    private int mStart;
+    private int start;
 
-    private int mEnd;
+    private int end;
 
     public boolean hasSample() {
-        return mName != null;
+        return name != null;
     }
 
     public final int getIndex() {
@@ -65,118 +65,118 @@ public class PCMSamplerChannel extends ToneComponent {
     }
 
     public final String getName() {
-        return mName;
+        return name;
     }
 
     public final void setName(String value) {
-        mName = value;
+        name = value;
     }
 
     public final float getLevel() {
-        return mLevel;
+        return level;
     }
 
     public final void setLevel(float value) {
-        if (value == mLevel)
+        if (value == level)
             return;
-        mLevel = value;
-        PCMSamplerMessage.SAMPLE_LEVEL.send(getEngine(), getToneIndex(), mLevel);
+        level = value;
+        PCMSamplerMessage.SAMPLE_LEVEL.send(getEngine(), getToneIndex(), level);
     }
 
     public final int getTune() {
-        return mTune;
+        return tune;
     }
 
     public final void setTune(int value) {
-        if (value == mTune)
+        if (value == tune)
             return;
-        mTune = value;
-        PCMSamplerMessage.SAMPLE_TUNE.send(getEngine(), getToneIndex(), mTune);
+        tune = value;
+        PCMSamplerMessage.SAMPLE_TUNE.send(getEngine(), getToneIndex(), tune);
     }
 
     public final int getRootKey() {
-        return mRootKey;
+        return rootKey;
     }
 
     public final void setRootKey(int value) {
-        if (value == mRootKey)
+        if (value == rootKey)
             return;
-        mRootKey = value;
-        PCMSamplerMessage.SAMPLE_ROOTKEY.send(getEngine(), getToneIndex(), mRootKey);
+        rootKey = value;
+        PCMSamplerMessage.SAMPLE_ROOTKEY.send(getEngine(), getToneIndex(), rootKey);
     }
 
     public final int getLowKey() {
-        return mLowKey;
+        return lowKey;
     }
 
     public final void setLowKey(int value) {
-        if (value == mLowKey)
+        if (value == lowKey)
             return;
-        mLowKey = value;
-        PCMSamplerMessage.SAMPLE_LOWKEY.send(getEngine(), getToneIndex(), mLowKey);
+        lowKey = value;
+        PCMSamplerMessage.SAMPLE_LOWKEY.send(getEngine(), getToneIndex(), lowKey);
     }
 
     public final int getHighKey() {
-        return mHighKey;
+        return highKey;
     }
 
     public final void setHighKey(int value) {
-        if (value == mHighKey)
+        if (value == highKey)
             return;
-        mHighKey = value;
-        PCMSamplerMessage.SAMPLE_HIGHKEY.send(getEngine(), getToneIndex(), mHighKey);
+        highKey = value;
+        PCMSamplerMessage.SAMPLE_HIGHKEY.send(getEngine(), getToneIndex(), highKey);
     }
 
     public final PlayMode getMode() {
-        return mMode;
+        return mode;
     }
 
     public final void setMode(PlayMode value) {
-        if (value == mMode)
+        if (value == mode)
             return;
-        mMode = value;
-        PCMSamplerMessage.SAMPLE_MODE.send(getEngine(), getToneIndex(), mMode.getValue());
+        mode = value;
+        PCMSamplerMessage.SAMPLE_MODE.send(getEngine(), getToneIndex(), mode.getValue());
     }
 
     public final int getStart() {
-        return mStart;
+        return start;
     }
 
     public final void setStart(int value) {
-        if (value == mStart)
+        if (value == start)
             return;
-        mStart = value;
-        PCMSamplerMessage.SAMPLE_START.send(getEngine(), getToneIndex(), mStart);
+        start = value;
+        PCMSamplerMessage.SAMPLE_START.send(getEngine(), getToneIndex(), start);
     }
 
     public final int getEnd() {
-        return mEnd;
+        return end;
     }
 
     public final void setEnd(int value) {
-        if (value == mEnd)
+        if (value == end)
             return;
-        mEnd = value;
-        PCMSamplerMessage.SAMPLE_END.send(getEngine(), getToneIndex(), mEnd);
+        end = value;
+        PCMSamplerMessage.SAMPLE_END.send(getEngine(), getToneIndex(), end);
     }
 
     public PCMSamplerChannel(PCMSamplerComponent sampler) {
-        mSampler = sampler;
+        this.sampler = sampler;
     }
 
     public void restore() {
-        mName = mSampler.getSampleName(mIndex);
-        if (mName == null)
+        name = sampler.getSampleName(mIndex);
+        if (name == null)
             return;
 
-        mLevel = PCMSamplerMessage.SAMPLE_LEVEL.query(getEngine(), getToneIndex());
-        mTune = (int)PCMSamplerMessage.SAMPLE_TUNE.query(getEngine(), getToneIndex());
-        mRootKey = (int)PCMSamplerMessage.SAMPLE_ROOTKEY.query(getEngine(), getToneIndex());
-        mLowKey = (int)PCMSamplerMessage.SAMPLE_LOWKEY.query(getEngine(), getToneIndex());
-        mHighKey = (int)PCMSamplerMessage.SAMPLE_HIGHKEY.query(getEngine(), getToneIndex());
-        mMode = PlayMode.toType((int)PCMSamplerMessage.SAMPLE_MODE.query(getEngine(),
+        level = PCMSamplerMessage.SAMPLE_LEVEL.query(getEngine(), getToneIndex());
+        tune = (int)PCMSamplerMessage.SAMPLE_TUNE.query(getEngine(), getToneIndex());
+        rootKey = (int)PCMSamplerMessage.SAMPLE_ROOTKEY.query(getEngine(), getToneIndex());
+        lowKey = (int)PCMSamplerMessage.SAMPLE_LOWKEY.query(getEngine(), getToneIndex());
+        highKey = (int)PCMSamplerMessage.SAMPLE_HIGHKEY.query(getEngine(), getToneIndex());
+        mode = PlayMode.toType((int)PCMSamplerMessage.SAMPLE_MODE.query(getEngine(),
                 getToneIndex()));
-        mStart = (int)PCMSamplerMessage.SAMPLE_START.query(getEngine(), getToneIndex());
-        mEnd = (int)PCMSamplerMessage.SAMPLE_END.query(getEngine(), getToneIndex());
+        start = (int)PCMSamplerMessage.SAMPLE_START.query(getEngine(), getToneIndex());
+        end = (int)PCMSamplerMessage.SAMPLE_END.query(getEngine(), getToneIndex());
     }
 }
