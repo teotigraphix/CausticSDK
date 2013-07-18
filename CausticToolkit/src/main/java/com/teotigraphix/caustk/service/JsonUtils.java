@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
 
+import org.apache.commons.io.IOUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -46,15 +48,19 @@ public class JsonUtils {
     static <T> T fromGson(File file, Class<T> classOfT, ICaustkController controller) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
+        FileReader reader = null;
         T result = null;
         try {
-            result = gson.fromJson(new FileReader(file), classOfT);
+            reader = new FileReader(file);
+            result = gson.fromJson(reader, classOfT);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         } catch (JsonIOException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(reader);
         }
         if (result instanceof ISerialize)
             ((ISerialize)result).wakeup(controller);

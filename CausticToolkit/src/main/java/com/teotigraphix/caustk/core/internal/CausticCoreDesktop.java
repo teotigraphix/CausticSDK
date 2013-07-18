@@ -96,7 +96,7 @@ public class CausticCoreDesktop {
         public void run() {
             while (m_bRun) {
                 if (m_bProcess) {
-                    int nCurBeat = GetCurrentBeat();
+                    int nCurBeat = 0;// GetCurrentBeat();
                     if (nCurBeat != m_nCurrentBeat) {
                         m_nCurrentBeat = nCurBeat;
                         for (CausticEventListener listener : m_EventListeners) {
@@ -104,7 +104,7 @@ public class CausticCoreDesktop {
                         }
                     }
 
-                    int nCurMeasure = GetCurrentSongMeasure();
+                    int nCurMeasure = 0;//GetCurrentSongMeasure();
                     if (nCurMeasure != m_nCurrentMeasure) {
                         m_nCurrentMeasure = nCurMeasure;
                         for (CausticEventListener listener : m_EventListeners) {

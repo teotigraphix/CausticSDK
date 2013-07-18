@@ -123,7 +123,7 @@ public class ProjectManager implements IProjectManager {
 
         if (!sessionPreferencesFile.exists()) {
             try {
-                sessionPreferencesFile.createNewFile();
+                FileUtils.writeStringToFile(sessionPreferencesFile, "");
                 sessionPreferences = new SessionPreferences();
                 saveProjectPreferences();
             } catch (IOException e) {

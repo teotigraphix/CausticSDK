@@ -1,3 +1,5 @@
 {
-  "map": {}
+  "map": {
+    "lastProject": "src\\test\\resources\\unit_test\\projects\\Test.ctk"
+  }
 }
