@@ -46,7 +46,7 @@ public class Tone implements ISerialize {
      * Returns the factory that creates all sub components of the audio system.
      */
     public IDeviceFactory getFactory() {
-        return controller.getFactory();
+        return controller.getDeviceFactory();
     }
 
     public ICaustkController getController() {

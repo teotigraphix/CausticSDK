@@ -58,7 +58,7 @@ public interface ICaustkController extends ICausticEngine {
 
     IDispatcher getDispatcher();
 
-    IDeviceFactory getFactory();
+    IDeviceFactory getDeviceFactory();
 
     ISerializeService getSerializeService();
 
@@ -98,16 +98,22 @@ public interface ICaustkController extends ICausticEngine {
      */
     void start();
 
+    /**
+     * Saves an sub components.
+     * 
+     * @see ICaustkApplication#save()
+     * @throws IOException
+     */
     void save() throws IOException;
 
     void close();
 
-    public class OnControllerSave {
-
-    }
-
-    public class OnApplicationClose {
-
-    }
+    //    public class OnControllerSave {
+    //
+    //    }
+    //
+    //    public class OnApplicationClose {
+    //
+    //    }
 
 }

@@ -40,7 +40,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
      */
     public static ICausticEngine getInstance() {
         if (instance == null)
-            instance = new DesktopSoundGenerator();
+            instance = new DesktopSoundGenerator(null);
         return instance;
     }
 
@@ -67,12 +67,6 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
-
-    /**
-     * For unit testing.
-     */
-    public DesktopSoundGenerator() {
-    }
 
     public DesktopSoundGenerator(ICaustkController controller) {
         this.controller = controller;
@@ -110,4 +104,8 @@ public class DesktopSoundGenerator implements ISoundGenerator {
         core().addEventListener(l);
     }
 
+    @Override
+    public void removeEventListener(CausticEventListener l) {
+        core().removeEventListener(l);
+    }
 }

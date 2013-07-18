@@ -27,7 +27,6 @@ import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.ICaustkController.OnControllerSave;
 
 /**
  * The project manager manages the single project loaded for an application.
@@ -93,26 +92,13 @@ public class ProjectManager implements IProjectManager {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ProjectManager(ICaustkController controller, File applicationRoot) {
+    public ProjectManager(ICaustkController controller) {
         this.controller = controller;
 
         initialize(controller.getConfiguration().getApplicationRoot());
 
-        controller.getDispatcher().register(OnControllerSave.class,
-                new EventObserver<OnControllerSave>() {
-                    @Override
-                    public void trigger(OnControllerSave object) {
-                        try {
-                            save();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
         controller.getDispatcher().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
-
                     @Override
                     public void trigger(OnProjectManagerChange object) {
                         if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {

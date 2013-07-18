@@ -67,6 +67,7 @@ public class CaustkApplication implements ICaustkApplication {
         this.configuration = configuration;
 
         // all Preset data gets loaded here
+        // Dispatcher is created in Controller
         controller = getConfiguration().createController(this);
     }
 
@@ -76,10 +77,8 @@ public class CaustkApplication implements ICaustkApplication {
 
     @Override
     public void initialize() {
-        // creates all sub components of the systemController
+        // creates all sub components of the controller
         controller.initialize();
-        // now we create the parts and the rest of the application audio
-        configure();
         getController().getDispatcher().trigger(new OnApplicationInitialize());
     }
 
@@ -99,13 +98,6 @@ public class CaustkApplication implements ICaustkApplication {
     public void close() {
         controller.close();
         getController().getDispatcher().trigger(new OnApplicationClose());
-    }
-
-    /**
-     * Called by {@link #initialize()} after all {@link ICaustkController}
-     * components have been created.
-     */
-    protected void configure() {
     }
 
 }

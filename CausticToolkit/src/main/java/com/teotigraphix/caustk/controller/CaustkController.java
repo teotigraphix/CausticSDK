@@ -97,7 +97,7 @@ public class CaustkController implements ICaustkController {
     private IDeviceFactory factory;
 
     @Override
-    public IDeviceFactory getFactory() {
+    public IDeviceFactory getDeviceFactory() {
         return factory;
     }
 
@@ -269,7 +269,7 @@ public class CaustkController implements ICaustkController {
 
         // sub composites will add their ICommands in their constructors
         serializeService = new SerializeService(this);
-        projectManager = new ProjectManager(this, applicationRoot);
+        projectManager = new ProjectManager(this);
         //        songManager = new SongManager(this, applicationRoot);
         //        libraryManager = new LibraryManager(this);
         //        commandManager = new CommandManager(this);
@@ -288,12 +288,11 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void save() throws IOException {
-        //        projectManager.save();
+        projectManager.save();
     }
 
     @Override
     public void close() {
-        getDispatcher().trigger(new OnControllerSave());
         soundGenerator.close();
     }
 

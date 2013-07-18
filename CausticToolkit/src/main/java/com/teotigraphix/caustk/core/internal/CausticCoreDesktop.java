@@ -78,6 +78,10 @@ public class CausticCoreDesktop {
         audioThread.AddEventListener(l);
     }
 
+    public void removeEventListener(CausticEventListener l) {
+        audioThread.RemoveEventListener(l);
+    }
+
     class CausticAudioMonitor extends Thread {
         CausticAudioMonitor() {
             m_nCurrentBeat = 0;
@@ -116,8 +120,12 @@ public class CausticCoreDesktop {
             }
         }
 
-        public void AddEventListener(CausticEventListener evtListener) {
-            m_EventListeners.add(evtListener);
+        public void AddEventListener(CausticEventListener l) {
+            m_EventListeners.add(l);
+        }
+
+        public void RemoveEventListener(CausticEventListener l) {
+            m_EventListeners.remove(l);
         }
 
         ArrayList<CausticEventListener> m_EventListeners;
