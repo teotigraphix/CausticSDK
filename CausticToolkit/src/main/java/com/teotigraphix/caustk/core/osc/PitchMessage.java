@@ -19,9 +19,11 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
+
 /**
  * The {@link PitchMessage} holds all OSC messages associated with the
- * {@link IPitchTuner} API.
+ * {@link PCMTunerComponent} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -43,8 +45,8 @@ public class PitchMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPitchTuner#getOctave()
-     * @see IPitchTuner#setOctave(int)
+     * @see PCMTunerComponent#getOctave()
+     * @see PCMTunerComponent#setOctave(int)
      */
     public static final PitchMessage PITCH_OCTAVE = new PitchMessage(
             "/caustic/${0}/pitch_octave ${1}");
@@ -62,8 +64,8 @@ public class PitchMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPitchTuner#getSemis()
-     * @see IPitchTuner#setSemis(int)
+     * @see PCMTunerComponent#getSemis()
+     * @see PCMTunerComponent#setSemis(int)
      */
     public static final PitchMessage PITCH_SEMIS = new PitchMessage(
             "/caustic/${0}/pitch_semis ${1}");
@@ -81,8 +83,8 @@ public class PitchMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPitchTuner#getCents()
-     * @see IPitchTuner#setCents(int)
+     * @see PCMTunerComponent#getCents()
+     * @see PCMTunerComponent#setCents(int)
      */
     public static final PitchMessage PITCH_CENTS = new PitchMessage(
             "/caustic/${0}/pitch_cents ${1}");

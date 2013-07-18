@@ -19,11 +19,12 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.bassline.DistortionComponent;
 import com.teotigraphix.caustk.core.components.bassline.DistortionComponent.Program;
 
 /**
  * The {@link BasslineDistortionMessage} holds all OSC messages associated with
- * the {@link IBasslineDistortionUnit} API.
+ * the {@link DistortionComponent} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -44,8 +45,8 @@ public class BasslineDistortionMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBasslineDistortionUnit#getAmount()
-     * @see IBasslineDistortionUnit#setAmount(float)
+     * @see DistortionComponent#getAmount()
+     * @see DistortionComponent#setAmount(float)
      */
     public static final BasslineDistortionMessage DISTORTION_AMOUNT = new BasslineDistortionMessage(
             "/caustic/${0}/distortion_amount ${1}");
@@ -64,8 +65,8 @@ public class BasslineDistortionMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBasslineDistortionUnit#getPostGain()
-     * @see IBasslineDistortionUnit#setPostGain(float)
+     * @see DistortionComponent#getPostGain()
+     * @see DistortionComponent#setPostGain(float)
      */
     public static final BasslineDistortionMessage DISTORTION_POSTGAIN = new BasslineDistortionMessage(
             "/caustic/${0}/distortion_postgain ${1}");
@@ -83,8 +84,8 @@ public class BasslineDistortionMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBasslineDistortionUnit#getPreGain()
-     * @see IBasslineDistortionUnit#setPreGain(float)
+     * @see DistortionComponent#getPreGain()
+     * @see DistortionComponent#setPreGain(float)
      */
     public static final BasslineDistortionMessage DISTORTION_PREGAIN = new BasslineDistortionMessage(
             "/caustic/${0}/distortion_pregain ${1}");
@@ -102,8 +103,8 @@ public class BasslineDistortionMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IBasslineDistortionUnit#getProgram()
-     * @see IBasslineDistortionUnit#setProgram(Program)
+     * @see DistortionComponent#getProgram()
+     * @see DistortionComponent#setProgram(Program)
      */
     public static final BasslineDistortionMessage DISTORTION_PROGRAM = new BasslineDistortionMessage(
             "/caustic/${0}/distortion_program ${1}");

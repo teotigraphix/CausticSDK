@@ -19,11 +19,14 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.FilterComponentBase;
+import com.teotigraphix.caustk.core.components.SynthFilterComponent;
 import com.teotigraphix.caustk.core.components.SynthFilterComponent.FilterType;
+import com.teotigraphix.caustk.core.components.bassline.FilterComponent;
 
 /**
  * The {@link FilterMessage} holds all OSC messages associated with the
- * {@link IFilterComponent} and {@link IFilter} API.
+ * {@link FilterComponentBase} and {@link SynthFilterComponent} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -48,8 +51,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IFilterComponent#getCutoff()
-     * @see IFilterComponent#setCutoff(float)
+     * @see FilterComponentBase#getCutoff()
+     * @see FilterComponentBase#setCutoff(float)
      */
     public static final FilterMessage FILTER_CUTOFF = new FilterMessage(
             "/caustic/${0}/filter_cutoff ${1}");
@@ -67,8 +70,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IFilterComponent#getResonance()
-     * @see IFilterComponent#setResonance(float)
+     * @see FilterComponentBase#getResonance()
+     * @see FilterComponentBase#setResonance(float)
      */
     public static final FilterMessage FILTER_RESONANCE = new FilterMessage(
             "/caustic/${0}/filter_resonance ${1}");
@@ -91,8 +94,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IFilter#getType()
-     * @see IFilter#setType(FilterType)
+     * @see SynthFilterComponent#getType()
+     * @see SynthFilterComponent#setType(FilterType)
      */
     public static final FilterMessage FILTER_TYPE = new FilterMessage(
             "/caustic/${0}/filter_type ${1}");
@@ -110,8 +113,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IFilter#getAttack()
-     * @see IFilter#setAttack(float)
+     * @see SynthFilterComponent#getAttack()
+     * @see SynthFilterComponent#setAttack(float)
      */
     public static final FilterMessage FILTER_ATTACK = new FilterMessage(
             "/caustic/${0}/filter_attack ${1}");
@@ -129,8 +132,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IFilter#getDecay()
-     * @see IFilter#setDecay(float)
+     * @see SynthFilterComponent#getDecay()
+     * @see SynthFilterComponent#setDecay(float)
      */
     public static final FilterMessage FILTER_DECAY = new FilterMessage(
             "/caustic/${0}/filter_decay ${1}");
@@ -148,8 +151,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IFilter#getSustain()
-     * @see IFilter#setSustain(float)
+     * @see SynthFilterComponent#getSustain()
+     * @see SynthFilterComponent#setSustain(float)
      */
     public static final FilterMessage FILTER_SUSTAIN = new FilterMessage(
             "/caustic/${0}/filter_sustain ${1}");
@@ -167,8 +170,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IFilter#getDecay()
-     * @see IFilter#setDecay(float)
+     * @see SynthFilterComponent#getDecay()
+     * @see SynthFilterComponent#setDecay(float)
      */
     public static final FilterMessage FILTER_RELEASE = new FilterMessage(
             "/caustic/${0}/filter_release ${1}");
@@ -186,8 +189,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IFilter#getTrack()
-     * @see IFilter#setTrack(float)
+     * @see SynthFilterComponent#getTrack()
+     * @see SynthFilterComponent#setTrack(float)
      */
     public static final FilterMessage FILTER_KBTRACK = new FilterMessage(
             "/caustic/${0}/filter_kbtrack ${1}");
@@ -205,8 +208,8 @@ public class FilterMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBasslineFilter#getEnvMod()
-     * @see IBasslineFilter#setEnvMod()
+     * @see FilterComponent#getEnvMod()
+     * @see FilterComponent#setEnvMod()
      */
     public static final FilterMessage FILTER_ENVMOD = new FilterMessage(
             "/caustic/${0}/filter_envmod ${1}");

@@ -19,9 +19,11 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
+
 /**
  * The {@link BasslineLFOMessage} holds all OSC messages associated with the
- * {@link IBasslineLFO1} API.
+ * {@link LFO1Component} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -42,8 +44,8 @@ public class BasslineLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see ILFOComponent#getDepth()
-     * @see ILFOComponent#setDepth(float)
+     * @see LFO1Component#getDepth()
+     * @see LFO1Component#setDepth(float)
      */
     public static final BasslineLFOMessage LFO_DEPTH = new BasslineLFOMessage(
             "/caustic/${0}/lfo_depth ${1}");
@@ -61,8 +63,8 @@ public class BasslineLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see ILFOComponent#getRate()
-     * @see ILFOComponent#setRate(int)
+     * @see LFO1Component#getRate()
+     * @see LFO1Component#setRate(int)
      */
     public static final BasslineLFOMessage LFO_RATE = new BasslineLFOMessage(
             "/caustic/${0}/lfo_rate ${1}");
@@ -80,8 +82,8 @@ public class BasslineLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBasslineLFO1#getPhase()
-     * @see IBasslineLFO1#setPhase(float)
+     * @see LFO1Component#getPhase()
+     * @see LFO1Component#setPhase(float)
      */
     public static final BasslineLFOMessage LFO_PHASE = new BasslineLFOMessage(
             "/caustic/${0}/lfo_phase ${1}");
@@ -99,8 +101,8 @@ public class BasslineLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IBasslineLFO1#getTarget()
-     * @see IBasslineLFO1#setTarget(LFOTarget)
+     * @see LFO1Component#getTarget()
+     * @see LFO1Component#setTarget(LFO1Component.LFOTarget))
      */
     public static final BasslineLFOMessage LFO_TARGET = new BasslineLFOMessage(
             "/caustic/${0}/lfo_target ${1}");

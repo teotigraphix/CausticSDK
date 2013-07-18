@@ -19,11 +19,13 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.subsynth.Osc1Component;
+import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc2Component.WaveForm;
 
 /**
  * The {@link SubSynthOscMessage} holds all OSC messages associated with the
- * {@link ISubSynthOsc1} and {@link ISubSynthOsc1} API.
+ * {@link Osc1Component} and {@link Osc2Component} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -32,7 +34,7 @@ import com.teotigraphix.caustk.core.components.subsynth.Osc2Component.WaveForm;
 public class SubSynthOscMessage extends CausticMessage {
 
     //--------------------------------------------------------------------------
-    // ISubSynthOsc1
+    // Osc1Component
     //--------------------------------------------------------------------------
 
     /**
@@ -51,8 +53,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>float</code>
      * </p>
      * 
-     * @see ISubSynthOsc1#getBend()
-     * @see ISubSynthOsc1#setBend(float)
+     * @see Osc1Component#getBend()
+     * @see Osc1Component#setBend(float)
      */
     public static final SubSynthOscMessage OSC_BEND = new SubSynthOscMessage(
             "/caustic/${0}/osc_bend ${1}");
@@ -73,8 +75,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>float</code>
      * </p>
      * 
-     * @see ISubSynthOsc1#getFM()
-     * @see ISubSynthOsc1#setFM(float)
+     * @see Osc1Component#getFM()
+     * @see Osc1Component#setFM(float)
      */
     public static final SubSynthOscMessage OSC1_FM = new SubSynthOscMessage(
             "/caustic/${0}/osc1_fm ${1}");
@@ -95,8 +97,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>float</code>
      * </p>
      * 
-     * @see ISubSynthOsc1#getMix()
-     * @see ISubSynthOsc1#setMix(float)
+     * @see Osc1Component#getMix()
+     * @see Osc1Component#setMix(float)
      */
     public static final SubSynthOscMessage OSC_MIX = new SubSynthOscMessage(
             "/caustic/${0}/osc_mix ${1}");
@@ -118,14 +120,14 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthOsc1#getWaveform()
-     * @see ISubSynthOsc1#setWaveform(Waveform)
+     * @see Osc1Component#getWaveform()
+     * @see Osc1Component#setWaveform(Waveform)
      */
     public static final SubSynthOscMessage OSC1_WAVEFORM = new SubSynthOscMessage(
             "/caustic/${0}/osc1_waveform ${1}");
 
     //--------------------------------------------------------------------------
-    // ISubSynthOsc2
+    // Osc2Component
     //--------------------------------------------------------------------------
 
     /**
@@ -144,8 +146,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthOsc2#getCents()
-     * @see ISubSynthOsc2#setCents(int)
+     * @see Osc2Component#getCents()
+     * @see Osc2Component#setCents(int)
      */
     public static final SubSynthOscMessage OSC2_CENTS = new SubSynthOscMessage(
             "/caustic/${0}/osc2_cents ${1}");
@@ -166,8 +168,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthOsc2#getOctave()
-     * @see ISubSynthOsc2#setOctave(int)
+     * @see Osc2Component#getOctave()
+     * @see Osc2Component#setOctave(int)
      */
     public static final SubSynthOscMessage OSC2_OCTAVE = new SubSynthOscMessage(
             "/caustic/${0}/osc2_octave ${1}");
@@ -188,8 +190,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>float</code>
      * </p>
      * 
-     * @see ISubSynthOsc2#getPhase()
-     * @see ISubSynthOsc2#setPhase(float)
+     * @see Osc2Component#getPhase()
+     * @see Osc2Component#setPhase(float)
      */
     public static final SubSynthOscMessage OSC2_PHASE = new SubSynthOscMessage(
             "/caustic/${0}/osc2_phase ${1}");
@@ -210,8 +212,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthOsc2#getSemis()
-     * @see ISubSynthOsc2#setSemis(int)
+     * @see Osc2Component#getSemis()
+     * @see Osc2Component#setSemis(int)
      */
     public static final SubSynthOscMessage OSC2_SEMIS = new SubSynthOscMessage(
             "/caustic/${0}/osc2_semis ${1}");
@@ -233,8 +235,8 @@ public class SubSynthOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthOsc2#getWaveform()
-     * @see ISubSynthOsc2#setWaveform(WaveForm)
+     * @see Osc2Component#getWaveform()
+     * @see Osc2Component#setWaveform(WaveForm)
      */
     public static final SubSynthOscMessage OSC2_WAVEFORM = new SubSynthOscMessage(
             "/caustic/${0}/osc2_waveform ${1}");

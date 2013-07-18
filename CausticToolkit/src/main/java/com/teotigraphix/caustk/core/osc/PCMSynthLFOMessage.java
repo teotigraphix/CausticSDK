@@ -19,11 +19,12 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc2Component.WaveForm;
 
 /**
  * The {@link PCMSynthLFOMessage} holds all OSC messages associated with the
- * {@link IPCMSynthLFO1} API.
+ * {@link LFO1Component} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -44,8 +45,8 @@ public class PCMSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see ILFOComponent#getDepth()
-     * @see ILFOComponent#setDepth(float)
+     * @see LFO1Component#getDepth()
+     * @see LFO1Component#setDepth(float)
      */
     public static final PCMSynthLFOMessage LFO_DEPTH = new PCMSynthLFOMessage(
             "/caustic/${0}/lfo_depth ${1}");
@@ -63,8 +64,8 @@ public class PCMSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see ILFOComponent#getRate()
-     * @see ILFOComponent#setRate(int)
+     * @see LFO1Component#getRate()
+     * @see LFO1Component#setRate(int)
      */
     public static final PCMSynthLFOMessage LFO_RATE = new PCMSynthLFOMessage(
             "/caustic/${0}/lfo_rate ${1}");
@@ -82,8 +83,8 @@ public class PCMSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPCMSynthLFO1#getTarget()
-     * @see IPCMSynthLFO1#setTarget(LFOTarget)
+     * @see LFO1Component#getTarget()
+     * @see LFO1Component#setTarget(LFOTarget)
      */
     public static final PCMSynthLFOMessage LFO_TARGET = new PCMSynthLFOMessage(
             "/caustic/${0}/lfo_target ${1}");
@@ -101,8 +102,8 @@ public class PCMSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPCMSynthLFO1#getWaveform()
-     * @see IPCMSynthLFO1#setWaveForm(WaveForm)
+     * @see LFO1Component#getWaveform()
+     * @see LFO1Component#setWaveForm(WaveForm)
      */
     public static final PCMSynthLFOMessage LFO_WAVEFORM = new PCMSynthLFOMessage(
             "/caustic/${0}/lfo_waveform ${1}");

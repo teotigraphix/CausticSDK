@@ -19,11 +19,13 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.subsynth.LFO1Component;
+import com.teotigraphix.caustk.core.components.subsynth.LFO2Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc2Component.WaveForm;
 
 /**
  * The {@link SubSynthLFOMessage} holds all OSC messages associated with the
- * {@link ISubSynthLFO1} and {@link ISubSynthLFO2} API.
+ * {@link LFO1Component} and {@link LFO2Component} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -44,8 +46,8 @@ public class SubSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see ILFOComponent#getDepth()
-     * @see ILFOComponent#setDepth(float)
+     * @see LFO1Component#getDepth()
+     * @see LFO1Component#setDepth(float)
      */
     public static final SubSynthLFOMessage LFO1_DEPTH = new SubSynthLFOMessage(
             "/caustic/${0}/lfo1_depth ${1}");
@@ -63,8 +65,8 @@ public class SubSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see ILFOComponent#getDepth()
-     * @see ILFOComponent#setDepth(float)
+     * @see LFO1Component#getDepth()
+     * @see LFO1Component#setDepth(float)
      */
     public static final SubSynthLFOMessage LFO2_DEPTH = new SubSynthLFOMessage(
             "/caustic/${0}/lfo2_depth ${1}");
@@ -82,8 +84,8 @@ public class SubSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see ILFOComponent#getRate()
-     * @see ILFOComponent#setRate(int)
+     * @see LFO1Component#getRate()
+     * @see LFO1Component#setRate(int)
      */
     public static final SubSynthLFOMessage LFO1_RATE = new SubSynthLFOMessage(
             "/caustic/${0}/lfo1_rate ${1}");
@@ -101,8 +103,8 @@ public class SubSynthLFOMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see ILFOComponent#getRate()
-     * @see ILFOComponent#setRate(int)
+     * @see LFO1Component#getRate()
+     * @see LFO1Component#setRate(int)
      */
     public static final SubSynthLFOMessage LFO2_RATE = new SubSynthLFOMessage(
             "/caustic/${0}/lfo2_rate ${1}");
@@ -127,8 +129,8 @@ public class SubSynthLFOMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthLFO1#getTarget()
-     * @see ISubSynthLFO1#setTarget(LFOTarget)
+     * @see LFO1Component#getTarget()
+     * @see LFO1Component#setTarget(LFOTarget)
      */
     public static final SubSynthLFOMessage LFO1_TARGET = new SubSynthLFOMessage(
             "/caustic/${0}/lfo1_target ${1}");
@@ -149,8 +151,8 @@ public class SubSynthLFOMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthLFO2#getTarget()
-     * @see ISubSynthLFO2#setTarget(LFOTarget)
+     * @see LFO2Component#getTarget()
+     * @see LFO2Component#setTarget(LFOTarget)
      */
     public static final SubSynthLFOMessage LFO2_TARGET = new SubSynthLFOMessage(
             "/caustic/${0}/lfo2_target ${1}");
@@ -171,8 +173,8 @@ public class SubSynthLFOMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see ISubSynthLFO1#getWaveform()
-     * @see ISubSynthLFO1#setWaveForm(WaveForm)
+     * @see LFO2Component#getWaveform()
+     * @see LFO2Component#setWaveForm(WaveForm)
      */
     public static final SubSynthLFOMessage LFO1_WAVEFORM = new SubSynthLFOMessage(
             "/caustic/${0}/lfo1_waveform ${1}");

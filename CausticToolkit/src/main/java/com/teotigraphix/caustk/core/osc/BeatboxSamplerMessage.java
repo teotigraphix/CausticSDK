@@ -19,9 +19,12 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.beatbox.WavSamplerChannel;
+import com.teotigraphix.caustk.core.components.beatbox.WavSamplerComponent;
+
 /**
  * The {@link BeatboxSamplerMessage} holds all OSC messages associated with the
- * {@link IBeatboxSampler} API.
+ * {@link WavSamplerComponent} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -44,7 +47,7 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IBeatboxSampler#loadChannel(int, String)
+     * @see WavSamplerComponent#loadChannel(int, String)
      */
     public static final PCMSamplerMessage CHANNEL_LOAD = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/load ${2}");
@@ -64,8 +67,8 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBeatboxSamplerChannel#getTune()
-     * @see IBeatboxSamplerChannel#setTune(float)
+     * @see WavSamplerChannel#getTune()
+     * @see WavSamplerChannel#setTune(float)
      */
     public static final PCMSamplerMessage CHANNEL_TUNE = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/tune ${2}");
@@ -85,8 +88,8 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IBeatboxSamplerChannel#isMute()
-     * @see IBeatboxSamplerChannel#setMute(boolean)
+     * @see WavSamplerChannel#isMute()
+     * @see WavSamplerChannel#setMute(boolean)
      */
     public static final PCMSamplerMessage CHANNEL_MUTE = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/mute ${2}");
@@ -106,8 +109,8 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IBeatboxSamplerChannel#isSolo()
-     * @see IBeatboxSamplerChannel#setSolo(boolean)
+     * @see WavSamplerChannel#isSolo()
+     * @see WavSamplerChannel#setSolo(boolean)
      */
     public static final PCMSamplerMessage CHANNEL_SOLO = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/solo ${2}");
@@ -127,8 +130,8 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBeatboxSamplerChannel#getPunch()
-     * @see IBeatboxSamplerChannel#setPunch(float)
+     * @see WavSamplerChannel#getPunch()
+     * @see WavSamplerChannel#setPunch(float)
      */
     public static final PCMSamplerMessage CHANNEL_PUNCH = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/punch ${2}");
@@ -148,8 +151,8 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBeatboxSamplerChannel#getDecay()
-     * @see IBeatboxSamplerChannel#setDecay(float)
+     * @see WavSamplerChannel#getDecay()
+     * @see WavSamplerChannel#setDecay(float)
      */
     public static final PCMSamplerMessage CHANNEL_DECAY = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/decay ${2}");
@@ -169,8 +172,8 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBeatboxSamplerChannel#getPan()
-     * @see IBeatboxSamplerChannel#setPan(float)
+     * @see WavSamplerChannel#getPan()
+     * @see WavSamplerChannel#setPan(float)
      */
     public static final PCMSamplerMessage CHANNEL_PAN = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/pan ${2}");
@@ -190,8 +193,8 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IBeatboxSamplerChannel#getPan()
-     * @see IBeatboxSamplerChannel#setPan(float)
+     * @see WavSamplerChannel#getPan()
+     * @see WavSamplerChannel#setPan(float)
      */
     public static final PCMSamplerMessage CHANNEL_VOLUME = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/volume ${2}");
@@ -212,7 +215,7 @@ public class BeatboxSamplerMessage extends CausticMessage {
      * located at the channel number, <code>""</code> if a sample has not been
      * assigned.
      * 
-     * @see IBeatboxSamplerChannel#getName()
+     * @see WavSamplerChannel#getName()
      */
     public static final PCMSamplerMessage QUERY_CHANNEL_SAMPLE_NAME = new PCMSamplerMessage(
             "/caustic/${0}/channel/${1}/sample_name");

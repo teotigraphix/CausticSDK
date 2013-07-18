@@ -19,9 +19,11 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
+
 /**
  * The {@link BasslineOscMessage} holds all OSC messages associated with the
- * {@link IBasslineOSC1} API.
+ * {@link OSC1Component} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -46,8 +48,8 @@ public class BasslineOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see IBasslineOSC1#getWaveform()
-     * @see IBasslineOSC1#setWaveForm(Waveform)
+     * @see OSC1Component#getWaveform()
+     * @see OSC1Component#setWaveForm(Waveform)
      */
     public static final BasslineOscMessage WAVEFORM = new BasslineOscMessage(
             "/caustic/${0}/waveform ${1}");
@@ -68,8 +70,8 @@ public class BasslineOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>float</code>
      * </p>
      * 
-     * @see IBasslineOSC1#getAccent()
-     * @see IBasslineOSC1#setAccent(float)
+     * @see OSC1Component#getAccent()
+     * @see OSC1Component#setAccent(float)
      */
     public static final BasslineOscMessage ACCENT = new BasslineOscMessage(
             "/caustic/${0}/accent ${1}");
@@ -90,8 +92,8 @@ public class BasslineOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see IBasslineOSC1#getTune()
-     * @see IBasslineOSC1#setTune(int)
+     * @see OSC1Component#getTune()
+     * @see OSC1Component#setTune(int)
      */
     public static final BasslineOscMessage TUNE = new BasslineOscMessage("/caustic/${0}/tune ${1}");
 
@@ -111,8 +113,8 @@ public class BasslineOscMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>float</code>
      * </p>
      * 
-     * @see IBasslineOSC1#getPulseWidth()
-     * @see IBasslineOSC1#setPulseWidth(float)
+     * @see OSC1Component#getPulseWidth()
+     * @see OSC1Component#setPulseWidth(float)
      */
     public static final BasslineOscMessage PULSE_WIDTH = new BasslineOscMessage(
             "/caustic/${0}/pulse_width ${1}");

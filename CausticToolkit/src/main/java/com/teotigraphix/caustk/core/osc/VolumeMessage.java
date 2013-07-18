@@ -19,9 +19,11 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.VolumeEnvelopeComponent;
+
 /**
  * The {@link VolumeMessage} holds all OSC messages associated with the
- * {@link IVolumeEnvelope} API.
+ * {@link VolumeEnvelopeComponent} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -48,14 +50,14 @@ public class VolumeMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IVolumeComponent#getOut()
-     * @see IVolumeComponent#setOut(float)
+     * @see VolumeEnvelopeComponent#getOut()
+     * @see VolumeEnvelopeComponent#setOut(float)
      */
     public static final VolumeMessage VOLUME_OUT = new VolumeMessage(
             "/caustic/${0}/volume_out ${1}");
 
     //--------------------------------------------------------------------------
-    // IVolumeEnvelope
+    // VolumeEnvelopeComponent
     //--------------------------------------------------------------------------
 
     /**
@@ -71,8 +73,8 @@ public class VolumeMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IVolumeEnvelope#getAttack()
-     * @see IVolumeEnvelope#setAttack(float)
+     * @see VolumeEnvelopeComponent#getAttack()
+     * @see VolumeEnvelopeComponent#setAttack(float)
      */
     public static final VolumeMessage VOLUME_ATTACK = new VolumeMessage(
             "/caustic/${0}/volume_attack ${1}");
@@ -90,8 +92,8 @@ public class VolumeMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IVolumeEnvelope#getDecay()
-     * @see IVolumeEnvelope#setDecay(float)
+     * @see VolumeEnvelopeComponent#getDecay()
+     * @see VolumeEnvelopeComponent#setDecay(float)
      */
     public static final VolumeMessage VOLUME_DECAY = new VolumeMessage(
             "/caustic/${0}/volume_decay ${1}");
@@ -109,8 +111,8 @@ public class VolumeMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IVolumeEnvelope#getSustain()
-     * @see IVolumeEnvelope#setSustain(float)
+     * @see VolumeEnvelopeComponent#getSustain()
+     * @see VolumeEnvelopeComponent#setSustain(float)
      */
     public static final VolumeMessage VOLUME_SUSTAIN = new VolumeMessage(
             "/caustic/${0}/volume_sustain ${1}");
@@ -128,8 +130,8 @@ public class VolumeMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IVolumeEnvelope#getRelease()
-     * @see IVolumeEnvelope#setRelease(float)
+     * @see VolumeEnvelopeComponent#getRelease()
+     * @see VolumeEnvelopeComponent#setRelease(float)
      */
     public static final VolumeMessage VOLUME_RELEASE = new VolumeMessage(
             "/caustic/${0}/volume_release ${1}");

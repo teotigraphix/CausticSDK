@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerChannel;
+import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent.PlayMode;
 
 /**
@@ -44,8 +46,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPCMSampler#getActiveIndex()
-     * @see IPCMSampler#setActiveIndex(int)
+     * @see PCMSamplerComponent#getActiveIndex()
+     * @see PCMSamplerComponent#setActiveIndex(int)
      */
     public static final PCMSamplerMessage SAMPLE_INDEX = new PCMSamplerMessage(
             "/caustic/${0}/sample_index ${1}");
@@ -63,7 +65,7 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IPCMSampler#loadChannel(int, String)
+     * @see PCMSamplerComponent#loadChannel(int, String)
      */
     public static final PCMSamplerMessage SAMPLE_LOAD = new PCMSamplerMessage(
             "/caustic/${0}/sample_load ${1}");
@@ -81,8 +83,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IPCMSamplerChannel#getLevel()
-     * @see IPCMSamplerChannel#setLevel(float)
+     * @see PCMSamplerChannel#getLevel()
+     * @see PCMSamplerChannel#setLevel(float)
      */
     public static final PCMSamplerMessage SAMPLE_LEVEL = new PCMSamplerMessage(
             "/caustic/${0}/sample_level ${1}");
@@ -100,8 +102,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IPCMSamplerChannel#getTune()
-     * @see IPCMSamplerChannel#setTune(int)
+     * @see PCMSamplerChannel#getTune()
+     * @see PCMSamplerChannel#setTune(int)
      */
     public static final PCMSamplerMessage SAMPLE_TUNE = new PCMSamplerMessage(
             "/caustic/${0}/sample_tune ${1}");
@@ -119,8 +121,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPCMSamplerChannel#getRootKey()
-     * @see IPCMSamplerChannel#setRootKey(int)
+     * @see PCMSamplerChannel#getRootKey()
+     * @see PCMSamplerChannel#setRootKey(int)
      */
     public static final PCMSamplerMessage SAMPLE_ROOTKEY = new PCMSamplerMessage(
             "/caustic/${0}/sample_rootkey ${1}");
@@ -138,8 +140,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPCMSamplerChannel#getLowKey()
-     * @see IPCMSamplerChannel#setLowKey(int)
+     * @see PCMSamplerChannel#getLowKey()
+     * @see PCMSamplerChannel#setLowKey(int)
      */
     public static final PCMSamplerMessage SAMPLE_LOWKEY = new PCMSamplerMessage(
             "/caustic/${0}/sample_lowkey ${1}");
@@ -157,8 +159,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPCMSamplerChannel#getHighKey()
-     * @see IPCMSamplerChannel#setHighKey(int)
+     * @see PCMSamplerChannel#getHighKey()
+     * @see PCMSamplerChannel#setHighKey(int)
      */
     public static final PCMSamplerMessage SAMPLE_HIGHKEY = new PCMSamplerMessage(
             "/caustic/${0}/sample_highkey ${1}");
@@ -176,9 +178,9 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPCMSampler.PlayMode
-     * @see IPCMSamplerChannel#getMode()
-     * @see IPCMSamplerChannel#setMode(PlayMode)
+     * @see PCMSamplerComponent.PlayMode
+     * @see PCMSamplerChannel#getMode()
+     * @see PCMSamplerChannel#setMode(PlayMode)
      */
     public static final PCMSamplerMessage SAMPLE_MODE = new PCMSamplerMessage(
             "/caustic/${0}/sample_mode ${1}");
@@ -196,8 +198,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IPCMSamplerChannel#getStart()
-     * @see IPCMSamplerChannel#setStart(int)
+     * @see PCMSamplerChannel#getStart()
+     * @see PCMSamplerChannel#setStart(int)
      */
     public static final PCMSamplerMessage SAMPLE_START = new PCMSamplerMessage(
             "/caustic/${0}/sample_start ${1}");
@@ -215,8 +217,8 @@ public class PCMSamplerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * 
-     * @see IPCMSamplerChannel#getEnd()
-     * @see IPCMSamplerChannel#setEnd(int)
+     * @see PCMSamplerChannel#getEnd()
+     * @see PCMSamplerChannel#setEnd(int)
      */
     public static final PCMSamplerMessage SAMPLE_END = new PCMSamplerMessage(
             "/caustic/${0}/sample_end ${1}");
@@ -235,7 +237,7 @@ public class PCMSamplerMessage extends CausticMessage {
      * located at the active index number, <code>""</code> if a sample has not
      * been assigned.
      * 
-     * @see IPCMSampler#getSampleName(int)
+     * @see PCMSamplerComponent#getSampleName(int)
      */
     public static final PCMSamplerMessage QUERY_SAMPLE_NAME = new PCMSamplerMessage(
             "/caustic/${0}/sample_name");
@@ -253,7 +255,7 @@ public class PCMSamplerMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>String</code> A space deliminated list of
      * index numbers that currently hold samples within the sampler.
      * 
-     * @see IPCMSampler#getSampleIndicies()
+     * @see PCMSamplerComponent#getSampleIndicies()
      */
     public static final PCMSamplerMessage QUERY_SAMPLE_INDICIES = new PCMSamplerMessage(
             "/caustic/${0}/sample_indices");

@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.core.components.SynthComponent;
+
 /**
  * The {@link SynthMessage} holds all OSC messages associated with the
  * {@link ISynth}, {@link ISynth#getSynth()} API.
@@ -45,8 +47,8 @@ public class SynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see ISynthComponent#setPolyphony(int)
-     * @see ISynthComponent#getPolyphony()
+     * @see SynthComponent#setPolyphony(int)
+     * @see SynthComponent#getPolyphony()
      */
     public static final SynthMessage POLYPHONY = new SynthMessage("/caustic/${0}/polyphony ${1}");
 
@@ -67,8 +69,8 @@ public class SynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see ISynthComponent#noteOn(int)
-     * @see ISynthComponent#noteOff(int)
+     * @see SynthComponent#noteOn(int)
+     * @see SynthComponent#noteOff(int)
      */
     public static final SynthMessage NOTE = new SynthMessage("/caustic/${0}/note/${1} ${2} ${3}");
 
@@ -90,10 +92,70 @@ public class SynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see ISynthComponent#notePreview(int, boolean)
+     * @see SynthComponent#notePreview(int, boolean)
      */
     public static final SynthMessage NOTE_PREVIEW = new SynthMessage(
             "/caustic/${0}/note/preview ${1} ${2}");
+
+    /**
+     * Message: <code>/caustic/[machine_index]/load_preset [preset_path]</code>
+     * <p>
+     * Loads a preset into the machine from an external file.
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>preset_path</strong>: The absolute path to the machine's
+     * preset file.</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>N/A</code>
+     * 
+     * @see IMachine#loadPreset(String)
+     */
+    public static final SynthMessage LOAD_PRESET = new SynthMessage(
+            "/caustic/${0}/load_preset ${1}");
+
+    /**
+     * Message: <code>/caustic/[machine_index]/save_preset [preset_name]</code>
+     * <p>
+     * Saves a preset from a machine to an external machine preset file.
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>preset_name</strong>: The simple name of the new preset file,
+     * without the file extension.</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>N/A</code>
+     * </p>
+     * 
+     * @see IMachine#savePreset(String)
+     */
+    public static final SynthMessage SAVE_PRESET = new SynthMessage(
+            "/caustic/${0}/save_preset ${1}");
+
+    /**
+     * Query: <code>/caustic/[machine_index]/preset</code>
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>String</code>The name of the preset
+     * loaded in the machine if any.
+     * 
+     * @see IMachine#getPresetName()
+     */
+    public static final SynthMessage QUERY_PRESET = new SynthMessage("/caustic/${0}/preset");
 
     SynthMessage(String message) {
         super(message);
