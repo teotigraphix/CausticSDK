@@ -25,7 +25,6 @@ import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.internal.effect.EffectsRack;
 import com.teotigraphix.caustic.internal.machine.Beatbox;
 import com.teotigraphix.caustic.internal.machine.Machine;
-import com.teotigraphix.caustic.internal.machine.PCMSynth;
 import com.teotigraphix.caustic.internal.mixer.MixerDelay;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.internal.mixer.MixerReverb;
@@ -34,6 +33,7 @@ import com.teotigraphix.caustic.machine.MachineType;
 import com.teotigraphix.caustic.mixer.MixerEffectType;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 
 public class PatchItem extends MemorySlotItem {
@@ -171,13 +171,13 @@ public class PatchItem extends MemorySlotItem {
         tone.getVolume().restore();
     }
 
-    void copyPCMSynth(ICaustkController controller, PCMSynth machine, IMemento memento) {
+    void copyPCMSynth(ICaustkController controller, PCMSynthTone tone, IMemento memento) {
         //machine.getSequencer().restore();
-        machine.getFilter().restore();
-        machine.getLFO1().restore();
-        machine.getPitch().restore();
-        machine.getSampler().restore();
-        machine.getVolume().restore();
+        tone.getFilter().restore();
+        tone.getLFO1().restore();
+        tone.getTuner().restore();
+        tone.getSampler().restore();
+        tone.getVolume().restore();
     }
 
     void copyBeatbox(ICaustkController controller, Beatbox machine, IMemento memento) {

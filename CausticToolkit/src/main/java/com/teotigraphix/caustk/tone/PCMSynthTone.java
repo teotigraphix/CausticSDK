@@ -20,8 +20,32 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.SynthFilterComponent;
+import com.teotigraphix.caustk.core.components.VolumeEnvelopeComponent;
+import com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component;
+import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent;
+import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
 
 public class PCMSynthTone extends SynthTone {
+
+    public VolumeEnvelopeComponent getVolume() {
+        return getComponent(VolumeEnvelopeComponent.class);
+    }
+
+    public SynthFilterComponent getFilter() {
+        return getComponent(SynthFilterComponent.class);
+    }
+
+    public LFO1Component getLFO1() {
+        return getComponent(LFO1Component.class);
+    }
+    public PCMTunerComponent getTuner() {
+        return getComponent(PCMTunerComponent.class);
+    }
+    
+    public PCMSamplerComponent getSampler() {
+        return getComponent(PCMSamplerComponent.class);
+    }
 
     public PCMSynthTone(ICaustkController controller) {
         super(controller);

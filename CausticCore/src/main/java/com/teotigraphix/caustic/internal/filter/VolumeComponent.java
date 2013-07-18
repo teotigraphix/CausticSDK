@@ -23,7 +23,6 @@ import com.teotigraphix.caustic.core.IMemento;
 import com.teotigraphix.caustic.filter.IVolumeComponent;
 import com.teotigraphix.caustic.internal.machine.MachineComponent;
 import com.teotigraphix.caustic.machine.IMachine;
-import com.teotigraphix.caustic.machine.IPCMSynth;
 import com.teotigraphix.caustic.osc.VolumeMessage;
 
 /**
@@ -60,13 +59,13 @@ public class VolumeComponent extends MachineComponent implements IVolumeComponen
     public void setOut(float value) {
         if (value == mOut)
             return;
-        if (getDevice() instanceof IPCMSynth) {
-            if (value < 0 || value > 8.0f)
-                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..8.0", value);
-        } else {
-            if (value < 0 || value > 2.0f)
-                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..2.0", value);
-        }
+        //        if (getDevice() instanceof IPCMSynth) {
+        //            if (value < 0 || value > 8.0f)
+        //                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..8.0", value);
+        //        } else {
+        //            if (value < 0 || value > 2.0f)
+        //                throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..2.0", value);
+        //        }
         mOut = value;
         VolumeMessage.VOLUME_OUT.send(getEngine(), getMachineIndex(), value);
     }

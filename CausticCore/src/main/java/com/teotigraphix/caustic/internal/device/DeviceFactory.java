@@ -36,7 +36,6 @@ import com.teotigraphix.caustic.internal.effect.FlangerEffect;
 import com.teotigraphix.caustic.internal.effect.ParametricEQEffect;
 import com.teotigraphix.caustic.internal.effect.PhaserEffect;
 import com.teotigraphix.caustic.internal.machine.Beatbox;
-import com.teotigraphix.caustic.internal.machine.PCMSynth;
 import com.teotigraphix.caustic.internal.mixer.MixerDelay;
 import com.teotigraphix.caustic.internal.mixer.MixerPanel;
 import com.teotigraphix.caustic.internal.mixer.MixerReverb;
@@ -129,9 +128,7 @@ public class DeviceFactory implements IDeviceFactory {
     public IMachine create(String machineId, MachineType machineType) throws CausticException {
         IMachine machine = null;
 
-        if (machineType == MachineType.PCMSYNTH)
-            machine = new PCMSynth(machineId);
-        else if (machineType == MachineType.BEATBOX)
+        if (machineType == MachineType.BEATBOX)
             machine = new Beatbox(machineId);
 
         machine.setFactory(this);
