@@ -42,7 +42,7 @@ public abstract class ToneComponent implements IRestore {
     //--------------------------------------------------------------------------
 
     public String serialize() {
-        return tone.getController().getSerializeService().toUnString(this);
+        return tone.getController().getSerializeService().toString(this);
     }
 
     /**

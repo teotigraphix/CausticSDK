@@ -146,6 +146,7 @@ public class SoundSource implements ISoundSource {
         return tone;
     }
 
+    @Override
     public void destroyTone(int index) {
         destroyTone(getTone(index));
     }
@@ -156,6 +157,7 @@ public class SoundSource implements ISoundSource {
         toneRemove(tone);
     }
 
+    @Override
     public void clearAndReset() {
         getController().getDispatcher().trigger(new OnSoundSourceClear());
 
@@ -186,22 +188,22 @@ public class SoundSource implements ISoundSource {
         switch (toneType) {
             case Bassline:
                 tone = new BasslineTone(getController());
-                initializeTone(tone, toneName, toneType);
+                initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup((BasslineTone)tone);
                 break;
             case Beatbox:
                 tone = new BeatboxTone(getController());
-                initializeTone(tone, toneName, toneType);
+                initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup((BeatboxTone)tone);
                 break;
             case PCMSynth:
                 tone = new PCMSynthTone(getController());
-                initializeTone(tone, toneName, toneType);
+                initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup((PCMSynthTone)tone);
                 break;
             case SubSynth:
                 tone = new SubSynthTone(getController());
-                initializeTone(tone, toneName, toneType);
+                initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup((SubSynthTone)tone);
                 break;
             case PadSynth:
@@ -225,10 +227,11 @@ public class SoundSource implements ISoundSource {
         return tone;
     }
 
-    private void initializeTone(Tone tone, String toneName, ToneType toneType) {
+    private void initializeTone(Tone tone, String toneName, ToneType toneType, int index) {
         tone.setId(UUID.randomUUID());
         tone.setName(toneName);
         tone.setToneType(toneType);
+        tone.setIndex(index);
     }
 
     private void toneAdd(int index, Tone tone) {

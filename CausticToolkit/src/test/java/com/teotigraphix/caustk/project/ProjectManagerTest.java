@@ -64,8 +64,8 @@ public class ProjectManagerTest {
         Project project2 = projectManager.load(PROJECT_FILE);
         assertNotNull(project2);
 
-        String serialized1 = controller.getSerializeService().toString(project1);
-        String serialized2 = controller.getSerializeService().toString(project2);
+        String serialized1 = controller.getSerializeService().toPrettyString(project1);
+        String serialized2 = controller.getSerializeService().toPrettyString(project2);
         Assert.assertEquals(serialized1, serialized2);
     }
 }

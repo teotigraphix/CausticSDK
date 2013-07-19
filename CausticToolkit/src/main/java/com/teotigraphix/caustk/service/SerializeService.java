@@ -45,12 +45,12 @@ public class SerializeService implements ISerializeService {
     }
 
     @Override
-    public String toUnString(Object serialized) {
+    public String toString(Object serialized) {
         return JsonUtils.toGson(serialized, false);
     }
 
     @Override
-    public String toString(Object serialized) {
+    public String toPrettyString(Object serialized) {
         return JsonUtils.toGson(serialized, true);
     }
 

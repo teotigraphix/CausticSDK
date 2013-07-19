@@ -171,14 +171,14 @@ public class ProjectManager implements IProjectManager {
     }
 
     protected void flushProjectFile() throws IOException {
-        String data = controller.getSerializeService().toString(project);
+        String data = controller.getSerializeService().toPrettyString(project);
         FileUtils.writeStringToFile(project.getFile(), data);
 
         saveProjectPreferences();
     }
 
     private void saveProjectPreferences() throws IOException {
-        String data = controller.getSerializeService().toString(sessionPreferences);
+        String data = controller.getSerializeService().toPrettyString(sessionPreferences);
         FileUtils.writeStringToFile(sessionPreferencesFile, data);
     }
 

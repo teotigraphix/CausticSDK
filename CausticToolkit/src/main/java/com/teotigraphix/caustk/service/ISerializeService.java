@@ -36,9 +36,11 @@ public interface ISerializeService {
 
     <T> T fromString(String data, Class<T> classOfT);
 
-    String toString(Object serialized);
+    //String toString(Object serialized);
     
-    String toUnString(Object serialized);
+    String toPrettyString(Object serialized);
+    
+    String toString(Object serialized);
 
     void save(File target, Object serialized) throws IOException;
 }

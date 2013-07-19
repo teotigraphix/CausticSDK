@@ -157,7 +157,7 @@ public class Tone implements ISerialize {
      * {@link ISerializeService}.
      */
     public String serialize() {
-        return controller.getSerializeService().toString(this);
+        return controller.getSerializeService().toPrettyString(this);
     }
 
     //--------------------------------------------------------------------------

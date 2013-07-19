@@ -201,6 +201,7 @@ public class WavSamplerChannel extends ToneComponent {
         this.sampler = sampler;
     }
 
+    @Override
     public void restore() {
         name = sampler.getSampleName(index);
         if (name == null)

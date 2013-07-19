@@ -28,6 +28,14 @@ public class ExceptionUtils {
 
     public static final float MIN_VALUE = -1000000.0f;
 
+    /**
+     * Returns a new {@link IllegalArgumentException} for an error in OSC range.
+     * 
+     * @param control The OSC control involved.
+     * @param range The accepted range.
+     * @param value The value that is throwing the range exception.
+     * @return A new {@link IllegalArgumentException}.
+     */
     public static final RuntimeException newRangeException(String control, String range,
             Object value) {
         if (value.equals(MIN_VALUE))

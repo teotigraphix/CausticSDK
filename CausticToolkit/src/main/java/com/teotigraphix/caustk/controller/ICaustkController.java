@@ -28,6 +28,7 @@ import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.service.ISerializeService;
+import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 
@@ -62,17 +63,19 @@ public interface ICaustkController extends ICausticEngine {
 
     ISerializeService getSerializeService();
 
+    IProjectManager getProjectManager();
+
     ISoundGenerator getSoundGenerator();
 
     ISoundSource getSoundSource();
 
-    IProjectManager getProjectManager();
+    ISoundMixer getSoundMixer();
 
     //    ISongManager getSongManager();
 
     //    ILibraryManager getLibraryManager();
 
-    //    ICaustkSoundMixer getSoundMixer();
+    //    
 
     //    SystemSequencer getSystemSequencer();
 
