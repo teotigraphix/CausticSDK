@@ -52,7 +52,7 @@ public class CaustkApplicationTest {
                         info.isStarted = true;
                     }
                 });
-        
+
         // all sub components in Controller are now created
         application.initialize();
         application.start();

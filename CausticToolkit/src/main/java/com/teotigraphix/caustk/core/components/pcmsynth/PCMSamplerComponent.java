@@ -21,7 +21,7 @@ public class PCMSamplerComponent extends ToneComponent {
             createChannels();
         }
     }
-    
+
     //--------------------------------------------------------------------------
     //
     // IPCMSampler API :: Properties

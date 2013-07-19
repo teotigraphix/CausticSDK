@@ -21,7 +21,8 @@ public class CausticCoreDesktop {
         RuntimeUtils.STORAGE_ROOT = Constants.STORAGE_ROOT;
 
         URL resource = CausticCoreDesktop.class.getClassLoader().getResource(
-                "com/teotigraphix/caustk/core/internal/CausticCore.dll");
+                Constants.RESOURCE_CORE_DLL);
+
         String path = null;
         try {
             path = new File(resource.toURI()).getParentFile().getPath();

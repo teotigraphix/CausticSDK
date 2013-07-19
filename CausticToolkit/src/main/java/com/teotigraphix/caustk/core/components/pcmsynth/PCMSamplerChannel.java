@@ -175,8 +175,8 @@ public class PCMSamplerChannel extends ToneComponent {
         rootKey = (int)PCMSamplerMessage.SAMPLE_ROOTKEY.query(getEngine(), getToneIndex());
         lowKey = (int)PCMSamplerMessage.SAMPLE_LOWKEY.query(getEngine(), getToneIndex());
         highKey = (int)PCMSamplerMessage.SAMPLE_HIGHKEY.query(getEngine(), getToneIndex());
-        mode = PlayMode.toType((int)PCMSamplerMessage.SAMPLE_MODE.query(getEngine(),
-                getToneIndex()));
+        mode = PlayMode.toType((int)PCMSamplerMessage.SAMPLE_MODE
+                .query(getEngine(), getToneIndex()));
         start = (int)PCMSamplerMessage.SAMPLE_START.query(getEngine(), getToneIndex());
         end = (int)PCMSamplerMessage.SAMPLE_END.query(getEngine(), getToneIndex());
     }

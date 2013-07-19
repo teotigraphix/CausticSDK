@@ -17,30 +17,17 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.service;
+package com.teotigraphix.caustk.controller.command;
 
-import java.io.File;
-import java.io.IOException;
+public interface ICommand {
 
-public interface ISerializeService {
+    CommandContext getContext();
 
     /**
-     * Returns a new instance of the {@link File} content based on the Type
-     * passed.
+     * Perform an action
      * 
-     * @param file
-     * @param classOfT
-     * @return
+     * @throws CommandExecutionException An exception occurred during execution.
      */
-    <T> T fromFile(File file, Class<T> classOfT);
+    void execute();
 
-    <T> T fromString(String data, Class<T> classOfT);
-
-    //String toString(Object serialized);
-
-    String toPrettyString(Object serialized);
-
-    String toString(Object serialized);
-
-    void save(File target, Object serialized) throws IOException;
 }

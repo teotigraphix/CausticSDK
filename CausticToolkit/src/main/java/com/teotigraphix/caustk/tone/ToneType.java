@@ -58,7 +58,7 @@ public enum ToneType {
     ToneType(String type) {
         value = type;
     }
-    
+
     /**
      * Returns the String value of the ToneType.
      * <p>

@@ -19,13 +19,28 @@
 
 package com.teotigraphix.caustk.sound;
 
+import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.sound.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.tone.Tone;
 
-public interface ISoundMixer {
+public interface ISoundMixer extends IControllerComponent {
 
     SoundMixerChannel getChannel(Tone tone);
 
     SoundMixerChannel getChannel(int index);
 
+    /**
+     * @see #executeSetValue(int, MixerInput, Number)
+     */
+    public static final String COMMAND_SET_VALUE = "sound_mixer/set_value";
+
+    /**
+     * Executes the {@link #COMMAND_SET_VALUE} command.
+     * 
+     * @param toneIndex The tone target's index.
+     * @param input The {@link MixerInput} value that will be set.
+     * @param value The value of the input's adjustment.
+     */
+    void executeSetValue(int toneIndex, MixerInput input, Number value);
 
 }

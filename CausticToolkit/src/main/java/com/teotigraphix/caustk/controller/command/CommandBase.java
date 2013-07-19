@@ -17,30 +17,25 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.service;
+package com.teotigraphix.caustk.controller.command;
 
-import java.io.File;
-import java.io.IOException;
+public abstract class CommandBase implements ICommand {
 
-public interface ISerializeService {
+    private CommandContext context;
 
-    /**
-     * Returns a new instance of the {@link File} content based on the Type
-     * passed.
-     * 
-     * @param file
-     * @param classOfT
-     * @return
-     */
-    <T> T fromFile(File file, Class<T> classOfT);
+    @Override
+    public CommandContext getContext() {
+        return context;
+    }
 
-    <T> T fromString(String data, Class<T> classOfT);
+    public void setContext(CommandContext value) {
+        context = value;
+    }
 
-    //String toString(Object serialized);
+    public CommandBase() {
+    }
 
-    String toPrettyString(Object serialized);
+    @Override
+    public abstract void execute();
 
-    String toString(Object serialized);
-
-    void save(File target, Object serialized) throws IOException;
 }

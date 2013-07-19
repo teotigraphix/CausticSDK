@@ -83,7 +83,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public float sendMessage(String message) {
-        System.out.println(message);
+        //System.out.println(message);
         //log.info("Message:" + message);
         float value = core().SendOSCMessage(message);
         return value;
@@ -92,7 +92,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     @Override
     public String queryMessage(String message) {
         //log.info("Query:" + message);
-        System.err.println(message);
+        //System.err.println(message);
         String result = core().QueryOSC(message);
         if (result != null && result.equals(""))
             return null;

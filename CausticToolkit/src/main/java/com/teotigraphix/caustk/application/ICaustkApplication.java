@@ -75,7 +75,7 @@ public interface ICaustkApplication {
      */
     public static class OnApplicationInitialize {
     }
-    
+
     /**
      * @see ICaustkApplication#start()
      * @see ICaustkController#getDispatcher()

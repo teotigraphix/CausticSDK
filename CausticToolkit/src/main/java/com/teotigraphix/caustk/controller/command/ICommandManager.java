@@ -17,30 +17,18 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.service;
+package com.teotigraphix.caustk.controller.command;
 
-import java.io.File;
-import java.io.IOException;
+public interface ICommandManager {
 
-public interface ISerializeService {
+    void execute(String message, Object... args);
 
-    /**
-     * Returns a new instance of the {@link File} content based on the Type
-     * passed.
-     * 
-     * @param file
-     * @param classOfT
-     * @return
-     */
-    <T> T fromFile(File file, Class<T> classOfT);
+    int undo();
 
-    <T> T fromString(String data, Class<T> classOfT);
+    int redo();
 
-    //String toString(Object serialized);
+    void put(String message, Class<?> command);
 
-    String toPrettyString(Object serialized);
+    void clearHistory();
 
-    String toString(Object serialized);
-
-    void save(File target, Object serialized) throws IOException;
 }

@@ -25,6 +25,7 @@ import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.service.ISerializeService;
@@ -79,13 +80,13 @@ public interface ICaustkController extends ICausticEngine {
 
     //    SystemSequencer getSystemSequencer();
 
-    //    ICommandManager getCommandManager();
+    ICommandManager getCommandManager();
 
-    //    void execute(String message, Object... args);
-    //
-    //    void undo();
-    //
-    //    void redo();
+    void execute(String message, Object... args);
+
+    void undo();
+
+    void redo();
 
     /**
      * Called to create all sub components of the {@link ICaustkController}.

@@ -17,30 +17,33 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.service;
+package com.teotigraphix.caustk.controller.command;
 
-import java.io.File;
-import java.io.IOException;
+import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerComponent;
 
-public interface ISerializeService {
+public class CommandContext {
 
-    /**
-     * Returns a new instance of the {@link File} content based on the Type
-     * passed.
-     * 
-     * @param file
-     * @param classOfT
-     * @return
-     */
-    <T> T fromFile(File file, Class<T> classOfT);
+    private final ICaustkController controller;
 
-    <T> T fromString(String data, Class<T> classOfT);
+    public <T extends IControllerComponent> T getComponent(Class<T> clazz) {
+        return controller.getComponent(clazz);
+    }
 
-    //String toString(Object serialized);
+    private final OSCMessage message;
 
-    String toPrettyString(Object serialized);
+    public OSCMessage getMessage() {
+        return message;
+    }
 
-    String toString(Object serialized);
+    protected IDispatcher getDispatcher() {
+        return controller.getDispatcher();
+    }
 
-    void save(File target, Object serialized) throws IOException;
+    public CommandContext(ICaustkController controller, OSCMessage message) {
+        this.controller = controller;
+        this.message = message;
+    }
+
 }

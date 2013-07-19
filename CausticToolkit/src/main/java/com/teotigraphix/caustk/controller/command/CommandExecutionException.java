@@ -17,30 +17,32 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.service;
+package com.teotigraphix.caustk.controller.command;
 
-import java.io.File;
-import java.io.IOException;
-
-public interface ISerializeService {
+public class CommandExecutionException extends RuntimeException {
 
     /**
-     * Returns a new instance of the {@link File} content based on the Type
-     * passed.
-     * 
-     * @param file
-     * @param classOfT
-     * @return
-     */
-    <T> T fromFile(File file, Class<T> classOfT);
+	 * 
+	 */
+    private static final long serialVersionUID = -3602002464749099348L;
 
-    <T> T fromString(String data, Class<T> classOfT);
+    public CommandExecutionException() {
+        // TODO Auto-generated constructor stub
+    }
 
-    //String toString(Object serialized);
+    public CommandExecutionException(String detailMessage) {
+        super(detailMessage);
+        // TODO Auto-generated constructor stub
+    }
 
-    String toPrettyString(Object serialized);
+    public CommandExecutionException(Throwable throwable) {
+        super(throwable);
+        // TODO Auto-generated constructor stub
+    }
 
-    String toString(Object serialized);
+    public CommandExecutionException(String detailMessage, Throwable throwable) {
+        super(detailMessage, throwable);
+        // TODO Auto-generated constructor stub
+    }
 
-    void save(File target, Object serialized) throws IOException;
 }

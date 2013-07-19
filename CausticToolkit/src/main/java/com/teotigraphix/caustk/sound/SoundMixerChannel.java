@@ -58,7 +58,7 @@ public class SoundMixerChannel implements ISerialize {
 
     private float mid = 0f;
 
-    public float getMid(int index) {
+    public float getMid() {
         return mid;
     }
 

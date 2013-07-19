@@ -29,6 +29,8 @@ import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.command.CommandManager;
+import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.service.ISerializeService;
@@ -151,12 +153,12 @@ public class CaustkController implements ICaustkController {
     // commandManager
     //----------------------------------
 
-    //    private ICommandManager commandManager;
-    //
-    //    @Override
-    //    public ICommandManager getCommandManager() {
-    //        return commandManager;
-    //    }
+    private ICommandManager commandManager;
+
+    @Override
+    public ICommandManager getCommandManager() {
+        return commandManager;
+    }
 
     /**
      * Executes an {@link ICommand} against a registered message.
@@ -166,20 +168,20 @@ public class CaustkController implements ICaustkController {
      *            be created.
      * @see #sendOSCCommand(OSCMessage)
      */
-    //    @Override
-    //    public void execute(String message, Object... args) {
-    //        commandManager.execute(message, args);
-    //    }
-    //
-    //    @Override
-    //    public void undo() {
-    //        commandManager.undo();
-    //    }
-    //
-    //    @Override
-    //    public void redo() {
-    //        commandManager.redo();
-    //    }
+    @Override
+    public void execute(String message, Object... args) {
+        commandManager.execute(message, args);
+    }
+
+    @Override
+    public void undo() {
+        commandManager.undo();
+    }
+
+    @Override
+    public void redo() {
+        commandManager.redo();
+    }
 
     //----------------------------------
     // soundGenerator
@@ -251,6 +253,7 @@ public class CaustkController implements ICaustkController {
     // we proxy the actual OSC impl so we can stop, or reroute
     @Override
     public float sendMessage(String message) {
+        System.out.println("Controller OSC: " + message);
         return soundGenerator.sendMessage(message);
     }
 
@@ -271,10 +274,10 @@ public class CaustkController implements ICaustkController {
 
         // sub composites will add their ICommands in their constructors
         serializeService = new SerializeService(this);
+        commandManager = new CommandManager(this);
         projectManager = new ProjectManager(this);
         //        songManager = new SongManager(this, applicationRoot);
         //        libraryManager = new LibraryManager(this);
-        //        commandManager = new CommandManager(this);
 
         soundGenerator = getConfiguration().createSoundGenerator(this);
         soundGenerator.initialize();

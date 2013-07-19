@@ -16,6 +16,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.sound.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneType;
 
@@ -44,6 +45,24 @@ public class SoundMixerTest {
         soundMixer = null;
     }
 
+    @Test
+    public void test_mixer_command() throws CausticException {
+        soundSource.createTone("tone1", ToneType.Bassline);
+        soundMixer.executeSetValue(0, MixerInput.High, 0.42f);
+        Assert.assertEquals(0.42f, soundMixer.getChannel(0).getHigh());
+    }
+
+    @Test
+    public void test_mixer_command_undoRedo() throws CausticException {
+        soundSource.createTone("tone1", ToneType.Bassline);
+        soundMixer.executeSetValue(0, MixerInput.High, 0.42f);
+        Assert.assertEquals(0.42f, soundMixer.getChannel(0).getHigh());
+        controller.undo();
+        Assert.assertEquals(0f, soundMixer.getChannel(0).getHigh());
+        controller.redo();
+        Assert.assertEquals(0.42f, soundMixer.getChannel(0).getHigh());
+    }
+
     @SuppressWarnings("unused")
     @Test
     public void test_project_save() throws CausticException, IOException {
@@ -53,19 +72,19 @@ public class SoundMixerTest {
         soundSource.createTone("tone1", ToneType.Bassline);
         soundSource.createTone("tone2", ToneType.Beatbox);
         soundSource.createTone("tone3", ToneType.SubSynth);
-        
+
         soundMixer.getChannel(0).setHigh(0.42f);
-        
+
         // save the project to disk
         controller.getProjectManager().save();
         // load the project from disk, this will reinitialize
         // the SoundMixer state instance from deserialization of the project map entry
         Project project2 = controller.getProjectManager().load(projectFile);
-        
+
         Assert.assertEquals(0.42f, soundMixer.getChannel(0).getHigh());
-        
+
         soundMixer.getChannel(1).setHigh(0.222f);
-        
+
         // test the native core saved the value
         Assert.assertEquals(0.222f, MixerMessage.EQ_HIGH.query(controller, 1));
     }

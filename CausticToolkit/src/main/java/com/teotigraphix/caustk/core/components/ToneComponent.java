@@ -22,11 +22,11 @@ public abstract class ToneComponent implements IRestore {
         tone = value;
     }
 
-    protected int getToneIndex() {
+    protected final int getToneIndex() {
         return tone.getIndex();
     }
 
-    protected ICausticEngine getEngine() {
+    protected final ICausticEngine getEngine() {
         return tone.getEngine();
     }
 
