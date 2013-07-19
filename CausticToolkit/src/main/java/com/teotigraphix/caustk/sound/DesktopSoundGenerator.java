@@ -61,7 +61,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public void initialize() {
-        core();
+        core().initialize();
     }
 
     //--------------------------------------------------------------------------

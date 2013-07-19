@@ -106,6 +106,10 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
      */
     @Override
     public void load() {
+        
+        if (!librariesDirectory.exists())
+            return;
+        
         Collection<File> dirs = FileUtils.listFilesAndDirs(librariesDirectory, new IOFileFilter() {
             @Override
             public boolean accept(File arg0, String arg1) {

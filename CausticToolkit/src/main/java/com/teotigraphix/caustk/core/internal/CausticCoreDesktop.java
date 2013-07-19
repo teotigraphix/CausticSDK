@@ -83,6 +83,10 @@ public class CausticCoreDesktop {
         audioThread.RemoveEventListener(l);
     }
 
+    public void initialize() {
+        audioThread.m_EventListeners.clear();
+    }
+
     class CausticAudioMonitor extends Thread {
         CausticAudioMonitor() {
             m_nCurrentBeat = 0;
@@ -97,7 +101,15 @@ public class CausticCoreDesktop {
         public void run() {
             while (m_bRun) {
                 if (m_bProcess) {
-                    int nCurBeat = 0;// GetCurrentBeat();
+                    int nCurMeasure = GetCurrentSongMeasure();
+                    if (nCurMeasure != m_nCurrentMeasure) {
+                        m_nCurrentMeasure = nCurMeasure;
+                        for (CausticEventListener listener : m_EventListeners) {
+                            listener.OnMeasureChanged(nCurMeasure);
+                        }
+                    }
+
+                    int nCurBeat = GetCurrentBeat();
                     if (nCurBeat != m_nCurrentBeat) {
                         m_nCurrentBeat = nCurBeat;
                         for (CausticEventListener listener : m_EventListeners) {
@@ -105,13 +117,6 @@ public class CausticCoreDesktop {
                         }
                     }
 
-                    int nCurMeasure = 0;//GetCurrentSongMeasure();
-                    if (nCurMeasure != m_nCurrentMeasure) {
-                        m_nCurrentMeasure = nCurMeasure;
-                        for (CausticEventListener listener : m_EventListeners) {
-                            listener.OnMeasureChanged(nCurMeasure);
-                        }
-                    }
                 } else {
                     try {
                         sleep(10);

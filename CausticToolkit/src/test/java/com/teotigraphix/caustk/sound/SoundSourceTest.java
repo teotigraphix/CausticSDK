@@ -66,6 +66,8 @@ public class SoundSourceTest {
         Assert.assertNotNull(controller.getSoundMixer().getChannel(3));
         Assert.assertNotNull(controller.getSoundMixer().getChannel(4));
         Assert.assertNotNull(controller.getSoundMixer().getChannel(5));
+
+        //controller.getSystemSequencer().play(SequencerMode.SONG);
     }
 
     @Test

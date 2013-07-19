@@ -35,6 +35,8 @@ import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer;
+import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.SerializeService;
 import com.teotigraphix.caustk.sound.ISoundMixer;
@@ -222,12 +224,12 @@ public class CaustkController implements ICaustkController {
     // systemSequencer
     //----------------------------------
 
-    //    private SystemSequencer systemSequencer;
-    //
-    //    @Override
-    //    public SystemSequencer getSystemSequencer() {
-    //        return systemSequencer;
-    //    }
+    private ISystemSequencer systemSequencer;
+
+    @Override
+    public ISystemSequencer getSystemSequencer() {
+        return systemSequencer;
+    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -284,9 +286,10 @@ public class CaustkController implements ICaustkController {
 
         soundGenerator = getConfiguration().createSoundGenerator(this);
         soundGenerator.initialize();
+        
         soundSource = new SoundSource(this);
         soundMixer = new SoundMixer(this);
-        //        systemSequencer = new SystemSequencer(this);
+        systemSequencer = new SystemSequencer(this);
     }
 
     @Override
