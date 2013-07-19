@@ -47,7 +47,7 @@ public class SoundMixerTest {
     @SuppressWarnings("unused")
     @Test
     public void test_project_save() throws CausticException, IOException {
-        File projectFile = new File("SounMixerTestProject.ctk");
+        File projectFile = new File("SoundMixerTestProject.ctk");
         Project project = controller.getProjectManager().create(projectFile);
 
         soundSource.createTone("tone1", ToneType.Bassline);
@@ -78,13 +78,13 @@ public class SoundMixerTest {
         Tone tone2 = soundSource.createTone("tone2", ToneType.Bassline);
         Tone tone3 = soundSource.createTone("tone3", ToneType.Bassline);
 
-        Assert.assertEquals(3, soundMixer.getState().getChannels().size());
+        Assert.assertEquals(3, soundMixer.getModel().getChannels().size());
 
         soundSource.destroyTone(1);
-        Assert.assertEquals(2, soundMixer.getState().getChannels().size());
+        Assert.assertEquals(2, soundMixer.getModel().getChannels().size());
         soundSource.destroyTone(0);
-        Assert.assertEquals(1, soundMixer.getState().getChannels().size());
+        Assert.assertEquals(1, soundMixer.getModel().getChannels().size());
         soundSource.destroyTone(2);
-        Assert.assertEquals(0, soundMixer.getState().getChannels().size());
+        Assert.assertEquals(0, soundMixer.getModel().getChannels().size());
     }
 }

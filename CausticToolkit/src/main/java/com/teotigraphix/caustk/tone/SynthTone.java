@@ -43,16 +43,16 @@ public class SynthTone extends Tone {
     // enabled
     //----------------------------------
 
-    private boolean mEnabled = false;
+    private boolean enabled = false;
 
     public final boolean isEnabled() {
-        return mEnabled;
+        return enabled;
     }
 
     public final void setEnabled(boolean value) {
-        if (value == mEnabled)
+        if (value == enabled)
             return;
-        mEnabled = value;
+        enabled = value;
         // firePropertyChange(TonePropertyKind.ENABLED, mEnabled);
     }
 
@@ -60,16 +60,16 @@ public class SynthTone extends Tone {
     // muted
     //----------------------------------
 
-    private boolean mMuted = false;
+    private boolean muted = false;
 
     public boolean isMuted() {
-        return mMuted;
+        return muted;
     }
 
     public void setMuted(boolean value) {
-        if (value == mMuted)
+        if (value == muted)
             return;
-        mMuted = value;
+        muted = value;
         // firePropertyChange(TonePropertyKind.MUTE, mMuted);
     }
 
@@ -77,16 +77,16 @@ public class SynthTone extends Tone {
     // selected
     //----------------------------------
 
-    private boolean mSelected = false;
+    private boolean selected = false;
 
     public boolean getSelected() {
-        return mSelected;
+        return selected;
     }
 
     public void setSelected(boolean value) {
-        if (value == mSelected)
+        if (value == selected)
             return;
-        mSelected = value;
+        selected = value;
         // firePropertyChange(TonePropertyKind.SELECTED, mSelected);
     }
 
@@ -94,16 +94,16 @@ public class SynthTone extends Tone {
     // presetBank
     //----------------------------------
 
-    private String mPresetBank;
+    private String presetBank;
 
     public final String getPresetBank() {
-        return mPresetBank;
+        return presetBank;
     }
 
     public final void setPresetBank(String value) {
-        if (value == mPresetBank)
+        if (value == presetBank)
             return;
-        mPresetBank = value;
+        presetBank = value;
         // firePropertyChange(TonePropertyKind.PRESET_BANK, mPresetBank);
     }
 

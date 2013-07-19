@@ -44,7 +44,7 @@ public class WavSamplerChannel extends ToneComponent {
 
     private String name;
 
-    private WavSamplerComponent sampler;
+    private transient WavSamplerComponent sampler;
 
     //--------------------------------------------------------------------------
     //

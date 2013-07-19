@@ -5,13 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.service.ISerialize;
-import com.teotigraphix.caustk.service.ISerializeService;
+import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixerState implements ISerialize {
-
-    transient ICaustkController controller;
+public class SoundMixerModel extends SubControllerModel {
 
     Map<Integer, SoundMixerChannel> channels = new HashMap<Integer, SoundMixerChannel>();
 
@@ -19,24 +16,15 @@ public class SoundMixerState implements ISerialize {
         return channels;
     }
 
-    /**
-     * Called from {@link ISerializeService}, the controller gets set in
-     * {@link #wakeup(ICaustkController)}.
-     */
-    public SoundMixerState() {
+    public SoundMixerModel() {
     }
 
-    /**
-     * Called when explicitly creating and instance in {@link SoundMixer}.
-     * 
-     * @param controller
-     */
-    public SoundMixerState(ICaustkController controller) {
-        this.controller = controller;
+    public SoundMixerModel(ICaustkController controller) {
+        super(controller);
     }
 
     void toneAdded(Tone tone) {
-        SoundMixerChannel channel = new SoundMixerChannel(controller);
+        SoundMixerChannel channel = new SoundMixerChannel(getController());
         channel.setIndex(tone.getIndex());
         channels.put(tone.getIndex(), channel);
     }
@@ -51,7 +39,7 @@ public class SoundMixerState implements ISerialize {
 
     @Override
     public void wakeup(ICaustkController controller) {
-        this.controller = controller;
+        super.wakeup(controller);
         for (SoundMixerChannel channel : channels.values()) {
             channel.wakeup(controller);
         }

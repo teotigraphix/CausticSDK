@@ -4,26 +4,38 @@ package com.teotigraphix.caustk.sound;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
-import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
-import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.controller.SubControllerBase;
+import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixer implements ISoundMixer {
+public class SoundMixer extends SubControllerBase implements ISoundMixer {
 
-    private ICaustkController controller;
+    //----------------------------------
+    // modelType
+    //----------------------------------
 
-    private SoundMixerState state;
-
-    SoundMixerState getState() {
-        return state;
+    @Override
+    protected Class<? extends SubControllerModel> getModelType() {
+        return SoundMixerModel.class;
     }
+
+    //----------------------------------
+    // model
+    //----------------------------------
+
+    SoundMixerModel getModel() {
+        return (SoundMixerModel)getInternalModel();
+    }
+
+    //--------------------------------------------------------------------------
+    // ISoundMixer API
+    //--------------------------------------------------------------------------
 
     @Override
     public SoundMixerChannel getChannel(int index) {
-        return state.getChannels().get(index);
+        return getModel().getChannels().get(index);
     }
 
     @Override
@@ -31,14 +43,12 @@ public class SoundMixer implements ISoundMixer {
         return getChannel(tone.getIndex());
     }
 
-    public final ICaustkController getController() {
-        return controller;
-    }
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public SoundMixer(ICaustkController controller) {
-        this.controller = controller;
-
-        state = new SoundMixerState(controller);
+        super(controller);
 
         // listen for tone add/remove
         controller.getDispatcher().register(OnSoundSourceToneAdd.class,
@@ -56,35 +66,13 @@ public class SoundMixer implements ISoundMixer {
                         removeTone(object.getTone());
                     }
                 });
-
-        controller.getDispatcher().register(OnProjectManagerChange.class,
-                new EventObserver<OnProjectManagerChange>() {
-                    @Override
-                    public void trigger(OnProjectManagerChange object) {
-                        if (object.getKind() == ProjectManagerChangeKind.SAVE) {
-                            saveState(object.getProject());
-                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
-                            loadState(object.getProject());
-                        }
-                    }
-                });
     }
 
     protected void addTone(Tone tone) {
-        state.toneAdded(tone);
+        getModel().toneAdded(tone);
     }
 
     protected void removeTone(Tone tone) {
-        state.toneRemoved(tone);
-    }
-
-    protected void loadState(Project project) {
-        String data = project.getString("ISoundMixer.state");
-        state = getController().getSerializeService().fromString(data, SoundMixerState.class);
-    }
-
-    protected void saveState(Project project) {
-        String data = getController().getSerializeService().toString(state);
-        project.put("ISoundMixer.state", data);
+        getModel().toneRemoved(tone);
     }
 }

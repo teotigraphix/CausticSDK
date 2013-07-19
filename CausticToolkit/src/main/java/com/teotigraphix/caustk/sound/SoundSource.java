@@ -22,8 +22,6 @@ package com.teotigraphix.caustk.sound;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import org.androidtransfuse.event.EventObserver;
@@ -31,8 +29,9 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.SubControllerBase;
+import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
@@ -42,7 +41,16 @@ import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
 
-public class SoundSource implements ISoundSource {
+public class SoundSource extends SubControllerBase implements ISoundSource {
+
+    @Override
+    protected Class<? extends SubControllerModel> getModelType() {
+        return SoundSourceModel.class;
+    }
+
+    SoundSourceModel getModel() {
+        return (SoundSourceModel)getInternalModel();
+    }
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -76,46 +84,28 @@ public class SoundSource implements ISoundSource {
     }
 
     //----------------------------------
-    // controller
-    //----------------------------------
-
-    private ICaustkController controller;
-
-    protected ICaustkController getController() {
-        return controller;
-    }
-
-    protected ICausticEngine getEngine() {
-        return controller.getSoundGenerator();
-    }
-
-    //----------------------------------
     // tones
     //----------------------------------
 
-    private Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
-
     @Override
     public int getToneCount() {
-        return tones.size();
+        return getModel().getTones().size();
     }
 
     @Override
     public Collection<Tone> getTones() {
-        return Collections.unmodifiableCollection(tones.values());
+        return Collections.unmodifiableCollection(getModel().getTones().values());
     }
 
     @Override
     public Tone getTone(int index) {
-        return tones.get(index);
+        return getModel().getTones().get(index);
     }
 
     public SoundSource(ICaustkController controller) {
-        this.controller = controller;
+        super(controller);
 
         dispatcher = new Dispatcher();
-
-        tones = new HashMap<Integer, Tone>();
 
         getDispatcher().register(OnSoundSourceInitialValue.class,
                 new EventObserver<OnSoundSourceInitialValue>() {
@@ -153,7 +143,7 @@ public class SoundSource implements ISoundSource {
 
     public void destroyTone(Tone tone) {
         int index = tone.getIndex();
-        RackMessage.REMOVE.send(getEngine(), index);
+        RackMessage.REMOVE.send(getController(), index);
         toneRemove(tone);
     }
 
@@ -161,12 +151,12 @@ public class SoundSource implements ISoundSource {
     public void clearAndReset() {
         getController().getDispatcher().trigger(new OnSoundSourceClear());
 
-        ArrayList<Tone> remove = new ArrayList<Tone>(tones.values());
+        ArrayList<Tone> remove = new ArrayList<Tone>(getModel().getTones().values());
         for (Tone tone : remove) {
             destroyTone(tone);
         }
 
-        RackMessage.BLANKRACK.send(getEngine());
+        RackMessage.BLANKRACK.send(getController());
 
         getController().getDispatcher().trigger(new OnSoundSourceReset());
     }
@@ -179,10 +169,10 @@ public class SoundSource implements ISoundSource {
         if (index > 13)
             throw new CausticException("Only 14 machines allowed in a rack");
 
-        if (tones.containsKey(index))
+        if (getModel().getTones().containsKey(index))
             throw new CausticException("{" + index + "} tone is already defined");
 
-        RackMessage.CREATE.send(getEngine(), toneType.getValue(), toneName, index);
+        RackMessage.CREATE.send(getController(), toneType.getValue(), toneName, index);
 
         Tone tone = null;
         switch (toneType) {
@@ -235,12 +225,12 @@ public class SoundSource implements ISoundSource {
     }
 
     private void toneAdd(int index, Tone tone) {
-        tones.put(index, tone);
+        getModel().getTones().put(index, tone);
         getController().getDispatcher().trigger(new OnSoundSourceToneAdd(tone));
     }
 
     private void toneRemove(Tone tone) {
-        tones.remove(tone.getIndex());
+        getModel().getTones().remove(tone.getIndex());
         getController().getDispatcher().trigger(new OnSoundSourceToneRemove(tone));
     }
 
@@ -304,7 +294,7 @@ public class SoundSource implements ISoundSource {
     private int nextIndex() {
         int index = 0;
         for (index = 0; index < 15; index++) {
-            if (!tones.containsKey(index))
+            if (!getModel().getTones().containsKey(index))
                 break;
         }
         return index;
