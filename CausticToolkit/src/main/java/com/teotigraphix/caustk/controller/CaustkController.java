@@ -31,6 +31,8 @@ import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.library.ILibraryManager;
+import com.teotigraphix.caustk.library.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.service.ISerializeService;
@@ -142,12 +144,12 @@ public class CaustkController implements ICaustkController {
     // libraryManager
     //----------------------------------
 
-    //    private ILibraryManager libraryManager;
-    //
-    //    @Override
-    //    public ILibraryManager getLibraryManager() {
-    //        return libraryManager;
-    //    }
+    private ILibraryManager libraryManager;
+
+    @Override
+    public ILibraryManager getLibraryManager() {
+        return libraryManager;
+    }
 
     //----------------------------------
     // commandManager
@@ -276,8 +278,9 @@ public class CaustkController implements ICaustkController {
         serializeService = new SerializeService(this);
         commandManager = new CommandManager(this);
         projectManager = new ProjectManager(this);
+        libraryManager = new LibraryManager(this);
         //        songManager = new SongManager(this, applicationRoot);
-        //        libraryManager = new LibraryManager(this);
+        //        
 
         soundGenerator = getConfiguration().createSoundGenerator(this);
         soundGenerator.initialize();

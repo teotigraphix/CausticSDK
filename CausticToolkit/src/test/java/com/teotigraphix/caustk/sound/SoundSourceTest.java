@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.sound;
 
+import java.io.File;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,6 +10,7 @@ import org.junit.Test;
 
 import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
@@ -21,9 +24,12 @@ public class SoundSourceTest {
 
     private SoundSource soundSource;
 
+    private ICaustkController controller;
+
     @Before
     public void setUp() throws Exception {
         application = CaustkApplicationUtils.createAndRun();
+        controller = application.getController();
         soundSource = (SoundSource)application.getController().getSoundSource();
     }
 
@@ -34,8 +40,32 @@ public class SoundSourceTest {
     }
 
     @Test
-    public void test_setup() throws CausticException {
+    public void test_loadSong() throws CausticException {
 
+    }
+
+    @Test
+    public void test_setup() throws CausticException {
+        soundSource.loadSong(new File("src/test/java/"
+                + "com/teotigraphix/caustk/sound/PULSAR.caustic"));
+
+        Assert.assertEquals(6, soundSource.getToneCount());
+
+        Assert.assertEquals(soundSource.getTone(0).getToneType(), ToneType.SubSynth);
+        Assert.assertEquals(soundSource.getTone(1).getToneType(), ToneType.SubSynth);
+        Assert.assertEquals(soundSource.getTone(2).getToneType(), ToneType.SubSynth);
+        Assert.assertEquals(soundSource.getTone(3).getToneType(), ToneType.Bassline);
+        Assert.assertEquals(soundSource.getTone(4).getToneType(), ToneType.PCMSynth);
+        Assert.assertEquals(soundSource.getTone(5).getToneType(), ToneType.Beatbox);
+
+        //OutputPanelMessage.PLAY.send(application.getController(), 1);
+
+        Assert.assertNotNull(controller.getSoundMixer().getChannel(0));
+        Assert.assertNotNull(controller.getSoundMixer().getChannel(1));
+        Assert.assertNotNull(controller.getSoundMixer().getChannel(2));
+        Assert.assertNotNull(controller.getSoundMixer().getChannel(3));
+        Assert.assertNotNull(controller.getSoundMixer().getChannel(4));
+        Assert.assertNotNull(controller.getSoundMixer().getChannel(5));
     }
 
     @Test

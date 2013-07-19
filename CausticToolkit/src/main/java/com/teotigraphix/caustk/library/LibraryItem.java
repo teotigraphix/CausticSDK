@@ -17,31 +17,39 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.library;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
-import com.teotigraphix.caustk.core.IRestore;
-import com.teotigraphix.caustk.sound.SoundMixer.MixerInput;
-import com.teotigraphix.caustk.tone.Tone;
+import java.util.UUID;
 
-public interface ISoundMixer extends IControllerComponent, IRestore {
+public abstract class LibraryItem {
 
-    SoundMixerChannel getChannel(Tone tone);
-
-    SoundMixerChannel getChannel(int index);
+    private UUID id;
 
     /**
-     * @see #executeSetValue(int, MixerInput, Number)
+     * A unique identifier for each library item using the {@link UUID} utility.
      */
-    public static final String COMMAND_SET_VALUE = "sound_mixer/set_value";
+    public UUID getId() {
+        return id;
+    }
 
-    /**
-     * Executes the {@link #COMMAND_SET_VALUE} command.
-     * 
-     * @param toneIndex The tone target's index.
-     * @param input The {@link MixerInput} value that will be set.
-     * @param value The value of the input's adjustment.
-     */
-    void executeSetValue(int toneIndex, MixerInput input, Number value);
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
+    private MetadataInfo metadataInfo;
+
+    public MetadataInfo getMetadataInfo() {
+        return metadataInfo;
+    }
+
+    public void setMetadataInfo(MetadataInfo metadataInfo) {
+        this.metadataInfo = metadataInfo;
+    }
+
+    public LibraryItem() {
+    }
+
+    public boolean hasTag(String tag) {
+        return metadataInfo.getTags().contains(tag);
+    }
 }

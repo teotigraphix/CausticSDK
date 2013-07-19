@@ -34,7 +34,8 @@ public class VolumeComponent extends ToneComponent {
             if (value < 0 || value > 8.0f)
                 throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..8.0", value);
         } else {
-            if (value < 0 || value > 2.0f)
+            // XXX OSC Beatbox is coming in above 2.0
+            if (value < 0 || value > 3.0f)
                 throw newRangeException(VolumeMessage.VOLUME_OUT.toString(), "0..2.0", value);
         }
         out = value;

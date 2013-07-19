@@ -42,9 +42,7 @@ public abstract class SubControllerBase {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public SubControllerBase(ICaustkController controller) {
-        this.controller = controller;
-
+    protected void resetModel() {
         try {
             model = createModel(controller);
         } catch (NoSuchMethodException e) {
@@ -60,6 +58,12 @@ public abstract class SubControllerBase {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public SubControllerBase(ICaustkController controller) {
+        this.controller = controller;
+
+        resetModel();
 
         controller.getDispatcher().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
@@ -69,6 +73,10 @@ public abstract class SubControllerBase {
                             saveState(object.getProject());
                         } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
                             loadState(object.getProject());
+                        } else if (object.getKind() == ProjectManagerChangeKind.CREATE) {
+                            createProject(object.getProject());
+                        } else if (object.getKind() == ProjectManagerChangeKind.EXIT) {
+                            projectExit(object.getProject());
                         }
                     }
                 });
@@ -86,6 +94,10 @@ public abstract class SubControllerBase {
         return constructor.newInstance(controller);
     }
 
+    protected void createProject(Project project) {
+
+    }
+
     protected void loadState(Project project) {
         String data = project.getString(getModelType().getName());
         model = getController().getSerializeService().fromString(data, getModelType());
@@ -96,4 +108,7 @@ public abstract class SubControllerBase {
         project.put(getModelType().getName(), data);
     }
 
+    protected void projectExit(Project project) {
+
+    }
 }

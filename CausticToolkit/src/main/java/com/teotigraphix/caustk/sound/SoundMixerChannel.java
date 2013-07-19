@@ -4,10 +4,11 @@ package com.teotigraphix.caustk.sound;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ExceptionUtils;
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.service.ISerialize;
 
-public class SoundMixerChannel implements ISerialize {
+public class SoundMixerChannel implements ISerialize, IRestore {
 
     private transient ICaustkController controller;
 
@@ -39,7 +40,7 @@ public class SoundMixerChannel implements ISerialize {
         return bass;
     }
 
-    float getBass(int index, boolean restore) {
+    float getBass(boolean restore) {
         return MixerMessage.EQ_BASS.query(getEngine(), index);
     }
 
@@ -62,7 +63,7 @@ public class SoundMixerChannel implements ISerialize {
         return mid;
     }
 
-    float getMid(int index, boolean restore) {
+    float getMid(boolean restore) {
         return MixerMessage.EQ_MID.query(getEngine(), index);
     }
 
@@ -85,7 +86,7 @@ public class SoundMixerChannel implements ISerialize {
         return high;
     }
 
-    float getHigh(int index, boolean restore) {
+    float getHigh(boolean restore) {
         return MixerMessage.EQ_HIGH.query(getEngine(), index);
     }
 
@@ -281,6 +282,18 @@ public class SoundMixerChannel implements ISerialize {
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {
         return ExceptionUtils.newRangeException(control, range, value);
+    }
+
+    @Override
+    public void restore() {
+        setBass(getBass(true));
+        setMid(getMid(true));
+        setHigh(getHigh(true));
+        setReverbSend(getReverbSend(true));
+        setDelaySend(getDelaySend(true));
+        setStereoWidth(getStereoWidth(true));
+        setPan(getPan(true));
+        setVolume(getVolume(true));
     }
 
 }

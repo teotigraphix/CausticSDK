@@ -36,7 +36,7 @@ public class PCMSamplerComponent extends ToneComponent {
     // currentChannel
     //----------------------------------
 
-    private int activeIndex = -1;
+    private int activeIndex = 0;
 
     private PCMSamplerChannel currentSample;
 
@@ -47,13 +47,14 @@ public class PCMSamplerComponent extends ToneComponent {
     }
 
     public void setActiveIndex(int value) {
+        currentSample = getPCMSample(activeIndex);
+
         if (value == activeIndex)
             return;
         if (value < 0 || value >= NUM_SAMPLER_CHANNELS)
             throw newRangeException(PCMSamplerMessage.SAMPLE_INDEX.toString(), "0..63", value);
 
         activeIndex = value;
-        currentSample = getPCMSample(activeIndex);
 
         PCMSamplerMessage.SAMPLE_INDEX.send(getEngine(), getToneIndex(), activeIndex);
 

@@ -9,6 +9,7 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
@@ -77,8 +78,24 @@ public class SoundMixer extends SubControllerBase implements ISoundMixer {
                     }
                 });
 
+        controller.getSoundSource().getDispatcher()
+                .register(OnSoundSourceSongLoad.class, new EventObserver<OnSoundSourceSongLoad>() {
+                    @Override
+                    public void trigger(OnSoundSourceSongLoad object) {
+                        restore();
+                    }
+                });
+
         controller.getCommandManager().put(ISoundMixer.COMMAND_SET_VALUE,
                 SoundMixerSetSendCommand.class);
+    }
+
+    @Override
+    public void restore() {
+        // restores the already created channels from the just previous song load
+        for (SoundMixerChannel channel : getModel().getChannels().values()) {
+            channel.restore();
+        }
     }
 
     protected void addTone(Tone tone) {

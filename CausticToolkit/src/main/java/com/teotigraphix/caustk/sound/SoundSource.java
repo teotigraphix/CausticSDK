@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.sound;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -42,6 +43,8 @@ import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
 
 public class SoundSource extends SubControllerBase implements ISoundSource {
+
+    private int maxNumTones = 6; // 14
 
     @Override
     protected Class<? extends SubControllerModel> getModelType() {
@@ -298,6 +301,38 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
                 break;
         }
         return index;
+    }
+
+    // XXX implement saveSong() if absolutePath, move file from caustic/songs to location
+
+    @Override
+    public void loadSong(File causticFile) throws CausticException {
+        clearAndReset();
+
+        RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
+
+        restore();
+
+        getDispatcher().trigger(new OnSoundSourceSongLoad());
+    }
+
+    @Override
+    public void restore() {
+        for (int i = 0; i < maxNumTones; i++) {
+            String name = RackMessage.QUERY_MACHINE_NAME.queryString(getController(), i);
+            String type = RackMessage.QUERY_MACHINE_TYPE.queryString(getController(), i);
+            if (name == null || name.equals(""))
+                continue;
+
+            ToneType toneType = ToneType.fromString(type);
+            Tone tone = null;
+            try {
+                tone = createTone(i, name, toneType);
+            } catch (CausticException e) {
+                e.printStackTrace();
+            }
+            tone.restore();
+        }
     }
 
 }

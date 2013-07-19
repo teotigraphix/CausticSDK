@@ -75,7 +75,7 @@ public enum ToneType {
      */
     public static ToneType fromString(String type) {
         for (ToneType toneType : values()) {
-            if (toneType.equals(type))
+            if (toneType.getValue().equals(type))
                 return toneType;
         }
         return null;

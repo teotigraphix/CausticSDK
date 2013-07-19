@@ -54,7 +54,8 @@ public class LFO1Component extends LFOComponentBase {
     }
 
     public LFO1Component() {
-        // TODO Auto-generated constructor stub
+        depthMessage = PCMSynthLFOMessage.LFO_DEPTH;
+        rateMessage = PCMSynthLFOMessage.LFO_RATE;
     }
 
     @Override

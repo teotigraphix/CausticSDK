@@ -27,11 +27,12 @@ import java.util.UUID;
 import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.components.ToneComponent;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 
-public class Tone implements ISerialize {
+public class Tone implements ISerialize, IRestore {
 
     private transient ICaustkController controller;
 
@@ -192,6 +193,13 @@ public class Tone implements ISerialize {
             ToneComponent component = (ToneComponent)getController().getSerializeService()
                     .fromString(data, cls);
             addComponent((Class<? extends ToneComponent>)cls, component);
+        }
+    }
+
+    @Override
+    public void restore() {
+        for (ToneComponent toneComponent : internalComponents.values()) {
+            toneComponent.restore();
         }
     }
 

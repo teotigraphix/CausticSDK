@@ -19,10 +19,12 @@
 
 package com.teotigraphix.caustk.sound;
 
+import java.io.File;
 import java.util.Collection;
 
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
@@ -30,7 +32,7 @@ import com.teotigraphix.caustk.tone.ToneType;
 /**
  * @author Michael Schmalle
  */
-public interface ISoundSource {
+public interface ISoundSource extends IRestore {
 
     /**
      * The {@link ISoundSource} dispatcher.
@@ -84,5 +86,11 @@ public interface ISoundSource {
      * rack.
      */
     void clearAndReset();
+
+    void loadSong(File causticFile) throws CausticException;
+
+    public static class OnSoundSourceSongLoad {
+
+    }
 
 }

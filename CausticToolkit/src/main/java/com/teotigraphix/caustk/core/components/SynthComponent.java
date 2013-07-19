@@ -2,6 +2,8 @@
 package com.teotigraphix.caustk.core.components;
 
 import com.teotigraphix.caustk.core.osc.SynthMessage;
+import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.BeatboxTone;
 
 public class SynthComponent extends ToneComponent {
 
@@ -34,6 +36,10 @@ public class SynthComponent extends ToneComponent {
     }
 
     public void setPolyphony(int value) {
+        if (getTone() instanceof BasslineTone)
+            return;
+        if (getTone() instanceof BeatboxTone)
+            return;
         if (value == polyphony)
             return;
         if (value < 1 || value > 16)

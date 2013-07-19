@@ -41,10 +41,11 @@ public class WavSamplerComponent extends ToneComponent {
         return getChannel(index);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void restore() {
         for (WavSamplerChannel channel : map.values()) {
-            channel.restore();
+            // XXX IMPLEMENT channel.restore();
         }
     }
 
