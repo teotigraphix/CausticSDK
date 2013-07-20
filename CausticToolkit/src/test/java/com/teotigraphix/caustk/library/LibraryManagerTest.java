@@ -55,6 +55,18 @@ public class LibraryManagerTest {
     }
 
     @Test
+    public void test_create_project_save() throws IOException, CausticException {
+        File projectFile = new File("LibraryManagerTestProject.ctk");
+        controller.getProjectManager().create(projectFile);
+        
+        Library library = libraryManager.createLibrary("foo");
+        libraryManager.importSong(library, PULSAR_CAUSTIC);
+        
+        controller.getProjectManager().save();
+        
+    }
+
+    @Test
     public void test_createLibrary() throws CausticException, IOException {
         Library library = libraryManager.createLibrary("baz");
         assertTrue(library.getDirectory().exists());

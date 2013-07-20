@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.core.osc.PCMSamplerMessage;
  */
 public class PCMSamplerChannel extends ToneComponent {
 
-    private PCMSamplerComponent sampler;
+    private transient PCMSamplerComponent sampler;
 
     private int mIndex;
 

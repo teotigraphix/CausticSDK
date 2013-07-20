@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -96,20 +95,6 @@ public class ProjectManager implements IProjectManager {
         this.controller = controller;
 
         initialize(controller.getConfiguration().getApplicationRoot());
-
-        controller.getDispatcher().register(OnProjectManagerChange.class,
-                new EventObserver<OnProjectManagerChange>() {
-                    @Override
-                    public void trigger(OnProjectManagerChange object) {
-                        if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
-                            try {
-                                flushProjectFile();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
     }
 
     //-------------------------------------------------------------------------
@@ -161,16 +146,20 @@ public class ProjectManager implements IProjectManager {
         // set modified
         project.getInfo().setModified(new Date());
 
+        //System.out.println(">> SAVE");
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
 
-        // all finalize actions like saving the full data to disk happen in a separate sequence
-        // NO clients should be changing the Project state in this event
+        //System.out.println(">> SAVE_COMPLETE");
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE_COMPLETE));
+
+        finalizeSaveComplete();
     }
 
-    protected void flushProjectFile() throws IOException {
+    protected void finalizeSaveComplete() throws IOException {
+        //System.out.println(">> SAVE_COMPLETE flushProjectFile()");
+
         String data = controller.getSerializeService().toPrettyString(project);
         FileUtils.writeStringToFile(project.getFile(), data);
 

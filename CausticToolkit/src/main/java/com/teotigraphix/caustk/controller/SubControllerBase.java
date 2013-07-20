@@ -64,18 +64,39 @@ public abstract class SubControllerBase {
         this.controller = controller;
 
         resetModel();
+        /*        
+
+        >> SAVE
+        LibraryManagerModel >> SAVE
+        SoundSourceModel >> SAVE
+        SoundMixerModel >> SAVE
+        SystemSequencerModel >> SAVE
+        >> SAVE_COMPLETE
+        >> SAVE_COMPLETE flushProjectFile()
+        LibraryManagerModel >> SAVE_COMPLETE
+        SoundSourceModel >> SAVE_COMPLETE
+        SoundMixerModel >> SAVE_COMPLETE
+        SystemSequencerModel >> SAVE_COMPLETE
+
+        */
 
         controller.getDispatcher().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {
                         if (object.getKind() == ProjectManagerChangeKind.SAVE) {
+                            //System.out.println(getModelType().getSimpleName() + " >> SAVE");
                             saveState(object.getProject());
+                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
+                            //System.out.println(getModelType().getSimpleName() + " >> SAVE_COMPLETE");
                         } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
+                            //System.out.println(getModelType().getSimpleName() + " >> LOAD");
                             loadState(object.getProject());
                         } else if (object.getKind() == ProjectManagerChangeKind.CREATE) {
+                            //System.out.println(getModelType().getSimpleName() + " >> CREATE");
                             createProject(object.getProject());
                         } else if (object.getKind() == ProjectManagerChangeKind.EXIT) {
+                            //System.out.println(getModelType().getSimpleName() + " >> EXIT");
                             projectExit(object.getProject());
                         }
                     }

@@ -10,7 +10,7 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 
 public class LibraryManagerModel extends SubControllerModel {
 
-    private Map<UUID, Library> libraries = new TreeMap<UUID, Library>();
+    private transient Map<UUID, Library> libraries = new TreeMap<UUID, Library>();
 
     Map<UUID, Library> getLibraies() {
         return libraries;
