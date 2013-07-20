@@ -12,6 +12,8 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustk.tone.Tone;
+
 public class Library {
 
     protected File getPresetsDirectory() {
@@ -119,6 +121,30 @@ public class Library {
     public Library() {
     }
 
+    public LibraryScene findSceneById(UUID id) {
+        for (LibraryScene item : scenes.values()) {
+            if (item.getId().equals(id))
+                return item;
+        }
+        return null;
+    }
+
+    public LibraryPatch findPatchById(UUID uuid) {
+        for (LibraryPatch item : patches.values()) {
+            if (item.getId().equals(uuid))
+                return item;
+        }
+        return null;
+    }
+
+    public LibraryPhrase findPhraseById(UUID uuid) {
+        for (LibraryPhrase item : phrases.values()) {
+            if (item.getId().equals(uuid))
+                return item;
+        }
+        return null;
+    }
+
     public List<LibraryScene> findScenesByTag(String tag) {
         List<LibraryScene> result = new ArrayList<LibraryScene>();
         for (LibraryScene item : getScenes()) {
@@ -127,6 +153,39 @@ public class Library {
             }
         }
         return result;
+    }
+
+    public List<LibraryPatch> findPatchByTag(String tag) {
+        List<LibraryPatch> result = new ArrayList<LibraryPatch>();
+        for (LibraryPatch item : getPatches()) {
+            if (item.hasTag(tag)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    public List<LibraryPhrase> findPhrasesByTag(String tag) {
+        List<LibraryPhrase> result = new ArrayList<LibraryPhrase>();
+        for (LibraryPhrase item : getPhrases()) {
+            if (item.hasTag(tag)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns all {@link LibraryPhrase}s in the {@link Library} for the tone's
+     * {@link MachineType}.
+     * 
+     * @param tone The tone used to search.
+     * @return A {@link List} of {@link LibraryPhrase}s that are of the same
+     *         {@link MachineType} as the tone.
+     */
+    public List<LibraryPhrase> findPhrasesForTone(Tone tone) {
+        String type = tone.getToneType().getValue();
+        return findPhrasesByTag(type);
     }
 
     /**
