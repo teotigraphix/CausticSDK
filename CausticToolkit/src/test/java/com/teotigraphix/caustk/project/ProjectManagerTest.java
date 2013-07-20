@@ -37,13 +37,13 @@ public class ProjectManagerTest {
         application = CaustkApplicationUtils.createAndRun();
         controller = application.getController();
         projectManager = (ProjectManager)controller.getProjectManager();
-        File applicationRoot = application.getConfiguration().getApplicationRoot();
-        FileUtils.deleteDirectory(applicationRoot);
     }
 
     @After
     public void tearDown() throws Exception {
         //controller.sendMessage("/caustic/blankrack");
+        File applicationRoot = application.getConfiguration().getApplicationRoot();
+        FileUtils.deleteDirectory(applicationRoot);
         application = null;
         controller = null;
     }

@@ -167,7 +167,9 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         getModel().getLibraies().put(library.getId(), library);
 
         library.addScene(defaultScene);
-
+        
+        saveLibrary(library);
+        
         return library;
     }
 
