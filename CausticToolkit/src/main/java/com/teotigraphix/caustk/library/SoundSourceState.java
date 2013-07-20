@@ -20,16 +20,24 @@
 package com.teotigraphix.caustk.library;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
 
-public class RackInfo {
+public class SoundSourceState {
 
-    public RackInfo() {
+    private Map<Integer, String> tones = new HashMap<Integer, String>();
+
+    public SoundSourceState() {
+    }
+
+    public void addTone(int index, String data) {
+        tones.put(index, data);
     }
 
     /**

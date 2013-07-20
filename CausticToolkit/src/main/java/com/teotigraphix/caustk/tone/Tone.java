@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.library.SoundSourceState;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 
@@ -124,6 +125,24 @@ public class Tone implements ISerialize, IRestore {
 
     public final void setName(String value) {
         name = value;
+    }
+
+    //----------------------------------
+    // defaultPatchId
+    //----------------------------------
+
+    private UUID defaultPatchId;
+
+    /**
+     * If loaded from the library as a {@link SoundSourceState} item, will point
+     * to the patch that was created when the tone was serialized.
+     */
+    public UUID getDefaultPatchId() {
+        return defaultPatchId;
+    }
+
+    public void setDefaultPatchId(UUID value) {
+        defaultPatchId = value;
     }
 
     //--------------------------------------------------------------------------

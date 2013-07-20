@@ -106,10 +106,10 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
      */
     @Override
     public void load() {
-        
+
         if (!librariesDirectory.exists())
             return;
-        
+
         Collection<File> dirs = FileUtils.listFilesAndDirs(librariesDirectory, new IOFileFilter() {
             @Override
             public boolean accept(File arg0, String arg1) {
@@ -167,9 +167,9 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         getModel().getLibraies().put(library.getId(), library);
 
         library.addScene(defaultScene);
-        
+
         saveLibrary(library);
-        
+
         return library;
     }
 
@@ -194,9 +194,9 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         MetadataInfo metadataInfo = new MetadataInfo();
         metadataInfo.addTag("DefaultScene");
         libraryScene.setMetadataInfo(metadataInfo);
-        libraryScene.setRackInfo(new RackInfo());
-        libraryScene.setMixerInfo(new MixerPanelInfo());
-        libraryScene.setEffectRackInfo(new EffectRackInfo());
+        libraryScene.setSoundSourceState(new SoundSourceState());
+        libraryScene.setSoundMixerState(new SoundMixerState());
+        libraryScene.setEffectMixerState(new EffectMixerState());
 
         getController().getSoundSource().clearAndReset();
 
@@ -238,41 +238,13 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
 
     @Override
     public void importSong(Library library, File causticFile) throws IOException, CausticException {
-
-        // Clear the rack
-
-        // Load the song
+        // Load the song, this automatically resets the sound source
         getController().getSoundSource().loadSong(causticFile);
 
-        // 
-
-        //        //----------------------------------------------------------------------
-        //        // clear the core rack
-        //        RackMessage.BLANKRACK.send(controller);
-        //
-        //        Rack rack = new Rack(controller.getFactory(), true);
-        //        rack.setEngine(controller);
-        //
-        //        // load the file into the rack.
-        //        try {
-        //            rack.loadSong(causticFile.getAbsolutePath());
-        //        } catch (CausticException e) {
-        //            e.printStackTrace();
-        //            throw new IOException(e);
-        //        }
-        //
-        //        // restore the rack
-        //        //rack.restore();
-        //        rack.getOutputPanel().restore();
-        //        rack.getMixerPanel().restore();
-        //        rack.getEffectsRack().restore();
-        //
-        //        //loadLibraryPatches(library, rack);
         loadLibraryScene(library, causticFile, getController().getSoundSource());
         loadLibraryPhrases(library, getController().getSoundSource());
-        //
-        //        // clear the core rack
-        //        RackMessage.BLANKRACK.send(controller);
+
+        getController().getSoundSource().clearAndReset();
     }
 
     private void loadLibraryScene(Library library, File causticFile, ISoundSource soundSource)
@@ -285,13 +257,14 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         library.addScene(scene);
 
         //--------------------------------------
-        RackInfo rackInfo = new RackInfo();
+        SoundSourceState soundSourceState = new SoundSourceState();
 
         for (int i = 0; i < 6; i++) {
             Tone tone = soundSource.getTone(i);
             LibraryPatch patch = null;
 
             if (tone != null) {
+
                 patch = new LibraryPatch();
                 patch.setToneType(tone.getToneType());
                 patch.setMetadataInfo(new MetadataInfo());
@@ -300,27 +273,19 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
                 relocatePresetFile(tone, library, patch);
                 library.addPatch(patch);
 
-                //                IMemento child = memento.createChild("machine");
-                //                child.putInteger("index", i);
-                //                child.putInteger("active", machine != null ? 1 : 0);
-                //
-                //                if (patch != null)
-                //                    child.putString("patchId", patch.getId().toString());
-                //
-                //                child.putString("id", machine.getId());
-                //                child.putString("type", machine.getType().getValue());
+                tone.setDefaultPatchId(patch.getId());
+                soundSourceState.addTone(i, tone.serialize());
             }
         }
 
-        // rackInfo.setData("json");
+        scene.setSoundSourceState(soundSourceState);
 
-        scene.setRackInfo(rackInfo);
+        SoundMixerState soundMixerState = new SoundMixerState();
+        soundMixerState.setData(getController().getSoundMixer().serialize());
+        scene.setSoundMixerState(soundMixerState);
 
-        MixerPanelInfo mixerPanelInfo = new MixerPanelInfo();
-        scene.setMixerInfo(mixerPanelInfo);
-
-        EffectRackInfo effectRackInfo = new EffectRackInfo();
-        scene.setEffectRackInfo(effectRackInfo);
+        EffectMixerState effectMixerState = new EffectMixerState();
+        scene.setEffectMixerState(effectMixerState);
 
         TagUtils.addDefaultTags(name, getController(), scene);
     }

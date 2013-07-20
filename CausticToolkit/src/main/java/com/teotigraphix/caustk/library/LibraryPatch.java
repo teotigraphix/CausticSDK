@@ -20,10 +20,15 @@
 package com.teotigraphix.caustk.library;
 
 import java.io.File;
+import java.util.UUID;
 
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.ToneType;
 
+/**
+ * The {@link LibraryPatch} has a unique {@link UUID} and has a corresponding
+ * preset file located in the <code>presets</code> directory.
+ */
 public class LibraryPatch extends LibraryItem {
 
     //----------------------------------
@@ -47,6 +52,8 @@ public class LibraryPatch extends LibraryItem {
     private String data;
 
     /**
+     * NOT IMPLEMENTED YET
+     * <p>
      * Returns the String {@link ISerialize} data that was saved from the
      * current tone.
      */

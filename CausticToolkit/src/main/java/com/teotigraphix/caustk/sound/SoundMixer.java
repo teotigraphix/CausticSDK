@@ -98,6 +98,12 @@ public class SoundMixer extends SubControllerBase implements ISoundMixer {
         }
     }
 
+    @Override
+    public String serialize() {
+        String data = getController().getSerializeService().toString(getModel());
+        return data;
+    }
+
     protected void addTone(Tone tone) {
         getModel().toneAdded(tone);
     }
@@ -270,4 +276,5 @@ public class SoundMixer extends SubControllerBase implements ISoundMixer {
         }
 
     }
+
 }

@@ -44,4 +44,6 @@ public interface ISoundMixer extends IControllerComponent, IRestore {
      */
     void executeSetValue(int toneIndex, MixerInput input, Number value);
 
+    String serialize();
+
 }

@@ -21,34 +21,34 @@ package com.teotigraphix.caustk.library;
 
 public class LibraryScene extends LibraryItem {
 
-    private RackInfo rackInfo;
+    private SoundSourceState soundSourceState;
 
-    public RackInfo getRackInfo() {
-        return rackInfo;
+    public SoundSourceState getSoundSourceState() {
+        return soundSourceState;
     }
 
-    public void setRackInfo(RackInfo rackInfo) {
-        this.rackInfo = rackInfo;
+    public void setSoundSourceState(SoundSourceState value) {
+        soundSourceState = value;
     }
 
-    private MixerPanelInfo mixerInfo;
+    private SoundMixerState soundMixerState;
 
-    public MixerPanelInfo getMixerInfo() {
-        return mixerInfo;
+    public SoundMixerState getSoundMixerState() {
+        return soundMixerState;
     }
 
-    public void setMixerInfo(MixerPanelInfo mixerInfo) {
-        this.mixerInfo = mixerInfo;
+    public void setSoundMixerState(SoundMixerState value) {
+        soundMixerState = value;
     }
 
-    private EffectRackInfo effectRackInfo;
+    private EffectMixerState effectMixerState;
 
-    public EffectRackInfo getEffectRackInfo() {
-        return effectRackInfo;
+    public EffectMixerState getEffectMixerState() {
+        return effectMixerState;
     }
 
-    public void setEffectRackInfo(EffectRackInfo effectRackInfo) {
-        this.effectRackInfo = effectRackInfo;
+    public void setEffectMixerState(EffectMixerState value) {
+        effectMixerState = value;
     }
 
     public LibraryScene() {
