@@ -13,6 +13,11 @@ import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 public class MediatorBase {
     private ICaustkController controller;
 
+    protected void setController(ICaustkController value) {
+        controller = value;
+        registerObservers();
+    }
+
     public final ICaustkController getController() {
         return controller;
     }
@@ -25,10 +30,16 @@ public class MediatorBase {
     // Constructor
     //--------------------------------------------------------------------------
 
+    // for FXMLControllers
+    public MediatorBase() {
+    }
+
     // @Inject
     public MediatorBase(ICaustkApplicationProvider provider) {
-        controller = provider.get().getController();
+        setController(provider.get().getController());
+    }
 
+    protected void registerObservers() {
         controller.getDispatcher().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
@@ -44,7 +55,8 @@ public class MediatorBase {
                     }
                 });
     }
-
+    
+    // called by JavaFX or what in Android?
     public void initialize() {
     }
 

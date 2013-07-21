@@ -59,8 +59,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     @Override
     public void setSelectedLibrary(Library value) {
         getModel().setSelectedLibrary(value);
-        //        controller.getDispatcher().trigger(
-        //                new OnLibraryManagerSelectedLibraryChange(selectedLibrary));
+        getController().getDispatcher().trigger(new OnLibraryManagerSelectedLibraryChange());
     }
 
     public LibraryManager(ICaustkController controller) {
@@ -83,7 +82,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         String id = getController().getProjectManager().getSessionPreferences()
                 .getString("selectedLibrary");
         if (id != null) {
-            setSelectedLibrary(getModel().getLibraies().get(id));
+            setSelectedLibrary(getModel().getLibraries().get(UUID.fromString(id)));
         }
     }
 
@@ -161,10 +160,11 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
 
         Library library = new Library();
         library.setId(UUID.randomUUID());
+        library.setMetadataInfo(new MetadataInfo());
         library.setDirectory(newDirectory);
         library.mkdirs();
 
-        getModel().getLibraies().put(library.getId(), library);
+        getModel().getLibraries().put(library.getId(), library);
 
         library.addScene(defaultScene);
 
@@ -209,7 +209,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         File file = new File(directory, "library.ctk");
 
         Library library = getController().getSerializeService().fromFile(file, Library.class);
-        getModel().getLibraies().put(library.getId(), library);
+        getModel().getLibraries().put(library.getId(), library);
 
         //        getController().getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));
 
@@ -225,7 +225,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
 
     @Override
     public void delete() throws IOException {
-        for (Library library : getModel().getLibraies().values()) {
+        for (Library library : getModel().getLibraries().values()) {
             library.delete();
         }
         clear();
@@ -245,6 +245,8 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         loadLibraryPhrases(library, getController().getSoundSource());
 
         getController().getSoundSource().clearAndReset();
+        
+        getController().getDispatcher().trigger(new OnLibraryManagerImportComplete());
     }
 
     private void loadLibraryScene(Library library, File causticFile, ISoundSource soundSource)
@@ -374,5 +376,16 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
             result = Resolution.SIXTEENTH;
 
         return result;
+    }
+
+    @Override
+    public boolean isLibrary(File reletiveFile) {
+        return new File(librariesDirectory, reletiveFile.getPath()).exists();
+    }
+
+    @Override
+    public void deleteLibrary(File reletivePath) throws IOException {
+        Library library = getModel().getLibrary(reletivePath);
+        getModel().removeLibrary(library);
     }
 }

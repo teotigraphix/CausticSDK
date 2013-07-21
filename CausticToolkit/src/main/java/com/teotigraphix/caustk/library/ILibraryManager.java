@@ -27,4 +27,16 @@ public interface ILibraryManager extends IControllerComponent {
 
     void clear();
 
+    boolean isLibrary(File libraryFile);
+
+    void deleteLibrary(File reletivePath) throws IOException;
+
+    public static class OnLibraryManagerSelectedLibraryChange {
+
+    }
+
+    public static class OnLibraryManagerImportComplete {
+
+    }
+
 }

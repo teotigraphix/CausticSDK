@@ -121,6 +121,11 @@ public abstract class SubControllerBase {
 
     protected void loadState(Project project) {
         String data = project.getString(getModelType().getName());
+        // if the data does not exist, API update, just create the model
+        if (data == null) {
+            resetModel();
+            return;
+        }
         model = getController().getSerializeService().fromString(data, getModelType());
     }
 

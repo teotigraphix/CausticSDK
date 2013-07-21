@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.library;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -12,7 +14,7 @@ public class LibraryManagerModel extends SubControllerModel {
 
     private transient Map<UUID, Library> libraries = new TreeMap<UUID, Library>();
 
-    Map<UUID, Library> getLibraies() {
+    Map<UUID, Library> getLibraries() {
         return libraries;
     }
 
@@ -42,6 +44,19 @@ public class LibraryManagerModel extends SubControllerModel {
 
     public LibraryManagerModel(ICaustkController controller) {
         super(controller);
+    }
+
+    public Library getLibrary(File reletivePath) {
+        for (Library library : libraries.values()) {
+            if (library.getName().endsWith(reletivePath.getName()))
+                return library;
+        }
+        return null;
+    }
+
+    public void removeLibrary(Library library) throws IOException {
+        library.delete();
+        libraries.remove(library.getId());
     }
 
 }

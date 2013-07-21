@@ -25,6 +25,20 @@ public class Library {
     }
 
     //----------------------------------
+    // metadataInfo
+    //----------------------------------
+
+    private MetadataInfo metadataInfo;
+
+    public final MetadataInfo getMetadataInfo() {
+        return metadataInfo;
+    }
+
+    public final void setMetadataInfo(MetadataInfo value) {
+        metadataInfo = value;
+    }
+
+    //----------------------------------
     // id
     //----------------------------------
 
@@ -42,7 +56,7 @@ public class Library {
     // directory
     //----------------------------------
 
-    private transient File directory;
+    private File directory;
 
     public File getDirectory() {
         return directory;
