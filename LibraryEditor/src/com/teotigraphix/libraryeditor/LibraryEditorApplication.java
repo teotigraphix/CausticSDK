@@ -13,7 +13,9 @@ import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.teotigraphix.caustic.controller.ApplicationController;
+import com.teotigraphix.caustic.controller.IApplicationController;
+import com.teotigraphix.caustic.mediator.StageMediator;
+import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.libraryeditor.config.ApplicationModule;
 
@@ -26,7 +28,13 @@ public class LibraryEditorApplication extends GuiceApplication {
     ICaustkApplicationProvider applicationProvider;
 
     @Inject
-    ApplicationController applicationController;
+    IApplicationController applicationController;
+
+    @Inject
+    IStageModel stageModel;
+
+    @Inject
+    StageMediator stageMediator; // is there a proper place for this?
 
     @Override
     public void init(List<Module> modules) throws Exception {
@@ -35,14 +43,16 @@ public class LibraryEditorApplication extends GuiceApplication {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        stageModel.setStage(primaryStage);
+
         AnchorPane frame = loader.load(
                 getClass().getResource("/com/teotigraphix/libraryeditor/view/RootPane.fxml"))
                 .getRoot();
         StageBuilder.create().title("Caustic Library Editor").resizable(true)
                 .scene(SceneBuilder.create().root(frame).build()).applyTo(primaryStage);
-        
+
         applicationController.start();
-        
+
         primaryStage.show();
     }
 

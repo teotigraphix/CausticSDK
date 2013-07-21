@@ -96,6 +96,13 @@ public class Project {
         return String.valueOf(map.get(key));
     }
 
+    public String getString(String key, String defaultValue) {
+        String result = getString(key);
+        if (result == null)
+            return defaultValue;
+        return result;
+    }
+
     /**
      * Returns a Integer for the key, <code>null</code> if the key does not
      * exist.
@@ -152,4 +159,5 @@ public class Project {
     public void close() {
         isClosed = true;
     }
+
 }

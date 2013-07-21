@@ -9,12 +9,12 @@ import javafx.scene.control.Dialogs.DialogResponse;
 import javafx.stage.FileChooser;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.utils.FileUtil;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.core.MediatorBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.Library;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-import com.teotigraphix.libraryeditor.utils.FileUtil;
 
 public class MainToolBarMediator extends MediatorBase {
 

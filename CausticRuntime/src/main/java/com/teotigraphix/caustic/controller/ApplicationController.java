@@ -6,26 +6,39 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.teotigraphix.caustic.model.ApplicationModel;
+import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustk.application.ICaustkApplication;
+import com.teotigraphix.caustk.application.ICaustkApplication.OnApplicationStart;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.application.core.MediatorBase;
 import com.teotigraphix.caustk.project.IProjectManager;
 
-@Singleton
-public class ApplicationController extends MediatorBase {
+/**
+ * Mediates the {@link ApplicationModel}.
+ */
+//@Singleton
+public class ApplicationController extends MediatorBase implements IApplicationController {
 
-    @SuppressWarnings("unused")
-    private ApplicationModel applicationModel;
+    private IApplicationModel applicationModel;
 
     @Inject
     public ApplicationController(ICaustkApplicationProvider provider,
-            ApplicationModel applicationModel) {
+            IApplicationModel applicationModel) {
         super(provider);
         this.applicationModel = applicationModel;
+
+        getController().getDispatcher().register(OnApplicationStart.class,
+                new EventObserver<OnApplicationStart>() {
+                    @Override
+                    public void trigger(OnApplicationStart object) {
+                        onApplicationStartHandler();
+                    }
+                });
     }
 
     /**
@@ -63,4 +76,14 @@ public class ApplicationController extends MediatorBase {
             projectManager.load(new File(path));
         }
     }
+
+    protected void onApplicationStartHandler() {
+        applicationModel.start();
+    }
+
+    @Override
+    protected void onProjectSave() {
+        applicationModel.setDirty(false);
+    }
+
 }
