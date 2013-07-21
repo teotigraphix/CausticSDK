@@ -1,5 +1,5 @@
 
-package com.teotigraphix.libraryeditor.controller;
+package com.teotigraphix.caustic.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,12 +8,12 @@ import javax.swing.JFileChooser;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustic.model.ApplicationModel;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.application.core.MediatorBase;
 import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.libraryeditor.model.ApplicationModel;
 
 @Singleton
 public class ApplicationController extends MediatorBase {

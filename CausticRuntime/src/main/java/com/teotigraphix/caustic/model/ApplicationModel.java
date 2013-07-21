@@ -1,5 +1,5 @@
 
-package com.teotigraphix.libraryeditor.model;
+package com.teotigraphix.caustic.model;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;

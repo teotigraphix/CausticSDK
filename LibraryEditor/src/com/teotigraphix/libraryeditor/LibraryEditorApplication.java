@@ -13,9 +13,9 @@ import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.teotigraphix.caustic.controller.ApplicationController;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.libraryeditor.config.ApplicationModule;
-import com.teotigraphix.libraryeditor.controller.ApplicationController;
 
 public class LibraryEditorApplication extends GuiceApplication {
 

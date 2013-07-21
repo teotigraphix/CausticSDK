@@ -3,6 +3,7 @@ package com.teotigraphix.libraryeditor.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustic.application.ApplicationProvider;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 
