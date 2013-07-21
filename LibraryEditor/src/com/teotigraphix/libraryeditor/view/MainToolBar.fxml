@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root type="HBox" spacing="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Button fx:id="createButton" mnemonicParsing="false" onAction="#onCreateButtonAction" prefWidth="75.0" text="Create" />
+    <Button fx:id="saveButton" mnemonicParsing="false" onAction="#onSaveButtonAction" prefWidth="75.0" text="Save" />
+  </children>
+  <padding>
+    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+  </padding>
+</fx:root>

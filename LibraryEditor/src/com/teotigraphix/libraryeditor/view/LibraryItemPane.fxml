@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<VBox prefHeight="534.0" prefWidth="250.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.teotigraphix.libraryeditor.view.LibraryItemPaneController">
+  <children>
+    <HBox prefHeight="-1.0" prefWidth="200.0" scaleY="1.0" spacing="5.0" VBox.vgrow="NEVER">
+      <children>
+        <ToggleButton id="" fx:id="sceneButton" mnemonicParsing="false" prefWidth="-1.0" selected="false" text="Scene" HBox.hgrow="ALWAYS">
+          <HBox.margin>
+            <Insets />
+          </HBox.margin>
+        </ToggleButton>
+        <ToggleButton fx:id="patchButton" mnemonicParsing="false" prefWidth="-1.0" text="Patch" HBox.hgrow="ALWAYS" />
+        <ToggleButton fx:id="phraseButton" mnemonicParsing="false" text="Phrase " HBox.hgrow="ALWAYS" />
+      </children>
+      <rotationAxis>
+        <Point3D z="1.0" />
+      </rotationAxis>
+    </HBox>
+    <HBox prefHeight="-1.0" prefWidth="200.0">
+      <children>
+        <Label fx:id="titleLabel" alignment="CENTER_RIGHT" text="Label" />
+      </children>
+    </HBox>
+    <ListView fx:id="itemList" prefHeight="-1.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+  </children>
+</VBox>
