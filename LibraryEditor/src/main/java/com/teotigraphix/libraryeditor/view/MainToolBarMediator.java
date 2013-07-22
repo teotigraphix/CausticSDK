@@ -15,9 +15,23 @@ import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.core.MediatorBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.Library;
+import com.teotigraphix.caustk.library.LibraryPatch;
+import com.teotigraphix.caustk.library.LibraryPhrase;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.PCMSynthTone;
+import com.teotigraphix.caustk.tone.SubSynthTone;
+import com.teotigraphix.caustk.tone.SynthTone;
+import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.libraryeditor.model.LibraryModel;
 
 public class MainToolBarMediator extends MediatorBase {
+
+    @Inject
+    LibraryModel libraryModel;
 
     public MainToolBarMediator() {
     }
@@ -94,7 +108,71 @@ public class MainToolBarMediator extends MediatorBase {
         DirectoryChooser chooser = FileUtil.createDefaultDirectoryChooser(null);
         File libDirectory = chooser.showDialog(null);
         Library library = getController().getLibraryManager().loadLibrary(libDirectory.getName());
-        getController().getLibraryManager().setSelectedLibrary(library);        
+        getController().getLibraryManager().setSelectedLibrary(library);
+    }
+
+    private SubSynthTone subSynthTone;
+
+    private BeatboxTone beatboxTone;
+
+    private BasslineTone basslineSynthTone;
+
+    private PCMSynthTone pcmSynthTone;
+
+    private void createAudioSystem() throws CausticException {
+        ISoundSource soundSource = getController().getSoundSource();
+
+        // XXX TEMP
+        soundSource.clearAndReset();
+
+        subSynthTone = (SubSynthTone)soundSource.createTone("subsynth", ToneType.SubSynth);
+        pcmSynthTone = (PCMSynthTone)soundSource.createTone("pcmsyth", ToneType.PCMSynth);
+        basslineSynthTone = (BasslineTone)soundSource.createTone("bassline", ToneType.Bassline);
+        beatboxTone = (BeatboxTone)soundSource.createTone("beatbox", ToneType.Beatbox);
+    }
+
+    public void previewItem() {
+        if (subSynthTone == null) {
+            try {
+                createAudioSystem();
+            } catch (CausticException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Preview the selected phrase
+        //if (libraryModel.getSelectedKind() != ItemKind.PHRASE)
+        //   return;
+
+        ISoundSource soundSource = getController().getSoundSource();
+
+        LibraryPhrase libraryPhrase = libraryModel.getLibraryPhrase();
+        LibraryPatch libraryPatch = libraryModel.getLibraryPatch();
+
+        ToneType toneType = libraryPhrase.getToneType();
+
+        SynthTone tone = (SynthTone)soundSource.getToneByName(toneType.getValue());
+        if (libraryPatch != null) {
+            File file = libraryPatch.getPresetFile();
+            file = getController().getLibraryManager().getSelectedLibrary().getPresetFile(file);
+            tone.getSynth().loadPreset(file.getAbsolutePath());
+        }
+
+        // clear A01
+        tone.getPatternSequencer().clear();
+
+        // set the note data at A01
+        tone.getPatternSequencer().setSelectedPattern(0, 0);
+
+        // set the length
+        int numMeasures = libraryPhrase.getLength();
+        tone.getPatternSequencer().setLength(numMeasures);
+        tone.getPatternSequencer().initializeData(libraryPhrase.getNoteData());
+
+        // add to song
+
+        // play
+        getController().getSystemSequencer().play(SequencerMode.PATTERN);
     }
 
 }

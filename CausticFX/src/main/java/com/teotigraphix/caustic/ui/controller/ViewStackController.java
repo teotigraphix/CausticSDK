@@ -95,13 +95,6 @@ public class ViewStackController extends MediatorBase {
     public ViewStackController(ICaustkApplicationProvider provider) {
         super(provider);
     }
-//
-//    @Override
-//    public void initialize() {
-//        super.initialize();
-//        // no sub components are created
-//        //setController(provider.get().getController());
-//    }
 
     protected Node getChild(int index) {
         return stackPane.getChildren().get(index);

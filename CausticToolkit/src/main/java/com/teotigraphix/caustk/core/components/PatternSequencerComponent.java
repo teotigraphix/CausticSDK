@@ -107,6 +107,21 @@ public class PatternSequencerComponent extends ToneComponent {
         return Arrays.asList(patterns.split(" "));
     }
 
+    public void initializeData(String data) {
+        // push the notes into the machines sequencer
+        String[] notes = data.split("\\|");
+        for (String noteData : notes) {
+            String[] split = noteData.split(" ");
+
+            float start = Float.valueOf(split[0]);
+            int pitch = Float.valueOf(split[1]).intValue();
+            float velocity = Float.valueOf(split[2]);
+            float end = Float.valueOf(split[3]);
+            int flags = Float.valueOf(split[4]).intValue();
+            addNote(pitch, start, end, velocity, flags);
+        }
+    }
+
     //--------------------------------------------------------------------------
     //
     // Constructor

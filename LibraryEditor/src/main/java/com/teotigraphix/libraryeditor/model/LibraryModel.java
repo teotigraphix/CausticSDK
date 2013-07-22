@@ -7,6 +7,8 @@ import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.core.ModelBase;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.LibraryItem;
+import com.teotigraphix.caustk.library.LibraryPatch;
+import com.teotigraphix.caustk.library.LibraryPhrase;
 
 @Singleton
 public class LibraryModel extends ModelBase {
@@ -28,9 +30,25 @@ public class LibraryModel extends ModelBase {
 
     private LibraryItem selectedItem;
 
+    private LibraryPatch libraryPatch;
+
+    private LibraryPhrase libraryPhrase;
+
     public void setSelectedItem(LibraryItem value) {
         selectedItem = value;
+        if (selectedItem instanceof LibraryPatch)
+            libraryPatch = (LibraryPatch)selectedItem;
+        if (selectedItem instanceof LibraryPhrase)
+            libraryPhrase = (LibraryPhrase)selectedItem;
         getController().getDispatcher().trigger(new OnLibraryModelSelectedItemChange(selectedItem));
+    }
+
+    public LibraryPatch getLibraryPatch() {
+        return libraryPatch;
+    }
+
+    public LibraryPhrase getLibraryPhrase() {
+        return libraryPhrase;
     }
 
     public LibraryItem getSelectedItem() {

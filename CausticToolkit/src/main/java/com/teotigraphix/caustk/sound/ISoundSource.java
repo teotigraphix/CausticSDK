@@ -25,6 +25,8 @@ import java.util.Collection;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
+import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
@@ -44,6 +46,8 @@ public interface ISoundSource extends IRestore {
     Collection<Tone> getTones();
 
     Tone getTone(int index);
+
+    Tone getToneByName(String value);
 
     int getTranspose();
 

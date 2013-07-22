@@ -47,6 +47,11 @@ public class MainToolBar extends HBox {
         mainToolBarMediator.importFile();
     }
 
+    @FXML
+    public void onPreviewButtonHandler(ActionEvent event) {
+        mainToolBarMediator.previewItem();
+    }
+
     public void initialize() {
         System.out.println("");
     }

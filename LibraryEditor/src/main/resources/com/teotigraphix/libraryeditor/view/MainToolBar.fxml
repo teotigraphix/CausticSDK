@@ -16,6 +16,8 @@
 			onAction="#onSaveButtonHandler" prefWidth="75.0" text="Save" />
 		<Button fx:id="importButton" mnemonicParsing="false"
 			onAction="#onImportButtonHandler" prefWidth="75.0" text="Import" />
+		<Button fx:id="previewButton" mnemonicParsing="false"
+			onAction="#onPreviewButtonHandler" prefWidth="75.0" text="Preview" />
 	</children>
 	<padding>
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

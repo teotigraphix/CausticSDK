@@ -23,13 +23,14 @@ import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.library.ILibraryManager.OnLibraryManagerImportComplete;
 import com.teotigraphix.caustk.library.ILibraryManager.OnLibraryManagerSelectedLibraryChange;
 import com.teotigraphix.caustk.library.Library;
+import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.caustk.library.LibraryPatch;
 import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.libraryeditor.model.LibraryModel;
 import com.teotigraphix.libraryeditor.model.LibraryModel.ItemKind;
-import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelSelectedKindChange;
 import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelRefresh;
+import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelSelectedKindChange;
 
 @FXMLController
 public class LibraryItemPaneController extends ViewStackController {
@@ -140,84 +141,9 @@ public class LibraryItemPaneController extends ViewStackController {
 
         libraryHolder = new BeanPathAdapter<Library>(library);
 
-        // Setup Scenes
-        final ObservableList<LibraryScene> sceneItems = FXCollections.observableArrayList(library
-                .getScenes());
-
-        sceneList.setItems(sceneItems);
-        libraryHolder.bindContentBidirectional("scenes", "metadataInfo.name", LibraryScene.class,
-                sceneList.getItems(), LibraryScene.class, null, null);
-        sceneList.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable,
-                            Number oldValue, Number newValue) {
-                        int index = newValue.intValue();
-                        if (index >= 0
-                                && index < getController().getLibraryManager().getSelectedLibrary()
-                                        .getScenes().size()) {
-                            LibraryScene item = getController().getLibraryManager()
-                                    .getSelectedLibrary().getScenes().get(index);
-                            libraryItemModel.setSelectedItem(item);
-                        }
-                    }
-                });
-
-        // Setup Patches
-        final ObservableList<LibraryPatch> patchItems = FXCollections.observableArrayList(library
-                .getPatches());
-
-        patchList.setItems(patchItems);
-        libraryHolder.bindContentBidirectional("patches", "metadataInfo.name", LibraryPatch.class,
-                patchList.getItems(), LibraryPatch.class, null, null);
-        patchList.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable,
-                            Number oldValue, Number newValue) {
-                        int index = newValue.intValue();
-                        if (index >= 0
-                                && index < getController().getLibraryManager().getSelectedLibrary()
-                                        .getPatches().size()) {
-                            LibraryPatch item = getController().getLibraryManager()
-                                    .getSelectedLibrary().getPatches().get(index);
-                            libraryItemModel.setSelectedItem(item);
-                        }
-                    }
-                });
-
-        // Setup Phrases
-        final ObservableList<LibraryPhrase> phraseItems = FXCollections.observableArrayList(library
-                .getPhrases());
-
-        phraseList.setItems(phraseItems);
-        libraryHolder.bindContentBidirectional("phrases", "metadataInfo.name", LibraryPhrase.class,
-                phraseList.getItems(), LibraryPhrase.class, null, null);
-        phraseList.getSelectionModel().selectedIndexProperty()
-                .addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observable,
-                            Number oldValue, Number newValue) {
-                        int index = newValue.intValue();
-                        if (index >= 0
-                                && index < getController().getLibraryManager().getSelectedLibrary()
-                                        .getPhrases().size()) {
-                            LibraryPhrase item = getController().getLibraryManager()
-                                    .getSelectedLibrary().getPhrases().get(index);
-                            libraryItemModel.setSelectedItem(item);
-                        }
-                    }
-                });
-
-        //libraryItemModel.setSelectedKind(ItemKind.SCENE);
-        //libraryItemModel.setSelectedProxy(library.getScenes().get(0));
-
-        //        try {
-        //            getController().getLibraryManager().saveLibrary(library);
-        //            getController().getApplication().save();
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
+        setupList(sceneList, library, LibraryScene.class, "scenes");
+        setupList(patchList, library, LibraryPatch.class, "patches");
+        setupList(phraseList, library, LibraryPhrase.class, "phrases");
 
     }
 
@@ -247,7 +173,7 @@ public class LibraryItemPaneController extends ViewStackController {
             lsv.<T> setItems(items);
         }
 
-        //libraryHolder.setBean(getController().getLibraryManager().getSelectedLibrary());
+        libraryHolder.setBean(getController().getLibraryManager().getSelectedLibrary());
     }
 
     protected void onLibraryModelRefreshHandler() {
@@ -266,5 +192,40 @@ public class LibraryItemPaneController extends ViewStackController {
         //System.out.println("LibraryItemPaneController.firstRun()");
         setToggleBar(toggleBar);
         setStackPane(viewStack);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> ObservableList<T> getList(Library library, Class<T> itemType) {
+        if (itemType == LibraryScene.class) {
+            return (ObservableList<T>)FXCollections.observableArrayList(library.getScenes());
+        } else if (itemType == LibraryPatch.class) {
+            return (ObservableList<T>)FXCollections.observableArrayList(library.getPatches());
+        } else if (itemType == LibraryPhrase.class) {
+            return (ObservableList<T>)FXCollections.observableArrayList(library.getPhrases());
+        }
+        return null;
+    }
+
+    private <T extends LibraryItem> void setupList(ListView<T> list, Library library,
+            final Class<T> itemType, String propertyName) {
+        ObservableList<T> sceneItems = getList(library, itemType);
+        list.setItems(sceneItems);
+        libraryHolder.bindContentBidirectional(propertyName, "metadataInfo.name", itemType,
+                list.getItems(), itemType, null, null);
+        list.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+                    Number newValue) {
+                int index = newValue.intValue();
+                
+                Library library = getController().getLibraryManager().getSelectedLibrary();
+                ObservableList<T> items = getList(library, itemType);
+                
+                if (index >= 0 && index < items.size()) {
+                    ObservableList<T> item = getList(library, itemType);
+                    libraryItemModel.setSelectedItem(item.get(index));
+                }
+            }
+        });
     }
 }

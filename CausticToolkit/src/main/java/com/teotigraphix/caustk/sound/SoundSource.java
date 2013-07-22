@@ -105,6 +105,15 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         return getModel().getTones().get(index);
     }
 
+    @Override
+    public Tone getToneByName(String value) {
+        for (Tone tone : getModel().getTones().values()) {
+            if (tone.getName().equals(value))
+                return tone;
+        }
+        return null;
+    }
+
     public SoundSource(ICaustkController controller) {
         super(controller);
 
