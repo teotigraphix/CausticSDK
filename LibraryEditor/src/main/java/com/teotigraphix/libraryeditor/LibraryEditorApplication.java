@@ -1,13 +1,16 @@
 
 package com.teotigraphix.libraryeditor;
 
+import java.io.IOException;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.SceneBuilder;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
+import javafx.stage.WindowEvent;
 
 import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
@@ -52,6 +55,17 @@ public class LibraryEditorApplication extends GuiceApplication {
                 .scene(SceneBuilder.create().root(frame).build()).applyTo(primaryStage);
 
         applicationController.start();
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                try {
+                    applicationProvider.get().save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                applicationProvider.get().close();
+            }
+        });
 
         primaryStage.show();
     }

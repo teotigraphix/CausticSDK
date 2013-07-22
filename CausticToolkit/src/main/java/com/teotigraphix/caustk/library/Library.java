@@ -12,9 +12,11 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class Library {
+public class Library implements ISerialize {
 
     protected File getPresetsDirectory() {
         return new File(directory, "presets");
@@ -114,29 +116,31 @@ public class Library {
     // scenes
     //----------------------------------
 
-    private Map<UUID, LibraryScene> scenes = new HashMap<UUID, LibraryScene>();
+    private List<LibraryScene> scenes = new ArrayList<LibraryScene>();
 
     public List<LibraryScene> getScenes() {
-        return new ArrayList<LibraryScene>(scenes.values());
+        return scenes;
+    }
+
+    public void setScenes(List<LibraryScene> value) {
+        scenes = value;
     }
 
     public void addScene(LibraryScene scene) {
-        if (scenes.containsKey(scene.getId()))
+        if (scenes.contains(scene))
             return;
-        scenes.put(scene.getId(), scene);
+        scenes.add(scene);
     }
 
     public void removeScene(LibraryScene scene) {
-        if (!scenes.containsKey(scene.getId()))
-            return;
-        scenes.remove(scene.getId());
+        scenes.remove(scene);
     }
 
     public Library() {
     }
 
     public LibraryScene findSceneById(UUID id) {
-        for (LibraryScene item : scenes.values()) {
+        for (LibraryScene item : scenes) {
             if (item.getId().equals(id))
                 return item;
         }
@@ -228,5 +232,16 @@ public class Library {
         FileUtils.deleteDirectory(directory);
         if (directory.exists())
             throw new IOException("Library " + directory.getAbsolutePath() + " was not deleted.");
+    }
+
+    @Override
+    public void sleep() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void wakeup(ICaustkController controller) {
+
     }
 }

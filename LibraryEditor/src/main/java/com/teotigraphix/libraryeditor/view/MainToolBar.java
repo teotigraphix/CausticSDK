@@ -16,7 +16,10 @@ public class MainToolBar extends HBox {
     MainToolBarMediator mainToolBarMediator;
 
     @FXML
-    Button createButton;
+    Button newButton;
+
+    @FXML
+    Button loadButton;
 
     @FXML
     Button saveButton;
@@ -25,12 +28,22 @@ public class MainToolBar extends HBox {
     }
 
     @FXML
-    public void onCreateButtonAction(ActionEvent event) {
+    public void onNewButtonHandler(ActionEvent event) {
         mainToolBarMediator.createLibrary();
     }
 
     @FXML
-    public void onSaveButtonAction(ActionEvent event) {
+    public void onLoadButtonHandler(ActionEvent event) {
+        //mainToolBarMediator.importFile();
+    }
+
+    @FXML
+    public void onSaveButtonHandler(ActionEvent event) {
+        mainToolBarMediator.saveLibrary();
+    }
+
+    @FXML
+    public void onImportButtonHandler(ActionEvent event) {
         mainToolBarMediator.importFile();
     }
 

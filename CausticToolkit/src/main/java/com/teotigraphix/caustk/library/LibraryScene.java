@@ -54,4 +54,8 @@ public class LibraryScene extends LibraryItem {
     public LibraryScene() {
     }
 
+    @Override
+    public String toString() {
+        return getMetadataInfo().getName() + " - " + getMetadataInfo().getTags().toString();
+    }
 }

@@ -80,4 +80,13 @@ public class MainToolBarMediator extends MediatorBase {
 
     }
 
+    public void saveLibrary() {
+        Library library = getController().getLibraryManager().getSelectedLibrary();
+        try {
+            getController().getLibraryManager().saveLibrary(library);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
