@@ -34,7 +34,7 @@ public class MainToolBar extends HBox {
 
     @FXML
     public void onLoadButtonHandler(ActionEvent event) {
-        //mainToolBarMediator.importFile();
+        mainToolBarMediator.loadLibrary();
     }
 
     @FXML

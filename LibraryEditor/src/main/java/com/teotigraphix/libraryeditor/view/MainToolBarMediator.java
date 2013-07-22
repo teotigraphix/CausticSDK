@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javafx.scene.control.Dialogs;
 import javafx.scene.control.Dialogs.DialogResponse;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import com.google.inject.Inject;
@@ -87,6 +88,13 @@ public class MainToolBarMediator extends MediatorBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void loadLibrary() {
+        DirectoryChooser chooser = FileUtil.createDefaultDirectoryChooser(null);
+        File libDirectory = chooser.showDialog(null);
+        Library library = getController().getLibraryManager().loadLibrary(libDirectory.getName());
+        getController().getLibraryManager().setSelectedLibrary(library);        
     }
 
 }

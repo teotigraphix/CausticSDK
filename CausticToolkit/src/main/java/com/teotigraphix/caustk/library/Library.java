@@ -4,10 +4,7 @@ package com.teotigraphix.caustk.library;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -72,44 +69,48 @@ public class Library implements ISerialize {
     // patches
     //----------------------------------
 
-    private Map<UUID, LibraryPatch> patches = new HashMap<UUID, LibraryPatch>();
+    private List<LibraryPatch> patches = new ArrayList<LibraryPatch>();
 
-    public Collection<LibraryPatch> getPatches() {
-        return patches.values();
+    public List<LibraryPatch> getPatches() {
+        return patches;
+    }
+
+    public void setPatches(List<LibraryPatch> value) {
+        patches = value;
     }
 
     public void addPatch(LibraryPatch patch) {
-        if (patches.containsKey(patch.getId()))
+        if (patches.contains(patch))
             return;
-        patches.put(patch.getId(), patch);
+        patches.add(patch);
     }
 
     public void removePatch(LibraryPatch patch) {
-        if (!patches.containsKey(patch.getId()))
-            return;
-        patches.remove(patch.getId());
+        patches.remove(patch);
     }
 
     //----------------------------------
     // phrases
     //----------------------------------
 
-    private Map<UUID, LibraryPhrase> phrases = new HashMap<UUID, LibraryPhrase>();
+    private List<LibraryPhrase> phrases = new ArrayList<LibraryPhrase>();
 
-    public Collection<LibraryPhrase> getPhrases() {
-        return phrases.values();
+    public List<LibraryPhrase> getPhrases() {
+        return phrases;
     }
 
-    public void addPhrase(LibraryPhrase patch) {
-        if (phrases.containsKey(patch.getId()))
-            return;
-        phrases.put(patch.getId(), patch);
+    public void setPhrases(List<LibraryPhrase> value) {
+        phrases = value;
     }
 
-    public void removePhrase(LibraryPhrase patch) {
-        if (!phrases.containsKey(patch.getId()))
+    public void addPhrase(LibraryPhrase phrase) {
+        if (phrases.contains(phrase))
             return;
-        phrases.remove(patch.getId());
+        phrases.add(phrase);
+    }
+
+    public void removePhrase(LibraryPhrase phrase) {
+        phrases.remove(phrase);
     }
 
     //----------------------------------
@@ -148,7 +149,7 @@ public class Library implements ISerialize {
     }
 
     public LibraryPatch findPatchById(UUID uuid) {
-        for (LibraryPatch item : patches.values()) {
+        for (LibraryPatch item : patches) {
             if (item.getId().equals(uuid))
                 return item;
         }
@@ -156,7 +157,7 @@ public class Library implements ISerialize {
     }
 
     public LibraryPhrase findPhraseById(UUID uuid) {
-        for (LibraryPhrase item : phrases.values()) {
+        for (LibraryPhrase item : phrases) {
             if (item.getId().equals(uuid))
                 return item;
         }

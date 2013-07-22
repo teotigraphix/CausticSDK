@@ -13,9 +13,14 @@ import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 public class MediatorBase {
     private ICaustkController controller;
 
+    private boolean controllerSet;
+
     protected void setController(ICaustkController value) {
         controller = value;
-        registerObservers();
+        if (!controllerSet) {
+            controllerSet = true;
+            registerObservers();
+        }
     }
 
     public final ICaustkController getController() {
@@ -55,9 +60,15 @@ public class MediatorBase {
                     }
                 });
     }
-    
+
     // called by JavaFX or what in Android?
     public void initialize() {
+        firstRun();
+    }
+
+    protected void firstRun() {
+        // TODO Auto-generated method stub
+
     }
 
     public void onRegister() {

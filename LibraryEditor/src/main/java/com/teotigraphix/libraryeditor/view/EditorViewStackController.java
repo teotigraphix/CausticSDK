@@ -4,7 +4,7 @@ package com.teotigraphix.libraryeditor.view;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 
@@ -16,22 +16,32 @@ import com.teotigraphix.caustic.model.BeanPathAdapter;
 import com.teotigraphix.caustic.ui.controller.ViewStackController;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.library.LibraryItem;
-import com.teotigraphix.libraryeditor.model.LibraryItemModel;
-import com.teotigraphix.libraryeditor.model.LibraryItemModel.OnLibraryItemModelItemChange;
 import com.teotigraphix.libraryeditor.model.LibraryModel;
+import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelSelectedItemChange;
 import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelRefresh;
 
 @FXMLController
 public class EditorViewStackController extends ViewStackController {
 
+    private BeanPathAdapter<LibraryItem> libraryItem;
+
     @FXML
     StackPane stackPane;
 
-    @Inject
-    LibraryItemModel libraryItemModel;
+    @FXML
+    TextField metaName;
+
+    @FXML
+    TextField metaAuthor;
+
+    @FXML
+    TextArea metaDescription;
+
+    @FXML
+    TextField metaTags;
 
     @Inject
-    LibraryModel libraryModel;
+    LibraryModel libraryItemModel;
 
     public EditorViewStackController() {
     }
@@ -42,17 +52,15 @@ public class EditorViewStackController extends ViewStackController {
     }
 
     @Override
-    public void initialize() {
-        super.initialize();
-
+    protected void firstRun() {
+        super.firstRun();
+        //System.out.println("LibraryItemPaneController.firstRun()");
         setStackPane(stackPane);
 
-        Node editorPane = stackPane.getChildrenUnmodifiable().get(0);
-        TextField nameInput = (TextField)editorPane.lookup("#metaName");
-        TextField authorInput = (TextField)editorPane.lookup("#metaAuthor");
-
-        nameInput.textProperty().addListener(changedHandler);
-        authorInput.textProperty().addListener(changedHandler);
+        metaName.textProperty().addListener(changedHandler);
+        metaAuthor.textProperty().addListener(changedHandler);
+        metaDescription.textProperty().addListener(changedHandler);
+        metaTags.textProperty().addListener(changedHandler);
     }
 
     private ChangeListener<String> changedHandler = new ChangeListener<String>() {
@@ -66,28 +74,48 @@ public class EditorViewStackController extends ViewStackController {
     @Override
     protected void registerObservers() {
         super.registerObservers();
-
-        getController().getDispatcher().register(OnLibraryItemModelItemChange.class,
-                new EventObserver<OnLibraryItemModelItemChange>() {
+        System.out.println("EditorViewStackController.registerObservers()");
+        getController().getDispatcher().register(OnLibraryModelSelectedItemChange.class,
+                new EventObserver<OnLibraryModelSelectedItemChange>() {
                     @Override
-                    public void trigger(OnLibraryItemModelItemChange object) {
-                        sceneItemChanged(libraryItemModel.getSelectedProxy());
+                    public void trigger(OnLibraryModelSelectedItemChange object) {
+                        sceneItemChanged(libraryItemModel.getSelectedItem());
                     }
                 });
     }
 
-    private BeanPathAdapter<LibraryItem> libraryItem;
-
     protected void sceneItemChanged(final LibraryItem item) {
-        Node editorPane = stackPane.getChildrenUnmodifiable().get(0);
-        TextField nameInput = (TextField)editorPane.lookup("#metaName");
-        TextField authorInput = (TextField)editorPane.lookup("#metaAuthor");
+        if (item == null) {
+            if (libraryItem == null)
+                return;
+            //System.out.println("EditorViewStackController.sceneItemChanged( UNSET )");
+            //reset or loading a new library
+            libraryItem.unBindBidirectional("metadataInfo.name", metaName.textProperty());
+            libraryItem.unBindBidirectional("metadataInfo.author", metaAuthor.textProperty());
+            libraryItem.unBindBidirectional("metadataInfo.description",
+                    metaDescription.textProperty());
+            libraryItem.unBindBidirectional("metadataInfo.tagsString", metaTags.textProperty());
+
+            metaName.setText("");
+            metaAuthor.setText("");
+            metaDescription.setText("");
+            metaTags.setText("");
+
+            libraryItem = null;
+            return;
+        }
 
         if (libraryItem == null) {
+            //System.out.println("EditorViewStackController.sceneItemChanged( SETUP )");
             libraryItem = new BeanPathAdapter<LibraryItem>(item);
-            libraryItem.bindBidirectional("metadataInfo.name", nameInput.textProperty());
-            libraryItem.bindBidirectional("metadataInfo.author", authorInput.textProperty());
+            libraryItem.bindBidirectional("metadataInfo.name", metaName.textProperty());
+            libraryItem.bindBidirectional("metadataInfo.author", metaAuthor.textProperty());
+            libraryItem.bindBidirectional("metadataInfo.description",
+                    metaDescription.textProperty());
+            libraryItem.bindBidirectional("metadataInfo.tagsString", metaTags.textProperty());
         } else {
+            // System.out.println(item);
+            //System.out.println("EditorViewStackController.sceneItemChanged( SET )");
             libraryItem.setBean(item);
         }
     }

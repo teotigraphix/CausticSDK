@@ -83,6 +83,6 @@ public class LibraryPatch extends LibraryItem {
 
     @Override
     public String toString() {
-        return getMetadataInfo().getTags().toString();
+        return getMetadataInfo().getName() + " - " + getMetadataInfo().getTags().toString();
     }
 }

@@ -1,72 +1,107 @@
 
 package com.teotigraphix.libraryeditor.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustic.model.BeanPathAdapter;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.core.ModelBase;
-import com.teotigraphix.caustk.library.Library;
-import com.teotigraphix.caustk.library.LibraryScene;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.library.LibraryItem;
 
 @Singleton
 public class LibraryModel extends ModelBase {
 
-    private Library library;
+    private ItemKind selectedKind;
 
-    private SceneItem selectedScene;
-
-    public final SceneItem getSelectedScene() {
-        return selectedScene;
+    public final ItemKind getSelectedKind() {
+        return selectedKind;
     }
 
-    public final void setSelectedScene(SceneItem selectedItem) {
-        this.selectedScene = selectedItem;
-        getController().getDispatcher().trigger(new OnLibraryModelSceneChange());
+    public final void setSelectedKind(ItemKind value) {
+        if (value == selectedKind)
+            return;
+        ItemKind oldKind = selectedKind;
+        selectedKind = value;
+        getController().getDispatcher().trigger(
+                new OnLibraryModelSelectedKindChange(selectedKind, oldKind));
     }
 
-    List<SceneItem> scenes = new ArrayList<>();
+    private LibraryItem selectedItem;
 
-    public final List<SceneItem> getScenes() {
-        return scenes;
+    public void setSelectedItem(LibraryItem value) {
+        selectedItem = value;
+        getController().getDispatcher().trigger(new OnLibraryModelSelectedItemChange(selectedItem));
     }
 
-    public final void setScenes(List<SceneItem> scenes) {
-        this.scenes = scenes;
-    }
-
-    BeanPathAdapter<LibraryModel> sceneHolder;
-
-    public BeanPathAdapter<LibraryModel> getSceneHolder() {
-        return sceneHolder;
+    public LibraryItem getSelectedItem() {
+        return selectedItem;
     }
 
     @Inject
     public LibraryModel(ICaustkApplicationProvider provider) {
         super(provider);
-
-        sceneHolder = new BeanPathAdapter<>(this);
     }
 
-    public void refresh(Library library) {
-        this.library = library;
-        scenes.clear();
+    public enum ItemKind {
+        SCENE(0), PATCH(1), PHRASE(2);
 
-        for (LibraryScene scene : library.getScenes()) {
-            scenes.add(new SceneItem(scene));
+        private int index;
+
+        ItemKind(int index) {
+            this.index = index;
+        }
+
+        public final int getIndex() {
+            return index;
+        }
+
+        public static ItemKind fromInt(int index) {
+            for (ItemKind kind : values()) {
+                if (kind.getIndex() == index)
+                    return kind;
+            }
+            return null;
         }
     }
 
-    public static class OnLibraryModelSceneChange {
+    /**
+     * @see ICaustkController#getDispatcher()
+     */
+    public static class OnLibraryModelSelectedKindChange {
+
+        private ItemKind kind;
+
+        private ItemKind oldKind;
+
+        public final ItemKind getKind() {
+            return kind;
+        }
+
+        public final ItemKind getOldKind() {
+            return oldKind;
+        }
+
+        public OnLibraryModelSelectedKindChange(ItemKind kind, ItemKind oldKind) {
+            this.kind = kind;
+            this.oldKind = oldKind;
+        }
+    }
+
+    public static class OnLibraryModelSelectedItemChange {
+
+        private LibraryItem item;
+
+        public final LibraryItem getItem() {
+            return item;
+        }
+
+        public OnLibraryModelSelectedItemChange(LibraryItem item) {
+            this.item = item;
+        }
     }
 
     public static class OnLibraryModelRefresh {
+
     }
 
-    public void update() {
-        sceneHolder.setBean(this);
-    }
 }

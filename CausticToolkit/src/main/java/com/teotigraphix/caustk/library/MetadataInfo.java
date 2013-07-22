@@ -20,7 +20,10 @@
 package com.teotigraphix.caustk.library;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class MetadataInfo {
@@ -77,6 +80,14 @@ public class MetadataInfo {
         this.modified = modified;
     }
 
+    public String getTagsString() {
+        return join(tags, " ");
+    }
+
+    public void setTagsString(String tags) {
+        this.tags = Arrays.asList(tags.split(" "));
+    }
+
     public List<String> getTags() {
         return tags;
     }
@@ -92,4 +103,15 @@ public class MetadataInfo {
         tags.add(tag);
     }
 
+    public static String join(Collection<String> s, String delimiter) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator<String> iter = s.iterator();
+        while (iter.hasNext()) {
+            buffer.append(iter.next());
+            if (iter.hasNext()) {
+                buffer.append(delimiter);
+            }
+        }
+        return buffer.toString();
+    }
 }
