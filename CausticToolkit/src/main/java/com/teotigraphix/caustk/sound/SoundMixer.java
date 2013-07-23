@@ -36,6 +36,10 @@ public class SoundMixer extends SubControllerBase implements ISoundMixer {
     //--------------------------------------------------------------------------
     // ISoundMixer API
     //--------------------------------------------------------------------------
+    @Override
+    public MasterMixer getMasterMixer() {
+        return getModel().getMasterMixer();
+    }
 
     @Override
     public SoundMixerChannel getChannel(int index) {

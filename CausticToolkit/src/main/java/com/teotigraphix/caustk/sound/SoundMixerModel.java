@@ -10,6 +10,12 @@ import com.teotigraphix.caustk.tone.Tone;
 
 public class SoundMixerModel extends SubControllerModel {
 
+    private MasterMixer masterMixer;
+
+    public MasterMixer getMasterMixer() {
+        return masterMixer;
+    }
+
     Map<Integer, SoundMixerChannel> channels = new HashMap<Integer, SoundMixerChannel>();
 
     Map<Integer, SoundMixerChannel> getChannels() {
@@ -21,6 +27,7 @@ public class SoundMixerModel extends SubControllerModel {
 
     public SoundMixerModel(ICaustkController controller) {
         super(controller);
+        masterMixer = new MasterMixer(controller);
     }
 
     void toneAdded(Tone tone) {
@@ -40,6 +47,7 @@ public class SoundMixerModel extends SubControllerModel {
     @Override
     public void wakeup(ICaustkController controller) {
         super.wakeup(controller);
+        masterMixer.setController(controller);
         for (SoundMixerChannel channel : channels.values()) {
             channel.wakeup(controller);
         }

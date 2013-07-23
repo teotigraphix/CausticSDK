@@ -26,6 +26,8 @@ import com.teotigraphix.caustk.tone.Tone;
 
 public interface ISoundMixer extends IControllerComponent, IRestore {
 
+    MasterMixer getMasterMixer();
+
     SoundMixerChannel getChannel(Tone tone);
 
     SoundMixerChannel getChannel(int index);
