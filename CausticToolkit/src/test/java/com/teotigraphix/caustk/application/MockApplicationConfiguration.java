@@ -3,6 +3,8 @@ package com.teotigraphix.caustk.application;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.core.internal.Constants;
+
 public class MockApplicationConfiguration extends CaustkConfigurationBase {
 
     public static ICaustkConfiguration create() {
@@ -16,7 +18,7 @@ public class MockApplicationConfiguration extends CaustkConfigurationBase {
 
     public MockApplicationConfiguration() {
         super();
-        setCausticStorage(new File(System.getProperty("user.home")));
+        setCausticStorage(new File(Constants.STORAGE_ROOT));
         setApplicationRoot(new File("src/test/resources/unit_test"));
     }
 

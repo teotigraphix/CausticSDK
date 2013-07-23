@@ -36,10 +36,14 @@ public class SynthComponent extends ToneComponent {
     }
 
     public void setPolyphony(int value) {
-        if (getTone() instanceof BasslineTone)
+        if (getTone() instanceof BasslineTone) {
+            polyphony = 1;
             return;
-        if (getTone() instanceof BeatboxTone)
+        }
+        if (getTone() instanceof BeatboxTone) {
+            polyphony = 8;
             return;
+        }
         if (value == polyphony)
             return;
         if (value < 1 || value > 16)
@@ -63,7 +67,6 @@ public class SynthComponent extends ToneComponent {
     }
 
     public void savePreset(String name) {
-        // calculate the preset path
         SynthMessage.SAVE_PRESET.send(getEngine(), getToneIndex(), name);
     }
 

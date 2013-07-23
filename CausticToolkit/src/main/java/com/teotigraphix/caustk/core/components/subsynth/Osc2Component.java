@@ -117,7 +117,7 @@ public class Osc2Component extends ToneComponent {
     }
 
     public void setWaveform(WaveForm value) {
-        // XXX OSC ERROR
+        // XXX OSC NULL
         if (value == null)
             return;
         if (value == waveForm)

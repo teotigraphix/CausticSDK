@@ -29,11 +29,19 @@ public class MasterMixerTest {
         soundSource = controller.getSoundSource();
         soundMixer = controller.getSoundMixer();
         masterMixer = soundMixer.getMasterMixer();
+
+        start();
+    }
+
+    protected void start() {
     }
 
     @After
     public void tearDown() {
+        end();
+    }
 
+    protected void end() {
     }
 
     @Test
@@ -42,7 +50,7 @@ public class MasterMixerTest {
         masterMixer.restore();
 
         Assert.assertEquals(1f, masterMixer.getVolume(), 0f);
-        
+
         //------------------------------
         // EQ
         //------------------------------
@@ -52,7 +60,7 @@ public class MasterMixerTest {
         Assert.assertEquals(1.100000023841858f, masterMixer.getEqualizer().getHigh(), 0f);
         Assert.assertEquals(1.0f, masterMixer.getEqualizer().getMid(), 0f);
         Assert.assertEquals(0.5f, masterMixer.getEqualizer().getMidHighFreq(), 0f);
-        
+
         //------------------------------
         // Limiter
         //------------------------------
@@ -61,7 +69,7 @@ public class MasterMixerTest {
         Assert.assertEquals(0.5f, masterMixer.getLimiter().getPost(), 0f);
         Assert.assertEquals(2.0f, masterMixer.getLimiter().getPre(), 0f);
         Assert.assertEquals(0.25f, masterMixer.getLimiter().getRelease(), 0f);
-        
+
         //------------------------------
         // Delay
         //------------------------------
@@ -80,7 +88,7 @@ public class MasterMixerTest {
         Assert.assertEquals(1, masterMixer.getDelay().getSync());
         Assert.assertEquals(8, masterMixer.getDelay().getTime());
         Assert.assertEquals(0.5f, masterMixer.getDelay().getWet(), 1f);
-        
+
         //------------------------------
         // Reverb
         //------------------------------

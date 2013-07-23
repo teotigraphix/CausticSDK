@@ -31,7 +31,8 @@ public class PatternSequencerComponent extends ToneComponent {
     public int getLength(int bankIndex, int patternIndex) {
         int lastBank = getSelectedBank();
         int lastIndex = getSelectedIndex();
-        int measures = (int)PatternSequencerMessage.NUM_MEASURES.send(getEngine(), getToneIndex());
+        setSelectedPattern(bankIndex, patternIndex);
+        int measures = (int)PatternSequencerMessage.NUM_MEASURES.query(getEngine(), getToneIndex());
         setSelectedPattern(lastBank, lastIndex);
         return measures;
     }

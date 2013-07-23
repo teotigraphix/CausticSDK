@@ -82,7 +82,6 @@ public class PCMTunerComponent extends ToneComponent {
     }
 
     public PCMTunerComponent() {
-        // TODO Auto-generated constructor stub
     }
 
     @Override

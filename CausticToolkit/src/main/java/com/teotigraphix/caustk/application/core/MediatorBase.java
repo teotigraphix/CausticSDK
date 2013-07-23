@@ -67,8 +67,6 @@ public class MediatorBase {
     }
 
     protected void firstRun() {
-        // TODO Auto-generated method stub
-
     }
 
     public void onRegister() {

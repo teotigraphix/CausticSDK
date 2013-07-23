@@ -91,8 +91,6 @@ public class MasterComponent implements ISerialize, IRestore {
 
     @Override
     public void sleep() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

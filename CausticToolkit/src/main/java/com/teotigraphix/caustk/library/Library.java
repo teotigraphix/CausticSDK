@@ -237,8 +237,6 @@ public class Library implements ISerialize {
 
     @Override
     public void sleep() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
