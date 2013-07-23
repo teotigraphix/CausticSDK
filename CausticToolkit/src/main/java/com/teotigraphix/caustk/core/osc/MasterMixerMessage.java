@@ -177,22 +177,23 @@ public class MasterMixerMessage extends CausticMessage {
             "/caustic/master/delay/wet ${0}");
 
     /**
-     * Message: <code>/caustic/master/delay/pan [value]</code>
+     * Message: <code>/caustic/master/delay/pan [step] [value]</code>
      * <p>
      * StepIndex panning where step index is 0,1,2,3,4 depending on how many
      * steps are enabled and panning is [-1..1] with 0 = dead center.
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
-     * <li><strong>value</strong>: (0,1,2,3,4).</li>
+     * <li><strong>step</strong>: (0,1,2,3,4).</li>
+     * <li><strong>value</strong>: (-1..1).</li>
      * </ul>
      * <p>
-     * <strong>Returns</strong>: <code>int</code>
+     * <strong>Returns</strong>: <code>float</code>
      */
     public static final MasterMixerMessage DELAY_PAN = new MasterMixerMessage(
-            "/caustic/master/delay/pan ${0}");
+            "/caustic/master/delay/pan ${0} ${1}");
 
     //--------------------------------------------------------------------------
     // Master Reverb
@@ -246,7 +247,7 @@ public class MasterMixerMessage extends CausticMessage {
             "/caustic/master/reverb/room_size ${0}");
 
     /**
-     * Message: <code>/caustic/master/reverb/hf_dampening [value]</code>
+     * Message: <code>/caustic/master/reverb/hf_damping [value]</code>
      * <p>
      * <strong>Default</strong>: <code>TODO</code>
      * <p>
@@ -257,11 +258,11 @@ public class MasterMixerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      */
-    public static final MasterMixerMessage REVERB_HF_DAMPENING = new MasterMixerMessage(
-            "/caustic/master/reverb/hf_dampening ${0}");
+    public static final MasterMixerMessage REVERB_HF_DAMPING = new MasterMixerMessage(
+            "/caustic/master/reverb/hf_damping ${0}");
 
     /**
-     * Message: <code>/caustic/master/reverb/hf_dampening [value]</code>
+     * Message: <code>/caustic/master/reverb/diffuse [value]</code>
      * <p>
      * <strong>Default</strong>: <code>TODO</code>
      * <p>
@@ -272,8 +273,8 @@ public class MasterMixerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      */
-    public static final MasterMixerMessage REVERB_DIFFUSION = new MasterMixerMessage(
-            "/caustic/master/reverb/diffusion ${0}");
+    public static final MasterMixerMessage REVERB_DIFFUSE = new MasterMixerMessage(
+            "/caustic/master/reverb/diffuse ${0}");
 
     /**
      * Message: <code>/caustic/master/reverb/dither_echoes [value]</code>

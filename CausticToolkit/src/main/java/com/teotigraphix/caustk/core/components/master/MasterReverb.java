@@ -78,46 +78,46 @@ public class MasterReverb extends MasterComponent {
     // hfDamping
     //----------------------------------
 
-    private float hfDampening = -42f;
+    private float hfDamping = -42f;
 
-    public float getHFDampening() {
-        return hfDampening;
+    public float getHFDamping() {
+        return hfDamping;
     }
 
-    float getHFDampening(boolean restore) {
-        return MasterMixerMessage.REVERB_HF_DAMPENING.query(getEngine());
+    float getHFDamping(boolean restore) {
+        return MasterMixerMessage.REVERB_HF_DAMPING.query(getEngine());
     }
 
-    public void setHFDampening(float value) {
-        if (hfDampening == value)
+    public void setHFDamping(float value) {
+        if (hfDamping == value)
             return;
-//XXX        if (value < 0f || value > 0.8f)
-//            throw newRangeException("hf_dampening", "0..0.8", value);
-        hfDampening = value;
-        MasterMixerMessage.REVERB_HF_DAMPENING.send(getEngine(), value);
+        if (value < 0f || value > 0.8f)
+            throw newRangeException("hf_damping", "0..0.8", value);
+        hfDamping = value;
+        MasterMixerMessage.REVERB_HF_DAMPING.send(getEngine(), value);
     }
 
     //----------------------------------
-    // diffusion
+    // diffuse
     //----------------------------------
 
-    private float diffusion = -42f;
+    private float diffuse = -42f;
 
-    public float getDiffusion() {
-        return diffusion;
+    public float getDiffuse() {
+        return diffuse;
     }
 
-    float getDiffusion(boolean restore) {
-        return MasterMixerMessage.REVERB_DIFFUSION.query(getEngine());
+    float getDiffuse(boolean restore) {
+        return MasterMixerMessage.REVERB_DIFFUSE.query(getEngine());
     }
 
-    public void setDiffusion(float value) {
-        if (diffusion == value)
+    public void setDiffuse(float value) {
+        if (diffuse == value)
             return;
-//XXX        if (value < 0f || value > 0.7f)
-//            throw newRangeException("diffusion", "0..0.7", value);
-        diffusion = value;
-        MasterMixerMessage.REVERB_DIFFUSION.send(getEngine(), value);
+        if (value < 0f || value > 0.7f)
+            throw newRangeException("diffuse", "0..0.7", value);
+        diffuse = value;
+        MasterMixerMessage.REVERB_DIFFUSE.send(getEngine(), value);
     }
 
     //----------------------------------
@@ -274,11 +274,11 @@ public class MasterReverb extends MasterComponent {
     @Override
     public void restore() {
         super.restore();
-        setDiffusion(getDiffusion(true));
+        setDiffuse(getDiffuse(true));
         setDitherEchoes(getDitherEchoes(true));
         setERDecay(getERDecay(true));
         setERGain(getERGain(true));
-        setHFDampening(getHFDampening(true));
+        setHFDamping(getHFDamping(true));
         setPreDelay(getPreDelay(true));
         setRoomSize(getRoomSize(true));
         setStereoDelay(getStereoDelay(true));

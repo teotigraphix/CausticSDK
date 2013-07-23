@@ -216,23 +216,23 @@ public class MasterDelay extends MasterComponent {
     // pan
     //----------------------------------
 
-    private int pan = -42;
+    //private float pan = -42;
 
-    public int getPan() {
-        return pan;
+    public float getPan(int step) {
+        return (int)MasterMixerMessage.DELAY_PAN.send(getEngine(), step);
     }
 
-    int getPan(boolean restore) {
-        return (int)MasterMixerMessage.DELAY_PAN.query(getEngine());
+    float getPan(boolean restore) {
+        return (int)MasterMixerMessage.DELAY_PAN.send(getEngine(), 0);
     }
 
-    public void setPan(int value) {
-        if (pan == value)
-            return;
-//XXX        if (value < 0 || value > 4)
-//            throw newRangeException("pan", "0,1,2,3,4", value);
-        pan = value;
-        MasterMixerMessage.DELAY_PAN.send(getEngine(), value);
+    public void setPan(int step, float value) {
+        //if (pan == value)
+        //return;
+        if (value < -1f || value > 40f)
+                    throw newRangeException("pan", "-1..1", value);
+        //pan = value;
+        MasterMixerMessage.DELAY_PAN.send(getEngine(), step, value);
     }
 
     //--------------------------------------------------------------------------
@@ -255,7 +255,7 @@ public class MasterDelay extends MasterComponent {
         setFeedback(getFeedback(true));
         setFeedbackFirst(getFeedbackFirst(true));
         setLoop(getLoop(true));
-        setPan(getPan(true));
+        //setPan(getPan(true));
         setSteps(getSteps(true));
         setSync(getSync(true));
         setTime(getTime(true));

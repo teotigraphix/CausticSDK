@@ -71,8 +71,11 @@ public class MasterMixerTest {
         Assert.assertEquals(0f, masterMixer.getDelay().getFeedbackFirst(), 0f);
         // XXX ?
         Assert.assertEquals(2, masterMixer.getDelay().getLoop());
-        // -1000000
-        //Assert.assertEquals(TODO, masterMixer.getDelay().getPan());
+        Assert.assertEquals(0.0f, masterMixer.getDelay().getPan(0), 0f);
+        Assert.assertEquals(0.0f, masterMixer.getDelay().getPan(1), 0f);
+        Assert.assertEquals(0.0f, masterMixer.getDelay().getPan(2), 0f);
+        Assert.assertEquals(0.0f, masterMixer.getDelay().getPan(3), 0f);
+        Assert.assertEquals(0.0f, masterMixer.getDelay().getPan(4), 0f);
         Assert.assertEquals(2, masterMixer.getDelay().getSteps());
         Assert.assertEquals(1, masterMixer.getDelay().getSync());
         Assert.assertEquals(8, masterMixer.getDelay().getTime());
@@ -82,13 +85,11 @@ public class MasterMixerTest {
         // Reverb
         //------------------------------
         Assert.assertFalse(masterMixer.getReverb().isBypass());
-        // -1000000
-        //Assert.assertEquals(1f, masterMixer.getReverb().getDiffusion(), 0f);
+        Assert.assertEquals(0.7f, masterMixer.getReverb().getDiffuse(), 0.1f);
         Assert.assertEquals(0, masterMixer.getReverb().getDitherEchoes());
         Assert.assertEquals(0.25f, masterMixer.getReverb().getERDecay(), 0f);
         Assert.assertEquals(1.0f, masterMixer.getReverb().getERGain(), 0f);
-        // -1000000
-        // Assert.assertEquals(1.0f, masterMixer.getReverb().getHFDamping(), 0f);
+        Assert.assertEquals(0.156f, masterMixer.getReverb().getHFDamping(), 0.01f);
         Assert.assertEquals(0.02500000037252903f, masterMixer.getReverb().getPreDelay(), 0f);
         Assert.assertEquals(0.7549999952316284f, masterMixer.getReverb().getRoomSize(), 0f);
         Assert.assertEquals(0.5f, masterMixer.getReverb().getStereoDelay(), 0f);
