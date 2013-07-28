@@ -11,6 +11,7 @@ import com.teotigraphix.caustk.core.components.bassline.FilterComponent;
 import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
 import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
 import com.teotigraphix.caustk.core.components.beatbox.WavSamplerComponent;
+import com.teotigraphix.caustk.core.components.modular.ModularBayComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
 import com.teotigraphix.caustk.core.components.subsynth.LFO2Component;
@@ -18,10 +19,18 @@ import com.teotigraphix.caustk.core.components.subsynth.Osc1Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.ModularTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 
 public class SoundSourceUtils {
+
+    public static void setup(ModularTone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        //tone.addComponent(VolumeComponent.class, new VolumeComponent());
+        tone.addComponent(ModularBayComponent.class, new ModularBayComponent());
+    }
 
     public static void setup(SubSynthTone tone) {
         tone.addComponent(SynthComponent.class, new SynthComponent());

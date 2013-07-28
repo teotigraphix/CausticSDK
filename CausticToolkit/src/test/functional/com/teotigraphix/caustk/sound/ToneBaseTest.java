@@ -10,6 +10,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.ModularTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.ToneType;
@@ -30,23 +31,27 @@ public class ToneBaseTest {
 
     protected BeatboxTone beatbox;
 
+    protected ModularTone modular;
+
     @Before
     public void setUp() throws CausticException {
         application = CaustkApplicationUtils.createAndRun();
         controller = application.getController();
         soundSource = controller.getSoundSource();
-        
+
         soundSource.clearAndReset();
-        
+
         subsynth = (SubSynthTone)soundSource.createTone(0, "tone1", ToneType.SubSynth);
         pcmsynth = (PCMSynthTone)soundSource.createTone(1, "tone2", ToneType.PCMSynth);
         bassline = (BasslineTone)soundSource.createTone(2, "tone3", ToneType.Bassline);
         beatbox = (BeatboxTone)soundSource.createTone(3, "tone4", ToneType.Beatbox);
-        
+        modular = (ModularTone)soundSource.createTone(4, "tone5", ToneType.Modular);
+
         subsynth.restore();
         pcmsynth.restore();
         bassline.restore();
         beatbox.restore();
+        modular.restore();
     }
 
     @After

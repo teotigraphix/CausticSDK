@@ -36,6 +36,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.ModularTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.Tone;
@@ -217,6 +218,9 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
             case EightBitSynth:
                 break;
             case Modular:
+                tone = new ModularTone(getController());
+                initializeTone(tone, toneName, toneType, index);
+                SoundSourceUtils.setup((ModularTone)tone);
                 break;
             case FMSynth:
                 break;

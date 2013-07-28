@@ -4,6 +4,7 @@ package com.teotigraphix.caustk.core.components;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.ModularTone;
 
 public class SynthComponent extends ToneComponent {
 
@@ -36,7 +37,7 @@ public class SynthComponent extends ToneComponent {
     }
 
     public void setPolyphony(int value) {
-        if (getTone() instanceof BasslineTone) {
+        if (getTone() instanceof BasslineTone || getTone() instanceof ModularTone) {
             polyphony = 1;
             return;
         }
