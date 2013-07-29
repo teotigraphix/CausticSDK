@@ -22,6 +22,7 @@ public class ModularToneTest extends ToneBaseTest {
     public void test_SynthComponent() {
         Assert.assertEquals(1, modular.getSynth().getPolyphony());
 
+        @SuppressWarnings("unused")
         File file = new File(
                 "C:/Users/Work/Documents/caustic/presets/modular/SIMPLE PWM.modularsynth");
         //modular.getSynth().loadPreset(file.getAbsolutePath());

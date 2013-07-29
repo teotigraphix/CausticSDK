@@ -19,11 +19,46 @@ import com.teotigraphix.caustk.core.components.subsynth.Osc1Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.EightBitSynth;
+import com.teotigraphix.caustk.tone.FMSynthTone;
 import com.teotigraphix.caustk.tone.ModularTone;
+import com.teotigraphix.caustk.tone.OrganTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
+import com.teotigraphix.caustk.tone.PadSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
+import com.teotigraphix.caustk.tone.VocoderTone;
 
 public class SoundSourceUtils {
+    
+    public static void setup(PadSynthTone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+
+    }
+
+    public static void setup(OrganTone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+
+    }
+
+    public static void setup(VocoderTone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+
+    }
+
+    public static void setup(EightBitSynth tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+
+    }
+
+    public static void setup(FMSynthTone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+
+    }
 
     public static void setup(ModularTone tone) {
         tone.addComponent(SynthComponent.class, new SynthComponent());

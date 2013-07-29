@@ -36,12 +36,17 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.EightBitSynth;
+import com.teotigraphix.caustk.tone.FMSynthTone;
 import com.teotigraphix.caustk.tone.ModularTone;
+import com.teotigraphix.caustk.tone.OrganTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
+import com.teotigraphix.caustk.tone.PadSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
+import com.teotigraphix.caustk.tone.VocoderTone;
 
 public class SoundSource extends SubControllerBase implements ISoundSource {
 
@@ -210,12 +215,24 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
                 SoundSourceUtils.setup((SubSynthTone)tone);
                 break;
             case PadSynth:
+                tone = new PadSynthTone(getController());
+                initializeTone(tone, toneName, toneType, index);
+                SoundSourceUtils.setup((PadSynthTone)tone);
                 break;
             case Organ:
+                tone = new OrganTone(getController());
+                initializeTone(tone, toneName, toneType, index);
+                SoundSourceUtils.setup((OrganTone)tone);
                 break;
             case Vocoder:
+                tone = new VocoderTone(getController());
+                initializeTone(tone, toneName, toneType, index);
+                SoundSourceUtils.setup((VocoderTone)tone);
                 break;
             case EightBitSynth:
+                tone = new EightBitSynth(getController());
+                initializeTone(tone, toneName, toneType, index);
+                SoundSourceUtils.setup((EightBitSynth)tone);
                 break;
             case Modular:
                 tone = new ModularTone(getController());
@@ -223,6 +240,9 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
                 SoundSourceUtils.setup((ModularTone)tone);
                 break;
             case FMSynth:
+                tone = new FMSynthTone(getController());
+                initializeTone(tone, toneName, toneType, index);
+                SoundSourceUtils.setup((FMSynthTone)tone);
                 break;
             default:
                 break;
