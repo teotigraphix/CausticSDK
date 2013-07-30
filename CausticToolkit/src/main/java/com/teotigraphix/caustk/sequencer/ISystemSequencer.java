@@ -71,4 +71,8 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
 
     }
 
+    int getCurrentMeasure();
+
+    int getCurrentBeat();
+
 }

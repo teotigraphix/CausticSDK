@@ -3,7 +3,9 @@ package com.teotigraphix.caustic.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
+import javax.inject.Named;
 import javax.swing.JFileChooser;
 
 import org.androidtransfuse.event.EventObserver;
@@ -25,6 +27,10 @@ import com.teotigraphix.caustk.project.IProjectManager;
 public class ApplicationController extends MediatorBase implements IApplicationController {
 
     private IApplicationModel applicationModel;
+
+    @Inject
+    @Named("resources")
+    ResourceBundle resourceBundle;
 
     @Inject
     public ApplicationController(ICaustkApplicationProvider provider,
@@ -54,7 +60,7 @@ public class ApplicationController extends MediatorBase implements IApplicationC
      */
     public void start() throws IOException {
         File causticStorage = new JFileChooser().getFileSystemView().getDefaultDirectory();
-        File applicationRoot = new File(causticStorage, "LibraryEditor");
+        File applicationRoot = new File(causticStorage, resourceBundle.getString("APP_DIRECTORY"));
 
         getController().getConfiguration().setCausticStorage(causticStorage);
         getController().getConfiguration().setApplicationRoot(applicationRoot);

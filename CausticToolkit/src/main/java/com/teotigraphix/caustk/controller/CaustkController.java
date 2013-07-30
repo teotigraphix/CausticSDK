@@ -33,6 +33,8 @@ import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.LibraryManager;
+import com.teotigraphix.caustk.pattern.IPatternManager;
+import com.teotigraphix.caustk.pattern.PatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.sequencer.ISongManager;
@@ -46,6 +48,10 @@ import com.teotigraphix.caustk.sound.SoundMixer;
 import com.teotigraphix.caustk.sound.SoundSource;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.caustk.system.IMemoryManager;
+import com.teotigraphix.caustk.system.ISystemState;
+import com.teotigraphix.caustk.system.MemoryManager;
+import com.teotigraphix.caustk.system.SystemState;
 
 /**
  * @author Michael Schmalle
@@ -233,6 +239,39 @@ public class CaustkController implements ICaustkController {
         return systemSequencer;
     }
 
+    //----------------------------------
+    // systemSequencer
+    //----------------------------------
+
+    private ISystemState systemState;
+
+    @Override
+    public ISystemState getSystemState() {
+        return systemState;
+    }
+
+    //----------------------------------
+    // patternManager
+    //----------------------------------
+
+    private IPatternManager patternManager;
+
+    @Override
+    public IPatternManager getPatternManager() {
+        return patternManager;
+    }
+
+    //----------------------------------
+    // memoryManager
+    //----------------------------------
+
+    private IMemoryManager memoryManager;
+
+    @Override
+    public IMemoryManager getMemoryManager() {
+        return memoryManager;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -291,6 +330,9 @@ public class CaustkController implements ICaustkController {
         soundSource = new SoundSource(this);
         soundMixer = new SoundMixer(this);
         systemSequencer = new SystemSequencer(this);
+        systemState = new SystemState(this);
+        patternManager = new PatternManager(this);
+        memoryManager = new MemoryManager(this);
     }
 
     @Override
