@@ -27,8 +27,6 @@ import java.util.UUID;
 
 import org.androidtransfuse.event.EventObserver;
 
-import sun.rmi.transport.proxy.CGIHandler;
-
 import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -37,7 +35,6 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.LibraryScene;
-import com.teotigraphix.caustk.library.SoundSourceState.RackInfoItem;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.EightBitSynth;
@@ -145,7 +142,8 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
     @Override
     public void createScene(LibraryScene scene) throws CausticException {
         for (String serializedData : scene.getSoundSourceState().getTones().values()) {
-            Tone tone = getController().getSerializeService().fromString(serializedData, Tone.class);
+            Tone tone = getController().getSerializeService()
+                    .fromString(serializedData, Tone.class);
             createTone(tone.getIndex(), tone.getName(), tone.getToneType());
         }
     }
@@ -183,9 +181,10 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
         ArrayList<Tone> remove = new ArrayList<Tone>(getModel().getTones().values());
         for (Tone tone : remove) {
-            destroyTone(tone);
+            //RackMessage.REMOVE.send(getController(), tone.getIndex());
+            toneRemove(tone);
         }
-
+        
         RackMessage.BLANKRACK.send(getController());
 
         getController().getDispatcher().trigger(new OnSoundSourceReset());

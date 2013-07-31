@@ -12,7 +12,8 @@ import com.teotigraphix.caustk.library.LibraryPattern;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 
 public class Pattern {
-    private ICaustkController controller;
+    
+    private transient ICaustkController controller;
 
     //--------------------------------------------------------------------------
     // Public Property API

@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-public class SynthToneTest extends ToneBaseTest {
+public class TestSynthTone extends ToneBaseTest {
 
     @Test
     public void test_presets() {
