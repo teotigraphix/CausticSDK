@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.tone;
 
+import java.util.UUID;
+
 /**
  * Each application must define the {@link Tone} instances that will get created
  * at startup.
@@ -47,4 +49,16 @@ public class ToneDescriptor {
     public ToneType getToneType() {
         return toneType;
     }
+    
+    public final UUID getPatchId() {
+        return patchId;
+    }
+
+    public final void setPatchId(UUID value) {
+        patchId = value;
+    }
+
+    private UUID patchId;
+    
+
 }

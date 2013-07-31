@@ -54,4 +54,12 @@ public abstract class LibraryItem extends MemorySlotItem {
     public boolean hasTag(String tag) {
         return metadataInfo.getTags().contains(tag);
     }
+
+    public boolean hasTagStartsWith(String search) {
+        for (String item : metadataInfo.getTags()) {
+            if (item.startsWith(search))
+                return true;
+        }
+        return false;
+    }
 }

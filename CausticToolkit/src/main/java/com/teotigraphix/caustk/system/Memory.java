@@ -3,12 +3,14 @@ package com.teotigraphix.caustk.system;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.Library;
-import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.caustk.library.LibraryPatch;
+import com.teotigraphix.caustk.library.LibraryPattern;
 import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.pattern.Part;
 import com.teotigraphix.caustk.pattern.Patch;
@@ -24,6 +26,20 @@ import com.teotigraphix.caustk.tone.BasslineTone;
  */
 public abstract class Memory {
     protected ICaustkController controller;
+
+    //----------------------------------
+    // currentLibrary
+    //----------------------------------
+
+    private Library currentLibrary;
+
+    public Library getCurrentLibrary() {
+        return currentLibrary;
+    }
+
+    public void setCurrentLibrary(Library value) {
+        currentLibrary = value;
+    }
 
     private Map<Category, MemorySlot> slots = new HashMap<Category, MemorySlot>();
 
@@ -186,7 +202,10 @@ public abstract class Memory {
      *            returned as the initial list of patterns.
      */
     Pattern getPattern(int index) {
-        LibraryItem item = (LibraryItem)getPatternSlot().getItem(index);
+        // XXX If this works with libraries, it might be better to add the items
+        // to the slods in the USER, SYSTEM banks so there is no ref to a library in this class
+        //LibraryItem item = (LibraryItem)getPatternSlot().getItem(index);
+        LibraryPattern item = currentLibrary.getPatterns().get(index);
         Pattern pattern = new Pattern(controller, item);
         return pattern;
     }
@@ -217,8 +236,9 @@ public abstract class Memory {
      */
     Phrase getPhrase(Part part) {
         int index = part.getIndex();
-        LibraryPhrase phraseItem = (LibraryPhrase)getPhraseSlot().getItem(0);
-        Phrase phrase = new Phrase(part, phraseItem);
+        UUID id = part.getPattern().getPatternItem().getPhrase(index);
+        LibraryPhrase libraryPhrase = currentLibrary.findPhraseById(id);
+        Phrase phrase = new Phrase(part, libraryPhrase);
         return phrase;
     }
 
@@ -231,9 +251,12 @@ public abstract class Memory {
      * @param part The {@link Part} needing a {@link Patch}.
      */
     Patch getPatch(Part part) {
-        LibraryPatch item = (LibraryPatch)getPatchSlot().getItem(0);
+        int index = part.getIndex();
+        UUID patchId = part.getPattern().getPatternItem().getToneSet().getDescriptors().get(index)
+                .getPatchId();
+        LibraryPatch item = currentLibrary.findPatchById(patchId);
         //if (part.getTone() instanceof BasslineTone)
-            return new Patch(part, item);
+        return new Patch(part, item);
         //return null;
     }
 

@@ -25,6 +25,23 @@ import com.teotigraphix.caustk.tone.ToneType;
 public class LibraryPhrase extends LibraryItem {
 
     //----------------------------------
+    //  name
+    //----------------------------------
+
+    String machineName;
+
+    /**
+     * The machine's name that this phrase was copied from in the .caustic file.
+     */
+    public final String getMachineName() {
+        return machineName;
+    }
+
+    public final void setMachineName(String value) {
+        machineName = value;
+    }
+
+    //----------------------------------
     //  bankIndex
     //----------------------------------
 
@@ -143,4 +160,5 @@ public class LibraryPhrase extends LibraryItem {
     public String toString() {
         return getMetadataInfo().getName() + ":" + getMetadataInfo().getTags().toString();
     }
+
 }

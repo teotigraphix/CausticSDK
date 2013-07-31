@@ -66,6 +66,30 @@ public class Library implements ISerialize {
     }
 
     //----------------------------------
+    // patterns
+    //----------------------------------
+
+    private List<LibraryPattern> patterns = new ArrayList<LibraryPattern>();
+
+    public List<LibraryPattern> getPatterns() {
+        return patterns;
+    }
+
+    public void setPatterns(List<LibraryPattern> value) {
+        patterns = value;
+    }
+
+    public void addPattern(LibraryPattern pattern) {
+        if (patterns.contains(pattern))
+            return;
+        patterns.add(pattern);
+    }
+
+    public void removePattern(LibraryPattern pattern) {
+        patterns.remove(pattern);
+    }
+
+    //----------------------------------
     // patches
     //----------------------------------
 
@@ -174,6 +198,16 @@ public class Library implements ISerialize {
         return result;
     }
 
+    public List<LibraryPatch> findPatchesByTagStartsWith(String search) {
+        List<LibraryPatch> result = new ArrayList<LibraryPatch>();
+        for (LibraryPatch item : getPatches()) {
+            if (item.hasTagStartsWith(search)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
     public List<LibraryPatch> findPatchByTag(String tag) {
         List<LibraryPatch> result = new ArrayList<LibraryPatch>();
         for (LibraryPatch item : getPatches()) {
@@ -188,6 +222,16 @@ public class Library implements ISerialize {
         List<LibraryPhrase> result = new ArrayList<LibraryPhrase>();
         for (LibraryPhrase item : getPhrases()) {
             if (item.hasTag(tag)) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    public List<LibraryPhrase> findPhrasesByTagStartsWith(String search) {
+        List<LibraryPhrase> result = new ArrayList<LibraryPhrase>();
+        for (LibraryPhrase item : getPhrases()) {
+            if (item.hasTagStartsWith(search)) {
                 result.add(item);
             }
         }

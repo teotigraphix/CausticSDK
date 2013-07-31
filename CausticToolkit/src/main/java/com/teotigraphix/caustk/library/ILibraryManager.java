@@ -21,6 +21,8 @@ public interface ILibraryManager extends IControllerComponent {
 
     void importSong(Library library, File causticFile) throws IOException, CausticException;
 
+    void importPatterns(Library library, File causticFile) throws IOException, CausticException;
+
     void delete() throws IOException;
 
     Library createLibrary(String name) throws IOException;

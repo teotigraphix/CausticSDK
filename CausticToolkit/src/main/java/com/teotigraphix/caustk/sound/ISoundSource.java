@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.sound;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
@@ -99,5 +100,7 @@ public interface ISoundSource extends IRestore {
     }
 
     void createScene(LibraryScene libraryScene) throws CausticException;
+
+    List<Tone> findToneStartsWith(String name);
 
 }

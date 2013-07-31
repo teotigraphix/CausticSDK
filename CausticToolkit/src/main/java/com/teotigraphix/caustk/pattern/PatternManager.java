@@ -1,18 +1,22 @@
 
 package com.teotigraphix.caustk.pattern;
 
+import java.util.Collection;
+
 import com.sun.jna.Memory;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.system.TemporaryMemory;
 import com.teotigraphix.caustk.tone.BeatboxTone;
-import com.teotigraphix.caustk.tone.RhythmSet;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.ToneDescriptor;
 
 public class PatternManager implements IControllerComponent, IPatternManager {
 
@@ -178,7 +182,11 @@ public class PatternManager implements IControllerComponent, IPatternManager {
         // this the 'configure', when 'commit' is called, all settings
         // of the Pattern model that apply to global devices get instantly applied
 
-        configureParts(pattern);
+        try {
+            configureParts(pattern);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
 
         queueNext(pattern);
 
@@ -189,18 +197,25 @@ public class PatternManager implements IControllerComponent, IPatternManager {
     protected void configureProperteis(Pattern pattern) {
     }
 
-    protected void configureParts(Pattern pattern) {
-        for (Tone tone : controller.getSoundSource().getTones()) {
-            Part part = null;
+    protected void configureParts(Pattern pattern) throws CausticException {
+        Collection<Tone> tones = controller.getSoundSource().getTones();
+        if (tones.size() == 0) {
+            // initialize the pattern set
+            for (ToneDescriptor descriptor : pattern.getPatternItem().getToneSet().getDescriptors()) {
+                Tone tone = controller.getSoundSource().createTone(descriptor);
+                Part part = null;
 
-            if (tone instanceof BeatboxTone) {
-                part = new RhythmPart(pattern, tone);
-            } else {
-                part = new SynthPart(pattern, tone);
+                if (tone instanceof BeatboxTone) {
+                    part = new RhythmPart(pattern, tone);
+                } else {
+                    part = new SynthPart(pattern, tone);
+                }
+
+                pattern.addPart(part);
             }
+        }
 
-            pattern.addPart(part);
-
+        for (Part part : pattern.getParts()) {
             controller.getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
             controller.getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
         }

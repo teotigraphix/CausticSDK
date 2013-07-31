@@ -3,7 +3,12 @@ package com.teotigraphix.caustk.library;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
@@ -18,9 +23,11 @@ import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolut
 import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.library.LibraryPattern.ToneSet;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -207,8 +214,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     public Library loadLibrary(String name) {
         File directory = new File(librariesDirectory, name);
         File file = new File(directory, "library.ctk");
-        if (!file.exists())
-        {
+        if (!file.exists()) {
             System.out.println("XXX Lib not found");
             return null;
         }
@@ -254,6 +260,110 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         getController().getDispatcher().trigger(new OnLibraryManagerImportComplete());
     }
 
+    @Override
+    public void importPatterns(Library library, File causticFile) throws IOException,
+            CausticException {
+        // Load the song, this automatically resets the sound source
+        getController().getSoundSource().loadSong(causticFile);
+
+        loadLibraryScene(library, causticFile, getController().getSoundSource());
+        loadLibraryPhrases(library, getController().getSoundSource());
+
+        loadLibraryPatterns(library, getController().getSoundSource());
+
+        getController().getSoundSource().clearAndReset();
+
+        getController().getDispatcher().trigger(new OnLibraryManagerImportComplete());
+    }
+
+    private void loadLibraryPatterns(Library library, ISoundSource soundSource) {
+        Map<String, List<LibraryPatch>> map = new TreeMap<String, List<LibraryPatch>>();
+
+        // the numbers get merged together
+        // PART1A, PART1B, PART1C etc
+
+        // first sort the parts from the patch name
+        for (LibraryPatch patch : library.getPatches()) {
+            // System.out.println(patch.getName());
+            String machineName = patch.getName();
+            String post = machineName.substring(4);
+            String index = post.substring(0, 1);
+
+            List<LibraryPatch> list = map.get(index);
+            if (list == null) {
+                list = new ArrayList<LibraryPatch>();
+                map.put(index, list);
+            }
+
+            list.add(patch);
+        }
+
+        // Create a PatternLibrary for EVERY defined phrase
+
+        // how many parts [3]
+        int numParts = map.size();
+        // all sets have to be the same size, test the first one to see how many
+        // sets are contained IE A, B, C etc [2]
+        int numPartSets = map.get("1").size();
+
+        // Number of LibraryPatterns, the pattern holds the numParts
+        int numPatterns = 64 * numPartSets;
+
+        List<ToneDescriptor> descriptors = new ArrayList<ToneDescriptor>();
+
+        for (Entry<String, List<LibraryPatch>> entry : map.entrySet()) {
+            int index = Integer.parseInt(entry.getKey()) - 1; // parts are 1 based
+            LibraryPatch firstPatch = entry.getValue().get(0);
+
+            ToneDescriptor descriptor = new ToneDescriptor(index, "PART" + (index + 1),
+                    firstPatch.getToneType());
+            descriptor.setPatchId(firstPatch.getId());
+            //for (LibraryPatch patch : entry.getValue()) {
+            //    List<LibraryPhrase> phrases = library.findPhrasesByTag(patch.getName());
+            //
+            //}
+            descriptors.add(descriptor);
+        }
+
+        ToneSet set = new ToneSet(descriptors);
+
+        List<LibraryPattern> patterns = new ArrayList<LibraryPattern>();
+        // create the LibraryPatterns
+        for (int i = 0; i < numPatterns; i++) {
+            LibraryPattern pattern = new LibraryPattern();
+            pattern.setId(UUID.randomUUID());
+            pattern.setIndex(i);
+            pattern.setMetadataInfo(new MetadataInfo());
+            pattern.setToneSet(set);
+            patterns.add(pattern);
+
+            for (ToneDescriptor descriptor : set.getDescriptors()) {
+                int partIndex = descriptor.getIndex();
+                String name = descriptor.getName();
+                List<LibraryPhrase> list = library.findPhrasesByTagStartsWith(name);
+                LibraryPhrase phrase = getPhraseFor(list, i);
+                pattern.putPhrase(partIndex, phrase);
+            }
+
+            // get the phrase id of the pattern
+        }
+
+        library.setPatterns(patterns);
+    }
+
+    private LibraryPhrase getPhraseFor(List<LibraryPhrase> phrases, int index) {
+        int bank = PatternUtils.getBank(index);
+        int pattern = PatternUtils.getPattern(index);
+
+        // Find the Phrase that has the same bank and pattern
+        for (LibraryPhrase phrase : phrases) {
+
+            if (phrase.getBankIndex() == bank && phrase.getPatternIndex() == pattern)
+                return phrase;
+        }
+        return null;
+    }
+
     private void loadLibraryScene(Library library, File causticFile, ISoundSource soundSource)
             throws IOException {
         String name = causticFile.getName().replace(".caustic", "");
@@ -273,6 +383,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
             if (tone != null) {
 
                 patch = new LibraryPatch();
+                patch.setName(tone.getName());
                 patch.setToneType(tone.getToneType());
                 patch.setMetadataInfo(new MetadataInfo());
                 patch.setId(UUID.randomUUID());
@@ -330,6 +441,9 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
                             getController(), i);
 
                     LibraryPhrase phrase = new LibraryPhrase();
+                    phrase.setBankIndex(bankIndex);
+                    phrase.setPatternIndex(patternIndex);
+                    phrase.setMachineName(tone.getName());
                     phrase.setMetadataInfo(new MetadataInfo());
                     phrase.setId(UUID.randomUUID());
                     phrase.setLength(length);

@@ -6,13 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-
-import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.caustk.library.LibraryPattern;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 
 public class Pattern {
-    
+
     private transient ICaustkController controller;
 
     //--------------------------------------------------------------------------
@@ -93,7 +91,7 @@ public class Pattern {
     //----------------------------------
     // length
     //----------------------------------
-    
+
     // start off with invalid length, must be set so Phrase is updated with num steps
     private int length = -1;
 
@@ -156,9 +154,9 @@ public class Pattern {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Pattern(ICaustkController controller, LibraryItem patternItem) {
+    public Pattern(ICaustkController controller, LibraryPattern patternItem) {
         this.controller = controller;
-// XXX        this.patternItem = patternItem;
+        this.patternItem = patternItem;
     }
 
     //--------------------------------------------------------------------------

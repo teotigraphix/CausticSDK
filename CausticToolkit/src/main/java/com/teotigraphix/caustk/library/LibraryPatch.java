@@ -32,6 +32,23 @@ import com.teotigraphix.caustk.tone.ToneType;
 public class LibraryPatch extends LibraryItem {
 
     //----------------------------------
+    // name
+    //----------------------------------
+
+    private String name;
+    
+    /**
+     * The name of the Machine the patch was saved against in the .caustic file.
+     */
+    public final String getName() {
+        return name;
+    }
+
+    public final void setName(String value) {
+        name = value;
+    }
+
+    //----------------------------------
     // toneType
     //----------------------------------
 

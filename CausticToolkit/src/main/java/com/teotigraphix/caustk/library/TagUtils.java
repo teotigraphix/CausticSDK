@@ -36,6 +36,7 @@ public class TagUtils {
 
     public static void addDefaultTags(LibraryPhrase item) {
         MetadataInfo info = item.getMetadataInfo();
+        info.getTags().add(item.getMachineName());
         info.getTags().add("length-" + item.getLength());
         info.getTags().add(item.getTempo() + "");
         info.getTags().add(item.getToneType().getValue());

@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import org.androidtransfuse.event.EventObserver;
@@ -140,6 +141,16 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
     //--------------------------------------------------------------------------
 
     @Override
+    public List<Tone> findToneStartsWith(String name) {
+        List<Tone> result = new ArrayList<Tone>();
+        for (Tone tone : getTones()) {
+            if (tone.getName().startsWith(name))
+                result.add(tone);
+        }
+        return result;
+    }
+
+    @Override
     public void createScene(LibraryScene scene) throws CausticException {
         for (String serializedData : scene.getSoundSourceState().getTones().values()) {
             Tone tone = getController().getSerializeService()
@@ -184,7 +195,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
             //RackMessage.REMOVE.send(getController(), tone.getIndex());
             toneRemove(tone);
         }
-        
+
         RackMessage.BLANKRACK.send(getController());
 
         getController().getDispatcher().trigger(new OnSoundSourceReset());
