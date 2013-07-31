@@ -20,7 +20,7 @@ public class PatternSequencerComponent extends ToneComponent {
     //----------------------------------
 
     public int getLength() {
-        int measures = (int)PatternSequencerMessage.NUM_MEASURES.send(getEngine(), getToneIndex());
+        int measures = (int)PatternSequencerMessage.NUM_MEASURES.query(getEngine(), getToneIndex());
         return measures;
     }
 
@@ -291,7 +291,7 @@ public class PatternSequencerComponent extends ToneComponent {
             return (int)(beat / resolution.getValue()) / beatsInMeasure;
         }
 
-        public static float toBeat(float step, Resolution resolution) {
+        public static float toBeat(int step, Resolution resolution) {
             return (step * resolution.getValue()) * beatsInMeasure;
         }
     }

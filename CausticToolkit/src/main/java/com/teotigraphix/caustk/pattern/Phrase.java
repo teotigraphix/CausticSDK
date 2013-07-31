@@ -2,9 +2,9 @@
 package com.teotigraphix.caustk.pattern;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
@@ -16,6 +16,7 @@ import com.teotigraphix.caustk.sequencer.SystemSequencer;
 // what makes more sense with UML and no access violations?
 
 public class Phrase {
+
     public enum Scale {
         SIXTEENTH, SIXTEENTH_TRIPLET, THIRTYSECOND, THIRTYSECOND_TRIPLET
     }
@@ -25,13 +26,16 @@ public class Phrase {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // phraseItem
+    // libraryPhrase
     //----------------------------------
 
-    private LibraryPhrase phraseItem;
+    private LibraryPhrase libraryPhrase;
 
-    public LibraryPhrase getPhraseItem() {
-        return phraseItem;
+    /**
+     * The {@link LibraryPhrase} assigned when the {@link Phrase} was created.
+     */
+    public LibraryPhrase getLibraryPhrase() {
+        return libraryPhrase;
     }
 
     //----------------------------------
@@ -46,6 +50,14 @@ public class Phrase {
 
     /**
      * Sets the new scale for the phrase.
+     * <p>
+     * The scale is used to calculate the {@link Resolution} of input. This
+     * property mainly relates the the view of the phrase, where the underlying
+     * pattern sequencer can have a higher resolution but the view is showing
+     * the scale.
+     * <p>
+     * So you can have a phrase scale of 16, but the resolution could be 64th,
+     * but the view will only show the scale notes which would be 16th.
      * 
      * @param value
      * @see OnPhraseScaleChange
@@ -68,11 +80,11 @@ public class Phrase {
         return part;
     }
 
-    private int position = 1;
-
     //----------------------------------
     // position
     //----------------------------------
+
+    private int position = 1;
 
     /**
      * Returns the current position in the phrase based on the rules of the
@@ -125,8 +137,8 @@ public class Phrase {
      * @see OnPhraseLengthChange
      */
     public void setLength(int value) {
-        int oldValue = getPatternSequencer().getLength();
-        if (oldValue == value)
+        int oldValue = getLength();
+        if (oldValue == value && map.size() != 0)
             return;
 
         if (position > value)
@@ -156,17 +168,28 @@ public class Phrase {
      * @param length
      */
     private void updateTriggers(int length, int oldLength) {
-        if (length <= oldLength)
+        if (length <= oldLength && map.size() != 0)
             return;
 
-        if (oldLength == -1) {
+        if (oldLength == -1 || map.size() == 0) {
+            int len = Resolution.toSteps(getResolution()) * length;
             // initialize all triggers to defaults using the current note scale
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i < len; i++) {
                 float beat = Resolution.toBeat(i, getResolution());
+                //System.out.println("b = " + beat);
                 Trigger trigger = new Trigger(beat, 60, 0.25f, 1f, 0);
                 map.put(beat, trigger);
             }
-            return;
+        } else if (length > oldLength) {
+            int startLen = Resolution.toSteps(getResolution()) * oldLength;
+            int len = Resolution.toSteps(getResolution()) * length;
+            // initialize all triggers to defaults using the current note scale
+            for (int i = startLen; i < len; i++) {
+                float beat = Resolution.toBeat(i, getResolution());
+                //System.out.println("b = " + beat);
+                Trigger trigger = new Trigger(beat, 60, 0.25f, 1f, 0);
+                map.put(beat, trigger);
+            }
         }
     }
 
@@ -174,9 +197,15 @@ public class Phrase {
     // resolution
     //----------------------------------
 
-    // XXX TEMP until scale is implemented
     public Resolution getResolution() {
-        return getPhraseItem().getResolution();
+        switch (getScale()) {
+            case SIXTEENTH:
+                return Resolution.SIXTEENTH;
+            case THIRTYSECOND:
+                return Resolution.THIRTYSECOND;
+            default:
+                return Resolution.SIXTYFOURTH;
+        }
     }
 
     public void setResolution(Resolution value) {
@@ -234,7 +263,7 @@ public class Phrase {
 
     public Phrase(Part part, LibraryPhrase phraseItem) {
         this.part = part;
-        this.phraseItem = phraseItem;
+        this.libraryPhrase = phraseItem;
         part.setPhrase(this);
     }
 
@@ -270,16 +299,22 @@ public class Phrase {
         } else {
             trigger.update(beat, pitch, gate, velocity, flags);
         }
+        trigger.selected = true;
     }
 
     protected void fireChange(TriggerChangeKind kind, Trigger trigger) {
         getPart().getPattern().dispatch(new OnPhraseTriggerChange(kind, trigger));
     }
 
-    Map<Float, Trigger> map = new HashMap<Float, Trigger>();
+    Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
+
+    private Trigger getTrigger(float beat) {
+        return map.get(beat);
+    }
 
     private Trigger getTrigger(int step) {
-        return map.get(step);
+        final float beat = Resolution.toBeat(step, getResolution());
+        return getTrigger(beat);
     }
 
     public static class OnPhraseTriggerChange {
@@ -355,12 +390,25 @@ public class Phrase {
             this.flags = flags;
         }
 
+        /**
+         * Returns the step value relative to the containing
+         * {@link Phrase#getResolution()}.
+         */
+        public int getStep() {
+            return Resolution.toStep(beat, getResolution());
+        }
+
         public int getStep(Resolution resolution) {
             return Resolution.toStep(beat, resolution);
         }
 
         public boolean isSelected() {
             return selected;
+        }
+        
+        @Override
+        public String toString() {
+            return "[" + getStep() + "] " + beat + ":" + pitch + "-" + selected;
         }
     }
 
@@ -404,6 +452,7 @@ public class Phrase {
     public void triggerOff(int step) {
         Trigger trigger = getTrigger(step);
         getPatternSequencer().triggerOff(getResolution(), step, trigger.getPitch());
+        trigger.selected = false;
     }
 
     /**
@@ -415,13 +464,13 @@ public class Phrase {
      * 
      * @see OnPhraseTransposeChange
      */
-    //    public void transpose(int delta) {
-    //        // XXX Its going to matter if the parent is rhythm or synth eventually
-    //        for (ITrigger trigger : getSteps()) {
-    //            triggerUpdatePitch(trigger.getIndex(), trigger.getPitch() + delta);
-    //        }
-    //        getPart().getPattern().dispatch(new OnPhraseTransposeChange(delta));
-    //    }
+    public void transpose(int delta) {
+        // XXX Its going to matter if the parent is rhythm or synth eventually
+        for (Trigger trigger : getSteps()) {
+            triggerUpdatePitch(trigger.getStep(), trigger.getPitch() + delta);
+        }
+        getPart().getPattern().dispatch(new OnPhraseTransposeChange(delta));
+    }
 
     /**
      * Returns whether the absolute(non view) current step is selected.
@@ -460,8 +509,8 @@ public class Phrase {
     }
 
     public void configure() {
-        setResolution(getPhraseItem().getResolution());
-        //        setNoteData(getPhraseItem().getData());
+        setResolution(getLibraryPhrase().getResolution());
+        setNoteData(getLibraryPhrase().getNoteData());
     }
 
     public void commit() {
@@ -556,7 +605,6 @@ public class Phrase {
 
     private int indciesInView = 16;
 
-    @SuppressWarnings("unused")
     private int endStepInView(int fromStep) {
         if (scale == Scale.SIXTEENTH)
             return fromStep + indciesInView;

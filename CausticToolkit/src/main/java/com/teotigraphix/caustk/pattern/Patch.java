@@ -1,6 +1,9 @@
 
 package com.teotigraphix.caustk.pattern;
 
+import java.io.File;
+
+import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.library.LibraryPatch;
 
 /**
@@ -53,5 +56,10 @@ public class Patch {
     }
 
     public void commit() {
+        File presetFile = getPart().getTone().getController().getLibraryManager()
+                .getSelectedLibrary().getPresetFile(patchItem.getPresetFile());
+        getPart().getTone().getDefaultPatchId();
+        getPart().getTone().getComponent(SynthComponent.class)
+                .loadPreset(presetFile.getAbsolutePath());
     }
 }

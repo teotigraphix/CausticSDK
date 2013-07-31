@@ -50,6 +50,7 @@ import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.system.IMemoryManager;
 import com.teotigraphix.caustk.system.ISystemState;
+import com.teotigraphix.caustk.system.Memory.Type;
 import com.teotigraphix.caustk.system.MemoryManager;
 import com.teotigraphix.caustk.system.SystemState;
 
@@ -333,6 +334,8 @@ public class CaustkController implements ICaustkController {
         systemState = new SystemState(this);
         patternManager = new PatternManager(this);
         memoryManager = new MemoryManager(this);
+
+        memoryManager.setSelectedMemoryType(Type.USER);
     }
 
     @Override

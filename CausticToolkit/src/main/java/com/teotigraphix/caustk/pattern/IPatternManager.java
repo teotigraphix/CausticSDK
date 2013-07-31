@@ -14,4 +14,8 @@ public interface IPatternManager extends IControllerComponent {
 
     Pattern getPendingPattern();
 
+    void configure(Pattern pattern);
+
+    void commit(Pattern pendingPattern);
+
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
+import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.caustk.library.LibraryPattern;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 
@@ -30,7 +31,7 @@ public class Pattern {
     // patternItem
     //----------------------------------
 
-    private final LibraryPattern patternItem;
+    private LibraryPattern patternItem;
 
     /**
      * The {@link LibraryPattern} data.
@@ -154,9 +155,9 @@ public class Pattern {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Pattern(ICaustkController controller, LibraryPattern patternItem) {
+    public Pattern(ICaustkController controller, LibraryItem patternItem) {
         this.controller = controller;
-        this.patternItem = patternItem;
+// XXX        this.patternItem = patternItem;
     }
 
     //--------------------------------------------------------------------------

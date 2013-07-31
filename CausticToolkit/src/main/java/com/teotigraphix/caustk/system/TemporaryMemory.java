@@ -121,7 +121,7 @@ public class TemporaryMemory extends Memory {
 
         // XXX releasePattern(pattern);
 
-        //        controller.getPatternSequencer().commit(pendingPattern);
+        controller.getPatternManager().commit(pendingPattern);
 
         previousPattern = currentPattern;
         currentPattern = pendingPattern;

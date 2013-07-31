@@ -207,6 +207,11 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     public Library loadLibrary(String name) {
         File directory = new File(librariesDirectory, name);
         File file = new File(directory, "library.ctk");
+        if (!file.exists())
+        {
+            System.out.println("XXX Lib not found");
+            return null;
+        }
 
         Library library = getController().getSerializeService().fromFile(file, Library.class);
         getModel().getLibraries().put(library.getId(), library);
@@ -245,7 +250,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         loadLibraryPhrases(library, getController().getSoundSource());
 
         getController().getSoundSource().clearAndReset();
-        
+
         getController().getDispatcher().trigger(new OnLibraryManagerImportComplete());
     }
 
@@ -344,8 +349,9 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         String id = patch.getId().toString();
         tone.getComponent(SynthComponent.class).savePreset(id);
         File presetFile = RuntimeUtils.getCausticPresetsFile(tone.getToneType().getValue(), id);
-        if (!presetFile.exists())
+        if (!presetFile.exists()) {
             throw new IOException("Preset file does not exist");
+        }
 
         File presetsDirectory = library.getPresetsDirectory();
         File destFile = new File(presetsDirectory, presetFile.getName());

@@ -11,8 +11,8 @@ public class MemoryBank extends Memory {
         return name;
     }
 
-    public MemoryBank(ICaustkController systemController, Type type, String name) {
-        super(systemController, type);
+    public MemoryBank(ICaustkController controller, Type type, String name) {
+        super(controller, type);
         this.name = name;
     }
 

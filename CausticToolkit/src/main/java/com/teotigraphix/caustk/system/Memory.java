@@ -1,10 +1,15 @@
 
 package com.teotigraphix.caustk.system;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.library.Library;
+import com.teotigraphix.caustk.library.LibraryItem;
+import com.teotigraphix.caustk.library.LibraryPatch;
+import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.pattern.Part;
 import com.teotigraphix.caustk.pattern.Patch;
 import com.teotigraphix.caustk.pattern.Pattern;
@@ -122,35 +127,26 @@ public abstract class Memory {
     }
 
     /**
-     * Loads the {@link MemoryDescriptor} for the specific memory bank.
+     * Loads the {@link Library} for the specific memory bank.
      * 
-     * @param descriptors TODO
+     * @param library TODO
      * @throws IOException
      */
-    //    public void load(List<MemoryDescriptor> descriptors) throws IOException {
-    //        //XXX this needs to be run in a service
-    //        // this list for now is ONLY used to create the bank and pattern names
-    //        // for the UI display
-    //        // seems like the most logical way is to have
-    //        // A[0], B[1], C[2], D[3], E[4], F[5]
-    //        // where the index is the machine
-    //        // each bank has 64 possible patterns from the machine
-    //        // the algorithm will automatically fill all 64 with either existing patterns
-    //        // or empty, if the machine does not exist, the bank will not be created
-    //
-    //        // file:C:\Users\Work\Documents\caustic\songs\PATTERNLIB1.caustic
-    //        // name:Preset Bank 1
-    //
-    //        for (MemoryDescriptor descriptor : descriptors) {
-    //            controller.getMemoryManager().getMemoryLoader()
-    //                    .load(descriptor, controller.getConfiguration().getToneDescriptors());
-    //
-    //            // add all items to the memory bank
-    //            getPatternSlot().addAll(descriptor.getPatternItems());
-    //            getPhraseSlot().addAll(descriptor.getPhraseItems());
-    //            getPatchSlot().addAll(descriptor.getPatchItems());
-    //        }
-    //    }
+    public void load(Library library) throws IOException {
+        //XXX this needs to be run in a service
+        // this list for now is ONLY used to create the bank and pattern names
+        // for the UI display
+        // seems like the most logical way is to have
+        // A[0], B[1], C[2], D[3], E[4], F[5]
+        // where the index is the machine
+        // each bank has 64 possible patterns from the machine
+        // the algorithm will automatically fill all 64 with either existing patterns
+        // or empty, if the machine does not exist, the bank will not be created
+
+        getPhraseSlot().addAll(library.getPhrases());
+        getPatchSlot().addAll(library.getPatches());
+        getPatternSlot().addAll(library.getScenes());
+    }
 
     /**
      * Copies a pattern data from the bank into a NEW {@link Pattern} instance
@@ -171,7 +167,7 @@ public abstract class Memory {
      */
     public Pattern copyPattern(int index) {
         Pattern pattern = getPattern(index);
-        //        controller.getPatternSequencer().configure(pattern);
+        controller.getPatternManager().configure(pattern);
         return pattern;
     }
 
@@ -190,10 +186,9 @@ public abstract class Memory {
      *            returned as the initial list of patterns.
      */
     Pattern getPattern(int index) {
-        //        PatternItem info = (PatternItem)getPatternSlot().getItem(index);
-        //        Pattern pattern = new Pattern(controller, info);
-        //        return pattern;
-        return null;
+        LibraryItem item = (LibraryItem)getPatternSlot().getItem(index);
+        Pattern pattern = new Pattern(controller, item);
+        return pattern;
     }
 
     public Phrase copyPhrase(Part part, int index) {
@@ -221,11 +216,10 @@ public abstract class Memory {
      * @param part The {@link Part} needing a {@link Phrase}.
      */
     Phrase getPhrase(Part part) {
-        //        int index = part.getIndex();
-        //        PhraseItem phraseItem = part.getPattern().getPatternItem().getPhraseAt(index);
-        //        Phrase phrase = new Phrase(part, phraseItem);
-        //        return phrase;
-        return null;
+        int index = part.getIndex();
+        LibraryPhrase phraseItem = (LibraryPhrase)getPhraseSlot().getItem(0);
+        Phrase phrase = new Phrase(part, phraseItem);
+        return phrase;
     }
 
     /**
@@ -237,11 +231,10 @@ public abstract class Memory {
      * @param part The {@link Part} needing a {@link Patch}.
      */
     Patch getPatch(Part part) {
-        //        PatchItem item = part.getPhrase().getPhraseItem().getDefaultPatch();
-        //        //PatchItem item = (PatchItem) getPatchSlot().getItem(index);
-        //        if (part.getTone() instanceof BasslineTone)
-        //            return new BasslinePatch(part, item);
-        return null;
+        LibraryPatch item = (LibraryPatch)getPatchSlot().getItem(0);
+        //if (part.getTone() instanceof BasslineTone)
+            return new Patch(part, item);
+        //return null;
     }
 
     public enum Type {

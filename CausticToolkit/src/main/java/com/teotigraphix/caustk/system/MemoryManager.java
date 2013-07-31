@@ -6,26 +6,16 @@ import com.teotigraphix.caustk.system.Memory.Category;
 import com.teotigraphix.caustk.system.Memory.Type;
 
 public class MemoryManager implements IMemoryManager {
+    
     //----------------------------------
-    // memoryLoader
+    // systemMemory
     //----------------------------------
-//
-//    private MemoryLoader memoryLoader;
-//
-//    public MemoryLoader getMemoryLoader() {
-//        return memoryLoader;
-//    }
 
-    //    //----------------------------------
-    //    // systemMemory
-    //    //----------------------------------
-    //
-    //    private SystemMemory systemMemory;
-    //
-    //    public SystemMemory getSystemMemory()
-    //    {
-    //        return systemMemory;
-    //    }
+    private SystemMemory systemMemory;
+
+    public SystemMemory getSystemMemory() {
+        return systemMemory;
+    }
 
     //----------------------------------
     // temporaryMemory
@@ -33,6 +23,7 @@ public class MemoryManager implements IMemoryManager {
 
     private TemporaryMemory temporaryMemory;
 
+    @Override
     public TemporaryMemory getTemporaryMemory() {
         return temporaryMemory;
     }
@@ -57,14 +48,17 @@ public class MemoryManager implements IMemoryManager {
 
     private MemoryBank presetMemoryBank;
 
+    @Override
     public MemoryBank getSelectedMemoryBank() {
         return selectedMemoryBank;
     }
 
+    @Override
     public Type getSelectedMemoryType() {
         return selectedMemoryType;
     }
 
+    @Override
     public void setSelectedMemoryType(Type value) {
         if (selectedMemoryType == value)
             return;
@@ -76,7 +70,7 @@ public class MemoryManager implements IMemoryManager {
         else if (selectedMemoryType == Type.USER)
             selectedMemoryBank = userMemoryBank;
 
-        getSystemController().getDispatcher().trigger(
+        getController().getDispatcher().trigger(
                 new OnMemoryManagerCurrentBankChange(selectedMemoryType, selectedMemoryBank));
     }
 
@@ -86,10 +80,12 @@ public class MemoryManager implements IMemoryManager {
 
     private Category selectedMemoryCategory;
 
+    @Override
     public Category getSelectedMemoryCategory() {
         return selectedMemoryCategory;
     }
 
+    @Override
     public void setSelectedMemoryCategory(Category value) {
         if (selectedMemoryCategory == value)
             return;
@@ -103,27 +99,25 @@ public class MemoryManager implements IMemoryManager {
     // systemController
     //----------------------------------
 
-    private ICaustkController systemController;
+    private ICaustkController controller;
 
-    public ICaustkController getSystemController() {
-        return systemController;
+    public ICaustkController getController() {
+        return controller;
     }
 
-    public MemoryManager(ICaustkController systemController) {
-        this.systemController = systemController;
-
-        //        memoryLoader = new MemoryLoader(systemController);
+    public MemoryManager(ICaustkController controller) {
+        this.controller = controller;
 
         createPresetBank();
         createUserBank();
 
         // XXX Do we want the controller passed to the banks or the manager?
-        //        systemMemory = new SystemMemory();
-        temporaryMemory = new TemporaryMemory(systemController);
+        systemMemory = new SystemMemory();
+        temporaryMemory = new TemporaryMemory(controller);
     }
 
     private void createPresetBank() {
-        presetMemoryBank = new MemoryBank(systemController, Type.PRESET, "Preset");
+        presetMemoryBank = new MemoryBank(controller, Type.PRESET, "Preset");
         presetMemoryBank.put(Category.PATCH, new MemorySlot(Category.PATCH));
         presetMemoryBank.put(Category.PATTERN, new MemorySlot(Category.PATTERN));
         presetMemoryBank.put(Category.PHRASE, new MemorySlot(Category.PHRASE));
@@ -131,7 +125,7 @@ public class MemoryManager implements IMemoryManager {
     }
 
     private void createUserBank() {
-        userMemoryBank = new MemoryBank(systemController, Type.USER, "User");
+        userMemoryBank = new MemoryBank(controller, Type.USER, "User");
         userMemoryBank.put(Category.PATCH, new MemorySlot(Category.PATCH));
         userMemoryBank.put(Category.PATTERN, new MemorySlot(Category.PATTERN));
         userMemoryBank.put(Category.PHRASE, new MemorySlot(Category.PHRASE));

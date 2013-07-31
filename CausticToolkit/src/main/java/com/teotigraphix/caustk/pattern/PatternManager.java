@@ -10,6 +10,7 @@ import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.RhythmSet;
 import com.teotigraphix.caustk.tone.Tone;
 
@@ -76,7 +77,7 @@ public class PatternManager implements IControllerComponent, IPatternManager {
 
         nextPattern = pattern;
 
-        //        pendingPattern = controller.getMemoryManager().getTemporaryMemory().copyPattern(pattern);
+        pendingPattern = controller.getMemoryManager().getTemporaryMemory().copyPattern(pattern);
         //
         //        getDispatcher().trigger(new OnPatternSequencerPatternChangePending());
         //
@@ -104,7 +105,7 @@ public class PatternManager implements IControllerComponent, IPatternManager {
         // it until the sequencer finishes the current pattern's length measures
         // TEMP for now we just do this right here until we sync into the
         // core's beat and measure callbacks
-//        controller.getMemoryManager().getTemporaryMemory().commit();
+        controller.getMemoryManager().getTemporaryMemory().commit();
         setPattern(pendingPattern);
     }
 
@@ -192,7 +193,7 @@ public class PatternManager implements IControllerComponent, IPatternManager {
         for (Tone tone : controller.getSoundSource().getTones()) {
             Part part = null;
 
-            if (tone instanceof RhythmSet) {
+            if (tone instanceof BeatboxTone) {
                 part = new RhythmPart(pattern, tone);
             } else {
                 part = new SynthPart(pattern, tone);
@@ -200,8 +201,8 @@ public class PatternManager implements IControllerComponent, IPatternManager {
 
             pattern.addPart(part);
 
-            //            controller.getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
-            //            controller.getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
+            controller.getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
+            controller.getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
         }
     }
 

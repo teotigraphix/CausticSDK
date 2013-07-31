@@ -33,6 +33,10 @@ public class SoundSourceState {
 
     private Map<Integer, String> tones = new HashMap<Integer, String>();
 
+    public Map<Integer, String> getTones() {
+        return tones;
+    }
+
     public SoundSourceState() {
     }
 

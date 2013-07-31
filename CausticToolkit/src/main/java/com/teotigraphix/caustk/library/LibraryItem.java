@@ -21,7 +21,9 @@ package com.teotigraphix.caustk.library;
 
 import java.util.UUID;
 
-public abstract class LibraryItem {
+import com.teotigraphix.caustk.system.MemorySlotItem;
+
+public abstract class LibraryItem extends MemorySlotItem {
 
     private UUID id;
 

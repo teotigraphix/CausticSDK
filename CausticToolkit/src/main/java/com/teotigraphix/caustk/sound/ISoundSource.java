@@ -25,6 +25,7 @@ import java.util.Collection;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
@@ -96,5 +97,7 @@ public interface ISoundSource extends IRestore {
     public static class OnSoundSourceSongLoad {
 
     }
+
+    void createScene(LibraryScene libraryScene) throws CausticException;
 
 }
