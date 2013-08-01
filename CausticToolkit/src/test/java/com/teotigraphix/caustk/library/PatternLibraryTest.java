@@ -82,7 +82,6 @@ public class PatternLibraryTest {
         assertEquals(128, patterns.size());
 
         controller.getLibraryManager().setSelectedLibrary(library);
-        controller.getMemoryManager().getSelectedMemoryBank().setCurrentLibrary(library);
 
         controller.getPatternManager().playPattern(1);
 

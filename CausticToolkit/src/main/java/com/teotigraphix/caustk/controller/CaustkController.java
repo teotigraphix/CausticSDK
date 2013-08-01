@@ -300,7 +300,6 @@ public class CaustkController implements ICaustkController {
     // we proxy the actual OSC impl so we can stop, or reroute
     @Override
     public float sendMessage(String message) {
-        System.out.println("Controller OSC: " + message);
         return soundGenerator.sendMessage(message);
     }
 
@@ -339,6 +338,8 @@ public class CaustkController implements ICaustkController {
         memoryManager = new MemoryManager(this);
 
         memoryManager.setSelectedMemoryType(Type.USER);
+        
+        projectManager.initialize();
     }
 
     @Override

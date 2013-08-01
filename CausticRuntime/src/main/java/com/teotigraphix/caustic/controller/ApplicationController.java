@@ -62,14 +62,12 @@ public class ApplicationController extends MediatorBase implements IApplicationC
 
         getController().getApplication().initialize();
 
-        IProjectManager projectManager = getController().getProjectManager();
-        projectManager.initialize();
-
         // from event calls appModel.start()
         getController().getApplication().start();
 
         applicationModel.start();
-
+        
+        IProjectManager projectManager = getController().getProjectManager();
         String path = projectManager.getSessionPreferences().getString("lastProject");
 
         Project project = null;

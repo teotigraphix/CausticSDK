@@ -30,14 +30,8 @@ public abstract class Memory {
     // currentLibrary
     //----------------------------------
 
-    private Library currentLibrary;
-
     public Library getCurrentLibrary() {
-        return currentLibrary;
-    }
-
-    public void setCurrentLibrary(Library value) {
-        currentLibrary = value;
+        return controller.getLibraryManager().getSelectedLibrary();
     }
 
     private Map<Category, MemorySlot> slots = new HashMap<Category, MemorySlot>();
@@ -204,7 +198,7 @@ public abstract class Memory {
         // XXX If this works with libraries, it might be better to add the items
         // to the slods in the USER, SYSTEM banks so there is no ref to a library in this class
         //LibraryItem item = (LibraryItem)getPatternSlot().getItem(index);
-        LibraryPattern item = currentLibrary.getPatterns().get(index);
+        LibraryPattern item = getCurrentLibrary().getPatterns().get(index);
         Pattern pattern = new Pattern(controller, item);
         return pattern;
     }
@@ -236,7 +230,7 @@ public abstract class Memory {
     Phrase getPhrase(Part part) {
         int index = part.getIndex();
         UUID id = part.getPattern().getPatternItem().getPhrase(index);
-        LibraryPhrase libraryPhrase = currentLibrary.findPhraseById(id);
+        LibraryPhrase libraryPhrase = getCurrentLibrary().findPhraseById(id);
         if (libraryPhrase == null) {
             libraryPhrase = new LibraryPhrase();
         }
@@ -256,7 +250,7 @@ public abstract class Memory {
         int index = part.getIndex();
         UUID patchId = part.getPattern().getPatternItem().getToneSet().getDescriptors().get(index)
                 .getPatchId();
-        LibraryPatch item = currentLibrary.findPatchById(patchId);
+        LibraryPatch item = getCurrentLibrary().findPatchById(patchId);
         //if (part.getTone() instanceof BasslineTone)
         return new Patch(part, item);
         //return null;

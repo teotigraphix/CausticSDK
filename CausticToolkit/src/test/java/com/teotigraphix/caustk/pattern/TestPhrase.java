@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.teotigraphix.caustk.application.CaustkApplicationUtils;
@@ -27,6 +28,7 @@ import com.teotigraphix.caustk.pattern.Phrase.Scale;
 import com.teotigraphix.caustk.pattern.Phrase.Trigger;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 
+@Ignore
 public class TestPhrase {
 
     private Pattern pattern;
@@ -49,12 +51,12 @@ public class TestPhrase {
 
         Library library = libraryManager.createLibrary("bazx");
         assertTrue(library.getDirectory().exists());
-        File causticFile = new File("src/test/java/com/teotigraphix/caustk/pattern/PULSAR.caustic");
-        controller.getLibraryManager().importSong(library, causticFile);
+        File causticFile = new File("src/test/java/com/teotigraphix/caustk/pattern/BL303A001.caustic");
+        controller.getLibraryManager().importPatterns(library, causticFile);
         controller.getLibraryManager().saveLibrary(library);
         controller.getLibraryManager().setSelectedLibrary(library);
 
-        controller.getMemoryManager().getSelectedMemoryBank().load(library);
+        //controller.getMemoryManager().getSelectedMemoryBank().load(library);
 
         controller.getSoundSource().createScene(library.getScenes().get(1));
 

@@ -7,4 +7,8 @@ public final class CtkDebug {
         System.out.println(message);
     }
 
+    public static void osc(String message) {
+        System.out.println("OSC: " + message);
+    }
+
 }

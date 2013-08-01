@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.sun.jna.Native;
 import com.teotigraphix.caustk.core.CausticEventListener;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class CausticCoreDesktop {
@@ -50,6 +51,7 @@ public class CausticCoreDesktop {
     }
 
     public float SendOSCMessage(String message) {
+        CtkDebug.osc(message);
         return caustic.CausticCore_OSCMessage(message, null);
     }
 
