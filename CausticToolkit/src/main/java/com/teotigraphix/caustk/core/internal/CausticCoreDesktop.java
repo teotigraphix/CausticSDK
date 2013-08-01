@@ -1,9 +1,8 @@
 
 package com.teotigraphix.caustk.core.internal;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.sun.jna.Native;
@@ -21,20 +20,13 @@ public class CausticCoreDesktop {
     public CausticCoreDesktop() {
         RuntimeUtils.STORAGE_ROOT = Constants.STORAGE_ROOT;
 
-        URL resource = CausticCoreDesktop.class.getClassLoader().getResource(
-                Constants.RESOURCE_CORE_DLL);
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        System.out.println("Current relative path is: " + s);
 
-        String path = null;
-        try {
-            path = new File(resource.toURI()).getParentFile().getPath();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        System.setProperty("jna.library.path", path);
+        System.setProperty("jna.library.path", s + "\\libs");
 
         m_byResponseString = new byte[4096];
-
         caustic = (CausticLibrary)Native.loadLibrary("CausticCore.dll", CausticLibrary.class);
         caustic.CausticCore_Init(1024);
         caustic.CausticCore_SetStorageRootDir(Constants.STORAGE_ROOT);

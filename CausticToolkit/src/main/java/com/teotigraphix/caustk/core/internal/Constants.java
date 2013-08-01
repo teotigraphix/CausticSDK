@@ -14,5 +14,5 @@ public class Constants {
      */
     public static String STORAGE_ROOT = "C:\\Users\\Work\\Documents";
 
-    public static String RESOURCE_CORE_DLL = "com/teotigraphix/caustk/core/internal/CausticCore.dll";
+    public static String RESOURCE_CORE_DLL = "/com/teotigraphix/caustk/core/internal/CausticCore.dll";
 }

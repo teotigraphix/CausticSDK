@@ -21,6 +21,7 @@ local.properties
 .classpath
 .project
 
+libs/
 CausticCore.dll
 CausticCore.lib
 fmodex.dll
