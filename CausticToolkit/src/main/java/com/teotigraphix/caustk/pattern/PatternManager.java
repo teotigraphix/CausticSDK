@@ -73,8 +73,8 @@ public class PatternManager implements IControllerComponent, IPatternManager {
             int beat = controller.getSystemSequencer().getCurrentBeat() + 1;
             int measure = controller.getSystemSequencer().getCurrentMeasure() + 1;
             int position = getPattern().getSelectedPart().getPhrase().getPosition();
-            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
-                throw new RuntimeException("Pattern change locked");
+            //            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
+            //                throw new RuntimeException("Pattern change locked");
         }
 
         updateName(pattern);
@@ -82,20 +82,20 @@ public class PatternManager implements IControllerComponent, IPatternManager {
         nextPattern = pattern;
 
         pendingPattern = controller.getMemoryManager().getTemporaryMemory().copyPattern(pattern);
-        //
-        //        getDispatcher().trigger(new OnPatternSequencerPatternChangePending());
-        //
-        //        // if the sequencer is not playing, advance automatically.
-        //        if (!controller.getComponent(SequencerAPI.class).isPlaying()) {
-        //            playNextPattern();
-        //        }
+
+        getDispatcher().trigger(new OnPatternSequencerPatternChangePending());
+
+        // if the sequencer is not playing, advance automatically.
+        if (!controller.getSystemSequencer().isPlaying()) {
+            playNextPattern();
+        }
     }
 
     private void updateName(int pattern) {
         int bank = pattern / 16;
         int index = pattern % 16;
-        @SuppressWarnings("unused")
-        String text = PatternUtils.toString(bank, index);
+        //@SuppressWarnings("unused")
+        //String text = PatternUtils.toString(bank, index);
         //        systemController.setDisplay(text, "main");
     }
 
@@ -203,6 +203,19 @@ public class PatternManager implements IControllerComponent, IPatternManager {
             // initialize the pattern set
             for (ToneDescriptor descriptor : pattern.getPatternItem().getToneSet().getDescriptors()) {
                 Tone tone = controller.getSoundSource().createTone(descriptor);
+                Part part = null;
+
+                if (tone instanceof BeatboxTone) {
+                    part = new RhythmPart(pattern, tone);
+                } else {
+                    part = new SynthPart(pattern, tone);
+                }
+
+                pattern.addPart(part);
+            }
+        } else {
+            // Tones have already been created
+            for (Tone tone : controller.getSoundSource().getTones()) {
                 Part part = null;
 
                 if (tone instanceof BeatboxTone) {

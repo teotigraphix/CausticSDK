@@ -89,5 +89,13 @@ public class PatternLibraryTest {
         controller.getPatternManager().playPattern(1);
 
         controller.getSystemSequencer().play(SequencerMode.PATTERN);
+        
+        controller.getPatternManager().playPattern(0);
+        
+        controller.getPatternManager().playPattern(63);
+        
+        controller.getPatternManager().playPattern(0);
+        
+        controller.getPatternManager().playPattern(64);
     }
 }

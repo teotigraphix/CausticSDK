@@ -111,7 +111,7 @@ public class LibraryPhrase extends LibraryItem {
     //  noteData
     //----------------------------------
 
-    private String noteData;
+    private String noteData = "";
 
     public final String getNoteData() {
         return noteData;

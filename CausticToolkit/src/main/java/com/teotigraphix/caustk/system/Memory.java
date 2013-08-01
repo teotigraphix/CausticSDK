@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.system;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -238,6 +237,9 @@ public abstract class Memory {
         int index = part.getIndex();
         UUID id = part.getPattern().getPatternItem().getPhrase(index);
         LibraryPhrase libraryPhrase = currentLibrary.findPhraseById(id);
+        if (libraryPhrase == null) {
+            libraryPhrase = new LibraryPhrase();
+        }
         Phrase phrase = new Phrase(part, libraryPhrase);
         return phrase;
     }

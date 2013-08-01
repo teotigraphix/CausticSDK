@@ -340,6 +340,9 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
             for (ToneDescriptor descriptor : set.getDescriptors()) {
                 int partIndex = descriptor.getIndex();
                 String name = descriptor.getName();
+                int patternBank = (int)(i / (64));
+                name = name + alpha[patternBank];
+                System.out.println("   " + name);
                 List<LibraryPhrase> list = library.findPhrasesByTagStartsWith(name);
                 LibraryPhrase phrase = getPhraseFor(list, i);
                 pattern.putPhrase(partIndex, phrase);
@@ -350,6 +353,10 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
 
         library.setPatterns(patterns);
     }
+
+    private String[] alpha = {
+            "A", "B", "C", "D"
+    };
 
     private LibraryPhrase getPhraseFor(List<LibraryPhrase> phrases, int index) {
         int bank = PatternUtils.getBank(index);

@@ -109,6 +109,9 @@ public class PatternSequencerComponent extends ToneComponent {
     }
 
     public void initializeData(String data) {
+        if (data.equals(""))
+            return;
+        
         // push the notes into the machines sequencer
         String[] notes = data.split("\\|");
         for (String noteData : notes) {
