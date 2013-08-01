@@ -8,17 +8,18 @@ import java.util.ResourceBundle;
 import javax.inject.Named;
 import javax.swing.JFileChooser;
 
-import org.androidtransfuse.event.EventObserver;
-
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.model.ApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustk.application.ICaustkApplication;
-import com.teotigraphix.caustk.application.ICaustkApplication.OnApplicationStart;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.application.core.MediatorBase;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
+import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
+import com.teotigraphix.caustk.project.Project;
 
 /**
  * Mediates the {@link ApplicationModel}.
@@ -37,14 +38,6 @@ public class ApplicationController extends MediatorBase implements IApplicationC
             IApplicationModel applicationModel) {
         super(provider);
         this.applicationModel = applicationModel;
-
-        getController().getDispatcher().register(OnApplicationStart.class,
-                new EventObserver<OnApplicationStart>() {
-                    @Override
-                    public void trigger(OnApplicationStart object) {
-                        onApplicationStartHandler();
-                    }
-                });
     }
 
     /**
@@ -62,29 +55,35 @@ public class ApplicationController extends MediatorBase implements IApplicationC
         File causticStorage = new JFileChooser().getFileSystemView().getDefaultDirectory();
         File applicationRoot = new File(causticStorage, resourceBundle.getString("APP_DIRECTORY"));
 
+        CtkDebug.log("> set caustic storage: " + causticStorage.getAbsolutePath());
+        CtkDebug.log("> set application root: " + applicationRoot.getAbsolutePath());
         getController().getConfiguration().setCausticStorage(causticStorage);
         getController().getConfiguration().setApplicationRoot(applicationRoot);
 
         getController().getApplication().initialize();
 
         IProjectManager projectManager = getController().getProjectManager();
-        projectManager.initialize(applicationRoot);
+        projectManager.initialize();
 
         // from event calls appModel.start()
         getController().getApplication().start();
 
+        applicationModel.start();
+
         String path = projectManager.getSessionPreferences().getString("lastProject");
 
+        Project project = null;
         if (path == null) {
-            projectManager.create(new File("UntitledProject.ctk"));
+            project = projectManager.create(new File("UntitledProject.ctk"));
             projectManager.save();
+            // adding a LOAD event here to keep consistent with all startup.
+            // whether a project is created or loaded on start, mediators will always
+            // get a load event at start.
+            getController().getDispatcher().trigger(
+                    new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
         } else {
-            projectManager.load(new File(path));
+            project = projectManager.load(new File(path));
         }
-    }
-
-    protected void onApplicationStartHandler() {
-        applicationModel.start();
     }
 
     @Override

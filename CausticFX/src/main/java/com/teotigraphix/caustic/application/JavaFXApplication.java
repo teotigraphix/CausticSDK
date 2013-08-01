@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.inject.Named;
-
 import javafx.event.EventHandler;
 import javafx.scene.SceneBuilder;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
 import javafx.stage.WindowEvent;
+
+import javax.inject.Named;
 
 import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
@@ -24,6 +24,75 @@ import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
 import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.application.core.MediatorBase.OnMediatorRegister;
+import com.teotigraphix.caustk.application.core.ModelBase.OnModelRegister;
+import com.teotigraphix.caustk.core.CtkDebug;
+
+/*
+App requirements;
+
+- config
+  - ApplicationConfiguration
+  - ApplicationConstants
+  - ApplicationModule
+
+- FooApplication extends JavaFXApplication
+- resources
+  - app/package/view/RootLayout.fxml
+  - FooApplication.properties
+    - APP_TITLE
+    - APP_DIRECTORY
+  - main.css
+
+Mediators
+
+- DesktopMediatorBase extends MediatorBase
+
+
+
+Application.start(Stage)
+  - save stage instance to StageModel
+  
+  - create the ui
+    - load the RootPane.fxml
+    - add the main.css
+  - add mediators to list
+  
+  - call create() on all mediators
+  
+  - add app listeners (close etc)
+  
+  - call preinitialize() on all mediators
+  
+  - IApplicationController.start()
+    - set caustic storage
+    - set application root usinf 'APP_DIRECTORY' resource
+    - ICaustkApplication.initialize()
+      - ICaustkController.initialize()
+        - create application root dir
+        - create ALL sub controllers
+      - fire(OnApplicationInitialize)
+    - IProjectManager.initialize()
+      - load .settings file
+    - ICaustkApplication.start()
+      - ICaustkController.start()
+      - fire(OnApplicationStart)
+    - find lastProject in settings
+      if note exists
+        - IProjectManager.create()
+        - IProjectManager.save()
+        - fire(OnProjectManagerChange[LOAD])
+        else
+        - IProjectManager.load(lastProj)
+          - project.open()
+          - fire(OnProjectManagerChange[LOAD])
+    
+    - trigger(OnModelRegister)
+    - trigger(OnMediatorRegister)
+    
+
+
+ */
 
 /**
  * The {@link JavaFXApplication} is the base app for all apps that implement a
@@ -61,30 +130,34 @@ public abstract class JavaFXApplication extends GuiceApplication {
     @Override
     public void start(Stage primaryStage) throws Exception {
         stageModel.setStage(primaryStage);
-
+        
+        CtkDebug.log("Create main app UI");
         createUI();
-
+        
+        CtkDebug.log("Rack up mediators");
         initMediators(mediators);
-
+        
+        CtkDebug.log("Create all mediator sub UI components");
         for (DesktopMediatorBase mediator : mediators) {
             mediator.create(root);
         }
 
         addListeners();
-
+        
+        CtkDebug.log("preinitialize all mediators");
         for (DesktopMediatorBase mediator : mediators) {
-            mediator.initialize();
+            mediator.preinitialize();
         }
-
+        
+        CtkDebug.log("Start application controller");
         applicationController.start();
-
-        applicationProvider.get().getController().getDispatcher()
-                .trigger(new OnApplicationRegister());
-
-        for (DesktopMediatorBase mediator : mediators) {
-            mediator.onRegister();
-        }
-
+        
+        CtkDebug.log("Register Models");
+        applicationProvider.get().getController().getDispatcher().trigger(new OnModelRegister());
+        CtkDebug.log("Register Mediators");
+        applicationProvider.get().getController().getDispatcher().trigger(new OnMediatorRegister());
+        
+        CtkDebug.log("Show the application");
         primaryStage.show();
     }
 
@@ -115,7 +188,10 @@ public abstract class JavaFXApplication extends GuiceApplication {
         });
     }
 
-    public static class OnApplicationRegister {
-
+    /*
+    Sub class applications need the following
+    public static void main(String[] args) {
+        Application.launch(args);
     }
+     */
 }

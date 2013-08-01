@@ -10,7 +10,6 @@ import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.system.TemporaryMemory;
@@ -70,11 +69,11 @@ public class PatternManager implements IControllerComponent, IPatternManager {
         // if the sequencer is locked, return
         // the sequencer is locked when we are in the last beat of the pattern
         if (getPattern() != null) {
-            int beat = controller.getSystemSequencer().getCurrentBeat() + 1;
-            int measure = controller.getSystemSequencer().getCurrentMeasure() + 1;
-            int position = getPattern().getSelectedPart().getPhrase().getPosition();
-            //            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
-            //                throw new RuntimeException("Pattern change locked");
+//            int beat = controller.getSystemSequencer().getCurrentBeat() + 1;
+//            int measure = controller.getSystemSequencer().getCurrentMeasure() + 1;
+//            int position = getPattern().getSelectedPart().getPhrase().getPosition();
+//            //            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
+//            //                throw new RuntimeException("Pattern change locked");
         }
 
         updateName(pattern);
@@ -92,8 +91,8 @@ public class PatternManager implements IControllerComponent, IPatternManager {
     }
 
     private void updateName(int pattern) {
-        int bank = pattern / 16;
-        int index = pattern % 16;
+//        int bank = pattern / 16;
+//        int index = pattern % 16;
         //@SuppressWarnings("unused")
         //String text = PatternUtils.toString(bank, index);
         //        systemController.setDisplay(text, "main");

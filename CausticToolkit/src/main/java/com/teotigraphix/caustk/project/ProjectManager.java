@@ -26,6 +26,7 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CtkDebug;
 
 /**
  * The project manager manages the single project loaded for an application.
@@ -93,8 +94,6 @@ public class ProjectManager implements IProjectManager {
 
     public ProjectManager(ICaustkController controller) {
         this.controller = controller;
-
-        initialize(controller.getConfiguration().getApplicationRoot());
     }
 
     //-------------------------------------------------------------------------
@@ -102,7 +101,10 @@ public class ProjectManager implements IProjectManager {
     //--------------------------------------------------------------------------
 
     @Override
-    public void initialize(File applicationRoot) {
+    public void initialize() {
+        CtkDebug.log("IProjectManager.initialize()");
+
+        File applicationRoot = controller.getConfiguration().getApplicationRoot();
         projectDirectory = new File(applicationRoot, "projects");
         sessionPreferencesFile = new File(applicationRoot, ".settings");
 
@@ -110,6 +112,8 @@ public class ProjectManager implements IProjectManager {
             try {
                 FileUtils.writeStringToFile(sessionPreferencesFile, "");
                 sessionPreferences = new SessionPreferences();
+                CtkDebug.log("Created new .settings file: "
+                        + sessionPreferencesFile.getAbsolutePath());
                 saveProjectPreferences();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -118,6 +122,7 @@ public class ProjectManager implements IProjectManager {
             if (sessionPreferencesFile.exists()) {
                 sessionPreferences = controller.getSerializeService().fromFile(
                         sessionPreferencesFile, SessionPreferences.class);
+                CtkDebug.log("Loaded .settings file: " + sessionPreferencesFile.getAbsolutePath());
             }
         }
     }
@@ -141,6 +146,8 @@ public class ProjectManager implements IProjectManager {
 
     @Override
     public void save() throws IOException {
+        // XXX project manager project.getFile absolute path doubled up
+        CtkDebug.log("IProjectManager.save(): " + project.getFile().getAbsolutePath());
 
         sessionPreferences.put("lastProject", project.getFile().getPath());
         // set modified
@@ -159,6 +166,7 @@ public class ProjectManager implements IProjectManager {
 
     protected void finalizeSaveComplete() throws IOException {
         //System.out.println(">> SAVE_COMPLETE flushProjectFile()");
+        CtkDebug.log("IProjectManager; Save Complete, now saving project json file");
 
         String data = controller.getSerializeService().toPrettyString(project);
         FileUtils.writeStringToFile(project.getFile(), data);
@@ -176,7 +184,9 @@ public class ProjectManager implements IProjectManager {
         file = toProjectFile(file);
         if (!file.exists())
             throw new IOException("Project file does not exist");
-
+        
+        CtkDebug.log("IProjectManager.load():" + file.getAbsolutePath());
+        
         project = controller.getSerializeService().fromFile(file, Project.class);
         project.open();
         controller.getDispatcher().trigger(
@@ -190,6 +200,7 @@ public class ProjectManager implements IProjectManager {
         project.setFile(new File(projectDirectory, projectFile.getPath()));
         project.setInfo(createInfo());
         project.open();
+        CtkDebug.log("IProjectManager.create(): " + projectFile.getAbsolutePath());
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
         return project;

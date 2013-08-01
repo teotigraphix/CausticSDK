@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.library;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.util.List;
@@ -14,9 +14,7 @@ import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.PatternUtils;
-import com.teotigraphix.caustk.pattern.PhraseUtils;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
-import com.teotigraphix.caustk.tone.Tone;
 
 public class PatternLibraryTest {
     // PART1A, PART2A, PART3A, PART1B, PART2B, PART3B
@@ -65,8 +63,8 @@ public class PatternLibraryTest {
         assertEquals(15, PatternUtils.getPattern(127));
         assertEquals(0, PatternUtils.getPattern(128));
 
-        int sets = 128 / 64; // 2
-        int banks = 128 / 16; // 8
+        //int sets = 128 / 64; // 2
+        //int banks = 128 / 16; // 8
 
         // 27 [B12] bank=1, pattern=11 0 index
     }
@@ -89,13 +87,13 @@ public class PatternLibraryTest {
         controller.getPatternManager().playPattern(1);
 
         controller.getSystemSequencer().play(SequencerMode.PATTERN);
-        
+
         controller.getPatternManager().playPattern(0);
-        
+
         controller.getPatternManager().playPattern(63);
-        
+
         controller.getPatternManager().playPattern(0);
-        
+
         controller.getPatternManager().playPattern(64);
     }
 }

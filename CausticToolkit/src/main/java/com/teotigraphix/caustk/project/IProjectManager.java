@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.project;
 import java.io.File;
 import java.io.IOException;
 
+import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 public interface IProjectManager {
@@ -55,8 +56,11 @@ public interface IProjectManager {
 
     /**
      * Loads the {@link SessionPreferences} from the application root.
+     * <p>
+     * Must be called after the
+     * {@link ICaustkConfiguration#setApplicationRoot(File)} is called.
      */
-    void initialize(File applicationRoot);
+    void initialize();
 
     /**
      * Creates a new {@link Project} file.

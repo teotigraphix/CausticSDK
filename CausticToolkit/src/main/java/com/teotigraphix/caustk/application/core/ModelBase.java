@@ -54,6 +54,14 @@ public class ModelBase {
                         }
                     }
                 });
+
+        controller.getDispatcher().register(OnModelRegister.class,
+                new EventObserver<OnModelRegister>() {
+                    @Override
+                    public void trigger(OnModelRegister object) {
+                        onRegister();
+                    }
+                });
     }
 
     public void onRegister() {
@@ -66,5 +74,12 @@ public class ModelBase {
     }
 
     protected void onProjectCreate() {
+    }
+
+    /**
+     * Fired just before the {@link MediatorBase#onRegister()} is called.
+     */
+    public static class OnModelRegister {
+
     }
 }

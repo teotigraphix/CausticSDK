@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.application;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CtkDebug;
 
 /**
  * @author Michael Schmalle
@@ -77,6 +78,7 @@ public class CaustkApplication implements ICaustkApplication {
 
     @Override
     public void initialize() {
+        CtkDebug.log("~Application.initialize()");
         // creates all sub components of the controller
         controller.initialize();
         getController().getDispatcher().trigger(new OnApplicationInitialize());
@@ -84,18 +86,21 @@ public class CaustkApplication implements ICaustkApplication {
 
     @Override
     public void start() {
+        CtkDebug.log("~Application.start()");
         controller.start();
         getController().getDispatcher().trigger(new OnApplicationStart());
     }
 
     @Override
     public void save() throws IOException {
+        CtkDebug.log("~Application.save()");
         controller.save();
         getController().getDispatcher().trigger(new OnApplicationSave());
     }
 
     @Override
     public void close() {
+        CtkDebug.log("~Application.close()");
         controller.close();
         getController().getDispatcher().trigger(new OnApplicationClose());
     }

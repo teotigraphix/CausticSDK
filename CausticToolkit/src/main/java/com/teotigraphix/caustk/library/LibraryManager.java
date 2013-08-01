@@ -301,7 +301,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         // Create a PatternLibrary for EVERY defined phrase
 
         // how many parts [3]
-        int numParts = map.size();
+        //int numParts = map.size();
         // all sets have to be the same size, test the first one to see how many
         // sets are contained IE A, B, C etc [2]
         int numPartSets = map.get("1").size();

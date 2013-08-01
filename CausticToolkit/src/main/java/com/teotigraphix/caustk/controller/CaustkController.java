@@ -31,6 +31,7 @@ import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.LibraryManager;
 import com.teotigraphix.caustk.pattern.IPatternManager;
@@ -314,10 +315,12 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void initialize() {
+        CtkDebug.log("Controller: Create app root dir if not created");
         File applicationRoot = getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
-
+        
+        CtkDebug.log("!!! Controller: Create all Sub controllers");
         // sub composites will add their ICommands in their constructors
         serializeService = new SerializeService(this);
         commandManager = new CommandManager(this);
@@ -345,11 +348,13 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void save() throws IOException {
+        CtkDebug.log("Controller.save()");
         projectManager.save();
     }
 
     @Override
     public void close() {
+        CtkDebug.log("Controller.close()");
         soundGenerator.close();
     }
 
