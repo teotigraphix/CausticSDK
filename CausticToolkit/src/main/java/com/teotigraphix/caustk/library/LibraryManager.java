@@ -472,7 +472,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         File presetFile = RuntimeUtils.getCausticPresetsFile(tone.getToneType().getValue(), id);
         if (!presetFile.exists()) {
             throw new IOException("Preset file does not exist");
-        }
+        }   
 
         File presetsDirectory = library.getPresetsDirectory();
         File destFile = new File(presetsDirectory, presetFile.getName());

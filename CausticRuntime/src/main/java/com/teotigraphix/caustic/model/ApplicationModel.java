@@ -3,7 +3,6 @@ package com.teotigraphix.caustic.model;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.ModelBase;
 import com.teotigraphix.caustk.core.CtkDebug;
 
 //@Singleton
@@ -29,7 +28,7 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
     public final void setDirty(boolean value) {
         if (value == dirty)
             return;
-        CtkDebug.log("ApplicationModel dirty: " + value);
+        CtkDebug.model("ApplicationModel dirty: " + value);
         dirty = value;
         getDispatcher().trigger(new OnApplicationModelDirtyChanged(dirty));
     }
@@ -49,7 +48,7 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
 
     @Override
     public void start() {
-        CtkDebug.log("ApplicationModel.start() fires OnApplicationModelStart");
+        CtkDebug.model("ApplicationModel.start() fires OnApplicationModelStart");
         getController().getDispatcher().trigger(new OnApplicationModelStart());
     }
 
@@ -63,6 +62,12 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
 
     @Override
     protected void onProjectLoad() {
+    }
+
+    @Override
+    public void run() {
+        CtkDebug.model(">>>>> ApplicationModel.run() fires OnApplicationModelRun");
+        getController().getDispatcher().trigger(new OnApplicationModelRun());
     }
 
 }

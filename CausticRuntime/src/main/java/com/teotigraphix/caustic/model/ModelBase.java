@@ -1,23 +1,22 @@
 
-package com.teotigraphix.caustk.application.core;
+package com.teotigraphix.caustic.model;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.teotigraphix.caustic.mediator.MediatorBase;
+import com.teotigraphix.caustic.model.IApplicationModel.OnApplicationModelRun;
+import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 
-// Mediators never dispatch events!, only listen and act with logic
-// that could eventually be put in a Command
-public class MediatorBase {
+public class ModelBase {
 
     private ICaustkController controller;
 
-    protected void setController(ICaustkController value) {
-        controller = value;
-        registerObservers();
-    }
+    private IDispatcher dispatcher;
 
     public final ICaustkController getController() {
         return controller;
@@ -27,25 +26,31 @@ public class MediatorBase {
     //        return controller.getDispatcher();
     //    }
 
+    /**
+     * The model's {@link IDispatcher} for local event dispatching.
+     */
+    public IDispatcher getDispatcher() {
+        return dispatcher;
+    }
+
+    /**
+     * Triggers and event through this model's {@link #getDispatcher()}.
+     * 
+     * @param event The event to dispatch.
+     */
+    protected void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    // for FXMLControllers
-    public MediatorBase() {
-    }
-
     // @Inject
-    public MediatorBase(ICaustkApplicationProvider provider) {
-        setController(provider.get().getController());
-    }
+    public ModelBase(ICaustkApplicationProvider provider) {
+        controller = provider.get().getController();
+        dispatcher = new Dispatcher();
 
-    /**
-     * Register {@link ICaustkController#getDispatcher()} events.
-     * <p>
-     * Called once when the controller is set.
-     */
-    protected void registerObservers() {
         controller.getDispatcher().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
@@ -61,24 +66,32 @@ public class MediatorBase {
                     }
                 });
 
-        controller.getDispatcher().register(OnMediatorRegister.class,
-                new EventObserver<OnMediatorRegister>() {
+        controller.getDispatcher().register(OnModelRegister.class,
+                new EventObserver<OnModelRegister>() {
                     @Override
-                    public void trigger(OnMediatorRegister object) {
+                    public void trigger(OnModelRegister object) {
                         onRegister();
                     }
                 });
+
+        controller.getDispatcher().register(OnApplicationModelRun.class,
+                new EventObserver<OnApplicationModelRun>() {
+                    @Override
+                    public void trigger(OnApplicationModelRun object) {
+                        onShow();
+                    }
+                });
+
     }
 
     /**
-     * Called before the application controller has it's start() invoked.
+     * The last phase of startup, where mediators have register, create ui and
+     * are ready to get the final update from model events.
      */
-    public void preinitialize() {
+    protected void onShow() {
+
     }
 
-    /**
-     * @see OnMediatorRegister
-     */
     public void onRegister() {
     }
 
@@ -92,10 +105,9 @@ public class MediatorBase {
     }
 
     /**
-     * Fired at the very end of the startup sequence, all application state is
-     * final and the window is just about to show.
+     * Fired just before the {@link MediatorBase#onRegister()} is called.
      */
-    public static class OnMediatorRegister {
+    public static class OnModelRegister {
 
     }
 }

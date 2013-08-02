@@ -187,12 +187,17 @@ public class RuntimeUtils {
      * @param presetName The name of the preset file without the preset
      *            extension.
      */
-    public static File getCausticPresetsFile(final String presetType, final String presetName) {
+    public static File getCausticPresetsFile(String presetType, String presetName) {
         final StringBuilder sb = new StringBuilder();
         sb.append(presetType);
         sb.append("/");
-        sb.append(presetName);
+        if (presetType.equals("modular"))
+            sb.append(presetName.toUpperCase());
+        else
+            sb.append(presetName); 
         sb.append(".");
+        if (presetType.equals("modular"))
+            presetType = "modularsynth";
         sb.append(presetType);
         return new File(getCausticPresetsDirectory(), sb.toString());
     }

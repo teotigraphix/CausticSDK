@@ -9,12 +9,12 @@ import javax.inject.Named;
 import javax.swing.JFileChooser;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.mediator.MediatorBase;
 import com.teotigraphix.caustic.model.ApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
-import com.teotigraphix.caustk.application.core.MediatorBase;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
@@ -66,7 +66,7 @@ public class ApplicationController extends MediatorBase implements IApplicationC
         getController().getApplication().start();
 
         applicationModel.start();
-        
+
         IProjectManager projectManager = getController().getProjectManager();
         String path = projectManager.getSessionPreferences().getString("lastProject");
 
@@ -82,6 +82,14 @@ public class ApplicationController extends MediatorBase implements IApplicationC
         } else {
             project = projectManager.load(new File(path));
         }
+    }
+
+    /**
+     * @see OnApplicationControllerShow
+     */
+    public void show() {
+        CtkDebug.log("ApplicationController.show()");
+        applicationModel.run();
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel.OnApplicationModelDirtyChanged;
 import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.MediatorBase;
 
 @Singleton
 public class StageMediator extends MediatorBase {

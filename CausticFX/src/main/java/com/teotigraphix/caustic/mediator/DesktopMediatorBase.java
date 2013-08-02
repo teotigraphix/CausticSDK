@@ -3,7 +3,6 @@ package com.teotigraphix.caustic.mediator;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.MediatorBase;
 
 import javafx.scene.layout.Pane;
 

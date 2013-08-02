@@ -7,4 +7,6 @@ public interface IApplicationController {
 
     void start() throws IOException;
 
+    void show();
+
 }

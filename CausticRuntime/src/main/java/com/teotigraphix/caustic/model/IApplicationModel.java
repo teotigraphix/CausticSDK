@@ -37,6 +37,13 @@ public interface IApplicationModel {
      */
     void start();
 
+    /**
+     * Called as the final phase of startup.
+     * <p>
+     * All mediators react to this final assignment of model data.
+     */
+    void run();
+
     //--------------------------------------------------------------------------
     // Events
     //--------------------------------------------------------------------------
@@ -48,6 +55,16 @@ public interface IApplicationModel {
      * @see ICaustkController#getDispatcher()
      */
     public static class OnApplicationModelStart {
+    }
+
+    /**
+     * Dispatched at the end of the startup phase, right before the window/view
+     * is shown.
+     * <p>
+     * All final model load can be done here, mediators are all wired and
+     * listening to model changes.
+     */
+    public static class OnApplicationModelRun {
     }
 
     /**

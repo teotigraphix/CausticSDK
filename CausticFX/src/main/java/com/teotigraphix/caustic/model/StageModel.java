@@ -5,7 +5,6 @@ import javafx.stage.Stage;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.ModelBase;
 
 //@Singleton
 public class StageModel extends ModelBase implements IStageModel {

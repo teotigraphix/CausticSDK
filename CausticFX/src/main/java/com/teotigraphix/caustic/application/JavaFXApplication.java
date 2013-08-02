@@ -22,10 +22,10 @@ import com.google.inject.Module;
 import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
 import com.teotigraphix.caustic.mediator.StageMediator;
+import com.teotigraphix.caustic.mediator.MediatorBase.OnMediatorRegister;
 import com.teotigraphix.caustic.model.IStageModel;
+import com.teotigraphix.caustic.model.ModelBase.OnModelRegister;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.MediatorBase.OnMediatorRegister;
-import com.teotigraphix.caustk.application.core.ModelBase.OnModelRegister;
 import com.teotigraphix.caustk.core.CtkDebug;
 
 /*
@@ -130,33 +130,35 @@ public abstract class JavaFXApplication extends GuiceApplication {
     @Override
     public void start(Stage primaryStage) throws Exception {
         stageModel.setStage(primaryStage);
-        
+
         CtkDebug.log("Create main app UI");
         createUI();
-        
+
         CtkDebug.log("Rack up mediators");
         initMediators(mediators);
-        
+
         CtkDebug.log("Create all mediator sub UI components");
         for (DesktopMediatorBase mediator : mediators) {
             mediator.create(root);
         }
 
         addListeners();
-        
+
         CtkDebug.log("preinitialize all mediators");
         for (DesktopMediatorBase mediator : mediators) {
             mediator.preinitialize();
         }
-        
+
         CtkDebug.log("Start application controller");
         applicationController.start();
-        
+
         CtkDebug.log("Register Models");
         applicationProvider.get().getController().getDispatcher().trigger(new OnModelRegister());
         CtkDebug.log("Register Mediators");
         applicationProvider.get().getController().getDispatcher().trigger(new OnMediatorRegister());
-        
+
+        applicationController.show();
+
         CtkDebug.log("Show the application");
         primaryStage.show();
     }

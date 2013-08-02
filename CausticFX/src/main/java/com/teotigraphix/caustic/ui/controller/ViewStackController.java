@@ -11,8 +11,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.mediator.MediatorBase;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.MediatorBase;
 
 public class ViewStackController extends MediatorBase {
 
