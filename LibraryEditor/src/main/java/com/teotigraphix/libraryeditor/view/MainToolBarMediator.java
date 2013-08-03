@@ -10,9 +10,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.mediator.MediatorBase;
 import com.teotigraphix.caustic.utils.FileUtil;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.MediatorBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.Library;
 import com.teotigraphix.caustk.library.LibraryPatch;
@@ -34,11 +33,6 @@ public class MainToolBarMediator extends MediatorBase {
     LibraryModel libraryModel;
 
     public MainToolBarMediator() {
-    }
-
-    @Inject
-    public MainToolBarMediator(ICaustkApplicationProvider provider) {
-        super(provider);
     }
 
     @Override
@@ -113,10 +107,13 @@ public class MainToolBarMediator extends MediatorBase {
 
     private SubSynthTone subSynthTone;
 
+    @SuppressWarnings("unused")
     private BeatboxTone beatboxTone;
 
+    @SuppressWarnings("unused")
     private BasslineTone basslineSynthTone;
 
+    @SuppressWarnings("unused")
     private PCMSynthTone pcmSynthTone;
 
     private void createAudioSystem() throws CausticException {
@@ -173,6 +170,12 @@ public class MainToolBarMediator extends MediatorBase {
 
         // play
         getController().getSystemSequencer().play(SequencerMode.PATTERN);
+    }
+
+    @Override
+    public void onRegister() {
+        // TODO Auto-generated method stub
+
     }
 
 }

@@ -1,10 +1,8 @@
 
 package com.teotigraphix.libraryeditor.model;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.ModelBase;
+import com.teotigraphix.caustic.model.ModelBase;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.caustk.library.LibraryPatch;
@@ -53,11 +51,6 @@ public class LibraryModel extends ModelBase {
 
     public LibraryItem getSelectedItem() {
         return selectedItem;
-    }
-
-    @Inject
-    public LibraryModel(ICaustkApplicationProvider provider) {
-        super(provider);
     }
 
     public enum ItemKind {
@@ -120,6 +113,18 @@ public class LibraryModel extends ModelBase {
 
     public static class OnLibraryModelRefresh {
 
+    }
+
+    @Override
+    public void onShow() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onRegister() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

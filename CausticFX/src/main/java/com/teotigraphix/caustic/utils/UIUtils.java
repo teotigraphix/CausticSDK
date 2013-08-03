@@ -102,7 +102,14 @@ public class UIUtils {
             node.setVisible(visible);
     }
 
-    public static void layout(Control node, int x, int y, int width, int height) {
+    public static void layout(Pane node, double x, double y, double width, double height) {
+        node.setLayoutX(x);
+        node.setLayoutY(y);
+        node.setPrefWidth(width);
+        node.setPrefHeight(height);
+    }
+    
+    public static void layout(Control node, double x, double y, double width, double height) {
         node.setLayoutX(x);
         node.setLayoutY(y);
         node.setPrefWidth(width);

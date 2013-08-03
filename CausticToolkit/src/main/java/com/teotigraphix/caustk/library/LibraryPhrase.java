@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.library;
 
+import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.tone.ToneType;
 
@@ -158,7 +159,12 @@ public class LibraryPhrase extends LibraryItem {
 
     @Override
     public String toString() {
-        return getMetadataInfo().getName() + ":" + getMetadataInfo().getTags().toString();
+        String name = getMetadataInfo().getName();
+        if (name.equals("Untitled"))
+            name = "";
+        String pat = PatternUtils.toString(getBankIndex(), getPatternIndex());
+        return name + "[" + pat + "] "
+                + getMetadataInfo().getTags().toString();
     }
 
 }

@@ -13,10 +13,10 @@ import javafx.stage.WindowEvent;
 import com.cathive.fx.guice.FXMLController;
 import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.mediator.MediatorBase;
 import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustic.preferences.WindowPreferences;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.core.MediatorBase;
 
 @FXMLController
 public class RootPaneController extends MediatorBase {
@@ -49,8 +49,8 @@ public class RootPaneController extends MediatorBase {
 
     public void initialize() {
         // no sub components are created
-        setController(provider.get().getController());
-        registerObservers();
+
+       // registerObservers();
 
         Parent libraryPane = null;
         Parent editorPane = null;
@@ -105,7 +105,6 @@ public class RootPaneController extends MediatorBase {
 
     @Override
     public void onRegister() {
-        super.onRegister();
     }
 
 }

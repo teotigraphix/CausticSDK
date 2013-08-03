@@ -19,7 +19,6 @@ import com.cathive.fx.guice.FXMLController;
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.model.BeanPathAdapter;
 import com.teotigraphix.caustic.ui.controller.ViewStackController;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.library.ILibraryManager.OnLibraryManagerImportComplete;
 import com.teotigraphix.caustk.library.ILibraryManager.OnLibraryManagerSelectedLibraryChange;
 import com.teotigraphix.caustk.library.Library;
@@ -68,11 +67,6 @@ public class LibraryItemPaneController extends ViewStackController {
     BeanPathAdapter<Library> libraryHolder;
 
     public LibraryItemPaneController() {
-    }
-
-    @Inject
-    public LibraryItemPaneController(ICaustkApplicationProvider provider) {
-        super(provider);
     }
 
     @Override
@@ -187,9 +181,7 @@ public class LibraryItemPaneController extends ViewStackController {
     }
 
     @Override
-    protected void firstRun() {
-        super.firstRun();
-        //System.out.println("LibraryItemPaneController.firstRun()");
+    public void onRegister() {
         setToggleBar(toggleBar);
         setStackPane(viewStack);
     }
@@ -217,10 +209,10 @@ public class LibraryItemPaneController extends ViewStackController {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue,
                     Number newValue) {
                 int index = newValue.intValue();
-                
+
                 Library library = getController().getLibraryManager().getSelectedLibrary();
                 ObservableList<T> items = getList(library, itemType);
-                
+
                 if (index >= 0 && index < items.size()) {
                     ObservableList<T> item = getList(library, itemType);
                     libraryItemModel.setSelectedItem(item.get(index));

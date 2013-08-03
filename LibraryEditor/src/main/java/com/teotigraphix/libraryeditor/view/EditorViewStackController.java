@@ -14,11 +14,10 @@ import com.cathive.fx.guice.FXMLController;
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.model.BeanPathAdapter;
 import com.teotigraphix.caustic.ui.controller.ViewStackController;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.libraryeditor.model.LibraryModel;
-import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelSelectedItemChange;
 import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelRefresh;
+import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelSelectedItemChange;
 
 @FXMLController
 public class EditorViewStackController extends ViewStackController {
@@ -46,15 +45,11 @@ public class EditorViewStackController extends ViewStackController {
     public EditorViewStackController() {
     }
 
-    @Inject
-    public EditorViewStackController(ICaustkApplicationProvider provider) {
-        super(provider);
-    }
-
     @Override
-    protected void firstRun() {
-        super.firstRun();
-        //System.out.println("LibraryItemPaneController.firstRun()");
+    public void onRegister() {
+        // TODO Auto-generated method stub
+        super.onRegister();
+        // XXX Needs to be put in Model onShow()
         setStackPane(stackPane);
 
         metaName.textProperty().addListener(changedHandler);
