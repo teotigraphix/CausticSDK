@@ -36,6 +36,7 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.LibraryScene;
+import com.teotigraphix.caustk.library.SoundMixerState;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.EightBitSynth;
@@ -152,11 +153,17 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
     @Override
     public void createScene(LibraryScene scene) throws CausticException {
+        // make tones
         for (String serializedData : scene.getSoundSourceState().getTones().values()) {
             Tone tone = getController().getSerializeService()
                     .fromString(serializedData, Tone.class);
             createTone(tone.getIndex(), tone.getName(), tone.getToneType());
         }
+        SoundMixerState mixerState = scene.getSoundMixerState();
+        
+        SoundMixerModel model = getController().getSerializeService().fromString(
+                mixerState.getData(), SoundMixerModel.class);
+        model.update();
     }
 
     @Override
@@ -367,6 +374,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
 
         restore();
+        getController().getSoundMixer().restore();
 
         getDispatcher().trigger(new OnSoundSourceSongLoad());
     }

@@ -6,9 +6,10 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixerModel extends SubControllerModel {
+public class SoundMixerModel extends SubControllerModel implements IRestore {
 
     private MasterMixer masterMixer;
 
@@ -50,6 +51,19 @@ public class SoundMixerModel extends SubControllerModel {
         masterMixer.setController(controller);
         for (SoundMixerChannel channel : channels.values()) {
             channel.wakeup(controller);
+        }
+    }
+
+    @Override
+    public void restore() {
+        for (SoundMixerChannel channel : channels.values()) {
+            channel.restore();
+        }
+    }
+
+    public void update() {
+        for (SoundMixerChannel channel : channels.values()) {
+            channel.update();
         }
     }
 

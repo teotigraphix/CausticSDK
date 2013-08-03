@@ -17,14 +17,14 @@
   </build>
   <dependencies>
   	<dependency>
-  		<groupId>com.cathive.fx</groupId>
-  		<artifactId>fx-guice</artifactId>
-  		<version>2.1.2</version>
-  	</dependency>
-  	<dependency>
   		<groupId>CausticToolkit</groupId>
   		<artifactId>CausticToolkit</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.google.inject</groupId>
+  		<artifactId>guice</artifactId>
+  		<version>3.0</version>
   	</dependency>
   </dependencies>
 </project>

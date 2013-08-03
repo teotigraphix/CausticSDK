@@ -1,0 +1,72 @@
+
+package com.teotigraphix.caustic.screen;
+
+import javafx.scene.layout.Pane;
+
+import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
+import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+
+public abstract class DesktopScreenView extends DesktopMediatorBase implements IScreenView {
+
+    private Pane rootPane;
+
+    private void setRoot(Pane value) {
+        rootPane = value;
+        screenRoot = new ScreenRootFX(rootPane);
+    }
+
+    private ScreenRootFX screenRoot;
+
+    @Override
+    public IScreenRoot getScreenRoot() {
+        return screenRoot;
+    }
+
+    public Pane getRoot() {
+        return rootPane;
+    }
+
+    protected abstract String getResource();
+
+    public DesktopScreenView(ICaustkApplicationProvider provider) {
+        super(provider);
+    }
+
+    @Override
+    public <T> void create(T root) {
+        Pane base = Pane.class.cast(root);
+        Pane component = load(getResource());
+        setRoot(component);
+        base.getChildren().add(component);
+        create(component);
+    }
+
+    public static class ScreenRootFX implements IScreenRoot {
+
+        private Pane root;
+
+        public ScreenRootFX(Pane root) {
+            this.root = root;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T getRoot() {
+            return (T)root;
+        }
+
+        @Override
+        public void show() {
+            root.setVisible(true);
+            root.toFront();
+        }
+
+        @Override
+        public void hide() {
+            root.setVisible(false);
+            root.toBack();
+        }
+
+    }
+
+}

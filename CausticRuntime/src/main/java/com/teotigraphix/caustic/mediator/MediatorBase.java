@@ -22,10 +22,6 @@ public class MediatorBase {
         return controller;
     }
 
-    //    protected IDispatcher getDispatcher() {
-    //        return controller.getDispatcher();
-    //    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------

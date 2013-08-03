@@ -22,10 +22,6 @@ public class ModelBase {
         return controller;
     }
 
-    //    protected IDispatcher getDispatcher() {
-    //        return controller.getDispatcher();
-    //    }
-
     /**
      * The model's {@link IDispatcher} for local event dispatching.
      */

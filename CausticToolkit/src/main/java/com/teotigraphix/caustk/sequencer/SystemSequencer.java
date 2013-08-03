@@ -132,12 +132,12 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
 
     @Override
     public void OnBeatChanged(int beat) {
-        System.out.println("   beat " + beat);
+        //System.out.println("   beat " + beat);
     }
 
     @Override
     public void OnMeasureChanged(int measure) {
-        System.out.println("measure " + measure);
+        //System.out.println("measure " + measure);
     }
 
     //--------------------------------------------------------------------------

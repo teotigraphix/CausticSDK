@@ -21,10 +21,12 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
-import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.mediator.MediatorBase.OnMediatorRegister;
+import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustic.model.ModelBase.OnModelRegister;
+import com.teotigraphix.caustic.screen.IScreenManager;
+import com.teotigraphix.caustic.screen.IScreenView;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.core.CtkDebug;
 
@@ -117,9 +119,14 @@ public abstract class JavaFXApplication extends GuiceApplication {
     protected IStageModel stageModel;
 
     @Inject
-    StageMediator stageMediator; // is there a proper place for this?
+    protected IScreenManager screenManager;
+
+    @Inject
+    protected StageMediator stageMediator; // is there a proper place for this?
 
     private List<DesktopMediatorBase> mediators = new ArrayList<>();
+
+    private List<Class<? extends IScreenView>> screens = new ArrayList<>();
 
     private Pane root;
 
@@ -132,17 +139,26 @@ public abstract class JavaFXApplication extends GuiceApplication {
         stageModel.setStage(primaryStage);
 
         CtkDebug.log("Create main app UI");
-        createUI();
+        createRootPane();
 
         CtkDebug.log("Rack up mediators");
         initMediators(mediators);
+
+        initScreens(screens);
+        for (Class<? extends IScreenView> type : screens) {
+            screenManager.addScreen(type);
+        }
 
         CtkDebug.log("Create all mediator sub UI components");
         for (DesktopMediatorBase mediator : mediators) {
             mediator.create(root);
         }
 
+        screenManager.create(root);
+
         addListeners();
+
+        screenManager.preinitialize();
 
         CtkDebug.log("preinitialize all mediators");
         for (DesktopMediatorBase mediator : mediators) {
@@ -154,6 +170,7 @@ public abstract class JavaFXApplication extends GuiceApplication {
 
         CtkDebug.log("Register Models");
         applicationProvider.get().getController().getDispatcher().trigger(new OnModelRegister());
+
         CtkDebug.log("Register Mediators");
         applicationProvider.get().getController().getDispatcher().trigger(new OnMediatorRegister());
 
@@ -163,18 +180,21 @@ public abstract class JavaFXApplication extends GuiceApplication {
         primaryStage.show();
     }
 
+    // screenManager.addScreen(MainScreenView.class);
+    protected abstract void initScreens(List<Class<? extends IScreenView>> screens);
+
     protected abstract String getRootPane();
 
     protected abstract void initMediators(List<DesktopMediatorBase> mediators);
 
-    protected void createUI() throws IOException {
+    protected void createRootPane() throws IOException {
         final Stage stage = stageModel.getStage();
 
         root = loader.load(getClass().getResource(getRootPane())).getRoot();
         StageBuilder.create().title(resourceBundle.getString("APP_TITLE")).resizable(false)
                 .scene(SceneBuilder.create().root(root).build()).applyTo(stage);
         stage.getScene().getStylesheets().add(getClass().getResource("/main.css").toExternalForm());
-        //stage.setResizable(false); // this is adding 10 px on width & height
+        stage.setResizable(true); // this is adding 10 px on width & height
     }
 
     protected void addListeners() {

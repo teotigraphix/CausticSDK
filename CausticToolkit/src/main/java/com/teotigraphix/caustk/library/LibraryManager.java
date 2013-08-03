@@ -18,6 +18,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerBase;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.core.components.SynthComponent;
@@ -89,7 +90,12 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         String id = getController().getProjectManager().getSessionPreferences()
                 .getString("selectedLibrary");
         if (id != null) {
-            setSelectedLibrary(getModel().getLibraries().get(UUID.fromString(id)));
+            Library library = getModel().getLibraries().get(UUID.fromString(id));
+            if (library != null) {
+                setSelectedLibrary(library);
+            } else {
+                CtkDebug.err("LibraryManager; Library null " + id);
+            }
         }
     }
 
@@ -472,7 +478,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         File presetFile = RuntimeUtils.getCausticPresetsFile(tone.getToneType().getValue(), id);
         if (!presetFile.exists()) {
             throw new IOException("Preset file does not exist");
-        }   
+        }
 
         File presetsDirectory = library.getPresetsDirectory();
         File destFile = new File(presetsDirectory, presetFile.getName());

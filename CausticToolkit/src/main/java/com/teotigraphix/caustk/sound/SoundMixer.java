@@ -102,6 +102,12 @@ public class SoundMixer extends SubControllerBase implements ISoundMixer {
         }
     }
 
+    public void update() {
+        for (SoundMixerChannel channel : getModel().getChannels().values()) {
+            channel.update();
+        }
+    }
+
     @Override
     public String serialize() {
         String data = getController().getSerializeService().toString(getModel());

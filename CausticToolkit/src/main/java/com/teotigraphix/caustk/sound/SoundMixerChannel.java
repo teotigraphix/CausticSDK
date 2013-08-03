@@ -296,4 +296,16 @@ public class SoundMixerChannel implements ISerialize, IRestore {
         setVolume(getVolume(true));
     }
 
+    public void update() {
+        MixerMessage.EQ_BASS.send(getEngine(), getIndex(), getBass());
+        MixerMessage.EQ_MID.send(getEngine(), getIndex(), getMid());
+        MixerMessage.EQ_HIGH.send(getEngine(), getIndex(), getHigh());
+        MixerMessage.REVERB_SEND.send(getEngine(), getIndex(), getReverbSend());
+        MixerMessage.DELAY_SEND.send(getEngine(), getIndex(), getDelaySend());
+        MixerMessage.STEREO_WIDTH.send(getEngine(), getIndex(), getStereoWidth());
+
+        MixerMessage.PAN.send(getEngine(), getIndex(), getPan());
+        MixerMessage.VOLUME.send(getEngine(), getIndex(), getVolume());
+    }
+
 }
