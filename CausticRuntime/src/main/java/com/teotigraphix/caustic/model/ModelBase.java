@@ -12,7 +12,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 
-public class ModelBase {
+public class ModelBase implements ICaustkModel {
 
     private ICaustkController controller;
 
@@ -83,9 +83,12 @@ public class ModelBase {
     /**
      * The last phase of startup, where mediators have register, create ui and
      * are ready to get the final update from model events.
+     * <p>
+     * All state the has been deserialized from the project session will get
+     * "executed" in the model here, the mediators will catch the model events
+     * and update the user interface according to the update logic.
      */
     protected void onShow() {
-
     }
 
     public void onRegister() {

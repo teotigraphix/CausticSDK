@@ -12,6 +12,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -99,6 +100,13 @@ public class UIUtils {
     public static void setVisible(Collection<? extends Node> nodes, boolean visible) {
         for (Node node : nodes)
             node.setVisible(visible);
+    }
+
+    public static void layout(Control node, int x, int y, int width, int height) {
+        node.setLayoutX(x);
+        node.setLayoutY(y);
+        node.setPrefWidth(width);
+        node.setPrefHeight(height);
     }
 
 }
