@@ -27,4 +27,8 @@ public final class CtkDebug {
         log(message);
     }
 
+    public static void warn(String message) {
+        System.err.println("WARNING: " + message);
+    }
+
 }

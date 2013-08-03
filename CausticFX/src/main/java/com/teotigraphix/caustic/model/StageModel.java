@@ -4,7 +4,6 @@ package com.teotigraphix.caustic.model;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 
 //@Singleton
 public class StageModel extends ModelBase implements IStageModel {
@@ -62,24 +61,20 @@ public class StageModel extends ModelBase implements IStageModel {
         getStage().setTitle("TODO StageModel - " + title + postfix);
     }
 
-    @Inject
-    public StageModel(ICaustkApplicationProvider provider) {
-        super(provider);
-    }
-
-    //--------------------------------------------------------------------------
-    // Project :: Events
-    //--------------------------------------------------------------------------
-
-    @Override
-    protected void onProjectCreate() {
-        String projectName = getController().getProjectManager().getProject().getFile().getPath();
-        setTitle(projectName);
+    public StageModel() {
+        super();
     }
 
     @Override
-    protected void onProjectLoad() {
-        String projectName = getController().getProjectManager().getProject().getFile().getPath();
-        setTitle(projectName);
+    public void onShow() {
+        // TODO Auto-generated method stub
+
     }
+
+    @Override
+    public void onRegister() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

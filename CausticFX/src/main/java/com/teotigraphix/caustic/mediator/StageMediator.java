@@ -37,4 +37,20 @@ public class StageMediator extends MediatorBase {
     protected void onApplicationModelDirtyChangedHandler() {
         stageModel.refreshTitle();
     }
+
+    //--------------------------------------------------------------------------
+    // Project :: Events
+    //--------------------------------------------------------------------------
+
+    @Override
+    protected void onProjectCreate() {
+        String projectName = getController().getProjectManager().getProject().getFile().getPath();
+        stageModel.setTitle(projectName);
+    }
+
+    @Override
+    protected void onProjectLoad() {
+        String projectName = getController().getProjectManager().getProject().getFile().getPath();
+        stageModel.setTitle(projectName);
+    }
 }

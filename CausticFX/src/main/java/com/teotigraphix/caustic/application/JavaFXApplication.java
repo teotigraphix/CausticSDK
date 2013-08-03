@@ -24,7 +24,6 @@ import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
 import com.teotigraphix.caustic.mediator.MediatorBase.OnMediatorRegister;
 import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.model.IStageModel;
-import com.teotigraphix.caustic.model.ModelBase.OnModelRegister;
 import com.teotigraphix.caustic.screen.IScreenManager;
 import com.teotigraphix.caustic.screen.IScreenView;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
@@ -168,9 +167,8 @@ public abstract class JavaFXApplication extends GuiceApplication {
         CtkDebug.log("Start application controller");
         applicationController.start();
 
-        CtkDebug.log("Register Models");
-        applicationProvider.get().getController().getDispatcher().trigger(new OnModelRegister());
-
+        applicationController.registerModels();
+        
         CtkDebug.log("Register Mediators");
         applicationProvider.get().getController().getDispatcher().trigger(new OnMediatorRegister());
 

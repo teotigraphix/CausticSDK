@@ -1,8 +1,6 @@
 
 package com.teotigraphix.caustic.model;
 
-import com.google.inject.Inject;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.core.CtkDebug;
 
 //@Singleton
@@ -37,9 +35,8 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
     // Constructor
     //--------------------------------------------------------------------------
 
-    @Inject
-    public ApplicationModel(ICaustkApplicationProvider provider) {
-        super(provider);
+    public ApplicationModel() {
+        super();
     }
 
     //--------------------------------------------------------------------------
@@ -57,17 +54,21 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
     //--------------------------------------------------------------------------
 
     @Override
-    protected void onProjectCreate() {
-    }
-
-    @Override
-    protected void onProjectLoad() {
-    }
-
-    @Override
     public void run() {
         CtkDebug.model(">>>>> ApplicationModel.run() fires OnApplicationModelRun");
         getController().getDispatcher().trigger(new OnApplicationModelRun());
+    }
+
+    @Override
+    public void onShow() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onRegister() {
+        // TODO Auto-generated method stub
+
     }
 
 }
