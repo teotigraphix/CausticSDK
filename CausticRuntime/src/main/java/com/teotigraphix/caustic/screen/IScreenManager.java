@@ -1,7 +1,9 @@
 
 package com.teotigraphix.caustic.screen;
 
-public interface IScreenManager {
+import com.teotigraphix.caustic.mediator.ICaustkMediator;
+
+public interface IScreenManager extends ICaustkMediator {
 
     void addScreen(Class<? extends IScreenView> type);
 
@@ -10,7 +12,5 @@ public interface IScreenManager {
     void showPopUp(Class<? extends IScreenView> type);
 
     void hidePopUp(Class<? extends IScreenView> type);
-
-    void preinitialize();
 
 }

@@ -1,9 +1,10 @@
 
 package com.teotigraphix.caustic.model;
 
+import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CtkDebug;
 
-//@Singleton
+@Singleton
 public class ApplicationModel extends ModelBase implements IApplicationModel {
 
     //----------------------------------

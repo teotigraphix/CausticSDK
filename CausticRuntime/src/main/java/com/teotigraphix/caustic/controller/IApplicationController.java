@@ -3,6 +3,7 @@ package com.teotigraphix.caustic.controller;
 
 import java.io.IOException;
 
+import com.teotigraphix.caustic.mediator.ICaustkMediator;
 import com.teotigraphix.caustic.model.ICaustkModel;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
@@ -29,5 +30,11 @@ public interface IApplicationController {
      * Main application calls this method in the startup sequence.
      */
     void registerModels();
+
+    void registerMeditor(ICaustkMediator mediator);
+
+    void registerMediatorObservers();
+
+    void registerMeditors();
 
 }

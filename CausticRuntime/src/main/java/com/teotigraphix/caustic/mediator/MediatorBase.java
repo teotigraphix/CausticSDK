@@ -3,19 +3,22 @@ package com.teotigraphix.caustic.mediator;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+import com.google.inject.Inject;
+import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 
 // Mediators never dispatch events!, only listen and act with logic
 // that could eventually be put in a Command
-public class MediatorBase {
+public abstract class MediatorBase implements ICaustkMediator {
 
     private ICaustkController controller;
 
-    protected void setController(ICaustkController value) {
-        controller = value;
+    private IApplicationController applicationController;
+
+    public final IApplicationController getApplicationController() {
+        return applicationController;
     }
 
     public final ICaustkController getController() {
@@ -26,13 +29,14 @@ public class MediatorBase {
     // Constructor
     //--------------------------------------------------------------------------
 
-    // for FXMLControllers
     public MediatorBase() {
     }
 
-    // @Inject
-    public MediatorBase(ICaustkApplicationProvider provider) {
-        setController(provider.get().getController());
+    @Inject
+    public void setApplicationController(IApplicationController applicationController) {
+        this.applicationController = applicationController;
+        controller = applicationController.getController();
+        applicationController.registerMeditor(this);
     }
 
     /**
@@ -55,28 +59,17 @@ public class MediatorBase {
                         }
                     }
                 });
-
-        controller.getDispatcher().register(OnMediatorRegister.class,
-                new EventObserver<OnMediatorRegister>() {
-                    @Override
-                    public void trigger(OnMediatorRegister object) {
-                        onRegister();
-                    }
-                });
     }
 
-    /**
-     * Called before the application controller has it's start() invoked.
-     */
-    public void preinitialize() {
+    @Override
+    public void onRegisterObservers() {
         registerObservers();
     }
 
     /**
      * @see OnMediatorRegister
      */
-    public void onRegister() {
-    }
+    public abstract void onRegister();
 
     protected void onProjectSave() {
     }
@@ -85,13 +78,5 @@ public class MediatorBase {
     }
 
     protected void onProjectCreate() {
-    }
-
-    /**
-     * Fired at the very end of the startup sequence, all application state is
-     * final and the window is just about to show.
-     */
-    public static class OnMediatorRegister {
-
     }
 }

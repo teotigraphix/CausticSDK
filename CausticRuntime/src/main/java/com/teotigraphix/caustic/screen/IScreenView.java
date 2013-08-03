@@ -1,9 +1,9 @@
 
 package com.teotigraphix.caustic.screen;
 
-public interface IScreenView {
-    
-    void preinitialize();
+import com.teotigraphix.caustic.mediator.ICaustkMediator;
+
+public interface IScreenView extends ICaustkMediator {
     
     IScreenRoot getScreenRoot();
     

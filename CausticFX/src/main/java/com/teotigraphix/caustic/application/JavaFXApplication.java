@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
-import com.teotigraphix.caustic.mediator.MediatorBase.OnMediatorRegister;
 import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustic.screen.IScreenManager;
@@ -157,20 +156,16 @@ public abstract class JavaFXApplication extends GuiceApplication {
 
         addListeners();
 
-        screenManager.preinitialize();
+        screenManager.onRegisterObservers(); // ??? Somewhere else?
 
-        CtkDebug.log("preinitialize all mediators");
-        for (DesktopMediatorBase mediator : mediators) {
-            mediator.preinitialize();
-        }
+        applicationController.registerMediatorObservers();
 
         CtkDebug.log("Start application controller");
         applicationController.start();
 
         applicationController.registerModels();
-        
-        CtkDebug.log("Register Mediators");
-        applicationProvider.get().getController().getDispatcher().trigger(new OnMediatorRegister());
+        applicationController.registerMeditors();
+        screenManager.onRegister(); // ??? Somewhere else?
 
         applicationController.show();
 

@@ -4,7 +4,6 @@ package com.teotigraphix.caustic.screen;
 import javafx.scene.layout.Pane;
 
 import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 
 public abstract class DesktopScreenView extends DesktopMediatorBase implements IScreenView {
 
@@ -27,10 +26,6 @@ public abstract class DesktopScreenView extends DesktopMediatorBase implements I
     }
 
     protected abstract String getResource();
-
-    public DesktopScreenView(ICaustkApplicationProvider provider) {
-        super(provider);
-    }
 
     @Override
     public <T> void create(T root) {
@@ -69,4 +64,7 @@ public abstract class DesktopScreenView extends DesktopMediatorBase implements I
 
     }
 
+    @Override
+    public void onRegister() {
+    }
 }

@@ -3,21 +3,15 @@ package com.teotigraphix.caustic.mediator;
 
 import java.io.IOException;
 
-import com.cathive.fx.guice.GuiceFXMLLoader;
-import com.google.inject.Inject;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-
 import javafx.scene.layout.Pane;
 
-public abstract class DesktopMediatorBase extends MediatorBase {
+import com.cathive.fx.guice.GuiceFXMLLoader;
+import com.google.inject.Inject;
+
+public abstract class DesktopMediatorBase extends MediatorBase implements ICaustkMediator {
 
     @Inject
     protected GuiceFXMLLoader loader;
-
-    @Inject
-    public DesktopMediatorBase(ICaustkApplicationProvider provider) {
-        super(provider);
-    }
 
     public abstract void create(Pane root);
 

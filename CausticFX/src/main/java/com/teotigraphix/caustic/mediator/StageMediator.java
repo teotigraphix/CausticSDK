@@ -8,23 +8,22 @@ import com.google.inject.Singleton;
 import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel.OnApplicationModelDirtyChanged;
 import com.teotigraphix.caustic.model.IStageModel;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 
 @Singleton
-public class StageMediator extends MediatorBase {
+public class StageMediator extends MediatorBase implements ICaustkMediator {
 
     @Inject
     IStageModel stageModel;
 
+    @Inject
     IApplicationModel applicationModel;
 
     public StageMediator() {
     }
 
-    @Inject
-    public StageMediator(ICaustkApplicationProvider provider, IApplicationModel applicationModel) {
-        super(provider);
-        this.applicationModel = applicationModel;
+    @Override
+    protected void registerObservers() {
+        super.registerObservers();
         applicationModel.getDispatcher().register(OnApplicationModelDirtyChanged.class,
                 new EventObserver<OnApplicationModelDirtyChanged>() {
                     @Override
@@ -52,5 +51,11 @@ public class StageMediator extends MediatorBase {
     protected void onProjectLoad() {
         String projectName = getController().getProjectManager().getProject().getFile().getPath();
         stageModel.setTitle(projectName);
+    }
+
+    @Override
+    public void onRegister() {
+        // TODO Auto-generated method stub
+
     }
 }

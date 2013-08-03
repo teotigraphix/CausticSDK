@@ -10,15 +10,18 @@ import java.util.ResourceBundle;
 import javax.inject.Named;
 import javax.swing.JFileChooser;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustic.mediator.MediatorBase;
+import com.teotigraphix.caustic.mediator.ICaustkMediator;
 import com.teotigraphix.caustic.model.ApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustic.model.ICaustkModel;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
@@ -29,7 +32,43 @@ import com.teotigraphix.caustk.project.Project;
  * Mediates the {@link ApplicationModel}.
  */
 @Singleton
-public class ApplicationController extends MediatorBase implements IApplicationController {
+public class ApplicationController implements IApplicationController {
+
+    private ICaustkController controller;
+
+    @Override
+    public ICaustkController getController() {
+        return controller;
+    }
+
+    private List<ICaustkMediator> mediators = new ArrayList<ICaustkMediator>();
+
+    @Override
+    public void registerMeditor(ICaustkMediator mediator) {
+        if (mediators.contains(mediator)) {
+            CtkDebug.warn("ApplicationController already contains " + mediator);
+            return;
+        }
+        mediators.add(mediator);
+    }
+
+    @Override
+    public void registerMediatorObservers() {
+        CtkDebug.log("ApplicationController Register Mediator Observers");
+        for (ICaustkMediator mediator : mediators) {
+            CtkDebug.log("   Register; " + mediator.getClass().getSimpleName());
+            mediator.onRegisterObservers();
+        }
+    }
+
+    @Override
+    public void registerMeditors() {
+        CtkDebug.log("ApplicationController Register Mediators");
+        for (ICaustkMediator mediator : mediators) {
+            CtkDebug.log("   Register; " + mediator.getClass().getSimpleName());
+            mediator.onRegister();
+        }
+    }
 
     private List<ICaustkModel> models = new ArrayList<ICaustkModel>();
 
@@ -60,7 +99,21 @@ public class ApplicationController extends MediatorBase implements IApplicationC
 
     @Inject
     public ApplicationController(ICaustkApplicationProvider provider) {
-        super(provider);
+        controller = provider.get().getController();
+        controller.getDispatcher().register(OnProjectManagerChange.class,
+                new EventObserver<OnProjectManagerChange>() {
+                    @Override
+                    public void trigger(OnProjectManagerChange object) {
+                        if (object.getKind() == ProjectManagerChangeKind.CREATE) {
+                            //onProjectCreate();
+                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
+                            //onProjectLoad();
+                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE) {
+                            onProjectSave();
+                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
+                        }
+                    }
+                });
     }
 
     /**
@@ -120,7 +173,6 @@ public class ApplicationController extends MediatorBase implements IApplicationC
         }
     }
 
-    @Override
     protected void onProjectSave() {
         applicationModel.setDirty(false);
     }

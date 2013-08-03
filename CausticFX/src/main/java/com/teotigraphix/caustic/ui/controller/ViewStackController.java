@@ -11,10 +11,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustic.mediator.ICaustkMediator;
 import com.teotigraphix.caustic.mediator.MediatorBase;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 
-public class ViewStackController extends MediatorBase {
+public class ViewStackController extends MediatorBase implements ICaustkMediator {
 
     @Inject
     ICaustkApplicationProvider provider;
@@ -91,11 +92,6 @@ public class ViewStackController extends MediatorBase {
     public ViewStackController() {
     }
 
-    @Inject
-    public ViewStackController(ICaustkApplicationProvider provider) {
-        super(provider);
-    }
-
     protected Node getChild(int index) {
         return stackPane.getChildren().get(index);
     }
@@ -113,5 +109,11 @@ public class ViewStackController extends MediatorBase {
 
     protected int getButtonIndex(ToggleButton button) {
         return toggleBar.getChildrenUnmodifiable().indexOf(button);
+    }
+
+    @Override
+    public void onRegister() {
+        // TODO Auto-generated method stub
+        
     }
 }

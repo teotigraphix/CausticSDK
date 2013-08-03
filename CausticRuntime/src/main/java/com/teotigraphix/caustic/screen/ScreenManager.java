@@ -8,7 +8,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustic.mediator.MediatorBase;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 
 /*
 
@@ -26,11 +25,6 @@ public class ScreenManager extends MediatorBase implements IScreenManager {
     @Inject
     Injector injector;
 
-    @Inject
-    public ScreenManager(ICaustkApplicationProvider provider) {
-        super(provider);
-    }
-
     @Override
     public <T> void create(T root) {
         for (IScreenView view : stack.values()) {
@@ -39,10 +33,10 @@ public class ScreenManager extends MediatorBase implements IScreenManager {
     }
 
     @Override
-    public void preinitialize() {
-        super.preinitialize();
+    public void onRegisterObservers() {
+        super.onRegisterObservers();
         for (IScreenView view : stack.values()) {
-            view.preinitialize();
+            view.onRegisterObservers();
         }
     }
 
@@ -63,4 +57,11 @@ public class ScreenManager extends MediatorBase implements IScreenManager {
         IScreenView view = stack.get(type);
         view.getScreenRoot().hide();
     }
+
+    @Override
+    public void onRegister() {
+        // TODO Auto-generated method stub
+
+    }
+
 }
