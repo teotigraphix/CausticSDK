@@ -13,16 +13,17 @@ import org.androidtransfuse.event.EventObserver;
 import com.cathive.fx.guice.FXMLController;
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.model.BeanPathAdapter;
+import com.teotigraphix.caustic.model.BeanPathAdapter.FieldPathValue;
 import com.teotigraphix.caustic.ui.controller.ViewStackController;
-import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.libraryeditor.model.LibraryModel;
+import com.teotigraphix.libraryeditor.model.LibraryModel.LibraryItemProxy;
 import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelRefresh;
 import com.teotigraphix.libraryeditor.model.LibraryModel.OnLibraryModelSelectedItemChange;
 
 @FXMLController
 public class EditorViewStackController extends ViewStackController {
 
-    private BeanPathAdapter<LibraryItem> libraryItem;
+    private BeanPathAdapter<LibraryItemProxy> libraryItem;
 
     @FXML
     StackPane stackPane;
@@ -62,7 +63,6 @@ public class EditorViewStackController extends ViewStackController {
         @Override
         public void changed(ObservableValue<? extends String> observable, String oldValue,
                 String newValue) {
-            getController().getDispatcher().trigger(new OnLibraryModelRefresh());
         }
     };
 
@@ -79,17 +79,16 @@ public class EditorViewStackController extends ViewStackController {
                 });
     }
 
-    protected void sceneItemChanged(final LibraryItem item) {
-        if (item == null) {
+    protected void sceneItemChanged(final LibraryItemProxy libraryItemProxy) {
+        if (libraryItemProxy == null) {
             if (libraryItem == null)
                 return;
-            //System.out.println("EditorViewStackController.sceneItemChanged( UNSET )");
+            System.out.println("EditorViewStackController.sceneItemChanged( UNSET )");
             //reset or loading a new library
-            libraryItem.unBindBidirectional("metadataInfo.name", metaName.textProperty());
-            libraryItem.unBindBidirectional("metadataInfo.author", metaAuthor.textProperty());
-            libraryItem.unBindBidirectional("metadataInfo.description",
-                    metaDescription.textProperty());
-            libraryItem.unBindBidirectional("metadataInfo.tagsString", metaTags.textProperty());
+            libraryItem.unBindBidirectional("name", metaName.textProperty());
+            libraryItem.unBindBidirectional("author", metaAuthor.textProperty());
+            libraryItem.unBindBidirectional("description", metaDescription.textProperty());
+            libraryItem.unBindBidirectional("tagsString", metaTags.textProperty());
 
             metaName.setText("");
             metaAuthor.setText("");
@@ -99,19 +98,26 @@ public class EditorViewStackController extends ViewStackController {
             libraryItem = null;
             return;
         }
-
+        getController().getDispatcher().trigger(new OnLibraryModelRefresh());
         if (libraryItem == null) {
-            //System.out.println("EditorViewStackController.sceneItemChanged( SETUP )");
-            libraryItem = new BeanPathAdapter<LibraryItem>(item);
-            libraryItem.bindBidirectional("metadataInfo.name", metaName.textProperty());
-            libraryItem.bindBidirectional("metadataInfo.author", metaAuthor.textProperty());
-            libraryItem.bindBidirectional("metadataInfo.description",
-                    metaDescription.textProperty());
-            libraryItem.bindBidirectional("metadataInfo.tagsString", metaTags.textProperty());
+
+            libraryItem = new BeanPathAdapter<LibraryItemProxy>(libraryItemProxy);
+            libraryItem.bindBidirectional("name", metaName.textProperty());
+            libraryItem.bindBidirectional("author", metaAuthor.textProperty());
+            libraryItem.bindBidirectional("description", metaDescription.textProperty());
+            libraryItem.bindBidirectional("tagsString", metaTags.textProperty());
+            libraryItem.fieldPathValueProperty().addListener(new ChangeListener<FieldPathValue>() {
+                @Override
+                public void changed(ObservableValue<? extends FieldPathValue> arg0,
+                        FieldPathValue arg1, FieldPathValue arg2) {
+                    getController().getDispatcher().trigger(new OnLibraryModelRefresh());
+                }
+            });
+
         } else {
             // System.out.println(item);
-            //System.out.println("EditorViewStackController.sceneItemChanged( SET )");
-            libraryItem.setBean(item);
+            System.out.println("EditorViewStackController.sceneItemChanged( SET )");
+            libraryItem.setBean(libraryItemProxy);
         }
     }
 

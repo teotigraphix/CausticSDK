@@ -28,7 +28,11 @@ import com.teotigraphix.caustk.core.CausticException;
 public interface ILibraryManager extends IControllerComponent {
 
     Library getSelectedLibrary();
-
+    
+    /**
+     * @see OnLibraryManagerSelectedLibraryChange
+     * @param value
+     */
     void setSelectedLibrary(Library value);
 
     void load();

@@ -1,12 +1,17 @@
 
 package com.teotigraphix.libraryeditor.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.inject.Singleton;
 import com.teotigraphix.caustic.model.ModelBase;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.library.Library;
 import com.teotigraphix.caustk.library.LibraryItem;
 import com.teotigraphix.caustk.library.LibraryPatch;
 import com.teotigraphix.caustk.library.LibraryPhrase;
+import com.teotigraphix.caustk.library.LibraryScene;
 
 @Singleton
 public class LibraryModel extends ModelBase {
@@ -26,18 +31,14 @@ public class LibraryModel extends ModelBase {
                 new OnLibraryModelSelectedKindChange(selectedKind, oldKind));
     }
 
-    private LibraryItem selectedItem;
+    private LibraryItemProxy selectedItem;
 
     private LibraryPatch libraryPatch;
 
     private LibraryPhrase libraryPhrase;
 
-    public void setSelectedItem(LibraryItem value) {
+    public void setSelectedItem(LibraryItemProxy value) {
         selectedItem = value;
-        if (selectedItem instanceof LibraryPatch)
-            libraryPatch = (LibraryPatch)selectedItem;
-        if (selectedItem instanceof LibraryPhrase)
-            libraryPhrase = (LibraryPhrase)selectedItem;
         getController().getDispatcher().trigger(new OnLibraryModelSelectedItemChange(selectedItem));
     }
 
@@ -49,7 +50,7 @@ public class LibraryModel extends ModelBase {
         return libraryPhrase;
     }
 
-    public LibraryItem getSelectedItem() {
+    public LibraryItemProxy getSelectedItem() {
         return selectedItem;
     }
 
@@ -100,13 +101,13 @@ public class LibraryModel extends ModelBase {
 
     public static class OnLibraryModelSelectedItemChange {
 
-        private LibraryItem item;
+        private LibraryItemProxy item;
 
-        public final LibraryItem getItem() {
+        public final LibraryItemProxy getItem() {
             return item;
         }
 
-        public OnLibraryModelSelectedItemChange(LibraryItem item) {
+        public OnLibraryModelSelectedItemChange(LibraryItemProxy item) {
             this.item = item;
         }
     }
@@ -118,13 +119,100 @@ public class LibraryModel extends ModelBase {
     @Override
     public void onShow() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void onRegister() {
         // TODO Auto-generated method stub
-        
+
+    }
+
+    private List<LibraryItemProxy> scenes = new ArrayList<>();
+
+    private List<LibraryItemProxy> patches = new ArrayList<>();
+
+    private List<LibraryItemProxy> phrases = new ArrayList<>();
+
+    public List<LibraryItemProxy> getScenes() {
+        return scenes;
+    }
+
+    public List<LibraryItemProxy> getPatches() {
+        return patches;
+    }
+
+    public List<LibraryItemProxy> getPhrases() {
+        return phrases;
+    }
+
+    public void refresh() {
+        scenes.clear();
+        patches.clear();
+        phrases.clear();
+
+        Library library = getController().getLibraryManager().getSelectedLibrary();
+        for (LibraryScene item : library.getScenes()) {
+            scenes.add(new LibraryItemProxy(item));
+        }
+
+        for (LibraryPatch item : library.getPatches()) {
+            patches.add(new LibraryItemProxy(item));
+        }
+
+        for (LibraryPhrase item : library.getPhrases()) {
+            phrases.add(new LibraryItemProxy(item));
+        }
+    }
+
+    public static class LibraryItemProxy {
+
+        public final String getName() {
+            return item.getMetadataInfo().getName();
+        }
+
+        public final void setName(String name) {
+            item.getMetadataInfo().setName(name);
+        }
+
+        public final String getAuthor() {
+            return item.getMetadataInfo().getAuthor();
+        }
+
+        public final void setAuthor(String author) {
+            item.getMetadataInfo().setAuthor(author);
+        }
+
+        public final String getDescription() {
+            return item.getMetadataInfo().getDescription();
+        }
+
+        public final void setDescription(String description) {
+            item.getMetadataInfo().setDescription(description);
+        }
+
+        public final String getTagsString() {
+            return item.getMetadataInfo().getTagsString();
+        }
+
+        public final void setTagsString(String tagsString) {
+            item.getMetadataInfo().setTagsString(tagsString);
+        }
+
+        private LibraryItem item;
+
+        public LibraryItem getItem() {
+            return item;
+        }
+
+        public LibraryItemProxy(LibraryItem item) {
+            this.item = item;
+        }
+
+        @Override
+        public String toString() {
+            return item.toString();
+        }
     }
 
 }
