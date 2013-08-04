@@ -169,8 +169,6 @@ public abstract class JavaFXApplication extends GuiceApplication {
 
     protected abstract String getRootPane();
 
-    //protected abstract void initMediators(List<DesktopMediatorBase> mediators);
-
     protected void createRootPane() throws IOException {
         final Stage stage = stageModel.getStage();
 
