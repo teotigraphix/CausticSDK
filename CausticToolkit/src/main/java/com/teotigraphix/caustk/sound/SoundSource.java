@@ -160,7 +160,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
             createTone(tone.getIndex(), tone.getName(), tone.getToneType());
         }
         SoundMixerState mixerState = scene.getSoundMixerState();
-        
+
         SoundMixerModel model = getController().getSerializeService().fromString(
                 mixerState.getData(), SoundMixerModel.class);
         model.update();

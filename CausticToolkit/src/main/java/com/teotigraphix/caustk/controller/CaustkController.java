@@ -30,7 +30,9 @@ import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.command.CommandManager;
+import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.LibraryManager;
@@ -44,11 +46,11 @@ import com.teotigraphix.caustk.sequencer.SongManager;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.SerializeService;
+import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundMixer;
+import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.SoundMixer;
 import com.teotigraphix.caustk.sound.SoundSource;
-import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.system.IMemoryManager;
 import com.teotigraphix.caustk.system.ISystemState;
 import com.teotigraphix.caustk.system.Memory.Type;
@@ -318,7 +320,7 @@ public class CaustkController implements ICaustkController {
         File applicationRoot = getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
-        
+
         CtkDebug.log("!!! Controller: Create all Sub controllers");
         // sub composites will add their ICommands in their constructors
         serializeService = new SerializeService(this);
@@ -338,7 +340,7 @@ public class CaustkController implements ICaustkController {
         memoryManager = new MemoryManager(this);
 
         memoryManager.setSelectedMemoryType(Type.USER);
-        
+
         projectManager.initialize();
     }
 

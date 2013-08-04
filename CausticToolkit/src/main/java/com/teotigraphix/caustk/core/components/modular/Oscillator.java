@@ -260,6 +260,7 @@ public class Oscillator extends ModularComponentBase {
 
         private int value;
 
+        @Override
         public final int getValue() {
             return value;
         }

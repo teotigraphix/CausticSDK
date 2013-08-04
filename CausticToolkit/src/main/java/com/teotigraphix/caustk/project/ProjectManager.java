@@ -184,9 +184,9 @@ public class ProjectManager implements IProjectManager {
         file = toProjectFile(file);
         if (!file.exists())
             throw new IOException("Project file does not exist");
-        
+
         CtkDebug.log("IProjectManager.load():" + file.getAbsolutePath());
-        
+
         project = controller.getSerializeService().fromFile(file, Project.class);
         project.open();
         controller.getDispatcher().trigger(

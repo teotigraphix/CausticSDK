@@ -132,6 +132,7 @@ public class SubOscillator extends ModularComponentBase {
 
         private int value;
 
+        @Override
         public final int getValue() {
             return value;
         }

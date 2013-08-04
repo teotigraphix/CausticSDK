@@ -230,7 +230,7 @@ public class MasterDelay extends MasterComponent {
         //if (pan == value)
         //return;
         if (value < -1f || value > 40f)
-                    throw newRangeException("pan", "-1..1", value);
+            throw newRangeException("pan", "-1..1", value);
         //pan = value;
         MasterMixerMessage.DELAY_PAN.send(getEngine(), step, value);
     }

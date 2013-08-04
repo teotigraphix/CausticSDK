@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.system;
 
@@ -18,10 +36,12 @@ public class SystemState extends SubControllerBase implements ISystemState {
 
     private boolean shiftEnabled;
 
+    @Override
     public boolean isShiftEnabled() {
         return shiftEnabled;
     }
 
+    @Override
     public void setShiftEnabled(boolean value) {
         if (shiftEnabled == value)
             return;
@@ -38,6 +58,7 @@ public class SystemState extends SubControllerBase implements ISystemState {
     /**
      * Returns whether the controller is in record mode.
      */
+    @Override
     public boolean isRecording() {
         return recording;
     }
@@ -48,6 +69,7 @@ public class SystemState extends SubControllerBase implements ISystemState {
      * @param value The new record mode.
      * @see OnSystemStateRecordModeChange
      */
+    @Override
     public void setRecording(boolean value) {
         if (recording == value)
             return;
@@ -64,6 +86,7 @@ public class SystemState extends SubControllerBase implements ISystemState {
     /**
      * Returns the current {@link SystemMode} of the controller.
      */
+    @Override
     public SystemMode getSystemMode() {
         return systemMode;
     }
@@ -74,6 +97,7 @@ public class SystemState extends SubControllerBase implements ISystemState {
      * @param value The new {@link SystemMode}.
      * @see OnSystemStateSystemModeChange
      */
+    @Override
     public void setSystemMode(SystemMode value) {
         if (systemMode == value)
             return;
@@ -90,6 +114,7 @@ public class SystemState extends SubControllerBase implements ISystemState {
     /**
      * Returns the current {@link KeyboardMode} of the controller.
      */
+    @Override
     public KeyboardMode getKeyboardMode() {
         return keyboardMode;
     }
@@ -100,6 +125,7 @@ public class SystemState extends SubControllerBase implements ISystemState {
      * @param value The new {@link KeyboardMode}.
      * @see OnSystemStateKeyboardModeChange
      */
+    @Override
     public void setKeyboardMode(KeyboardMode value) {
         if (keyboardMode == value)
             return;
@@ -189,7 +215,7 @@ public class SystemState extends SubControllerBase implements ISystemState {
     @Override
     public void restore() {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

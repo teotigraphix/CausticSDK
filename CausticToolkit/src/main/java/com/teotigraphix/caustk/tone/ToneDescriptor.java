@@ -49,7 +49,7 @@ public class ToneDescriptor {
     public ToneType getToneType() {
         return toneType;
     }
-    
+
     public final UUID getPatchId() {
         return patchId;
     }
@@ -59,6 +59,5 @@ public class ToneDescriptor {
     }
 
     private UUID patchId;
-    
 
 }

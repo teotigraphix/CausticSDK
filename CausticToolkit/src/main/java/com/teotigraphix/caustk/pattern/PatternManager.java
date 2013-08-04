@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.pattern;
 
@@ -69,11 +87,11 @@ public class PatternManager implements IControllerComponent, IPatternManager {
         // if the sequencer is locked, return
         // the sequencer is locked when we are in the last beat of the pattern
         if (getPattern() != null) {
-//            int beat = controller.getSystemSequencer().getCurrentBeat() + 1;
-//            int measure = controller.getSystemSequencer().getCurrentMeasure() + 1;
-//            int position = getPattern().getSelectedPart().getPhrase().getPosition();
-//            //            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
-//            //                throw new RuntimeException("Pattern change locked");
+            //            int beat = controller.getSystemSequencer().getCurrentBeat() + 1;
+            //            int measure = controller.getSystemSequencer().getCurrentMeasure() + 1;
+            //            int position = getPattern().getSelectedPart().getPhrase().getPosition();
+            //            //            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
+            //            //                throw new RuntimeException("Pattern change locked");
         }
 
         updateName(pattern);
@@ -91,8 +109,8 @@ public class PatternManager implements IControllerComponent, IPatternManager {
     }
 
     private void updateName(int pattern) {
-//        int bank = pattern / 16;
-//        int index = pattern % 16;
+        //        int bank = pattern / 16;
+        //        int index = pattern % 16;
         //@SuppressWarnings("unused")
         //String text = PatternUtils.toString(bank, index);
         //        systemController.setDisplay(text, "main");
@@ -175,6 +193,7 @@ public class PatternManager implements IControllerComponent, IPatternManager {
      * @see TemporaryMemory#copyPattern(int)
      * @see Memory#copyPattern(int)
      */
+    @Override
     public void configure(Pattern pattern) {
         // copies serialized data from disk into the pattern model.
         // nothing happens anywhere except inside the  Pattern right now,
@@ -249,6 +268,7 @@ public class PatternManager implements IControllerComponent, IPatternManager {
      * @see SystemSequencer#playNextPattern()
      * @see TemporaryMemory#commit()
      */
+    @Override
     public void commit(Pattern pattern) {
         for (Part part : pattern.getParts()) {
             part.getPatch().commit();

@@ -36,7 +36,7 @@ public class LibraryPatch extends LibraryItem {
     //----------------------------------
 
     private String name;
-    
+
     /**
      * The name of the Machine the patch was saved against in the .caustic file.
      */

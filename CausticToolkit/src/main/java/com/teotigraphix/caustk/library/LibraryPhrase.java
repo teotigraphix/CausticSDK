@@ -163,8 +163,7 @@ public class LibraryPhrase extends LibraryItem {
         if (name.equals("Untitled"))
             name = "";
         String pat = PatternUtils.toString(getBankIndex(), getPatternIndex());
-        return name + "[" + pat + "] "
-                + getMetadataInfo().getTags().toString();
+        return name + "[" + pat + "] " + getMetadataInfo().getTags().toString();
     }
 
 }

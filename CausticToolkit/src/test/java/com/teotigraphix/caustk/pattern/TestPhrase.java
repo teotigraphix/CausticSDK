@@ -51,7 +51,8 @@ public class TestPhrase {
 
         Library library = libraryManager.createLibrary("bazx");
         assertTrue(library.getDirectory().exists());
-        File causticFile = new File("src/test/java/com/teotigraphix/caustk/pattern/BL303A001.caustic");
+        File causticFile = new File(
+                "src/test/java/com/teotigraphix/caustk/pattern/BL303A001.caustic");
         controller.getLibraryManager().importPatterns(library, causticFile);
         controller.getLibraryManager().saveLibrary(library);
         controller.getLibraryManager().setSelectedLibrary(library);

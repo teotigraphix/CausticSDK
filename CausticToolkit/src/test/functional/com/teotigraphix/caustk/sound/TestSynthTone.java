@@ -59,7 +59,7 @@ public class TestSynthTone extends ToneBaseTest {
         subsynth.getPatternSequencer().setLength(0, 1, 8);
         Assert.assertEquals(1, subsynth.getPatternSequencer().getLength(0, 0));
         Assert.assertEquals(8, subsynth.getPatternSequencer().getLength(0, 1));
-        
+
         Assert.assertEquals(2, subsynth.getPatternSequencer().getSelectedBank(true));
         Assert.assertEquals(4, subsynth.getPatternSequencer().getSelectedIndex(true));
     }

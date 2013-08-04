@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.sequencer.ISongSequencer.ExportType;
+
 /**
  * The {@link SequencerMessage} holds all OSC messages associated with the
  * {@link ISequencer} API.

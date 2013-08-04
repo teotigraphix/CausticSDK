@@ -25,6 +25,7 @@ import com.teotigraphix.caustk.controller.CaustkController;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.caustk.sound.SoundSource;
 import com.teotigraphix.caustk.tone.Tone;
 
 /**
