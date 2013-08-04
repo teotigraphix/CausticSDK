@@ -18,9 +18,7 @@ import com.teotigraphix.caustic.mediator.ICaustkMediator;
 import com.teotigraphix.caustic.model.ApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustic.model.ICaustkModel;
-import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.IProjectManager;
@@ -116,17 +114,6 @@ public class ApplicationController implements IApplicationController {
                 });
     }
 
-    /**
-     * Starts the {@link ICaustkApplication}.
-     * 
-     * @see ICaustkConfiguration#setApplicationRoot(File)
-     * @see ICaustkConfiguration#setCausticStorage(File)
-     * @see ICaustkApplication#initialize()
-     * @see IProjectManager#initialize(File)
-     * @see ICaustkApplication#start()
-     * @see IProjectManager#load(File)
-     * @throws IOException
-     */
     @Override
     public void start() throws IOException {
         File causticStorage = new JFileChooser().getFileSystemView().getDefaultDirectory();
@@ -169,6 +156,7 @@ public class ApplicationController implements IApplicationController {
         CtkDebug.log("ApplicationController.show()");
         applicationModel.run();
         for (ICaustkModel model : models) {
+            CtkDebug.log("    Show " + model.getClass().getSimpleName());
             model.onShow();
         }
     }

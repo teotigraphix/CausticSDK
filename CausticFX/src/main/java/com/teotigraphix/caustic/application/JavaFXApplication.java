@@ -20,7 +20,6 @@ import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.teotigraphix.caustic.controller.IApplicationController;
-import com.teotigraphix.caustic.mediator.DesktopMediatorBase;
 import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustic.screen.IScreenManager;
@@ -122,8 +121,6 @@ public abstract class JavaFXApplication extends GuiceApplication {
     @Inject
     protected StageMediator stageMediator; // is there a proper place for this?
 
-    private List<DesktopMediatorBase> mediators = new ArrayList<>();
-
     private List<Class<? extends IScreenView>> screens = new ArrayList<>();
 
     private Pane root;
@@ -139,33 +136,27 @@ public abstract class JavaFXApplication extends GuiceApplication {
         CtkDebug.log("Create main app UI");
         createRootPane();
 
-        CtkDebug.log("Rack up mediators");
-        initMediators(mediators);
+        addListeners();
 
+        CtkDebug.log("Create IScreenView instances");
         initScreens(screens);
         for (Class<? extends IScreenView> type : screens) {
             screenManager.addScreen(type);
         }
 
-        CtkDebug.log("Create all mediator sub UI components");
-        for (DesktopMediatorBase mediator : mediators) {
-            mediator.create(root);
-        }
-
+        CtkDebug.log("Create ScreenManager");
         screenManager.create(root);
-
-        addListeners();
-
-        screenManager.onRegisterObservers(); // ??? Somewhere else?
-
+        
+        // registers screenManager which then will loop through all screens
         applicationController.registerMediatorObservers();
 
         CtkDebug.log("Start application controller");
+        // set roots, call initialize(), start() on application, start app model
+        // create or load last project
         applicationController.start();
 
         applicationController.registerModels();
         applicationController.registerMeditors();
-        screenManager.onRegister(); // ??? Somewhere else?
 
         applicationController.show();
 
@@ -178,7 +169,7 @@ public abstract class JavaFXApplication extends GuiceApplication {
 
     protected abstract String getRootPane();
 
-    protected abstract void initMediators(List<DesktopMediatorBase> mediators);
+    //protected abstract void initMediators(List<DesktopMediatorBase> mediators);
 
     protected void createRootPane() throws IOException {
         final Stage stage = stageModel.getStage();

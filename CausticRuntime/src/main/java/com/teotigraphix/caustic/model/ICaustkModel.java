@@ -3,12 +3,19 @@ package com.teotigraphix.caustic.model;
 
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustic.mediator.ICaustkMediator;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 /**
  * A model that is {@link ICaustkController} aware and registered in the
  * application with the {@link Injector} binder as a {@link Singleton}.
+ * <p>
+ * Model startup phase; 
+ * <ul>
+ * <li>{@link #onRegister()}</li>
+ * <li>{@link #onShow()}</li>
+ * </ul>
  */
 public interface ICaustkModel {
 
@@ -21,6 +28,13 @@ public interface ICaustkModel {
      */
     IDispatcher getDispatcher();
 
+    /**
+     * The model's registration phase where state is created from deserialzed
+     * project state.
+     * <p>
+     * Mediators have not had their {@link ICaustkMediator#onRegister()} called,
+     * the {@link #onShow()} method is where model's update deserialized state.
+     */
     void onRegister();
 
     /**
@@ -30,6 +44,9 @@ public interface ICaustkModel {
      * All state the has been deserialized from the project session will get
      * "executed" in the model here, the mediators will catch the model events
      * and update the user interface according to the update logic.
+     * <p>
+     * Any logic that gets executed here should not depend on an state changes
+     * from within this phase.
      */
     void onShow();
 }
