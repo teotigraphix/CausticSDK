@@ -54,10 +54,11 @@ public class FileUtil {
         writer.close();
     }
 
-    public static DirectoryChooser createDefaultDirectoryChooser(String initialPath) {
+    public static DirectoryChooser createDefaultDirectoryChooser(String initialPath, String title) {
         DirectoryChooser chooser = new DirectoryChooser();
         File directory = getParentOrUserDirectory(initialPath);
         chooser.setInitialDirectory(directory);
+        chooser.setTitle(title);
         return chooser;
     }
 

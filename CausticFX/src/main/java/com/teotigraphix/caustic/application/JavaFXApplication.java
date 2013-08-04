@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustic.application;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.scene.SceneBuilder;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
 import javafx.stage.WindowEvent;
@@ -24,6 +26,7 @@ import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.model.IStageModel;
 import com.teotigraphix.caustic.screen.IScreenManager;
 import com.teotigraphix.caustic.screen.IScreenView;
+import com.teotigraphix.caustic.utils.FileUtil;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.core.CtkDebug;
 
@@ -119,11 +122,21 @@ public abstract class JavaFXApplication extends GuiceApplication {
     protected IScreenManager screenManager;
 
     @Inject
+    protected IPreferenceManager preferenceManager;
+
+    @Inject
+    protected IApplicationPreferences applicationPreferences;
+
+    @Inject
     protected StageMediator stageMediator; // is there a proper place for this?
 
     private List<Class<? extends IScreenView>> screens = new ArrayList<>();
 
     private Pane root;
+
+    Pane getRoot() {
+        return root;
+    }
 
     @Override
     public void init(List<Module> modules) throws Exception {
@@ -138,6 +151,8 @@ public abstract class JavaFXApplication extends GuiceApplication {
 
         addListeners();
 
+        setupWorkingDirectory();
+
         CtkDebug.log("Create IScreenView instances");
         initScreens(screens);
         for (Class<? extends IScreenView> type : screens) {
@@ -145,8 +160,8 @@ public abstract class JavaFXApplication extends GuiceApplication {
         }
 
         CtkDebug.log("Create ScreenManager");
-        screenManager.create(root);
-        
+        screenManager.create(getRoot());
+
         // registers screenManager which then will loop through all screens
         applicationController.registerMediatorObservers();
 
@@ -162,6 +177,26 @@ public abstract class JavaFXApplication extends GuiceApplication {
 
         CtkDebug.log("Show the application");
         primaryStage.show();
+    }
+
+    private void setupWorkingDirectory() {
+        String causticDirectory = preferenceManager.getString("causticRoot", null);
+        if (causticDirectory == null) {
+            DirectoryChooser chooser = FileUtil.createDefaultDirectoryChooser(null,
+                    "Choose Caustic application root");
+            File causticFile = chooser.showDialog(null);
+            if (causticFile != null && causticFile.isDirectory()) {
+                causticDirectory = causticFile.getPath();
+                preferenceManager.edit().putString("causticRoot", causticDirectory).commit();
+            } else {
+                throw new RuntimeException("Caustic directory invalid.");
+            }
+        }
+
+        File workingDirectory = new File(causticDirectory).getParentFile();
+        applicationProvider.get().getConfiguration().setCausticStorage(workingDirectory);
+        File applicationRoot = new File(workingDirectory, resourceBundle.getString("APP_DIRECTORY"));
+        applicationProvider.get().getConfiguration().setApplicationRoot(applicationRoot);
     }
 
     // screenManager.addScreen(MainScreenView.class);

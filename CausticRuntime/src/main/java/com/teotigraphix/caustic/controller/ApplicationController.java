@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.inject.Named;
-import javax.swing.JFileChooser;
 
 import org.androidtransfuse.event.EventObserver;
 
@@ -116,14 +115,6 @@ public class ApplicationController implements IApplicationController {
 
     @Override
     public void start() throws IOException {
-        File causticStorage = new JFileChooser().getFileSystemView().getDefaultDirectory();
-        File applicationRoot = new File(causticStorage, resourceBundle.getString("APP_DIRECTORY"));
-
-        CtkDebug.log("> set caustic storage: " + causticStorage.getAbsolutePath());
-        CtkDebug.log("> set application root: " + applicationRoot.getAbsolutePath());
-        getController().getConfiguration().setCausticStorage(causticStorage);
-        getController().getConfiguration().setApplicationRoot(applicationRoot);
-
         getController().getApplication().initialize();
 
         // from event calls appModel.start()
