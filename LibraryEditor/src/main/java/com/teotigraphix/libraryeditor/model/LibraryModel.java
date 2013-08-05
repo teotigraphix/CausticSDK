@@ -4,7 +4,10 @@ package com.teotigraphix.libraryeditor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustic.application.IApplicationPreferences;
+import com.teotigraphix.caustic.application.IPreferenceManager;
 import com.teotigraphix.caustic.model.ModelBase;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.Library;
@@ -16,7 +19,12 @@ import com.teotigraphix.caustk.library.LibraryScene;
 @Singleton
 public class LibraryModel extends ModelBase {
 
-    private ItemKind selectedKind;
+    private static final String PREF_SELECTED_KIND = "LibraryModel_selectedKind";
+
+    @Inject
+    IPreferenceManager applicationPreferences;
+
+    private ItemKind selectedKind = ItemKind.SCENE;
 
     public final ItemKind getSelectedKind() {
         return selectedKind;
@@ -29,6 +37,8 @@ public class LibraryModel extends ModelBase {
         selectedKind = value;
         getController().getDispatcher().trigger(
                 new OnLibraryModelSelectedKindChange(selectedKind, oldKind));
+        applicationPreferences.edit().putInt(PREF_SELECTED_KIND, selectedKind.getIndex()).commit();
+
     }
 
     private LibraryItemProxy selectedItem;
@@ -37,8 +47,14 @@ public class LibraryModel extends ModelBase {
 
     private LibraryPhrase libraryPhrase;
 
+    private int pendingKind;
+
     public void setSelectedItem(LibraryItemProxy value) {
         selectedItem = value;
+        if (selectedItem.getItem() instanceof LibraryPatch)
+            libraryPatch = (LibraryPatch)selectedItem.getItem();
+        else if (selectedItem.getItem() instanceof LibraryPhrase)
+            libraryPhrase = (LibraryPhrase)selectedItem.getItem();
         getController().getDispatcher().trigger(new OnLibraryModelSelectedItemChange(selectedItem));
     }
 
@@ -118,14 +134,14 @@ public class LibraryModel extends ModelBase {
 
     @Override
     public void onShow() {
-        // TODO Auto-generated method stub
 
+        setSelectedKind(ItemKind.fromInt(pendingKind));
+        pendingKind = -1;
     }
 
     @Override
     public void onRegister() {
-        // TODO Auto-generated method stub
-
+        pendingKind = applicationPreferences.getInt(PREF_SELECTED_KIND, 0);
     }
 
     private List<LibraryItemProxy> scenes = new ArrayList<>();

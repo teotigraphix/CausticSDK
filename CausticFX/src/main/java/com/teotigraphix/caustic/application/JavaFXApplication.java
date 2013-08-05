@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.SceneBuilder;
 import javafx.scene.layout.Pane;
@@ -21,6 +23,7 @@ import com.cathive.fx.guice.GuiceApplication;
 import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.teotigraphix.caustic.application.IPreferenceManager.Editor;
 import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustic.mediator.StageMediator;
 import com.teotigraphix.caustic.model.IStageModel;
@@ -134,6 +137,8 @@ public abstract class JavaFXApplication extends GuiceApplication {
 
     private Pane root;
 
+    private Editor editor;
+
     Pane getRoot() {
         return root;
     }
@@ -176,7 +181,58 @@ public abstract class JavaFXApplication extends GuiceApplication {
         applicationController.show();
 
         CtkDebug.log("Show the application");
-        primaryStage.show();
+
+        show();
+    }
+
+    public void show() {
+        double x = applicationPreferences.getFloat("x", -10f);
+        double y = applicationPreferences.getFloat("y", -10f);
+        double width = applicationPreferences.getFloat("width", -10f);
+        double height = applicationPreferences.getFloat("height", -10f);
+
+        Stage stage = stageModel.getStage();
+        x = (x < 0) ? 0 : x;
+        y = (y < 0) ? 0 : y;
+        width = (width == -10) ? stage.getWidth() : width;
+        height = (height == -10) ? stage.getHeight() : height;
+
+        stage.setX(x);
+        stage.setY(y);
+        stage.setWidth(width);
+        stage.setHeight(height);
+
+        editor = applicationPreferences.edit();
+
+        stage.xProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+                    Number newValue) {
+                editor.putFloat("x", newValue.floatValue());
+            }
+        });
+        stage.yProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+                    Number newValue) {
+                editor.putFloat("y", newValue.floatValue());
+            }
+        });
+        stage.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+                    Number newValue) {
+                editor.putFloat("width", newValue.floatValue());
+            }
+        });
+        stage.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue,
+                    Number newValue) {
+                editor.putFloat("height", newValue.floatValue());
+            }
+        });
+        stage.show();
     }
 
     private void setupWorkingDirectory() {
@@ -218,6 +274,7 @@ public abstract class JavaFXApplication extends GuiceApplication {
         stageModel.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
                 try {
+                    editor.commit();
                     applicationProvider.get().save();
                 } catch (IOException e) {
                     e.printStackTrace();

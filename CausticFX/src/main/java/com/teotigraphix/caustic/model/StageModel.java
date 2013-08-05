@@ -4,8 +4,9 @@ package com.teotigraphix.caustic.model;
 import javafx.stage.Stage;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
-//@Singleton
+@Singleton
 public class StageModel extends ModelBase implements IStageModel {
 
     @Inject
@@ -58,7 +59,7 @@ public class StageModel extends ModelBase implements IStageModel {
         if (applicationModel.isDirty()) {
             postfix = "*";
         }
-        getStage().setTitle("TODO StageModel - " + title + postfix);
+        getStage().setTitle(applicationModel.getName() + " - " + title + postfix);
     }
 
     public StageModel() {
@@ -67,14 +68,10 @@ public class StageModel extends ModelBase implements IStageModel {
 
     @Override
     public void onShow() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onRegister() {
-        // TODO Auto-generated method stub
-
     }
 
 }

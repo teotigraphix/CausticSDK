@@ -21,7 +21,8 @@ public class PreferenceManager implements IPreferenceManager {
 
     public PreferenceManager() {
         // User Preference Node: /com.teotigraphix.caustic.application.PreferenceManager
-        setupUserNode(getClass().getName());
+        if (getClass().getName().equals("com.teotigraphix.caustic.application.PreferenceManager"))
+            setupUserNode(getClass().getName());
     }
 
     @Override

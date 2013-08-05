@@ -1,17 +1,22 @@
 
 package com.teotigraphix.libraryeditor.view;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import org.androidtransfuse.event.EventObserver;
@@ -39,6 +44,9 @@ public class LibraryItemPaneController extends ViewStackController {
     public HBox toggleBar;
 
     @FXML
+    public TextField searchText;
+
+    @FXML
     public StackPane viewStack;
 
     @FXML
@@ -64,6 +72,38 @@ public class LibraryItemPaneController extends ViewStackController {
 
     BeanPathAdapter<Library> libraryHolder;
 
+    private Map<ItemKind, ListState> state = new HashMap<>();
+
+    class ListState {
+
+        private ItemKind kind;
+
+        public ItemKind getKind() {
+            return kind;
+        }
+
+        private ListView<LibraryItemProxy> list;
+
+        public ListView<LibraryItemProxy> getList() {
+            return list;
+        }
+
+        public ListState(ItemKind kind, ListView<LibraryItemProxy> list) {
+            this.kind = kind;
+            this.list = list;
+        }
+
+        private String searchText = "";
+
+        public String getSearchText() {
+            return searchText;
+        }
+
+        public void setSearchText(String value) {
+            searchText = value;
+        }
+    }
+
     public LibraryItemPaneController() {
     }
 
@@ -73,7 +113,7 @@ public class LibraryItemPaneController extends ViewStackController {
         //System.out.println("LibraryItemPaneController.registerObservers()");
 
         // OnLibraryModelRefresh
-        getController().getDispatcher().register(OnLibraryModelRefresh.class,
+        getController().register(OnLibraryModelRefresh.class,
                 new EventObserver<OnLibraryModelRefresh>() {
                     @Override
                     public void trigger(OnLibraryModelRefresh object) {
@@ -82,7 +122,7 @@ public class LibraryItemPaneController extends ViewStackController {
                 });
 
         // OnLibraryManagerSelectedLibraryChange
-        getController().getDispatcher().register(OnLibraryManagerSelectedLibraryChange.class,
+        getController().register(OnLibraryManagerSelectedLibraryChange.class,
                 new EventObserver<OnLibraryManagerSelectedLibraryChange>() {
                     @Override
                     public void trigger(OnLibraryManagerSelectedLibraryChange object) {
@@ -91,7 +131,7 @@ public class LibraryItemPaneController extends ViewStackController {
                 });
 
         // OnLibraryManagerImportComplete
-        getController().getDispatcher().register(OnLibraryManagerImportComplete.class,
+        getController().register(OnLibraryManagerImportComplete.class,
                 new EventObserver<OnLibraryManagerImportComplete>() {
                     @Override
                     public void trigger(OnLibraryManagerImportComplete object) {
@@ -100,7 +140,7 @@ public class LibraryItemPaneController extends ViewStackController {
                 });
 
         // OnLibraryItemModelSelectedKindChange
-        getController().getDispatcher().register(OnLibraryModelSelectedKindChange.class,
+        getController().register(OnLibraryModelSelectedKindChange.class,
                 new EventObserver<OnLibraryModelSelectedKindChange>() {
                     @Override
                     public void trigger(OnLibraryModelSelectedKindChange object) {
@@ -119,6 +159,19 @@ public class LibraryItemPaneController extends ViewStackController {
 
     protected void selectedKindChangeHandler(ItemKind kind, ItemKind oldKind) {
         setSelectedIndex(kind.getIndex());
+        searchText.setText(getListState().getSearchText());
+    }
+
+    protected List<LibraryItemProxy> getItems(ItemKind kind) {
+        switch (kind) {
+            case SCENE:
+                return libraryModel.getScenes();
+            case PHRASE:
+                return libraryModel.getPhrases();
+            case PATCH:
+                return libraryModel.getPatches();
+        }
+        return null;
     }
 
     protected void onLibraryManagerSelectedLibraryChangeHandler() {
@@ -126,6 +179,15 @@ public class LibraryItemPaneController extends ViewStackController {
         titleLabel.setText(library.getName());
 
         libraryModel.refresh();
+
+        searchText.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                    String newValue) {
+                getListState().setSearchText(newValue);
+                handleSearchByKey(getListState().getList(), oldValue, newValue);
+            }
+        });
 
         // Scenes
         sceneList.setItems(FXCollections.observableArrayList(libraryModel.getScenes()));
@@ -174,30 +236,69 @@ public class LibraryItemPaneController extends ViewStackController {
                         }
                     }
                 });
+
+        // TEMP
+        sceneList.getSelectionModel().select(0);
     }
 
     protected void onLibraryModelRefreshHandler() {
-        switch (libraryModel.getSelectedKind()) {
-            case SCENE:
-                sceneList.setItems(null);
-                sceneList.setItems(FXCollections.observableArrayList(libraryModel.getScenes()));
-                break;
+        getListState().getList().setItems(null);
+        getListState().getList().setItems(
+                FXCollections.observableArrayList(getItems(libraryModel.getSelectedKind())));
+    }
 
-            case PATCH:
-                patchList.setItems(null);
-                patchList.setItems(FXCollections.observableArrayList(libraryModel.getPatches()));
-                break;
-
-            case PHRASE:
-                phraseList.setItems(null);
-                phraseList.setItems(FXCollections.observableArrayList(libraryModel.getPhrases()));
-                break;
-        }
+    private ListState getListState() {
+        return state.get(libraryModel.getSelectedKind());
     }
 
     @Override
     public void onRegister() {
+
+    }
+
+    public void handleSearchByKey(ListView<LibraryItemProxy> list, String oldVal, String newVal) {
+        // If the number of characters in the text box is less than last time
+        // it must be because the user pressed delete
+        if (oldVal != null && (newVal.length() < oldVal.length())) {
+            // Restore the lists original set of entries
+            // and start from the beginning
+            list.setItems(FXCollections.observableArrayList(getItems(libraryModel.getSelectedKind())));
+        }
+
+        // Break out all of the parts of theO search text
+        // by splitting on white space
+        String[] parts = newVal.toUpperCase().split(" ");
+
+        // Filter out the entries that don't contain the entered text
+        ObservableList<LibraryItemProxy> subentries = FXCollections.observableArrayList();
+        for (LibraryItemProxy entry : list.getItems()) {
+            boolean match = true;
+            // String entryText = (String)entry.getItem().getMetadataInfo().getTagsString();
+            String entryText = (String)entry.getItem().toString();
+            for (String part : parts) {
+                // The entry needs to contain all portions of the
+                // search string *but* in any order
+                if (!entryText.toUpperCase().contains(part)) {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match) {
+                subentries.add(entry);
+            }
+        }
+        list.setItems(subentries);
+    }
+
+    @Override
+    public void create(Pane root) {
         setToggleBar(toggleBar);
         setStackPane(viewStack);
+
+        state = new HashMap<ItemKind, ListState>();
+        state.put(ItemKind.SCENE, new ListState(ItemKind.SCENE, sceneList));
+        state.put(ItemKind.PHRASE, new ListState(ItemKind.PHRASE, phraseList));
+        state.put(ItemKind.PATCH, new ListState(ItemKind.PATCH, patchList));
     }
 }

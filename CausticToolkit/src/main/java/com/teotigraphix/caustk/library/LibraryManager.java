@@ -85,7 +85,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     @Override
     public void setSelectedLibrary(Library value) {
         getModel().setSelectedLibrary(value);
-        getController().getDispatcher().trigger(new OnLibraryManagerSelectedLibraryChange());
+        getController().getDispatcher().trigger(new OnLibraryManagerSelectedLibraryChange(value));
     }
 
     public LibraryManager(ICaustkController controller) {

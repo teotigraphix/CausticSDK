@@ -4,6 +4,7 @@ package com.teotigraphix.libraryeditor.view;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 import com.cathive.fx.guice.FXMLComponent;
@@ -53,7 +54,10 @@ public class MainToolBar extends HBox {
     }
 
     public void initialize() {
-        System.out.println("");
+        System.out.println("MainToolBar.initialize()");
+        newButton.setTooltip(new Tooltip("Create a new Library"));
+        loadButton.setTooltip(new Tooltip("Load an exiting Library"));
+        saveButton.setTooltip(new Tooltip("Save the current Library"));
     }
 
 }

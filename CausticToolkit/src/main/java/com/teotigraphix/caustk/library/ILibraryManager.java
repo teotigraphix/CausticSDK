@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.core.CausticException;
 public interface ILibraryManager extends IControllerComponent {
 
     Library getSelectedLibrary();
-    
+
     /**
      * @see OnLibraryManagerSelectedLibraryChange
      * @param value
@@ -56,6 +56,16 @@ public interface ILibraryManager extends IControllerComponent {
     void deleteLibrary(File reletivePath) throws IOException;
 
     public static class OnLibraryManagerSelectedLibraryChange {
+
+        private Library library;
+
+        public Library getLibrary() {
+            return library;
+        }
+
+        public OnLibraryManagerSelectedLibraryChange(Library library) {
+            this.library = library;
+        }
 
     }
 

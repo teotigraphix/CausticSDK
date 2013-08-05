@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import org.androidtransfuse.event.EventObserver;
@@ -48,15 +49,7 @@ public class EditorViewStackController extends ViewStackController {
 
     @Override
     public void onRegister() {
-        // TODO Auto-generated method stub
         super.onRegister();
-        // XXX Needs to be put in Model onShow()
-        setStackPane(stackPane);
-
-        metaName.textProperty().addListener(changedHandler);
-        metaAuthor.textProperty().addListener(changedHandler);
-        metaDescription.textProperty().addListener(changedHandler);
-        metaTags.textProperty().addListener(changedHandler);
     }
 
     private ChangeListener<String> changedHandler = new ChangeListener<String>() {
@@ -69,7 +62,7 @@ public class EditorViewStackController extends ViewStackController {
     @Override
     protected void registerObservers() {
         super.registerObservers();
-        System.out.println("EditorViewStackController.registerObservers()");
+        //System.out.println("EditorViewStackController.registerObservers()");
         getController().getDispatcher().register(OnLibraryModelSelectedItemChange.class,
                 new EventObserver<OnLibraryModelSelectedItemChange>() {
                     @Override
@@ -119,6 +112,16 @@ public class EditorViewStackController extends ViewStackController {
             System.out.println("EditorViewStackController.sceneItemChanged( SET )");
             libraryItem.setBean(libraryItemProxy);
         }
+    }
+
+    @Override
+    public void create(Pane root) {
+        setStackPane(stackPane);
+
+        metaName.textProperty().addListener(changedHandler);
+        metaAuthor.textProperty().addListener(changedHandler);
+        metaDescription.textProperty().addListener(changedHandler);
+        metaTags.textProperty().addListener(changedHandler);
     }
 
 }

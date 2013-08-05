@@ -9,7 +9,7 @@ import com.cathive.fx.guice.PersistentProperty.NodeType;
 import com.google.inject.Singleton;
 
 @Singleton
-public class WindowPreferences {
+public abstract class WindowPreferences {
     @PersistentProperty(clazz = WindowPreferences.class, key = "x", type = NodeType.USER_NODE)
     private DoubleProperty x = new SimpleDoubleProperty();
 

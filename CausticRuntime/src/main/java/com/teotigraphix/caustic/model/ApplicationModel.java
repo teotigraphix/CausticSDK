@@ -1,11 +1,24 @@
 
 package com.teotigraphix.caustic.model;
 
+import java.util.ResourceBundle;
+
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.teotigraphix.caustk.core.CtkDebug;
 
 @Singleton
 public class ApplicationModel extends ModelBase implements IApplicationModel {
+
+    @Inject
+    @Named(value = "resources")
+    ResourceBundle resourceBundle;
+
+    @Override
+    public String getName() {
+        return resourceBundle.getString("APP_TITLE");
+    }
 
     //----------------------------------
     // dirty

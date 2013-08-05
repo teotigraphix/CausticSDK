@@ -11,7 +11,12 @@ public interface IApplicationModel {
      * The {@link IApplicationModel}'s local dispatcher.
      */
     IDispatcher getDispatcher();
-
+    
+    /**
+     * Returns the application's name.
+     */
+    String getName();
+    
     /**
      * Returns whether the application state is dirty.
      */
@@ -85,5 +90,6 @@ public interface IApplicationModel {
             this.dirty = dirty;
         }
     }
+
 
 }

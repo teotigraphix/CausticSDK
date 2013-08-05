@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.IOException;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.application.IDeviceFactory;
@@ -94,6 +96,8 @@ public interface ICaustkController extends ICausticEngine {
 
     void execute(String message, Object... args);
 
+    <T> void register(Class<T> type, final EventObserver<T> observer);
+
     void undo();
 
     void redo();
@@ -129,5 +133,4 @@ public interface ICaustkController extends ICausticEngine {
     //    public class OnApplicationClose {
     //
     //    }
-
 }

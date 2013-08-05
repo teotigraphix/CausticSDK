@@ -15,7 +15,6 @@ import com.cathive.fx.guice.GuiceFXMLLoader;
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.mediator.MediatorBase;
 import com.teotigraphix.caustic.model.IStageModel;
-import com.teotigraphix.caustic.preferences.WindowPreferences;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 
 @FXMLController
@@ -38,9 +37,6 @@ public class RootPaneController extends MediatorBase {
     IStageModel stageModel;
 
     @Inject
-    WindowPreferences preference;
-
-    @Inject
     ICaustkApplicationProvider provider;
 
     public RootPaneController() {
@@ -50,7 +46,7 @@ public class RootPaneController extends MediatorBase {
     public void initialize() {
         // no sub components are created
 
-       // registerObservers();
+        // registerObservers();
 
         Parent libraryPane = null;
         Parent editorPane = null;
@@ -74,28 +70,6 @@ public class RootPaneController extends MediatorBase {
                 getController().getApplication().close();
             }
         });
-    }
-
-    public void show() {
-        double x = preference.xProperty().get();
-        double y = preference.yProperty().get();
-        double width = preference.widthProperty().get();
-        double height = preference.heightProperty().get();
-
-        Stage stage = stageModel.getStage();
-        x = (x < 0) ? 0 : x;
-        y = (y < 0) ? 0 : y;
-        stage.setX(x);
-        stage.setY(y);
-        stage.setWidth(width);
-        stage.setHeight(height);
-
-        preference.xProperty().bind(stage.xProperty());
-        preference.yProperty().bind(stage.yProperty());
-        preference.widthProperty().bind(stage.widthProperty());
-        preference.heightProperty().bind(stage.heightProperty());
-
-        stage.show();
     }
 
     @Override

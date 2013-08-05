@@ -8,14 +8,14 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustic.mediator.ICaustkMediator;
-import com.teotigraphix.caustic.mediator.MediatorBase;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 
-public class ViewStackController extends MediatorBase implements ICaustkMediator {
+public abstract class ViewStackController extends FXControllerBase implements ICaustkMediator {
 
     @Inject
     ICaustkApplicationProvider provider;
@@ -111,9 +111,11 @@ public class ViewStackController extends MediatorBase implements ICaustkMediator
         return toggleBar.getChildrenUnmodifiable().indexOf(button);
     }
 
+    public abstract void create(Pane root);
+
     @Override
     public void onRegister() {
         // TODO Auto-generated method stub
-        
+
     }
 }

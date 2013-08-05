@@ -102,6 +102,8 @@ public class MainToolBarMediator extends MediatorBase {
         DirectoryChooser chooser = FileUtil.createDefaultDirectoryChooser(null,
                 "Choose library directory to load");
         File libDirectory = chooser.showDialog(null);
+        if (libDirectory == null)
+            return;
         Library library = getController().getLibraryManager().loadLibrary(libDirectory.getName());
         getController().getLibraryManager().setSelectedLibrary(library);
     }

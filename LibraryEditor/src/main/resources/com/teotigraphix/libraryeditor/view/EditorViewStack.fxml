@@ -39,6 +39,9 @@
                 <RowConstraints maxHeight="67.0" minHeight="5.0" prefHeight="36.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="178.0" minHeight="10.0" prefHeight="129.0" vgrow="ALWAYS" />
               </rowConstraints>
+              <StackPane.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+              </StackPane.margin>
             </GridPane>
           </children>
         </StackPane>

@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
@@ -77,6 +79,11 @@ public class CaustkController implements ICaustkController {
     @Override
     public <T extends IControllerComponent> T getComponent(Class<T> clazz) {
         return clazz.cast(api.get(clazz));
+    }
+
+    @Override
+    public <T> void register(Class<T> eventType, final EventObserver<T> observer) {
+        getDispatcher().register(eventType, observer);
     }
 
     //----------------------------------
