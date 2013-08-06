@@ -19,10 +19,80 @@
 
 package com.teotigraphix.caustk.tone;
 
-public class ToneUtils {
+import java.io.IOException;
+import java.io.StringReader;
+
+import com.google.gson.stream.JsonReader;
+
+/**
+ * Various static methods used with the various Tone framework.
+ */
+public final class ToneUtils {
 
     public static int getComponentCount(Tone tone) {
         return tone.getComponentCount();
     }
 
+    /**
+     * Returns the specific tone class using the <code>toneType</code> property
+     * in the JSON string.
+     * 
+     * @param data Valid serialized Tone data.
+     * @throws IOException
+     */
+    public static Class<? extends Tone> getToneClass(String data) throws IOException {
+        ToneType type = readToneType(data);
+        switch (type) {
+            case Bassline:
+                return BasslineTone.class;
+            case Beatbox:
+                return BeatboxTone.class;
+            case EightBitSynth:
+                return EightBitSynth.class;
+            case FMSynth:
+                return FMSynthTone.class;
+            case Modular:
+                return ModularTone.class;
+            case Organ:
+                return OrganTone.class;
+            case PadSynth:
+                return PadSynthTone.class;
+            case PCMSynth:
+                return PCMSynthTone.class;
+            case SubSynth:
+                return SubSynthTone.class;
+            case Vocoder:
+                return VocoderTone.class;
+        }
+        return null;
+    }
+
+    /**
+     * Reads and returns the {@link ToneType} from the JSON data.
+     * 
+     * @param data Valid serialized Tone data.
+     * @throws IOException
+     */
+    public static ToneType readToneType(String data) throws IOException {
+        JsonReader reader = new JsonReader(new StringReader(data));
+        String type = null;
+        try {
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                if (name.equals("toneType")) {
+                    type = reader.nextString();
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+        } finally {
+            reader.close();
+        }
+        if (type != null)
+            return ToneType.valueOf(type);
+
+        return null;
+    }
 }

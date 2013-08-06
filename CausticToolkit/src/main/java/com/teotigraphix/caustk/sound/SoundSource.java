@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.sound;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,11 +50,12 @@ import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
+import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 
 public class SoundSource extends SubControllerBase implements ISoundSource {
 
-    private int maxNumTones = 6; // 14
+    private int maxNumTones = 14;
 
     @Override
     protected Class<? extends SubControllerModel> getModelType() {
@@ -164,6 +166,26 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         SoundMixerModel model = getController().getSerializeService().fromString(
                 mixerState.getData(), SoundMixerModel.class);
         model.update();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends Tone> T createTone(String data) throws CausticException {
+        Tone tone = null;
+        try {
+            tone = getController().getSerializeService().fromString(data,
+                    ToneUtils.getToneClass(data));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int index = nextIndex();
+        tone.setIndex(index);
+
+        RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
+                index);
+
+        return (T)tone;
     }
 
     @Override

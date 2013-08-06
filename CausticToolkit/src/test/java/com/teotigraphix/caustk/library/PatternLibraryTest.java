@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.teotigraphix.caustk.application.CaustkApplicationUtils;
@@ -16,6 +17,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 
+@Ignore
 public class PatternLibraryTest {
     // PART1A, PART2A, PART3A, PART1B, PART2B, PART3B
     private static final File A001 = new File(

@@ -66,8 +66,10 @@ public class MasterMixerTest {
         //------------------------------
         Assert.assertFalse(masterMixer.getLimiter().isBypass());
         Assert.assertEquals(0.01899999938905239f, masterMixer.getLimiter().getAttack(), 0f);
-        Assert.assertEquals(0.5f, masterMixer.getLimiter().getPost(), 0f);
-        Assert.assertEquals(2.0f, masterMixer.getLimiter().getPre(), 0f);
+        // XXX was 0.5 
+        Assert.assertEquals(1.0f, masterMixer.getLimiter().getPost(), 0f);
+        // XXX was 2.0
+        Assert.assertEquals(1.0f, masterMixer.getLimiter().getPre(), 0f);
         Assert.assertEquals(0.25f, masterMixer.getLimiter().getRelease(), 0f);
 
         //------------------------------

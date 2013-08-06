@@ -60,6 +60,21 @@ public interface ISoundSource extends IRestore {
     //    void noteOff(Tone tone, int pitch);
 
     /**
+     * Creates and returns a Tone instance from serialized JSON data.
+     * <p>
+     * When deserialized, the sound source does not use the index property of
+     * the tone, it will assign the next available index to the tone.
+     * <p>
+     * Use {@link #createScene(LibraryScene)} to recreate a rack session.
+     * 
+     * @param data Valid serialized Tone data.
+     * @throws CausticException
+     */
+    <T extends Tone> T createTone(String data) throws CausticException;
+    
+    // XXX make tone creation generic
+    
+    /**
      * @param name
      * @param toneType
      * @throws CausticException

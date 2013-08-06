@@ -151,7 +151,7 @@ public class Tone implements ISerialize, IRestore {
 
     private transient Map<Class<? extends ToneComponent>, ToneComponent> internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
 
-    private Map<String, String> components = new HashMap<String, String>();
+    private Map<String, Map<String, String>> components = new HashMap<String, Map<String, String>>();
 
     public void addComponent(Class<? extends ToneComponent> clazz, ToneComponent instance) {
         internalComponents.put(clazz, instance);
@@ -186,11 +186,15 @@ public class Tone implements ISerialize, IRestore {
 
     @Override
     public void sleep() {
-        components = new HashMap<String, String>();
+        components = new HashMap<String, Map<String, String>>();
         for (ToneComponent toneComponent : internalComponents.values()) {
-            String data = toneComponent.serialize();
+            HashMap<String, String> map = new HashMap<String, String>();
             String className = toneComponent.getClass().getName();
-            components.put(className, data);
+            if (toneComponent instanceof ISerialize) {
+                String data = toneComponent.serialize();
+                map.put("state", data);
+            }
+            components.put(className, map);
         }
     }
 
@@ -200,18 +204,33 @@ public class Tone implements ISerialize, IRestore {
         // the wakeup() method acts like the Constructor when the instance is deserialized
         this.controller = controller;
         internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
-        for (Entry<String, String> entry : components.entrySet()) {
+        for (Entry<String, Map<String, String>> entry : components.entrySet()) {
             String className = entry.getKey();
-            String data = entry.getValue();
+            Map<String, String> component = entry.getValue();
+            String data = "";
             Class<?> cls = null;
             try {
                 cls = Class.forName(className);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            ToneComponent component = (ToneComponent)getController().getSerializeService()
+
+            if (component.containsKey("state")) {
+                data = component.get("state");
+            }
+
+            ToneComponent instance = (ToneComponent)getController().getSerializeService()
                     .fromString(data, cls);
-            addComponent((Class<? extends ToneComponent>)cls, component);
+            if (instance == null) {
+                try {
+                    instance = (ToneComponent)cls.newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            addComponent((Class<? extends ToneComponent>)cls, instance);
         }
     }
 
