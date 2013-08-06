@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -24,14 +25,13 @@ public class RootPaneController extends MediatorBase {
 
     private static final String EDITOR_PANE = "/com/teotigraphix/libraryeditor/view/EditorViewStack.fxml";
 
+    private static final String MAIN_TOOL_BAR = "/com/teotigraphix/libraryeditor/view/MainToolBar.fxml";
+
     @FXML
     BorderPane borderPane;
 
     @Inject
     GuiceFXMLLoader loader;
-
-    @Inject
-    MainToolBar mainToolBar;
 
     @Inject
     IStageModel stageModel;
@@ -50,9 +50,12 @@ public class RootPaneController extends MediatorBase {
 
         Parent libraryPane = null;
         Parent editorPane = null;
+        HBox mainToolBar = null;
         try {
             libraryPane = loader.load(getClass().getResource(LIBRARY_PANE)).getRoot();
             editorPane = loader.load(getClass().getResource(EDITOR_PANE)).getRoot();
+            mainToolBar = loader.load(getClass().getResource(MAIN_TOOL_BAR)).getRoot();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

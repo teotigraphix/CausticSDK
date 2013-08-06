@@ -163,7 +163,7 @@ public abstract class JavaFXApplication extends GuiceApplication {
         for (Class<? extends IScreenView> type : screens) {
             screenManager.addScreen(type);
         }
-
+        
         CtkDebug.log("Create ScreenManager");
         screenManager.create(getRoot());
 

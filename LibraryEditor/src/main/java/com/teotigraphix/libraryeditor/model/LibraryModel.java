@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustic.application.IApplicationPreferences;
 import com.teotigraphix.caustic.application.IPreferenceManager;
 import com.teotigraphix.caustic.model.ModelBase;
 import com.teotigraphix.caustk.controller.ICaustkController;

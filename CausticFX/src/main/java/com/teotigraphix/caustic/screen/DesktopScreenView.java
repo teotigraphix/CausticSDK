@@ -30,10 +30,17 @@ public abstract class DesktopScreenView extends DesktopMediatorBase implements I
     @Override
     public <T> void create(T root) {
         Pane base = Pane.class.cast(root);
-        Pane component = load(getResource());
-        setRoot(component);
-        base.getChildren().add(component);
-        create(component);
+        String resource = getResource();
+        if (resource == null) {
+            // placeholder for injections
+            setRoot((Pane)root);
+            create((Pane)root);
+        } else {
+            Pane component = load(resource);
+            setRoot(component);
+            base.getChildren().add(component);
+            create(component);
+        }
     }
 
     public static class ScreenRootFX implements IScreenRoot {

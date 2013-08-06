@@ -5,21 +5,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 
-<fx:root type="HBox" spacing="5.0" xmlns:fx="http://javafx.com/fxml/1"
-	xmlns="http://javafx.com/javafx/2.2">
-	<children>
-		<Button id="createButton" fx:id="newButton" mnemonicParsing="false"
-			onAction="#onNewButtonHandler" prefWidth="75.0" text="New" />
-		<Button id="saveButton" fx:id="loadButton" mnemonicParsing="false"
-			onAction="#onLoadButtonHandler" prefWidth="75.0" text="Load" />
-		<Button fx:id="saveButton" mnemonicParsing="false"
-			onAction="#onSaveButtonHandler" prefWidth="75.0" text="Save" />
-		<Button fx:id="importButton" mnemonicParsing="false"
-			onAction="#onImportButtonHandler" prefWidth="75.0" text="Import" />
-		<Button fx:id="previewButton" mnemonicParsing="false"
-			onAction="#onPreviewButtonHandler" prefWidth="75.0" text="Preview" />
-	</children>
-	<padding>
-		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-	</padding>
+<fx:root type="HBox" spacing="5.0" fx:controller="com.teotigraphix.libraryeditor.view.MainToolBarController" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <Button fx:id="newButton" id="newButton" mnemonicParsing="false" onAction="#onNewButtonHandler" prefWidth="75.0" text="New" />
+    <Button fx:id="loadButton" id="newButton" mnemonicParsing="false" onAction="#onLoadButtonHandler" prefWidth="75.0" text="Load" />
+    <Button fx:id="saveButton" id="newButton" mnemonicParsing="false" onAction="#onSaveButtonHandler" prefWidth="75.0" text="Save" />
+    <Button fx:id="importButton" id="newButton" mnemonicParsing="false" onAction="#onImportButtonHandler" prefWidth="75.0" text="Import" />
+    <Button fx:id="previewButton" id="newButton" mnemonicParsing="false" onAction="#onPreviewButtonHandler" prefWidth="75.0" text="Preview" />
+  </children>
+  <padding>
+    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+  </padding>
 </fx:root>
