@@ -30,6 +30,7 @@ import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
 import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
 import com.teotigraphix.caustk.core.components.beatbox.WavSamplerComponent;
 import com.teotigraphix.caustk.core.components.modular.ModularBayComponent;
+import com.teotigraphix.caustk.core.components.padsynth.HarmonicsComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
 import com.teotigraphix.caustk.core.components.subsynth.LFO2Component;
@@ -51,7 +52,8 @@ public class SoundSourceUtils {
     public static void setup(PadSynthTone tone) {
         tone.addComponent(SynthComponent.class, new SynthComponent());
         tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-
+        tone.addComponent(VolumeComponent.class, new VolumeComponent());
+        tone.addComponent(HarmonicsComponent.class, new HarmonicsComponent());
     }
 
     public static void setup(OrganTone tone) {

@@ -38,7 +38,7 @@ public class MasterComponent implements ISerialize, IRestore {
         return controller;
     }
 
-    protected CausticMessage bypassMessage;
+    protected transient CausticMessage bypassMessage;
 
     //----------------------------------
     // bypass

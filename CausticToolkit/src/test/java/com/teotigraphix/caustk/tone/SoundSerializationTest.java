@@ -32,6 +32,12 @@ public class SoundSerializationTest extends CaustkTestBase {
     }
 
     @Test
+    public void test_serialize_PadSynth() throws CausticException, IOException {
+        PadSynthTone tone = (PadSynthTone)soundSource.createTone(10, "part1", ToneType.PadSynth);
+        
+    }
+
+    @Test
     public void test_serialize_SubSynth() throws CausticException, IOException {
         Tone tone = soundSource.createTone(10, "part1", ToneType.SubSynth);
         tone.setMuted(true);

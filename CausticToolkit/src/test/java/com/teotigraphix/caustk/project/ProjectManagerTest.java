@@ -17,6 +17,8 @@ import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.tone.ToneType;
 
 public class ProjectManagerTest {
 
@@ -32,11 +34,14 @@ public class ProjectManagerTest {
 
     private ProjectManager projectManager;
 
+    private ISoundSource soundSource;
+
     @Before
     public void setUp() throws Exception {
         application = CaustkApplicationUtils.createAndRun();
         controller = application.getController();
         projectManager = (ProjectManager)controller.getProjectManager();
+        soundSource = controller.getSoundSource();
     }
 
     @After
@@ -46,6 +51,7 @@ public class ProjectManagerTest {
         FileUtils.deleteDirectory(applicationRoot);
         application = null;
         controller = null;
+        soundSource = null;
     }
 
     @Test
@@ -55,6 +61,19 @@ public class ProjectManagerTest {
         Assert.assertTrue(project.getFile().exists());
     }
 
+    //@Test
+    public void test_create_tone_project() throws CausticException, IOException {
+        Project project = projectManager.create(PROJECT_FILE);
+        
+        soundSource.createTone("part1", ToneType.SubSynth);
+        soundSource.createTone("part2", ToneType.Bassline);
+        soundSource.createTone("part3", ToneType.Beatbox);
+        soundSource.createTone("part4", ToneType.PCMSynth);
+        
+        projectManager.save();
+        Assert.assertTrue(project.getFile().exists());
+    }
+    
     @Test
     public void test_create_project() throws CausticException, IOException {
         Project project1 = projectManager.create(PROJECT_FILE);
