@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
-public class FMSynthTone extends SynthTone {
+public class FMSynthTone extends Tone {
 
     public FMSynthTone(ICaustkController controller) {
         super(controller);

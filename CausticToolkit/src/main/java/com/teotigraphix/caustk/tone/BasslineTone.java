@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.components.bassline.FilterComponent;
 import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
 import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
 
-public class BasslineTone extends SynthTone {
+public class BasslineTone extends Tone {
 
     public FilterComponent getFilter() {
         return getComponent(FilterComponent.class);

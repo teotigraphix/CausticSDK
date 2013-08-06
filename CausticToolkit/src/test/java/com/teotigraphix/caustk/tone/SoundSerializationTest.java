@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.tone;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -33,6 +34,9 @@ public class SoundSerializationTest extends CaustkTestBase {
     @Test
     public void test_serialize_SubSynth() throws CausticException, IOException {
         Tone tone = soundSource.createTone(10, "part1", ToneType.SubSynth);
+        tone.setMuted(true);
+        tone.setEnabled(true);
+        tone.setSelected(true);
 
         String data = tone.serialize();
 
@@ -44,6 +48,9 @@ public class SoundSerializationTest extends CaustkTestBase {
         assertEquals("part1", subsynth.getName());
         // check all components were created
         assertEquals(tone.getComponentCount(), subsynth.getComponentCount());
+        assertTrue(subsynth.isMuted());
+        assertTrue(subsynth.isEnabled());
+        assertTrue(subsynth.isSelected());
     }
 
 }

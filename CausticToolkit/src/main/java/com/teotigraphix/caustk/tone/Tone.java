@@ -28,14 +28,123 @@ import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.components.ToneComponent;
+import com.teotigraphix.caustk.core.components.VolumeComponent;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.library.SoundSourceState;
+import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 public class Tone implements ISerialize, IRestore {
 
     private transient ICaustkController controller;
+
+    public VolumeComponent getVolume() {
+        return getComponent(VolumeComponent.class);
+    }
+
+    public SynthComponent getSynth() {
+        return getComponent(SynthComponent.class);
+    }
+
+    public PatternSequencerComponent getPatternSequencer() {
+        return getComponent(PatternSequencerComponent.class);
+    }
+
+    //----------------------------------
+    // enabled
+    //----------------------------------
+
+    private boolean enabled = false;
+
+    public final boolean isEnabled() {
+        return enabled;
+    }
+
+    public final void setEnabled(boolean value) {
+        if (value == enabled)
+            return;
+        enabled = value;
+        // firePropertyChange(TonePropertyKind.ENABLED, mEnabled);
+    }
+
+    //----------------------------------
+    // muted
+    //----------------------------------
+
+    private boolean muted = false;
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(boolean value) {
+        if (value == muted)
+            return;
+        muted = value;
+        // firePropertyChange(TonePropertyKind.MUTE, mMuted);
+    }
+
+    //----------------------------------
+    // presetBank
+    //----------------------------------
+
+    private String presetBank;
+
+    public final String getPresetBank() {
+        return presetBank;
+    }
+
+    public final void setPresetBank(String value) {
+        if (value == presetBank)
+            return;
+        presetBank = value;
+        // firePropertyChange(TonePropertyKind.PRESET_BANK, mPresetBank);
+    }
+
+    //----------------------------------
+    // selected
+    //----------------------------------
+
+    private boolean selected = false;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean value) {
+        if (value == selected)
+            return;
+        selected = value;
+        // firePropertyChange(TonePropertyKind.SELECTED, mSelected);
+    }
+
+    /**
+     * Called from the {@link SystemSequencer} in the triggerOn observer.
+     * 
+     * @param step
+     * @param pitch
+     * @param gate
+     * @param velocity
+     * @param flags
+     */
+    public void _triggerOn(int step, int pitch, float gate, float velocity, int flags) {
+        getComponent(PatternSequencerComponent.class).triggerOn(Resolution.SIXTEENTH, step, pitch,
+                gate, velocity, flags);
+    }
+
+    /**
+     * Called from the {@link SystemSequencer} in the triggerOff observer.
+     * 
+     * @param step
+     * @param pitch
+     */
+    public void _triggerOff(int step, int pitch) {
+        getComponent(PatternSequencerComponent.class).triggerOff(Resolution.SIXTEENTH, step, pitch);
+    }
 
     int getComponentCount() {
         return internalComponents.size();

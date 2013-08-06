@@ -27,7 +27,7 @@ import com.teotigraphix.caustk.core.components.subsynth.LFO2Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc1Component;
 import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
 
-public class SubSynthTone extends SynthTone {
+public class SubSynthTone extends Tone {
 
     @Override
     public VolumeEnvelopeComponent getVolume() {

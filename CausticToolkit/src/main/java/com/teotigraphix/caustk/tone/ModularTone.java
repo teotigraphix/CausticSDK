@@ -47,7 +47,7 @@ import com.teotigraphix.caustk.core.components.modular.ThreeInputMixer;
 import com.teotigraphix.caustk.core.components.modular.TwoInputMixer;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 
-public class ModularTone extends SynthTone {
+public class ModularTone extends Tone {
 
     private transient ModularPanel modularPanel;
 

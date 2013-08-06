@@ -24,7 +24,7 @@ import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
-public class RhythmSet extends SynthTone {
+public class RhythmSet extends Tone {
     private List<RhythmTone> tones = new ArrayList<RhythmTone>();
 
     public List<RhythmTone> getTones() {

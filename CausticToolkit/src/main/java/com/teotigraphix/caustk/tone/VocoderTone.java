@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
-public class VocoderTone extends SynthTone {
+public class VocoderTone extends Tone {
 
     public VocoderTone(ICaustkController controller) {
         super(controller);

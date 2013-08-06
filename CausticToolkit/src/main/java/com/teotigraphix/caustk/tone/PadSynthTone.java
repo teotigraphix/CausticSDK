@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
-public class PadSynthTone extends SynthTone {
+public class PadSynthTone extends Tone {
 
     public PadSynthTone(ICaustkController controller) {
         super(controller);

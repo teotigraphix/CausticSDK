@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
 
-public class PCMSynthTone extends SynthTone {
+public class PCMSynthTone extends Tone {
 
     @Override
     public VolumeEnvelopeComponent getVolume() {

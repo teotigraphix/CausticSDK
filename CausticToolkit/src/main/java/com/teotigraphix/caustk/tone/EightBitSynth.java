@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
-public class EightBitSynth extends SynthTone {
+public class EightBitSynth extends Tone {
 
     public EightBitSynth(ICaustkController controller) {
         super(controller);

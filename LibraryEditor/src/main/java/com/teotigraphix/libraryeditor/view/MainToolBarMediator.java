@@ -22,7 +22,7 @@ import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
-import com.teotigraphix.caustk.tone.SynthTone;
+import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.libraryeditor.model.LibraryModel;
@@ -151,7 +151,7 @@ public class MainToolBarMediator extends MediatorBase {
 
         ToneType toneType = libraryPhrase.getToneType();
 
-        SynthTone tone = (SynthTone)soundSource.getToneByName(toneType.getValue());
+        Tone tone = soundSource.getToneByName(toneType.getValue());
         if (libraryPatch != null) {
             File file = libraryPatch.getPresetFile();
             file = getController().getLibraryManager().getSelectedLibrary().getPresetFile(file);

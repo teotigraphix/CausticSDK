@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
-public class OrganTone extends SynthTone {
+public class OrganTone extends Tone {
 
     public OrganTone(ICaustkController controller) {
         super(controller);
