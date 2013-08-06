@@ -17,6 +17,7 @@ public class HarmonicsComponent extends ToneComponent {
     private float[][] table;
 
     private void createTables() {
+        table = new float[2][24];
         table[0] = new float[24];
         table[1] = new float[24];
         for (int i = 0; i < 2; i++) {

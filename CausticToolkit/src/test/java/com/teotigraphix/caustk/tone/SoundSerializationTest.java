@@ -33,8 +33,8 @@ public class SoundSerializationTest extends CaustkTestBase {
 
     @Test
     public void test_serialize_PadSynth() throws CausticException, IOException {
+        @SuppressWarnings("unused")
         PadSynthTone tone = (PadSynthTone)soundSource.createTone(10, "part1", ToneType.PadSynth);
-        
     }
 
     @Test
