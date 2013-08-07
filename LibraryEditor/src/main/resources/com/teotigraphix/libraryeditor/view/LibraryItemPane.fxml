@@ -18,12 +18,22 @@
         <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" fx:id="x1" />
       </padding>
     </HBox>
-    <HBox padding="$x1" prefHeight="-1.0" prefWidth="200.0" spacing="4.0">
+    <HBox alignment="CENTER_LEFT" prefHeight="-1.0" prefWidth="200.0" spacing="4.0">
       <children>
-        <Label text="Search" />
+        <Label alignment="CENTER_LEFT" text="Search" />
         <TextField id="" fx:id="searchText" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
       </children>
+      <padding>
+        <Insets bottom="8.0" top="4.0" />
+      </padding>
     </HBox>
+    <StackPane fx:id="viewStack" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+      <children>
+        <ListView id="itemList" fx:id="sceneList" editable="false" prefHeight="-1.0" prefWidth="250.0" />
+        <ListView fx:id="patchList" prefHeight="200.0" prefWidth="200.0" />
+        <ListView fx:id="phraseList" prefHeight="200.0" prefWidth="200.0" />
+      </children>
+    </StackPane>
     <HBox fx:id="toggleBar" prefHeight="-1.0" prefWidth="200.0" scaleY="1.0" spacing="5.0" VBox.vgrow="NEVER">
       <children>
         <ToggleButton id="" fx:id="sceneButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonClickHandler" prefWidth="-1.0" selected="false" text="Scene" HBox.hgrow="ALWAYS">
@@ -35,19 +45,12 @@
         <ToggleButton fx:id="phraseButton" maxWidth="1.7976931348623157E308" minWidth="-1.0" mnemonicParsing="false" onAction="#buttonClickHandler" rotate="0.0" text="Phrase " toggleGroup="$libraryItemGroup" HBox.hgrow="ALWAYS" />
       </children>
       <padding>
-        <Insets bottom="4.0" top="4.0" />
+        <Insets bottom="4.0" top="8.0" />
       </padding>
       <rotationAxis>
         <Point3D z="1.0" />
       </rotationAxis>
     </HBox>
-    <StackPane fx:id="viewStack" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-      <children>
-        <ListView id="itemList" fx:id="sceneList" editable="false" prefHeight="-1.0" prefWidth="250.0" />
-        <ListView fx:id="patchList" prefHeight="200.0" prefWidth="200.0" />
-        <ListView fx:id="phraseList" prefHeight="200.0" prefWidth="200.0" />
-      </children>
-    </StackPane>
   </children>
   <padding>
     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

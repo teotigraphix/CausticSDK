@@ -33,10 +33,10 @@
                 <ColumnConstraints hgrow="ALWAYS" maxWidth="537.0" minWidth="10.0" prefWidth="-1.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="73.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="67.0" minHeight="5.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="60.0" prefHeight="73.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="36.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="178.0" minHeight="10.0" prefHeight="129.0" vgrow="ALWAYS" />
               </rowConstraints>
               <StackPane.margin>
@@ -46,6 +46,9 @@
           </children>
         </StackPane>
       </children>
+      <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      </padding>
     </AnchorPane>
   </content>
 </ScrollPane>

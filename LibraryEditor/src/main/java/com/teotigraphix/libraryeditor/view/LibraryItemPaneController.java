@@ -135,7 +135,7 @@ public class LibraryItemPaneController extends ViewStackController {
                 new EventObserver<OnLibraryManagerImportComplete>() {
                     @Override
                     public void trigger(OnLibraryManagerImportComplete object) {
-                        onLibraryModelRefreshHandler();
+                        refreshView();
                     }
                 });
 
@@ -147,6 +147,13 @@ public class LibraryItemPaneController extends ViewStackController {
                         selectedKindChangeHandler(object.getKind(), object.getOldKind());
                     }
                 });
+    }
+
+    protected void refreshView() {
+        libraryModel.refresh();
+        sceneList.setItems(FXCollections.observableArrayList(libraryModel.getScenes()));
+        patchList.setItems(FXCollections.observableArrayList(libraryModel.getPatches()));
+        phraseList.setItems(FXCollections.observableArrayList(libraryModel.getPhrases()));
     }
 
     @FXML
@@ -178,8 +185,8 @@ public class LibraryItemPaneController extends ViewStackController {
         Library library = getController().getLibraryManager().getSelectedLibrary();
         titleLabel.setText(library.getName());
 
-        libraryModel.refresh();
-
+        refreshView();
+        
         searchText.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -189,8 +196,6 @@ public class LibraryItemPaneController extends ViewStackController {
             }
         });
 
-        // Scenes
-        sceneList.setItems(FXCollections.observableArrayList(libraryModel.getScenes()));
         sceneList.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
@@ -205,8 +210,6 @@ public class LibraryItemPaneController extends ViewStackController {
                     }
                 });
 
-        // Patches
-        patchList.setItems(FXCollections.observableArrayList(libraryModel.getPatches()));
         patchList.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override
@@ -221,8 +224,6 @@ public class LibraryItemPaneController extends ViewStackController {
                     }
                 });
 
-        // Phrases
-        phraseList.setItems(FXCollections.observableArrayList(libraryModel.getPhrases()));
         phraseList.getSelectionModel().selectedIndexProperty()
                 .addListener(new ChangeListener<Number>() {
                     @Override

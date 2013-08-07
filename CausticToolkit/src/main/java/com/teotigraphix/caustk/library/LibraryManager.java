@@ -235,20 +235,30 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     }
 
     @Override
+    public Library loadLibrary(File directory) {
+        if (!directory.exists()) {
+            CtkDebug.err("Library not found; " + directory);
+            return null;
+        }
+
+        File file = new File(directory, "library.ctk");
+        Library library = getController().getSerializeService().fromFile(file, Library.class);
+        getModel().getLibraries().put(library.getId(), library);
+
+        //getController().getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));
+
+        return library;
+    }
+
+    @Override
     public Library loadLibrary(String name) {
         File directory = new File(librariesDirectory, name);
         File file = new File(directory, "library.ctk");
         if (!file.exists()) {
-            System.out.println("XXX Lib not found");
+            CtkDebug.err("Library not found; " + file);
             return null;
         }
-
-        Library library = getController().getSerializeService().fromFile(file, Library.class);
-        getModel().getLibraries().put(library.getId(), library);
-
-        //        getController().getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));
-
-        return library;
+        return loadLibrary(directory);
     }
 
     @Override

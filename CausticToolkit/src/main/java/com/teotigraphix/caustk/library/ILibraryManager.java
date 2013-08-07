@@ -36,11 +36,21 @@ public interface ILibraryManager extends IControllerComponent {
     void setSelectedLibrary(Library value);
 
     void load();
-
+    
+    Library loadLibrary(File file);
+    
     Library loadLibrary(String name);
 
     void saveLibrary(Library library) throws IOException;
-
+    
+    /**
+     * 
+     * @param library
+     * @param causticFile
+     * @throws IOException
+     * @throws CausticException
+     * @see OnLibraryManagerImportComplete
+     */
     void importSong(Library library, File causticFile) throws IOException, CausticException;
 
     void importPatterns(Library library, File causticFile) throws IOException, CausticException;

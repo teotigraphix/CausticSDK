@@ -21,15 +21,11 @@ import com.teotigraphix.caustic.utils.FileUtil;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.ILibraryManager.OnLibraryManagerSelectedLibraryChange;
 import com.teotigraphix.caustk.library.Library;
-import com.teotigraphix.caustk.library.LibraryPatch;
-import com.teotigraphix.caustk.library.LibraryPhrase;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
-import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.libraryeditor.model.LibraryModel;
@@ -192,39 +188,39 @@ public class MainToolBarController extends FXControllerBase {
             }
         }
 
-        // Preview the selected phrase
-        //if (libraryModel.getSelectedKind() != ItemKind.PHRASE)
-        //   return;
-
-        ISoundSource soundSource = getController().getSoundSource();
-
-        LibraryPhrase libraryPhrase = libraryModel.getLibraryPhrase();
-        LibraryPatch libraryPatch = libraryModel.getLibraryPatch();
-
-        ToneType toneType = libraryPhrase.getToneType();
-
-        Tone tone = soundSource.getToneByName(toneType.getValue());
-        if (libraryPatch != null) {
-            File file = libraryPatch.getPresetFile();
-            file = getController().getLibraryManager().getSelectedLibrary().getPresetFile(file);
-            tone.getSynth().loadPreset(file.getAbsolutePath());
-        }
-
-        // clear A01
-        tone.getPatternSequencer().clear();
-
-        // set the note data at A01
-        tone.getPatternSequencer().setSelectedPattern(0, 0);
-
-        // set the length
-        int numMeasures = libraryPhrase.getLength();
-        tone.getPatternSequencer().setLength(numMeasures);
-        tone.getPatternSequencer().initializeData(libraryPhrase.getNoteData());
-
-        // add to song
-
-        // play
-        getController().getSystemSequencer().play(SequencerMode.PATTERN);
+        //        // Preview the selected phrase
+        //        //if (libraryModel.getSelectedKind() != ItemKind.PHRASE)
+        //        //   return;
+        //
+        //        ISoundSource soundSource = getController().getSoundSource();
+        //
+        //        LibraryPhrase libraryPhrase = libraryModel.getLibraryPhrase();
+        //        LibraryPatch libraryPatch = libraryModel.getLibraryPatch();
+        //
+        //        ToneType toneType = libraryPhrase.getToneType();
+        //
+        //        Tone tone = soundSource.getToneByName(toneType.getValue());
+        //        if (libraryPatch != null) {
+        //            File file = libraryPatch.getPresetFile();
+        //            file = getController().getLibraryManager().getSelectedLibrary().getPresetFile(file);
+        //            tone.getSynth().loadPreset(file.getAbsolutePath());
+        //        }
+        //
+        //        // clear A01
+        //        tone.getPatternSequencer().clear();
+        //
+        //        // set the note data at A01
+        //        tone.getPatternSequencer().setSelectedPattern(0, 0);
+        //
+        //        // set the length
+        //        int numMeasures = libraryPhrase.getLength();
+        //        tone.getPatternSequencer().setLength(numMeasures);
+        //        tone.getPatternSequencer().initializeData(libraryPhrase.getNoteData());
+        //
+        //        // add to song
+        //
+        //        // play
+        //        getController().getSystemSequencer().play(SequencerMode.PATTERN);
     }
 
     private SubSynthTone subSynthTone;
