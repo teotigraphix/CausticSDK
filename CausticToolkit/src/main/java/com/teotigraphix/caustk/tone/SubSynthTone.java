@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.components.SynthFilterComponent;
 import com.teotigraphix.caustk.core.components.VolumeEnvelopeComponent;
 import com.teotigraphix.caustk.core.components.subsynth.LFO1Component;
@@ -34,7 +36,6 @@ public class SubSynthTone extends Tone {
         return ToneType.SubSynth;
     }
 
-    @Override
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
     }
@@ -61,6 +62,18 @@ public class SubSynthTone extends Tone {
 
     public SubSynthTone(ICaustkController controller) {
         super(controller);
+    }
+
+    public static void setup(Tone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        tone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
+        tone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        tone.addComponent(Osc1Component.class, new Osc1Component());
+        tone.addComponent(Osc2Component.class, new Osc2Component());
+        tone.addComponent(com.teotigraphix.caustk.core.components.subsynth.LFO1Component.class,
+                new com.teotigraphix.caustk.core.components.subsynth.LFO1Component());
+        tone.addComponent(LFO2Component.class, new LFO2Component());
     }
 
 }

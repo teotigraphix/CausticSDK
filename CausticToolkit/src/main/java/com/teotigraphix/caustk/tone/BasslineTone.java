@@ -20,6 +20,9 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
+import com.teotigraphix.caustk.core.components.VolumeComponent;
 import com.teotigraphix.caustk.core.components.bassline.DistortionComponent;
 import com.teotigraphix.caustk.core.components.bassline.FilterComponent;
 import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
@@ -30,6 +33,10 @@ public class BasslineTone extends Tone {
     @Override
     public ToneType getToneType() {
         return ToneType.Bassline;
+    }
+
+    public VolumeComponent getVolume() {
+        return getComponent(VolumeComponent.class);
     }
 
     public FilterComponent getFilter() {
@@ -50,6 +57,16 @@ public class BasslineTone extends Tone {
 
     public BasslineTone(ICaustkController controller) {
         super(controller);
+    }
+
+    public static void setup(Tone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        tone.addComponent(VolumeComponent.class, new VolumeComponent());
+        tone.addComponent(DistortionComponent.class, new DistortionComponent());
+        tone.addComponent(FilterComponent.class, new FilterComponent());
+        tone.addComponent(LFO1Component.class, new LFO1Component());
+        tone.addComponent(OSC1Component.class, new OSC1Component());
     }
 
 }

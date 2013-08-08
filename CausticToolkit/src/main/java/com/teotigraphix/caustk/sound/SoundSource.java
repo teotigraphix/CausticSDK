@@ -213,9 +213,15 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+
+        SoundSourceUtils.setup(toneClass.cast(tone));
+
+        RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
+                tone.getIndex());
+
         return tone;
     }
-    
+
     @Override
     public Tone createTone(String name, ToneType toneType) throws CausticException {
         return createTone(new ToneDescriptor(nextIndex(), name, toneType));

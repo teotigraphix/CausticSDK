@@ -32,7 +32,7 @@ public class HarmonicsComponent extends ToneComponent {
     }
 
     float getHarmonic(int tableIndex, int index, boolean restore) {
-        return PadSynthMessage.HARMONICS.query(getEngine(), getToneIndex(), tableIndex, index);
+        return PadSynthMessage.QUERY_HARMONICS.send(getEngine(), getToneIndex(), tableIndex, index);
     }
 
     public void setHarmonic(int tableIndex, int index, float value) {
@@ -55,7 +55,7 @@ public class HarmonicsComponent extends ToneComponent {
     }
 
     float getWidth(int tableIndex, boolean restore) {
-        return PadSynthMessage.WIDTH.query(getEngine(), getToneIndex(), tableIndex);
+        return PadSynthMessage.QUERY_WIDTH.send(getEngine(), getToneIndex(), tableIndex);
     }
 
     public void setWidth(int tableIndex, float value) {
@@ -76,9 +76,12 @@ public class HarmonicsComponent extends ToneComponent {
     public void restore() {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 24; j++) {
-                table[i][j] = getHarmonic(i, j, true);
+                float harmonic = getHarmonic(i, j, true);
+                table[i][j] = harmonic;
             }
         }
+        getWidth(0, true);
+        getWidth(1, true);
     }
 
 }

@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.components.modular.AREnvelope;
 import com.teotigraphix.caustk.core.components.modular.Arpeggiator;
 import com.teotigraphix.caustk.core.components.modular.Crossfader;
@@ -31,6 +33,7 @@ import com.teotigraphix.caustk.core.components.modular.FMPair;
 import com.teotigraphix.caustk.core.components.modular.FormantFilter;
 import com.teotigraphix.caustk.core.components.modular.LagProcessor;
 import com.teotigraphix.caustk.core.components.modular.MiniLFO;
+import com.teotigraphix.caustk.core.components.modular.ModularBayComponent;
 import com.teotigraphix.caustk.core.components.modular.ModularComponentBase;
 import com.teotigraphix.caustk.core.components.modular.ModularPanel;
 import com.teotigraphix.caustk.core.components.modular.NoiseGenerator;
@@ -244,6 +247,13 @@ public class ModularTone extends Tone {
 
         modularPanel = new ModularPanel(controller);
         modularPanel.setTone(this);
+    }
+
+    public static void setup(Tone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        //tone.addComponent(VolumeComponent.class, new VolumeComponent());
+        tone.addComponent(ModularBayComponent.class, new ModularBayComponent());
     }
 
 }

@@ -29,10 +29,9 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.components.ToneComponent;
-import com.teotigraphix.caustk.core.components.VolumeComponent;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.library.SoundSourceState;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerialize;
@@ -42,9 +41,12 @@ public abstract class Tone implements ISerialize, IRestore {
 
     private transient ICaustkController controller;
 
-    public VolumeComponent getVolume() {
-        return getComponent(VolumeComponent.class);
-    }
+    @SuppressWarnings("unused")
+    private ToneType toneType;
+
+    //    public VolumeComponent getVolume() {
+    //        return getComponent(VolumeComponent.class);
+    //    }
 
     public SynthComponent getSynth() {
         return getComponent(SynthComponent.class);
@@ -287,6 +289,7 @@ public abstract class Tone implements ISerialize, IRestore {
 
     @Override
     public void sleep() {
+        toneType = getToneType();
         components = new HashMap<String, Map<String, String>>();
         for (ToneComponent toneComponent : internalComponents.values()) {
             HashMap<String, String> map = new HashMap<String, String>();

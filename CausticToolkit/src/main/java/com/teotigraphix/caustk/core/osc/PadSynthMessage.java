@@ -44,10 +44,28 @@ public class PadSynthMessage extends CausticMessage {
      * <li><strong>amplitude</strong>: (0.0..1.0)</li>
      * </ul>
      * <p>
-     * <strong>Returns</strong>: <code>float</code>
+     * <strong>Returns</strong>: <code>N/A</code>
      */
     public static final PadSynthMessage HARMONICS = new PadSynthMessage(
             "/caustic/${0}/harmonics ${1} ${2} ${3}");
+
+    /**
+     * Query:
+     * <code>/caustic/[machine_index]/harmonics [table_index] [index] [amplitude]</code>
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>table_index</strong>: (0,1)</li>
+     * <li><strong>index</strong>: (0..23)</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>float</code>
+     */
+    public static final PadSynthMessage QUERY_HARMONICS = new PadSynthMessage(
+            "/caustic/${0}/harmonics ${1} ${2}");
 
     /**
      * Message:
@@ -62,15 +80,32 @@ public class PadSynthMessage extends CausticMessage {
      * <li><strong>amplitude</strong>: (0.0..1.0)</li>
      * </ul>
      * <p>
-     * <strong>Returns</strong>: <code>float</code>
+     * <strong>Returns</strong>: <code>N/A</code>
      */
     public static final PadSynthMessage WIDTH = new PadSynthMessage(
             "/caustic/${0}/harmonics ${1} width ${2}");
 
     /**
+     * Query:
+     * <code>/caustic/[machine_index]/harmonics [table_index] width</code>
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>table_index</strong>: (0,1)</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>float</code>
+     */
+    public static final PadSynthMessage QUERY_WIDTH = new PadSynthMessage(
+            "/caustic/${0}/harmonics ${1} width");
+
+    /**
      * Message: <code>/caustic/[machine_index]/lfo1_target [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -86,7 +121,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/lfo1_rate [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>6</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -102,7 +137,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/lfo1_depth [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -118,7 +153,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/lfo1_phase [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -134,7 +169,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/lfo2_target [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -150,7 +185,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/lfo2_rate [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>6</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -166,7 +201,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/lfo2_depth [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -182,7 +217,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/lfo2_phase [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -383,6 +418,22 @@ public class PadSynthMessage extends CausticMessage {
      */
     public static final PadSynthMessage VOLUME_RELEASE = new PadSynthMessage(
             "/caustic/${0}/volume_release ${1}");
+
+    /**
+     * Message: <code>/caustic/[machine_index]/volume_out [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>TODO</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>value</strong>: (0..2)</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>float</code>
+     */
+    public static final PadSynthMessage VOLUME_OUT = new PadSynthMessage(
+            "/caustic/${0}/volume_out ${1}");
 
     PadSynthMessage(String message) {
         super(message);

@@ -32,4 +32,9 @@ public class EightBitSynth extends Tone {
         super(controller);
     }
 
+    public static void setup(Tone tone) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

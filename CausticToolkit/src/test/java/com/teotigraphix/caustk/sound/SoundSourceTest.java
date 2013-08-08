@@ -15,6 +15,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
+import com.teotigraphix.caustk.tone.PadSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.ToneUtils;
@@ -82,7 +83,7 @@ public class SoundSourceTest {
 
     @Test
     public void test_PCMSynth() throws CausticException {
-        PCMSynthTone tone = (PCMSynthTone)soundSource.createTone("tone1", ToneType.PCMSynth);
+        PCMSynthTone tone = soundSource.createTone("tone1", PCMSynthTone.class);
         Assert.assertEquals(7, ToneUtils.getComponentCount(tone));
         Assert.assertNotNull(tone.getSynth());
         Assert.assertNotNull(tone.getPatternSequencer());
@@ -95,7 +96,7 @@ public class SoundSourceTest {
 
     @Test
     public void test_SubSynth() throws CausticException {
-        SubSynthTone tone = (SubSynthTone)soundSource.createTone("tone1", ToneType.SubSynth);
+        SubSynthTone tone = soundSource.createTone("tone1", SubSynthTone.class);
         Assert.assertEquals(8, ToneUtils.getComponentCount(tone));
         Assert.assertNotNull(tone.getSynth());
         Assert.assertNotNull(tone.getPatternSequencer());
@@ -109,7 +110,7 @@ public class SoundSourceTest {
 
     @Test
     public void test_Bassline() throws CausticException {
-        BasslineTone tone = (BasslineTone)soundSource.createTone("tone1", ToneType.Bassline);
+        BasslineTone tone = soundSource.createTone("tone1", BasslineTone.class);
         Assert.assertEquals(7, ToneUtils.getComponentCount(tone));
         Assert.assertNotNull(tone.getSynth());
         Assert.assertNotNull(tone.getPatternSequencer());
@@ -120,4 +121,16 @@ public class SoundSourceTest {
         Assert.assertNotNull(tone.getDistortion());
     }
 
+    @Test
+    public void test_PadSynth() throws CausticException {
+        PadSynthTone tone = soundSource.createTone("tone1", PadSynthTone.class);
+        Assert.assertEquals(7, ToneUtils.getComponentCount(tone));
+        Assert.assertNotNull(tone.getSynth());
+        Assert.assertNotNull(tone.getPatternSequencer());
+        Assert.assertNotNull(tone.getVolume());
+        Assert.assertNotNull(tone.getHarmonics());
+        Assert.assertNotNull(tone.getLFO1());
+        Assert.assertNotNull(tone.getLFO2());
+        Assert.assertNotNull(tone.getMorph());
+    }
 }

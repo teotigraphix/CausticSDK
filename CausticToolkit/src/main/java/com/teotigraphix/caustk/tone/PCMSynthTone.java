@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.components.SynthFilterComponent;
 import com.teotigraphix.caustk.core.components.VolumeEnvelopeComponent;
 import com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component;
@@ -33,7 +35,6 @@ public class PCMSynthTone extends Tone {
         return ToneType.PCMSynth;
     }
 
-    @Override
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
     }
@@ -56,6 +57,17 @@ public class PCMSynthTone extends Tone {
 
     public PCMSynthTone(ICaustkController controller) {
         super(controller);
+    }
+
+    public static void setup(Tone tone) {
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        tone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
+        tone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        tone.addComponent(com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component.class,
+                new com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component());
+        tone.addComponent(PCMSamplerComponent.class, new PCMSamplerComponent());
+        tone.addComponent(PCMTunerComponent.class, new PCMTunerComponent());
     }
 
 }
