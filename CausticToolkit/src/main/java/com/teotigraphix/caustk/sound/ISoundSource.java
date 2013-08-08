@@ -71,15 +71,18 @@ public interface ISoundSource extends IRestore {
      * @throws CausticException
      */
     <T extends Tone> T createTone(String data) throws CausticException;
-    
+
     // XXX make tone creation generic
-    
+
     /**
      * @param name
      * @param toneType
      * @throws CausticException
      */
     Tone createTone(String name, ToneType toneType) throws CausticException;
+
+    <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
+            throws CausticException;
 
     /**
      * @param index

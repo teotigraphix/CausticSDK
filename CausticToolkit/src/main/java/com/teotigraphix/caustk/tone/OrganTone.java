@@ -23,6 +23,11 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class OrganTone extends Tone {
 
+    @Override
+    public ToneType getToneType() {
+        return ToneType.Organ;
+    }
+
     public OrganTone(ICaustkController controller) {
         super(controller);
     }

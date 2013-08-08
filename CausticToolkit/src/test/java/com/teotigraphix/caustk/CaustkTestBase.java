@@ -7,6 +7,7 @@ import org.junit.Before;
 import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CausticException;
 
 public class CaustkTestBase {
 
@@ -21,7 +22,7 @@ public class CaustkTestBase {
         start();
     }
 
-    protected void start() {
+    protected void start() throws CausticException {
     }
 
     @After

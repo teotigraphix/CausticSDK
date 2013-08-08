@@ -30,6 +30,11 @@ import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
 public class SubSynthTone extends Tone {
 
     @Override
+    public ToneType getToneType() {
+        return ToneType.SubSynth;
+    }
+
+    @Override
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
     }

@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -188,6 +190,32 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         return (T)tone;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
+            throws CausticException {
+        T tone = null;
+        try {
+            Constructor<? extends Tone> constructor = toneClass
+                    .getConstructor(ICaustkController.class);
+            tone = (T)constructor.newInstance(getController());
+            initializeTone(tone, name, tone.getToneType(), nextIndex());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return tone;
+    }
+    
     @Override
     public Tone createTone(String name, ToneType toneType) throws CausticException {
         return createTone(new ToneDescriptor(nextIndex(), name, toneType));
@@ -307,7 +335,6 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
     private void initializeTone(Tone tone, String toneName, ToneType toneType, int index) {
         tone.setId(UUID.randomUUID());
         tone.setName(toneName);
-        tone.setToneType(toneType);
         tone.setIndex(index);
     }
 

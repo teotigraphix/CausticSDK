@@ -27,6 +27,11 @@ import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
 
 public class BasslineTone extends Tone {
 
+    @Override
+    public ToneType getToneType() {
+        return ToneType.Bassline;
+    }
+
     public FilterComponent getFilter() {
         return getComponent(FilterComponent.class);
     }

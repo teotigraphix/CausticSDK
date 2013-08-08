@@ -23,6 +23,11 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class PadSynthTone extends Tone {
 
+    @Override
+    public ToneType getToneType() {
+        return ToneType.PadSynth;
+    }
+
     public PadSynthTone(ICaustkController controller) {
         super(controller);
     }

@@ -23,6 +23,11 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class VocoderTone extends Tone {
 
+    @Override
+    public ToneType getToneType() {
+        return ToneType.Vocoder;
+    }
+
     public VocoderTone(ICaustkController controller) {
         super(controller);
     }

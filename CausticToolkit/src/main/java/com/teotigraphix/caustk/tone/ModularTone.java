@@ -49,6 +49,11 @@ import com.teotigraphix.caustk.core.osc.ModularMessage;
 
 public class ModularTone extends Tone {
 
+    @Override
+    public ToneType getToneType() {
+        return ToneType.Modular;
+    }
+
     private transient ModularPanel modularPanel;
 
     public ModularPanel getPanel() {

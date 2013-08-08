@@ -38,7 +38,7 @@ import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 
-public class Tone implements ISerialize, IRestore {
+public abstract class Tone implements ISerialize, IRestore {
 
     private transient ICaustkController controller;
 
@@ -168,15 +168,7 @@ public class Tone implements ISerialize, IRestore {
         return controller;
     }
 
-    private ToneType toneType;
-
-    public final ToneType getToneType() {
-        return toneType;
-    }
-
-    public final void setToneType(ToneType value) {
-        toneType = value;
-    }
+    public abstract ToneType getToneType();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties

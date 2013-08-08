@@ -147,6 +147,8 @@ public class MainToolBarController extends FXControllerBase {
         FileChooser chooser = FileUtil.createDefaultFileChooser(RuntimeUtils
                 .getCausticSongsDirectory().getAbsolutePath(), "Caustic song file", "*.caustic");
         File causticFile = chooser.showOpenDialog(null);
+        if (causticFile == null)
+            return;
 
         // if no current library open error dialog
         Library library = getController().getLibraryManager().getSelectedLibrary();

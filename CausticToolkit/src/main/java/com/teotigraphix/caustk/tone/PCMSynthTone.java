@@ -29,6 +29,11 @@ import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
 public class PCMSynthTone extends Tone {
 
     @Override
+    public ToneType getToneType() {
+        return ToneType.PCMSynth;
+    }
+
+    @Override
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
     }
