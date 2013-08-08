@@ -31,17 +31,19 @@ import com.teotigraphix.caustk.tone.ToneType;
 
 public class SoundSourceState {
 
-    private Map<Integer, String> tones = new HashMap<Integer, String>();
+    private Map<Integer, ToneDescriptor> descriptors = new HashMap<Integer, ToneDescriptor>();
 
-    public Map<Integer, String> getTones() {
-        return tones;
+    public Map<Integer, ToneDescriptor> getDescriptors() {
+        return descriptors;
     }
 
     public SoundSourceState() {
     }
 
-    public void addTone(int index, String data) {
-        tones.put(index, data);
+    public void addTone(Tone tone) {
+        ToneDescriptor descriptor = new ToneDescriptor(tone.getIndex(), tone.getName(),
+                tone.getToneType());
+        descriptors.put(tone.getIndex(), descriptor);
     }
 
     /**

@@ -89,9 +89,9 @@ public class MainToolBarController extends FXControllerBase {
 
     protected void onLibraryManagerSelectedLibraryChangeHandler() {
         boolean disabled = (getController().getLibraryManager().getSelectedLibrary() == null);
-        newButton.setDisable(disabled);
-        loadButton.setDisable(disabled);
-        saveButton.setDisable(disabled);
+        //newButton.setDisable(disabled);
+        //loadButton.setDisable(disabled);
+        //saveButton.setDisable(disabled);
     }
 
     public void initialize() {
@@ -100,9 +100,9 @@ public class MainToolBarController extends FXControllerBase {
 
     @Override
     public void create(Pane root) {
-        newButton.setDisable(true);
-        loadButton.setDisable(true);
-        saveButton.setDisable(true);
+        //newButton.setDisable(true);
+        //loadButton.setDisable(true);
+        //saveButton.setDisable(true);
     }
 
     @Override

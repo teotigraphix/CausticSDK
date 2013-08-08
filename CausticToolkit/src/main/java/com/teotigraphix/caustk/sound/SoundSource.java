@@ -158,10 +158,8 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
     @Override
     public void createScene(LibraryScene scene) throws CausticException {
         // make tones
-        for (String serializedData : scene.getSoundSourceState().getTones().values()) {
-            Tone tone = getController().getSerializeService()
-                    .fromString(serializedData, Tone.class);
-            createTone(tone.getIndex(), tone.getName(), tone.getToneType());
+        for (ToneDescriptor descriptor : scene.getSoundSourceState().getDescriptors().values()) {
+            createTone(descriptor);
         }
         SoundMixerState mixerState = scene.getSoundMixerState();
 

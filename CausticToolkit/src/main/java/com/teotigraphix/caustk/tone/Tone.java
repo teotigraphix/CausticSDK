@@ -268,7 +268,7 @@ public abstract class Tone implements ISerialize, IRestore {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
-
+    
     public Tone(ICaustkController controller) {
         this.controller = controller;
     }

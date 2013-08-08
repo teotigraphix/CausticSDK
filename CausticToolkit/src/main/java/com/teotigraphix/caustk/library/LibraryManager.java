@@ -433,7 +433,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
                 library.addPatch(patch);
 
                 tone.setDefaultPatchId(patch.getId());
-                soundSourceState.addTone(i, tone.serialize());
+                soundSourceState.addTone(tone);
             }
         }
 

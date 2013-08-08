@@ -82,5 +82,4 @@ public class JsonUtils {
             ((ISerialize)result).wakeup(controller);
         return result;
     }
-
 }

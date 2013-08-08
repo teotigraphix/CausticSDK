@@ -25,10 +25,13 @@ import java.util.Map;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.ToneDescriptor;
 
 public class SoundSourceModel extends SubControllerModel {
 
-    private Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
+    private transient Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
+
+    private Map<Integer, ToneDescriptor> descriptors = new HashMap<Integer, ToneDescriptor>();
 
     public SoundSourceModel() {
     }
@@ -43,17 +46,21 @@ public class SoundSourceModel extends SubControllerModel {
 
     @Override
     public void sleep() {
-        super.sleep();
         for (Tone tone : tones.values()) {
-            tone.sleep();
+            ToneDescriptor descriptor = new ToneDescriptor(tone.getIndex(), tone.getName(),
+                    tone.getToneType());
+            descriptors.put(tone.getIndex(), descriptor);
         }
     }
 
     @Override
     public void wakeup(ICaustkController controller) {
         super.wakeup(controller);
-        for (Tone tone : tones.values()) {
-            tone.wakeup(controller);
+//        for (Tone tone : tones.values()) {
+//            tone.wakeup(controller);
+//        }
+        for (ToneDescriptor descriptor : descriptors.values()) {
+            
         }
     }
 
