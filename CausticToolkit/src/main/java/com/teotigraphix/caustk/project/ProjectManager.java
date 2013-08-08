@@ -197,12 +197,21 @@ public class ProjectManager implements IProjectManager {
     @Override
     public Project create(File projectFile) throws IOException {
         project = new Project();
-        project.setFile(new File(projectDirectory, projectFile.getPath()));
+        project.setInitializing(true);
+        project.setFile(new File(projectDirectory, projectFile.getName()));
         project.setInfo(createInfo());
         project.open();
-        CtkDebug.log("IProjectManager.create(): " + projectFile.getAbsolutePath());
+        CtkDebug.log("IProjectManager.create(): " + project.getFile().getAbsolutePath());
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
+
+        finalizeSaveComplete();
+
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
+
+        project.setInitializing(false);
+
         return project;
     }
 

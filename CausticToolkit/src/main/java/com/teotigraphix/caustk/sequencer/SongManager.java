@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerBase;
 import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.Project;
 
 public class SongManager extends SubControllerBase implements ISongManager {
@@ -69,7 +70,8 @@ public class SongManager extends SubControllerBase implements ISongManager {
         String path = getController().getProjectManager().getSessionPreferences()
                 .getString(PROJECT_SESSION_LAST_SONG);
         if (path == null) {
-            throw new RuntimeException("TrackSong path null");
+            //throw new RuntimeException("TrackSong path null");
+            CtkDebug.err("SongManager; TrackSong path null");
         } else if (toSongFile(new File(path)).exists()) {
             deserializeTrackSong(toSongFile(new File(path)));
         }

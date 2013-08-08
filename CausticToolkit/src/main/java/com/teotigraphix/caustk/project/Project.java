@@ -30,6 +30,16 @@ public class Project {
 
     private transient boolean isClosed;
 
+    private transient boolean initializing = false;
+
+    public boolean isInitializing() {
+        return initializing;
+    }
+
+    public void setInitializing(boolean value) {
+        initializing = value;
+    }
+
     //----------------------------------
     // file
     //----------------------------------
@@ -37,7 +47,7 @@ public class Project {
     private File file;
 
     /**
-     * Returns the reletive File path to the project in the
+     * Returns the relative File path to the project in the
      * <code>projects</code> directory.
      */
     public File getFile() {
@@ -46,6 +56,10 @@ public class Project {
 
     public void setFile(File value) {
         file = value;
+    }
+
+    public File getDirectory() {
+        return file;
     }
 
     //----------------------------------
