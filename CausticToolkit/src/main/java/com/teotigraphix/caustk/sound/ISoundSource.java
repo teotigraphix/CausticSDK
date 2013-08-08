@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.sound;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -112,6 +113,28 @@ public interface ISoundSource extends IRestore {
     void clearAndReset();
 
     void loadSong(File causticFile) throws CausticException;
+
+    /**
+     * Saves a <code>.caustic</code> song file to the <code>caustic/songs</code>
+     * driectory.
+     * 
+     * @param name The simple song name.
+     * @return A File representing the location of the saved song.
+     */
+    File saveSong(String name);
+
+    /**
+     * Saves a <code>.caustic</code> song file to the location specified with
+     * the file argument.
+     * <p>
+     * Note; The song file is moved from the caustic/songs directory to the new
+     * location.
+     * 
+     * @param file The location to save the song.
+     * @return
+     * @throws IOException 
+     */
+    File saveSongAs(File file) throws IOException;
 
     public static class OnSoundSourceSongLoad {
 

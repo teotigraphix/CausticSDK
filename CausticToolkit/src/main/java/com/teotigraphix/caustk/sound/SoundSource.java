@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.androidtransfuse.event.EventObserver;
+import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.IDispatcher;
@@ -54,6 +55,7 @@ import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class SoundSource extends SubControllerBase implements ISoundSource {
 
@@ -418,8 +420,6 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         return index;
     }
 
-    // XXX implement saveSong() if absolutePath, move file from caustic/songs to location
-
     @Override
     public void loadSong(File causticFile) throws CausticException {
         clearAndReset();
@@ -430,6 +430,19 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         getController().getSoundMixer().restore();
 
         getDispatcher().trigger(new OnSoundSourceSongLoad());
+    }
+
+    @Override
+    public File saveSong(String name) {
+        RackMessage.SAVE_SONG.send(getController(), name);
+        return RuntimeUtils.getCausticSongFile(name);
+    }
+
+    @Override
+    public File saveSongAs(File file) throws IOException {
+        File song = saveSong(file.getName().replace(".caustic", ""));
+        FileUtils.moveFileToDirectory(song, file.getParentFile(), true);
+        return file;
     }
 
     @Override

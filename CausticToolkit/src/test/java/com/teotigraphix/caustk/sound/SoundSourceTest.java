@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.sound;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -19,6 +20,7 @@ import com.teotigraphix.caustk.tone.PadSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.ToneUtils;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class SoundSourceTest {
     private ICaustkApplication application;
@@ -43,6 +45,25 @@ public class SoundSourceTest {
     @Test
     public void test_loadSong() throws CausticException {
 
+    }
+
+    @Test
+    public void test_saveSong() throws CausticException {
+        File file = soundSource.saveSong("Foo");
+        Assert.assertTrue(file.exists());
+        Assert.assertEquals(RuntimeUtils.getCausticSongFile("Foo"), file);
+        file.delete();
+        Assert.assertFalse(file.exists());
+    }
+
+    @Test
+    public void test_saveSongAs() throws CausticException, IOException {
+        File song = new File("src/test/java/com/teotigraphix/caustk/sound/Bar.caustic");
+        Assert.assertFalse(song.exists());
+        File file = soundSource.saveSongAs(song);
+        Assert.assertTrue(file.exists());
+        file.delete();
+        Assert.assertFalse(file.exists());
     }
 
     @Test
