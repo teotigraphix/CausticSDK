@@ -125,15 +125,10 @@ public class ApplicationController implements IApplicationController {
         IProjectManager projectManager = getController().getProjectManager();
         String path = projectManager.getSessionPreferences().getString("lastProject");
 
+        @SuppressWarnings("unused")
         Project project = null;
         if (path == null) {
             project = projectManager.create(new File("UntitledProject.ctk"));
-            projectManager.save();
-            // adding a LOAD event here to keep consistent with all startup.
-            // whether a project is created or loaded on start, mediators will always
-            // get a load event at start.
-            getController().getDispatcher().trigger(
-                    new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
         } else {
             project = projectManager.load(new File(path));
         }

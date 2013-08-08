@@ -56,11 +56,12 @@ public class SoundSourceModel extends SubControllerModel {
     @Override
     public void wakeup(ICaustkController controller) {
         super.wakeup(controller);
-//        for (Tone tone : tones.values()) {
-//            tone.wakeup(controller);
-//        }
-        for (ToneDescriptor descriptor : descriptors.values()) {
-            
+        //        for (Tone tone : tones.values()) {
+        //            tone.wakeup(controller);
+        //        }
+        for (@SuppressWarnings("unused")
+        ToneDescriptor descriptor : descriptors.values()) {
+
         }
     }
 

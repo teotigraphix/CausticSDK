@@ -147,7 +147,7 @@ public class ProjectManager implements IProjectManager {
     @Override
     public void save() throws IOException {
         // XXX project manager project.getFile absolute path doubled up
-        CtkDebug.log("IProjectManager.save(): " + project.getFile().getAbsolutePath());
+        CtkDebug.log("IProjectManager.save(): " + project.getFile().getPath());
 
         sessionPreferences.put("lastProject", project.getFile().getPath());
         // set modified
@@ -205,8 +205,16 @@ public class ProjectManager implements IProjectManager {
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
 
+        // create the projects resources directory which is the same name
+        File directory = new File(projectDirectory, project.getName());
+        FileUtils.forceMkdir(directory);
+
+        // save the new Project
         finalizeSaveComplete();
 
+        // adding a LOAD event here to keep consistent with all startup.
+        // whether a project is created or loaded on start, mediators will always
+        // get a load event at start.
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
 

@@ -44,6 +44,10 @@ public class Project {
     // file
     //----------------------------------
 
+    public String getName() {
+        return file.getName().replace(".ctk", "");
+    }
+
     private File file;
 
     /**
@@ -58,8 +62,21 @@ public class Project {
         file = value;
     }
 
+    /**
+     * Returns the project's resource directory which is the same name oas the
+     * project descriptor file.
+     */
     public File getDirectory() {
-        return file;
+        return new File(file.getParentFile(), getName());
+    }
+
+    /**
+     * Returns a File handle to relativePath passed.
+     * 
+     * @param relativePath The path inside the project's resource directory.
+     */
+    public File getResource(String relativePath) {
+        return new File(getDirectory(), relativePath);
     }
 
     //----------------------------------
@@ -126,7 +143,10 @@ public class Project {
     public Integer getInterger(String key) {
         if (!map.containsKey(key))
             return null;
-        return Integer.parseInt((String)map.get(key));
+        Object value = map.get(key);
+        if (value instanceof Double)
+            return ((Double)value).intValue();
+        return (Integer)value;
     }
 
     /**

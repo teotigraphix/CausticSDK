@@ -441,7 +441,8 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
     @Override
     public File saveSongAs(File file) throws IOException {
         File song = saveSong(file.getName().replace(".caustic", ""));
-        FileUtils.moveFileToDirectory(song, file.getParentFile(), true);
+        FileUtils.copyFileToDirectory(song, file.getParentFile(), true);
+        song.delete();
         return file;
     }
 

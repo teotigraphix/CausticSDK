@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core;
 
+import java.io.IOException;
+
 public final class CtkDebug {
 
     public static void model(String message) {
@@ -31,6 +33,11 @@ public final class CtkDebug {
 
     public static void err(String message) {
         System.err.println(message);
+    }
+
+    public static void err(String message, IOException e) {
+        System.err.println(message);
+        e.printStackTrace();
     }
 
     public static void log(String message) {
