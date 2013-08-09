@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.sequencer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -16,10 +15,7 @@ import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.Library;
-import com.teotigraphix.caustk.library.LibraryPatch;
-import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.Project;
@@ -112,81 +108,80 @@ public class TrackSongTest {
     }
 
     @Ignore
-    @SuppressWarnings("unused")
     @Test
     public void test_add_phrase() throws CausticException, IOException {
-
-        createMockProject();
-        Library library = createMockLibrary();
-        TrackSong trackSong = createMockTrackSong();
-
-        LibraryScene libraryScene = library.getDefaultScene();//= library.getScenes().get(0);
-
-        TrackUtils.assignScene(controller, trackSong, libraryScene);
-
-        projectManager.save();
-
-        // Raw data that needs to be copied
-        LibraryPhrase libraryPhrase1 = library.findPhrasesByTag("length-1").get(0);
-        LibraryPhrase libraryPhrase2 = library.findPhrasesByTag("subsynth").get(0);
-
-        Assert.assertNotNull(libraryPhrase1);
-
-        Track track1 = trackSong.getTrack(0);
-        Track track2 = trackSong.getTrack(1);
-        Track track3 = trackSong.getTrack(2);
-        Track track4 = trackSong.getTrack(3);
-        Track track5 = trackSong.getTrack(4);
-        Track track6 = trackSong.getTrack(5);
-
-        // construct a TrackPhrase for the Library phrase
-        // the TrackPhrase is a unique instance that points to a assigned
-        // bank/pattern in a machine. TrackItem instances hold reference ids
-        // the their TrackPhrase. The TrackPhrase holds the original note data etc.
-        // Everytime a TrackPhrase is created, it will assign a new bank/pattern 
-        // in the Track's machine, this means there is only 64 possible TrackPhrases
-        // that can be created from a Track
-        TrackPhrase track1PhraseA01 = track1.copyTrackPhrase(libraryPhrase1);
-        TrackPhrase track2PhraseA01 = track1.copyTrackPhrase(libraryPhrase1);
-
-        List<LibraryPatch> patches = library.findPatchByTag("subsynth");
-        LibraryPatch libraryPatch = patches.get(0);
-        TrackUtils.assignPatch(controller, track1, libraryPatch);
-
-        TrackUtils.assignNotes(controller, track1, track1PhraseA01);
-
-        track1.addPhraseAt(0, 2, track1PhraseA01);
-        track1.addPhraseAt(2, 1, track1PhraseA01);
-        track1.addPhraseAt(4, 1, track1PhraseA01);
-
-        //track1.addPhraseAt(3, 6, phraseA01);
-
-        track1.addPhrase(1, track1PhraseA01);
-        track2.addPhrase(4, track2PhraseA01);
-        //controller.sendMessage("/caustic/sequencer/pattern_event 1 0 0 0 1");
-
-        //track.clearPhrases();
-        //track.removePhrase(trackPhrase);
-
-        //trackSong.clearTracks();
-
-        String string1 = controller.getSerializeService().toString(trackSong);
-        TrackSong restoredSong = controller.getSerializeService().fromString(string1,
-                TrackSong.class);
-        restoredSong.setController(controller);
-
         //
-        //        LibraryPhrase libraryPhrase2 = library.findPhrasesByTag("length-8").get(1);
-        //        track1 = restoredSong.getTrack(0);
-        //        track1.addPhrase(5, 12,
-        //                track1.createTrackPhraseFrom(controller, libraryPhrase2));
+        //        createMockProject();
+        //        Library library = createMockLibrary();
+        //        TrackSong trackSong = createMockTrackSong();
         //
-        string1 = controller.getSerializeService().toString(restoredSong);
-        projectManager.save();
-        //controller.api(SequencerAPI.class).play(Mode.SONG);
-
-        String path = "";
-        RackMessage.SAVE_SONG.send(controller, "Test420");
+        //        LibraryScene libraryScene = library.getDefaultScene();//= library.getScenes().get(0);
+        //
+        //        TrackUtils.assignScene(controller, trackSong, libraryScene);
+        //
+        //        projectManager.save();
+        //
+        //        // Raw data that needs to be copied
+        //        LibraryPhrase libraryPhrase1 = library.findPhrasesByTag("length-1").get(0);
+        //        LibraryPhrase libraryPhrase2 = library.findPhrasesByTag("subsynth").get(0);
+        //
+        //        Assert.assertNotNull(libraryPhrase1);
+        //
+        //        Track track1 = trackSong.getTrack(0);
+        //        Track track2 = trackSong.getTrack(1);
+        //        Track track3 = trackSong.getTrack(2);
+        //        Track track4 = trackSong.getTrack(3);
+        //        Track track5 = trackSong.getTrack(4);
+        //        Track track6 = trackSong.getTrack(5);
+        //
+        //        // construct a TrackPhrase for the Library phrase
+        //        // the TrackPhrase is a unique instance that points to a assigned
+        //        // bank/pattern in a machine. TrackItem instances hold reference ids
+        //        // the their TrackPhrase. The TrackPhrase holds the original note data etc.
+        //        // Everytime a TrackPhrase is created, it will assign a new bank/pattern 
+        //        // in the Track's machine, this means there is only 64 possible TrackPhrases
+        //        // that can be created from a Track
+        //        TrackPhrase track1PhraseA01 = track1.copyTrackPhrase(libraryPhrase1);
+        //        TrackPhrase track2PhraseA01 = track1.copyTrackPhrase(libraryPhrase1);
+        //
+        //        List<LibraryPatch> patches = library.findPatchByTag("subsynth");
+        //        LibraryPatch libraryPatch = patches.get(0);
+        //        TrackUtils.assignPatch(controller, track1, libraryPatch);
+        //
+        //        TrackUtils.assignNotes(controller, track1, track1PhraseA01);
+        //
+        //        track1.addPhraseAt(0, 2, track1PhraseA01);
+        //        track1.addPhraseAt(2, 1, track1PhraseA01);
+        //        track1.addPhraseAt(4, 1, track1PhraseA01);
+        //
+        //        //track1.addPhraseAt(3, 6, phraseA01);
+        //
+        //        track1.addPhrase(1, track1PhraseA01);
+        //        track2.addPhrase(4, track2PhraseA01);
+        //        //controller.sendMessage("/caustic/sequencer/pattern_event 1 0 0 0 1");
+        //
+        //        //track.clearPhrases();
+        //        //track.removePhrase(trackPhrase);
+        //
+        //        //trackSong.clearTracks();
+        //
+        //        String string1 = controller.getSerializeService().toString(trackSong);
+        //        TrackSong restoredSong = controller.getSerializeService().fromString(string1,
+        //                TrackSong.class);
+        //        restoredSong.setController(controller);
+        //
+        //        //
+        //        //        LibraryPhrase libraryPhrase2 = library.findPhrasesByTag("length-8").get(1);
+        //        //        track1 = restoredSong.getTrack(0);
+        //        //        track1.addPhrase(5, 12,
+        //        //                track1.createTrackPhraseFrom(controller, libraryPhrase2));
+        //        //
+        //        string1 = controller.getSerializeService().toString(restoredSong);
+        //        projectManager.save();
+        //        //controller.api(SequencerAPI.class).play(Mode.SONG);
+        //
+        //        String path = "";
+        //        RackMessage.SAVE_SONG.send(controller, "Test420");
     }
 
     @Test
@@ -227,6 +222,7 @@ public class TrackSongTest {
         return song;
     }
 
+    @SuppressWarnings("unused")
     private Library createMockLibrary() throws IOException, CausticException {
         // create a library
         Library library = controller.getLibraryManager().createLibrary("TrackSongLib");

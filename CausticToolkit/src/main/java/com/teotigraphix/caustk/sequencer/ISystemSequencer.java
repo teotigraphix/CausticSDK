@@ -4,6 +4,7 @@ package com.teotigraphix.caustk.sequencer;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.tone.Tone;
 
 /**
  * Controls the outputpanel (transport).
@@ -74,5 +75,9 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
     int getCurrentMeasure();
 
     int getCurrentBeat();
+
+    void addPattern(Tone tone, int bank, int pattern, int start, int end);
+
+    void removePattern(Tone tone, int start, int end);
 
 }

@@ -169,6 +169,27 @@ public class PatternSequencerComponent extends ToneComponent {
         PatternSequencerMessage.CLEAR_BANK.send(getEngine(), getToneIndex(), index);
     }
 
+    /**
+     * Clears the bank and index while holding the selected bank and pattern
+     * index.
+     * <p>
+     * Use this is the selected bank and pattern cannot change.
+     * 
+     * @param bank The bank to clear.
+     * @param index The pattern to clear.
+     */
+    public void clearIndex(int bank, int index) {
+        int oldBank = getSelectedBank(true);
+        sendBankOSC(bank);
+        PatternSequencerMessage.CLEAR_PATTERN.send(getEngine(), getToneIndex(), index);
+        sendBankOSC(oldBank);
+    }
+
+    /**
+     * Clears the pattern using the current bank selected.
+     * 
+     * @param index The pattern index to clear.
+     */
     public void clearIndex(int index) {
         PatternSequencerMessage.CLEAR_PATTERN.send(getEngine(), getToneIndex(), index);
     }

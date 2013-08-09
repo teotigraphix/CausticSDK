@@ -303,6 +303,17 @@ public class Library implements ISerialize {
 
     @Override
     public void wakeup(ICaustkController controller) {
-
+        for (LibraryScene item : scenes) {
+            item.setLibrary(this);
+        }
+        for (LibraryPhrase item : phrases) {
+            item.setLibrary(this);
+        }
+        for (LibraryPatch item : patches) {
+            item.setLibrary(this);
+        }
+        for (LibraryPattern item : patterns) {
+            item.setLibrary(this);
+        }
     }
 }

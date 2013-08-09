@@ -19,16 +19,13 @@
 
 package com.teotigraphix.caustk.sequencer;
 
-import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
@@ -57,7 +54,7 @@ public class Track implements ISerialize {
     Map<Integer, TrackItem> items = new HashMap<Integer, TrackItem>();
 
     // A01->TrackPhrase
-    Map<String, TrackPhrase> registry = new HashMap<String, TrackPhrase>();
+    // Map<String, TrackPhrase> registry = new HashMap<String, TrackPhrase>();
 
     //----------------------------------
     //  dispatcher
@@ -102,44 +99,44 @@ public class Track implements ISerialize {
     //--------------------------------------------------------------------------
 
     public Track() {
-        initialize();
+        //initialize();
     }
 
-    public TrackPhrase copyTrackPhrase(LibraryPhrase libraryPhrase) {
-        // TrackItem are unique and hold the start and end measures
-        // within a Track. The TrackPhrase is created to hold the referenced note data
-        // and pointer back to the original library phrase
-        // ALL TrackPhrase are copied from a source LibraryPhrase.
+    //    public TrackPhrase copyTrackPhrase(LibraryPhrase libraryPhrase) {
+    //        // TrackItem are unique and hold the start and end measures
+    //        // within a Track. The TrackPhrase is created to hold the referenced note data
+    //        // and pointer back to the original library phrase
+    //        // ALL TrackPhrase are copied from a source LibraryPhrase.
+    //
+    //        // will always create a new instance and get a bank/patter slot off the stack
+    //        BankPatternSlot slot = queue.pop();
+    //
+    //        TrackPhrase trackPhrase = new TrackPhrase();
+    //        trackPhrase.setId(UUID.randomUUID());
+    //        trackPhrase.setBankIndex(slot.getBank());
+    //        trackPhrase.setPatternIndex(slot.getPattern());
+    //        trackPhrase.setNumMeasures(libraryPhrase.getLength());
+    //        trackPhrase.setNoteData(libraryPhrase.getNoteData());
+    //
+    //        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
+    //                trackPhrase.getPatternIndex());
+    //        registry.put(patternName, trackPhrase);
+    //
+    //        return trackPhrase;
+    //    }
 
-        // will always create a new instance and get a bank/patter slot off the stack
-        BankPatternSlot slot = queue.pop();
-
-        TrackPhrase trackPhrase = new TrackPhrase();
-        trackPhrase.setId(UUID.randomUUID());
-        trackPhrase.setBankIndex(slot.getBank());
-        trackPhrase.setPatternIndex(slot.getPattern());
-        trackPhrase.setNumMeasures(libraryPhrase.getLength());
-        trackPhrase.setNoteData(libraryPhrase.getNoteData());
-
-        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
-                trackPhrase.getPatternIndex());
-        registry.put(patternName, trackPhrase);
-
-        return trackPhrase;
-    }
-
-    public void deleteTrackPhrase(TrackPhrase trackPhrase) {
-        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
-                trackPhrase.getPatternIndex());
-        TrackPhrase phrase = registry.get(patternName);
-        if (phrase == null) {
-
-            return;
-        }
-
-        registry.remove(patternName);
-        // remove all TrackItem ?
-    }
+    //    public void deleteTrackPhrase(TrackPhrase trackPhrase) {
+    //        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
+    //                trackPhrase.getPatternIndex());
+    //        TrackPhrase phrase = registry.get(patternName);
+    //        if (phrase == null) {
+    //
+    //            return;
+    //        }
+    //
+    //        registry.remove(patternName);
+    //        // remove all TrackItem ?
+    //    }
 
     @SuppressWarnings("unused")
     private TrackItem findTrackItem(LibraryPhrase libraryPhrase) {
@@ -147,20 +144,20 @@ public class Track implements ISerialize {
         return trackItem;
     }
 
-    @SuppressWarnings("unused")
-    private TrackPhrase findTrackPhraseById(UUID id) {
-        for (TrackPhrase trackPhrase : registry.values()) {
-            if (trackPhrase.getId().equals(id))
-                return trackPhrase;
-        }
-        return null;
-    }
+    //    @SuppressWarnings("unused")
+    //    private TrackPhrase findTrackPhraseById(UUID id) {
+    //        for (TrackPhrase trackPhrase : registry.values()) {
+    //            if (trackPhrase.getId().equals(id))
+    //                return trackPhrase;
+    //        }
+    //        return null;
+    //    }
 
     private transient Deque<BankPatternSlot> queue;
 
-    public TrackItem addPhrase(int numLoops, TrackPhrase trackPhrase) throws CausticException {
+    public TrackItem addPhrase(int numLoops, ChannelPhrase channel) throws CausticException {
         int startMeasure = getNextMeasure();
-        return addPhraseAt(startMeasure, numLoops, trackPhrase);
+        return addPhraseAt(startMeasure, numLoops, channel);
     }
 
     /**
@@ -191,21 +188,22 @@ public class Track implements ISerialize {
      *            an index of 0-63.
      * @throws CausticException The start or measure span is occupied
      */
-    public TrackItem addPhraseAt(int startMeasure, int numLoops, TrackPhrase trackPhrase)
+    public TrackItem addPhraseAt(int startMeasure, int numLoops, ChannelPhrase channelPhrase)
             throws CausticException {
 
         if (contains(startMeasure))
             throw new CausticException("Track contain phrase at start: " + startMeasure);
 
-        final int duration = trackPhrase.getNumMeasures() * numLoops;
+        final int duration = channelPhrase.getLength() * numLoops;
         int endMeasure = startMeasure + duration;
         if (contains(startMeasure, endMeasure))
             throw new CausticException("Track contain phrase at end: " + endMeasure);
 
         TrackItem item = new TrackItem();
-        item.setTrackPhraseId(trackPhrase.getId());
+        item.setPhraseId(channelPhrase.getId());
         item.setStartMeasure(startMeasure);
-
+        item.setBankIndex(channelPhrase.getBankIndex());
+        item.setPatternIndex(channelPhrase.getPatternIndex());
         item.setEndMeasure(startMeasure + duration);
         item.setNumLoops(numLoops);
 
@@ -214,6 +212,10 @@ public class Track implements ISerialize {
         getDispatcher().trigger(new OnTrackPhraseAdd(this, item));
 
         return item;
+    }
+
+    public TrackItem getTrackItem(int measure) {
+        return items.get(measure);
     }
 
     private boolean contains(int startMeasure, int endMeasure) {
@@ -243,25 +245,6 @@ public class Track implements ISerialize {
         queue.push(slot);
 
         //getDispatcher().trigger(new OnTrackPhraseRemove(this, trackPhrase));
-    }
-
-    public void _addPhrase(int startMeasure, int numMeasures, TrackPhrase trackPhrase)
-            throws CausticException {
-        //        if (map.containsKey(startMeasure))
-        //            throw new CausticException("Patterns contain phrase at: " + startMeasure);
-        //
-        //        trackPhrase.setStartMeasure(startMeasure);
-        //        trackPhrase.setEndMeasure(startMeasure + numMeasures);
-        //        map.put(startMeasure, trackPhrase);
-        //        getDispatcher().trigger(new OnTrackPhraseAdd(this, trackPhrase));
-    }
-
-    public void _removePhrase(TrackPhrase trackPhrase) throws CausticException {
-        //        int measure = trackPhrase.getStartMeasure();
-        //        if (!map.containsKey(measure))
-        //            throw new CausticException("Patterns does not contain phrase at: " + measure);
-        //        map.remove(measure);
-        //        getDispatcher().trigger(new OnTrackPhraseRemove(this, trackPhrase));
     }
 
     public static class TrackEvent {
@@ -342,29 +325,29 @@ public class Track implements ISerialize {
         }
     }
 
-    private void initialize() {
-        queue = new ArrayDeque<BankPatternSlot>();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 16; j++) {
-                TrackPhrase phrase = findPhrase(i, j);
-                if (phrase == null) {
-                    queue.addLast(new BankPatternSlot(i, j));
-                } else {
+    //    private void initialize() {
+    //        queue = new ArrayDeque<BankPatternSlot>();
+    //        for (int i = 0; i < 4; i++) {
+    //            for (int j = 0; j < 16; j++) {
+    //                TrackPhrase phrase = findPhrase(i, j);
+    //                if (phrase == null) {
+    //                    queue.addLast(new BankPatternSlot(i, j));
+    //                } else {
+    //
+    //                }
+    //            }
+    //        }
+    //    }
 
-                }
-            }
-        }
-    }
-
-    private TrackPhrase findPhrase(int bankIndex, int patternIndex) {
-        for (TrackPhrase trackPhrase : registry.values()) {
-            if (trackPhrase.getBankIndex() == bankIndex
-                    && trackPhrase.getPatternIndex() == patternIndex) {
-                return trackPhrase;
-            }
-        }
-        return null;
-    }
+    //    private TrackPhrase findPhrase(int bankIndex, int patternIndex) {
+    //        for (TrackPhrase trackPhrase : registry.values()) {
+    //            if (trackPhrase.getBankIndex() == bankIndex
+    //                    && trackPhrase.getPatternIndex() == patternIndex) {
+    //                return trackPhrase;
+    //            }
+    //        }
+    //        return null;
+    //    }
 
     @Override
     public void sleep() {
@@ -372,8 +355,10 @@ public class Track implements ISerialize {
 
     @Override
     public void wakeup(ICaustkController controller) {
-        initialize();
-
+        //initialize();
+        for (TrackItem item : items.values()) {
+            item.wakeup(controller);
+        }
     }
 
 }

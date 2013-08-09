@@ -21,32 +21,47 @@ package com.teotigraphix.caustk.sequencer;
 
 import java.util.UUID;
 
-public class TrackItem {
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.library.LibraryPhrase;
+import com.teotigraphix.caustk.service.ISerialize;
 
-    private UUID libraryPhraseId;
+/**
+ * A {@link TrackItem} is a value object that is contained in a {@link Track}.
+ * <p>
+ * A new track item is created for every span of a {@link ChannelPhrase}
+ * inserted into the Track with {@link Track#addPhrase(int, ChannelPhrase)}.
+ */
+public class TrackItem implements ISerialize {
 
-    public final UUID getLibraryPhraseId() {
-        return libraryPhraseId;
+    //----------------------------------
+    //  phraseId
+    //----------------------------------
+
+    private UUID phraseId;
+
+    /**
+     * Returns the {@link ChannelPhrase#getId()} of the underlying
+     * {@link LibraryPhrase} that was copied when the channel had its phrase
+     * assigned.
+     */
+    public final UUID getPhraseId() {
+        return phraseId;
     }
 
-    public final void setLibraryPhraseId(UUID value) {
-        libraryPhraseId = value;
+    public final void setPhraseId(UUID value) {
+        phraseId = value;
     }
 
-    private UUID trackPhraseId;
+    //----------------------------------
+    //  bankIndex
+    //----------------------------------
 
     private int bankIndex;
 
-    private int patternIndex;
-
-    public final UUID getTrackPhraseId() {
-        return trackPhraseId;
-    }
-
-    public final void setTrackPhraseId(UUID value) {
-        trackPhraseId = value;
-    }
-
+    /**
+     * The bank index in the pattern sequencer where the phrase data is located
+     * (A-D).
+     */
     public final int getBankIndex() {
         return bankIndex;
     }
@@ -55,6 +70,16 @@ public class TrackItem {
         bankIndex = value;
     }
 
+    //----------------------------------
+    //  patternIndex
+    //----------------------------------
+
+    private int patternIndex;
+
+    /**
+     * The pattern index in the pattern sequencer where the phrase data is
+     * located (1-16).
+     */
     public final int getPatternIndex() {
         return patternIndex;
     }
@@ -69,6 +94,9 @@ public class TrackItem {
 
     private int startMeasure;
 
+    /**
+     * The measure at which this item starts in the song sequencer.
+     */
     public final int getStartMeasure() {
         return startMeasure;
     }
@@ -83,6 +111,9 @@ public class TrackItem {
 
     private int endMeasure;
 
+    /**
+     * The measure at which this item ends in the song sequencer.
+     */
     public final int getEndMeasure() {
         return endMeasure;
     }
@@ -91,6 +122,9 @@ public class TrackItem {
         endMeasure = value;
     }
 
+    /**
+     * Returns the length of the item span, end - start measure.
+     */
     public int getLength() {
         // this allows for virtual lengths in the track
         // this means that a phrase may be 8 measures but was added as 4 measures
@@ -104,6 +138,12 @@ public class TrackItem {
 
     private int numLoops;
 
+    /**
+     * The number of loops that the original phrase num measures is multiplied
+     * by.
+     * 
+     * @return
+     */
     public int getNumLoops() {
         return numLoops;
     }
@@ -124,6 +164,7 @@ public class TrackItem {
             return true;
         return false;
     }
+
     //
     //    public boolean containsInSpan(int measure) {
     //        int start = getStartMeasure();
@@ -132,5 +173,13 @@ public class TrackItem {
     //            return true;
     //        return false;
     //    }
+
+    @Override
+    public void sleep() {
+    }
+
+    @Override
+    public void wakeup(ICaustkController controller) {
+    }
 
 }

@@ -178,7 +178,7 @@ public class PatternSequencerMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>int</code>
      * </p>
      * 
-     * @see com.teotigraphix.caustic.sequencer.IPatternSequencer#getNumMeasures()
+     * @see com.teotigraphix.caustic.sequencer.IPatternSequencer#getLength()
      * @see com.teotigraphix.caustic.sequencer.IPatternSequencer#setNumMeasures()
      */
     public static final PatternSequencerMessage NUM_MEASURES = new PatternSequencerMessage(

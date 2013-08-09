@@ -25,6 +25,19 @@ import com.teotigraphix.caustk.system.MemorySlotItem;
 
 public abstract class LibraryItem extends MemorySlotItem {
 
+    private transient Library library;
+
+    /**
+     * Returns the runtime reference of the Library that owns this item.
+     */
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
     private UUID id;
 
     /**

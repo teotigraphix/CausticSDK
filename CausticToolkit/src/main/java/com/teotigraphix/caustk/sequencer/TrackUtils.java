@@ -116,21 +116,6 @@ public class TrackUtils {
         machine.restore();
     }
 
-    public static void assignNotes(ICaustkController controller, Track track,
-            TrackPhrase trackPhrase) {
-        //        IPatternSequencer2 sequencer = getPatternSequencer(controller, track);
-        //
-        //        int lastBank = sequencer.getSelectedBank();
-        //        int lastPattern = sequencer.getSelectedIndex();
-        //        sequencer.setSelectedPattern(trackPhrase.getBankIndex(), trackPhrase.getPatternIndex());
-        //
-        //        sequencer.setLength(trackPhrase.getNumMeasures());
-        //
-        //        PatternSequencerUtils.applyNoteData(sequencer, trackPhrase.getNoteData());
-        //
-        //        sequencer.setSelectedPattern(lastBank, lastPattern);
-    }
-
     public static Tone getTone(ICaustkController controller, Track track) {
         Tone tone = controller.getSoundSource().getTone(track.getIndex());
         return tone;
