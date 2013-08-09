@@ -85,6 +85,9 @@ public interface ISoundSource extends IRestore {
     <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
             throws CausticException;
 
+    <T extends Tone> T createTone(int index, String name, Class<? extends Tone> toneClass)
+            throws CausticException;
+
     /**
      * @param index
      * @param name
@@ -132,7 +135,7 @@ public interface ISoundSource extends IRestore {
      * 
      * @param file The location to save the song.
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     File saveSongAs(File file) throws IOException;
 

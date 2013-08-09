@@ -35,6 +35,8 @@ public interface ISerializeService {
     <T> T fromFile(File file, Class<T> classOfT);
 
     <T> T fromString(String data, Class<T> classOfT);
+    
+    <T> T copy(Object data, Class<T> classOfT);
 
     //String toString(Object serialized);
 

@@ -55,6 +55,13 @@ public class SerializeService implements ISerializeService {
     }
 
     @Override
+    public <T> T copy(Object instance, Class<T> classOfT) {
+        String data = toPrettyString(instance);
+        T result = fromString(data, classOfT);
+        return result;
+    }
+
+    @Override
     public void save(File target, Object serialized) throws IOException {
         String data = JsonUtils.toGson(serialized, true);
         FileUtils.writeStringToFile(target, data);

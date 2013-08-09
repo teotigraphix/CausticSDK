@@ -186,20 +186,22 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
         RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
                 index);
+        
+        toneAdd(index, tone);
 
         return (T)tone;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
+    public <T extends Tone> T createTone(int index, String name, Class<? extends Tone> toneClass)
             throws CausticException {
         T tone = null;
         try {
             Constructor<? extends Tone> constructor = toneClass
                     .getConstructor(ICaustkController.class);
             tone = (T)constructor.newInstance(getController());
-            initializeTone(tone, name, tone.getToneType(), nextIndex());
+            initializeTone(tone, name, tone.getToneType(), index);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (SecurityException e) {
@@ -218,8 +220,16 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
         RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
                 tone.getIndex());
+        
+        toneAdd(index, tone);
 
         return tone;
+    }
+
+    @Override
+    public <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
+            throws CausticException {
+        return createTone(nextIndex(), name, toneClass);
     }
 
     @Override

@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk;
 
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Before;
 
@@ -22,7 +24,7 @@ public class CaustkTestBase {
         start();
     }
 
-    protected void start() throws CausticException {
+    protected void start() throws CausticException, IOException {
     }
 
     @After
