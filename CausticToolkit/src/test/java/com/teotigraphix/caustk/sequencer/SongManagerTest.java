@@ -20,7 +20,7 @@ import com.teotigraphix.caustk.project.ProjectManager;
 
 public class SongManagerTest {
 
-    private final static File PROJECT_FILE = new File("Test.ctk");
+    private final static File PROJECT_DIR = new File("Test");
 
     private ICaustkApplication application;
 
@@ -51,7 +51,7 @@ public class SongManagerTest {
 
     @Test
     public void test_create_song() throws CausticException, IOException {
-        Project project1 = projectManager.create(PROJECT_FILE);
+        Project project1 = projectManager.create(PROJECT_DIR);
         projectManager.save();
         Assert.assertFalse(songManager.songExists("Foo.ctks"));
         songManager.create("Foo.ctks");
@@ -66,7 +66,7 @@ public class SongManagerTest {
         Assert.assertTrue(project1.isClosed());
         Assert.assertNull(songManager.getTrackSong());
         @SuppressWarnings("unused")
-        Project project2 = projectManager.load(PROJECT_FILE);
+        Project project2 = projectManager.load(PROJECT_DIR);
         Assert.assertNotNull(songManager.getTrackSong());
     }
 }

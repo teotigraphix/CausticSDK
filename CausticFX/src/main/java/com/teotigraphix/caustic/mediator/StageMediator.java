@@ -43,13 +43,15 @@ public class StageMediator extends MediatorBase implements ICaustkMediator {
 
     @Override
     protected void onProjectCreate() {
-        String projectName = getController().getProjectManager().getProject().getFile().getPath();
+        String projectName = getController().getProjectManager().getProject().getDirectory()
+                .getPath();
         stageModel.setTitle(projectName);
     }
 
     @Override
     protected void onProjectLoad() {
-        String projectName = getController().getProjectManager().getProject().getFile().getPath();
+        String projectName = getController().getProjectManager().getProject().getDirectory()
+                .getPath();
         stageModel.setTitle(projectName);
     }
 

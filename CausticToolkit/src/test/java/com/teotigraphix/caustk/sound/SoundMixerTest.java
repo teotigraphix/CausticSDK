@@ -66,8 +66,8 @@ public class SoundMixerTest {
     @SuppressWarnings("unused")
     @Test
     public void test_project_save() throws CausticException, IOException {
-        File projectFile = new File("SoundMixerTestProject.ctk");
-        Project project = controller.getProjectManager().create(projectFile);
+        File projectDir = new File("SoundMixerTestProject");
+        Project project = controller.getProjectManager().create(projectDir);
 
         soundSource.createTone("tone1", ToneType.Bassline);
         soundSource.createTone("tone2", ToneType.Beatbox);
@@ -79,7 +79,7 @@ public class SoundMixerTest {
         controller.getProjectManager().save();
         // load the project from disk, this will reinitialize
         // the SoundMixer state instance from deserialization of the project map entry
-        Project project2 = controller.getProjectManager().load(projectFile);
+        Project project2 = controller.getProjectManager().load(projectDir);
 
         Assert.assertEquals(0.42f, soundMixer.getChannel(0).getHigh());
 

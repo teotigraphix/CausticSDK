@@ -45,21 +45,13 @@ public class Project {
     //----------------------------------
 
     public String getName() {
-        return file.getName().replace(".ctk", "");
+        return directory.getName().replace(".ctk", "");
     }
 
-    private File file;
+    private File directory;
 
-    /**
-     * Returns the relative File path to the project in the
-     * <code>projects</code> directory.
-     */
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File value) {
-        file = value;
+    public void setDirectory(File value) {
+        directory = value;
     }
 
     /**
@@ -67,7 +59,15 @@ public class Project {
      * project descriptor file.
      */
     public File getDirectory() {
-        return new File(file.getParentFile(), getName());
+        return directory;
+    }
+
+    /**
+     * Returns the <code>.project</code> state file located at the root of the
+     * project directory.
+     */
+    public File getStateFile() {
+        return getResource(".project");
     }
 
     /**

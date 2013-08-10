@@ -213,7 +213,7 @@ public class TrackSongTest {
     }
 
     private Project createMockProject() throws IOException {
-        Project project = projectManager.create(new File("Test.ctk"));
+        Project project = projectManager.create(new File("Test"));
         return project;
     }
 

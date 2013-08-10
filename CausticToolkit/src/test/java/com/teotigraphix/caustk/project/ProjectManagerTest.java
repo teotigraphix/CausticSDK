@@ -26,7 +26,7 @@ public class ProjectManagerTest {
     private static final File APPLICATION_ROOT_DIR = new File(
             "src/test/java/com/teotigraphix/caustk/project");
 
-    private final static File PROJECT_FILE = new File("Test.ctk");
+    private final static File PROJECT_DIR = new File("Test");
 
     private ICaustkApplication application;
 
@@ -56,14 +56,14 @@ public class ProjectManagerTest {
 
     @Test
     public void test_create_empty_project() throws CausticException, IOException {
-        Project project = projectManager.create(PROJECT_FILE);
+        Project project = projectManager.create(PROJECT_DIR);
         projectManager.save();
-        Assert.assertTrue(project.getFile().exists());
+        Assert.assertTrue(project.getStateFile().exists());
     }
 
     //@Test
     public void test_create_tone_project() throws CausticException, IOException {
-        Project project = projectManager.create(PROJECT_FILE);
+        Project project = projectManager.create(PROJECT_DIR);
         
         soundSource.createTone("part1", ToneType.SubSynth);
         soundSource.createTone("part2", ToneType.Bassline);
@@ -71,16 +71,16 @@ public class ProjectManagerTest {
         soundSource.createTone("part4", ToneType.PCMSynth);
         
         projectManager.save();
-        Assert.assertTrue(project.getFile().exists());
+        Assert.assertTrue(project.getStateFile().exists());
     }
     
     @Test
     public void test_create_project() throws CausticException, IOException {
-        Project project1 = projectManager.create(PROJECT_FILE);
+        Project project1 = projectManager.create(PROJECT_DIR);
         projectManager.save();
         assertNotNull(project1);
-        Assert.assertTrue(project1.getFile().exists());
-        Project project2 = projectManager.load(PROJECT_FILE);
+        Assert.assertTrue(project1.getStateFile().exists());
+        Project project2 = projectManager.load(PROJECT_DIR);
         assertNotNull(project2);
 
         String serialized1 = controller.getSerializeService().toPrettyString(project1);

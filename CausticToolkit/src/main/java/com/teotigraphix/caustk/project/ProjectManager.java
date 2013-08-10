@@ -147,9 +147,9 @@ public class ProjectManager implements IProjectManager {
     @Override
     public void save() throws IOException {
         // XXX project manager project.getFile absolute path doubled up
-        CtkDebug.log("IProjectManager.save(): " + project.getFile().getPath());
+        CtkDebug.log("IProjectManager.save(): " + project.getStateFile());
 
-        sessionPreferences.put("lastProject", project.getFile().getPath());
+        sessionPreferences.put("lastProject", project.getDirectory().getPath());
         // set modified
         project.getInfo().setModified(new Date());
 
@@ -169,7 +169,7 @@ public class ProjectManager implements IProjectManager {
         CtkDebug.log("IProjectManager; Save Complete, now saving project json file");
 
         String data = controller.getSerializeService().toPrettyString(project);
-        FileUtils.writeStringToFile(project.getFile(), data);
+        FileUtils.writeStringToFile(project.getStateFile(), data);
 
         saveProjectPreferences();
     }
@@ -180,14 +180,18 @@ public class ProjectManager implements IProjectManager {
     }
 
     @Override
-    public Project load(File file) throws IOException {
-        file = toProjectFile(file);
-        if (!file.exists())
+    public Project load(File directory) throws IOException {
+        if (directory.getName().contains("."))
+            throw new IOException("Project is not a directory");
+
+        directory = toProjectFile(directory);
+        if (!directory.exists())
             throw new IOException("Project file does not exist");
 
-        CtkDebug.log("IProjectManager.load():" + file.getAbsolutePath());
+        CtkDebug.log("IProjectManager.load():" + directory.getAbsolutePath());
 
-        project = controller.getSerializeService().fromFile(file, Project.class);
+        project = controller.getSerializeService().fromFile(new File(directory, ".project"),
+                Project.class);
         project.open();
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
@@ -195,13 +199,17 @@ public class ProjectManager implements IProjectManager {
     }
 
     @Override
-    public Project create(File projectFile) throws IOException {
+    public Project create(File file) throws IOException {
+        if (file.getName().contains("."))
+            throw new IOException("Project is not a directory");
+
         project = new Project();
         project.setInitializing(true);
-        project.setFile(new File(projectDirectory, projectFile.getName()));
+        // set the project sub directory in the /projects directory
+        project.setDirectory(new File(projectDirectory, file.getName()));
         project.setInfo(createInfo());
         project.open();
-        CtkDebug.log("IProjectManager.create(): " + project.getFile().getAbsolutePath());
+        CtkDebug.log("IProjectManager.create(): " + project.getDirectory().getAbsolutePath());
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
 

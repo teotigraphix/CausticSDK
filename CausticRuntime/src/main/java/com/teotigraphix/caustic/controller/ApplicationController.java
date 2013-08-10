@@ -129,7 +129,7 @@ public class ApplicationController implements IApplicationController {
         @SuppressWarnings("unused")
         Project project = null;
         if (path == null) {
-            project = projectManager.create(new File("UntitledProject.ctk"));
+            project = projectManager.create(new File("UntitledProject"));
         } else {
             project = projectManager.load(new File(path));
         }
