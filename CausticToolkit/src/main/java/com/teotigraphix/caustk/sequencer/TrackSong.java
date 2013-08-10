@@ -50,10 +50,6 @@ public class TrackSong extends Song implements ISerialize {
         return controller;
     }
 
-    public final void setController(ICaustkController value) {
-        controller = value;
-    }
-
     //--------------------------------------------------------------------------
     // 
     //  ITrackSong API :: Properties
@@ -281,7 +277,7 @@ public class TrackSong extends Song implements ISerialize {
 
     @Override
     public void wakeup(ICaustkController controller) {
-        setController(controller);
+        this.controller = controller;
         initializeTracks();
         for (Track track : tracks.values()) {
             track.wakeup(controller);

@@ -74,4 +74,10 @@ public class StageModel extends ModelBase implements IStageModel {
     public void onRegister() {
     }
 
+    @Override
+    public void save() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

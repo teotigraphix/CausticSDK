@@ -84,7 +84,7 @@ public interface ICaustkApplication {
     }
 
     /**
-     * @see ICaustkApplication#start()
+     * @see ICaustkApplication#save()
      * @see ICaustkController#getDispatcher()
      */
     public static class OnApplicationSave {

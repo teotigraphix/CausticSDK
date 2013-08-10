@@ -49,4 +49,6 @@ public interface ICaustkModel {
      * from within this phase.
      */
     void onShow();
+
+    void save();
 }

@@ -140,7 +140,7 @@ public class Project {
      * 
      * @param key The String key.
      */
-    public Integer getInterger(String key) {
+    public Integer getInteger(String key) {
         if (!map.containsKey(key))
             return null;
         Object value = map.get(key);

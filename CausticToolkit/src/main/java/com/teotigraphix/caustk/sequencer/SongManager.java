@@ -94,6 +94,13 @@ public class SongManager extends SubControllerBase implements ISongManager {
         trackSong = null;
     }
 
+    public TrackSong create(File file) throws IOException {
+        if (file.exists())
+            throw new IOException("TrackSong file exists");
+        trackSong = createTrackSong(file);
+        return trackSong;
+    }
+
     @Override
     public TrackSong create(String path) throws IOException {
         File file = toSongFile(new File(path));
@@ -142,7 +149,7 @@ public class SongManager extends SubControllerBase implements ISongManager {
     private TrackSong createTrackSong(File file) {
         TrackSong song = new TrackSong();
         song.setFile(file);
-        song.setController(getController());
+        song.wakeup(getController());
         return song;
     }
 
@@ -158,6 +165,8 @@ public class SongManager extends SubControllerBase implements ISongManager {
     }
 
     public File toSongFile(File file) {
+        if (file.isAbsolute())
+            return file;
         return new File(songDirectory, file.getPath());
     }
 

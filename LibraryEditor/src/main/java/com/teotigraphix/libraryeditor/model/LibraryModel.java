@@ -230,4 +230,10 @@ public class LibraryModel extends ModelBase {
         }
     }
 
+    @Override
+    public void save() {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
