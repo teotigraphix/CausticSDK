@@ -17,6 +17,7 @@ import com.teotigraphix.caustic.mediator.ICaustkMediator;
 import com.teotigraphix.caustic.model.ApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustic.model.ICaustkModel;
+import com.teotigraphix.caustic.model.ModelBase;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
@@ -31,14 +32,23 @@ import com.teotigraphix.caustk.project.Project;
 @Singleton
 public class ApplicationController implements IApplicationController {
 
+    @Inject
+    private IApplicationModel applicationModel;
+
+    @Inject
+    @Named("resources")
+    ResourceBundle resourceBundle;
+
     private ICaustkController controller;
+
+    private List<ICaustkModel> models = new ArrayList<ICaustkModel>();
+
+    private List<ICaustkMediator> mediators = new ArrayList<ICaustkMediator>();
 
     @Override
     public ICaustkController getController() {
         return controller;
     }
-
-    private List<ICaustkMediator> mediators = new ArrayList<ICaustkMediator>();
 
     @Override
     public void registerMeditor(ICaustkMediator mediator) {
@@ -67,8 +77,6 @@ public class ApplicationController implements IApplicationController {
         }
     }
 
-    private List<ICaustkModel> models = new ArrayList<ICaustkModel>();
-
     @Override
     public void registerModel(ICaustkModel model) {
         if (models.contains(model)) {
@@ -86,13 +94,6 @@ public class ApplicationController implements IApplicationController {
             model.onRegister();
         }
     }
-
-    @Inject
-    private IApplicationModel applicationModel;
-
-    @Inject
-    @Named("resources")
-    ResourceBundle resourceBundle;
 
     @Inject
     public ApplicationController(ICaustkApplicationProvider provider) {
@@ -134,6 +135,15 @@ public class ApplicationController implements IApplicationController {
         }
     }
 
+    public void load() {
+        for (ICaustkModel model : models) {
+            if (model instanceof ModelBase) {
+                CtkDebug.log("    Load; " + model.getClass().getSimpleName());
+                ((ModelBase)model).setupState();
+            }
+        }
+    }
+
     /**
      * @see OnApplicationControllerShow
      */
@@ -149,6 +159,10 @@ public class ApplicationController implements IApplicationController {
 
     protected void onProjectSave() {
         applicationModel.setDirty(false);
+        for (ICaustkModel model : models) {
+            CtkDebug.log("    Saving; " + model.getClass().getSimpleName());
+            model.save();
+        }
     }
 
 }

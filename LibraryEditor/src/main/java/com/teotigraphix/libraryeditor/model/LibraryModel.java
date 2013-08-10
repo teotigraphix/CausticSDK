@@ -229,11 +229,4 @@ public class LibraryModel extends ModelBase {
             return item.toString();
         }
     }
-
-    @Override
-    public void save() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

@@ -85,10 +85,4 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
 
     }
 
-    @Override
-    public void save() {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

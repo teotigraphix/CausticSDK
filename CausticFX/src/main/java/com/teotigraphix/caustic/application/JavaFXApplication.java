@@ -174,7 +174,9 @@ public abstract class JavaFXApplication extends GuiceApplication {
         // set roots, call initialize(), start() on application, start app model
         // create or load last project
         applicationController.start();
-
+        
+        applicationController.load();
+        
         applicationController.registerModels();
         applicationController.registerMeditors();
 

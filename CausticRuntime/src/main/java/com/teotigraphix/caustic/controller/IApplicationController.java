@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.project.Project;
 
 public interface IApplicationController {
 
@@ -36,6 +37,12 @@ public interface IApplicationController {
      * Returns the single instance of the {@link ICaustkController}.
      */
     ICaustkController getController();
+
+    /**
+     * Loads {@link ICaustkModel} state after the {@link Project} has been
+     * deserialized.
+     */
+    void load();
 
     /**
      * Starts the {@link ICaustkApplication}.
