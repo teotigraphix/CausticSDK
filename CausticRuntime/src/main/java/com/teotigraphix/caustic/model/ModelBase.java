@@ -7,6 +7,8 @@ import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.service.IInjectorService;
+import com.teotigraphix.caustk.service.ISerialize;
 
 public abstract class ModelBase implements ICaustkModel {
 
@@ -15,6 +17,11 @@ public abstract class ModelBase implements ICaustkModel {
     private IDispatcher dispatcher;
 
     private IApplicationController applicationController;
+
+    @Override
+    public boolean isInitialized() {
+        return state != null && stateFactory != null;
+    }
 
     private ICaustkModelState state;
 
@@ -82,8 +89,12 @@ public abstract class ModelBase implements ICaustkModel {
         Project project = getController().getProjectManager().getProject();
         String data = project.getString(getStateKey());
         if (data != null) {
-            state = getController().getSerializeService().fromString(data, stateFactory);
-            initializeState(state);
+            state = getController().getSerializeService().fromStateString(data, stateFactory);
+            IInjectorService injectorService = controller.getComponent(IInjectorService.class);
+            injectorService.inject(state);
+            if (state instanceof ISerialize)
+                ((ISerialize)state).wakeup(controller);
+            restoreState(state);
         } else {
             try {
                 state = stateFactory.newInstance();
@@ -94,6 +105,10 @@ public abstract class ModelBase implements ICaustkModel {
             }
             configState(state);
         }
+        initalizeState();
+    }
+
+    protected void initalizeState() {
     }
 
     /**
@@ -101,7 +116,7 @@ public abstract class ModelBase implements ICaustkModel {
      * 
      * @param state
      */
-    protected void initializeState(ICaustkModelState state) {
+    protected void restoreState(ICaustkModelState state) {
     }
 
     /**

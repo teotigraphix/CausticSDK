@@ -35,7 +35,16 @@ public interface ISerializeService {
     <T> T fromFile(File file, Class<T> classOfT);
 
     <T> T fromString(String data, Class<T> classOfT);
-    
+
+    /**
+     * Does not inject or wakeup instance.
+     * 
+     * @param data
+     * @param classOfT
+     * @return
+     */
+    <T> T fromStateString(String data, Class<T> classOfT);
+
     <T> T copy(Object data, Class<T> classOfT);
 
     //String toString(Object serialized);
@@ -45,4 +54,5 @@ public interface ISerializeService {
     String toString(Object serialized);
 
     void save(File target, Object serialized) throws IOException;
+
 }

@@ -170,6 +170,7 @@ public class Song {
     //  ISong API :: Methods
     // 
     //--------------------------------------------------------------------------
+
     /**
      * Enables the playhead.
      * <p>
@@ -177,7 +178,6 @@ public class Song {
      * useful for starting a song at o beat and 0 measure.
      * </p>
      */
-
     public void play() {
         setCurrentBeat(currentBeat);
     }
@@ -190,8 +190,8 @@ public class Song {
         int lastBeat = currentBeat;
         int lastMeasure = currentMeasure;
 
-        currentBeat = 0;
-        currentMeasure = 0;
+        currentBeat = -1;
+        currentMeasure = -1;
 
         //        fireBeatChange(mCurrentBeat, lastBeat);
         //        fireMeasureChange(mCurrentMeasure, lastMeasure);

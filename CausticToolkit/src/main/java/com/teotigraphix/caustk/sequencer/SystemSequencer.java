@@ -26,8 +26,6 @@ import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticEventListener;
-import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.tone.Tone;
 
 public class SystemSequencer extends SubControllerBase implements ISystemSequencer,
         CausticEventListener {
@@ -91,6 +89,9 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
         setIsPlaying(true);
+        
+        getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(0));
+        getController().getDispatcher().trigger(new OnSongSequencerBeatChange(0));
     }
 
     @Override
@@ -154,11 +155,13 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     @Override
     public void OnBeatChanged(int beat) {
         //System.out.println("   beat " + beat);
+        getController().getDispatcher().trigger(new OnSongSequencerBeatChange(beat));
     }
 
     @Override
     public void OnMeasureChanged(int measure) {
         //System.out.println("measure " + measure);
+        getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(measure));
     }
 
     //--------------------------------------------------------------------------
@@ -262,16 +265,4 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
         return 0;
     }
 
-    @Override
-    public void addPattern(Tone tone, int bank, int pattern, int start, int end) {
-        // /caustic/sequencer/pattern_event [machin_index] [start_measure] [bank] [pattern] [end_measure] 
-        SequencerMessage.PATTERN_EVENT.send(getController(), tone.getIndex(), start, bank, pattern,
-                end);
-
-    }
-
-    @Override
-    public void removePattern(Tone tone, int start, int end) {
-        SequencerMessage.PATTERN_EVENT.send(getController(), tone.getIndex(), start, -1, -1, end);
-    }
 }

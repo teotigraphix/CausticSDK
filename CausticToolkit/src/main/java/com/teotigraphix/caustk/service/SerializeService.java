@@ -45,6 +45,11 @@ public class SerializeService implements ISerializeService {
     }
 
     @Override
+    public <T> T fromStateString(String data, Class<T> classOfT) {
+        return JsonUtils.fromState(data, classOfT);
+    }
+
+    @Override
     public String toString(Object serialized) {
         return JsonUtils.toGson(serialized, false);
     }

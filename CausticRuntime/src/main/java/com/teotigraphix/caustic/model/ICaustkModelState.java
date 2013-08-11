@@ -1,5 +1,7 @@
 package com.teotigraphix.caustic.model;
 
-public interface ICaustkModelState {
+import com.teotigraphix.caustk.service.ISerialize;
+
+public interface ICaustkModelState extends ISerialize {
 
 }

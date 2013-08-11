@@ -18,7 +18,9 @@ import com.teotigraphix.caustk.controller.ICaustkController;
  * </ul>
  */
 public interface ICaustkModel {
-
+    
+    boolean isInitialized();
+    
     /**
      * The model's local dispatcher.
      * <p>

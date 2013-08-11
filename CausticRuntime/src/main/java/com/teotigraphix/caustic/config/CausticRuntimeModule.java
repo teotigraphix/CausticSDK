@@ -12,7 +12,9 @@ import com.teotigraphix.caustic.model.ApplicationModel;
 import com.teotigraphix.caustic.model.IApplicationModel;
 import com.teotigraphix.caustic.screen.IScreenManager;
 import com.teotigraphix.caustic.screen.ScreenManager;
+import com.teotigraphix.caustic.servce.InjectorService;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.service.IInjectorService;
 
 public abstract class CausticRuntimeModule extends AbstractModule {
 
@@ -22,7 +24,8 @@ public abstract class CausticRuntimeModule extends AbstractModule {
         bind(IApplicationModel.class).to(ApplicationModel.class).in(Singleton.class);
         bind(IApplicationController.class).to(ApplicationController.class).in(Singleton.class);
         bind(IControllerProvider.class).to(ControllerProvider.class).in(Singleton.class);
-        
+        bind(IInjectorService.class).to(InjectorService.class).in(Singleton.class);
+
         bind(IScreenManager.class).to(ScreenManager.class).in(Singleton.class);
 
         configurePlatformRequirements();

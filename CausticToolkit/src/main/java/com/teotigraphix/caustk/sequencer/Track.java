@@ -19,8 +19,10 @@
 
 package com.teotigraphix.caustk.sequencer;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.teotigraphix.caustk.application.IDispatcher;
@@ -200,6 +202,7 @@ public class Track implements ISerialize {
             throw new CausticException("Track contain phrase at end: " + endMeasure);
 
         TrackItem item = new TrackItem();
+        item.setNumMeasures(channelPhrase.getLength());
         item.setPhraseId(channelPhrase.getId());
         item.setStartMeasure(startMeasure);
         item.setBankIndex(channelPhrase.getBankIndex());
@@ -216,6 +219,16 @@ public class Track implements ISerialize {
 
     public TrackItem getTrackItem(int measure) {
         return items.get(measure);
+    }
+
+    public TrackItem findTrackItem(int startMeasure, int length) {
+        for (int i = startMeasure; i < startMeasure + length; i++) {
+            for (TrackItem item : items.values()) {
+                if (items.containsKey(i))
+                    return item;
+            }
+        }
+        return null;
     }
 
     private boolean contains(int startMeasure, int endMeasure) {
@@ -235,7 +248,15 @@ public class Track implements ISerialize {
         }
         return false;
     }
-
+    
+    public List<TrackItem> getItemsOnMeasure(int measure) {
+        List<TrackItem> result = new ArrayList<TrackItem>();
+        for (TrackItem item : items.values()) {
+            if (item.contains(measure))
+                result.add(item);
+        }
+        return result;
+    }
     public void removePhrase(int startMeasure) throws CausticException {
         if (!items.containsKey(startMeasure))
             throw new CausticException("Patterns does not contain phrase at: " + startMeasure);

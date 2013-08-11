@@ -175,7 +175,11 @@ public class TrackSong extends Song implements ISerialize {
             int start = trackItem.getStartMeasure();
             int end = trackItem.getEndMeasure();
             // add the track to the song sequencer
-            controller.getSystemSequencer().addPattern(tone, bank, pattern, start, end);
+            try {
+                controller.getSongSequencer().addPattern(tone, bank, pattern, start, end);
+            } catch (CausticException e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -188,7 +192,11 @@ public class TrackSong extends Song implements ISerialize {
             int start = trackItem.getStartMeasure();
             int end = trackItem.getEndMeasure();
             // remove the track to the song sequencer
-            controller.getSystemSequencer().removePattern(tone, start, end);
+            try {
+                controller.getSongSequencer().removePattern(tone, start, end);
+            } catch (CausticException e) {
+                e.printStackTrace();
+            }
         }
     };
 

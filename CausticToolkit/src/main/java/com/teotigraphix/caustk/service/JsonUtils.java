@@ -62,6 +62,8 @@ public class JsonUtils {
         } finally {
             IOUtils.closeQuietly(reader);
         }
+        IInjectorService injectorService = controller.getComponent(IInjectorService.class);
+        injectorService.inject(result);
         if (result instanceof ISerialize)
             ((ISerialize)result).wakeup(controller);
         return result;
@@ -78,8 +80,24 @@ public class JsonUtils {
         } catch (JsonIOException e) {
             e.printStackTrace();
         }
+        IInjectorService injectorService = controller.getComponent(IInjectorService.class);
+        injectorService.inject(result);
         if (result instanceof ISerialize)
             ((ISerialize)result).wakeup(controller);
+        return result;
+    }
+    
+    static <T> T fromState(String data, Class<T> classOfT) {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        T result = null;
+        try {
+            result = gson.fromJson(new StringReader(data), classOfT);
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        } catch (JsonIOException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 }

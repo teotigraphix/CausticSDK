@@ -43,8 +43,10 @@ import com.teotigraphix.caustk.pattern.PatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.sequencer.ISongManager;
+import com.teotigraphix.caustk.sequencer.ISongSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.SongManager;
+import com.teotigraphix.caustk.sequencer.SongSequencer;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.SerializeService;
@@ -159,6 +161,17 @@ public class CaustkController implements ICaustkController {
     @Override
     public ISongManager getSongManager() {
         return songManager;
+    }
+
+    //----------------------------------
+    // songSequencer
+    //----------------------------------
+
+    private ISongSequencer songSequencer;
+
+    @Override
+    public ISongSequencer getSongSequencer() {
+        return songSequencer;
     }
 
     //----------------------------------
@@ -335,6 +348,7 @@ public class CaustkController implements ICaustkController {
         projectManager = new ProjectManager(this);
         libraryManager = new LibraryManager(this);
         songManager = new SongManager(this);
+        songSequencer = new SongSequencer(this);
 
         soundGenerator = getConfiguration().createSoundGenerator(this);
         soundGenerator.initialize();

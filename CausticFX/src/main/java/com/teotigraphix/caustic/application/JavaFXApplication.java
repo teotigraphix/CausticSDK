@@ -32,6 +32,7 @@ import com.teotigraphix.caustic.screen.IScreenView;
 import com.teotigraphix.caustic.utils.FileUtil;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.core.CtkDebug;
+import com.teotigraphix.caustk.service.IInjectorService;
 
 /*
 App requirements;
@@ -112,6 +113,11 @@ public abstract class JavaFXApplication extends GuiceApplication {
     @Inject
     protected GuiceFXMLLoader loader;
 
+    // XXX This has to be put in the Andorid Application impl
+    // and use controller.addComponent(IInjectorService.class);
+    @Inject
+    protected IInjectorService injectorService;
+
     @Inject
     protected IApplicationController applicationController;
 
@@ -150,6 +156,10 @@ public abstract class JavaFXApplication extends GuiceApplication {
     @Override
     public void start(Stage primaryStage) throws Exception {
         stageModel.setStage(primaryStage);
+        
+        // XXX special case, maybe a better place to put this
+        applicationProvider.get().getController()
+                .addComponent(IInjectorService.class, injectorService);
 
         CtkDebug.log("Create main app UI");
         createRootPane();
@@ -163,7 +173,7 @@ public abstract class JavaFXApplication extends GuiceApplication {
         for (Class<? extends IScreenView> type : screens) {
             screenManager.addScreen(type);
         }
-        
+
         CtkDebug.log("Create ScreenManager");
         screenManager.create(getRoot());
 
@@ -174,9 +184,9 @@ public abstract class JavaFXApplication extends GuiceApplication {
         // set roots, call initialize(), start() on application, start app model
         // create or load last project
         applicationController.start();
-        
+
         applicationController.load();
-        
+
         applicationController.registerModels();
         applicationController.registerMeditors();
 

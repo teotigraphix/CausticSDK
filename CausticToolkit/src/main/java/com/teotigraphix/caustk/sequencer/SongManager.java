@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerBase;
 import com.teotigraphix.caustk.controller.SubControllerModel;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.Project;
 
 public class SongManager extends SubControllerBase implements ISongManager {
@@ -37,7 +36,7 @@ public class SongManager extends SubControllerBase implements ISongManager {
         return SongManagerModel.class;
     }
 
-    private static final String PROJECT_SESSION_LAST_SONG = "lastSong";
+    //private static final String PROJECT_SESSION_LAST_SONG = "lastSong";
 
     private File songDirectory;
 
@@ -54,27 +53,37 @@ public class SongManager extends SubControllerBase implements ISongManager {
 
     public SongManager(ICaustkController controller) {
         super(controller);
-
-        songDirectory = new File(controller.getConfiguration().getApplicationRoot(), "songs");
     }
 
     @Override
     protected void createProject(Project project) {
         super.createProject(project);
-        trackSong = createTrackSong(createUntitledFile());
+        songDirectory = new File(project.getDirectory(), "songs");
+        try {
+            FileUtils.forceMkdir(songDirectory);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        File file = new File(songDirectory, "UntitledSong.ctks");
+        trackSong = createTrackSong(file);
+        try {
+            save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void loadState(Project project) {
         super.loadState(project);
-        String path = getController().getProjectManager().getSessionPreferences()
-                .getString(PROJECT_SESSION_LAST_SONG);
-        if (path == null) {
-            //throw new RuntimeException("TrackSong path null");
-            CtkDebug.err("SongManager; TrackSong path null");
-        } else if (toSongFile(new File(path)).exists()) {
-            deserializeTrackSong(toSongFile(new File(path)));
-        }
+        //        String path = getController().getProjectManager().getSessionPreferences()
+        //                .getString(PROJECT_SESSION_LAST_SONG);
+        //        if (path == null) {
+        //            //throw new RuntimeException("TrackSong path null");
+        //            CtkDebug.err("SongManager; TrackSong path null");
+        //        } else if (toSongFile(new File(path)).exists()) {
+        //            deserializeTrackSong(toSongFile(new File(path)));
+        //        }
     }
 
     @Override
@@ -126,10 +135,6 @@ public class SongManager extends SubControllerBase implements ISongManager {
     public void save() throws IOException {
         saveSessionProperties();
 
-        if (trackSong == null || trackSong.getTracks().size() == 0) {
-            return;
-        }
-
         File target = toSongFile(trackSong.getFile());
         try {
             getController().getSerializeService().save(target, trackSong);
@@ -153,17 +158,6 @@ public class SongManager extends SubControllerBase implements ISongManager {
         return song;
     }
 
-    /**
-     * Creates an Untitled.ctks File checking that there is not an existing
-     * file, if their is, a number is appended to the end.
-     */
-    private File createUntitledFile() {
-        // TODO createUntitledFile() need to loop through all files and get 'Untitled'
-        // entries and find the next number to append
-        File file = new File("Untitled.ctks");
-        return file;
-    }
-
     public File toSongFile(File file) {
         if (file.isAbsolute())
             return file;
@@ -181,10 +175,8 @@ public class SongManager extends SubControllerBase implements ISongManager {
     }
 
     private void saveSessionProperties() {
-        if (trackSong == null)
-            return;
-        getController().getProjectManager().getSessionPreferences()
-                .put(PROJECT_SESSION_LAST_SONG, trackSong.getFile().getPath());
+        //        getController().getProjectManager().getSessionPreferences()
+        //                .put(PROJECT_SESSION_LAST_SONG, trackSong.getFile().getPath());
     }
 
     private void deserializeTrackSong(File file) {

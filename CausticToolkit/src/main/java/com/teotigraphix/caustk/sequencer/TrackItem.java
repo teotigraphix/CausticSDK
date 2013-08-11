@@ -33,6 +33,8 @@ import com.teotigraphix.caustk.service.ISerialize;
  */
 public class TrackItem implements ISerialize {
 
+    private int numMeasures;
+
     //----------------------------------
     //  phraseId
     //----------------------------------
@@ -122,6 +124,14 @@ public class TrackItem implements ISerialize {
         endMeasure = value;
     }
 
+    public int getNumMeasures() {
+        return numMeasures;
+    }
+
+    public void setNumMeasures(int value) {
+        numMeasures = value;
+    }
+
     /**
      * Returns the length of the item span, end - start measure.
      */
@@ -160,7 +170,7 @@ public class TrackItem implements ISerialize {
     public boolean contains(int measure) {
         int start = getStartMeasure();
         int end = getEndMeasure();
-        if (measure > start && measure < end)
+        if (measure >= start && measure < end)
             return true;
         return false;
     }
