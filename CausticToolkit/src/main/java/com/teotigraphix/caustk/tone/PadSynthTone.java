@@ -67,7 +67,6 @@ public class PadSynthTone extends Tone {
         tone.addComponent(LFO1Component.class, new LFO1Component());
         tone.addComponent(LFO2Component.class, new LFO2Component());
         tone.addComponent(MorphComponent.class, new MorphComponent());
-        tone.addComponent(VolumeComponent.class, new VolumeComponent());
     }
 
 }

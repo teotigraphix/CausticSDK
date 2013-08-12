@@ -20,8 +20,20 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.core.components.SynthComponent;
+import com.teotigraphix.caustk.core.components.organ.LeslieComponent;
+import com.teotigraphix.caustk.core.components.organ.VolumeComponent;
 
 public class OrganTone extends Tone {
+
+    public VolumeComponent getVolume() {
+        return getComponent(VolumeComponent.class);
+    }
+
+    public LeslieComponent getLeslie() {
+        return getComponent(LeslieComponent.class);
+    }
 
     @Override
     public ToneType getToneType() {
@@ -33,8 +45,10 @@ public class OrganTone extends Tone {
     }
 
     public static void setup(Tone tone) {
-        // TODO Auto-generated method stub
-        
+        tone.addComponent(SynthComponent.class, new SynthComponent());
+        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        tone.addComponent(VolumeComponent.class, new VolumeComponent());
+        tone.addComponent(LeslieComponent.class, new LeslieComponent());
     }
 
 }
