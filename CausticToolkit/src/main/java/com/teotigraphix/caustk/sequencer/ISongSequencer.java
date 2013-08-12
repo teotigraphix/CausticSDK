@@ -28,6 +28,18 @@ import com.teotigraphix.caustk.tone.Tone;
 public interface ISongSequencer extends IControllerComponent, IRestore {
 
     /**
+     * Sets the mode for the song sequencers end.
+     * 
+     * @param mode The new mode.
+     */
+    void setSongEndMode(SongEndMode mode);
+
+    /**
+     * Returns the current value form the core's song sequencer's song end mode.
+     */
+    SongEndMode getSongEndMode();
+
+    /**
      * Returns the raw token string of patterns in the song sequencer.
      * 
      * @see SequencerMessage#QUERY_PATTERN_EVENT
@@ -175,4 +187,45 @@ public interface ISongSequencer extends IControllerComponent, IRestore {
             return mValue;
         }
     }
+
+    /**
+     * The mode(0,1,2) keep playing, stop, loop to start.
+     */
+    public enum SongEndMode {
+
+        /**
+         * Keep playing.
+         */
+        PLAY(0),
+
+        /**
+         * Stop at last measure.
+         */
+        STOP(1),
+
+        /**
+         * Loop to start measure from end.
+         */
+        LOOP(2);
+
+        private int value;
+
+        public int getValue() {
+            return value;
+        }
+
+        SongEndMode(int value) {
+            this.value = value;
+
+        }
+
+        public static SongEndMode fromInt(int value) {
+            for (SongEndMode mode : values()) {
+                if (mode.getValue() == value)
+                    return mode;
+            }
+            return null;
+        }
+    }
+
 }

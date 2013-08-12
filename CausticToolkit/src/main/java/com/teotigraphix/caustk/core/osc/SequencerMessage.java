@@ -30,6 +30,23 @@ import com.teotigraphix.caustk.sequencer.ISongSequencer.ExportType;
  * @since 1.0
  */
 public class SequencerMessage extends CausticMessage {
+    /**
+     * Message: <code>/caustic/sequencer/song_end_mode [mode]</code>
+     * <p>
+     * Sequences a machine pattern into the song sequencer.
+     * <p>
+     * <strong>Default</strong>: <code>2</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>mode</strong>: The mode(0,1,2) keep playing, stop, loop to
+     * start.</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>int</code>
+     */
+    public static final SequencerMessage SONG_END_MODE = new SequencerMessage(
+            "/caustic/sequencer/song_end_mode ${0}");
 
     /**
      * Message:

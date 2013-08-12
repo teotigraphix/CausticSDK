@@ -42,6 +42,16 @@ public class SongSequencer extends SubControllerBase implements ISongSequencer {
     }
 
     @Override
+    public void setSongEndMode(SongEndMode mode) {
+        SequencerMessage.SONG_END_MODE.send(getController(), mode.getValue());
+    }
+
+    @Override
+    public SongEndMode getSongEndMode() {
+        return SongEndMode.fromInt((int)SequencerMessage.SONG_END_MODE.send(getController()));
+    }
+
+    @Override
     public String getPatterns() {
         return SequencerMessage.QUERY_PATTERN_EVENT.queryString(getController());
     }
