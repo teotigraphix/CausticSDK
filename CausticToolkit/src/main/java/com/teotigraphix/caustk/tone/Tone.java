@@ -88,6 +88,7 @@ public abstract class Tone implements ISerialize, IRestore {
             return;
         muted = value;
         // firePropertyChange(TonePropertyKind.MUTE, mMuted);
+        controller.getSoundMixer().getChannel(getIndex()).setMute(muted);
     }
 
     //----------------------------------

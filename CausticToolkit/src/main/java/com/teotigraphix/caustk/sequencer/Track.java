@@ -202,6 +202,7 @@ public class Track implements ISerialize {
             throw new CausticException("Track contain phrase at end: " + endMeasure);
 
         TrackItem item = new TrackItem();
+        item.setTrackIndex(getIndex());
         item.setNumMeasures(channelPhrase.getLength());
         item.setPhraseId(channelPhrase.getId());
         item.setStartMeasure(startMeasure);

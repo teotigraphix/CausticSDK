@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.sequencer;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.service.ISerialize;
 
@@ -34,6 +35,20 @@ import com.teotigraphix.caustk.service.ISerialize;
 public class TrackItem implements ISerialize {
 
     private int numMeasures;
+
+    //----------------------------------
+    //  trackIndex
+    //----------------------------------
+
+    private int trackIndex;
+
+    public int getTrackIndex() {
+        return trackIndex;
+    }
+
+    public void setTrackIndex(int value) {
+        trackIndex = value;
+    }
 
     //----------------------------------
     //  phraseId
@@ -190,6 +205,12 @@ public class TrackItem implements ISerialize {
 
     @Override
     public void wakeup(ICaustkController controller) {
+    }
+
+    @Override
+    public String toString() {
+        return "Track" + trackIndex + "[" + startMeasure + "|"
+                + PatternUtils.toString(bankIndex, patternIndex) + "|" + endMeasure + "]";
     }
 
 }
