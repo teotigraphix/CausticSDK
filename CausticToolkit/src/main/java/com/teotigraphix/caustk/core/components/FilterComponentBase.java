@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.core.components;
 
 import com.teotigraphix.caustk.core.osc.FilterMessage;
+import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class FilterComponentBase extends ToneComponent {
 

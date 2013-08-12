@@ -23,6 +23,7 @@ import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.ModularTone;
+import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class SynthComponent extends ToneComponent {
 

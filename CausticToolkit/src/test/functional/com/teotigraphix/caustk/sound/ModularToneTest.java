@@ -6,15 +6,15 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.teotigraphix.caustk.core.components.modular.AREnvelope;
-import com.teotigraphix.caustk.core.components.modular.AREnvelope.AREnvelopeJack;
-import com.teotigraphix.caustk.core.components.modular.MiniLFO;
-import com.teotigraphix.caustk.core.components.modular.MiniLFO.MiniLFOJack;
-import com.teotigraphix.caustk.core.components.modular.ModularPanel.ModularPanelJack;
-import com.teotigraphix.caustk.core.components.modular.PulseGenerator;
-import com.teotigraphix.caustk.core.components.modular.PulseGenerator.PulseGeneratorJack;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.tone.ModularTone.ComponentType;
+import com.teotigraphix.caustk.tone.modular.AREnvelope;
+import com.teotigraphix.caustk.tone.modular.MiniLFO;
+import com.teotigraphix.caustk.tone.modular.PulseGenerator;
+import com.teotigraphix.caustk.tone.modular.AREnvelope.AREnvelopeJack;
+import com.teotigraphix.caustk.tone.modular.MiniLFO.MiniLFOJack;
+import com.teotigraphix.caustk.tone.modular.ModularPanel.ModularPanelJack;
+import com.teotigraphix.caustk.tone.modular.PulseGenerator.PulseGeneratorJack;
 
 public class ModularToneTest extends ToneBaseTest {
 

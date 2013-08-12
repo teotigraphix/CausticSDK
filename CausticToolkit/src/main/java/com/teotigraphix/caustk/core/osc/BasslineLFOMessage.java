@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.bassline.LFO1Component;
+import com.teotigraphix.caustk.tone.bassline.LFO1Component;
 
 /**
  * The {@link BasslineLFOMessage} holds all OSC messages associated with the

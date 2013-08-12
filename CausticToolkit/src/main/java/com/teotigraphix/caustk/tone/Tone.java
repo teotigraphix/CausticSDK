@@ -31,7 +31,6 @@ import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.core.components.SynthComponent;
-import com.teotigraphix.caustk.core.components.ToneComponent;
 import com.teotigraphix.caustk.library.SoundSourceState;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerialize;

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.bassline.OSC1Component;
+import com.teotigraphix.caustk.tone.bassline.OSC1Component;
 
 /**
  * The {@link BasslineOscMessage} holds all OSC messages associated with the

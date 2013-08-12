@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerChannel;
-import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent;
-import com.teotigraphix.caustk.core.components.pcmsynth.PCMSamplerComponent.PlayMode;
+import com.teotigraphix.caustk.tone.pcmsynth.PCMSamplerChannel;
+import com.teotigraphix.caustk.tone.pcmsynth.PCMSamplerComponent;
+import com.teotigraphix.caustk.tone.pcmsynth.PCMSamplerComponent.PlayMode;
 
 /**
  * The {@link PCMSamplerMessage} holds all OSC messages associated with the

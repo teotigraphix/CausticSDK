@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PatternSequencerComponent extends ToneComponent {
 

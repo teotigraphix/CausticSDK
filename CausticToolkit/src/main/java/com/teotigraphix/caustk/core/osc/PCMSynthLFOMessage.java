@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.pcmsynth.LFO1Component;
-import com.teotigraphix.caustk.core.components.subsynth.Osc2Component.WaveForm;
+import com.teotigraphix.caustk.tone.pcmsynth.LFO1Component;
+import com.teotigraphix.caustk.tone.subsynth.Osc2Component.WaveForm;
 
 /**
  * The {@link PCMSynthLFOMessage} holds all OSC messages associated with the

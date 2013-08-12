@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.core.components;
 
 import com.teotigraphix.caustk.core.osc.CausticMessage;
+import com.teotigraphix.caustk.tone.ToneComponent;
 
 public abstract class LFOComponentBase extends ToneComponent {
 

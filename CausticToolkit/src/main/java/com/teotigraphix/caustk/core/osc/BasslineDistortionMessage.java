@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.bassline.DistortionComponent;
-import com.teotigraphix.caustk.core.components.bassline.DistortionComponent.Program;
+import com.teotigraphix.caustk.tone.bassline.DistortionComponent;
+import com.teotigraphix.caustk.tone.bassline.DistortionComponent.Program;
 
 /**
  * The {@link BasslineDistortionMessage} holds all OSC messages associated with

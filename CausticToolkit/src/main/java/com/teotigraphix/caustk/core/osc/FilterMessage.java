@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.core.osc;
 import com.teotigraphix.caustk.core.components.FilterComponentBase;
 import com.teotigraphix.caustk.core.components.SynthFilterComponent;
 import com.teotigraphix.caustk.core.components.SynthFilterComponent.FilterType;
-import com.teotigraphix.caustk.core.components.bassline.FilterComponent;
+import com.teotigraphix.caustk.tone.bassline.FilterComponent;
 
 /**
  * The {@link FilterMessage} holds all OSC messages associated with the

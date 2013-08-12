@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.pcmsynth.PCMTunerComponent;
+import com.teotigraphix.caustk.tone.pcmsynth.PCMTunerComponent;
 
 /**
  * The {@link PitchMessage} holds all OSC messages associated with the

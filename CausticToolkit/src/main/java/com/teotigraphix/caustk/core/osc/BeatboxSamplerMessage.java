@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.beatbox.WavSamplerChannel;
-import com.teotigraphix.caustk.core.components.beatbox.WavSamplerComponent;
+import com.teotigraphix.caustk.tone.beatbox.WavSamplerChannel;
+import com.teotigraphix.caustk.tone.beatbox.WavSamplerComponent;
 
 /**
  * The {@link BeatboxSamplerMessage} holds all OSC messages associated with the

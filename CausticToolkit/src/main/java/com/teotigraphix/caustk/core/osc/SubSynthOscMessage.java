@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.components.subsynth.Osc1Component;
-import com.teotigraphix.caustk.core.components.subsynth.Osc2Component;
-import com.teotigraphix.caustk.core.components.subsynth.Osc2Component.WaveForm;
+import com.teotigraphix.caustk.tone.subsynth.Osc1Component;
+import com.teotigraphix.caustk.tone.subsynth.Osc2Component;
+import com.teotigraphix.caustk.tone.subsynth.Osc2Component.WaveForm;
 
 /**
  * The {@link SubSynthOscMessage} holds all OSC messages associated with the

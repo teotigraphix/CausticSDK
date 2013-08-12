@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.core.components.beatbox.WavSamplerChannel;
+import com.teotigraphix.caustk.tone.beatbox.WavSamplerChannel;
 
 public class RhythmChannel {
 
