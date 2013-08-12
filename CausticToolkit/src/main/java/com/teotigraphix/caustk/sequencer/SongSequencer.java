@@ -23,6 +23,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerBase;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class SongSequencer extends SubControllerBase implements ISongSequencer {
@@ -41,63 +42,75 @@ public class SongSequencer extends SubControllerBase implements ISongSequencer {
     }
 
     @Override
-    public void restore() {
+    public String getPatterns() {
+        return SequencerMessage.QUERY_PATTERN_EVENT.queryString(getController());
     }
 
     @Override
     public void addPattern(Tone tone, int bank, int pattern, int start, int end)
             throws CausticException {
-        getModel().addPattern(tone, bank, pattern, start, end);
+        SequencerMessage.PATTERN_EVENT.send(getController(), tone.getIndex(), start, bank, pattern,
+                end);
     }
 
     @Override
     public void removePattern(Tone tone, int start, int end) throws CausticException {
-        getModel().removePattern(tone, start, end);
+        SequencerMessage.PATTERN_EVENT.send(getController(), tone.getIndex(), start, -1, -1, end);
     }
 
     @Override
     public void setLoopPoints(int startBar, int endBar) {
-        getModel().setLoopPoints(startBar, endBar);
+        SequencerMessage.LOOP_POINTS.send(getController(), startBar, endBar);
     }
 
     @Override
-    public void playPosition(int positionInBeats) {
-        getModel().playPosition(positionInBeats);
+    public void playPosition(int beat) {
+        SequencerMessage.PLAY_POSITION.send(getController(), beat);
     }
 
     @Override
     public void playPositionAt(int bar, int step) {
-        getModel().playPositionAt(bar, step);
+        playPositionAt(bar, step);
     }
 
     @Override
     public void exportSong(String exportPath, ExportType type, int quality) {
-        getModel().exportSong(exportPath, type, quality);
+        String ftype = "";
+        String fquality = "";
+        if (type != null) {
+            ftype = type.getValue();
+            fquality = Integer.toString(quality);
+        }
+        SequencerMessage.EXPORT_SONG.send(getController(), exportPath, ftype, fquality);
     }
 
     @Override
     public void exportSong(String exportPath, ExportType type) {
-        getModel().exportSong(exportPath, type, 70);
+        exportSong(exportPath, type, 70);
     }
 
     @Override
     public float exportSongProgress() {
-        return getModel().exportSongProgress();
+        return SequencerMessage.EXPORT_PROGRESS.query(getController());
     }
 
     @Override
     public void clearPatterns() {
-        getModel().clearPatterns();
+        SequencerMessage.CLEAR_PATTERNS.send(getController());
     }
 
     @Override
     public void clearAutomation() {
-        getModel().clearAutomation();
+        SequencerMessage.CLEAR_AUTOMATION.send(getController());
     }
 
     @Override
     public void clearAutomation(Tone tone) {
-        getModel().clearAutomation(tone);
+        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getController(), tone.getIndex());
+    }
+
+    @Override
+    public void restore() {
     }
 
 }

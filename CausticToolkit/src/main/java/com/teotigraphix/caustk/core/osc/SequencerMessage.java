@@ -57,6 +57,22 @@ public class SequencerMessage extends CausticMessage {
             "/caustic/sequencer/pattern_event ${0} ${1} ${2} ${3} ${4}");
 
     /**
+     * Query: <code>/caustic/sequencer/pattern_event</code>
+     * <p>
+     * Returns a token string separated by <code>|</code> of all patterns in the
+     * sequencer.
+     * <p>
+     * Example token
+     * <code>[machin_index] [start_measure] [bank] [pattern] [end_measure]</code>.
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Returns</strong>: <code>Token string</code>
+     */
+    public static final SequencerMessage QUERY_PATTERN_EVENT = new SequencerMessage(
+            "/caustic/sequencer/pattern_event");
+
+    /**
      * Message:
      * <code>/caustic/sequencer/loop_points [start_measure] [end_measure]</code>
      * <p>

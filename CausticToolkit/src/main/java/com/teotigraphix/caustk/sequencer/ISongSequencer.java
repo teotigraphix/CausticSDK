@@ -22,9 +22,17 @@ package com.teotigraphix.caustk.sequencer;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.tone.Tone;
 
 public interface ISongSequencer extends IControllerComponent, IRestore {
+
+    /**
+     * Returns the raw token string of patterns in the song sequencer.
+     * 
+     * @see SequencerMessage#QUERY_PATTERN_EVENT
+     */
+    String getPatterns();
 
     /**
      * Adds {@link Tone} bank patterns into the song sequencer.
