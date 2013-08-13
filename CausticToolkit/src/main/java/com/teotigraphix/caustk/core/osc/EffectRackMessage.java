@@ -55,7 +55,7 @@ public class EffectRackMessage extends CausticMessage {
      * 
      * @see IEffectsRack#putEffect(IMachine, int, EffectType)
      */
-    public static final BasslineDistortionMessage CREATE = new BasslineDistortionMessage(
+    public static final EffectRackMessage CREATE = new EffectRackMessage(
             "/caustic/effects_rack/create ${0} ${1} ${2}");
 
     /**
@@ -73,7 +73,7 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      */
-    public static final BasslineDistortionMessage REMOVE = new BasslineDistortionMessage(
+    public static final EffectRackMessage REMOVE = new EffectRackMessage(
             "/caustic/effects_rack/remove ${0} ${1}");
 
     /**
@@ -97,7 +97,7 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      */
-    public static final BasslineDistortionMessage SET = new BasslineDistortionMessage(
+    public static final EffectRackMessage SET = new EffectRackMessage(
             "/caustic/effects_rack/${0}/${1}/${2} ${3}");
 
     /**
@@ -120,7 +120,7 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      */
-    public static final BasslineDistortionMessage GET = new BasslineDistortionMessage(
+    public static final EffectRackMessage GET = new EffectRackMessage(
             "/caustic/effects_rack/${0}/${1}/${2}");
 
     /**
@@ -139,7 +139,7 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      */
-    public static final BasslineDistortionMessage TYPE = new BasslineDistortionMessage(
+    public static final EffectRackMessage TYPE = new EffectRackMessage(
             "/caustic/effects_rack/type ${0} ${1}");
 
     EffectRackMessage(String message) {

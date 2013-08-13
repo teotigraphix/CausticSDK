@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.pattern;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.library.LibraryPatch;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 /**
  * The Patch holds all sound settings that will get serialized to disk and

@@ -21,12 +21,12 @@ import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.Library;
 import com.teotigraphix.caustk.pattern.Phrase.Scale;
 import com.teotigraphix.caustk.pattern.Phrase.Trigger;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 @Ignore
 public class TestPhrase {

@@ -38,8 +38,6 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.PatternUtils;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
-import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.library.LibraryPattern.ToneSet;
@@ -48,6 +46,8 @@ import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*

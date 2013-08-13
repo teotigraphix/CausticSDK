@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.tone.PadSynthTone;
-import com.teotigraphix.caustk.tone.padsynth.LFO1Component.Target;
+import com.teotigraphix.caustk.tone.components.padsynth.LFO1Component.Target;
 
 public class PadSynthToneTest extends CaustkTestBase {
 

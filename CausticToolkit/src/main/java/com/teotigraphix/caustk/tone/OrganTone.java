@@ -20,10 +20,10 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.core.components.SynthComponent;
-import com.teotigraphix.caustk.tone.organ.LeslieComponent;
-import com.teotigraphix.caustk.tone.organ.VolumeComponent;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.tone.components.VolumeComponent;
+import com.teotigraphix.caustk.tone.components.organ.LeslieComponent;
 
 public class OrganTone extends Tone {
 

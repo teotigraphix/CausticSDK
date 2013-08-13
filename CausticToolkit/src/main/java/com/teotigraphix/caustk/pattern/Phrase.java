@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 // XXX You have to decide if you are going to proxy the patternsequencer
 // api through the Tone or call it straight from this class

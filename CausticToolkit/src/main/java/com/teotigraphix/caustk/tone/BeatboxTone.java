@@ -20,10 +20,10 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.core.components.SynthComponent;
-import com.teotigraphix.caustk.core.components.VolumeComponent;
-import com.teotigraphix.caustk.tone.beatbox.WavSamplerComponent;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.tone.components.VolumeComponent;
+import com.teotigraphix.caustk.tone.components.beatbox.WavSamplerComponent;
 
 public class BeatboxTone extends RhythmTone {
 

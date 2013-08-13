@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.pattern;
 
-import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 public class SynthPart extends Part {
 

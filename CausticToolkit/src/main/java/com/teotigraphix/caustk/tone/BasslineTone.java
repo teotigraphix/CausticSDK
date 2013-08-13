@@ -20,13 +20,13 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.core.components.SynthComponent;
-import com.teotigraphix.caustk.core.components.VolumeComponent;
-import com.teotigraphix.caustk.tone.bassline.DistortionComponent;
-import com.teotigraphix.caustk.tone.bassline.FilterComponent;
-import com.teotigraphix.caustk.tone.bassline.LFO1Component;
-import com.teotigraphix.caustk.tone.bassline.OSC1Component;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.tone.components.VolumeComponent;
+import com.teotigraphix.caustk.tone.components.bassline.DistortionComponent;
+import com.teotigraphix.caustk.tone.components.bassline.FilterComponent;
+import com.teotigraphix.caustk.tone.components.bassline.LFO1Component;
+import com.teotigraphix.caustk.tone.components.bassline.OSC1Component;
 
 public class BasslineTone extends Tone {
 

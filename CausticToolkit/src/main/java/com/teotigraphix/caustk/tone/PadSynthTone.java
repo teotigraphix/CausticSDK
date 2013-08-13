@@ -20,13 +20,13 @@
 package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.core.components.SynthComponent;
-import com.teotigraphix.caustk.tone.padsynth.HarmonicsComponent;
-import com.teotigraphix.caustk.tone.padsynth.LFO1Component;
-import com.teotigraphix.caustk.tone.padsynth.LFO2Component;
-import com.teotigraphix.caustk.tone.padsynth.MorphComponent;
-import com.teotigraphix.caustk.tone.padsynth.VolumeComponent;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.tone.components.padsynth.HarmonicsComponent;
+import com.teotigraphix.caustk.tone.components.padsynth.LFO1Component;
+import com.teotigraphix.caustk.tone.components.padsynth.LFO2Component;
+import com.teotigraphix.caustk.tone.components.padsynth.MorphComponent;
+import com.teotigraphix.caustk.tone.components.padsynth.VolumeComponent;
 
 public class PadSynthTone extends Tone {
 

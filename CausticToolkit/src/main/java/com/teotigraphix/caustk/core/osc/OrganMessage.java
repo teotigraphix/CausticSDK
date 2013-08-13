@@ -124,21 +124,6 @@ public class OrganMessage extends CausticMessage {
      */
     public static final OrganMessage DRIVE = new OrganMessage("/caustic/${0}/drive ${1}");
 
-    /**
-     * Message: <code>/caustic/[machine_index]/volume_out [value]</code>
-     * <p>
-     * <strong>Default</strong>: <code>N/A</code>
-     * <p>
-     * <strong>Parameters</strong>:
-     * <ul>
-     * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0.0..1.5)</li>
-     * </ul>
-     * <p>
-     * <strong>Returns</strong>: <code>float</code>
-     */
-    public static final OrganMessage VOLUME_OUT = new OrganMessage("/caustic/${0}/volume_out ${1}");
-
     OrganMessage(String message) {
         super(message);
     }

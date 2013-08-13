@@ -20,8 +20,8 @@
 package com.teotigraphix.caustk.library;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 public class TagUtils {
 

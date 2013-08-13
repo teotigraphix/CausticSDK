@@ -24,7 +24,6 @@ import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.components.SynthComponent;
 import com.teotigraphix.caustk.library.EffectMixerState;
 import com.teotigraphix.caustk.library.Library;
 import com.teotigraphix.caustk.library.LibraryPatch;
@@ -34,6 +33,7 @@ import com.teotigraphix.caustk.library.SoundSourceState;
 import com.teotigraphix.caustk.library.SoundSourceState.RackInfoItem;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 public class TrackUtils {
 
