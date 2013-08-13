@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.sound;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.ExceptionUtils;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
@@ -29,6 +28,7 @@ import com.teotigraphix.caustk.sound.master.MasterDelay;
 import com.teotigraphix.caustk.sound.master.MasterEqualizer;
 import com.teotigraphix.caustk.sound.master.MasterLimiter;
 import com.teotigraphix.caustk.sound.master.MasterReverb;
+import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public class MasterMixer implements ISerialize, IRestore {
 

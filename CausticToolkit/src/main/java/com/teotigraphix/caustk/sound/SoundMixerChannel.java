@@ -20,11 +20,11 @@
 package com.teotigraphix.caustk.sound;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.ExceptionUtils;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.service.ISerialize;
+import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public class SoundMixerChannel implements ISerialize, IRestore {
 

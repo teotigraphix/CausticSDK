@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.core.ExceptionUtils;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public abstract class ToneComponent implements IRestore {
 
