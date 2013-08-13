@@ -19,11 +19,17 @@
 
 package com.teotigraphix.caustk.sound;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.service.ISerialize;
+import com.teotigraphix.caustk.sound.effect.EffectBase;
+import com.teotigraphix.caustk.sound.effect.EffectType;
+import com.teotigraphix.caustk.sound.effect.EffectUtils;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public class SoundMixerChannel implements ISerialize, IRestore {
@@ -32,6 +38,22 @@ public class SoundMixerChannel implements ISerialize, IRestore {
 
     private ICausticEngine getEngine() {
         return controller;
+    }
+
+    private transient Map<Integer, EffectBase> effects = new HashMap<Integer, EffectBase>();
+
+    public EffectBase getEffect(int slot) {
+        return effects.get(slot);
+    }
+
+    public EffectBase addEffect(int slot, EffectType type) {
+        EffectBase effect = EffectUtils.create(type);
+        effects.put(slot, effect);
+        return effect;
+    }
+
+    public EffectBase removeEffect(int slot) {
+        return effects.remove(slot);
     }
 
     //----------------------------------
