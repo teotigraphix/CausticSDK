@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.PatternUtils;
+import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 
 @Ignore

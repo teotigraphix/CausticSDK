@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.library;
 
-import com.teotigraphix.caustk.core.PatternUtils;
+import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 

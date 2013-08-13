@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.sequencer;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.PatternUtils;
 import com.teotigraphix.caustk.library.LibraryPhrase;
+import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.service.ISerialize;
 
 /**
