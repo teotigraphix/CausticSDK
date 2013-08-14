@@ -19,13 +19,15 @@
 
 package com.teotigraphix.caustk.sound.effect;
 
-public class BitcrusherEffect extends EffectBase {
+import com.teotigraphix.caustk.controller.IControllerComponent;
+
+public class ChorusEffect extends EffectBase implements IControllerComponent {
 
     @Override
     public EffectType getType() {
-        return EffectType.BITCRUSHER;
+        return EffectType.CHORUS;
     }
-    
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------
@@ -34,126 +36,94 @@ public class BitcrusherEffect extends EffectBase {
     // depth
     //----------------------------------
 
-    private int depth = 3;
+    private float depth = 0.3f;
 
-    public int getDepth() {
+    public float getDepth() {
         return depth;
     }
 
-    int getDepth(boolean restore) {
-        return (int)get(BitcrusherControl.Depth);
+    float getDepth(boolean restore) {
+        return get(ChorusControl.Depth);
     }
 
-    public void setDepth(int value) {
+    public void setDepth(float value) {
         if (value == depth)
             return;
-        if (value < 1 || value > 16)
-            throw newRangeException(BitcrusherControl.Depth, "1..16", value);
+        if (value < 0.1f || value > 0.95f)
+            throw newRangeException(ChorusControl.Depth, "0.1..0.95", value);
         depth = value;
-        set(BitcrusherControl.Depth, depth);
-    }
-
-    //----------------------------------
-    // jitter
-    //----------------------------------
-
-    private float jitter = 0f;
-
-    public float getJitter() {
-        return jitter;
-    }
-
-    float getJitter(boolean restore) {
-        return get(BitcrusherControl.Jitter);
-    }
-
-    public void setJitter(float value) {
-        if (value == jitter)
-            return;
-        if (value < 0f || value > 1f)
-            throw newRangeException(BitcrusherControl.Jitter, "0..1", value);
-        jitter = value;
-        set(BitcrusherControl.Jitter, jitter);
+        set(ChorusControl.Depth, depth);
     }
 
     //----------------------------------
     // rate
     //----------------------------------
 
-    private float rate = 0.1f;
+    private float rate = 0.4f;
 
     public float getRate() {
         return rate;
     }
 
     float getRate(boolean restore) {
-        return get(BitcrusherControl.Rate);
+        return get(ChorusControl.Rate);
     }
 
     public void setRate(float value) {
         if (value == rate)
             return;
-        if (value < 0.01f || value > 0.5f)
-            throw newRangeException(BitcrusherControl.Rate, "0.01..0.5", value);
+        if (value < 0f || value > 1.0f)
+            throw newRangeException(ChorusControl.Rate, "0.0..1.0", value);
         rate = value;
-        set(BitcrusherControl.Rate, rate);
+        set(ChorusControl.Rate, rate);
     }
 
     //----------------------------------
     // wet
     //----------------------------------
 
-    private float wet = 1f;
+    private float wet = 0.5f;
 
     public float getWet() {
         return wet;
     }
 
-    float getWet(boolean restore) {
-        return get(BitcrusherControl.Wet);
+    public float getWet(boolean restore) {
+        return get(ChorusControl.Wet);
     }
 
     public void setWet(float value) {
         if (value == wet)
             return;
         if (value < 0f || value > 1f)
-            throw newRangeException(BitcrusherControl.Wet, "0..1", value);
+            throw newRangeException(ChorusControl.Wet, "0..1", value);
         wet = value;
-        set(BitcrusherControl.Wet, wet);
+        set(ChorusControl.Wet, wet);
     }
 
-
-    public BitcrusherEffect(int slot, int toneIndex) {
+    public ChorusEffect(int slot, int toneIndex) {
         super(slot, toneIndex);
     }
 
     @Override
     public void restore() {
-        setDepth(getDepth(true));
-        setJitter(getJitter(true));
-        setRate(getRate(true));
-        setWet(getWet(true));
+
     }
 
-    public enum BitcrusherControl implements IEffectControl {
+    public enum ChorusControl implements IEffectControl {
 
         /**
-         * 1..16
+         * 0.1..0.95
          */
         Depth("depth"),
 
         /**
-         * 0..1
-         */
-        Jitter("jitter"),
-
-        /**
-         * 0.01..0.5
+         * 0..1.0
          */
         Rate("rate"),
 
         /**
-         * 0..1
+         * 0..1.0
          */
         Wet("wet");
 
@@ -163,9 +133,8 @@ public class BitcrusherEffect extends EffectBase {
             return control;
         }
 
-        private BitcrusherControl(String control) {
+        private ChorusControl(String control) {
             this.control = control;
         }
     }
-
 }
