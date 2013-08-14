@@ -107,7 +107,9 @@ public class ChorusEffect extends EffectBase implements IControllerComponent {
 
     @Override
     public void restore() {
-
+        setDepth(getDepth(true));
+        setRate(getRate(true));
+        setWet(getWet(true));
     }
 
     public enum ChorusControl implements IEffectControl {
