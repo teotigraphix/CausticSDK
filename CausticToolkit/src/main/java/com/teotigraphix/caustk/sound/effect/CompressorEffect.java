@@ -21,11 +21,6 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class CompressorEffect extends EffectBase {
 
-    @Override
-    public EffectType getType() {
-        return EffectType.COMPRESSOR;
-    }
-
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------
@@ -146,7 +141,7 @@ public class CompressorEffect extends EffectBase {
     }
 
     public CompressorEffect(int slot, int toneIndex) {
-        super(slot, toneIndex);
+        super(EffectType.COMPRESSOR, slot, toneIndex);
     }
 
     @Override

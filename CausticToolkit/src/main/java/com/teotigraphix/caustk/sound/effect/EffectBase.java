@@ -32,8 +32,12 @@ public abstract class EffectBase implements ISerialize, IRestore {
     //----------------------------------
     // type
     //----------------------------------
-
-    public abstract EffectType getType();
+    
+    private EffectType type;
+    
+    public final EffectType getType() {
+        return type;
+    }
 
     //----------------------------------
     // toneIndex
@@ -51,6 +55,7 @@ public abstract class EffectBase implements ISerialize, IRestore {
 
     private int slot;
 
+
     public int getSlot() {
         return slot;
     }
@@ -59,7 +64,8 @@ public abstract class EffectBase implements ISerialize, IRestore {
         slot = value;
     }
 
-    public EffectBase(int slot, int toneIndex) {
+    public EffectBase(EffectType type, int slot, int toneIndex) {
+        this.type = type;
         this.slot = slot;
         this.toneIndex = toneIndex;
     }

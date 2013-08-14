@@ -21,11 +21,6 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class BitcrusherEffect extends EffectBase {
 
-    @Override
-    public EffectType getType() {
-        return EffectType.BITCRUSHER;
-    }
-    
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------
@@ -122,9 +117,8 @@ public class BitcrusherEffect extends EffectBase {
         set(BitcrusherControl.Wet, wet);
     }
 
-
     public BitcrusherEffect(int slot, int toneIndex) {
-        super(slot, toneIndex);
+        super(EffectType.BITCRUSHER, slot, toneIndex);
     }
 
     @Override

@@ -21,11 +21,6 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class AutowahEffect extends EffectBase {
 
-    @Override
-    public EffectType getType() {
-        return EffectType.AUTOWAH;
-    }
-
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------
@@ -146,16 +141,16 @@ public class AutowahEffect extends EffectBase {
     }
 
     public AutowahEffect(int slot, int toneIndex) {
-        super(slot, toneIndex);
+        super(EffectType.AUTOWAH, slot, toneIndex);
     }
-    
+
     @Override
     public void restore() {
-       setCutoff(getCutoff(true));
-       setDepth(getDepth(true));
-       setResonance(getResonance(true));
-       setSpeed(getSpeed(true));
-       setWet(getWet(true));
+        setCutoff(getCutoff(true));
+        setDepth(getDepth(true));
+        setResonance(getResonance(true));
+        setSpeed(getSpeed(true));
+        setWet(getWet(true));
     }
 
     public enum AutowahControl implements IEffectControl {

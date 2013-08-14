@@ -23,11 +23,6 @@ import com.teotigraphix.caustk.controller.IControllerComponent;
 
 public class ChorusEffect extends EffectBase implements IControllerComponent {
 
-    @Override
-    public EffectType getType() {
-        return EffectType.CHORUS;
-    }
-
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------
@@ -102,7 +97,7 @@ public class ChorusEffect extends EffectBase implements IControllerComponent {
     }
 
     public ChorusEffect(int slot, int toneIndex) {
-        super(slot, toneIndex);
+        super(EffectType.CHORUS, slot, toneIndex);
     }
 
     @Override
