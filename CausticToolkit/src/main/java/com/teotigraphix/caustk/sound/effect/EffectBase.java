@@ -20,11 +20,12 @@
 package com.teotigraphix.caustk.sound.effect;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public abstract class EffectBase implements ISerialize {
+public abstract class EffectBase implements ISerialize, IRestore {
 
     private transient ICaustkController controller;
 
@@ -91,9 +92,11 @@ public abstract class EffectBase implements ISerialize {
     }
 
     @Override
-    public void sleep() {
-        // TODO Auto-generated method stub
+    public void restore() {
+    }
 
+    @Override
+    public void sleep() {
     }
 
     @Override

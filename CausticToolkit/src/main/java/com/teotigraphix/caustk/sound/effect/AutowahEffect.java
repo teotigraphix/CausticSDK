@@ -148,6 +148,15 @@ public class AutowahEffect extends EffectBase {
     public AutowahEffect(int slot, int toneIndex) {
         super(slot, toneIndex);
     }
+    
+    @Override
+    public void restore() {
+       setCutoff(getCutoff(true));
+       setDepth(getDepth(true));
+       setResonance(getResonance(true));
+       setSpeed(getSpeed(true));
+       setWet(getWet(true));
+    }
 
     public enum AutowahControl implements IEffectControl {
 
