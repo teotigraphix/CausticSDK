@@ -1,9 +1,7 @@
 
 package com.teotigraphix.caustk.sound.effect;
 
-import com.teotigraphix.caustk.core.IRestore;
-
-public class FlangerEffect extends EffectBase implements IRestore {
+public class FlangerEffect extends EffectBase {
 
     //--------------------------------------------------------------------------
     // API :: Properties
