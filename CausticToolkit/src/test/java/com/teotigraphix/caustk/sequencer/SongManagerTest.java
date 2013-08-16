@@ -67,6 +67,6 @@ public class SongManagerTest {
         Assert.assertNull(songManager.getTrackSong());
         @SuppressWarnings("unused")
         Project project2 = projectManager.load(PROJECT_DIR);
-        Assert.assertNotNull(songManager.getTrackSong());
+        Assert.assertNull(songManager.getTrackSong());
     }
 }

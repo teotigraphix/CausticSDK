@@ -40,7 +40,7 @@ public class LFO1Component extends ToneComponent {
     }
 
     int getRate(boolean restore) {
-        return (int)PCMSynthMessage.LFO_DEPTH.query(getEngine(), getToneIndex());
+        return (int)PCMSynthMessage.LFO_RATE.query(getEngine(), getToneIndex());
     }
 
     public void setRate(int value) {
@@ -49,7 +49,7 @@ public class LFO1Component extends ToneComponent {
         if (value < 0 || value > 12)
             throw newRangeException("lfo1_rate", "0..12", value);
         rate = value;
-        PCMSynthMessage.LFO_DEPTH.send(getEngine(), getToneIndex(), rate);
+        PCMSynthMessage.LFO_RATE.send(getEngine(), getToneIndex(), rate);
     }
 
     //----------------------------------
@@ -63,7 +63,7 @@ public class LFO1Component extends ToneComponent {
     }
 
     float getDepth(boolean restore) {
-        return PCMSynthMessage.LFO_RATE.query(getEngine(), getToneIndex());
+        return PCMSynthMessage.LFO_DEPTH.query(getEngine(), getToneIndex());
     }
 
     public void setDepth(float value) {
@@ -72,7 +72,7 @@ public class LFO1Component extends ToneComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("lfo1_depth", "0..1", value);
         depth = value;
-        PCMSynthMessage.LFO_RATE.send(getEngine(), getToneIndex(), depth);
+        PCMSynthMessage.LFO_DEPTH.send(getEngine(), getToneIndex(), depth);
     }
 
     //----------------------------------

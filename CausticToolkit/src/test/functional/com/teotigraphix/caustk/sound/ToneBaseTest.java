@@ -11,7 +11,9 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.ModularTone;
+import com.teotigraphix.caustk.tone.OrganTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
+import com.teotigraphix.caustk.tone.PadSynthTone;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.ToneType;
 
@@ -33,6 +35,10 @@ public class ToneBaseTest {
 
     protected ModularTone modular;
 
+    protected PadSynthTone padsynth;
+
+    protected OrganTone organ;
+
     @Before
     public void setUp() throws CausticException {
         application = CaustkApplicationUtils.createAndRun();
@@ -46,12 +52,16 @@ public class ToneBaseTest {
         bassline = (BasslineTone)soundSource.createTone(2, "tone3", ToneType.Bassline);
         beatbox = (BeatboxTone)soundSource.createTone(3, "tone4", ToneType.Beatbox);
         modular = (ModularTone)soundSource.createTone(4, "tone5", ToneType.Modular);
+        padsynth = (PadSynthTone)soundSource.createTone(5, "tone6", ToneType.PadSynth);
+        organ = (OrganTone)soundSource.createTone(6, "tone7", ToneType.Organ);
 
         subsynth.restore();
         pcmsynth.restore();
         bassline.restore();
         beatbox.restore();
         modular.restore();
+        padsynth.restore();
+        organ.restore();
     }
 
     @After

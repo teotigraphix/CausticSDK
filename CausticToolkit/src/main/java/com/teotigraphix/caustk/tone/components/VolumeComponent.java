@@ -24,8 +24,8 @@ public class VolumeComponent extends ToneComponent {
     public void setOut(float value) {
         if (value == out)
             return;
-        if (value < 0f || value > 2f)
-            throw newRangeException("out", "0..2", value);
+//        if (value < 0f || value > 2f)
+//            throw newRangeException("out", "0..2", value);
         out = value;
         VolumeMessage.VOLUME_OUT.send(getEngine(), getToneIndex(), out);
     }

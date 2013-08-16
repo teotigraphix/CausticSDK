@@ -19,41 +19,43 @@
 
 package com.teotigraphix.caustk.sound.effect;
 
+import com.teotigraphix.caustk.sound.IEffect;
+
 public final class EffectUtils {
 
-    public static EffectBase create(EffectType type) {
-        EffectBase effect = null;
+    public static IEffect create(EffectType type, int slot, int toneIndex) {
+        IEffect effect = null;
         switch (type) {
             case AUTOWAH:
-
+                effect = new AutowahEffect(slot, toneIndex);
                 break;
 
             case BITCRUSHER:
-
+                effect = new BitcrusherEffect(slot, toneIndex);
                 break;
 
             case CHORUS:
-
+                effect = new ChorusEffect(slot, toneIndex);
                 break;
 
             case COMPRESSOR:
-
+                effect = new CompressorEffect(slot, toneIndex);
                 break;
-                
-            case DISTORTION:
 
+            case DISTORTION:
+                effect = new DistortionEffect(slot, toneIndex);
                 break;
 
             case FLANGER:
-
+                effect = new FlangerEffect(slot, toneIndex);
                 break;
 
             case PARAMETRICEQ:
-
+                effect = new ParametricEQEffect(slot, toneIndex);
                 break;
 
             case PHASER:
-
+                effect = new PhaserEffect(slot, toneIndex);
                 break;
         }
         return effect;

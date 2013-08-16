@@ -20,21 +20,20 @@
 package com.teotigraphix.caustk.sound.effect;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
-import com.teotigraphix.caustk.service.ISerialize;
+import com.teotigraphix.caustk.sound.IEffect;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public abstract class EffectBase implements ISerialize, IRestore {
+public abstract class EffectBase implements IEffect {
 
     private transient ICaustkController controller;
 
     //----------------------------------
     // type
     //----------------------------------
-    
+
     private EffectType type;
-    
+
     public final EffectType getType() {
         return type;
     }
@@ -54,7 +53,6 @@ public abstract class EffectBase implements ISerialize, IRestore {
     //----------------------------------
 
     private int slot;
-
 
     public int getSlot() {
         return slot;

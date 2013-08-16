@@ -23,11 +23,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.service.ISerialize;
-import com.teotigraphix.caustk.sound.effect.EffectBase;
 import com.teotigraphix.caustk.sound.effect.EffectType;
 import com.teotigraphix.caustk.sound.effect.EffectUtils;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -40,20 +41,27 @@ public class SoundMixerChannel implements ISerialize, IRestore {
         return controller;
     }
 
-    private transient Map<Integer, EffectBase> effects = new HashMap<Integer, EffectBase>();
+    private transient Map<Integer, IEffect> effects = new HashMap<Integer, IEffect>();
 
-    public EffectBase getEffect(int slot) {
+    public IEffect getEffect(int slot) {
         return effects.get(slot);
     }
 
-    public EffectBase addEffect(int slot, EffectType type) {
-        EffectBase effect = EffectUtils.create(type);
+    public IEffect addEffect(EffectType type, int slot) throws CausticException {
+        if (effects.containsKey(slot))
+            throw new CausticException("Channel already contains slot:" + slot);
+        IEffect effect = EffectUtils.create(type, slot, getIndex());
+        EffectRackMessage.CREATE.send(controller, getIndex(), slot, type.getValue());
         effects.put(slot, effect);
         return effect;
     }
 
-    public EffectBase removeEffect(int slot) {
-        return effects.remove(slot);
+    public IEffect removeEffect(int slot) {
+        IEffect effect = effects.remove(slot);
+        if (effect != null) {
+            EffectRackMessage.REMOVE.send(controller, getIndex(), slot);
+        }
+        return effect;
     }
 
     //----------------------------------
@@ -334,6 +342,10 @@ public class SoundMixerChannel implements ISerialize, IRestore {
         setStereoWidth(getStereoWidth(true));
         setPan(getPan(true));
         setVolume(getVolume(true));
+
+        for (IEffect effect : effects.values()) {
+            effect.restore();
+        }
     }
 
     public void update() {

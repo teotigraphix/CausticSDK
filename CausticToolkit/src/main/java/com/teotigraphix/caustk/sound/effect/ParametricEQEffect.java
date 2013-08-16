@@ -94,7 +94,7 @@ public class ParametricEQEffect extends EffectBase {
         set(ParametricEQControl.Width, width);
     }
 
-    public ParametricEQEffect(EffectType type, int slot, int toneIndex) {
+    public ParametricEQEffect(int slot, int toneIndex) {
         super(EffectType.PARAMETRICEQ, slot, toneIndex);
     }
 

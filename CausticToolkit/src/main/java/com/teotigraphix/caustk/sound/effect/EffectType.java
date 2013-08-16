@@ -25,14 +25,14 @@ public enum EffectType {
 
     PARAMETRICEQ(9);
 
-    private int mValue;
+    private int value;
 
     EffectType(int value) {
-        mValue = value;
+        this.value = value;
     }
 
     public int getValue() {
-        return mValue;
+        return value;
     }
 
     public static EffectType fromInt(Integer type) {

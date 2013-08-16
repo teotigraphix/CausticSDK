@@ -21,6 +21,7 @@ public class CaustkTestBase {
     public void setUp() throws Exception {
         application = CaustkApplicationUtils.createAndRun();
         controller = application.getController();
+        controller.getSoundSource().clearAndReset();
         start();
     }
 

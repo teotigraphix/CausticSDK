@@ -117,7 +117,7 @@ public class FlangerEffect extends EffectBase {
         set(FlangerControl.Wet, wet);
     }
 
-    public FlangerEffect(EffectType type, int slot, int toneIndex) {
+    public FlangerEffect(int slot, int toneIndex) {
         super(EffectType.FLANGER, slot, toneIndex);
     }
 
