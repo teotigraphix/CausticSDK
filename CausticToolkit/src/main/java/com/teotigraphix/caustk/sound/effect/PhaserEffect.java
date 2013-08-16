@@ -48,7 +48,7 @@ public class PhaserEffect extends EffectBase {
     // feedback
     //----------------------------------
 
-    private float mFeedback = 0.9f;
+    private float mFeedback = 0.47f;
 
     public float getFeedback() {
         return mFeedback;
@@ -106,7 +106,7 @@ public class PhaserEffect extends EffectBase {
         /**
          * 0.1..0.95
          */
-        Depth("Depth"),
+        Depth("depth"),
 
         /**
          * 0.1..0.95

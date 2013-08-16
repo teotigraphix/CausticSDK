@@ -163,7 +163,7 @@ public class AutowahEffect extends EffectBase {
         /**
          * 0..1
          */
-        Depth("cutoff"),
+        Depth("depth"),
 
         /**
          * 0..1

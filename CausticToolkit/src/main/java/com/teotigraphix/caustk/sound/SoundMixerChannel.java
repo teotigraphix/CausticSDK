@@ -53,6 +53,7 @@ public class SoundMixerChannel implements ISerialize, IRestore {
         IEffect effect = EffectUtils.create(type, slot, getIndex());
         EffectRackMessage.CREATE.send(controller, getIndex(), slot, type.getValue());
         effects.put(slot, effect);
+        effect.wakeup(controller);
         return effect;
     }
 

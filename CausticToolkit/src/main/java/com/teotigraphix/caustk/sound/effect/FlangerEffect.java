@@ -29,7 +29,7 @@ public class FlangerEffect extends EffectBase {
     // depth
     //----------------------------------
 
-    private float depth = 0.9f;
+    private float depth = 0.25f;
 
     public float getDepth() {
         return depth;
@@ -134,7 +134,7 @@ public class FlangerEffect extends EffectBase {
         /**
          * 0.1..0.95
          */
-        Depth("Depth"),
+        Depth("depth"),
 
         /**
          * 0.25..0.8

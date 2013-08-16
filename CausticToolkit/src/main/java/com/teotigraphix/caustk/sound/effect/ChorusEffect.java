@@ -31,7 +31,7 @@ public class ChorusEffect extends EffectBase implements IControllerComponent {
     // depth
     //----------------------------------
 
-    private float depth = 0.3f;
+    private float depth = 0.25f;
 
     public float getDepth() {
         return depth;
