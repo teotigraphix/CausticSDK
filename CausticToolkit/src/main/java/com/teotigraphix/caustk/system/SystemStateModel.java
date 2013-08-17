@@ -22,7 +22,17 @@ package com.teotigraphix.caustk.system;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 
+/**
+ * Serialized - v1.0
+ * <ul>
+ * <li>N/A</li>
+ * </ul>
+ */
 public class SystemStateModel extends SubControllerModel {
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public SystemStateModel() {
     }

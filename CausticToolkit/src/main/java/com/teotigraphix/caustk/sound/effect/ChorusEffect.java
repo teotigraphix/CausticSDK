@@ -19,9 +19,7 @@
 
 package com.teotigraphix.caustk.sound.effect;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
-
-public class ChorusEffect extends EffectBase implements IControllerComponent {
+public class ChorusEffect extends EffectBase {
 
     //--------------------------------------------------------------------------
     // API :: Properties

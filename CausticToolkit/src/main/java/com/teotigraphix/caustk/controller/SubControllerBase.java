@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.controller;
 
@@ -9,7 +27,13 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.project.ProjectManager;
 
+/**
+ * A {@link SubControllerBase} implementation is part of the
+ * {@link ICaustkController} API and manages it's own model that will get
+ * serialized during the {@link ProjectManager}'s project load/save phases.
+ */
 public abstract class SubControllerBase {
 
     //----------------------------------
@@ -64,21 +88,6 @@ public abstract class SubControllerBase {
         this.controller = controller;
 
         resetModel();
-        /*        
-
-        >> SAVE
-        LibraryManagerModel >> SAVE
-        SoundSourceModel >> SAVE
-        SoundMixerModel >> SAVE
-        SystemSequencerModel >> SAVE
-        >> SAVE_COMPLETE
-        >> SAVE_COMPLETE flushProjectFile()
-        LibraryManagerModel >> SAVE_COMPLETE
-        SoundSourceModel >> SAVE_COMPLETE
-        SoundMixerModel >> SAVE_COMPLETE
-        SystemSequencerModel >> SAVE_COMPLETE
-
-        */
 
         controller.getDispatcher().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {

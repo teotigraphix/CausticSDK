@@ -23,6 +23,12 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.tone.Tone;
 
+/**
+ * Serialized - v1.0
+ * <ul>
+ * <li>N/A</li>
+ * </ul>
+ */
 public class SongSequencerModel extends SubControllerModel {
 
     public SongSequencerModel() {

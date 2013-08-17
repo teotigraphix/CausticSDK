@@ -40,7 +40,7 @@ public class CaustkApplication implements ICaustkApplication {
     private ICaustkConfiguration configuration;
 
     @Override
-    public ICaustkConfiguration getConfiguration() {
+    public final ICaustkConfiguration getConfiguration() {
         return configuration;
     }
 
@@ -51,12 +51,12 @@ public class CaustkApplication implements ICaustkApplication {
     private ICaustkController controller;
 
     @Override
-    public ICaustkController getController() {
+    public final ICaustkController getController() {
         return controller;
     }
 
     //--------------------------------------------------------------------------
-    // Constructors
+    // Constructor
     //--------------------------------------------------------------------------
 
     /**
@@ -67,13 +67,11 @@ public class CaustkApplication implements ICaustkApplication {
     public CaustkApplication(ICaustkConfiguration configuration) {
         this.configuration = configuration;
 
-        // all Preset data gets loaded here
-        // Dispatcher is created in Controller
         controller = getConfiguration().createController(this);
     }
 
     //--------------------------------------------------------------------------
-    // Public IGooveBoxApplication API
+    // Public ICaustkApplication API
     //--------------------------------------------------------------------------
 
     @Override

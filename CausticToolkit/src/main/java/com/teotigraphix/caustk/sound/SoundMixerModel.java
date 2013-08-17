@@ -21,13 +21,32 @@ package com.teotigraphix.caustk.sound;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.library.Library;
 import com.teotigraphix.caustk.tone.Tone;
 
+
+/**
+ * Serialized - v1.0
+ * <ul>
+ * <li><code>masterMixer</code> - A serialized {@link MasterMixer}.</li>
+ * <li><code>selectedLibraryId</code> - The current {@link Library} {@link UUID}
+ * </li>
+ * </ul>
+ */
 public class SoundMixerModel extends SubControllerModel implements IRestore {
+
+    //--------------------------------------------------------------------------
+    // Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // masterMixer
+    //----------------------------------
 
     private MasterMixer masterMixer;
 
@@ -35,11 +54,19 @@ public class SoundMixerModel extends SubControllerModel implements IRestore {
         return masterMixer;
     }
 
+    //----------------------------------
+    // channels
+    //----------------------------------
+
     Map<Integer, SoundMixerChannel> channels = new HashMap<Integer, SoundMixerChannel>();
 
     Map<Integer, SoundMixerChannel> getChannels() {
         return channels;
     }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public SoundMixerModel() {
     }
@@ -47,6 +74,16 @@ public class SoundMixerModel extends SubControllerModel implements IRestore {
     public SoundMixerModel(ICaustkController controller) {
         super(controller);
         masterMixer = new MasterMixer(controller);
+    }
+
+    //--------------------------------------------------------------------------
+    // Method API
+    //--------------------------------------------------------------------------
+
+    public void update() {
+        for (SoundMixerChannel channel : channels.values()) {
+            channel.update();
+        }
     }
 
     void toneAdded(Tone tone) {
@@ -76,12 +113,6 @@ public class SoundMixerModel extends SubControllerModel implements IRestore {
     public void restore() {
         for (SoundMixerChannel channel : channels.values()) {
             channel.restore();
-        }
-    }
-
-    public void update() {
-        for (SoundMixerChannel channel : channels.values()) {
-            channel.update();
         }
     }
 

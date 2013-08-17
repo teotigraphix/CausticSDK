@@ -24,7 +24,6 @@ import java.util.Collection;
 import com.sun.jna.Memory;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;
@@ -35,7 +34,7 @@ import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 
-public class PatternManager implements IControllerComponent, IPatternManager {
+public class PatternManager implements IPatternManager {
 
     //--------------------------------------------------------------------------
     // Public OSC Command API

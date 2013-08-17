@@ -22,6 +22,12 @@ package com.teotigraphix.caustk.sequencer;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 
+/**
+ * Serialized - v1.0
+ * <ul>
+ * <li>N/A</li>
+ * </ul>
+ */
 public class SongManagerModel extends SubControllerModel {
 
     public SongManagerModel() {

@@ -28,7 +28,21 @@ import java.util.UUID;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 
+/**
+ * Serialized - v1.0
+ * <ul>
+ * <li><code>libraries</code> - A map of {@link UUID} to {@link Library}</li>
+ * <li><code>selectedLibraryId</code> - The current {@link Library} {@link UUID}
+ * </li>
+ * </ul>
+ */
 public class LibraryManagerModel extends SubControllerModel {
+
+    private transient Library selectedLibrary;
+    
+    //--------------------------------------------------------------------------
+    // Property API
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // libraries
@@ -43,8 +57,6 @@ public class LibraryManagerModel extends SubControllerModel {
     //----------------------------------
     // selectedLibrary
     //----------------------------------
-
-    private transient Library selectedLibrary;
 
     private UUID selectedLibraryId;
 
@@ -61,12 +73,20 @@ public class LibraryManagerModel extends SubControllerModel {
         selectedLibraryId = selectedLibrary.getId();
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
     public LibraryManagerModel() {
     }
 
     public LibraryManagerModel(ICaustkController controller) {
         super(controller);
     }
+
+    //--------------------------------------------------------------------------
+    // Method API
+    //--------------------------------------------------------------------------
 
     public Library getLibrary(File reletivePath) {
         for (Library library : libraries.values()) {

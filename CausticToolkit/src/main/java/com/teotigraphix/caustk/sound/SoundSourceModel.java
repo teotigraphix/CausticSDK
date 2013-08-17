@@ -27,21 +27,47 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 
+/**
+ * Serialized - v1.0
+ * <ul>
+ * <li><code>descriptors</code> - A serialized {@link ToneDescriptor}.</li>
+ * </ul>
+ */
 public class SoundSourceModel extends SubControllerModel {
 
     private transient Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
 
+    //--------------------------------------------------------------------------
+    // Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // descriptors
+    //----------------------------------
+
     private Map<Integer, ToneDescriptor> descriptors = new HashMap<Integer, ToneDescriptor>();
+
+    public final Map<Integer, ToneDescriptor> getDescriptors() {
+        return descriptors;
+    }
+
+    //----------------------------------
+    // tones
+    //----------------------------------
+
+    Map<Integer, Tone> getTones() {
+        return tones;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public SoundSourceModel() {
     }
 
     public SoundSourceModel(ICaustkController controller) {
         super(controller);
-    }
-
-    Map<Integer, Tone> getTones() {
-        return tones;
     }
 
     @Override
@@ -61,8 +87,6 @@ public class SoundSourceModel extends SubControllerModel {
         //        }
         for (@SuppressWarnings("unused")
         ToneDescriptor descriptor : descriptors.values()) {
-
         }
     }
-
 }

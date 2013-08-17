@@ -47,18 +47,22 @@ import com.teotigraphix.caustk.system.ISystemState;
 public interface ICaustkController extends ICausticEngine {
 
     /**
-     * @param clazz
-     * @param instance
+     * Adds a controller component API.
+     * 
+     * @param clazz The class type API key.
+     * @param instance The implementing instance of the class type.
      */
     void addComponent(Class<? extends IControllerComponent> clazz, IControllerComponent instance);
 
     /**
+     * Returns a registered API controller component.
+     * 
      * <pre>
-     * ISoundSourceAPI api = context.api().get(ISoundSourceAPI.class);
+     * ISoundSourceAPI api = context.getComponent(ISoundSourceAPI.class);
      * api.setMasterVolume(0.5f);
      * </pre>
      * 
-     * @param clazz
+     * @param clazz The class type API key.
      */
     <T extends IControllerComponent> T getComponent(Class<T> clazz);
 
@@ -125,12 +129,4 @@ public interface ICaustkController extends ICausticEngine {
     void save() throws IOException;
 
     void close();
-
-    //    public class OnControllerSave {
-    //
-    //    }
-    //
-    //    public class OnApplicationClose {
-    //
-    //    }
 }

@@ -23,5 +23,9 @@ package com.teotigraphix.caustk.application;
  * @author Michael Schmalle
  */
 public interface ICaustkApplicationProvider {
+
+    /**
+     * Returns the application's {@link ICaustkApplication} implementation.
+     */
     ICaustkApplication get();
 }

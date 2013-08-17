@@ -24,7 +24,23 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 
+/**
+ * Serialized - v1.0
+ * <ul>
+ * <li><code>isPlaying</code> - Sequencer playing.</li>
+ * <li><code>sequencerMode</code> - {@link SequencerMode} pattern/song</li>
+ * <li><code>tempo</code> - Sequencer bpm.</li>
+ * </ul>
+ */
 public class SystemSequencerModel extends SubControllerModel {
+
+    //--------------------------------------------------------------------------
+    // Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // isPlaying
+    //----------------------------------
 
     private boolean isPlaying;
 
@@ -37,6 +53,10 @@ public class SystemSequencerModel extends SubControllerModel {
         return isPlaying;
     }
 
+    //----------------------------------
+    // sequencerMode
+    //----------------------------------
+
     private SequencerMode sequencerMode;
 
     public final SequencerMode getSequencerMode() {
@@ -48,6 +68,10 @@ public class SystemSequencerModel extends SubControllerModel {
         OutputPanelMessage.MODE.send(getController(), sequencerMode.getValue());
     }
 
+    //----------------------------------
+    // tempo
+    //----------------------------------
+
     private float tempo;
 
     public void setTempo(float value) {
@@ -58,6 +82,10 @@ public class SystemSequencerModel extends SubControllerModel {
     public float getTempo() {
         return tempo;
     }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public SystemSequencerModel() {
     }

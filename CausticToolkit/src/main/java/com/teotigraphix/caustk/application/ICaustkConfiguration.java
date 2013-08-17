@@ -31,14 +31,37 @@ import com.teotigraphix.caustk.sound.ISoundGenerator;
  */
 public interface ICaustkConfiguration {
 
+    /**
+     * Returns the machine id.
+     */
     String getApplicationId();
 
+    /**
+     * Returns the native root of the application's directory.
+     */
     File getApplicationRoot();
 
+    /**
+     * Set the application directory root.
+     * <p>
+     * This root uses the application name.
+     * 
+     * @param value A directory that will be created for the root of the
+     *            application.
+     */
     void setApplicationRoot(File value);
 
+    /**
+     * Returns the storage directory that holds the <code>caustic</code>
+     * directory.
+     */
     File getCausticStorage();
 
+    /**
+     * Sets the caustic storage root.
+     * 
+     * @param value A directory holding the <code>caustic</code> folder.
+     */
     void setCausticStorage(File value);
 
     //--------------------------------------------------------------------------
