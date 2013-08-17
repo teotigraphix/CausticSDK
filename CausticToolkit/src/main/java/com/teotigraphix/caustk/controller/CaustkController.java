@@ -29,7 +29,6 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.application.ICaustkConfiguration;
-import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommand;
@@ -117,17 +116,6 @@ public class CaustkController implements ICaustkController {
     @Override
     public IDispatcher getDispatcher() {
         return dispatcher;
-    }
-
-    //----------------------------------
-    // factory
-    //----------------------------------
-
-    private IDeviceFactory factory;
-
-    @Override
-    public IDeviceFactory getDeviceFactory() {
-        return factory;
     }
 
     //----------------------------------
@@ -311,7 +299,6 @@ public class CaustkController implements ICaustkController {
     public CaustkController(ICaustkApplication application) {
         this.application = application;
 
-        factory = getConfiguration().createDeviceFactory(this);
         dispatcher = new Dispatcher();
     }
 

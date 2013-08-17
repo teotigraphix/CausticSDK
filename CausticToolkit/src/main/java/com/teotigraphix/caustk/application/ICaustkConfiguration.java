@@ -25,8 +25,6 @@ import com.teotigraphix.caustk.controller.CaustkController;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
-import com.teotigraphix.caustk.sound.SoundSource;
-import com.teotigraphix.caustk.tone.Tone;
 
 /**
  * @author Michael Schmalle
@@ -42,17 +40,6 @@ public interface ICaustkConfiguration {
     File getCausticStorage();
 
     void setCausticStorage(File value);
-
-    /**
-     * Returns a {@link DeviceFactory} that creates caustic components.
-     * <p>
-     * The {@link SoundSource} is used to create {@link IMachine}s and other
-     * components while managing them and using them with {@link Tone}
-     * instances.
-     * <p>
-     * Default returns a {@link GrooveDeviceFactory}.
-     */
-    IDeviceFactory createDeviceFactory(ICausticEngine engine);
 
     //--------------------------------------------------------------------------
     // Factory Methods

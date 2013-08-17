@@ -23,7 +23,6 @@ import java.io.File;
 
 import com.teotigraphix.caustk.controller.CaustkController;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.sound.DesktopSoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 
@@ -62,11 +61,6 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     @Override
     public void setCausticStorage(File value) {
         causticStorage = value;
-    }
-
-    @Override
-    public IDeviceFactory createDeviceFactory(ICausticEngine engine) {
-        return new DeviceFactory(engine);
     }
 
     @Override

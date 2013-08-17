@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.application.IDeviceFactory;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
@@ -33,8 +32,8 @@ import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 public abstract class Tone implements ISerialize, IRestore {
 
@@ -159,13 +158,6 @@ public abstract class Tone implements ISerialize, IRestore {
         return controller;
     }
 
-    /**
-     * Returns the factory that creates all sub components of the audio system.
-     */
-    public IDeviceFactory getFactory() {
-        return controller.getDeviceFactory();
-    }
-
     public ICaustkController getController() {
         return controller;
     }
@@ -268,7 +260,7 @@ public abstract class Tone implements ISerialize, IRestore {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
-    
+
     public Tone(ICaustkController controller) {
         this.controller = controller;
     }
