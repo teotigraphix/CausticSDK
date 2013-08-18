@@ -552,12 +552,14 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
         getModel().removeLibrary(library);
     }
 
+    @Override
     public void exportLibrary(File file, Library library) throws IOException {
         Collection<File> files = FileUtils.listFiles(library.getDirectory(), null, true);
         Compress compress = new Compress(files, file.getAbsolutePath());
         compress.zip();
     }
 
+    @Override
     public Library importLibrary(File file) throws IOException {
         // extract to libraries dir
         File location = new File(librariesDirectory, file.getName().replace(".ctkl", ""));

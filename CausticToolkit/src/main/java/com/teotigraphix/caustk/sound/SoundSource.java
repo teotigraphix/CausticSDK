@@ -292,52 +292,52 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
             case Bassline:
                 tone = new BasslineTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((BasslineTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case Beatbox:
                 tone = new BeatboxTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((BeatboxTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case PCMSynth:
                 tone = new PCMSynthTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((PCMSynthTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case SubSynth:
                 tone = new SubSynthTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((SubSynthTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case PadSynth:
                 tone = new PadSynthTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((PadSynthTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case Organ:
                 tone = new OrganTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((OrganTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case Vocoder:
                 tone = new VocoderTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((VocoderTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case EightBitSynth:
                 tone = new EightBitSynth(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((EightBitSynth)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case Modular:
                 tone = new ModularTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((ModularTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             case FMSynth:
                 tone = new FMSynthTone(getController());
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup((FMSynthTone)tone);
+                SoundSourceUtils.setup(tone);
                 break;
             default:
                 break;

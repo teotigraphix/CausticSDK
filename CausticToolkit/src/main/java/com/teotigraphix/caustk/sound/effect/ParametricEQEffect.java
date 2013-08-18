@@ -124,6 +124,7 @@ public class ParametricEQEffect extends EffectBase {
 
         private String control;
 
+        @Override
         public String getControl() {
             return control;
         }

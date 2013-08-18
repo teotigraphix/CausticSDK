@@ -69,6 +69,7 @@ public abstract class MediatorBase implements ICaustkMediator {
     /**
      * @see OnMediatorRegister
      */
+    @Override
     public abstract void onRegister();
 
     protected void onProjectSave() {

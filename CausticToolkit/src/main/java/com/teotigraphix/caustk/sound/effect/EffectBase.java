@@ -34,6 +34,7 @@ public abstract class EffectBase implements IEffect {
 
     private EffectType type;
 
+    @Override
     public final EffectType getType() {
         return type;
     }
@@ -44,6 +45,7 @@ public abstract class EffectBase implements IEffect {
 
     private int toneIndex;
 
+    @Override
     public int getToneIndex() {
         return toneIndex;
     }
@@ -54,6 +56,7 @@ public abstract class EffectBase implements IEffect {
 
     private int slot;
 
+    @Override
     public int getSlot() {
         return slot;
     }

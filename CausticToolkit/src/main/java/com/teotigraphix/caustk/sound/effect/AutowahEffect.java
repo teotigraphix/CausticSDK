@@ -182,6 +182,7 @@ public class AutowahEffect extends EffectBase {
 
         private String control;
 
+        @Override
         public String getControl() {
             return control;
         }

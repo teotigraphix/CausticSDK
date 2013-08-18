@@ -135,6 +135,7 @@ public class ApplicationController implements IApplicationController {
         }
     }
 
+    @Override
     public void load() {
         for (ICaustkModel model : models) {
             if (model instanceof ModelBase) {

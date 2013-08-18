@@ -120,6 +120,7 @@ public class PhaserEffect extends EffectBase {
 
         private String control;
 
+        @Override
         public String getControl() {
             return control;
         }

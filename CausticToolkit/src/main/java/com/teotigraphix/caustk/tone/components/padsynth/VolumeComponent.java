@@ -149,14 +149,17 @@ public class VolumeComponent extends com.teotigraphix.caustk.tone.components.Vol
 
     protected float out;
 
+    @Override
     public float getOut() {
         return out;
     }
 
+    @Override
     protected float getOut(boolean restore) {
         return PadSynthMessage.VOLUME_OUT.query(getEngine(), getToneIndex());
     }
 
+    @Override
     public void setOut(float value) {
         if (value == out)
             return;

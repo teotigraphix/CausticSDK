@@ -275,7 +275,7 @@ public class LibraryItemPaneController extends ViewStackController {
         for (LibraryItemProxy entry : list.getItems()) {
             boolean match = true;
             // String entryText = (String)entry.getItem().getMetadataInfo().getTagsString();
-            String entryText = (String)entry.getItem().toString();
+            String entryText = entry.getItem().toString();
             for (String part : parts) {
                 // The entry needs to contain all portions of the
                 // search string *but* in any order

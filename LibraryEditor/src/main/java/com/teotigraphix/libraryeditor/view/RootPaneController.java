@@ -69,6 +69,7 @@ public class RootPaneController extends MediatorBase {
         stageModel.setStage(value);
 
         value.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
             public void handle(WindowEvent we) {
                 getController().getApplication().close();
             }
