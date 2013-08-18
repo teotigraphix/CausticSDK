@@ -36,15 +36,14 @@ public interface ILibraryManager extends IControllerComponent {
     void setSelectedLibrary(Library value);
 
     void load();
-    
+
     Library loadLibrary(File file);
-    
+
     Library loadLibrary(String name);
 
     void saveLibrary(Library library) throws IOException;
-    
+
     /**
-     * 
      * @param library
      * @param causticFile
      * @throws IOException
@@ -64,6 +63,10 @@ public interface ILibraryManager extends IControllerComponent {
     boolean isLibrary(File libraryFile);
 
     void deleteLibrary(File reletivePath) throws IOException;
+
+    void exportLibrary(File file, Library library) throws IOException;
+
+    Library importLibrary(File file) throws IOException;
 
     public static class OnLibraryManagerSelectedLibraryChange {
 

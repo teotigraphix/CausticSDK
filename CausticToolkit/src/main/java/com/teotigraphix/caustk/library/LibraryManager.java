@@ -48,6 +48,8 @@ import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.utils.Compress;
+import com.teotigraphix.caustk.utils.Decompress;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
@@ -548,5 +550,20 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     public void deleteLibrary(File reletivePath) throws IOException {
         Library library = getModel().getLibrary(reletivePath);
         getModel().removeLibrary(library);
+    }
+
+    public void exportLibrary(File file, Library library) throws IOException {
+        Collection<File> files = FileUtils.listFiles(library.getDirectory(), null, true);
+        Compress compress = new Compress(files, file.getAbsolutePath());
+        compress.zip();
+    }
+
+    public Library importLibrary(File file) throws IOException {
+        // extract to libraries dir
+        File location = new File(librariesDirectory, file.getName().replace(".ctkl", ""));
+        Decompress decompress = new Decompress(file.getAbsolutePath(), location.getAbsolutePath());
+        decompress.unzip();
+        Library library = loadLibrary(location);
+        return library;
     }
 }
