@@ -23,11 +23,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class RhythmTone extends Tone {
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.Beatbox;
-    }
-
     private RhythmChannel channel;
 
     public RhythmChannel getChannel() {
@@ -39,7 +34,7 @@ public class RhythmTone extends Tone {
     }
 
     public RhythmTone(ICaustkController controller) {
-        super(controller);
+        super(ToneType.Beatbox, controller);
     }
 
 }

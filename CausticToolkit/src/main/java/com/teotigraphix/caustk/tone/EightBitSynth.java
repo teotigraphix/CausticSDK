@@ -23,13 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class EightBitSynth extends Tone {
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.EightBitSynth;
-    }
-
     public EightBitSynth(ICaustkController controller) {
-        super(controller);
+        super(ToneType.EightBitSynth, controller);
     }
 
     public static void setup(Tone tone) {

@@ -26,11 +26,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class RhythmSet extends Tone {
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.Beatbox;
-    }
-
     private List<RhythmTone> tones = new ArrayList<RhythmTone>();
 
     public List<RhythmTone> getTones() {
@@ -38,7 +33,7 @@ public class RhythmSet extends Tone {
     }
 
     public RhythmSet(ICaustkController controller) {
-        super(controller);
+        super(ToneType.Beatbox, controller);
         createTones();
     }
 

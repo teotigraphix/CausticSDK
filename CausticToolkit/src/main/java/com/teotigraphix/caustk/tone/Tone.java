@@ -39,8 +39,11 @@ public abstract class Tone implements ISerialize, IRestore {
 
     private transient ICaustkController controller;
 
-    @SuppressWarnings("unused")
-    private ToneType toneType;
+    private final ToneType toneType;
+
+    public final ToneType getToneType() {
+        return toneType;
+    }
 
     //    public VolumeComponent getVolume() {
     //        return getComponent(VolumeComponent.class);
@@ -162,8 +165,6 @@ public abstract class Tone implements ISerialize, IRestore {
         return controller;
     }
 
-    public abstract ToneType getToneType();
-
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -261,7 +262,8 @@ public abstract class Tone implements ISerialize, IRestore {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Tone(ICaustkController controller) {
+    public Tone(ToneType toneType, ICaustkController controller) {
+        this.toneType = toneType;
         this.controller = controller;
     }
 
@@ -281,7 +283,6 @@ public abstract class Tone implements ISerialize, IRestore {
 
     @Override
     public void sleep() {
-        toneType = getToneType();
         components = new HashMap<String, Map<String, String>>();
         for (ToneComponent toneComponent : internalComponents.values()) {
             HashMap<String, String> map = new HashMap<String, String>();

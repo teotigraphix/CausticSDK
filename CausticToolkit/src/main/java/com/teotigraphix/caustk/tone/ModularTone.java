@@ -52,11 +52,6 @@ import com.teotigraphix.caustk.tone.components.modular.TwoInputMixer;
 
 public class ModularTone extends Tone {
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.Modular;
-    }
-
     private transient ModularPanel modularPanel;
 
     public ModularPanel getPanel() {
@@ -243,7 +238,7 @@ public class ModularTone extends Tone {
     // /caustic/modular/type <component bay#> returns the type# from the list above
 
     public ModularTone(ICaustkController controller) {
-        super(controller);
+        super(ToneType.Modular, controller);
 
         modularPanel = new ModularPanel(controller);
         modularPanel.setTone(this);

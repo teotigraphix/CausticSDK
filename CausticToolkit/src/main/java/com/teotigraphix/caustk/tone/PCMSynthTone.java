@@ -30,11 +30,6 @@ import com.teotigraphix.caustk.tone.components.pcmsynth.PCMTunerComponent;
 
 public class PCMSynthTone extends Tone {
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.PCMSynth;
-    }
-
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
     }
@@ -56,7 +51,7 @@ public class PCMSynthTone extends Tone {
     }
 
     public PCMSynthTone(ICaustkController controller) {
-        super(controller);
+        super(ToneType.PCMSynth, controller);
     }
 
     public static void setup(Tone tone) {

@@ -30,11 +30,6 @@ import com.teotigraphix.caustk.tone.components.bassline.OSC1Component;
 
 public class BasslineTone extends Tone {
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.Bassline;
-    }
-
     public VolumeComponent getVolume() {
         return getComponent(VolumeComponent.class);
     }
@@ -56,7 +51,7 @@ public class BasslineTone extends Tone {
     }
 
     public BasslineTone(ICaustkController controller) {
-        super(controller);
+        super(ToneType.Bassline, controller);
     }
 
     public static void setup(Tone tone) {

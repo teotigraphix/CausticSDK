@@ -50,13 +50,8 @@ public class PadSynthTone extends Tone {
         return getComponent(VolumeComponent.class);
     }
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.PadSynth;
-    }
-
     public PadSynthTone(ICaustkController controller) {
-        super(controller);
+        super(ToneType.PadSynth, controller);
     }
 
     public static void setup(Tone tone) {

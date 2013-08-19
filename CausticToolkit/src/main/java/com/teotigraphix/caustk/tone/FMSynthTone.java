@@ -23,13 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class FMSynthTone extends Tone {
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.FMSynth;
-    }
-
     public FMSynthTone(ICaustkController controller) {
-        super(controller);
+        super(ToneType.FMSynth, controller);
     }
 
     public static void setup(Tone tone) {

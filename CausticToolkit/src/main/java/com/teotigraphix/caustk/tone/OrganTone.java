@@ -35,13 +35,8 @@ public class OrganTone extends Tone {
         return getComponent(LeslieComponent.class);
     }
 
-    @Override
-    public ToneType getToneType() {
-        return ToneType.Organ;
-    }
-
     public OrganTone(ICaustkController controller) {
-        super(controller);
+        super(ToneType.Organ, controller);
     }
 
     public static void setup(Tone tone) {
