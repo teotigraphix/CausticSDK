@@ -90,10 +90,7 @@ public abstract class ModelBase implements ICaustkModel {
         String data = project.getString(getStateKey());
         if (data != null) {
             state = getController().getSerializeService().fromStateString(data, stateFactory);
-            IInjectorService injectorService = controller.getComponent(IInjectorService.class);
-            injectorService.inject(state);
-            if (state instanceof ISerialize)
-                ((ISerialize)state).wakeup(controller);
+            inject(state);
             restoreState(state);
         } else {
             try {
@@ -103,9 +100,17 @@ public abstract class ModelBase implements ICaustkModel {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+            inject(state);
             configState(state);
         }
         initalizeState();
+    }
+
+    private void inject(ICaustkModelState state) {
+        IInjectorService injectorService = controller.getComponent(IInjectorService.class);
+        injectorService.inject(state);
+        if (state instanceof ISerialize)
+            ((ISerialize)state).wakeup(controller);
     }
 
     protected void initalizeState() {
@@ -128,10 +133,10 @@ public abstract class ModelBase implements ICaustkModel {
     }
 
     @Override
-    public abstract void onShow();
+    public abstract void onRegister();
 
     @Override
-    public abstract void onRegister();
+    public abstract void onShow();
 
     @Override
     public final void save() {
