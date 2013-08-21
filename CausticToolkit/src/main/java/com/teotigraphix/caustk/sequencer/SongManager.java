@@ -135,7 +135,9 @@ public class SongManager extends SubControllerBase implements ISongManager {
     @Override
     public void save() throws IOException {
         saveSessionProperties();
-
+        if(trackSong == null)
+            return;
+        
         File target = toSongFile(trackSong.getFile());
         try {
             getController().getSerializeService().save(target, trackSong);

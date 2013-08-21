@@ -173,18 +173,10 @@ public abstract class CausticActivity extends RoboActivity {
 
     protected void addListeners() {
         editor = applicationPreferences.edit();
-
-        //        stageModel.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-        //            public void handle(WindowEvent we) {
-        //                try {
-        //                    editor.commit();
-        //                    applicationProvider.get().save();
-        //                } catch (IOException e) {
-        //                    e.printStackTrace();
-        //                }
-        //                applicationProvider.get().close();
-        //            }
-        //        });
+        int starts = applicationPreferences.getInt("starts", 0);
+        starts++;
+        editor.putInt("starts", starts);
+        Log.i("CYCLE", "starts" + starts);
     }
 
     @Override
@@ -206,6 +198,7 @@ public abstract class CausticActivity extends RoboActivity {
     @Override
     protected void onStop() {
         controller.onStop(); // 4
+        save();
         super.onStop();
         if (mDebugLog)
             Log.i("CYCLE", "onStop()");
@@ -223,7 +216,7 @@ public abstract class CausticActivity extends RoboActivity {
     private void save() {
         try {
             applicationProvider.get().save();
-
+            editor.commit();
         } catch (IOException e) {
             e.printStackTrace();
         }
