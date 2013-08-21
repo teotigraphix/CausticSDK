@@ -30,7 +30,7 @@ package com.teotigraphix.caustk.core;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ICausticEngine {
+public interface ICausticEngine extends IActivityCycle {
 
     //--------------------------------------------------------------------------
     //

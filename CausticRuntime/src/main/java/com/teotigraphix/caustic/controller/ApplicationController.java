@@ -35,9 +35,9 @@ public class ApplicationController implements IApplicationController {
     @Inject
     private IApplicationModel applicationModel;
 
-    @Inject
-    @Named("resources")
-    ResourceBundle resourceBundle;
+    //@Inject(optional=true)
+    //@Named("resources")
+    ResourceBundle _resourceBundle;
 
     private ICaustkController controller;
 

@@ -23,7 +23,6 @@ import java.io.File;
 
 import com.teotigraphix.caustk.controller.CaustkController;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.sound.DesktopSoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 
 /**
@@ -69,8 +68,6 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     }
 
     @Override
-    public ISoundGenerator createSoundGenerator(ICaustkController controller) {
-        return new DesktopSoundGenerator(controller);
-    }
+    public abstract ISoundGenerator createSoundGenerator(ICaustkController controller);
 
 }

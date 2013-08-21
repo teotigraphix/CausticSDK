@@ -22,9 +22,9 @@
   		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	<dependency>
-  		<groupId>com.google.inject</groupId>
-  		<artifactId>guice</artifactId>
-  		<version>3.0</version>
+  		<groupId>org.roboguice</groupId>
+  		<artifactId>roboguice</artifactId>
+  		<version>3.0b-experimental</version>
   	</dependency>
   </dependencies>
 </project>

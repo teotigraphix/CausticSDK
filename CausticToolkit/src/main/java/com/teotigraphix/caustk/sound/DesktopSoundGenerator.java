@@ -126,4 +126,46 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     public void removeEventListener(CausticEventListener l) {
         core().removeEventListener(l);
     }
+
+    @Override
+    public void onStart() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onResume() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onPause() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onStop() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onDestroy() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onRestart() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
+        
+    }
 }

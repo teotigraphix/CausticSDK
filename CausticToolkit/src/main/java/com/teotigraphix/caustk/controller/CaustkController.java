@@ -369,4 +369,43 @@ public class CaustkController implements ICaustkController {
         soundGenerator.close();
     }
 
+    //--------------------------------------------------------------------------
+    // IActivityCycle API
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void onStart() {
+        soundGenerator.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        soundGenerator.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        soundGenerator.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        soundGenerator.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        soundGenerator.onDestroy();
+    }
+
+    @Override
+    public void onRestart() {
+        soundGenerator.onRestart();
+    }
+
+    @Override
+    public void dispose() {
+        soundGenerator.dispose();
+    }
+
 }

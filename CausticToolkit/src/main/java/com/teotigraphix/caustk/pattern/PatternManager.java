@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.pattern;
 
 import java.util.Collection;
 
-import com.sun.jna.Memory;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
