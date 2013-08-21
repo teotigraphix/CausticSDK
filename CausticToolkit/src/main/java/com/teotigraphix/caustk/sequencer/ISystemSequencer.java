@@ -74,6 +74,22 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
     int getCurrentMeasure();
 
     int getCurrentBeat();
+    
+    /**
+     * @see ISystemSequencer#setTempo(float)
+     */
+    public static class OnSongSequencerTempoChange {
+
+        private float tempo;
+
+        public float getTempo() {
+            return tempo;
+        }
+
+        public OnSongSequencerTempoChange(float tempo) {
+            this.tempo = tempo;
+        }
+    }
 
     public static class OnSongSequencerBeatChange {
 
@@ -87,7 +103,7 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
             this.beat = beat;
         }
     }
-    
+
     public static class OnSongSequencerMeasureChange {
 
         private int measure;

@@ -89,7 +89,7 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
         setIsPlaying(true);
-        
+
         getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(0));
         getController().getDispatcher().trigger(new OnSongSequencerBeatChange(0));
     }

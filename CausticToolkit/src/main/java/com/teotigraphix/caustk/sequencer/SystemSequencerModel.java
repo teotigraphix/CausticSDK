@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.sequencer;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSongSequencerTempoChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 
 /**
@@ -42,7 +43,7 @@ public class SystemSequencerModel extends SubControllerModel {
     // isPlaying
     //----------------------------------
 
-    private boolean isPlaying;
+    private boolean isPlaying = false;
 
     public void setIsPlaying(boolean value) {
         isPlaying = value;
@@ -57,7 +58,7 @@ public class SystemSequencerModel extends SubControllerModel {
     // sequencerMode
     //----------------------------------
 
-    private SequencerMode sequencerMode;
+    private SequencerMode sequencerMode = SequencerMode.PATTERN;
 
     public final SequencerMode getSequencerMode() {
         return sequencerMode;
@@ -72,11 +73,12 @@ public class SystemSequencerModel extends SubControllerModel {
     // tempo
     //----------------------------------
 
-    private float tempo;
+    private float tempo = 120;
 
     public void setTempo(float value) {
         tempo = value;
         OutputPanelMessage.BPM.send(getController(), tempo);
+        getController().getDispatcher().trigger(new OnSongSequencerTempoChange(value));
     }
 
     public float getTempo() {
@@ -94,4 +96,11 @@ public class SystemSequencerModel extends SubControllerModel {
         super(controller);
     }
 
+    @Override
+    public void wakeup(ICaustkController controller) {
+        super.wakeup(controller);
+
+        setTempo(getTempo());
+        setSequencerMode(getSequencerMode());
+    }
 }

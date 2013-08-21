@@ -18,18 +18,18 @@ public class ButtonBase extends UIComponent {
 
     @Inject
     ITouchService touchService;
-//
-//    private static final int[] STATE_NORMAL = {
-//        R.attr.state_normal
-//    };
-//
-//    private static final int[] STATE_CHECKED = {
-//        R.attr.state_checked
-//    };
-//
-//    private static final int[] STATE_INDETERMINATE = {
-//        R.attr.state_indeterminate
-//    };
+
+    private static final int[] STATE_NORMAL = {
+        R.attr.state_normal
+    };
+
+    private static final int[] STATE_CHECKED = {
+        R.attr.state_checked
+    };
+
+    private static final int[] STATE_INDETERMINATE = {
+        R.attr.state_indeterminate
+    };
 
     private static final String TAG = "ButtonBase";
 
@@ -103,18 +103,18 @@ public class ButtonBase extends UIComponent {
     public ButtonBase(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-//        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Slider);
-//
-//        final int n = a.getIndexCount();
-//        for (int i = 0; i < n; i++) {
-//            int attr = a.getIndex(i);
-//            switch (attr) {
-//                case R.styleable.Slider_text:
-//                    setText(a.getString(attr));
-//                    break;
-//            }
-//        }
-//        a.recycle();
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Slider);
+
+        final int n = a.getIndexCount();
+        for (int i = 0; i < n; i++) {
+            int attr = a.getIndex(i);
+            switch (attr) {
+                case R.styleable.Slider_text:
+                    setText(a.getString(attr));
+                    break;
+            }
+        }
+        a.recycle();
     }
 
     public ButtonBase(Context context, AttributeSet attrs, int defStyle) {
@@ -193,15 +193,15 @@ public class ButtonBase extends UIComponent {
     @Override
     protected int[] onCreateDrawableState(int extraSpace) {
         final int[] drawableState = super.onCreateDrawableState(extraSpace + 2);
-//        if (isChecked()) { //  || isDown
-//            mergeDrawableStates(drawableState, STATE_CHECKED);
-//        }
-//        if (isNormal()) {
-//            mergeDrawableStates(drawableState, STATE_NORMAL);
-//        }
-//        if (isIndeterminate()) {
-//            mergeDrawableStates(drawableState, STATE_INDETERMINATE);
-//        }
+        if (isChecked()) { //  || isDown
+            mergeDrawableStates(drawableState, STATE_CHECKED);
+        }
+        if (isNormal()) {
+            mergeDrawableStates(drawableState, STATE_NORMAL);
+        }
+        if (isIndeterminate()) {
+            mergeDrawableStates(drawableState, STATE_INDETERMINATE);
+        }
         return drawableState;
     }
 

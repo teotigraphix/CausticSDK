@@ -133,9 +133,11 @@ public abstract class SubControllerBase {
         // if the data does not exist, API update, just create the model
         if (data == null) {
             resetModel();
-            return;
+            // simulate the model wakeup() so it happens everytime a model is loaded
+            model.wakeup(getController());
+        } else {
+            model = getController().getSerializeService().fromString(data, getModelType());
         }
-        model = getController().getSerializeService().fromString(data, getModelType());
     }
 
     protected void saveState(Project project) {

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.inject.Named;
-
 import org.androidtransfuse.event.EventObserver;
 
 import com.google.inject.Inject;

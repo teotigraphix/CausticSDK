@@ -18,6 +18,7 @@ import com.teotigraphix.android.service.ITouchService;
 import com.teotigraphix.android.ui.MainLayout;
 import com.teotigraphix.caustic.application.IApplicationPreferences;
 import com.teotigraphix.caustic.application.IPreferenceManager;
+import com.teotigraphix.caustic.application.IPreferenceManager.Editor;
 import com.teotigraphix.caustic.controller.IApplicationController;
 import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -48,9 +49,11 @@ public abstract class CausticActivity extends RoboActivity {
 
     private MainLayout layout;
 
-    protected boolean mDebugLog = false;
+    protected boolean mDebugLog = true;
 
     private ICaustkController controller;
+
+    private Editor editor;
 
     IActivityCycle getActivityCycle() {
         return (IActivityCycle)controller;
@@ -63,12 +66,16 @@ public abstract class CausticActivity extends RoboActivity {
 
         super.onCreate(savedInstanceState);
 
+        commitLayout();
+
         try {
             start();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    protected abstract void commitLayout();
 
     /**
      * Call in application activity to set the {@link MainLayout}.
@@ -165,6 +172,8 @@ public abstract class CausticActivity extends RoboActivity {
     }
 
     protected void addListeners() {
+        editor = applicationPreferences.edit();
+
         //        stageModel.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
         //            public void handle(WindowEvent we) {
         //                try {
@@ -205,9 +214,19 @@ public abstract class CausticActivity extends RoboActivity {
     @Override
     protected void onDestroy() {
         controller.onDestroy();
+        save();
         super.onDestroy();
         if (mDebugLog)
             Log.i("CYCLE", "onDestroy()");
+    }
+
+    private void save() {
+        try {
+            applicationProvider.get().save();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
