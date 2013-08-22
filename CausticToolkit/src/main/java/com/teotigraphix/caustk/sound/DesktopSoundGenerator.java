@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.sound;
 
 import java.util.logging.Logger;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticEventListener;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.internal.CausticCoreDesktop;
@@ -58,12 +57,9 @@ public class DesktopSoundGenerator implements ISoundGenerator {
      */
     public static ICausticEngine getInstance() {
         if (instance == null)
-            instance = new DesktopSoundGenerator(null);
+            instance = new DesktopSoundGenerator();
         return instance;
     }
-
-    @SuppressWarnings("unused")
-    private ICaustkController controller;
 
     //----------------------------------
     // instance
@@ -86,8 +82,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public DesktopSoundGenerator(ICaustkController controller) {
-        this.controller = controller;
+    public DesktopSoundGenerator() {
     }
 
     @Override
@@ -130,42 +125,42 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     @Override
     public void onStart() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void onResume() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void onPause() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void onStop() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void onDestroy() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void onRestart() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void dispose() {
         // TODO Auto-generated method stub
-        
+
     }
 }
