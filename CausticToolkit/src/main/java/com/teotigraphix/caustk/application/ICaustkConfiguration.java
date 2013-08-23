@@ -90,4 +90,6 @@ public interface ICaustkConfiguration {
      */
     ISoundGenerator createSoundGenerator(ICaustkController controller);
 
+    void setSoundGenerator(ISoundGenerator soundGenerator);
+
 }

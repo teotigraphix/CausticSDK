@@ -29,4 +29,10 @@ public class MockApplicationConfiguration extends CaustkConfigurationBase {
     public ISoundGenerator createSoundGenerator(ICaustkController controller) {
         return new DesktopSoundGenerator();
     }
+
+    @Override
+    public void setSoundGenerator(ISoundGenerator soundGenerator) {
+        // TODO Auto-generated method stub
+        
+    }
 }
