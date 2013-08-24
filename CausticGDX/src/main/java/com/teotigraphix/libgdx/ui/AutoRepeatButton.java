@@ -3,12 +3,11 @@ package com.teotigraphix.libgdx.ui;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class AutoRepeatButton extends TextButton {
+public class AutoRepeatButton extends Button {
 
     public AutoRepeatButton(String text, Skin skin) {
         super(text, skin);
