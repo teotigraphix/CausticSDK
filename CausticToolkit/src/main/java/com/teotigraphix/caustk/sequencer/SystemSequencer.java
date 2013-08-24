@@ -92,11 +92,13 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
 
         getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(0));
         getController().getDispatcher().trigger(new OnSongSequencerBeatChange(0));
+        getController().getDispatcher().trigger(new OnSongSequencerTransportChange());
     }
 
     @Override
     public void stop() {
         setIsPlaying(false);
+        getController().getDispatcher().trigger(new OnSongSequencerTransportChange());
     }
 
     public void executePlay() {

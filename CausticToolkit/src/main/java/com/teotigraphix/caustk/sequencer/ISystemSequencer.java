@@ -76,6 +76,12 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
     int getCurrentBeat();
     
     /**
+     * @see ISystemSequencer#isPlaying()
+     */
+    public static class OnSongSequencerTransportChange {
+    }
+    
+    /**
      * @see ISystemSequencer#setTempo(float)
      */
     public static class OnSongSequencerTempoChange {
