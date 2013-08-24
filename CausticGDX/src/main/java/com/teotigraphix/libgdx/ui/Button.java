@@ -1,6 +1,9 @@
 
 package com.teotigraphix.libgdx.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
@@ -11,6 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
  * The {@link Button} is not a toggle button.
  */
 public class Button extends TextButton {
+
+    Map<String, Object> properties = new HashMap<String, Object>();
+
+    public final Map<String, Object> getProperties() {
+        return properties;
+    }
 
     boolean isToggle = false;
 
