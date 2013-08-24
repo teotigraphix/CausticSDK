@@ -7,8 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
@@ -60,6 +62,17 @@ public class Knob extends Stack {
         return !cancelled;
     }
 
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String value) {
+        text = value;
+        invalidate();
+    }
+
     //----------------------------------
     // stepSize
     //----------------------------------
@@ -72,6 +85,7 @@ public class Knob extends Stack {
 
     public void setStepSize(float value) {
         stepSize = value;
+        invalidate();
     }
 
     //----------------------------------
@@ -86,6 +100,7 @@ public class Knob extends Stack {
 
     public void setMaxValue(float value) {
         maxValue = value;
+        invalidate();
     }
 
     //----------------------------------
@@ -94,19 +109,24 @@ public class Knob extends Stack {
 
     private float minValue = 0f;
 
+    private Skin skin;
+
     public float getMinValue() {
         return minValue;
     }
 
     public void setMinValue(float value) {
         minValue = value;
+        invalidate();
     }
 
-    public Knob(float min, float max, float stepSize, Skin skin) {
+    public Knob(float min, float max, float stepSize, String text, Skin skin) {
         super();
         this.minValue = min;
         this.maxValue = max;
         this.stepSize = stepSize;
+        this.text = text;
+        this.skin = skin;
         setTouchable(Touchable.enabled);
         setWidth(60);
         setHeight(60);
@@ -119,6 +139,8 @@ public class Knob extends Stack {
 
     private Image knob;
 
+    private Label label;
+
     private void createChildren() {
         background = new Image(style.background);
         add(background);
@@ -128,9 +150,12 @@ public class Knob extends Stack {
         knob.setHeight(60);
         add(knob);
 
-        init();
+        label = new Label(text, skin);
+        label.setAlignment(Align.center);
+        label.setFontScale(0.9f, 0.9f);
+        add(label);
 
-        invalidate();
+        init();
     }
 
     @Override
@@ -140,6 +165,10 @@ public class Knob extends Stack {
         if (currentAngle == null)
             currentAngle = getAngleFromValue(value);
         knob.setRotation(currentAngle);
+
+        label.setText(text);
+        label.setSize(getWidth(), label.getPrefHeight());
+        label.setPosition(0f, -label.getPrefHeight() - 5);
     }
 
     private void init() {
