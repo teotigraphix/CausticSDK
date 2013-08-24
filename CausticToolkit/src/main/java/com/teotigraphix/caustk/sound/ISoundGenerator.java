@@ -54,4 +54,6 @@ public interface ISoundGenerator extends ICausticEngine {
      */
     void removeEventListener(CausticEventListener l);
 
+    float getCurrentBeat();
+
 }

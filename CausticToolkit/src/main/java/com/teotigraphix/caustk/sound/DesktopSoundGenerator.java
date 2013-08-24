@@ -163,4 +163,9 @@ public class DesktopSoundGenerator implements ISoundGenerator {
         // TODO Auto-generated method stub
 
     }
+
+    @Override
+    public float getCurrentBeat() {
+        return core().GetCurrentBeat();
+    }
 }

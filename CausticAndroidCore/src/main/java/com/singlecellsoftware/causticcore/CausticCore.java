@@ -125,7 +125,7 @@ class CausticAudioMonitor extends Thread {
 
     private int m_nCurrentMeasure;
 
-    private static native int nativeGetCurrentBeat();
+    static native int nativeGetCurrentBeat();
 
     private static native int nativeGetCurrentSongMeasure();
 }
@@ -134,6 +134,10 @@ class CausticAudioMonitor extends Thread {
 
 public class CausticCore {
     public CausticCore() {
+    }
+
+    public float getCurrentBeat() {
+        return CausticAudioMonitor.nativeGetCurrentBeat();
     }
 
     public void initialize() {

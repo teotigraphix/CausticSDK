@@ -28,4 +28,9 @@ public class ParticleEffectActor extends Actor {
         return effect;
     }
 
+    public void start() {
+        effect.reset();
+        effect.start();
+    }
+
 }

@@ -175,6 +175,11 @@ public class AndroidSoundGenerator implements ISoundGenerator {
         causticCore.RemoveEventListener(l);        
     }
 
+    @Override
+    public float getCurrentBeat() {
+        return causticCore.getCurrentBeat();
+    }
+
     //--------------------------------------------------------------------------
     // 
     //  Listeners

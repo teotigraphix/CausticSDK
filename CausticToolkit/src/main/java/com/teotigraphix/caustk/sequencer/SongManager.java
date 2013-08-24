@@ -28,8 +28,26 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerBase;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSongSequencerBeatChange;
 
 public class SongManager extends SubControllerBase implements ISongManager {
+    private float currentBeat;
+
+    @Override
+    public void setCurrentBeat(float value) {
+        if (value == currentBeat)
+            return;
+        currentBeat = value;
+        if (trackSong != null) {
+            trackSong.setCurrentBeat((int)value);
+        }
+        getController().getDispatcher().trigger(new OnSongSequencerBeatChange((int)currentBeat));
+    }
+
+    @Override
+    public float getCurrentBeat() {
+        return currentBeat;
+    }
 
     @Override
     protected Class<? extends SubControllerModel> getModelType() {
@@ -114,9 +132,13 @@ public class SongManager extends SubControllerBase implements ISongManager {
     @Override
     public TrackSong create(String path) throws IOException {
         File file = toSongFile(new File(path));
-        if (file.exists())
-            throw new IOException("TrackSong file exists");
-        trackSong = createTrackSong(new File(path));
+        if (file.exists()) {
+            //throw new IOException("TrackSong file exists");
+            trackSong = load(file);
+        } else {
+            trackSong = createTrackSong(new File(path));
+        }
+
         return trackSong;
     }
 
@@ -135,9 +157,9 @@ public class SongManager extends SubControllerBase implements ISongManager {
     @Override
     public void save() throws IOException {
         saveSessionProperties();
-        if(trackSong == null)
+        if (trackSong == null)
             return;
-        
+
         File target = toSongFile(trackSong.getFile());
         try {
             getController().getSerializeService().save(target, trackSong);

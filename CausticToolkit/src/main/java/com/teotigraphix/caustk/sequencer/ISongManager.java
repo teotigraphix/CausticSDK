@@ -29,7 +29,7 @@ public interface ISongManager {
     TrackSong getTrackSong();
 
     TrackSong create(File songFile) throws IOException;
-    
+
     TrackSong create(String path) throws IOException;
 
     /**
@@ -103,6 +103,8 @@ public interface ISongManager {
 
     boolean songExists(String path);
 
+    void setCurrentBeat(float beat);
 
+    float getCurrentBeat();
 
 }
