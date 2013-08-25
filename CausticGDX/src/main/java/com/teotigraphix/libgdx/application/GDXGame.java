@@ -1,12 +1,17 @@
 
 package com.teotigraphix.libgdx.application;
 
+import java.io.IOException;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 /**
@@ -17,6 +22,8 @@ import com.teotigraphix.libgdx.screen.IScreen;
  * keep screens around or dispose of them when another screen is set.
  */
 public abstract class GDXGame implements IGame {
+
+    private StartupExecutor executor;
 
     @Inject
     Injector injector;
@@ -34,10 +41,48 @@ public abstract class GDXGame implements IGame {
 
     private IScreen screen;
 
+    private boolean printFPS;
+
+    private FPSLogger fpsLogger;
+
+    public static final boolean DEV_MODE = true;
+
+    private ISoundGenerator soundGenerator;
+
+    public ISoundGenerator getSoundGenerator() {
+        return soundGenerator;
+    }
+
+    public GDXGame(ISoundGenerator soundGenerator) {
+        this.soundGenerator = soundGenerator;
+        executor = new StartupExecutor();
+        fpsLogger = new FPSLogger();
+    }
+
+    @Override
+    public void initialize(Module ...modules) {
+        try {
+            for (Module module : modules) {
+                executor.addModule(module);
+            }
+            executor.start(soundGenerator);
+            executor.getInjector().injectMembers(this);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        setController(executor.getController());
+    }
+
     @Override
     public void dispose() {
         if (screen != null)
             screen.hide();
+        try {
+            getController().getApplication().save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -54,8 +99,18 @@ public abstract class GDXGame implements IGame {
 
     @Override
     public void render() {
+        // output the current FPS
+        if (printFPS)
+            fpsLogger.log();
+
         if (screen != null)
             screen.render(Gdx.graphics.getDeltaTime());
+
+        if (getController() != null) {
+            float beat = getController().getSoundGenerator().getCurrentBeat();
+            //System.out.println(beat + "");
+            getController().getSongManager().setCurrentBeat(beat);
+        }
     }
 
     @Override
