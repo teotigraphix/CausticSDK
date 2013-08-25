@@ -22,7 +22,6 @@ package com.teotigraphix.causitc.sound;
 import android.util.Log;
 
 import com.singlecellsoftware.causticcore.CausticCore;
-import com.teotigraphix.caustk.core.CausticEventListener;
 
 /**
  * @author Michael Schmalle
@@ -65,10 +64,4 @@ public class Caustic extends CausticCore {
             return "";
         }
     }
-
-    public void RemoveEventListener(CausticEventListener l) {
-        // TODO Auto-generated method stub
-
-    }
-
 }

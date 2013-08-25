@@ -60,7 +60,7 @@ public abstract class GDXGame implements IGame {
     }
 
     @Override
-    public void initialize(Module ...modules) {
+    public void initialize(Module... modules) {
         try {
             for (Module module : modules) {
                 executor.addModule(module);
@@ -76,6 +76,7 @@ public abstract class GDXGame implements IGame {
 
     @Override
     public void dispose() {
+        soundGenerator.onDestroy();
         if (screen != null)
             screen.hide();
         try {

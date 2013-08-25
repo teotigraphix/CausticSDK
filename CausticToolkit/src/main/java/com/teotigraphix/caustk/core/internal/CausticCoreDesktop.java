@@ -21,10 +21,8 @@ package com.teotigraphix.caustk.core.internal;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import com.sun.jna.Native;
-import com.teotigraphix.caustk.core.CausticEventListener;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -33,7 +31,7 @@ public class CausticCoreDesktop {
 
     private static CausticLibrary caustic;
 
-    private static CausticAudioMonitor audioThread;
+    //    private static CausticAudioMonitor audioThread;
 
     public CausticCoreDesktop() {
         RuntimeUtils.STORAGE_ROOT = Constants.STORAGE_ROOT;
@@ -49,15 +47,9 @@ public class CausticCoreDesktop {
         caustic.CausticCore_Init(1024);
         caustic.CausticCore_SetStorageRootDir(Constants.STORAGE_ROOT);
         SendOSCMessage("/caustic/blankrack");
-
-        audioThread = new CausticAudioMonitor();
-        audioThread.start();
-        audioThread.m_bProcess = true;
     }
 
     public static void reset() {
-        if (audioThread != null)
-            audioThread.m_EventListeners.clear();
     }
 
     public float SendOSCMessage(String message) {
@@ -81,80 +73,9 @@ public class CausticCoreDesktop {
     }
 
     public void CausticCore_Deinit() {
-        audioThread.m_bProcess = false;
-        audioThread.m_bRun = false;
-        audioThread.m_EventListeners.clear();
         caustic.CausticCore_Deinit();
     }
 
-    public void addEventListener(CausticEventListener l) {
-        audioThread.AddEventListener(l);
-    }
-
-    public void removeEventListener(CausticEventListener l) {
-        audioThread.RemoveEventListener(l);
-    }
-
     public void initialize() {
-        audioThread.m_EventListeners.clear();
     }
-
-    class CausticAudioMonitor extends Thread {
-        CausticAudioMonitor() {
-            m_nCurrentBeat = 0;
-            m_nCurrentMeasure = -1;
-            m_bRun = true;
-            m_bProcess = false;
-            m_EventListeners = new ArrayList<CausticEventListener>();
-            setDaemon(true);
-        }
-
-        @Override
-        public void run() {
-            while (m_bRun) {
-                if (m_bProcess) {
-                    int nCurMeasure = GetCurrentSongMeasure();
-                    if (nCurMeasure != m_nCurrentMeasure) {
-                        m_nCurrentMeasure = nCurMeasure;
-                        for (CausticEventListener listener : m_EventListeners) {
-                            listener.OnMeasureChanged(nCurMeasure);
-                        }
-                    }
-
-                    int nCurBeat = GetCurrentBeat();
-                    if (nCurBeat != m_nCurrentBeat) {
-                        m_nCurrentBeat = nCurBeat;
-                        for (CausticEventListener listener : m_EventListeners) {
-                            listener.OnBeatChanged(nCurBeat);
-                        }
-                    }
-
-                } else {
-                    try {
-                        sleep(10);
-                    } catch (Exception e) {
-                    }
-                }
-            }
-        }
-
-        public void AddEventListener(CausticEventListener l) {
-            m_EventListeners.add(l);
-        }
-
-        public void RemoveEventListener(CausticEventListener l) {
-            m_EventListeners.remove(l);
-        }
-
-        ArrayList<CausticEventListener> m_EventListeners;
-
-        public boolean m_bRun;
-
-        public boolean m_bProcess;
-
-        private int m_nCurrentBeat;
-
-        private int m_nCurrentMeasure;
-    }
-
 }

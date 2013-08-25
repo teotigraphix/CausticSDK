@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.sound;
 
 import java.util.logging.Logger;
 
-import com.teotigraphix.caustk.core.CausticEventListener;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.internal.CausticCoreDesktop;
 
@@ -113,16 +112,6 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     }
 
     @Override
-    public void addEventListener(CausticEventListener l) {
-        core().addEventListener(l);
-    }
-
-    @Override
-    public void removeEventListener(CausticEventListener l) {
-        core().removeEventListener(l);
-    }
-
-    @Override
     public void onStart() {
         // TODO Auto-generated method stub
 
@@ -148,8 +137,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public void onDestroy() {
-        // TODO Auto-generated method stub
-
+        causticCore.CausticCore_Deinit();
     }
 
     @Override
@@ -167,5 +155,10 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     @Override
     public float getCurrentBeat() {
         return core().GetCurrentBeat();
+    }
+
+    @Override
+    public float getCurrentSongMeasure() {
+        return core().GetCurrentSongMeasure();
     }
 }

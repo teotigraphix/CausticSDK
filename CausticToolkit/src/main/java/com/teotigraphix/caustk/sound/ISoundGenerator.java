@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.sound;
 
-import com.teotigraphix.caustk.core.CausticEventListener;
 import com.teotigraphix.caustk.core.ICausticEngine;
 
 /**
@@ -40,20 +39,8 @@ public interface ISoundGenerator extends ICausticEngine {
      */
     void close();
 
-    /**
-     * Adds an event listener to the Caustic core event loop.
-     * 
-     * @param l The listener add.
-     */
-    void addEventListener(CausticEventListener l);
-
-    /**
-     * Removes an event listener from the Caustic core event loop.
-     * 
-     * @param l The listener to remove.
-     */
-    void removeEventListener(CausticEventListener l);
-
     float getCurrentBeat();
+
+    float getCurrentSongMeasure();
 
 }

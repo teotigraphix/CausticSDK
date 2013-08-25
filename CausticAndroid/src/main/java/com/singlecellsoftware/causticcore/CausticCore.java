@@ -1,15 +1,11 @@
 
 package com.singlecellsoftware.causticcore;
 
-import java.util.ArrayList;
-
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Environment;
 import android.util.Log;
-
-import com.teotigraphix.caustk.core.CausticEventListener;
 
 //=================================================================================================
 
@@ -75,67 +71,71 @@ class CausticAudioLoop extends Thread {
     private static native void nativeSetProcessBufferSize(int nSize);
 }
 
-class CausticAudioMonitor extends Thread {
-    CausticAudioMonitor() {
-        m_nCurrentBeat = 0;
-        m_nCurrentMeasure = -1;
-        m_bRun = true;
-        m_bProcess = false;
-        m_EventListeners = new ArrayList<CausticEventListener>();
-    }
-
-    public void run() {
-        while (m_bRun) {
-            if (m_bProcess) {
-                int nCurBeat = nativeGetCurrentBeat();
-                if (nCurBeat != m_nCurrentBeat) {
-                    m_nCurrentBeat = nCurBeat;
-                    for (CausticEventListener listener : m_EventListeners) {
-                        listener.OnBeatChanged(nCurBeat);
-                    }
-                }
-
-                int nCurMeasure = nativeGetCurrentSongMeasure();
-                if (nCurMeasure != m_nCurrentMeasure) {
-                    m_nCurrentMeasure = nCurMeasure;
-                    for (CausticEventListener listener : m_EventListeners) {
-                        listener.OnMeasureChanged(nCurMeasure);
-                    }
-                }
-            } else {
-                try {
-                    sleep(10);
-                } catch (Exception e) {
-                }
-            }
-        }
-    }
-
-    public void AddEventListener(CausticEventListener evtListener) {
-        m_EventListeners.add(evtListener);
-    }
-
-    ArrayList<CausticEventListener> m_EventListeners;
-
-    public boolean m_bRun;
-
-    public boolean m_bProcess;
-
-    private int m_nCurrentBeat;
-
-    private int m_nCurrentMeasure;
-
-    static native int nativeGetCurrentBeat();
-
-    static native int nativeGetCurrentSongMeasure();
-}
+//class CausticAudioMonitor extends Thread {
+//    CausticAudioMonitor() {
+//        m_nCurrentBeat = 0;
+//        m_nCurrentMeasure = -1;
+//        m_bRun = true;
+//        m_bProcess = false;
+//        m_EventListeners = new ArrayList<CausticEventListener>();
+//    }
+//
+//    public void run() {
+//        while (m_bRun) {
+//            if (m_bProcess) {
+//                int nCurBeat = nativeGetCurrentBeat();
+//                if (nCurBeat != m_nCurrentBeat) {
+//                    m_nCurrentBeat = nCurBeat;
+//                    for (CausticEventListener listener : m_EventListeners) {
+//                        listener.OnBeatChanged(nCurBeat);
+//                    }
+//                }
+//
+//                int nCurMeasure = nativeGetCurrentSongMeasure();
+//                if (nCurMeasure != m_nCurrentMeasure) {
+//                    m_nCurrentMeasure = nCurMeasure;
+//                    for (CausticEventListener listener : m_EventListeners) {
+//                        listener.OnMeasureChanged(nCurMeasure);
+//                    }
+//                }
+//            } else {
+//                try {
+//                    sleep(10);
+//                } catch (Exception e) {
+//                }
+//            }
+//        }
+//    }
+//
+//    public void AddEventListener(CausticEventListener evtListener) {
+//        m_EventListeners.add(evtListener);
+//    }
+//
+//    ArrayList<CausticEventListener> m_EventListeners;
+//
+//    public boolean m_bRun;
+//
+//    public boolean m_bProcess;
+//
+//    private int m_nCurrentBeat;
+//
+//    private int m_nCurrentMeasure;
+//
+//    static native int nativeGetCurrentBeat();
+//
+//    static native int nativeGetCurrentSongMeasure();
+//}
 
 // =================================================================================================
 
 public class CausticCore {
 
     public float getCurrentBeat() {
-        return CausticAudioMonitor.nativeGetCurrentBeat();
+        return nativeGetCurrentBeat();
+    }
+
+    public float getCurrentSongMeasure() {
+        return nativeGetCurrentSongMeasure();
     }
 
     public CausticCore() {
@@ -153,7 +153,7 @@ public class CausticCore {
         nativeCreateMachines();
         SendOSCMessage("/caustic/blankrack");
 
-        m_AudioMonitor = new CausticAudioMonitor();
+        //m_AudioMonitor = new CausticAudioMonitor();
     }
 
     public void Start() {
@@ -166,24 +166,24 @@ public class CausticCore {
         m_AudioLoop.setPriority(Thread.MAX_PRIORITY);
         m_AudioLoop.start();
 
-        m_AudioMonitor.setPriority(Thread.MAX_PRIORITY - 1);
-        m_AudioMonitor.start();
+        //m_AudioMonitor.setPriority(Thread.MAX_PRIORITY - 1);
+        //m_AudioMonitor.start();
     }
 
     public void Pause() {
         m_AudioLoop.m_bProcess = false;
         m_AudioLoop.setPriority(Thread.NORM_PRIORITY);
 
-        m_AudioMonitor.m_bProcess = false;
-        m_AudioMonitor.setPriority(Thread.NORM_PRIORITY);
+        //m_AudioMonitor.m_bProcess = false;
+        // m_AudioMonitor.setPriority(Thread.NORM_PRIORITY);
     }
 
     public void Resume() {
         m_AudioLoop.m_bProcess = true;
         m_AudioLoop.setPriority(Thread.MAX_PRIORITY);
 
-        m_AudioMonitor.m_bProcess = true;
-        m_AudioMonitor.setPriority(Thread.MAX_PRIORITY - 1);
+        //m_AudioMonitor.m_bProcess = true;
+        //m_AudioMonitor.setPriority(Thread.MAX_PRIORITY - 1);
     }
 
     public void Restart() {
@@ -194,7 +194,7 @@ public class CausticCore {
 
     public void Stop() {
         m_AudioLoop.m_bRun = false;
-        m_AudioMonitor.m_bRun = false;
+        //m_AudioMonitor.m_bRun = false;
     }
 
     public float SendOSCMessage(String msg) {
@@ -206,13 +206,13 @@ public class CausticCore {
         return new String(m_byResponseString, 0, nStrLen);
     }
 
-    public void AddEventListener(CausticEventListener evtListener) {
-        m_AudioMonitor.AddEventListener(evtListener);
-    }
+    //    public void AddEventListener(CausticEventListener evtListener) {
+    //        m_AudioMonitor.AddEventListener(evtListener);
+    //    }
 
     private CausticAudioLoop m_AudioLoop;
 
-    private CausticAudioMonitor m_AudioMonitor;
+    //    private CausticAudioMonitor m_AudioMonitor;
 
     private byte[] m_byResponseString;
 
@@ -223,4 +223,8 @@ public class CausticCore {
     private static native float nativeOSCMessage(String msg, byte[] response);
 
     private static native void nativeSetStorageRootDir(String sRootDir);
+
+    private static native int nativeGetCurrentBeat();
+
+    private static native int nativeGetCurrentSongMeasure();
 }

@@ -25,10 +25,8 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
-import com.teotigraphix.caustk.core.CausticEventListener;
 
-public class SystemSequencer extends SubControllerBase implements ISystemSequencer,
-        CausticEventListener {
+public class SystemSequencer extends SubControllerBase implements ISystemSequencer {
 
     //----------------------------------
     // modelType
@@ -81,8 +79,6 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
         super(controller);
 
         controller.addComponent(ISystemSequencer.class, this);
-
-        controller.getSoundGenerator().addEventListener(this);
     }
 
     @Override
@@ -154,17 +150,17 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
         }
     }
 
-    @Override
-    public void OnBeatChanged(int beat) {
-        //System.out.println("   beat " + beat);
-        getController().getDispatcher().trigger(new OnSongSequencerBeatChange(beat));
-    }
-
-    @Override
-    public void OnMeasureChanged(int measure) {
-        //System.out.println("measure " + measure);
-        getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(measure));
-    }
+    //    @Override
+    //    public void OnBeatChanged(int beat) {
+    //        //System.out.println("   beat " + beat);
+    //        getController().getDispatcher().trigger(new OnSongSequencerBeatChange(beat));
+    //    }
+    //
+    //    @Override
+    //    public void OnMeasureChanged(int measure) {
+    //        //System.out.println("measure " + measure);
+    //        getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(measure));
+    //    }
 
     //--------------------------------------------------------------------------
 

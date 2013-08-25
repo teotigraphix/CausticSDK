@@ -21,7 +21,6 @@ package com.teotigraphix.causitc.sound;
 
 import java.util.logging.Logger;
 
-import com.teotigraphix.caustk.core.CausticEventListener;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 
@@ -156,28 +155,23 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void close() {
         // TODO Auto-generated method stub
-        
-    }
 
-    @Override
-    public void addEventListener(CausticEventListener l) {
-        causticCore.AddEventListener(l);
-    }
-
-    @Override
-    public void removeEventListener(CausticEventListener l) {
-        causticCore.RemoveEventListener(l);        
     }
 
     @Override
     public float getCurrentBeat() {
         return causticCore.getCurrentBeat();
+    }
+
+    @Override
+    public float getCurrentSongMeasure() {
+        return causticCore.getCurrentSongMeasure();
     }
 
     //--------------------------------------------------------------------------
