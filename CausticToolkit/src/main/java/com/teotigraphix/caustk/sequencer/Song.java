@@ -92,7 +92,7 @@ public class Song {
     //  currentBeat
     //----------------------------------
 
-    private int currentBeat = 0;
+    private int currentBeat = -1;
 
     /**
      * Return the ISong current beat.
@@ -101,6 +101,13 @@ public class Song {
         return currentBeat;
     }
 
+    private float beat = -1;
+    
+    void setCurrentBeat(float value) {
+        beat = value;
+    }
+
+    
     void setCurrentBeat(int value) {
         setCurrentBeat(value, false);
     }
@@ -267,6 +274,7 @@ public class Song {
     public void seek(int beat) {
         setCurrentBeat(beat, true);
     }
+
 
     /**
      * Moves the playhead to the end of the song data.

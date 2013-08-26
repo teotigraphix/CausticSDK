@@ -4,9 +4,12 @@ package com.teotigraphix.libgdx.application;
 import com.badlogic.gdx.ApplicationListener;
 import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 public interface IGame extends ApplicationListener {
+
+    ISoundGenerator getSoundGenerator();
 
     ICaustkController getController();
 
@@ -22,6 +25,6 @@ public interface IGame extends ApplicationListener {
      * 
      * @param modules
      */
-    void initialize(Module ...modules);
+    void initialize(Module... modules);
 
 }

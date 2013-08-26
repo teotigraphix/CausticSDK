@@ -21,6 +21,12 @@ import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.tone.ToneType;
 
+/*
+
+
+
+*/
+
 public class TrackSongTest {
 
     private File CAUSTIC_LIB_FILE = new File(
@@ -34,6 +40,8 @@ public class TrackSongTest {
 
     private ISongManager songManager;
 
+    private ISongPlayer songPlayer;
+
     @Before
     public void setUp() throws Exception {
         application = CaustkApplicationUtils.createAndRun();
@@ -41,6 +49,7 @@ public class TrackSongTest {
         controller = application.getController();
         projectManager = controller.getProjectManager();
         songManager = controller.getSongManager();
+        songPlayer = controller.getSongPlayer();
     }
 
     @After

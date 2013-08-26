@@ -11,6 +11,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.screen.IScreen;
 
@@ -65,8 +66,7 @@ public abstract class GDXGame implements IGame {
             for (Module module : modules) {
                 executor.addModule(module);
             }
-            executor.start(soundGenerator);
-            executor.getInjector().injectMembers(this);
+            executor.start(this);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -108,9 +108,8 @@ public abstract class GDXGame implements IGame {
             screen.render(Gdx.graphics.getDeltaTime());
 
         if (getController() != null) {
-            float beat = getController().getSoundGenerator().getCurrentBeat();
-            //System.out.println(beat + "");
-            getController().getSongManager().setCurrentBeat(beat);
+            final float beat = getController().getSoundGenerator().getCurrentBeat();
+            getController().getSongPlayer().setCurrentBeat(beat);
         }
     }
 
@@ -128,6 +127,8 @@ public abstract class GDXGame implements IGame {
      */
     @Override
     public void setScreen(IScreen screen) {
+        CtkDebug.err("Creating Screen " + screen);
+        CtkDebug.err("injector " + injector);
         if (this.screen != null)
             this.screen.hide();
         this.screen = screen;

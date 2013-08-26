@@ -66,7 +66,7 @@ public class SynthComponent extends ToneComponent {
         }
         if (value == polyphony)
             return;
-        if (value < 1 || value > 16)
+        if (value < 0 || value > 16)
             throw newRangeException(SynthMessage.POLYPHONY.toString(), "1..16", value);
         polyphony = value;
         SynthMessage.POLYPHONY.send(getEngine(), getToneIndex(), polyphony);

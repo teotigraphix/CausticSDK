@@ -71,71 +71,25 @@ class CausticAudioLoop extends Thread {
     private static native void nativeSetProcessBufferSize(int nSize);
 }
 
-//class CausticAudioMonitor extends Thread {
-//    CausticAudioMonitor() {
-//        m_nCurrentBeat = 0;
-//        m_nCurrentMeasure = -1;
-//        m_bRun = true;
-//        m_bProcess = false;
-//        m_EventListeners = new ArrayList<CausticEventListener>();
-//    }
-//
-//    public void run() {
-//        while (m_bRun) {
-//            if (m_bProcess) {
-//                int nCurBeat = nativeGetCurrentBeat();
-//                if (nCurBeat != m_nCurrentBeat) {
-//                    m_nCurrentBeat = nCurBeat;
-//                    for (CausticEventListener listener : m_EventListeners) {
-//                        listener.OnBeatChanged(nCurBeat);
-//                    }
-//                }
-//
-//                int nCurMeasure = nativeGetCurrentSongMeasure();
-//                if (nCurMeasure != m_nCurrentMeasure) {
-//                    m_nCurrentMeasure = nCurMeasure;
-//                    for (CausticEventListener listener : m_EventListeners) {
-//                        listener.OnMeasureChanged(nCurMeasure);
-//                    }
-//                }
-//            } else {
-//                try {
-//                    sleep(10);
-//                } catch (Exception e) {
-//                }
-//            }
-//        }
-//    }
-//
-//    public void AddEventListener(CausticEventListener evtListener) {
-//        m_EventListeners.add(evtListener);
-//    }
-//
-//    ArrayList<CausticEventListener> m_EventListeners;
-//
-//    public boolean m_bRun;
-//
-//    public boolean m_bProcess;
-//
-//    private int m_nCurrentBeat;
-//
-//    private int m_nCurrentMeasure;
-//
-//    static native int nativeGetCurrentBeat();
-//
-//    static native int nativeGetCurrentSongMeasure();
-//}
+class CausticAudioMonitor {
+    CausticAudioMonitor() {
+    }
+
+    static native int nativeGetCurrentBeat();
+
+    static native int nativeGetCurrentSongMeasure();
+}
 
 // =================================================================================================
 
 public class CausticCore {
 
     public float getCurrentBeat() {
-        return nativeGetCurrentBeat();
+        return CausticAudioMonitor.nativeGetCurrentBeat();
     }
 
     public float getCurrentSongMeasure() {
-        return nativeGetCurrentSongMeasure();
+        return CausticAudioMonitor.nativeGetCurrentSongMeasure();
     }
 
     public CausticCore() {
@@ -224,7 +178,4 @@ public class CausticCore {
 
     private static native void nativeSetStorageRootDir(String sRootDir);
 
-    private static native int nativeGetCurrentBeat();
-
-    private static native int nativeGetCurrentSongMeasure();
 }

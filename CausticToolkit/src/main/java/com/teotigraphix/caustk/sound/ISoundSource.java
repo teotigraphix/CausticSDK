@@ -141,6 +141,15 @@ public interface ISoundSource extends IRestore {
 
     public static class OnSoundSourceSongLoad {
 
+        private File file;
+
+        public File getFile() {
+            return file;
+        }
+
+        public OnSoundSourceSongLoad(File file) {
+            this.file = file;
+        }
     }
 
     void createScene(LibraryScene libraryScene) throws CausticException;

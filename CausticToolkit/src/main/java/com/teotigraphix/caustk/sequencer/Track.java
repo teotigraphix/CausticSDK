@@ -24,10 +24,12 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
@@ -35,11 +37,12 @@ import com.teotigraphix.caustk.tone.Tone;
 /*
 
 What is a Track?
-- a channel in a rack (machine) which pattern and automation state is saved over time.
+- a channel in a rack (machine) which pattern and automation state is saved over time
+  in SONG sequencer mode.
+
 
 A track has;
-- index, the current Tone index
-- name, the current Tone name, can be set different than the tone name temp
+- index; the current Tone index
 - current beat, measure proxied from the parent Song
 - soft transient reference to its containing song
 
@@ -104,42 +107,6 @@ public class Track implements ISerialize {
         //initialize();
     }
 
-    //    public TrackPhrase copyTrackPhrase(LibraryPhrase libraryPhrase) {
-    //        // TrackItem are unique and hold the start and end measures
-    //        // within a Track. The TrackPhrase is created to hold the referenced note data
-    //        // and pointer back to the original library phrase
-    //        // ALL TrackPhrase are copied from a source LibraryPhrase.
-    //
-    //        // will always create a new instance and get a bank/patter slot off the stack
-    //        BankPatternSlot slot = queue.pop();
-    //
-    //        TrackPhrase trackPhrase = new TrackPhrase();
-    //        trackPhrase.setId(UUID.randomUUID());
-    //        trackPhrase.setBankIndex(slot.getBank());
-    //        trackPhrase.setPatternIndex(slot.getPattern());
-    //        trackPhrase.setNumMeasures(libraryPhrase.getLength());
-    //        trackPhrase.setNoteData(libraryPhrase.getNoteData());
-    //
-    //        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
-    //                trackPhrase.getPatternIndex());
-    //        registry.put(patternName, trackPhrase);
-    //
-    //        return trackPhrase;
-    //    }
-
-    //    public void deleteTrackPhrase(TrackPhrase trackPhrase) {
-    //        String patternName = PatternUtils.toString(trackPhrase.getBankIndex(),
-    //                trackPhrase.getPatternIndex());
-    //        TrackPhrase phrase = registry.get(patternName);
-    //        if (phrase == null) {
-    //
-    //            return;
-    //        }
-    //
-    //        registry.remove(patternName);
-    //        // remove all TrackItem ?
-    //    }
-
     @SuppressWarnings("unused")
     private TrackItem findTrackItem(LibraryPhrase libraryPhrase) {
         TrackItem trackItem = items.get(libraryPhrase.getId());
@@ -159,7 +126,7 @@ public class Track implements ISerialize {
 
     public TrackItem addPhrase(int numLoops, ChannelPhrase channel) throws CausticException {
         int startMeasure = getNextMeasure();
-        return addPhraseAt(startMeasure, numLoops, channel);
+        return addPhraseAt(startMeasure, numLoops, channel, true);
     }
 
     /**
@@ -190,8 +157,8 @@ public class Track implements ISerialize {
      *            an index of 0-63.
      * @throws CausticException The start or measure span is occupied
      */
-    public TrackItem addPhraseAt(int startMeasure, int numLoops, ChannelPhrase channelPhrase)
-            throws CausticException {
+    public TrackItem addPhraseAt(int startMeasure, int numLoops, ChannelPhrase channelPhrase,
+            boolean dispatch) throws CausticException {
 
         if (contains(startMeasure))
             throw new CausticException("Track contain phrase at start: " + startMeasure);
@@ -213,7 +180,8 @@ public class Track implements ISerialize {
 
         items.put(startMeasure, item);
 
-        getDispatcher().trigger(new OnTrackPhraseAdd(this, item));
+        if (dispatch)
+            getDispatcher().trigger(new OnTrackPhraseAdd(this, item));
 
         return item;
     }
@@ -249,7 +217,7 @@ public class Track implements ISerialize {
         }
         return false;
     }
-    
+
     public List<TrackItem> getItemsOnMeasure(int measure) {
         List<TrackItem> result = new ArrayList<TrackItem>();
         for (TrackItem item : items.values()) {
@@ -258,6 +226,7 @@ public class Track implements ISerialize {
         }
         return result;
     }
+
     public void removePhrase(int startMeasure) throws CausticException {
         if (!items.containsKey(startMeasure))
             throw new CausticException("Patterns does not contain phrase at: " + startMeasure);
@@ -383,4 +352,69 @@ public class Track implements ISerialize {
         }
     }
 
+    public static float toLocalBeat(float beat, int length) {
+        float r = (beat % (length * 4));
+        return r;
+    }
+
+    private float currentBeat;
+
+    public float getCurrentBeat() {
+        return currentBeat;
+    }
+
+    @SuppressWarnings("unused")
+    public void setCurrentBeat(float currentBeat) {
+        this.currentBeat = currentBeat;
+        for (TrackItem item : items.values()) {
+
+        }
+    }
+
+    public void restore(ICaustkController controller) {
+        // load up TrackItems
+        // [machin_index] [start_measure] [bank] [pattern] [end_measure]. 
+        String patterns = controller.getSongSequencer().getPatterns();
+        if ("".equals(patterns))
+            return;
+
+        String[] tokens = patterns.split("\\|");
+        for (String phrase : tokens) {
+            String[] split = phrase.split(" ");
+            int toneIndex = Integer.valueOf(split[0]);
+            int start = Integer.valueOf(split[1]);
+            int bank = Integer.valueOf(split[2]);
+            int pattern = Integer.valueOf(split[3]);
+            int end = Integer.valueOf(split[4]);
+            if (toneIndex == getIndex()) {
+                load(controller, bank, pattern, start, end);
+            }
+        }
+    }
+
+    private void load(ICaustkController controller, int bank, int pattern, int start, int end) {
+        // get the data
+        // add the TrackItem
+
+        // set the bank/pattern to retrive correct note data
+        PatternSequencerMessage.BANK.send(controller, getIndex(), bank);
+        PatternSequencerMessage.PATTERN.send(controller, getIndex(), pattern);
+        UUID id = UUID.randomUUID();
+        int length = (int)PatternSequencerMessage.NUM_MEASURES.query(controller, getIndex());
+        String noteData = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(controller,
+                getIndex());
+
+        ProxyChannelPhrase phrase = new ProxyChannelPhrase(id, bank, pattern, length, noteData);
+        try {
+            addPhraseAt(start, 1, phrase, false);
+        } catch (CausticException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public String toString() {
+        return items.values().toString();
+    }
 }

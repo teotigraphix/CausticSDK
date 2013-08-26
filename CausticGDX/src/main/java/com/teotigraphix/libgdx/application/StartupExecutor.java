@@ -16,7 +16,6 @@ import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.service.IInjectorService;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.controller.IApplicationController;
 
 public class StartupExecutor {
@@ -50,7 +49,7 @@ public class StartupExecutor {
     public StartupExecutor() {
     }
 
-    public void start(ISoundGenerator soundGenerator) throws IOException {
+    public void start(IGame gdxGame) throws IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
         File causticDirectory = new File(root.getAbsolutePath());
         File applicationDirectory = new File(root, "Tones");
@@ -76,9 +75,10 @@ public class StartupExecutor {
 
         // Injects all fields annotated with @Inject into this GuiceApplication instance.
         injector.injectMembers(instance);
+        injector.injectMembers(gdxGame); // just need the injector
 
         //CaustkApplication application = new CaustkApplication(configuration);
-        application.get().getConfiguration().setSoundGenerator(soundGenerator);
+        application.get().getConfiguration().setSoundGenerator(gdxGame.getSoundGenerator());
         application.get().getConfiguration().setCausticStorage(causticDirectory);
         application.get().getConfiguration().setApplicationRoot(applicationDirectory);
         //application.get().initialize();

@@ -11,6 +11,7 @@ import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.teotigraphix.caustk.application.CaustkApplicationUtils;
@@ -20,6 +21,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.ToneType;
 
+@Ignore
 public class ProjectManagerTest {
 
     @SuppressWarnings("unused")

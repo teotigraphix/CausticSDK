@@ -186,7 +186,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
         RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
                 index);
-        
+
         toneAdd(index, tone);
 
         return (T)tone;
@@ -220,7 +220,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
         RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
                 tone.getIndex());
-        
+
         toneAdd(index, tone);
 
         return tone;
@@ -439,7 +439,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
         restore();
         getController().getSoundMixer().restore();
 
-        getDispatcher().trigger(new OnSoundSourceSongLoad());
+        getDispatcher().trigger(new OnSoundSourceSongLoad(causticFile));
     }
 
     @Override

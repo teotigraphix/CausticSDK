@@ -29,7 +29,6 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.library.EffectMixerState;
 import com.teotigraphix.caustk.library.SoundMixerState;
 import com.teotigraphix.caustk.library.SoundSourceState;
@@ -52,9 +51,11 @@ public class TrackSong extends Song implements ISerialize {
     }
 
     @Override
-    void setCurrentBeat(int value) {
-        super.setCurrentBeat(value);
-        CtkDebug.err("TrackSong:Beat" + value);
+    void setCurrentBeat(float currentBeat) {
+        super.setCurrentBeat(currentBeat);
+        for (Track track : tracks.values()) {
+            track.setCurrentBeat(currentBeat);
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -297,6 +298,10 @@ public class TrackSong extends Song implements ISerialize {
         for (Track track : tracks.values()) {
             track.wakeup(controller);
         }
+    }
+
+    void setController(ICaustkController value) {
+        controller = value;
     }
 
 }
