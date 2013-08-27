@@ -52,6 +52,7 @@ public class SongPlayer extends SubControllerBase implements ISongPlayer {
 
     private TrackSong song;
 
+    @Override
     public TrackSong getSong() {
         return song;
     }
@@ -115,6 +116,7 @@ public class SongPlayer extends SubControllerBase implements ISongPlayer {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    @Override
     public TrackSong create() throws IOException {
         if (song != null) {
             unload(song);

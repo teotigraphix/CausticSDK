@@ -13,10 +13,12 @@ public class ParticleEffectActor extends Actor {
         this.effect = effect;
     }
 
+    @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
         effect.draw(batch); //define behavior when stage calls Actor.draw()
     }
 
+    @Override
     public void act(float delta) {
         super.act(delta);
         effect.setPosition(getX(), getY()); //set to whatever x/y you prefer

@@ -33,6 +33,7 @@ public abstract class GDXGame implements IGame {
     @Inject
     IDialogManager dialogManager;
 
+    @Override
     public IDialogManager getDialogManager() {
         return dialogManager;
     }
@@ -58,12 +59,14 @@ public abstract class GDXGame implements IGame {
 
     private String appName;
 
+    @Override
     public String getAppName() {
         return appName;
     }
 
     private ISoundGenerator soundGenerator;
 
+    @Override
     public ISoundGenerator getSoundGenerator() {
         return soundGenerator;
     }

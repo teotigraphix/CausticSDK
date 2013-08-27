@@ -36,10 +36,12 @@ public class ScreenBase implements IScreen {
 
     private Skin skin;
 
+    @Override
     public IGame getGame() {
         return game;
     }
 
+    @Override
     public Stage getStage() {
         return stage;
     }
@@ -92,6 +94,7 @@ public class ScreenBase implements IScreen {
         return atlas;
     }
 
+    @Override
     public Skin getSkin() {
         if (skin == null) {
             FileHandle skinFile = Gdx.files.internal("skin/uiskin.json");

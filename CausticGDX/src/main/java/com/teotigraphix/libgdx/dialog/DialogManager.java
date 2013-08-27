@@ -2,7 +2,6 @@
 package com.teotigraphix.libgdx.dialog;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.google.inject.Singleton;
@@ -14,10 +13,12 @@ public class DialogManager implements IDialogManager {
 
     IScreen screen;
 
+    @Override
     public IScreen getScreen() {
         return screen;
     }
 
+    @Override
     public void setScreen(IScreen screen) {
         this.screen = screen;
     }
@@ -25,6 +26,7 @@ public class DialogManager implements IDialogManager {
     public DialogManager() {
     }
 
+    @Override
     public void create() {
         final Window window = new Window("Main Menu", screen.getSkin());
         window.setMovable(false);

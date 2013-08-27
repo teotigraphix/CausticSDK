@@ -101,6 +101,7 @@ public class Song {
         return currentBeat;
     }
 
+    @SuppressWarnings("unused")
     private float beat = -1;
     
     void setCurrentBeat(float value) {
