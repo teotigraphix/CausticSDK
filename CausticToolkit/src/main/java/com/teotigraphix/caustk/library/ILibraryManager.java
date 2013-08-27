@@ -44,6 +44,15 @@ public interface ILibraryManager extends IControllerComponent {
     void saveLibrary(Library library) throws IOException;
 
     /**
+     * Create a libary in a specific location other than the default
+     * <code>libraries</code> directory.
+     * 
+     * @param file
+     * @throws IOException
+     */
+    Library createLibrary(File file) throws IOException;
+
+    /**
      * @param library
      * @param causticFile
      * @throws IOException
@@ -85,5 +94,17 @@ public interface ILibraryManager extends IControllerComponent {
     public static class OnLibraryManagerImportComplete {
 
     }
+
+    /**
+     * Saves the selected library.
+     * 
+     * @throws IOException
+     */
+    void save() throws IOException;
+
+    /**
+     * Creates an empty library with no directory
+     */
+    Library createLibrary();
 
 }

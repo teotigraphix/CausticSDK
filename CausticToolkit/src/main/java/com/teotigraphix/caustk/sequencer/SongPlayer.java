@@ -77,6 +77,7 @@ public class SongPlayer extends SubControllerBase implements ISongPlayer {
         if (song != null) {
             song.setCurrentBeat(currentBeat);
         }
+        getController().getDispatcher().trigger(new OnSongPlayerBeatChange(currentBeat));
     }
 
     public SongPlayer(ICaustkController controller) {
@@ -118,7 +119,7 @@ public class SongPlayer extends SubControllerBase implements ISongPlayer {
         if (song != null) {
             unload(song);
         }
-        TrackSong song = new TrackSong();
+        song = new TrackSong();
 
         // File stays null until it has an explicit location set
         //song.setFile(file);

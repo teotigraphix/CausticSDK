@@ -36,7 +36,20 @@ public interface ISongPlayer {
     TrackSong create() throws IOException;
 
     void setCurrentBeat(float value);
-    
+
     float getCurrentbeat();
+
+    public static class OnSongPlayerBeatChange {
+
+        private float beat;
+
+        public float getBeat() {
+            return beat;
+        }
+
+        public OnSongPlayerBeatChange(float beat) {
+            this.beat = beat;
+        }
+    }
 
 }

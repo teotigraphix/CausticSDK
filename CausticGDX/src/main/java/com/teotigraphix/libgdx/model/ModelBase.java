@@ -100,12 +100,26 @@ public abstract class ModelBase implements ICaustkModel {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+            preconfigState(state);
             inject(state);
             configState(state);
         }
         initalizeState();
     }
 
+    /**
+     * Called before the state is injected.
+     * 
+     * @param state
+     */
+    protected void preconfigState(ICaustkModelState state) {
+    }
+
+    /**
+     * Injects the state with the current inejctor.
+     * 
+     * @param state
+     */
     private void inject(ICaustkModelState state) {
         IInjectorService injectorService = controller.getComponent(IInjectorService.class);
         injectorService.inject(state);

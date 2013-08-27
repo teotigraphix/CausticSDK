@@ -40,6 +40,7 @@ public class TrackSongTest {
 
     private ISongManager songManager;
 
+    @SuppressWarnings("unused")
     private ISongPlayer songPlayer;
 
     @Before

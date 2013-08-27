@@ -13,6 +13,7 @@ import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 /**
@@ -28,6 +29,13 @@ public abstract class GDXGame implements IGame {
 
     @Inject
     Injector injector;
+
+    @Inject
+    IDialogManager dialogManager;
+
+    public IDialogManager getDialogManager() {
+        return dialogManager;
+    }
 
     private ICaustkController controller;
 
@@ -48,13 +56,20 @@ public abstract class GDXGame implements IGame {
 
     public static final boolean DEV_MODE = true;
 
+    private String appName;
+
+    public String getAppName() {
+        return appName;
+    }
+
     private ISoundGenerator soundGenerator;
 
     public ISoundGenerator getSoundGenerator() {
         return soundGenerator;
     }
 
-    public GDXGame(ISoundGenerator soundGenerator) {
+    public GDXGame(String appName, ISoundGenerator soundGenerator) {
+        this.appName = appName;
         this.soundGenerator = soundGenerator;
         executor = new StartupExecutor();
         fpsLogger = new FPSLogger();
@@ -123,23 +138,24 @@ public abstract class GDXGame implements IGame {
      * Sets the current screen. {@link IScreen#hide()} is called on any old
      * screen, and {@link IScreen#show()} is called on the new screen, if any.
      * 
-     * @param screen may be {@code null}
+     * @param value may be {@code null}
      */
     @Override
-    public void setScreen(IScreen screen) {
-        CtkDebug.err("Creating Screen " + screen);
+    public void setScreen(IScreen value) {
+        CtkDebug.err("Creating Screen " + value);
         CtkDebug.err("injector " + injector);
-        if (this.screen != null)
-            this.screen.hide();
-        this.screen = screen;
-        if (this.screen != null) {
+        if (screen != null)
+            screen.hide();
+        screen = value;
+        if (screen != null) {
+            dialogManager.setScreen(screen);
             // this will only happen at first start up with the splash
             // TODO Can I fix this?
             if (injector != null)
-                injector.injectMembers(this.screen);
-            this.screen.initialize(this);
-            this.screen.show();
-            this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                injector.injectMembers(screen);
+            screen.initialize(this);
+            screen.show();
+            screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }
 

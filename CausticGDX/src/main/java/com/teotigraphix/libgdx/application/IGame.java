@@ -5,6 +5,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 public interface IGame extends ApplicationListener {
@@ -12,6 +13,8 @@ public interface IGame extends ApplicationListener {
     ISoundGenerator getSoundGenerator();
 
     ICaustkController getController();
+
+    IDialogManager getDialogManager();
 
     void setScreen(IScreen screen);
 
@@ -26,5 +29,7 @@ public interface IGame extends ApplicationListener {
      * @param modules
      */
     void initialize(Module... modules);
+
+    String getAppName();
 
 }

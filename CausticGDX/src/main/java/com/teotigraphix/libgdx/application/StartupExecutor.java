@@ -49,10 +49,10 @@ public class StartupExecutor {
     public StartupExecutor() {
     }
 
-    public void start(IGame gdxGame) throws IOException {
+    public void start(IGame game) throws IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
         File causticDirectory = new File(root.getAbsolutePath());
-        File applicationDirectory = new File(root, "Tones");
+        File applicationDirectory = new File(root, game.getAppName());
 
         @SuppressWarnings("unchecked")
         final Class<StartupExecutor> clazz = (Class<StartupExecutor>)getClass();
@@ -75,10 +75,10 @@ public class StartupExecutor {
 
         // Injects all fields annotated with @Inject into this GuiceApplication instance.
         injector.injectMembers(instance);
-        injector.injectMembers(gdxGame); // just need the injector
+        injector.injectMembers(game); // just need the injector
 
         //CaustkApplication application = new CaustkApplication(configuration);
-        application.get().getConfiguration().setSoundGenerator(gdxGame.getSoundGenerator());
+        application.get().getConfiguration().setSoundGenerator(game.getSoundGenerator());
         application.get().getConfiguration().setCausticStorage(causticDirectory);
         application.get().getConfiguration().setApplicationRoot(applicationDirectory);
         //application.get().initialize();

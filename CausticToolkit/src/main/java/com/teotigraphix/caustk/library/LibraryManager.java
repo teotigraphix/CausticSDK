@@ -60,6 +60,8 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class LibraryManager extends SubControllerBase implements ILibraryManager {
 
+    private static final String LIBRARY_CTKL = "library.ctkl";
+
     @Override
     protected Class<? extends SubControllerModel> getModelType() {
         return LibraryManagerModel.class;
@@ -177,6 +179,33 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     }
 
     @Override
+    public Library createLibrary() {
+        Library library = new Library();
+        library.setId(UUID.randomUUID());
+        library.setMetadataInfo(new MetadataInfo());
+        getModel().getLibraries().put(library.getId(), library);
+
+        return library;
+    }
+
+    @Override
+    public Library createLibrary(File directory) throws IOException {
+        // file: CausticLive/projects/Foo/libraris/User
+        Library library = new Library();
+        library.setId(UUID.randomUUID());
+        library.setMetadataInfo(new MetadataInfo());
+        library.setDirectory(directory);
+        library.mkdirs();
+
+        getModel().getLibraries().put(library.getId(), library);
+
+        if (directory.exists())
+            saveLibrary(library);
+
+        return library;
+    }
+
+    @Override
     public Library createLibrary(String name) throws IOException {
         File newDirectory = new File(librariesDirectory, name);
         //if (newDirectory.exists())
@@ -243,7 +272,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
             return null;
         }
 
-        File file = new File(directory, "library.ctk");
+        File file = new File(directory, LIBRARY_CTKL);
         Library library = getController().getSerializeService().fromFile(file, Library.class);
         getModel().getLibraries().put(library.getId(), library);
 
@@ -255,7 +284,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     @Override
     public Library loadLibrary(String name) {
         File directory = new File(librariesDirectory, name);
-        File file = new File(directory, "library.ctk");
+        File file = new File(directory, LIBRARY_CTKL);
         if (!file.exists()) {
             CtkDebug.err("Library not found; " + file);
             return null;
@@ -264,9 +293,14 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
     }
 
     @Override
+    public void save() throws IOException {
+        saveLibrary(getSelectedLibrary());
+    }
+
+    @Override
     public void saveLibrary(Library library) throws IOException {
         String data = getController().getSerializeService().toString(library);
-        File file = new File(library.getDirectory(), "library.ctk");
+        File file = new File(library.getDirectory(), LIBRARY_CTKL);
         FileUtils.writeStringToFile(file, data);
     }
 

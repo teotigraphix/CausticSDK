@@ -101,6 +101,7 @@ public class Library implements ISerialize {
         if (patterns.contains(pattern))
             return;
         patterns.add(pattern);
+        pattern.setLibrary(this);
     }
 
     public void removePattern(LibraryPattern pattern) {
@@ -125,6 +126,7 @@ public class Library implements ISerialize {
         if (patches.contains(patch))
             return;
         patches.add(patch);
+        patch.setLibrary(this);
     }
 
     public void removePatch(LibraryPatch patch) {
@@ -149,6 +151,7 @@ public class Library implements ISerialize {
         if (phrases.contains(phrase))
             return;
         phrases.add(phrase);
+        phrase.setLibrary(this);
     }
 
     public void removePhrase(LibraryPhrase phrase) {
@@ -173,6 +176,7 @@ public class Library implements ISerialize {
         if (scenes.contains(scene))
             return;
         scenes.add(scene);
+        scene.setLibrary(this);
     }
 
     public void removeScene(LibraryScene scene) {
