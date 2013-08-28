@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.sequencer;
 
+import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerBase;
 import com.teotigraphix.caustk.controller.SubControllerModel;
@@ -27,6 +28,13 @@ import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 
 public class SystemSequencer extends SubControllerBase implements ISystemSequencer {
+
+    private Dispatcher dispatcher;
+
+    @Override
+    public Dispatcher getDispatcher() {
+        return dispatcher;
+    }
 
     //----------------------------------
     // modelType
@@ -48,6 +56,9 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     @Override
     public void setIsPlaying(boolean value) {
         getModel().setIsPlaying(value);
+        if (!value) {
+            currentBeat = -1;
+        }
     }
 
     @Override
@@ -77,7 +88,7 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
 
     public SystemSequencer(ICaustkController controller) {
         super(controller);
-
+        dispatcher = new Dispatcher();
         controller.addComponent(ISystemSequencer.class, this);
     }
 
@@ -86,8 +97,6 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
         setSequencerMode(mode);
         setIsPlaying(true);
 
-        getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(0));
-        getController().getDispatcher().trigger(new OnSongSequencerBeatChange(0));
         getController().getDispatcher().trigger(new OnSongSequencerTransportChange());
     }
 
@@ -150,20 +159,6 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
         }
     }
 
-    //    @Override
-    //    public void OnBeatChanged(int beat) {
-    //        //System.out.println("   beat " + beat);
-    //        getController().getDispatcher().trigger(new OnSongSequencerBeatChange(beat));
-    //    }
-    //
-    //    @Override
-    //    public void OnMeasureChanged(int measure) {
-    //        //System.out.println("measure " + measure);
-    //        getController().getDispatcher().trigger(new OnSongSequencerMeasureChange(measure));
-    //    }
-
-    //--------------------------------------------------------------------------
-
     //----------------------------------
     // currentMeasure
     //----------------------------------
@@ -189,18 +184,36 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     }
 
     public int getMeasureBeat() {
-        return mCurrentBeat % 4;
+        return currentBeat % 4;
     }
 
     //----------------------------------
     // currentBeat
     //----------------------------------
 
-    private int mCurrentBeat = 0;
+    public int getStep() {
+        int step = (currentBeat % 4) * 4;
+        return step;
+    }
+
+    @Override
+    public void beatUpdate(float beat) {
+        if (!isPlaying())
+            return;
+        floatBeat = beat;
+        int round = (int)Math.floor(floatBeat);
+        if (round != currentBeat) {
+            setCurrentBeat(round);
+        }
+    }
+
+    private float floatBeat;
+
+    private int currentBeat = -1;
 
     @Override
     public int getCurrentBeat() {
-        return mCurrentBeat;
+        return currentBeat;
     }
 
     void setCurrentBeat(int value) {
@@ -208,22 +221,25 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     }
 
     void setCurrentBeat(int value, boolean seeking) {
+        if (value == currentBeat)
+            return;
+
         int beatsInLength = 4;
 
-        int last = mCurrentBeat;
-        mCurrentBeat = value;
+        int last = currentBeat;
+        currentBeat = value;
 
-        //fireBeatChange(mCurrentBeat, last);
+        getDispatcher().trigger(new OnSystemSequencerBeatChange(currentBeat));
 
         if (last < value) {
             // forward
-            if (mCurrentBeat == 0) {
+            if (currentBeat == 0) {
                 setCurrentMeasure(0);
             } else {
-                int remainder = mCurrentBeat % beatsInLength;
-                System.out.println("    remainder " + getMeasureBeat());
+                int remainder = currentBeat % beatsInLength;
+                //System.out.println("    remainder " + getMeasureBeat());
                 if (seeking) {
-                    setCurrentMeasure(mCurrentBeat / beatsInLength);
+                    setCurrentMeasure(currentBeat / beatsInLength);
                 } else if (remainder == 0) {
                     setCurrentMeasure(mCurrentMeasure + 1);
                 }
@@ -236,6 +252,7 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
                 setCurrentMeasure(mCurrentMeasure - 1);
             }
         }
+
     }
 
     int updateMeasure(int beat) {

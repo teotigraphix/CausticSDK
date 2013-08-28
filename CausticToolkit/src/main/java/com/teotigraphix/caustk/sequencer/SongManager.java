@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.SubControllerBase;
 import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSongSequencerBeatChange;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 
 public class SongManager extends SubControllerBase implements ISongManager {
     private float currentBeat;
@@ -41,7 +41,7 @@ public class SongManager extends SubControllerBase implements ISongManager {
         if (trackSong != null) {
             trackSong.setCurrentBeat((int)value);
         }
-        getController().getDispatcher().trigger(new OnSongSequencerBeatChange((int)currentBeat));
+        getController().getDispatcher().trigger(new OnSystemSequencerBeatChange((int)currentBeat));
     }
 
     @Override

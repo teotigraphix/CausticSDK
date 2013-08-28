@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.sequencer;
 
+import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.IRestore;
@@ -68,19 +69,32 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
                     return PATTERN;
             }
         }
-
     }
 
+    /**
+     * The single entry point for a beat change from the caustic core audio.
+     * 
+     * @param beat The beat and decimal fraction in between the beat.
+     */
+    void beatUpdate(float beat);
+
+    /**
+     * Returns the current measure of the song sequencer, calculated from the
+     * {@link #getCurrentBeat()}.
+     */
     int getCurrentMeasure();
 
+    /**
+     * Returns the current beat of the song sequencer.
+     */
     int getCurrentBeat();
-    
+
     /**
      * @see ISystemSequencer#isPlaying()
      */
     public static class OnSongSequencerTransportChange {
     }
-    
+
     /**
      * @see ISystemSequencer#setTempo(float)
      */
@@ -97,7 +111,7 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
         }
     }
 
-    public static class OnSongSequencerBeatChange {
+    public static class OnSystemSequencerBeatChange {
 
         private int beat;
 
@@ -105,11 +119,14 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
             return beat;
         }
 
-        public OnSongSequencerBeatChange(int beat) {
+        public OnSystemSequencerBeatChange(int beat) {
             this.beat = beat;
         }
     }
 
+    /**
+     * @see ISystemSequencer#getDispatcher()
+     */
     public static class OnSongSequencerMeasureChange {
 
         private int measure;
@@ -122,4 +139,9 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
             this.measure = measure;
         }
     }
+
+    Dispatcher getDispatcher();
+
+    int getStep();
+
 }

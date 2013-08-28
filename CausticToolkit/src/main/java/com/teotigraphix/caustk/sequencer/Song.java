@@ -103,12 +103,11 @@ public class Song {
 
     @SuppressWarnings("unused")
     private float beat = -1;
-    
+
     void setCurrentBeat(float value) {
         beat = value;
     }
 
-    
     void setCurrentBeat(int value) {
         setCurrentBeat(value, false);
     }
@@ -275,7 +274,6 @@ public class Song {
     public void seek(int beat) {
         setCurrentBeat(beat, true);
     }
-
 
     /**
      * Moves the playhead to the end of the song data.

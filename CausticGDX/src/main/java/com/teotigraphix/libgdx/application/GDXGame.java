@@ -57,7 +57,7 @@ public abstract class GDXGame implements IGame {
 
     private boolean printFPS;
 
-    private FPSLogger fpsLogger;
+    private FPSLogger fps;
 
     public static final boolean DEV_MODE = true;
 
@@ -79,7 +79,7 @@ public abstract class GDXGame implements IGame {
         this.appName = appName;
         this.soundGenerator = soundGenerator;
         executor = new StartupExecutor();
-        fpsLogger = new FPSLogger();
+        fps = new FPSLogger();
     }
 
     @Override
@@ -124,14 +124,14 @@ public abstract class GDXGame implements IGame {
     public void render() {
         // output the current FPS
         if (printFPS)
-            fpsLogger.log();
+            fps.log();
 
         if (screen != null)
             screen.render(Gdx.graphics.getDeltaTime());
 
         if (getController() != null) {
             final float beat = getController().getSoundGenerator().getCurrentBeat();
-            getController().getSongPlayer().setCurrentBeat(beat);
+            getController().getSystemSequencer().beatUpdate(beat);
         }
     }
 
