@@ -21,6 +21,8 @@ package com.teotigraphix.causitc.sound;
 
 import java.util.logging.Logger;
 
+import android.content.Context;
+
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 
@@ -58,10 +60,10 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     //
     //--------------------------------------------------------------------------
 
-    public AndroidSoundGenerator() {
+    public AndroidSoundGenerator(Context context, int key) {
         causticCore = new Caustic();
         try {
-            causticCore.initialize();
+            causticCore.initialize(context, key);
         } catch (UnsatisfiedLinkError e) {
             causticCore.setDebug(true);
             // Debug tests, or can't find the .so on the device
@@ -145,6 +147,7 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     //
     //--------------------------------------------------------------------------
 
+    @Override
     public void dispose() {
         if (causticCore != null) {
             onStop();

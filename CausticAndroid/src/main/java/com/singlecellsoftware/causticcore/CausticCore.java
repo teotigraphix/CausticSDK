@@ -1,6 +1,7 @@
 
 package com.singlecellsoftware.causticcore;
 
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -87,12 +88,15 @@ public class CausticCore {
     public CausticCore() {
     }
 
-    public void initialize() {
+    public void initialize(Context context, int key) {
         try {
             System.loadLibrary("caustic");
         } catch (Exception e) {
             Log.e("CausticCore", e.getMessage());
         }
+
+        // This must be called before any other functions, to unlock Core functionality 
+        nativeEnableOSC(context, key);
 
         m_byResponseString = new byte[4096];
         nativeSetStorageRootDir(Environment.getExternalStorageDirectory().getPath() + "/");
@@ -143,6 +147,8 @@ public class CausticCore {
     private CausticAudioLoop m_AudioLoop;
 
     private byte[] m_byResponseString;
+
+    private static native void nativeEnableOSC(Context ctx, int nKey);
 
     private static native void nativeCreateMachines();
 
