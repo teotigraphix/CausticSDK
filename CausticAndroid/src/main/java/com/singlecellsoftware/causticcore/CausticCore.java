@@ -35,6 +35,7 @@ class CausticAudioLoop extends Thread {
         m_bProcess = false;
     }
 
+    @Override
     public void run() {
         if (m_AudioTrack == null)
             return;
@@ -71,25 +72,16 @@ class CausticAudioLoop extends Thread {
     private static native void nativeSetProcessBufferSize(int nSize);
 }
 
-class CausticAudioMonitor {
-    CausticAudioMonitor() {
-    }
-
-    static native int nativeGetCurrentBeat();
-
-    static native int nativeGetCurrentSongMeasure();
-}
-
 // =================================================================================================
 
 public class CausticCore {
 
     public float getCurrentBeat() {
-        return CausticAudioMonitor.nativeGetCurrentBeat();
+        return nativeGetCurrentBeat();
     }
 
     public float getCurrentSongMeasure() {
-        return CausticAudioMonitor.nativeGetCurrentSongMeasure();
+        return nativeGetCurrentSongMeasure();
     }
 
     public CausticCore() {
@@ -106,8 +98,6 @@ public class CausticCore {
         nativeSetStorageRootDir(Environment.getExternalStorageDirectory().getPath() + "/");
         nativeCreateMachines();
         SendOSCMessage("/caustic/blankrack");
-
-        //m_AudioMonitor = new CausticAudioMonitor();
     }
 
     public void Start() {
@@ -119,25 +109,16 @@ public class CausticCore {
         m_AudioLoop = new CausticAudioLoop();
         m_AudioLoop.setPriority(Thread.MAX_PRIORITY);
         m_AudioLoop.start();
-
-        //m_AudioMonitor.setPriority(Thread.MAX_PRIORITY - 1);
-        //m_AudioMonitor.start();
     }
 
     public void Pause() {
         m_AudioLoop.m_bProcess = false;
         m_AudioLoop.setPriority(Thread.NORM_PRIORITY);
-
-        //m_AudioMonitor.m_bProcess = false;
-        // m_AudioMonitor.setPriority(Thread.NORM_PRIORITY);
     }
 
     public void Resume() {
         m_AudioLoop.m_bProcess = true;
         m_AudioLoop.setPriority(Thread.MAX_PRIORITY);
-
-        //m_AudioMonitor.m_bProcess = true;
-        //m_AudioMonitor.setPriority(Thread.MAX_PRIORITY - 1);
     }
 
     public void Restart() {
@@ -148,7 +129,6 @@ public class CausticCore {
 
     public void Stop() {
         m_AudioLoop.m_bRun = false;
-        //m_AudioMonitor.m_bRun = false;
     }
 
     public float SendOSCMessage(String msg) {
@@ -160,13 +140,7 @@ public class CausticCore {
         return new String(m_byResponseString, 0, nStrLen);
     }
 
-    //    public void AddEventListener(CausticEventListener evtListener) {
-    //        m_AudioMonitor.AddEventListener(evtListener);
-    //    }
-
     private CausticAudioLoop m_AudioLoop;
-
-    //    private CausticAudioMonitor m_AudioMonitor;
 
     private byte[] m_byResponseString;
 
@@ -177,5 +151,9 @@ public class CausticCore {
     private static native float nativeOSCMessage(String msg, byte[] response);
 
     private static native void nativeSetStorageRootDir(String sRootDir);
+
+    static native int nativeGetCurrentBeat();
+
+    static native int nativeGetCurrentSongMeasure();
 
 }

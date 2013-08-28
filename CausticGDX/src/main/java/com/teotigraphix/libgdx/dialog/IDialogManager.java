@@ -1,13 +1,15 @@
+
 package com.teotigraphix.libgdx.dialog;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.AlertDialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ListDialog;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 public interface IDialogManager {
 
-    IScreen getScreen();
+    AlertDialog createAlert(IScreen screen, String title, Actor actor);
 
-    void setScreen(IScreen screen);
-
-    void create();
+    ListDialog createListDialog(IScreen screen, String title, Object[] items);
 
 }

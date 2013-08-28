@@ -14,6 +14,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
+import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 /**
@@ -32,6 +33,9 @@ public abstract class GDXGame implements IGame {
 
     @Inject
     IDialogManager dialogManager;
+
+    @Inject
+    IScreenProvider screenProvider;
 
     @Override
     public IDialogManager getDialogManager() {
@@ -150,12 +154,15 @@ public abstract class GDXGame implements IGame {
         if (screen != null)
             screen.hide();
         screen = value;
+
         if (screen != null) {
-            dialogManager.setScreen(screen);
             // this will only happen at first start up with the splash
             // TODO Can I fix this?
-            if (injector != null)
+            if (injector != null) {
                 injector.injectMembers(screen);
+                // XXX FIX, either fix this or make the splash screen dumb with no injections
+                screenProvider.setScreen(screen);
+            }
             screen.initialize(this);
             screen.show();
             screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

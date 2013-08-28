@@ -31,8 +31,6 @@ public class CausticCoreDesktop {
 
     private static CausticLibrary caustic;
 
-    //    private static CausticAudioMonitor audioThread;
-
     public CausticCoreDesktop() {
         RuntimeUtils.STORAGE_ROOT = Constants.STORAGE_ROOT;
 
@@ -64,7 +62,7 @@ public class CausticCoreDesktop {
         return new String(m_byResponseString, 0, nStrLen);
     }
 
-    public int GetCurrentBeat() {
+    public float GetCurrentBeat() {
         return caustic.CausticCore_GetCurrentBeat();
     }
 

@@ -30,7 +30,7 @@ public interface CausticLibrary extends Library {
 
     float CausticCore_OSCMessage(String message, byte[] response);
 
-    int CausticCore_GetCurrentBeat();
+    float CausticCore_GetCurrentBeat();
 
     int CausticCore_GetCurrentSongMeasure();
 }
