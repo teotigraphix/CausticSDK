@@ -33,8 +33,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
@@ -58,17 +58,17 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 */
 
-public class LibraryManager extends SubControllerBase implements ILibraryManager {
+public class LibraryManager extends ControllerComponent implements ILibraryManager {
 
     private static final String LIBRARY_CTKL = "library.ctkl";
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return LibraryManagerModel.class;
     }
 
     LibraryManagerModel getModel() {
-        return (LibraryManagerModel)getInternalModel();
+        return (LibraryManagerModel)getInternalState();
     }
 
     //--------------------------------------------------------------------------
@@ -314,7 +314,7 @@ public class LibraryManager extends SubControllerBase implements ILibraryManager
 
     @Override
     public void clear() {
-        resetModel();
+        resetState();
     }
 
     @Override

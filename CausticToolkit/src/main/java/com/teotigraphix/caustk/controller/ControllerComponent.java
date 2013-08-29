@@ -24,17 +24,19 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.teotigraphix.caustk.application.Dispatcher;
+import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.project.ProjectManager;
 
 /**
- * A {@link SubControllerBase} implementation is part of the
+ * A {@link ControllerComponent} implementation is part of the
  * {@link ICaustkController} API and manages it's own model that will get
  * serialized during the {@link ProjectManager}'s project load/save phases.
  */
-public abstract class SubControllerBase {
+public abstract class ControllerComponent implements IControllerComponent {
 
     //----------------------------------
     // controller
@@ -46,29 +48,70 @@ public abstract class SubControllerBase {
         return controller;
     }
 
+    private IDispatcher dispatcher;
+
+    @Override
+    public final IDispatcher getDispatcher() {
+        return dispatcher;
+    }
+
     //----------------------------------
     // model
     //----------------------------------
 
-    private SubControllerModel model;
+    private ControllerComponentState state;
 
-    protected SubControllerModel getInternalModel() {
-        return model;
+    protected ControllerComponentState getInternalState() {
+        return state;
     }
 
     //----------------------------------
     // modelType
     //----------------------------------
 
-    protected abstract Class<? extends SubControllerModel> getModelType();
+    protected abstract Class<? extends ControllerComponentState> getStateType();
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    protected void resetModel() {
+    public ControllerComponent(ICaustkController controller) {
+        this.controller = controller;
+        dispatcher = new Dispatcher();
+        resetState();
+    }
+
+    /**
+     * Called from the client, signaling all controllers have been created.
+     */
+    @Override
+    public void onRegister() {
+
+        controller.getDispatcher().register(OnProjectManagerChange.class,
+                new EventObserver<OnProjectManagerChange>() {
+                    @Override
+                    public void trigger(OnProjectManagerChange object) {
+                        if (object.getKind() == ProjectManagerChangeKind.SAVE) {
+                            saveState(object.getProject());
+                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
+                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
+                            loadState(object.getProject());
+                        } else if (object.getKind() == ProjectManagerChangeKind.CREATE) {
+                            createProject(object.getProject());
+                        } else if (object.getKind() == ProjectManagerChangeKind.EXIT) {
+                            projectExit(object.getProject());
+                        }
+                    }
+                });
+    }
+
+    //--------------------------------------------------------------------------
+    // State
+    //--------------------------------------------------------------------------
+
+    protected void resetState() {
         try {
-            model = createModel(controller);
+            state = createState(controller);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (SecurityException e) {
@@ -84,43 +127,11 @@ public abstract class SubControllerBase {
         }
     }
 
-    public SubControllerBase(ICaustkController controller) {
-        this.controller = controller;
-
-        resetModel();
-
-        controller.getDispatcher().register(OnProjectManagerChange.class,
-                new EventObserver<OnProjectManagerChange>() {
-                    @Override
-                    public void trigger(OnProjectManagerChange object) {
-                        if (object.getKind() == ProjectManagerChangeKind.SAVE) {
-                            //System.out.println(getModelType().getSimpleName() + " >> SAVE");
-                            saveState(object.getProject());
-                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
-                            //System.out.println(getModelType().getSimpleName() + " >> SAVE_COMPLETE");
-                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
-                            //System.out.println(getModelType().getSimpleName() + " >> LOAD");
-                            loadState(object.getProject());
-                        } else if (object.getKind() == ProjectManagerChangeKind.CREATE) {
-                            //System.out.println(getModelType().getSimpleName() + " >> CREATE");
-                            createProject(object.getProject());
-                        } else if (object.getKind() == ProjectManagerChangeKind.EXIT) {
-                            //System.out.println(getModelType().getSimpleName() + " >> EXIT");
-                            projectExit(object.getProject());
-                        }
-                    }
-                });
-    }
-
-    //--------------------------------------------------------------------------
-    // State
-    //--------------------------------------------------------------------------
-
-    private SubControllerModel createModel(ICaustkController controller)
+    private ControllerComponentState createState(ICaustkController controller)
             throws NoSuchMethodException, SecurityException, InstantiationException,
             IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Constructor<? extends SubControllerModel> constructor = getModelType().getConstructor(
-                ICaustkController.class);
+        Constructor<? extends ControllerComponentState> constructor = getStateType()
+                .getConstructor(ICaustkController.class);
         return constructor.newInstance(controller);
     }
 
@@ -129,20 +140,20 @@ public abstract class SubControllerBase {
     }
 
     protected void loadState(Project project) {
-        String data = project.getString(getModelType().getName());
+        String data = project.getString(getStateType().getName());
         // if the data does not exist, API update, just create the model
         if (data == null) {
-            resetModel();
+            resetState();
             // simulate the model wakeup() so it happens everytime a model is loaded
-            model.wakeup(getController());
+            state.wakeup(getController());
         } else {
-            model = getController().getSerializeService().fromString(data, getModelType());
+            state = getController().getSerializeService().fromString(data, getStateType());
         }
     }
 
     protected void saveState(Project project) {
-        String data = getController().getSerializeService().toString(model);
-        project.put(getModelType().getName(), data);
+        String data = getController().getSerializeService().toString(state);
+        project.put(getStateType().getName(), data);
     }
 
     protected void projectExit(Project project) {

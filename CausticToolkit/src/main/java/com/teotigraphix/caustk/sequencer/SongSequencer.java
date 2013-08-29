@@ -20,20 +20,20 @@
 package com.teotigraphix.caustk.sequencer;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SongSequencer extends SubControllerBase implements ISongSequencer {
+public class SongSequencer extends ControllerComponent implements ISongSequencer {
 
     SongSequencerModel getModel() {
-        return (SongSequencerModel)getInternalModel();
+        return (SongSequencerModel)getInternalState();
     }
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return SongSequencerModel.class;
     }
 

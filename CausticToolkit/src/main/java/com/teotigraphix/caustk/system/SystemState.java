@@ -20,13 +20,13 @@
 package com.teotigraphix.caustk.system;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 
-public class SystemState extends SubControllerBase implements ISystemState {
+public class SystemState extends ControllerComponent implements ISystemState {
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return SystemStateModel.class;
     }
 

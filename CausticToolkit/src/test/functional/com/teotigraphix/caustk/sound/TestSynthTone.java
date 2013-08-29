@@ -38,9 +38,9 @@ public class TestSynthTone extends ToneBaseTest {
 
     @Test
     public void test_PatternSequencerComponent() {
-        subsynth.getPatternSequencer().setSelectedPattern(2, 4);
+        subsynth.getPatternSequencer().setSelectedBankPattern(2, 4);
         Assert.assertEquals(2, subsynth.getPatternSequencer().getSelectedBank());
-        Assert.assertEquals(4, subsynth.getPatternSequencer().getSelectedIndex());
+        Assert.assertEquals(4, subsynth.getPatternSequencer().getSelectedPattern());
         List<String> listing = subsynth.getPatternSequencer().getPatternListing();
         Assert.assertEquals(0, listing.size());
 
@@ -54,13 +54,13 @@ public class TestSynthTone extends ToneBaseTest {
         Assert.assertEquals(0, listing.size());
 
         Assert.assertEquals(2, subsynth.getPatternSequencer().getSelectedBank(true));
-        Assert.assertEquals(4, subsynth.getPatternSequencer().getSelectedIndex(true));
+        Assert.assertEquals(4, subsynth.getPatternSequencer().getSelectedPattern(true));
 
         subsynth.getPatternSequencer().setLength(0, 1, 8);
         Assert.assertEquals(1, subsynth.getPatternSequencer().getLength(0, 0));
         Assert.assertEquals(8, subsynth.getPatternSequencer().getLength(0, 1));
 
         Assert.assertEquals(2, subsynth.getPatternSequencer().getSelectedBank(true));
-        Assert.assertEquals(4, subsynth.getPatternSequencer().getSelectedIndex(true));
+        Assert.assertEquals(4, subsynth.getPatternSequencer().getSelectedPattern(true));
     }
 }

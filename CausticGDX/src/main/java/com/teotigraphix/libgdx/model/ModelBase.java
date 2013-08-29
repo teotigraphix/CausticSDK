@@ -75,7 +75,7 @@ public abstract class ModelBase implements ICaustkModel {
     @Inject
     public void setApplicationController(IApplicationController applicationController) {
         this.applicationController = applicationController;
-        this.controller = applicationController.getController();
+        controller = applicationController.getController();
         dispatcher = new Dispatcher();
         applicationController.registerModel(this);
     }

@@ -65,6 +65,7 @@ public class PatternManager implements IPatternManager {
      */
     public static final String COMMAND_PATTERN = "pattern_sequencer/pattern";
 
+    @Override
     public final IDispatcher getDispatcher() {
         return controller.getDispatcher();
     }
@@ -317,7 +318,7 @@ public class PatternManager implements IPatternManager {
     private void changePosition(PatternLocation location, Part part) {
         PatternSequencerComponent component = part.getTone().getComponent(
                 PatternSequencerComponent.class);
-        component.setSelectedPattern(location.bank, location.pattern);
+        component.setSelectedBankPattern(location.bank, location.pattern);
     }
 
     static class PatternLocation {
@@ -409,5 +410,9 @@ public class PatternManager implements IPatternManager {
             if (last != -1)
                 getContext().getComponent(IPatternManager.class).playPattern(last);
         }
+    }
+
+    @Override
+    public void onRegister() {
     }
 }

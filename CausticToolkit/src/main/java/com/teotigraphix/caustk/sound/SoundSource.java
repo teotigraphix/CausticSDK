@@ -32,11 +32,9 @@ import java.util.UUID;
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.application.Dispatcher;
-import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.LibraryScene;
@@ -57,33 +55,22 @@ import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-public class SoundSource extends SubControllerBase implements ISoundSource {
+public class SoundSource extends ControllerComponent implements ISoundSource {
 
     private int maxNumTones = 14;
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return SoundSourceModel.class;
     }
 
     SoundSourceModel getModel() {
-        return (SoundSourceModel)getInternalModel();
+        return (SoundSourceModel)getInternalState();
     }
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // dispatcher
-    //----------------------------------
-
-    private final IDispatcher dispatcher;
-
-    @Override
-    public IDispatcher getDispatcher() {
-        return dispatcher;
-    }
 
     //----------------------------------
     // transpose
@@ -132,8 +119,10 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
     public SoundSource(ICaustkController controller) {
         super(controller);
 
-        dispatcher = new Dispatcher();
+    }
 
+    @Override
+    public void onRegister() {
         getDispatcher().register(OnSoundSourceInitialValue.class,
                 new EventObserver<OnSoundSourceInitialValue>() {
                     @Override
@@ -261,7 +250,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
     @Override
     public void clearAndReset() {
-        getController().getDispatcher().trigger(new OnSoundSourceClear());
+        getDispatcher().trigger(new OnSoundSourceClear());
 
         ArrayList<Tone> remove = new ArrayList<Tone>(getModel().getTones().values());
         for (Tone tone : remove) {
@@ -271,7 +260,7 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
         RackMessage.BLANKRACK.send(getController());
 
-        getController().getDispatcher().trigger(new OnSoundSourceReset());
+        getDispatcher().trigger(new OnSoundSourceReset());
     }
 
     //--------------------------------------------------------------------------
@@ -356,12 +345,12 @@ public class SoundSource extends SubControllerBase implements ISoundSource {
 
     private void toneAdd(int index, Tone tone) {
         getModel().getTones().put(index, tone);
-        getController().getDispatcher().trigger(new OnSoundSourceToneAdd(tone));
+        getDispatcher().trigger(new OnSoundSourceToneAdd(tone));
     }
 
     private void toneRemove(Tone tone) {
         getModel().getTones().remove(tone.getIndex());
-        getController().getDispatcher().trigger(new OnSoundSourceToneRemove(tone));
+        getDispatcher().trigger(new OnSoundSourceToneRemove(tone));
     }
 
     //--------------------------------------------------------------------------

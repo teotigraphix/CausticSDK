@@ -158,7 +158,7 @@ public class CausticCore {
 
     private static native void nativeSetStorageRootDir(String sRootDir);
 
-    static native int nativeGetCurrentBeat();
+    static native float nativeGetCurrentBeat();
 
     static native int nativeGetCurrentSongMeasure();
 

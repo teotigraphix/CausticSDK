@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.tone.ToneDescriptor;
  * <li><code>descriptors</code> - A serialized {@link ToneDescriptor}.</li>
  * </ul>
  */
-public class SoundSourceModel extends SubControllerModel {
+public class SoundSourceModel extends ControllerComponentState {
 
     private transient Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
 

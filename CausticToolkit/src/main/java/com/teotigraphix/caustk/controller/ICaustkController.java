@@ -41,6 +41,7 @@ import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.system.IMemoryManager;
 import com.teotigraphix.caustk.system.ISystemState;
+import com.teotigraphix.caustk.track.ITrackSequencer;
 
 /**
  * @author Michael Schmalle
@@ -89,8 +90,10 @@ public interface ICaustkController extends ICausticEngine {
 
     ISystemSequencer getSystemSequencer();
 
+    ITrackSequencer getTrackSequencer();
+
     ISongSequencer getSongSequencer();
-    
+
     ISongPlayer getSongPlayer();
 
     ISystemState getSystemState();

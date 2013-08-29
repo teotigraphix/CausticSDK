@@ -25,16 +25,16 @@ import java.io.IOException;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SongPlayer extends SubControllerBase implements ISongPlayer {
+public class SongPlayer extends ControllerComponent implements ISongPlayer {
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return SongPlayerModel.class;
     }
 
@@ -43,7 +43,7 @@ public class SongPlayer extends SubControllerBase implements ISongPlayer {
     //----------------------------------
 
     SongPlayerModel getModel() {
-        return (SongPlayerModel)getInternalModel();
+        return (SongPlayerModel)getInternalState();
     }
 
     //----------------------------------

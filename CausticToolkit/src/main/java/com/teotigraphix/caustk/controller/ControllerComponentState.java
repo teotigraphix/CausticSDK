@@ -23,7 +23,7 @@ import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**
- * The {@link SubControllerModel} is the base class for all models of sub
+ * The {@link ControllerComponentState} is the base class for all models of sub
  * controllers that wish to be serialized automatically during the framework
  * save phases.
  * <p>
@@ -31,9 +31,9 @@ import com.teotigraphix.caustk.service.ISerializeService;
  * Each project will have it's own model instance serialized, so anything save
  * in these models should be on a per project base.
  * 
- * @see SubControllerBase
+ * @see ControllerComponent
  */
-public class SubControllerModel implements ISerialize {
+public class ControllerComponentState implements ISerialize {
 
     transient ICaustkController controller;
 
@@ -45,16 +45,16 @@ public class SubControllerModel implements ISerialize {
      * Called from {@link ISerializeService}, the controller gets set in
      * {@link #wakeup(ICaustkController)}.
      */
-    public SubControllerModel() {
+    public ControllerComponentState() {
     }
 
     /**
-     * Called when explicitly creating and instance in {@link SubControllerBase}
+     * Called when explicitly creating and instance in {@link ControllerComponent}
      * .
      * 
      * @param controller
      */
-    public SubControllerModel(ICaustkController controller) {
+    public ControllerComponentState(ICaustkController controller) {
         this.controller = controller;
     }
 

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.library.Library;
 import com.teotigraphix.caustk.tone.Tone;
@@ -38,7 +38,7 @@ import com.teotigraphix.caustk.tone.Tone;
  * </li>
  * </ul>
  */
-public class SoundMixerModel extends SubControllerModel implements IRestore {
+public class SoundMixerModel extends ControllerComponentState implements IRestore {
 
     //--------------------------------------------------------------------------
     // Property API

@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.sequencer;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.tone.Tone;
 
 /**
@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.tone.Tone;
  * <li>N/A</li>
  * </ul>
  */
-public class SongSequencerModel extends SubControllerModel {
+public class SongSequencerModel extends ControllerComponentState {
 
     public SongSequencerModel() {
     }

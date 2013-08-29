@@ -2,7 +2,7 @@
 package com.teotigraphix.caustk.sequencer;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 
 /**
  * Serialized - v1.0
@@ -10,7 +10,7 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
  * <li><code></code> -</li>
  * </ul>
  */
-public class SongPlayerModel extends SubControllerModel {
+public class SongPlayerModel extends ControllerComponentState {
 
     public SongPlayerModel() {
     }

@@ -1,7 +1,6 @@
 
 package com.teotigraphix.caustk.sequencer;
 
-import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.IRestore;
@@ -139,8 +138,6 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
             this.measure = measure;
         }
     }
-
-    Dispatcher getDispatcher();
 
     int getStep();
 

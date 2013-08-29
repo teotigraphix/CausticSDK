@@ -49,28 +49,28 @@ public class PatternSequencerComponent extends ToneComponent {
 
     public int getLength(int bankIndex, int patternIndex) {
         int lastBank = getSelectedBank();
-        int lastIndex = getSelectedIndex();
-        setSelectedPattern(bankIndex, patternIndex);
+        int lastIndex = getSelectedPattern();
+        setSelectedBankPattern(bankIndex, patternIndex);
         int measures = (int)PatternSequencerMessage.NUM_MEASURES.query(getEngine(), getToneIndex());
-        setSelectedPattern(lastBank, lastIndex);
+        setSelectedBankPattern(lastBank, lastIndex);
         return measures;
     }
 
     public void setLength(int bankIndex, int patternIndex, int value) {
         int lastBank = getSelectedBank();
-        int lastIndex = getSelectedIndex();
-        setSelectedPattern(bankIndex, patternIndex);
+        int lastIndex = getSelectedPattern();
+        setSelectedBankPattern(bankIndex, patternIndex);
         PatternSequencerMessage.NUM_MEASURES.send(getEngine(), getToneIndex(), value);
-        setSelectedPattern(lastBank, lastIndex);
+        setSelectedBankPattern(lastBank, lastIndex);
     }
 
     //----------------------------------
     // selectedBank
     //----------------------------------
 
-    public void setSelectedPattern(int bank, int pattern) {
+    public void setSelectedBankPattern(int bank, int pattern) {
         setSelectedBank(bank);
-        setSelectedIndex(pattern);
+        setSelectedPattern(pattern);
     }
 
     //----------------------------------
@@ -87,7 +87,7 @@ public class PatternSequencerComponent extends ToneComponent {
         return (int)PatternSequencerMessage.BANK.query(getEngine(), getToneIndex());
     }
 
-    void setSelectedBank(int value) {
+    public void setSelectedBank(int value) {
         if (value < 0 || value > 15)
             throw newRangeException("bank", "0..15", value);
         selectedBank = value;
@@ -95,24 +95,24 @@ public class PatternSequencerComponent extends ToneComponent {
     }
 
     //----------------------------------
-    // selectedIndex
+    // selectedPattern
     //----------------------------------
 
-    private int selectedIndex = 0;
+    private int selectedPattern = 0;
 
-    public int getSelectedIndex() {
-        return selectedIndex;
+    public int getSelectedPattern() {
+        return selectedPattern;
     }
 
-    public int getSelectedIndex(boolean restore) {
+    public int getSelectedPattern(boolean restore) {
         return (int)PatternSequencerMessage.PATTERN.query(getEngine(), getToneIndex());
     }
 
-    void setSelectedIndex(int value) {
+    public void setSelectedPattern(int value) {
         if (value < 0 || value > 15)
             throw newRangeException("pattern", "0..15", value);
-        selectedIndex = value;
-        sendcPatternOSC(selectedIndex);
+        selectedPattern = value;
+        sendcPatternOSC(selectedPattern);
     }
 
     //----------------------------------
@@ -211,10 +211,10 @@ public class PatternSequencerComponent extends ToneComponent {
     public void addNote(int bankIndex, int patternIndex, int pitch, float start, float end,
             float velocity, int flags) {
         int lastBank = getSelectedBank();
-        int lastIndex = getSelectedIndex();
-        setSelectedPattern(bankIndex, patternIndex);
+        int lastIndex = getSelectedPattern();
+        setSelectedBankPattern(bankIndex, patternIndex);
         addNote(pitch, start, end, velocity, flags);
-        setSelectedPattern(lastBank, lastIndex);
+        setSelectedBankPattern(lastBank, lastIndex);
     }
 
     public void removeNote(int pitch, float start) {
@@ -223,10 +223,10 @@ public class PatternSequencerComponent extends ToneComponent {
 
     public void removeNote(int bankIndex, int patternIndex, int pitch, float start) {
         int lastBank = getSelectedBank();
-        int lastIndex = getSelectedIndex();
-        setSelectedPattern(bankIndex, patternIndex);
+        int lastIndex = getSelectedPattern();
+        setSelectedBankPattern(bankIndex, patternIndex);
         removeNote(pitch, start);
-        setSelectedPattern(lastBank, lastIndex);
+        setSelectedBankPattern(lastBank, lastIndex);
     }
 
     public void triggerOn(Resolution resolution, int step, int pitch, float gate, float velocity,
@@ -239,10 +239,10 @@ public class PatternSequencerComponent extends ToneComponent {
     public void triggerOn(int bankIndex, int patternIndex, Resolution resolution, int step,
             int pitch, float gate, float velocity, int flags) {
         int lastBank = getSelectedBank();
-        int lastIndex = getSelectedIndex();
-        setSelectedPattern(bankIndex, patternIndex);
+        int lastIndex = getSelectedPattern();
+        setSelectedBankPattern(bankIndex, patternIndex);
         triggerOn(resolution, step, pitch, gate, velocity, flags);
-        setSelectedPattern(lastBank, lastIndex);
+        setSelectedBankPattern(lastBank, lastIndex);
     }
 
     public void triggerOff(Resolution resolution, int step, int pitch) {
@@ -253,10 +253,10 @@ public class PatternSequencerComponent extends ToneComponent {
     public void triggerOff(int bankIndex, int patternIndex, Resolution resolution, int step,
             int pitch) {
         int lastBank = getSelectedBank();
-        int lastIndex = getSelectedIndex();
-        setSelectedPattern(bankIndex, patternIndex);
+        int lastIndex = getSelectedPattern();
+        setSelectedBankPattern(bankIndex, patternIndex);
         triggerOff(resolution, step, pitch);
-        setSelectedPattern(lastBank, lastIndex);
+        setSelectedBankPattern(lastBank, lastIndex);
     }
 
     @Override

@@ -19,29 +19,21 @@
 
 package com.teotigraphix.caustk.sequencer;
 
-import com.teotigraphix.caustk.application.Dispatcher;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 
-public class SystemSequencer extends SubControllerBase implements ISystemSequencer {
-
-    private Dispatcher dispatcher;
-
-    @Override
-    public Dispatcher getDispatcher() {
-        return dispatcher;
-    }
+public class SystemSequencer extends ControllerComponent implements ISystemSequencer {
 
     //----------------------------------
     // modelType
     //----------------------------------
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return SystemSequencerModel.class;
     }
 
@@ -50,7 +42,7 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     //----------------------------------
 
     SystemSequencerModel getModel() {
-        return (SystemSequencerModel)getInternalModel();
+        return (SystemSequencerModel)getInternalState();
     }
 
     @Override
@@ -88,7 +80,6 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
 
     public SystemSequencer(ICaustkController controller) {
         super(controller);
-        dispatcher = new Dispatcher();
         controller.addComponent(ISystemSequencer.class, this);
     }
 
@@ -97,13 +88,13 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
         setSequencerMode(mode);
         setIsPlaying(true);
 
-        getController().getDispatcher().trigger(new OnSongSequencerTransportChange());
+        getDispatcher().trigger(new OnSongSequencerTransportChange());
     }
 
     @Override
     public void stop() {
         setIsPlaying(false);
-        getController().getDispatcher().trigger(new OnSongSequencerTransportChange());
+        getDispatcher().trigger(new OnSongSequencerTransportChange());
     }
 
     public void executePlay() {
@@ -191,6 +182,7 @@ public class SystemSequencer extends SubControllerBase implements ISystemSequenc
     // currentBeat
     //----------------------------------
 
+    @Override
     public int getStep() {
         int step = (currentBeat % 4) * 4;
         return step;

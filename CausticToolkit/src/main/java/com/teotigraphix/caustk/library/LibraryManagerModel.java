@@ -26,7 +26,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 
 /**
  * Serialized - v1.0
@@ -36,7 +36,7 @@ import com.teotigraphix.caustk.controller.SubControllerModel;
  * </li>
  * </ul>
  */
-public class LibraryManagerModel extends SubControllerModel {
+public class LibraryManagerModel extends ControllerComponentState {
 
     private transient Library selectedLibrary;
     

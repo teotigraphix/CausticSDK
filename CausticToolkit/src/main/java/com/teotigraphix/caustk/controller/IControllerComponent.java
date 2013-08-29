@@ -19,6 +19,12 @@
 
 package com.teotigraphix.caustk.controller;
 
+import com.teotigraphix.caustk.application.IDispatcher;
+
 public interface IControllerComponent {
+
+    IDispatcher getDispatcher();
+
+    void onRegister();
 
 }

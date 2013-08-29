@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.sequencer;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSongSequencerTempoChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
  * <li><code>tempo</code> - Sequencer bpm.</li>
  * </ul>
  */
-public class SystemSequencerModel extends SubControllerModel {
+public class SystemSequencerModel extends ControllerComponentState {
 
     //--------------------------------------------------------------------------
     // Property API

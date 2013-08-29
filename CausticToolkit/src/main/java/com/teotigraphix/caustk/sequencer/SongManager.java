@@ -25,12 +25,12 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 
-public class SongManager extends SubControllerBase implements ISongManager {
+public class SongManager extends ControllerComponent implements ISongManager {
     private float currentBeat;
 
     @Override
@@ -50,7 +50,7 @@ public class SongManager extends SubControllerBase implements ISongManager {
     }
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return SongManagerModel.class;
     }
 

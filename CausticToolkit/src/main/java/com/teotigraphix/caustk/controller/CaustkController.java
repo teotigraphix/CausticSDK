@@ -21,7 +21,9 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
@@ -61,6 +63,8 @@ import com.teotigraphix.caustk.system.ISystemState;
 import com.teotigraphix.caustk.system.Memory.Type;
 import com.teotigraphix.caustk.system.MemoryManager;
 import com.teotigraphix.caustk.system.SystemState;
+import com.teotigraphix.caustk.track.ITrackSequencer;
+import com.teotigraphix.caustk.track.TrackSequencer;
 
 /**
  * @author Michael Schmalle
@@ -162,6 +166,17 @@ public class CaustkController implements ICaustkController {
     @Override
     public ISongPlayer getSongPlayer() {
         return songPlayer;
+    }
+
+    //----------------------------------
+    // songSequencer
+    //----------------------------------
+
+    private ITrackSequencer trackSequencer;
+
+    @Override
+    public ITrackSequencer getTrackSequencer() {
+        return trackSequencer;
     }
 
     //----------------------------------
@@ -346,11 +361,13 @@ public class CaustkController implements ICaustkController {
         soundGenerator.initialize();
 
         // sub composites will add their ICommands in their constructors
+
         serializeService = new SerializeService(this);
         commandManager = new CommandManager(this);
         projectManager = new ProjectManager(this);
         libraryManager = new LibraryManager(this);
 
+        trackSequencer = new TrackSequencer(this);
         soundSource = new SoundSource(this);
         soundMixer = new SoundMixer(this);
         songManager = new SongManager(this);
@@ -362,10 +379,23 @@ public class CaustkController implements ICaustkController {
         patternManager = new PatternManager(this);
         memoryManager = new MemoryManager(this);
 
+        components.add(libraryManager);
+        components.add(trackSequencer);
+        components.add(soundMixer);
+        components.add(songSequencer);
+        components.add(systemSequencer);
+        components.add(patternManager);
+
+        for (IControllerComponent component : components) {
+            component.onRegister();
+        }
+
         memoryManager.setSelectedMemoryType(Type.USER);
 
         projectManager.initialize();
     }
+
+    private List<IControllerComponent> components = new ArrayList<IControllerComponent>();
 
     @Override
     public void start() {

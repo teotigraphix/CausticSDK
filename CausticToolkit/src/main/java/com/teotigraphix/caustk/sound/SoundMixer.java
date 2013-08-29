@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.sound;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.SubControllerBase;
-import com.teotigraphix.caustk.controller.SubControllerModel;
+import com.teotigraphix.caustk.controller.ControllerComponent;
+import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
@@ -32,14 +32,14 @@ import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixer extends SubControllerBase implements ISoundMixer {
+public class SoundMixer extends ControllerComponent implements ISoundMixer {
 
     //----------------------------------
     // modelType
     //----------------------------------
 
     @Override
-    protected Class<? extends SubControllerModel> getModelType() {
+    protected Class<? extends ControllerComponentState> getStateType() {
         return SoundMixerModel.class;
     }
 
@@ -48,7 +48,7 @@ public class SoundMixer extends SubControllerBase implements ISoundMixer {
     //----------------------------------
 
     SoundMixerModel getModel() {
-        return (SoundMixerModel)getInternalModel();
+        return (SoundMixerModel)getInternalState();
     }
 
     //--------------------------------------------------------------------------
