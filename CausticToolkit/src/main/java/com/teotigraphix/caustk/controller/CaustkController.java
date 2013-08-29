@@ -43,12 +43,8 @@ import com.teotigraphix.caustk.pattern.IPatternManager;
 import com.teotigraphix.caustk.pattern.PatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
-import com.teotigraphix.caustk.sequencer.ISongManager;
-import com.teotigraphix.caustk.sequencer.ISongPlayer;
 import com.teotigraphix.caustk.sequencer.ISongSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
-import com.teotigraphix.caustk.sequencer.SongManager;
-import com.teotigraphix.caustk.sequencer.SongPlayer;
 import com.teotigraphix.caustk.sequencer.SongSequencer;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
@@ -144,28 +140,6 @@ public class CaustkController implements ICaustkController {
     @Override
     public ISerializeService getSerializeService() {
         return serializeService;
-    }
-
-    //----------------------------------
-    // songManager
-    //----------------------------------
-
-    private ISongManager songManager;
-
-    @Override
-    public ISongManager getSongManager() {
-        return songManager;
-    }
-
-    //----------------------------------
-    // songSequencer
-    //----------------------------------
-
-    private ISongPlayer songPlayer;
-
-    @Override
-    public ISongPlayer getSongPlayer() {
-        return songPlayer;
     }
 
     //----------------------------------
@@ -370,8 +344,6 @@ public class CaustkController implements ICaustkController {
         trackSequencer = new TrackSequencer(this);
         soundSource = new SoundSource(this);
         soundMixer = new SoundMixer(this);
-        songManager = new SongManager(this);
-        songPlayer = new SongPlayer(this);
         songSequencer = new SongSequencer(this);
 
         systemSequencer = new SystemSequencer(this);

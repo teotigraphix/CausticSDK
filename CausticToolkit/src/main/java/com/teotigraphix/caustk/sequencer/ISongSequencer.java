@@ -23,8 +23,14 @@ import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.sequencer.ISongSequencer.ExportType;
 import com.teotigraphix.caustk.tone.Tone;
 
+/**
+ * The {@link ISongSequencer} API is the interface between the core's song
+ * sequencer and the framework.
+ */
+@SuppressWarnings("unused")
 public interface ISongSequencer extends IControllerComponent, IRestore {
 
     /**
@@ -120,7 +126,7 @@ public interface ISongSequencer extends IControllerComponent, IRestore {
     /**
      * @see #exportSong(String, ExportType, int)
      * @param exportPath a full path for the exported file, without extension
-     * @param type ExportType - WAV (default) or MID
+     * @param type {@link ExportType} - WAV (default) or MID
      */
     void exportSong(String exportPath, ExportType type);
 

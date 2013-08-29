@@ -21,9 +21,9 @@ package com.teotigraphix.caustk.sound;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ControllerComponentState;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
@@ -83,8 +83,10 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
 
         controller.addComponent(ISoundMixer.class, this);
 
+        final ISoundSource soundSource = getController().getSoundSource();
+
         // listen for tone add/remove
-        controller.getDispatcher().register(OnSoundSourceToneAdd.class,
+        soundSource.getDispatcher().register(OnSoundSourceToneAdd.class,
                 new EventObserver<OnSoundSourceToneAdd>() {
                     @Override
                     public void trigger(OnSoundSourceToneAdd object) {
@@ -92,7 +94,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
                     }
                 });
 
-        controller.getDispatcher().register(OnSoundSourceToneRemove.class,
+        soundSource.getDispatcher().register(OnSoundSourceToneRemove.class,
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
@@ -100,8 +102,8 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
                     }
                 });
 
-        controller.getSoundSource().getDispatcher()
-                .register(OnSoundSourceSongLoad.class, new EventObserver<OnSoundSourceSongLoad>() {
+        soundSource.getDispatcher().register(OnSoundSourceSongLoad.class,
+                new EventObserver<OnSoundSourceSongLoad>() {
                     @Override
                     public void trigger(OnSoundSourceSongLoad object) {
                         restore();
