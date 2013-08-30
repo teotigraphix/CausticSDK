@@ -184,7 +184,8 @@ public class ProjectManager implements IProjectManager {
         if (directory.getName().contains("."))
             throw new IOException("Project is not a directory");
 
-        directory = toProjectFile(directory);
+        if (!directory.isAbsolute())
+            directory = toProjectFile(directory);
         if (!directory.exists())
             throw new IOException("Project file does not exist");
 
@@ -192,9 +193,17 @@ public class ProjectManager implements IProjectManager {
 
         project = controller.getSerializeService().fromFile(new File(directory, ".project"),
                 Project.class);
+
         project.open();
+
+        // all state objects are created here
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
+
+        // all clients can now act on the deserialized state objects (IControllerComponent)
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD_COMPLETE));
+
         return project;
     }
 

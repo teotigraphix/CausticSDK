@@ -113,9 +113,11 @@ public abstract class ControllerComponent implements IControllerComponent {
 
                             case CLOSE_COMPLETE:
                                 closeProject(object.getProject());
+                                state = null;
                                 break;
 
                             case LOAD_COMPLETE:
+                                loadComplete(object.getProject());
                                 break;
 
                         }
@@ -123,8 +125,13 @@ public abstract class ControllerComponent implements IControllerComponent {
                 });
     }
 
+    protected void loadComplete(Project project) {
+        // TODO Auto-generated method stub
+
+    }
+
     protected void closeProject(Project project) {
-        state = null;
+
     }
 
     //--------------------------------------------------------------------------

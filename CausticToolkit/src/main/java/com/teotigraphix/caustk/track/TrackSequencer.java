@@ -1,16 +1,17 @@
 
 package com.teotigraphix.caustk.track;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.androidtransfuse.event.EventObserver;
+import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
@@ -25,34 +26,33 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     @SuppressWarnings("unused")
     private TrackSequencerHandlers handlers;
 
-    private Map<Integer, TrackChannel> tracks = new HashMap<Integer, TrackChannel>();
-
     @Override
     protected Class<? extends ControllerComponentState> getStateType() {
         return TrackSequencerState.class;
     }
 
     //----------------------------------
+    // trackSong
+    //----------------------------------
+
+    private TrackSong trackSong;
+
+    public final TrackSong getTrackSong() {
+        return trackSong;
+    }
+
+    //----------------------------------
     // currentTrack
     //----------------------------------
 
-    private int currentTrack = -1;
-
     @Override
     public int getCurrentTrack() {
-        return currentTrack;
+        return trackSong.getCurrentTrack();
     }
 
     @Override
     public void setCurrentTrack(int value) {
-        if (currentTrack < 0 || currentTrack > 13)
-            throw new IllegalArgumentException("Illigal track index");
-        if (tracks.containsKey(value))
-            throw new IllegalArgumentException("Track index does not exist;" + value);
-        if (value == currentTrack)
-            return;
-        currentTrack = value;
-        getDispatcher().trigger(new OnTrackSequencerCurrentTrackChange(currentTrack));
+        trackSong.setCurrentTrack(value);
     }
 
     //----------------------------------
@@ -61,12 +61,12 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     @Override
     public int getCurrentBank() {
-        return getCurrentBank(currentTrack);
+        return trackSong.getCurrentBank();
     }
 
     @Override
     public int getCurrentBank(int trackIndex) {
-        return getTrack(trackIndex).getCurrentBank();
+        return trackSong.getCurrentBank(trackIndex);
     }
 
     //----------------------------------
@@ -75,12 +75,12 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     @Override
     public int getCurrentPattern() {
-        return getCurrentPattern(currentTrack);
+        return trackSong.getCurrentPattern();
     }
 
     @Override
     public int getCurrentPattern(int trackIndex) {
-        return getTrack(trackIndex).getCurrentPattern();
+        return trackSong.getCurrentPattern(trackIndex);
     }
 
     //----------------------------------
@@ -88,31 +88,31 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     //----------------------------------
 
     @Override
+    public boolean hasTracks() {
+        return trackSong.hasTracks();
+    }
+
+    @Override
     public Collection<TrackChannel> getTracks() {
-        return tracks.values();
+        return trackSong.getTracks();
     }
 
     @Override
     public TrackChannel getSelectedTrack() {
-        return getTrack(currentTrack);
+        return trackSong.getSelectedTrack();
     }
 
     @Override
     public TrackChannel getTrack(int index) {
-        TrackChannel track = getState().getTracks().get(index);
-        if (track == null) {
-            track = new TrackChannel(getController(), index);
-            getState().getTracks().put(index, track);
-        }
-        return track;
+        return trackSong.getTrack(index);
     }
 
     public TrackChannel findTrack(int index) {
-        return tracks.get(index);
+        return trackSong.findTrack(index);
     }
 
     public TrackPhrase getPhrase(int toneIndex, int bankIndex, int patterIndex) {
-        return getTrack(toneIndex).getPhrase(bankIndex, patterIndex);
+        return trackSong.getPhrase(toneIndex, bankIndex, patterIndex);
     }
 
     //----------------------------------
@@ -129,8 +129,10 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     public TrackSequencer(ICaustkController controller) {
         super(controller);
-
         handlers = new TrackSequencerHandlers(this);
+        // DUMMY
+        trackSong = new TrackSong();
+        trackSong.wakeup(getController());
     }
 
     @Override
@@ -155,15 +157,49 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                 });
     }
 
+    @Override
+    protected void closeProject(Project project) {
+
+    }
+
+    @Override
+    public void create(File songFile) throws IOException {
+        if (trackSong != null) {
+
+        }
+        // all songs are relative to the current projects location
+        File localFile = getController().getProjectManager().getProject()
+                .getResource(songFile.getPath());
+        File absoluteTargetSongFile = localFile.getAbsoluteFile();
+
+        // save the project relative path of the song
+        getState().setSongFile(localFile);
+        File absoluteSongDir = absoluteTargetSongFile.getParentFile();
+
+        if (!absoluteSongDir.exists())
+            FileUtils.forceMkdir(absoluteSongDir);
+
+        trackSong = new TrackSong(songFile);
+        trackSong.wakeup(getController());
+        saveTrackSong();
+    }
+
+    private void saveTrackSong() throws IOException {
+        if (!trackSong.exists())
+            return;
+
+        File localFile = getController().getProjectManager().getProject()
+                .getResource(trackSong.getFile().getPath());
+        File absoluteTargetSongFile = localFile.getAbsoluteFile();
+        getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
+    }
+
     protected void trackAdd(Tone tone) {
-        TrackChannel channel = getTrack(tone.getIndex());
-        tracks.put(tone.getIndex(), channel);
-        channel.onAdded();
+        trackSong.toneAdd(tone);
     }
 
     protected void trackRemove(Tone tone) {
-        TrackChannel channel = tracks.remove(tone.getIndex());
-        channel.onRemoved();
+        trackSong.toneRemove(tone);
     }
 
     //--------------------------------------------------------------------------
@@ -175,16 +211,52 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     //--------------------------------------------------------------------------
 
     @Override
+    protected void createProject(Project project) {
+    }
+
+    @Override
     protected void loadState(Project project) {
         super.loadState(project);
+        File file = getState().getSongFile();
+        if (file != null) {
+            trackSong = getController().getSerializeService().fromFile(file, TrackSong.class);
+        }
         getDispatcher().trigger(new OnTrackSequencerLoad());
     }
 
-    public static class TrackSequencerState extends ControllerComponentState {
-        private Map<Integer, TrackChannel> tracks = new TreeMap<Integer, TrackChannel>();
+    @Override
+    protected void loadComplete(Project project) {
+        if (trackSong.exists()) {
+            File causticFile = trackSong.getAbsoluteCausticFile();
+            try {
+                getController().getSoundSource().loadSong(causticFile);
+            } catch (CausticException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-        public Map<Integer, TrackChannel> getTracks() {
-            return tracks;
+    @Override
+    protected void saveState(Project project) {
+        // save the state object
+        super.saveState(project);
+        try {
+            saveTrackSong();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static class TrackSequencerState extends ControllerComponentState {
+
+        private File songFile;
+
+        public File getSongFile() {
+            return songFile;
+        }
+
+        public void setSongFile(File value) {
+            songFile = value;
         }
 
         public TrackSequencerState() {
@@ -198,39 +270,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         @Override
         public void wakeup(ICaustkController controller) {
             super.wakeup(controller);
-            for (TrackChannel item : tracks.values()) {
-                item.wakeup(controller);
-            }
         }
     }
 
-    @Override
-    public boolean hasTracks() {
-        return tracks.size() > 0;
-    }
-
-    /*
-     * - dispatcher
-     * 
-     * - currentTrack
-     * - currentBank
-     * - currentPattern
-     * 
-     * -
-     * 
-     */
-
-    /*
-        trackSequencer.setCurrentTrack(0);
-        TrackItem track = trackSequencer.getTrack();
-        
-        track.setCurrentBank(0);
-        track.setCurrentPattern(2);
-        
-        Phrase phrase = track.getPhrase();
-        phrase.setLength(2);
-        phrase.setNoteData(2)
-        phrase.setPlayMeasure(2)
-        phrase.setEditMeasure(2)
-    */
 }

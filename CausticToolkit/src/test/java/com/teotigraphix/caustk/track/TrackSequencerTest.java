@@ -39,6 +39,7 @@ public class TrackSequencerTest extends CaustkTestBase {
     @Test
     public void test_addRemove() throws CausticException {
         //trackSequencer.hasTracks()
+
         assertFalse(trackSequencer.hasTracks());
         soundSource.createTone("part1", SubSynthTone.class);
         assertEquals(1, trackSequencer.getTracks().size());
@@ -48,7 +49,9 @@ public class TrackSequencerTest extends CaustkTestBase {
     @Test
     public void test_TrackPhrase_setBankPattern() throws CausticException, IOException {
         File projectDir = new File("TrackSequencerTestProject");
-        controller.getProjectManager().create(projectDir);
+        @SuppressWarnings("unused")
+        Project project = controller.getProjectManager().create(projectDir);
+        controller.getTrackSequencer().create(new File("songs/Foo.ctks"));
 
         soundSource.createTone("part1", SubSynthTone.class);
         TrackChannel channel1 = trackSequencer.getTrack(0);
@@ -59,8 +62,8 @@ public class TrackSequencerTest extends CaustkTestBase {
         channel1.getPhrase().setEditMeasure(4);
         channel1.getPhrase().setPlayMeasure(3);
 
-        Project project = controller.getProjectManager().getProject();
-        controller.getProjectManager().save();
+        project = controller.getProjectManager().getProject();
+        controller.getApplication().save();
 
         controller.getProjectManager().clear();
         assertNull(controller.getProjectManager().getProject());

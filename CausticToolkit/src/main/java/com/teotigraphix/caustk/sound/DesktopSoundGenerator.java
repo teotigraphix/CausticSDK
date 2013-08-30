@@ -104,7 +104,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     @Override
     public String queryMessage(String message) {
         //log.info("Query:" + message);
-        //System.err.println(message);
+        System.err.println(message);
         String result = core().QueryOSC(message);
         if (result != null && result.equals(""))
             return null;

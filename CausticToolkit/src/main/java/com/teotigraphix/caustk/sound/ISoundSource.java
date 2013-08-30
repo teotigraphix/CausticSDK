@@ -115,6 +115,17 @@ public interface ISoundSource extends IRestore {
      */
     void clearAndReset();
 
+    /**
+     * Loads a <code>.caustic</code> file from disk.
+     * <p>
+     * Note: All clients MUST take responsibility for calling
+     * {@link #clearAndReset()} if they wish to remove all state from the sound
+     * source.
+     * 
+     * @param causticFile The absolute location of the <code>.caustic</code>
+     *            file with extension.
+     * @throws CausticException
+     */
     void loadSong(File causticFile) throws CausticException;
 
     /**

@@ -39,6 +39,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.caustk.library.SoundMixerState;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.EightBitSynth;
@@ -77,6 +78,8 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
     //----------------------------------
 
     private int transpose;
+
+    private boolean restoring;
 
     @Override
     public int getTranspose() {
@@ -130,6 +133,11 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
                         System.out.println("Original value:" + object.getValue());
                     }
                 });
+    }
+
+    @Override
+    protected void closeProject(Project project) {
+        clearAndReset();
     }
 
     //--------------------------------------------------------------------------
@@ -274,7 +282,8 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         if (getModel().getTones().containsKey(index))
             throw new CausticException("{" + index + "} tone is already defined");
 
-        RackMessage.CREATE.send(getController(), toneType.getValue(), toneName, index);
+        if (!restoring)
+            RackMessage.CREATE.send(getController(), toneType.getValue(), toneName, index);
 
         Tone tone = null;
         switch (toneType) {
@@ -421,7 +430,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     @Override
     public void loadSong(File causticFile) throws CausticException {
-        clearAndReset();
+        //RackMessage.BLANKRACK.send(getController());
 
         RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
 
@@ -447,6 +456,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     @Override
     public void restore() {
+        restoring = true;
         for (int i = 0; i < maxNumTones; i++) {
             String name = RackMessage.QUERY_MACHINE_NAME.queryString(getController(), i);
             String type = RackMessage.QUERY_MACHINE_TYPE.queryString(getController(), i);
@@ -462,6 +472,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
             }
             tone.restore();
         }
+        restoring = false;
     }
 
 }

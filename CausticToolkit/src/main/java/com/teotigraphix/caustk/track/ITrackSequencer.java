@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.track;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import com.teotigraphix.caustk.application.IDispatcher;
@@ -69,6 +71,16 @@ public interface ITrackSequencer extends IControllerComponent {
      */
     // XXX I am not sure this belongs in the public api
     TrackChannel getTrack(int index);
+
+    /**
+     * Creates a new {@link TrackSong}.
+     * 
+     * @param songFile The absolute path to the file, the <code>.caustic</code>
+     *            file is saved in the same directory with the same name as this
+     *            song file.
+     * @throws IOException
+     */
+    void create(File songFile) throws IOException;
 
     public enum PropertyChangeKind {
 
