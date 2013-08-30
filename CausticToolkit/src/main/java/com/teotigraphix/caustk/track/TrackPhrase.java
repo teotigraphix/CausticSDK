@@ -1,6 +1,9 @@
 
 package com.teotigraphix.caustk.track;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.service.ISerialize;
@@ -130,6 +133,51 @@ public class TrackPhrase implements ISerialize {
                 new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteData, this));
     }
 
+    private List<PhraseNote> notes = new ArrayList<PhraseNote>();
+
+    public List<PhraseNote> getNotes() {
+        return notes;
+    }
+
+    public List<PhraseNote> getEditMeasureNotes() {
+        List<PhraseNote> result = new ArrayList<PhraseNote>();
+        for (PhraseNote note : notes) {
+            int measure = (int)Math.floor(note.getStart());
+            if (measure >= editMeasure || measure <= editMeasure + 4) {
+                result.add(note);
+            }
+        }
+        return result;
+    }
+
+    public void addNote(int pitch, float start, float end, float velocity, int flags) {
+        PhraseNote note = new PhraseNote(pitch, start, end, velocity, flags);
+        notes.add(note);
+        getDispatcher().trigger(
+                new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteAdd, this, note));
+    }
+
+    public void removeNote(int pitch, float start) {
+        PhraseNote note = getNote(pitch, start);
+        if (note != null) {
+            notes.remove(note);
+            getDispatcher().trigger(
+                    new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteRemove, this, note));
+        }
+    }
+
+    public PhraseNote getNote(int pitch, float start) {
+        for (PhraseNote note : notes) {
+            if (note.getPitch() == pitch && note.getStart() == start)
+                return note;
+        }
+        return null;
+    }
+
+    public boolean hasNote(int pitch, float start) {
+        return getNote(pitch, start) != null;
+    }
+
     //----------------------------------
     // playMeasure
     //----------------------------------
@@ -205,4 +253,5 @@ public class TrackPhrase implements ISerialize {
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
     }
+
 }

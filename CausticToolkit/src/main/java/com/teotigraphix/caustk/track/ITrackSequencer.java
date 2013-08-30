@@ -105,6 +105,16 @@ public interface ITrackSequencer extends IControllerComponent {
         NoteData,
 
         /**
+         * @see TrackPhrase#addNote(int, float, float, float, int)
+         */
+        NoteAdd,
+
+        /**
+         * @see TrackPhrase#removeNote(int, float)
+         */
+        NoteRemove,
+
+        /**
          * @see TrackPhrase#setPlayMeasure(int)
          */
         PlayMeasure,
@@ -135,6 +145,12 @@ public interface ITrackSequencer extends IControllerComponent {
             return trackPhrase;
         }
 
+        private PhraseNote phraseNote;
+
+        public PhraseNote getPhraseNote() {
+            return phraseNote;
+        }
+
         public OnTrackSequencerPropertyChange(PropertyChangeKind kind, TrackChannel trackChannel) {
             this.kind = kind;
             this.trackChannel = trackChannel;
@@ -143,6 +159,15 @@ public interface ITrackSequencer extends IControllerComponent {
         public OnTrackSequencerPropertyChange(PropertyChangeKind kind, TrackPhrase trackPhrase) {
             this.kind = kind;
             this.trackPhrase = trackPhrase;
+            trackChannel = trackPhrase.getController().getTrackSequencer()
+                    .getTrack(trackPhrase.getToneIndex());
+        }
+
+        public OnTrackSequencerPropertyChange(PropertyChangeKind kind, TrackPhrase trackPhrase,
+                PhraseNote phraseNote) {
+            this.kind = kind;
+            this.trackPhrase = trackPhrase;
+            this.phraseNote = phraseNote;
             trackChannel = trackPhrase.getController().getTrackSequencer()
                     .getTrack(trackPhrase.getToneIndex());
         }

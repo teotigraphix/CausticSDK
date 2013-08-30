@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.track;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -83,8 +84,17 @@ public class TrackChannel implements ISerialize {
         if (value == currentPattern)
             return;
         currentPattern = value;
+        bankEditor.put(currentBank, currentPattern);
         getDispatcher().trigger(
                 new OnTrackSequencerPropertyChange(PropertyChangeKind.Pattern, this));
+    }
+
+    private Map<Integer, Integer> bankEditor = new HashMap<Integer, Integer>();
+
+    public int getEditPattern() {
+        if (!bankEditor.containsKey(currentBank))
+            return 0;
+        return bankEditor.get(currentBank);
     }
 
     /**

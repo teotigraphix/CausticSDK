@@ -17,16 +17,16 @@ public class TrackSequencerHandlers {
 
     public TrackSequencerHandlers(TrackSequencer trackSequencer) {
         this.trackSequencer = trackSequencer;
-
+        // since we register in the constructor, we always know we will be called first
         registerObservers();
     }
 
     void registerObservers() {
-        getDispatcher().register(OnTrackSequencerPropertyChange.class, bankChange);
+        getDispatcher().register(OnTrackSequencerPropertyChange.class, propertyChange);
     }
 
     void unregisterObservers() {
-        getDispatcher().unregister(bankChange);
+        getDispatcher().unregister(propertyChange);
     }
 
     //--------------------------------------------------------------------------
@@ -35,11 +35,12 @@ public class TrackSequencerHandlers {
 
     // Bank
 
-    private EventObserver<OnTrackSequencerPropertyChange> bankChange = new EventObserver<OnTrackSequencerPropertyChange>() {
+    private EventObserver<OnTrackSequencerPropertyChange> propertyChange = new EventObserver<OnTrackSequencerPropertyChange>() {
         @Override
         public void trigger(OnTrackSequencerPropertyChange object) {
             TrackChannel channel = null;
             Tone tone = null;
+            PhraseNote note = null;
             switch (object.getKind()) {
 
                 case Bank:
@@ -66,15 +67,24 @@ public class TrackSequencerHandlers {
                     break;
 
                 case EditMeasure:
-
                     break;
 
                 case PlayMeasure:
-
                     break;
 
-                default:
+                case NoteAdd:
+                    tone = object.getTrackPhrase().getTone();
+                    note = object.getPhraseNote();
+                    tone.getPatternSequencer().addNote(note.getPitch(), note.getStart(),
+                            note.getEnd(), note.getVelocity(), note.getFlags());
                     break;
+
+                case NoteRemove:
+                    tone = object.getTrackPhrase().getTone();
+                    note = object.getPhraseNote();
+                    tone.getPatternSequencer().removeNote(note.getPitch(), note.getStart());
+                    break;
+
             }
         }
     };
