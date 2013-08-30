@@ -232,8 +232,8 @@ public class ProjectManager implements IProjectManager {
         // adding a LOAD event here to keep consistent with all startup.
         // whether a project is created or loaded on start, mediators will always
         // get a load event at start.
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
+        //        controller.getDispatcher().trigger(
+        //                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
 
         project.setInitializing(false);
 

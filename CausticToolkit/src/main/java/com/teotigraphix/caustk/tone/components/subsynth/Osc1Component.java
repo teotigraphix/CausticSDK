@@ -67,13 +67,14 @@ public class Osc1Component extends ToneComponent {
         return SubSynthMessage.OSC1_FM.query(getEngine(), getToneIndex());
     }
 
+    // XXX SunSYnth fix 
     public void setFM(float value) {
         if (value == fm)
             return;
-        if (value < 0 || value > 1f)
-            throw newRangeException(SubSynthMessage.OSC1_FM.toString(), "0..1", value);
+        //if (value < 0 || value > 1f)
+        //    throw newRangeException(SubSynthMessage.OSC1_FM.toString(), "0..1", value);
         fm = value;
-        SubSynthMessage.OSC1_FM.send(getEngine(), getToneIndex(), fm);
+        //SubSynthMessage.OSC1_FM.send(getEngine(), getToneIndex(), fm);
     }
 
     //----------------------------------
@@ -110,7 +111,8 @@ public class Osc1Component extends ToneComponent {
     }
 
     Osc1Waveform getWaveform(boolean restore) {
-        return Osc1Waveform.toType(SubSynthMessage.OSC1_WAVEFORM.query(getEngine(), getToneIndex()));
+        return Osc1Waveform
+                .toType(SubSynthMessage.OSC1_WAVEFORM.query(getEngine(), getToneIndex()));
     }
 
     public void setWaveform(Osc1Waveform value) {

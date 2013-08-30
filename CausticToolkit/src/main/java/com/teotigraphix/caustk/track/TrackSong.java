@@ -78,8 +78,8 @@ public class TrackSong implements ISerialize {
     }
 
     public void setCurrentTrack(int value) {
-        if (currentTrack < 0 || currentTrack > 13)
-            throw new IllegalArgumentException("Illigal track index");
+        if (value < 0 || value > 13)
+            throw new IllegalArgumentException("Illigal track index " + value);
         if (tracks.containsKey(value))
             throw new IllegalArgumentException("Track index does not exist;" + value);
         if (value == currentTrack)
