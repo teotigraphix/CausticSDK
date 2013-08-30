@@ -13,6 +13,8 @@ import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
@@ -153,6 +155,17 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
                         trackRemove(object.getTone());
+                    }
+                });
+
+        final ISystemSequencer systemSequencer = getController().getSystemSequencer();
+
+        systemSequencer.getDispatcher().register(OnSystemSequencerBeatChange.class,
+                new EventObserver<OnSystemSequencerBeatChange>() {
+                    @Override
+                    public void trigger(OnSystemSequencerBeatChange object) {
+                        //System.out.println(object.getBeat());
+                        getSelectedTrack().getPhrase().onBeatChange(object.getBeat());
                     }
                 });
     }

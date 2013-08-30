@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.SnapshotArray;
 
 public class ButtonBar extends Table {
 
@@ -67,5 +68,17 @@ public class ButtonBar extends Table {
 
     public interface OnButtonBarListener {
         void onChange(int index);
+    }
+
+    public void disableFrom(int length) {
+        SnapshotArray<Actor> children = getChildren();
+        for (int i = 0; i < children.size; i++) {
+            ToggleButton button = (ToggleButton)children.get(i);
+            if (i < length)
+                button.setDisabled(false);
+            else
+                button.setDisabled(true);
+        }
+
     }
 }

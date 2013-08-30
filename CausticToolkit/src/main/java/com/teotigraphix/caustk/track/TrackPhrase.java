@@ -142,8 +142,9 @@ public class TrackPhrase implements ISerialize {
     public List<PhraseNote> getEditMeasureNotes() {
         List<PhraseNote> result = new ArrayList<PhraseNote>();
         for (PhraseNote note : notes) {
-            int measure = (int)Math.floor(note.getStart());
-            if (measure >= editMeasure || measure <= editMeasure + 4) {
+            int beat = (int)Math.floor(note.getStart());
+            int startBeat = ((editMeasure) * 4);
+            if (beat >= startBeat && beat < startBeat + 4) {
                 result.add(note);
             }
         }
@@ -199,7 +200,9 @@ public class TrackPhrase implements ISerialize {
     public void setPlayMeasure(int value) {
         if (value == playMeasure)
             return;
+
         playMeasure = value;
+        //System.err.println(playMeasure);
         getDispatcher().trigger(
                 new OnTrackSequencerPropertyChange(PropertyChangeKind.PlayMeasure, this));
     }
@@ -230,6 +233,98 @@ public class TrackPhrase implements ISerialize {
                 new OnTrackSequencerPropertyChange(PropertyChangeKind.EditMeasure, this));
     }
 
+    public void onBeatChange(int beat) {
+        localBeat = (int)toLocalBeat(beat, getLength());
+
+        float fullMeasure = beat / 4;
+        float measure = fullMeasure % getLength();
+        setCurrentBeat(beat);
+
+        setPlayMeasure((int)measure);
+    }
+
+    //----------------------------------
+    //  currentMeasure
+    //----------------------------------
+
+    private int currentMeasure = 0;
+
+    /**
+     * Returns the current measure playing in Song mode.
+     * <p>
+     * Note: The current bar is divisible by 4, the current measure is the sum
+     * of all steps played currently in a song.
+     * </p>
+     * 
+     * @return
+     */
+    public int getCurrentMeasure() {
+        return currentMeasure;
+    }
+
+    void setCurrentMeasure(int value) {
+        currentMeasure = value;
+    }
+
+    //----------------------------------
+    //  currentBeat
+    //----------------------------------
+
+    private int currentBeat = -1;
+
+    /**
+     * Return the ISong current beat.
+     */
+    public int getCurrentBeat() {
+        return currentBeat;
+    }
+
+    @SuppressWarnings("unused")
+    private float beat = -1;
+
+    private int localBeat;
+
+    void setCurrentBeat(float value) {
+        beat = value;
+    }
+
+    void setCurrentBeat(int value) {
+        setCurrentBeat(value, false);
+    }
+
+    void setCurrentBeat(int value, boolean seeking) {
+        int last = currentBeat;
+        currentBeat = value;
+
+        //        fireBeatChange(mCurrentBeat, last);
+
+        if (last < value) {
+            // forward
+            if (currentBeat == 0) {
+                setCurrentMeasure(0);
+            } else {
+                int remainder = currentBeat % 4;
+                if (seeking) {
+                    setCurrentMeasure(currentBeat / 4);
+                } else if (remainder == 0) {
+                    setCurrentMeasure(currentMeasure + 1);
+                }
+            }
+        } else if (last > value) {
+            // reverse
+            // if the last beat was a measure change, decrement measure
+            int remainder = last % 4;
+            if (remainder == 0) {
+                setCurrentMeasure(currentMeasure - 1);
+            }
+        }
+    }
+
+    public static float toLocalBeat(float beat, int length) {
+        float r = (beat % (length * 4));
+        return r;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -252,6 +347,11 @@ public class TrackPhrase implements ISerialize {
     @Override
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
+    }
+
+    public int getLocalBeat() {
+        return localBeat;
+
     }
 
 }
