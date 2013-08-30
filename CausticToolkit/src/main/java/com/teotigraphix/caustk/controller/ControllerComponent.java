@@ -27,7 +27,6 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.application.Dispatcher;
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
-import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.project.ProjectManager;
 
@@ -91,18 +90,41 @@ public abstract class ControllerComponent implements IControllerComponent {
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {
-                        if (object.getKind() == ProjectManagerChangeKind.SAVE) {
-                            saveState(object.getProject());
-                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
-                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
-                            loadState(object.getProject());
-                        } else if (object.getKind() == ProjectManagerChangeKind.CREATE) {
-                            createProject(object.getProject());
-                        } else if (object.getKind() == ProjectManagerChangeKind.EXIT) {
-                            projectExit(object.getProject());
+
+                        switch (object.getKind()) {
+                            case SAVE:
+                                saveState(object.getProject());
+                                break;
+
+                            case SAVE_COMPLETE:
+                                break;
+
+                            case LOAD:
+                                loadState(object.getProject());
+                                break;
+
+                            case CREATE:
+                                createProject(object.getProject());
+                                break;
+
+                            case EXIT:
+                                projectExit(object.getProject());
+                                break;
+
+                            case CLOSE_COMPLETE:
+                                closeProject(object.getProject());
+                                break;
+
+                            case LOAD_COMPLETE:
+                                break;
+
                         }
                     }
                 });
+    }
+
+    protected void closeProject(Project project) {
+        state = null;
     }
 
     //--------------------------------------------------------------------------

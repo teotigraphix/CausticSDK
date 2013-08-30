@@ -127,7 +127,7 @@ public class PatternSequencerComponent extends ToneComponent {
         return Arrays.asList(patterns.split(" "));
     }
 
-    public void initializeData(String data) {
+    public void assignNoteData(String data) {
         if (data.equals(""))
             return;
 

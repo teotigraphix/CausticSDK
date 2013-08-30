@@ -45,11 +45,14 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     @Override
     public void setCurrentTrack(int value) {
+        if (currentTrack < 0 || currentTrack > 13)
+            throw new IllegalArgumentException("Illigal track index");
+        if (tracks.containsKey(value))
+            throw new IllegalArgumentException("Track index does not exist;" + value);
         if (value == currentTrack)
             return;
-        int old = currentTrack;
         currentTrack = value;
-        getDispatcher().trigger(new OnTrackSequencerCurrentTrackChange(currentTrack, old));
+        getDispatcher().trigger(new OnTrackSequencerCurrentTrackChange(currentTrack));
     }
 
     //----------------------------------
@@ -90,7 +93,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     }
 
     @Override
-    public TrackChannel getTrack() {
+    public TrackChannel getSelectedTrack() {
         return getTrack(currentTrack);
     }
 
@@ -132,6 +135,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     @Override
     public void onRegister() {
+        super.onRegister();
 
         final ISoundSource soundSource = getController().getSoundSource();
         soundSource.getDispatcher().register(OnSoundSourceToneAdd.class,
@@ -202,8 +206,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     @Override
     public boolean hasTracks() {
-        // TODO Auto-generated method stub
-        return false;
+        return tracks.size() > 0;
     }
 
     /*

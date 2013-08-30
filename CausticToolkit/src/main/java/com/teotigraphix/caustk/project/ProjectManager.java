@@ -231,6 +231,14 @@ public class ProjectManager implements IProjectManager {
         return project;
     }
 
+    @Override
+    public void clear() {
+        project.close();
+        controller.getDispatcher().trigger(
+                new OnProjectManagerChange(project, ProjectManagerChangeKind.CLOSE_COMPLETE));
+        project = null;
+    }
+
     //--------------------------------------------------------------------------
     // 
     //--------------------------------------------------------------------------

@@ -272,7 +272,7 @@ public class Phrase {
     }
 
     public void setNoteData(String data) {
-        part.getTone().getComponent(PatternSequencerComponent.class).initializeData(data);
+        part.getTone().getComponent(PatternSequencerComponent.class).assignNoteData(data);
     }
 
     //--------------------------------------------------------------------------

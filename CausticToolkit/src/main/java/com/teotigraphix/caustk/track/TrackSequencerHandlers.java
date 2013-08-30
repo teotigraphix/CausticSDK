@@ -4,8 +4,8 @@ package com.teotigraphix.caustk.track;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.application.IDispatcher;
-import com.teotigraphix.caustk.track.TrackChannel.OnTrackChannelBankChange;
-import com.teotigraphix.caustk.track.TrackChannel.OnTrackChannelPatternChange;
+import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.track.ITrackSequencer.OnTrackSequencerPropertyChange;
 
 public class TrackSequencerHandlers {
 
@@ -22,34 +22,61 @@ public class TrackSequencerHandlers {
     }
 
     void registerObservers() {
-        getDispatcher().register(OnTrackChannelBankChange.class, bankChange);
-        getDispatcher().register(OnTrackChannelPatternChange.class, patternChange);
+        getDispatcher().register(OnTrackSequencerPropertyChange.class, bankChange);
     }
 
     void unregisterObservers() {
         getDispatcher().unregister(bankChange);
-        getDispatcher().unregister(patternChange);
     }
 
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
 
-    private EventObserver<OnTrackChannelBankChange> bankChange = new EventObserver<OnTrackChannelBankChange>() {
+    // Bank
+
+    private EventObserver<OnTrackSequencerPropertyChange> bankChange = new EventObserver<OnTrackSequencerPropertyChange>() {
         @Override
-        public void trigger(OnTrackChannelBankChange object) {
-            final TrackChannel channel = object.getTrack();
-            int bank = channel.getCurrentBank();
-            channel.getTone().getPatternSequencer().setSelectedBank(bank);
+        public void trigger(OnTrackSequencerPropertyChange object) {
+            TrackChannel channel = null;
+            Tone tone = null;
+            switch (object.getKind()) {
+
+                case Bank:
+                    channel = object.getTrackChannel();
+                    int bank = channel.getCurrentBank();
+                    channel.getTone().getPatternSequencer().setSelectedBank(bank);
+                    break;
+
+                case Pattern:
+                    channel = object.getTrackChannel();
+                    int pattern = object.getTrackChannel().getCurrentPattern();
+                    channel.getTone().getPatternSequencer().setSelectedPattern(pattern);
+                    break;
+
+                case Length:
+                    tone = object.getTrackPhrase().getTone();
+                    tone.getPatternSequencer().setLength(object.getTrackPhrase().getLength());
+                    break;
+
+                case NoteData:
+                    tone = object.getTrackPhrase().getTone();
+                    tone.getPatternSequencer()
+                            .assignNoteData(object.getTrackPhrase().getNoteData());
+                    break;
+
+                case EditMeasure:
+
+                    break;
+
+                case PlayMeasure:
+
+                    break;
+
+                default:
+                    break;
+            }
         }
     };
 
-    private EventObserver<OnTrackChannelPatternChange> patternChange = new EventObserver<OnTrackChannelPatternChange>() {
-        @Override
-        public void trigger(OnTrackChannelPatternChange object) {
-            final TrackChannel channel = object.getTrack();
-            int pattern = channel.getCurrentPattern();
-            channel.getTone().getPatternSequencer().setSelectedPattern(pattern);
-        }
-    };
 }

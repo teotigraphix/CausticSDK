@@ -8,6 +8,8 @@ import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.track.ITrackSequencer.OnTrackSequencerPropertyChange;
+import com.teotigraphix.caustk.track.ITrackSequencer.PropertyChangeKind;
 
 /**
  * @see ITrackSequencer#getDispatcher()
@@ -59,9 +61,8 @@ public class TrackChannel implements ISerialize {
     public void setCurrentBank(int value) {
         if (value == currentBank)
             return;
-        int old = currentBank;
         currentBank = value;
-        getDispatcher().trigger(new OnTrackChannelBankChange(this, old));
+        getDispatcher().trigger(new OnTrackSequencerPropertyChange(PropertyChangeKind.Bank, this));
     }
 
     //----------------------------------
@@ -81,9 +82,9 @@ public class TrackChannel implements ISerialize {
     public void setCurrentPattern(int value) {
         if (value == currentPattern)
             return;
-        int old = currentPattern;
         currentPattern = value;
-        getDispatcher().trigger(new OnTrackChannelPatternChange(this, old));
+        getDispatcher().trigger(
+                new OnTrackSequencerPropertyChange(PropertyChangeKind.Pattern, this));
     }
 
     /**
@@ -112,7 +113,7 @@ public class TrackChannel implements ISerialize {
         }
         TrackPhrase phrase = banks.get(pattern);
         if (phrase == null) {
-            phrase = new TrackPhrase(controller, bank, pattern);
+            phrase = new TrackPhrase(controller, index, bank, pattern);
             banks.put(pattern, phrase);
         }
         return phrase;

@@ -125,6 +125,8 @@ public interface IProjectManager {
      */
     boolean isProject(File file);
 
+    void clear();
+
     /**
      * @see ICaustkController#getDispatcher()
      */
@@ -170,6 +172,12 @@ public interface IProjectManager {
          * Dispatched when the project manager has completely saved all state.
          */
         SAVE_COMPLETE,
+
+        /**
+         * Dispatched when a project has been closed by
+         * {@link IProjectManager#clear()}.
+         */
+        CLOSE_COMPLETE,
 
         /**
          * Dispatched when the project manager has had its
