@@ -284,6 +284,17 @@ public class TrackPhrase implements ISerialize {
 
     private int localBeat;
 
+    /**
+     * Returns the actual beat in the current measure.
+     * <p>
+     * Example; measure 4, beat 14 would be beat 2 in the measure (0 index - 3rd
+     * beat in measure).
+     * </p>
+     */
+    public int getMeasureBeat() {
+        return currentBeat % 4;
+    }
+
     void setCurrentBeat(float value) {
         beat = value;
     }
@@ -294,7 +305,12 @@ public class TrackPhrase implements ISerialize {
 
     void setCurrentBeat(int value, boolean seeking) {
         int last = currentBeat;
+        if (value == currentBeat)
+            return;
+
         currentBeat = value;
+
+        getDispatcher().trigger(new OnTrackSequencerPropertyChange(PropertyChangeKind.Beat, this));
 
         //        fireBeatChange(mCurrentBeat, last);
 

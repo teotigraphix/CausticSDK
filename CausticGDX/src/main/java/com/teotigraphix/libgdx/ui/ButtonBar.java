@@ -29,21 +29,23 @@ public class ButtonBar extends Table {
     // currentIndex
     //----------------------------------
 
-    private int currentIndex;
-
-    public int getCurrentIndex() {
-        return currentIndex;
-    }
-
-    public void setCurrentIndex(int value) {
-        currentIndex = value;
+    /**
+     * Sets the progress bar percent and visible on the button index.
+     * <p>
+     * All other progress overlays are invisible.
+     * 
+     * @param index The button index.
+     * @param percent The progress percent (0-100).
+     */
+    public void setProgressAt(int index, float percent) {
         Array<Button> buttons = group.getButtons();
         for (int i = 0; i < buttons.size; i++) {
             GDXToggleButton button = (GDXToggleButton)buttons.get(i);
-            if (i == currentIndex) {
-                button.setCurrent(true);
+            if (i == index) {
+                button.setIsProgress(true);
+                button.setProgress(percent);
             } else {
-                button.setCurrent(false);
+                button.setIsProgress(false);
             }
         }
         invalidateHierarchy();
@@ -66,7 +68,7 @@ public class ButtonBar extends Table {
         this.buttonStyleName = buttonStyleName;
     }
 
-    private void createChildren() {
+    protected void createChildren() {
         for (int i = 0; i < items.length; i++) {
             final int index = i;
             final GDXToggleButton button = new GDXToggleButton(items[i], skin.get(buttonStyleName,

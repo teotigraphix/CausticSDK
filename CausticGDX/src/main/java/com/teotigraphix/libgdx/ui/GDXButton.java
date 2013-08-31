@@ -18,11 +18,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  */
 public class GDXButton extends TextButton {
 
+    //----------------------------------
+    // properties
+    //----------------------------------
+
     Map<String, Object> properties = new HashMap<String, Object>();
 
     public final Map<String, Object> getProperties() {
         return properties;
     }
+
+    //----------------------------------
+    // isToggle
+    //----------------------------------
 
     boolean isToggle = false;
 
@@ -36,6 +44,10 @@ public class GDXButton extends TextButton {
         isToggle = value;
     }
 
+    //----------------------------------
+    // checked
+    //----------------------------------
+
     @Override
     public void setChecked(boolean value) {
         if (isToggle) {
@@ -43,14 +55,33 @@ public class GDXButton extends TextButton {
         }
     }
 
-    private boolean isCurrent = false;
+    //----------------------------------
+    // progress
+    //----------------------------------
 
-    public boolean isCurrent() {
-        return isCurrent;
+    private float progress = 100f;
+
+    public float getProgress() {
+        return progress;
     }
 
-    public void setCurrent(boolean isCurrent) {
-        this.isCurrent = isCurrent;
+    public void setProgress(float value) {
+        progress = value;
+        invalidate();
+    }
+
+    //----------------------------------
+    // isProgress
+    //----------------------------------
+
+    private boolean isProgress = false;
+
+    public boolean isProgress() {
+        return isProgress;
+    }
+
+    public void setIsProgress(boolean value) {
+        isProgress = value;
         invalidate();
     }
 
@@ -58,6 +89,10 @@ public class GDXButton extends TextButton {
     public ButtonStyle getStyle() {
         return style;
     }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public GDXButton(String text, Skin skin) {
         super(text, skin);
@@ -77,20 +112,28 @@ public class GDXButton extends TextButton {
         style = skin.get(styleName, ButtonStyle.class);
     }
 
+    //--------------------------------------------------------------------------
+    // Overridden Public :: Methods
+    //--------------------------------------------------------------------------
+
     @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
-        // TODO Auto-generated method stub
         super.draw(batch, parentAlpha);
 
-        Drawable overlay1 = style.currentOverlay;
-        if (isCurrent) {
-            overlay1.draw(batch, getX(), getY(), getWidth(), getHeight());
+        Drawable progressOverlay = style.progressOverlay;
+        if (isProgress) {
+            float width = (progress / 100f) * getWidth();
+            progressOverlay.draw(batch, getX(), getY(), width, getHeight());
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Style
+    //--------------------------------------------------------------------------
+
     public static class ButtonStyle extends TextButtonStyle {
 
-        public Drawable currentOverlay;
+        public Drawable progressOverlay;
 
         public ButtonStyle() {
         }

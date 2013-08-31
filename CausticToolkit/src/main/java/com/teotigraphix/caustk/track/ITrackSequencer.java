@@ -122,7 +122,12 @@ public interface ITrackSequencer extends IControllerComponent {
         /**
          * @see TrackPhrase#setEditMeasure(int)
          */
-        EditMeasure
+        EditMeasure,
+
+        /**
+         * Dispatched every beat when the phrase is active.
+         */
+        Beat
     }
 
     public static class OnTrackSequencerPropertyChange {
