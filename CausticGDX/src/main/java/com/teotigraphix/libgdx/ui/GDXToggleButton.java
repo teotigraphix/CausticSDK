@@ -3,19 +3,19 @@ package com.teotigraphix.libgdx.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class ToggleButton extends Button {
+public class GDXToggleButton extends GDXButton {
 
-    public ToggleButton(String text, Skin skin) {
+    public GDXToggleButton(String text, Skin skin) {
         super(text, skin);
         isToggle = true;
     }
 
-    public ToggleButton(String text, TextButtonStyle style) {
+    public GDXToggleButton(String text, ButtonStyle style) {
         super(text, style);
         isToggle = true;
     }
 
-    public ToggleButton(String text, Skin skin, String styleName) {
+    public GDXToggleButton(String text, Skin skin, String styleName) {
         super(text, skin, styleName);
         isToggle = true;
     }
