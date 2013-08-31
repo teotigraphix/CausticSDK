@@ -114,6 +114,8 @@ public interface ITrackSequencer extends IControllerComponent {
          */
         NoteRemove,
 
+        ClearMeasure,
+
         /**
          * @see TrackPhrase#setPlayMeasure(int)
          */

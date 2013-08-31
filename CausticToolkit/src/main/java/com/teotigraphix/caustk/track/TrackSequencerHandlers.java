@@ -84,6 +84,8 @@ public class TrackSequencerHandlers {
                     note = object.getPhraseNote();
                     tone.getPatternSequencer().removeNote(note.getPitch(), note.getStart());
                     break;
+                default:
+                    break;
 
             }
         }

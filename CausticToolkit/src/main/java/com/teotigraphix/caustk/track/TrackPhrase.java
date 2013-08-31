@@ -140,10 +140,14 @@ public class TrackPhrase implements ISerialize {
     }
 
     public List<PhraseNote> getEditMeasureNotes() {
+        return getNotes(editMeasure);
+    }
+
+    public List<PhraseNote> getNotes(int measure) {
         List<PhraseNote> result = new ArrayList<PhraseNote>();
         for (PhraseNote note : notes) {
             int beat = (int)Math.floor(note.getStart());
-            int startBeat = ((editMeasure) * 4);
+            int startBeat = (measure * 4);
             if (beat >= startBeat && beat < startBeat + 4) {
                 result.add(note);
             }
@@ -165,6 +169,10 @@ public class TrackPhrase implements ISerialize {
             getDispatcher().trigger(
                     new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteRemove, this, note));
         }
+    }
+
+    public void removeNote(PhraseNote note) {
+        removeNote(note.getPitch(), note.getStart());
     }
 
     public PhraseNote getNote(int pitch, float start) {
@@ -370,4 +378,23 @@ public class TrackPhrase implements ISerialize {
 
     }
 
+    /**
+     * Clears all notes from all measures of the phrase.
+     */
+    public void clear() {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * Clears all notes from measure.
+     */
+    public void clear(int measure) {
+        List<PhraseNote> list = getNotes(measure);
+        for (PhraseNote note : list) {
+            removeNote(note);
+        }
+        getDispatcher().trigger(
+                new OnTrackSequencerPropertyChange(PropertyChangeKind.ClearMeasure, this));
+    }
 }
