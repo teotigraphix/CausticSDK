@@ -1,7 +1,6 @@
 
 package com.teotigraphix.libgdx.ui;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -17,7 +16,13 @@ import com.badlogic.gdx.utils.Pools;
 
 public class Knob extends Stack {
 
-    private float originalAngle;
+    private Image background;
+
+    private Image knob;
+
+    private Label label;
+
+    private float originalAngle = 0f;
 
     private float lastAngle = 0f;
 
@@ -52,7 +57,6 @@ public class Knob extends Stack {
         if (value == oldValue)
             return false;
         this.value = value;
-
         ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
         boolean cancelled = fire(changeEvent);
         if (cancelled)
@@ -61,6 +65,10 @@ public class Knob extends Stack {
         Pools.free(changeEvent);
         return !cancelled;
     }
+
+    //----------------------------------
+    // text
+    //----------------------------------
 
     private String text;
 
@@ -120,10 +128,14 @@ public class Knob extends Stack {
         invalidate();
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
     public Knob(float min, float max, float stepSize, String text, Skin skin) {
         super();
-        this.minValue = min;
-        this.maxValue = max;
+        minValue = min;
+        maxValue = max;
         this.stepSize = stepSize;
         this.text = text;
         this.skin = skin;
@@ -132,14 +144,7 @@ public class Knob extends Stack {
         setHeight(60);
         style = skin.get("default", KnobStyle.class);
         createChildren();
-
     }
-
-    private Image background;
-
-    private Image knob;
-
-    private Label label;
 
     private void createChildren() {
         background = new Image(style.background);
@@ -161,9 +166,14 @@ public class Knob extends Stack {
     @Override
     public void layout() {
         super.layout();
+
         knob.setOrigin(knob.getWidth() / 2, knob.getHeight() / 2);
-        if (currentAngle == null)
-            currentAngle = getAngleFromValue(value);
+
+        if (currentAngle == null) {
+            currentAngle = getAngleFromValue(getValue());
+            lastAngle = currentAngle;
+        }
+
         knob.setRotation(currentAngle);
 
         label.setText(text);
@@ -178,8 +188,10 @@ public class Knob extends Stack {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (disabled)
                     return false;
+
                 if (draggingPointer != -1)
                     return false;
+
                 draggingPointer = pointer;
 
                 originalAngle = lastAngle;
@@ -188,9 +200,16 @@ public class Knob extends Stack {
             }
 
             @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                calculatePositionAndValue(x, y);
+                currentAngle = getAngleFromValue(getValue());
+            }
+
+            @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (pointer != draggingPointer)
                     return;
+
                 draggingPointer = -1;
 
                 lastAngle = currentAngle;
@@ -203,13 +222,7 @@ public class Knob extends Stack {
                     Pools.free(changeEvent);
                 }
 
-                currentAngle = getAngleFromValue(value) - 140;
-            }
-
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                calculatePositionAndValue(x, y);
-                currentAngle = getAngleFromValue(value) - 140;
+                currentAngle = getAngleFromValue(getValue());
             }
         });
     }
@@ -224,35 +237,32 @@ public class Knob extends Stack {
         return valueSet;
     }
 
-    @Override
-    public void draw(SpriteBatch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
-
     protected float pointToValue(float x, float y) {
-        float delta = x; // changed this to negate
-        float result;
+        float result = 0f;
 
-        currentAngle = originalAngle - delta;
+        currentAngle = x - originalAngle;
 
-        if (currentAngle < 0) {
-            if (Math.abs(currentAngle) >= 180 - minimumAngle)
-                currentAngle = -(180 - minimumAngle);
-        } else {
-            if (currentAngle >= 180 - minimumAngle)
-                currentAngle = 180 - minimumAngle;
-        }
-
-        // 280 degrees to min/mx
-        float spanAngle = 360 - (minimumAngle * 2);
-        float spanValue = (currentAngle + spanAngle - 140);
-
+        //        // 280 degrees to min/mx minAng:40
+        float spanAngle = 280; // 360 - (minimumAngle * 2);
+        float spanValue = (currentAngle + spanAngle - 140); // - 140 rotates 0 counterclock
+        // this is a ratio fullSpan/spanAngle * fullPossibleValue
         result = getMinValue() + (spanValue / spanAngle) * (getMaxValue() - getMinValue());
 
         return result;
     }
 
-    protected float nearestValidValue(float value, float interval) {
+    protected float getAngleFromValue(float value) throws RuntimeException {
+        if (value < getMinValue() || value > getMaxValue()) {
+            throw new RuntimeException("Invalid value found when attempting to retrieve angle.");
+        }
+
+        float valuePercentage = (value - getMinValue()) / (getMaxValue() - getMinValue());
+        float maxRotation = 360 - (minimumAngle * 2);
+        float angleForValue = valuePercentage * maxRotation;
+        return 140 - angleForValue; // brings the span clockwise
+    }
+
+    private float nearestValidValue(float value, float interval) {
         if (interval == 0)
             return Math.max(getMinValue(), Math.min(getMaxValue(), value));
 
@@ -289,17 +299,6 @@ public class Knob extends Stack {
         return v;
     }
 
-    protected float getAngleFromValue(float value) throws RuntimeException {
-        if (value < getMinValue() || value > getMaxValue()) {
-            throw new RuntimeException("Invalid value found when attempting to retrieve angle.");
-        }
-
-        float valuePercentage = (value - getMinValue()) / (getMaxValue() - getMinValue());
-        float maxRotation = 360 - (minimumAngle * 2);
-        float angleForValue = valuePercentage * maxRotation;
-        return angleForValue;
-    }
-
     static public class KnobStyle {
         /** The slider background, stretched only in one direction. */
         public Drawable background;
@@ -322,8 +321,8 @@ public class Knob extends Stack {
         }
 
         public KnobStyle(KnobStyle style) {
-            this.background = style.background;
-            this.knob = style.knob;
+            background = style.background;
+            knob = style.knob;
         }
     }
 }
