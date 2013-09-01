@@ -18,12 +18,18 @@ import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.libgdx.controller.IApplicationController;
 
+/**
+ * The main instrumentation class for application startup of the game.
+ */
 public class StartupExecutor {
 
     final Set<Module> modules = new HashSet<Module>();
 
     @Inject
     ICaustkApplicationProvider application;
+
+    @Inject
+    IInjectorService injectorService;
 
     @Inject
     IApplicationController applicationController;
@@ -35,20 +41,45 @@ public class StartupExecutor {
 
     private Injector injector;
 
-    public Injector getInjector() {
+    Injector getInjector() {
         return injector;
     }
 
-    @Inject
-    private IInjectorService injectorService;
-
-    public ICaustkController getController() {
+    ICaustkController getController() {
         return controller;
     }
 
     public StartupExecutor() {
     }
 
+    /*
+     * - resolve caustic and application directory
+     * - collection modules
+     * - create application Injector using collected modules
+     * - inject executor and game
+     * - assign sound generator, caustic root, application root to configuration
+     * -  Call;
+     *   - applicationController.registerMediatorObservers()
+     *     - MediatorBase.registerObservers()
+     *   - applicationController.start()
+     *     - ICausticApplication.initialize()
+     *     - ICausticApplication.start()
+     *     - IApplicationModel.start()
+     *     - Find lastProject, if not null load(lastProject) else create()
+     *   - applicationController.load()
+     *     - foreach(model) ModelBase.setupState()
+     *   - applicationController.registerModels()
+     *     - ModelBase.onRegister()
+     *   - applicationController.registerMeditors()
+     *     - MediatorBase.onRegister()
+     *   - applicationController.show()
+     */
+
+    /**
+     * @param game
+     * @see IGame#initialize(Module...)
+     * @throws IOException
+     */
     public void start(IGame game) throws IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
         File causticDirectory = new File(root.getAbsolutePath());
@@ -73,7 +104,7 @@ public class StartupExecutor {
         // Creates an injector with all of the required modules.
         injector = Guice.createInjector(modules);
 
-        // Injects all fields annotated with @Inject into this GuiceApplication instance.
+        // Injects all fields annotated with @Inject into this IGame instance.
         injector.injectMembers(instance);
         injector.injectMembers(game); // just need the injector
 
@@ -103,11 +134,6 @@ public class StartupExecutor {
         applicationController.show();
 
         CtkDebug.log("Show the application");
-
-        show();
-    }
-
-    private void show() {
     }
 
     public final void addModule(Module module) {

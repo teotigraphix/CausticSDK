@@ -31,7 +31,21 @@ import com.teotigraphix.caustk.sound.ISoundGenerator;
 public interface ICaustkConfiguration {
 
     /**
-     * Returns the machine id.
+     * Returns the human readable application name with spaces.
+     */
+    String getApplicationTitle();
+
+    /**
+     * Sets the application's human readable name.
+     * 
+     * @param value The app name.
+     */
+    void setApplicationTitle(String value);
+
+    /**
+     * Returns the application id used for the root param of OSC messages.
+     * <p>
+     * All lowercase, no spaces, alpha numeric.
      */
     String getApplicationId();
 
@@ -81,14 +95,19 @@ public interface ICaustkConfiguration {
     ICaustkController createController(ICaustkApplication application);
 
     /**
-     * Creates the core {@link ICausticEngine} implementation for the desktop or
+     * Returns the core {@link ICausticEngine} implementation for the desktop or
      * android device.
      * 
-     * @param controller The main controller.
      * @return The single instance of the {@link ISoundGenerator}.
      */
-    ISoundGenerator createSoundGenerator(ICaustkController controller);
+    ISoundGenerator getSoundGenerator();
 
+    /**
+     * Sets the core {@link ICausticEngine} implementation for the desktop or
+     * android device.
+     * 
+     * @param soundGenerator The main sound generator.
+     */
     void setSoundGenerator(ISoundGenerator soundGenerator);
 
 }

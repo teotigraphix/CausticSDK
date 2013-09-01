@@ -331,7 +331,7 @@ public class CaustkController implements ICaustkController {
             applicationRoot.mkdirs();
 
         CtkDebug.log("!!! Controller: Create all Sub controllers");
-        soundGenerator = getConfiguration().createSoundGenerator(this);
+        soundGenerator = getConfiguration().getSoundGenerator();
         soundGenerator.initialize();
 
         // sub composites will add their ICommands in their constructors

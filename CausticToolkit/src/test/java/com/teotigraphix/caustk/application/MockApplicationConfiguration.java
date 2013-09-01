@@ -4,10 +4,8 @@ package com.teotigraphix.caustk.application;
 import java.io.File;
 
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
 import com.teotigraphix.caustk.core.internal.Constants;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.core.DesktopSoundGenerator;
 
 public class MockApplicationConfiguration extends CaustkConfigurationBase {
@@ -16,25 +14,15 @@ public class MockApplicationConfiguration extends CaustkConfigurationBase {
         return new MockApplicationConfiguration();
     }
 
-    @Override
-    public String getApplicationId() {
-        return "default";
-    }
-
     public MockApplicationConfiguration() {
         super();
+    }
+
+    @Override
+    protected void initialize() {
         setCausticStorage(new File(Constants.STORAGE_ROOT));
         setApplicationRoot(new File("src/test/resources/unit_test"));
-    }
-
-    @Override
-    public ISoundGenerator createSoundGenerator(ICaustkController controller) {
-        return new DesktopSoundGenerator();
-    }
-
-    @Override
-    public void setSoundGenerator(ISoundGenerator soundGenerator) {
-        // TODO Auto-generated method stub
-        
+        setSoundGenerator(new DesktopSoundGenerator());
+        setApplicationId("default");
     }
 }

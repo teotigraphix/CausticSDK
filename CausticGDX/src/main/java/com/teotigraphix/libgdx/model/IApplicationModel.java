@@ -1,7 +1,6 @@
 
 package com.teotigraphix.libgdx.model;
 
-import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 
@@ -11,12 +10,12 @@ public interface IApplicationModel {
      * The {@link IApplicationModel}'s local dispatcher.
      */
     IDispatcher getDispatcher();
-    
+
     /**
      * Returns the application's name.
      */
     String getName();
-    
+
     /**
      * Returns whether the application state is dirty.
      */
@@ -54,25 +53,6 @@ public interface IApplicationModel {
     //--------------------------------------------------------------------------
 
     /**
-     * Dispatched after the {@link ICaustkApplication#start()} has been called
-     * and before the project is loaded.
-     * 
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnApplicationModelStart {
-    }
-
-    /**
-     * Dispatched at the end of the startup phase, right before the window/view
-     * is shown.
-     * <p>
-     * All final model load can be done here, mediators are all wired and
-     * listening to model changes.
-     */
-    public static class OnApplicationModelRun {
-    }
-
-    /**
      * Dispatched when the Application has become dirty or was cleaned by a
      * save.
      * 
@@ -90,6 +70,5 @@ public interface IApplicationModel {
             this.dirty = dirty;
         }
     }
-
 
 }

@@ -25,6 +25,8 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.caustk.sound.core.DesktopSoundGenerator;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * Used in unit tests of the toolkit framework. Need the
@@ -32,16 +34,62 @@ import com.teotigraphix.caustk.sound.ISoundGenerator;
  */
 public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
 
-    private File applicationRoot;
+    //--------------------------------------------------------------------------
+    // ICaustkConfiguration API :: Properties
+    //--------------------------------------------------------------------------
 
-    private File causticStorage;
+    //----------------------------------
+    // soundGenerator
+    //----------------------------------
 
-    public CaustkConfigurationBase() {
-        setCausticStorage(new File(System.getProperty("user.home")));
+    private ISoundGenerator soundGenerator;
+
+    @Override
+    public ISoundGenerator getSoundGenerator() {
+        return soundGenerator;
     }
 
     @Override
-    public abstract String getApplicationId();
+    public void setSoundGenerator(ISoundGenerator value) {
+        soundGenerator = value;
+    }
+
+    //----------------------------------
+    // applicationTitle
+    //----------------------------------
+
+    private String applicationId;
+
+    @Override
+    public final String getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(String value) {
+        applicationId = value;
+    }
+
+    //----------------------------------
+    // applicationTitle
+    //----------------------------------
+
+    private String applicationTitle;
+
+    @Override
+    public String getApplicationTitle() {
+        return applicationTitle;
+    }
+
+    @Override
+    public void setApplicationTitle(String value) {
+        applicationTitle = value;
+    }
+
+    //----------------------------------
+    // applicationRoot
+    //----------------------------------
+
+    private File applicationRoot;
 
     @Override
     public File getApplicationRoot() {
@@ -53,6 +101,12 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
         applicationRoot = value;
     }
 
+    //----------------------------------
+    // causticStorage
+    //----------------------------------
+
+    private File causticStorage;
+
     @Override
     public File getCausticStorage() {
         return causticStorage;
@@ -61,14 +115,29 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     @Override
     public void setCausticStorage(File value) {
         causticStorage = value;
+        RuntimeUtils.STORAGE_ROOT = value.getAbsolutePath();
     }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public CaustkConfigurationBase() {
+        setCausticStorage(new File(System.getProperty("user.home")));
+        initialize();
+    }
+
+    /**
+     * Subclasses can initialize any properties specific to the platform.
+     */
+    abstract protected void initialize();
+
+    //--------------------------------------------------------------------------
+    // ICaustkConfiguration API :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public ICaustkController createController(ICaustkApplication application) {
         return new CaustkController(application);
     }
-
-    @Override
-    public abstract ISoundGenerator createSoundGenerator(ICaustkController controller);
-
 }

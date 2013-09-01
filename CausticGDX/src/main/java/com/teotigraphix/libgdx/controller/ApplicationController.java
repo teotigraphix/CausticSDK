@@ -16,7 +16,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
-import com.teotigraphix.caustk.project.IProjectManager.ProjectManagerChangeKind;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.libgdx.model.ApplicationModel;
 import com.teotigraphix.libgdx.model.IApplicationModel;
@@ -99,13 +98,12 @@ public class ApplicationController implements IApplicationController {
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {
-                        if (object.getKind() == ProjectManagerChangeKind.CREATE) {
-                            //onProjectCreate();
-                        } else if (object.getKind() == ProjectManagerChangeKind.LOAD) {
-                            //onProjectLoad();
-                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE) {
-                            onProjectSave();
-                        } else if (object.getKind() == ProjectManagerChangeKind.SAVE_COMPLETE) {
+                        switch (object.getKind()) {
+                            case SAVE:
+                                onProjectSave();
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });

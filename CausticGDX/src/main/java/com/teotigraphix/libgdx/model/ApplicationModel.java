@@ -1,17 +1,11 @@
 
 package com.teotigraphix.libgdx.model;
 
-import java.util.ResourceBundle;
-
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CtkDebug;
 
 @Singleton
 public class ApplicationModel extends ModelBase implements IApplicationModel {
-
-    //@Inject
-    //@Named(value = "resources")
-    ResourceBundle _resourceBundle;
 
     @Override
     public String getName() {
@@ -58,7 +52,6 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
     @Override
     public void start() {
         CtkDebug.model("ApplicationModel.start() fires OnApplicationModelStart");
-        getController().getDispatcher().trigger(new OnApplicationModelStart());
     }
 
     //--------------------------------------------------------------------------
@@ -68,19 +61,13 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
     @Override
     public void run() {
         CtkDebug.model(">>>>> ApplicationModel.run() fires OnApplicationModelRun");
-        getController().getDispatcher().trigger(new OnApplicationModelRun());
-    }
-
-    @Override
-    public void onShow() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onRegister() {
-        // TODO Auto-generated method stub
-
     }
 
+    @Override
+    public void onShow() {
+    }
 }
