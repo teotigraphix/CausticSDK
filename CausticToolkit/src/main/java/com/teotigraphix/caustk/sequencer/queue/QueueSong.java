@@ -60,8 +60,7 @@ public class QueueSong implements ISerialize {
         return bankMap;
     }
 
-    @SuppressWarnings("unused")
-    private QueueData getQueueData(int bankIndex, int patternIndex) {
+    public QueueData getQueueData(int bankIndex, int patternIndex) {
         Map<Integer, QueueData> bankMap = getBankMap(bankIndex);
         QueueData queueData = bankMap.get(patternIndex);
         if (queueData == null) {
@@ -95,6 +94,13 @@ public class QueueSong implements ISerialize {
                 queueData.wakeup(controller);
             }
         }
+    }
+
+    //--------------------------------------------------------------------------
+
+    public void nextBeat() {
+        // TODO Auto-generated method stub
+
     }
 
 }

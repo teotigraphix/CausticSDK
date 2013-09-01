@@ -110,10 +110,6 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         return trackSong.getTrack(index);
     }
 
-    public TrackChannel findTrack(int index) {
-        return trackSong.findTrack(index);
-    }
-
     public TrackPhrase getPhrase(int toneIndex, int bankIndex, int patterIndex) {
         return trackSong.getPhrase(toneIndex, bankIndex, patterIndex);
     }

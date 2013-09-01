@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.track;
+package com.teotigraphix.caustk.sequencer.track;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

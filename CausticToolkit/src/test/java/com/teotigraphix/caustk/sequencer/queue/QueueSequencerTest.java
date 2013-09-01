@@ -50,6 +50,9 @@ public class QueueSequencerTest extends CaustkTestBase {
         assertTrue(trackSequencer.getTrackSong().getAbsoluteFile().exists());
         assertTrue(queueSequencer.getQueueSong().getAbsoluteFile().exists());
 
+        QueueData data = queueSequencer.getQueueSong().getQueueData(0, 0);
+        queueSequencer.queue(data);
+
         controller.getApplication().save();
     }
 }

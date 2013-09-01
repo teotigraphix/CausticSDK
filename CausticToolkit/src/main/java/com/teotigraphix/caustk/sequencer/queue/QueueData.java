@@ -39,13 +39,13 @@ public class QueueData implements ISerialize {
     // state
     //----------------------------------
 
-    private PadDataState state = PadDataState.IDLE;
+    private QueueDataState state = QueueDataState.Idle;
 
-    public final PadDataState getState() {
+    public final QueueDataState getState() {
         return state;
     }
 
-    public void setState(PadDataState value) {
+    public void setState(QueueDataState value) {
         state = value;
     }
 
@@ -127,8 +127,8 @@ public class QueueData implements ISerialize {
 
     @Override
     public void sleep() {
-        if (state == PadDataState.QUEUED)
-            state = PadDataState.IDLE;
+        if (state == QueueDataState.Queued)
+            state = QueueDataState.Idle;
         for (QueueDataChannel channel : map.values()) {
             channel.sleep();
         }
@@ -148,13 +148,13 @@ public class QueueData implements ISerialize {
         return "Data{" + state + "}[" + bankIndex + "," + patternIndex + "]";
     }
 
-    public enum PadDataState {
-        IDLE,
+    public enum QueueDataState {
+        Idle,
 
-        SELECTED,
+        Selected,
 
-        QUEUED,
+        Queued,
 
-        UNQUEUED;
+        UnQueued;
     }
 }

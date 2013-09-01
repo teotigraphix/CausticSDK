@@ -1,12 +1,17 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.sound.midi.Track;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;
@@ -26,7 +31,7 @@ public class TrackChannel implements ISerialize {
         return controller.getTrackSequencer().getDispatcher();
     }
 
-    Map<Integer, Map<Integer, TrackPhrase>> patterns = new TreeMap<Integer, Map<Integer, TrackPhrase>>();
+    Map<Integer, Map<Integer, TrackPhrase>> phrases = new TreeMap<Integer, Map<Integer, TrackPhrase>>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -117,10 +122,10 @@ public class TrackChannel implements ISerialize {
      * @param pattern
      */
     public TrackPhrase getPhrase(int bank, int pattern) {
-        Map<Integer, TrackPhrase> banks = patterns.get(bank);
+        Map<Integer, TrackPhrase> banks = phrases.get(bank);
         if (banks == null) {
             banks = new TreeMap<Integer, TrackPhrase>();
-            patterns.put(bank, banks);
+            phrases.put(bank, banks);
         }
         TrackPhrase phrase = banks.get(pattern);
         if (phrase == null) {
@@ -170,7 +175,7 @@ public class TrackChannel implements ISerialize {
     @Override
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
-        for (Map<Integer, TrackPhrase> bankMap : patterns.values()) {
+        for (Map<Integer, TrackPhrase> bankMap : phrases.values()) {
             for (TrackPhrase phrase : bankMap.values()) {
                 phrase.wakeup(controller);
             }
@@ -220,4 +225,193 @@ public class TrackChannel implements ISerialize {
         }
     }
 
+    //--------------------------------------------------------------------------
+
+    // the phrase map is keyed on the measure start
+    Map<Integer, TrackItem> items = new HashMap<Integer, TrackItem>();
+
+    public void setCurrentBeat(float currentBeat) {
+        // TODO Auto-generated method stub
+
+    }
+
+    public List<TrackItem> getItemsOnMeasure(int measure) {
+        List<TrackItem> result = new ArrayList<TrackItem>();
+        for (TrackItem item : items.values()) {
+            if (item.contains(measure))
+                result.add(item);
+        }
+        return result;
+    }
+
+    public TrackItem getTrackItem(int measure) {
+        return items.get(measure);
+    }
+
+    public TrackItem findTrackItem(int startMeasure, int length) {
+        for (int i = startMeasure; i < startMeasure + length; i++) {
+            for (TrackItem item : items.values()) {
+                if (items.containsKey(i))
+                    return item;
+            }
+        }
+        return null;
+    }
+
+    public TrackItem addPhrase(int numLoops, TrackPhrase channel) throws CausticException {
+        int startMeasure = getNextMeasure();
+        return addPhraseAt(startMeasure, numLoops, channel, true);
+    }
+
+    /**
+     * Adds a {@link TrackPhrase} to the {@link Track} by creating a
+     * {@link TrackItem} reference.
+     * 
+     * @param startMeasure The measure the phrase starts on.
+     * @param numLoops The number of times the phrase is repeated. The
+     *            {@link TrackPhrase#getNumMeasures()} is used to calculate the
+     *            number of total measures.
+     * @param trackPhrase The phrase reference which will already have been
+     *            created and registered with the Track. This phrase will have
+     *            an index of 0-63.
+     * @throws CausticException The start or measure span is occupied
+     */
+    public TrackItem addPhraseAt(int startMeasure, int numLoops, TrackPhrase trackPhrase,
+            boolean dispatch) throws CausticException {
+
+        if (contains(startMeasure))
+            throw new CausticException("Track contain phrase at start: " + startMeasure);
+
+        final int duration = trackPhrase.getLength() * numLoops;
+        int endMeasure = startMeasure + duration;
+        if (contains(startMeasure, endMeasure))
+            throw new CausticException("Track contain phrase at end: " + endMeasure);
+
+        TrackItem item = new TrackItem();
+        item.setTrackIndex(getIndex());
+        item.setNumMeasures(trackPhrase.getLength());
+        //        item.setPhraseId(trackPhrase.getId());
+        item.setStartMeasure(startMeasure);
+        item.setBankIndex(trackPhrase.getBank());
+        item.setPatternIndex(trackPhrase.getPattern());
+        item.setEndMeasure(startMeasure + duration);
+        item.setNumLoops(numLoops);
+
+        items.put(startMeasure, item);
+
+        //if (dispatch)
+        //   getDispatcher().trigger(new OnTrackPhraseAdd(this, item));
+
+        return item;
+    }
+
+    public void removePhrase(int startMeasure) throws CausticException {
+        if (!items.containsKey(startMeasure))
+            throw new CausticException("Patterns does not contain phrase at: " + startMeasure);
+
+        TrackItem item = items.remove(startMeasure);
+        @SuppressWarnings("unused")
+        BankPatternSlot slot = new BankPatternSlot(item.getBankIndex(), item.getPatternIndex());
+        //        queue.push(slot);
+
+        //getDispatcher().trigger(new OnTrackPhraseRemove(this, trackPhrase));
+    }
+
+    /**
+     * Returns the valid next 'last' measure.
+     * <p>
+     * This measure is for patterns being appended to the end of the current
+     * last pattern's measure.
+     */
+    private int getNextMeasure() {
+        int next = 0;
+        for (TrackItem item : items.values()) {
+            if (item.getEndMeasure() > next)
+                next = item.getEndMeasure();
+        }
+        return next;
+    }
+
+    private boolean contains(int startMeasure, int endMeasure) {
+        //        for (int measure = startMeasure; measure < endMeasure; measure++) {
+        //            for (TrackItem item : items.values()) {
+        //                if (item.containsInSpan(measure))
+        //                    return true;
+        //            }
+        //        }
+        return false;
+    }
+
+    public boolean contains(int measure) {
+        for (TrackItem item : items.values()) {
+            if (item.contains(measure))
+                return true;
+        }
+        return false;
+    }
+
+    class BankPatternSlot {
+
+        private int bank;
+
+        private int pattern;
+
+        public final int getBank() {
+            return bank;
+        }
+
+        public final int getPattern() {
+            return pattern;
+        }
+
+        public BankPatternSlot(int bank, int pattern) {
+            this.bank = bank;
+            this.pattern = pattern;
+        }
+
+        @Override
+        public String toString() {
+            return "[" + bank + ":" + pattern + "]";
+        }
+    }
+
+    public static float toLocalBeat(float beat, int length) {
+        float r = (beat % (length * 4));
+        return r;
+    }
+
+    @Override
+    public String toString() {
+        return items.values().toString();
+    }
+
+    public static class OnTrackChannelPhraseAdd extends TrackChannelEvent {
+
+        private TrackItem trackItem;
+
+        public OnTrackChannelPhraseAdd(TrackChannel track, TrackItem trackItem) {
+            super(track);
+            this.trackItem = trackItem;
+        }
+
+        public final TrackItem getItem() {
+            return trackItem;
+        }
+
+    }
+
+    public static class OnTrackChannelPhraseRemove extends TrackChannelEvent {
+
+        private TrackItem trackItem;
+
+        public OnTrackChannelPhraseRemove(TrackChannel track, TrackItem trackItem) {
+            super(track);
+            this.trackItem = trackItem;
+        }
+
+        public final TrackItem getItem() {
+            return trackItem;
+        }
+
+    }
 }

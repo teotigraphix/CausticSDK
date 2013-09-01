@@ -11,12 +11,18 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerTrackSongChange;
-import com.teotigraphix.caustk.sequencer.queue.QueueData.PadDataState;
+import com.teotigraphix.caustk.sequencer.queue.QueueData.QueueDataState;
+import com.teotigraphix.caustk.sequencer.track.TrackChannel;
+import com.teotigraphix.caustk.sequencer.track.TrackItem;
+import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
+import com.teotigraphix.caustk.tone.Tone;
 
 public class QueueSequencer extends ControllerComponent implements IQueueSequencer {
 
@@ -25,6 +31,8 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     private List<QueueData> playQueue = new ArrayList<QueueData>();
 
     private List<QueueData> queued = new ArrayList<QueueData>();
+
+    private List<QueueData> flushedQueue = new ArrayList<QueueData>();
 
     final ITrackSequencer getTrackSequencer() {
         return getController().getTrackSequencer();
@@ -43,6 +51,10 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     public final QueueSong getQueueSong() {
         return queueSong;
+    }
+
+    public final TrackSong getTrackSong() {
+        return getTrackSequencer().getTrackSong();
     }
 
     public QueueSequencer(ICaustkController controller) {
@@ -102,34 +114,212 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         queueSong.wakeup(getController());
     }
 
+    @Override
     public boolean queue(QueueData data) {
         if (currentLocalBeat == 3)
             return false;
 
         if (!queued.contains(data)) {
             CtkDebug.log("Queue:" + data);
-            data.setState(PadDataState.QUEUED);
+            data.setState(QueueDataState.Queued);
             queued.add(data);
         }
         return true;
     }
 
+    @Override
     public boolean unqueue(QueueData data) {
         if (currentLocalBeat == 3)
             return false;
         if (playQueue.contains(data)) {
-            if (data.getState() == PadDataState.QUEUED) {
-                data.setState(PadDataState.IDLE);
+            if (data.getState() == QueueDataState.Queued) {
+                data.setState(QueueDataState.Idle);
                 playQueue.remove(data);
             } else {
-                data.setState(PadDataState.UNQUEUED);
+                data.setState(QueueDataState.UnQueued);
             }
         } else {
             queued.remove(data);
-            data.setState(PadDataState.IDLE);
+            data.setState(QueueDataState.Idle);
         }
 
         return true;
+    }
+
+    public void beatChange(float beat) {
+        getQueueSong().nextBeat();
+
+        currentLocalBeat = (int)(beat % 4);
+
+        // start new measure
+        if (currentLocalBeat == 0) {
+            for (QueueData data : flushedQueue) {
+                if (data.getState() != QueueDataState.Queued) {
+                    data.setState(QueueDataState.Idle);
+                    QueueDataChannel channel = data.getChannel(data.getViewChannel());
+                    //                    channel.setCurrentBeat(0);
+                }
+
+                for (QueueDataChannel channel : data.getChannels()) {
+                    Tone tone = getController().getSoundSource().getTone(channel.getToneIndex());
+                    tone.setMuted(true);
+                }
+            }
+
+            flushedQueue.clear();
+
+            for (QueueData data : playQueue) {
+                for (QueueDataChannel channel : data.getChannels()) {
+                    Tone tone = getController().getSoundSource().getTone(channel.getToneIndex());
+                    if (tone != null)
+                        tone.setMuted(false);
+                }
+            }
+
+            //CtkDebug.model(">> Remainder:" + remainder);
+            lockAndExtendPlayingTracks();
+        }
+
+        // last beat in measure
+        if (currentLocalBeat == 3) {
+            queueTracks();
+        }
+
+        for (QueueData data : playQueue) {
+            QueueDataChannel channel = data.getChannel(data.getViewChannel());
+            //int calcBeatInMeasure = channel.getChannelPhrase().getLength();
+            //Track track = getSong().getTrack(channel.getIndex());
+            //TrackItem trackItem = track.getTrackItem(measure);
+            //if (trackItem != null) {
+            //int beats = trackItem.getStartMeasure() * 4;
+            //beats = beat - beats;
+            //int currentLocalBeat
+            //.setCurrentBeat(beat);
+            //            channel.setCurrentBeat(channel.getCurrentBeat() + 1);
+            //}
+        }
+    }
+
+    private void lockAndExtendPlayingTracks() {
+        final int beat = getTrackSong().getCurrentBeat();
+        final int currentMeasure = getTrackSong().getCurrentMeasure();
+        @SuppressWarnings("unused")
+        final int isNewMeasure = beat % 4;
+
+        // from here on, we have everything correct with current beat and measure
+        // the TrackSong's cursor is correct.
+        // Check to see if there are any tracks that are in their last beat
+        // All tracks in the last beat get extended their length
+
+        for (TrackChannel track : getTrackSequencer().getTracks()) {
+
+            // First try an find a track item at the current measure
+            List<TrackItem> list = track.getItemsOnMeasure(currentMeasure);
+            for (TrackItem item : list) {
+                //String name = PatternUtils.toString(item.getBankIndex(), item.getPatternIndex());
+
+                //int numPhraseMeasures = item.getNumMeasures();
+                //int numBeatsInPhrase = (4 * numPhraseMeasures);
+                //int startMeasure = beat % numBeatsInPhrase;
+
+                //CtkDebug.model("XXX:" + startMeasure);
+                // If the current beat is the last beat in the phrase
+                if (item.getEndMeasure() == currentMeasure + 1) {
+                    //if (startMeasure == numBeatsInPhrase - 1) {
+
+                    QueueData data = queueSong.getQueueData(item.getBankIndex(),
+                            item.getPatternIndex());
+
+                    for (QueueDataChannel channel : data.getChannels()) {
+
+                        if (channel.isLoopEnabled()) {
+
+                            if (data.getState() == QueueDataState.Selected) {
+                                // add the phrase at the very next measure
+                                //                                addPhraseAt(track, currentMeasure + 1, channel.getChannelPhrase());
+                                //                                channel.setCurrentBeat(0);
+                            } else if (data.getState() == QueueDataState.UnQueued) {
+                                // remove the item from the que
+                                stopPlaying(data);
+                            }
+
+                        } else {
+                            // oneshot remove
+                            stopPlaying(data);
+                            // set this here since turning off is immediate
+                            data.setState(QueueDataState.Idle);
+                        }
+
+                    }
+
+                    //CtkDebug.model("Lock:" + beat);
+                }
+            }
+        }
+    }
+
+    private void queueTracks() {
+        @SuppressWarnings("unused")
+        final int currentBeat = getTrackSong().getCurrentBeat();
+        final int currentMeasure = getTrackSong().getCurrentMeasure();
+
+        //CtkDebug.log("Setup queued [" + currentBeat + "," + currentMeasure + "]");
+
+        ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
+        // loop through the queue and add queued items
+        for (QueueData data : copied) {
+            if (data.getState() == QueueDataState.Queued) {
+                // add to sequencer
+                for (QueueDataChannel channel : data.getChannels()) {
+                    //                    Track track = song.getTrack(channel.getIndex());
+                    //                    addPhraseAt(track, currentMeasure + 1, channel.getChannelPhrase());
+                }
+                startPlaying(data);
+            } else if (data.getState() == QueueDataState.Selected) {
+
+            }
+        }
+    }
+
+    public void play() throws CausticException {
+        getTrackSong().rewind();
+
+        ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
+        for (QueueData data : copied) {
+            if (data.getState() == QueueDataState.Queued) {
+                // add to sequencer
+                for (QueueDataChannel channel : data.getChannels()) {
+                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                    //                    addPhraseAt(track, 0, channel.getChannelPhrase());
+                }
+                startPlaying(data);
+            } else if (data.getState() == QueueDataState.Selected) {
+
+            }
+        }
+        //getSong().play();
+        getController().getSystemSequencer().play(SequencerMode.SONG);
+    }
+
+    private void addPhraseAt(TrackChannel track, int start, TrackPhrase phrase) {
+        try {
+            track.addPhraseAt(start, 1, phrase, true);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startPlaying(QueueData data) {
+        data.setState(QueueDataState.Selected);
+        queued.remove(data);
+        playQueue.add(data);
+    }
+
+    private void stopPlaying(QueueData data) {
+        flushedQueue.add(data);
+        playQueue.remove(data);
+        // things will get set to idle in flush if not queued again
+        // data.setState(PadDataState.IDLE);
     }
 
     public static class QueueSequencerState extends ControllerComponentState {

@@ -225,4 +225,6 @@ public interface ITrackSequencer extends IControllerComponent {
         }
     }
 
+    TrackSong getTrackSong();
+
 }
