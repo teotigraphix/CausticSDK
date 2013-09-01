@@ -33,6 +33,9 @@ public class TrackSong implements ISerialize {
 
     private File file;
 
+    /**
+     * The relative path within the project directory.
+     */
     public final File getFile() {
         return file;
     }
@@ -41,30 +44,51 @@ public class TrackSong implements ISerialize {
         file = value;
     }
 
+    /**
+     * Returns the absolute location of the song file on disk, within the
+     * project's resource directory.
+     */
+    public File getAbsoluteFile() {
+        final File absoluteFile = controller.getProjectManager().getProject()
+                .getResource(file.getPath()).getAbsoluteFile();
+        return absoluteFile;
+    }
+
+    /**
+     * The relative path of the containing directory within the project
+     * directory.
+     */
     public final File getDirectory() {
         if (file == null)
             return null;
         return file.getParentFile();
     }
 
+    /**
+     * The song's file name without the extension.
+     */
     public String getFileName() {
         if (file == null)
             return null;
         return file.getName().replace(".ctks", "");
     }
 
+    /**
+     * The relative location of the sibling <code>.caustic</code> file.
+     */
     public File getCausticFile() {
         if (file == null)
             return null;
         return new File(getDirectory(), getFileName() + ".caustic");
     }
 
+    /**
+     * The absolute location of the sibling <code>.caustic</code> file on disk.
+     */
     public File getAbsoluteCausticFile() {
         if (file == null)
             return null;
-        File absoluteFile = controller.getProjectManager().getProject().getResource(file.getPath())
-                .getAbsoluteFile();
-        return new File(absoluteFile.getParentFile(), getFileName() + ".caustic");
+        return new File(getAbsoluteFile().getParentFile(), getFileName() + ".caustic");
     }
 
     //----------------------------------

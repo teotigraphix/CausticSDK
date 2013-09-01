@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
@@ -13,9 +12,6 @@ import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
 public interface ITrackSequencer extends IControllerComponent {
-
-    @Override
-    IDispatcher getDispatcher();
 
     /**
      * Returns the current track/tone index.
@@ -78,6 +74,7 @@ public interface ITrackSequencer extends IControllerComponent {
      * @param songFile The absolute path to the file, the <code>.caustic</code>
      *            file is saved in the same directory with the same name as this
      *            song file.
+     * @see OnTrackSequencerTrackSongChange
      * @throws IOException
      */
     void create(File songFile) throws IOException;
@@ -177,6 +174,34 @@ public interface ITrackSequencer extends IControllerComponent {
             this.phraseNote = phraseNote;
             trackChannel = trackPhrase.getController().getTrackSequencer()
                     .getTrack(trackPhrase.getToneIndex());
+        }
+    }
+
+    public enum TrackSongChangeKind {
+        Create,
+
+        Load,
+
+        Save
+    }
+
+    public static class OnTrackSequencerTrackSongChange {
+
+        private TrackSong trackSong;
+
+        private TrackSongChangeKind kind;
+
+        public TrackSongChangeKind getKind() {
+            return kind;
+        }
+
+        public TrackSong getTrackSong() {
+            return trackSong;
+        }
+
+        public OnTrackSequencerTrackSongChange(TrackSongChangeKind kind, TrackSong trackSong) {
+            this.kind = kind;
+            this.trackSong = trackSong;
         }
     }
 

@@ -194,6 +194,8 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
         trackSong = new TrackSong(songFile);
         trackSong.wakeup(getController());
+        getDispatcher().trigger(
+                new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Create, trackSong));
         saveTrackSong();
     }
 
@@ -205,6 +207,8 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                 .getResource(trackSong.getFile().getPath());
         File absoluteTargetSongFile = localFile.getAbsoluteFile();
         getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
+        getDispatcher().trigger(
+                new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Save, trackSong));
     }
 
     protected void trackAdd(Tone tone) {
@@ -233,6 +237,8 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         File file = getState().getSongFile();
         if (file != null) {
             trackSong = getController().getSerializeService().fromFile(file, TrackSong.class);
+            getDispatcher().trigger(
+                    new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Load, trackSong));
         }
         getDispatcher().trigger(new OnTrackSequencerLoad());
     }

@@ -43,10 +43,12 @@ import com.teotigraphix.caustk.pattern.IPatternManager;
 import com.teotigraphix.caustk.pattern.PatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
+import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISongSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.SongSequencer;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.sequencer.queue.QueueSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.SerializeService;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
@@ -143,7 +145,7 @@ public class CaustkController implements ICaustkController {
     }
 
     //----------------------------------
-    // songSequencer
+    // trackSequencer
     //----------------------------------
 
     private ITrackSequencer trackSequencer;
@@ -162,6 +164,17 @@ public class CaustkController implements ICaustkController {
     @Override
     public ISongSequencer getSongSequencer() {
         return songSequencer;
+    }
+
+    //----------------------------------
+    // queueSequencer
+    //----------------------------------
+
+    private IQueueSequencer queueSequencer;
+
+    @Override
+    public IQueueSequencer getQueueSequencer() {
+        return queueSequencer;
     }
 
     //----------------------------------
@@ -345,6 +358,7 @@ public class CaustkController implements ICaustkController {
         soundSource = new SoundSource(this);
         soundMixer = new SoundMixer(this);
         songSequencer = new SongSequencer(this);
+        queueSequencer = new QueueSequencer(this);
 
         systemSequencer = new SystemSequencer(this);
         systemState = new SystemState(this);
@@ -357,6 +371,7 @@ public class CaustkController implements ICaustkController {
         components.add(songSequencer);
         components.add(systemSequencer);
         components.add(patternManager);
+        components.add(queueSequencer);
 
         for (IControllerComponent component : components) {
             component.onRegister();
