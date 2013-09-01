@@ -19,13 +19,8 @@
 
 package com.teotigraphix.caustk.controller;
 
-import java.io.IOException;
-
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.application.ICaustkApplication;
-import com.teotigraphix.caustk.application.ICaustkConfiguration;
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
@@ -105,28 +100,4 @@ public interface ICaustkController extends ICausticEngine {
     void undo();
 
     void redo();
-
-    /**
-     * Called to create all sub components of the {@link ICaustkController}.
-     * 
-     * @see ICaustkApplication#initialize()
-     */
-    void initialize();
-
-    /**
-     * Called to start all sub components of the {@link ICaustkController}.
-     * 
-     * @see ICaustkApplication#start()
-     */
-    void start();
-
-    /**
-     * Saves an sub components.
-     * 
-     * @see ICaustkApplication#save()
-     * @throws IOException
-     */
-    void save() throws IOException;
-
-    void close();
 }

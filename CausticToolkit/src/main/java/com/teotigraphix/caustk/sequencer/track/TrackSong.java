@@ -7,8 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerCurrentTrackChange;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.sound.mixer.MasterMixer;

@@ -4,8 +4,8 @@ package com.teotigraphix.caustk.sequencer.track;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;

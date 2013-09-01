@@ -10,8 +10,8 @@ import java.util.Map.Entry;
 import org.androidtransfuse.event.EventObserver;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.libgdx.screen.IScreen;
 

@@ -3,7 +3,7 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
 import com.teotigraphix.caustk.tone.Tone;
 

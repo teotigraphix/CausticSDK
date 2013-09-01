@@ -12,7 +12,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.service.IInjectorService;

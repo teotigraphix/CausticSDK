@@ -32,9 +32,9 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
-import com.teotigraphix.caustk.controller.ControllerComponent;
-import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;

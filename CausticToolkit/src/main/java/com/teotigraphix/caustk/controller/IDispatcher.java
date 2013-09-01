@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.application;
+package com.teotigraphix.caustk.controller;
 
 import org.androidtransfuse.event.EventObserver;
 

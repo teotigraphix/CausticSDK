@@ -11,6 +11,7 @@ import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 
 public class QueueMapTest extends CaustkTestBase {
 
+    @SuppressWarnings("unused")
     private IQueueSequencer queueSequencer;
 
     @Override

@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.project;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.application.ICaustkConfiguration;
+import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 public interface IProjectManager {

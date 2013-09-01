@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.system;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.ControllerComponentState;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 
 /**
  * Serialized - v1.0

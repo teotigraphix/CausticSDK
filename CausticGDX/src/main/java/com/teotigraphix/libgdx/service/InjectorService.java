@@ -4,7 +4,7 @@ package com.teotigraphix.libgdx.service;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.service.IInjectorService;
 
 @Singleton

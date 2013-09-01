@@ -5,8 +5,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.service.ISerialize;
 
 public class QueueSong implements ISerialize {
@@ -60,6 +60,7 @@ public class QueueSong implements ISerialize {
         return bankMap;
     }
 
+    @SuppressWarnings("unused")
     private QueueData getQueueData(int bankIndex, int patternIndex) {
         Map<Integer, QueueData> bankMap = getBankMap(bankIndex);
         QueueData queueData = bankMap.get(patternIndex);

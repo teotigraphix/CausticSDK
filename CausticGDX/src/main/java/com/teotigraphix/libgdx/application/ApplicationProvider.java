@@ -2,10 +2,10 @@
 package com.teotigraphix.libgdx.application;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.application.CaustkApplication;
-import com.teotigraphix.caustk.application.ICaustkApplication;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
-import com.teotigraphix.caustk.application.ICaustkConfiguration;
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.controller.ICaustkConfiguration;
+import com.teotigraphix.caustk.controller.core.CaustkApplication;
 
 public class ApplicationProvider implements ICaustkApplicationProvider {
 

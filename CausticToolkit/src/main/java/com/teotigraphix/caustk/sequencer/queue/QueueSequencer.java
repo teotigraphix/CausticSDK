@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ControllerComponent;
-import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;

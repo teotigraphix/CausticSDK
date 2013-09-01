@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.controller.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.IDispatcher;
 
 /**
  * @author Michael Schmalle

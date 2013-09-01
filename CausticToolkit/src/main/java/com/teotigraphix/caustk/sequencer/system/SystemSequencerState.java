@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.sequencer.system;
 
-import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSongSequencerTempoChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;

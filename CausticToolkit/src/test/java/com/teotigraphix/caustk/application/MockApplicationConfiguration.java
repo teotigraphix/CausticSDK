@@ -3,7 +3,9 @@ package com.teotigraphix.caustk.application;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
 import com.teotigraphix.caustk.core.internal.Constants;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.core.DesktopSoundGenerator;

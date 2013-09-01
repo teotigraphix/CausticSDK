@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller;
+package com.teotigraphix.caustk.controller.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,10 +28,11 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.application.Dispatcher;
-import com.teotigraphix.caustk.application.ICaustkApplication;
-import com.teotigraphix.caustk.application.ICaustkConfiguration;
-import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkConfiguration;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
@@ -323,8 +324,7 @@ public class CaustkController implements ICaustkController {
     // ISystemController API
     //--------------------------------------------------------------------------
 
-    @Override
-    public void initialize() {
+    void initialize() {
         CtkDebug.log("Controller: Create app root dir if not created");
         File applicationRoot = getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
@@ -369,19 +369,15 @@ public class CaustkController implements ICaustkController {
 
     private List<IControllerComponent> components = new ArrayList<IControllerComponent>();
 
-    @Override
-    public void start() {
-
+    void start() {
     }
 
-    @Override
-    public void save() throws IOException {
+    void save() throws IOException {
         CtkDebug.log("Controller.save()");
         projectManager.save();
     }
 
-    @Override
-    public void close() {
+    void close() {
         CtkDebug.log("Controller.close()");
         soundGenerator.close();
     }

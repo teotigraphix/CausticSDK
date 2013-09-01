@@ -26,7 +26,7 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.ControllerComponentState;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 
 /**
  * Serialized - v1.0

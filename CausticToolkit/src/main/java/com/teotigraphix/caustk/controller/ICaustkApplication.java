@@ -17,11 +17,10 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.application;
+package com.teotigraphix.caustk.controller;
 
 import java.io.IOException;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 /**
  * The {@link ICaustkApplication} API is the startup instrumentation.
@@ -69,31 +68,39 @@ public interface ICaustkApplication {
      */
     void save() throws IOException;
 
-    /**
-     * @see ICaustkApplication#initialize()
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnApplicationInitialize {
+    public enum StateChangeKind {
+
+        /**
+         * @see ICaustkApplication#initialize()
+         */
+        Initialize,
+
+        /**
+         * @see ICaustkApplication#start()
+         */
+        Start,
+
+        /**
+         * @see ICaustkApplication#save()
+         */
+        Save,
+
+        /**
+         * @see ICaustkApplication#close()
+         */
+        Close
     }
 
-    /**
-     * @see ICaustkApplication#start()
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnApplicationStart {
-    }
+    public static class OnCausticApplicationStateChange {
 
-    /**
-     * @see ICaustkApplication#save()
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnApplicationSave {
-    }
+        private StateChangeKind kind;
 
-    /**
-     * @see ICaustkApplication#close()
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnApplicationClose {
+        public StateChangeKind getKind() {
+            return kind;
+        }
+
+        public OnCausticApplicationStateChange(StateChangeKind kind) {
+            this.kind = kind;
+        }
     }
 }

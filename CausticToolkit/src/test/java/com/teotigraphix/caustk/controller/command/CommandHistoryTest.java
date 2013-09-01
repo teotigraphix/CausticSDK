@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.teotigraphix.caustk.application.CaustkApplicationUtils;
-import com.teotigraphix.caustk.application.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnNextComplete;
 

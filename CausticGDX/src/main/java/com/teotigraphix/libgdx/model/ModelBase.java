@@ -2,9 +2,9 @@
 package com.teotigraphix.libgdx.model;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.application.Dispatcher;
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.caustk.service.ISerialize;

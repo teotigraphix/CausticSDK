@@ -22,12 +22,12 @@ package com.teotigraphix.caustk.controller.command;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.application.Dispatcher;
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnClearComplete;
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnFastForwardComplete;
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnRewindComplete;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 
 public class CommandManager implements ICommandManager {

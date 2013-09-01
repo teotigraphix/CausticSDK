@@ -17,10 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.application;
+package com.teotigraphix.caustk.controller.core;
 
 import java.io.IOException;
 
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 
@@ -37,7 +39,7 @@ public class CaustkApplication implements ICaustkApplication {
     // configuration
     //----------------------------------
 
-    private ICaustkConfiguration configuration;
+    private final ICaustkConfiguration configuration;
 
     @Override
     public final ICaustkConfiguration getConfiguration() {
@@ -48,7 +50,7 @@ public class CaustkApplication implements ICaustkApplication {
     // controller
     //----------------------------------
 
-    private ICaustkController controller;
+    private final CaustkController controller;
 
     @Override
     public final ICaustkController getController() {
@@ -67,7 +69,7 @@ public class CaustkApplication implements ICaustkApplication {
     public CaustkApplication(ICaustkConfiguration configuration) {
         this.configuration = configuration;
 
-        controller = getConfiguration().createController(this);
+        controller = (CaustkController)getConfiguration().createController(this);
     }
 
     //--------------------------------------------------------------------------
@@ -79,28 +81,32 @@ public class CaustkApplication implements ICaustkApplication {
         CtkDebug.log("~Application.initialize()");
         // creates all sub components of the controller
         controller.initialize();
-        getController().getDispatcher().trigger(new OnApplicationInitialize());
+        fireStateChange(StateChangeKind.Initialize);
     }
 
     @Override
     public void start() {
         CtkDebug.log("~Application.start()");
         controller.start();
-        getController().getDispatcher().trigger(new OnApplicationStart());
+        fireStateChange(StateChangeKind.Start);
     }
 
     @Override
     public void save() throws IOException {
         CtkDebug.log("~Application.save()");
         controller.save();
-        getController().getDispatcher().trigger(new OnApplicationSave());
+        fireStateChange(StateChangeKind.Save);
     }
 
     @Override
     public void close() {
         CtkDebug.log("~Application.close()");
         controller.close();
-        getController().getDispatcher().trigger(new OnApplicationClose());
+        fireStateChange(StateChangeKind.Close);
+    }
+
+    private void fireStateChange(StateChangeKind kind) {
+        getController().getDispatcher().trigger(new OnCausticApplicationStateChange(kind));
     }
 
 }

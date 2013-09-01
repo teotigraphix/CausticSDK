@@ -23,12 +23,12 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ControllerComponent;
-import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;

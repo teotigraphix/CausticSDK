@@ -17,15 +17,16 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.application;
+package com.teotigraphix.caustk.controller.core;
 
-/**
- * @author Michael Schmalle
- */
-public interface ICaustkApplicationProvider {
+import org.androidtransfuse.event.EventManager;
 
-    /**
-     * Returns the application's {@link ICaustkApplication} implementation.
-     */
-    ICaustkApplication get();
+import com.teotigraphix.caustk.controller.IDispatcher;
+
+
+public class Dispatcher extends EventManager implements IDispatcher {
+
+    public Dispatcher() {
+    }
+
 }

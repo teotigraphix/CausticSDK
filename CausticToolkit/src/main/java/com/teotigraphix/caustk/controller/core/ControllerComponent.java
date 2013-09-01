@@ -17,15 +17,16 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller;
+package com.teotigraphix.caustk.controller.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.application.Dispatcher;
-import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.project.ProjectManager;

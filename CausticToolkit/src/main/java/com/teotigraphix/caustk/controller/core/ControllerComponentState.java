@@ -17,8 +17,9 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller;
+package com.teotigraphix.caustk.controller.core;
 
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 

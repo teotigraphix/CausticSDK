@@ -32,9 +32,9 @@ import java.util.UUID;
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.controller.ControllerComponent;
-import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.LibraryScene;

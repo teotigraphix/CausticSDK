@@ -22,8 +22,8 @@ package com.teotigraphix.libgdx.controller;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.application.ICaustkApplication;
-import com.teotigraphix.caustk.application.ICaustkConfiguration;
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.Project;

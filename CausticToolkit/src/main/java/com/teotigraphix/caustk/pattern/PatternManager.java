@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.pattern;
 
 import java.util.Collection;
 
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;

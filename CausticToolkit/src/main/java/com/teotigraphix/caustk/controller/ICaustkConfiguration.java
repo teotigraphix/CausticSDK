@@ -17,12 +17,11 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.application;
+package com.teotigraphix.caustk.controller;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.controller.CaustkController;
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 

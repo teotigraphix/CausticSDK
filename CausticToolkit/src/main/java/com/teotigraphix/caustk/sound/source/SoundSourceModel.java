@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.ControllerComponentState;
+import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 

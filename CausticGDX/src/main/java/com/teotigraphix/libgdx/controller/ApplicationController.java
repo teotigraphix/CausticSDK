@@ -11,7 +11,7 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.IProjectManager;

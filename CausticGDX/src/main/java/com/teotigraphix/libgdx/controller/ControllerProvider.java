@@ -3,7 +3,7 @@ package com.teotigraphix.libgdx.controller;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.application.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 @Singleton

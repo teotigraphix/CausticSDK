@@ -3,8 +3,8 @@ package com.teotigraphix.libgdx.model;
 
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 
 /**
  * A model that is {@link ICaustkController} aware and registered in the

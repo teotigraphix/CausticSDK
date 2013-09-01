@@ -19,8 +19,8 @@
 
 package com.teotigraphix.libgdx.model;
 
-import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 
 public class ModelStateBase implements ICaustkModelState {
 

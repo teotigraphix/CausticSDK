@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.library.LibraryScene;
