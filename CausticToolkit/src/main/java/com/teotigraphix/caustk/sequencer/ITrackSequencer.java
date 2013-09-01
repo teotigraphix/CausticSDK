@@ -1,14 +1,18 @@
 
-package com.teotigraphix.caustk.track;
+package com.teotigraphix.caustk.sequencer;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
 import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.sequencer.track.PhraseNote;
+import com.teotigraphix.caustk.sequencer.track.TrackChannel;
+import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
+import com.teotigraphix.caustk.sequencer.track.TrackSong;
 import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
-import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
+import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
+import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
 public interface ITrackSequencer extends IControllerComponent {

@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.track;
+package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,10 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerCurrentTrackChange;
 import com.teotigraphix.caustk.service.ISerialize;
+import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.track.ITrackSequencer.OnTrackSequencerCurrentTrackChange;
 
 public class TrackSong implements ISerialize {
 
@@ -176,12 +177,24 @@ public class TrackSong implements ISerialize {
         this.file = file;
     }
 
+    //--------------------------------------------------------------------------
+    // ISerialize API :: Methods
+    //--------------------------------------------------------------------------
+
+    private MasterMixer masterMixer = null;
+
+    /*
+     * A song serializes;
+     * - MasterDelay , MasterReverb, MasterEqualizer, MasterLimiter
+     * - EffectChannel slot1, slot2
+     */
     @Override
     public void sleep() {
         // save the .caustic file
         try {
             File absoluteTargetSongFile = getAbsoluteCausticFile();
             controller.getSoundSource().saveSongAs(absoluteTargetSongFile);
+            masterMixer = controller.getSoundMixer().getMasterMixer();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,6 +203,12 @@ public class TrackSong implements ISerialize {
     @Override
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
+        if (!exists()) // dummy placeholder
+            return;
+
+        if (masterMixer != null)
+            controller.getSoundMixer().setMasterMixer(masterMixer);
+
         for (TrackChannel item : tracks.values()) {
             item.wakeup(controller);
         }

@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.sound.SoundSource;
+import com.teotigraphix.caustk.sound.source.SoundSource;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneType;

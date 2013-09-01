@@ -14,8 +14,8 @@ import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.sound.IEffect;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.SoundMixerChannel;
 import com.teotigraphix.caustk.sound.effect.DistortionEffect.Program;
+import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.SubSynthTone;
 
 public class EffectTest extends CaustkTestBase {

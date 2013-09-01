@@ -13,10 +13,10 @@ import com.teotigraphix.caustk.controller.ControllerComponentState;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerTrackSongChange;
 import com.teotigraphix.caustk.sequencer.queue.QueueData.PadDataState;
-import com.teotigraphix.caustk.track.ITrackSequencer;
-import com.teotigraphix.caustk.track.ITrackSequencer.OnTrackSequencerTrackSongChange;
-import com.teotigraphix.caustk.track.TrackSong;
+import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
 public class QueueSequencer extends ControllerComponent implements IQueueSequencer {
 

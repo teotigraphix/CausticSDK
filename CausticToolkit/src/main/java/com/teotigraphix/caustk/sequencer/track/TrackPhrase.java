@@ -1,15 +1,16 @@
 
-package com.teotigraphix.caustk.track;
+package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.track.ITrackSequencer.OnTrackSequencerPropertyChange;
-import com.teotigraphix.caustk.track.ITrackSequencer.PropertyChangeKind;
 
 /**
  * @see ITrackSequencer#getDispatcher()
@@ -22,7 +23,7 @@ public class TrackPhrase implements ISerialize {
 
     private transient ICaustkController controller;
 
-    ICaustkController getController() {
+    public final ICaustkController getController() {
         return controller;
     }
 

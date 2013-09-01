@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.sound.source;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +38,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.LibraryScene;
-import com.teotigraphix.caustk.library.SoundMixerState;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.EightBitSynth;
@@ -160,11 +160,10 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         for (ToneDescriptor descriptor : scene.getSoundSourceState().getDescriptors().values()) {
             createTone(descriptor);
         }
-        SoundMixerState mixerState = scene.getSoundMixerState();
-
-        SoundMixerModel model = getController().getSerializeService().fromString(
-                mixerState.getData(), SoundMixerModel.class);
-        model.update();
+        //        SoundMixerState mixerState = scene.getSoundMixerState();
+        //        SoundMixerModel model = getController().getSerializeService().fromString(
+        //                mixerState.getData(), SoundMixerModel.class);
+        //        model.update();
     }
 
     @SuppressWarnings("unchecked")

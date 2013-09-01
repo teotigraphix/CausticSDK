@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.sound.mixer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.service.ISerialize;
+import com.teotigraphix.caustk.sound.IEffect;
 import com.teotigraphix.caustk.sound.effect.EffectType;
 import com.teotigraphix.caustk.sound.effect.EffectUtils;
 import com.teotigraphix.caustk.utils.ExceptionUtils;

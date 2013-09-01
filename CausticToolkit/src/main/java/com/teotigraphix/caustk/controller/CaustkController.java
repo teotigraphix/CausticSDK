@@ -46,23 +46,23 @@ import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISongSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.SongSequencer;
 import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.sequencer.queue.QueueSequencer;
+import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.SerializeService;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.SoundMixer;
-import com.teotigraphix.caustk.sound.SoundSource;
+import com.teotigraphix.caustk.sound.mixer.SoundMixer;
+import com.teotigraphix.caustk.sound.source.SoundSource;
 import com.teotigraphix.caustk.system.IMemoryManager;
 import com.teotigraphix.caustk.system.ISystemState;
 import com.teotigraphix.caustk.system.Memory.Type;
 import com.teotigraphix.caustk.system.MemoryManager;
 import com.teotigraphix.caustk.system.SystemState;
-import com.teotigraphix.caustk.track.ITrackSequencer;
-import com.teotigraphix.caustk.track.TrackSequencer;
 
 /**
  * @author Michael Schmalle

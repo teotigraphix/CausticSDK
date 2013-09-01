@@ -17,7 +17,9 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.sound.mixer;
+
+import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
@@ -27,12 +29,22 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.sound.ISoundMixer;
+import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
-import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
-import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
+import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
+import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class SoundMixer extends ControllerComponent implements ISoundMixer {
+
+    //----------------------------------
+    // channels
+    //----------------------------------
+
+    Map<Integer, SoundMixerChannel> getChannels() {
+        return masterMixer.getChannels();
+    }
 
     //----------------------------------
     // modelType
@@ -40,28 +52,40 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
 
     @Override
     protected Class<? extends ControllerComponentState> getStateType() {
-        return SoundMixerModel.class;
+        return SoundMixerState.class;
     }
 
     //----------------------------------
     // model
     //----------------------------------
 
-    SoundMixerModel getModel() {
-        return (SoundMixerModel)getInternalState();
+    SoundMixerState getModel() {
+        return (SoundMixerState)getInternalState();
     }
 
     //--------------------------------------------------------------------------
     // ISoundMixer API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // masterMixer
+    //----------------------------------
+
+    private MasterMixer masterMixer;
+
     @Override
     public MasterMixer getMasterMixer() {
-        return getModel().getMasterMixer();
+        return masterMixer;
+    }
+
+    @Override
+    public void setMasterMixer(MasterMixer value) {
+        masterMixer = value;
     }
 
     @Override
     public SoundMixerChannel getChannel(int index) {
-        return getModel().getChannels().get(index);
+        return getChannels().get(index);
     }
 
     @Override
@@ -81,6 +105,8 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
     public SoundMixer(ICaustkController controller) {
         super(controller);
 
+        masterMixer = new MasterMixer(controller);
+
         controller.addComponent(ISoundMixer.class, this);
 
         final ISoundSource soundSource = getController().getSoundSource();
@@ -90,7 +116,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
                 new EventObserver<OnSoundSourceToneAdd>() {
                     @Override
                     public void trigger(OnSoundSourceToneAdd object) {
-                        addTone(object.getTone());
+                        masterMixer.addTone(object.getTone());
                     }
                 });
 
@@ -98,7 +124,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
-                        removeTone(object.getTone());
+                        masterMixer.removeTone(object.getTone());
                     }
                 });
 
@@ -117,29 +143,15 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
     @Override
     public void restore() {
         // restores the already created channels from the just previous song load
-        for (SoundMixerChannel channel : getModel().getChannels().values()) {
+        for (SoundMixerChannel channel : getChannels().values()) {
             channel.restore();
         }
     }
 
     public void update() {
-        for (SoundMixerChannel channel : getModel().getChannels().values()) {
+        for (SoundMixerChannel channel : getChannels().values()) {
             channel.update();
         }
-    }
-
-    @Override
-    public String serialize() {
-        String data = getController().getSerializeService().toString(getModel());
-        return data;
-    }
-
-    protected void addTone(Tone tone) {
-        getModel().toneAdded(tone);
-    }
-
-    protected void removeTone(Tone tone) {
-        getModel().toneRemoved(tone);
     }
 
     //--------------------------------------------------------------------------
@@ -307,4 +319,14 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
 
     }
 
+    public static class SoundMixerState extends ControllerComponentState {
+
+        public SoundMixerState() {
+            super();
+        }
+
+        public SoundMixerState(ICaustkController controller) {
+            super(controller);
+        }
+    }
 }

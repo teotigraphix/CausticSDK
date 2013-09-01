@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.sound.mixer;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,9 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.sound.SoundMixer.MixerInput;
+import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.sound.mixer.SoundMixer;
+import com.teotigraphix.caustk.sound.mixer.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneType;
 
@@ -97,13 +99,13 @@ public class SoundMixerTest {
         Tone tone2 = soundSource.createTone("tone2", ToneType.Bassline);
         Tone tone3 = soundSource.createTone("tone3", ToneType.Bassline);
 
-        Assert.assertEquals(3, soundMixer.getModel().getChannels().size());
+        Assert.assertEquals(3, soundMixer.getChannels().size());
 
         soundSource.destroyTone(1);
-        Assert.assertEquals(2, soundMixer.getModel().getChannels().size());
+        Assert.assertEquals(2, soundMixer.getChannels().size());
         soundSource.destroyTone(0);
-        Assert.assertEquals(1, soundMixer.getModel().getChannels().size());
+        Assert.assertEquals(1, soundMixer.getChannels().size());
         soundSource.destroyTone(2);
-        Assert.assertEquals(0, soundMixer.getModel().getChannels().size());
+        Assert.assertEquals(0, soundMixer.getChannels().size());
     }
 }

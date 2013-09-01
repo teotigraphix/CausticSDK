@@ -1,11 +1,11 @@
 
-package com.teotigraphix.caustk.track;
+package com.teotigraphix.caustk.sequencer.track;
 
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.application.IDispatcher;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.track.ITrackSequencer.OnTrackSequencerPropertyChange;
 
 public class TrackSequencerHandlers {
 

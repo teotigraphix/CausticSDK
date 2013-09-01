@@ -10,9 +10,9 @@ import org.junit.Test;
 
 import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.SubSynthTone;
-import com.teotigraphix.caustk.track.TrackSequencer;
 
 public class QueueSequencerTest extends CaustkTestBase {
 
@@ -49,5 +49,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         assertTrue(trackSequencer.getTrackSong().getAbsoluteCausticFile().exists());
         assertTrue(trackSequencer.getTrackSong().getAbsoluteFile().exists());
         assertTrue(queueSequencer.getQueueSong().getAbsoluteFile().exists());
+
+        controller.getApplication().save();
     }
 }

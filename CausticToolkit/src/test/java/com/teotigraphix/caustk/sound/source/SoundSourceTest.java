@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.sound.source;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import com.teotigraphix.caustk.application.CaustkApplicationUtils;
 import com.teotigraphix.caustk.application.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.sound.source.SoundSource;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;

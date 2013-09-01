@@ -32,9 +32,9 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ControllerComponentState;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
@@ -46,8 +46,8 @@ import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
-import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.utils.Compress;
 import com.teotigraphix.caustk.utils.Decompress;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
@@ -476,7 +476,8 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         scene.setSoundSourceState(soundSourceState);
 
         SoundMixerState soundMixerState = new SoundMixerState();
-        soundMixerState.setData(getController().getSoundMixer().serialize());
+        String data = getController().getSerializeService().toString(getModel());
+        soundMixerState.setData(data);
         scene.setSoundMixerState(soundMixerState);
 
         EffectMixerState effectMixerState = new EffectMixerState();

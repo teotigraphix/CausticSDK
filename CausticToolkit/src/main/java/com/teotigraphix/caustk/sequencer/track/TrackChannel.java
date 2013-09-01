@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.track;
+package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,10 +7,11 @@ import java.util.TreeMap;
 
 import com.teotigraphix.caustk.application.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.track.ITrackSequencer.OnTrackSequencerPropertyChange;
-import com.teotigraphix.caustk.track.ITrackSequencer.PropertyChangeKind;
 
 /**
  * @see ITrackSequencer#getDispatcher()
@@ -155,6 +156,12 @@ public class TrackChannel implements ISerialize {
     //--------------------------------------------------------------------------
     // ISerialize API :: Methods
     //--------------------------------------------------------------------------
+
+    /*
+     * A channel serializes;
+     * - MixerChannel (bass, mid, high, delay, reverb, pan, width, volume
+     * - EffectChannel slot1, slot2
+     */
 
     @Override
     public void sleep() {

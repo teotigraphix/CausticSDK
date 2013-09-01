@@ -17,7 +17,10 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.sound.mixer;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
@@ -28,6 +31,7 @@ import com.teotigraphix.caustk.sound.master.MasterDelay;
 import com.teotigraphix.caustk.sound.master.MasterEqualizer;
 import com.teotigraphix.caustk.sound.master.MasterLimiter;
 import com.teotigraphix.caustk.sound.master.MasterReverb;
+import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public class MasterMixer implements ISerialize, IRestore {
@@ -40,6 +44,16 @@ public class MasterMixer implements ISerialize, IRestore {
 
     private ICausticEngine getEngine() {
         return controller;
+    }
+
+    //----------------------------------
+    // channels
+    //----------------------------------
+
+    Map<Integer, SoundMixerChannel> channels = new HashMap<Integer, SoundMixerChannel>();
+
+    Map<Integer, SoundMixerChannel> getChannels() {
+        return channels;
     }
 
     //----------------------------------
@@ -124,9 +138,9 @@ public class MasterMixer implements ISerialize, IRestore {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
-
-    public MasterMixer() {
-    }
+    //
+    //    public MasterMixer() {
+    //    }
 
     public MasterMixer(ICaustkController controller) {
         this.controller = controller;
@@ -135,6 +149,16 @@ public class MasterMixer implements ISerialize, IRestore {
         limiter = new MasterLimiter(controller);
         delay = new MasterDelay(controller);
         reverb = new MasterReverb(controller);
+    }
+
+    protected void addTone(Tone tone) {
+        SoundMixerChannel channel = new SoundMixerChannel(controller);
+        channel.setIndex(tone.getIndex());
+        channels.put(tone.getIndex(), channel);
+    }
+
+    protected void removeTone(Tone tone) {
+        channels.remove(tone.getIndex());
     }
 
     @Override

@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.track;
+package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +15,10 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneAdd;
-import com.teotigraphix.caustk.sound.SoundSource.OnSoundSourceToneRemove;
+import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
+import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
 /**
@@ -134,7 +135,6 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         handlers = new TrackSequencerHandlers(this);
         // DUMMY
         trackSong = new TrackSong();
-        trackSong.wakeup(getController());
     }
 
     @Override
