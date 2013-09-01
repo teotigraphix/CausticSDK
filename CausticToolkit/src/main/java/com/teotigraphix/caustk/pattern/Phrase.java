@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.teotigraphix.caustk.library.LibraryPhrase;
-import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 

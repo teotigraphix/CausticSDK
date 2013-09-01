@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.system.TemporaryMemory;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.Tone;

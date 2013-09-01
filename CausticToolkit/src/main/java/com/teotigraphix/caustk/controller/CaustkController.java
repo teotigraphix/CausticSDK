@@ -44,12 +44,10 @@ import com.teotigraphix.caustk.pattern.PatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
-import com.teotigraphix.caustk.sequencer.ISongSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
-import com.teotigraphix.caustk.sequencer.SongSequencer;
-import com.teotigraphix.caustk.sequencer.SystemSequencer;
 import com.teotigraphix.caustk.sequencer.queue.QueueSequencer;
+import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.SerializeService;
@@ -153,17 +151,6 @@ public class CaustkController implements ICaustkController {
     @Override
     public ITrackSequencer getTrackSequencer() {
         return trackSequencer;
-    }
-
-    //----------------------------------
-    // songSequencer
-    //----------------------------------
-
-    private ISongSequencer songSequencer;
-
-    @Override
-    public ISongSequencer getSongSequencer() {
-        return songSequencer;
     }
 
     //----------------------------------
@@ -357,7 +344,6 @@ public class CaustkController implements ICaustkController {
         trackSequencer = new TrackSequencer(this);
         soundSource = new SoundSource(this);
         soundMixer = new SoundMixer(this);
-        songSequencer = new SongSequencer(this);
         queueSequencer = new QueueSequencer(this);
 
         systemSequencer = new SystemSequencer(this);
@@ -368,7 +354,6 @@ public class CaustkController implements ICaustkController {
         components.add(libraryManager);
         components.add(trackSequencer);
         components.add(soundMixer);
-        components.add(songSequencer);
         components.add(systemSequencer);
         components.add(patternManager);
         components.add(queueSequencer);

@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sequencer;
+package com.teotigraphix.caustk.sequencer.system;
 
 import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ControllerComponentState;
@@ -25,6 +25,10 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer;
+import com.teotigraphix.caustk.tone.Tone;
 
 public class SystemSequencer extends ControllerComponent implements ISystemSequencer {
 
@@ -34,15 +38,15 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
 
     @Override
     protected Class<? extends ControllerComponentState> getStateType() {
-        return SystemSequencerModel.class;
+        return SystemSequencerState.class;
     }
 
     //----------------------------------
     // model
     //----------------------------------
 
-    SystemSequencerModel getModel() {
-        return (SystemSequencerModel)getInternalState();
+    SystemSequencerState getModel() {
+        return (SystemSequencerState)getInternalState();
     }
 
     @Override
@@ -270,6 +274,87 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
                 setCurrentMeasure(mCurrentMeasure + 1);
         }
         return 0;
+    }
+
+    //--------------------------------------------------------------------------
+    // Song
+
+    @Override
+    public void setSongEndMode(SongEndMode mode) {
+        SequencerMessage.SONG_END_MODE.send(getController(), mode.getValue());
+    }
+
+    @Override
+    public SongEndMode getSongEndMode() {
+        return SongEndMode.fromInt((int)SequencerMessage.SONG_END_MODE.send(getController()));
+    }
+
+    @Override
+    public String getPatterns() {
+        return SequencerMessage.QUERY_PATTERN_EVENT.queryString(getController());
+    }
+
+    @Override
+    public void addPattern(Tone tone, int bank, int pattern, int start, int end)
+            throws CausticException {
+        SequencerMessage.PATTERN_EVENT.send(getController(), tone.getIndex(), start, bank, pattern,
+                end);
+    }
+
+    @Override
+    public void removePattern(Tone tone, int start, int end) throws CausticException {
+        SequencerMessage.PATTERN_EVENT.send(getController(), tone.getIndex(), start, -1, -1, end);
+    }
+
+    @Override
+    public void setLoopPoints(int startBar, int endBar) {
+        SequencerMessage.LOOP_POINTS.send(getController(), startBar, endBar);
+    }
+
+    @Override
+    public void playPosition(int beat) {
+        SequencerMessage.PLAY_POSITION.send(getController(), beat);
+    }
+
+    @Override
+    public void playPositionAt(int bar, int step) {
+        playPositionAt(bar, step);
+    }
+
+    @Override
+    public void exportSong(String exportPath, ExportType type, int quality) {
+        String ftype = "";
+        String fquality = "";
+        if (type != null) {
+            ftype = type.getValue();
+            fquality = Integer.toString(quality);
+        }
+        SequencerMessage.EXPORT_SONG.send(getController(), exportPath, ftype, fquality);
+    }
+
+    @Override
+    public void exportSong(String exportPath, ExportType type) {
+        exportSong(exportPath, type, 70);
+    }
+
+    @Override
+    public float exportSongProgress() {
+        return SequencerMessage.EXPORT_PROGRESS.query(getController());
+    }
+
+    @Override
+    public void clearPatterns() {
+        SequencerMessage.CLEAR_PATTERNS.send(getController());
+    }
+
+    @Override
+    public void clearAutomation() {
+        SequencerMessage.CLEAR_AUTOMATION.send(getController());
+    }
+
+    @Override
+    public void clearAutomation(Tone tone) {
+        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getController(), tone.getIndex());
     }
 
 }

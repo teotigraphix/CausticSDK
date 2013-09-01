@@ -17,10 +17,10 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sequencer;
+package com.teotigraphix.caustk.sequencer.system;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ControllerComponentState;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSongSequencerTempoChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
  * <li><code>tempo</code> - Sequencer bpm.</li>
  * </ul>
  */
-public class SystemSequencerModel extends ControllerComponentState {
+public class SystemSequencerState extends ControllerComponentState {
 
     //--------------------------------------------------------------------------
     // Property API
@@ -89,10 +89,10 @@ public class SystemSequencerModel extends ControllerComponentState {
     // Constructors
     //--------------------------------------------------------------------------
 
-    public SystemSequencerModel() {
+    public SystemSequencerState() {
     }
 
-    public SystemSequencerModel(ICaustkController controller) {
+    public SystemSequencerState(ICaustkController controller) {
         super(controller);
     }
 

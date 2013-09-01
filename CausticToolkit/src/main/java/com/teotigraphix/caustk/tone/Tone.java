@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.library.SoundSourceState;
-import com.teotigraphix.caustk.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
