@@ -113,11 +113,4 @@ public class QueueSong implements ISerialize {
         }
     }
 
-    //--------------------------------------------------------------------------
-
-    public void nextBeat() {
-        // TODO Auto-generated method stub
-
-    }
-
 }

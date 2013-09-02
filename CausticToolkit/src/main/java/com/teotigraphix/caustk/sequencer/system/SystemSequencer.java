@@ -160,6 +160,8 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
 
     private int mCurrentMeasure = 0;
 
+    private int currentMeasure;
+
     @Override
     public int getCurrentMeasure() {
         return mCurrentMeasure;
@@ -193,9 +195,10 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
     }
 
     @Override
-    public void beatUpdate(float beat) {
+    public void beatUpdate(int measure, float beat) {
         if (!isPlaying())
             return;
+        currentMeasure = measure;
         floatBeat = beat;
         int round = (int)Math.floor(floatBeat);
         if (round != currentBeat) {
@@ -225,7 +228,7 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
         int last = currentBeat;
         currentBeat = value;
 
-        getDispatcher().trigger(new OnSystemSequencerBeatChange(currentBeat));
+        getDispatcher().trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
 
         if (last < value) {
             // forward

@@ -7,14 +7,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.androidtransfuse.event.EventObserver;
-
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerCurrentTrackChange;
-import com.teotigraphix.caustk.sequencer.track.TrackChannel.OnTrackChannelPhraseAdd;
-import com.teotigraphix.caustk.sequencer.track.TrackChannel.OnTrackChannelPhraseRemove;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 import com.teotigraphix.caustk.tone.Tone;
@@ -208,10 +203,6 @@ public class TrackSong implements ISerialize {
         if (!exists()) // dummy placeholder
             return;
 
-        getDispatcher().register(OnTrackChannelPhraseAdd.class, onTrackChannelPhraseHandler);
-        getDispatcher().register(OnTrackChannelPhraseRemove.class,
-                onTrackChannelPhraseRemoveHandler);
-
         if (masterMixer != null)
             controller.getSoundMixer().setMasterMixer(masterMixer);
 
@@ -264,61 +255,31 @@ public class TrackSong implements ISerialize {
      * </p>
      */
     public int getMeasureBeat() {
-        return currentBeat % 4;
+        return (int)(currentBeat % 4);
+    }
+
+    public void setPosition(int measure, float beat) {
+        setCurrentMeasure(measure);
+        setCurrentBeat(beat);
     }
 
     //----------------------------------
     //  currentBeat
     //----------------------------------
 
-    private int currentBeat = -1;
+    private float currentBeat = -1;
 
     /**
      * Return the ISong current beat.
      */
-    public int getCurrentBeat() {
+    public float getCurrentBeat() {
         return currentBeat;
     }
 
-    @SuppressWarnings("unused")
-    private float beat = -1;
-
     void setCurrentBeat(float value) {
-        beat = value;
+        currentBeat = value;
         for (TrackChannel track : tracks.values()) {
             track.setCurrentBeat(currentBeat);
-        }
-    }
-
-    void setCurrentBeat(int value) {
-        setCurrentBeat(value, false);
-    }
-
-    void setCurrentBeat(int value, boolean seeking) {
-        int last = currentBeat;
-        currentBeat = value;
-
-        //        fireBeatChange(mCurrentBeat, last);
-
-        if (last < value) {
-            // forward
-            if (currentBeat == 0) {
-                setCurrentMeasure(0);
-            } else {
-                int remainder = currentBeat % 4;
-                if (seeking) {
-                    setCurrentMeasure(currentBeat / 4);
-                } else if (remainder == 0) {
-                    setCurrentMeasure(currentMeasure + 1);
-                }
-            }
-        } else if (last > value) {
-            // reverse
-            // if the last beat was a measure change, decrement measure
-            int remainder = last % 4;
-            if (remainder == 0) {
-                setCurrentMeasure(currentMeasure - 1);
-            }
         }
     }
 
@@ -355,136 +316,4 @@ public class TrackSong implements ISerialize {
         return (int)total;
     }
 
-    /**
-     * Enables the playhead.
-     * <p>
-     * Calling play dispatches signals without advancing the playhead. This is
-     * useful for starting a song at o beat and 0 measure.
-     * </p>
-     */
-    public void play() {
-        setCurrentBeat(currentBeat);
-    }
-
-    /**
-     * Rewinds the playhead to the start of the song, beat 0.
-     */
-    @SuppressWarnings("unused")
-    public void rewind() {
-        int lastBeat = currentBeat;
-        int lastMeasure = currentMeasure;
-
-        currentBeat = -1;
-        currentMeasure = -1;
-
-        //        fireBeatChange(mCurrentBeat, lastBeat);
-        //        fireMeasureChange(mCurrentMeasure, lastMeasure);
-    }
-
-    /**
-     * Moves playhead to next beat based on song implementation.
-     */
-    public void nextBeat() {
-        setCurrentBeat(currentBeat + 1);
-    }
-
-    /**
-     * Moves playhead to previous beat based on song implementation.
-     */
-    public void previousBeat() {
-        setCurrentBeat(currentBeat - 1);
-    }
-
-    /**
-     * Moves playhead to next measure based on song implementation.
-     */
-    public void nextMeasure() {
-        // TODO use seek() and calc it
-        // think about this though, do you want beat signals or not???
-        // if so, just loop this, if not use seek() and only he measure
-        // signal will fire
-        // start with a next beat since we might be on a 0 beat of the measure
-        nextBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        nextBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        nextBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        nextBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        nextBeat();
-        if (getMeasureBeat() == 0)
-            return;
-    }
-
-    /**
-     * Moves playhead to previous measure based on song implementation.
-     */
-    public void previousMeasure() {
-        // start with a previous beat since we might be on a 0 beat of the measure
-        previousBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        previousBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        previousBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        previousBeat();
-        if (getMeasureBeat() == 0)
-            return;
-        previousBeat();
-        if (getMeasureBeat() == 0)
-            return;
-    }
-
-    /**
-     * Moves the playhead a number of beats.
-     * 
-     * @param beats The beats to rewind.
-     */
-    public void seek(int beat) {
-        setCurrentBeat(beat, true);
-    }
-
-    private transient EventObserver<OnTrackChannelPhraseAdd> onTrackChannelPhraseHandler = new EventObserver<OnTrackChannelPhraseAdd>() {
-        @Override
-        public void trigger(OnTrackChannelPhraseAdd object) {
-            TrackChannel track = object.getTrack();
-            TrackItem trackItem = object.getItem();
-            Tone tone = controller.getSoundSource().getTone(track.getIndex());
-            int bank = trackItem.getBankIndex();
-            int pattern = trackItem.getPatternIndex();
-            int start = trackItem.getStartMeasure();
-            int end = trackItem.getEndMeasure();
-            // add the track to the song sequencer
-            try {
-                controller.getSystemSequencer().addPattern(tone, bank, pattern, start, end);
-            } catch (CausticException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    private transient EventObserver<OnTrackChannelPhraseRemove> onTrackChannelPhraseRemoveHandler = new EventObserver<OnTrackChannelPhraseRemove>() {
-        @Override
-        public void trigger(OnTrackChannelPhraseRemove object) {
-            TrackChannel track = object.getTrack();
-            TrackItem trackItem = object.getItem();
-            Tone tone = controller.getSoundSource().getTone(track.getIndex());
-            int start = trackItem.getStartMeasure();
-            int end = trackItem.getEndMeasure();
-            // remove the track to the song sequencer
-            try {
-                controller.getSystemSequencer().removePattern(tone, start, end);
-            } catch (CausticException e) {
-                e.printStackTrace();
-            }
-        }
-    };
 }

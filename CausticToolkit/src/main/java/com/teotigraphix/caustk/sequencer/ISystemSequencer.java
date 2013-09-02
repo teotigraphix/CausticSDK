@@ -284,7 +284,7 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
      * 
      * @param beat The beat and decimal fraction in between the beat.
      */
-    void beatUpdate(float beat);
+    void beatUpdate(int measure, float beat);
 
     /**
      * Returns the current measure of the song sequencer, calculated from the
@@ -321,15 +321,23 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
 
     public static class OnSystemSequencerBeatChange {
 
-        private int beat;
+        private int measure;
 
-        public int getBeat() {
+        private float beat;
+
+        public int getMeasure() {
+            return measure;
+        }
+
+        public float getBeat() {
             return beat;
         }
 
-        public OnSystemSequencerBeatChange(int beat) {
+        public OnSystemSequencerBeatChange(int measure, float beat) {
+            this.measure = measure;
             this.beat = beat;
         }
+
     }
 
     /**

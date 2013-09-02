@@ -242,7 +242,7 @@ public class TrackPhrase implements ISerialize {
                 new OnTrackSequencerPropertyChange(PropertyChangeKind.EditMeasure, this));
     }
 
-    public void onBeatChange(int beat) {
+    public void onBeatChange(float beat) {
         localBeat = (int)toLocalBeat(beat, getLength());
 
         float fullMeasure = beat / 4;

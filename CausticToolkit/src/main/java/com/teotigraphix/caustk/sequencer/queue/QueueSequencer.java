@@ -107,7 +107,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {
-                        beatChange(object.getBeat());
+                        beatChange(object.getMeasure(), object.getBeat());
                     }
                 });
 
@@ -205,9 +205,11 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         return true;
     }
 
-    public void beatChange(float beat) {
-        getQueueSong().nextBeat();
-        System.out.println(beat + "");
+    public void beatChange(int measure, float beat) {
+        getTrackSong().setPosition(measure, beat);
+
+        System.out.println("M:" + getTrackSong().getCurrentMeasure() + "B:"
+                + getTrackSong().getCurrentBeat());
 
         currentLocalBeat = (int)(beat % 4);
 
@@ -261,10 +263,10 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     }
 
     private void lockAndExtendPlayingTracks() {
-        final int beat = getTrackSong().getCurrentBeat();
+        final float beat = getTrackSong().getCurrentBeat();
         final int currentMeasure = getTrackSong().getCurrentMeasure();
         @SuppressWarnings("unused")
-        final int isNewMeasure = beat % 4;
+        final int isNewMeasure = (int)(beat % 4);
 
         // from here on, we have everything correct with current beat and measure
         // the TrackSong's cursor is correct.
@@ -296,7 +298,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
                             if (data.getState() == QueueDataState.Selected) {
                                 // add the phrase at the very next measure
-                                addPhraseAt(track, currentMeasure + 1, null);
+                                addPhraseAt(track, currentMeasure + 1, data);
                                 // channel.setCurrentBeat(0);
                             } else if (data.getState() == QueueDataState.UnQueued) {
                                 // remove the item from the que
@@ -309,10 +311,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
                             // set this here since turning off is immediate
                             data.setState(QueueDataState.Idle);
                         }
-
                     }
-
-                    //CtkDebug.model("Lock:" + beat);
                 }
             }
         }
@@ -320,10 +319,10 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     private void queueTracks() {
         @SuppressWarnings("unused")
-        final int currentBeat = getTrackSong().getCurrentBeat();
+        final float currentBeat = getTrackSong().getCurrentBeat();
         final int currentMeasure = getTrackSong().getCurrentMeasure();
 
-        //CtkDebug.log("Setup queued [" + currentBeat + "," + currentMeasure + "]");
+        CtkDebug.log("Setup queued [" + currentBeat + "," + currentMeasure + "]");
 
         ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
         // loop through the queue and add queued items
@@ -331,9 +330,8 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
             if (data.getState() == QueueDataState.Queued) {
                 // add to sequencer
                 for (QueueDataChannel channel : data.getChannels()) {
-                    @SuppressWarnings("unused")
                     TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
-                    //addPhraseAt(track, currentMeasure + 1, channel.getChannelPhrase());
+                    addPhraseAt(track, currentMeasure + 1, data);
                 }
                 startPlaying(data);
             } else if (data.getState() == QueueDataState.Selected) {
@@ -344,8 +342,6 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     @Override
     public void play() throws CausticException {
-        getTrackSong().rewind();
-
         ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
         for (QueueData data : copied) {
             if (data.getState() == QueueDataState.Queued) {

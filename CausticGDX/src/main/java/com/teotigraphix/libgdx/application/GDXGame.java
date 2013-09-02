@@ -129,8 +129,9 @@ public abstract class GDXGame implements IGame {
             screen.render(Gdx.graphics.getDeltaTime());
 
         if (getController() != null) {
+            final float measure = getController().getSoundGenerator().getCurrentSongMeasure();
             final float beat = getController().getSoundGenerator().getCurrentBeat();
-            getController().getSystemSequencer().beatUpdate(beat);
+            getController().getSystemSequencer().beatUpdate((int)measure, beat);
         }
     }
 
