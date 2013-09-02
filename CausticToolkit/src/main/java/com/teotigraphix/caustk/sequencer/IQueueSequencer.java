@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.queue.QueueData;
 import com.teotigraphix.caustk.sequencer.queue.QueueDataChannel;
 
@@ -21,5 +22,7 @@ public interface IQueueSequencer extends IControllerComponent {
     Collection<QueueData> getQueueData(int bankIndex);
 
     Map<Integer, QueueData> getView(int bankIndex);
+
+    void play() throws CausticException;
 
 }

@@ -16,6 +16,8 @@ import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerTrackSongChange;
@@ -86,6 +88,16 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     @Override
     public void onRegister() {
         super.onRegister();
+
+        final ISystemSequencer systemSequencer = getController().getSystemSequencer();
+
+        systemSequencer.getDispatcher().register(OnSystemSequencerBeatChange.class,
+                new EventObserver<OnSystemSequencerBeatChange>() {
+                    @Override
+                    public void trigger(OnSystemSequencerBeatChange object) {
+                        beatChange(object.getBeat());
+                    }
+                });
 
         getTrackSequencer().getDispatcher().register(OnTrackSequencerTrackSongChange.class,
                 new EventObserver<OnTrackSequencerTrackSongChange>() {
@@ -310,6 +322,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         }
     }
 
+    @Override
     public void play() throws CausticException {
         getTrackSong().rewind();
 
@@ -328,6 +341,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         }
         //getSong().play();
         getController().getSystemSequencer().play(SequencerMode.SONG);
+        getController().getDispatcher().trigger(new OnQueueSequencerDataChange());
     }
 
     @SuppressWarnings("unused")
@@ -343,6 +357,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         data.setState(QueueDataState.Selected);
         queued.remove(data);
         playQueue.add(data);
+
     }
 
     private void stopPlaying(QueueData data) {
@@ -350,6 +365,10 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         playQueue.remove(data);
         // things will get set to idle in flush if not queued again
         // data.setState(PadDataState.IDLE);
+    }
+
+    public static class OnQueueSequencerDataChange {
+
     }
 
     public static class QueueSequencerState extends ControllerComponentState {

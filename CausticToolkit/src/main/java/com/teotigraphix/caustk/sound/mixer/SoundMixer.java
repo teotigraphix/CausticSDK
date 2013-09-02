@@ -81,6 +81,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
     @Override
     public void setMasterMixer(MasterMixer value) {
         masterMixer = value;
+        masterMixer.setController(getController());
     }
 
     @Override
