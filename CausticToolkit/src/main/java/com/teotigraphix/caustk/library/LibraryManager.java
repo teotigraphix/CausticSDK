@@ -262,14 +262,14 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     @Override
     public Library loadLibrary(File directory) {
-        CtkDebug.log("Load library; " + directory);
-        if (!directory.exists()) {
+        File absoluteLocation = getController().getProjectManager().getProject()
+                .getAbsoluteResource(directory.getPath());
+
+        CtkDebug.log("Load library; " + absoluteLocation);
+        if (!absoluteLocation.exists()) {
             CtkDebug.err("Library not found; " + directory);
             return null;
         }
-
-        File absoluteLocation = getController().getProjectManager().getProject()
-                .getAbsoluteResource(directory.getPath());
 
         File file = new File(absoluteLocation, LIBRARY_CTKL);
         Library library = getController().getSerializeService().fromFile(file, Library.class);
