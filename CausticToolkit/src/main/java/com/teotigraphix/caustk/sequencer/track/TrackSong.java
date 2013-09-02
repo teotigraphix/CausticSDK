@@ -172,9 +172,6 @@ public class TrackSong implements ISerialize {
     }
 
     public TrackSong() {
-        getDispatcher().register(OnTrackChannelPhraseAdd.class, onTrackChannelPhraseHandler);
-        getDispatcher().register(OnTrackChannelPhraseRemove.class,
-                onTrackChannelPhraseRemoveHandler);
     }
 
     public TrackSong(File file) {
@@ -210,6 +207,10 @@ public class TrackSong implements ISerialize {
         this.controller = controller;
         if (!exists()) // dummy placeholder
             return;
+
+        getDispatcher().register(OnTrackChannelPhraseAdd.class, onTrackChannelPhraseHandler);
+        getDispatcher().register(OnTrackChannelPhraseRemove.class,
+                onTrackChannelPhraseRemoveHandler);
 
         if (masterMixer != null)
             controller.getSoundMixer().setMasterMixer(masterMixer);

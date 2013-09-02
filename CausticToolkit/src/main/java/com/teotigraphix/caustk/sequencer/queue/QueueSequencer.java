@@ -4,7 +4,9 @@ package com.teotigraphix.caustk.sequencer.queue;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
@@ -57,6 +59,26 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         return getTrackSequencer().getTrackSong();
     }
 
+    @Override
+    public Collection<QueueData> getQueueData(int bankIndex) {
+        return queueSong.getQueueData(bankIndex);
+    }
+
+    @Override
+    public Map<Integer, QueueData> getView(int bankIndex) {
+        return queueSong.getView(bankIndex);
+    }
+
+    @Override
+    public QueueData getQueueData(int bankIndex, int patternIndex) {
+        return queueSong.getQueueData(bankIndex, patternIndex);
+    }
+
+    @Override
+    public QueueDataChannel getChannel(int bankIndex, int patternIndex, int toneIndex) {
+        return queueSong.getChannel(bankIndex, patternIndex, toneIndex);
+    }
+
     public QueueSequencer(ICaustkController controller) {
         super(controller);
     }
@@ -88,7 +110,6 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
                             default:
                                 break;
-
                         }
                     }
                 });
@@ -101,17 +122,25 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         getController().getSerializeService().save(absoluteTargetSongFile, queueSong);
     }
 
-    protected void create(TrackSong trackSong) {
+    private File toFile(TrackSong trackSong) {
         File songsDirectory = trackSong.getDirectory();
         String fileName = trackSong.getFileName() + "Queue.ctks";
-        File queueFile = new File(songsDirectory, fileName);
+        File file = new File(songsDirectory, fileName);
+        return file;
+    }
+
+    protected void create(TrackSong trackSong) {
+        File queueFile = toFile(trackSong);
         queueSong = new QueueSong(queueFile);
         queueSong.wakeup(getController());
     }
 
     protected void load(TrackSong trackSong) {
-        queueSong = new QueueSong();
-        queueSong.wakeup(getController());
+        File songsDirectory = trackSong.getAbsoluteFile().getParentFile();
+        String fileName = trackSong.getFileName() + "Queue.ctks";
+        File file = new File(songsDirectory, fileName);
+
+        queueSong = getController().getSerializeService().fromFile(file, QueueSong.class);
     }
 
     @Override
@@ -333,4 +362,5 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         }
 
     }
+
 }

@@ -2,6 +2,8 @@
 package com.teotigraphix.caustk.sequencer.queue;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,13 +44,18 @@ public class QueueSong implements ISerialize {
     public QueueSong() {
     }
 
-    public QueueSong(ICaustkController controller) {
-        this.controller = controller;
-
-    }
-
     public QueueSong(File file) {
         this.file = file;
+    }
+
+    public Collection<QueueData> getQueueData(int bankIndex) {
+        Collection<QueueData> result = new ArrayList<QueueData>();
+        if (map.containsKey(bankIndex)) {
+            for (QueueData queueData : getBankMap(bankIndex).values()) {
+                result.add(queueData);
+            }
+        }
+        return result;
     }
 
     private Map<Integer, QueueData> getBankMap(int bankIndex) {
@@ -68,6 +75,15 @@ public class QueueSong implements ISerialize {
             bankMap.put(patternIndex, queueData);
         }
         return queueData;
+    }
+
+    public Map<Integer, QueueData> getView(int bankIndex) {
+        Map<Integer, QueueData> map = getBankMap(bankIndex);
+        Map<Integer, QueueData> result = new HashMap<Integer, QueueData>(16);
+        for (int i = 0; i < 16; i++) {
+            result.put(i, map.get(i));
+        }
+        return result;
     }
 
     public QueueDataChannel getChannel(int bankIndex, int patternIndex, int toneIndex) {

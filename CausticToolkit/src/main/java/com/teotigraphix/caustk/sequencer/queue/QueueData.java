@@ -127,8 +127,8 @@ public class QueueData implements ISerialize {
 
     @Override
     public void sleep() {
-        if (state == QueueDataState.Queued)
-            state = QueueDataState.Idle;
+        //if (state == QueueDataState.Queued)
+        //    state = QueueDataState.Idle;
         for (QueueDataChannel channel : map.values()) {
             channel.sleep();
         }
