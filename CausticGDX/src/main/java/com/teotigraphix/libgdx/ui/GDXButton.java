@@ -90,6 +90,10 @@ public class GDXButton extends TextButton {
         return style;
     }
 
+    protected Class<? extends ButtonStyle> getStyleType() {
+        return ButtonStyle.class;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -97,19 +101,25 @@ public class GDXButton extends TextButton {
     public GDXButton(String text, Skin skin) {
         super(text, skin);
         // calls setStyle()
-        style = skin.get(ButtonStyle.class);
+        style = skin.get(getStyleType());
+        init();
     }
 
     public GDXButton(String text, ButtonStyle style) {
         super(text, style);
         // special constructor
         this.style = style;
+        init();
     }
 
     public GDXButton(String text, Skin skin, String styleName) {
         super(text, skin, styleName);
         // calls setStyle()
-        style = skin.get(styleName, ButtonStyle.class);
+        style = skin.get(styleName, getStyleType());
+        init();
+    }
+
+    protected void init() {
     }
 
     //--------------------------------------------------------------------------

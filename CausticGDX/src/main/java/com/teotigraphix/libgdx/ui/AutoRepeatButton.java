@@ -11,19 +11,18 @@ public class AutoRepeatButton extends GDXButton {
 
     public AutoRepeatButton(String text, Skin skin) {
         super(text, skin);
-        init();
     }
 
     public AutoRepeatButton(String text, ButtonStyle style) {
         super(text, style);
-        init();
     }
 
     private Task task;
 
     private OnValueChangeListener listener;
 
-    private void init() {
+    @Override
+    protected void init() {
         addListener(new ActorGestureListener() {
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {

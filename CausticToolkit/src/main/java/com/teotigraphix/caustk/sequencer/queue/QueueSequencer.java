@@ -330,6 +330,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         getController().getSystemSequencer().play(SequencerMode.SONG);
     }
 
+    @SuppressWarnings("unused")
     private void addPhraseAt(TrackChannel track, int start, TrackPhrase phrase) {
         try {
             track.addPhraseAt(start, 1, phrase, true);
