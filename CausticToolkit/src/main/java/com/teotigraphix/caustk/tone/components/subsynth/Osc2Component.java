@@ -45,8 +45,8 @@ public class Osc2Component extends ToneComponent {
     public void setCents(int value) {
         if (value == cents)
             return;
-        if (value < -50 || value > 50)
-            throw newRangeException(SubSynthMessage.OSC2_CENTS.toString(), "-50..50", value);
+        //        if (value < -50 || value > 50)
+        //            throw newRangeException(SubSynthMessage.OSC2_CENTS.toString(), "-50..50", value);
         cents = value;
         SubSynthMessage.OSC2_CENTS.send(getEngine(), getToneIndex(), cents);
     }
@@ -68,8 +68,8 @@ public class Osc2Component extends ToneComponent {
     public void setOctave(int value) {
         if (value == octave)
             return;
-        if (value < -3 || value > 3)
-            throw newRangeException(SubSynthMessage.OSC2_OCTAVE.toString(), "-3..3", value);
+        //        if (value < -3 || value > 3)
+        //            throw newRangeException(SubSynthMessage.OSC2_OCTAVE.toString(), "-3..3", value);
         octave = value;
         SubSynthMessage.OSC2_OCTAVE.send(getEngine(), getToneIndex(), octave);
     }
@@ -91,8 +91,8 @@ public class Osc2Component extends ToneComponent {
     public void setPhase(float value) {
         if (value == phase)
             return;
-        if (value < -0.5f || value > 0.5f)
-            throw newRangeException(SubSynthMessage.OSC2_PHASE.toString(), "-0.5..0.5", value);
+        //        if (value < -0.5f || value > 0.5f)
+        //            throw newRangeException(SubSynthMessage.OSC2_PHASE.toString(), "-0.5..0.5", value);
         phase = value;
         SubSynthMessage.OSC2_PHASE.send(getEngine(), getToneIndex(), phase);
     }
@@ -114,8 +114,8 @@ public class Osc2Component extends ToneComponent {
     public void setSemis(int value) {
         if (value == semis)
             return;
-        if (value < -12 || value > 12)
-            throw newRangeException(SubSynthMessage.OSC2_SEMIS.toString(), "-12..12", value);
+        //        if (value < -12 || value > 12)
+        //            throw newRangeException(SubSynthMessage.OSC2_SEMIS.toString(), "-12..12", value);
         semis = value;
         SubSynthMessage.OSC2_SEMIS.send(getEngine(), getToneIndex(), semis);
     }
@@ -131,7 +131,8 @@ public class Osc2Component extends ToneComponent {
     }
 
     Osc2WaveForm getWaveform(boolean restore) {
-        return Osc2WaveForm.toType(SubSynthMessage.OSC2_WAVEFORM.query(getEngine(), getToneIndex()));
+        return Osc2WaveForm
+                .toType(SubSynthMessage.OSC2_WAVEFORM.query(getEngine(), getToneIndex()));
     }
 
     public void setWaveform(Osc2WaveForm value) {

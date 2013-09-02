@@ -38,6 +38,18 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     private List<QueueData> flushedQueue = new ArrayList<QueueData>();
 
+    private boolean recordMode;
+
+    @Override
+    public boolean isRecordMode() {
+        return recordMode;
+    }
+
+    @Override
+    public void setRecordMode(boolean value) {
+        recordMode = value;
+    }
+
     final ITrackSequencer getTrackSequencer() {
         return getController().getTrackSequencer();
     }
@@ -157,6 +169,9 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     @Override
     public boolean queue(QueueData data) {
+        if (!recordMode)
+            return false;
+
         if (currentLocalBeat == 3)
             return false;
 
@@ -170,6 +185,9 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     @Override
     public boolean unqueue(QueueData data) {
+        if (!recordMode)
+            return false;
+
         if (currentLocalBeat == 3)
             return false;
         if (playQueue.contains(data)) {
@@ -189,6 +207,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     public void beatChange(float beat) {
         getQueueSong().nextBeat();
+        System.out.println(beat + "");
 
         currentLocalBeat = (int)(beat % 4);
 
@@ -345,11 +364,14 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         getController().getDispatcher().trigger(new OnQueueSequencerDataChange());
     }
 
-    @SuppressWarnings("unused")
+    @Override
+    public void stop() {
+        getController().getSystemSequencer().stop();
+    }
+
     private void addPhraseAt(TrackChannel track, int start, QueueData data) {
         try {
             TrackPhrase phrase = track.getPhrase(data.getBankIndex(), data.getPatternIndex());
-
             track.addPhraseAt(start, 1, phrase, true);
         } catch (CausticException e) {
             e.printStackTrace();

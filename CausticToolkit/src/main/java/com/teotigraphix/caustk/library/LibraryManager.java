@@ -30,7 +30,6 @@ import java.util.TreeMap;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
@@ -49,7 +48,6 @@ import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.utils.Compress;
-import com.teotigraphix.caustk.utils.Decompress;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
@@ -79,7 +77,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     // selectedLibrary
     //----------------------------------
 
-    private File librariesDirectory;
+    //private File librariesDirectory;
 
     @Override
     public Library getSelectedLibrary() {
@@ -94,31 +92,23 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     public LibraryManager(ICaustkController controller) {
         super(controller);
-
-        File root = controller.getConfiguration().getApplicationRoot();
-        if (!root.exists())
-            throw new RuntimeException("Application root not specified");
-
-        librariesDirectory = new File(root, "libraries");
-        if (!librariesDirectory.exists())
-            librariesDirectory.mkdirs();
     }
 
     @Override
     protected void loadState(Project project) {
         super.loadState(project);
 
-        load();
-        String id = getController().getProjectManager().getSessionPreferences()
-                .getString("selectedLibrary");
-        if (id != null) {
-            Library library = getModel().getLibraries().get(UUID.fromString(id));
-            if (library != null) {
-                setSelectedLibrary(library);
-            } else {
-                CtkDebug.err("LibraryManager; Library null " + id);
-            }
-        }
+        //        load();
+        //        String id = getController().getProjectManager().getSessionPreferences()
+        //                .getString("selectedLibrary");
+        //        if (id != null) {
+        //            Library library = getModel().getLibraries().get(UUID.fromString(id));
+        //            if (library != null) {
+        //                setSelectedLibrary(library);
+        //            } else {
+        //                CtkDebug.err("LibraryManager; Library null " + id);
+        //            }
+        //        }
     }
 
     @Override
@@ -127,8 +117,8 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
         // if the project has selected a library, save it
         if (getSelectedLibrary() != null) {
-            getController().getProjectManager().getSessionPreferences()
-                    .put("selectedLibrary", getSelectedLibrary().getId());
+            //            getController().getProjectManager().getSessionPreferences()
+            //                    .put("selectedLibrary", getSelectedLibrary().getId());
         }
     }
 
@@ -138,49 +128,52 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
      * Each sub directory located within the <code>libraries</code> directory
      * will be created as a {@link Library} instance.
      */
-    @Override
+    //@Override
     public void load() {
 
-        if (!librariesDirectory.exists())
-            return;
-
-        Collection<File> dirs = FileUtils.listFilesAndDirs(librariesDirectory, new IOFileFilter() {
-            @Override
-            public boolean accept(File arg0, String arg1) {
-                return false;
-            }
-
-            @Override
-            public boolean accept(File arg0) {
-                return false;
-            }
-        }, new IOFileFilter() {
-            @Override
-            public boolean accept(File file, String name) {
-                if (file.getParentFile().getName().equals("libraries"))
-                    return true;
-                return false;
-            }
-
-            @Override
-            public boolean accept(File file) {
-                if (file.getParentFile().getName().equals("libraries"))
-                    return true;
-                return false;
-            }
-        });
-
-        for (File directory : dirs) {
-            if (directory.equals(librariesDirectory))
-                continue;
-
-            loadLibrary(directory.getName());
-        }
+        //        File librariesDirectory = null;
+        //
+        //        if (!librariesDirectory.exists())
+        //            return;
+        //
+        //        Collection<File> dirs = FileUtils.listFilesAndDirs(librariesDirectory, new IOFileFilter() {
+        //            @Override
+        //            public boolean accept(File arg0, String arg1) {
+        //                return false;
+        //            }
+        //
+        //            @Override
+        //            public boolean accept(File arg0) {
+        //                return false;
+        //            }
+        //        }, new IOFileFilter() {
+        //            @Override
+        //            public boolean accept(File file, String name) {
+        //                if (file.getParentFile().getName().equals("libraries"))
+        //                    return true;
+        //                return false;
+        //            }
+        //
+        //            @Override
+        //            public boolean accept(File file) {
+        //                if (file.getParentFile().getName().equals("libraries"))
+        //                    return true;
+        //                return false;
+        //            }
+        //        });
+        //
+        //        for (File directory : dirs) {
+        //            if (directory.equals(librariesDirectory))
+        //                continue;
+        //
+        //            //            loadLibrary(directory.getName());
+        //        }
     }
 
     @Override
     public Library createLibrary() {
         Library library = new Library();
+        library.wakeup(getController());
         library.setId(UUID.randomUUID());
         library.setMetadataInfo(new MetadataInfo());
         getModel().getLibraries().put(library.getId(), library);
@@ -190,51 +183,53 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     @Override
     public Library createLibrary(File directory) throws IOException {
-        // file: CausticLive/projects/Foo/libraris/User
         Library library = new Library();
+        library.wakeup(getController());
         library.setId(UUID.randomUUID());
         library.setMetadataInfo(new MetadataInfo());
-        library.setDirectory(directory);
+        // reletive directory IN the libraries folder
+        library.setDirectory(new File("libraries", directory.getPath()));
         library.mkdirs();
 
         getModel().getLibraries().put(library.getId(), library);
-
-        if (directory.exists())
-            saveLibrary(library);
-
-        return library;
-    }
-
-    @Override
-    public Library createLibrary(String name) throws IOException {
-        File newDirectory = new File(librariesDirectory, name);
-        //if (newDirectory.exists())
-        //    throw new CausticException("Library already exists " + newDirectory.getAbsolutePath());
-        newDirectory.mkdir();
-
-        // create a default scene for every new Library
-        LibraryScene defaultScene = null;
-        try {
-            defaultScene = createDefaultScene();
-        } catch (CausticException e) {
-            e.printStackTrace();
-        }
-
-        Library library = new Library();
-        library.setId(UUID.randomUUID());
-        library.setMetadataInfo(new MetadataInfo());
-        library.setDirectory(newDirectory);
-        library.mkdirs();
-
-        getModel().getLibraries().put(library.getId(), library);
-
-        library.addScene(defaultScene);
 
         saveLibrary(library);
 
         return library;
     }
 
+    @Override
+    public Library createLibrary(String name) throws IOException {
+        //        File newDirectory = new File(librariesDirectory, name);
+        //        //if (newDirectory.exists())
+        //        //    throw new CausticException("Library already exists " + newDirectory.getAbsolutePath());
+        //        newDirectory.mkdir();
+        //
+        //        // create a default scene for every new Library
+        //        LibraryScene defaultScene = null;
+        //        try {
+        //            defaultScene = createDefaultScene();
+        //        } catch (CausticException e) {
+        //            e.printStackTrace();
+        //        }
+        //
+        //        Library library = new Library();
+        //        library.setId(UUID.randomUUID());
+        //        library.setMetadataInfo(new MetadataInfo());
+        //        library.setDirectory(newDirectory);
+        //        library.mkdirs();
+        //
+        //        getModel().getLibraries().put(library.getId(), library);
+        //
+        //        library.addScene(defaultScene);
+        //
+        //        saveLibrary(library);
+        //
+        //        return library;
+        return null;
+    }
+
+    @SuppressWarnings("unused")
     private LibraryScene createDefaultScene() throws CausticException {
         getController().getSoundSource().clearAndReset();
 
@@ -267,29 +262,22 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     @Override
     public Library loadLibrary(File directory) {
+        CtkDebug.log("Load library; " + directory);
         if (!directory.exists()) {
             CtkDebug.err("Library not found; " + directory);
             return null;
         }
 
-        File file = new File(directory, LIBRARY_CTKL);
+        File absoluteLocation = getController().getProjectManager().getProject()
+                .getAbsoluteResource(directory.getPath());
+
+        File file = new File(absoluteLocation, LIBRARY_CTKL);
         Library library = getController().getSerializeService().fromFile(file, Library.class);
         getModel().getLibraries().put(library.getId(), library);
 
         //getController().getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));
 
         return library;
-    }
-
-    @Override
-    public Library loadLibrary(String name) {
-        File directory = new File(librariesDirectory, name);
-        File file = new File(directory, LIBRARY_CTKL);
-        if (!file.exists()) {
-            CtkDebug.err("Library not found; " + file);
-            return null;
-        }
-        return loadLibrary(directory);
     }
 
     @Override
@@ -300,7 +288,9 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     @Override
     public void saveLibrary(Library library) throws IOException {
         String data = getController().getSerializeService().toString(library);
-        File file = new File(library.getDirectory(), LIBRARY_CTKL);
+        File absoluteLocation = getController().getProjectManager().getProject()
+                .getAbsoluteResource(library.getDirectory().getPath());
+        File file = new File(absoluteLocation, LIBRARY_CTKL);
         FileUtils.writeStringToFile(file, data);
     }
 
@@ -576,10 +566,10 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         return result;
     }
 
-    @Override
-    public boolean isLibrary(File reletiveFile) {
-        return new File(librariesDirectory, reletiveFile.getPath()).exists();
-    }
+    //    @Override
+    //    public boolean isLibrary(File reletiveFile) {
+    //        return new File(librariesDirectory, reletiveFile.getPath()).exists();
+    //    }
 
     @Override
     public void deleteLibrary(File reletivePath) throws IOException {
@@ -594,13 +584,13 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         compress.zip();
     }
 
-    @Override
-    public Library importLibrary(File file) throws IOException {
-        // extract to libraries dir
-        File location = new File(librariesDirectory, file.getName().replace(".ctkl", ""));
-        Decompress decompress = new Decompress(file.getAbsolutePath(), location.getAbsolutePath());
-        decompress.unzip();
-        Library library = loadLibrary(location);
-        return library;
-    }
+    //    @Override
+    //    public Library importLibrary(File file) throws IOException {
+    //        // extract to libraries dir
+    //        File location = new File(librariesDirectory, file.getName().replace(".ctkl", ""));
+    //        Decompress decompress = new Decompress(file.getAbsolutePath(), location.getAbsolutePath());
+    //        decompress.unzip();
+    //        Library library = loadLibrary(location);
+    //        return library;
+    //    }
 }

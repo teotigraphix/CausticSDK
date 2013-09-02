@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.androidtransfuse.event.EventObserver;
 
@@ -30,10 +29,6 @@ public class ApplicationController implements IApplicationController {
 
     @Inject
     private IApplicationModel applicationModel;
-
-    //@Inject(optional=true)
-    //@Named("resources")
-    ResourceBundle _resourceBundle;
 
     private ICaustkController controller;
 

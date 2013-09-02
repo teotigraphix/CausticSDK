@@ -38,8 +38,6 @@ public class ProjectManager implements IProjectManager {
 
     private ICaustkController controller;
 
-    private File projectDirectory;
-
     private File sessionPreferencesFile;
 
     //----------------------------------
@@ -61,7 +59,6 @@ public class ProjectManager implements IProjectManager {
      * The root application directory, all {@link Project}s are stored in the
      * <code>applicationRoot/projects</code> directory.
      */
-    //private File applicationRoot;
 
     @Override
     public File getApplicationRoot() {
@@ -75,6 +72,10 @@ public class ProjectManager implements IProjectManager {
             directory.mkdirs();
         }
         return directory;
+    }
+
+    protected File getAbsoluteProjectDirectory() {
+        return getDirectory("projects");
     }
 
     //----------------------------------
@@ -105,7 +106,7 @@ public class ProjectManager implements IProjectManager {
         CtkDebug.log("IProjectManager.initialize()");
 
         File applicationRoot = controller.getConfiguration().getApplicationRoot();
-        projectDirectory = new File(applicationRoot, "projects");
+
         sessionPreferencesFile = new File(applicationRoot, ".settings");
 
         if (!sessionPreferencesFile.exists()) {
@@ -153,11 +154,9 @@ public class ProjectManager implements IProjectManager {
         // set modified
         project.getInfo().setModified(new Date());
 
-        //System.out.println(">> SAVE");
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
 
-        //System.out.println(">> SAVE_COMPLETE");
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE_COMPLETE));
 
@@ -184,14 +183,16 @@ public class ProjectManager implements IProjectManager {
         if (directory.getName().contains("."))
             throw new IOException("Project is not a directory");
 
-        if (!directory.isAbsolute())
-            directory = toProjectFile(directory);
-        if (!directory.exists())
-            throw new IOException("Project file does not exist");
+        //if (!directory.isAbsolute())
+        //    directory = toProjectFile(directory);
+        //if (!directory.exists())
+        //    throw new IOException("Project file does not exist");
 
-        CtkDebug.log("IProjectManager.load():" + directory.getAbsolutePath());
+        File absoluteDir = getDirectory(directory.getPath());
 
-        project = controller.getSerializeService().fromFile(new File(directory, ".project"),
+        CtkDebug.log("IProjectManager.load():" + absoluteDir);
+
+        project = controller.getSerializeService().fromFile(new File(absoluteDir, ".project"),
                 Project.class);
 
         project.open();
@@ -213,18 +214,17 @@ public class ProjectManager implements IProjectManager {
             throw new IOException("Project is not a directory");
 
         project = new Project();
+        project.wakeup(controller);
         project.setInitializing(true);
         // set the project sub directory in the /projects directory
-        project.setDirectory(new File(projectDirectory, file.getName()));
+        project.setDirectory(new File("projects", file.getName()));
         project.setInfo(createInfo());
         project.open();
-        CtkDebug.log("IProjectManager.create(): " + project.getDirectory().getAbsolutePath());
+        CtkDebug.log("IProjectManager.create(): " + project.getAbsolutDirectory());
         controller.getDispatcher().trigger(
                 new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
 
-        // create the projects resources directory which is the same name
-        File directory = new File(projectDirectory, project.getName());
-        FileUtils.forceMkdir(directory);
+        FileUtils.forceMkdir(project.getAbsolutDirectory());
 
         // save the new Project
         finalizeSaveComplete();
@@ -265,7 +265,7 @@ public class ProjectManager implements IProjectManager {
     private File toProjectFile(File file) {
         if (file.isAbsolute())
             return file;
-        return new File(projectDirectory, file.getPath());
+        return new File(getAbsoluteProjectDirectory(), file.getPath());
     }
 
 }

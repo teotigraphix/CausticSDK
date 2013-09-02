@@ -29,7 +29,8 @@ public class ListDialog extends AlertDialog {
         });
 
         ScrollPane pane = new ScrollPane(list, getSkin());
-        setContent(pane).size(330f, 400f).expandX();
+        pane.setOverscroll(false, false);
+        setContent(pane).size(420f, 400f).expandX();
     }
 
     public ListDialog(String title, Skin skin, String windowStyleName) {

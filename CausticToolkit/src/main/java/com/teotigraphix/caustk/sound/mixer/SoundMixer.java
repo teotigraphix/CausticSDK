@@ -133,7 +133,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
                 new EventObserver<OnSoundSourceSongLoad>() {
                     @Override
                     public void trigger(OnSoundSourceSongLoad object) {
-                        restore();
+                        // restore();
                     }
                 });
 

@@ -434,7 +434,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
 
         restore();
-        getController().getSoundMixer().restore();
+        //getController().getSoundMixer().restore();
 
         getDispatcher().trigger(new OnSoundSourceSongLoad(causticFile));
     }
@@ -469,7 +469,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
             } catch (CausticException e) {
                 e.printStackTrace();
             }
-            tone.restore();
+            //            tone.restore();
         }
         restoring = false;
     }

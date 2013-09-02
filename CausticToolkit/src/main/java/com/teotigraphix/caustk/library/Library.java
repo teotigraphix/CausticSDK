@@ -33,8 +33,12 @@ import com.teotigraphix.caustk.tone.Tone;
 
 public class Library implements ISerialize {
 
+    /**
+     * Returns the absolute presets dir for the project.
+     */
     protected File getPresetsDirectory() {
-        return new File(directory, "presets");
+        File file = new File(directory, "presets");
+        return controller.getProjectManager().getProject().getAbsoluteResource(file.getPath());
     }
 
     public String getName() {
@@ -75,6 +79,10 @@ public class Library implements ISerialize {
 
     private File directory;
 
+    // libraries\User
+    /**
+     * The relative directory.
+     */
     public File getDirectory() {
         return directory;
     }
@@ -163,6 +171,8 @@ public class Library implements ISerialize {
     //----------------------------------
 
     private List<LibraryScene> scenes = new ArrayList<LibraryScene>();
+
+    private transient ICaustkController controller;
 
     public List<LibraryScene> getScenes() {
         return scenes;
@@ -292,7 +302,7 @@ public class Library implements ISerialize {
      * Creates the sub directories of the library on creation.
      */
     public void mkdirs() throws IOException {
-        getPresetsDirectory().mkdir();
+        getPresetsDirectory().mkdirs();
     }
 
     public void delete() throws IOException {
@@ -307,6 +317,7 @@ public class Library implements ISerialize {
 
     @Override
     public void wakeup(ICaustkController controller) {
+        this.controller = controller;
         for (LibraryScene item : scenes) {
             item.setLibrary(this);
         }

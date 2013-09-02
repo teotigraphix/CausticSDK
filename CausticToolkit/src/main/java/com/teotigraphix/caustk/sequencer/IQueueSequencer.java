@@ -25,4 +25,10 @@ public interface IQueueSequencer extends IControllerComponent {
 
     void play() throws CausticException;
 
+    void stop();
+
+    boolean isRecordMode();
+
+    void setRecordMode(boolean value);
+
 }

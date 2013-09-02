@@ -46,8 +46,8 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
     public void setRate(int value) {
         if (value == rate)
             return;
-        if (value < 0 || value > 12)
-            throw newRangeException("lfo1_rate", "0..12", value);
+        //        if (value < 0 || value > 12)
+        //            throw newRangeException("lfo1_rate", "0..12", value);
         rate = value;
         SubSynthMessage.LFO1_RATE.send(getEngine(), getToneIndex(), rate);
     }
@@ -69,8 +69,8 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
     public void setDepth(float value) {
         if (value == depth)
             return;
-        if (value < 0f || value > 1f)
-            throw newRangeException("lfo1_depth", "0..1", value);
+        //        if (value < 0f || value > 1f)
+        //            throw newRangeException("lfo1_depth", "0..1", value);
         depth = value;
         SubSynthMessage.LFO1_DEPTH.send(getEngine(), getToneIndex(), depth);
     }
@@ -93,7 +93,7 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
         if (value == target)
             return;
         target = value;
-        SubSynthMessage.LFO1_TARGET.send(getEngine(), getToneIndex(), target.getValue());
+        //        SubSynthMessage.LFO1_TARGET.send(getEngine(), getToneIndex(), target.getValue());
     }
 
     //----------------------------------
@@ -107,14 +107,15 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
     }
 
     Osc2WaveForm getWaveform(boolean restore) {
-        return Osc2WaveForm.toType(SubSynthMessage.LFO1_WAVEFORM.query(getEngine(), getToneIndex()));
+        return Osc2WaveForm
+                .toType(SubSynthMessage.LFO1_WAVEFORM.query(getEngine(), getToneIndex()));
     }
 
     public void setWaveForm(Osc2WaveForm value) {
         if (value == waveForm)
             return;
         waveForm = value;
-        SubSynthMessage.LFO1_WAVEFORM.send(getEngine(), getToneIndex(), waveForm.getValue());
+        //        SubSynthMessage.LFO1_WAVEFORM.send(getEngine(), getToneIndex(), waveForm.getValue());
     }
 
     public LFO1Component() {

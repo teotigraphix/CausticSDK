@@ -23,14 +23,19 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.service.ISerialize;
+
 /**
  * The main class that is serialized in a <code>ctk</code> file.
  */
-public class Project {
+public class Project implements ISerialize {
 
     private transient boolean isClosed;
 
     private transient boolean initializing = false;
+
+    private transient ICaustkController controller;
 
     public boolean isInitializing() {
         return initializing;
@@ -62,21 +67,29 @@ public class Project {
         return directory;
     }
 
+    public File getAbsolutDirectory() {
+        return controller.getProjectManager().getDirectory(directory.getPath());
+    }
+
     /**
      * Returns the <code>.project</code> state file located at the root of the
      * project directory.
      */
     public File getStateFile() {
-        return getResource(".project");
+        return getAbsoluteResource(".project");
     }
 
     /**
-     * Returns a File handle to relativePath passed.
+     * Returns a relative File handle to relativePath passed.
      * 
      * @param relativePath The path inside the project's resource directory.
      */
     public File getResource(String relativePath) {
         return new File(getDirectory(), relativePath);
+    }
+
+    public File getAbsoluteResource(String relativePath) {
+        return new File(getAbsolutDirectory(), relativePath);
     }
 
     //----------------------------------
@@ -192,6 +205,15 @@ public class Project {
      */
     public void close() {
         isClosed = true;
+    }
+
+    @Override
+    public void sleep() {
+    }
+
+    @Override
+    public void wakeup(ICaustkController controller) {
+        this.controller = controller;
     }
 
 }
