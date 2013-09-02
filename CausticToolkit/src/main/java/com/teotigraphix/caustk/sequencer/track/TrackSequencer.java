@@ -179,7 +179,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         }
         // all songs are relative to the current projects location
         File localFile = getController().getProjectManager().getProject()
-                .getResource(songFile.getPath());
+                .getAbsoluteResource(songFile.getPath());
         File absoluteTargetSongFile = localFile.getAbsoluteFile();
 
         // save the project relative path of the song
@@ -201,7 +201,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
             return;
 
         File localFile = getController().getProjectManager().getProject()
-                .getResource(trackSong.getFile().getPath());
+                .getAbsoluteResource(trackSong.getFile().getPath());
         File absoluteTargetSongFile = localFile.getAbsoluteFile();
         getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
         getDispatcher().trigger(

@@ -56,7 +56,7 @@ public class TrackSong implements ISerialize {
      */
     public File getAbsoluteFile() {
         final File absoluteFile = controller.getProjectManager().getProject()
-                .getResource(file.getPath()).getAbsoluteFile();
+                .getAbsoluteResource(file.getPath());
         return absoluteFile;
     }
 

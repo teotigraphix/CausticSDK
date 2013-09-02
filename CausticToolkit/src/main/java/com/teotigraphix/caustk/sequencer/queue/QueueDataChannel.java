@@ -178,9 +178,8 @@ public class QueueDataChannel implements ISerialize {
         int index = getToneIndex();
         TrackChannel track = controller.getTrackSequencer().getTrack(index);
         TrackPhrase trackPhrase = track.getPhrase(getBankIndex(), getPatternIndex());
-
-        trackPhrase.setNoteData(phrase.getNoteData());
         trackPhrase.setLength(phrase.getLength());
+        trackPhrase.setNoteData(phrase.getNoteData());
 
         //        if (phrase == null) {
         //            clearPhrase();
