@@ -277,8 +277,8 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
                             if (data.getState() == QueueDataState.Selected) {
                                 // add the phrase at the very next measure
-                                //                                addPhraseAt(track, currentMeasure + 1, channel.getChannelPhrase());
-                                //                                channel.setCurrentBeat(0);
+                                addPhraseAt(track, currentMeasure + 1, null);
+                                // channel.setCurrentBeat(0);
                             } else if (data.getState() == QueueDataState.UnQueued) {
                                 // remove the item from the que
                                 stopPlaying(data);
@@ -312,8 +312,9 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
             if (data.getState() == QueueDataState.Queued) {
                 // add to sequencer
                 for (QueueDataChannel channel : data.getChannels()) {
-                    //                    Track track = song.getTrack(channel.getIndex());
-                    //                    addPhraseAt(track, currentMeasure + 1, channel.getChannelPhrase());
+                    @SuppressWarnings("unused")
+                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                    //addPhraseAt(track, currentMeasure + 1, channel.getChannelPhrase());
                 }
                 startPlaying(data);
             } else if (data.getState() == QueueDataState.Selected) {
@@ -332,7 +333,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
                 // add to sequencer
                 for (QueueDataChannel channel : data.getChannels()) {
                     TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
-                    //                    addPhraseAt(track, 0, channel.getChannelPhrase());
+                    addPhraseAt(track, 0, data);
                 }
                 startPlaying(data);
             } else if (data.getState() == QueueDataState.Selected) {
@@ -345,8 +346,10 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     }
 
     @SuppressWarnings("unused")
-    private void addPhraseAt(TrackChannel track, int start, TrackPhrase phrase) {
+    private void addPhraseAt(TrackChannel track, int start, QueueData data) {
         try {
+            TrackPhrase phrase = track.getPhrase(data.getBankIndex(), data.getPatternIndex());
+
             track.addPhraseAt(start, 1, phrase, true);
         } catch (CausticException e) {
             e.printStackTrace();

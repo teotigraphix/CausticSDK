@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.service.ISerialize;
@@ -112,6 +113,16 @@ public class QueueData implements ISerialize {
         return new ArrayList<QueueDataChannel>(map.values());
     }
 
+    private UUID phraseId;
+
+    public UUID getPhraseId() {
+        return phraseId;
+    }
+
+    public void setPhraseId(UUID value) {
+        phraseId = value;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -157,4 +168,5 @@ public class QueueData implements ISerialize {
 
         UnQueued;
     }
+
 }

@@ -301,6 +301,8 @@ public class TrackChannel implements ISerialize {
 
         //if (dispatch)
         //   getDispatcher().trigger(new OnTrackPhraseAdd(this, item));
+        controller.getSystemSequencer().addPattern(getTone(), item.getBankIndex(),
+                item.getPatternIndex(), item.getStartMeasure(), item.getEndMeasure());
 
         return item;
     }

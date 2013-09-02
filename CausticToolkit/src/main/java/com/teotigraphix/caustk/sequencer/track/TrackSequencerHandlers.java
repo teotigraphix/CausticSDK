@@ -57,13 +57,16 @@ public class TrackSequencerHandlers {
 
                 case Length:
                     tone = object.getTrackPhrase().getTone();
-                    tone.getPatternSequencer().setLength(object.getTrackPhrase().getLength());
+                    tone.getPatternSequencer().setLength(object.getTrackPhrase().getBank(),
+                            object.getTrackPhrase().getPattern(),
+                            object.getTrackPhrase().getLength());
                     break;
 
                 case NoteData:
                     tone = object.getTrackPhrase().getTone();
-                    tone.getPatternSequencer()
-                            .assignNoteData(object.getTrackPhrase().getNoteData());
+                    tone.getPatternSequencer().assignNoteData(object.getTrackPhrase().getBank(),
+                            object.getTrackPhrase().getPattern(),
+                            object.getTrackPhrase().getNoteData());
                     break;
 
                 case EditMeasure:

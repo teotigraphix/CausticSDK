@@ -72,6 +72,7 @@ public class QueueSong implements ISerialize {
         QueueData queueData = bankMap.get(patternIndex);
         if (queueData == null) {
             queueData = new QueueData(bankIndex, patternIndex);
+            queueData.wakeup(controller);
             bankMap.put(patternIndex, queueData);
         }
         return queueData;

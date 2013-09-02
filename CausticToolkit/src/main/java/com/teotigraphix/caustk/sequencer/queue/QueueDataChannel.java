@@ -6,6 +6,8 @@ import java.util.UUID;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.LibraryPhrase;
 import com.teotigraphix.caustk.pattern.PatternUtils;
+import com.teotigraphix.caustk.sequencer.track.TrackChannel;
+import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
 
@@ -173,41 +175,49 @@ public class QueueDataChannel implements ISerialize {
     }
 
     public void assignPhrase(LibraryPhrase phrase) {
-        if (phrase == null) {
-            clearPhrase();
-            return;
-        }
-        // save original the libraryId and phraseId if ever this
-        // channel wants to try and reset its phrase data
-        // but we copy the whole thing so there is no dependencies
-        // between this project and library since they could get disconnected
-        ownerLibraryId = phrase.getLibrary().getId();
-        ownerPhraseId = phrase.getId();
-        LibraryPhrase newPhrase = controller.getSerializeService()
-                .copy(phrase, LibraryPhrase.class);
+        int index = getToneIndex();
+        TrackChannel track = controller.getTrackSequencer().getTrack(index);
+        TrackPhrase trackPhrase = track.getPhrase(getBankIndex(), getPatternIndex());
 
-        // update the decoration to hold our position
-        // the original ID from the library can always get the original bank/pattern locations
-        newPhrase.setId(UUID.randomUUID());
-        newPhrase.setBankIndex(getBankIndex());
-        newPhrase.setPatternIndex(getPatternIndex());
+        trackPhrase.setNoteData(phrase.getNoteData());
+        trackPhrase.setLength(phrase.getLength());
 
-        //        channelPhrase = new ChannelPhrase(newPhrase);
+        //        if (phrase == null) {
+        //            clearPhrase();
+        //            return;
+        //        }
+        //        // save original the libraryId and phraseId if ever this
+        //        // channel wants to try and reset its phrase data
+        //        // but we copy the whole thing so there is no dependencies
+        //        // between this project and library since they could get disconnected
+        //        ownerLibraryId = phrase.getLibrary().getId();
+        //        ownerPhraseId = phrase.getId();
+        //        LibraryPhrase newPhrase = controller.getSerializeService()
+        //                .copy(phrase, LibraryPhrase.class);
         //
-        //        assignNoteData(channelPhrase);
+        //        // update the decoration to hold our position
+        //        // the original ID from the library can always get the original bank/pattern locations
+        //        newPhrase.setId(UUID.randomUUID());
+        //        newPhrase.setBankIndex(getBankIndex());
+        //        newPhrase.setPatternIndex(getPatternIndex());
+        //
+        //        //        channelPhrase = new ChannelPhrase(newPhrase);
+        //        //
+        //        assignNoteData(phrase);
     }
 
-    //    private void assignNoteData(ChannelPhrase channelPhrase) {
-    //        if (getTone() == null)
-    //            return;
-    //        String data = channelPhrase.getNoteData();
-    //        int oldBank = getTone().getPatternSequencer().getSelectedBank();
-    //        int oldPattern = getTone().getPatternSequencer().getSelectedIndex();
-    //        getTone().getPatternSequencer().setSelectedPattern(getBankIndex(), getPatternIndex());
-    //        getTone().getPatternSequencer().setLength(channelPhrase.getLength());
-    //        getTone().getPatternSequencer().initializeData(data);
-    //        getTone().getPatternSequencer().setSelectedPattern(oldBank, oldPattern);
-    //    }
+    private void assignNoteData(LibraryPhrase channelPhrase) {
+        if (getTone() == null)
+            return;
+
+        String data = channelPhrase.getNoteData();
+        int oldBank = getTone().getPatternSequencer().getSelectedBank();
+        int oldPattern = getTone().getPatternSequencer().getSelectedPattern();
+        getTone().getPatternSequencer().setSelectedBankPattern(getBankIndex(), getPatternIndex());
+        getTone().getPatternSequencer().setLength(channelPhrase.getLength());
+        getTone().getPatternSequencer().assignNoteData(data);
+        getTone().getPatternSequencer().setSelectedBankPattern(oldBank, oldPattern);
+    }
 
     private void clearPhrase() {
         ownerLibraryId = null;

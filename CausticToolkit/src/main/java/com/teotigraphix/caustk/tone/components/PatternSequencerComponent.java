@@ -127,6 +127,14 @@ public class PatternSequencerComponent extends ToneComponent {
         return Arrays.asList(patterns.split(" "));
     }
 
+    public void assignNoteData(int bankIndex, int patternIndex, String data) {
+        int lastBank = getSelectedBank();
+        int lastIndex = getSelectedPattern();
+        setSelectedBankPattern(bankIndex, patternIndex);
+        assignNoteData(data);
+        setSelectedBankPattern(lastBank, lastIndex);
+    }
+
     public void assignNoteData(String data) {
         if (data.equals(""))
             return;

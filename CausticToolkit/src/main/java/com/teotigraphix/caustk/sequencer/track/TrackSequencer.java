@@ -11,7 +11,6 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
-import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
@@ -40,6 +39,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     private TrackSong trackSong;
 
+    @Override
     public final TrackSong getTrackSong() {
         return trackSong;
     }
@@ -241,14 +241,14 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     @Override
     protected void loadComplete(Project project) {
-        if (trackSong.exists()) {
-            File causticFile = trackSong.getAbsoluteCausticFile();
-            try {
-                getController().getSoundSource().loadSong(causticFile);
-            } catch (CausticException e) {
-                e.printStackTrace();
-            }
-        }
+        //        if (trackSong.exists()) {
+        //            File causticFile = trackSong.getAbsoluteCausticFile();
+        //            try {
+        //                getController().getSoundSource().loadSong(causticFile);
+        //            } catch (CausticException e) {
+        //                e.printStackTrace();
+        //            }
+        //        }
     }
 
     @Override
