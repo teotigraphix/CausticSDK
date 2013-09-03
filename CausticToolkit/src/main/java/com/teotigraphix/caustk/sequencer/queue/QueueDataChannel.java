@@ -205,6 +205,7 @@ public class QueueDataChannel implements ISerialize {
         //        assignNoteData(phrase);
     }
 
+    @SuppressWarnings("unused")
     private void assignNoteData(LibraryPhrase channelPhrase) {
         if (getTone() == null)
             return;
@@ -218,6 +219,7 @@ public class QueueDataChannel implements ISerialize {
         getTone().getPatternSequencer().setSelectedBankPattern(oldBank, oldPattern);
     }
 
+    @SuppressWarnings("unused")
     private void clearPhrase() {
         ownerLibraryId = null;
         ownerPhraseId = null;

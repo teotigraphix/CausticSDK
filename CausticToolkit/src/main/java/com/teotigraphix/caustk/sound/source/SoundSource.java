@@ -275,6 +275,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
     //--------------------------------------------------------------------------
 
     Tone createSynthChannel(int index, String toneName, ToneType toneType) throws CausticException {
+        toneName = toneName.replace(" ", "_");
         if (index > 13)
             throw new CausticException("Only 14 machines allowed in a rack");
 
@@ -463,6 +464,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
                 continue;
 
             ToneType toneType = ToneType.fromString(type);
+            @SuppressWarnings("unused")
             Tone tone = null;
             try {
                 tone = createTone(i, name, toneType);
