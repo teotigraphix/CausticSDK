@@ -59,7 +59,15 @@ public class ScrollList extends ScrollPane {
         return list.getSelectedIndex();
     }
 
+    public void setSelectedIndex(int value) {
+        list.setSelectedIndex(value);
+    }
+
     public Object getItem(int index) {
         return items.get(index);
+    }
+
+    public Object getSelectedItem() {
+        return getItem(getSelectedIndex());
     }
 }

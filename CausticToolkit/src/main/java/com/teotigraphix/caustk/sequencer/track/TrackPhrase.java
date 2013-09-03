@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
@@ -42,6 +43,20 @@ public class TrackPhrase implements ISerialize {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // toneIndex
+    //----------------------------------
+
+    private UUID phraseId;
+
+    public UUID getPhraseId() {
+        return phraseId;
+    }
+
+    public void setPhraseId(UUID value) {
+        phraseId = value;
+    }
 
     //----------------------------------
     // toneIndex

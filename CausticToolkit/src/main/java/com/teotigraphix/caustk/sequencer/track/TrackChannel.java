@@ -304,7 +304,7 @@ public class TrackChannel implements ISerialize {
         TrackItem item = new TrackItem();
         item.setTrackIndex(getIndex());
         item.setNumMeasures(trackPhrase.getLength());
-        //        item.setPhraseId(trackPhrase.getId());
+        item.setPhraseId(trackPhrase.getPhraseId());
         item.setStartMeasure(startMeasure);
         item.setBankIndex(trackPhrase.getBank());
         item.setPatternIndex(trackPhrase.getPattern());
