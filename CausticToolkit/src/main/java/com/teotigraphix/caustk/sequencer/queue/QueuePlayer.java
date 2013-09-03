@@ -50,14 +50,14 @@ public class QueuePlayer {
     public void play() throws CausticException {
         ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
         for (QueueData data : copied) {
-            if (data.getState() == QueueDataState.Queued) {
+            if (data.getState() == QueueDataState.Queue) {
                 // add to sequencer
                 for (QueueDataChannel channel : data.getChannels()) {
                     TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
                     addPhraseAt(track, 0, data);
                 }
                 startPlaying(data);
-            } else if (data.getState() == QueueDataState.Selected) {
+            } else if (data.getState() == QueueDataState.Play) {
             }
         }
         getController().getSystemSequencer().play(SequencerMode.SONG);
@@ -73,8 +73,8 @@ public class QueuePlayer {
 
         if (!queued.contains(data)) {
             //CtkDebug.log("Queue:" + data);
-            setState(data, QueueDataState.Queued);
             queued.add(data);
+            setState(data, QueueDataState.Queue);
         }
         return true;
     }
@@ -84,9 +84,9 @@ public class QueuePlayer {
             return false;
 
         if (playQueue.contains(data)) {
-            if (data.getState() == QueueDataState.Queued) {
-                setState(data, QueueDataState.Idle);
+            if (data.getState() == QueueDataState.Queue) {
                 playQueue.remove(data);
+                setState(data, QueueDataState.Idle);
             } else {
                 setState(data, QueueDataState.UnQueued);
             }
@@ -110,7 +110,7 @@ public class QueuePlayer {
         if (isStartMeasure()) {
             log("Start measure");
             for (QueueData data : flushedQueue) {
-                if (data.getState() != QueueDataState.Queued) {
+                if (data.getState() != QueueDataState.Queue) {
                     setState(data, QueueDataState.Idle);
                     // QueueDataChannel channel = data.getChannel(data.getViewChannel());
                     //                    channel.setCurrentBeat(0);
@@ -149,7 +149,7 @@ public class QueuePlayer {
 
                     if (channel.isLoopEnabled()) {
 
-                        if (data.getState() == QueueDataState.Selected) {
+                        if (data.getState() == QueueDataState.Play) {
                             // add the phrase at the very next measure
                             addPhraseAt(track, currentMeasure + 1, data);
                             // channel.setCurrentBeat(0);
@@ -177,14 +177,14 @@ public class QueuePlayer {
         ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
         // loop through the queue and add queued items
         for (QueueData data : copied) {
-            if (data.getState() == QueueDataState.Queued) {
+            if (data.getState() == QueueDataState.Queue) {
                 // add to sequencer
                 for (QueueDataChannel channel : data.getChannels()) {
                     TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
                     addPhraseAt(track, nextMeasure, data);
                 }
                 startPlaying(data);
-            } else if (data.getState() == QueueDataState.Selected) {
+            } else if (data.getState() == QueueDataState.Play) {
 
             }
         }
@@ -201,7 +201,7 @@ public class QueuePlayer {
 
     private void startPlaying(QueueData data) {
         //log("startPlaying" + data);
-        setState(data, QueueDataState.Selected);
+        setState(data, QueueDataState.Play);
         queued.remove(data);
         playQueue.add(data);
 

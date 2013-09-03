@@ -14,6 +14,10 @@ public class QueueData implements ISerialize {
 
     private transient ICaustkController controller;
 
+    public ICaustkController getController() {
+        return controller;
+    }
+
     private Map<Integer, QueueDataChannel> map = new TreeMap<Integer, QueueDataChannel>();
 
     //----------------------------------
@@ -54,19 +58,19 @@ public class QueueData implements ISerialize {
     // viewChannel
     //----------------------------------
 
-    private Integer viewChannel = null;
+    private int viewChannel = -1;
 
     /**
      * Returns the {@link QueueDataChannel} index that is considered the top
      * view.
      */
     public int getViewChannel() {
-        if (viewChannel == null) {
-            for (QueueDataChannel channel : map.values()) {
-                return channel.getToneIndex();
-            }
-            viewChannel = 0;
-        }
+        //        if (viewChannel == null) {
+        //            for (QueueDataChannel channel : map.values()) {
+        //                return channel.getToneIndex();
+        //            }
+        //            viewChannel = 0;
+        //        }
         return viewChannel;
     }
 
@@ -162,9 +166,9 @@ public class QueueData implements ISerialize {
     public enum QueueDataState {
         Idle,
 
-        Selected,
+        Play,
 
-        Queued,
+        Queue,
 
         UnQueued;
     }

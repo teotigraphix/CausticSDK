@@ -95,6 +95,8 @@ public class ButtonBar extends Table {
     }
 
     public void select(int index) {
+        if (index == -1)
+            return;
         // XXX Need a way to not dispatch the change listener when programatically selecting
         group.getButtons().get(index).setChecked(true);
     }
