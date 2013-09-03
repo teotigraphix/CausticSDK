@@ -140,7 +140,7 @@ public class QueueDataChannel implements ISerialize {
     // loopEnabled
     //----------------------------------
 
-    private boolean loopEnabled = true;
+    private boolean loopEnabled = false;
 
     public boolean isLoopEnabled() {
         return loopEnabled;

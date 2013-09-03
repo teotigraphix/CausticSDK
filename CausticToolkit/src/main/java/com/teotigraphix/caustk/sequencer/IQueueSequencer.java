@@ -31,4 +31,17 @@ public interface IQueueSequencer extends IControllerComponent {
 
     void setRecordMode(boolean value);
 
+    public static class OnQueueSequencerDataChange {
+
+        private QueueData data;
+
+        public QueueData getData() {
+            return data;
+        }
+
+        public OnQueueSequencerDataChange(QueueData data) {
+            this.data = data;
+        }
+    }
+
 }

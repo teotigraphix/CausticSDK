@@ -83,16 +83,9 @@ public abstract class GDXGame implements IGame {
 
     @Override
     public void initialize(Module... modules) {
-        try {
-            for (Module module : modules) {
-                executor.addModule(module);
-            }
-            executor.start(this);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        for (Module module : modules) {
+            executor.addModule(module);
         }
-        setController(executor.getController());
     }
 
     @Override
@@ -105,6 +98,16 @@ public abstract class GDXGame implements IGame {
             e.printStackTrace();
         }
         soundGenerator.onDestroy();
+    }
+
+    @Override
+    public void create() {
+        try {
+            executor.start(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setController(executor.getController());
     }
 
     @Override

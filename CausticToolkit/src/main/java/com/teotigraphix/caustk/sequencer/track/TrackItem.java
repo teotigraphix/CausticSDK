@@ -36,6 +36,10 @@ import com.teotigraphix.caustk.service.ISerialize;
  */
 public class TrackItem implements ISerialize {
 
+    //--------------------------------------------------------------------------
+    // Properties
+    //--------------------------------------------------------------------------
+
     private int numMeasures;
 
     //----------------------------------
@@ -44,6 +48,9 @@ public class TrackItem implements ISerialize {
 
     private int trackIndex;
 
+    /**
+     * The track/tone index.
+     */
     public int getTrackIndex() {
         return trackIndex;
     }
@@ -59,9 +66,8 @@ public class TrackItem implements ISerialize {
     private UUID phraseId;
 
     /**
-     * Returns the {@link ChannelPhrase#getId()} of the underlying
-     * {@link LibraryPhrase} that was copied when the channel had its phrase
-     * assigned.
+     * Returns the {@link LibraryPhrase} id that was copied when the channel had
+     * its phrase assigned.
      */
     public final UUID getPhraseId() {
         return phraseId;
@@ -79,7 +85,7 @@ public class TrackItem implements ISerialize {
 
     /**
      * The bank index in the pattern sequencer where the phrase data is located
-     * (A-D).
+     * 0-3, (A-D).
      */
     public final int getBankIndex() {
         return bankIndex;
@@ -97,7 +103,7 @@ public class TrackItem implements ISerialize {
 
     /**
      * The pattern index in the pattern sequencer where the phrase data is
-     * located (1-16).
+     * located 0-15, (1-16).
      */
     public final int getPatternIndex() {
         return patternIndex;
@@ -179,11 +185,23 @@ public class TrackItem implements ISerialize {
         numLoops = value;
     }
 
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
     public TrackItem() {
     }
 
-    // 0:4
-
+    /**
+     * Returns whether the measure passed is located on the start or within this
+     * item.
+     * <p>
+     * Will return false if the measure is equal to the end measure of this
+     * item. This means the measure starts when this items stops, no overlap.
+     * 
+     * @param measure The measure to check containment from start to end of this
+     *            item.
+     */
     public boolean contains(int measure) {
         int start = getStartMeasure();
         int end = getEndMeasure();
@@ -192,14 +210,9 @@ public class TrackItem implements ISerialize {
         return false;
     }
 
-    //
-    //    public boolean containsInSpan(int measure) {
-    //        int start = getStartMeasure();
-    //        int end = getEndMeasure();
-    //        if (measure > start && measure <= end)
-    //            return true;
-    //        return false;
-    //    }
+    //--------------------------------------------------------------------------
+    // ISerialize API
+    //--------------------------------------------------------------------------
 
     @Override
     public void sleep() {

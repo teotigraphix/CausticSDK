@@ -235,6 +235,20 @@ public class TrackChannel implements ISerialize {
 
     }
 
+    /**
+     * Returns a collection of items that end at the passed measure.
+     * 
+     * @param measure The end measure.
+     */
+    public List<TrackItem> getItemsAtEndMeasure(int measure) {
+        List<TrackItem> result = new ArrayList<TrackItem>();
+        for (TrackItem item : items.values()) {
+            if (item.getEndMeasure() == measure)
+                result.add(item);
+        }
+        return result;
+    }
+
     public List<TrackItem> getItemsOnMeasure(int measure) {
         List<TrackItem> result = new ArrayList<TrackItem>();
         for (TrackItem item : items.values()) {
