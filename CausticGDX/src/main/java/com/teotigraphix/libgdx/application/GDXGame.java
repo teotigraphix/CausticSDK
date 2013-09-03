@@ -138,6 +138,12 @@ public abstract class GDXGame implements IGame {
 
     @Override
     public void render() {
+
+        if (pendingScreen != null) {
+            setScreen(pendingScreen);
+            pendingScreen = null;
+        }
+
         // output the current FPS
         if (printFPS)
             fps.log();
@@ -162,13 +168,15 @@ public abstract class GDXGame implements IGame {
         screenTypes.put(id, type);
     }
 
+    private IScreen pendingScreen;
+
     @Override
     public void setScreen(int id) {
         IScreen screen = screens.get(id);
         if (screen == null) {
             Class<? extends IScreen> type = screenTypes.get(id);
             try {
-                screen = type.newInstance();
+                pendingScreen = type.newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -176,7 +184,6 @@ public abstract class GDXGame implements IGame {
             }
             screens.put(id, screen);
         }
-        setScreen(screen);
     }
 
     /**
