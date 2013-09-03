@@ -37,6 +37,8 @@ public interface IApplicationController {
      */
     ICaustkController getController();
 
+    void initialize();
+
     /**
      * Loads {@link ICaustkModel} state after the {@link Project} has been
      * deserialized.

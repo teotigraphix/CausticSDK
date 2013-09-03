@@ -105,10 +105,12 @@ public class ApplicationController implements IApplicationController {
     }
 
     @Override
-    public void start() throws IOException {
+    public void initialize() {
         getController().getApplication().initialize();
+    }
 
-        // from event calls appModel.start()
+    @Override
+    public void start() throws IOException {
         getController().getApplication().start();
 
         applicationModel.start();

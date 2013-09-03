@@ -167,4 +167,8 @@ public abstract class MediatorBase implements ICaustkMediator {
     @Override
     public void create(IScreen screen) {
     }
+
+    @Override
+    public void onShow(IScreen screen) {
+    }
 }

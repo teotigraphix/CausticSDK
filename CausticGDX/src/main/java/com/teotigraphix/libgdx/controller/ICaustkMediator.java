@@ -42,6 +42,16 @@ public interface ICaustkMediator {
 
     void dispose();
 
+    /**
+     * @param screen The parent screen.
+     * @see IScreen#create()
+     */
     void create(IScreen screen);
+
+    /**
+     * @param screen The parent screen.
+     * @see IScreen#show()
+     */
+    void onShow(IScreen screen);
 
 }

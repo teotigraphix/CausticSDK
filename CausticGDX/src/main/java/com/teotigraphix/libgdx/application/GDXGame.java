@@ -7,6 +7,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.utils.ArrayMap;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -24,6 +25,10 @@ import com.teotigraphix.libgdx.screen.IScreen;
  * keep screens around or dispose of them when another screen is set.
  */
 public abstract class GDXGame implements IGame {
+
+    private ArrayMap<Integer, IScreen> screens = new ArrayMap<Integer, IScreen>();
+
+    private ArrayMap<Integer, Class<? extends IScreen>> screenTypes = new ArrayMap<Integer, Class<? extends IScreen>>();
 
     private StartupExecutor executor;
 
@@ -69,14 +74,17 @@ public abstract class GDXGame implements IGame {
 
     private ISoundGenerator soundGenerator;
 
+    private Module module;
+
     @Override
     public ISoundGenerator getSoundGenerator() {
         return soundGenerator;
     }
 
-    public GDXGame(String appName, ISoundGenerator soundGenerator) {
+    public GDXGame(String appName, ISoundGenerator soundGenerator, Module module) {
         this.appName = appName;
         this.soundGenerator = soundGenerator;
+        this.module = module;
         executor = new StartupExecutor();
         fps = new FPSLogger();
     }
@@ -85,6 +93,19 @@ public abstract class GDXGame implements IGame {
     public void initialize(Module... modules) {
         for (Module module : modules) {
             executor.addModule(module);
+        }
+        executor.initialize(this);
+        setController(executor.getController());
+    }
+
+    @Override
+    public void create() {
+        initialize(module);
+        controller.onStart();
+        try {
+            executor.start(this);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -98,26 +119,19 @@ public abstract class GDXGame implements IGame {
             e.printStackTrace();
         }
         soundGenerator.onDestroy();
-    }
-
-    @Override
-    public void create() {
-        try {
-            executor.start(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        setController(executor.getController());
+        controller.onDestroy();
     }
 
     @Override
     public void pause() {
+        controller.onPause();
         if (screen != null)
             screen.pause();
     }
 
     @Override
     public void resume() {
+        controller.onResume();
         if (screen != null)
             screen.resume();
     }
@@ -144,6 +158,27 @@ public abstract class GDXGame implements IGame {
             screen.resize(width, height);
     }
 
+    protected void addScreen(int id, Class<? extends IScreen> type) {
+        screenTypes.put(id, type);
+    }
+
+    @Override
+    public void setScreen(int id) {
+        IScreen screen = screens.get(id);
+        if (screen == null) {
+            Class<? extends IScreen> type = screenTypes.get(id);
+            try {
+                screen = type.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            screens.put(id, screen);
+        }
+        setScreen(screen);
+    }
+
     /**
      * Sets the current screen. {@link IScreen#hide()} is called on any old
      * screen, and {@link IScreen#show()} is called on the new screen, if any.
@@ -152,21 +187,22 @@ public abstract class GDXGame implements IGame {
      */
     @Override
     public void setScreen(IScreen value) {
-        //CtkDebug.err("Creating Screen " + value);
-        //CtkDebug.err("injector " + injector);
         if (screen != null)
             screen.hide();
+
         screen = value;
 
         if (screen != null) {
             // this will only happen at first start up with the splash
             // TODO Can I fix this?
-            if (injector != null) {
-                injector.injectMembers(screen);
-                // XXX FIX, either fix this or make the splash screen dumb with no injections
-                screenProvider.setScreen(screen);
+            if (!screen.isInitialized()) {
+                if (injector != null) {
+                    injector.injectMembers(screen);
+                }
+                screen.initialize(this);
+                screen.create();
             }
-            screen.initialize(this);
+            screenProvider.setScreen(screen);
             screen.show();
             screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }

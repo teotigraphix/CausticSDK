@@ -1,11 +1,16 @@
 
 package com.teotigraphix.libgdx.model;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CtkDebug;
+import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 
 @Singleton
 public class ApplicationModel extends ModelBase implements IApplicationModel {
+
+    @Inject
+    IScreenProvider screenProvider;
 
     @Override
     public String getName() {
@@ -35,6 +40,11 @@ public class ApplicationModel extends ModelBase implements IApplicationModel {
         CtkDebug.model("ApplicationModel dirty: " + value);
         dirty = value;
         getDispatcher().trigger(new OnApplicationModelDirtyChanged(dirty));
+    }
+
+    @Override
+    public void setScreen(int screenId) {
+        screenProvider.getScreen().getGame().setScreen(screenId);
     }
 
     //--------------------------------------------------------------------------

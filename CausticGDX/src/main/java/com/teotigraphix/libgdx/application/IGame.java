@@ -23,6 +23,8 @@ public interface IGame extends ApplicationListener {
      */
     String getAppName();
 
+    void setScreen(int id);
+
     /**
      * Sets the current {@link IScreen} of the {@link IGame}, each screen has a
      * {@link Stage} filled with actors of the screen.

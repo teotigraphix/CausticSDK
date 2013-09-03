@@ -54,11 +54,11 @@ public class ButtonBar extends Table {
     public ButtonBar() {
     }
 
-    public ButtonBar(Skin skin, String[] items, boolean isViertical) {
+    public ButtonBar(Skin skin, String[] items, boolean isVertical) {
         super(skin);
         this.skin = skin;
         this.items = items;
-        isVertical = isViertical;
+        this.isVertical = isVertical;
         group = new ButtonGroup();
         createChildren();
     }

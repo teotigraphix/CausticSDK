@@ -47,12 +47,32 @@ public class QueuePlayer {
         return currentLocalBeat == 0;
     }
 
+    public void play() throws CausticException {
+        ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
+        for (QueueData data : copied) {
+            if (data.getState() == QueueDataState.Queued) {
+                // add to sequencer
+                for (QueueDataChannel channel : data.getChannels()) {
+                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                    addPhraseAt(track, 0, data);
+                }
+                startPlaying(data);
+            } else if (data.getState() == QueueDataState.Selected) {
+            }
+        }
+        getController().getSystemSequencer().play(SequencerMode.SONG);
+    }
+
+    public void stop() {
+        getController().getSystemSequencer().stop();
+    }
+
     public boolean queue(QueueData data) {
         if (isLockMeasure())
             return false;
 
         if (!queued.contains(data)) {
-            CtkDebug.log("Queue:" + data);
+            //CtkDebug.log("Queue:" + data);
             setState(data, QueueDataState.Queued);
             queued.add(data);
         }
@@ -92,79 +112,55 @@ public class QueuePlayer {
             for (QueueData data : flushedQueue) {
                 if (data.getState() != QueueDataState.Queued) {
                     setState(data, QueueDataState.Idle);
-                    QueueDataChannel channel = data.getChannel(data.getViewChannel());
+                    // QueueDataChannel channel = data.getChannel(data.getViewChannel());
                     //                    channel.setCurrentBeat(0);
                 }
             }
 
             flushedQueue.clear();
-
-            lockAndExtendPlayingTracks();
         }
 
         // last beat in measure
         if (isLockMeasure()) {
             //log("Lock measure");
+            extendOrRemovePlayingTracks();
+
             queueTracks();
         }
     }
 
-    public void play() throws CausticException {
-        ArrayList<QueueData> copied = new ArrayList<QueueData>(queued);
-        for (QueueData data : copied) {
-            if (data.getState() == QueueDataState.Queued) {
-                // add to sequencer
-                for (QueueDataChannel channel : data.getChannels()) {
-                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
-                    addPhraseAt(track, 0, data);
-                }
-                startPlaying(data);
-            } else if (data.getState() == QueueDataState.Selected) {
-            }
-        }
-        getController().getSystemSequencer().play(SequencerMode.SONG);
-    }
-
-    public void stop() {
-        getController().getSystemSequencer().stop();
-    }
-
-    private void lockAndExtendPlayingTracks() {
+    private void extendOrRemovePlayingTracks() {
         //final float currentBeat = getTrackSong().getCurrentBeat();
         final int currentMeasure = getTrackSong().getCurrentMeasure();
 
         for (TrackChannel track : getController().getTrackSequencer().getTracks()) {
 
-            // First try an find a track item at the current measure
-            List<TrackItem> list = track.getItemsAtEndMeasure(currentMeasure);
+            // Find all tracks that are ending at the next measure
+            List<TrackItem> list = track.getItemsAtEndMeasure(currentMeasure + 1);
             for (TrackItem item : list) {
 
                 // If the current beat is the last beat in the phrase
-                if (item.getEndMeasure() == currentMeasure) {
-                    //log("End:" + item.getEndMeasure() + " == " + currentMeasure);
+                log("End:" + item.getEndMeasure() + " == " + currentMeasure);
 
-                    QueueData data = queueSequencer.getQueueData(item.getBankIndex(),
-                            item.getPatternIndex());
+                QueueData data = queueSequencer.getQueueData(item.getBankIndex(),
+                        item.getPatternIndex());
 
-                    for (QueueDataChannel channel : data.getChannels()) {
+                for (QueueDataChannel channel : data.getChannels()) {
 
-                        if (channel.isLoopEnabled()) {
+                    if (channel.isLoopEnabled()) {
 
-                            if (data.getState() == QueueDataState.Selected) {
-                                // add the phrase at the very next measure
-                                addPhraseAt(track, currentMeasure + 1, data);
-                                // channel.setCurrentBeat(0);
-                            } else if (data.getState() == QueueDataState.UnQueued) {
-                                // remove the item from the que
-                                stopPlaying(data);
-                            }
-
-                        } else {
-                            // oneshot remove
+                        if (data.getState() == QueueDataState.Selected) {
+                            // add the phrase at the very next measure
+                            addPhraseAt(track, currentMeasure + 1, data);
+                            // channel.setCurrentBeat(0);
+                        } else if (data.getState() == QueueDataState.UnQueued) {
+                            // remove the item from the que
                             stopPlaying(data);
-                            // set this here since turning off is immediate
-                            setState(data, QueueDataState.Idle);
                         }
+
+                    } else {
+                        // oneshot remove
+                        stopPlaying(data);
                     }
                 }
             }
@@ -174,6 +170,7 @@ public class QueuePlayer {
     private void queueTracks() {
         //final float currentBeat = getTrackSong().getCurrentBeat();
         final int currentMeasure = getTrackSong().getCurrentMeasure();
+        final int nextMeasure = currentMeasure + 1;
 
         // CtkDebug.log("Setup queued [" + currentBeat + "," + currentMeasure + "]");
 
@@ -184,7 +181,7 @@ public class QueuePlayer {
                 // add to sequencer
                 for (QueueDataChannel channel : data.getChannels()) {
                     TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
-                    addPhraseAt(track, currentMeasure + 1, data);
+                    addPhraseAt(track, nextMeasure, data);
                 }
                 startPlaying(data);
             } else if (data.getState() == QueueDataState.Selected) {
@@ -225,6 +222,5 @@ public class QueuePlayer {
 
     private void log(String message) {
         CtkDebug.log(message);
-
     }
 }

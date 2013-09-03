@@ -36,6 +36,13 @@ public class ScreenBase implements IScreen {
 
     private Skin skin;
 
+    private boolean initialized;
+
+    @Override
+    public boolean isInitialized() {
+        return initialized;
+    }
+
     @Override
     public IGame getGame() {
         return game;
@@ -59,7 +66,7 @@ public class ScreenBase implements IScreen {
     public ScreenBase() {
         int width = (isGameScreen() ? GAME_VIEWPORT_WIDTH : MENU_VIEWPORT_WIDTH);
         int height = (isGameScreen() ? GAME_VIEWPORT_HEIGHT : MENU_VIEWPORT_HEIGHT);
-        this.stage = new Stage(width, height, true);
+        stage = new Stage(width, height, true);
     }
 
     protected String getName() {
@@ -118,18 +125,26 @@ public class ScreenBase implements IScreen {
     // Screen implementation
 
     @Override
-    public void show() {
+    public void create() {
+        Gdx.app.log(LOG, "Creating screen: " + getName());
 
         for (ICaustkMediator mediator : mediators) {
             mediator.create(this);
             mediator.onRegisterObservers();
             mediator.onRegister();
         }
+    }
 
+    @Override
+    public void show() {
         Gdx.app.log(LOG, "Showing screen: " + getName());
 
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
+
+        for (ICaustkMediator mediator : mediators) {
+            mediator.onShow(this);
+        }
     }
 
     @Override
@@ -164,7 +179,7 @@ public class ScreenBase implements IScreen {
         // dispose the screen when leaving the screen;
         // note that the dipose() method is not called automatically by the
         // framework, so we must figure out when it's appropriate to call it
-        dispose();
+        //dispose();
     }
 
     @Override
@@ -204,6 +219,7 @@ public class ScreenBase implements IScreen {
 
     @Override
     public void initialize(IGame game) {
+        initialized = true;
         this.game = game;
 
     }

@@ -8,6 +8,8 @@ import com.teotigraphix.libgdx.application.IGame;
 
 public interface IScreen extends Screen {
 
+    boolean isInitialized();
+
     void initialize(IGame gdxGame);
 
     Skin getSkin();
@@ -15,5 +17,7 @@ public interface IScreen extends Screen {
     Stage getStage();
 
     IGame getGame();
+
+    void create();
 
 }

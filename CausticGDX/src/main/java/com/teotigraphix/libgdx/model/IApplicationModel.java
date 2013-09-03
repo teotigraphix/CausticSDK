@@ -16,6 +16,8 @@ public interface IApplicationModel {
      */
     String getName();
 
+    void setScreen(int screenId);
+
     /**
      * Returns whether the application state is dirty.
      */
