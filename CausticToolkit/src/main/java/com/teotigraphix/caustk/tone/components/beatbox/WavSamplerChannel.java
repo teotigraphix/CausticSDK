@@ -108,6 +108,23 @@ public class WavSamplerChannel extends ToneComponent {
     }
 
     //----------------------------------
+    // muteGroups
+    //----------------------------------
+
+    private int muteGroups;
+
+    public int getMuteGroups() {
+        return (int)BeatboxMessage.CHANNEL_MUTE_GROUPS.query(getEngine(), getToneIndex(), index);
+    }
+
+    public void getMuteGroups(int value) {
+        if (value == muteGroups)
+            return;
+        muteGroups = value;
+        BeatboxMessage.CHANNEL_MUTE_GROUPS.send(getEngine(), getToneIndex(), index, muteGroups);
+    }
+
+    //----------------------------------
     // solo
     //----------------------------------
 

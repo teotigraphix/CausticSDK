@@ -96,6 +96,25 @@ public class BeatboxMessage extends CausticMessage {
 
     /**
      * Message:
+     * <code>/caustic/[machine_index]/channel/[channel_num]/mute_groups [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>0</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>channel_num</strong>: The channel number in the beatbox.</li>
+     * <li><strong>value</strong>: [int bitmask] where bit 0 is group 1, bit 1
+     * is group 2, etc. (so max 15 for all groups set)</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>int</code>
+     */
+    public static final BeatboxMessage CHANNEL_MUTE_GROUPS = new BeatboxMessage(
+            "/caustic/${0}/channel/${1}/mute_groups ${2}");
+
+    /**
+     * Message:
      * <code>/caustic/[machine_index]/channel/[channel_num]/solo [value]</code>
      * <p>
      * <strong>Default</strong>: <code>0</code>
