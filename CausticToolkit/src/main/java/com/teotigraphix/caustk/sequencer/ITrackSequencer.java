@@ -83,6 +83,15 @@ public interface ITrackSequencer extends IControllerComponent {
      */
     void create(File songFile) throws IOException;
 
+    /**
+     * Loads the complete state of a <code>.caustic</code> file into the current
+     * {@link TrackSong}.
+     * 
+     * @param absoluteCausticFile The absolute location of the
+     *            <code>.caustic</code> file.
+     */
+    void load(File absoluteCausticFile);
+
     public enum PropertyChangeKind {
 
         /**

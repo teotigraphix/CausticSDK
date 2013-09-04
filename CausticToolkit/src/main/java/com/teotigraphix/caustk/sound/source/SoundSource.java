@@ -36,6 +36,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.caustk.project.Project;
@@ -261,7 +262,6 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
         ArrayList<Tone> remove = new ArrayList<Tone>(getModel().getTones().values());
         for (Tone tone : remove) {
-            //RackMessage.REMOVE.send(getController(), tone.getIndex());
             toneRemove(tone);
         }
 
@@ -275,7 +275,6 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
     //--------------------------------------------------------------------------
 
     Tone createSynthChannel(int index, String toneName, ToneType toneType) throws CausticException {
-        toneName = toneName.replace(" ", "_");
         if (index > 13)
             throw new CausticException("Only 14 machines allowed in a rack");
 
@@ -430,12 +429,9 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     @Override
     public void loadSong(File causticFile) throws CausticException {
-        //RackMessage.BLANKRACK.send(getController());
-
         RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
 
-        restore();
-        //getController().getSoundMixer().restore();
+        loadMachines();
 
         getDispatcher().trigger(new OnSoundSourceSongLoad(causticFile));
     }
@@ -456,6 +452,10 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     @Override
     public void restore() {
+
+    }
+
+    protected void loadMachines() {
         restoring = true;
         for (int i = 0; i < maxNumTones; i++) {
             String name = RackMessage.QUERY_MACHINE_NAME.queryString(getController(), i);
@@ -463,17 +463,18 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
             if (name == null || name.equals(""))
                 continue;
 
+            name = name.replace(" ", "_");
             ToneType toneType = ToneType.fromString(type);
+
             @SuppressWarnings("unused")
             Tone tone = null;
             try {
+                CtkDebug.log("Restore machine from load: " + name + ":" + type);
                 tone = createTone(i, name, toneType);
             } catch (CausticException e) {
                 e.printStackTrace();
             }
-            //            tone.restore();
         }
         restoring = false;
     }
-
 }

@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -169,6 +170,10 @@ public class TrackPhrase implements ISerialize {
             }
         }
         return result;
+    }
+
+    public void addNotes(Collection<PhraseNote> notes) {
+        this.notes.addAll(notes);
     }
 
     public void addNote(int pitch, float start, float end, float velocity, int flags) {
@@ -413,4 +418,5 @@ public class TrackPhrase implements ISerialize {
         getDispatcher().trigger(
                 new OnTrackSequencerPropertyChange(PropertyChangeKind.ClearMeasure, this));
     }
+
 }

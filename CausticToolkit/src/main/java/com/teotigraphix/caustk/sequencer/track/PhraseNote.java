@@ -24,6 +24,10 @@ public class PhraseNote implements ISerialize {
         return end;
     }
 
+    public float getGate() {
+        return end - start;
+    }
+
     private float velocity;
 
     public float getVelocity() {

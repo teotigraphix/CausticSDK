@@ -21,9 +21,11 @@ package com.teotigraphix.caustk.tone.components;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.sequencer.track.PhraseNote;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PatternSequencerComponent extends ToneComponent {
@@ -50,9 +52,9 @@ public class PatternSequencerComponent extends ToneComponent {
     public int getLength(int bankIndex, int patternIndex) {
         int lastBank = getSelectedBank();
         int lastIndex = getSelectedPattern();
-        setSelectedBankPattern(bankIndex, patternIndex);
+        sendBankPatternOSC(bankIndex, patternIndex);
         int measures = (int)PatternSequencerMessage.NUM_MEASURES.query(getEngine(), getToneIndex());
-        setSelectedBankPattern(lastBank, lastIndex);
+        sendBankPatternOSC(lastBank, lastIndex);
         return measures;
     }
 
@@ -125,6 +127,44 @@ public class PatternSequencerComponent extends ToneComponent {
         if (patterns == null || "".equals(patterns))
             return new ArrayList<String>();
         return Arrays.asList(patterns.split(" "));
+    }
+
+    /**
+     * Returns a collection of {@link PhraseNote}s for the bank and pattern.
+     * <p>
+     * The sequencer will temporarily set the bank and pattern, then rest to the
+     * original values.
+     * 
+     * @param bank
+     * @param pattern
+     */
+    public Collection<PhraseNote> getNotes(int bank, int pattern) {
+        int oldBank = getSelectedBank();
+        int oldPattern = getSelectedPattern();
+        sendBankPatternOSC(bank, pattern);
+
+        List<PhraseNote> result = new ArrayList<PhraseNote>();
+        String data = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getEngine(),
+                getToneIndex());
+
+        if (data != null && !data.equals("")) {
+            String[] notes = data.split("\\|");
+            for (String noteData : notes) {
+                String[] split = noteData.split(" ");
+
+                float start = Float.valueOf(split[0]);
+                int pitch = Float.valueOf(split[1]).intValue();
+                float velocity = Float.valueOf(split[2]);
+                float end = Float.valueOf(split[3]);
+                int flags = Float.valueOf(split[4]).intValue();
+                PhraseNote note = new PhraseNote(pitch, start, end, velocity, flags);
+                result.add(note);
+            }
+        }
+
+        sendBankPatternOSC(oldBank, oldPattern);
+
+        return result;
     }
 
     public void assignNoteData(int bankIndex, int patternIndex, String data) {
@@ -201,6 +241,11 @@ public class PatternSequencerComponent extends ToneComponent {
      */
     public void clearIndex(int index) {
         PatternSequencerMessage.CLEAR_PATTERN.send(getEngine(), getToneIndex(), index);
+    }
+
+    final void sendBankPatternOSC(int bank, int pattern) {
+        PatternSequencerMessage.BANK.send(getEngine(), getToneIndex(), bank);
+        PatternSequencerMessage.PATTERN.send(getEngine(), getToneIndex(), pattern);
     }
 
     final void sendBankOSC(int bank) {

@@ -4,6 +4,7 @@ package com.teotigraphix.caustk.sequencer.track;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
@@ -12,6 +13,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
@@ -20,6 +23,7 @@ import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 
 /**
  * @see OnTrackSequencerLoad
@@ -173,19 +177,85 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     }
 
     @Override
+    public void load(File absoluteCausticFile) {
+        // clear sound source model
+        getController().getSoundSource().clearAndReset();
+
+        // load the machines, no restore
+        try {
+            getController().getSoundSource().loadSong(absoluteCausticFile);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
+
+        // load all tone patterns into TrackPhrase/PhraseNote
+        for (Tone tone : getController().getSoundSource().getTones()) {
+            int toneIndex = tone.getIndex();
+            TrackChannel channel = getTrack(toneIndex);
+            PatternSequencerComponent sequencer = tone.getPatternSequencer();
+            List<String> patterns = sequencer.getPatternListing();
+            for (String patternName : patterns) {
+                int bank = PatternUtils.toBank(patternName);
+                int pattern = PatternUtils.toPattern(patternName);
+                // get the note data
+                Collection<PhraseNote> notes = sequencer.getNotes(bank, pattern);
+                TrackPhrase phrase = channel.getPhrase(bank, pattern);
+                phrase.setLength(sequencer.getLength(bank, pattern));
+                phrase.addNotes(notes);
+            }
+        }
+
+        // load all song sequencer patterns into TrackItems
+        String patterns = SequencerMessage.QUERY_PATTERN_EVENT.queryString(getController());
+        String[] items = patterns.split("\\|");
+        for (String item : items) {
+            String[] spilt = item.split(" ");
+            int toneIndex = Integer.valueOf(spilt[0]);
+            int start = Integer.valueOf(spilt[1]);
+            int bank = Integer.valueOf(spilt[2]);
+            int pattern = Integer.valueOf(spilt[3]);
+            int end = Integer.valueOf(spilt[4]);
+
+            TrackChannel channel = getTrack(toneIndex);
+            TrackPhrase phrase = channel.getPhrase(bank, pattern);
+            int phraseLength = phrase.getLength();
+
+            int span = end - start;
+            // multiple patterns
+            int loops = span / phraseLength;
+            int remainder = span % phraseLength;
+            if (remainder != 0) {
+
+            } else {
+                for (int i = start; i < start + loops; i++) {
+                    try {
+                        channel.addPhraseAt(i, 1, phrase, false);
+                    } catch (CausticException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }
+    }
+
+    @Override
     public void create(File songFile) throws IOException {
         if (trackSong != null) {
 
         }
+
         // all songs are relative to the current projects location
+        // /MyProject/songs/MySong.ctks
         File localFile = getController().getProjectManager().getProject()
                 .getAbsoluteResource(songFile.getPath());
-        File absoluteTargetSongFile = localFile.getAbsoluteFile();
-
         // save the project relative path of the song
         getState().setSongFile(localFile);
-        File absoluteSongDir = absoluteTargetSongFile.getParentFile();
 
+        // platform independent location
+        File absoluteSongDir = localFile.getAbsoluteFile().getParentFile();
+
+        // make the songs directory
         if (!absoluteSongDir.exists())
             FileUtils.forceMkdir(absoluteSongDir);
 
@@ -193,6 +263,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         trackSong.wakeup(getController());
         getDispatcher().trigger(
                 new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Create, trackSong));
+
         saveTrackSong();
     }
 

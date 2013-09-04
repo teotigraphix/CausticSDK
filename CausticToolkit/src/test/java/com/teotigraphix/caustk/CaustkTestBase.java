@@ -1,8 +1,13 @@
 
 package com.teotigraphix.caustk;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 
@@ -33,9 +38,19 @@ public class CaustkTestBase {
         application = null;
         controller = null;
         end();
+        FileUtils.forceDelete(getUnitTestResource());
+        assertFalse(getUnitTestResource().exists());
     }
 
     protected void end() {
+    }
+
+    protected static File getUnitTestResource() {
+        return new File("src/test/resources/unit_test").getAbsoluteFile();
+    }
+
+    protected void assertResourceExists(String path) {
+        assertTrue(new File(getUnitTestResource(), path).exists());
     }
 
 }

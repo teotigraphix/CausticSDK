@@ -39,11 +39,11 @@ public class QueuePlayer {
         this.queueSequencer = queueSequencer;
     }
 
-    public final boolean isLockMeasure() {
+    public final boolean isLockBeat() {
         return currentLocalBeat == 3;
     }
 
-    public final boolean isStartMeasure() {
+    public final boolean isStartBeat() {
         return currentLocalBeat == 0;
     }
 
@@ -68,7 +68,7 @@ public class QueuePlayer {
     }
 
     public boolean queue(QueueData data) {
-        if (isLockMeasure())
+        if (isLockBeat())
             return false;
 
         if (!queued.contains(data)) {
@@ -80,7 +80,7 @@ public class QueuePlayer {
     }
 
     public boolean unqueue(QueueData data) {
-        if (isLockMeasure())
+        if (isLockBeat())
             return false;
 
         if (playQueue.contains(data)) {
@@ -107,8 +107,8 @@ public class QueuePlayer {
         currentLocalBeat = (int)(beat % 4);
 
         // start new measure
-        if (isStartMeasure()) {
-            log("Start measure");
+        if (isStartBeat()) {
+            log("|Start Beat================================================");
             for (QueueData data : flushedQueue) {
                 if (data.getState() != QueueDataState.Queue) {
                     setState(data, QueueDataState.Idle);
@@ -121,11 +121,12 @@ public class QueuePlayer {
         }
 
         // last beat in measure
-        if (isLockMeasure()) {
+        if (isLockBeat()) {
             //log("Lock measure");
             extendOrRemovePlayingTracks();
 
             queueTracks();
+            log("|End Beat================================================");
         }
     }
 
@@ -140,7 +141,7 @@ public class QueuePlayer {
             for (TrackItem item : list) {
 
                 // If the current beat is the last beat in the phrase
-                log("End:" + item.getEndMeasure() + " == " + currentMeasure);
+                //log("End:" + item.getEndMeasure() + " == " + currentMeasure);
 
                 QueueData data = queueSequencer.getQueueData(item.getBankIndex(),
                         item.getPatternIndex());
@@ -201,9 +202,9 @@ public class QueuePlayer {
 
     private void startPlaying(QueueData data) {
         //log("startPlaying" + data);
-        setState(data, QueueDataState.Play);
         queued.remove(data);
         playQueue.add(data);
+        setState(data, QueueDataState.Play);
 
     }
 

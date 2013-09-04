@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,20 @@ public class TrackChannel implements ISerialize {
     public void setCurrentBankPattern(int bank, int pattern) {
         setCurrentBank(bank);
         setCurrentPattern(pattern);
+    }
+
+    /**
+     * Returns the existing {@link TrackPhrase}s for the bankIndex.
+     * <p>
+     * Due to lazy load, if a phrase is asked for it can still exist in the
+     * collection even without not data.
+     */
+    public Collection<TrackPhrase> getPhrases(int bankIndex) {
+        return phrases.get(bankIndex).values();
+    }
+
+    public Map<Integer, TrackPhrase> getPhraseMap(int bankIndex) {
+        return phrases.get(bankIndex);
     }
 
     /**
@@ -262,6 +277,15 @@ public class TrackChannel implements ISerialize {
         return items.get(measure);
     }
 
+    /**
+     * Returns all {@link TrackItem}s for the whole {@link TrackChannel}.
+     * <p>
+     * The map is indexed by start measure.
+     */
+    public Map<Integer, TrackItem> getTrackItems() {
+        return items;
+    }
+
     public TrackItem findTrackItem(int startMeasure, int length) {
         for (int i = startMeasure; i < startMeasure + length; i++) {
             for (TrackItem item : items.values()) {
@@ -272,9 +296,9 @@ public class TrackChannel implements ISerialize {
         return null;
     }
 
-    public TrackItem addPhrase(int numLoops, TrackPhrase channel) throws CausticException {
+    public TrackItem addPhrase(int numLoops, TrackPhrase phrase) throws CausticException {
         int startMeasure = getNextMeasure();
-        return addPhraseAt(startMeasure, numLoops, channel, true);
+        return addPhraseAt(startMeasure, numLoops, phrase, true);
     }
 
     /**

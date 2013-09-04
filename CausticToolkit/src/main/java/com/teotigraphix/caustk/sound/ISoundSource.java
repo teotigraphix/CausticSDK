@@ -121,6 +121,9 @@ public interface ISoundSource extends IRestore {
      * Note: All clients MUST take responsibility for calling
      * {@link #clearAndReset()} if they wish to remove all state from the sound
      * source.
+     * <p>
+     * Will only restore the rack state of machines, all tones are not restored
+     * at this point.
      * 
      * @param causticFile The absolute location of the <code>.caustic</code>
      *            file with extension.
