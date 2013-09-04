@@ -5,6 +5,7 @@ import com.teotigraphix.caustk.tone.components.FilterComponentBase;
 import com.teotigraphix.caustk.tone.components.SynthFilterComponent;
 import com.teotigraphix.caustk.tone.components.SynthFilterComponent.FilterType;
 import com.teotigraphix.caustk.tone.components.bassline.FilterComponent;
+import com.teotigraphix.caustk.tone.components.bassline.OSC1Component.Waveform;
 import com.teotigraphix.caustk.tone.components.subsynth.LFO1Component;
 import com.teotigraphix.caustk.tone.components.subsynth.LFO2Component;
 import com.teotigraphix.caustk.tone.components.subsynth.Osc1Component;
@@ -366,7 +367,7 @@ public class SubSynthMessage extends CausticMessage {
             "/caustic/${0}/osc_bend ${1}");
 
     /**
-     * Message: <code>/caustic/[machine_index]/osc1_fm [value]</code>
+     * Message: <code>/caustic/[machine_index]/osc_modulation [value]</code>
      * <p>
      * <strong>Default</strong>: <code>0.0</code>
      * </p>
@@ -381,10 +382,31 @@ public class SubSynthMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>float</code>
      * </p>
      * 
-     * @see Osc1Component#getFM()
-     * @see Osc1Component#setFM(float)
+     * @see Osc1Component#getModulation()
+     * @see Osc1Component#setModulation(float)
      */
-    public static final SubSynthMessage OSC1_FM = new SubSynthMessage("/caustic/${0}/osc1_fm ${1}");
+    public static final SubSynthMessage OSC1_MODULATION = new SubSynthMessage(
+            "/caustic/${0}/osc_modulation ${1}");
+
+    /**
+     * Message:
+     * <code>/caustic/[machine_index]/osc_modulation_mode [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>0.0</code>
+     * </p>
+     * <p>
+     * <strong>Parameters</strong>:
+     * </p>
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>value</strong>: (0,1,2) FM, PM, AM
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>float</code>
+     * </p>
+     */
+    public static final SubSynthMessage OSC1_MODULATION_MODE = new SubSynthMessage(
+            "/caustic/${0}/osc_modulation_mode ${1}");
 
     /**
      * Message: <code>/caustic/[machine_index]/osc_mix [value]</code>
@@ -451,6 +473,25 @@ public class SubSynthMessage extends CausticMessage {
      */
     public static final SubSynthMessage OSC2_CENTS = new SubSynthMessage(
             "/caustic/${0}/osc2_cents ${1}");
+
+    /**
+     * Message: <code>/caustic/[machine_index]/osc2_cents_mode [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>0</code>
+     * </p>
+     * <p>
+     * <strong>Parameters</strong>:
+     * </p>
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>value</strong>: (0,1) Cents, Unison
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>int</code>
+     * </p>
+     */
+    public static final SubSynthMessage OSC2_CENTS_MODE = new SubSynthMessage(
+            "/caustic/${0}/osc2_cents_mode ${1}");
 
     /**
      * Message: <code>/caustic/[machine_index]/osc2_octave [value]</code>

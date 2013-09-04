@@ -41,8 +41,8 @@ public class SynthMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>polyphony</strong>: (1..8) The number of notes played at
-     * once.</li>
+     * <li><strong>polyphony</strong>: (0..8) The number of notes played at
+     * once. 0 is lagato in SubSynth</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>

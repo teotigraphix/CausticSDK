@@ -69,8 +69,8 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
     public void setDepth(float value) {
         if (value == depth)
             return;
-        //        if (value < 0f || value > 1f)
-        //            throw newRangeException("lfo1_depth", "0..1", value);
+        if (value < 0f || value > 1f)
+            throw newRangeException("lfo1_depth", "0..1", value);
         depth = value;
         SubSynthMessage.LFO1_DEPTH.send(getEngine(), getToneIndex(), depth);
     }
@@ -93,7 +93,7 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
         if (value == target)
             return;
         target = value;
-        //        SubSynthMessage.LFO1_TARGET.send(getEngine(), getToneIndex(), target.getValue());
+        SubSynthMessage.LFO1_TARGET.send(getEngine(), getToneIndex(), target.getValue());
     }
 
     //----------------------------------
@@ -115,7 +115,7 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
         if (value == waveForm)
             return;
         waveForm = value;
-        //        SubSynthMessage.LFO1_WAVEFORM.send(getEngine(), getToneIndex(), waveForm.getValue());
+        SubSynthMessage.LFO1_WAVEFORM.send(getEngine(), getToneIndex(), waveForm.getValue());
     }
 
     public LFO1Component() {
@@ -131,62 +131,37 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
 
     public enum LFO1Target {
 
-        /**
-         * No LFO.
-         */
         NONE(0),
 
-        /**
-         * Primary oscillation.
-         */
-        OSC_PRIMARY(1),
+        OSC1(1),
 
-        /**
-         * Secondary oscillation.
-         */
-        OSC_SECONDARY(2),
+        OSC2(2),
 
-        /**
-         * Primary and secondary oscillation.
-         */
-        OSC_PRIMARY_SECONDARY(3),
+        OSC1PLUS2(3),
 
-        /**
-         * Phase oscillation.
-         */
         PHASE(4),
 
-        /**
-         * Cutoff oscillation.
-         */
         CUTOFF(5),
 
-        /**
-         * Volume oscillation.
-         */
         VOLUME(6),
 
-        /**
-         * Octave oscillation.
-         */
         OCTAVE(7),
 
-        /**
-         * Semitone oscillation.
-         */
-        SEMIS(8);
+        SEMIS(8),
 
-        private final int mValue;
+        OSC1MOD(9);
+
+        private final int value;
 
         LFO1Target(int value) {
-            mValue = value;
+            this.value = value;
         }
 
         /**
          * Returns the int value of the lfo.
          */
         public int getValue() {
-            return mValue;
+            return value;
         }
 
         /**

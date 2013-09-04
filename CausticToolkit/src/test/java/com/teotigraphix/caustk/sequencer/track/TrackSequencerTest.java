@@ -93,6 +93,8 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertNotNull(tone);
         assertEquals("SQUARE", tone.getName());
 
+        tone.restore();
+
         Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
         assertEquals(1, BankA.size());
 

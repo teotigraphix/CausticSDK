@@ -26,7 +26,7 @@ public class Osc1Component extends ToneComponent {
 
     //--------------------------------------------------------------------------
     //
-    // ISubSynthOsc1 API :: Properties
+    // API :: Properties
     //
     //--------------------------------------------------------------------------
 
@@ -54,27 +54,49 @@ public class Osc1Component extends ToneComponent {
     }
 
     //----------------------------------
-    // fm
+    // modulation
     //----------------------------------
 
-    private float fm = 0.0f;
+    private float modulation = 0.0f;
 
-    public float getFM() {
-        return fm;
+    public float getModulation() {
+        return modulation;
     }
 
-    float getFM(boolean restore) {
-        return SubSynthMessage.OSC1_FM.query(getEngine(), getToneIndex());
+    float getModulation(boolean restore) {
+        return SubSynthMessage.OSC1_MODULATION.query(getEngine(), getToneIndex());
     }
 
-    // XXX SunSYnth fix 
-    public void setFM(float value) {
-        if (value == fm)
+    public void setModulation(float value) {
+        if (value == modulation)
             return;
-        //if (value < 0 || value > 1f)
-        //    throw newRangeException(SubSynthMessage.OSC1_FM.toString(), "0..1", value);
-        fm = value;
-        //SubSynthMessage.OSC1_FM.send(getEngine(), getToneIndex(), fm);
+        if (value < 0 || value > 1f)
+            throw newRangeException(SubSynthMessage.OSC1_MODULATION.toString(), "0..1", value);
+        modulation = value;
+        SubSynthMessage.OSC1_MODULATION.send(getEngine(), getToneIndex(), modulation);
+    }
+
+    //----------------------------------
+    // modulationMode
+    //----------------------------------
+
+    private ModulationMode modulationMode = ModulationMode.FM;
+
+    public ModulationMode getModulationMode() {
+        return modulationMode;
+    }
+
+    ModulationMode getModulationMode(boolean restore) {
+        return ModulationMode.toType((int)SubSynthMessage.OSC1_MODULATION_MODE.query(getEngine(),
+                getToneIndex()));
+    }
+
+    public void setModulationMode(ModulationMode value) {
+        if (value == modulationMode)
+            return;
+        modulationMode = value;
+        SubSynthMessage.OSC1_MODULATION_MODE.send(getEngine(), getToneIndex(),
+                modulationMode.getValue());
     }
 
     //----------------------------------
@@ -116,9 +138,6 @@ public class Osc1Component extends ToneComponent {
     }
 
     public void setWaveform(Osc1Waveform value) {
-        // XXX OSC ERROR
-        if (value == null)
-            return;
         if (value == waveform)
             return;
         waveform = value;
@@ -131,9 +150,39 @@ public class Osc1Component extends ToneComponent {
     @Override
     public void restore() {
         setBend(getBend(true));
-        setFM(getFM(true));
+        setModulation(getModulation(true));
+        setModulationMode(getModulationMode(true));
         setMix(getMix(true));
         setWaveform(getWaveform(true));
+    }
+
+    public enum ModulationMode {
+        FM(0),
+
+        PM(1),
+
+        AM(2);
+
+        private final int value;
+
+        /**
+         * Returns the integer value of the {@link Osc1Waveform}.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        ModulationMode(int value) {
+            this.value = value;
+        }
+
+        public static ModulationMode toType(Integer type) {
+            for (ModulationMode result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
     }
 
     /**
@@ -145,35 +194,23 @@ public class Osc1Component extends ToneComponent {
      */
     public enum Osc1Waveform {
 
-        /**
-         * A sine wave (0).
-         */
         SINE(0),
 
-        /**
-         * A saw tooth wave (1).
-         */
-        SAW(1),
+        TRIANGLE(1),
 
-        /**
-         * A triangle wave (2).
-         */
-        TRIANGLE(2),
+        SAW(2),
 
-        /**
-         * A square wave (3).
-         */
-        SQUARE(3),
+        SAW_HQ(3),
 
-        /**
-         * A noise wave (4).
-         */
-        NOISE(4),
+        SQUARE(4),
 
-        /**
-         * N/A. (5)
-         */
-        CUSTOM(5);
+        SQUARE_HQ(5),
+
+        NOISE(6),
+
+        CUSTOM1(7),
+
+        CUSTOM2(8);
 
         private final int mValue;
 

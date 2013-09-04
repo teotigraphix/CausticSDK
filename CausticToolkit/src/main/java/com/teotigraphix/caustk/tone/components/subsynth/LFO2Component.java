@@ -45,8 +45,8 @@ public class LFO2Component extends ToneComponent {
     public void setRate(int value) {
         if (value == rate)
             return;
-        //        if (value < 0 || value > 12)
-        //            throw newRangeException("lfo1_rate", "0..12", value);
+        if (value < 0 || value > 12)
+            throw newRangeException("lfo1_rate", "0..12", value);
         rate = value;
         SubSynthMessage.LFO1_RATE.send(getEngine(), getToneIndex(), rate);
     }
@@ -69,9 +69,9 @@ public class LFO2Component extends ToneComponent {
         if (value == depth)
             return;
         if (value < 0f || value > 1f)
-            //           throw newRangeException("lfo1_depth", "0..1", value);
-            //        depth = value;
-            SubSynthMessage.LFO1_DEPTH.send(getEngine(), getToneIndex(), depth);
+            throw newRangeException("lfo1_depth", "0..1", value);
+        depth = value;
+        SubSynthMessage.LFO1_DEPTH.send(getEngine(), getToneIndex(), depth);
     }
 
     //----------------------------------
@@ -92,7 +92,7 @@ public class LFO2Component extends ToneComponent {
         if (value == target)
             return;
         target = value;
-        //        SubSynthMessage.LFO2_TARGET.send(getEngine(), getToneIndex(), target.getValue());
+        SubSynthMessage.LFO2_TARGET.send(getEngine(), getToneIndex(), target.getValue());
     }
 
     public LFO2Component() {
@@ -107,50 +107,25 @@ public class LFO2Component extends ToneComponent {
 
     public enum LFO2Target {
 
-        /**
-         * No LFO.
-         */
         NONE(0),
 
-        /**
-         * Primary oscillation.
-         */
-        OSC_PRIMARY(1),
+        OSC1(1),
 
-        /**
-         * Secondary oscillation.
-         */
-        OSC_SECONDARY(2),
+        OSC2(2),
 
-        /**
-         * Primary and secondary oscillation.
-         */
-        OSC_PRIMARY_SECONDARY(3),
+        OSC1PLUS2(3),
 
-        /**
-         * Phase oscillation.
-         */
         PHASE(4),
 
-        /**
-         * Cutoff oscillation.
-         */
         CUTOFF(5),
 
-        /**
-         * Volume oscillation.
-         */
         VOLUME(6),
 
-        /**
-         * Octave oscillation.
-         */
         OCTAVE(7),
 
-        /**
-         * Semitone oscillation.
-         */
-        SEMIS(8);
+        SEMIS(8),
+
+        OSC1MOD(9);
 
         private final int mValue;
 

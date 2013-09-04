@@ -45,8 +45,8 @@ public class Osc2Component extends ToneComponent {
     public void setCents(int value) {
         if (value == cents)
             return;
-        //        if (value < -50 || value > 50)
-        //            throw newRangeException(SubSynthMessage.OSC2_CENTS.toString(), "-50..50", value);
+        if (value < -50 || value > 50)
+            throw newRangeException(SubSynthMessage.OSC2_CENTS.toString(), "-50..50", value);
         cents = value;
         SubSynthMessage.OSC2_CENTS.send(getEngine(), getToneIndex(), cents);
     }
@@ -68,8 +68,8 @@ public class Osc2Component extends ToneComponent {
     public void setOctave(int value) {
         if (value == octave)
             return;
-        //        if (value < -3 || value > 3)
-        //            throw newRangeException(SubSynthMessage.OSC2_OCTAVE.toString(), "-3..3", value);
+        if (value < -3 || value > 3)
+            throw newRangeException(SubSynthMessage.OSC2_OCTAVE.toString(), "-3..3", value);
         octave = value;
         SubSynthMessage.OSC2_OCTAVE.send(getEngine(), getToneIndex(), octave);
     }
@@ -91,8 +91,8 @@ public class Osc2Component extends ToneComponent {
     public void setPhase(float value) {
         if (value == phase)
             return;
-        //        if (value < -0.5f || value > 0.5f)
-        //            throw newRangeException(SubSynthMessage.OSC2_PHASE.toString(), "-0.5..0.5", value);
+        if (value < -0.5f || value > 0.5f)
+            throw newRangeException(SubSynthMessage.OSC2_PHASE.toString(), "-0.5..0.5", value);
         phase = value;
         SubSynthMessage.OSC2_PHASE.send(getEngine(), getToneIndex(), phase);
     }
@@ -114,10 +114,32 @@ public class Osc2Component extends ToneComponent {
     public void setSemis(int value) {
         if (value == semis)
             return;
-        //        if (value < -12 || value > 12)
-        //            throw newRangeException(SubSynthMessage.OSC2_SEMIS.toString(), "-12..12", value);
+        if (value < -12 || value > 12)
+            throw newRangeException(SubSynthMessage.OSC2_SEMIS.toString(), "-12..12", value);
         semis = value;
         SubSynthMessage.OSC2_SEMIS.send(getEngine(), getToneIndex(), semis);
+    }
+
+    //----------------------------------
+    // centsMode
+    //----------------------------------
+
+    private CentsMode centsMode = CentsMode.CENTS;
+
+    public CentsMode getCentsMode() {
+        return centsMode;
+    }
+
+    CentsMode getCentsMode(boolean restore) {
+        return CentsMode.toType((int)SubSynthMessage.OSC2_CENTS_MODE.query(getEngine(),
+                getToneIndex()));
+    }
+
+    public void setCentsMode(CentsMode value) {
+        if (value == centsMode)
+            return;
+        centsMode = value;
+        SubSynthMessage.OSC2_CENTS_MODE.send(getEngine(), getToneIndex(), centsMode.getValue());
     }
 
     //----------------------------------
@@ -136,9 +158,6 @@ public class Osc2Component extends ToneComponent {
     }
 
     public void setWaveform(Osc2WaveForm value) {
-        // XXX OSC NULL
-        if (value == null)
-            return;
         if (value == waveForm)
             return;
         waveForm = value;
@@ -151,60 +170,73 @@ public class Osc2Component extends ToneComponent {
     @Override
     public void restore() {
         setCents(getCents(true));
+        setCentsMode(getCentsMode(true));
         setOctave(getOctave(true));
         setPhase(getPhase(true));
         setSemis(getSemis(true));
         setWaveform(getWaveform(true));
     }
 
-    public enum Osc2WaveForm {
+    public enum CentsMode {
+        CENTS(0),
 
-        /**
-         * Inactive oscillator.
-         */
-        NONE(0),
+        UNISON(1);
 
-        /**
-         * A sine wave (1).
-         */
-        SINE(1),
-
-        /**
-         * A saw wave (2).
-         */
-        SAW(2),
-
-        /**
-         * A triangle wave (3).
-         */
-        TRIANGLE(3),
-
-        /**
-         * A square wave (4).
-         */
-        SQUARE(4),
-
-        /**
-         * A noise wave (5).
-         */
-        NOISE(5),
-
-        /**
-         * A custom wave (6) <strong>N/A</strong>.
-         */
-        CUSTOM(6);
-
-        private final int mValue;
+        private final int value;
 
         /**
          * Returns in integer value for the {@link Osc2WaveForm}.
          */
         public int getValue() {
-            return mValue;
+            return value;
+        }
+
+        CentsMode(int value) {
+            this.value = value;
+        }
+
+        public static CentsMode toType(Integer type) {
+            for (CentsMode result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+    }
+
+    public enum Osc2WaveForm {
+
+        NONE(0),
+
+        SINE(1),
+
+        TRIANGLE(2),
+
+        SAW(3),
+
+        SAW_HQ(4),
+
+        SQUARE(5),
+
+        SQUARE_HQ(6),
+
+        NOISE(7),
+
+        CUSTOM1(8),
+
+        CUSTOM2(9);
+
+        private final int value;
+
+        /**
+         * Returns in integer value for the {@link Osc2WaveForm}.
+         */
+        public int getValue() {
+            return value;
         }
 
         Osc2WaveForm(int value) {
-            mValue = value;
+            this.value = value;
         }
 
         /**
