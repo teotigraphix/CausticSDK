@@ -50,11 +50,11 @@ public class TrackSequencerTest extends CaustkTestBase {
     @Test
     public void test_() throws IOException, CausticException {
         // create the absolute project directory
-        controller.getProjectManager().createProject(new File("TrackSequencerTestProject"));
+        controller.getProjectManager().createProject("TrackSequencerTestProject");
         assertResourceExists("projects/TrackSequencerTestProject");
 
         // create the absolute songs directory
-        controller.getTrackSequencer().createSong(new File("songs/Foo.ctks"));
+        controller.getTrackSequencer().createSong(new File("Foo.ctks"));
         assertResourceExists("projects/TrackSequencerTestProject/songs/Foo.ctks");
 
         // TrackSequencer listens the TrackAdd from SoundSource
