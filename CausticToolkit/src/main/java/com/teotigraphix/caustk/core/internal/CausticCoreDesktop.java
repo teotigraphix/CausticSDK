@@ -62,7 +62,7 @@ public class CausticCoreDesktop {
         return new String(m_byResponseString, 0, nStrLen);
     }
 
-    public float getVersion() {
+    public int getVersion() {
         return caustic.CausticCore_GetVersion();
     }
 

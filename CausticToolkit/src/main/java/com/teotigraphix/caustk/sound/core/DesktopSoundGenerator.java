@@ -161,4 +161,9 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     public float getCurrentSongMeasure() {
         return core().getCurrentSongMeasure();
     }
+
+    @Override
+    public int getVerison() {
+        return core().getVersion();
+    }
 }
