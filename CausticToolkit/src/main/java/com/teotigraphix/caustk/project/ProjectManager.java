@@ -65,9 +65,13 @@ public class ProjectManager implements IProjectManager {
         return controller.getConfiguration().getApplicationRoot();
     }
 
+    public File getProjectDirectory() {
+        return new File(getApplicationRoot(), "projects");
+    }
+
     @Override
     public File getDirectory(String path) {
-        File directory = new File(getApplicationRoot(), path);
+        File directory = new File(getProjectDirectory(), path);
         if (!directory.exists()) {
             directory.mkdirs();
         }
@@ -183,10 +187,8 @@ public class ProjectManager implements IProjectManager {
         if (directory.getName().contains("."))
             throw new IOException("Project is not a directory");
 
-        //if (!directory.isAbsolute())
-        //    directory = toProjectFile(directory);
-        //if (!directory.exists())
-        //    throw new IOException("Project file does not exist");
+        if (directory.isAbsolute())
+            throw new IOException("Project direcotry must not be absolute");
 
         File absoluteDir = getDirectory(directory.getPath());
 
@@ -217,7 +219,7 @@ public class ProjectManager implements IProjectManager {
         project.wakeup(controller);
         project.setInitializing(true);
         // set the project sub directory in the /projects directory
-        project.setDirectory(new File("projects", file.getName()));
+        project.setDirectory(new File(file.getPath()));
         project.setInfo(createInfo());
         project.open();
         CtkDebug.log("IProjectManager.create(): " + project.getAbsolutDirectory());

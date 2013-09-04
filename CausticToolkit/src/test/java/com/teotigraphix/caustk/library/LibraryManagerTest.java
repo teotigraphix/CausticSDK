@@ -10,16 +10,12 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.teotigraphix.caustk.application.CaustkApplicationUtils;
-import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
 
-public class LibraryManagerTest {
+public class LibraryManagerTest extends CaustkTestBase {
 
     private static final File PULSAR_CAUSTIC = new File(
             "src/test/java/com/teotigraphix/caustk/sound/PULSAR.caustic");
@@ -33,51 +29,34 @@ public class LibraryManagerTest {
     private static final File DRIVE = new File(
             "src/test/java/com/teotigraphix/caustk/sound/DRIVE.caustic");
 
-    private ICaustkApplication application;
-
-    private ICaustkController controller;
-
     private ILibraryManager libraryManager;
 
-    @Before
-    public void setUp() throws Exception {
-        // plain ole caustk app and config
-        application = CaustkApplicationUtils.createAndRun();
-
-        controller = application.getController();
+    @Override
+    protected void start() throws CausticException, IOException {
         libraryManager = controller.getLibraryManager();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        application = null;
+    @Override
+    protected void end() {
         controller = null;
-    }
-
-    @Test
-    public void test_create_project_save() throws IOException, CausticException {
-        File projectDir = new File("LibraryManagerTestProject");
-        controller.getProjectManager().create(projectDir);
-
-        Library library = libraryManager.createLibrary("foo");
-        libraryManager.importSong(library, PULSAR_CAUSTIC);
-
-        controller.getProjectManager().save();
-
+        libraryManager = null;
     }
 
     @Test
     public void test_createLibrary() throws CausticException, IOException {
+        controller.getProjectManager().create(new File("LibraryManagerTestProject"));
+        assertResourceExists("projects/LibraryManagerTestProject");
+
         Library library = libraryManager.createLibrary("baz");
-        assertTrue(library.getDirectory().exists());
+        assertTrue(library.getAbsoluteDirectory().exists());
         libraryManager.importSong(library, PULSAR_CAUSTIC);
         libraryManager.importSong(library, FADING_ENTROPY);
         libraryManager.importSong(library, ICECANYON);
         libraryManager.importSong(library, DRIVE);
 
-        // added 4 scenes and the default scene makes 5
+        // added 4 scenes
         List<LibraryScene> scenes = new ArrayList<LibraryScene>(library.getScenes());
-        Assert.assertEquals(5, scenes.size());
+        Assert.assertEquals(4, scenes.size());
 
         List<LibraryPatch> patches = new ArrayList<LibraryPatch>(library.getPatches());
         Assert.assertEquals(24, patches.size());
@@ -87,17 +66,17 @@ public class LibraryManagerTest {
 
         libraryManager.saveLibrary(library);
 
-        //        Library loadedLibrary = libraryManager.loadLibrary("baz");
-        //
-        //        scenes = new ArrayList<LibraryScene>(loadedLibrary.getScenes());
-        //        Assert.assertEquals(5, scenes.size());
-        //
-        //        patches = new ArrayList<LibraryPatch>(loadedLibrary.getPatches());
-        //        Assert.assertEquals(24, patches.size());
-        //
-        //        phrases = new ArrayList<LibraryPhrase>(loadedLibrary.getPhrases());
-        //        Assert.assertEquals(97, phrases.size());
-        //
-        //        library.delete();
+        Library loadedLibrary = libraryManager.loadLibrary("baz");
+
+        scenes = new ArrayList<LibraryScene>(loadedLibrary.getScenes());
+        Assert.assertEquals(4, scenes.size());
+
+        patches = new ArrayList<LibraryPatch>(loadedLibrary.getPatches());
+        Assert.assertEquals(24, patches.size());
+
+        phrases = new ArrayList<LibraryPhrase>(loadedLibrary.getPhrases());
+        Assert.assertEquals(97, phrases.size());
+
+        library.delete();
     }
 }

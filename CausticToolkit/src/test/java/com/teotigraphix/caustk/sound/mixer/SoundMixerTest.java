@@ -17,7 +17,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.mixer.SoundMixer;
 import com.teotigraphix.caustk.sound.mixer.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneType;
@@ -81,7 +80,7 @@ public class SoundMixerTest {
         controller.getProjectManager().save();
         // load the project from disk, this will reinitialize
         // the SoundMixer state instance from deserialization of the project map entry
-        Project project2 = controller.getProjectManager().load(projectDir);
+        Project project2 = controller.getProjectManager().load(new File("SoundMixerTestProject"));
 
         Assert.assertEquals(0.42f, soundMixer.getChannel(0).getHigh());
 

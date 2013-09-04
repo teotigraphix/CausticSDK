@@ -182,12 +182,17 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     }
 
     @Override
+    public Library createLibrary(String relativePath) throws IOException {
+        return createLibrary(new File(relativePath));
+    }
+
+    @Override
     public Library createLibrary(File directory) throws IOException {
         Library library = new Library();
         library.wakeup(getController());
         library.setId(UUID.randomUUID());
         library.setMetadataInfo(new MetadataInfo());
-        // reletive directory IN the libraries folder
+        // Relative directory IN the libraries folder
         library.setDirectory(new File("libraries", directory.getPath()));
         library.mkdirs();
 
@@ -196,37 +201,6 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         saveLibrary(library);
 
         return library;
-    }
-
-    @Override
-    public Library createLibrary(String name) throws IOException {
-        //        File newDirectory = new File(librariesDirectory, name);
-        //        //if (newDirectory.exists())
-        //        //    throw new CausticException("Library already exists " + newDirectory.getAbsolutePath());
-        //        newDirectory.mkdir();
-        //
-        //        // create a default scene for every new Library
-        //        LibraryScene defaultScene = null;
-        //        try {
-        //            defaultScene = createDefaultScene();
-        //        } catch (CausticException e) {
-        //            e.printStackTrace();
-        //        }
-        //
-        //        Library library = new Library();
-        //        library.setId(UUID.randomUUID());
-        //        library.setMetadataInfo(new MetadataInfo());
-        //        library.setDirectory(newDirectory);
-        //        library.mkdirs();
-        //
-        //        getModel().getLibraries().put(library.getId(), library);
-        //
-        //        library.addScene(defaultScene);
-        //
-        //        saveLibrary(library);
-        //
-        //        return library;
-        return null;
     }
 
     @SuppressWarnings("unused")
@@ -261,9 +235,14 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     }
 
     @Override
+    public Library loadLibrary(String relativePath) {
+        return loadLibrary(new File(relativePath));
+    }
+
+    @Override
     public Library loadLibrary(File directory) {
         File absoluteLocation = getController().getProjectManager().getProject()
-                .getAbsoluteResource(directory.getPath());
+                .getAbsoluteResource(new File("libraries", directory.getPath()).getPath());
 
         CtkDebug.log("Load library; " + absoluteLocation);
         if (!absoluteLocation.exists()) {

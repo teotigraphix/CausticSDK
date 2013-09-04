@@ -84,14 +84,15 @@ public interface IProjectManager {
      * Loads a project from disk using the <code>.ctk</code> project format.
      * <p>
      * 
-     * @param file The project <code>.ctk</code> file.
+     * @param directory The project directory path; contained in the
+     *            <code>projects</code> directory.
      * @return A fully loaded <code>.ctk</code> project state.
      * @throws IOException Project file does not exist
      * @see OnProjectManagerChange
      * @see ProjectManagerChangeKind#LOAD
      * @see ProjectManagerChangeKind#LOAD_COMPLETE
      */
-    Project load(File file) throws IOException;
+    Project load(File directory) throws IOException;
 
     /**
      * Saves the current {@link Project} to disk using the project's file

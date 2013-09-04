@@ -67,9 +67,7 @@ public class MasterMixerTest {
         //------------------------------
         Assert.assertFalse(masterMixer.getLimiter().isBypass());
         Assert.assertEquals(0.01899999938905239f, masterMixer.getLimiter().getAttack(), 0f);
-        // XXX was 0.5 
         Assert.assertEquals(1.0f, masterMixer.getLimiter().getPost(), 0f);
-        // XXX was 2.0
         Assert.assertEquals(1.0f, masterMixer.getLimiter().getPre(), 0f);
         Assert.assertEquals(0.25f, masterMixer.getLimiter().getRelease(), 0f);
 
@@ -77,7 +75,7 @@ public class MasterMixerTest {
         // Delay
         //------------------------------
         Assert.assertFalse(masterMixer.getDelay().isBypass());
-        Assert.assertEquals(1f, masterMixer.getDelay().getDamping(), 0f);
+        Assert.assertEquals(0f, masterMixer.getDelay().getDamping(), 0f);
         Assert.assertEquals(0.5f, masterMixer.getDelay().getFeedback(), 0f);
         Assert.assertEquals(0f, masterMixer.getDelay().getFeedbackFirst(), 0f);
         // XXX ?

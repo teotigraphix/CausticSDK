@@ -91,6 +91,10 @@ public class Library implements ISerialize {
         directory = value;
     }
 
+    public File getAbsoluteDirectory() {
+        return controller.getProjectManager().getProject().getAbsoluteResource(directory.getPath());
+    }
+
     //----------------------------------
     // patterns
     //----------------------------------

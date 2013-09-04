@@ -28,6 +28,7 @@ import com.teotigraphix.caustk.pattern.Phrase.Trigger;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
+// XXX This test needs to creat a project and use CausticTestBase
 @Ignore
 public class TestPhrase {
 

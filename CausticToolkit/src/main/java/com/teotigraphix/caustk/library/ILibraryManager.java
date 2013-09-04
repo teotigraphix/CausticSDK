@@ -35,19 +35,25 @@ public interface ILibraryManager extends IControllerComponent {
      */
     void setSelectedLibrary(Library value);
 
-    //void load();
-
     Library loadLibrary(File file);
 
-    //Library loadLibrary(String name);
+    Library loadLibrary(String relativePath);
 
     void saveLibrary(Library library) throws IOException;
 
     /**
-     * Create a libary in a specific location other than the default
-     * <code>libraries</code> directory.
+     * @param relativePath The string path IE <code>User</code> or
+     *            <code>subdir/User</code>.
+     * @see #createLibrary(File)
+     * @throws IOException
+     */
+    Library createLibrary(String relativePath) throws IOException;
+
+    /**
+     * Create a library in the application's <code>libraries</code> directory.
      * 
-     * @param file
+     * @param file The relative directory of the new library. IE
+     *            <code>User</code> or <code>subdir/User</code>.
      * @throws IOException
      */
     Library createLibrary(File file) throws IOException;
@@ -65,7 +71,7 @@ public interface ILibraryManager extends IControllerComponent {
 
     void delete() throws IOException;
 
-    Library createLibrary(String name) throws IOException;
+    //Library createLibrary(String name) throws IOException;
 
     void clear();
 
