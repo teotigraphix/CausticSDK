@@ -74,6 +74,13 @@ public interface ITrackSequencer extends IControllerComponent {
     TrackChannel getTrack(Tone tone);
 
     /**
+     * @see #createSong(File)
+     * @param relativePath
+     * @throws IOException
+     */
+    TrackSong createSong(String relativePath) throws IOException;
+
+    /**
      * Creates a new {@link TrackSong}.
      * 
      * @param songFile The absolute path to the file, the <code>.caustic</code>

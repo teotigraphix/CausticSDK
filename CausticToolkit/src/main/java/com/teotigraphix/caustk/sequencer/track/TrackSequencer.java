@@ -266,6 +266,11 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     }
 
     @Override
+    public TrackSong createSong(String relativePath) throws IOException {
+        return createSong(new File(relativePath));
+    }
+
+    @Override
     public TrackSong createSong(File songFile) throws IOException {
         if (trackSong != null) {
             trackSong.dispose();

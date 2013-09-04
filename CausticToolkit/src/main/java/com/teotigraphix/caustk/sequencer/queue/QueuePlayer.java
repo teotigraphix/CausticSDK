@@ -33,6 +33,22 @@ public class QueuePlayer {
 
     private List<QueueData> flushedQueue = new ArrayList<QueueData>();
 
+    List<QueueData> getPlayQueue() {
+        return playQueue;
+    }
+
+    List<QueueData> getQueued() {
+        return queued;
+    }
+
+    List<QueueData> getFlushedQueue() {
+        return flushedQueue;
+    }
+
+    int getCurrentLocalBeat() {
+        return currentLocalBeat;
+    }
+
     private QueueSequencer queueSequencer;
 
     public QueuePlayer(QueueSequencer queueSequencer) {
@@ -60,7 +76,8 @@ public class QueuePlayer {
             } else if (data.getState() == QueueDataState.Play) {
             }
         }
-        getController().getSystemSequencer().play(SequencerMode.SONG);
+        if (queueSequencer.isAudioEnabled())
+            getController().getSystemSequencer().play(SequencerMode.SONG);
     }
 
     public void stop() {
@@ -71,7 +88,10 @@ public class QueuePlayer {
         if (isLockBeat())
             return false;
 
-        if (!queued.contains(data)) {
+        // if the pattern is still playing but got unqueued, just update the state
+        if (playQueue.contains(data)) {
+            setState(data, QueueDataState.Play);
+        } else if (!queued.contains(data)) {
             //CtkDebug.log("Queue:" + data);
             queued.add(data);
             setState(data, QueueDataState.Queue);
@@ -137,32 +157,33 @@ public class QueuePlayer {
         for (TrackChannel track : getController().getTrackSequencer().getTracks()) {
 
             // Find all tracks that are ending at the next measure
-            List<TrackItem> list = track.getItemsAtEndMeasure(currentMeasure + 1);
-            for (TrackItem item : list) {
+            TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
+            // no item queued or playing at the measure
+            if (item == null)
+                continue;
 
-                // If the current beat is the last beat in the phrase
-                //log("End:" + item.getEndMeasure() + " == " + currentMeasure);
+            // If the current beat is the last beat in the phrase
+            //log("End:" + item.getEndMeasure() + " == " + currentMeasure);
 
-                QueueData data = queueSequencer.getQueueData(item.getBankIndex(),
-                        item.getPatternIndex());
+            QueueData data = queueSequencer.getQueueData(item.getBankIndex(),
+                    item.getPatternIndex());
 
-                for (QueueDataChannel channel : data.getChannels()) {
+            for (QueueDataChannel channel : data.getChannels()) {
 
-                    if (channel.isLoopEnabled()) {
+                if (channel.isLoopEnabled()) {
 
-                        if (data.getState() == QueueDataState.Play) {
-                            // add the phrase at the very next measure
-                            addPhraseAt(track, currentMeasure + 1, data);
-                            // channel.setCurrentBeat(0);
-                        } else if (data.getState() == QueueDataState.UnQueued) {
-                            // remove the item from the que
-                            stopPlaying(data);
-                        }
-
-                    } else {
-                        // oneshot remove
+                    if (data.getState() == QueueDataState.Play) {
+                        // add the phrase at the very next measure
+                        addPhraseAt(track, currentMeasure + 1, data);
+                        // channel.setCurrentBeat(0);
+                    } else if (data.getState() == QueueDataState.UnQueued) {
+                        // remove the item from the que
                         stopPlaying(data);
                     }
+
+                } else {
+                    // oneshot remove
+                    stopPlaying(data);
                 }
             }
         }

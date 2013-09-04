@@ -1,10 +1,8 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -271,26 +269,24 @@ public class TrackChannel implements ISerialize {
     }
 
     /**
-     * Returns a collection of items that end at the passed measure.
+     * Returns an item that ends at the end measure.
      * 
      * @param measure The end measure.
      */
-    public List<TrackItem> getItemsAtEndMeasure(int measure) {
-        List<TrackItem> result = new ArrayList<TrackItem>();
+    public TrackItem getItemAtEndMeasure(int measure) {
         for (TrackItem item : items.values()) {
             if (item.getEndMeasure() == measure)
-                result.add(item);
+                return item;
         }
-        return result;
+        return null;
     }
 
-    public List<TrackItem> getItemsOnMeasure(int measure) {
-        List<TrackItem> result = new ArrayList<TrackItem>();
+    public TrackItem getItemOnMeasure(int measure) {
         for (TrackItem item : items.values()) {
             if (item.contains(measure))
-                result.add(item);
+                return item;
         }
-        return result;
+        return null;
     }
 
     public TrackItem getTrackItem(int measure) {

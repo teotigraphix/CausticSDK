@@ -21,6 +21,25 @@ import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
 public class QueueSequencer extends ControllerComponent implements IQueueSequencer {
 
+    private boolean audioEnabled = true;
+
+    /*
+     * for unit testing
+     */
+    boolean isAudioEnabled() {
+        return audioEnabled;
+    }
+
+    void setAudioEnabled(boolean value) {
+        audioEnabled = value;
+    }
+
+    private QueuePlayer player;
+
+    QueuePlayer getPlayer() {
+        return player;
+    }
+
     private boolean recordMode;
 
     @Override
@@ -47,8 +66,6 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     //----------------------------------
 
     private QueueSong queueSong;
-
-    private QueuePlayer player;
 
     public final QueueSong getQueueSong() {
         return queueSong;
