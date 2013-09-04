@@ -20,6 +20,7 @@ import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
@@ -235,8 +236,18 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                     }
                 }
             }
-
         }
+
+        MasterMixer masterMixer = new MasterMixer(getController());
+        getController().getSoundMixer().setMasterMixer(masterMixer);
+
+        // load all mixer channels
+        for (Tone tone : getController().getSoundSource().getTones()) {
+            masterMixer.addTone(tone);
+        }
+        // Restores volume, equalizer, limiter, delay, reverb
+        // all channel's eq and effects
+        masterMixer.restore();
     }
 
     @Override

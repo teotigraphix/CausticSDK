@@ -48,6 +48,10 @@ public class SoundMixerChannel implements ISerialize, IRestore {
         return effects.get(slot);
     }
 
+    public boolean hasEffect(int slot) {
+        return effects.containsKey(slot);
+    }
+
     public IEffect addEffect(EffectType type, int slot) throws CausticException {
         if (effects.containsKey(slot))
             throw new CausticException("Channel already contains slot:" + slot);
@@ -344,10 +348,24 @@ public class SoundMixerChannel implements ISerialize, IRestore {
         setStereoWidth(getStereoWidth(true));
         setPan(getPan(true));
         setVolume(getVolume(true));
-
-        for (IEffect effect : effects.values()) {
-            effect.restore();
+        // /caustic/effects_rack/type [machine_index] [slot] 
+        EffectType effect0 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(controller,
+                getIndex(), 0));
+        EffectType effect1 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(controller,
+                getIndex(), 1));
+        if (effect0 != null) {
+            restoreEffect(effect0, 0);
         }
+        if (effect1 != null) {
+            restoreEffect(effect1, 1);
+        }
+    }
+
+    private void restoreEffect(EffectType type, int slot) {
+        IEffect effect = EffectUtils.create(type, slot, getIndex());
+        effect.wakeup(controller);
+        effects.put(slot, effect);
+        effect.restore();
     }
 
     public void update() {

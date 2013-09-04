@@ -138,9 +138,6 @@ public class MasterMixer implements ISerialize, IRestore {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
-    //
-    //    public MasterMixer() {
-    //    }
 
     public MasterMixer(ICaustkController controller) {
         this.controller = controller;
@@ -151,13 +148,13 @@ public class MasterMixer implements ISerialize, IRestore {
         reverb = new MasterReverb(controller);
     }
 
-    protected void addTone(Tone tone) {
+    public void addTone(Tone tone) {
         SoundMixerChannel channel = new SoundMixerChannel(controller);
         channel.setIndex(tone.getIndex());
         channels.put(tone.getIndex(), channel);
     }
 
-    protected void removeTone(Tone tone) {
+    public void removeTone(Tone tone) {
         channels.remove(tone.getIndex());
     }
 
@@ -168,6 +165,9 @@ public class MasterMixer implements ISerialize, IRestore {
         limiter.restore();
         delay.restore();
         reverb.restore();
+        for (SoundMixerChannel mixerChannel : channels.values()) {
+            mixerChannel.restore();
+        }
     }
 
     @Override

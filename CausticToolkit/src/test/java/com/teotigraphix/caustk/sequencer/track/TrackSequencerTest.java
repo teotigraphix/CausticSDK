@@ -18,6 +18,8 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.sound.effect.ChorusEffect;
+import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
@@ -83,33 +85,116 @@ public class TrackSequencerTest extends CaustkTestBase {
         testTone4(trackSequencer.getTrack(4));
         testTone5(trackSequencer.getTrack(5));
 
-        testSongSequencer();
     }
 
-    private void testSongSequencer() {
-
-        TrackChannel channel1 = trackSequencer.getTrack(0);
-        channel1.getCurrentBank();
-    }
-
-    private void testTone5(TrackChannel channel) {
-        // TIGHTKIT Bassline
-        BeatboxTone tone = (BeatboxTone)channel.getTone();
+    private void testTone0(TrackChannel channel) {
+        // SQUARE SubSynth
+        SubSynthTone tone = (SubSynthTone)channel.getTone();
         assertNotNull(tone);
-        assertEquals("TIGHTKIT", tone.getName());
+        assertEquals("SQUARE", tone.getName());
 
         Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
-        assertEquals(2, BankA.size());
+        assertEquals(1, BankA.size());
 
         TrackPhrase A01 = BankA.get(0);
-        TrackPhrase A02 = BankA.get(1);
-
-        assertEquals(14, A01.getNotes().size());
-        assertEquals(4, A02.getNotes().size());
+        assertEquals(8, A01.getNotes().size());
 
         // test TrackItems
         Map<Integer, TrackItem> items = channel.getTrackItems();
-        assertEquals(18, items.size());
+        assertEquals(33, items.size());
+
+        // test mixer channel
+        SoundMixerChannel mixerChannel = channel.getMixerChannel();
+        assertEquals(0f, mixerChannel.getBass(), 0f);
+        assertEquals(0.03f, mixerChannel.getMid(), 0.01f);
+        assertEquals(0.39f, mixerChannel.getHigh(), 0.01f);
+        assertEquals(0.32f, mixerChannel.getDelaySend(), 0.01f);
+        assertEquals(0.05f, mixerChannel.getReverbSend(), 0.01f);
+        assertEquals(0f, mixerChannel.getPan(), 0.01f);
+        assertEquals(0.77f, mixerChannel.getStereoWidth(), 0.01f);
+        assertEquals(1.0f, mixerChannel.getVolume(), 0.01f);
+
+        // test effects
+        assertFalse(mixerChannel.hasEffect(0));
+        assertFalse(mixerChannel.hasEffect(1));
+    }
+
+    private void testTone1(TrackChannel channel) {
+        // RHODES PCMSynth
+        PCMSynthTone tone = (PCMSynthTone)channel.getTone();
+        assertNotNull(tone);
+        assertEquals("RHODES", tone.getName());
+
+        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        assertEquals(4, BankA.size());
+
+        TrackPhrase A01 = BankA.get(0);
+        TrackPhrase A02 = BankA.get(1);
+        TrackPhrase A03 = BankA.get(2);
+        TrackPhrase A04 = BankA.get(3);
+
+        assertEquals(4, A01.getNotes().size());
+        assertEquals(1, A02.getNotes().size());
+        assertEquals(3, A03.getNotes().size());
+        assertEquals(4, A04.getNotes().size());
+
+        // test TrackItems
+        Map<Integer, TrackItem> items = channel.getTrackItems();
+        assertEquals(36, items.size());
+
+        // test mixer channel
+        SoundMixerChannel mixerChannel = channel.getMixerChannel();
+        assertEquals(0f, mixerChannel.getBass(), 0f);
+        assertEquals(0.15f, mixerChannel.getMid(), 0.01f);
+        assertEquals(-0.16f, mixerChannel.getHigh(), 0.01f);
+        assertEquals(0.36f, mixerChannel.getDelaySend(), 0.01f);
+        assertEquals(0.20f, mixerChannel.getReverbSend(), 0.01f);
+        assertEquals(0f, mixerChannel.getPan(), 0.01f);
+        assertEquals(0.20f, mixerChannel.getStereoWidth(), 0.01f);
+        assertEquals(0.73f, mixerChannel.getVolume(), 0.01f);
+
+        // test effects
+        assertTrue(mixerChannel.hasEffect(0));
+        ChorusEffect effect = (ChorusEffect)mixerChannel.getEffect(0);
+        assertEquals(0.3f, effect.getDepth(), 0.01f);
+        assertEquals(0.4f, effect.getRate(), 0.01f);
+        assertEquals(0.13f, effect.getWet(), 0.01f);
+        // XXX needs deleay
+        assertFalse(mixerChannel.hasEffect(1));
+    }
+
+    private void testTone2(TrackChannel channel) {
+        // STRINGS SubSynthTone
+        SubSynthTone tone = (SubSynthTone)channel.getTone();
+        assertNotNull(tone);
+        assertEquals("STRINGS", tone.getName());
+
+        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        assertEquals(1, BankA.size());
+
+        TrackPhrase A01 = BankA.get(0);
+        assertEquals(3, A01.getNotes().size());
+
+        // test TrackItems
+        Map<Integer, TrackItem> items = channel.getTrackItems();
+        assertEquals(33, items.size());
+    }
+
+    private void testTone3(TrackChannel channel) {
+        // DRONE Bassline
+        BasslineTone tone = (BasslineTone)channel.getTone();
+        assertNotNull(tone);
+        assertEquals("DRONE", tone.getName());
+
+        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        assertEquals(1, BankA.size());
+
+        TrackPhrase A01 = BankA.get(0);
+        assertEquals(16, A01.getNotes().size());
+
+        // test TrackItems
+        Map<Integer, TrackItem> items = channel.getTrackItems();
+        assertEquals(33, items.size());
     }
 
     private void testTone4(TrackChannel channel) {
@@ -136,79 +221,24 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertEquals(24, items.size());
     }
 
-    private void testTone3(TrackChannel channel) {
-        // DRONE Bassline
-        BasslineTone tone = (BasslineTone)channel.getTone();
+    private void testTone5(TrackChannel channel) {
+        // TIGHTKIT Bassline
+        BeatboxTone tone = (BeatboxTone)channel.getTone();
         assertNotNull(tone);
-        assertEquals("DRONE", tone.getName());
+        assertEquals("TIGHTKIT", tone.getName());
 
         Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
-        assertEquals(1, BankA.size());
-
-        TrackPhrase A01 = BankA.get(0);
-        assertEquals(16, A01.getNotes().size());
-
-        // test TrackItems
-        Map<Integer, TrackItem> items = channel.getTrackItems();
-        assertEquals(33, items.size());
-    }
-
-    private void testTone2(TrackChannel channel) {
-        // STRINGS SubSynthTone
-        SubSynthTone tone = (SubSynthTone)channel.getTone();
-        assertNotNull(tone);
-        assertEquals("STRINGS", tone.getName());
-
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
-        assertEquals(1, BankA.size());
-
-        TrackPhrase A01 = BankA.get(0);
-        assertEquals(3, A01.getNotes().size());
-
-        // test TrackItems
-        Map<Integer, TrackItem> items = channel.getTrackItems();
-        assertEquals(33, items.size());
-    }
-
-    private void testTone1(TrackChannel channel) {
-        // RHODES PCMSynth
-        PCMSynthTone tone = (PCMSynthTone)channel.getTone();
-        assertNotNull(tone);
-        assertEquals("RHODES", tone.getName());
-
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
-        assertEquals(4, BankA.size());
+        assertEquals(2, BankA.size());
 
         TrackPhrase A01 = BankA.get(0);
         TrackPhrase A02 = BankA.get(1);
-        TrackPhrase A03 = BankA.get(2);
-        TrackPhrase A04 = BankA.get(3);
 
-        assertEquals(4, A01.getNotes().size());
-        assertEquals(1, A02.getNotes().size());
-        assertEquals(3, A03.getNotes().size());
-        assertEquals(4, A04.getNotes().size());
+        assertEquals(14, A01.getNotes().size());
+        assertEquals(4, A02.getNotes().size());
 
         // test TrackItems
         Map<Integer, TrackItem> items = channel.getTrackItems();
-        assertEquals(36, items.size());
-    }
-
-    private void testTone0(TrackChannel channel) {
-        // SQUARE SubSynth
-        SubSynthTone tone = (SubSynthTone)channel.getTone();
-        assertNotNull(tone);
-        assertEquals("SQUARE", tone.getName());
-
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
-        assertEquals(1, BankA.size());
-
-        TrackPhrase A01 = BankA.get(0);
-        assertEquals(8, A01.getNotes().size());
-
-        // test TrackItems
-        Map<Integer, TrackItem> items = channel.getTrackItems();
-        assertEquals(33, items.size());
+        assertEquals(18, items.size());
     }
 
     //@Test

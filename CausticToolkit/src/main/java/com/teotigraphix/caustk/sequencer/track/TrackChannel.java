@@ -17,6 +17,7 @@ import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;
 import com.teotigraphix.caustk.service.ISerialize;
+import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.Tone;
 
 /**
@@ -30,6 +31,10 @@ public class TrackChannel implements ISerialize {
 
     final IDispatcher getDispatcher() {
         return controller.getTrackSequencer().getDispatcher();
+    }
+
+    public SoundMixerChannel getMixerChannel() {
+        return controller.getSoundMixer().getChannel(getIndex());
     }
 
     Map<Integer, Map<Integer, TrackPhrase>> phrases = new TreeMap<Integer, Map<Integer, TrackPhrase>>();
@@ -454,4 +459,5 @@ public class TrackChannel implements ISerialize {
         }
 
     }
+
 }

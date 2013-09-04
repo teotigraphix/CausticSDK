@@ -11,7 +11,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerCurrentTrackChange;
 import com.teotigraphix.caustk.service.ISerialize;
-import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class TrackSong implements ISerialize {
@@ -178,8 +177,6 @@ public class TrackSong implements ISerialize {
     // ISerialize API :: Methods
     //--------------------------------------------------------------------------
 
-    private MasterMixer masterMixer = null;
-
     /*
      * A song serializes;
      * - MasterDelay , MasterReverb, MasterEqualizer, MasterLimiter
@@ -191,7 +188,7 @@ public class TrackSong implements ISerialize {
         try {
             File absoluteTargetSongFile = getAbsoluteCausticFile();
             controller.getSoundSource().saveSongAs(absoluteTargetSongFile);
-            masterMixer = controller.getSoundMixer().getMasterMixer();
+            // masterMixer = controller.getSoundMixer().getMasterMixer();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,8 +200,8 @@ public class TrackSong implements ISerialize {
         if (!exists()) // dummy placeholder
             return;
 
-        if (masterMixer != null)
-            controller.getSoundMixer().setMasterMixer(masterMixer);
+        //if (masterMixer != null)
+        //    controller.getSoundMixer().setMasterMixer(masterMixer);
 
         for (TrackChannel item : tracks.values()) {
             item.wakeup(controller);
