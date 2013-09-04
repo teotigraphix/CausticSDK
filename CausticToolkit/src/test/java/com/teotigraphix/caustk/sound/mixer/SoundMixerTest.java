@@ -68,7 +68,7 @@ public class SoundMixerTest {
     @Test
     public void test_project_save() throws CausticException, IOException {
         File projectDir = new File("SoundMixerTestProject");
-        Project project = controller.getProjectManager().create(projectDir);
+        Project project = controller.getProjectManager().createProject(projectDir);
 
         soundSource.createTone("tone1", ToneType.Bassline);
         soundSource.createTone("tone2", ToneType.Beatbox);

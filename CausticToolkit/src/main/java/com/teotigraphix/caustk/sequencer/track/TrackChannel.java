@@ -120,6 +120,16 @@ public class TrackChannel implements ISerialize {
         setCurrentPattern(pattern);
     }
 
+    public final boolean hasBank(int bankIndex) {
+        return phrases.containsKey(bankIndex);
+    }
+
+    public final boolean hasPhrase(int bankIndex, int patternIndex) {
+        if (!hasBank(bankIndex))
+            return false;
+        return getPhraseMap(bankIndex).containsKey(patternIndex);
+    }
+
     /**
      * Returns the existing {@link TrackPhrase}s for the bankIndex.
      * <p>
@@ -190,6 +200,11 @@ public class TrackChannel implements ISerialize {
 
     @Override
     public void sleep() {
+        for (Map<Integer, TrackPhrase> map : phrases.values()) {
+            for (TrackPhrase phrase : map.values()) {
+                phrase.sleep();
+            }
+        }
     }
 
     @Override

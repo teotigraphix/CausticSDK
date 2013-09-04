@@ -69,8 +69,9 @@ public interface ITrackSequencer extends IControllerComponent {
      * 
      * @param index The tone index
      */
-    // XXX I am not sure this belongs in the public api
     TrackChannel getTrack(int index);
+
+    TrackChannel getTrack(Tone tone);
 
     /**
      * Creates a new {@link TrackSong}.
@@ -81,7 +82,7 @@ public interface ITrackSequencer extends IControllerComponent {
      * @see OnTrackSequencerTrackSongChange
      * @throws IOException
      */
-    void create(File songFile) throws IOException;
+    TrackSong createSong(File songFile) throws IOException;
 
     /**
      * Loads the complete state of a <code>.caustic</code> file into the current
@@ -89,8 +90,9 @@ public interface ITrackSequencer extends IControllerComponent {
      * 
      * @param absoluteCausticFile The absolute location of the
      *            <code>.caustic</code> file.
+     * @throws IOException
      */
-    void load(File absoluteCausticFile);
+    void load(File absoluteCausticFile) throws IOException;
 
     public enum PropertyChangeKind {
 

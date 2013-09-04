@@ -50,11 +50,11 @@ public class TrackSequencerTest extends CaustkTestBase {
     @Test
     public void test_() throws IOException, CausticException {
         // create the absolute project directory
-        controller.getProjectManager().create(new File("TrackSequencerTestProject"));
+        controller.getProjectManager().createProject(new File("TrackSequencerTestProject"));
         assertResourceExists("projects/TrackSequencerTestProject");
 
         // create the absolute songs directory
-        controller.getTrackSequencer().create(new File("songs/Foo.ctks"));
+        controller.getTrackSequencer().createSong(new File("songs/Foo.ctks"));
         assertResourceExists("projects/TrackSequencerTestProject/songs/Foo.ctks");
 
         // TrackSequencer listens the TrackAdd from SoundSource
@@ -257,8 +257,8 @@ public class TrackSequencerTest extends CaustkTestBase {
     public void test_TrackPhrase_setBankPattern() throws CausticException, IOException {
         File projectDir = new File("TrackSequencerTestProject");
         @SuppressWarnings("unused")
-        Project project = controller.getProjectManager().create(projectDir);
-        controller.getTrackSequencer().create(new File("songs/Foo.ctks"));
+        Project project = controller.getProjectManager().createProject(projectDir);
+        controller.getTrackSequencer().createSong(new File("songs/Foo.ctks"));
 
         soundSource.createTone("part1", SubSynthTone.class);
         TrackChannel channel1 = trackSequencer.getTrack(0);

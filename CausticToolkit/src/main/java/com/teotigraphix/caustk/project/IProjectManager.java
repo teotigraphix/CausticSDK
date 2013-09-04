@@ -43,7 +43,7 @@ public interface IProjectManager {
     File getDirectory(String name);
 
     /**
-     * Returns the current {@link Project} instantiated by {@link #create(File)}
+     * Returns the current {@link Project} instantiated by {@link #createProject(File)}
      * or {@link #load(File)}.
      */
     Project getProject();
@@ -64,6 +64,16 @@ public interface IProjectManager {
 
     /**
      * Creates a new {@link Project} file.
+     * 
+     * @param relativePath The path within the <code>projects</code> directory
+     *            of the application root.
+     * @throws IOException
+     * @see #createProject(File)
+     */
+    Project createProject(String relativePath) throws IOException;
+
+    /**
+     * Creates a new {@link Project} file.
      * <p>
      * This method will NOT save the {@link Project}. This allows for clients to
      * add data entries before the initial save.
@@ -78,7 +88,7 @@ public interface IProjectManager {
      * @see OnProjectManagerChange
      * @see ProjectManagerChangeKind#CREATE
      */
-    Project create(File projectFile) throws IOException;
+    Project createProject(File projectFile) throws IOException;
 
     /**
      * Loads a project from disk using the <code>.ctk</code> project format.
@@ -108,7 +118,7 @@ public interface IProjectManager {
     /**
      * Saves the project state and exits.
      * <p>
-     * The {@link #create(File)} or {@link #load(File)} method has to be called
+     * The {@link #createProject(File)} or {@link #load(File)} method has to be called
      * again for the project to be active. Calling this method will remove the
      * current {@link Project} instance.
      * 

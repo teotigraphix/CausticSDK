@@ -50,7 +50,7 @@ public class TrackSong implements ISerialize {
      */
     public File getAbsoluteFile() {
         final File absoluteFile = controller.getProjectManager().getProject()
-                .getAbsoluteResource(file.getPath());
+                .getAbsoluteResource(new File("songs", file.getPath()).getPath());
         return absoluteFile;
     }
 
@@ -184,6 +184,9 @@ public class TrackSong implements ISerialize {
      */
     @Override
     public void sleep() {
+        for (TrackChannel channel : tracks.values()) {
+            channel.sleep();
+        }
         // save the .caustic file
         try {
             File absoluteTargetSongFile = getAbsoluteCausticFile();
@@ -200,11 +203,8 @@ public class TrackSong implements ISerialize {
         if (!exists()) // dummy placeholder
             return;
 
-        //if (masterMixer != null)
-        //    controller.getSoundMixer().setMasterMixer(masterMixer);
-
-        for (TrackChannel item : tracks.values()) {
-            item.wakeup(controller);
+        for (TrackChannel channel : tracks.values()) {
+            channel.wakeup(controller);
         }
     }
 
@@ -311,6 +311,11 @@ public class TrackSong implements ISerialize {
         float totalNumBeats = (getCurrentMeasure() * 4) + getMeasureBeat();
         float total = timeInSec * totalNumBeats;
         return (int)total;
+    }
+
+    public void dispose() {
+        // TODO Auto-generated method stub
+
     }
 
 }

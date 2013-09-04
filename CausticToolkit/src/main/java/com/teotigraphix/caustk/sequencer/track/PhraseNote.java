@@ -6,19 +6,19 @@ import com.teotigraphix.caustk.service.ISerialize;
 
 public class PhraseNote implements ISerialize {
 
-    private int pitch;
+    private transient int pitch;
 
     public int getPitch() {
         return pitch;
     }
 
-    private float start;
+    private transient float start;
 
     public float getStart() {
         return start;
     }
 
-    private float end;
+    private transient float end;
 
     public float getEnd() {
         return end;
@@ -28,13 +28,13 @@ public class PhraseNote implements ISerialize {
         return end - start;
     }
 
-    private float velocity;
+    private transient float velocity;
 
     public float getVelocity() {
         return velocity;
     }
 
-    private int flags;
+    private transient int flags;
 
     public int getFlags() {
         return flags;
@@ -48,12 +48,38 @@ public class PhraseNote implements ISerialize {
         this.flags = flags;
     }
 
+    private String data;
+
+    public String getNoteData() {
+        // [start] [note] [velocity] [end] [flags]
+        final StringBuilder sb = new StringBuilder();
+        sb.append(start);
+        sb.append(" ");
+        sb.append(pitch);
+        sb.append(" ");
+        sb.append(velocity);
+        sb.append(" ");
+        sb.append(end);
+        sb.append(" ");
+        sb.append(flags);
+        return sb.toString();
+    }
+
     @Override
     public void sleep() {
+        data = getNoteData();
     }
 
     @Override
     public void wakeup(ICaustkController controller) {
+        if (data != null) {
+            String[] split = data.split("\\|");
+            start = Float.valueOf(split[0]);
+            pitch = Integer.valueOf(split[0]);
+            velocity = Float.valueOf(split[0]);
+            end = Float.valueOf(split[0]);
+            flags = Integer.valueOf(split[0]);
+            data = null;
+        }
     }
-
 }

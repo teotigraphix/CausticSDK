@@ -78,7 +78,8 @@ public class TrackSequencerHandlers {
                 case NoteAdd:
                     tone = object.getTrackPhrase().getTone();
                     note = object.getPhraseNote();
-                    tone.getPatternSequencer().addNote(note.getPitch(), note.getStart(),
+                    tone.getPatternSequencer().addNote(object.getTrackPhrase().getBank(),
+                            object.getTrackPhrase().getPattern(), note.getPitch(), note.getStart(),
                             note.getEnd(), note.getVelocity(), note.getFlags());
                     break;
 

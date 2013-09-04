@@ -37,14 +37,14 @@ public class ProjectManagerTest1 extends CaustkTestBase {
 
     @Test
     public void test_create_empty_project() throws CausticException, IOException {
-        Project project = projectManager.create(PROJECT_DIR);
+        Project project = projectManager.createProject(PROJECT_DIR);
         projectManager.save();
         Assert.assertTrue(project.getStateFile().exists());
     }
 
     @Test
     public void test_create_tone_project() throws CausticException, IOException {
-        Project project = projectManager.create(PROJECT_DIR);
+        Project project = projectManager.createProject(PROJECT_DIR);
 
         soundSource.createTone("part1", ToneType.SubSynth);
         soundSource.createTone("part2", ToneType.Bassline);
@@ -57,7 +57,7 @@ public class ProjectManagerTest1 extends CaustkTestBase {
 
     @Test
     public void test_create_project() throws CausticException, IOException {
-        Project project1 = projectManager.create(PROJECT_DIR);
+        Project project1 = projectManager.createProject(PROJECT_DIR);
         projectManager.save();
         assertNotNull(project1);
         Assert.assertTrue(project1.getStateFile().exists());

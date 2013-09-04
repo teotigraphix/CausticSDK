@@ -176,20 +176,22 @@ public class TrackPhrase implements ISerialize {
         this.notes.addAll(notes);
     }
 
-    public void addNote(int pitch, float start, float end, float velocity, int flags) {
+    public PhraseNote addNote(int pitch, float start, float end, float velocity, int flags) {
         PhraseNote note = new PhraseNote(pitch, start, end, velocity, flags);
         notes.add(note);
         getDispatcher().trigger(
                 new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteAdd, this, note));
+        return note;
     }
 
-    public void removeNote(int pitch, float start) {
+    public PhraseNote removeNote(int pitch, float start) {
         PhraseNote note = getNote(pitch, start);
         if (note != null) {
             notes.remove(note);
             getDispatcher().trigger(
                     new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteRemove, this, note));
         }
+        return note;
     }
 
     public void removeNote(PhraseNote note) {
@@ -387,11 +389,17 @@ public class TrackPhrase implements ISerialize {
 
     @Override
     public void sleep() {
+        for (PhraseNote note : notes) {
+            note.sleep();
+        }
     }
 
     @Override
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
+        for (PhraseNote note : notes) {
+            note.wakeup(controller);
+        }
     }
 
     public int getLocalBeat() {

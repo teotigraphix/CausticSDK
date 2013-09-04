@@ -183,7 +183,7 @@ public class Project implements ISerialize {
     /**
      * Returns whether the project is open or closed.
      * <p>
-     * The project is open when the {@link IProjectManager#create(File)} or
+     * The project is open when the {@link IProjectManager#createProject(File)} or
      * {@link IProjectManager#load(File)} has been called.
      * <p>
      * The project is closed when the {@link IProjectManager#exit()} has been

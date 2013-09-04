@@ -44,7 +44,7 @@ public class LibraryManagerTest extends CaustkTestBase {
 
     @Test
     public void test_createLibrary() throws CausticException, IOException {
-        controller.getProjectManager().create(new File("LibraryManagerTestProject"));
+        controller.getProjectManager().createProject(new File("LibraryManagerTestProject"));
         assertResourceExists("projects/LibraryManagerTestProject");
 
         Library library = libraryManager.createLibrary("baz");

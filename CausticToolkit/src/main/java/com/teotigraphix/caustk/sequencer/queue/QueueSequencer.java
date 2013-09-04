@@ -123,7 +123,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     protected void save() throws IOException {
         File localFile = getController().getProjectManager().getProject()
-                .getAbsoluteResource(queueSong.getFile().getPath());
+                .getAbsoluteResource(new File("songs", queueSong.getFile().getPath()).getPath());
         File absoluteTargetSongFile = localFile.getAbsoluteFile();
         getController().getSerializeService().save(absoluteTargetSongFile, queueSong);
     }

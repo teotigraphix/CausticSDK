@@ -16,11 +16,13 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 
-public class CaustkTestBase {
+public abstract class CaustkTestBase {
 
     private ICaustkApplication application;
 
     protected ICaustkController controller;
+
+    protected boolean deleteOnExit = true;
 
     @Before
     public void setUp() throws Exception {
@@ -30,20 +32,20 @@ public class CaustkTestBase {
         start();
     }
 
-    protected void start() throws CausticException, IOException {
-    }
+    protected abstract void start() throws CausticException, IOException;
 
     @After
     public void tearDown() throws Exception {
         application = null;
         controller = null;
         end();
-        FileUtils.forceDelete(getUnitTestResource());
-        assertFalse(getUnitTestResource().exists());
+        if (deleteOnExit) {
+            FileUtils.forceDelete(getUnitTestResource());
+            assertFalse(getUnitTestResource().exists());
+        }
     }
 
-    protected void end() {
-    }
+    protected abstract void end();
 
     protected static File getUnitTestResource() {
         return new File("src/test/resources/unit_test").getAbsoluteFile();

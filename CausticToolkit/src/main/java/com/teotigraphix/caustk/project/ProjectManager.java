@@ -211,7 +211,12 @@ public class ProjectManager implements IProjectManager {
     }
 
     @Override
-    public Project create(File file) throws IOException {
+    public Project createProject(String relativePath) throws IOException {
+        return createProject(new File(relativePath));
+    }
+
+    @Override
+    public Project createProject(File file) throws IOException {
         if (file.getName().contains("."))
             throw new IOException("Project is not a directory");
 
