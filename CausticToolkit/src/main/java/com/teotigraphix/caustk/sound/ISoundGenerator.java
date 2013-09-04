@@ -43,4 +43,6 @@ public interface ISoundGenerator extends ICausticEngine {
 
     float getCurrentSongMeasure();
 
+    int getVerison();
+
 }

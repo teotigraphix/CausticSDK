@@ -168,6 +168,11 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     }
 
     @Override
+    public int getVerison() {
+        return causticCore.getVersion();
+    }
+
+    @Override
     public float getCurrentBeat() {
         return causticCore.getCurrentBeat();
     }

@@ -87,7 +87,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public void close() {
-        causticCore.CausticCore_Deinit();
+        causticCore.deinit();
     }
 
     //--------------------------------------------------------------------------
@@ -137,7 +137,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public void onDestroy() {
-        causticCore.CausticCore_Deinit();
+        causticCore.deinit();
     }
 
     @Override
@@ -154,11 +154,11 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public float getCurrentBeat() {
-        return core().GetCurrentBeat();
+        return core().getCurrentBeat();
     }
 
     @Override
     public float getCurrentSongMeasure() {
-        return core().GetCurrentSongMeasure();
+        return core().getCurrentSongMeasure();
     }
 }

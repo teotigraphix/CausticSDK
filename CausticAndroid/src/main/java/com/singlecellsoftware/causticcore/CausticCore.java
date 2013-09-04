@@ -77,6 +77,10 @@ class CausticAudioLoop extends Thread {
 
 public class CausticCore {
 
+    public int getVersion() {
+        return nativeGetVersion();
+    }
+
     public float getCurrentBeat() {
         return nativeGetCurrentBeat();
     }
@@ -162,4 +166,5 @@ public class CausticCore {
 
     static native int nativeGetCurrentSongMeasure();
 
+    static native int nativeGetVersion();
 }

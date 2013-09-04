@@ -33,4 +33,19 @@ public interface CausticLibrary extends Library {
     float CausticCore_GetCurrentBeat();
 
     int CausticCore_GetCurrentSongMeasure();
+
+    /**
+     * return a 32 bit value where the version number is split into 4 parts, 8
+     * bits each
+     * <ul>
+     * <li>bits [24..31] are major version</li>
+     * <li>bits [16..23] are minor version</li>
+     * <li>bits [8..15] are release</li>
+     * <li>bits [0..7] are build # (though I doubt you'll ever see that change
+     * for OSC)</li>
+     * </ul>
+     * <p>
+     * For example right now it returns 0x03000000 for 3.0.0.0
+     */
+    int CausticCore_GetVersion();
 }

@@ -62,15 +62,19 @@ public class CausticCoreDesktop {
         return new String(m_byResponseString, 0, nStrLen);
     }
 
-    public float GetCurrentBeat() {
+    public float getVersion() {
+        return caustic.CausticCore_GetVersion();
+    }
+
+    public float getCurrentBeat() {
         return caustic.CausticCore_GetCurrentBeat();
     }
 
-    public int GetCurrentSongMeasure() {
+    public int getCurrentSongMeasure() {
         return caustic.CausticCore_GetCurrentSongMeasure();
     }
 
-    public void CausticCore_Deinit() {
+    public void deinit() {
         caustic.CausticCore_Deinit();
     }
 
