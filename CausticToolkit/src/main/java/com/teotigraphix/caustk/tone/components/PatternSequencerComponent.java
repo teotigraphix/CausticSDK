@@ -193,6 +193,50 @@ public class PatternSequencerComponent extends ToneComponent {
         }
     }
 
+    public ShuffleMode getShuffleMode() {
+        return ShuffleMode.fromInt((int)PatternSequencerMessage.SHUFFLE_MODE.query(getEngine(),
+                getToneIndex()));
+    }
+
+    public void setShuffleMode(ShuffleMode value) {
+        PatternSequencerMessage.SHUFFLE_MODE.send(getEngine(), getToneIndex(), value.getValue());
+    }
+
+    public float getShuffleAmount() {
+        return PatternSequencerMessage.SHUFFLE_AMOUNT.query(getEngine(), getToneIndex());
+    }
+
+    public void setShuffleAmount(float value) {
+        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getEngine(), getToneIndex(), value);
+    }
+
+    public enum ShuffleMode {
+
+        DEFAULT(0),
+
+        EIGTH(1),
+
+        SIXTEENTH(2);
+
+        private final int value;
+
+        ShuffleMode(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public static ShuffleMode fromInt(int value) {
+            for (ShuffleMode mode : values()) {
+                if (mode.getValue() == value)
+                    return mode;
+            }
+            return null;
+        }
+    }
+
     //--------------------------------------------------------------------------
     //
     // Constructor

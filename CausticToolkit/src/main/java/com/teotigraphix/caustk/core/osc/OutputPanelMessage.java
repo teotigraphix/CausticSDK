@@ -86,6 +86,37 @@ public class OutputPanelMessage extends CausticMessage {
     public static final OutputPanelMessage PLAY = new OutputPanelMessage(
             "/caustic/outputpanel/play ${0}");
 
+    /**
+     * Message: <code>/caustic/outputpanel/shuffle_mode [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>value</strong>: (1,2) 1 <code>8th notes</code>, 2
+     * <code>16th notes</code>.</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>int</code>
+     */
+    public static final OutputPanelMessage SHUFFLE_MODE = new OutputPanelMessage(
+            "/caustic/outputpanel/shuffle_mode ${0}");
+
+    /**
+     * Message: <code>/caustic/outputpanel/shuffle_amount [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>value</strong>: (0..1)
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>float</code>
+     */
+    public static final OutputPanelMessage SHUFFLE_AMOUNT = new OutputPanelMessage(
+            "/caustic/outputpanel/shuffle_amount ${0}");
+
     OutputPanelMessage(String message) {
         super(message);
     }

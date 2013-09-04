@@ -140,6 +140,39 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
      */
     void clearAutomation(Tone machine);
 
+    ShuffleMode getShuffleMode();
+
+    void setShuffleMode(ShuffleMode value);
+
+    float getShuffleAmount();
+
+    void setShuffleAmount(float value);
+
+    public enum ShuffleMode {
+
+        EIGTH(1),
+
+        SIXTEENTH(2);
+
+        private final int value;
+
+        ShuffleMode(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public static ShuffleMode fromInt(int value) {
+            for (ShuffleMode mode : values()) {
+                if (mode.getValue() == value)
+                    return mode;
+            }
+            return null;
+        }
+    }
+
     /**
      * The export type for external media from the {@link ISequencer}.
      * 
@@ -207,7 +240,6 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
 
         SongEndMode(int value) {
             this.value = value;
-
         }
 
         public static SongEndMode fromInt(int value) {

@@ -163,6 +163,41 @@ public class PatternSequencerMessage extends CausticMessage {
 
     /**
      * Message:
+     * <code>/caustic/[machine_index]/pattern_sequencer/shuffle_mode [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The index of the machine.</li>
+     * <li><strong>value</strong>: (0,1,2) 0 default inherit, 1
+     * <code>8th notes</code>, 2 <code>16th notes</code>.</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>int</code>
+     */
+    public static final PatternSequencerMessage SHUFFLE_MODE = new PatternSequencerMessage(
+            "/caustic/${0}/pattern_sequencer/shuffle_mode ${1}");
+
+    /**
+     * Message:
+     * <code>/caustic/[machine_index]/pattern_sequencer/shuffle_amount [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The index of the machine.</li>
+     * <li><strong>value</strong>: (0..1)
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>float</code>
+     */
+    public static final PatternSequencerMessage SHUFFLE_AMOUNT = new PatternSequencerMessage(
+            "/caustic/${0}/pattern_sequencer/shuffle_amount ${1}");
+
+    /**
+     * Message:
      * <code>/caustic/[machine_index]/pattern_sequencer/num_measures [value]</code>
      * <p>
      * <strong>Default</strong>: <code>1</code>

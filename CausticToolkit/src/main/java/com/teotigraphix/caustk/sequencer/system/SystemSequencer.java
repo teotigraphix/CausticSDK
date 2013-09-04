@@ -26,6 +26,7 @@ import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.tone.Tone;
@@ -358,6 +359,26 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
     @Override
     public void clearAutomation(Tone tone) {
         SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getController(), tone.getIndex());
+    }
+
+    @Override
+    public ShuffleMode getShuffleMode() {
+        return ShuffleMode.fromInt((int)OutputPanelMessage.SHUFFLE_MODE.query(getController()));
+    }
+
+    @Override
+    public void setShuffleMode(ShuffleMode value) {
+        OutputPanelMessage.SHUFFLE_MODE.send(getController(), value.getValue());
+    }
+
+    @Override
+    public float getShuffleAmount() {
+        return OutputPanelMessage.SHUFFLE_AMOUNT.query(getController());
+    }
+
+    @Override
+    public void setShuffleAmount(float value) {
+        OutputPanelMessage.SHUFFLE_AMOUNT.send(getController(), value);
     }
 
 }
