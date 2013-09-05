@@ -438,7 +438,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
                 library.addPatch(patch);
 
                 tone.setDefaultPatchId(patch.getId());
-                soundSourceState.addTone(tone);
+                soundSourceState.addTone(tone, patch.getId());
             }
         }
 
@@ -561,6 +561,18 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         Collection<File> files = FileUtils.listFiles(library.getDirectory(), null, true);
         Compress compress = new Compress(files, file.getAbsolutePath());
         compress.zip();
+    }
+
+    @Override
+    public void assignPatch(Tone tone, LibraryPatch libraryPatch) {
+        final Library library = getSelectedLibrary();
+        final File presetFile = library.getPresetFile(libraryPatch.getPresetFile());
+        tone.getSynth().loadPreset(presetFile.getAbsolutePath());
+    }
+
+    @Override
+    public void assignPatch(int toneIndex, LibraryPatch libraryPatch) {
+        assignPatch(getController().getSoundSource().getTone(toneIndex), libraryPatch);
     }
 
     //    @Override

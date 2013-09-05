@@ -38,6 +38,8 @@ import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.library.Library;
+import com.teotigraphix.caustk.library.LibraryPatch;
 import com.teotigraphix.caustk.library.LibraryScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sound.ISoundSource;
@@ -159,7 +161,14 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
     public void createScene(LibraryScene scene) throws CausticException {
         // make tones
         for (ToneDescriptor descriptor : scene.getSoundSourceState().getDescriptors().values()) {
-            createTone(descriptor);
+            Tone tone = createTone(descriptor);
+            UUID patchId = descriptor.getPatchId();
+            Library library = getController().getLibraryManager().getSelectedLibrary();
+            if (library != null && patchId != null) {
+                LibraryPatch libraryPatch = library.findPatchById(patchId);
+                getController().getLibraryManager().assignPatch(tone, libraryPatch);
+            }
+
         }
         //        SoundMixerState mixerState = scene.getSoundMixerState();
         //        SoundMixerModel model = getController().getSerializeService().fromString(

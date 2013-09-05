@@ -19,15 +19,12 @@
 
 package com.teotigraphix.caustk.library;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
-import com.teotigraphix.caustk.tone.ToneType;
 
 public class SoundSourceState {
 
@@ -40,78 +37,10 @@ public class SoundSourceState {
     public SoundSourceState() {
     }
 
-    public void addTone(Tone tone) {
+    public void addTone(Tone tone, UUID patchId) {
         ToneDescriptor descriptor = new ToneDescriptor(tone.getIndex(), tone.getName(),
                 tone.getToneType());
+        descriptor.setPatchId(patchId);
         descriptors.put(tone.getIndex(), descriptor);
-    }
-
-    /**
-     * Returns a lazy List of the {@link RackInfoItem}s found in the rack info.
-     */
-    public List<RackInfoItem> getItems() {
-        List<RackInfoItem> result = new ArrayList<RackInfoItem>();
-
-        return result;
-    }
-
-    public static class RackInfoItem {
-        // <machine active="1" id="DRUMSIES" index="5" 
-        // patchId="a146b131-d14d-4828-97b0-369c1accfa2d" type="beatbox"/>
-
-        private UUID patchId;
-
-        /**
-         * Returns the patch {@link UUID} that the machine had when its library
-         * was created.
-         * <p>
-         * This id may become invalid over time if libraries are merged.
-         */
-        public UUID getPatchId() {
-            return patchId;
-        }
-
-        private String name;
-
-        /**
-         * Returns the String id of the machine in the rack.
-         */
-        public String getName() {
-            return name;
-        }
-
-        private boolean active;
-
-        public boolean isActive() {
-            return active;
-        }
-
-        private int index;
-
-        public int getIndex() {
-            return index;
-        }
-
-        private ToneType toneType;
-
-        public ToneType getToneType() {
-            return toneType;
-        }
-
-        public RackInfoItem(Tone tone) {
-            active = true;
-            index = tone.getIndex();
-            toneType = tone.getToneType();
-            name = tone.getName();
-            //            String pid = memento.getString("patchId");
-            //            if (pid != null)
-            //                patchId = UUID.fromString(pid);
-        }
-
-        public ToneDescriptor createDescriptor() {
-            ToneDescriptor descriptor = new ToneDescriptor(index, name, toneType);
-            return descriptor;
-        }
-
     }
 }

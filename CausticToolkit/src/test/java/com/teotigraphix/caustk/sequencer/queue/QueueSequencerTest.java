@@ -25,7 +25,6 @@ import com.teotigraphix.caustk.sequencer.track.TrackChannel;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
 import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
-import com.teotigraphix.caustk.tone.Tone;
 
 @SuppressWarnings("unused")
 public class QueueSequencerTest extends CaustkTestBase {
@@ -88,6 +87,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         importSong(controller, library, causticFile);
 
         // load tones 
+        // load patches
         controller.getSoundSource().createScene(library.getScenes().get(0));
         assertEquals(6, trackSequencer.getTracks().size());
 
@@ -97,10 +97,6 @@ public class QueueSequencerTest extends CaustkTestBase {
         track3 = trackSequencer.getTrack(3);
         track4 = trackSequencer.getTrack(4);
         track5 = trackSequencer.getTrack(5);
-
-        // load patches
-        List<LibraryPatch> subsynthPatches = library.findPatchByTag("subsynth");
-        assignPatch(controller, 0, subsynthPatches.get(0));
 
         queueDataA01 = queueSequencer.getQueueData(0, 0);
         queueDataA02 = queueSequencer.getQueueData(0, 1);
@@ -267,15 +263,6 @@ public class QueueSequencerTest extends CaustkTestBase {
         trackPhrase.setLength(libraryPhrase.getLength());
         trackPhrase.setNoteData(libraryPhrase.getNoteData());
         channel.assignPhrase(trackPhrase);
-    }
-
-    public static void assignPatch(ICaustkController controller, int toneIndex,
-            LibraryPatch libraryPatch) {
-        final Library library = controller.getLibraryManager().getSelectedLibrary();
-        final File presetFile = library.getPresetFile(libraryPatch.getPresetFile());
-
-        final Tone tone = controller.getSoundSource().getTone(toneIndex);
-        tone.getSynth().loadPreset(presetFile.getAbsolutePath());
     }
 
     public static void importSong(ICaustkController controller, Library library, File file)
