@@ -108,6 +108,45 @@ public class QueueSequencerTest extends CaustkTestBase {
     }
 
     @Test
+    public void test_replace_unqueued_data() throws IOException, CausticException {
+        LibraryPhrase phrase1 = library.findPhrasesByTag("length-1").get(0);
+        LibraryPhrase phrase2 = library.findPhrasesByTag("length-1").get(1);
+        LibraryPhrase phrase3 = library.findPhrasesByTag("length-1").get(1);
+        assignPhrase(queueDataA01, track0, phrase1);
+        assignPhrase(queueDataA02, track0, phrase2);
+        assignPhrase(queueDataC01, track0, phrase3);
+
+        // play loop with A01
+        queueSequencer.touch(queueDataA01);
+        queueSequencer.play();
+
+        // queue A02
+        queueSequencer.touch(queueDataA02);
+
+        queueSequencer.beatChange(0, 0);
+        queueSequencer.beatChange(0, 1);
+
+        assertQueue(queueDataA01, 1, 1, 0, QueueDataState.PlayUnqueued); // A02 unqueued it
+        assertQueue(queueDataA02, 1, 1, 0, QueueDataState.Queue);
+        assertQueue(queueDataC01, 1, 1, 0, QueueDataState.Idle);
+
+        // queue C01, replaces A02
+        queueSequencer.touch(queueDataC01);
+
+        assertQueue(queueDataA01, 1, 1, 0, QueueDataState.PlayUnqueued); // C01 unqueued it
+        assertQueue(queueDataA02, 1, 1, 0, QueueDataState.Idle);
+        assertQueue(queueDataC01, 1, 1, 0, QueueDataState.Queue);
+
+        queueSequencer.beatChange(0, 2);
+        queueSequencer.beatChange(0, 3);
+        queueSequencer.beatChange(1, 4);
+
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Idle);
+        assertQueue(queueDataA02, 0, 1, 0, QueueDataState.Idle);
+        assertQueue(queueDataC01, 0, 1, 0, QueueDataState.Play);
+    }
+
+    @Test
     public void test_unqueue_self_when_playing() throws IOException, CausticException {
         LibraryPhrase phrase1 = library.findPhrasesByTag("length-1").get(0);
         LibraryPhrase phrase4 = library.findPhrasesByTag("length-1").get(1);

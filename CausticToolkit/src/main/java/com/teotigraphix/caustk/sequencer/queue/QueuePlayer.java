@@ -109,14 +109,28 @@ public class QueuePlayer {
         } else if (!queued.contains(data)) {
 
             QueueDataChannel viewChannel = data.getViewChannel();
+            // the invalidData is the data that is still playing
+            // but the viewChannel is going to trade playing spaces on the next measure
             QueueData invalidData = channelInvalidatesPlayingData(viewChannel);
             // check for the existence of another channel that shares this track
             if (invalidData != null) {
-                invalidData.setDataThatInvalidated(data);
-                setState(invalidData, QueueDataState.PlayUnqueued);
-                queued.add(data);
-                setState(data, QueueDataState.Queue);
-                data.setTheInvalidatedData(invalidData);
+
+                if (invalidData.getDataThatInvalidated() != null) {
+                    QueueData oldData = invalidData.getDataThatInvalidated();
+                    queued.remove(oldData);
+                    setState(oldData, QueueDataState.Idle);
+                    invalidData.setDataThatInvalidated(data);
+                    data.setTheInvalidatedData(invalidData);
+                    setState(data, QueueDataState.Queue);
+                    queued.add(data);
+                } else {
+                    invalidData.setDataThatInvalidated(data);
+                    setState(invalidData, QueueDataState.PlayUnqueued);
+                    queued.add(data);
+                    setState(data, QueueDataState.Queue);
+                    data.setTheInvalidatedData(invalidData);
+                }
+
             } else {
                 queued.add(data);
                 setState(data, QueueDataState.Queue);
