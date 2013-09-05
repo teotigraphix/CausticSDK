@@ -90,9 +90,51 @@ public class QueuePlayer {
         getController().getSystemSequencer().stop();
     }
 
-    public boolean queue(QueueData data) {
+    public boolean touch(QueueData data) {
+
+        // QUEUE
         if (isLockBeat())
             return false;
+        log("queue(" + data + ")");
+
+        // if the pattern is still playing but got unqueued, just update the state
+        if (playQueue.contains(data)) {
+
+            setState(data, QueueDataState.PlayUnqueued);
+
+            //            if (data.getState() == QueueDataState.Queue) {
+            //                //playQueue.remove(data);
+            //                setState(data, QueueDataState.Idle);
+            //            } else {
+            //                setState(data, QueueDataState.UnQueued);
+            //            }
+
+        } else if (!queued.contains(data)) {
+
+            QueueDataChannel viewChannel = data.getViewChannel();
+            QueueData invalidData = channelInvalidatesPlayingData(viewChannel);
+            // check for the existence of another channel that shares this track
+            if (invalidData != null) {
+                setState(invalidData, QueueDataState.UnQueued);
+                queued.add(data);
+                setState(data, QueueDataState.Queue);
+            } else {
+                queued.add(data);
+                setState(data, QueueDataState.Queue);
+            }
+        } else {
+            // queued but not playing, just remove and set back to Idle
+            queued.remove(data);
+            setState(data, QueueDataState.Idle);
+        }
+
+        return false;
+    }
+
+    private boolean queue(QueueData data) {
+        if (isLockBeat())
+            return false;
+        log("queue(" + data + ")");
 
         // if the pattern is still playing but got unqueued, just update the state
         if (playQueue.contains(data)) {
@@ -113,10 +155,10 @@ public class QueuePlayer {
         return true;
     }
 
-    public boolean unqueue(QueueData data) {
+    private boolean unqueue(QueueData data) {
         if (isLockBeat())
             return false;
-
+        log("unqueue(" + data + ")");
         if (playQueue.contains(data)) {
             if (data.getState() == QueueDataState.Queue) {
                 //playQueue.remove(data);
@@ -142,7 +184,7 @@ public class QueuePlayer {
 
         // start new measure
         if (isStartBeat()) {
-            log("|Start Beat================================================");
+            //log("|Start Beat================================================");
 
             for (QueueData data : tempPlayQueue) {
                 setState(data, QueueDataState.Play);
@@ -167,7 +209,7 @@ public class QueuePlayer {
 
             queueTracks();
 
-            log("|End Beat================================================");
+            //log("|End Beat================================================");
         }
     }
 

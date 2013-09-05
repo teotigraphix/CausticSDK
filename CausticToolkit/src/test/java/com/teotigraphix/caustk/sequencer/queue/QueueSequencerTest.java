@@ -113,7 +113,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         assignPhrase(queueDataA01, track0, phrase1);
 
         queueDataA01.getViewChannel().setLoopEnabled(false);
-        queueSequencer.queue(queueDataA01);
+        queueSequencer.touch(queueDataA01);
         assertQueue(queueDataA01, 1, 0, 0, QueueDataState.Queue);
         queueSequencer.play();
         assertTrackItem(0, 0, 1, queueDataA01);
@@ -122,7 +122,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueSequencer.beatChange(0, 1);
         queueSequencer.beatChange(0, 2);
         queueSequencer.beatChange(0, 3);
-        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued); // should be UnQueue ?
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
         queueSequencer.beatChange(1, 4);
         assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
     }
@@ -133,68 +133,30 @@ public class QueueSequencerTest extends CaustkTestBase {
         assignPhrase(queueDataA01, track0, phrase1);
 
         assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
-        queueSequencer.queue(queueDataA01);
+        queueSequencer.touch(queueDataA01);
         assertQueue(queueDataA01, 1, 0, 0, QueueDataState.Queue);
-        // try and add it again
-        queueSequencer.queue(queueDataA01);
-        assertQueue(queueDataA01, 1, 0, 0, QueueDataState.Queue);
+        // try and add it again, if in the queue and not playing, goes back to Idle
+        queueSequencer.touch(queueDataA01);
+        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
 
         // the start of recording has to have play() because the sequencer
         // needs pattern data before it starts
         queueSequencer.play();
 
-        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
-        assertTrackItem(0, 0, 1, queueDataA01);
+        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
 
         queueSequencer.beatChange(0, 0);
         queueSequencer.beatChange(0, 1);
         queueSequencer.beatChange(0, 2);
+        queueSequencer.touch(queueDataA01);
+        // added the TrackItem but state is not Play until the start measure
         queueSequencer.beatChange(0, 3);
         assertTrue(player.isLockBeat());
-        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
-        // [Track0[0|A01|1], Track0[1|A01|2]]
+        // there is 1 in the tempPlayQueue
+        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Queue);
+
         assertTrackItem(0, 1, 1, queueDataA01);
 
-        // can't add a pattern in the lock beat IE the last beat in the measure
-        queueSequencer.unqueue(queueDataA01);
-        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
-
-        queueSequencer.beatChange(1, 4);
-        queueSequencer.unqueue(queueDataA01);
-        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.UnQueued);
-
-        // set an unqueued pattern back to play
-        queueSequencer.queue(queueDataA01);
-        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
-
-        // now take it out for good
-        queueSequencer.unqueue(queueDataA01);
-        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.UnQueued);
-        queueSequencer.beatChange(1, 5);
-        queueSequencer.beatChange(1, 6);
-        queueSequencer.beatChange(1, 7);
-        assertTrue(player.isLockBeat());
-        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
-        queueSequencer.beatChange(2, 8);
-        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
-
-        // test the loop off
-        queueDataA01.getChannel(0).setLoopEnabled(false);
-        queueSequencer.beatChange(2, 9);
-        queueSequencer.beatChange(2, 10);
-        queueSequencer.queue(queueDataA01);
-        assertQueue(queueDataA01, 1, 0, 0, QueueDataState.Queue);
-        queueSequencer.beatChange(2, 11);
-        assertTrue(player.isLockBeat());
-        queueSequencer.beatChange(3, 12);
-        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
-
-        queueSequencer.beatChange(3, 13);
-        queueSequencer.beatChange(3, 14);
-        queueSequencer.beatChange(3, 15);
-        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
-        queueSequencer.beatChange(4, 16);
-        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
     }
 
     @Test
@@ -204,7 +166,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         assignPhrase(queueDataA01, track0, phrase1);
         assignPhrase(queueDataA02, track0, phrase1);
 
-        queueSequencer.queue(queueDataA01);
+        queueSequencer.touch(queueDataA01);
         player.play();
         assertTrackItem(0, 0, 1, queueDataA01);
 
@@ -216,7 +178,7 @@ public class QueueSequencerTest extends CaustkTestBase {
 
         queueSequencer.beatChange(1, 4); // start measure
         // queue another pad that shares the same channel
-        queueSequencer.queue(queueDataA02);
+        queueSequencer.touch(queueDataA02);
 
         assertQueue(queueDataA01, 1, 1, 0, QueueDataState.UnQueued);
         assertQueue(queueDataA02, 1, 1, 0, QueueDataState.Queue);

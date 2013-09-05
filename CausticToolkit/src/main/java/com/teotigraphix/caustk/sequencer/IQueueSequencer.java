@@ -11,9 +11,11 @@ import com.teotigraphix.caustk.sequencer.queue.QueueDataChannel;
 
 public interface IQueueSequencer extends IControllerComponent {
 
-    boolean queue(QueueData data);
+    boolean touch(QueueData data);
 
-    boolean unqueue(QueueData data);
+    //    boolean queue(QueueData data);
+    //
+    //    boolean unqueue(QueueData data);
 
     QueueData getQueueData(int bankIndex, int patternIndex);
 

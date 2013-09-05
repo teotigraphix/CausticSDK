@@ -167,14 +167,19 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     }
 
     @Override
-    public boolean queue(QueueData data) {
-        return player.queue(data);
+    public boolean touch(QueueData data) {
+        return player.touch(data);
     }
 
-    @Override
-    public boolean unqueue(QueueData data) {
-        return player.unqueue(data);
-    }
+    //    @Override
+    //    public boolean queue(QueueData data) {
+    //        return player.queue(data);
+    //    }
+    //
+    //    @Override
+    //    public boolean unqueue(QueueData data) {
+    //        return player.unqueue(data);
+    //    }
 
     public void beatChange(int measure, float beat) {
         player.beatChange(measure, beat);
