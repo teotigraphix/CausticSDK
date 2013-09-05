@@ -27,13 +27,13 @@ import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 import com.teotigraphix.caustk.tone.Tone;
 
+@SuppressWarnings("unused")
 public class QueueSequencerTest extends CaustkTestBase {
 
     private ITrackSequencer trackSequencer;
 
     private QueueSequencer queueSequencer;
 
-    @SuppressWarnings("unused")
     private TrackSong trackSong;
 
     private QueuePlayer player;
@@ -106,9 +106,29 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueDataA02 = queueSequencer.getQueueData(0, 1);
         queueDataC01 = queueSequencer.getQueueData(2, 0);
 
-        queueDataA01.setViewChannel(0);
-        queueDataA02.setViewChannel(0);
-        queueDataC01.setViewChannel(0);
+        queueDataA01.setViewChannelIndex(0);
+        queueDataA02.setViewChannelIndex(0);
+        queueDataC01.setViewChannelIndex(0);
+    }
+
+    @Test
+    public void test_loop_off() throws IOException, CausticException {
+        LibraryPhrase phrase1 = library.findPhrasesByTag("subsynth").get(0);
+        assignPhrase(queueDataA01, track0, phrase1);
+
+        queueDataA01.getViewChannel().setLoopEnabled(false);
+        queueSequencer.queue(queueDataA01);
+        assertQueue(queueDataA01, 1, 0, 0, QueueDataState.Queue);
+        queueSequencer.play();
+        assertTrackItem(0, 0, 1, queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
+        queueSequencer.beatChange(0, 0);
+        queueSequencer.beatChange(0, 1);
+        queueSequencer.beatChange(0, 2);
+        queueSequencer.beatChange(0, 3);
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued); // should be UnQueue ?
+        queueSequencer.beatChange(1, 4);
+        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
     }
 
     @Test
@@ -151,14 +171,14 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueSequencer.queue(queueDataA01);
         assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
 
-        // now tak it out for good
+        // now take it out for good
         queueSequencer.unqueue(queueDataA01);
         assertQueue(queueDataA01, 0, 1, 0, QueueDataState.UnQueued);
         queueSequencer.beatChange(1, 5);
         queueSequencer.beatChange(1, 6);
         queueSequencer.beatChange(1, 7);
         assertTrue(player.isLockBeat());
-        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.UnQueued);
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
         queueSequencer.beatChange(2, 8);
         assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
 
@@ -176,7 +196,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueSequencer.beatChange(3, 13);
         queueSequencer.beatChange(3, 14);
         queueSequencer.beatChange(3, 15);
-        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.Play);
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
         queueSequencer.beatChange(4, 16);
         assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
     }
@@ -213,7 +233,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueSequencer.beatChange(1, 6);
         queueSequencer.beatChange(1, 7);
         assertTrue(player.isLockBeat());
-        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.UnQueued);
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
         assertQueue(queueDataA02, 0, 0, 1, QueueDataState.Queue);
         queueSequencer.beatChange(2, 8);
         assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Idle);

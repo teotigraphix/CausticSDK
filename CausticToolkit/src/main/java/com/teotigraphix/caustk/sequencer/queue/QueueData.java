@@ -57,24 +57,22 @@ public class QueueData implements ISerialize {
     // viewChannel
     //----------------------------------
 
-    private int viewChannel = -1;
+    private int viewChannelIndex = -1;
 
     /**
      * Returns the {@link QueueDataChannel} index that is considered the top
      * view.
      */
-    public int getViewChannel() {
-        //        if (viewChannel == null) {
-        //            for (QueueDataChannel channel : map.values()) {
-        //                return channel.getToneIndex();
-        //            }
-        //            viewChannel = 0;
-        //        }
-        return viewChannel;
+    public int getViewChannelIndex() {
+        return viewChannelIndex;
     }
 
-    public void setViewChannel(int value) {
-        viewChannel = value;
+    public void setViewChannelIndex(int value) {
+        viewChannelIndex = value;
+    }
+
+    public QueueDataChannel getViewChannel() {
+        return getChannel(viewChannelIndex);
     }
 
     //----------------------------------
@@ -156,6 +154,8 @@ public class QueueData implements ISerialize {
         Idle,
 
         Play,
+
+        PlayUnqueued,
 
         Queue,
 
