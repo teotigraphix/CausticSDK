@@ -29,6 +29,8 @@ public class QueuePlayer {
 
     private List<QueueData> playQueue = new ArrayList<QueueData>();
 
+    private List<QueueData> tempPlayQueue = new ArrayList<QueueData>();
+
     private List<QueueData> queued = new ArrayList<QueueData>();
 
     private List<QueueData> flushedQueue = new ArrayList<QueueData>();
@@ -68,11 +70,18 @@ public class QueuePlayer {
         for (QueueData data : copied) {
             if (data.getState() == QueueDataState.Queue) {
                 // add to sequencer
-                for (QueueDataChannel channel : data.getChannels()) {
-                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
-                    addPhraseAt(track, 0, data);
-                }
-                startPlaying(data);
+                QueueDataChannel channel = data.getChannel(data.getViewChannel());
+                TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                addPhraseAt(track, 0, data);
+                //                for (QueueDataChannel channel : data.getChannels()) {
+                //                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                //                    addPhraseAt(track, 0, data);
+                //                }
+                //startPlaying(data);
+                // this is special instance since everything is started
+                setState(data, QueueDataState.Play);
+                playQueue.add(data);
+                queued.remove(data);
             } else if (data.getState() == QueueDataState.Play) {
             }
         }
@@ -92,9 +101,17 @@ public class QueuePlayer {
         if (playQueue.contains(data)) {
             setState(data, QueueDataState.Play);
         } else if (!queued.contains(data)) {
-            //CtkDebug.log("Queue:" + data);
-            queued.add(data);
-            setState(data, QueueDataState.Queue);
+            QueueDataChannel viewChannel = data.getChannel(data.getViewChannel());
+            QueueData invalidData = channelInvalidatesPlayingData(viewChannel);
+            // check for the existence of another channel that shares this track
+            if (invalidData != null) {
+                setState(invalidData, QueueDataState.UnQueued);
+                queued.add(data);
+                setState(data, QueueDataState.Queue);
+            } else {
+                queued.add(data);
+                setState(data, QueueDataState.Queue);
+            }
         }
         return true;
     }
@@ -105,7 +122,7 @@ public class QueuePlayer {
 
         if (playQueue.contains(data)) {
             if (data.getState() == QueueDataState.Queue) {
-                playQueue.remove(data);
+                //playQueue.remove(data);
                 setState(data, QueueDataState.Idle);
             } else {
                 setState(data, QueueDataState.UnQueued);
@@ -129,6 +146,14 @@ public class QueuePlayer {
         // start new measure
         if (isStartBeat()) {
             log("|Start Beat================================================");
+
+            for (QueueData data : tempPlayQueue) {
+                setState(data, QueueDataState.Play);
+                playQueue.add(data);
+            }
+
+            tempPlayQueue.clear();
+
             for (QueueData data : flushedQueue) {
                 if (data.getState() != QueueDataState.Queue) {
                     setState(data, QueueDataState.Idle);
@@ -165,28 +190,78 @@ public class QueuePlayer {
             // If the current beat is the last beat in the phrase
             //log("End:" + item.getEndMeasure() + " == " + currentMeasure);
 
-            QueueData data = queueSequencer.getQueueData(item.getBankIndex(),
-                    item.getPatternIndex());
-
-            for (QueueDataChannel channel : data.getChannels()) {
-
-                if (channel.isLoopEnabled()) {
-
-                    if (data.getState() == QueueDataState.Play) {
-                        // add the phrase at the very next measure
-                        addPhraseAt(track, currentMeasure + 1, data);
-                        // channel.setCurrentBeat(0);
-                    } else if (data.getState() == QueueDataState.UnQueued) {
-                        // remove the item from the que
-                        stopPlaying(data);
-                    }
-
-                } else {
-                    // oneshot remove
-                    stopPlaying(data);
-                }
-            }
+            //            QueueData data = queueSequencer.getQueueData(item.getBankIndex(),
+            //                    item.getPatternIndex());
+            //
+            //            for (QueueDataChannel channel : data.getChannels()) {
+            //
+            //                if (channel.isLoopEnabled()) {
+            //
+            //                    if (data.getState() == QueueDataState.Play) {
+            //                        // add the phrase at the very next measure
+            //                        addPhraseAt(track, currentMeasure + 1, data);
+            //                        // channel.setCurrentBeat(0);
+            //                    } else if (data.getState() == QueueDataState.UnQueued) {
+            //                        // remove the item from the que
+            //                        stopPlaying(data);
+            //                    }
+            //
+            //                } else {
+            //                    // oneshot remove
+            //                    stopPlaying(data);
+            //                }
+            //            }
+            updateChannel(track, item);
         }
+    }
+
+    private void updateChannel(TrackChannel track, TrackItem item) {
+        final int currentMeasure = getTrackSong().getCurrentMeasure();
+
+        QueueData data = queueSequencer.getQueueData(item.getBankIndex(), item.getPatternIndex());
+        QueueDataChannel channel = data.getChannel(data.getViewChannel());
+
+        // data is the Play state
+        if (data.getState() == QueueDataState.UnQueued) {
+            stopPlaying(data);
+        } else if (channelIsQueued(channel)) {
+            // stop the already playing channel because there is another
+            // pad that is scheduled to play on the same channel
+            stopPlaying(data);
+            setState(data, QueueDataState.UnQueued);
+            // should lock this somehow
+            // channel.hasRemoveLock()
+        } else if (channel.isLoopEnabled()) {
+
+            if (data.getState() == QueueDataState.Play) {
+                // add the phrase at the very next measure
+                addPhraseAt(track, currentMeasure + 1, data);
+                // channel.setCurrentBeat(0);
+            } else if (data.getState() == QueueDataState.UnQueued) {
+                // remove the item from the que
+                stopPlaying(data);
+            }
+
+        } else {
+            // oneshot remove
+            stopPlaying(data);
+        }
+    }
+
+    private QueueData channelInvalidatesPlayingData(QueueDataChannel queuedData) {
+        for (QueueData playData : playQueue) {
+            if (playData.getViewChannel() == queuedData.getToneIndex())
+                return playData;
+        }
+        return null;
+    }
+
+    private boolean channelIsQueued(QueueDataChannel playingChannel) {
+        for (QueueData queuedData : queued) {
+            if (playingChannel.getToneIndex() == queuedData.getViewChannel())
+                return true;
+        }
+        return false;
     }
 
     private void queueTracks() {
@@ -224,8 +299,9 @@ public class QueuePlayer {
     private void startPlaying(QueueData data) {
         //log("startPlaying" + data);
         queued.remove(data);
-        playQueue.add(data);
-        setState(data, QueueDataState.Play);
+        //        playQueue.add(data);
+        tempPlayQueue.add(data);
+        //        setState(data, QueueDataState.Play);
 
     }
 

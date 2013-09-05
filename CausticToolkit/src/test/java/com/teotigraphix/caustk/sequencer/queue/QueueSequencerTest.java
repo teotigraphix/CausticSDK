@@ -44,6 +44,24 @@ public class QueueSequencerTest extends CaustkTestBase {
 
     private QueueData queueDataA01;
 
+    private TrackChannel track0;
+
+    private TrackChannel track1;
+
+    private TrackChannel track2;
+
+    private TrackChannel track3;
+
+    private TrackChannel track4;
+
+    private TrackChannel track5;
+
+    private Library library;
+
+    private QueueData queueDataA02;
+
+    private QueueData queueDataC01;
+
     @Override
     protected void start() throws CausticException, IOException {
         controller.getProjectManager().createProject("QueueSequencerTestProject");
@@ -52,6 +70,8 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueSequencer = (QueueSequencer)controller.getQueueSequencer();
         queueSequencer.setAudioEnabled(false);
         player = queueSequencer.getPlayer();
+
+        createMockData();
     }
 
     @Override
@@ -60,10 +80,9 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueSequencer = null;
     }
 
-    @Test
-    public void test_simple() throws IOException, CausticException {
+    private void createMockData() throws CausticException, IOException {
         final ILibraryManager libraryManager = controller.getLibraryManager();
-        Library library = libraryManager.createLibrary("User");
+        library = libraryManager.createLibrary("User");
         libraryManager.setSelectedLibrary(library);
 
         importSong(controller, library, causticFile);
@@ -72,23 +91,31 @@ public class QueueSequencerTest extends CaustkTestBase {
         controller.getSoundSource().createScene(library.getScenes().get(0));
         assertEquals(6, trackSequencer.getTracks().size());
 
-        TrackChannel track0 = trackSequencer.getTrack(0);
+        track0 = trackSequencer.getTrack(0);
+        track1 = trackSequencer.getTrack(1);
+        track2 = trackSequencer.getTrack(2);
+        track3 = trackSequencer.getTrack(3);
+        track4 = trackSequencer.getTrack(4);
+        track5 = trackSequencer.getTrack(5);
 
         // load patches
         List<LibraryPatch> subsynthPatches = library.findPatchByTag("subsynth");
         assignPatch(controller, 0, subsynthPatches.get(0));
 
-        // load phrases
-        List<LibraryPhrase> subsynthPhrases = library.findPhrasesByTag("subsynth");
-        LibraryPhrase phrase1 = subsynthPhrases.get(0);
-
         queueDataA01 = queueSequencer.getQueueData(0, 0);
-        assignPhrase(queueDataA01, track0, phrase1);
+        queueDataA02 = queueSequencer.getQueueData(0, 1);
+        queueDataC01 = queueSequencer.getQueueData(2, 0);
 
-        testSimple();
+        queueDataA01.setViewChannel(0);
+        queueDataA02.setViewChannel(0);
+        queueDataC01.setViewChannel(0);
     }
 
-    protected void testSimple() throws CausticException {
+    @Test
+    public void test_simple() throws IOException, CausticException {
+        LibraryPhrase phrase1 = library.findPhrasesByTag("subsynth").get(0);
+        assignPhrase(queueDataA01, track0, phrase1);
+
         assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
         queueSequencer.queue(queueDataA01);
         assertQueue(queueDataA01, 1, 0, 0, QueueDataState.Queue);
@@ -96,7 +123,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         queueSequencer.queue(queueDataA01);
         assertQueue(queueDataA01, 1, 0, 0, QueueDataState.Queue);
 
-        // the start of recording has to have play() becasue the sequencer
+        // the start of recording has to have play() because the sequencer
         // needs pattern data before it starts
         queueSequencer.play();
 
@@ -152,6 +179,45 @@ public class QueueSequencerTest extends CaustkTestBase {
         assertQueue(queueDataA01, 0, 0, 1, QueueDataState.Play);
         queueSequencer.beatChange(4, 16);
         assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
+    }
+
+    @Test
+    public void test_turn_playing_tone_off() throws IOException, CausticException {
+        LibraryPhrase phrase1 = library.findPhrasesByTag("subsynth").get(0);
+        //LibraryPhrase phrase2 = library.findPhrasesByTag("pcmsynth").get(0);
+        assignPhrase(queueDataA01, track0, phrase1);
+        assignPhrase(queueDataA02, track0, phrase1);
+
+        queueSequencer.queue(queueDataA01);
+        player.play();
+        assertTrackItem(0, 0, 1, queueDataA01);
+
+        queueSequencer.beatChange(0, 0);
+        queueSequencer.beatChange(0, 1);
+        queueSequencer.beatChange(0, 2);
+        queueSequencer.beatChange(0, 3);
+        assertTrackItem(0, 1, 1, queueDataA01);
+
+        queueSequencer.beatChange(1, 4); // start measure
+        // queue another pad that shares the same channel
+        queueSequencer.queue(queueDataA02);
+
+        assertQueue(queueDataA01, 1, 1, 0, QueueDataState.UnQueued);
+        assertQueue(queueDataA02, 1, 1, 0, QueueDataState.Queue);
+
+        // the rule is, if a channel is playing and another that shares 
+        // the same channel is queued, the queued channel will turn off
+        // the playing channel
+
+        queueSequencer.beatChange(1, 5);
+        queueSequencer.beatChange(1, 6);
+        queueSequencer.beatChange(1, 7);
+        assertTrue(player.isLockBeat());
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.UnQueued);
+        assertQueue(queueDataA02, 0, 0, 1, QueueDataState.Queue);
+        queueSequencer.beatChange(2, 8);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Idle);
+        assertQueue(queueDataA02, 0, 1, 0, QueueDataState.Play);
     }
 
     private void assertTrackItem(int trackIndex, int startMeasure, int length, QueueData data) {
