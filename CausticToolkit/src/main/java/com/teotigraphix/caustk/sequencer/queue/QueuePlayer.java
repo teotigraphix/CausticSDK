@@ -102,6 +102,15 @@ public class QueuePlayer {
 
             if (data.getState() == QueueDataState.PlayUnqueued) {
                 setState(data, QueueDataState.Play);
+                // check for a queued data of the same channel, take it out
+                QueueData dataThatInvalidated = data.getDataThatInvalidated();
+                if (dataThatInvalidated != null) {
+                    setState(dataThatInvalidated, QueueDataState.Idle);
+                    queued.remove(dataThatInvalidated);
+                    data.setDataThatInvalidated(null);
+                    dataThatInvalidated.setTheInvalidatedData(null);
+                }
+
             } else if (data.getState() == QueueDataState.Play) {
                 setState(data, QueueDataState.PlayUnqueued);
             }

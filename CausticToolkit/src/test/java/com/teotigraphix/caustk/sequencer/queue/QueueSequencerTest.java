@@ -108,6 +108,32 @@ public class QueueSequencerTest extends CaustkTestBase {
     }
 
     @Test
+    public void test_1playing_1queued_requeue_play() throws IOException, CausticException {
+        // the playing one wants to play again, unqueue and idle the queued data
+        LibraryPhrase phrase1 = library.findPhrasesByTag("length-1").get(0);
+        LibraryPhrase phrase2 = library.findPhrasesByTag("length-1").get(1);
+        assignPhrase(queueDataA01, track0, phrase1);
+        assignPhrase(queueDataA02, track0, phrase2);
+
+        queueSequencer.touch(queueDataA01);
+        queueSequencer.play();
+
+        queueSequencer.beatChange(0, 0);
+        queueSequencer.beatChange(0, 1);
+
+        queueSequencer.touch(queueDataA02);
+        assertQueue(queueDataA01, 1, 1, 0, QueueDataState.PlayUnqueued);
+        assertQueue(queueDataA02, 1, 1, 0, QueueDataState.Queue);
+
+        queueSequencer.beatChange(0, 2);
+
+        // put the play data back into full Play mode, remove the queued
+        queueSequencer.touch(queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
+        assertQueue(queueDataA02, 0, 1, 0, QueueDataState.Idle);
+    }
+
+    @Test
     public void test_replace_unqueued_data() throws IOException, CausticException {
         LibraryPhrase phrase1 = library.findPhrasesByTag("length-1").get(0);
         LibraryPhrase phrase2 = library.findPhrasesByTag("length-1").get(1);
