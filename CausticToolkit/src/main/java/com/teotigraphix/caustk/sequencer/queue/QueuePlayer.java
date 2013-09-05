@@ -100,14 +100,11 @@ public class QueuePlayer {
         // if the pattern is still playing but got unqueued, just update the state
         if (playQueue.contains(data)) {
 
-            setState(data, QueueDataState.PlayUnqueued);
-
-            //            if (data.getState() == QueueDataState.Queue) {
-            //                //playQueue.remove(data);
-            //                setState(data, QueueDataState.Idle);
-            //            } else {
-            //                setState(data, QueueDataState.UnQueued);
-            //            }
+            if (data.getState() == QueueDataState.PlayUnqueued) {
+                setState(data, QueueDataState.Play);
+            } else if (data.getState() == QueueDataState.Play) {
+                setState(data, QueueDataState.PlayUnqueued);
+            }
 
         } else if (!queued.contains(data)) {
 

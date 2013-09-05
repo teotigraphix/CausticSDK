@@ -108,7 +108,78 @@ public class QueueSequencerTest extends CaustkTestBase {
     }
 
     @Test
-    public void test_same_channel_different_measure_length() throws IOException, CausticException {
+    public void test_unqueue_self_when_playing() throws IOException, CausticException {
+        LibraryPhrase phrase1 = library.findPhrasesByTag("length-1").get(0);
+        LibraryPhrase phrase4 = library.findPhrasesByTag("length-1").get(1);
+        phrase4.setLength(4);
+        assignPhrase(queueDataA01, track0, phrase1);
+        assignPhrase(queueDataA02, track0, phrase4);
+
+        queueSequencer.touch(queueDataA01);
+        queueSequencer.play();
+        assertTrackItem(0, 0, 1, queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
+
+        queueSequencer.beatChange(0, 0);
+        queueSequencer.beatChange(0, 1);
+
+        // unqueue self
+        queueSequencer.touch(queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.PlayUnqueued);
+        queueSequencer.beatChange(0, 2);
+
+        // queue again
+        queueSequencer.touch(queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
+
+        // take it out again
+        queueSequencer.touch(queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.PlayUnqueued);
+        queueSequencer.beatChange(0, 3);
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
+        queueSequencer.beatChange(1, 4);
+        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
+    }
+
+    @Test
+    public void test_unqueue_4measure_length() throws IOException, CausticException {
+        LibraryPhrase phrase1 = library.findPhrasesByTag("length-1").get(1);
+        phrase1.setLength(4);
+        assignPhrase(queueDataA01, track0, phrase1);
+
+        queueSequencer.touch(queueDataA01);
+        queueSequencer.play();
+        assertTrackItem(0, 0, 4, queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.Play);
+
+        queueSequencer.beatChange(0, 0);
+        queueSequencer.beatChange(0, 1);
+        queueSequencer.beatChange(0, 2);
+
+        queueSequencer.touch(queueDataA01);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.PlayUnqueued);
+
+        queueSequencer.beatChange(0, 3);
+        queueSequencer.beatChange(1, 4);
+        queueSequencer.beatChange(1, 5);
+        queueSequencer.beatChange(1, 6);
+        queueSequencer.beatChange(1, 7);
+        queueSequencer.beatChange(2, 8);
+        queueSequencer.beatChange(2, 9);
+        queueSequencer.beatChange(2, 10);
+        queueSequencer.beatChange(2, 11);
+        queueSequencer.beatChange(3, 12);
+        queueSequencer.beatChange(3, 13);
+        queueSequencer.beatChange(3, 14);
+        assertQueue(queueDataA01, 0, 1, 0, QueueDataState.PlayUnqueued);
+        queueSequencer.beatChange(3, 15); // puts into tempPlayQueue
+        assertQueue(queueDataA01, 0, 0, 1, QueueDataState.PlayUnqueued);
+        queueSequencer.beatChange(4, 16);
+        assertQueue(queueDataA01, 0, 0, 0, QueueDataState.Idle);
+    }
+
+    @Test
+    public void test_one_mesure_queue_unqueue_self() throws IOException, CausticException {
         LibraryPhrase phrase1 = library.findPhrasesByTag("length-1").get(0);
         LibraryPhrase phrase4 = library.findPhrasesByTag("length-1").get(1);
         phrase4.setLength(4);
