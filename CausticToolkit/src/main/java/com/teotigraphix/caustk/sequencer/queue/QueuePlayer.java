@@ -115,9 +115,11 @@ public class QueuePlayer {
             QueueData invalidData = channelInvalidatesPlayingData(viewChannel);
             // check for the existence of another channel that shares this track
             if (invalidData != null) {
-                setState(invalidData, QueueDataState.UnQueued);
+                invalidData.setDataThatInvalidated(data);
+                setState(invalidData, QueueDataState.PlayUnqueued);
                 queued.add(data);
                 setState(data, QueueDataState.Queue);
+                data.setTheInvalidatedData(invalidData);
             } else {
                 queued.add(data);
                 setState(data, QueueDataState.Queue);
@@ -126,52 +128,15 @@ public class QueuePlayer {
             // queued but not playing, just remove and set back to Idle
             queued.remove(data);
             setState(data, QueueDataState.Idle);
+            if (data.getTheInvalidatedData() != null) {
+                // reset the state
+                setState(data.getTheInvalidatedData(), QueueDataState.Play);
+                data.getTheInvalidatedData().setDataThatInvalidated(null);
+                data.setTheInvalidatedData(null);
+            }
         }
 
         return false;
-    }
-
-    private boolean queue(QueueData data) {
-        if (isLockBeat())
-            return false;
-        log("queue(" + data + ")");
-
-        // if the pattern is still playing but got unqueued, just update the state
-        if (playQueue.contains(data)) {
-            setState(data, QueueDataState.Play);
-        } else if (!queued.contains(data)) {
-            QueueDataChannel viewChannel = data.getViewChannel();
-            QueueData invalidData = channelInvalidatesPlayingData(viewChannel);
-            // check for the existence of another channel that shares this track
-            if (invalidData != null) {
-                setState(invalidData, QueueDataState.UnQueued);
-                queued.add(data);
-                setState(data, QueueDataState.Queue);
-            } else {
-                queued.add(data);
-                setState(data, QueueDataState.Queue);
-            }
-        }
-        return true;
-    }
-
-    private boolean unqueue(QueueData data) {
-        if (isLockBeat())
-            return false;
-        log("unqueue(" + data + ")");
-        if (playQueue.contains(data)) {
-            if (data.getState() == QueueDataState.Queue) {
-                //playQueue.remove(data);
-                setState(data, QueueDataState.Idle);
-            } else {
-                setState(data, QueueDataState.UnQueued);
-            }
-        } else {
-            queued.remove(data);
-            setState(data, QueueDataState.Idle);
-        }
-
-        return true;
     }
 
     public void beatChange(int measure, float beat) {
@@ -235,7 +200,8 @@ public class QueuePlayer {
         QueueDataChannel channel = data.getChannel(data.getViewChannelIndex());
 
         // data is the Play state
-        if (data.getState() == QueueDataState.UnQueued) {
+        if (data.getState() == QueueDataState.UnQueued
+                || data.getState() == QueueDataState.PlayUnqueued) {
 
             stopPlayingUnqueue(data);
 
@@ -267,16 +233,30 @@ public class QueuePlayer {
         for (QueueData data : copied) {
             if (data.getState() == QueueDataState.Queue) {
                 // add to sequencer
-                for (QueueDataChannel channel : data.getChannels()) {
-                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                QueueDataChannel channel = data.getViewChannel();
+                TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
+                if (item != null) {
                     addPhraseAt(track, nextMeasure, data);
+                    startPlaying(data);
+                    if (data.getTheInvalidatedData() != null) {
+                        data.getTheInvalidatedData().setDataThatInvalidated(null);
+                        data.setTheInvalidatedData(null);
+                    }
+                } else if (data.getTheInvalidatedData() == null) {
+                    addPhraseAt(track, nextMeasure, data);
+                    startPlaying(data);
                 }
-                startPlaying(data);
-            } else if (data.getState() == QueueDataState.Play) {
-
+                //                for (QueueDataChannel channel : data.getChannels()) {
+                //                    TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                //                    addPhraseAt(track, nextMeasure, data);
+                //                }
+                //                startPlaying(data);
             }
         }
     }
+
+    // TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
 
     private void addPhraseAt(TrackChannel track, int start, QueueData data) {
         try {

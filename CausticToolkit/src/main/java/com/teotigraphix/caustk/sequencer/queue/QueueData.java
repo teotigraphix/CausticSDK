@@ -162,4 +162,24 @@ public class QueueData implements ISerialize {
         UnQueued;
     }
 
+    private transient QueueData theInvalidatedData;
+
+    public QueueData getTheInvalidatedData() {
+        return theInvalidatedData;
+    }
+
+    public void setTheInvalidatedData(QueueData theInvalidatedData) {
+        this.theInvalidatedData = theInvalidatedData;
+    }
+
+    private transient QueueData dataThatInvalidated;
+
+    public QueueData getDataThatInvalidated() {
+        return dataThatInvalidated;
+    }
+
+    public void setDataThatInvalidated(QueueData data) {
+        dataThatInvalidated = data;
+    }
+
 }
