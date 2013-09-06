@@ -52,7 +52,7 @@ public class CommandManager implements ICommandManager {
 
     public CommandManager(ICaustkController controller) {
         this.controller = controller;
-        applicationId = controller.getConfiguration().getApplicationId();
+        applicationId = controller.getApplicationId();
         dispatcher = new Dispatcher();
         commandHistory = new CommandHistory(dispatcher);
 

@@ -29,7 +29,6 @@ import java.util.Map;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.IDispatcher;
@@ -72,22 +71,15 @@ public class CaustkController implements ICaustkController {
     // Public Property API
     //--------------------------------------------------------------------------
 
-    private Map<Class<? extends IControllerComponent>, IControllerComponent> api = new HashMap<Class<? extends IControllerComponent>, IControllerComponent>();
+    //----------------------------------
+    // dispatcher
+    //----------------------------------
+
+    private final IDispatcher dispatcher;
 
     @Override
-    public void addComponent(Class<? extends IControllerComponent> clazz,
-            IControllerComponent instance) {
-        api.put(clazz, instance);
-    }
-
-    @Override
-    public <T extends IControllerComponent> T getComponent(Class<T> clazz) {
-        return clazz.cast(api.get(clazz));
-    }
-
-    @Override
-    public <T> void register(Class<T> eventType, final EventObserver<T> observer) {
-        getDispatcher().register(eventType, observer);
+    public final IDispatcher getDispatcher() {
+        return dispatcher;
     }
 
     //----------------------------------
@@ -97,28 +89,18 @@ public class CaustkController implements ICaustkController {
     private ICaustkApplication application;
 
     @Override
-    public ICaustkApplication getApplication() {
+    public final ICaustkApplication getApplication() {
         return application;
     }
 
-    //----------------------------------
-    // applicationConfiguration
-    //----------------------------------
-
     @Override
-    public ICaustkConfiguration getConfiguration() {
-        return application.getConfiguration();
+    public final String getApplicationId() {
+        return application.getConfiguration().getApplicationId();
     }
 
-    //----------------------------------
-    // dispatcher
-    //----------------------------------
-
-    private IDispatcher dispatcher;
-
     @Override
-    public IDispatcher getDispatcher() {
-        return dispatcher;
+    public final File getApplicationRoot() {
+        return application.getConfiguration().getApplicationRoot();
     }
 
     //----------------------------------
@@ -174,40 +156,6 @@ public class CaustkController implements ICaustkController {
     @Override
     public ILibraryManager getLibraryManager() {
         return libraryManager;
-    }
-
-    //----------------------------------
-    // commandManager
-    //----------------------------------
-
-    private ICommandManager commandManager;
-
-    @Override
-    public ICommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    /**
-     * Executes an {@link ICommand} against a registered message.
-     * 
-     * @param message The message without the controller/applicationId.
-     * @param args Arguments to pass to the created {@link OSCMessage} that will
-     *            be created.
-     * @see #sendOSCCommand(OSCMessage)
-     */
-    @Override
-    public void execute(String message, Object... args) {
-        commandManager.execute(message, args);
-    }
-
-    @Override
-    public void undo() {
-        commandManager.undo();
-    }
-
-    @Override
-    public void redo() {
-        commandManager.redo();
     }
 
     //----------------------------------
@@ -287,6 +235,40 @@ public class CaustkController implements ICaustkController {
         return memoryManager;
     }
 
+    //----------------------------------
+    // commandManager
+    //----------------------------------
+
+    private ICommandManager commandManager;
+
+    @Override
+    public ICommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    /**
+     * Executes an {@link ICommand} against a registered message.
+     * 
+     * @param message The message without the controller/applicationId.
+     * @param args Arguments to pass to the created {@link OSCMessage} that will
+     *            be created.
+     * @see #sendOSCCommand(OSCMessage)
+     */
+    @Override
+    public void execute(String message, Object... args) {
+        commandManager.execute(message, args);
+    }
+
+    @Override
+    public void undo() {
+        commandManager.undo();
+    }
+
+    @Override
+    public void redo() {
+        commandManager.redo();
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -305,18 +287,42 @@ public class CaustkController implements ICaustkController {
         dispatcher = new Dispatcher();
     }
 
+    //----------------------------------
+    // ControllerComponents
+    //----------------------------------
+
+    private Map<Class<? extends IControllerComponent>, IControllerComponent> api = new HashMap<Class<? extends IControllerComponent>, IControllerComponent>();
+
+    private List<IControllerComponent> components = new ArrayList<IControllerComponent>();
+
+    @Override
+    public void addComponent(Class<? extends IControllerComponent> clazz,
+            IControllerComponent instance) {
+        api.put(clazz, instance);
+    }
+
+    @Override
+    public <T extends IControllerComponent> T getComponent(Class<T> clazz) {
+        return clazz.cast(api.get(clazz));
+    }
+
+    @Override
+    public <T> void register(Class<T> eventType, final EventObserver<T> observer) {
+        getDispatcher().register(eventType, observer);
+    }
+
     //--------------------------------------------------------------------------
     // ICausticEngine API
     //--------------------------------------------------------------------------
 
     // we proxy the actual OSC impl so we can stop, or reroute
     @Override
-    public float sendMessage(String message) {
+    public final float sendMessage(String message) {
         return soundGenerator.sendMessage(message);
     }
 
     @Override
-    public String queryMessage(String message) {
+    public final String queryMessage(String message) {
         return soundGenerator.queryMessage(message);
     }
 
@@ -326,30 +332,32 @@ public class CaustkController implements ICaustkController {
 
     void initialize() {
         CtkDebug.log("Controller: Create app root dir if not created");
-        File applicationRoot = getConfiguration().getApplicationRoot();
+        File applicationRoot = application.getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
 
         CtkDebug.log("!!! Controller: Create all Sub controllers");
-        soundGenerator = getConfiguration().getSoundGenerator();
+        soundGenerator = application.getConfiguration().getSoundGenerator();
         soundGenerator.initialize();
 
         // sub composites will add their ICommands in their constructors
 
         serializeService = new SerializeService(this);
+        systemState = new SystemState(this);
+        memoryManager = new MemoryManager(this);
+
         commandManager = new CommandManager(this);
         projectManager = new ProjectManager(this);
         libraryManager = new LibraryManager(this);
 
-        trackSequencer = new TrackSequencer(this);
         soundSource = new SoundSource(this);
         soundMixer = new SoundMixer(this);
-        queueSequencer = new QueueSequencer(this);
 
         systemSequencer = new SystemSequencer(this);
-        systemState = new SystemState(this);
+        trackSequencer = new TrackSequencer(this);
+        queueSequencer = new QueueSequencer(this);
+
         patternManager = new PatternManager(this);
-        memoryManager = new MemoryManager(this);
 
         components.add(libraryManager);
         components.add(trackSequencer);
@@ -366,8 +374,6 @@ public class CaustkController implements ICaustkController {
 
         projectManager.initialize();
     }
-
-    private List<IControllerComponent> components = new ArrayList<IControllerComponent>();
 
     void start() {
     }
@@ -420,5 +426,4 @@ public class CaustkController implements ICaustkController {
     public void dispose() {
         soundGenerator.dispose();
     }
-
 }

@@ -59,10 +59,9 @@ public class ProjectManager implements IProjectManager {
      * The root application directory, all {@link Project}s are stored in the
      * <code>applicationRoot/projects</code> directory.
      */
-
     @Override
     public File getApplicationRoot() {
-        return controller.getConfiguration().getApplicationRoot();
+        return controller.getApplicationRoot();
     }
 
     public File getProjectDirectory() {
@@ -109,7 +108,7 @@ public class ProjectManager implements IProjectManager {
     public void initialize() {
         CtkDebug.log("IProjectManager.initialize()");
 
-        File applicationRoot = controller.getConfiguration().getApplicationRoot();
+        File applicationRoot = controller.getApplicationRoot();
 
         sessionPreferencesFile = new File(applicationRoot, ".settings");
 

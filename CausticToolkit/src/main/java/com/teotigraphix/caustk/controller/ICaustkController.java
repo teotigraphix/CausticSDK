@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.controller;
 
+import java.io.File;
+
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.command.ICommandManager;
@@ -41,6 +43,8 @@ import com.teotigraphix.caustk.system.ISystemState;
  */
 public interface ICaustkController extends ICausticEngine {
 
+    IDispatcher getDispatcher();
+
     /**
      * Adds a controller component API.
      * 
@@ -61,11 +65,14 @@ public interface ICaustkController extends ICausticEngine {
      */
     <T extends IControllerComponent> T getComponent(Class<T> clazz);
 
+    /**
+     * Returns the top level application created at startup.
+     */
     ICaustkApplication getApplication();
 
-    ICaustkConfiguration getConfiguration();
+    File getApplicationRoot();
 
-    IDispatcher getDispatcher();
+    String getApplicationId();
 
     ISerializeService getSerializeService();
 
@@ -93,11 +100,12 @@ public interface ICaustkController extends ICausticEngine {
 
     ICommandManager getCommandManager();
 
+    void undo();
+
+    void redo();
+
     void execute(String message, Object... args);
 
     <T> void register(Class<T> type, final EventObserver<T> observer);
 
-    void undo();
-
-    void redo();
 }
