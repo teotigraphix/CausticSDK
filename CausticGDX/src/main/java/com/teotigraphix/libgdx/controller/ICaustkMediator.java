@@ -28,7 +28,7 @@ public interface ICaustkMediator {
      * <p>
      * The main application and project state has not been loaded yet.
      */
-    void onRegisterObservers();
+    //void onRegisterObservers();
 
     /**
      * Access to framework and application state will be non <code>null</code>.
@@ -38,7 +38,7 @@ public interface ICaustkMediator {
      * <p>
      * Register all user interface component listeners.
      */
-    void onRegister();
+    void onRegister(IScreen screen);
 
     void dispose();
 

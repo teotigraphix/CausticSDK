@@ -84,6 +84,10 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
         masterMixer.setController(getController());
     }
 
+    public boolean hasChannel(int index) {
+        return getChannels().containsKey(index);
+    }
+
     @Override
     public SoundMixerChannel getChannel(int index) {
         return getChannels().get(index);

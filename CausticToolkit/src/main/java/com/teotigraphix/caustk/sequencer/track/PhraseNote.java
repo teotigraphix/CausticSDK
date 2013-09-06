@@ -74,11 +74,14 @@ public class PhraseNote implements ISerialize {
     public void wakeup(ICaustkController controller) {
         if (data != null) {
             String[] split = data.split("\\|");
-            start = Float.valueOf(split[0]);
-            pitch = Integer.valueOf(split[0]);
-            velocity = Float.valueOf(split[0]);
-            end = Float.valueOf(split[0]);
-            flags = Integer.valueOf(split[0]);
+            for (String notes : split) {
+                String[] chunks = notes.split(" ");
+                start = Float.valueOf(chunks[0]);
+                pitch = Integer.valueOf(chunks[1]);
+                velocity = Float.valueOf(chunks[2]);
+                end = Float.valueOf(chunks[3]);
+                flags = Integer.valueOf(chunks[4]);
+            }
             data = null;
         }
     }

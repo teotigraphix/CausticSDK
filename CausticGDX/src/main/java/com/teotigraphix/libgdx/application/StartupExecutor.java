@@ -112,22 +112,17 @@ public class StartupExecutor {
         controller = application.get().getController();
         controller.addComponent(IInjectorService.class, injectorService);
 
-        // registers screenManager which then will loop through all screens
-        applicationController.registerMediatorObservers();
-
         applicationController.initialize();
+        applicationController.registerModels();
+        applicationController.registerMeditors();
+
         try {
             applicationController.start();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         applicationController.load();
-
-        applicationController.registerModels();
-        applicationController.registerMeditors();
-
     }
 
     /**

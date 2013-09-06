@@ -45,12 +45,18 @@ public abstract class CaustkMediator implements ICaustkMediator {
         applicationController.registerMeditor(this);
     }
 
+    @Override
+    public void onRegister(IScreen screen) {
+        registerObservers();
+        onAttach();
+    }
+
     /**
      * Register {@link ICaustkController#getDispatcher()} events.
      * <p>
      * Called once when the controller is set.
      */
-    protected void registerObservers() {
+    private void registerObservers() {
         register(getController().getDispatcher(), OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
@@ -133,16 +139,14 @@ public abstract class CaustkMediator implements ICaustkMediator {
         dispatcher.register(event, observer);
     }
 
-    @Override
-    public void onRegisterObservers() {
-        registerObservers();
-    }
+    //
+    //    @Override
+    //    public void onRegisterObservers() {
+    //        registerObservers();
+    //    }
 
-    /**
-     * @see OnMediatorRegister
-     */
-    @Override
-    public abstract void onRegister();
+    public void onAttach() {
+    }
 
     @SuppressWarnings("rawtypes")
     @Override

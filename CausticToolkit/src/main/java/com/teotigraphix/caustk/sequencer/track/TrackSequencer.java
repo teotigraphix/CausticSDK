@@ -141,7 +141,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         super(controller);
         handlers = new TrackSequencerHandlers(this);
         // DUMMY
-        trackSong = new TrackSong();
+        //trackSong = new TrackSong();
     }
 
     @Override
@@ -341,8 +341,14 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     protected void loadState(Project project) {
         super.loadState(project);
         File file = getState().getSongFile();
-        if (file != null) {
-            trackSong = getController().getSerializeService().fromFile(file, TrackSong.class);
+        // XXX refactor and use with createSOng() logic
+        File localFile = getController().getProjectManager().getProject()
+                .getAbsoluteResource(new File("songs", file.getPath()).getPath());
+        File absoluteTargetSongFile = localFile.getAbsoluteFile();
+        if (absoluteTargetSongFile != null) {
+
+            trackSong = getController().getSerializeService().fromFile(absoluteTargetSongFile,
+                    TrackSong.class);
             getDispatcher().trigger(
                     new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Load, trackSong));
         }

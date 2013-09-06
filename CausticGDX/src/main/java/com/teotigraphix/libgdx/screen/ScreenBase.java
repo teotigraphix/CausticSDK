@@ -130,8 +130,8 @@ public class ScreenBase implements IScreen {
 
         for (ICaustkMediator mediator : mediators) {
             mediator.create(this);
-            mediator.onRegisterObservers();
-            mediator.onRegister();
+            // mediator.onRegisterObservers();
+            mediator.onRegister(this);
         }
     }
 

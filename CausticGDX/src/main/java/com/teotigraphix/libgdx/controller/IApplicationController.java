@@ -99,7 +99,7 @@ public interface IApplicationController {
      * <p>
      * Main application calls this method in the startup sequence.
      */
-    void registerMediatorObservers();
+    //void registerMediatorObservers();
 
     /**
      * Calls {@link ICaustkMediator#onRegister()} on all registered mediators.

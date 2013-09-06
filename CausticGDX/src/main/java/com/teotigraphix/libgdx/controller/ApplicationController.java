@@ -17,9 +17,9 @@ import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.libgdx.model.ApplicationModel;
+import com.teotigraphix.libgdx.model.CaustkModel;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 import com.teotigraphix.libgdx.model.ICaustkModel;
-import com.teotigraphix.libgdx.model.CaustkModel;
 
 /**
  * Mediates the {@link ApplicationModel}.
@@ -51,20 +51,11 @@ public class ApplicationController implements IApplicationController {
     }
 
     @Override
-    public void registerMediatorObservers() {
-        CtkDebug.log("ApplicationController Register Mediator Observers");
-        for (ICaustkMediator mediator : mediators) {
-            CtkDebug.log("   Register; " + mediator.getClass().getSimpleName());
-            mediator.onRegisterObservers();
-        }
-    }
-
-    @Override
     public void registerMeditors() {
         CtkDebug.log("ApplicationController Register Mediators");
         for (ICaustkMediator mediator : mediators) {
             CtkDebug.log("   Register; " + mediator.getClass().getSimpleName());
-            mediator.onRegister();
+            mediator.onRegister(null); // No screen means ApplicationMediator
         }
     }
 
