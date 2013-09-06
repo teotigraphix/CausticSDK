@@ -32,7 +32,7 @@ public class MasterEqualizer extends MasterComponent {
     // bass
     //----------------------------------
 
-    private float bass = 0f;
+    private float bass = 1.1f;
 
     public float getBass() {
         return bass;
@@ -55,7 +55,7 @@ public class MasterEqualizer extends MasterComponent {
     // bassMidFreq
     //----------------------------------
 
-    private float bassMidFreq = 0f;
+    private float bassMidFreq = 0.5f;
 
     public float getBassMidFreq() {
         return bassMidFreq;
@@ -78,7 +78,7 @@ public class MasterEqualizer extends MasterComponent {
     // mid
     //----------------------------------
 
-    private float mid = 0f;
+    private float mid = 1f;
 
     public float getMid() {
         return mid;
@@ -101,7 +101,7 @@ public class MasterEqualizer extends MasterComponent {
     // midHighFreq
     //----------------------------------
 
-    private float midHighFreq = 0f;
+    private float midHighFreq = 0.5f;
 
     public float getMidHighFreq() {
         return midHighFreq;
@@ -124,7 +124,7 @@ public class MasterEqualizer extends MasterComponent {
     // high
     //----------------------------------
 
-    private float high = 0f;
+    private float high = 1.1f;
 
     public float getHigh() {
         return high;

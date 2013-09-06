@@ -53,7 +53,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/delay/steps [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>2</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -68,7 +68,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/delay/loop [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>2</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -83,7 +83,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/delay/time [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>8</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -101,7 +101,7 @@ public class MasterMixerMessage extends CausticMessage {
      * Toggles between tempo-sync'ed integer values for time or non-sync'ed
      * float values
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -116,7 +116,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/delay/feedback [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.5</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -134,7 +134,7 @@ public class MasterMixerMessage extends CausticMessage {
      * Controls whether the first echo gets attenuated by the feedback amount or
      * not
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -149,7 +149,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/delay/damping [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -164,7 +164,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/delay/wet [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.5</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -219,7 +219,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/pre_delay [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.02</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -234,7 +234,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/room_size [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.75</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -249,7 +249,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/hf_damping [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.156</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -264,7 +264,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/diffuse [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.7</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -279,7 +279,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/dither_echoes [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -294,7 +294,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/er_gain [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -309,7 +309,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/er_decay [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.25</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -324,7 +324,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/stereo_delay [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.5</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -339,7 +339,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/stereo_spread [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.25</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -354,7 +354,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/reverb/stereo_spread [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.25</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -391,7 +391,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/eq/bass [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1.1</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -406,7 +406,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/eq/bassmid_freq [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.5</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -421,7 +421,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/eq/mid [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -436,7 +436,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/eq/midhigh_freq [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.5</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -451,7 +451,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/eq/high [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1.1</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -502,7 +502,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/limiter/attack [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>1</code>
+     * <strong>Default</strong>: <code>0.02</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -517,7 +517,7 @@ public class MasterMixerMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/master/limiter/release [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>1</code>
+     * <strong>Default</strong>: <code>0.25</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>

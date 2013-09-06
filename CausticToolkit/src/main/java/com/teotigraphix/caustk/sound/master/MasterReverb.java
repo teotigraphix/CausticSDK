@@ -32,7 +32,7 @@ public class MasterReverb extends MasterComponent {
     // preDelay
     //----------------------------------
 
-    private float preDelay = -42f;
+    private float preDelay = 0.02f;
 
     public float getPreDelay() {
         return preDelay;
@@ -55,7 +55,7 @@ public class MasterReverb extends MasterComponent {
     // roomSize
     //----------------------------------
 
-    private float roomSize = -42f;
+    private float roomSize = 0.75f;
 
     public float getRoomSize() {
         return roomSize;
@@ -78,7 +78,7 @@ public class MasterReverb extends MasterComponent {
     // hfDamping
     //----------------------------------
 
-    private float hfDamping = -42f;
+    private float hfDamping = 0.156f;
 
     public float getHFDamping() {
         return hfDamping;
@@ -101,7 +101,7 @@ public class MasterReverb extends MasterComponent {
     // diffuse
     //----------------------------------
 
-    private float diffuse = -42f;
+    private float diffuse = 0.7f;
 
     public float getDiffuse() {
         return diffuse;
@@ -124,7 +124,7 @@ public class MasterReverb extends MasterComponent {
     // ditherEchoes
     //----------------------------------
 
-    private int ditherEchoes = -42;
+    private int ditherEchoes = 0;
 
     public int getDitherEchoes() {
         return ditherEchoes;
@@ -147,7 +147,7 @@ public class MasterReverb extends MasterComponent {
     // erGain
     //----------------------------------
 
-    private float erGain = -42f;
+    private float erGain = 1f;
 
     public float getERGain() {
         return erGain;
@@ -170,7 +170,7 @@ public class MasterReverb extends MasterComponent {
     // erDecay
     //----------------------------------
 
-    private float erDecay = -42f;
+    private float erDecay = 0.25f;
 
     public float getERDecay() {
         return erDecay;
@@ -193,7 +193,7 @@ public class MasterReverb extends MasterComponent {
     // stereoDelay
     //----------------------------------
 
-    private float stereoDelay = -42f;
+    private float stereoDelay = 0.5f;
 
     public float getStereoDelay() {
         return stereoDelay;
@@ -216,7 +216,7 @@ public class MasterReverb extends MasterComponent {
     // stereoSpread
     //----------------------------------
 
-    private float stereoSpread = -42f;
+    private float stereoSpread = 0.25f;
 
     public float getStereoSpread() {
         return stereoSpread;
@@ -239,7 +239,7 @@ public class MasterReverb extends MasterComponent {
     // wet
     //----------------------------------
 
-    private float wet = -42f;
+    private float wet = 0.25f;
 
     public float getWet() {
         return wet;

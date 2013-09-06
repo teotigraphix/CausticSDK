@@ -32,7 +32,7 @@ public class MasterLimiter extends MasterComponent {
     // pre
     //----------------------------------
 
-    private float pre = -42f;
+    private float pre = 1f;
 
     public float getPre() {
         return pre;
@@ -55,7 +55,7 @@ public class MasterLimiter extends MasterComponent {
     // attack
     //----------------------------------
 
-    private float attack = -42f;
+    private float attack = 0.02f;
 
     public float getAttack() {
         return attack;
@@ -78,7 +78,7 @@ public class MasterLimiter extends MasterComponent {
     // release
     //----------------------------------
 
-    private float release = -42f;
+    private float release = 0.25f;
 
     public float getRelease() {
         return release;
@@ -101,7 +101,7 @@ public class MasterLimiter extends MasterComponent {
     // post
     //----------------------------------
 
-    private float post = -42f;
+    private float post = 1f;
 
     public float getPost() {
         return post;

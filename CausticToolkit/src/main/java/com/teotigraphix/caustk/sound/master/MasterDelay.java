@@ -32,7 +32,7 @@ public class MasterDelay extends MasterComponent {
     // steps
     //----------------------------------
 
-    private int steps = -42;
+    private int steps = 2;
 
     public int getSteps() {
         return steps;
@@ -55,7 +55,7 @@ public class MasterDelay extends MasterComponent {
     // loop
     //----------------------------------
 
-    private int loop = -42;
+    private int loop = 2;
 
     public int getLoop() {
         return steps;
@@ -78,7 +78,7 @@ public class MasterDelay extends MasterComponent {
     // time
     //----------------------------------
 
-    private int time = -42;
+    private int time = 8;
 
     public int getTime() {
         return time;
@@ -101,7 +101,7 @@ public class MasterDelay extends MasterComponent {
     // sync
     //----------------------------------
 
-    private int sync = -42;
+    private int sync = 1;
 
     public int getSync() {
         return sync;
@@ -124,7 +124,7 @@ public class MasterDelay extends MasterComponent {
     // feedback
     //----------------------------------
 
-    private float feedback = -42f;
+    private float feedback = 0.5f;
 
     public float getFeedback() {
         return feedback;
@@ -147,7 +147,7 @@ public class MasterDelay extends MasterComponent {
     // feedbackFirst
     //----------------------------------
 
-    private int feedbackFirst = -42;
+    private int feedbackFirst = 0;
 
     public int getFeedbackFirst() {
         return feedbackFirst;
@@ -170,7 +170,7 @@ public class MasterDelay extends MasterComponent {
     // damping
     //----------------------------------
 
-    private float damping = -42f;
+    private float damping = 0f;
 
     public float getDamping() {
         return damping;
@@ -193,7 +193,7 @@ public class MasterDelay extends MasterComponent {
     // wet
     //----------------------------------
 
-    private float wet = -42f;
+    private float wet = 0.5f;
 
     public float getWet() {
         return wet;
@@ -216,12 +216,11 @@ public class MasterDelay extends MasterComponent {
     // pan
     //----------------------------------
 
-    //private float pan = -42;
-
     public float getPan(int step) {
         return (int)MasterMixerMessage.DELAY_PAN.send(getEngine(), step);
     }
 
+    // XXX todo impl panMap
     float getPan(boolean restore) {
         return (int)MasterMixerMessage.DELAY_PAN.send(getEngine(), 0);
     }

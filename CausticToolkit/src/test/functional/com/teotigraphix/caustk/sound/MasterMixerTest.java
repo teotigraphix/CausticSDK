@@ -1,53 +1,30 @@
 
 package com.teotigraphix.caustk.sound;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.teotigraphix.caustk.application.CaustkApplicationUtils;
-import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 
-public class MasterMixerTest {
-
-    private ICaustkApplication application;
-
-    private ICaustkController controller;
-
-    private ISoundSource soundSource;
+public class MasterMixerTest extends CaustkTestBase {
 
     private ISoundMixer soundMixer;
 
     private MasterMixer masterMixer;
 
-    @Before
-    public void setUp() {
-        application = CaustkApplicationUtils.createAndRun();
-        controller = application.getController();
-        soundSource = controller.getSoundSource();
+    @Override
+    protected void start() {
         soundMixer = controller.getSoundMixer();
         masterMixer = soundMixer.getMasterMixer();
-
-        start();
     }
 
-    protected void start() {
-    }
-
-    @After
-    public void tearDown() {
-        end();
-    }
-
+    @Override
     protected void end() {
     }
 
     @Test
     public void test_defaults() {
-        soundSource.clearAndReset();
         masterMixer.restore();
 
         Assert.assertEquals(1f, masterMixer.getVolume(), 0f);
