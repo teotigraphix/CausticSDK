@@ -140,8 +140,10 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     public TrackSequencer(ICaustkController controller) {
         super(controller);
         handlers = new TrackSequencerHandlers(this);
-        // DUMMY
-        //trackSong = new TrackSong();
+        // XXX Need to figure out how to avoid this (remove the facade?)
+        // straight access into the TrackSong
+        trackSong = new TrackSong();
+        trackSong.wakeup(controller);
     }
 
     @Override
@@ -340,8 +342,11 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     @Override
     protected void loadState(Project project) {
         super.loadState(project);
+        if (!trackSong.exists())
+            return;
+
         File file = getState().getSongFile();
-        // XXX refactor and use with createSOng() logic
+        // XXX refactor and use with createSong() logic
         File localFile = getController().getProjectManager().getProject()
                 .getAbsoluteResource(new File("songs", file.getPath()).getPath());
         File absoluteTargetSongFile = localFile.getAbsoluteFile();
