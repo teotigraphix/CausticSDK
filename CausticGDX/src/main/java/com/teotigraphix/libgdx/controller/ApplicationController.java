@@ -19,7 +19,7 @@ import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.libgdx.model.ApplicationModel;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 import com.teotigraphix.libgdx.model.ICaustkModel;
-import com.teotigraphix.libgdx.model.ModelBase;
+import com.teotigraphix.libgdx.model.CaustkModel;
 
 /**
  * Mediates the {@link ApplicationModel}.
@@ -130,9 +130,9 @@ public class ApplicationController implements IApplicationController {
     @Override
     public void load() {
         for (ICaustkModel model : models) {
-            if (model instanceof ModelBase) {
+            if (model instanceof CaustkModel) {
                 CtkDebug.log("    Load; " + model.getClass().getSimpleName());
-                ((ModelBase)model).setupState();
+                ((CaustkModel)model).setupState();
             }
         }
     }

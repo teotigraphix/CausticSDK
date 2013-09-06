@@ -7,7 +7,7 @@ import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 
 @Singleton
-public class ApplicationModel extends ModelBase implements IApplicationModel {
+public class ApplicationModel extends CaustkModel implements IApplicationModel {
 
     @Inject
     IScreenProvider screenProvider;

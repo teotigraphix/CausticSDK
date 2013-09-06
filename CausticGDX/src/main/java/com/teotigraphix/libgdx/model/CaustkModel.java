@@ -10,7 +10,7 @@ import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.libgdx.controller.IApplicationController;
 
-public abstract class ModelBase implements ICaustkModel {
+public abstract class CaustkModel implements ICaustkModel {
 
     private ICaustkController controller;
 
@@ -80,7 +80,7 @@ public abstract class ModelBase implements ICaustkModel {
         applicationController.registerModel(this);
     }
 
-    public ModelBase() {
+    public CaustkModel() {
     }
 
     public final void setupState() {

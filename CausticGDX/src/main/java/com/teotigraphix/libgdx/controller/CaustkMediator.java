@@ -17,7 +17,7 @@ import com.teotigraphix.libgdx.screen.IScreen;
 
 // Mediators never dispatch events!, only listen and act with logic
 // that could eventually be put in a Command
-public abstract class MediatorBase implements ICaustkMediator {
+public abstract class CaustkMediator implements ICaustkMediator {
 
     private ICaustkController controller;
 
@@ -35,7 +35,7 @@ public abstract class MediatorBase implements ICaustkMediator {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MediatorBase() {
+    public CaustkMediator() {
     }
 
     @Inject
