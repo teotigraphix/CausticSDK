@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.service;
+package com.teotigraphix.caustk.service.serialize;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,6 +31,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.service.IInjectorService;
+import com.teotigraphix.caustk.service.ISerialize;
 
 public class JsonUtils {
 

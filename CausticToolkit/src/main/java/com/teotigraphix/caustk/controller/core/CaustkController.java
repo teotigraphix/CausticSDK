@@ -51,7 +51,7 @@ import com.teotigraphix.caustk.sequencer.queue.QueueSequencer;
 import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
-import com.teotigraphix.caustk.service.SerializeService;
+import com.teotigraphix.caustk.service.serialize.SerializeService;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;

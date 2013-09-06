@@ -218,4 +218,24 @@ public class SystemState extends ControllerComponent implements ISystemState {
 
     }
 
+    /**
+     * Serialized - v1.0
+     * <ul>
+     * <li>N/A</li>
+     * </ul>
+     */
+    public static class SystemStateModel extends ControllerComponentState {
+
+        //--------------------------------------------------------------------------
+        // Constructors
+        //--------------------------------------------------------------------------
+
+        public SystemStateModel() {
+        }
+
+        public SystemStateModel(ICaustkController controller) {
+            super(controller);
+        }
+
+    }
 }

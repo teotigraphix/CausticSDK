@@ -26,7 +26,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.androidtransfuse.event.EventObserver;
@@ -485,5 +487,69 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
             }
         }
         restoring = false;
+    }
+
+    /**
+     * Serialized - v1.0
+     * <ul>
+     * <li><code>descriptors</code> - A serialized {@link ToneDescriptor}.</li>
+     * </ul>
+     */
+    public static class SoundSourceModel extends ControllerComponentState {
+
+        private transient Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
+
+        //--------------------------------------------------------------------------
+        // Property API
+        //--------------------------------------------------------------------------
+
+        //----------------------------------
+        // descriptors
+        //----------------------------------
+
+        private Map<Integer, ToneDescriptor> descriptors = new HashMap<Integer, ToneDescriptor>();
+
+        public final Map<Integer, ToneDescriptor> getDescriptors() {
+            return descriptors;
+        }
+
+        //----------------------------------
+        // tones
+        //----------------------------------
+
+        Map<Integer, Tone> getTones() {
+            return tones;
+        }
+
+        //--------------------------------------------------------------------------
+        // Constructors
+        //--------------------------------------------------------------------------
+
+        public SoundSourceModel() {
+        }
+
+        public SoundSourceModel(ICaustkController controller) {
+            super(controller);
+        }
+
+        @Override
+        public void sleep() {
+            for (Tone tone : tones.values()) {
+                ToneDescriptor descriptor = new ToneDescriptor(tone.getIndex(), tone.getName(),
+                        tone.getToneType());
+                descriptors.put(tone.getIndex(), descriptor);
+            }
+        }
+
+        @Override
+        public void wakeup(ICaustkController controller) {
+            super.wakeup(controller);
+            //        for (Tone tone : tones.values()) {
+            //            tone.wakeup(controller);
+            //        }
+            for (@SuppressWarnings("unused")
+            ToneDescriptor descriptor : descriptors.values()) {
+            }
+        }
     }
 }
