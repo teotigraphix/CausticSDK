@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.sound.effect.EffectType;
+
 /**
  * The {@link EffectRackMessage} holds all OSC messages associated with the
  * {@link IEffectsRack} API.

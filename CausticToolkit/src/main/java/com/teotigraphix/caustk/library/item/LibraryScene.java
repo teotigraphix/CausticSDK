@@ -17,21 +17,35 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.library;
+package com.teotigraphix.caustk.library.item;
 
-public class SoundMixerState extends LibraryItem {
+public class LibraryScene extends LibraryItem {
 
-    private String data;
+    private SoundSourceDescriptor soundSourceDescriptor;
 
-    public final String getData() {
-        return data;
+    public SoundSourceDescriptor getSoundSourceDescriptor() {
+        return soundSourceDescriptor;
     }
 
-    public final void setData(String value) {
-        data = value;
+    public void setSoundSourceDescriptor(SoundSourceDescriptor value) {
+        soundSourceDescriptor = value;
     }
 
-    public SoundMixerState() {
+    private SoundMixerDescriptor soundMixerDescriptor;
+
+    public SoundMixerDescriptor getSoundMixerDescriptor() {
+        return soundMixerDescriptor;
     }
 
+    public void setSoundMixerDescriptor(SoundMixerDescriptor value) {
+        soundMixerDescriptor = value;
+    }
+
+    public LibraryScene() {
+    }
+
+    @Override
+    public String toString() {
+        return getMetadataInfo().getName() + " - " + getMetadataInfo().getTags().toString();
+    }
 }

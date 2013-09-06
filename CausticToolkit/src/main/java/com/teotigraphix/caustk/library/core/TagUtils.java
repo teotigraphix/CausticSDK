@@ -17,9 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.library;
+package com.teotigraphix.caustk.library.core;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.library.item.LibraryPhrase;
+import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 

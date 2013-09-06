@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.library;
+package com.teotigraphix.caustk.library.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,19 +28,22 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.library.item.LibraryPattern;
+import com.teotigraphix.caustk.library.item.LibraryPhrase;
+import com.teotigraphix.caustk.library.item.LibraryScene;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class Library implements ISerialize {
 
-    /**
-     * Returns the absolute presets dir for the project.
-     */
-    protected File getPresetsDirectory() {
-        File file = new File(directory, "presets");
-        return controller.getProjectManager().getProject().getAbsoluteResource(file.getPath());
-    }
+    private static final String PRESETS_DIR = "presets";
 
+    /**
+     * Returns the name of the library's directory that holds the
+     * <code>.ctkl</code> descriptor.
+     */
     public String getName() {
         return getDirectory().getName();
     }
@@ -79,9 +82,8 @@ public class Library implements ISerialize {
 
     private File directory;
 
-    // libraries\User
     /**
-     * The relative directory.
+     * The relative directory within the <code>libraries</code> directory.
      */
     public File getDirectory() {
         return directory;
@@ -91,6 +93,10 @@ public class Library implements ISerialize {
         directory = value;
     }
 
+    /**
+     * The absolute directory location of this library using the {@link Project}
+     * to resolve the location.
+     */
     public File getAbsoluteDirectory() {
         return controller.getProjectManager().getProject().getAbsoluteResource(directory.getPath());
     }
@@ -197,8 +203,16 @@ public class Library implements ISerialize {
         scenes.remove(scene);
     }
 
+    //--------------------------------------------------------------------------
+    //  Constructor
+    //--------------------------------------------------------------------------
+
     public Library() {
     }
+
+    //--------------------------------------------------------------------------
+    //  Methods
+    //--------------------------------------------------------------------------
 
     public LibraryScene findSceneById(UUID id) {
         for (LibraryScene item : scenes) {
@@ -297,11 +311,6 @@ public class Library implements ISerialize {
         return new File(getPresetsDirectory(), preset.getName());
     }
 
-    public LibraryScene getDefaultScene() {
-        LibraryScene libraryScene = findScenesByTag("DefaultScene").get(0);
-        return libraryScene;
-    }
-
     /**
      * Creates the sub directories of the library on creation.
      */
@@ -313,6 +322,16 @@ public class Library implements ISerialize {
         FileUtils.deleteDirectory(directory);
         if (directory.exists())
             throw new IOException("Library " + directory.getAbsolutePath() + " was not deleted.");
+    }
+
+    /**
+     * Returns the absolute presets dir for the project.
+     * <p>
+     * Uses the {@link Project} to resolve to relative directory location.
+     */
+    protected final File getPresetsDirectory() {
+        File file = new File(directory, PRESETS_DIR);
+        return controller.getProjectManager().getProject().getAbsoluteResource(file.getPath());
     }
 
     @Override

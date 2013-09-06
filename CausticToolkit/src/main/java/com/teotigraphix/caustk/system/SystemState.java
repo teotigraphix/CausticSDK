@@ -20,10 +20,10 @@
 package com.teotigraphix.caustk.system;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.StateControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 
-public class SystemState extends ControllerComponent implements ISystemState {
+public class SystemState extends StateControllerComponent implements ISystemState {
 
     @Override
     protected Class<? extends ControllerComponentState> getStateType() {

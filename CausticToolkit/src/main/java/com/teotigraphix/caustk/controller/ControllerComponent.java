@@ -17,67 +17,57 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.pattern;
+package com.teotigraphix.caustk.controller;
 
-import java.io.File;
-
-import com.teotigraphix.caustk.library.item.LibraryPatch;
-import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 
 /**
- * The Patch holds all sound settings that will get serialized to disk and
- * reloaded into the the Tone.
+ * Bas class for a {@link IControllerComponent}.
  * <p>
- * Data;
- * <ul>
- * <li>Mixer</li>
- * <li>Mixer</li>
- * <li>Mixer</li>
- * </ul>
+ * The {@link IControllerComponent}s get registered with
+ * {@link ICaustkController#addComponent(Class, IControllerComponent)}.
  */
-public class Patch {
+public abstract class ControllerComponent implements IControllerComponent {
+
     //--------------------------------------------------------------------------
-    // Public Property API
+    // Property API
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // patchItem
+    // controller
     //----------------------------------
 
-    private LibraryPatch patchItem;
+    private final ICaustkController controller;
 
-    public LibraryPatch getPatchItem() {
-        return patchItem;
+    public final ICaustkController getController() {
+        return controller;
     }
 
     //----------------------------------
-    // part
+    // dispatcher
     //----------------------------------
 
-    private Part part;
+    private final IDispatcher dispatcher;
 
-    public Part getPart() {
-        return part;
+    @Override
+    public final IDispatcher getDispatcher() {
+        return dispatcher;
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Patch(Part part, LibraryPatch patchItem) {
-        this.part = part;
-        this.patchItem = patchItem;
-        part.setPatch(this);
+    public ControllerComponent(ICaustkController controller) {
+        this.controller = controller;
+        dispatcher = new Dispatcher();
     }
 
-    public void configure() {
-    }
+    //--------------------------------------------------------------------------
+    // Methods
+    //--------------------------------------------------------------------------
 
-    public void commit() {
-        File presetFile = getPart().getTone().getController().getLibraryManager()
-                .getSelectedLibrary().getPresetFile(patchItem.getPresetFile());
-        getPart().getTone().getDefaultPatchId();
-        getPart().getTone().getComponent(SynthComponent.class)
-                .loadPreset(presetFile.getAbsolutePath());
-    }
+    @Override
+    public abstract void onRegister();
+
 }

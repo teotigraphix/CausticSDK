@@ -17,8 +17,30 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.library;
+package com.teotigraphix.caustk.library.item;
 
-public class EffectMixerState {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
+import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.ToneDescriptor;
+
+public class SoundSourceDescriptor {
+
+    private Map<Integer, ToneDescriptor> descriptors = new HashMap<Integer, ToneDescriptor>();
+
+    public Map<Integer, ToneDescriptor> getDescriptors() {
+        return descriptors;
+    }
+
+    public SoundSourceDescriptor() {
+    }
+
+    public void addTone(Tone tone, UUID patchId) {
+        ToneDescriptor descriptor = new ToneDescriptor(tone.getIndex(), tone.getName(),
+                tone.getToneType());
+        descriptor.setPatchId(patchId);
+        descriptors.put(tone.getIndex(), descriptor);
+    }
 }

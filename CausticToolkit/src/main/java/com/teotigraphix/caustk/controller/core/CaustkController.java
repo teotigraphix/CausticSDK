@@ -39,7 +39,7 @@ import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.library.LibraryManager;
+import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.pattern.IPatternManager;
 import com.teotigraphix.caustk.pattern.PatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;

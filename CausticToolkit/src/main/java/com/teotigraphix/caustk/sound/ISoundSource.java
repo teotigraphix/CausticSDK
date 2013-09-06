@@ -27,7 +27,7 @@ import java.util.List;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
-import com.teotigraphix.caustk.library.LibraryScene;
+import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;

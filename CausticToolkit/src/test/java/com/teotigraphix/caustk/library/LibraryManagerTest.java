@@ -14,6 +14,10 @@ import org.junit.Test;
 
 import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.library.core.Library;
+import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.library.item.LibraryPhrase;
+import com.teotigraphix.caustk.library.item.LibraryScene;
 
 public class LibraryManagerTest extends CaustkTestBase {
 

@@ -9,7 +9,7 @@ import java.util.Map;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.StateControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
@@ -19,7 +19,7 @@ import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerTrackSongChange;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
-public class QueueSequencer extends ControllerComponent implements IQueueSequencer {
+public class QueueSequencer extends StateControllerComponent implements IQueueSequencer {
 
     private boolean audioEnabled = true;
 

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.library.LibraryPattern;
+import com.teotigraphix.caustk.library.item.LibraryPattern;
 import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 
 public class Pattern {

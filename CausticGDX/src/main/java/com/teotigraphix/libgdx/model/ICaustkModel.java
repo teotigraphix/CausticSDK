@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.libgdx.controller.ICaustkMediator;
 
 /**
  * A model that is {@link ICaustkController} aware and registered in the

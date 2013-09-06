@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.tone.components.VolumeEnvelopeComponent;
+
 public class VolumeMessage extends CausticMessage {
 
     //--------------------------------------------------------------------------

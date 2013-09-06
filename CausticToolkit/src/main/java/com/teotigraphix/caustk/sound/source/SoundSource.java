@@ -35,14 +35,14 @@ import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.StateControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.library.Library;
-import com.teotigraphix.caustk.library.LibraryPatch;
-import com.teotigraphix.caustk.library.LibraryScene;
+import com.teotigraphix.caustk.library.core.Library;
+import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.BasslineTone;
@@ -61,7 +61,7 @@ import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-public class SoundSource extends ControllerComponent implements ISoundSource {
+public class SoundSource extends StateControllerComponent implements ISoundSource {
 
     private int maxNumTones = 14;
 
@@ -162,7 +162,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
     @Override
     public void createScene(LibraryScene scene) throws CausticException {
         // make tones
-        for (ToneDescriptor descriptor : scene.getSoundSourceState().getDescriptors().values()) {
+        for (ToneDescriptor descriptor : scene.getSoundSourceDescriptor().getDescriptors().values()) {
             Tone tone = createTone(descriptor);
             UUID patchId = descriptor.getPatchId();
             Library library = getController().getLibraryManager().getSelectedLibrary();

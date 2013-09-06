@@ -22,7 +22,7 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.library.Library;
+import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.pattern.Phrase.Scale;
 import com.teotigraphix.caustk.pattern.Phrase.Trigger;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;

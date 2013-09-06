@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.library;
+package com.teotigraphix.caustk.library.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,95 +31,66 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
-import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
-import com.teotigraphix.caustk.library.LibraryPattern.ToneSet;
+import com.teotigraphix.caustk.library.ILibraryManager;
+import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.library.item.LibraryPattern;
+import com.teotigraphix.caustk.library.item.LibraryPattern.ToneSet;
+import com.teotigraphix.caustk.library.item.LibraryPhrase;
+import com.teotigraphix.caustk.library.item.LibraryScene;
+import com.teotigraphix.caustk.library.item.SoundMixerDescriptor;
+import com.teotigraphix.caustk.library.item.SoundSourceDescriptor;
 import com.teotigraphix.caustk.pattern.PatternUtils;
-import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
-import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.utils.Compress;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-/*
-
-
-
-*/
-
 public class LibraryManager extends ControllerComponent implements ILibraryManager {
 
     private static final String LIBRARY_CTKL = "library.ctkl";
-
-    @Override
-    protected Class<? extends ControllerComponentState> getStateType() {
-        return LibraryManagerModel.class;
-    }
-
-    LibraryManagerModel getModel() {
-        return (LibraryManagerModel)getInternalState();
-    }
 
     //--------------------------------------------------------------------------
     // API
     //--------------------------------------------------------------------------
 
     //----------------------------------
+    // libraries
+    //----------------------------------
+
+    private transient Map<UUID, Library> libraries = new TreeMap<UUID, Library>();
+
+    Map<UUID, Library> getLibraries() {
+        return libraries;
+    }
+
+    //----------------------------------
     // selectedLibrary
     //----------------------------------
 
-    //private File librariesDirectory;
+    private Library selectedLibrary;
 
     @Override
     public Library getSelectedLibrary() {
-        return getModel().getSelectedLibrary();
+        return selectedLibrary;
     }
 
     @Override
     public void setSelectedLibrary(Library value) {
-        getModel().setSelectedLibrary(value);
+        selectedLibrary = value;
         getController().getDispatcher().trigger(new OnLibraryManagerSelectedLibraryChange(value));
     }
 
     public LibraryManager(ICaustkController controller) {
         super(controller);
-    }
-
-    @Override
-    protected void loadState(Project project) {
-        super.loadState(project);
-
-        //        load();
-        //        String id = getController().getProjectManager().getSessionPreferences()
-        //                .getString("selectedLibrary");
-        //        if (id != null) {
-        //            Library library = getModel().getLibraries().get(UUID.fromString(id));
-        //            if (library != null) {
-        //                setSelectedLibrary(library);
-        //            } else {
-        //                CtkDebug.err("LibraryManager; Library null " + id);
-        //            }
-        //        }
-    }
-
-    @Override
-    protected void saveState(Project project) {
-        super.saveState(project);
-
-        // if the project has selected a library, save it
-        if (getSelectedLibrary() != null) {
-            //            getController().getProjectManager().getSessionPreferences()
-            //                    .put("selectedLibrary", getSelectedLibrary().getId());
-        }
     }
 
     /**
@@ -176,7 +147,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         library.wakeup(getController());
         library.setId(UUID.randomUUID());
         library.setMetadataInfo(new MetadataInfo());
-        getModel().getLibraries().put(library.getId(), library);
+        getLibraries().put(library.getId(), library);
 
         return library;
     }
@@ -196,42 +167,11 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         library.setDirectory(new File("libraries", directory.getPath()));
         library.mkdirs();
 
-        getModel().getLibraries().put(library.getId(), library);
+        getLibraries().put(library.getId(), library);
 
         saveLibrary(library);
 
         return library;
-    }
-
-    @SuppressWarnings("unused")
-    private LibraryScene createDefaultScene() throws CausticException {
-        getController().getSoundSource().clearAndReset();
-
-        getController().getSoundSource().createTone("SubSynth", ToneType.SubSynth);
-        getController().getSoundSource().createTone("PCMSynth1", ToneType.PCMSynth);
-        getController().getSoundSource().createTone("PCMSynth2", ToneType.PCMSynth);
-        getController().getSoundSource().createTone("Bassline1", ToneType.Bassline);
-        getController().getSoundSource().createTone("Bassline2", ToneType.Bassline);
-        getController().getSoundSource().createTone("Beatbox", ToneType.Beatbox);
-
-        for (Tone tone : getController().getSoundSource().getTones()) {
-            tone.restore();
-        }
-
-        getController().getSoundMixer().restore();
-
-        LibraryScene libraryScene = new LibraryScene();
-        libraryScene.setId(UUID.randomUUID());
-        MetadataInfo metadataInfo = new MetadataInfo();
-        metadataInfo.addTag("DefaultScene");
-        libraryScene.setMetadataInfo(metadataInfo);
-        libraryScene.setSoundSourceState(new SoundSourceState());
-        libraryScene.setSoundMixerState(new SoundMixerState());
-        libraryScene.setEffectMixerState(new EffectMixerState());
-
-        getController().getSoundSource().clearAndReset();
-
-        return libraryScene;
     }
 
     @Override
@@ -252,7 +192,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
         File file = new File(absoluteLocation, LIBRARY_CTKL);
         Library library = getController().getSerializeService().fromFile(file, Library.class);
-        getModel().getLibraries().put(library.getId(), library);
+        getLibraries().put(library.getId(), library);
 
         //getController().getDispatcher().trigger(new OnLibraryManagerLoadComplete(library));
 
@@ -275,7 +215,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     @Override
     public void delete() throws IOException {
-        for (Library library : getModel().getLibraries().values()) {
+        for (Library library : getLibraries().values()) {
             library.delete();
         }
         clear();
@@ -283,7 +223,6 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     @Override
     public void clear() {
-        resetState();
     }
 
     @Override
@@ -420,7 +359,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         library.addScene(scene);
 
         //--------------------------------------
-        SoundSourceState soundSourceState = new SoundSourceState();
+        SoundSourceDescriptor soundSourceDescriptor = new SoundSourceDescriptor();
 
         for (int i = 0; i < 6; i++) {
             Tone tone = soundSource.getTone(i);
@@ -438,19 +377,16 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
                 library.addPatch(patch);
 
                 tone.setDefaultPatchId(patch.getId());
-                soundSourceState.addTone(tone, patch.getId());
+                soundSourceDescriptor.addTone(tone, patch.getId());
             }
         }
 
-        scene.setSoundSourceState(soundSourceState);
+        scene.setSoundSourceDescriptor(soundSourceDescriptor);
 
-        SoundMixerState soundMixerState = new SoundMixerState();
-        String data = getController().getSerializeService().toString(getModel());
-        soundMixerState.setData(data);
-        scene.setSoundMixerState(soundMixerState);
-
-        EffectMixerState effectMixerState = new EffectMixerState();
-        scene.setEffectMixerState(effectMixerState);
+        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
+        String data = getController().getSerializeService().toString(null); // XXX
+        soundMixerDescriptor.setData(data);
+        scene.setSoundMixerDescriptor(soundMixerDescriptor);
 
         TagUtils.addDefaultTags(name, getController(), scene);
     }
@@ -549,11 +485,23 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     //    public boolean isLibrary(File reletiveFile) {
     //        return new File(librariesDirectory, reletiveFile.getPath()).exists();
     //    }
+    public Library getLibrary(File reletivePath) {
+        for (Library library : libraries.values()) {
+            if (library.getName().endsWith(reletivePath.getName()))
+                return library;
+        }
+        return null;
+    }
+
+    public void removeLibrary(Library library) throws IOException {
+        library.delete();
+        libraries.remove(library.getId());
+    }
 
     @Override
     public void deleteLibrary(File reletivePath) throws IOException {
-        Library library = getModel().getLibrary(reletivePath);
-        getModel().removeLibrary(library);
+        Library library = getLibrary(reletivePath);
+        removeLibrary(library);
     }
 
     @Override
@@ -575,6 +523,11 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         assignPatch(getController().getSoundSource().getTone(toneIndex), libraryPatch);
     }
 
+    @Override
+    public void onRegister() {
+
+    }
+
     //    @Override
     //    public Library importLibrary(File file) throws IOException {
     //        // extract to libraries dir
@@ -584,4 +537,5 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     //        Library library = loadLibrary(location);
     //        return library;
     //    }
+
 }

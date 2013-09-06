@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.service.ISerializeService;
  * Each project will have it's own model instance serialized, so anything save
  * in these models should be on a per project base.
  * 
- * @see ControllerComponent
+ * @see StateControllerComponent
  */
 public class ControllerComponentState implements ISerialize {
 
@@ -50,7 +50,7 @@ public class ControllerComponentState implements ISerialize {
     }
 
     /**
-     * Called when explicitly creating and instance in {@link ControllerComponent}
+     * Called when explicitly creating and instance in {@link StateControllerComponent}
      * .
      * 
      * @param controller

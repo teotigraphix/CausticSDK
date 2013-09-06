@@ -24,39 +24,21 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.IControllerComponent;
-import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.project.ProjectManager;
 
 /**
- * A {@link ControllerComponent} implementation is part of the
+ * A {@link StateControllerComponent} implementation is part of the
  * {@link ICaustkController} API and manages it's own model that will get
  * serialized during the {@link ProjectManager}'s project load/save phases.
  */
-public abstract class ControllerComponent implements IControllerComponent {
+public abstract class StateControllerComponent extends ControllerComponent {
 
     //----------------------------------
-    // controller
-    //----------------------------------
-
-    private ICaustkController controller;
-
-    public final ICaustkController getController() {
-        return controller;
-    }
-
-    private IDispatcher dispatcher;
-
-    @Override
-    public final IDispatcher getDispatcher() {
-        return dispatcher;
-    }
-
-    //----------------------------------
-    // model
+    // state
     //----------------------------------
 
     private ControllerComponentState state;
@@ -66,7 +48,7 @@ public abstract class ControllerComponent implements IControllerComponent {
     }
 
     //----------------------------------
-    // modelType
+    // stateType
     //----------------------------------
 
     protected abstract Class<? extends ControllerComponentState> getStateType();
@@ -75,9 +57,8 @@ public abstract class ControllerComponent implements IControllerComponent {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ControllerComponent(ICaustkController controller) {
-        this.controller = controller;
-        dispatcher = new Dispatcher();
+    public StateControllerComponent(ICaustkController controller) {
+        super(controller);
         resetState();
     }
 
@@ -87,7 +68,7 @@ public abstract class ControllerComponent implements IControllerComponent {
     @Override
     public void onRegister() {
 
-        controller.getDispatcher().register(OnProjectManagerChange.class,
+        getController().getDispatcher().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {
@@ -127,12 +108,9 @@ public abstract class ControllerComponent implements IControllerComponent {
     }
 
     protected void loadComplete(Project project) {
-        // TODO Auto-generated method stub
-
     }
 
     protected void closeProject(Project project) {
-
     }
 
     //--------------------------------------------------------------------------
@@ -141,7 +119,7 @@ public abstract class ControllerComponent implements IControllerComponent {
 
     protected void resetState() {
         try {
-            state = createState(controller);
+            state = createState(getController());
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (SecurityException e) {

@@ -24,7 +24,7 @@ import java.util.UUID;
 import javax.sound.midi.Track;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.library.LibraryPhrase;
+import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.service.ISerialize;
 

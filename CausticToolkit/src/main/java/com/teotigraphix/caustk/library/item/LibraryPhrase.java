@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.library;
+package com.teotigraphix.caustk.library.item;
 
 import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.tone.ToneType;

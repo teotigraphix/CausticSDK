@@ -17,10 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.library;
+package com.teotigraphix.caustk.library.item;
 
 import java.util.UUID;
 
+import com.teotigraphix.caustk.library.core.Library;
+import com.teotigraphix.caustk.library.core.MetadataInfo;
 import com.teotigraphix.caustk.system.MemorySlotItem;
 
 public abstract class LibraryItem extends MemorySlotItem {

@@ -25,10 +25,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.library.Library;
-import com.teotigraphix.caustk.library.LibraryPatch;
-import com.teotigraphix.caustk.library.LibraryPattern;
-import com.teotigraphix.caustk.library.LibraryPhrase;
+import com.teotigraphix.caustk.library.core.Library;
+import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.library.item.LibraryPattern;
+import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.pattern.Part;
 import com.teotigraphix.caustk.pattern.Patch;
 import com.teotigraphix.caustk.pattern.Pattern;

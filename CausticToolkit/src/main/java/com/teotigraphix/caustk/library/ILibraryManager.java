@@ -24,6 +24,8 @@ import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.library.core.Library;
+import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.tone.Tone;
 
 public interface ILibraryManager extends IControllerComponent {

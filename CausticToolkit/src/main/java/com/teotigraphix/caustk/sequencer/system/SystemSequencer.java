@@ -23,7 +23,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.StateControllerComponent;
 import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SystemSequencer extends ControllerComponent implements ISystemSequencer {
+public class SystemSequencer extends StateControllerComponent implements ISystemSequencer {
 
     //----------------------------------
     // modelType
