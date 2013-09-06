@@ -8,9 +8,8 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.StateControllerComponent;
-import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
@@ -19,7 +18,7 @@ import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerTrackSongChange;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
-public class QueueSequencer extends StateControllerComponent implements IQueueSequencer {
+public class QueueSequencer extends ControllerComponent implements IQueueSequencer {
 
     private boolean audioEnabled = true;
 
@@ -54,11 +53,6 @@ public class QueueSequencer extends StateControllerComponent implements IQueueSe
 
     final ITrackSequencer getTrackSequencer() {
         return getController().getTrackSequencer();
-    }
-
-    @Override
-    protected Class<? extends ControllerComponentState> getStateType() {
-        return QueueSequencerState.class;
     }
 
     //----------------------------------
@@ -98,7 +92,6 @@ public class QueueSequencer extends StateControllerComponent implements IQueueSe
 
     @Override
     public void onRegister() {
-        super.onRegister();
 
         final ISystemSequencer systemSequencer = getController().getSystemSequencer();
 
@@ -184,17 +177,4 @@ public class QueueSequencer extends StateControllerComponent implements IQueueSe
     public void stop() {
         player.stop();
     }
-
-    public static class QueueSequencerState extends ControllerComponentState {
-
-        public QueueSequencerState() {
-            super();
-        }
-
-        public QueueSequencerState(ICaustkController controller) {
-            super(controller);
-        }
-
-    }
-
 }

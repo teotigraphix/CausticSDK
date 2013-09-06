@@ -19,40 +19,33 @@
 
 package com.teotigraphix.caustk.sequencer.system;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
-import com.teotigraphix.caustk.controller.core.StateControllerComponent;
-import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SystemSequencer extends StateControllerComponent implements ISystemSequencer {
+public class SystemSequencer extends ControllerComponent implements ISystemSequencer {
+
+    //--------------------------------------------------------------------------
+    // Property API
+    //--------------------------------------------------------------------------
 
     //----------------------------------
-    // modelType
+    // isPlaying
     //----------------------------------
 
-    @Override
-    protected Class<? extends ControllerComponentState> getStateType() {
-        return SystemSequencerState.class;
-    }
-
-    //----------------------------------
-    // model
-    //----------------------------------
-
-    SystemSequencerState getModel() {
-        return (SystemSequencerState)getInternalState();
-    }
+    private boolean isPlaying = false;
 
     @Override
     public void setIsPlaying(boolean value) {
-        getModel().setIsPlaying(value);
+        isPlaying = value;
+        OutputPanelMessage.PLAY.send(getController(), isPlaying ? 1 : 0);
         if (!value) {
             currentBeat = -1;
         }
@@ -60,46 +53,69 @@ public class SystemSequencer extends StateControllerComponent implements ISystem
 
     @Override
     public boolean isPlaying() {
-        return getModel().isPlaying();
+        return isPlaying;
     }
+
+    //----------------------------------
+    // sequencerMode
+    //----------------------------------
+
+    private SequencerMode sequencerMode = SequencerMode.PATTERN;
 
     @Override
     public final SequencerMode getSequencerMode() {
-        return getModel().getSequencerMode();
+        return sequencerMode;
     }
 
     @Override
+    public void setSequencerMode(SequencerMode value) {
+        sequencerMode = value;
+        OutputPanelMessage.MODE.send(getController(), sequencerMode.getValue());
+    }
+
+    //----------------------------------
+    // tempo
+    //----------------------------------
+
+    private float tempo = 120f;
+
+    @Override
     public void setTempo(float value) {
-        getModel().setTempo(value);
+        tempo = value;
+        OutputPanelMessage.BPM.send(getController(), tempo);
+        getController().getDispatcher().trigger(new OnSystemSequencerTempoChange(value));
     }
 
     @Override
     public float getTempo() {
-        return getModel().getTempo();
+        return tempo;
     }
 
-    @Override
-    public final void setSequencerMode(SequencerMode value) {
-        getModel().setSequencerMode(value);
-    }
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public SystemSequencer(ICaustkController controller) {
         super(controller);
         controller.addComponent(ISystemSequencer.class, this);
     }
 
+    //--------------------------------------------------------------------------
+    // Method API
+    //--------------------------------------------------------------------------
+
     @Override
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
         setIsPlaying(true);
 
-        getDispatcher().trigger(new OnSongSequencerTransportChange());
+        getDispatcher().trigger(new OnSystemSequencerTransportChange());
     }
 
     @Override
     public void stop() {
         setIsPlaying(false);
-        getDispatcher().trigger(new OnSongSequencerTransportChange());
+        getDispatcher().trigger(new OnSystemSequencerTransportChange());
     }
 
     public void executePlay() {
@@ -379,6 +395,10 @@ public class SystemSequencer extends StateControllerComponent implements ISystem
     @Override
     public void setShuffleAmount(float value) {
         OutputPanelMessage.SHUFFLE_AMOUNT.send(getController(), value);
+    }
+
+    @Override
+    public void onRegister() {
     }
 
 }

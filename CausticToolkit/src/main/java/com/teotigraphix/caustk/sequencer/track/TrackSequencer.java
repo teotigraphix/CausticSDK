@@ -9,13 +9,11 @@ import java.util.List;
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.StateControllerComponent;
-import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.pattern.PatternUtils;
-import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
@@ -29,15 +27,10 @@ import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 /**
  * @see OnTrackSequencerLoad
  */
-public class TrackSequencer extends StateControllerComponent implements ITrackSequencer {
+public class TrackSequencer extends ControllerComponent implements ITrackSequencer {
 
     @SuppressWarnings("unused")
     private TrackSequencerHandlers handlers;
-
-    @Override
-    protected Class<? extends ControllerComponentState> getStateType() {
-        return TrackSequencerState.class;
-    }
 
     //----------------------------------
     // trackSong
@@ -125,14 +118,6 @@ public class TrackSequencer extends StateControllerComponent implements ITrackSe
         return trackSong.getPhrase(toneIndex, bankIndex, patterIndex);
     }
 
-    //----------------------------------
-    // state
-    //----------------------------------
-
-    final TrackSequencerState getState() {
-        return (TrackSequencerState)getInternalState();
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -148,7 +133,6 @@ public class TrackSequencer extends StateControllerComponent implements ITrackSe
 
     @Override
     public void onRegister() {
-        super.onRegister();
 
         final ISoundSource soundSource = getController().getSoundSource();
         soundSource.getDispatcher().register(OnSoundSourceToneAdd.class,
@@ -177,11 +161,6 @@ public class TrackSequencer extends StateControllerComponent implements ITrackSe
                         getSelectedTrack().getPhrase().onBeatChange(object.getBeat());
                     }
                 });
-    }
-
-    @Override
-    protected void closeProject(Project project) {
-
     }
 
     @Override
@@ -282,8 +261,6 @@ public class TrackSequencer extends StateControllerComponent implements ITrackSe
         // /MyProject/songs/MySong.ctks
         File localFile = getController().getProjectManager().getProject()
                 .getAbsoluteResource(new File("songs", songFile.getPath()).getPath());
-        // save the project relative path of the song
-        getState().setSongFile(songFile);
 
         // platform independent location
         File absoluteSongDir = localFile.getAbsoluteFile().getParentFile();
@@ -335,78 +312,47 @@ public class TrackSequencer extends StateControllerComponent implements ITrackSe
     // State
     //--------------------------------------------------------------------------
 
-    @Override
-    protected void createProject(Project project) {
-    }
-
-    @Override
-    protected void loadState(Project project) {
-        super.loadState(project);
-        if (!trackSong.exists())
-            return;
-
-        File file = getState().getSongFile();
-        // XXX refactor and use with createSong() logic
-        File localFile = getController().getProjectManager().getProject()
-                .getAbsoluteResource(new File("songs", file.getPath()).getPath());
-        File absoluteTargetSongFile = localFile.getAbsoluteFile();
-        if (absoluteTargetSongFile != null) {
-
-            trackSong = getController().getSerializeService().fromFile(absoluteTargetSongFile,
-                    TrackSong.class);
-            getDispatcher().trigger(
-                    new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Load, trackSong));
-        }
-        getDispatcher().trigger(new OnTrackSequencerLoad());
-    }
-
-    @Override
-    protected void loadComplete(Project project) {
-        if (trackSong.exists()) {
-            File causticFile = trackSong.getAbsoluteCausticFile();
-            try {
-                getController().getSoundSource().loadSong(causticFile);
-            } catch (CausticException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    protected void saveState(Project project) {
-        // save the state object
-        super.saveState(project);
-        try {
-            saveTrackSong();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static class TrackSequencerState extends ControllerComponentState {
-
-        private File songFile;
-
-        public File getSongFile() {
-            return songFile;
-        }
-
-        public void setSongFile(File value) {
-            songFile = value;
-        }
-
-        public TrackSequencerState() {
-            super();
-        }
-
-        public TrackSequencerState(ICaustkController controller) {
-            super(controller);
-        }
-
-        @Override
-        public void wakeup(ICaustkController controller) {
-            super.wakeup(controller);
-        }
-    }
-
+    //    @Override
+    //    protected void loadState(Project project) {
+    //        super.loadState(project);
+    //        if (!trackSong.exists())
+    //            return;
+    //
+    //        File file = getState().getSongFile();
+    //        // XXX refactor and use with createSong() logic
+    //        File localFile = getController().getProjectManager().getProject()
+    //                .getAbsoluteResource(new File("songs", file.getPath()).getPath());
+    //        File absoluteTargetSongFile = localFile.getAbsoluteFile();
+    //        if (absoluteTargetSongFile != null) {
+    //
+    //            trackSong = getController().getSerializeService().fromFile(absoluteTargetSongFile,
+    //                    TrackSong.class);
+    //            getDispatcher().trigger(
+    //                    new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Load, trackSong));
+    //        }
+    //        getDispatcher().trigger(new OnTrackSequencerLoad());
+    //    }
+    //
+    //    @Override
+    //    protected void loadComplete(Project project) {
+    //        if (trackSong.exists()) {
+    //            File causticFile = trackSong.getAbsoluteCausticFile();
+    //            try {
+    //                getController().getSoundSource().loadSong(causticFile);
+    //            } catch (CausticException e) {
+    //                e.printStackTrace();
+    //            }
+    //        }
+    //    }
+    //
+    //    @Override
+    //    protected void saveState(Project project) {
+    //        // save the state object
+    //        super.saveState(project);
+    //        try {
+    //            saveTrackSong();
+    //        } catch (IOException e) {
+    //            e.printStackTrace();
+    //        }
+    //    }
 }

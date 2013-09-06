@@ -34,16 +34,14 @@ import java.util.UUID;
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.StateControllerComponent;
-import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.library.item.LibraryScene;
-import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
@@ -61,18 +59,11 @@ import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-public class SoundSource extends StateControllerComponent implements ISoundSource {
+public class SoundSource extends ControllerComponent implements ISoundSource {
 
     private int maxNumTones = 14;
 
-    @Override
-    protected Class<? extends ControllerComponentState> getStateType() {
-        return SoundSourceModel.class;
-    }
-
-    SoundSourceModel getModel() {
-        return (SoundSourceModel)getInternalState();
-    }
+    private boolean restoring;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -83,8 +74,6 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
     //----------------------------------
 
     private int transpose;
-
-    private boolean restoring;
 
     @Override
     public int getTranspose() {
@@ -100,24 +89,26 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
     // tones
     //----------------------------------
 
+    private Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
+
     @Override
     public int getToneCount() {
-        return getModel().getTones().size();
+        return tones.size();
     }
 
     @Override
     public Collection<Tone> getTones() {
-        return Collections.unmodifiableCollection(getModel().getTones().values());
+        return Collections.unmodifiableCollection(tones.values());
     }
 
     @Override
     public Tone getTone(int index) {
-        return getModel().getTones().get(index);
+        return tones.get(index);
     }
 
     @Override
     public Tone getToneByName(String value) {
-        for (Tone tone : getModel().getTones().values()) {
+        for (Tone tone : tones.values()) {
             if (tone.getName().equals(value))
                 return tone;
         }
@@ -138,11 +129,6 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
                         System.out.println("Original value:" + object.getValue());
                     }
                 });
-    }
-
-    @Override
-    protected void closeProject(Project project) {
-        clearAndReset();
     }
 
     //--------------------------------------------------------------------------
@@ -271,7 +257,7 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
     public void clearAndReset() {
         getDispatcher().trigger(new OnSoundSourceClear());
 
-        ArrayList<Tone> remove = new ArrayList<Tone>(getModel().getTones().values());
+        ArrayList<Tone> remove = new ArrayList<Tone>(tones.values());
         for (Tone tone : remove) {
             toneRemove(tone);
         }
@@ -289,7 +275,7 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
         if (index > 13)
             throw new CausticException("Only 14 machines allowed in a rack");
 
-        if (getModel().getTones().containsKey(index))
+        if (tones.containsKey(index))
             throw new CausticException("{" + index + "} tone is already defined");
 
         if (!restoring)
@@ -363,12 +349,12 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
     }
 
     private void toneAdd(int index, Tone tone) {
-        getModel().getTones().put(index, tone);
+        tones.put(index, tone);
         getDispatcher().trigger(new OnSoundSourceToneAdd(tone));
     }
 
     private void toneRemove(Tone tone) {
-        getModel().getTones().remove(tone.getIndex());
+        tones.remove(tone.getIndex());
         getDispatcher().trigger(new OnSoundSourceToneRemove(tone));
     }
 
@@ -422,17 +408,13 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
     }
 
     //--------------------------------------------------------------------------
-    // Public Observer
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
     // Private Methods
     //--------------------------------------------------------------------------
 
     private int nextIndex() {
         int index = 0;
         for (index = 0; index < 15; index++) {
-            if (!getModel().getTones().containsKey(index))
+            if (!tones.containsKey(index))
                 break;
         }
         return index;
@@ -487,69 +469,5 @@ public class SoundSource extends StateControllerComponent implements ISoundSourc
             }
         }
         restoring = false;
-    }
-
-    /**
-     * Serialized - v1.0
-     * <ul>
-     * <li><code>descriptors</code> - A serialized {@link ToneDescriptor}.</li>
-     * </ul>
-     */
-    public static class SoundSourceModel extends ControllerComponentState {
-
-        private transient Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
-
-        //--------------------------------------------------------------------------
-        // Property API
-        //--------------------------------------------------------------------------
-
-        //----------------------------------
-        // descriptors
-        //----------------------------------
-
-        private Map<Integer, ToneDescriptor> descriptors = new HashMap<Integer, ToneDescriptor>();
-
-        public final Map<Integer, ToneDescriptor> getDescriptors() {
-            return descriptors;
-        }
-
-        //----------------------------------
-        // tones
-        //----------------------------------
-
-        Map<Integer, Tone> getTones() {
-            return tones;
-        }
-
-        //--------------------------------------------------------------------------
-        // Constructors
-        //--------------------------------------------------------------------------
-
-        public SoundSourceModel() {
-        }
-
-        public SoundSourceModel(ICaustkController controller) {
-            super(controller);
-        }
-
-        @Override
-        public void sleep() {
-            for (Tone tone : tones.values()) {
-                ToneDescriptor descriptor = new ToneDescriptor(tone.getIndex(), tone.getName(),
-                        tone.getToneType());
-                descriptors.put(tone.getIndex(), descriptor);
-            }
-        }
-
-        @Override
-        public void wakeup(ICaustkController controller) {
-            super.wakeup(controller);
-            //        for (Tone tone : tones.values()) {
-            //            tone.wakeup(controller);
-            //        }
-            for (@SuppressWarnings("unused")
-            ToneDescriptor descriptor : descriptors.values()) {
-            }
-        }
     }
 }

@@ -19,16 +19,10 @@
 
 package com.teotigraphix.caustk.system;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.StateControllerComponent;
-import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 
-public class SystemState extends StateControllerComponent implements ISystemState {
-
-    @Override
-    protected Class<? extends ControllerComponentState> getStateType() {
-        return SystemStateModel.class;
-    }
+public class SystemState extends ControllerComponent implements ISystemState {
 
     //----------------------------------
     // shiftEnabled
@@ -214,28 +208,10 @@ public class SystemState extends StateControllerComponent implements ISystemStat
 
     @Override
     public void restore() {
-        // TODO Auto-generated method stub
-
     }
 
-    /**
-     * Serialized - v1.0
-     * <ul>
-     * <li>N/A</li>
-     * </ul>
-     */
-    public static class SystemStateModel extends ControllerComponentState {
-
-        //--------------------------------------------------------------------------
-        // Constructors
-        //--------------------------------------------------------------------------
-
-        public SystemStateModel() {
-        }
-
-        public SystemStateModel(ICaustkController controller) {
-            super(controller);
-        }
-
+    @Override
+    public void onRegister() {
     }
+
 }

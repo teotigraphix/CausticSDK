@@ -23,12 +23,11 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
-import com.teotigraphix.caustk.controller.core.StateControllerComponent;
-import com.teotigraphix.caustk.controller.core.ControllerComponentState;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
@@ -36,7 +35,7 @@ import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixer extends StateControllerComponent implements ISoundMixer {
+public class SoundMixer extends ControllerComponent implements ISoundMixer {
 
     //----------------------------------
     // channels
@@ -44,23 +43,6 @@ public class SoundMixer extends StateControllerComponent implements ISoundMixer 
 
     Map<Integer, SoundMixerChannel> getChannels() {
         return masterMixer.getChannels();
-    }
-
-    //----------------------------------
-    // modelType
-    //----------------------------------
-
-    @Override
-    protected Class<? extends ControllerComponentState> getStateType() {
-        return SoundMixerState.class;
-    }
-
-    //----------------------------------
-    // model
-    //----------------------------------
-
-    SoundMixerState getModel() {
-        return (SoundMixerState)getInternalState();
     }
 
     //--------------------------------------------------------------------------
@@ -84,6 +66,7 @@ public class SoundMixer extends StateControllerComponent implements ISoundMixer 
         masterMixer.setController(getController());
     }
 
+    @Override
     public boolean hasChannel(int index) {
         return getChannels().containsKey(index);
     }
@@ -157,6 +140,10 @@ public class SoundMixer extends StateControllerComponent implements ISoundMixer 
         for (SoundMixerChannel channel : getChannels().values()) {
             channel.update();
         }
+    }
+
+    @Override
+    public void onRegister() {
     }
 
     //--------------------------------------------------------------------------
@@ -324,14 +311,4 @@ public class SoundMixer extends StateControllerComponent implements ISoundMixer 
 
     }
 
-    public static class SoundMixerState extends ControllerComponentState {
-
-        public SoundMixerState() {
-            super();
-        }
-
-        public SoundMixerState(ICaustkController controller) {
-            super(controller);
-        }
-    }
 }

@@ -15,9 +15,12 @@ import com.teotigraphix.caustk.tone.Tone;
 @SuppressWarnings("unused")
 public interface ISystemSequencer extends IControllerComponent, IRestore {
 
+    int getStep();
+
     //--------------------------------------------------------------------------
     // Native Song sequencer
     //--------------------------------------------------------------------------
+
     /**
      * Sets the mode for the song sequencers end.
      * 
@@ -332,13 +335,13 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
     /**
      * @see ISystemSequencer#isPlaying()
      */
-    public static class OnSongSequencerTransportChange {
+    public static class OnSystemSequencerTransportChange {
     }
 
     /**
      * @see ISystemSequencer#setTempo(float)
      */
-    public static class OnSongSequencerTempoChange {
+    public static class OnSystemSequencerTempoChange {
 
         private float tempo;
 
@@ -346,22 +349,22 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
             return tempo;
         }
 
-        public OnSongSequencerTempoChange(float tempo) {
+        public OnSystemSequencerTempoChange(float tempo) {
             this.tempo = tempo;
         }
     }
 
     public static class OnSystemSequencerBeatChange {
 
-        private int measure;
+        private final int measure;
 
-        private float beat;
+        private final float beat;
 
-        public int getMeasure() {
+        public final int getMeasure() {
             return measure;
         }
 
-        public float getBeat() {
+        public final float getBeat() {
             return beat;
         }
 
@@ -369,25 +372,5 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
             this.measure = measure;
             this.beat = beat;
         }
-
     }
-
-    /**
-     * @see ISystemSequencer#getDispatcher()
-     */
-    public static class OnSongSequencerMeasureChange {
-
-        private int measure;
-
-        public int getMeasure() {
-            return measure;
-        }
-
-        public OnSongSequencerMeasureChange(int measure) {
-            this.measure = measure;
-        }
-    }
-
-    int getStep();
-
 }
