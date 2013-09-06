@@ -17,9 +17,11 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller;
+package com.teotigraphix.caustk.controller.core;
 
-import com.teotigraphix.caustk.controller.core.Dispatcher;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.controller.IDispatcher;
 
 /**
  * Bas class for a {@link IControllerComponent}.

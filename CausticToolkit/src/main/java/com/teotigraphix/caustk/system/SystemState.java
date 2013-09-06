@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.system;
 
-import com.teotigraphix.caustk.controller.ControllerComponent;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.ControllerComponent;
 
 public class SystemState extends ControllerComponent implements ISystemState {
 
