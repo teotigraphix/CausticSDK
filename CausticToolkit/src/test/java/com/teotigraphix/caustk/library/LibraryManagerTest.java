@@ -81,6 +81,12 @@ public class LibraryManagerTest extends CaustkTestBase {
         phrases = new ArrayList<LibraryPhrase>(loadedLibrary.getPhrases());
         Assert.assertEquals(97, phrases.size());
 
+        LibraryScene scene = loadedLibrary.getScenes().get(0);
+
+        controller.getSoundSource().createScene(scene);
+
+        String prettyString = controller.getSerializeService().toPrettyString(scene);
+
         library.delete();
     }
 }

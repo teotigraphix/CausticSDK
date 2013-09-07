@@ -1,16 +1,18 @@
 
 package com.teotigraphix.caustk.library.item;
 
+import com.teotigraphix.caustk.sound.mixer.MasterMixer;
+
 public class SoundMixerDescriptor {
 
-    private String data;
+    private MasterMixer masterMixer;
 
-    public final String getData() {
-        return data;
+    public MasterMixer getMasterMixer() {
+        return masterMixer;
     }
 
-    public final void setData(String value) {
-        data = value;
+    public void setMasterMixer(MasterMixer value) {
+        masterMixer = value;
     }
 
     public SoundMixerDescriptor() {

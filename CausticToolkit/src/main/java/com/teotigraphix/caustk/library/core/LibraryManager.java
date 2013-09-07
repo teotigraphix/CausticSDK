@@ -384,8 +384,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         scene.setSoundSourceDescriptor(soundSourceDescriptor);
 
         SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
-        String data = getController().getSerializeService().toString(null); // XXX
-        soundMixerDescriptor.setData(data);
+        soundMixerDescriptor.setMasterMixer(getController().getSoundMixer().getMasterMixer());
         scene.setSoundMixerDescriptor(soundMixerDescriptor);
 
         TagUtils.addDefaultTags(name, getController(), scene);
