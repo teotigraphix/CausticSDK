@@ -11,12 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
- * The {@link GDXButton} disables the checked property when
+ * The {@link SelectButton} disables the checked property when
  * {@link #setToggle(boolean)} is set.
  * <p>
- * The {@link GDXButton} is not a toggle button.
+ * The {@link SelectButton} is not a toggle button.
  */
-public class GDXButton extends TextButton {
+public class SelectButton extends TextButton {
 
     //----------------------------------
     // properties
@@ -34,7 +34,7 @@ public class GDXButton extends TextButton {
 
     boolean isToggle = false;
 
-    private ButtonStyle style;
+    private SelectButtonStyle style;
 
     public boolean isToggle() {
         return isToggle;
@@ -86,33 +86,33 @@ public class GDXButton extends TextButton {
     }
 
     @Override
-    public ButtonStyle getStyle() {
+    public SelectButtonStyle getStyle() {
         return style;
     }
 
-    protected Class<? extends ButtonStyle> getStyleType() {
-        return ButtonStyle.class;
+    protected Class<? extends SelectButtonStyle> getStyleType() {
+        return SelectButtonStyle.class;
     }
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
-    public GDXButton(String text, Skin skin) {
+    public SelectButton(String text, Skin skin) {
         super(text, skin);
         // calls setStyle()
         style = skin.get(getStyleType());
         init();
     }
 
-    public GDXButton(String text, ButtonStyle style) {
+    public SelectButton(String text, SelectButtonStyle style) {
         super(text, style);
         // special constructor
         this.style = style;
         init();
     }
 
-    public GDXButton(String text, Skin skin, String styleName) {
+    public SelectButton(String text, Skin skin, String styleName) {
         super(text, skin, styleName);
         // calls setStyle()
         style = skin.get(styleName, getStyleType());
@@ -120,6 +120,7 @@ public class GDXButton extends TextButton {
     }
 
     protected void init() {
+    	isToggle = true;
     }
 
     //--------------------------------------------------------------------------
@@ -141,18 +142,18 @@ public class GDXButton extends TextButton {
     // Style
     //--------------------------------------------------------------------------
 
-    public static class ButtonStyle extends TextButtonStyle {
+    public static class SelectButtonStyle extends TextButtonStyle {
 
         public Drawable progressOverlay;
 
-        public ButtonStyle() {
+        public SelectButtonStyle() {
         }
 
-        public ButtonStyle(Drawable up, Drawable down, Drawable checked, BitmapFont font) {
+        public SelectButtonStyle(Drawable up, Drawable down, Drawable checked, BitmapFont font) {
             super(up, down, checked, font);
         }
 
-        public ButtonStyle(TextButtonStyle style) {
+        public SelectButtonStyle(TextButtonStyle style) {
             super(style);
         }
 

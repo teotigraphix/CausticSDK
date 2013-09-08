@@ -6,21 +6,24 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
 
-public class Knob extends Stack {
+public class Knob extends Table {
+
+    private final KnobStyle style;
 
     private Image background;
 
     private Image knob;
 
-    private Label label;
+    //----------------------------------
+    // Knob logic
+    //----------------------------------
 
     private float originalAngle = 0f;
 
@@ -36,11 +39,20 @@ public class Knob extends Stack {
 
     private int draggingPointer = -1;
 
-    private KnobStyle style;
-
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
+
+    private Skin skin;
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    @Override
+    public void setSkin(Skin skin) {
+        this.skin = skin;
+    }
 
     //----------------------------------
     // value
@@ -64,21 +76,6 @@ public class Knob extends Stack {
 
         Pools.free(changeEvent);
         return !cancelled;
-    }
-
-    //----------------------------------
-    // text
-    //----------------------------------
-
-    private String text;
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String value) {
-        text = value;
-        invalidate();
     }
 
     //----------------------------------
@@ -117,8 +114,6 @@ public class Knob extends Stack {
 
     private float minValue = 0f;
 
-    private Skin skin;
-
     public float getMinValue() {
         return minValue;
     }
@@ -129,59 +124,36 @@ public class Knob extends Stack {
     }
 
     //--------------------------------------------------------------------------
-    // Constructors
+    // Constructor
     //--------------------------------------------------------------------------
 
-    public Knob(float min, float max, float stepSize, String text, Skin skin) {
-        super();
+    public Knob(float min, float max, float stepSize, Skin skin) {
+        super(skin);
         minValue = min;
         maxValue = max;
         this.stepSize = stepSize;
-        this.text = text;
-        this.skin = skin;
-        setTouchable(Touchable.enabled);
-        setWidth(60);
-        setHeight(60);
+        setSkin(skin);
+        //setTouchable(Touchable.enabled);
         style = skin.get("default", KnobStyle.class);
-        createChildren();
+        initialize();
     }
 
-    private void createChildren() {
+    protected void createChildren() {
         background = new Image(style.background);
-        add(background);
 
         knob = new Image(style.knob);
-        knob.setWidth(60);
-        knob.setHeight(60);
-        add(knob);
+        knob.setTouchable(Touchable.disabled);
 
-        label = new Label(text, skin);
-        label.setAlignment(Align.center);
-        label.setFontScale(0.9f, 0.9f);
-        add(label);
+        Stack stack = new Stack();
+        stack.add(background);
+        stack.add(knob);
 
-        init();
+        add(stack).size(background.getPrefWidth(), background.getPrefHeight());
     }
 
-    @Override
-    public void layout() {
-        super.layout();
+    protected void initialize() {
+        createChildren();
 
-        knob.setOrigin(knob.getWidth() / 2, knob.getHeight() / 2);
-
-        if (currentAngle == null) {
-            currentAngle = getAngleFromValue(getValue());
-            lastAngle = currentAngle;
-        }
-
-        knob.setRotation(currentAngle);
-
-        label.setText(text);
-        label.setSize(getWidth(), label.getPrefHeight());
-        label.setPosition(0f, -label.getPrefHeight() - 5);
-    }
-
-    private void init() {
         addListener(new InputListener() {
 
             @Override
@@ -225,6 +197,20 @@ public class Knob extends Stack {
                 currentAngle = getAngleFromValue(getValue());
             }
         });
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
+
+        knob.setOrigin(knob.getWidth() / 2, knob.getHeight() / 2);
+
+        if (currentAngle == null) {
+            currentAngle = getAngleFromValue(getValue());
+            lastAngle = currentAngle;
+        }
+
+        knob.setRotation(currentAngle);
     }
 
     boolean calculatePositionAndValue(float x, float y) {
@@ -299,17 +285,26 @@ public class Knob extends Stack {
         return v;
     }
 
-    static public class KnobStyle {
-        /** The slider background, stretched only in one direction. */
+    public static class KnobStyle {
+
+        /**
+         * The slider background, stretched only in one direction.
+         */
         public Drawable background;
 
-        /** Optional. **/
+        /**
+         * Optional.
+         */
         public Drawable disabledBackground;
 
-        /** Optional, centered on the background. */
+        /**
+         * Optional, centered on the background.
+         */
         public Drawable knob, disabledKnob;
 
-        /** Optional. */
+        /**
+         * Optional.
+         */
         public Drawable knobBefore, knobAfter, disabledKnobBefore, disabledKnobAfter;
 
         public KnobStyle() {

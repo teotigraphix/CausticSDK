@@ -7,13 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class AutoRepeatButton extends GDXButton {
+public class AutoRepeatButton extends SelectButton {
 
     public AutoRepeatButton(String text, Skin skin) {
         super(text, skin);
     }
 
-    public AutoRepeatButton(String text, ButtonStyle style) {
+    public AutoRepeatButton(String text, SelectButtonStyle style) {
         super(text, style);
     }
 

@@ -21,6 +21,7 @@ local.properties
 .classpath
 .project
 
+doc/
 libs/
 CausticCore.dll
 CausticCore.lib

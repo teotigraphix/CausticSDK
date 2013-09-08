@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.teotigraphix.libgdx.ui.GDXButton.ButtonStyle;
+import com.teotigraphix.libgdx.ui.SelectButton.SelectButtonStyle;
 
 public class ButtonBar extends Table {
 
@@ -40,7 +40,7 @@ public class ButtonBar extends Table {
     public void setProgressAt(int index, float percent) {
         Array<Button> buttons = group.getButtons();
         for (int i = 0; i < buttons.size; i++) {
-            GDXToggleButton button = (GDXToggleButton)buttons.get(i);
+            SelectButton button = (SelectButton)buttons.get(i);
             if (i == index) {
                 button.setIsProgress(true);
                 button.setProgress(percent);
@@ -71,8 +71,8 @@ public class ButtonBar extends Table {
     protected void createChildren() {
         for (int i = 0; i < items.length; i++) {
             final int index = i;
-            final GDXToggleButton button = new GDXToggleButton(items[i], skin.get(buttonStyleName,
-                    ButtonStyle.class));
+            final SelectButton button = new SelectButton(items[i], skin.get(buttonStyleName,
+                    SelectButtonStyle.class));
             if (isVertical) {
                 add(button).fill().expand().minHeight(0).prefHeight(999);
                 row();
@@ -112,13 +112,14 @@ public class ButtonBar extends Table {
     public void disableFrom(int length) {
         SnapshotArray<Actor> children = getChildren();
         for (int i = 0; i < children.size; i++) {
-            GDXToggleButton button = (GDXToggleButton)children.get(i);
+            SelectButton button = (SelectButton)children.get(i);
             if (i < length) {
                 button.setDisabled(false);
                 button.invalidate();
             } else {
                 button.setDisabled(true);
             }
+
         }
 
     }
