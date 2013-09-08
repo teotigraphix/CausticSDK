@@ -211,8 +211,20 @@ public class Knob extends ControlTable {
 
     protected float pointToValue(float x, float y) {
         float result = 0f;
+        System.out.println("X:" + x + " Y:" + y);
 
-        currentAngle = x - originalAngle;
+        float absX = Math.abs(x);
+        float absY = Math.abs(y);
+
+        float delta = 0f;
+
+        if (absX > absY) {
+            delta = x;
+        } else {
+            delta = y;
+        }
+
+        currentAngle = (delta * 2) - originalAngle;
 
         //        // 280 degrees to min/mx minAng:40
         float spanAngle = 280; // 360 - (minimumAngle * 2);
