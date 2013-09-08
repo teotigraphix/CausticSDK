@@ -1,7 +1,10 @@
 
 package com.teotigraphix.libgdx.ui;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 
@@ -45,12 +48,17 @@ public class TextKnob extends Knob {
 
     public TextKnob(float min, float max, float stepSize, Skin skin) {
         super(min, max, stepSize, skin);
+        styleClass = TextKnobStyle.class;
     }
 
     public TextKnob(float min, float max, float stepSize, String text, Skin skin) {
-        super(min, max, stepSize, skin);
+        this(min, max, stepSize, skin);
         setText(text);
     }
+
+    //--------------------------------------------------------------------------
+    // Overridden :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     protected void createChildren() {
@@ -58,19 +66,32 @@ public class TextKnob extends Knob {
 
         row();
 
-        label = new Label(text, getSkin());
+        TextKnobStyle style = getStyle();
+        label = new Label(text, new LabelStyle(style.font, style.fontColor));
         label.setAlignment(Align.center);
         add(label);
     }
 
     @Override
-    public void validate() {
+    protected void commitProperties() {
         if (!textIsValue) {
             label.setText(text);
         } else {
             // will need some type of rounding
             label.setText(Float.toString(getValue()));
         }
-        super.validate();
+    }
+
+    public static class TextKnobStyle extends KnobStyle {
+
+        /**
+         * 
+         */
+        public BitmapFont font;
+
+        public Color fontColor;
+
+        public TextKnobStyle() {
+        }
     }
 }

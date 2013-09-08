@@ -8,14 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
 
-public class Knob extends Table {
-
-    private final KnobStyle style;
+public class Knob extends ControlTable {
 
     private Image background;
 
@@ -42,17 +39,6 @@ public class Knob extends Table {
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
-
-    private Skin skin;
-
-    public Skin getSkin() {
-        return skin;
-    }
-
-    @Override
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-    }
 
     //----------------------------------
     // value
@@ -134,11 +120,12 @@ public class Knob extends Table {
         this.stepSize = stepSize;
         setSkin(skin);
         //setTouchable(Touchable.enabled);
-        style = skin.get("default", KnobStyle.class);
-        initialize();
+        styleClass = KnobStyle.class;
     }
 
+    @Override
     protected void createChildren() {
+        KnobStyle style = getStyle();
         background = new Image(style.background);
 
         knob = new Image(style.knob);
@@ -151,9 +138,8 @@ public class Knob extends Table {
         add(stack).size(background.getPrefWidth(), background.getPrefHeight());
     }
 
+    @Override
     protected void initialize() {
-        createChildren();
-
         addListener(new InputListener() {
 
             @Override
