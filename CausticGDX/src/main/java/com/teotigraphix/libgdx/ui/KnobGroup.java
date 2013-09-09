@@ -11,7 +11,6 @@ public class KnobGroup extends ControlTable {
         super(skin);
         this.items = items;
         //styleClass = SliderGroupStyle.class;
-        setSkin(skin);
     }
 
     @Override

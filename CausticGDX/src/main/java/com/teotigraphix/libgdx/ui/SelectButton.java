@@ -1,141 +1,52 @@
 
 package com.teotigraphix.libgdx.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
-/**
- * The {@link SelectButton} disables the checked property when
- * {@link #setToggle(boolean)} is set.
- * <p>
- * The {@link SelectButton} is not a toggle button.
- */
-public class SelectButton extends TextButton {
+public class SelectButton extends ControlTable {
 
-    //----------------------------------
-    // properties
-    //----------------------------------
+    private Button button;
 
-    Map<String, Object> properties = new HashMap<String, Object>();
+    private String text;
 
-    public final Map<String, Object> getProperties() {
-        return properties;
+    private Label label;
+
+    private boolean isToggle;
+
+    public String getText() {
+        return text;
     }
 
-    //----------------------------------
-    // isToggle
-    //----------------------------------
-
-    boolean isToggle = false;
-
-    private SelectButtonStyle style;
-
-    public boolean isToggle() {
-        return isToggle;
-    }
-
-    public void setToggle(boolean value) {
-        isToggle = value;
-    }
-
-    //----------------------------------
-    // checked
-    //----------------------------------
-
-    @Override
-    public void setChecked(boolean value) {
-        if (isToggle) {
-            super.setChecked(value);
-        }
-    }
-
-    //----------------------------------
-    // progress
-    //----------------------------------
-
-    private float progress = 100f;
-
-    public float getProgress() {
-        return progress;
-    }
-
-    public void setProgress(float value) {
-        progress = value;
-        invalidate();
-    }
-
-    //----------------------------------
-    // isProgress
-    //----------------------------------
-
-    private boolean isProgress = false;
-
-    public boolean isProgress() {
-        return isProgress;
-    }
-
-    public void setIsProgress(boolean value) {
-        isProgress = value;
-        invalidate();
+    public SelectButton(String text, String styleName, Skin skin) {
+        super(skin);
+        this.text = text;
+        setStyleName(styleName);
+        styleClass = SelectButtonStyle.class;
     }
 
     @Override
-    public SelectButtonStyle getStyle() {
-        return style;
-    }
-
-    protected Class<? extends SelectButtonStyle> getStyleType() {
-        return SelectButtonStyle.class;
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-
-    public SelectButton(String text, Skin skin) {
-        super(text, skin);
-        // calls setStyle()
-        style = skin.get(getStyleType());
-        init();
-    }
-
-    public SelectButton(String text, SelectButtonStyle style) {
-        super(text, style);
-        // special constructor
-        this.style = style;
-        init();
-    }
-
-    public SelectButton(String text, Skin skin, String styleName) {
-        super(text, skin, styleName);
-        // calls setStyle()
-        style = skin.get(styleName, getStyleType());
-        init();
-    }
-
-    protected void init() {
-        isToggle = true;
-    }
-
-    //--------------------------------------------------------------------------
-    // Overridden Public :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void draw(SpriteBatch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-
-        Drawable progressOverlay = style.progressOverlay;
-        if (isProgress) {
-            float width = (progress / 100f) * getWidth();
-            progressOverlay.draw(batch, getX(), getY(), width, getHeight());
-        }
+    protected void createChildren() {
+        SelectButtonStyle style = getStyle();
+        button = new Button(style);
+        button.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (!isToggle)
+                    event.cancel();
+            }
+        });
+        add(button).size(style.width, style.height);
+        label = new Label(text, new LabelStyle(style.font, style.fontColor));
+        row();
+        add(label);
     }
 
     //--------------------------------------------------------------------------
@@ -145,6 +56,10 @@ public class SelectButton extends TextButton {
     public static class SelectButtonStyle extends TextButtonStyle {
 
         public Drawable progressOverlay;
+
+        public float width = 50f;
+
+        public float height = 30;
 
         public SelectButtonStyle() {
         }
@@ -158,4 +73,5 @@ public class SelectButton extends TextButton {
         }
 
     }
+
 }

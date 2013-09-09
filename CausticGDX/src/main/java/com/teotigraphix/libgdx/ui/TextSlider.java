@@ -51,7 +51,6 @@ public class TextSlider extends ControlTable {
     public TextSlider(String text, float minimum, float maximum, float stepSize, boolean vertical,
             Skin skin) {
         super(skin);
-        setSkin(skin);
         this.text = text;
         this.minimum = minimum;
         this.maximum = maximum;

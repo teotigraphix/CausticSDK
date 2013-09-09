@@ -118,7 +118,6 @@ public class Knob extends ControlTable {
         minValue = min;
         maxValue = max;
         this.stepSize = stepSize;
-        setSkin(skin);
         //setTouchable(Touchable.enabled);
         styleClass = KnobStyle.class;
     }

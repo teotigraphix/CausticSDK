@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.esotericsoftware.tablelayout.Cell;
-import com.teotigraphix.libgdx.ui.SelectButton;
+import com.teotigraphix.libgdx.ui.OldSelectButton;
 
 public class AlertDialog extends Dialog {
 
@@ -15,9 +15,9 @@ public class AlertDialog extends Dialog {
         return skin;
     }
 
-    private SelectButton okButton;
+    private OldSelectButton okButton;
 
-    private SelectButton cancelButton;
+    private OldSelectButton cancelButton;
 
     private OnAlertDialogListener listener;
 
@@ -40,7 +40,7 @@ public class AlertDialog extends Dialog {
 
     protected void createChildren() {
         // create buttons
-        okButton = new SelectButton("OK", skin);
+        okButton = new OldSelectButton("OK", skin);
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -48,7 +48,7 @@ public class AlertDialog extends Dialog {
                 hide();
             }
         });
-        cancelButton = new SelectButton("Cancel", skin);
+        cancelButton = new OldSelectButton("Cancel", skin);
         cancelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -43,7 +43,6 @@ public class TitleGroup extends ControlTable {
         this.text = text;
         this.labelStyleName = labelStyleName;
         this.labelPlacement = labelPlacement;
-        setSkin(skin);
         //debug();
     }
 

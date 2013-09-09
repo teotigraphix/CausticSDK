@@ -1,6 +1,9 @@
 
 package com.teotigraphix.libgdx.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -11,6 +14,18 @@ public abstract class ControlTable extends Table implements ISkinAware {
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // properties
+    //----------------------------------
+
+    Map<String, Object> properties;
+
+    public final Map<String, Object> getProperties() {
+        if (properties == null)
+            properties = new HashMap<String, Object>();
+        return properties;
+    }
 
     //----------------------------------
     // skin
@@ -63,6 +78,7 @@ public abstract class ControlTable extends Table implements ISkinAware {
 
     public ControlTable(Skin skin) {
         super(skin);
+        setSkin(skin);
     }
 
     @Override
