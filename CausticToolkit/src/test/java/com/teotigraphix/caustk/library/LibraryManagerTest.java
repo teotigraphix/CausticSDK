@@ -85,6 +85,7 @@ public class LibraryManagerTest extends CaustkTestBase {
 
         controller.getSoundSource().createScene(scene);
 
+        @SuppressWarnings("unused")
         String prettyString = controller.getSerializeService().toPrettyString(scene);
 
         library.delete();
