@@ -120,7 +120,7 @@ public class SelectButton extends TextButton {
     }
 
     protected void init() {
-    	isToggle = true;
+        isToggle = true;
     }
 
     //--------------------------------------------------------------------------

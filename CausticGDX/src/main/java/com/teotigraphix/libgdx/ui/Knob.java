@@ -211,7 +211,7 @@ public class Knob extends ControlTable {
 
     protected float pointToValue(float x, float y) {
         float result = 0f;
-        System.out.println("X:" + x + " Y:" + y);
+        //System.out.println("X:" + x + " Y:" + y);
 
         float absX = Math.abs(x);
         float absY = Math.abs(y);

@@ -3,27 +3,27 @@ package com.teotigraphix.libgdx.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class SliderGroup extends ControlTable {
+public class KnobGroup extends ControlTable {
 
-    private SliderItem[] items;
+    private KnobItem[] items;
 
-    public SliderGroup(SliderItem[] items, Skin skin) {
+    public KnobGroup(KnobItem[] items, Skin skin) {
         super(skin);
         this.items = items;
-        styleClass = SliderGroupStyle.class;
+        //styleClass = SliderGroupStyle.class;
         setSkin(skin);
     }
 
     @Override
     protected void createChildren() {
-        for (SliderItem item : items) {
-            TextSlider slider = new TextSlider(item.getText(), item.getMin(), item.getMax(),
-                    item.getStepSize(), true, getSkin());
-            add(slider).pad(4f);
+        for (KnobItem item : items) {
+            TextKnob child = new TextKnob(item.getMin(), item.getMax(), item.getStepSize(),
+                    item.getText(), getSkin());
+            add(child).pad(4f);
         }
     }
 
-    public static class SliderItem {
+    public static class KnobItem {
 
         private String text;
 
@@ -55,7 +55,7 @@ public class SliderGroup extends ControlTable {
             return data;
         }
 
-        public SliderItem(String text, float min, float max, float stepSize, Object data) {
+        public KnobItem(String text, float min, float max, float stepSize, Object data) {
             this.text = text;
             this.min = min;
             this.max = max;
@@ -64,7 +64,4 @@ public class SliderGroup extends ControlTable {
         }
     }
 
-    public static class SliderGroupStyle {
-
-    }
 }
