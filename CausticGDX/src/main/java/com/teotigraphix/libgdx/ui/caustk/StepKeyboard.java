@@ -2,6 +2,8 @@
 package com.teotigraphix.libgdx.ui.caustk;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.libgdx.ui.ControlTable;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.OnStepButtonListener;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.StepButtonItem;
@@ -10,12 +12,51 @@ public class StepKeyboard extends ControlTable {
 
     private StepButton lastStepButton;
 
+    private Stack stack;
+
+    private Table stepGroup;
+
+    private Table keyGroup;
+
     int[] sharps = new int[] {
             1, 4, 6, 9, 11, 13
     };
 
-    @SuppressWarnings("unused")
     private OnStepKeyboardListener onStepKeyboardListener;
+
+    public enum StepKeyboardMode {
+
+        Step(0),
+
+        Key(1);
+
+        private int index;
+
+        public int getIndex() {
+            return index;
+        }
+
+        StepKeyboardMode(int index) {
+            this.index = index;
+        }
+    }
+
+    //----------------------------------
+    // mode
+    //----------------------------------
+
+    private StepKeyboardMode mode;
+
+    public StepKeyboardMode getMode() {
+        return mode;
+    }
+
+    public void setMode(StepKeyboardMode value) {
+        if (value == mode)
+            return;
+        mode = value;
+        invalidate();
+    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -31,22 +72,91 @@ public class StepKeyboard extends ControlTable {
 
     @Override
     protected void createChildren() {
-        for (int i = 0; i < 16; i++) {
-            String text = "" + (i + 1);
-            String styleName = "step-button";
-            if (isSharp(i))
-                styleName = "step-button-sharp";
+        stack = new Stack();
 
-            StepButtonItem item = new StepButtonItem(i, text, styleName);
-            final StepButton stepButton = new StepButton(item, getSkin());
+        stepGroup = createStepGroup();
+        keyGroup = createKeyGroup();
+
+        stack.add(stepGroup);
+        stack.add(keyGroup);
+
+        add(stack);
+    }
+
+    @Override
+    public void validate() {
+        super.validate();
+
+        if (mode == StepKeyboardMode.Key) {
+            stepGroup.setVisible(false);
+            keyGroup.setVisible(true);
+        } else if (mode == StepKeyboardMode.Step) {
+            stepGroup.setVisible(true);
+            keyGroup.setVisible(false);
+        }
+    }
+
+    private Table createStepGroup() {
+        Table table = new Table();
+        for (int i = 0; i < 16; i++) {
+            StepButton stepButton = createButton(i, true);
             stepButton.setOnStepButtonListener(new OnStepButtonListener() {
                 @Override
                 public void onChange(int index, boolean selected) {
                     selectionChange(index, selected);
                 }
+
+                @Override
+                public void onTouchUp(int index) {
+                }
+
+                @Override
+                public void onTouchDown(int index) {
+                }
+
             });
-            add(stepButton).space(10f).size(50f, 70f).fill().expand().minWidth(0f).prefWidth(999f);
+            table.add(stepButton).space(10f).size(50f, 70f);
         }
+
+        return table;
+    }
+
+    private Table createKeyGroup() {
+        Table table = new Table();
+        for (int i = 0; i < 16; i++) {
+            StepButton stepButton = createButton(i, false);
+            stepButton.setOnStepButtonListener(new OnStepButtonListener() {
+                @Override
+                public void onChange(int index, boolean selected) {
+                }
+
+                @Override
+                public void onTouchUp(int index) {
+                    onStepKeyboardListener.onKeyUp(index);
+                }
+
+                @Override
+                public void onTouchDown(int index) {
+                    onStepKeyboardListener.onKeyDown(index);
+                }
+
+            });
+            table.add(stepButton).space(10f).size(50f, 70f);
+        }
+
+        return table;
+    }
+
+    private StepButton createButton(int index, boolean isToggle) {
+        String text = "" + (index + 1);
+        String styleName = "step-button";
+        if (isSharp(index))
+            styleName = "step-button-sharp";
+
+        final StepButtonItem item = new StepButtonItem(index, text, isToggle, styleName);
+        final StepButton stepButton = new StepButton(item, getSkin());
+
+        return stepButton;
     }
 
     //--------------------------------------------------------------------------
@@ -63,7 +173,11 @@ public class StepKeyboard extends ControlTable {
     }
 
     protected final StepButton getStepButton(int index) {
-        return (StepButton)getChildren().get(index);
+        if (mode == StepKeyboardMode.Key)
+            return (StepButton)keyGroup.getChildren().get(index);
+        else if (mode == StepKeyboardMode.Step)
+            return (StepButton)stepGroup.getChildren().get(index);
+        return null;
     }
 
     //--------------------------------------------------------------------------
@@ -76,6 +190,10 @@ public class StepKeyboard extends ControlTable {
 
     public interface OnStepKeyboardListener {
         void onStepChange(int index, boolean selected);
+
+        void onKeyDown(int index);
+
+        void onKeyUp(int index);
     }
 
     //--------------------------------------------------------------------------

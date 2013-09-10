@@ -2,9 +2,11 @@
 package com.teotigraphix.libgdx.ui.caustk;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.teotigraphix.libgdx.ui.ControlTable;
@@ -41,10 +43,21 @@ public class StepButton extends ControlTable {
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (noEvent)
+                if (noEvent || !item.isToggle())
                     event.cancel();
                 onStepButtonListener.onChange(getIndex(), button.isChecked());
 
+            }
+        });
+        button.addListener(new ActorGestureListener() {
+            @Override
+            public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onStepButtonListener.onTouchDown(getIndex());
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                onStepButtonListener.onTouchUp(getIndex());
             }
         });
         stack.add(button);
@@ -73,6 +86,10 @@ public class StepButton extends ControlTable {
 
     public interface OnStepButtonListener {
         void onChange(int index, boolean selected);
+
+        void onTouchUp(int index);
+
+        void onTouchDown(int index);
     }
 
     public static class StepButtonItem {
@@ -82,6 +99,12 @@ public class StepButton extends ControlTable {
         private String styleName;
 
         private int index;
+
+        private boolean isToggle;
+
+        public boolean isToggle() {
+            return isToggle;
+        }
 
         public int getIndex() {
             return index;
@@ -95,9 +118,10 @@ public class StepButton extends ControlTable {
             return text;
         }
 
-        public StepButtonItem(int index, String text, String styleName) {
+        public StepButtonItem(int index, String text, boolean isToggle, String styleName) {
             this.index = index;
             this.text = text;
+            this.isToggle = isToggle;
             this.styleName = styleName;
         }
 
