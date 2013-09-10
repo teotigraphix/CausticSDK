@@ -8,27 +8,26 @@ import com.teotigraphix.libgdx.ui.caustk.StepButton.StepButtonItem;
 
 public class StepKeyboard extends ControlTable {
 
-    @SuppressWarnings("unused")
-    private OnStepKeyboardListener onStepKeyboardListener;
-
-    public StepKeyboard(Skin skin) {
-        super(skin);
-        //debug();
-    }
-
-    StepButton lastStepButton;
+    private StepButton lastStepButton;
 
     int[] sharps = new int[] {
             1, 4, 6, 9, 11, 13
     };
 
-    private boolean isSharp(int index) {
-        for (int i = 0; i < sharps.length; i++) {
-            if (sharps[i] == index)
-                return true;
-        }
-        return false;
+    @SuppressWarnings("unused")
+    private OnStepKeyboardListener onStepKeyboardListener;
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public StepKeyboard(Skin skin) {
+        super(skin);
     }
+
+    //--------------------------------------------------------------------------
+    // Overridden :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     protected void createChildren() {
@@ -43,16 +42,33 @@ public class StepKeyboard extends ControlTable {
             stepButton.setOnStepButtonListener(new OnStepButtonListener() {
                 @Override
                 public void onChange(int index, boolean selected) {
-                    System.out.println("index:" + index + " selected:" + selected);
-                    if (lastStepButton != null)
-                        lastStepButton.selectActive(false);
-                    stepButton.selectActive(true);
-                    lastStepButton = stepButton;
+                    selectionChange(index, selected);
                 }
             });
             add(stepButton).space(10f).size(50f, 70f).fill().expand().minWidth(0f).prefWidth(999f);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // Protected :: Methods
+    //--------------------------------------------------------------------------
+
+    protected void selectionChange(int index, boolean selected) {
+        //                     System.out.println("index:" + index + " selected:" + selected);
+        StepButton button = getStepButton(index);
+        if (lastStepButton != null)
+            lastStepButton.selectActive(false);
+        button.selectActive(true);
+        lastStepButton = button;
+    }
+
+    protected final StepButton getStepButton(int index) {
+        return (StepButton)getChildren().get(index);
+    }
+
+    //--------------------------------------------------------------------------
+    // Listener
+    //--------------------------------------------------------------------------
 
     public void setOnStepKeyboardListener(OnStepKeyboardListener l) {
         onStepKeyboardListener = l;
@@ -61,4 +77,17 @@ public class StepKeyboard extends ControlTable {
     public interface OnStepKeyboardListener {
         void onStepChange(int index, boolean selected);
     }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
+
+    private boolean isSharp(int index) {
+        for (int i = 0; i < sharps.length; i++) {
+            if (sharps[i] == index)
+                return true;
+        }
+        return false;
+    }
+
 }
