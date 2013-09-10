@@ -42,18 +42,21 @@ public class MatrixStateSelector extends ControlTable {
 
     private ArrayMap<Integer, Integer> ledIndcies = new ArrayMap<Integer, Integer>();
 
-    public int getSelectedRow() {
-        return ledIndcies.get(selectedColumn);
+    //--------------------------------------------------------------------------
+    // Property :: API
+    //--------------------------------------------------------------------------
+
+    public MatrixState getState() {
+        return states[selectedColumn];
     }
 
-    public void setSelectedRow(int value) {
-        int old = getSelectedRow();
-        if (value == old)
-            return;
-        ledIndcies.put(selectedColumn, value);
-        fireChange();
-        invalidate();
+    public MatrixStateItem getStateItem() {
+        return states[selectedColumn].getItem(getSelectedRow());
     }
+
+    //----------------------------------
+    // selectedColumn
+    //----------------------------------
 
     private int selectedColumn;
 
@@ -69,11 +72,26 @@ public class MatrixStateSelector extends ControlTable {
         invalidate();
     }
 
-    private void fireChange() {
-        MatrixState state = states[selectedColumn];
-        MatrixStateItem item = state.getItem(getSelectedRow());
-        onMatrixStateSelectorListener.onChange(state, item);
+    //----------------------------------
+    // selectedRow of column
+    //----------------------------------
+
+    public int getSelectedRow() {
+        return ledIndcies.get(selectedColumn);
     }
+
+    public void setSelectedRow(int value) {
+        int old = getSelectedRow();
+        if (value == old)
+            return;
+        ledIndcies.put(selectedColumn, value);
+        fireChange();
+        invalidate();
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public MatrixStateSelector(MatrixState[] states, Skin skin) {
         super(skin);
@@ -114,63 +132,27 @@ public class MatrixStateSelector extends ControlTable {
         skin.add("default", selectButtonStyle);
     }
 
+    //--------------------------------------------------------------------------
+    // Overridden :: Methods
+    //--------------------------------------------------------------------------
+
     @Override
     protected void createChildren() {
-        Table buttonTable = createIncDecButtons();
-        add(buttonTable).fillY().expandY().padRight(10f);
-        Table ledTable = createLeds();
-        add(ledTable).fillY().expandY().padRight(10f);
-        //debug();
-        for (MatrixState state : states) {
-            Table table = new Table();
-            table.align(Align.top);
-            Array<MatrixStateItem> items = state.items;
-            Iterator<MatrixStateItem> i = items.iterator();
-            while (i.hasNext()) {
-                MatrixStateItem item = i.next();
-                Label label = new Label(item.getName(), getSkin(), "matrix-state-selector-label");
-                //label.setAlignment(Align.top);
-                table.add(label).left().top().width(75f);
-                table.row().top();
-                //table.debug();
-            }
-
-            add(table).expandY().fillY().padRight(10f);
-        }
+        createIncDecButtons();
+        createLeds();
+        createMatrix();
 
         row().padTop(10f);
         add();
         add();
 
-        for (MatrixState state : states) {
-            SelectButton selectButton = new SelectButton(state.getName(), "default", getSkin());
-            selectButton.setIsToggle(true);
-            selectButton.setIsGroup(true);
-            selectButton.setOnSelectButtonListener(new OnSelectButtonListener() {
-                @Override
-                public void onChange(SelectButton button) {
-                    onSelectionChange(buttons.indexOf(button, true));
-                }
-            });
-
-            buttons.add(selectButton);
-            add(selectButton).left();
-        }
-
-        ledIndcies.put(0, 0);
-        ledIndcies.put(1, 0);
-        ledIndcies.put(2, 0);
-        // createColumns();
-    }
-
-    protected void onSelectionChange(int index) {
-        setSelectedColumn(index);
+        createStateButtons();
     }
 
     @Override
     public void layout() {
         super.layout();
-        System.out.println("layout");
+
         Iterator<SelectButton> i = buttons.iterator();
         while (i.hasNext()) {
             SelectButton button = i.next();
@@ -180,21 +162,23 @@ public class MatrixStateSelector extends ControlTable {
         SelectButton button = buttons.get(selectedColumn);
         if (!button.isSelected()) {
             button.select(true);
-            System.out.println("true");
         }
 
         Iterator<Led> ledIterator = leds.iterator();
         while (ledIterator.hasNext()) {
             ledIterator.next().turnOff();
         }
+
         leds.get(getSelectedRow()).turnOn();
     }
 
-    private OnMatrixStateSelectorListener onMatrixStateSelectorListener;
+    //--------------------------------------------------------------------------
+    // Creation :: Methods
+    //--------------------------------------------------------------------------
 
-    private Table createLeds() {
+    private void createLeds() {
         Table table = new Table();
-        //table.debug();
+
         for (int i = 0; i < 5; i++) {
             Led led = new Led(getSkin());
             led.setStyleName("default");
@@ -203,12 +187,11 @@ public class MatrixStateSelector extends ControlTable {
             leds.add(led);
         }
 
-        return table;
+        add(table).fillY().expandY().padRight(10f);
     }
 
     private Table createIncDecButtons() {
         Table table = new Table();
-        //table.debug();
 
         Image decImage = new Image(getSkin().getDrawable("matrix_state_selector_dec"));
         decButton = new Button(decImage, getSkin(), DEC_BUTTON_STYLE_NAME);
@@ -230,9 +213,55 @@ public class MatrixStateSelector extends ControlTable {
                 increment();
             }
         });
+
         table.add(incButton).size(55f, 35f).bottom();
+
+        add(table).fillY().expandY().padRight(10f);
+
         return table;
     }
+
+    private void createMatrix() {
+        for (MatrixState state : states) {
+            Table table = new Table();
+            table.align(Align.top);
+
+            Array<MatrixStateItem> items = state.items;
+            Iterator<MatrixStateItem> i = items.iterator();
+            while (i.hasNext()) {
+                MatrixStateItem item = i.next();
+                Label label = new Label(item.getName(), getSkin(), "matrix-state-selector-label");
+                table.add(label).left().top().width(75f);
+                table.row().top();
+            }
+
+            add(table).expandY().fillY().padRight(10f);
+
+            // initialize the led map
+            ledIndcies.put(state.getIndex(), 0);
+        }
+    }
+
+    private void createStateButtons() {
+        for (MatrixState state : states) {
+            SelectButton selectButton = new SelectButton(state.getName(), "default", getSkin());
+            selectButton.setIsToggle(true);
+            selectButton.setIsGroup(true);
+            selectButton.setOnSelectButtonListener(new OnSelectButtonListener() {
+                @Override
+                public void onChange(SelectButton button) {
+                    onSelectionChange(buttons.indexOf(button, true));
+                }
+            });
+
+            buttons.add(selectButton);
+            add(selectButton).left();
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected :: Methods
+    //--------------------------------------------------------------------------
 
     protected void increment() {
         int index = getSelectedRow() + 1;
@@ -250,6 +279,12 @@ public class MatrixStateSelector extends ControlTable {
         setSelectedRow(index);
     }
 
+    //--------------------------------------------------------------------------
+    // Listener
+    //--------------------------------------------------------------------------
+
+    private OnMatrixStateSelectorListener onMatrixStateSelectorListener;
+
     public void setOnMatrixStateSelectorListener(OnMatrixStateSelectorListener l) {
         onMatrixStateSelectorListener = l;
     }
@@ -258,13 +293,19 @@ public class MatrixStateSelector extends ControlTable {
         void onChange(MatrixState state, MatrixStateItem item);
     }
 
-    public MatrixState getState() {
-        return states[selectedColumn];
+    private void fireChange() {
+        MatrixState state = states[selectedColumn];
+        MatrixStateItem item = state.getItem(getSelectedRow());
+        onMatrixStateSelectorListener.onChange(state, item);
     }
 
-    public MatrixStateItem getStateItem() {
-        return states[selectedColumn].getItem(getSelectedRow());
+    protected void onSelectionChange(int index) {
+        setSelectedColumn(index);
     }
+
+    //--------------------------------------------------------------------------
+    // Model
+    //--------------------------------------------------------------------------
 
     public static class MatrixState {
 
@@ -331,5 +372,4 @@ public class MatrixStateSelector extends ControlTable {
             return "[MatrixStateItem|" + name + "]";
         }
     }
-
 }

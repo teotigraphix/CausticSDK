@@ -17,15 +17,17 @@ public class SelectButton extends ControlTable {
 
     private Button button;
 
-    private String text;
-
     private Label label;
 
-    private boolean isToggle;
-
-    private OnSelectButtonListener onSelectButtonListener;
-
     private boolean noEvent;
+
+    //--------------------------------------------------------------------------
+    // Property :: API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // isGroup
+    //----------------------------------
 
     private boolean isGroup;
 
@@ -37,6 +39,12 @@ public class SelectButton extends ControlTable {
         isGroup = value;
     }
 
+    //----------------------------------
+    // isToggle
+    //----------------------------------
+
+    private boolean isToggle;
+
     public boolean isToggle() {
         return isToggle;
     }
@@ -44,6 +52,10 @@ public class SelectButton extends ControlTable {
     public void setIsToggle(boolean value) {
         isToggle = value;
     }
+
+    //----------------------------------
+    // selected
+    //----------------------------------
 
     public boolean isSelected() {
         return button.isChecked();
@@ -57,9 +69,19 @@ public class SelectButton extends ControlTable {
         noEvent = false;
     }
 
+    //----------------------------------
+    // text
+    //----------------------------------
+
+    private String text;
+
     public String getText() {
         return text;
     }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public SelectButton(String text, String styleName, Skin skin) {
         super(skin);
@@ -67,6 +89,10 @@ public class SelectButton extends ControlTable {
         setStyleName(styleName);
         styleClass = SelectButtonStyle.class;
     }
+
+    //--------------------------------------------------------------------------
+    // Overridden :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     protected void createChildren() {
@@ -95,6 +121,12 @@ public class SelectButton extends ControlTable {
         row();
         add(label);
     }
+
+    //--------------------------------------------------------------------------
+    // Listener
+    //--------------------------------------------------------------------------
+
+    private OnSelectButtonListener onSelectButtonListener;
 
     public void setOnSelectButtonListener(OnSelectButtonListener l) {
         onSelectButtonListener = l;

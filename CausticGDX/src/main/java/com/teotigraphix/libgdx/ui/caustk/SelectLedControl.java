@@ -137,8 +137,8 @@ public class SelectLedControl extends ControlTable {
     }
 
     @Override
-    public void validate() {
-        super.validate();
+    public void layout() {
+        super.layout();
 
         for (int i = 0; i < 8; i++) {
             top.get(i).turnOff();
