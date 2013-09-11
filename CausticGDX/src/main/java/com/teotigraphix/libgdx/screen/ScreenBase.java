@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -44,6 +44,8 @@ public class ScreenBase implements IScreen {
 
     private static final boolean DEV_MODE = false;
 
+    protected Color backgroundColor = new Color();
+
     protected IGame game;
 
     protected final Stage stage;
@@ -52,7 +54,7 @@ public class ScreenBase implements IScreen {
 
     private SpriteBatch batch;
 
-    private Skin skin;
+    private static Skin skin;
 
     private boolean initialized;
 
@@ -122,8 +124,7 @@ public class ScreenBase implements IScreen {
     @Override
     public Skin getSkin() {
         if (skin == null) {
-            FileHandle skinFile = Gdx.files.internal("skin/uiskin.json");
-            skin = new Skin(skinFile, getAtlas());
+            skin = new Skin(getAtlas());
         }
         return skin;
     }
@@ -179,8 +180,9 @@ public class ScreenBase implements IScreen {
 
         // (2) draw the result
 
-        // clear the screen with the given RGB color (black)
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
+        // clear the screen with the given RGB color
+        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.b, backgroundColor.g,
+                backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // draw the actors

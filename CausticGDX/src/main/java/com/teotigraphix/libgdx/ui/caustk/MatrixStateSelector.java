@@ -21,9 +21,7 @@ package com.teotigraphix.libgdx.ui.caustk;
 
 import java.util.Iterator;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
@@ -122,8 +120,8 @@ public class MatrixStateSelector extends ControlTable {
         skin.add("white", new Color(1, 1, 1, 1));
         skin.add("black", new Color(0, 0, 0, 1));
 
-        skin.add("default-font", new BitmapFont(Gdx.files.internal("skin/default.fnt"), false));
-        skin.add("eras-12-b", new BitmapFont(Gdx.files.internal("skin/Eras-12-B.fnt"), false));
+        //skin.add("default-font", new BitmapFont(Gdx.files.internal("skin/default.fnt"), false));
+        //skin.add("eras-12-b", new BitmapFont(Gdx.files.internal("skin/Eras-12-B.fnt"), false));
 
         ButtonStyle decButtonStyle = new ButtonStyle();
         decButtonStyle.up = skin.getDrawable("pad_up");
@@ -145,7 +143,7 @@ public class MatrixStateSelector extends ControlTable {
         selectButtonStyle.up = skin.getDrawable("pad_up");
         selectButtonStyle.down = skin.getDrawable("pad_down");
         selectButtonStyle.checked = skin.getDrawable("pad_down");
-        selectButtonStyle.font = skin.getFont("default-font");
+        selectButtonStyle.font = skin.getFont("eras-12-b");
         selectButtonStyle.fontColor = skin.getColor("white");
         skin.add("default", selectButtonStyle);
     }
