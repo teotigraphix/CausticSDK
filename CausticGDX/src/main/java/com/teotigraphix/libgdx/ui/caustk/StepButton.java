@@ -21,6 +21,7 @@ package com.teotigraphix.libgdx.ui.caustk;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -43,6 +44,16 @@ public class StepButton extends ControlTable {
 
     private StepButtonOverlayGroup overlay;
 
+    private ButtonGroup buttonGroup;
+
+    public ButtonGroup getButtonGroup() {
+        return buttonGroup;
+    }
+
+    public void setButtonGroup(ButtonGroup value) {
+        buttonGroup = value;
+    }
+
     public int getIndex() {
         return item.getIndex();
     }
@@ -57,6 +68,8 @@ public class StepButton extends ControlTable {
         stack = new Stack();
 
         button = new TextButton(item.getText(), getSkin(), item.getStyleName());
+        if (buttonGroup != null)
+            buttonGroup.add(button);
         button.getLabel().setAlignment(Align.top);
         button.addListener(new ChangeListener() {
             @Override
@@ -148,4 +161,5 @@ public class StepButton extends ControlTable {
     public void selectActive(boolean selected) {
         overlay.select(selected);
     }
+
 }

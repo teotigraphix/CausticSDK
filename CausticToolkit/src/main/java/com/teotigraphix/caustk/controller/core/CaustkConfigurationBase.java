@@ -25,7 +25,6 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
-import com.teotigraphix.caustk.sound.core.DesktopSoundGenerator;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**

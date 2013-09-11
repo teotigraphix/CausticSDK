@@ -6,7 +6,7 @@ import java.io.File;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
 import com.teotigraphix.caustk.core.internal.Constants;
-import com.teotigraphix.caustk.sound.core.DesktopSoundGenerator;
+import com.teotigraphix.caustk.core.internal.DesktopSoundGenerator;
 
 public class MockApplicationConfiguration extends CaustkConfigurationBase {
 

@@ -73,6 +73,10 @@ class CausticAudioLoop extends Thread {
     private static native void nativeSetProcessBufferSize(int nSize);
 }
 
+class CausticAudioMonitor extends Thread {
+    static native int nativeGetCurrentSongMeasure();
+}
+
 // =================================================================================================
 
 public class CausticCore {
@@ -86,7 +90,7 @@ public class CausticCore {
     }
 
     public float getCurrentSongMeasure() {
-        return nativeGetCurrentSongMeasure();
+        return CausticAudioMonitor.nativeGetCurrentSongMeasure();
     }
 
     public CausticCore() {
@@ -164,7 +168,7 @@ public class CausticCore {
 
     static native float nativeGetCurrentBeat();
 
-    static native int nativeGetCurrentSongMeasure();
+    // static native int nativeGetCurrentSongMeasure();
 
     static native int nativeGetVersion();
 }

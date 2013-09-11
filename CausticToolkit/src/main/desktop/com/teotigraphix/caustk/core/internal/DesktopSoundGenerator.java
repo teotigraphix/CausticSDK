@@ -17,12 +17,11 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sound.core;
+package com.teotigraphix.caustk.core.internal;
 
 import java.util.logging.Logger;
 
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.core.internal.CausticCoreDesktop;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 
 /**
