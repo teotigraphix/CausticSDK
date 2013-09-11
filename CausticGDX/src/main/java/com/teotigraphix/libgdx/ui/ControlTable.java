@@ -104,6 +104,8 @@ public abstract class ControlTable extends Table implements ISkinAware {
         if (!childrenCreated) {
             initialize();
             createChildren();
+            setWidth(getPrefWidth());
+            setHeight(getPrefHeight());
             childrenCreated = true;
         }
         commitProperties();
