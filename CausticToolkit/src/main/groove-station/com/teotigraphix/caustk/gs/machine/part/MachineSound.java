@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.gs.machine.parts;
+package com.teotigraphix.caustk.gs.machine.part;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 

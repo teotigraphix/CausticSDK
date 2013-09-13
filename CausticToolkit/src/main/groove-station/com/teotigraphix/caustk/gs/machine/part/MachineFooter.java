@@ -1,15 +1,19 @@
 
-package com.teotigraphix.caustk.gs.machine.parts;
+package com.teotigraphix.caustk.gs.machine.part;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 
-public class MachineControls extends MachineComponentPart {
+/**
+ * Holds any controls, status specific to the application and machine when in
+ * view.
+ */
+public class MachineFooter extends MachineComponentPart {
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MachineControls(GrooveMachine grooveMachine) {
+    public MachineFooter(GrooveMachine grooveMachine) {
         super(grooveMachine);
     }
 

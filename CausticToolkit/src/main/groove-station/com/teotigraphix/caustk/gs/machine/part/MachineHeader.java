@@ -1,19 +1,19 @@
 
-package com.teotigraphix.caustk.gs.machine.parts;
+package com.teotigraphix.caustk.gs.machine.part;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 
 /**
- * Holds any controls, status specific to the application and machine when in
- * view.
+ * Holds all application specific logo, title, controls as well as a group for
+ * machine specific controls.
  */
-public class MachineFooter extends MachineComponentPart {
+public class MachineHeader extends MachineComponentPart {
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MachineFooter(GrooveMachine grooveMachine) {
+    public MachineHeader(GrooveMachine grooveMachine) {
         super(grooveMachine);
     }
 

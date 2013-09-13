@@ -2,13 +2,13 @@
 package com.teotigraphix.caustk.gs.machine;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.gs.machine.parts.MachineControls;
-import com.teotigraphix.caustk.gs.machine.parts.MachineFooter;
-import com.teotigraphix.caustk.gs.machine.parts.MachineHeader;
-import com.teotigraphix.caustk.gs.machine.parts.MachineSequencer;
-import com.teotigraphix.caustk.gs.machine.parts.MachineSound;
-import com.teotigraphix.caustk.gs.machine.parts.MachineSystem;
-import com.teotigraphix.caustk.gs.machine.parts.MachineTransport;
+import com.teotigraphix.caustk.gs.machine.part.MachineControls;
+import com.teotigraphix.caustk.gs.machine.part.MachineFooter;
+import com.teotigraphix.caustk.gs.machine.part.MachineHeader;
+import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
+import com.teotigraphix.caustk.gs.machine.part.MachineSound;
+import com.teotigraphix.caustk.gs.machine.part.MachineSystem;
+import com.teotigraphix.caustk.gs.machine.part.MachineTransport;
 
 public abstract class GrooveMachine {
 

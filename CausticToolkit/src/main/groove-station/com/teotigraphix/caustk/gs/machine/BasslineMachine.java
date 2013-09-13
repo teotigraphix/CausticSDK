@@ -1,8 +1,11 @@
 
-package com.teotigraphix.caustk.gs.machine.parts;
+package com.teotigraphix.caustk.gs.machine;
 
-import com.teotigraphix.caustk.gs.machine.GrooveMachine;
-
+/*
+ * Part1 - Bassline
+ * Part2 - Bassline
+ * Part3 - Modular
+ */
 public class BasslineMachine extends GrooveMachine {
 
     public BasslineMachine() {

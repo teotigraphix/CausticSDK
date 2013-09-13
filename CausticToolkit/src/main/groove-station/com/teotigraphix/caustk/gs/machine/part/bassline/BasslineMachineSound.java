@@ -1,8 +1,8 @@
 
-package com.teotigraphix.caustk.gs.machine.parts.bassline;
+package com.teotigraphix.caustk.gs.machine.part.bassline;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
-import com.teotigraphix.caustk.gs.machine.parts.MachineSound;
+import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 
 public class BasslineMachineSound extends MachineSound {
 
