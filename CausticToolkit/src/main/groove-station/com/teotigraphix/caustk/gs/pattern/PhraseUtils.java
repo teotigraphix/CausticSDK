@@ -17,9 +17,9 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.pattern;
+package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.pattern.Phrase.Trigger;
+import com.teotigraphix.caustk.gs.pattern.Phrase.Trigger;
 
 public class PhraseUtils {
 

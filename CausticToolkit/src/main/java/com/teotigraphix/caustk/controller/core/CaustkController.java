@@ -39,8 +39,6 @@ import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.core.LibraryManager;
-import com.teotigraphix.caustk.pattern.IPatternManager;
-import com.teotigraphix.caustk.pattern.PatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
@@ -56,11 +54,6 @@ import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.mixer.SoundMixer;
 import com.teotigraphix.caustk.sound.source.SoundSource;
-import com.teotigraphix.caustk.system.IMemoryManager;
-import com.teotigraphix.caustk.system.ISystemState;
-import com.teotigraphix.caustk.system.Memory.Type;
-import com.teotigraphix.caustk.system.MemoryManager;
-import com.teotigraphix.caustk.system.SystemState;
 
 /**
  * @author Michael Schmalle
@@ -203,39 +196,6 @@ public class CaustkController implements ICaustkController {
     }
 
     //----------------------------------
-    // systemSequencer
-    //----------------------------------
-
-    private ISystemState systemState;
-
-    @Override
-    public ISystemState getSystemState() {
-        return systemState;
-    }
-
-    //----------------------------------
-    // patternManager
-    //----------------------------------
-
-    private IPatternManager patternManager;
-
-    @Override
-    public IPatternManager getPatternManager() {
-        return patternManager;
-    }
-
-    //----------------------------------
-    // memoryManager
-    //----------------------------------
-
-    private IMemoryManager memoryManager;
-
-    @Override
-    public IMemoryManager getMemoryManager() {
-        return memoryManager;
-    }
-
-    //----------------------------------
     // commandManager
     //----------------------------------
 
@@ -343,8 +303,6 @@ public class CaustkController implements ICaustkController {
         // sub composites will add their ICommands in their constructors
 
         serializeService = new SerializeService(this);
-        systemState = new SystemState(this);
-        memoryManager = new MemoryManager(this);
 
         commandManager = new CommandManager(this);
         projectManager = new ProjectManager(this);
@@ -357,20 +315,15 @@ public class CaustkController implements ICaustkController {
         trackSequencer = new TrackSequencer(this);
         queueSequencer = new QueueSequencer(this);
 
-        patternManager = new PatternManager(this);
-
         components.add(libraryManager);
         components.add(trackSequencer);
         components.add(soundMixer);
         components.add(systemSequencer);
-        components.add(patternManager);
         components.add(queueSequencer);
 
         for (IControllerComponent component : components) {
             component.onRegister();
         }
-
-        memoryManager.setSelectedMemoryType(Type.USER);
 
         projectManager.initialize();
     }

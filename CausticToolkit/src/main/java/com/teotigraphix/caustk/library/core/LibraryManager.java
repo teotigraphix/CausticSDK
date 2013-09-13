@@ -45,13 +45,13 @@ import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.library.item.SoundMixerDescriptor;
 import com.teotigraphix.caustk.library.item.SoundSourceDescriptor;
-import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.utils.Compress;
+import com.teotigraphix.caustk.utils.PatternUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class LibraryManager extends ControllerComponent implements ILibraryManager {

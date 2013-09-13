@@ -13,7 +13,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.pattern.PatternUtils;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
@@ -23,6 +22,7 @@ import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
  * @see OnTrackSequencerLoad

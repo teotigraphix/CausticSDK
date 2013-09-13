@@ -17,59 +17,20 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.pattern;
+package com.teotigraphix.caustk.gs.pattern;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.library.item.LibraryPattern;
-import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 
 public class Pattern {
 
-    private transient ICaustkController controller;
+    private final ICaustkController controller;
 
-    //--------------------------------------------------------------------------
-    // Public Property API
-    //--------------------------------------------------------------------------
-
-    /**
-     * Dispatch an event through the {@link ICaustkController#getDispatcher()}.
-     * 
-     * @param event
-     */
-    public void dispatch(Object event) {
-        controller.getDispatcher().trigger(event);
-    }
-
-    //----------------------------------
-    // patternItem
-    //----------------------------------
-
-    private LibraryPattern patternItem;
-
-    /**
-     * The {@link LibraryPattern} data.
-     * <p>
-     * The info will be set as the pattern is being created by the provider.
-     * 
-     * @see PatternProvider#get(int)
-     */
-    public LibraryPattern getPatternItem() {
-        return patternItem;
-    }
-
-    //----------------------------------
-    // index
-    //----------------------------------
-
-    /**
-     * The location within the memory's bank that this pattern is located.
-     */
-    public int getIndex() {
-        return patternItem.getIndex();
+    public ICaustkController getController() {
+        return controller;
     }
 
     //----------------------------------
@@ -102,8 +63,6 @@ public class Pattern {
 
     public void setTempo(float value) {
         tempo = value;
-        //controller.api(SequencerAPI.class).setTempo(value);
-        controller.getSystemSequencer().setTempo(value);
     }
 
     //----------------------------------
@@ -156,25 +115,23 @@ public class Pattern {
      * Sets the selected part of the pattern.
      * 
      * @param value The part to be selected.
-     * @see OnPatternSelectedPartChange
      */
     public void setSelectedPart(Part value) {
         if (selectedPart == value)
             return;
 
-        Part oldPart = selectedPart;
+        //GrooveMachinePart oldPart = selectedPart;
         selectedPart = value;
 
-        dispatch(new OnPatternSelectedPartChange(selectedPart, oldPart));
+        //dispatch(new OnPatternSelectedPartChange(selectedPart, oldPart));
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Pattern(ICaustkController controller, LibraryPattern patternItem) {
+    public Pattern(ICaustkController controller) {
         this.controller = controller;
-        this.patternItem = patternItem;
     }
 
     //--------------------------------------------------------------------------
@@ -186,33 +143,4 @@ public class Pattern {
             return;
         parts.add(part);
     }
-
-    //--------------------------------------------------------------------------
-    // Observer Event API
-    //--------------------------------------------------------------------------
-
-    /**
-     * Dispatched when the {@link Pattern#setSelectedPart(Part)} is called.
-     * 
-     * @see SystemSequencer#getDispatcher()
-     */
-    public static class OnPatternSelectedPartChange {
-        private Part part;
-
-        private Part oldPart;
-
-        public final Part getPart() {
-            return part;
-        }
-
-        public final Part getOldPart() {
-            return oldPart;
-        }
-
-        public OnPatternSelectedPartChange(Part part, Part oldPart) {
-            this.part = part;
-            this.oldPart = oldPart;
-        }
-    }
-
 }

@@ -26,7 +26,6 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.pattern.IPatternManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
@@ -35,8 +34,6 @@ import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.system.IMemoryManager;
-import com.teotigraphix.caustk.system.ISystemState;
 
 /**
  * @author Michael Schmalle
@@ -91,12 +88,6 @@ public interface ICaustkController extends ICausticEngine {
     ITrackSequencer getTrackSequencer();
 
     IQueueSequencer getQueueSequencer();
-
-    ISystemState getSystemState();
-
-    IPatternManager getPatternManager();
-
-    IMemoryManager getMemoryManager();
 
     ICommandManager getCommandManager();
 

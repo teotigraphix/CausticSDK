@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.pattern;
+package com.teotigraphix.caustk.gs.pattern;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,8 @@ public class Phrase {
     private LibraryPhrase libraryPhrase;
 
     /**
-     * The {@link LibraryPhrase} assigned when the {@link Phrase} was created.
+     * The {@link LibraryPhrase} assigned when the {@link Phrase}
+     * was created.
      */
     public LibraryPhrase getLibraryPhrase() {
         return libraryPhrase;
@@ -83,9 +84,9 @@ public class Phrase {
     public void setScale(Scale value) {
         if (scale == value)
             return;
-        Scale oldScale = scale;
+        //Scale oldScale = scale;
         scale = value;
-        getPart().getPattern().dispatch(new OnPhraseScaleChange(scale, oldScale));
+        //        getPart().getPattern().dispatch(new OnPhraseScaleChange(scale, oldScale));
     }
 
     //----------------------------------
@@ -130,9 +131,9 @@ public class Phrase {
         // if p = 1 and len = 1
         if (value < 0 || value > getLength())
             return;
-        int oldPosition = position;
+        //int oldPosition = position;
         position = value;
-        getPart().getPattern().dispatch(new OnPhrasePositionChange(position, oldPosition));
+        //        getPart().getPattern().dispatch(new OnPhrasePositionChange(position, oldPosition));
     }
 
     //----------------------------------
@@ -147,7 +148,8 @@ public class Phrase {
      * Sets the phrase's new length.
      * <p>
      * The {@link Pattern#setLength(int)} will set this and when a
-     * {@link Phrase} is committed, the length of the owning pattern is used.
+     * {@link Phrase} is committed, the length of the owning
+     * pattern is used.
      * <p>
      * This should never be set from other than the {@link Pattern}.
      * 
@@ -174,7 +176,7 @@ public class Phrase {
 
         updateTriggers(value, oldValue);
 
-        getPart().getPattern().dispatch(new OnPhraseLengthChange(value, oldValue));
+        //        getPart().getPattern().dispatch(new OnPhraseLengthChange(value, oldValue));
     }
 
     /**
@@ -321,7 +323,7 @@ public class Phrase {
     }
 
     protected void fireChange(TriggerChangeKind kind, Trigger trigger) {
-        getPart().getPattern().dispatch(new OnPhraseTriggerChange(kind, trigger));
+        //        getPart().getPattern().dispatch(new OnPhraseTriggerChange(kind, trigger));
     }
 
     Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
@@ -487,7 +489,7 @@ public class Phrase {
         for (Trigger trigger : getSteps()) {
             triggerUpdatePitch(trigger.getStep(), trigger.getPitch() + delta);
         }
-        getPart().getPattern().dispatch(new OnPhraseTransposeChange(delta));
+        //        getPart().getPattern().dispatch(new OnPhraseTransposeChange(delta));
     }
 
     /**

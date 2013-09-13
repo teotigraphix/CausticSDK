@@ -17,24 +17,14 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.pattern;
+package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.tone.Tone;
 
-public interface IPatternManager extends IControllerComponent {
+public class RhythmPart extends Part {
 
-    Pattern playPattern(int last);
-
-    Pattern getPattern();
-
-    void playNextPattern();
-
-    void setNextPattern(int last);
-
-    Pattern getPendingPattern();
-
-    void configure(Pattern pattern);
-
-    void commit(Pattern pendingPattern);
+    public RhythmPart(Pattern pattern, Tone tone) {
+        super(pattern, tone);
+    }
 
 }

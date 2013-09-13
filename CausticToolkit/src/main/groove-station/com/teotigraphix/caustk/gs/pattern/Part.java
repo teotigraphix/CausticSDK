@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.pattern;
+package com.teotigraphix.caustk.gs.pattern;
 
 import com.teotigraphix.caustk.tone.Tone;
 
@@ -100,10 +100,11 @@ public class Part {
     }
 
     /**
-     * Transposes the {@link Phrase} by the delta positive or negative.
+     * Transposes the {@link Phrase} by the delta positive or
+     * negative.
      * <p>
-     * The {@link Phrase} will track the original, the value of 0 will set the
-     * original pitch on the phrase.
+     * The {@link Phrase} will track the original, the value of 0
+     * will set the original pitch on the phrase.
      * 
      * @param delta
      */

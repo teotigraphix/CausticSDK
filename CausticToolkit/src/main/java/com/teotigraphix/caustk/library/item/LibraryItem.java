@@ -23,9 +23,18 @@ import java.util.UUID;
 
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.core.MetadataInfo;
-import com.teotigraphix.caustk.system.MemorySlotItem;
 
-public abstract class LibraryItem extends MemorySlotItem {
+public abstract class LibraryItem { //extends MemorySlotItem {
+
+    private int index;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     private transient Library library;
 

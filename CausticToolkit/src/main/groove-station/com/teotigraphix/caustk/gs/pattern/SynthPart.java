@@ -17,12 +17,24 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.system;
+package com.teotigraphix.caustk.gs.pattern;
 
-/**
- * Shift function enums implement this so they can be passed to the
- * {@link SystemState#select()} method.
- */
-public interface IShiftFunction {
+import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.components.SynthComponent;
 
+public class SynthPart extends Part {
+
+    public SynthPart(Pattern pattern, Tone tone) {
+        super(pattern, tone);
+    }
+
+    public void noteOn(int pitch, float velocity) {
+        SynthComponent synth = getTone().getComponent(SynthComponent.class);
+        synth.noteOn(pitch, velocity);
+    }
+
+    public void noteOff(int pitch) {
+        SynthComponent synth = getTone().getComponent(SynthComponent.class);
+        synth.noteOff(pitch);
+    }
 }
