@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.gs.pattern.Phrase.Trigger;
-
 public class PhraseUtils {
 
     private static final float STEP_FRACTION = 0.0625f;
@@ -35,21 +33,21 @@ public class PhraseUtils {
         return Float.toString(NUM_BEATS * stepFraction);
     }
 
-    public static float incrementGate(Phrase phrase, Trigger trigger) {
+    public static float incrementGate(Phrase phrase, Note note) {
         //        float beat = Resolution.toBeat(trigger.getIndex(), phrase
         //                .getResolution());
-        float gate = trigger.getGate();
+        float gate = note.getGate();
         gate += STEP_FRACTION;
         gate = Math.max(Math.min(gate, MAX_STEP), MIN_STEP);
-        phrase.triggerUpdateGate(trigger.getStep(), gate);
-        return trigger.getGate();
+        phrase.triggerUpdateGate(note.getStep(phrase.getResolution()), gate);
+        return note.getGate();
     }
 
-    public static float decrementGate(Phrase phrase, Trigger trigger) {
+    public static float decrementGate(Phrase phrase, Note trigger) {
         float gate = trigger.getGate();
         gate -= 0.0625f;
         gate = Math.max(Math.min(gate, MAX_STEP), MIN_STEP);
-        phrase.triggerUpdateGate(trigger.getStep(), gate);
+        phrase.triggerUpdateGate(trigger.getStep(phrase.getResolution()), gate);
         return trigger.getGate();
     }
 

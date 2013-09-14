@@ -35,9 +35,7 @@ import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolut
 
 public class Phrase {
 
-    public enum Scale {
-        SIXTEENTH, SIXTEENTH_TRIPLET, THIRTYSECOND, THIRTYSECOND_TRIPLET
-    }
+    Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -50,8 +48,7 @@ public class Phrase {
     private LibraryPhrase libraryPhrase;
 
     /**
-     * The {@link LibraryPhrase} assigned when the {@link Phrase}
-     * was created.
+     * The {@link LibraryPhrase} assigned when the {@link Phrase} was created.
      */
     public LibraryPhrase getLibraryPhrase() {
         return libraryPhrase;
@@ -148,8 +145,7 @@ public class Phrase {
      * Sets the phrase's new length.
      * <p>
      * The {@link Pattern#setLength(int)} will set this and when a
-     * {@link Phrase} is committed, the length of the owning
-     * pattern is used.
+     * {@link Phrase} is committed, the length of the owning pattern is used.
      * <p>
      * This should never be set from other than the {@link Pattern}.
      * 
@@ -197,7 +193,7 @@ public class Phrase {
             for (int i = 0; i < len; i++) {
                 float beat = Resolution.toBeat(i, getResolution());
                 //System.out.println("b = " + beat);
-                Trigger trigger = new Trigger(beat, 60, 0.25f, 1f, 0);
+                Trigger trigger = new Trigger(beat);
                 map.put(beat, trigger);
             }
         } else if (length > oldLength) {
@@ -207,7 +203,7 @@ public class Phrase {
             for (int i = startLen; i < len; i++) {
                 float beat = Resolution.toBeat(i, getResolution());
                 //System.out.println("b = " + beat);
-                Trigger trigger = new Trigger(beat, 60, 0.25f, 1f, 0);
+                Trigger trigger = new Trigger(beat);
                 map.put(beat, trigger);
             }
         }
@@ -251,16 +247,20 @@ public class Phrase {
      * <p>
      * A copy of the collection is returned.
      */
-    public List<Trigger> getSteps() {
+    public List<Trigger> getTriggers() {
         return new ArrayList<Trigger>(map.values());
     }
 
-    public List<Trigger> getViewSteps() {
+    public List<Trigger> getViewTriggers() {
         // find the start (position - 1) * resolution
         int fromStep = (position - 1) * indciesInView;
         // find the end fromIndex + scale
         int toStep = endStepInView(fromStep);
-        return new ArrayList<Phrase.Trigger>(map.values()).subList(fromStep, toStep);
+        return new ArrayList<Trigger>(map.values()).subList(fromStep, toStep);
+    }
+
+    public final Trigger getTrigger(float beat) {
+        return map.get(beat);
     }
 
     /**
@@ -269,8 +269,8 @@ public class Phrase {
      * 
      * @param step The absolute step position within the phrase.
      */
-    public Trigger getStep(int step) {
-        return map.get(Resolution.toBeat(step, getResolution()));
+    public final Trigger getTrigger(int step) {
+        return getTrigger(Resolution.toBeat(step, getResolution()));
     }
 
     public void setNoteData(String data) {
@@ -314,128 +314,38 @@ public class Phrase {
 
         Trigger trigger = getTrigger(step);
         if (trigger == null) {
-            trigger = new Trigger(beat, pitch, gate, velocity, flags);
+            trigger = new Trigger(beat);
             map.put(beat, trigger);
-        } else {
-            trigger.update(beat, pitch, gate, velocity, flags);
         }
-        trigger.selected = true;
+
+        Note note = trigger.getNote(beat, pitch);
+        if (note == null) {
+            note = trigger.addNote(beat, pitch, gate, velocity, flags);
+        }
+
+        note.update(beat, pitch, gate, velocity, flags);
+
+        trigger.setSelected(true);
     }
 
-    protected void fireChange(TriggerChangeKind kind, Trigger trigger) {
+    protected void fireChange(TriggerChangeKind kind, Note trigger) {
         //        getPart().getPattern().dispatch(new OnPhraseTriggerChange(kind, trigger));
     }
 
-    Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
-
-    private Trigger getTrigger(float beat) {
-        return map.get(beat);
+    public final boolean containsTrigger(float beat) {
+        return map.containsKey(beat);
     }
 
-    private Trigger getTrigger(int step) {
-        final float beat = Resolution.toBeat(step, getResolution());
-        return getTrigger(beat);
-    }
-
-    public static class OnPhraseTriggerChange {
-
-        private TriggerChangeKind kind;
-
-        private Trigger trigger;
-
-        public final TriggerChangeKind getKind() {
-            return kind;
-        }
-
-        public final Trigger getTrigger() {
-            return trigger;
-        }
-
-        public OnPhraseTriggerChange(TriggerChangeKind kind, Trigger trigger) {
-            this.trigger = trigger;
-        }
-    }
-
-    public enum TriggerChangeKind {
-        RESET, PITCH, GATE, VELOCITY, FLAGS, SELECTED
-    }
-
-    public class Trigger {
-
-        private float beat;
-
-        private int pitch;
-
-        private float gate;
-
-        private float velocity;
-
-        private int flags = 0;
-
-        public final float getBeat() {
-            return beat;
-        }
-
-        public final int getPitch() {
-            return pitch;
-        }
-
-        public final float getGate() {
-            return gate;
-        }
-
-        public final float getVelocity() {
-            return velocity;
-        }
-
-        public final int getFlags() {
-            return flags;
-        }
-
-        private boolean selected = false;
-
-        public Trigger(float beat, int pitch, float gate, float velocity, int flags) {
-            this.beat = beat;
-            this.pitch = pitch;
-            this.gate = gate;
-            this.velocity = velocity;
-            this.flags = flags;
-        }
-
-        public void update(float beat, int pitch, float gate, float velocity, int flags) {
-            this.beat = beat;
-            this.pitch = pitch;
-            this.gate = gate;
-            this.velocity = velocity;
-            this.flags = flags;
-        }
-
-        /**
-         * Returns the step value relative to the containing
-         * {@link Phrase#getResolution()}.
-         */
-        public int getStep() {
-            return Resolution.toStep(beat, getResolution());
-        }
-
-        public int getStep(Resolution resolution) {
-            return Resolution.toStep(beat, resolution);
-        }
-
-        public boolean isSelected() {
-            return selected;
-        }
-
-        @Override
-        public String toString() {
-            return "[" + getStep() + "] " + beat + ":" + pitch + "-" + selected;
-        }
+    public final boolean containsTrigger(int step) {
+        float beat = Resolution.toBeat(step, getResolution());
+        return containsTrigger(beat);
     }
 
     public void triggerOn(int step) {
-        Trigger trigger = getStep(step);
-        triggerOn(step, trigger.getPitch(), trigger.getGate(), trigger.getVelocity(),
-                trigger.getFlags());
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerOn(step, note.getPitch(), note.getGate(), note.getVelocity(), note.getFlags());
+        }
     }
 
     public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags) {
@@ -444,23 +354,31 @@ public class Phrase {
     }
 
     public void triggerUpdatePitch(int step, int pitch) {
-        Trigger trigger = getStep(step);
-        triggerUpdate(step, pitch, trigger.getGate(), trigger.getVelocity(), trigger.getFlags());
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerUpdate(step, pitch, note.getGate(), note.getVelocity(), note.getFlags());
+        }
     }
 
     public void triggerUpdateGate(int step, float gate) {
-        Trigger trigger = getStep(step);
-        triggerUpdate(step, trigger.getPitch(), gate, trigger.getVelocity(), trigger.getFlags());
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerUpdate(step, note.getPitch(), gate, note.getVelocity(), note.getFlags());
+        }
     }
 
     public void triggerUpdateVelocity(int step, float velocity) {
-        Trigger trigger = getStep(step);
-        triggerUpdate(step, trigger.getPitch(), trigger.getGate(), velocity, trigger.getFlags());
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerUpdate(step, note.getPitch(), note.getGate(), velocity, note.getFlags());
+        }
     }
 
     public void triggerUpdateFlags(int step, int flags) {
-        Trigger trigger = getStep(step);
-        triggerUpdate(step, trigger.getPitch(), trigger.getGate(), trigger.getVelocity(), flags);
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerUpdate(step, note.getPitch(), note.getGate(), note.getVelocity(), flags);
+        }
     }
 
     /**
@@ -471,8 +389,10 @@ public class Phrase {
      */
     public void triggerOff(int step) {
         Trigger trigger = getTrigger(step);
-        getPatternSequencer().triggerOff(getResolution(), step, trigger.getPitch());
-        trigger.selected = false;
+        for (Note note : trigger.getNotes()) {
+            getPatternSequencer().triggerOff(getResolution(), step, note.getPitch());
+        }
+        trigger.setSelected(false);
     }
 
     /**
@@ -486,8 +406,10 @@ public class Phrase {
      */
     public void transpose(int delta) {
         // XXX Its going to matter if the parent is rhythm or synth eventually
-        for (Trigger trigger : getSteps()) {
-            triggerUpdatePitch(trigger.getStep(), trigger.getPitch() + delta);
+        for (Trigger trigger : getTriggers()) {
+            for (Note note : trigger.getNotes()) {
+                triggerUpdatePitch(note.getStep(getResolution()), note.getPitch() + delta);
+            }
         }
         //        getPart().getPattern().dispatch(new OnPhraseTransposeChange(delta));
     }
@@ -635,12 +557,34 @@ public class Phrase {
 
     @Override
     public String toString() {
-        //        return "[Phrase("
-        //                + getPart().getIndex()
-        //                + ","
-        //                + getPart().getTone().getMachine().getSequencer().getActiveStepPhrase()
-        //                        .getStepMap().toString() + ")]";
         return "[Phrase(" + getPart().getIndex() + ")]";
+    }
+
+    public static class OnPhraseTriggerChange {
+
+        private TriggerChangeKind kind;
+
+        private Note trigger;
+
+        public final TriggerChangeKind getKind() {
+            return kind;
+        }
+
+        public final Note getTrigger() {
+            return trigger;
+        }
+
+        public OnPhraseTriggerChange(TriggerChangeKind kind, Note trigger) {
+            this.trigger = trigger;
+        }
+    }
+
+    public enum TriggerChangeKind {
+        RESET, PITCH, GATE, VELOCITY, FLAGS, SELECTED
+    }
+
+    public enum Scale {
+        SIXTEENTH, SIXTEENTH_TRIPLET, THIRTYSECOND, THIRTYSECOND_TRIPLET
     }
 
 }
