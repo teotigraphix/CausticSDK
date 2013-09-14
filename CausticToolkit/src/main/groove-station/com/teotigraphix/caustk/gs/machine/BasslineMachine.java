@@ -19,10 +19,11 @@
 
 package com.teotigraphix.caustk.gs.machine;
 
+import com.teotigraphix.caustk.gs.machine.part.bassline.BasslineMachineSound;
+
 /*
  * Part1 - Bassline
  * Part2 - Bassline
- * Part3 - Modular
  */
 public class BasslineMachine extends GrooveMachine {
 
@@ -30,7 +31,8 @@ public class BasslineMachine extends GrooveMachine {
     }
 
     @Override
-    public void createParts() {
+    protected void createComponentParts() {
+        setMachineSound(new BasslineMachineSound(this));
     }
 
 }

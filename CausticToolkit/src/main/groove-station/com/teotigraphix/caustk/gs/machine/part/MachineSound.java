@@ -20,6 +20,10 @@
 package com.teotigraphix.caustk.gs.machine.part;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+import com.teotigraphix.caustk.gs.memory.Memory.Category;
+import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
+import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
+import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 
 /*
  * This class will implement and wrap the Tone API for each machine.
@@ -41,6 +45,32 @@ public class MachineSound extends MachineComponentPart {
 
     public MachineSound(GrooveMachine grooveMachine) {
         super(grooveMachine);
+    }
+
+    public MemorySlotItem createInitData(Category category) {
+        switch (category) {
+            case PATCH:
+                return null;
+            case PATTERN:
+                return createPatternInitData();
+            case PATTERN_SET:
+                return null;
+            case PHRASE:
+                return createPhraseInitData();
+            case RPSSET:
+                return null;
+            case SONG:
+                return null;
+        }
+        return null;
+    }
+
+    protected PatternMemoryItem createPatternInitData() {
+        return new PatternMemoryItem();
+    }
+
+    protected MemorySlotItem createPhraseInitData() {
+        return new PhraseMemoryItem();
     }
 
 }

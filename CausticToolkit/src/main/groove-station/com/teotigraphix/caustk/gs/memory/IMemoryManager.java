@@ -17,22 +17,25 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.machine;
+package com.teotigraphix.caustk.gs.memory;
 
-/*
- * Part1 - Beatbox 
- * Part2 - Beatbox 
- * Part3 - PCMSynth
- */
-public class DrumMachine extends GrooveMachine {
+import com.teotigraphix.caustk.gs.memory.Memory.Category;
+import com.teotigraphix.caustk.gs.memory.Memory.Type;
 
-    public DrumMachine() {
-    }
+public interface IMemoryManager {
 
-    @Override
-    protected void createComponentParts() {
-        // TODO Auto-generated method stub
+    Memory getSelectedMemoryBank();
 
-    }
+    TemporaryMemory getTemporaryMemory();
+
+    MemoryBank getMemoryBank(Type value);
+
+    Type getSelectedMemoryType();
+
+    void setSelectedMemoryType(Type value);
+
+    Category getSelectedMemoryCategory();
+
+    void setSelectedMemoryCategory(Category value);
 
 }

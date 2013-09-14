@@ -19,10 +19,21 @@
 
 package com.teotigraphix.caustk.gs.machine.part.sequencer;
 
+import com.teotigraphix.caustk.gs.pattern.Phrase;
+
 public class StepSequencer {
 
+    private Phrase phrase;
+
+    public Phrase getPhrase() {
+        return phrase;
+    }
+
+    public void setPhrase(Phrase phrase) {
+        this.phrase = phrase;
+    }
+
     public StepSequencer() {
-        // TODO Auto-generated constructor stub
     }
 
 }

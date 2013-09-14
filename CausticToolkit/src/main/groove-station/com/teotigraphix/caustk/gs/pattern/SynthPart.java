@@ -24,8 +24,8 @@ import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 public class SynthPart extends Part {
 
-    public SynthPart(Pattern pattern, Tone tone) {
-        super(pattern, tone);
+    public SynthPart(Tone tone) {
+        super(tone);
     }
 
     public void noteOn(int pitch, float velocity) {

@@ -31,7 +31,9 @@ public class SynthMachine extends GrooveMachine {
     }
 
     @Override
-    public void createParts() {
+    protected void createComponentParts() {
+        // TODO Auto-generated method stub
+
     }
 
 }

@@ -81,4 +81,18 @@ public class Note {
     public String toString() {
         return "[" + beat + "] " + beat + ":" + pitch;
     }
+
+    public String serialze() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(beat);
+        sb.append(" ");
+        sb.append(pitch);
+        sb.append(" ");
+        sb.append(velocity);
+        sb.append(" ");
+        sb.append(beat + gate);
+        sb.append(" ");
+        sb.append(flags);
+        return sb.toString();
+    }
 }

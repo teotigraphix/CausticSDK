@@ -25,7 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.teotigraphix.caustk.library.core.MetadataInfo;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
+import com.teotigraphix.caustk.tone.ToneType;
 
 /**
  * The {@link LibraryPattern} is a collection of library items linked together
@@ -35,6 +37,19 @@ import com.teotigraphix.caustk.tone.ToneDescriptor;
  * part is then combined together to form the full part items for the pattern.
  */
 public class LibraryPattern extends LibraryItem {
+
+    public LibraryPattern createDefault() {
+        LibraryPattern item = new LibraryPattern();
+        item.setId(UUID.randomUUID());
+        item.setIndex(-1);
+        item.setLibrary(null);
+        item.setMetadataInfo(new MetadataInfo());
+        List<ToneDescriptor> descriptors = new ArrayList<ToneDescriptor>();
+        descriptors.add(new ToneDescriptor(0, "part1", ToneType.Bassline));
+        descriptors.add(new ToneDescriptor(1, "part2", ToneType.Bassline));
+        item.setToneSet(toneSet);
+        return item;
+    }
 
     private ToneSet toneSet;
 

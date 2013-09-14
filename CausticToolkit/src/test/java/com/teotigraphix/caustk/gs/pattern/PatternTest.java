@@ -29,20 +29,22 @@ public class PatternTest extends CaustkTestBase {
 
     private Part part2;
 
+    @SuppressWarnings("unused")
     @Override
     protected void start() throws CausticException, IOException {
         tone1 = controller.getSoundSource().createTone("part1", BasslineTone.class);
         tone2 = controller.getSoundSource().createTone("part1", BasslineTone.class);
 
-        pattern = new Pattern(controller);
+        pattern = new Pattern(controller, null);
 
-        part1 = new Part(pattern, tone1);
+        part1 = new Part(tone1);
         Phrase phrase1 = new Phrase(part1, null);
-        part1.setPhrase(phrase1);
 
-        part2 = new Part(pattern, tone2);
+        part2 = new Part(tone2);
         Phrase phrase2 = new Phrase(part2, null);
-        part2.setPhrase(phrase2);
+
+        part1.setPattern(pattern);
+        part2.setPattern(pattern);
     }
 
     @Override

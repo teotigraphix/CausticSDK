@@ -54,6 +54,10 @@ public class Part {
         return pattern;
     }
 
+    public void setPattern(Pattern value) {
+        pattern = value;
+    }
+
     //----------------------------------
     // patch
     //----------------------------------
@@ -94,8 +98,7 @@ public class Part {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Part(Pattern pattern, Tone tone) {
-        this.pattern = pattern;
+    public Part(Tone tone) {
         this.tone = tone;
     }
 

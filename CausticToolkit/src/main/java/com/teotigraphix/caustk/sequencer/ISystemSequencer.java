@@ -11,6 +11,8 @@ import com.teotigraphix.caustk.tone.Tone;
 
 /**
  * Controls the outputpanel (transport).
+ * 
+ * @see OnSystemSequencerBeatChange
  */
 @SuppressWarnings("unused")
 public interface ISystemSequencer extends IControllerComponent, IRestore {

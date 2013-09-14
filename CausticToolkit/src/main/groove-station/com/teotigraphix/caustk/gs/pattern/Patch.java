@@ -74,10 +74,15 @@ public class Patch {
     }
 
     public void commit() {
-        File presetFile = getPart().getTone().getController().getLibraryManager()
-                .getSelectedLibrary().getPresetFile(patchItem.getPresetFile());
-        getPart().getTone().getDefaultPatchId();
-        getPart().getTone().getComponent(SynthComponent.class)
-                .loadPreset(presetFile.getAbsolutePath());
+        try {
+            File presetFile = getPart().getTone().getController().getLibraryManager()
+                    .getSelectedLibrary().getPresetFile(patchItem.getPresetFile());
+            getPart().getTone().getDefaultPatchId();
+            getPart().getTone().getComponent(SynthComponent.class)
+                    .loadPreset(presetFile.getAbsolutePath());
+        } catch (Exception e) {
+            // default library patch proxy, no preset
+        }
+
     }
 }

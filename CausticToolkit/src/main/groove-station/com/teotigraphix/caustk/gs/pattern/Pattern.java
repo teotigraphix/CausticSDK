@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 
 public class Pattern {
 
@@ -31,6 +32,16 @@ public class Pattern {
 
     public ICaustkController getController() {
         return controller;
+    }
+
+    //----------------------------------
+    // libraryPattern
+    //----------------------------------
+
+    private PatternMemoryItem patternMemoryItem;
+
+    public PatternMemoryItem getPatternMemoryItem() {
+        return patternMemoryItem;
     }
 
     //----------------------------------
@@ -130,8 +141,9 @@ public class Pattern {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Pattern(ICaustkController controller) {
+    public Pattern(ICaustkController controller, PatternMemoryItem PatternMemoryItem) {
         this.controller = controller;
+        this.patternMemoryItem = PatternMemoryItem;
     }
 
     //--------------------------------------------------------------------------
@@ -142,5 +154,11 @@ public class Pattern {
         if (parts.contains(part))
             return;
         parts.add(part);
+        part.setPattern(this);
+    }
+
+    public void removePart(Part part) {
+        parts.remove(part);
+        part.setPattern(null);
     }
 }

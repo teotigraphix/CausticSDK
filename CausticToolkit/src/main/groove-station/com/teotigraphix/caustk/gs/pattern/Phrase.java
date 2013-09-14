@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.teotigraphix.caustk.library.item.LibraryPhrase;
+import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
@@ -42,16 +42,13 @@ public class Phrase {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // libraryPhrase
+    // scale
     //----------------------------------
 
-    private LibraryPhrase libraryPhrase;
+    private PhraseMemoryItem memoryItem;
 
-    /**
-     * The {@link LibraryPhrase} assigned when the {@link Phrase} was created.
-     */
-    public LibraryPhrase getLibraryPhrase() {
-        return libraryPhrase;
+    public PhraseMemoryItem getMemoryItem() {
+        return memoryItem;
     }
 
     //----------------------------------
@@ -281,9 +278,9 @@ public class Phrase {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Phrase(Part part, LibraryPhrase phraseItem) {
+    public Phrase(Part part, PhraseMemoryItem memoryItem) {
         this.part = part;
-        this.libraryPhrase = phraseItem;
+        this.memoryItem = memoryItem;
         part.setPhrase(this);
     }
 
@@ -451,8 +448,8 @@ public class Phrase {
     }
 
     public void configure() {
-        setResolution(getLibraryPhrase().getResolution());
-        setNoteData(getLibraryPhrase().getNoteData());
+        setResolution(getMemoryItem().getResolution());
+        setNoteData(getMemoryItem().getInitNoteData());
     }
 
     public void commit() {
