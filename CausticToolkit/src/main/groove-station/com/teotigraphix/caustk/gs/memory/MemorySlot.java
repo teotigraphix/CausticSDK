@@ -77,6 +77,7 @@ public class MemorySlot {
     public void addItem(MemorySlotItem item) {
         if (items.contains(item))
             return;
+        item.setIndex(items.size());
         items.add(item);
     }
 

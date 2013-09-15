@@ -26,7 +26,6 @@ import com.teotigraphix.caustk.gs.machine.part.sequencer.StepSequencer;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /*
@@ -133,14 +132,6 @@ public class MachineSequencer extends MachineComponentPart {
     //-----------------------------------------------------------------------------
     // CONFIGURATION
 
-    //    private static PatternLocation pattern1 = new PatternLocation(0, 1);
-    //
-    //    private static PatternLocation pattern2 = new PatternLocation(0, 2);
-    //
-    private static PatternLocation currentPatternLocation;
-
-    private static PatternLocation nextPatternLocation;
-
     /**
      * @see #setNextPattern(int)
      * @see TemporaryMemory#copyPattern(int)
@@ -157,98 +148,39 @@ public class MachineSequencer extends MachineComponentPart {
         } catch (CausticException e) {
             e.printStackTrace();
         }
-
-        queueNext(pattern);
-
-        configurePartData(pattern);
-        configureProperteis(pattern);
-    }
-
-    protected void configureParts(Pattern pattern) throws CausticException {
-        for (Part part : getGrooveMachine().getParts()) {
-            pattern.addPart(part);
-            getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
-            getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
-        }
-    }
-
-    protected void configurePartData(Pattern pattern) {
-        for (Part part : pattern.getParts()) {
-            configurePart(part);
-        }
-    }
-
-    protected void configureProperteis(Pattern pattern) {
-    }
-
-    protected void configurePart(Part part) {
-        if (part.isRhythm()) {
-        } else {
-        }
     }
 
     public void commit(Pattern pattern) {
         for (Part part : pattern.getParts()) {
             part.getPatch().commit();
-            part.getPhrase().commit();
+            // part.getPhrase().commit();
         }
 
         commitPropertySettings(pattern);
     }
 
+    protected void configureParts(Pattern pattern) throws CausticException {
+        for (Part part : getGrooveMachine().getParts()) {
+            getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
+            //getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
+        }
+    }
+
     protected void commitPropertySettings(Pattern pattern) {
         // set the default tempo/bpm
-        if (pattern.getPatternMemoryItem() != null) {
-            pattern.setTempo(pattern.getPatternMemoryItem().getTempo());
-        }
+        pattern.setTempo(pattern.getMemoryItem().getTempo());
+        // configure length, it may have changed since the original init
+        pattern.setLength(pattern.getMemoryItem().getLength());
 
         for (Part part : pattern.getParts()) {
-            PatternSequencerComponent component = part.getTone().getComponent(
-                    PatternSequencerComponent.class);
-            component.clearIndex(currentPatternLocation.pattern);
-
-            changePosition(nextPatternLocation, part);
+            setBankPattern(part, pattern.getBankIndex(), pattern.getPatternIndex());
         }
-
-        if (pattern.getPatternMemoryItem() != null) {
-            pattern.setLength(pattern.getPatternMemoryItem().getLength());
-        }
-
-        PatternLocation lastPatternLocation = currentPatternLocation;
-        currentPatternLocation = nextPatternLocation;
-        nextPatternLocation = lastPatternLocation;
 
         pattern.setSelectedPart(pattern.getPart(0));
     }
 
-    private void queueNext(Pattern pattern) {
-        // add the phrase data
-        for (Part part : pattern.getParts()) {
-            // switch to edit
-            changePosition(nextPatternLocation, part);
-
-            part.getPhrase().configure();
-
-            // switch back to current
-            changePosition(currentPatternLocation, part);
-        }
-    }
-
-    private void changePosition(PatternLocation location, Part part) {
-        PatternSequencerComponent component = part.getTone().getComponent(
-                PatternSequencerComponent.class);
-        component.setSelectedBankPattern(location.bank, location.pattern);
-    }
-
-    static class PatternLocation {
-        private int bank;
-
-        private int pattern;
-
-        public PatternLocation(int bank, int pattern) {
-            this.bank = bank;
-            this.pattern = pattern;
-        }
+    private void setBankPattern(Part part, int bank, int pattern) {
+        part.getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
     }
 
     //--------------------------------------------------------------------------
@@ -285,5 +217,4 @@ public class MachineSequencer extends MachineComponentPart {
         String text = PatternUtils.toString(bank, index);
         System.out.println("Pattern:" + text);
     }
-
 }

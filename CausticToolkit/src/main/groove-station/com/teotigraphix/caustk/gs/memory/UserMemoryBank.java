@@ -54,7 +54,7 @@ public class UserMemoryBank extends MemoryBank {
     public Phrase getPhrase(Part part) {
         int index = part.getIndex();
 
-        PatternMemoryItem item = part.getPattern().getPatternMemoryItem();
+        PatternMemoryItem item = part.getPattern().getMemoryItem();
         PhraseMemoryItem phraseMemoryItem = item.getPhrase(index);
         if (phraseMemoryItem == null) {
             phraseMemoryItem = (PhraseMemoryItem)getMachine().getMachineSound().createInitData(

@@ -37,6 +37,8 @@ import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.Memory.Type;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.MemoryManager;
+import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
+import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.Phrase;
@@ -44,6 +46,7 @@ import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.caustk.gs.pattern.SynthPart;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.utils.PatternUtils;
 
 public abstract class GrooveMachine {
 
@@ -51,7 +54,7 @@ public abstract class GrooveMachine {
     // nextPatternIndex
     //----------------------------------
 
-    private int nextPatternIndex = 0;
+    private int nextPatternIndex = -1;
 
     public int getNextPatternIndex() {
         return nextPatternIndex;
@@ -231,31 +234,34 @@ public abstract class GrooveMachine {
         }
     }
 
+    private void setBankPattern(Part part, int bank, int pattern) {
+        part.getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
+    }
+
     protected void setupPatterns() {
         MemoryBank memoryBank = getMemoryManager().getSelectedMemoryBank();
         for (int i = 0; i < 64; i++) {
             Pattern pattern = memoryBank.getPattern(i);
+            PatternMemoryItem patternItem = pattern.getMemoryItem();
+            memoryBank.getPatternSlot().addItem(patternItem);
 
             for (Part part : parts) {
                 pattern.addPart(part);
                 Phrase phrase = memoryBank.getPhrase(part);
+                PhraseMemoryItem phraseItem = phrase.getMemoryItem();
+                memoryBank.getPhraseSlot().addItem(phraseItem);
 
+                int bankIndex = PatternUtils.getBank(i);
+                int patternIndex = PatternUtils.getPattern(i);
+                setBankPattern(part, bankIndex, patternIndex);
                 phrase.configure();
 
             }
-            //            // calls getMachineSound().createInitData(Category.PATTERN)
-            //            PatternMemoryItem patternItem = (PatternMemoryItem)memoryBank.getPatternSlot().getItem(
-            //                    i);
-            //            if (patternItem == null) {
-            //                patternItem = (PatternMemoryItem)getMachineSound().createInitData(Category.PATTERN);
-            //                memoryBank.getPatternSlot().addItem(patternItem);
-            //            }
-            //
-            //            PhraseMemoryItem phraseItem = (PhraseMemoryItem)memoryBank.getPhraseSlot().getItem(i);
-            //            if (phraseItem == null) {
-            //                phraseItem = (PhraseMemoryItem)getMachineSound().createInitData(Category.PHRASE);
-            //                memoryBank.getPhraseSlot().addItem(phraseItem);
-            //            }
+        }
+
+        // reset bank/pattern to 0
+        for (Part part : parts) {
+            setBankPattern(part, 0, 0);
         }
     }
 

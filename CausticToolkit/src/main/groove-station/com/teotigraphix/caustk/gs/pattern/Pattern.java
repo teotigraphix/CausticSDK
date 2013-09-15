@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
+import com.teotigraphix.caustk.utils.PatternUtils;
 
 public class Pattern {
 
@@ -40,7 +41,7 @@ public class Pattern {
 
     private PatternMemoryItem patternMemoryItem;
 
-    public PatternMemoryItem getPatternMemoryItem() {
+    public PatternMemoryItem getMemoryItem() {
         return patternMemoryItem;
     }
 
@@ -60,6 +61,24 @@ public class Pattern {
 
     public Part getPart(int index) {
         return parts.get(index);
+    }
+
+    //----------------------------------
+    // bank/pattern
+    //----------------------------------
+
+    /**
+     * Returns the bank index the parts of this pattern are assigned to.
+     */
+    public int getBankIndex() {
+        return PatternUtils.getBank(patternMemoryItem.getIndex());
+    }
+
+    /**
+     * Returns the pattern index the parts of this pattern are assigned to.
+     */
+    public int getPatternIndex() {
+        return PatternUtils.getPattern(patternMemoryItem.getIndex());
     }
 
     //----------------------------------
