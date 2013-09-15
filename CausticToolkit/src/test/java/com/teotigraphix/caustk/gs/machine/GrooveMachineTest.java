@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.gs.pattern;
+package com.teotigraphix.caustk.gs.machine;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,6 +17,8 @@ import com.teotigraphix.caustk.gs.machine.GrooveStation;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveStationSetup;
 import com.teotigraphix.caustk.gs.machine.MachineType;
+import com.teotigraphix.caustk.gs.pattern.Pattern;
+import com.teotigraphix.caustk.gs.pattern.SynthPart;
 import com.teotigraphix.caustk.tone.ToneType;
 
 public class GrooveMachineTest extends CaustkTestBase {

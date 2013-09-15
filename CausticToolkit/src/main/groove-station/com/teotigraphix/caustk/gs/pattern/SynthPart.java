@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.gs.pattern;
 
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 public class SynthPart extends Part {
 
@@ -28,13 +27,4 @@ public class SynthPart extends Part {
         super(tone);
     }
 
-    public void noteOn(int pitch, float velocity) {
-        SynthComponent synth = getTone().getComponent(SynthComponent.class);
-        synth.noteOn(pitch, velocity);
-    }
-
-    public void noteOff(int pitch) {
-        SynthComponent synth = getTone().getComponent(SynthComponent.class);
-        synth.noteOff(pitch);
-    }
 }

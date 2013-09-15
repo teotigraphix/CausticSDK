@@ -28,33 +28,33 @@ import com.teotigraphix.caustk.gs.memory.MemoryManager;
  */
 public abstract class MachineComponentPart {
 
-    protected ICaustkController getController() {
-        return grooveMachine.getController();
+    protected final ICaustkController getController() {
+        return machine.getController();
     }
 
-    protected MemoryManager getMemoryManager() {
-        return grooveMachine.getMemoryManager();
+    protected final MemoryManager getMemoryManager() {
+        return machine.getMemoryManager();
     }
 
     //----------------------------------
     // grooveMachine
     //----------------------------------
 
-    private GrooveMachine grooveMachine;
+    private final GrooveMachine machine;
 
     /**
      * Returns the {@link GrooveMachine} owner of this part.
      */
-    public GrooveMachine getGrooveMachine() {
-        return grooveMachine;
+    public final GrooveMachine getMachine() {
+        return machine;
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MachineComponentPart(GrooveMachine grooveMachine) {
-        this.grooveMachine = grooveMachine;
+    public MachineComponentPart(GrooveMachine machine) {
+        this.machine = machine;
     }
 
 }

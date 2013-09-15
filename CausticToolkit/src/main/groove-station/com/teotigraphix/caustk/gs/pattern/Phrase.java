@@ -481,6 +481,10 @@ public class Phrase {
     // Protected Method API
     //--------------------------------------------------------------------------
 
+    public void setSelectedBankPattern(int bank, int pattern) {
+        getPart().getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
+    }
+
     protected final PatternSequencerComponent getPatternSequencer() {
         return getPart().getTone().getComponent(PatternSequencerComponent.class);
     }

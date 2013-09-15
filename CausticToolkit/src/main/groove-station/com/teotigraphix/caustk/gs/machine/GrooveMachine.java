@@ -40,6 +40,8 @@ import com.teotigraphix.caustk.gs.memory.MemoryManager;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
+import com.teotigraphix.caustk.gs.pattern.PartUtils;
+import com.teotigraphix.caustk.gs.pattern.Patch;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.Phrase;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
@@ -50,8 +52,16 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 
 public abstract class GrooveMachine {
 
-    public Pattern getPattern() {
+    protected final Pattern getPattern() {
         return getMachineSequencer().getPattern();
+    }
+
+    public final Phrase getSelectedPhrase() {
+        return getMachineSequencer().getPattern().getSelectedPart().getPhrase();
+    }
+
+    public final Patch getSelectedPatch() {
+        return getMachineSequencer().getPattern().getSelectedPart().getPatch();
     }
 
     //----------------------------------
@@ -242,10 +252,6 @@ public abstract class GrooveMachine {
         }
     }
 
-    private void setBankPattern(Part part, int bank, int pattern) {
-        part.getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
-    }
-
     protected void setupPatterns() {
         MemoryBank memoryBank = getMemoryManager().getSelectedMemoryBank();
         for (int i = 0; i < 64; i++) {
@@ -263,7 +269,7 @@ public abstract class GrooveMachine {
 
                 int bankIndex = PatternUtils.getBank(i);
                 int patternIndex = PatternUtils.getPattern(i);
-                setBankPattern(part, bankIndex, patternIndex);
+                PartUtils.setBankPattern(part, bankIndex, patternIndex);
                 phrase.configure();
 
             }
@@ -271,7 +277,7 @@ public abstract class GrooveMachine {
 
         // reset bank/pattern to 0
         for (Part part : parts) {
-            setBankPattern(part, 0, 0);
+            PartUtils.setBankPattern(part, 0, 0);
         }
     }
 

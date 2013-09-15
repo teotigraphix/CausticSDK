@@ -26,6 +26,7 @@ import com.teotigraphix.caustk.gs.machine.part.sequencer.StepSequencer;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 import com.teotigraphix.caustk.gs.pattern.Part;
+import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
@@ -174,11 +175,11 @@ public class MachineSequencer extends MachineComponentPart {
 
     protected void configureParts(Pattern pattern) throws CausticException {
         // add parts the the pattern
-        for (Part part : getGrooveMachine().getParts()) {
+        for (Part part : getMachine().getParts()) {
             pattern.addPart(part);
         }
 
-        for (Part part : getGrooveMachine().getParts()) {
+        for (Part part : getMachine().getParts()) {
             getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
             //getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
             //part.getPhrase().configure();
@@ -190,14 +191,10 @@ public class MachineSequencer extends MachineComponentPart {
         pattern.setTempo(pattern.getMemoryItem().getTempo());
 
         for (Part part : pattern.getParts()) {
-            setBankPattern(part, pattern.getBankIndex(), pattern.getPatternIndex());
+            PartUtils.setBankPattern(part, pattern.getBankIndex(), pattern.getPatternIndex());
         }
 
         pattern.setSelectedPart(pattern.getPart(0));
-    }
-
-    private void setBankPattern(Part part, int bank, int pattern) {
-        part.getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
     }
 
     //--------------------------------------------------------------------------

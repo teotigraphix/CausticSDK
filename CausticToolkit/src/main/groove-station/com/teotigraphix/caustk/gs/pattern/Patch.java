@@ -36,6 +36,7 @@ import com.teotigraphix.caustk.tone.components.SynthComponent;
  * </ul>
  */
 public class Patch {
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -77,12 +78,32 @@ public class Patch {
         try {
             File presetFile = getPart().getTone().getController().getLibraryManager()
                     .getSelectedLibrary().getPresetFile(patchItem.getPresetFile());
-            getPart().getTone().getDefaultPatchId();
-            getPart().getTone().getComponent(SynthComponent.class)
-                    .loadPreset(presetFile.getAbsolutePath());
+            loadPreset(presetFile);
         } catch (Exception e) {
             // default library patch proxy, no preset
         }
 
+    }
+
+    //--------------------------------------------------------------------------
+    // Method API
+    //--------------------------------------------------------------------------
+
+    public void loadPreset(File presetFile) {
+        getPart().getTone().getSynth().loadPreset(presetFile.getAbsolutePath());
+    }
+
+    public void savePreset(String name) {
+        getPart().getTone().getSynth().savePreset(name);
+    }
+
+    public void noteOn(int pitch, float velocity) {
+        SynthComponent synth = getPart().getTone().getComponent(SynthComponent.class);
+        synth.noteOn(pitch, velocity);
+    }
+
+    public void noteOff(int pitch) {
+        SynthComponent synth = getPart().getTone().getComponent(SynthComponent.class);
+        synth.noteOff(pitch);
     }
 }

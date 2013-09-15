@@ -41,7 +41,7 @@ public class Part {
 
     private Tone tone;
 
-    public Tone getTone() {
+    protected Tone getTone() {
         return tone;
     }
 
@@ -114,5 +114,4 @@ public class Part {
     public void transpose(int delta) {
         getPhrase().transpose(delta);
     }
-
 }
