@@ -40,6 +40,10 @@ public class Phrase {
     // Public Property API
     //--------------------------------------------------------------------------
 
+    public boolean isInMemory() {
+        return getPart().getPattern().isInMemory();
+    }
+
     //----------------------------------
     // scale
     //----------------------------------

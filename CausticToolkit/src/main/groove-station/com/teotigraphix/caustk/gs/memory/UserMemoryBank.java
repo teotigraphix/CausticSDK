@@ -1,6 +1,10 @@
 
 package com.teotigraphix.caustk.gs.memory;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
@@ -31,6 +35,10 @@ public class UserMemoryBank extends MemoryBank {
 
     @Override
     public Pattern getPattern(int index) {
+        if (inMemoryPatterns.containsKey(index)) {
+            return inMemoryPatterns.get(index);
+        }
+
         PatternMemoryItem item = (PatternMemoryItem)getPatternSlot().getItem(index);
         if (item == null) {
             item = (PatternMemoryItem)getMachine().getMachineSound().createInitData(
@@ -66,4 +74,19 @@ public class UserMemoryBank extends MemoryBank {
         return phrase;
     }
 
+    private Map<Integer, Pattern> inMemoryPatterns = new HashMap<Integer, Pattern>();
+
+    @Override
+    public Collection<Pattern> getInMemoryPatterns() {
+        return inMemoryPatterns.values();
+    }
+
+    @Override
+    public void writePattern(Pattern pattern) {
+        int index = pattern.getIndex();
+        if (!pattern.isInMemory()) {
+            inMemoryPatterns.put(index, pattern);
+            pattern.setInMemory(true);
+        }
+    }
 }

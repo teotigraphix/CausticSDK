@@ -42,6 +42,20 @@ public class Pattern implements IDispatcher {
     }
 
     //----------------------------------
+    // inMemory
+    //----------------------------------
+
+    private boolean inMemory = false;
+
+    public boolean isInMemory() {
+        return inMemory;
+    }
+
+    public void setInMemory(boolean value) {
+        inMemory = value;
+    }
+
+    //----------------------------------
     // libraryPattern
     //----------------------------------
 
@@ -72,6 +86,10 @@ public class Pattern implements IDispatcher {
     //----------------------------------
     // bank/pattern
     //----------------------------------
+
+    public int getIndex() {
+        return (getBankIndex() + 1) * getPatternIndex();
+    }
 
     /**
      * Returns the bank index the parts of this pattern are assigned to.

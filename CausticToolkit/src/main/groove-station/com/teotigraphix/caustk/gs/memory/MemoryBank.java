@@ -19,7 +19,10 @@
 
 package com.teotigraphix.caustk.gs.memory;
 
+import java.util.Collection;
+
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+import com.teotigraphix.caustk.gs.pattern.Pattern;
 
 public class MemoryBank extends Memory {
 
@@ -34,4 +37,12 @@ public class MemoryBank extends Memory {
         this.name = name;
     }
 
+    public Collection<Pattern> getInMemoryPatterns() {
+        return null;
+    }
+
+    public void writePattern(Pattern pattern) {
+        // TODO Auto-generated method stub
+
+    }
 }

@@ -216,6 +216,10 @@ public abstract class GrooveMachine {
     // Method API
     //--------------------------------------------------------------------------
 
+    public void write() throws CausticException {
+        machineSequencer.write();
+    }
+
     private List<Part> parts = new ArrayList<Part>();
 
     public List<Part> getParts() {

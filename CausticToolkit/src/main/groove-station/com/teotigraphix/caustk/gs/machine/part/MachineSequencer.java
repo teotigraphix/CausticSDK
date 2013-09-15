@@ -23,6 +23,7 @@ import com.sun.jna.Memory;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.sequencer.StepSequencer;
+import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
@@ -117,6 +118,15 @@ public class MachineSequencer extends MachineComponentPart {
         setNextPattern(pattern);
         playNextPattern();
         return getPattern();
+    }
+
+    public void write() throws CausticException {
+        // a write operation on the sequencer saves the current pattern 
+        // into memory from the temporary memory
+
+        // for now this is User
+        MemoryBank memoryBank = getMemoryManager().getSelectedMemoryBank();
+        memoryBank.writePattern(getPattern());
     }
 
     //--------------------------------------------------------------------------

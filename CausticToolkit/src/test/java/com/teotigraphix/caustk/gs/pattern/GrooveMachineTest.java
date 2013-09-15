@@ -56,7 +56,7 @@ public class GrooveMachineTest extends CaustkTestBase {
     }
 
     @Test
-    public void test_init() {
+    public void test_init() throws CausticException {
         // the GrooveMachine will handle callbacks from the GrooveStation with beat change events
         // The GrooveStation will be listening to the SystemSequencer for beatchange events.
 
@@ -80,5 +80,27 @@ public class GrooveMachineTest extends CaustkTestBase {
         assertFalse(selectedPart.getPhrase().getTrigger(1).isSelected());
         //controller.getSystemSequencer().play(SequencerMode.PATTERN);
 
+        // in memory patterns are those that are written to disk when current
+        // once the pattern is changed without a write operation, the pattern
+        // is recreated from the init data when reselected. If a pattern is reselected
+        // that was written to disk, the original pattern created will be used.
+        assertFalse(currentPattern.isInMemory());
+        assertEquals(0, basslineMachine.getMemoryManager().getSelectedMemoryBank()
+                .getInMemoryPatterns().size());
+        basslineMachine.write();
+        assertTrue(currentPattern.isInMemory());
+        assertEquals(1, basslineMachine.getMemoryManager().getSelectedMemoryBank()
+                .getInMemoryPatterns().size());
+
+        basslineMachine.setNextPatternIndex(42);
+
+        currentPattern = basslineMachine.getPattern();
+        assertFalse(currentPattern.isInMemory());
+
+        currentPattern.getSelectedPart().getPhrase().triggerOn(1);
+
+        basslineMachine.setNextPatternIndex(0);
+        currentPattern = basslineMachine.getPattern();
+        assertTrue(currentPattern.isInMemory());
     }
 }
