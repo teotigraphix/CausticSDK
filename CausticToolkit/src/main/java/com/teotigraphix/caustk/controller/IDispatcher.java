@@ -46,4 +46,9 @@ public interface IDispatcher {
      * @param event object
      */
     void trigger(Object event);
+
+    /**
+     * Clears all observers from the observer map.
+     */
+    void clear();
 }

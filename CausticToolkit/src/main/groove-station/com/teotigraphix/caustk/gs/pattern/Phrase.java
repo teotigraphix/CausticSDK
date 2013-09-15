@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
-import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
@@ -78,9 +77,8 @@ public class Phrase {
     public void setScale(Scale value) {
         if (scale == value)
             return;
-        //Scale oldScale = scale;
         scale = value;
-        //        getPart().getPattern().dispatch(new OnPhraseScaleChange(scale, oldScale));
+        firePhraseChange(PhraseChangeKind.Scale);
     }
 
     //----------------------------------
@@ -125,9 +123,8 @@ public class Phrase {
         // if p = 1 and len = 1
         if (value < 0 || value > getLength())
             return;
-        //int oldPosition = position;
         position = value;
-        //        getPart().getPattern().dispatch(new OnPhrasePositionChange(position, oldPosition));
+        firePhraseChange(PhraseChangeKind.Position);
     }
 
     //----------------------------------
@@ -169,7 +166,7 @@ public class Phrase {
 
         updateTriggers(value, oldValue);
 
-        //        getPart().getPattern().dispatch(new OnPhraseLengthChange(value, oldValue));
+        firePhraseChange(PhraseChangeKind.Length);
     }
 
     /**
@@ -219,10 +216,6 @@ public class Phrase {
             default:
                 return Resolution.SIXTYFOURTH;
         }
-    }
-
-    public void setResolution(Resolution value) {
-        //getPatternSequencer().setResolution(value);
     }
 
     //----------------------------------
@@ -331,10 +324,8 @@ public class Phrase {
         note.update(beat, pitch, gate, velocity, flags);
 
         trigger.setSelected(true);
-    }
 
-    protected void fireChange(TriggerChangeKind kind, Note trigger) {
-        //        getPart().getPattern().dispatch(new OnPhraseTriggerChange(kind, trigger));
+        fireTriggerChange(TriggerChangeKind.Selected, trigger);
     }
 
     public final boolean containsTrigger(float beat) {
@@ -346,8 +337,16 @@ public class Phrase {
         return containsTrigger(beat);
     }
 
+    /**
+     * Triggers the step notes on, not changing an trigger/note properties.
+     * 
+     * @param step The trigger step.
+     */
     public void triggerOn(int step) {
         Trigger trigger = getTrigger(step);
+        if (trigger == null) {
+            trigger = createInitTrigger(step);
+        }
         for (Note note : trigger.getNotes()) {
             triggerOn(step, note.getPitch(), note.getGate(), note.getVelocity(), note.getFlags());
         }
@@ -363,6 +362,7 @@ public class Phrase {
         for (Note note : trigger.getNotes()) {
             triggerUpdate(step, pitch, note.getGate(), note.getVelocity(), note.getFlags());
         }
+        fireTriggerChange(TriggerChangeKind.Pitch, trigger);
     }
 
     public void triggerUpdateGate(int step, float gate) {
@@ -370,6 +370,7 @@ public class Phrase {
         for (Note note : trigger.getNotes()) {
             triggerUpdate(step, note.getPitch(), gate, note.getVelocity(), note.getFlags());
         }
+        fireTriggerChange(TriggerChangeKind.Gate, trigger);
     }
 
     public void triggerUpdateVelocity(int step, float velocity) {
@@ -377,6 +378,7 @@ public class Phrase {
         for (Note note : trigger.getNotes()) {
             triggerUpdate(step, note.getPitch(), note.getGate(), velocity, note.getFlags());
         }
+        fireTriggerChange(TriggerChangeKind.Velocity, trigger);
     }
 
     public void triggerUpdateFlags(int step, int flags) {
@@ -384,6 +386,7 @@ public class Phrase {
         for (Note note : trigger.getNotes()) {
             triggerUpdate(step, note.getPitch(), note.getGate(), note.getVelocity(), flags);
         }
+        fireTriggerChange(TriggerChangeKind.Flags, trigger);
     }
 
     /**
@@ -398,6 +401,7 @@ public class Phrase {
             getPatternSequencer().triggerOff(getResolution(), step, note.getPitch());
         }
         trigger.setSelected(false);
+        fireTriggerChange(TriggerChangeKind.Selected, trigger);
     }
 
     /**
@@ -416,7 +420,8 @@ public class Phrase {
                 triggerUpdatePitch(note.getStep(getResolution()), note.getPitch() + delta);
             }
         }
-        //        getPart().getPattern().dispatch(new OnPhraseTransposeChange(delta));
+        firePhraseChange(PhraseChangeKind.Transpose);
+
     }
 
     /**
@@ -456,98 +461,31 @@ public class Phrase {
     }
 
     public void configure() {
-        setResolution(getMemoryItem().getResolution());
+        // setScale(getMemoryItem().getResolution());
         setNoteData(getMemoryItem().getInitNoteData());
     }
 
     public void commit() {
-        // TODO Auto-generated method stub
-
     }
 
-    /**
-     * @see SystemSequencer#getDispatcher()
-     */
-    public static class OnPhraseScaleChange {
-        private Scale scale;
-
-        private Scale oldScale;
-
-        public Scale getScale() {
-            return scale;
-        }
-
-        public Scale getOldScale() {
-            return oldScale;
-        }
-
-        public OnPhraseScaleChange(Scale scale, Scale oldScale) {
-            this.scale = scale;
-            this.oldScale = oldScale;
-        }
+    @Override
+    public String toString() {
+        return "[Phrase(" + getPart().getIndex() + ")]";
     }
 
-    /**
-     * @see SystemSequencer#getDispatcher()
-     */
-    public static class OnPhrasePositionChange {
-        private int position;
-
-        private int oldPosition;
-
-        public int getPosition() {
-            return position;
-        }
-
-        public int getOldPosition() {
-            return oldPosition;
-        }
-
-        public OnPhrasePositionChange(int position, int oldPosition) {
-            this.position = position;
-            this.oldPosition = oldPosition;
-        }
-    }
-
-    /**
-     * @see SystemSequencer#getDispatcher()
-     */
-    public static class OnPhraseLengthChange {
-        private int length;
-
-        private int oldLength;
-
-        public int getLength() {
-            return length;
-        }
-
-        public int getOldPosition() {
-            return oldLength;
-        }
-
-        public OnPhraseLengthChange(int length, int oldLength) {
-            this.length = length;
-            this.oldLength = oldLength;
-        }
-    }
-
-    /**
-     * @see SystemSequencer#getDispatcher()
-     */
-    public static class OnPhraseTransposeChange {
-        private int delta;
-
-        public int getDelta() {
-            return delta;
-        }
-
-        public OnPhraseTransposeChange(int delta) {
-            this.delta = delta;
-        }
-    }
+    //--------------------------------------------------------------------------
+    // Protected Method API
+    //--------------------------------------------------------------------------
 
     protected final PatternSequencerComponent getPatternSequencer() {
         return getPart().getTone().getComponent(PatternSequencerComponent.class);
+    }
+
+    private Trigger createInitTrigger(int step) {
+        float beat = Resolution.toBeat(step, getResolution());
+        Trigger trigger = new Trigger(beat);
+        trigger.addNote(beat, 60, 0.25f, 1f, 0);
+        return trigger;
     }
 
     private int indciesInView = 16;
@@ -560,36 +498,88 @@ public class Phrase {
         return -1;
     }
 
-    @Override
-    public String toString() {
-        return "[Phrase(" + getPart().getIndex() + ")]";
+    //--------------------------------------------------------------------------
+    // Event API
+    //--------------------------------------------------------------------------
+
+    private void firePhraseChange(PhraseChangeKind kind) {
+        getPart().getPattern().trigger(new OnPhraseChange(kind, this));
+    }
+
+    private void fireTriggerChange(TriggerChangeKind kind, Trigger trigger) {
+        getPart().getPattern().trigger(new OnPhraseTriggerChange(kind, trigger, this));
+    }
+
+    public enum PhraseChangeKind {
+        Scale,
+
+        Position,
+
+        Length,
+
+        Transpose;
+    }
+
+    public static class OnPhraseChange {
+
+        private PhraseChangeKind kind;
+
+        private Phrase phrase;
+
+        public final PhraseChangeKind getKind() {
+            return kind;
+        }
+
+        public final Phrase getPhrase() {
+            return phrase;
+        }
+
+        public OnPhraseChange(PhraseChangeKind kind, Phrase phrase) {
+            this.phrase = phrase;
+        }
+    }
+
+    public enum TriggerChangeKind {
+        Reset,
+
+        Pitch,
+
+        Gate,
+
+        Velocity,
+
+        Flags,
+
+        Selected;
     }
 
     public static class OnPhraseTriggerChange {
 
         private TriggerChangeKind kind;
 
-        private Note trigger;
+        private Trigger trigger;
+
+        private Phrase phrase;
+
+        public Phrase getPhrase() {
+            return phrase;
+        }
 
         public final TriggerChangeKind getKind() {
             return kind;
         }
 
-        public final Note getTrigger() {
+        public final Trigger getTrigger() {
             return trigger;
         }
 
-        public OnPhraseTriggerChange(TriggerChangeKind kind, Note trigger) {
+        public OnPhraseTriggerChange(TriggerChangeKind kind, Trigger trigger, Phrase phrase) {
             this.trigger = trigger;
+            this.phrase = phrase;
         }
-    }
-
-    public enum TriggerChangeKind {
-        RESET, PITCH, GATE, VELOCITY, FLAGS, SELECTED
     }
 
     public enum Scale {
         SIXTEENTH, SIXTEENTH_TRIPLET, THIRTYSECOND, THIRTYSECOND_TRIPLET
     }
-
 }

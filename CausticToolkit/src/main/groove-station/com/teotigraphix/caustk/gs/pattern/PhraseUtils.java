@@ -51,4 +51,8 @@ public class PhraseUtils {
         return trigger.getGate();
     }
 
+    public static Note createNote(String data) {
+        return null;
+    }
+
 }

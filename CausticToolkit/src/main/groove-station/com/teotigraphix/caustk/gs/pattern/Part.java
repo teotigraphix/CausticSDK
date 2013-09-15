@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.gs.pattern;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class Part {
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------

@@ -23,11 +23,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class Pattern {
+public class Pattern implements IDispatcher {
+
+    private final IDispatcher dispatcher;
 
     private final ICaustkController controller;
 
@@ -126,8 +132,9 @@ public class Pattern {
     /**
      * The selected part of the pattern.
      */
-    public Part getSelectedPart() {
-        return selectedPart;
+    @SuppressWarnings("unchecked")
+    public <T extends Part> T getSelectedPart() {
+        return (T)selectedPart;
     }
 
     /**
@@ -163,6 +170,7 @@ public class Pattern {
     public Pattern(ICaustkController controller, PatternMemoryItem PatternMemoryItem) {
         this.controller = controller;
         this.patternMemoryItem = PatternMemoryItem;
+        dispatcher = new Dispatcher();
     }
 
     //--------------------------------------------------------------------------
@@ -179,5 +187,29 @@ public class Pattern {
     public void removePart(Part part) {
         parts.remove(part);
         part.setPattern(null);
+    }
+
+    //--------------------------------------------------------------------------
+    // IDispatcher API
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
+    @Override
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        dispatcher.register(event, observer);
+    }
+
+    @Override
+    public void unregister(EventObserver<?> observer) {
+        dispatcher.unregister(observer);
+    }
+
+    @Override
+    public void clear() {
+        dispatcher.clear();
     }
 }

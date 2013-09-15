@@ -2,6 +2,8 @@
 package com.teotigraphix.caustk.gs.pattern;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -69,6 +71,13 @@ public class GrooveMachineTest extends CaustkTestBase {
         assertEquals(1, currentPattern.getPart(0).getPhrase().getTrigger(0f).getNotes().size());
         assertEquals(1, currentPattern.getPart(1).getPhrase().getTrigger(0f).getNotes().size());
 
+        SynthPart selectedPart = currentPattern.getSelectedPart();
+        // test a default trigger/note is created for a "non" existing trigger location
+        selectedPart.getPhrase().triggerOn(1);
+        assertTrue(selectedPart.getPhrase().containsTrigger(1));
+        assertTrue(selectedPart.getPhrase().getTrigger(1).isSelected());
+        selectedPart.getPhrase().triggerOff(1);
+        assertFalse(selectedPart.getPhrase().getTrigger(1).isSelected());
         //controller.getSystemSequencer().play(SequencerMode.PATTERN);
 
     }
