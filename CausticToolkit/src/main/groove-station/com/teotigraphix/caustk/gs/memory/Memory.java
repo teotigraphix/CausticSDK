@@ -215,7 +215,7 @@ public abstract class Memory {
      *            selection in the UI that was based off what this provider
      *            returned as the initial list of patterns.
      */
-    Pattern getPattern(int index) {
+    public Pattern getPattern(int index) {
         // XXX If this works with libraries, it might be better to add the items
         // to the slods in the USER, SYSTEM banks so there is no ref to a library in this class
         //LibraryItem item = (LibraryItem)getPatternSlot().getItem(index);
@@ -249,7 +249,7 @@ public abstract class Memory {
      * 
      * @param part The {@link Part} needing a {@link Phrase}.
      */
-    Phrase getPhrase(Part part) {
+    public Phrase getPhrase(Part part) {
         @SuppressWarnings("unused")
         int index = part.getIndex();
         //        LibraryPhrase libraryPhrase = null;

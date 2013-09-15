@@ -67,7 +67,7 @@ public class PatternSequencerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * 
-     * @see IPatternSequencer#getSelectedPatternIndex()
+     * @see IPatternSequencer#getNextPatternIndex()
      * @see IPatternSequencer#setBankPattern(int, int)
      */
     public static final PatternSequencerMessage PATTERN = new PatternSequencerMessage(

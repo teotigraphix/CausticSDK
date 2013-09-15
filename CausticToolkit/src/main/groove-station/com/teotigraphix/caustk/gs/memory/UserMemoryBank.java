@@ -30,7 +30,7 @@ public class UserMemoryBank extends MemoryBank {
     }
 
     @Override
-    Pattern getPattern(int index) {
+    public Pattern getPattern(int index) {
         PatternMemoryItem item = (PatternMemoryItem)getPatternSlot().getItem(index);
         if (item == null) {
             item = (PatternMemoryItem)getMachine().getMachineSound().createInitData(
@@ -51,7 +51,7 @@ public class UserMemoryBank extends MemoryBank {
     }
 
     @Override
-    Phrase getPhrase(Part part) {
+    public Phrase getPhrase(Part part) {
         int index = part.getIndex();
 
         PatternMemoryItem item = part.getPattern().getPatternMemoryItem();

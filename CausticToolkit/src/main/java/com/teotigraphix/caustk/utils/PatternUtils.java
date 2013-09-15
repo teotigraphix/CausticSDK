@@ -67,23 +67,5 @@ public final class PatternUtils {
     public static int getBank(int index) {
         float num = index / 16;
         return (int)num % 4;
-        //        if (index < 16)
-        //            return 0;
-        //        else if (index < 32)
-        //            return 1;
-        //        else if (index < 48)
-        //            return 2;
-        //        else if (index < 64)
-        //            return 3;
-        //        else if (index < 80)
-        //            return 0;
-        //        else if (index < 96)
-        //            return 1;
-        //        else if (index < 112)
-        //            return 2;
-        //        else if (index < 128)
-        //            return 3;
-        //        
-        //        return -1;
     }
 }

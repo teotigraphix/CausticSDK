@@ -35,8 +35,11 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSystem;
 import com.teotigraphix.caustk.gs.machine.part.MachineTransport;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.Memory.Type;
+import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.MemoryManager;
 import com.teotigraphix.caustk.gs.pattern.Part;
+import com.teotigraphix.caustk.gs.pattern.Pattern;
+import com.teotigraphix.caustk.gs.pattern.Phrase;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.caustk.gs.pattern.SynthPart;
 import com.teotigraphix.caustk.tone.BeatboxTone;
@@ -44,11 +47,36 @@ import com.teotigraphix.caustk.tone.Tone;
 
 public abstract class GrooveMachine {
 
+    //----------------------------------
+    // nextPatternIndex
+    //----------------------------------
+
+    private int nextPatternIndex = 0;
+
+    public int getNextPatternIndex() {
+        return nextPatternIndex;
+    }
+
+    public void setNextPatternIndex(int value) {
+        if (value == nextPatternIndex)
+            return;
+        nextPatternIndex = value;
+        getMachineSequencer().setNextPattern(nextPatternIndex);
+    }
+
+    //----------------------------------
+    // memoryManager
+    //----------------------------------
+
     private MemoryManager memoryManager;
 
     public MemoryManager getMemoryManager() {
         return memoryManager;
     }
+
+    //----------------------------------
+    // machineSound
+    //----------------------------------
 
     private MachineSound machineSound;
 
@@ -154,24 +182,6 @@ public abstract class GrooveMachine {
         return controller;
     }
 
-    private int selectedPatternIndex = 0;
-
-    public int getSelectedPatternIndex() {
-        return selectedPatternIndex;
-    }
-
-    private int selectedPhraseIndex = 0;
-
-    public int getSelectedPhraseIndex() {
-        return selectedPhraseIndex;
-    }
-
-    private int selectedPatchIndex = 0;
-
-    public int getSelectedPatchIndex() {
-        return selectedPatchIndex;
-    }
-
     public void setController(ICaustkController controller) {
         this.controller = controller;
         createMainComponentParts();
@@ -206,8 +216,11 @@ public abstract class GrooveMachine {
     }
 
     public void setup(GrooveMachineDescriptor descriptor) throws CausticException {
-        //Pattern pattern = machine.getMemoryManager().
+        setupParts(descriptor);
+        setupPatterns();
+    }
 
+    private void setupParts(GrooveMachineDescriptor descriptor) throws CausticException {
         for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
 
             Tone tone = controller.getSoundSource().createTone(partDescriptor.getName(),
@@ -215,6 +228,34 @@ public abstract class GrooveMachine {
 
             Part part = createPart(tone);
             parts.add(part);
+        }
+    }
+
+    protected void setupPatterns() {
+        MemoryBank memoryBank = getMemoryManager().getSelectedMemoryBank();
+        for (int i = 0; i < 64; i++) {
+            Pattern pattern = memoryBank.getPattern(i);
+
+            for (Part part : parts) {
+                pattern.addPart(part);
+                Phrase phrase = memoryBank.getPhrase(part);
+
+                phrase.configure();
+
+            }
+            //            // calls getMachineSound().createInitData(Category.PATTERN)
+            //            PatternMemoryItem patternItem = (PatternMemoryItem)memoryBank.getPatternSlot().getItem(
+            //                    i);
+            //            if (patternItem == null) {
+            //                patternItem = (PatternMemoryItem)getMachineSound().createInitData(Category.PATTERN);
+            //                memoryBank.getPatternSlot().addItem(patternItem);
+            //            }
+            //
+            //            PhraseMemoryItem phraseItem = (PhraseMemoryItem)memoryBank.getPhraseSlot().getItem(i);
+            //            if (phraseItem == null) {
+            //                phraseItem = (PhraseMemoryItem)getMachineSound().createInitData(Category.PHRASE);
+            //                memoryBank.getPhraseSlot().addItem(phraseItem);
+            //            }
         }
     }
 

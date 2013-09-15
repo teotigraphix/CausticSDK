@@ -26,8 +26,8 @@ import com.teotigraphix.caustk.gs.machine.part.sequencer.StepSequencer;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
+import com.teotigraphix.caustk.utils.PatternUtils;
 
 /*
  * - KeyboardToggleButton
@@ -84,17 +84,18 @@ public class MachineSequencer extends MachineComponentPart {
         // if the sequencer is locked, return
         // the sequencer is locked when we are in the last beat of the pattern
         if (getPattern() != null) {
-            //            int beat = controller.getSystemSequencer().getCurrentBeat() + 1;
-            //            int measure = controller.getSystemSequencer().getCurrentMeasure() + 1;
-            //            int position = getPattern().getSelectedPart().getPhrase().getPosition();
-            //            //            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
-            //            //                throw new RuntimeException("Pattern change locked");
+            float beat = getCurrentBeat() + 1;
+            int measure = getCurrentMeasure() + 1;
+            int position = getPattern().getSelectedPart().getPhrase().getPosition();
+            if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
+                throw new RuntimeException("Pattern change locked");
         }
 
         updateName(pattern);
 
         nextPattern = pattern;
 
+        // calls #configure(Pattern) from TemporaryMemory > UserMemory
         pendingPattern = getMemoryManager().getTemporaryMemory().copyPattern(pattern);
 
         // getDispatcher().trigger(new OnPatternSequencerPatternChangePending());
@@ -109,11 +110,6 @@ public class MachineSequencer extends MachineComponentPart {
         if (pendingPattern == null)
             return;
 
-        // !!! There has to be a commitPattern() method on the temp memory
-        // Because we want to pre setup the pattern but not actually change
-        // it until the sequencer finishes the current pattern's length measures
-        // TEMP for now we just do this right here until we sync into the
-        // core's beat and measure callbacks
         getMemoryManager().getTemporaryMemory().commit();
         setPattern(pendingPattern);
     }
@@ -134,27 +130,19 @@ public class MachineSequencer extends MachineComponentPart {
         stepSequencer = new StepSequencer();
     }
 
-    private void updateName(int pattern) {
-        //        int bank = pattern / 16;
-        //        int index = pattern % 16;
-        //@SuppressWarnings("unused")
-        //String text = PatternUtils.toString(bank, index);
-        //        systemController.setDisplay(text, "main");
-    }
-
     //-----------------------------------------------------------------------------
     // CONFIGURATION
 
-    private static PatternLocation pattern1 = new PatternLocation(0, 1);
+    //    private static PatternLocation pattern1 = new PatternLocation(0, 1);
+    //
+    //    private static PatternLocation pattern2 = new PatternLocation(0, 2);
+    //
+    private static PatternLocation currentPatternLocation;
 
-    private static PatternLocation pattern2 = new PatternLocation(0, 2);
-
-    private static PatternLocation currentPatternLocation = pattern1;
-
-    private static PatternLocation nextPatternLocation = pattern2;
+    private static PatternLocation nextPatternLocation;
 
     /**
-     * @see SystemSequencer#setNextPattern(int)
+     * @see #setNextPattern(int)
      * @see TemporaryMemory#copyPattern(int)
      * @see Memory#copyPattern(int)
      */
@@ -176,9 +164,6 @@ public class MachineSequencer extends MachineComponentPart {
         configureProperteis(pattern);
     }
 
-    protected void configureProperteis(Pattern pattern) {
-    }
-
     protected void configureParts(Pattern pattern) throws CausticException {
         for (Part part : getGrooveMachine().getParts()) {
             pattern.addPart(part);
@@ -191,6 +176,9 @@ public class MachineSequencer extends MachineComponentPart {
         for (Part part : pattern.getParts()) {
             configurePart(part);
         }
+    }
+
+    protected void configureProperteis(Pattern pattern) {
     }
 
     protected void configurePart(Part part) {
@@ -290,4 +278,12 @@ public class MachineSequencer extends MachineComponentPart {
         setCurrentMeasure(measure);
         setCurrentBeat(beat);
     }
+
+    private void updateName(int pattern) {
+        int bank = PatternUtils.getBank(pattern);
+        int index = PatternUtils.getBank(pattern);
+        String text = PatternUtils.toString(bank, index);
+        System.out.println("Pattern:" + text);
+    }
+
 }

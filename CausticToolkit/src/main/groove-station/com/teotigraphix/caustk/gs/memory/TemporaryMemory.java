@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.gs.memory;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Patch;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
@@ -89,56 +90,48 @@ public class TemporaryMemory extends Memory {
     // 
     //----------------------------------
 
-    protected Memory getCurrentMemory() {
+    /**
+     * Returns the currently selected {@link MemoryBank} in the machine's
+     * {@link MemoryManager}.
+     */
+    protected final Memory getCurrentMemory() {
         return getMachine().getMemoryManager().getSelectedMemoryBank();
     }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public TemporaryMemory(GrooveMachine machine) {
         super(machine, Type.TEMPORARY);
     }
 
+    //--------------------------------------------------------------------------
+    // Method :: API
+    //--------------------------------------------------------------------------
+
     @Override
     public Pattern copyPattern(int index) {
-        pendingPattern = getMachine().getMemoryManager().getSelectedMemoryBank().copyPattern(index);
+        pendingPattern = getCurrentMemory().copyPattern(index);
         return pendingPattern;
     }
 
     @Override
     public Phrase copyPhrase(Part part, int index) {
-        Phrase phrase = getMachine().getMemoryManager().getSelectedMemoryBank()
-                .copyPhrase(part, index);
+        Phrase phrase = getCurrentMemory().copyPhrase(part, index);
         return phrase;
     }
 
     @Override
     public Patch copyPatch(Part part, int index) {
-        Patch patch = getMachine().getMemoryManager().getSelectedMemoryBank()
-                .copyPatch(part, index);
+        Patch patch = getCurrentMemory().copyPatch(part, index);
         return patch;
     }
 
+    /**
+     * @see MachineSequencer#playNextPattern()
+     */
     public void commit() {
-        // commits all pending pattern and patch data to the 
-        // Tone's sound and sequencer data on the CORE
-        // XXX This is the final stop for an IMachine getting updated
-        // bank and pattern changes here and patch audio/mixer/effect settings update
-
-        // SoundSource soundSource = controller.getSoundSource();
-
-        // the raw juice here, this should be the ONLY PLACE THIS SHIT is messed with
-        //Collection<Tone> tones = soundSource.getTones();
-
-        // what the fuck happens now?
-
-        // - All Tones are created when the application starts in v1
-        //   so we need either update the controls and pattern_sequencer
-        //   of the machine, or find a new empty pattern and insert the
-        //   new data instead of removing it all
-        // - If we decide to just keep adding, then if the pattern data already
-        //   exists, we just switch bank and pattern in the pattern_sequencer
-        // 
-
-        // XXX releasePattern(pattern);
 
         getMachine().getMachineSequencer().commit(pendingPattern);
 

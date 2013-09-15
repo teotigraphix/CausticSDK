@@ -42,7 +42,7 @@ public class GrooveMachineTest extends CaustkTestBase {
     private void setupBassline(GrooveStationSetup setup) {
         GrooveMachineDescriptor bassline = new GrooveMachineDescriptor(MachineType.Bassline);
         bassline.addPart("part1", ToneType.Bassline);
-        bassline.addPart("part2", ToneType.SubSynth);
+        bassline.addPart("part2", ToneType.Bassline);
 
         setup.addDescriptor(bassline);
     }
@@ -58,8 +58,7 @@ public class GrooveMachineTest extends CaustkTestBase {
         // The GrooveStation will be listening to the SystemSequencer for beatchange events.
 
         // how to add init data to patterns?
-
-        basslineMachine.getMachineSequencer().setNextPattern(0);
+        basslineMachine.setNextPatternIndex(0);
 
         controller.getSystemSequencer().play(SequencerMode.PATTERN);
     }
