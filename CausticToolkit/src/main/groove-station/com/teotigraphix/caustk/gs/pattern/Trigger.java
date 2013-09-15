@@ -82,32 +82,24 @@ public class Trigger {
     // Method API
     //--------------------------------------------------------------------------
 
-    public boolean hasNote(float beat, int pitch) {
-        return getNote(beat, pitch) != null;
+    public boolean hasNote(int pitch) {
+        return getNote(pitch) != null;
     }
 
-    public Note getNote(float beat, int pitch) {
+    public Note getNote(int pitch) {
         if (notes != null) {
             for (Note note : notes) {
-                if (note.getBeat() == beat && note.getPitch() == pitch)
+                if (note.getPitch() == pitch)
                     return note;
             }
         }
         return null;
     }
 
-    public List<Note> getNotes(float beat) {
-        ArrayList<Note> result = new ArrayList<Note>();
-        if (notes != null) {
-            for (Note note : notes) {
-                if (note.getBeat() == beat)
-                    result.add(note);
-            }
-        }
-        return result;
-    }
-
     public Note addNote(float beat, int pitch, float gate, float velocity, int flags) {
+        if (hasNote(pitch)) {
+            throw new IllegalStateException("Note exists");
+        }
         Note note = new Note(beat, pitch, gate, velocity, flags);
         addNote(note);
         return note;
@@ -117,10 +109,10 @@ public class Trigger {
         getNotes().add(note);
     }
 
-    public Note removeNote(float beat, int pitch) {
+    public Note removeNote(int pitch) {
         Note note = null;
         if (notes != null) {
-            note = getNote(beat, pitch);
+            note = getNote(pitch);
             if (note != null) {
                 notes.remove(note);
             }

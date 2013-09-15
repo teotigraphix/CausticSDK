@@ -320,7 +320,7 @@ public class Phrase {
             map.put(beat, trigger);
         }
 
-        Note note = trigger.getNote(beat, pitch);
+        Note note = trigger.getNote(pitch);
         if (note == null) {
             note = trigger.addNote(beat, pitch, gate, velocity, flags);
         }
@@ -406,6 +406,24 @@ public class Phrase {
         }
         trigger.setSelected(false);
         fireTriggerChange(TriggerChangeKind.Selected, trigger);
+    }
+
+    public void removeNote(int step, int pitch) {
+        Trigger trigger = getTrigger(step);
+        Note note = trigger.getNote(pitch);
+        if (note != null) {
+            getPatternSequencer().triggerOff(getResolution(), step, note.getPitch());
+        }
+    }
+
+    public void addNote(int step, int pitch, float gate, float velocity, int flags) {
+        float beat = Resolution.toBeat(step, getResolution());
+        Trigger trigger = getTrigger(step);
+        if (trigger == null) {
+            trigger = new Trigger(beat);
+        }
+        trigger.addNote(beat, pitch, gate, velocity, flags);
+        getPatternSequencer().triggerOn(getResolution(), step, pitch, gate, velocity, flags);
     }
 
     /**
@@ -590,4 +608,5 @@ public class Phrase {
     public enum Scale {
         SIXTEENTH, SIXTEENTH_TRIPLET, THIRTYSECOND, THIRTYSECOND_TRIPLET
     }
+
 }

@@ -230,6 +230,17 @@ public abstract class GrooveMachine {
         machineSequencer.write();
     }
 
+    /**
+     * Mutes/unmutes all parts of the machine.
+     * 
+     * @param muted Whether the machine is muted.
+     */
+    public void setMute(boolean muted) {
+        for (Part part : getParts()) {
+            part.setMute(muted);
+        }
+    }
+
     private List<Part> parts = new ArrayList<Part>();
 
     public List<Part> getParts() {

@@ -129,7 +129,8 @@ public class GrooveStation {
             switch (machineType) {
                 case Bassline:
                     return new BasslineMachine();
-
+                case Drum:
+                    return new DrumMachine();
                 default:
                     break;
             }

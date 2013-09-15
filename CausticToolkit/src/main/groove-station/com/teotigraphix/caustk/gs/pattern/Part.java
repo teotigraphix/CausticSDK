@@ -19,9 +19,14 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class Part {
+
+    ICaustkController getController() {
+        return pattern.getController();
+    }
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -33,6 +38,10 @@ public class Part {
 
     public int getIndex() {
         return pattern.getParts().indexOf(this);
+    }
+
+    public int getToneIndex() {
+        return tone.getIndex();
     }
 
     //----------------------------------
@@ -113,5 +122,13 @@ public class Part {
      */
     public void transpose(int delta) {
         getPhrase().transpose(delta);
+    }
+
+    public boolean istMute() {
+        return getController().getSoundMixer().getChannel(getToneIndex()).isMute();
+    }
+
+    public void setMute(boolean muted) {
+        getController().getSoundMixer().getChannel(getToneIndex()).setMute(muted);
     }
 }
