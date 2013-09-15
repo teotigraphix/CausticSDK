@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 
 import org.junit.Test;
@@ -13,7 +15,6 @@ import com.teotigraphix.caustk.gs.machine.GrooveStation;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveStationSetup;
 import com.teotigraphix.caustk.gs.machine.MachineType;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.tone.ToneType;
 
 public class GrooveMachineTest extends CaustkTestBase {
@@ -60,6 +61,15 @@ public class GrooveMachineTest extends CaustkTestBase {
         // how to add init data to patterns?
         basslineMachine.setNextPatternIndex(0);
 
-        controller.getSystemSequencer().play(SequencerMode.PATTERN);
+        Pattern currentPattern = basslineMachine.getPattern();
+        assertEquals(2, currentPattern.getPartCount());
+        assertEquals(4, currentPattern.getPart(0).getPhrase().getTriggers().size());
+        assertEquals(4, currentPattern.getPart(1).getPhrase().getTriggers().size());
+
+        assertEquals(1, currentPattern.getPart(0).getPhrase().getTrigger(0f).getNotes().size());
+        assertEquals(1, currentPattern.getPart(1).getPhrase().getTrigger(0f).getNotes().size());
+
+        //controller.getSystemSequencer().play(SequencerMode.PATTERN);
+
     }
 }

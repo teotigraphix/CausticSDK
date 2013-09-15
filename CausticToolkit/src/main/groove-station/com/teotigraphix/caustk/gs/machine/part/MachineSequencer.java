@@ -143,6 +143,9 @@ public class MachineSequencer extends MachineComponentPart {
         // this the 'configure', when 'commit' is called, all settings
         // of the Pattern model that apply to global devices get instantly applied
 
+        // configure length, it may have changed since the original init
+        pattern.setLength(pattern.getMemoryItem().getLength());
+
         try {
             configureParts(pattern);
         } catch (CausticException e) {
@@ -160,17 +163,21 @@ public class MachineSequencer extends MachineComponentPart {
     }
 
     protected void configureParts(Pattern pattern) throws CausticException {
+        // add parts the the pattern
+        for (Part part : getGrooveMachine().getParts()) {
+            pattern.addPart(part);
+        }
+
         for (Part part : getGrooveMachine().getParts()) {
             getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
             //getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
+            //part.getPhrase().configure();
         }
     }
 
     protected void commitPropertySettings(Pattern pattern) {
         // set the default tempo/bpm
         pattern.setTempo(pattern.getMemoryItem().getTempo());
-        // configure length, it may have changed since the original init
-        pattern.setLength(pattern.getMemoryItem().getLength());
 
         for (Part part : pattern.getParts()) {
             setBankPattern(part, pattern.getBankIndex(), pattern.getPatternIndex());

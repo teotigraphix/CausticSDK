@@ -50,6 +50,10 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 
 public abstract class GrooveMachine {
 
+    public Pattern getPattern() {
+        return getMachineSequencer().getPattern();
+    }
+
     //----------------------------------
     // nextPatternIndex
     //----------------------------------
@@ -244,6 +248,8 @@ public abstract class GrooveMachine {
             Pattern pattern = memoryBank.getPattern(i);
             PatternMemoryItem patternItem = pattern.getMemoryItem();
             memoryBank.getPatternSlot().addItem(patternItem);
+
+            // have to add parts first, set length, then set note data
 
             for (Part part : parts) {
                 pattern.addPart(part);

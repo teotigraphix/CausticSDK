@@ -53,6 +53,15 @@ public class Note {
         return flags;
     }
 
+    public Note(String data) {
+        String[] split = data.split(" ");
+        this.beat = Float.valueOf(split[0]);
+        this.pitch = Float.valueOf(split[1]).intValue();
+        this.velocity = Float.valueOf(split[2]);
+        this.gate = Float.valueOf(split[3]) - beat;
+        this.flags = Float.valueOf(split[4]).intValue();
+    }
+
     public Note(float beat, int pitch, float gate, float velocity, int flags) {
         this.beat = beat;
         this.pitch = pitch;

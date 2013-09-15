@@ -271,7 +271,15 @@ public class Phrase {
     }
 
     public void setNoteData(String data) {
-        part.getTone().getComponent(PatternSequencerComponent.class).assignNoteData(data);
+        // setting the note data must create the Trigger instances
+        if (data != null && !data.equals("")) {
+            String[] notes = data.split("\\|");
+            for (String noteData : notes) {
+                Note note = new Note(noteData);
+                triggerOn(note.getStep(getResolution()), note.getPitch(), note.getGate(),
+                        note.getVelocity(), note.getFlags());
+            }
+        }
     }
 
     //--------------------------------------------------------------------------

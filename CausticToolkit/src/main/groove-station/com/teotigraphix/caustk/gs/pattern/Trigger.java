@@ -109,8 +109,12 @@ public class Trigger {
 
     public Note addNote(float beat, int pitch, float gate, float velocity, int flags) {
         Note note = new Note(beat, pitch, gate, velocity, flags);
-        getNotes().add(note);
+        addNote(note);
         return note;
+    }
+
+    public void addNote(Note note) {
+        getNotes().add(note);
     }
 
     public Note removeNote(float beat, int pitch) {
@@ -123,4 +127,5 @@ public class Trigger {
         }
         return note;
     }
+
 }
