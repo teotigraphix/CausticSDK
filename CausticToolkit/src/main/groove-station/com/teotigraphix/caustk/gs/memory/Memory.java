@@ -197,7 +197,7 @@ public abstract class Memory {
      */
     public Pattern copyPattern(int index) {
         Pattern pattern = getPattern(index);
-        machine.getMachineSequencer().configure(pattern);
+        machine.getSequencer().configure(pattern);
         return pattern;
     }
 

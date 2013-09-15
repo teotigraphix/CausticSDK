@@ -32,8 +32,8 @@ public abstract class MachineComponentPart {
         return machine.getController();
     }
 
-    protected final MemoryManager getMemoryManager() {
-        return machine.getMemoryManager();
+    protected final MemoryManager getMemory() {
+        return machine.getMemory();
     }
 
     //----------------------------------

@@ -58,7 +58,7 @@ public class MemoryManager {
     // memory
     //----------------------------------
 
-    private Type selectedMemoryType;
+    private Type selectedType;
 
     private MemoryBank selectedMemoryBank;
 
@@ -71,41 +71,41 @@ public class MemoryManager {
     }
 
     public Type getSelectedMemoryType() {
-        return selectedMemoryType;
+        return selectedType;
     }
 
-    public void setSelectedMemoryType(Type value) {
-        if (selectedMemoryType == value)
+    public void setSelectedType(Type value) {
+        if (selectedType == value)
             return;
 
-        selectedMemoryType = value;
+        selectedType = value;
 
-        if (selectedMemoryType == Type.PRESET)
+        if (selectedType == Type.PRESET)
             selectedMemoryBank = presetMemoryBank;
-        else if (selectedMemoryType == Type.USER)
+        else if (selectedType == Type.USER)
             selectedMemoryBank = userMemoryBank;
 
         getController().getDispatcher().trigger(
-                new OnMemoryManagerCurrentBankChange(selectedMemoryType, selectedMemoryBank));
+                new OnMemoryManagerCurrentBankChange(selectedType, selectedMemoryBank));
     }
 
     //----------------------------------
     // memoryCategory
     //----------------------------------
 
-    private Category selectedMemoryCategory;
+    private Category selectedCategory;
 
-    public Category getSelectedMemoryCategory() {
-        return selectedMemoryCategory;
+    public Category getSelectedCategory() {
+        return selectedCategory;
     }
 
-    public void setSelectedMemoryCategory(Category value) {
-        if (selectedMemoryCategory == value)
+    public void setSelectedCategory(Category value) {
+        if (selectedCategory == value)
             return;
-        selectedMemoryCategory = value;
+        selectedCategory = value;
         // for now we are just proxing to the current memory slot
         // this changes the strategy inside
-        selectedMemoryBank.setCategory(selectedMemoryCategory);
+        selectedMemoryBank.setCategory(selectedCategory);
     }
 
     //----------------------------------

@@ -97,7 +97,7 @@ public class MachineSequencer extends MachineComponentPart {
         nextPattern = pattern;
 
         // calls #configure(Pattern) from TemporaryMemory > UserMemory
-        pendingPattern = getMemoryManager().getTemporaryMemory().copyPattern(pattern);
+        pendingPattern = getMemory().getTemporaryMemory().copyPattern(pattern);
 
         // getDispatcher().trigger(new OnPatternSequencerPatternChangePending());
 
@@ -111,7 +111,7 @@ public class MachineSequencer extends MachineComponentPart {
         if (pendingPattern == null)
             return;
 
-        getMemoryManager().getTemporaryMemory().commit();
+        getMemory().getTemporaryMemory().commit();
         setPattern(pendingPattern);
     }
 
@@ -126,7 +126,7 @@ public class MachineSequencer extends MachineComponentPart {
         // into memory from the temporary memory
 
         // for now this is User
-        MemoryBank memoryBank = getMemoryManager().getSelectedMemoryBank();
+        MemoryBank memoryBank = getMemory().getSelectedMemoryBank();
         memoryBank.writePattern(getPattern());
     }
 
@@ -180,7 +180,7 @@ public class MachineSequencer extends MachineComponentPart {
         }
 
         for (Part part : getMachine().getParts()) {
-            getMemoryManager().getSelectedMemoryBank().copyPatch(part, 0);
+            getMemory().getSelectedMemoryBank().copyPatch(part, 0);
             //getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
             //part.getPhrase().configure();
         }

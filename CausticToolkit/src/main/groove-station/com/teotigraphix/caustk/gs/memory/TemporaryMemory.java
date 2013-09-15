@@ -95,7 +95,7 @@ public class TemporaryMemory extends Memory {
      * {@link MemoryManager}.
      */
     protected final Memory getCurrentMemory() {
-        return getMachine().getMemoryManager().getSelectedMemoryBank();
+        return getMachine().getMemory().getSelectedMemoryBank();
     }
 
     //--------------------------------------------------------------------------
@@ -133,7 +133,7 @@ public class TemporaryMemory extends Memory {
      */
     public void commit() {
 
-        getMachine().getMachineSequencer().commit(pendingPattern);
+        getMachine().getSequencer().commit(pendingPattern);
 
         previousPattern = currentPattern;
         currentPattern = pendingPattern;

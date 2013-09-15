@@ -53,15 +53,15 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 public abstract class GrooveMachine {
 
     protected final Pattern getPattern() {
-        return getMachineSequencer().getPattern();
+        return getSequencer().getPattern();
     }
 
     public final Phrase getSelectedPhrase() {
-        return getMachineSequencer().getPattern().getSelectedPart().getPhrase();
+        return getSequencer().getPattern().getSelectedPart().getPhrase();
     }
 
     public final Patch getSelectedPatch() {
-        return getMachineSequencer().getPattern().getSelectedPart().getPatch();
+        return getSequencer().getPattern().getSelectedPart().getPatch();
     }
 
     //----------------------------------
@@ -78,7 +78,7 @@ public abstract class GrooveMachine {
         if (value == nextPatternIndex)
             return;
         nextPatternIndex = value;
-        getMachineSequencer().setNextPattern(nextPatternIndex);
+        getSequencer().setNextPattern(nextPatternIndex);
     }
 
     //----------------------------------
@@ -87,7 +87,7 @@ public abstract class GrooveMachine {
 
     private MemoryManager memoryManager;
 
-    public MemoryManager getMemoryManager() {
+    public MemoryManager getMemory() {
         return memoryManager;
     }
 
@@ -97,11 +97,11 @@ public abstract class GrooveMachine {
 
     private MachineSound machineSound;
 
-    public MachineSound getMachineSound() {
+    public MachineSound getSound() {
         return machineSound;
     }
 
-    void setMachineSound(MachineSound value) {
+    void setSound(MachineSound value) {
         machineSound = value;
     }
 
@@ -111,11 +111,11 @@ public abstract class GrooveMachine {
 
     private MachineHeader machineHeader;
 
-    public MachineHeader getMachineHeader() {
+    public MachineHeader getHeader() {
         return machineHeader;
     }
 
-    void setMachineHeader(MachineHeader value) {
+    void setHeader(MachineHeader value) {
         machineHeader = value;
     }
 
@@ -125,11 +125,11 @@ public abstract class GrooveMachine {
 
     private MachineSystem machineSystem;
 
-    public MachineSystem getMachineSystem() {
+    public MachineSystem getSystem() {
         return machineSystem;
     }
 
-    public void setMachineSystem(MachineSystem value) {
+    public void setSystem(MachineSystem value) {
         machineSystem = value;
     }
 
@@ -139,11 +139,11 @@ public abstract class GrooveMachine {
 
     private MachineTransport machineTransport;
 
-    public MachineTransport getMachineTransport() {
+    public MachineTransport getTransport() {
         return machineTransport;
     }
 
-    public void setMachineTransport(MachineTransport value) {
+    public void setTransport(MachineTransport value) {
         machineTransport = value;
     }
 
@@ -153,11 +153,11 @@ public abstract class GrooveMachine {
 
     private MachineSequencer machineSequencer;
 
-    public MachineSequencer getMachineSequencer() {
+    public MachineSequencer getSequencer() {
         return machineSequencer;
     }
 
-    public void setMachineSequencer(MachineSequencer value) {
+    public void setSequencer(MachineSequencer value) {
         machineSequencer = value;
     }
 
@@ -167,11 +167,11 @@ public abstract class GrooveMachine {
 
     private MachineControls machineControls;
 
-    public MachineControls getMachineControls() {
+    public MachineControls getControls() {
         return machineControls;
     }
 
-    public void setMachineControls(MachineControls value) {
+    public void setControls(MachineControls value) {
         machineControls = value;
     }
 
@@ -181,11 +181,11 @@ public abstract class GrooveMachine {
 
     private MachineFooter machineFooter;
 
-    public MachineFooter getMachineFooter() {
+    public MachineFooter getFooter() {
         return machineFooter;
     }
 
-    public void setMachineFooter(MachineFooter value) {
+    public void setFooter(MachineFooter value) {
         machineFooter = value;
     }
 
@@ -215,8 +215,8 @@ public abstract class GrooveMachine {
 
     protected void createMainComponentParts() {
         memoryManager = new MemoryManager(this);
-        memoryManager.setSelectedMemoryType(Type.USER);
-        memoryManager.setSelectedMemoryCategory(Category.PATTERN);
+        memoryManager.setSelectedType(Type.USER);
+        memoryManager.setSelectedCategory(Category.PATTERN);
         machineSequencer = new MachineSequencer(this);
     }
 
@@ -264,7 +264,7 @@ public abstract class GrooveMachine {
     }
 
     protected void setupPatterns() {
-        MemoryBank memoryBank = getMemoryManager().getSelectedMemoryBank();
+        MemoryBank memoryBank = getMemory().getSelectedMemoryBank();
         for (int i = 0; i < 64; i++) {
             Pattern pattern = memoryBank.getPattern(i);
             PatternMemoryItem patternItem = pattern.getMemoryItem();

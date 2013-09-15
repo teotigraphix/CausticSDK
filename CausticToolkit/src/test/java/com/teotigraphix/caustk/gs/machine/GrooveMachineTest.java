@@ -134,11 +134,11 @@ public class GrooveMachineTest extends CaustkTestBase {
         // is recreated from the init data when reselected. If a pattern is reselected
         // that was written to disk, the original pattern created will be used.
         assertFalse(currentPattern.isInMemory());
-        assertEquals(0, basslineMachine.getMemoryManager().getSelectedMemoryBank()
+        assertEquals(0, basslineMachine.getMemory().getSelectedMemoryBank()
                 .getInMemoryPatterns().size());
         basslineMachine.write();
         assertTrue(currentPattern.isInMemory());
-        assertEquals(1, basslineMachine.getMemoryManager().getSelectedMemoryBank()
+        assertEquals(1, basslineMachine.getMemory().getSelectedMemoryBank()
                 .getInMemoryPatterns().size());
 
         basslineMachine.setNextPatternIndex(42);

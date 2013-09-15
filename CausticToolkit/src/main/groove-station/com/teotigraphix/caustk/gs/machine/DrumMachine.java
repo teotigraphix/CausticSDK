@@ -52,7 +52,7 @@ public class DrumMachine extends GrooveMachine {
 
     @Override
     protected void createComponentParts() {
-        setMachineSound(new DrumMachineSound(this));
+        setSound(new DrumMachineSound(this));
     }
 
     //--------------------------------------------------------------------------

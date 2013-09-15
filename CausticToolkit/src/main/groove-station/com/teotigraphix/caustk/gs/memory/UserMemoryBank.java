@@ -29,7 +29,7 @@ public class UserMemoryBank extends MemoryBank {
     @Override
     public Pattern copyPattern(int index) {
         Pattern pattern = getPattern(index);
-        getMachine().getMachineSequencer().configure(pattern);
+        getMachine().getSequencer().configure(pattern);
         return pattern;
     }
 
@@ -41,7 +41,7 @@ public class UserMemoryBank extends MemoryBank {
 
         PatternMemoryItem item = (PatternMemoryItem)getPatternSlot().getItem(index);
         if (item == null) {
-            item = (PatternMemoryItem)getMachine().getMachineSound().createInitData(
+            item = (PatternMemoryItem)getMachine().getSound().createInitData(
                     Category.PATTERN);
         }
 
@@ -65,7 +65,7 @@ public class UserMemoryBank extends MemoryBank {
         PatternMemoryItem item = part.getPattern().getMemoryItem();
         PhraseMemoryItem phraseMemoryItem = item.getPhrase(index);
         if (phraseMemoryItem == null) {
-            phraseMemoryItem = (PhraseMemoryItem)getMachine().getMachineSound().createInitData(
+            phraseMemoryItem = (PhraseMemoryItem)getMachine().getSound().createInitData(
                     Category.PHRASE);
             item.setPhrase(index, phraseMemoryItem);
         }
