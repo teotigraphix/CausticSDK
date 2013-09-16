@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.teotigraphix.caustk.controller.IControllerComponent;
-import com.teotigraphix.caustk.sequencer.track.PhraseNote;
+import com.teotigraphix.caustk.sequencer.track.Note;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
-import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
@@ -153,7 +153,7 @@ public interface ITrackSequencer extends IControllerComponent {
         }
     }
 
-    public enum TrackPhraseChangeKind {
+    public enum PhraseChangeKind {
 
         /**
          * Dispatched every beat when the phrase is active.
@@ -197,31 +197,30 @@ public interface ITrackSequencer extends IControllerComponent {
         Position;
     }
 
-    public static class OnTrackPhraseChange {
+    public static class OnPhraseChange {
 
-        private final TrackPhraseChangeKind kind;
+        private final PhraseChangeKind kind;
 
-        public TrackPhraseChangeKind getKind() {
+        public PhraseChangeKind getKind() {
             return kind;
         }
 
-        private final TrackPhrase trackPhrase;
+        private final Phrase phrase;
 
-        public TrackPhrase getTrackPhrase() {
-            return trackPhrase;
+        public Phrase getPhrase() {
+            return phrase;
         }
 
-        private final PhraseNote phraseNote;
+        private final Note note;
 
-        public PhraseNote getPhraseNote() {
-            return phraseNote;
+        public Note getNote() {
+            return note;
         }
 
-        public OnTrackPhraseChange(TrackPhraseChangeKind kind, TrackPhrase trackPhrase,
-                PhraseNote phraseNote) {
+        public OnPhraseChange(PhraseChangeKind kind, Phrase phrase, Note note) {
             this.kind = kind;
-            this.trackPhrase = trackPhrase;
-            this.phraseNote = phraseNote;
+            this.phrase = phrase;
+            this.note = note;
         }
     }
 
@@ -253,5 +252,4 @@ public interface ITrackSequencer extends IControllerComponent {
             this.trackSong = trackSong;
         }
     }
-
 }

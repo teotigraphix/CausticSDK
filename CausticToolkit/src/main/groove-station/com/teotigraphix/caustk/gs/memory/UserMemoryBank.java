@@ -10,7 +10,8 @@ import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.gs.pattern.Phrase;
+import com.teotigraphix.caustk.sequencer.track.Track;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 
 public class UserMemoryBank extends MemoryBank {
 
@@ -41,8 +42,7 @@ public class UserMemoryBank extends MemoryBank {
 
         PatternMemoryItem item = (PatternMemoryItem)getPatternSlot().getItem(index);
         if (item == null) {
-            item = (PatternMemoryItem)getMachine().getSound().createInitData(
-                    Category.PATTERN);
+            item = (PatternMemoryItem)getMachine().getSound().createInitData(Category.PATTERN);
         }
 
         // user memory has no PatternItem data, all defaults until the user either
@@ -54,7 +54,8 @@ public class UserMemoryBank extends MemoryBank {
     @Override
     public Phrase copyPhrase(Part part, int index) {
         Phrase phrase = getPhrase(part);
-        phrase.configure();
+        part.setPhrase(phrase);
+        //        phrase.configure();
         return phrase;
     }
 
@@ -69,8 +70,12 @@ public class UserMemoryBank extends MemoryBank {
                     Category.PHRASE);
             item.setPhrase(index, phraseMemoryItem);
         }
+        // the TrackSequencer holds all existing and lazy loaded pattern phrases
+        Track track = getMachine().getController().getTrackSequencer()
+                .getTrack(part.getToneIndex());
+        Phrase phrase = track.getPhrase(part.getPattern().getBankIndex(), part.getPattern()
+                .getPatternIndex());
 
-        Phrase phrase = new Phrase(part, phraseMemoryItem);
         return phrase;
     }
 

@@ -17,25 +17,31 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.pattern;
+package com.teotigraphix.caustk.gs.machine.part.sound;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.gs.pattern.Part;
+import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 /**
  * The Patch holds all sound settings that will get serialized to disk and
  * reloaded into the the Tone.
  * <p>
- * Data;
- * <ul>
- * <li>Mixer</li>
- * <li>Mixer</li>
- * <li>Mixer</li>
- * </ul>
+ * The Patch also is the API decorating the Tone's sound API.
+ * <p>
+ * Most application will call methods on the Patch to adjust the Tone's sounds,
+ * this can allow for undoable commands.
  */
 public class Patch {
+
+    @SuppressWarnings("unchecked")
+    protected <T extends Tone> T getTone() {
+        return (T)PartUtils.getTone(getPart());
+    }
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -76,8 +82,8 @@ public class Patch {
 
     public void commit() {
         try {
-            File presetFile = getPart().getTone().getController().getLibraryManager()
-                    .getSelectedLibrary().getPresetFile(patchItem.getPresetFile());
+            File presetFile = getTone().getController().getLibraryManager().getSelectedLibrary()
+                    .getPresetFile(patchItem.getPresetFile());
             loadPreset(presetFile);
         } catch (Exception e) {
             // default library patch proxy, no preset
@@ -90,20 +96,20 @@ public class Patch {
     //--------------------------------------------------------------------------
 
     public void loadPreset(File presetFile) {
-        getPart().getTone().getSynth().loadPreset(presetFile.getAbsolutePath());
+        getTone().getSynth().loadPreset(presetFile.getAbsolutePath());
     }
 
     public void savePreset(String name) {
-        getPart().getTone().getSynth().savePreset(name);
+        getTone().getSynth().savePreset(name);
     }
 
     public void noteOn(int pitch, float velocity) {
-        SynthComponent synth = getPart().getTone().getComponent(SynthComponent.class);
+        SynthComponent synth = getTone().getComponent(SynthComponent.class);
         synth.noteOn(pitch, velocity);
     }
 
     public void noteOff(int pitch) {
-        SynthComponent synth = getPart().getTone().getComponent(SynthComponent.class);
+        SynthComponent synth = getTone().getComponent(SynthComponent.class);
         synth.noteOff(pitch);
     }
 }

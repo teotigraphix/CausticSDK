@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.gs.machine.part.sequencer;
 
-import com.teotigraphix.caustk.gs.pattern.Phrase;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 
 public class StepSequencer {
 

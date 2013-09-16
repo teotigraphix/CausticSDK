@@ -21,10 +21,10 @@ package com.teotigraphix.caustk.gs.memory;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
+import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.pattern.Part;
-import com.teotigraphix.caustk.gs.pattern.Patch;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.gs.pattern.Phrase;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 
 public class TemporaryMemory extends Memory {
 

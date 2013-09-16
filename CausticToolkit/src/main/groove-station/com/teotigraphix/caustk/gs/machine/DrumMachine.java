@@ -24,6 +24,7 @@ import java.io.File;
 import com.teotigraphix.caustk.gs.machine.part.bassline.DrumMachineSound;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.ShuffleMode;
 import com.teotigraphix.caustk.tone.components.beatbox.WavSamplerChannel;
 
@@ -62,12 +63,14 @@ public class DrumMachine extends GrooveMachine {
     public void triggerOn(int bank, int channel, int step, float velocity) {
         // need to use add/remove note since the beat box is polyphonic
         // can use "triggers" because we are working with pseudo channels in the sequencer
-        getParts().get(bank).getPhrase().addNote(step, root + channel, 0.25f, 1f, 0);
+        float beat = Resolution.toBeat(step, getParts().get(bank).getPhrase().getResolution());
+        getParts().get(bank).getPhrase().addNote(root + channel, beat, beat + 0.25f, 1f, 0);
     }
 
     public void triggerOff(int bank, int channel, int step) {
         // same as triggerOn()
-        getParts().get(bank).getPhrase().removeNote(step, root + channel);
+        float beat = Resolution.toBeat(step, getParts().get(bank).getPhrase().getResolution());
+        getParts().get(bank).getPhrase().removeNote(root + channel, beat);
     }
 
     public void setSwing(int bank, float value) {

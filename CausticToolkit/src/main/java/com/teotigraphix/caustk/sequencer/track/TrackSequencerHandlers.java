@@ -4,8 +4,8 @@ package com.teotigraphix.caustk.sequencer.track;
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackPhraseChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnPhraseChange;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class TrackSequencerHandlers {
@@ -24,7 +24,7 @@ public class TrackSequencerHandlers {
 
     void registerObservers() {
         getDispatcher().register(OnTrackChange.class, onTrackPropertyChange);
-        getDispatcher().register(OnTrackPhraseChange.class, onTrackPhrasePropertyChange);
+        getDispatcher().register(OnPhraseChange.class, onTrackPhrasePropertyChange);
     }
 
     void unregisterObservers() {
@@ -59,24 +59,25 @@ public class TrackSequencerHandlers {
         }
     };
 
-    private EventObserver<OnTrackPhraseChange> onTrackPhrasePropertyChange = new EventObserver<OnTrackPhraseChange>() {
+    private EventObserver<OnPhraseChange> onTrackPhrasePropertyChange = new EventObserver<OnPhraseChange>() {
         @Override
-        public void trigger(OnTrackPhraseChange object) {
+        public void trigger(OnPhraseChange object) {
             Tone tone = null;
-            PhraseNote note = null;
+            Note note = null;
             switch (object.getKind()) {
                 case Length:
-                    tone = object.getTrackPhrase().getTone();
-                    tone.getPatternSequencer().setLength(object.getTrackPhrase().getBank(),
-                            object.getTrackPhrase().getPattern(),
-                            object.getTrackPhrase().getLength());
+                    tone = object.getPhrase().getTone();
+                    tone.getPatternSequencer().setLength(object.getPhrase().getBank(),
+                            object.getPhrase().getPattern(),
+                            object.getPhrase().getLength());
                     break;
 
                 case NoteData:
-                    tone = object.getTrackPhrase().getTone();
-                    tone.getPatternSequencer().assignNoteData(object.getTrackPhrase().getBank(),
-                            object.getTrackPhrase().getPattern(),
-                            object.getTrackPhrase().getNoteData());
+                    tone = object.getPhrase().getTone();
+                    //                    tone.getPatternSequencer().assignNoteData(object.getTrackPhrase().getBank(),
+                    //                            object.getTrackPhrase().getPattern(),
+                    //                            object.getTrackPhrase().getNoteData());
+
                     break;
 
                 case EditMeasure:
@@ -86,17 +87,17 @@ public class TrackSequencerHandlers {
                     break;
 
                 case NoteAdd:
-                    tone = object.getTrackPhrase().getTone();
-                    note = object.getPhraseNote();
-                    tone.getPatternSequencer().addNote(object.getTrackPhrase().getBank(),
-                            object.getTrackPhrase().getPattern(), note.getPitch(), note.getStart(),
-                            note.getEnd(), note.getVelocity(), note.getFlags());
+                    tone = object.getPhrase().getTone();
+                    note = object.getNote();
+                    //                    tone.getPatternSequencer().addNote(object.getTrackPhrase().getBank(),
+                    //                            object.getTrackPhrase().getPattern(), note.getPitch(), note.getStart(),
+                    //                            note.getEnd(), note.getVelocity(), note.getFlags());
                     break;
 
                 case NoteRemove:
-                    tone = object.getTrackPhrase().getTone();
-                    note = object.getPhraseNote();
-                    tone.getPatternSequencer().removeNote(note.getPitch(), note.getStart());
+                    tone = object.getPhrase().getTone();
+                    note = object.getNote();
+                    //                    tone.getPatternSequencer().removeNote(note.getPitch(), note.getStart());
                     break;
 
                 case ClearMeasure:

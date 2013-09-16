@@ -24,14 +24,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+import com.teotigraphix.caustk.gs.machine.part.sound.BasslinePatch;
+import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
-import com.teotigraphix.caustk.gs.pattern.Patch;
+import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.gs.pattern.Phrase;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.tone.Tone;
 
 /**
  * Represents an abstract memory bank, USER, PRESET etc.
@@ -227,7 +230,7 @@ public abstract class Memory {
 
     public Phrase copyPhrase(Part part, int index) {
         Phrase phrase = getPhrase(part);
-        phrase.configure();
+        //        phrase.configure();
         return phrase;
     }
 
@@ -261,7 +264,7 @@ public abstract class Memory {
         //            libraryPhrase = new LibraryPhrase();
         //        }
 
-        Phrase phrase = new Phrase(part, null);
+        Phrase phrase = null;// = new TrackPhrase(part, null);
         return phrase;
     }
 
@@ -274,8 +277,7 @@ public abstract class Memory {
      * @param part The {@link Part} needing a {@link Patch}.
      */
     Patch getPatch(Part part) {
-        @SuppressWarnings("unused")
-        int index = part.getIndex();
+        Patch patch = null;
         LibraryPatch item = null;
         //        PatternMemoryItem libraryPattern = part.getPattern().getPatternMemoryItem();
         //        if (libraryPattern != null) {
@@ -285,8 +287,14 @@ public abstract class Memory {
         //        } else {
         //            item = new LibraryPatch();
         //        }
+        Tone tone = PartUtils.getTone(part);
 
-        return new Patch(part, item);
+        if (tone instanceof BasslineTone)
+            patch = new BasslinePatch(part, item);
+        else
+            patch = new Patch(part, item);
+
+        return patch;
     }
 
     public enum Type {

@@ -95,10 +95,10 @@ public class TrackSequencerTest extends CaustkTestBase {
 
         tone.restore();
 
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        Map<Integer, Phrase> BankA = channel.getPhraseMap(0);
         assertEquals(1, BankA.size());
 
-        TrackPhrase A01 = BankA.get(0);
+        Phrase A01 = BankA.get(0);
         assertEquals(8, A01.getNotes().size());
 
         // test TrackItems
@@ -127,13 +127,13 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertNotNull(tone);
         assertEquals("RHODES", tone.getName());
 
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        Map<Integer, Phrase> BankA = channel.getPhraseMap(0);
         assertEquals(4, BankA.size());
 
-        TrackPhrase A01 = BankA.get(0);
-        TrackPhrase A02 = BankA.get(1);
-        TrackPhrase A03 = BankA.get(2);
-        TrackPhrase A04 = BankA.get(3);
+        Phrase A01 = BankA.get(0);
+        Phrase A02 = BankA.get(1);
+        Phrase A03 = BankA.get(2);
+        Phrase A04 = BankA.get(3);
 
         assertEquals(4, A01.getNotes().size());
         assertEquals(1, A02.getNotes().size());
@@ -171,10 +171,10 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertNotNull(tone);
         assertEquals("STRINGS", tone.getName());
 
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        Map<Integer, Phrase> BankA = channel.getPhraseMap(0);
         assertEquals(1, BankA.size());
 
-        TrackPhrase A01 = BankA.get(0);
+        Phrase A01 = BankA.get(0);
         assertEquals(3, A01.getNotes().size());
 
         // test TrackItems
@@ -188,10 +188,10 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertNotNull(tone);
         assertEquals("DRONE", tone.getName());
 
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        Map<Integer, Phrase> BankA = channel.getPhraseMap(0);
         assertEquals(1, BankA.size());
 
-        TrackPhrase A01 = BankA.get(0);
+        Phrase A01 = BankA.get(0);
         assertEquals(16, A01.getNotes().size());
 
         // test TrackItems
@@ -205,13 +205,13 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertNotNull(tone);
         assertEquals("HIGH_LEAD", tone.getName());
 
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        Map<Integer, Phrase> BankA = channel.getPhraseMap(0);
         assertEquals(4, BankA.size());
 
-        TrackPhrase A01 = BankA.get(0);
-        TrackPhrase A02 = BankA.get(1);
-        TrackPhrase A03 = BankA.get(2);
-        TrackPhrase A04 = BankA.get(3);
+        Phrase A01 = BankA.get(0);
+        Phrase A02 = BankA.get(1);
+        Phrase A03 = BankA.get(2);
+        Phrase A04 = BankA.get(3);
 
         assertEquals(7, A01.getNotes().size());
         assertEquals(8, A02.getNotes().size());
@@ -229,11 +229,11 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertNotNull(tone);
         assertEquals("TIGHTKIT", tone.getName());
 
-        Map<Integer, TrackPhrase> BankA = channel.getPhraseMap(0);
+        Map<Integer, Phrase> BankA = channel.getPhraseMap(0);
         assertEquals(2, BankA.size());
 
-        TrackPhrase A01 = BankA.get(0);
-        TrackPhrase A02 = BankA.get(1);
+        Phrase A01 = BankA.get(0);
+        Phrase A02 = BankA.get(1);
 
         assertEquals(14, A01.getNotes().size());
         assertEquals(4, A02.getNotes().size());
@@ -284,7 +284,7 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertEquals(1, channel1.getCurrentBank());
         assertEquals(14, channel1.getCurrentPattern());
 
-        TrackPhrase phrase = channel1.getPhrase();
+        Phrase phrase = channel1.getPhrase();
         assertNotNull(channel1);
 
         assertEquals(8, phrase.getLength());

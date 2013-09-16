@@ -20,6 +20,9 @@
 package com.teotigraphix.caustk.gs.pattern;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
+import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class Part {
@@ -36,10 +39,16 @@ public class Part {
     // index
     //----------------------------------
 
+    /**
+     * The {@link Part}'s index within it's parent {@link Pattern}.
+     */
     public int getIndex() {
         return pattern.getParts().indexOf(this);
     }
 
+    /**
+     * The index of the decorated {@link Tone} in the {@link ISoundSource}.
+     */
     public int getToneIndex() {
         return tone.getIndex();
     }
@@ -50,6 +59,9 @@ public class Part {
 
     private Tone tone;
 
+    /**
+     * The decorated {@link Tone}.
+     */
     protected Tone getTone() {
         return tone;
     }
@@ -121,7 +133,7 @@ public class Part {
      * @param delta
      */
     public void transpose(int delta) {
-        getPhrase().transpose(delta);
+        //        getPhrase().transpose(delta);
     }
 
     public boolean istMute() {

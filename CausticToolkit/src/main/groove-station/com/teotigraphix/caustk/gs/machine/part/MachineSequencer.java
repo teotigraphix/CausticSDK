@@ -25,6 +25,7 @@ import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.sequencer.StepSequencer;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
+import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
@@ -166,8 +167,16 @@ public class MachineSequencer extends MachineComponentPart {
 
     public void commit(Pattern pattern) {
         for (Part part : pattern.getParts()) {
+
+            PhraseMemoryItem phraseMemoryItem = pattern.getMemoryItem().getPhrase(part.getIndex());
+
             part.getPatch().commit();
-            // part.getPhrase().commit();
+
+            if (!pattern.isInMemory()) {
+                part.getPhrase().getTrack()
+                        .setCurrentBankPattern(pattern.getBankIndex(), pattern.getPatternIndex());
+                part.getPhrase().setNoteData(phraseMemoryItem.getInitNoteData());
+            }
         }
 
         commitPropertySettings(pattern);
@@ -180,8 +189,8 @@ public class MachineSequencer extends MachineComponentPart {
         }
 
         for (Part part : getMachine().getParts()) {
-            getMemory().getSelectedMemoryBank().copyPatch(part, 0);
-            //getMemoryManager().getSelectedMemoryBank().copyPhrase(part, 0);
+            getMemory().getSelectedMemoryBank().copyPatch(part, pattern.getIndex());
+            getMemory().getSelectedMemoryBank().copyPhrase(part, pattern.getIndex());
             //part.getPhrase().configure();
         }
     }

@@ -160,7 +160,7 @@ public class TrackSong implements ISerialize {
         return track;
     }
 
-    public TrackPhrase getPhrase(int toneIndex, int bankIndex, int patterIndex) {
+    public Phrase getPhrase(int toneIndex, int bankIndex, int patterIndex) {
         return getTrack(toneIndex).getPhrase(bankIndex, patterIndex);
     }
 

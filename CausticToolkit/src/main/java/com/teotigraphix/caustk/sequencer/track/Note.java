@@ -23,7 +23,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
-public class PhraseNote implements ISerialize {
+public class Note implements ISerialize {
 
     private String data;
 
@@ -65,7 +65,7 @@ public class PhraseNote implements ISerialize {
         return Resolution.toStep(start, resolution);
     }
 
-    public PhraseNote(String data) {
+    public Note(String data) {
         String[] split = data.split(" ");
         this.start = Float.valueOf(split[0]);
         this.pitch = Float.valueOf(split[1]).intValue();
@@ -74,7 +74,7 @@ public class PhraseNote implements ISerialize {
         this.flags = Float.valueOf(split[4]).intValue();
     }
 
-    public PhraseNote(int pitch, float start, float end, float velocity, int flags) {
+    public Note(int pitch, float start, float end, float velocity, int flags) {
         this.pitch = pitch;
         this.start = start;
         this.end = end;

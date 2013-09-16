@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
-import com.teotigraphix.caustk.sequencer.track.PhraseNote;
+import com.teotigraphix.caustk.sequencer.track.Note;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PatternSequencerComponent extends ToneComponent {
@@ -130,7 +130,7 @@ public class PatternSequencerComponent extends ToneComponent {
     }
 
     /**
-     * Returns a collection of {@link PhraseNote}s for the bank and pattern.
+     * Returns a collection of {@link Note}s for the bank and pattern.
      * <p>
      * The sequencer will temporarily set the bank and pattern, then rest to the
      * original values.
@@ -138,12 +138,12 @@ public class PatternSequencerComponent extends ToneComponent {
      * @param bank
      * @param pattern
      */
-    public Collection<PhraseNote> getNotes(int bank, int pattern) {
+    public Collection<Note> getNotes(int bank, int pattern) {
         int oldBank = getSelectedBank();
         int oldPattern = getSelectedPattern();
         sendBankPatternOSC(bank, pattern);
 
-        List<PhraseNote> result = new ArrayList<PhraseNote>();
+        List<Note> result = new ArrayList<Note>();
         String data = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getEngine(),
                 getToneIndex());
 
@@ -157,7 +157,7 @@ public class PatternSequencerComponent extends ToneComponent {
                 float velocity = Float.valueOf(split[2]);
                 float end = Float.valueOf(split[3]);
                 int flags = Float.valueOf(split[4]).intValue();
-                PhraseNote note = new PhraseNote(pitch, start, end, velocity, flags);
+                Note note = new Note(pitch, start, end, velocity, flags);
                 result.add(note);
             }
         }
@@ -323,36 +323,6 @@ public class PatternSequencerComponent extends ToneComponent {
         int lastIndex = getSelectedPattern();
         setSelectedBankPattern(bankIndex, patternIndex);
         removeNote(pitch, start);
-        setSelectedBankPattern(lastBank, lastIndex);
-    }
-
-    public void triggerOn(Resolution resolution, int step, int pitch, float gate, float velocity,
-            int flags) {
-        float start = Resolution.toBeat(step, resolution);
-        float end = start + gate;
-        addNote(pitch, start, end, velocity, flags);
-    }
-
-    public void triggerOn(int bankIndex, int patternIndex, Resolution resolution, int step,
-            int pitch, float gate, float velocity, int flags) {
-        int lastBank = getSelectedBank();
-        int lastIndex = getSelectedPattern();
-        setSelectedBankPattern(bankIndex, patternIndex);
-        triggerOn(resolution, step, pitch, gate, velocity, flags);
-        setSelectedBankPattern(lastBank, lastIndex);
-    }
-
-    public void triggerOff(Resolution resolution, int step, int pitch) {
-        float start = Resolution.toBeat(step, resolution);
-        removeNote(pitch, start);
-    }
-
-    public void triggerOff(int bankIndex, int patternIndex, Resolution resolution, int step,
-            int pitch) {
-        int lastBank = getSelectedBank();
-        int lastIndex = getSelectedPattern();
-        setSelectedBankPattern(bankIndex, patternIndex);
-        triggerOff(resolution, step, pitch);
         setSelectedBankPattern(lastBank, lastIndex);
     }
 

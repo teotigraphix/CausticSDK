@@ -33,22 +33,20 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 import com.teotigraphix.caustk.gs.machine.part.MachineSystem;
 import com.teotigraphix.caustk.gs.machine.part.MachineTransport;
+import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.Memory.Type;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.MemoryManager;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
-import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
-import com.teotigraphix.caustk.gs.pattern.Patch;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.gs.pattern.Phrase;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.caustk.gs.pattern.SynthPart;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.utils.PatternUtils;
 
 public abstract class GrooveMachine {
 
@@ -272,18 +270,18 @@ public abstract class GrooveMachine {
 
             // have to add parts first, set length, then set note data
 
-            for (Part part : parts) {
-                pattern.addPart(part);
-                Phrase phrase = memoryBank.getPhrase(part);
-                PhraseMemoryItem phraseItem = phrase.getMemoryItem();
-                memoryBank.getPhraseSlot().addItem(phraseItem);
-
-                int bankIndex = PatternUtils.getBank(i);
-                int patternIndex = PatternUtils.getPattern(i);
-                PartUtils.setBankPattern(part, bankIndex, patternIndex);
-                phrase.configure();
-
-            }
+            //            for (Part part : parts) {
+            //                pattern.addPart(part);
+            //                TrackPhrase phrase = memoryBank.getPhrase(part);
+            //                PhraseMemoryItem phraseItem = phrase.getMemoryItem();
+            //                memoryBank.getPhraseSlot().addItem(phraseItem);
+            //
+            //                int bankIndex = PatternUtils.getBank(i);
+            //                int patternIndex = PatternUtils.getPattern(i);
+            //                PartUtils.setBankPattern(part, bankIndex, patternIndex);
+            //                phrase.configure();
+            //
+            //            }
         }
 
         // reset bank/pattern to 0

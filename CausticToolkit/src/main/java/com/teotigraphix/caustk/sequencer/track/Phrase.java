@@ -1,7 +1,6 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -9,8 +8,8 @@ import java.util.UUID;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackPhraseChange;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.TrackPhraseChangeKind;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnPhraseChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.PhraseChangeKind;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
@@ -22,7 +21,9 @@ import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolut
  * @see OnTrackPhrasePlayMeasureChange
  * @see OnTrackPhraseEditMeasureChange
  */
-public class TrackPhrase implements ISerialize {
+public class Phrase implements ISerialize {
+
+    private TriggerMap triggerMap;
 
     private transient ICaustkController controller;
 
@@ -121,7 +122,7 @@ public class TrackPhrase implements ISerialize {
             return;
         length = value;
 
-        fireChange(TrackPhraseChangeKind.Length);
+        fireChange(PhraseChangeKind.Length);
 
         if (position > value)
             setPosition(value);
@@ -145,70 +146,34 @@ public class TrackPhrase implements ISerialize {
     }
 
     /**
+     * The client is responsible for setting the correct bank/pattern before
+     * this call.
+     * 
      * @param value
      * @see OnTrackPhraseNoteDataChange
      */
     public void setNoteData(String value) {
         noteData = value;
-        fireChange(TrackPhraseChangeKind.NoteData);
+        if (noteData == null || noteData.equals(""))
+            return; // XXX Clear the note list?
+
+        String[] notes = noteData.split("\\|");
+        for (String noteData : notes) {
+            String[] split = noteData.split(" ");
+
+            float start = Float.valueOf(split[0]);
+            int pitch = Float.valueOf(split[1]).intValue();
+            float velocity = Float.valueOf(split[2]);
+            float end = Float.valueOf(split[3]);
+            int flags = Float.valueOf(split[4]).intValue();
+            addNote(pitch, start, end, velocity, flags);
+        }
+
+        fireChange(PhraseChangeKind.NoteData);
     }
 
-    private List<PhraseNote> notes = new ArrayList<PhraseNote>();
-
-    public List<PhraseNote> getNotes() {
-        return notes;
-    }
-
-    public List<PhraseNote> getEditMeasureNotes() {
+    public Collection<Note> getEditMeasureNotes() {
         return getNotes(editMeasure);
-    }
-
-    public List<PhraseNote> getNotes(int measure) {
-        List<PhraseNote> result = new ArrayList<PhraseNote>();
-        for (PhraseNote note : notes) {
-            int beat = (int)Math.floor(note.getStart());
-            int startBeat = (measure * 4);
-            if (beat >= startBeat && beat < startBeat + 4) {
-                result.add(note);
-            }
-        }
-        return result;
-    }
-
-    public void addNotes(Collection<PhraseNote> notes) {
-        this.notes.addAll(notes);
-    }
-
-    public PhraseNote addNote(int pitch, float start, float end, float velocity, int flags) {
-        PhraseNote note = new PhraseNote(pitch, start, end, velocity, flags);
-        notes.add(note);
-        fireChange(TrackPhraseChangeKind.NoteAdd, note);
-        return note;
-    }
-
-    public PhraseNote removeNote(int pitch, float start) {
-        PhraseNote note = getNote(pitch, start);
-        if (note != null) {
-            notes.remove(note);
-            fireChange(TrackPhraseChangeKind.NoteRemove, note);
-        }
-        return note;
-    }
-
-    public void removeNote(PhraseNote note) {
-        removeNote(note.getPitch(), note.getStart());
-    }
-
-    public PhraseNote getNote(int pitch, float start) {
-        for (PhraseNote note : notes) {
-            if (note.getPitch() == pitch && note.getStart() == start)
-                return note;
-        }
-        return null;
-    }
-
-    public boolean hasNote(int pitch, float start) {
-        return getNote(pitch, start) != null;
     }
 
     //----------------------------------
@@ -234,7 +199,7 @@ public class TrackPhrase implements ISerialize {
             return;
 
         playMeasure = value;
-        fireChange(TrackPhraseChangeKind.PlayMeasure);
+        fireChange(PhraseChangeKind.PlayMeasure);
     }
 
     //----------------------------------
@@ -259,7 +224,7 @@ public class TrackPhrase implements ISerialize {
         if (value == editMeasure)
             return;
         editMeasure = value;
-        fireChange(TrackPhraseChangeKind.EditMeasure);
+        fireChange(PhraseChangeKind.EditMeasure);
     }
 
     public void onBeatChange(float beat) {
@@ -374,11 +339,12 @@ public class TrackPhrase implements ISerialize {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public TrackPhrase(ICaustkController controller, int toneIndex, int bank, int pattern) {
+    public Phrase(ICaustkController controller, int toneIndex, int bank, int pattern) {
         this.controller = controller;
         this.toneIndex = toneIndex;
         this.bank = bank;
         this.pattern = pattern;
+        triggerMap = new TriggerMap(this);
     }
 
     //--------------------------------------------------------------------------
@@ -387,17 +353,16 @@ public class TrackPhrase implements ISerialize {
 
     @Override
     public void sleep() {
-        for (PhraseNote note : notes) {
-            note.sleep();
-        }
     }
 
     @Override
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
-        for (PhraseNote note : notes) {
-            note.wakeup(controller);
-        }
+    }
+
+    @Override
+    public String toString() {
+        return "Bank:" + bank + ",Pattern:" + pattern;
     }
 
     public int getLocalBeat() {
@@ -417,19 +382,19 @@ public class TrackPhrase implements ISerialize {
      * Clears all notes from measure.
      */
     public void clear(int measure) {
-        List<PhraseNote> list = getNotes(measure);
-        for (PhraseNote note : list) {
+        Collection<Note> list = getNotes(measure);
+        for (Note note : list) {
             removeNote(note);
         }
-        fireChange(TrackPhraseChangeKind.ClearMeasure);
+        fireChange(PhraseChangeKind.ClearMeasure);
     }
 
-    protected void fireChange(TrackPhraseChangeKind kind) {
-        getDispatcher().trigger(new OnTrackPhraseChange(kind, this, null));
+    protected void fireChange(PhraseChangeKind kind) {
+        getDispatcher().trigger(new OnPhraseChange(kind, this, null));
     }
 
-    protected void fireChange(TrackPhraseChangeKind kind, PhraseNote phraseNote) {
-        getDispatcher().trigger(new OnTrackPhraseChange(kind, this, phraseNote));
+    protected void fireChange(PhraseChangeKind kind, Note phraseNote) {
+        getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
     }
 
     //--------------------------------------------------------------------------
@@ -468,7 +433,7 @@ public class TrackPhrase implements ISerialize {
         if (scale == value)
             return;
         scale = value;
-        fireChange(TrackPhraseChangeKind.Scale);
+        fireChange(PhraseChangeKind.Scale);
     }
 
     //----------------------------------
@@ -504,7 +469,128 @@ public class TrackPhrase implements ISerialize {
         if (value < 0 || value > getLength())
             return;
         position = value;
-        fireChange(TrackPhraseChangeKind.Position);
+        fireChange(PhraseChangeKind.Position);
     }
 
+    //----------------------------------
+    // resolution
+    //----------------------------------
+
+    public Resolution getResolution() {
+        switch (getScale()) {
+            case SIXTEENTH:
+                return Resolution.SIXTEENTH;
+            case THIRTYSECOND:
+                return Resolution.THIRTYSECOND;
+            default:
+                return Resolution.SIXTYFOURTH;
+        }
+    }
+
+    //----------------------------------
+    // stepCount
+    //----------------------------------
+
+    /**
+     * Returns the full number of steps in all measures.
+     * <p>
+     * IE 4 measures of 32nd resolution has 128 steps.
+     */
+    public int getStepCount() {
+        int numStepsInMeasure = Resolution.toSteps(getResolution());
+        return numStepsInMeasure * getLength();
+    }
+
+    /**
+     * Increments the internal pointer of the measure position.
+     */
+    public void incrementPosition() {
+        int len = getLength();
+        int value = position + 1;
+        if (value > len)
+            value = len;
+        setPosition(value);
+    }
+
+    /**
+     * Decrement the internal pointer of the measure position.
+     */
+    public void decrementPosition() {
+        int value = position - 1;
+        if (value < 1)
+            value = 1;
+        setPosition(value);
+    }
+
+    public Collection<Note> getNotes() {
+        return triggerMap.getNotes();
+    }
+
+    public Collection<Note> getNotes(int measure) {
+        return triggerMap.getNotes(measure);
+    }
+
+    public void addNotes(Collection<Note> notes) {
+        triggerMap.addNotes(notes);
+    }
+
+    public Note addNote(int pitch, float start, float gate, float velocity, int flags) {
+        return triggerMap.addNote(pitch, start, gate, velocity, flags);
+    }
+
+    public Note removeNote(int pitch, float beat) {
+        return triggerMap.removeNote(beat, pitch);
+    }
+
+    public void removeNote(Note note) {
+        triggerMap.removeNote(note);
+    }
+
+    public Note getNote(int pitch, float start) {
+        return triggerMap.getNote(pitch, start);
+    }
+
+    public boolean hasNote(int pitch, float beat) {
+        return triggerMap.hasNote(pitch, beat);
+    }
+
+    public Collection<Trigger> getTriggers() {
+        return triggerMap.getTriggers();
+    }
+
+    public List<Trigger> getViewTriggers() {
+        return triggerMap.getViewTriggers();
+    }
+
+    public final Trigger getTrigger(float beat) {
+        return triggerMap.getTrigger(beat);
+    }
+
+    public final Trigger getTrigger(int step) {
+        return triggerMap.getTrigger(step);
+    }
+
+    public void triggerOn(int step) {
+        triggerMap.triggerOn(step);
+    }
+
+    public void triggerOn(int step, int pitch, float gate, float velocity, int flags) {
+        triggerMap.triggerOn(step, pitch, gate, velocity, flags);
+    }
+
+    public void triggerOff(int step) {
+        triggerMap.triggerOff(step);
+    }
+
+    public void triggerUpdateGate(int step, float gate) {
+        triggerMap.triggerUpdateGate(step, gate);
+    }
+
+    public final boolean containsTrigger(float beat) {
+        return triggerMap.containsTrigger(beat);
+    }
+
+    public final boolean containsTrigger(int step) {
+        return triggerMap.containsTrigger(step);
+    }
 }

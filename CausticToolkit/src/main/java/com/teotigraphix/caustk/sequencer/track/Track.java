@@ -30,7 +30,7 @@ public class Track implements ISerialize {
         return controller.getTrackSequencer();
     }
 
-    Map<Integer, Map<Integer, TrackPhrase>> phrases = new TreeMap<Integer, Map<Integer, TrackPhrase>>();
+    Map<Integer, Map<Integer, Phrase>> phrases = new TreeMap<Integer, Map<Integer, Phrase>>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -138,45 +138,45 @@ public class Track implements ISerialize {
     }
 
     /**
-     * Returns the existing {@link TrackPhrase}s for the bankIndex.
+     * Returns the existing {@link Phrase}s for the bankIndex.
      * <p>
      * Due to lazy load, if a phrase is asked for it can still exist in the
      * collection even without not data.
      */
-    public Collection<TrackPhrase> getPhrases(int bankIndex) {
+    public Collection<Phrase> getPhrases(int bankIndex) {
         return phrases.get(bankIndex).values();
     }
 
-    public Map<Integer, TrackPhrase> getPhraseMap(int bankIndex) {
+    public Map<Integer, Phrase> getPhraseMap(int bankIndex) {
         return phrases.get(bankIndex);
     }
 
     /**
-     * Returns a {@link TrackPhrase} for the bank and pattern, will create a new
+     * Returns a {@link Phrase} for the bank and pattern, will create a new
      * phrase if does not exist.
      * 
      * @param bank
      * @param pattern
      */
-    public TrackPhrase getPhrase(int bank, int pattern) {
-        Map<Integer, TrackPhrase> banks = phrases.get(bank);
+    public Phrase getPhrase(int bank, int pattern) {
+        Map<Integer, Phrase> banks = phrases.get(bank);
         if (banks == null) {
-            banks = new TreeMap<Integer, TrackPhrase>();
+            banks = new TreeMap<Integer, Phrase>();
             phrases.put(bank, banks);
         }
-        TrackPhrase phrase = banks.get(pattern);
+        Phrase phrase = banks.get(pattern);
         if (phrase == null) {
-            phrase = new TrackPhrase(controller, index, bank, pattern);
+            phrase = new Phrase(controller, index, bank, pattern);
             banks.put(pattern, phrase);
         }
         return phrase;
     }
 
     /**
-     * Returns the current {@link TrackPhrase} of the {@link #getCurrentBank()}
+     * Returns the current {@link Phrase} of the {@link #getCurrentBank()}
      * and {@link #getCurrentPattern()}.
      */
-    public TrackPhrase getPhrase() {
+    public Phrase getPhrase() {
         return getPhrase(currentBank, currentPattern);
     }
 
@@ -207,8 +207,8 @@ public class Track implements ISerialize {
 
     @Override
     public void sleep() {
-        for (Map<Integer, TrackPhrase> map : phrases.values()) {
-            for (TrackPhrase phrase : map.values()) {
+        for (Map<Integer, Phrase> map : phrases.values()) {
+            for (Phrase phrase : map.values()) {
                 phrase.sleep();
             }
         }
@@ -217,8 +217,8 @@ public class Track implements ISerialize {
     @Override
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
-        for (Map<Integer, TrackPhrase> bankMap : phrases.values()) {
-            for (TrackPhrase phrase : bankMap.values()) {
+        for (Map<Integer, Phrase> bankMap : phrases.values()) {
+            for (Phrase phrase : bankMap.values()) {
                 phrase.wakeup(controller);
             }
         }
@@ -282,25 +282,25 @@ public class Track implements ISerialize {
         return null;
     }
 
-    public TrackItem addPhrase(int numLoops, TrackPhrase phrase) throws CausticException {
+    public TrackItem addPhrase(int numLoops, Phrase phrase) throws CausticException {
         int startMeasure = getNextMeasure();
         return addPhraseAt(startMeasure, numLoops, phrase, true);
     }
 
     /**
-     * Adds a {@link TrackPhrase} to the {@link Track} by creating a
+     * Adds a {@link Phrase} to the {@link Track} by creating a
      * {@link TrackItem} reference.
      * 
      * @param startMeasure The measure the phrase starts on.
      * @param numLoops The number of times the phrase is repeated. The
-     *            {@link TrackPhrase#getNumMeasures()} is used to calculate the
+     *            {@link Phrase#getNumMeasures()} is used to calculate the
      *            number of total measures.
      * @param trackPhrase The phrase reference which will already have been
      *            created and registered with the Track. This phrase will have
      *            an index of 0-63.
      * @throws CausticException The start or measure span is occupied
      */
-    public TrackItem addPhraseAt(int startMeasure, int numLoops, TrackPhrase trackPhrase,
+    public TrackItem addPhraseAt(int startMeasure, int numLoops, Phrase trackPhrase,
             boolean dispatch) throws CausticException {
 
         if (contains(startMeasure))

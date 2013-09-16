@@ -27,11 +27,9 @@ import java.util.UUID;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
-import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 
 public abstract class Tone implements ISerialize, IRestore {
@@ -123,30 +121,6 @@ public abstract class Tone implements ISerialize, IRestore {
             return;
         selected = value;
         // firePropertyChange(TonePropertyKind.SELECTED, mSelected);
-    }
-
-    /**
-     * Called from the {@link SystemSequencer} in the triggerOn observer.
-     * 
-     * @param step
-     * @param pitch
-     * @param gate
-     * @param velocity
-     * @param flags
-     */
-    public void _triggerOn(int step, int pitch, float gate, float velocity, int flags) {
-        getComponent(PatternSequencerComponent.class).triggerOn(Resolution.SIXTEENTH, step, pitch,
-                gate, velocity, flags);
-    }
-
-    /**
-     * Called from the {@link SystemSequencer} in the triggerOff observer.
-     * 
-     * @param step
-     * @param pitch
-     */
-    public void _triggerOff(int step, int pitch) {
-        getComponent(PatternSequencerComponent.class).triggerOff(Resolution.SIXTEENTH, step, pitch);
     }
 
     int getComponentCount() {

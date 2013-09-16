@@ -31,8 +31,8 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 /**
  * A {@link TrackItem} is a value object that is contained in a {@link Track}.
  * <p>
- * A new track item is created for every span of a {@link TrackPhrase} inserted
- * into the Track with {@link Track#addPhrase(int, TrackPhrase)}.
+ * A new track item is created for every span of a {@link Phrase} inserted
+ * into the Track with {@link Track#addPhrase(int, Phrase)}.
  */
 public class TrackItem implements ISerialize {
 

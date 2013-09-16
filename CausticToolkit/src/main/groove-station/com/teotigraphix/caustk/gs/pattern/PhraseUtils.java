@@ -19,7 +19,8 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.sequencer.track.PhraseNote;
+import com.teotigraphix.caustk.sequencer.track.Note;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 
 public class PhraseUtils {
 
@@ -35,7 +36,7 @@ public class PhraseUtils {
         return Float.toString(NUM_BEATS * stepFraction);
     }
 
-    public static float incrementGate(Phrase phrase, PhraseNote note) {
+    public static float incrementGate(Phrase phrase, Note note) {
         //        float beat = Resolution.toBeat(trigger.getIndex(), phrase
         //                .getResolution());
         float gate = note.getGate();
@@ -45,7 +46,7 @@ public class PhraseUtils {
         return note.getGate();
     }
 
-    public static float decrementGate(Phrase phrase, PhraseNote trigger) {
+    public static float decrementGate(Phrase phrase, Note trigger) {
         float gate = trigger.getGate();
         gate -= 0.0625f;
         gate = Math.max(Math.min(gate, MAX_STEP), MIN_STEP);
@@ -53,7 +54,7 @@ public class PhraseUtils {
         return trigger.getGate();
     }
 
-    public static PhraseNote createNote(String data) {
+    public static Note createNote(String data) {
         return null;
     }
 

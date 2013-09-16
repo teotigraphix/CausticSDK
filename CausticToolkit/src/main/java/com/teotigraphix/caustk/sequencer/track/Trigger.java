@@ -17,12 +17,11 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.pattern;
+package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.sequencer.track.PhraseNote;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 public class Trigger {
@@ -63,11 +62,9 @@ public class Trigger {
     // notes
     //----------------------------------
 
-    private List<PhraseNote> notes;
+    private List<Note> notes;
 
-    public List<PhraseNote> getNotes() {
-        if (notes == null)
-            notes = new ArrayList<PhraseNote>();
+    public List<Note> getNotes() {
         return notes;
     }
 
@@ -77,6 +74,7 @@ public class Trigger {
 
     public Trigger(float beat) {
         this.beat = beat;
+        notes = new ArrayList<Note>();
     }
 
     //--------------------------------------------------------------------------
@@ -87,36 +85,33 @@ public class Trigger {
         return getNote(pitch) != null;
     }
 
-    public PhraseNote getNote(int pitch) {
-        if (notes != null) {
-            for (PhraseNote note : notes) {
-                if (note.getPitch() == pitch)
-                    return note;
-            }
+    public Note getNote(int pitch) {
+        for (Note note : notes) {
+            if (note.getPitch() == pitch)
+                return note;
         }
         return null;
     }
 
-    public PhraseNote addNote(float beat, int pitch, float gate, float velocity, int flags) {
+    public Note addNote(float beat, int pitch, float gate, float velocity, int flags) {
         if (hasNote(pitch)) {
             throw new IllegalStateException("Note exists");
         }
-        PhraseNote note = new PhraseNote(pitch, beat, beat + gate, velocity, flags);
+        Note note = new Note(pitch, beat, beat + gate, velocity, flags);
         addNote(note);
         return note;
     }
 
-    public void addNote(PhraseNote note) {
+    public void addNote(Note note) {
+        if (hasNote(note.getPitch()))
+            return;
         getNotes().add(note);
     }
 
-    public PhraseNote removeNote(int pitch) {
-        PhraseNote note = null;
-        if (notes != null) {
-            note = getNote(pitch);
-            if (note != null) {
-                notes.remove(note);
-            }
+    public Note removeNote(int pitch) {
+        Note note = getNote(pitch);
+        if (note != null) {
+            notes.remove(note);
         }
         return note;
     }

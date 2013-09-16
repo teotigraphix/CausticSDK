@@ -114,7 +114,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         return trackSong.getTrack(index);
     }
 
-    public TrackPhrase getPhrase(int toneIndex, int bankIndex, int patterIndex) {
+    public Phrase getPhrase(int toneIndex, int bankIndex, int patterIndex) {
         return trackSong.getPhrase(toneIndex, bankIndex, patterIndex);
     }
 
@@ -190,8 +190,8 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                 int bank = PatternUtils.toBank(patternName);
                 int pattern = PatternUtils.toPattern(patternName);
                 // get the note data
-                Collection<PhraseNote> notes = sequencer.getNotes(bank, pattern);
-                TrackPhrase phrase = channel.getPhrase(bank, pattern);
+                Collection<Note> notes = sequencer.getNotes(bank, pattern);
+                Phrase phrase = channel.getPhrase(bank, pattern);
                 phrase.setLength(sequencer.getLength(bank, pattern));
                 phrase.addNotes(notes);
             }
@@ -211,7 +211,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                 int end = Integer.valueOf(spilt[4]);
 
                 Track channel = getTrack(toneIndex);
-                TrackPhrase phrase = channel.getPhrase(bank, pattern);
+                Phrase phrase = channel.getPhrase(bank, pattern);
                 int phraseLength = phrase.getLength();
 
                 int span = end - start;

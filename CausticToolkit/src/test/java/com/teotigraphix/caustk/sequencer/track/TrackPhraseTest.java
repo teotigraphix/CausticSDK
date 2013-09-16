@@ -45,8 +45,8 @@ public class TrackPhraseTest extends CaustkTestBase {
         assertNotNull(song);
         Tone tone = soundSource.createTone("part1", SubSynthTone.class);
         Track channel = trackSequencer.getTrack(tone);
-        TrackPhrase phrase = channel.getPhrase(0, 1);
-        PhraseNote note = phrase.addNote(60, 0f, 2f, 0.5f, 1);
+        Phrase phrase = channel.getPhrase(0, 1);
+        Note note = phrase.addNote(60, 0f, 2f, 0.5f, 1);
 
         assertEquals(60, note.getPitch());
         assertEquals(0f, note.getStart(), 0f);
@@ -70,7 +70,7 @@ public class TrackPhraseTest extends CaustkTestBase {
         phrase = channel.getPhrase(0, 1);
 
         // test the restored note loaded from the .caustic file
-        PhraseNote note2 = phrase.getNote(60, 0f);
+        Note note2 = phrase.getNote(60, 0f);
         assertEquals(60, note2.getPitch());
         assertEquals(0f, note2.getStart(), 0f);
         assertEquals(2f, note2.getEnd(), 0f);

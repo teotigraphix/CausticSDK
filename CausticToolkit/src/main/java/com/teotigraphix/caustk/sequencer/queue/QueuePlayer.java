@@ -12,7 +12,7 @@ import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.sequencer.queue.QueueData.QueueDataState;
 import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
-import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
 public class QueuePlayer {
@@ -296,7 +296,7 @@ public class QueuePlayer {
 
     private void addPhraseAt(Track track, int start, QueueData data) {
         try {
-            TrackPhrase phrase = track.getPhrase(data.getBankIndex(), data.getPatternIndex());
+            Phrase phrase = track.getPhrase(data.getBankIndex(), data.getPatternIndex());
             track.addPhraseAt(start, 1, phrase, true);
         } catch (CausticException e) {
             e.printStackTrace();
