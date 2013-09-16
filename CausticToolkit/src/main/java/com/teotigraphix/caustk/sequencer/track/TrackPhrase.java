@@ -9,10 +9,11 @@ import java.util.UUID;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackPhraseChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.TrackPhraseChangeKind;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 /**
  * @see ITrackSequencer#getDispatcher()
@@ -33,11 +34,11 @@ public class TrackPhrase implements ISerialize {
         return controller.getTrackSequencer();
     }
 
-    final Tone getTone() {
+    public final Tone getTone() {
         return controller.getSoundSource().getTone(toneIndex);
     }
 
-    final Track getTrack() {
+    public final Track getTrack() {
         return controller.getTrackSequencer().getTrack(toneIndex);
     }
 
@@ -119,8 +120,11 @@ public class TrackPhrase implements ISerialize {
         if (value == length)
             return;
         length = value;
-        getDispatcher()
-                .trigger(new OnTrackSequencerPropertyChange(PropertyChangeKind.Length, this));
+
+        fireChange(TrackPhraseChangeKind.Length);
+
+        if (position > value)
+            setPosition(value);
     }
 
     //----------------------------------
@@ -146,8 +150,7 @@ public class TrackPhrase implements ISerialize {
      */
     public void setNoteData(String value) {
         noteData = value;
-        getDispatcher().trigger(
-                new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteData, this));
+        fireChange(TrackPhraseChangeKind.NoteData);
     }
 
     private List<PhraseNote> notes = new ArrayList<PhraseNote>();
@@ -179,8 +182,7 @@ public class TrackPhrase implements ISerialize {
     public PhraseNote addNote(int pitch, float start, float end, float velocity, int flags) {
         PhraseNote note = new PhraseNote(pitch, start, end, velocity, flags);
         notes.add(note);
-        getDispatcher().trigger(
-                new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteAdd, this, note));
+        fireChange(TrackPhraseChangeKind.NoteAdd, note);
         return note;
     }
 
@@ -188,8 +190,7 @@ public class TrackPhrase implements ISerialize {
         PhraseNote note = getNote(pitch, start);
         if (note != null) {
             notes.remove(note);
-            getDispatcher().trigger(
-                    new OnTrackSequencerPropertyChange(PropertyChangeKind.NoteRemove, this, note));
+            fireChange(TrackPhraseChangeKind.NoteRemove, note);
         }
         return note;
     }
@@ -233,9 +234,7 @@ public class TrackPhrase implements ISerialize {
             return;
 
         playMeasure = value;
-        //System.err.println(playMeasure);
-        getDispatcher().trigger(
-                new OnTrackSequencerPropertyChange(PropertyChangeKind.PlayMeasure, this));
+        fireChange(TrackPhraseChangeKind.PlayMeasure);
     }
 
     //----------------------------------
@@ -260,8 +259,7 @@ public class TrackPhrase implements ISerialize {
         if (value == editMeasure)
             return;
         editMeasure = value;
-        getDispatcher().trigger(
-                new OnTrackSequencerPropertyChange(PropertyChangeKind.EditMeasure, this));
+        fireChange(TrackPhraseChangeKind.EditMeasure);
     }
 
     public void onBeatChange(float beat) {
@@ -341,7 +339,7 @@ public class TrackPhrase implements ISerialize {
 
         currentBeat = value;
 
-        getDispatcher().trigger(new OnTrackSequencerPropertyChange(PropertyChangeKind.Beat, this));
+        // getDispatcher().trigger(new OnTrackSequencerPropertyChange(PropertyChangeKind.Beat, this));
 
         //        fireBeatChange(mCurrentBeat, last);
 
@@ -423,8 +421,90 @@ public class TrackPhrase implements ISerialize {
         for (PhraseNote note : list) {
             removeNote(note);
         }
-        getDispatcher().trigger(
-                new OnTrackSequencerPropertyChange(PropertyChangeKind.ClearMeasure, this));
+        fireChange(TrackPhraseChangeKind.ClearMeasure);
+    }
+
+    protected void fireChange(TrackPhraseChangeKind kind) {
+        getDispatcher().trigger(new OnTrackPhraseChange(kind, this, null));
+    }
+
+    protected void fireChange(TrackPhraseChangeKind kind, PhraseNote phraseNote) {
+        getDispatcher().trigger(new OnTrackPhraseChange(kind, this, phraseNote));
+    }
+
+    //--------------------------------------------------------------------------
+    // Added from Phrase
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // scale
+    //----------------------------------
+
+    public enum Scale {
+        SIXTEENTH, SIXTEENTH_TRIPLET, THIRTYSECOND, THIRTYSECOND_TRIPLET, SIXTYFORTH
+    }
+
+    private Scale scale = Scale.SIXTEENTH;
+
+    public Scale getScale() {
+        return scale;
+    }
+
+    /**
+     * Sets the new scale for the phrase.
+     * <p>
+     * The scale is used to calculate the {@link Resolution} of input. This
+     * property mainly relates the the view of the phrase, where the underlying
+     * pattern sequencer can have a higher resolution but the view is showing
+     * the scale.
+     * <p>
+     * So you can have a phrase scale of 16, but the resolution could be 64th,
+     * but the view will only show the scale notes which would be 16th.
+     * 
+     * @param value
+     * @see OnPhraseScaleChange
+     */
+    public void setScale(Scale value) {
+        if (scale == value)
+            return;
+        scale = value;
+        fireChange(TrackPhraseChangeKind.Scale);
+    }
+
+    //----------------------------------
+    // position
+    //----------------------------------
+
+    private int position = 1;
+
+    /**
+     * Returns the current position in the phrase based on the rules of the
+     * view.
+     * <p>
+     * Depending on the resolution and scale, the position can mean different
+     * things.
+     * <p>
+     * 16th note with a length of 4, has 4 measures and thus 4 positions(1-4).
+     * When the position is 2, the view triggers are 16-31(0 index).
+     */
+    public int getPosition() {
+        return position;
+    }
+
+    /**
+     * Sets the current position of the phrase.
+     * 
+     * @param value The new phrase position.
+     * @see OnPhrasePositionChange
+     */
+    void setPosition(int value) {
+        if (position == value)
+            return;
+        // if p = 1 and len = 1
+        if (value < 0 || value > getLength())
+            return;
+        position = value;
+        fireChange(TrackPhraseChangeKind.Position);
     }
 
 }

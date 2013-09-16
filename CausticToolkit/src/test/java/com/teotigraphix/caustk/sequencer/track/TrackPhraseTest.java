@@ -9,8 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.Test;
-
 import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
@@ -37,7 +35,11 @@ public class TrackPhraseTest extends CaustkTestBase {
         trackSequencer = null;
     }
 
-    @Test
+    public void test_phrase_trigger() {
+
+    }
+
+    //@Test
     public void test_notes() throws IOException, CausticException {
         TrackSong song = trackSequencer.createSong(new File("TrackPhraseTestSong.ctks"));
         assertNotNull(song);

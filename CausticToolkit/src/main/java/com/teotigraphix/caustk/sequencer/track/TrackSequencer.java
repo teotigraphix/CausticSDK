@@ -270,7 +270,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
         trackSong = new TrackSong(songFile);
         trackSong.wakeup(getController());
-        trigger(new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Create, trackSong));
+        trigger(new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
 
         saveTrackSong();
 
@@ -283,7 +283,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
         File absoluteTargetSongFile = getAbsoluteSongFile();
         getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
-        trigger(new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Save, trackSong));
+        trigger(new OnTrackSongChange(TrackSongChangeKind.Save, trackSong));
     }
 
     protected File getAbsoluteSongFile() {

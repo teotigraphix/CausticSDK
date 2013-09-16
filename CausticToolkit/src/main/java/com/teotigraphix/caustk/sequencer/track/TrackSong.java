@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerCurrentTrackChange;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
 
@@ -109,7 +108,7 @@ public class TrackSong implements ISerialize {
         if (value == currentTrack)
             return;
         currentTrack = value;
-        getDispatcher().trigger(new OnTrackSequencerCurrentTrackChange(currentTrack));
+        //        getDispatcher().trigger(new OnTrackSequencerCurrentTrackChange(currentTrack));
     }
 
     //----------------------------------
@@ -314,8 +313,6 @@ public class TrackSong implements ISerialize {
     }
 
     public void dispose() {
-        // TODO Auto-generated method stub
-
     }
 
 }

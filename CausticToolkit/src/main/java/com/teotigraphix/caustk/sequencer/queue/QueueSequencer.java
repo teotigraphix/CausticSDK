@@ -15,7 +15,7 @@ import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerTrackSongChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSongChange;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
 public class QueueSequencer extends ControllerComponent implements IQueueSequencer {
@@ -103,10 +103,10 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
                     }
                 });
 
-        getTrackSequencer().register(OnTrackSequencerTrackSongChange.class,
-                new EventObserver<OnTrackSequencerTrackSongChange>() {
+        getTrackSequencer().register(OnTrackSongChange.class,
+                new EventObserver<OnTrackSongChange>() {
                     @Override
-                    public void trigger(OnTrackSequencerTrackSongChange object) {
+                    public void trigger(OnTrackSongChange object) {
                         switch (object.getKind()) {
                             case Create:
                                 create(object.getTrackSong());

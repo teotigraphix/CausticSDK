@@ -8,6 +8,7 @@ import java.util.Collection;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.sequencer.track.PhraseNote;
 import com.teotigraphix.caustk.sequencer.track.Track;
+import com.teotigraphix.caustk.sequencer.track.TrackItem;
 import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 import com.teotigraphix.caustk.sound.ISoundSource;
@@ -16,6 +17,8 @@ import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
 public interface ITrackSequencer extends IControllerComponent {
+
+    TrackSong getTrackSong();
 
     /**
      * Returns the current track/tone index.
@@ -56,16 +59,16 @@ public interface ITrackSequencer extends IControllerComponent {
     Track getSelectedTrack();
 
     /**
-     * Returns a collection of {@link Track}s that have been created due
-     * to {@link Tone} creation in the {@link ISoundSource}.
+     * Returns a collection of {@link Track}s that have been created due to
+     * {@link Tone} creation in the {@link ISoundSource}.
      */
     Collection<Track> getTracks();
 
     /**
      * Returns a {@link Track} at the specified index.
      * <p>
-     * If the channel has not been created, a new {@link Track} instance
-     * is created and placed in the sequencer.
+     * If the channel has not been created, a new {@link Track} instance is
+     * created and placed in the sequencer.
      * 
      * @param index The tone index
      */
@@ -86,7 +89,7 @@ public interface ITrackSequencer extends IControllerComponent {
      * @param songFile The absolute path to the file, the <code>.caustic</code>
      *            file is saved in the same directory with the same name as this
      *            song file.
-     * @see OnTrackSequencerTrackSongChange
+     * @see OnTrackSongChange
      * @throws IOException
      */
     TrackSong createSong(File songFile) throws IOException;
@@ -101,17 +104,61 @@ public interface ITrackSequencer extends IControllerComponent {
      */
     void load(File absoluteCausticFile) throws IOException;
 
-    public enum PropertyChangeKind {
+    public enum TrackChangeKind {
 
         /**
-         * @see TrackChannel#setCurrentBank(int)
+         * @see Track#setCurrentBank(int)
          */
         Bank,
 
         /**
-         * @see TrackChannel#setCurrentPattern(int)
+         * @see Track#setCurrentPattern(int)
          */
         Pattern,
+
+        Add,
+
+        Remove;
+    }
+
+    public static class OnTrackChange {
+
+        final private TrackChangeKind kind;
+
+        public TrackChangeKind getKind() {
+            return kind;
+        }
+
+        Track track;
+
+        public Track getTrack() {
+            return track;
+        }
+
+        private TrackItem trackItem;
+
+        public final TrackItem getItem() {
+            return trackItem;
+        }
+
+        public OnTrackChange(TrackChangeKind kind, Track track) {
+            this.kind = kind;
+            this.track = track;
+        }
+
+        public OnTrackChange(TrackChangeKind kind, Track track, TrackItem trackItem) {
+            this.kind = kind;
+            this.track = track;
+            this.trackItem = trackItem;
+        }
+    }
+
+    public enum TrackPhraseChangeKind {
+
+        /**
+         * Dispatched every beat when the phrase is active.
+         */
+        Beat,
 
         /**
          * @see TrackPhrase#setLength(int)
@@ -145,61 +192,41 @@ public interface ITrackSequencer extends IControllerComponent {
          */
         EditMeasure,
 
-        /**
-         * Dispatched every beat when the phrase is active.
-         */
-        Beat
+        Scale,
+
+        Position;
     }
 
-    public static class OnTrackSequencerPropertyChange {
+    public static class OnTrackPhraseChange {
 
-        final private PropertyChangeKind kind;
+        private final TrackPhraseChangeKind kind;
 
-        public PropertyChangeKind getKind() {
+        public TrackPhraseChangeKind getKind() {
             return kind;
         }
 
-        Track trackChannel;
-
-        public Track getTrackChannel() {
-            return trackChannel;
-        }
-
-        private TrackPhrase trackPhrase;
+        private final TrackPhrase trackPhrase;
 
         public TrackPhrase getTrackPhrase() {
             return trackPhrase;
         }
 
-        private PhraseNote phraseNote;
+        private final PhraseNote phraseNote;
 
         public PhraseNote getPhraseNote() {
             return phraseNote;
         }
 
-        public OnTrackSequencerPropertyChange(PropertyChangeKind kind, Track trackChannel) {
-            this.kind = kind;
-            this.trackChannel = trackChannel;
-        }
-
-        public OnTrackSequencerPropertyChange(PropertyChangeKind kind, TrackPhrase trackPhrase) {
-            this.kind = kind;
-            this.trackPhrase = trackPhrase;
-            trackChannel = trackPhrase.getController().getTrackSequencer()
-                    .getTrack(trackPhrase.getToneIndex());
-        }
-
-        public OnTrackSequencerPropertyChange(PropertyChangeKind kind, TrackPhrase trackPhrase,
+        public OnTrackPhraseChange(TrackPhraseChangeKind kind, TrackPhrase trackPhrase,
                 PhraseNote phraseNote) {
             this.kind = kind;
             this.trackPhrase = trackPhrase;
             this.phraseNote = phraseNote;
-            trackChannel = trackPhrase.getController().getTrackSequencer()
-                    .getTrack(trackPhrase.getToneIndex());
         }
     }
 
     public enum TrackSongChangeKind {
+
         Create,
 
         Load,
@@ -207,7 +234,7 @@ public interface ITrackSequencer extends IControllerComponent {
         Save
     }
 
-    public static class OnTrackSequencerTrackSongChange {
+    public static class OnTrackSongChange {
 
         private TrackSong trackSong;
 
@@ -221,28 +248,10 @@ public interface ITrackSequencer extends IControllerComponent {
             return trackSong;
         }
 
-        public OnTrackSequencerTrackSongChange(TrackSongChangeKind kind, TrackSong trackSong) {
+        public OnTrackSongChange(TrackSongChangeKind kind, TrackSong trackSong) {
             this.kind = kind;
             this.trackSong = trackSong;
         }
     }
-
-    public static class OnTrackSequencerLoad {
-    }
-
-    public static class OnTrackSequencerCurrentTrackChange {
-
-        private int index;
-
-        public int getIndex() {
-            return index;
-        }
-
-        public OnTrackSequencerCurrentTrackChange(int index) {
-            this.index = index;
-        }
-    }
-
-    TrackSong getTrackSong();
 
 }

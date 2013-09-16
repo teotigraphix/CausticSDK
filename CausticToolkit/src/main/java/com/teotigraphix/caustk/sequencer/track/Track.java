@@ -10,8 +10,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackChange;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer.TrackChangeKind;
 import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
@@ -83,7 +83,7 @@ public class Track implements ISerialize {
         if (value == currentBank)
             return;
         currentBank = value;
-        getDispatcher().trigger(new OnTrackSequencerPropertyChange(PropertyChangeKind.Bank, this));
+        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Bank, this));
     }
 
     //----------------------------------
@@ -105,8 +105,7 @@ public class Track implements ISerialize {
             return;
         currentPattern = value;
         bankEditor.put(currentBank, currentPattern);
-        getDispatcher().trigger(
-                new OnTrackSequencerPropertyChange(PropertyChangeKind.Pattern, this));
+        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Pattern, this));
     }
 
     private Map<Integer, Integer> bankEditor = new HashMap<Integer, Integer>();
@@ -229,32 +228,6 @@ public class Track implements ISerialize {
     // Events
     //--------------------------------------------------------------------------
 
-    public static class OnTrackBankChange extends TrackEvent {
-        private int old;
-
-        public int getOld() {
-            return old;
-        }
-
-        public OnTrackBankChange(Track track, int old) {
-            super(track);
-            this.old = old;
-        }
-    }
-
-    public static class OnTrackPatternChange extends TrackEvent {
-        private int old;
-
-        public int getOld() {
-            return old;
-        }
-
-        public OnTrackPatternChange(Track track, int old) {
-            super(track);
-            this.old = old;
-        }
-    }
-
     //--------------------------------------------------------------------------
 
     // the phrase map is keyed on the measure start
@@ -363,7 +336,8 @@ public class Track implements ISerialize {
             throw new CausticException("Patterns does not contain phrase at: " + startMeasure);
 
         TrackItem item = items.remove(startMeasure);
-        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Remove, this, item));
+        getDispatcher().trigger(
+                new OnTrackChange(TrackChangeKind.Remove, this, item));
     }
 
     /**
@@ -407,48 +381,5 @@ public class Track implements ISerialize {
     @Override
     public String toString() {
         return items.values().toString();
-    }
-
-    public enum TrackChangeKind {
-        Add,
-
-        Remove;
-    }
-
-    public static class TrackEvent {
-
-        private Track track;
-
-        public Track getTrack() {
-            return track;
-        }
-
-        public TrackEvent(Track track) {
-            this.track = track;
-        }
-    }
-
-    /**
-     * @see ITrackSequencer#getDispatcher()
-     */
-    public static class OnTrackChange extends TrackEvent {
-
-        private TrackItem trackItem;
-
-        private TrackChangeKind kind;
-
-        public final TrackChangeKind getKind() {
-            return kind;
-        }
-
-        public final TrackItem getItem() {
-            return trackItem;
-        }
-
-        public OnTrackChange(TrackChangeKind kind, Track track, TrackItem trackItem) {
-            super(track);
-            this.kind = kind;
-            this.trackItem = trackItem;
-        }
     }
 }
