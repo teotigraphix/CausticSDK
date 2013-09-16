@@ -27,7 +27,7 @@ public class Track implements ISerialize {
     private transient ICaustkController controller;
 
     final IDispatcher getDispatcher() {
-        return controller.getTrackSequencer().getDispatcher();
+        return controller.getTrackSequencer();
     }
 
     Map<Integer, Map<Integer, TrackPhrase>> phrases = new TreeMap<Integer, Map<Integer, TrackPhrase>>();

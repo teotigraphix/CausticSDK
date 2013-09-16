@@ -95,7 +95,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
         final ISystemSequencer systemSequencer = getController().getSystemSequencer();
 
-        systemSequencer.getDispatcher().register(OnSystemSequencerBeatChange.class,
+        systemSequencer.register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {
@@ -103,7 +103,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
                     }
                 });
 
-        getTrackSequencer().getDispatcher().register(OnTrackSequencerTrackSongChange.class,
+        getTrackSequencer().register(OnTrackSequencerTrackSongChange.class,
                 new EventObserver<OnTrackSequencerTrackSongChange>() {
                     @Override
                     public void trigger(OnTrackSequencerTrackSongChange object) {

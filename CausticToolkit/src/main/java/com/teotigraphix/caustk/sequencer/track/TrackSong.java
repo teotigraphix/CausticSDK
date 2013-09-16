@@ -20,7 +20,7 @@ public class TrackSong implements ISerialize {
     private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
     IDispatcher getDispatcher() {
-        return controller.getTrackSequencer().getDispatcher();
+        return controller.getTrackSequencer();
     }
 
     //----------------------------------

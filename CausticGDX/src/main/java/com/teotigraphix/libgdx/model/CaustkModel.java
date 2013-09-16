@@ -19,6 +19,8 @@
 
 package com.teotigraphix.libgdx.model;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
@@ -69,23 +71,6 @@ public abstract class CaustkModel implements ICaustkModel {
         return controller;
     }
 
-    /**
-     * The model's {@link IDispatcher} for local event dispatching.
-     */
-    @Override
-    public IDispatcher getDispatcher() {
-        return dispatcher;
-    }
-
-    /**
-     * Triggers and event through this model's {@link #getDispatcher()}.
-     * 
-     * @param event The event to dispatch.
-     */
-    protected void trigger(Object event) {
-        dispatcher.trigger(event);
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -99,6 +84,26 @@ public abstract class CaustkModel implements ICaustkModel {
     }
 
     public CaustkModel() {
+    }
+
+    @Override
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        dispatcher.register(event, observer);
+    }
+
+    @Override
+    public void unregister(EventObserver<?> observer) {
+        dispatcher.unregister(observer);
+    }
+
+    @Override
+    public void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
+    @Override
+    public void clear() {
+        dispatcher.clear();
     }
 
     public final void setupState() {

@@ -35,18 +35,9 @@ import com.teotigraphix.libgdx.controller.ICaustkMediator;
  * <li>{@link #onShow()}</li>
  * </ul>
  */
-public interface ICaustkModel {
+public interface ICaustkModel extends IDispatcher {
 
     boolean isInitialized();
-
-    /**
-     * The model's local dispatcher.
-     * <p>
-     * Most if not all events dispatched from a model are local, any that are
-     * dispatched through the {@link ICaustkController#getDispatcher()} will be
-     * documented on the model's event class.
-     */
-    IDispatcher getDispatcher();
 
     /**
      * The model's registration phase where state is created from deserialzed

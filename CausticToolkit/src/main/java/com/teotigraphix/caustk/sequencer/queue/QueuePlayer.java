@@ -314,7 +314,7 @@ public class QueuePlayer {
     private void setState(QueueData data, QueueDataState state) {
         if (!state.equals(data.getState())) {
             data.setState(state);
-            queueSequencer.getDispatcher().trigger(new OnQueueSequencerDataChange(data));
+            queueSequencer.trigger(new OnQueueSequencerDataChange(data));
         }
     }
 

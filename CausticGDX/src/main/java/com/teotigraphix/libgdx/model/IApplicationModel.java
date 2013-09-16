@@ -20,14 +20,8 @@
 package com.teotigraphix.libgdx.model;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.IDispatcher;
 
 public interface IApplicationModel {
-
-    /**
-     * The {@link IApplicationModel}'s local dispatcher.
-     */
-    IDispatcher getDispatcher();
 
     /**
      * Returns the application's name.

@@ -100,15 +100,14 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
         final ISoundSource soundSource = getController().getSoundSource();
 
         // listen for tone add/remove
-        soundSource.getDispatcher().register(OnSoundSourceToneAdd.class,
-                new EventObserver<OnSoundSourceToneAdd>() {
-                    @Override
-                    public void trigger(OnSoundSourceToneAdd object) {
-                        masterMixer.addTone(object.getTone());
-                    }
-                });
+        soundSource.register(OnSoundSourceToneAdd.class, new EventObserver<OnSoundSourceToneAdd>() {
+            @Override
+            public void trigger(OnSoundSourceToneAdd object) {
+                masterMixer.addTone(object.getTone());
+            }
+        });
 
-        soundSource.getDispatcher().register(OnSoundSourceToneRemove.class,
+        soundSource.register(OnSoundSourceToneRemove.class,
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
@@ -116,7 +115,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
                     }
                 });
 
-        soundSource.getDispatcher().register(OnSoundSourceSongLoad.class,
+        soundSource.register(OnSoundSourceSongLoad.class,
                 new EventObserver<OnSoundSourceSongLoad>() {
                     @Override
                     public void trigger(OnSoundSourceSongLoad object) {

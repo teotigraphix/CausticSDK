@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.teotigraphix.libgdx.ui.ControlTable;
 
+@SuppressWarnings("unused")
 public class TransportGroup extends ControlTable {
 
     private Button recordButton;

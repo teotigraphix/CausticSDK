@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.library.item.LibraryScene;
@@ -37,12 +37,7 @@ import com.teotigraphix.caustk.tone.ToneType;
 /**
  * @author Michael Schmalle
  */
-public interface ISoundSource extends IRestore {
-
-    /**
-     * The {@link ISoundSource} dispatcher.
-     */
-    IDispatcher getDispatcher();
+public interface ISoundSource extends IControllerComponent, IRestore {
 
     int getToneCount();
 

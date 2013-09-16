@@ -57,7 +57,7 @@ public class ApplicationModel extends CaustkModel implements IApplicationModel {
             return;
         CtkDebug.model("ApplicationModel dirty: " + value);
         dirty = value;
-        getDispatcher().trigger(new OnApplicationModelDirtyChanged(dirty));
+        trigger(new OnApplicationModelDirtyChanged(dirty));
     }
 
     @Override

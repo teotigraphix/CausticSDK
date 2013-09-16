@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.controller.core;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.IDispatcher;
@@ -51,11 +53,6 @@ public abstract class ControllerComponent implements IControllerComponent {
 
     private final IDispatcher dispatcher;
 
-    @Override
-    public final IDispatcher getDispatcher() {
-        return dispatcher;
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -71,5 +68,25 @@ public abstract class ControllerComponent implements IControllerComponent {
 
     @Override
     public abstract void onRegister();
+
+    @Override
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        dispatcher.register(event, observer);
+    }
+
+    @Override
+    public void unregister(EventObserver<?> observer) {
+        dispatcher.unregister(observer);
+    }
+
+    @Override
+    public void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
+    @Override
+    public void clear() {
+        dispatcher.clear();
+    }
 
 }

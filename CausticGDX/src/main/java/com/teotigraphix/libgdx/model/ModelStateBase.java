@@ -41,7 +41,7 @@ public class ModelStateBase implements ICaustkModelState {
     }
 
     protected final IDispatcher getDispatcher() {
-        return controller.getComponent(modelType).getDispatcher();
+        return controller.getComponent(modelType);
     }
 
     public ModelStateBase() {

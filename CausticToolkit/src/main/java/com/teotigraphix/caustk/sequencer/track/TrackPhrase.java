@@ -30,7 +30,7 @@ public class TrackPhrase implements ISerialize {
     }
 
     final IDispatcher getDispatcher() {
-        return controller.getTrackSequencer().getDispatcher();
+        return controller.getTrackSequencer();
     }
 
     final Tone getTone() {

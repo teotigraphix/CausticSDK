@@ -19,10 +19,13 @@
 
 package com.teotigraphix.libgdx.service;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.service.IInjectorService;
 
 @Singleton
@@ -31,7 +34,10 @@ public class InjectorService implements IInjectorService {
     @Inject
     Injector injector;
 
+    private final IDispatcher dispatcher;
+
     public InjectorService() {
+        dispatcher = new Dispatcher();
     }
 
     @Override
@@ -40,8 +46,23 @@ public class InjectorService implements IInjectorService {
     }
 
     @Override
-    public IDispatcher getDispatcher() {
-        return null;
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        dispatcher.register(event, observer);
+    }
+
+    @Override
+    public void unregister(EventObserver<?> observer) {
+        dispatcher.unregister(observer);
+    }
+
+    @Override
+    public void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
+    @Override
+    public void clear() {
+        dispatcher.clear();
     }
 
     @Override

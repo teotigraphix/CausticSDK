@@ -19,13 +19,7 @@
 
 package com.teotigraphix.caustk.controller;
 
-public interface IControllerComponent {
-
-    /**
-     * Returns the {@link IDispatcher} instance for the specific controller
-     * component.
-     */
-    IDispatcher getDispatcher();
+public interface IControllerComponent extends IDispatcher {
 
     void onRegister();
 

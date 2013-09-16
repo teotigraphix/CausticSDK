@@ -38,7 +38,7 @@ public class QueueSong implements ISerialize {
     }
 
     IDispatcher getDispatcher() {
-        return controller.getQueueSequencer().getDispatcher();
+        return controller.getQueueSequencer();
     }
 
     public QueueSong() {

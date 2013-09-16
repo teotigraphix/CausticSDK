@@ -109,13 +109,13 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
         setSequencerMode(mode);
         setIsPlaying(true);
 
-        getDispatcher().trigger(new OnSystemSequencerTransportChange());
+        trigger(new OnSystemSequencerTransportChange());
     }
 
     @Override
     public void stop() {
         setIsPlaying(false);
-        getDispatcher().trigger(new OnSystemSequencerTransportChange());
+        trigger(new OnSystemSequencerTransportChange());
     }
 
     public void executePlay() {
@@ -245,7 +245,7 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
         int last = currentBeat;
         currentBeat = value;
 
-        getDispatcher().trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
+        trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
 
         if (last < value) {
             // forward

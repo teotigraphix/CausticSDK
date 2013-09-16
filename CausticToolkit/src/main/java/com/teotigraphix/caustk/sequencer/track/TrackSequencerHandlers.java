@@ -12,7 +12,7 @@ public class TrackSequencerHandlers {
     private final TrackSequencer trackSequencer;
 
     private final IDispatcher getDispatcher() {
-        return trackSequencer.getDispatcher();
+        return trackSequencer;
     }
 
     public TrackSequencerHandlers(TrackSequencer trackSequencer) {

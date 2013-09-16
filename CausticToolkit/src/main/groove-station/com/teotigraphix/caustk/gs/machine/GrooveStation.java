@@ -79,7 +79,7 @@ public class GrooveStation {
     private void setupSystemSequencer() {
         ISystemSequencer systemSequencer = controller.getSystemSequencer();
 
-        systemSequencer.getDispatcher().register(OnSystemSequencerBeatChange.class,
+        systemSequencer.register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {

@@ -122,13 +122,12 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     @Override
     public void onRegister() {
-        getDispatcher().register(OnSoundSourceInitialValue.class,
-                new EventObserver<OnSoundSourceInitialValue>() {
-                    @Override
-                    public void trigger(OnSoundSourceInitialValue object) {
-                        System.out.println("Original value:" + object.getValue());
-                    }
-                });
+        register(OnSoundSourceInitialValue.class, new EventObserver<OnSoundSourceInitialValue>() {
+            @Override
+            public void trigger(OnSoundSourceInitialValue object) {
+                System.out.println("Original value:" + object.getValue());
+            }
+        });
     }
 
     //--------------------------------------------------------------------------
@@ -255,7 +254,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     @Override
     public void clearAndReset() {
-        getDispatcher().trigger(new OnSoundSourceClear());
+        trigger(new OnSoundSourceClear());
 
         ArrayList<Tone> remove = new ArrayList<Tone>(tones.values());
         for (Tone tone : remove) {
@@ -264,7 +263,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
         RackMessage.BLANKRACK.send(getController());
 
-        getDispatcher().trigger(new OnSoundSourceReset());
+        trigger(new OnSoundSourceReset());
     }
 
     //--------------------------------------------------------------------------
@@ -350,12 +349,12 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     private void toneAdd(int index, Tone tone) {
         tones.put(index, tone);
-        getDispatcher().trigger(new OnSoundSourceToneAdd(tone));
+        trigger(new OnSoundSourceToneAdd(tone));
     }
 
     private void toneRemove(Tone tone) {
         tones.remove(tone.getIndex());
-        getDispatcher().trigger(new OnSoundSourceToneRemove(tone));
+        trigger(new OnSoundSourceToneRemove(tone));
     }
 
     //--------------------------------------------------------------------------
@@ -426,7 +425,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
         loadMachines();
 
-        getDispatcher().trigger(new OnSoundSourceSongLoad(causticFile));
+        trigger(new OnSoundSourceSongLoad(causticFile));
     }
 
     @Override
