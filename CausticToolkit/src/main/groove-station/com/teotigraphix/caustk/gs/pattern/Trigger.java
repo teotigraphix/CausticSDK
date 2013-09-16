@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.gs.pattern;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.teotigraphix.caustk.sequencer.track.PhraseNote;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 public class Trigger {
@@ -62,11 +63,11 @@ public class Trigger {
     // notes
     //----------------------------------
 
-    private List<Note> notes;
+    private List<PhraseNote> notes;
 
-    public List<Note> getNotes() {
+    public List<PhraseNote> getNotes() {
         if (notes == null)
-            notes = new ArrayList<Note>();
+            notes = new ArrayList<PhraseNote>();
         return notes;
     }
 
@@ -86,9 +87,9 @@ public class Trigger {
         return getNote(pitch) != null;
     }
 
-    public Note getNote(int pitch) {
+    public PhraseNote getNote(int pitch) {
         if (notes != null) {
-            for (Note note : notes) {
+            for (PhraseNote note : notes) {
                 if (note.getPitch() == pitch)
                     return note;
             }
@@ -96,21 +97,21 @@ public class Trigger {
         return null;
     }
 
-    public Note addNote(float beat, int pitch, float gate, float velocity, int flags) {
+    public PhraseNote addNote(float beat, int pitch, float gate, float velocity, int flags) {
         if (hasNote(pitch)) {
             throw new IllegalStateException("Note exists");
         }
-        Note note = new Note(beat, pitch, gate, velocity, flags);
+        PhraseNote note = new PhraseNote(pitch, beat, beat + gate, velocity, flags);
         addNote(note);
         return note;
     }
 
-    public void addNote(Note note) {
+    public void addNote(PhraseNote note) {
         getNotes().add(note);
     }
 
-    public Note removeNote(int pitch) {
-        Note note = null;
+    public PhraseNote removeNote(int pitch) {
+        PhraseNote note = null;
         if (notes != null) {
             note = getNote(pitch);
             if (note != null) {

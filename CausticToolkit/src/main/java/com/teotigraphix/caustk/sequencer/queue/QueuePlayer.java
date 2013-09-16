@@ -10,7 +10,7 @@ import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer.OnQueueSequencerDataChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.sequencer.queue.QueueData.QueueDataState;
-import com.teotigraphix.caustk.sequencer.track.TrackChannel;
+import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
 import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
@@ -71,7 +71,7 @@ public class QueuePlayer {
             if (data.getState() == QueueDataState.Queue) {
 
                 // add to sequencer
-                TrackChannel track = getTrackSong().getTrack(data.getViewChannelIndex());
+                Track track = getTrackSong().getTrack(data.getViewChannelIndex());
                 addPhraseAt(track, 0, data);
 
                 // this is special instance since everything is started
@@ -210,7 +210,7 @@ public class QueuePlayer {
         //final float currentBeat = getTrackSong().getCurrentBeat();
         final int currentMeasure = getTrackSong().getCurrentMeasure();
 
-        for (TrackChannel track : getController().getTrackSequencer().getTracks()) {
+        for (Track track : getController().getTrackSequencer().getTracks()) {
 
             // Find all tracks that are ending at the next measure
             TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
@@ -221,7 +221,7 @@ public class QueuePlayer {
         }
     }
 
-    private void updateChannel(TrackChannel track, TrackItem item) {
+    private void updateChannel(Track track, TrackItem item) {
         final int currentMeasure = getTrackSong().getCurrentMeasure();
 
         QueueData data = queueSequencer.getQueueData(item.getBankIndex(), item.getPatternIndex());
@@ -268,7 +268,7 @@ public class QueuePlayer {
             if (data.getState() == QueueDataState.Queue) {
                 // add to sequencer
                 QueueDataChannel channel = data.getViewChannel();
-                TrackChannel track = getTrackSong().getTrack(channel.getToneIndex());
+                Track track = getTrackSong().getTrack(channel.getToneIndex());
                 TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
                 if (item != null) {
                     addPhraseAt(track, nextMeasure, data);
@@ -294,7 +294,7 @@ public class QueuePlayer {
 
     // TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
 
-    private void addPhraseAt(TrackChannel track, int start, QueueData data) {
+    private void addPhraseAt(Track track, int start, QueueData data) {
         try {
             TrackPhrase phrase = track.getPhrase(data.getBankIndex(), data.getPatternIndex());
             track.addPhraseAt(start, 1, phrase, true);

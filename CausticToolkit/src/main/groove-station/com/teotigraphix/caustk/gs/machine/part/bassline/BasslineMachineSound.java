@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
-import com.teotigraphix.caustk.gs.pattern.Note;
+import com.teotigraphix.caustk.sequencer.track.PhraseNote;
 
 public class BasslineMachineSound extends MachineSound {
 
@@ -44,13 +44,13 @@ public class BasslineMachineSound extends MachineSound {
     protected MemorySlotItem createPhraseInitData() {
         PhraseMemoryItem item = new PhraseMemoryItem();
         StringBuilder sb = new StringBuilder();
-        sb.append(new Note(0f, 60, 0.25f, 1f, 0).serialze());
+        sb.append(new PhraseNote(60, 0f, 0.25f, 1f, 0).serialze());
         sb.append("|");
-        sb.append(new Note(1f, 60, 0.25f, 1f, 0).serialze());
+        sb.append(new PhraseNote(60, 1f, 1.25f, 1f, 0).serialze());
         sb.append("|");
-        sb.append(new Note(2f, 60, 0.25f, 1f, 0).serialze());
+        sb.append(new PhraseNote(60, 2f, 2.25f, 1f, 0).serialze());
         sb.append("|");
-        sb.append(new Note(3f, 60, 0.25f, 1f, 0).serialze());
+        sb.append(new PhraseNote(60, 3f, 3.25f, 1f, 0).serialze());
         item.setInitNoteData(sb.toString());
         return item;
     }

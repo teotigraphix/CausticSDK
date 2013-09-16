@@ -95,22 +95,22 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     }
 
     @Override
-    public Collection<TrackChannel> getTracks() {
+    public Collection<Track> getTracks() {
         return trackSong.getTracks();
     }
 
     @Override
-    public TrackChannel getSelectedTrack() {
+    public Track getSelectedTrack() {
         return trackSong.getSelectedTrack();
     }
 
     @Override
-    public TrackChannel getTrack(Tone tone) {
+    public Track getTrack(Tone tone) {
         return getTrack(tone.getIndex());
     }
 
     @Override
-    public TrackChannel getTrack(int index) {
+    public Track getTrack(int index) {
         return trackSong.getTrack(index);
     }
 
@@ -184,7 +184,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         // load all tone patterns into TrackPhrase/PhraseNote
         for (Tone tone : getController().getSoundSource().getTones()) {
             int toneIndex = tone.getIndex();
-            TrackChannel channel = getTrack(toneIndex);
+            Track channel = getTrack(toneIndex);
             PatternSequencerComponent sequencer = tone.getPatternSequencer();
             List<String> patterns = sequencer.getPatternListing();
             for (String patternName : patterns) {
@@ -211,7 +211,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                 int pattern = Integer.valueOf(spilt[3]);
                 int end = Integer.valueOf(spilt[4]);
 
-                TrackChannel channel = getTrack(toneIndex);
+                Track channel = getTrack(toneIndex);
                 TrackPhrase phrase = channel.getPhrase(bank, pattern);
                 int phraseLength = phrase.getLength();
 

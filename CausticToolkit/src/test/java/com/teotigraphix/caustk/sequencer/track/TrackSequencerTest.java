@@ -87,7 +87,7 @@ public class TrackSequencerTest extends CaustkTestBase {
 
     }
 
-    private void testTone0(TrackChannel channel) {
+    private void testTone0(Track channel) {
         // SQUARE SubSynth
         SubSynthTone tone = (SubSynthTone)channel.getTone();
         assertNotNull(tone);
@@ -121,7 +121,7 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertFalse(mixerChannel.hasEffect(1));
     }
 
-    private void testTone1(TrackChannel channel) {
+    private void testTone1(Track channel) {
         // RHODES PCMSynth
         PCMSynthTone tone = (PCMSynthTone)channel.getTone();
         assertNotNull(tone);
@@ -165,7 +165,7 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertFalse(mixerChannel.hasEffect(1));
     }
 
-    private void testTone2(TrackChannel channel) {
+    private void testTone2(Track channel) {
         // STRINGS SubSynthTone
         SubSynthTone tone = (SubSynthTone)channel.getTone();
         assertNotNull(tone);
@@ -182,7 +182,7 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertEquals(33, items.size());
     }
 
-    private void testTone3(TrackChannel channel) {
+    private void testTone3(Track channel) {
         // DRONE Bassline
         BasslineTone tone = (BasslineTone)channel.getTone();
         assertNotNull(tone);
@@ -199,7 +199,7 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertEquals(33, items.size());
     }
 
-    private void testTone4(TrackChannel channel) {
+    private void testTone4(Track channel) {
         // HIGH_LEAD Bassline
         BasslineTone tone = (BasslineTone)channel.getTone();
         assertNotNull(tone);
@@ -223,7 +223,7 @@ public class TrackSequencerTest extends CaustkTestBase {
         assertEquals(24, items.size());
     }
 
-    private void testTone5(TrackChannel channel) {
+    private void testTone5(Track channel) {
         // TIGHTKIT Bassline
         BeatboxTone tone = (BeatboxTone)channel.getTone();
         assertNotNull(tone);
@@ -261,7 +261,7 @@ public class TrackSequencerTest extends CaustkTestBase {
         controller.getTrackSequencer().createSong(new File("songs/Foo.ctks"));
 
         soundSource.createTone("part1", SubSynthTone.class);
-        TrackChannel channel1 = trackSequencer.getTrack(0);
+        Track channel1 = trackSequencer.getTrack(0);
         channel1.setCurrentBankPattern(1, 14);
 
         channel1.getPhrase().setNoteData("1.000000 48 1.00 1.250000 0|1.250000 48 1.00 1.500000 0");

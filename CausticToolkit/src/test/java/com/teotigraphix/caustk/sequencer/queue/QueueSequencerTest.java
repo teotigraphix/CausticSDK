@@ -21,7 +21,7 @@ import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.queue.QueueData.QueueDataState;
-import com.teotigraphix.caustk.sequencer.track.TrackChannel;
+import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
 import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
@@ -43,17 +43,17 @@ public class QueueSequencerTest extends CaustkTestBase {
 
     private QueueData queueDataA01;
 
-    private TrackChannel track0;
+    private Track track0;
 
-    private TrackChannel track1;
+    private Track track1;
 
-    private TrackChannel track2;
+    private Track track2;
 
-    private TrackChannel track3;
+    private Track track3;
 
-    private TrackChannel track4;
+    private Track track4;
 
-    private TrackChannel track5;
+    private Track track5;
 
     private Library library;
 
@@ -387,7 +387,7 @@ public class QueueSequencerTest extends CaustkTestBase {
     }
 
     private void assertTrackItem(int trackIndex, int startMeasure, int length, QueueData data) {
-        TrackChannel track = trackSequencer.getTrack(trackIndex);
+        Track track = trackSequencer.getTrack(trackIndex);
         assertTrue(track.contains(startMeasure));
         TrackItem item = track.getItemOnMeasure(startMeasure);
         QueueDataChannel channel = data.getChannel(trackIndex);
@@ -403,7 +403,7 @@ public class QueueSequencerTest extends CaustkTestBase {
         assertEquals(state, data.getState());
     }
 
-    public static void assignPhrase(QueueData data, TrackChannel trackChannel,
+    public static void assignPhrase(QueueData data, Track trackChannel,
             LibraryPhrase libraryPhrase) {
         QueueDataChannel channel = data.getChannel(trackChannel.getIndex());
         TrackPhrase trackPhrase = trackChannel.getPhrase(channel.getBankIndex(),

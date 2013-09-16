@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.pattern.Phrase.Scale;
+import com.teotigraphix.caustk.sequencer.track.PhraseNote;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
@@ -281,7 +282,7 @@ public class PatternTest extends CaustkTestBase {
         Phrase phrase = part1.getPhrase();
         phrase.triggerOn(4, 65, 0.5f, 1f, 2);
         Trigger trigger = phrase.getTrigger(4);
-        Note note = trigger.getNotes().get(0);
+        PhraseNote note = trigger.getNotes().get(0);
         assertEquals(4, note.getStep(phrase.getResolution()));
         assertEquals(65, note.getPitch());
         assertEquals(0.5f, note.getGate(), 0f);

@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.sequencer.track.PhraseNote;
-import com.teotigraphix.caustk.sequencer.track.TrackChannel;
+import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackPhrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 import com.teotigraphix.caustk.sound.ISoundSource;
@@ -53,25 +53,25 @@ public interface ITrackSequencer extends IControllerComponent {
     /**
      * Returns the selected/focused track in the sequencer.
      */
-    TrackChannel getSelectedTrack();
+    Track getSelectedTrack();
 
     /**
-     * Returns a collection of {@link TrackChannel}s that have been created due
+     * Returns a collection of {@link Track}s that have been created due
      * to {@link Tone} creation in the {@link ISoundSource}.
      */
-    Collection<TrackChannel> getTracks();
+    Collection<Track> getTracks();
 
     /**
-     * Returns a {@link TrackChannel} at the specified index.
+     * Returns a {@link Track} at the specified index.
      * <p>
-     * If the channel has not been created, a new {@link TrackChannel} instance
+     * If the channel has not been created, a new {@link Track} instance
      * is created and placed in the sequencer.
      * 
      * @param index The tone index
      */
-    TrackChannel getTrack(int index);
+    Track getTrack(int index);
 
-    TrackChannel getTrack(Tone tone);
+    Track getTrack(Tone tone);
 
     /**
      * @see #createSong(File)
@@ -159,9 +159,9 @@ public interface ITrackSequencer extends IControllerComponent {
             return kind;
         }
 
-        TrackChannel trackChannel;
+        Track trackChannel;
 
-        public TrackChannel getTrackChannel() {
+        public Track getTrackChannel() {
             return trackChannel;
         }
 
@@ -177,7 +177,7 @@ public interface ITrackSequencer extends IControllerComponent {
             return phraseNote;
         }
 
-        public OnTrackSequencerPropertyChange(PropertyChangeKind kind, TrackChannel trackChannel) {
+        public OnTrackSequencerPropertyChange(PropertyChangeKind kind, Track trackChannel) {
             this.kind = kind;
             this.trackChannel = trackChannel;
         }

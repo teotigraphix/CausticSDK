@@ -42,7 +42,7 @@ public class TrackPhraseTest extends CaustkTestBase {
         TrackSong song = trackSequencer.createSong(new File("TrackPhraseTestSong.ctks"));
         assertNotNull(song);
         Tone tone = soundSource.createTone("part1", SubSynthTone.class);
-        TrackChannel channel = trackSequencer.getTrack(tone);
+        Track channel = trackSequencer.getTrack(tone);
         TrackPhrase phrase = channel.getPhrase(0, 1);
         PhraseNote note = phrase.addNote(60, 0f, 2f, 0.5f, 1);
 

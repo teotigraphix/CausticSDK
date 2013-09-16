@@ -37,7 +37,7 @@ public class TrackPhrase implements ISerialize {
         return controller.getSoundSource().getTone(toneIndex);
     }
 
-    final TrackChannel getTrackChannel() {
+    final Track getTrack() {
         return controller.getTrackSequencer().getTrack(toneIndex);
     }
 

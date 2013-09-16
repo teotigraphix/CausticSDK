@@ -17,7 +17,7 @@ public class TrackSong implements ISerialize {
 
     private transient ICaustkController controller;
 
-    private Map<Integer, TrackChannel> tracks = new HashMap<Integer, TrackChannel>();
+    private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
     IDispatcher getDispatcher() {
         return controller.getTrackSequencer().getDispatcher();
@@ -144,18 +144,18 @@ public class TrackSong implements ISerialize {
         return tracks.size() > 0;
     }
 
-    public Collection<TrackChannel> getTracks() {
+    public Collection<Track> getTracks() {
         return tracks.values();
     }
 
-    public TrackChannel getSelectedTrack() {
+    public Track getSelectedTrack() {
         return getTrack(currentTrack);
     }
 
-    public TrackChannel getTrack(int index) {
-        TrackChannel track = tracks.get(index);
+    public Track getTrack(int index) {
+        Track track = tracks.get(index);
         if (track == null) {
-            track = new TrackChannel(controller, index);
+            track = new Track(controller, index);
             tracks.put(index, track);
         }
         return track;
@@ -184,7 +184,7 @@ public class TrackSong implements ISerialize {
      */
     @Override
     public void sleep() {
-        for (TrackChannel channel : tracks.values()) {
+        for (Track channel : tracks.values()) {
             channel.sleep();
         }
         // save the .caustic file
@@ -203,19 +203,19 @@ public class TrackSong implements ISerialize {
         if (!exists()) // dummy placeholder
             return;
 
-        for (TrackChannel channel : tracks.values()) {
+        for (Track channel : tracks.values()) {
             channel.wakeup(controller);
         }
     }
 
     void toneAdd(Tone tone) {
-        TrackChannel channel = getTrack(tone.getIndex());
+        Track channel = getTrack(tone.getIndex());
         tracks.put(tone.getIndex(), channel);
         channel.onAdded();
     }
 
     void toneRemove(Tone tone) {
-        TrackChannel channel = tracks.remove(tone.getIndex());
+        Track channel = tracks.remove(tone.getIndex());
         channel.onRemoved();
     }
 
@@ -275,7 +275,7 @@ public class TrackSong implements ISerialize {
 
     void setCurrentBeat(float value) {
         currentBeat = value;
-        for (TrackChannel track : tracks.values()) {
+        for (Track track : tracks.values()) {
             track.setCurrentBeat(currentBeat);
         }
     }

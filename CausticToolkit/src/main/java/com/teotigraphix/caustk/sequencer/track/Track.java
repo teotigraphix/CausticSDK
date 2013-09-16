@@ -13,24 +13,21 @@ import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSequencerPropertyChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.PropertyChangeKind;
 import com.teotigraphix.caustk.service.ISerialize;
+import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.Tone;
 
 /**
  * @see ITrackSequencer#getDispatcher()
- * @see OnTrackChannelBankChange
- * @see OnTrackChannelPatternChange
+ * @see OnTrackBankChange
+ * @see OnTrackPatternChange
  */
-public class TrackChannel implements ISerialize {
+public class Track implements ISerialize {
 
     private transient ICaustkController controller;
 
     final IDispatcher getDispatcher() {
         return controller.getTrackSequencer().getDispatcher();
-    }
-
-    public SoundMixerChannel getMixerChannel() {
-        return controller.getSoundMixer().getChannel(getIndex());
     }
 
     Map<Integer, Map<Integer, TrackPhrase>> phrases = new TreeMap<Integer, Map<Integer, TrackPhrase>>();
@@ -39,16 +36,31 @@ public class TrackChannel implements ISerialize {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
+    /**
+     * Returns the {@link SoundMixerChannel} for the track.
+     */
+    public SoundMixerChannel getMixerChannel() {
+        return controller.getSoundMixer().getChannel(getIndex());
+    }
+
+    /**
+     * Returns the {@link Tone} for this track located in the
+     * {@link ISoundSource}.
+     */
     public Tone getTone() {
         return controller.getSoundSource().getTone(getIndex());
     }
 
     //----------------------------------
-    // currentBank
+    // index
     //----------------------------------
 
     private final int index;
 
+    /**
+     * Returns the index within the {@link ISoundSource}, the same index as the
+     * {@link #getTone()}.
+     */
     public int getIndex() {
         return index;
     }
@@ -65,7 +77,7 @@ public class TrackChannel implements ISerialize {
 
     /**
      * @param value
-     * @see OnTrackChannelBankChange
+     * @see OnTrackBankChange
      */
     public void setCurrentBank(int value) {
         if (value == currentBank)
@@ -86,7 +98,7 @@ public class TrackChannel implements ISerialize {
 
     /**
      * @param value
-     * @see OnTrackChannelPatternChange
+     * @see OnTrackPatternChange
      */
     public void setCurrentPattern(int value) {
         if (value == currentPattern)
@@ -108,8 +120,8 @@ public class TrackChannel implements ISerialize {
     /**
      * @param bank
      * @param pattern
-     * @see OnTrackChannelBankChange
-     * @see OnTrackChannelPatternChange
+     * @see OnTrackBankChange
+     * @see OnTrackPatternChange
      */
     public void setCurrentBankPattern(int bank, int pattern) {
         setCurrentBank(bank);
@@ -173,7 +185,7 @@ public class TrackChannel implements ISerialize {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public TrackChannel(ICaustkController controller, int index) {
+    public Track(ICaustkController controller, int index) {
         this.controller = controller;
         this.index = index;
     }
@@ -217,40 +229,27 @@ public class TrackChannel implements ISerialize {
     // Events
     //--------------------------------------------------------------------------
 
-    public static class TrackChannelEvent {
-
-        private TrackChannel track;
-
-        public TrackChannel getTrack() {
-            return track;
-        }
-
-        public TrackChannelEvent(TrackChannel track) {
-            this.track = track;
-        }
-    }
-
-    public static class OnTrackChannelBankChange extends TrackChannelEvent {
+    public static class OnTrackBankChange extends TrackEvent {
         private int old;
 
         public int getOld() {
             return old;
         }
 
-        public OnTrackChannelBankChange(TrackChannel track, int old) {
+        public OnTrackBankChange(Track track, int old) {
             super(track);
             this.old = old;
         }
     }
 
-    public static class OnTrackChannelPatternChange extends TrackChannelEvent {
+    public static class OnTrackPatternChange extends TrackEvent {
         private int old;
 
         public int getOld() {
             return old;
         }
 
-        public OnTrackChannelPatternChange(TrackChannel track, int old) {
+        public OnTrackPatternChange(Track track, int old) {
             super(track);
             this.old = old;
         }
@@ -292,7 +291,7 @@ public class TrackChannel implements ISerialize {
     }
 
     /**
-     * Returns all {@link TrackItem}s for the whole {@link TrackChannel}.
+     * Returns all {@link TrackItem}s for the whole {@link Track}.
      * <p>
      * The map is indexed by start measure.
      */
@@ -351,8 +350,8 @@ public class TrackChannel implements ISerialize {
 
         items.put(startMeasure, item);
 
-        //if (dispatch)
-        //   getDispatcher().trigger(new OnTrackPhraseAdd(this, item));
+        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Add, this, item));
+
         controller.getSystemSequencer().addPattern(getTone(), item.getBankIndex(),
                 item.getPatternIndex(), item.getStartMeasure(), item.getEndMeasure());
 
@@ -364,11 +363,7 @@ public class TrackChannel implements ISerialize {
             throw new CausticException("Patterns does not contain phrase at: " + startMeasure);
 
         TrackItem item = items.remove(startMeasure);
-        @SuppressWarnings("unused")
-        BankPatternSlot slot = new BankPatternSlot(item.getBankIndex(), item.getPatternIndex());
-        //        queue.push(slot);
-
-        //getDispatcher().trigger(new OnTrackPhraseRemove(this, trackPhrase));
+        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Remove, this, item));
     }
 
     /**
@@ -404,31 +399,6 @@ public class TrackChannel implements ISerialize {
         return false;
     }
 
-    class BankPatternSlot {
-
-        private int bank;
-
-        private int pattern;
-
-        public final int getBank() {
-            return bank;
-        }
-
-        public final int getPattern() {
-            return pattern;
-        }
-
-        public BankPatternSlot(int bank, int pattern) {
-            this.bank = bank;
-            this.pattern = pattern;
-        }
-
-        @Override
-        public String toString() {
-            return "[" + bank + ":" + pattern + "]";
-        }
-    }
-
     public static float toLocalBeat(float beat, int length) {
         float r = (beat % (length * 4));
         return r;
@@ -439,34 +409,46 @@ public class TrackChannel implements ISerialize {
         return items.values().toString();
     }
 
-    public static class OnTrackChannelPhraseAdd extends TrackChannelEvent {
+    public enum TrackChangeKind {
+        Add,
+
+        Remove;
+    }
+
+    public static class TrackEvent {
+
+        private Track track;
+
+        public Track getTrack() {
+            return track;
+        }
+
+        public TrackEvent(Track track) {
+            this.track = track;
+        }
+    }
+
+    /**
+     * @see ITrackSequencer#getDispatcher()
+     */
+    public static class OnTrackChange extends TrackEvent {
 
         private TrackItem trackItem;
 
-        public OnTrackChannelPhraseAdd(TrackChannel track, TrackItem trackItem) {
-            super(track);
-            this.trackItem = trackItem;
+        private TrackChangeKind kind;
+
+        public final TrackChangeKind getKind() {
+            return kind;
         }
 
         public final TrackItem getItem() {
             return trackItem;
         }
 
-    }
-
-    public static class OnTrackChannelPhraseRemove extends TrackChannelEvent {
-
-        private TrackItem trackItem;
-
-        public OnTrackChannelPhraseRemove(TrackChannel track, TrackItem trackItem) {
+        public OnTrackChange(TrackChangeKind kind, Track track, TrackItem trackItem) {
             super(track);
+            this.kind = kind;
             this.trackItem = trackItem;
         }
-
-        public final TrackItem getItem() {
-            return trackItem;
-        }
-
     }
-
 }

@@ -38,7 +38,7 @@ public class TrackSequencerHandlers {
     private EventObserver<OnTrackSequencerPropertyChange> propertyChange = new EventObserver<OnTrackSequencerPropertyChange>() {
         @Override
         public void trigger(OnTrackSequencerPropertyChange object) {
-            TrackChannel channel = null;
+            Track channel = null;
             Tone tone = null;
             PhraseNote note = null;
             switch (object.getKind()) {
