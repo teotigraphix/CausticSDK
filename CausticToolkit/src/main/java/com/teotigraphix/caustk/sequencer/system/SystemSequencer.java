@@ -83,7 +83,7 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
     public void setTempo(float value) {
         tempo = value;
         OutputPanelMessage.BPM.send(getController(), tempo);
-        getController().getDispatcher().trigger(new OnSystemSequencerTempoChange(value));
+        getController().trigger(new OnSystemSequencerTempoChange(value));
     }
 
     @Override

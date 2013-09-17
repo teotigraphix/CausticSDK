@@ -86,7 +86,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     @Override
     public void setSelectedLibrary(Library value) {
         selectedLibrary = value;
-        getController().getDispatcher().trigger(new OnLibraryManagerSelectedLibraryChange(value));
+        getController().trigger(new OnLibraryManagerSelectedLibraryChange(value));
     }
 
     public LibraryManager(ICaustkController controller) {
@@ -235,7 +235,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
         getController().getSoundSource().clearAndReset();
 
-        getController().getDispatcher().trigger(new OnLibraryManagerImportComplete());
+        getController().trigger(new OnLibraryManagerImportComplete());
     }
 
     @Override
@@ -251,7 +251,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
         getController().getSoundSource().clearAndReset();
 
-        getController().getDispatcher().trigger(new OnLibraryManagerImportComplete());
+        getController().trigger(new OnLibraryManagerImportComplete());
     }
 
     private void loadLibraryPatterns(Library library, ISoundSource soundSource) {

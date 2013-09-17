@@ -85,7 +85,7 @@ public class MemoryManager {
         else if (selectedType == Type.USER)
             selectedMemoryBank = userMemoryBank;
 
-        getController().getDispatcher().trigger(
+        getController().trigger(
                 new OnMemoryManagerCurrentBankChange(selectedType, selectedMemoryBank));
     }
 

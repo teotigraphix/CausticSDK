@@ -38,7 +38,7 @@ public class CommandContext {
     }
 
     protected IDispatcher getDispatcher() {
-        return controller.getDispatcher();
+        return controller;
     }
 
     public CommandContext(ICaustkController controller, OSCMessage message) {

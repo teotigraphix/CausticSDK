@@ -98,7 +98,7 @@ public class ApplicationController implements IApplicationController {
     @Inject
     public ApplicationController(ICaustkApplicationProvider provider) {
         controller = provider.get().getController();
-        controller.getDispatcher().register(OnProjectManagerChange.class,
+        controller.register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {

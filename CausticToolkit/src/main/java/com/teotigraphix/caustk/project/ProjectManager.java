@@ -144,8 +144,7 @@ public class ProjectManager implements IProjectManager {
         Project oldProject = project;
         project.close();
         project = null;
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.EXIT));
+        controller.trigger(new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.EXIT));
     }
 
     @Override
@@ -157,11 +156,10 @@ public class ProjectManager implements IProjectManager {
         // set modified
         project.getInfo().setModified(new Date());
 
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
 
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE_COMPLETE));
+        controller.trigger(new OnProjectManagerChange(project,
+                ProjectManagerChangeKind.SAVE_COMPLETE));
 
         finalizeSaveComplete();
     }
@@ -199,12 +197,11 @@ public class ProjectManager implements IProjectManager {
         project.open();
 
         // all state objects are created here
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
 
         // all clients can now act on the deserialized state objects (IControllerComponent)
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD_COMPLETE));
+        controller.trigger(new OnProjectManagerChange(project,
+                ProjectManagerChangeKind.LOAD_COMPLETE));
 
         return project;
     }
@@ -227,8 +224,7 @@ public class ProjectManager implements IProjectManager {
         project.setInfo(createInfo());
         project.open();
         CtkDebug.log("IProjectManager.create(): " + project.getAbsolutDirectory());
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
 
         FileUtils.forceMkdir(project.getAbsolutDirectory());
 
@@ -249,8 +245,8 @@ public class ProjectManager implements IProjectManager {
     @Override
     public void clear() {
         project.close();
-        controller.getDispatcher().trigger(
-                new OnProjectManagerChange(project, ProjectManagerChangeKind.CLOSE_COMPLETE));
+        controller.trigger(new OnProjectManagerChange(project,
+                ProjectManagerChangeKind.CLOSE_COMPLETE));
         project = null;
     }
 

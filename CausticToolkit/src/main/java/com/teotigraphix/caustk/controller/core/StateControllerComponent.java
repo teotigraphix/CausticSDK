@@ -67,7 +67,7 @@ public abstract class StateControllerComponent extends ControllerComponent {
     @Override
     public void onRegister() {
 
-        getController().getDispatcher().register(OnProjectManagerChange.class,
+        getController().register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {

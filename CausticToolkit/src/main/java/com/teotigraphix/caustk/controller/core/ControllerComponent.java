@@ -69,6 +69,10 @@ public abstract class ControllerComponent implements IControllerComponent {
     @Override
     public abstract void onRegister();
 
+    //--------------------------------------------------------------------------
+    // IDispatcher API
+    //--------------------------------------------------------------------------
+
     @Override
     public <T> void register(Class<T> event, EventObserver<T> observer) {
         dispatcher.register(event, observer);
@@ -88,5 +92,4 @@ public abstract class ControllerComponent implements IControllerComponent {
     public void clear() {
         dispatcher.clear();
     }
-
 }

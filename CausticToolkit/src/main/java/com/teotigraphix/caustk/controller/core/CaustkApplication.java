@@ -106,7 +106,7 @@ public class CaustkApplication implements ICaustkApplication {
     }
 
     private void fireStateChange(StateChangeKind kind) {
-        getController().getDispatcher().trigger(new OnCausticApplicationStateChange(kind));
+        getController().trigger(new OnCausticApplicationStateChange(kind));
     }
 
 }

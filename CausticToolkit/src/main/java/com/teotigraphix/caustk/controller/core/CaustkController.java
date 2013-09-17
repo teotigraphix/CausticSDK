@@ -70,11 +70,6 @@ public class CaustkController implements ICaustkController {
 
     private final IDispatcher dispatcher;
 
-    @Override
-    public final IDispatcher getDispatcher() {
-        return dispatcher;
-    }
-
     //----------------------------------
     // application
     //----------------------------------
@@ -266,9 +261,28 @@ public class CaustkController implements ICaustkController {
         return clazz.cast(api.get(clazz));
     }
 
+    //--------------------------------------------------------------------------
+    // IDispatcher API
+    //--------------------------------------------------------------------------
+
     @Override
-    public <T> void register(Class<T> eventType, final EventObserver<T> observer) {
-        getDispatcher().register(eventType, observer);
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        dispatcher.register(event, observer);
+    }
+
+    @Override
+    public void unregister(EventObserver<?> observer) {
+        dispatcher.unregister(observer);
+    }
+
+    @Override
+    public void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
+    @Override
+    public void clear() {
+        dispatcher.clear();
     }
 
     //--------------------------------------------------------------------------

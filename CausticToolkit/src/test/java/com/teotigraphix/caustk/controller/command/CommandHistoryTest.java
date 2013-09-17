@@ -41,7 +41,7 @@ public class CommandHistoryTest {
         intList = new ArrayList<Integer>();
         stringList = new ArrayList<String>();
 
-        history = new CommandHistory(controller.getDispatcher());
+        history = new CommandHistory(controller);
         testCommand = new MockUndoableCommand2();
         testCommand.setContext(context);
         testCommand.list = intList;
@@ -259,17 +259,16 @@ public class CommandHistoryTest {
         foo2 = createCommand("Add pattern A2");
         foo3 = createCommand("Remove pattern A1");
 
-        controller.getDispatcher().register(OnNextComplete.class,
-                new EventObserver<OnNextComplete>() {
-                    @Override
-                    public void trigger(OnNextComplete object) {
-                        if (currentCommand == null)
-                            return;
+        controller.register(OnNextComplete.class, new EventObserver<OnNextComplete>() {
+            @Override
+            public void trigger(OnNextComplete object) {
+                if (currentCommand == null)
+                    return;
 
-                        Assert.assertSame(currentCommand, history.getCurrent());
-                        Assert.assertSame(currentCommand, object.getCommand());
-                    }
-                });
+                Assert.assertSame(currentCommand, history.getCurrent());
+                Assert.assertSame(currentCommand, object.getCommand());
+            }
+        });
 
         currentCommand = foo1;
         history.execute(foo1);

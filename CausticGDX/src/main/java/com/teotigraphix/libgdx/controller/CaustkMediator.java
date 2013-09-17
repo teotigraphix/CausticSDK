@@ -75,7 +75,7 @@ public abstract class CaustkMediator implements ICaustkMediator {
      * Called once when the controller is set.
      */
     private void registerObservers() {
-        register(getController().getDispatcher(), OnProjectManagerChange.class,
+        register(getController(), OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {
@@ -137,7 +137,7 @@ public abstract class CaustkMediator implements ICaustkMediator {
      * @param observer
      */
     protected <T> void register(Class<T> event, EventObserver<T> observer) {
-        register(getController().getDispatcher(), event, observer);
+        register(getController(), event, observer);
     }
 
     /**

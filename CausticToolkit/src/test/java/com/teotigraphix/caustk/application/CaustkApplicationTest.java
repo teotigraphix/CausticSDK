@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkApplication.OnCausticApplicationStateChange;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.CaustkApplication;
 import com.teotigraphix.caustk.core.CausticException;
 
@@ -34,7 +34,7 @@ public class CaustkApplicationTest {
     public void test_setup() throws CausticException, IOException {
         info = new AppInfo();
         // the dispatcher is ready when the constructor returns for the application
-        IDispatcher dispatcher = application.getController().getDispatcher();
+        IDispatcher dispatcher = application.getController();
         dispatcher.register(OnCausticApplicationStateChange.class,
                 new EventObserver<OnCausticApplicationStateChange>() {
                     @Override

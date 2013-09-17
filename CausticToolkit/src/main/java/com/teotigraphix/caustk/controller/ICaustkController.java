@@ -21,8 +21,6 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.File;
 
-import org.androidtransfuse.event.EventObserver;
-
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
@@ -38,9 +36,7 @@ import com.teotigraphix.caustk.sound.ISoundSource;
 /**
  * @author Michael Schmalle
  */
-public interface ICaustkController extends ICausticEngine {
-
-    IDispatcher getDispatcher();
+public interface ICaustkController extends ICausticEngine, IDispatcher {
 
     /**
      * Adds a controller component API.
@@ -96,7 +92,5 @@ public interface ICaustkController extends ICausticEngine {
     void redo();
 
     void execute(String message, Object... args);
-
-    <T> void register(Class<T> type, final EventObserver<T> observer);
 
 }
