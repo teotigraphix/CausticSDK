@@ -54,14 +54,6 @@ public abstract class ToneComponent implements IRestore {
     public ToneComponent() {
     }
 
-    //--------------------------------------------------------------------------
-    // ISerialize API :: Methods
-    //--------------------------------------------------------------------------
-
-    public String serialize() {
-        return tone.getController().getSerializeService().toString(this);
-    }
-
     /**
      * Returns a new {@link IllegalArgumentException} for an error in OSC range.
      * 

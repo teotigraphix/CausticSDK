@@ -28,7 +28,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.service.ISerialize;
-import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 
@@ -240,16 +239,6 @@ public abstract class Tone implements ISerialize, IRestore {
         this.controller = controller;
     }
 
-    /**
-     * Serializes the entire instance minus transient properties.
-     * <p>
-     * Returns the serialized state based on the current implementation of
-     * {@link ISerializeService}.
-     */
-    public String serialize() {
-        return controller.getSerializeService().toPrettyString(this);
-    }
-
     //--------------------------------------------------------------------------
     // ISerialize API :: Methods
     //--------------------------------------------------------------------------
@@ -261,7 +250,7 @@ public abstract class Tone implements ISerialize, IRestore {
             HashMap<String, String> map = new HashMap<String, String>();
             String className = toneComponent.getClass().getName();
             if (toneComponent instanceof ISerialize) {
-                String data = toneComponent.serialize();
+                String data = getController().getSerializeService().toString(toneComponent);
                 map.put("state", data);
             }
             components.put(className, map);

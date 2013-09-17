@@ -11,9 +11,6 @@ import org.junit.Test;
 import com.teotigraphix.caustk.CaustkTestBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sound.source.SoundSource;
-import com.teotigraphix.caustk.tone.SubSynthTone;
-import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.ToneType;
 
 public class SoundSerializationTest extends CaustkTestBase {
 
@@ -44,7 +41,7 @@ public class SoundSerializationTest extends CaustkTestBase {
         tone.setEnabled(true);
         tone.setSelected(true);
 
-        String data = tone.serialize();
+        String data = controller.getSerializeService().toPrettyString(tone);
 
         SubSynthTone subsynth = soundSource.createTone(data);
 
