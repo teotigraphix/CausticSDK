@@ -266,6 +266,8 @@ public class MachineSequencer extends MachineComponentPart {
         int localMeasure = PhraseUtils.toLocalMeasure(beat, getPattern().getLength());
 
         System.out.println("LocalBeat:" + localBeat + " LocalMeasure:" + localMeasure);
+        if (onMachineSequencerListener != null)
+            onMachineSequencerListener.onBeatChange(this);
     }
 
     private void updateName(int pattern) {
@@ -273,5 +275,15 @@ public class MachineSequencer extends MachineComponentPart {
         int index = PatternUtils.getBank(pattern);
         String text = PatternUtils.toString(bank, index);
         System.out.println("Pattern:" + text);
+    }
+
+    private OnMachineSequencerListener onMachineSequencerListener;
+
+    public void setOnMachineSequencerListener(OnMachineSequencerListener l) {
+        this.onMachineSequencerListener = l;
+    }
+
+    public interface OnMachineSequencerListener {
+        void onBeatChange(MachineSequencer machineSequencer);
     }
 }

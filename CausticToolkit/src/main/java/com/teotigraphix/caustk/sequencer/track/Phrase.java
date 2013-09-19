@@ -463,7 +463,7 @@ public class Phrase implements ISerialize {
      * @param value The new phrase position.
      * @see OnPhrasePositionChange
      */
-    void setPosition(int value) {
+    public void setPosition(int value) {
         if (position == value)
             return;
         // if p = 1 and len = 1

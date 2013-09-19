@@ -83,6 +83,21 @@ public class SelectLedControl extends ControlTable {
     }
 
     //----------------------------------
+    // maxTopIndex
+    //----------------------------------
+
+    private int maxTopIndex = 7;
+
+    public int getMaxTopIndex() {
+        return maxTopIndex;
+    }
+
+    public void setMaxTopIndex(int value) {
+        maxTopIndex = value;
+        invalidate();
+    }
+
+    //----------------------------------
     // bottomIndex
     //----------------------------------
 
@@ -98,6 +113,21 @@ public class SelectLedControl extends ControlTable {
         bottomIndex = value;
         invalidate();
         onSelectLedControlListener.onBottomIndexChange(bottomIndex);
+    }
+
+    //----------------------------------
+    // maxBottomIndex
+    //----------------------------------
+
+    private int maxBottomIndex = 7;
+
+    public int getMaxBottomIndex() {
+        return maxBottomIndex;
+    }
+
+    public void setMaxBottomIndex(int value) {
+        maxBottomIndex = value;
+        invalidate();
     }
 
     //--------------------------------------------------------------------------
@@ -224,9 +254,15 @@ public class SelectLedControl extends ControlTable {
         setBottomIndex(index);
     }
 
+    private int getActiveMaxIndex() {
+        if (activeSelector == ActiveSeletor.TOP)
+            return maxTopIndex;
+        return maxBottomIndex;
+    }
+
     protected void increment() {
         int index = getActiveIndex() + 1;
-        if (index > 7)
+        if (index > getActiveMaxIndex())
             index = 0;
         setActiveIndex(index);
         onSelectLedControlListener.onIncrement(index);
@@ -235,8 +271,9 @@ public class SelectLedControl extends ControlTable {
     protected void decrement() {
         int index = getActiveIndex() - 1;
         if (index < 0)
-            index = 7;
+            index = getActiveMaxIndex();
         setActiveIndex(index);
         onSelectLedControlListener.onDecrement(index);
     }
+
 }
