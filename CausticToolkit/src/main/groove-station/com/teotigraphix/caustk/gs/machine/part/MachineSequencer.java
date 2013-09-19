@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
+import com.teotigraphix.caustk.gs.pattern.PhraseUtils;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /*
@@ -220,6 +221,12 @@ public class MachineSequencer extends MachineComponentPart {
 
     private float currentBeat;
 
+    /**
+     * Returns the current beat based on the sequencer mode.
+     * <p>
+     * In Pattern, will be 0-31, Song will be the current beat in the song
+     * sequencer.
+     */
     public float getCurrentBeat() {
         return currentBeat;
     }
@@ -228,10 +235,37 @@ public class MachineSequencer extends MachineComponentPart {
         this.currentBeat = currentBeat;
     }
 
+    /**
+     * Returns 0-3.
+     */
+    public float getMeasureBeat() {
+        return PhraseUtils.toMeasureBeat(currentBeat);
+    }
+
+    /**
+     * Returns 0-31(8 bars), 0-15(4 bars), 0-7(2 bars), 0-3(1 bar) based on the
+     * length.
+     */
+    public float getLocalBeat() {
+        return PhraseUtils.toLocalBeat(currentBeat, getPattern().getLength());
+    }
+
+    /**
+     * Returns the local measure calculated from the {@link #getLocalBeat()}.
+     */
+    public int getLocalMeasure() {
+        return PhraseUtils.toLocalMeasure(currentBeat, getPattern().getLength());
+    }
+
     public void beatChange(int measure, float beat) {
         // CausticCore > IGame > ISystemSequencer > GrooveStation > GrooveMachine
         setCurrentMeasure(measure);
         setCurrentBeat(beat);
+
+        float localBeat = PhraseUtils.toLocalBeat(beat, getPattern().getLength());
+        int localMeasure = PhraseUtils.toLocalMeasure(beat, getPattern().getLength());
+
+        System.out.println("LocalBeat:" + localBeat + " LocalMeasure:" + localMeasure);
     }
 
     private void updateName(int pattern) {

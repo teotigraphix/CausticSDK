@@ -32,6 +32,32 @@ public class PhraseUtils {
 
     private static final float NUM_BEATS = 4.0f;
 
+    public static int toLocalMeasure(float beat, int length) {
+        float localBeat = toLocalBeat(beat, length);
+        return (int)Math.floor(localBeat / NUM_BEATS);
+    }
+
+    /**
+     * Returns the beat within a measure (0-3).
+     * 
+     * @param beat The full beat (0-31).
+     */
+    public static float toMeasureBeat(float beat) {
+        float r = (beat % 4);
+        return r;
+    }
+
+    /**
+     * Returns a beat within the length.
+     * 
+     * @param beat The full beat (0-31).
+     * @param length The length of the pattern.
+     */
+    public static float toLocalBeat(float beat, int length) {
+        float r = (beat % (length * 4));
+        return r;
+    }
+
     public static String toStepDecimalString(float stepFraction) {
         return Float.toString(NUM_BEATS * stepFraction);
     }
