@@ -258,19 +258,34 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
     /**
      * Plays the song sequencer in pattern or song mode.
      * <p>
-     * <code>system_sequencer/play [sequencer_mode] [play]</code>
+     * <code>[app_id]/system_sequencer/play [sequencer_mode]</code>
      * <ul>
-     * <li>sequencer_mode - {@link SequencerMode}, the int value</li>
-     * <li>play (0,1) [0] stop, [1] play</li>
+     * <li><code>sequencer_mode</code> - {@link SequencerMode}; the int value</li>
      * </ul>
      * 
      * @see OnSystemSequencerPlay
-     * @see OnSystemSequencerStop
      */
     public static final String COMMAND_PLAY = "system_sequencer/play";
 
     /**
-     * Sets the bpm of the {@link IOutputPanel}.
+     * Stops the song sequencer.
+     * <p>
+     * <code>[app_id]/system_sequencer/stop</code>
+     * <ul>
+     * <li>N/A</li>
+     * </ul>
+     * 
+     * @see OnSystemSequencerStop
+     */
+    public static final String COMMAND_STOP = "system_sequencer/stop";
+
+    /**
+     * Sets the bpm of the OutputPanel.
+     * <p>
+     * <code>[app_id]/system_sequencer/tempo [value]</code>
+     * <ul>
+     * <li><code>value</code> - float; (60.0..250.0)</li>
+     * </ul>
      */
     public static final String COMMAND_U_TEMPO = "system_sequencer/tempo";
 

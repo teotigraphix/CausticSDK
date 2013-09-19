@@ -8,11 +8,12 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer.OnQueueSequencerDataChange;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.sequencer.queue.QueueData.QueueDataState;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
-import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
 public class QueuePlayer {
@@ -82,11 +83,11 @@ public class QueuePlayer {
             }
         }
         if (queueSequencer.isAudioEnabled())
-            getController().getSystemSequencer().play(SequencerMode.SONG);
+            getController().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG);
     }
 
     public void stop() {
-        getController().getSystemSequencer().stop();
+        getController().execute(ISystemSequencer.COMMAND_STOP);
     }
 
     public boolean touch(QueueData data) {

@@ -27,17 +27,20 @@ public class CommandContext {
 
     private final ICaustkController controller;
 
-    public <T extends IControllerComponent> T getComponent(Class<T> clazz) {
+    public final <T extends IControllerComponent> T getComponent(Class<T> clazz) {
         return controller.getComponent(clazz);
     }
 
     private final OSCMessage message;
 
-    public OSCMessage getMessage() {
+    public final OSCMessage getMessage() {
         return message;
     }
 
-    protected IDispatcher getDispatcher() {
+    /**
+     * The {@link ICaustkController} as dispatcher.
+     */
+    protected final IDispatcher getDispatcher() {
         return controller;
     }
 

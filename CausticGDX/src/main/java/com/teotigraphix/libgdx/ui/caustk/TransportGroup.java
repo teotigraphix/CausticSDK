@@ -97,6 +97,12 @@ public class TransportGroup extends ControlTable {
 
     private void createTransposeButton() {
         transposeButton = createButton("transport/transpose");
+        transposeButton.addListener(new ActorGestureListener() {
+            @Override
+            public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                onTransportGroupListener.onTransposeClick();
+            }
+        });
         // transpose;
         // touchDown, touchDown step key for octave, touchUp()
         // - if after this operation the octave is other than 0, this
