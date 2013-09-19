@@ -106,6 +106,12 @@ public abstract class CaustkModel implements ICaustkModel {
         dispatcher.clear();
     }
 
+    /**
+     * 
+     */
+    protected void construct() {
+    }
+
     public final void setupState() {
         if (stateFactory == null)
             return;
