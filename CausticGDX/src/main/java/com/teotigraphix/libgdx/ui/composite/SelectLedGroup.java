@@ -51,10 +51,23 @@ public class SelectLedGroup extends ControlTable {
         if (value == selectedIndex)
             return;
         selectedIndex = value;
-        if (onSelectLedGroupListener != null) {
+        if (onSelectLedGroupListener != null && !noCallback) {
             onSelectLedGroupListener.onChange(selectedIndex, items[selectedIndex]);
         }
         invalidate();
+    }
+
+    private boolean noCallback = false;
+
+    /**
+     * Updates the selection without the callback.
+     * 
+     * @param index
+     */
+    public void select(int index) {
+        noCallback = true;
+        setSelectedIndex(index);
+        noCallback = false;
     }
 
     public SelectLedGroup(String text, String buttonStyleName, LedItem[] items,
@@ -122,4 +135,5 @@ public class SelectLedGroup extends ControlTable {
     public interface OnSelectLedGroupListener {
         void onChange(int index, LedItem item);
     }
+
 }

@@ -116,4 +116,9 @@ public class Trigger {
         return note;
     }
 
+    @Override
+    public String toString() {
+        return "[Trigger(" + beat + "," + getStep(Resolution.SIXTEENTH) + ")]";
+    }
+
 }

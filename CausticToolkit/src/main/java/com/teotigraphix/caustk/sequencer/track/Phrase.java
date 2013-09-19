@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -560,6 +561,10 @@ public class Phrase implements ISerialize {
 
     public List<Trigger> getViewTriggers() {
         return triggerMap.getViewTriggers();
+    }
+
+    public Map<Integer, Trigger> getViewTriggerMap() {
+        return triggerMap.getViewTriggerMap();
     }
 
     public final Trigger getTrigger(float beat) {

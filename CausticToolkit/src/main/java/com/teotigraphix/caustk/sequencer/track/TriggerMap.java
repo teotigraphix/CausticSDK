@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -59,11 +60,27 @@ public class TriggerMap {
     }
 
     public List<Trigger> getViewTriggers() {
+        ArrayList<Trigger> result = new ArrayList<Trigger>();
         // find the start (position - 1) * resolution
         int fromStep = (trackPhrase.getPosition() - 1) * indciesInView;
         // find the end fromIndex + scale
         int toStep = endStepInView(fromStep);
-        return new ArrayList<Trigger>(map.values()).subList(fromStep, toStep);
+        for (Trigger trigger : map.values()) {
+            int step = trigger.getStep(trackPhrase.getResolution());
+            if (step >= fromStep && step < toStep)
+                result.add(trigger);
+        }
+        //return new ArrayList<Trigger>(map.values()).subList(fromStep, toStep);
+        return result;
+    }
+
+    public Map<Integer, Trigger> getViewTriggerMap() {
+        Map<Integer, Trigger> result = new HashMap<Integer, Trigger>();
+        for (Trigger trigger : getViewTriggers()) {
+            final int step = trigger.getStep(trackPhrase.getResolution());
+            result.put(step, trigger);
+        }
+        return result;
     }
 
     //--------------------------------------------------------------------------
@@ -117,8 +134,8 @@ public class TriggerMap {
     /**
      * Adds a {@link Note} to the {@link Trigger} at the specified beat.
      * <p>
-     * Will create a {@link Trigger} based on the
-     * {@link Phrase#getResolution()} if it doesn't exist.
+     * Will create a {@link Trigger} based on the {@link Phrase#getResolution()}
+     * if it doesn't exist.
      * 
      * @param pitch The MIDI pitch value.
      * @param beat The start beat.
@@ -131,6 +148,7 @@ public class TriggerMap {
         Trigger trigger = getTrigger(beat);
         if (trigger == null) {
             trigger = new Trigger(beat);
+            trigger.setSelected(true);
             map.put(beat, trigger);
         }
         Note note = trigger.addNote(beat, pitch, gate, velocity, flags);
@@ -142,12 +160,11 @@ public class TriggerMap {
     /**
      * Adds a {@link Note} to the {@link Trigger} at the specified step.
      * <p>
-     * Will create a {@link Trigger} based on the
-     * {@link Phrase#getResolution()} if it doesn't exist.
+     * Will create a {@link Trigger} based on the {@link Phrase#getResolution()}
+     * if it doesn't exist.
      * 
      * @param pitch The MIDI pitch value.
-     * @param step The trigger step based on the
-     *            {@link Phrase#getResolution()}.
+     * @param step The trigger step based on the {@link Phrase#getResolution()}.
      * @param gate The gate length.
      * @param velocity The note velocity.
      * @param flags The accent, slide flags.
@@ -264,6 +281,7 @@ public class TriggerMap {
         Trigger trigger = getTrigger(step);
         if (trigger == null) {
             trigger = createInitTrigger(step);
+            trigger.setSelected(true);
             map.put(Resolution.toBeat(step, trackPhrase.getResolution()), trigger);
         }
         for (Note note : trigger.getNotes()) {

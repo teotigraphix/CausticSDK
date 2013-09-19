@@ -240,7 +240,6 @@ public class StepKeyboard extends ControlTable {
             });
             table.add(stepButton).space(10f).size(50f, 70f);
         }
-
         return table;
     }
 
@@ -319,6 +318,9 @@ public class StepKeyboard extends ControlTable {
             lastStepButton.selectActive(false);
         button.selectActive(true);
         lastStepButton = button;
+
+        // callback to listeners that a stepButton changed
+        onStepKeyboardListener.onStepChange(index, selected);
     }
 
     protected final StepButton getStepButton(int index) {
@@ -327,6 +329,12 @@ public class StepKeyboard extends ControlTable {
         else if (mode == StepKeyboardMode.Step)
             return (StepButton)stepGroup.getChildren().get(index);
         return null;
+    }
+
+    public void select(int step, boolean selected) {
+        // using this method only updates the view, not events are fired
+        final StepButton button = (StepButton)stepGroup.getChildren().get(step);
+        button.updateSelected(selected);
     }
 
     //--------------------------------------------------------------------------
@@ -409,4 +417,5 @@ public class StepKeyboard extends ControlTable {
             this.name = name;
         }
     }
+
 }

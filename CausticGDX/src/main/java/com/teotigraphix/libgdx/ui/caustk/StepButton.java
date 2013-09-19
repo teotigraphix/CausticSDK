@@ -46,6 +46,8 @@ public class StepButton extends ControlTable {
 
     private ButtonGroup buttonGroup;
 
+    private boolean noCallBack;
+
     public ButtonGroup getButtonGroup() {
         return buttonGroup;
     }
@@ -76,7 +78,8 @@ public class StepButton extends ControlTable {
             public void changed(ChangeEvent event, Actor actor) {
                 if (noEvent || !item.isToggle())
                     event.cancel();
-                onStepButtonListener.onChange(getIndex(), button.isChecked());
+                if (!noCallBack)
+                    onStepButtonListener.onChange(getIndex(), button.isChecked());
 
             }
         });
@@ -98,11 +101,16 @@ public class StepButton extends ControlTable {
         stack.add(overlay);
     }
 
+    public void updateSelected(boolean selected) {
+        noCallBack = true;
+        button.setChecked(selected);
+        noCallBack = false;
+    }
+
     public void select(boolean selected) {
         noEvent = true;
         button.setChecked(selected);
         noEvent = false;
-
     }
 
     public void toggle() {

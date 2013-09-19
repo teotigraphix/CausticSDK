@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.gs.machine;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -52,6 +53,10 @@ public abstract class GrooveMachine {
 
     protected final Pattern getPattern() {
         return getSequencer().getPattern();
+    }
+
+    public final Part getSelectedPart() {
+        return getSequencer().getPattern().getSelectedPart();
     }
 
     public final Phrase getSelectedPhrase() {
@@ -242,7 +247,11 @@ public abstract class GrooveMachine {
     private List<Part> parts = new ArrayList<Part>();
 
     public List<Part> getParts() {
-        return parts;
+        return Collections.unmodifiableList(parts);
+    }
+
+    public void setSelectedPart(int partIndex) {
+        getPattern().setSelectedPart(partIndex);
     }
 
     public void setup(GrooveMachineDescriptor descriptor) throws CausticException {
