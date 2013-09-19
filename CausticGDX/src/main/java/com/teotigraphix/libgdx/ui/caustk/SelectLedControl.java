@@ -139,13 +139,13 @@ public class SelectLedControl extends ControlTable {
                 decrement();
             }
         });
-        add(decButton).size(55f, 35f).pad(4f);
+        add(decButton).size(55f, 35f);//.pad(4f);
 
         createLedTable();
 
         Image incImage = new Image(getSkin().getDrawable("select_led_control_inc"));
         incButton = new Button(incImage, getSkin(), "select-led-control-inc-button");
-        add(incButton).size(55f, 35f).pad(4f);
+        add(incButton).size(55f, 35f);//.pad(4f);
         incButton.addListener(new ActorGestureListener() {
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {

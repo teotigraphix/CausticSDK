@@ -109,7 +109,7 @@ public class StepKeyboard extends ControlTable {
 
     @Override
     protected void createChildren() {
-        //debug();
+        debug();
 
         keyBoardToggle = new Button(getSkin());
         keyBoardToggle.addListener(new ChangeListener() {
@@ -284,7 +284,7 @@ public class StepKeyboard extends ControlTable {
 
     private void createGroup(FunctionGroup functionGroup, Table parent) {
         //parent.debug();
-        parent.padTop(10f);
+        parent.padTop(0f);
         Table fullGroup = new Table(getSkin());
 
         Table topGroup = new Table(getSkin());

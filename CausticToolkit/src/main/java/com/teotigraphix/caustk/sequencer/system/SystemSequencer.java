@@ -81,6 +81,8 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
 
     @Override
     public void setTempo(float value) {
+        if (value == tempo)
+            return;
         tempo = value;
         OutputPanelMessage.BPM.send(getController(), tempo);
         getController().trigger(new OnSystemSequencerTempoChange(value));
@@ -97,7 +99,11 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
 
     public SystemSequencer(ICaustkController controller) {
         super(controller);
+
         controller.addComponent(ISystemSequencer.class, this);
+
+        getController().getCommandManager().put(COMMAND_PLAY, SystemSequencerPlayCommand.class);
+        getController().getCommandManager().put(COMMAND_U_TEMPO, SystemSequencerTempoCommand.class);
     }
 
     //--------------------------------------------------------------------------
@@ -108,7 +114,6 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
         setIsPlaying(true);
-
         trigger(new OnSystemSequencerTransportChange());
     }
 
@@ -116,18 +121,6 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
     public void stop() {
         setIsPlaying(false);
         trigger(new OnSystemSequencerTransportChange());
-    }
-
-    public void executePlay() {
-        getController().execute(COMMAND_PLAY);
-    }
-
-    public void executeStop() {
-        getController().execute(COMMAND_STOP);
-    }
-
-    public void executeTempo(float tempo) {
-        getController().execute(COMMAND_STOP, tempo);
     }
 
     @Override
@@ -143,14 +136,12 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
         public void execute() {
             int smode = CommandUtils.getInteger(getContext(), 0);
             SequencerMode mode = SequencerMode.fromInt(smode);
-            getContext().getComponent(ISystemSequencer.class).play(mode);
-        }
-    }
-
-    public static class SystemSequencerStopCommand extends CommandBase {
-        @Override
-        public void execute() {
-            getContext().getComponent(ISystemSequencer.class).stop();
+            boolean playing = CommandUtils.getBoolean(getContext(), 1);
+            if (playing) {
+                getContext().getComponent(ISystemSequencer.class).play(mode);
+            } else {
+                getContext().getComponent(ISystemSequencer.class).stop();
+            }
         }
     }
 

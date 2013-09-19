@@ -2,7 +2,6 @@
 package com.teotigraphix.caustk.sequencer;
 
 import com.teotigraphix.caustk.controller.IControllerComponent;
-import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
@@ -258,24 +257,22 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
 
     /**
      * Plays the song sequencer in pattern or song mode.
+     * <p>
+     * <code>system_sequencer/play [sequencer_mode] [play]</code>
+     * <ul>
+     * <li>sequencer_mode - {@link SequencerMode}, the int value</li>
+     * <li>play (0,1) [0] stop, [1] play</li>
+     * </ul>
      * 
      * @see OnSystemSequencerPlay
+     * @see OnSystemSequencerStop
      */
     public static final String COMMAND_PLAY = "system_sequencer/play";
 
     /**
-     * Stops the song sequencer.
-     * 
-     * @see OnSystemSequencerStop
-     */
-    public static final String COMMAND_STOP = "system_sequencer/stop";
-
-    /**
      * Sets the bpm of the {@link IOutputPanel}.
-     * 
-     * @see UndoCommand
      */
-    public static final String COMMAND_TEMPO = "system_sequencer/tempo";
+    public static final String COMMAND_U_TEMPO = "system_sequencer/tempo";
 
     void setTempo(float bpm);
 
