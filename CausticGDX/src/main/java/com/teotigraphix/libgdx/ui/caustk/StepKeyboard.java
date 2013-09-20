@@ -326,6 +326,27 @@ public class StepKeyboard extends ControlTable {
         onStepKeyboardListener.onStepChange(index, selected);
     }
 
+    private StepButton lastCurrent;
+
+    /**
+     * Sets the index that uses the currentOverlay of the {@link StepButton}.
+     * 
+     * @param index 0-15
+     */
+    public void setCurrentIndex(int index) {
+        if (index == -1) {
+            if (lastCurrent != null)
+                lastCurrent.selectCurrent(false);
+            lastCurrent = null;
+        } else {
+            StepButton button = getStepButton(index);
+            if (lastCurrent != null)
+                lastCurrent.selectCurrent(false);
+            button.selectCurrent(true);
+            lastCurrent = button;
+        }
+    }
+
     protected final StepButton getStepButton(int index) {
         if (mode == StepKeyboardMode.Key)
             return (StepButton)keyGroup.getChildren().get(index);

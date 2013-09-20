@@ -30,9 +30,11 @@ public class StepButtonOverlayGroup extends WidgetGroup {
 
     private Skin skin;
 
-    private Image selectedOverlay;
+    private Image activeOverlay;
 
-    float selectionDuration = 0.2f;
+    private Image currentOverlay;
+
+    float activeDuration = 0.2f;
 
     public StepButtonOverlayGroup(Skin skin) {
         this.skin = skin;
@@ -41,24 +43,45 @@ public class StepButtonOverlayGroup extends WidgetGroup {
     }
 
     private void createChildren() {
-        selectedOverlay = new Image(skin.getDrawable("pad_lit_green"));
-        selectedOverlay.setVisible(false);
-        addActor(selectedOverlay);
+        activeOverlay = new Image(skin.getDrawable("pad_lit_green"));
+        activeOverlay.setVisible(false);
+        addActor(activeOverlay);
+
+        currentOverlay = new Image(skin.getDrawable("pad_lit_green"));
+        currentOverlay.setVisible(false);
+        addActor(currentOverlay);
     }
 
-    public void select(boolean selected) {
-        selectedOverlay.setVisible(selected);
+    public void current(boolean selected) {
+        currentOverlay.setVisible(selected);
         if (selected) {
-            selectedOverlay.addAction(Actions.forever(Actions.sequence(
-                    Actions.fadeIn(selectionDuration), Actions.delay(0.15f),
-                    Actions.fadeOut(selectionDuration), new Action() {
+            currentOverlay.addAction(Actions.forever(Actions.sequence(
+                    Actions.fadeIn(activeDuration), Actions.delay(0.15f),
+                    Actions.fadeOut(activeDuration), new Action() {
                         @Override
                         public boolean act(float delta) {
                             return true;
                         }
                     })));
         } else {
-            selectedOverlay.clearActions();
+            currentOverlay.clearActions();
+        }
+        invalidate();
+    }
+
+    public void active(boolean selected) {
+        activeOverlay.setVisible(selected);
+        if (selected) {
+            activeOverlay.addAction(Actions.forever(Actions.sequence(
+                    Actions.fadeIn(activeDuration), Actions.delay(0.15f),
+                    Actions.fadeOut(activeDuration), new Action() {
+                        @Override
+                        public boolean act(float delta) {
+                            return true;
+                        }
+                    })));
+        } else {
+            activeOverlay.clearActions();
         }
         invalidate();
     }
@@ -67,11 +90,15 @@ public class StepButtonOverlayGroup extends WidgetGroup {
     public void layout() {
         super.layout();
 
-        if (selectedOverlay.isVisible()) {
-            selectedOverlay.setPosition(-5f, -5f);
-            selectedOverlay.setSize(getWidth() + 10f, getHeight() + 10f);
+        if (activeOverlay.isVisible()) {
+            activeOverlay.setPosition(-5f, -5f);
+            activeOverlay.setSize(getWidth() + 10f, getHeight() + 10f);
         }
 
+        if (currentOverlay.isVisible()) {
+            currentOverlay.setPosition(-5f, -5f);
+            currentOverlay.setSize(getWidth() + 10f, getHeight() + 10f);
+        }
     }
 
 }

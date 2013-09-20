@@ -205,15 +205,30 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
         return step;
     }
 
+    private int currentSixteenthStep;
+
+    @Override
+    public int getCurrentSixteenthStep() {
+        return currentSixteenthStep;
+    }
+
     @Override
     public void beatUpdate(int measure, float beat) {
         if (!isPlaying())
             return;
         currentMeasure = measure;
         floatBeat = beat;
+
         int round = (int)Math.floor(floatBeat);
         if (round != currentBeat) {
             setCurrentBeat(round);
+        }
+
+        // sixteenth step calculation
+        int step = (int)Math.floor((floatBeat % 4) * 4);
+        if (step != currentSixteenthStep) {
+            currentSixteenthStep = step;
+            trigger(new OnSystemSequencerStepChange());
         }
     }
 

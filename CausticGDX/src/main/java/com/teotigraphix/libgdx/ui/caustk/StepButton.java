@@ -167,7 +167,11 @@ public class StepButton extends ControlTable {
     }
 
     public void selectActive(boolean selected) {
-        overlay.select(selected);
+        overlay.active(selected);
+    }
+
+    public void selectCurrent(boolean selected) {
+        overlay.current(selected);
     }
 
 }

@@ -370,6 +370,11 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
         }
     }
 
+    public static class OnSystemSequencerStepChange {
+        public OnSystemSequencerStepChange() {
+        }
+    }
+
     public static class OnSystemSequencerBeatChange {
 
         private final int measure;
@@ -389,4 +394,6 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
             this.beat = beat;
         }
     }
+
+    int getCurrentSixteenthStep();
 }
