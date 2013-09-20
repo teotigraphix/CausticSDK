@@ -347,6 +347,8 @@ public interface ISystemSequencer extends IControllerComponent, IRestore {
     int getCurrentBeat();
 
     /**
+     * Dispatched when play or stop is executed on the sequencer.
+     * 
      * @see ISystemSequencer#isPlaying()
      */
     public static class OnSystemSequencerTransportChange {

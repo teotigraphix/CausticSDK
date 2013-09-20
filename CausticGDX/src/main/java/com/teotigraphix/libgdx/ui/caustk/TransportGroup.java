@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.teotigraphix.libgdx.ui.ControlTable;
 
-@SuppressWarnings("unused")
 public class TransportGroup extends ControlTable {
 
     private Button recordButton;
@@ -24,6 +23,8 @@ public class TransportGroup extends ControlTable {
     private Button transposeButton;
 
     private OnTransportGroupListener onTransportGroupListener;
+
+    private boolean noEvent;
 
     public TransportGroup(Skin skin) {
         super(skin);
@@ -74,9 +75,16 @@ public class TransportGroup extends ControlTable {
         playPauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                onTransportGroupListener.onPlayChange(playPauseButton.isChecked());
+                if (!noEvent)
+                    onTransportGroupListener.onPlayChange(playPauseButton.isChecked());
             }
         });
+    }
+
+    public void selectPlayPause(boolean selected) {
+        noEvent = true;
+        playPauseButton.setChecked(selected);
+        noEvent = false;
     }
 
     private void createTapButton() {
