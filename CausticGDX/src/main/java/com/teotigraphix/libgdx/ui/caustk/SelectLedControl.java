@@ -240,7 +240,7 @@ public class SelectLedControl extends ControlTable {
                 } else {
                     bottom.add(led);
                 }
-                led.setStyleName(i == 0 ? "default" : "default-green");
+                led.setStyleName(i == 0 ? "default-green" : "default");
                 ledTable.add(led);
             }
             ledTable.row();

@@ -19,6 +19,10 @@
 
 package com.teotigraphix.caustk.gs.machine.part;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
@@ -39,12 +43,60 @@ import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
  */
 public class MachineSound extends MachineComponentPart {
 
+    int[] octaves = new int[] {
+            -4, -3, -2, -1, 0, 2, 3, 4
+    };
+
+    Map<Integer, Integer> octavex = new HashMap<Integer, Integer>();
+
+    private int octaveIndex = 4;
+
+    public int getOctaveIndex() {
+        return octaveIndex;
+    }
+
+    public void setOctaveIndex(int value) {
+        octaveIndex = value;
+        if (octaveIndex > 7)
+            octaveIndex = 7;
+        else if (octaveIndex < 0)
+            octaveIndex = 0;
+        setOctave(octaves[octaveIndex]);
+        CtkDebug.log("O:" + octave);
+    }
+
+    public void incrementOctave() {
+        octaveIndex++;
+        if (octaveIndex > 7)
+            octaveIndex = 7;
+        setOctave(octaves[octaveIndex]);
+    }
+
+    public void deccrementOctave() {
+        octaveIndex--;
+        if (octaveIndex < 0)
+            octaveIndex = 0;
+        setOctave(octaves[octaveIndex]);
+    }
+
+    private int octave = -1;
+
+    public int getOctave() {
+        return octave;
+    }
+
+    public void setOctave(int octave) {
+        this.octave = octave;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public MachineSound(GrooveMachine grooveMachine) {
         super(grooveMachine);
+        octavex.put(0, -5);
+
     }
 
     public MemorySlotItem createInitData(Category category) {
@@ -71,6 +123,27 @@ public class MachineSound extends MachineComponentPart {
 
     protected MemorySlotItem createPhraseInitData() {
         return new PhraseMemoryItem();
+    }
+
+    /**
+     * Sounds a note from the machine's sound engine.
+     * 
+     * @param pitch The relative pitch without the octave.
+     * @param velocity The velocity of the note.
+     */
+    public void noteOn(int pitch, float velocity) {
+        int root = 60 + (octaves[octaveIndex] * 12);
+        getMachine().getSelectedPart().getPatch().noteOn(root + pitch, velocity);
+    }
+
+    /**
+     * Stops a note from the machine's sound engine.
+     * 
+     * @param pitch The relative pitch without the octave.
+     */
+    public void noteOff(int pitch) {
+        int root = 60 + (octaves[octaveIndex] * 12);
+        getMachine().getSelectedPart().getPatch().noteOff(root + pitch);
     }
 
 }

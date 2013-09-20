@@ -90,7 +90,10 @@ public class StepKeyboard extends ControlTable {
     public void setMode(StepKeyboardMode value) {
         if (value == mode)
             return;
+        StepKeyboardMode oldMode = mode;
         mode = value;
+        if (onStepKeyboardListener != null)
+            onStepKeyboardListener.onModeChange(mode, oldMode);
         invalidate();
     }
 
@@ -351,6 +354,8 @@ public class StepKeyboard extends ControlTable {
         void onKeyDown(int index);
 
         void onKeyUp(int index);
+
+        void onModeChange(StepKeyboardMode mode, StepKeyboardMode oldMode);
     }
 
     //--------------------------------------------------------------------------
