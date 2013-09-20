@@ -19,6 +19,10 @@
 
 package com.teotigraphix.caustk.gs.machine.part;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.sun.jna.Memory;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
@@ -46,6 +50,63 @@ public class MachineSequencer extends MachineComponentPart {
 
     @SuppressWarnings("unused")
     private StepSequencer stepSequencer;
+
+    private List<Part> parts = new ArrayList<Part>();
+
+    public List<Part> getParts() {
+        return Collections.unmodifiableList(parts);
+    }
+
+    public void setSelectedPart(int partIndex) {
+        Part oldPart = getPattern().getSelectedPart();
+        getPattern().setSelectedPart(partIndex);
+        for (OnMachineSequencerListener listener : onMachineSequencerListener) {
+            listener.onSelectedPartChange(getPattern().getSelectedPart(), oldPart);
+        }
+    }
+
+    public void addPart(Part part) {
+        parts.add(part);
+    }
+
+    public enum StepKeyboardMode {
+
+        Step(0),
+
+        Key(1),
+
+        Shift(1);
+
+        private int index;
+
+        public int getIndex() {
+            return index;
+        }
+
+        StepKeyboardMode(int index) {
+            this.index = index;
+        }
+    }
+
+    //----------------------------------
+    // mode
+    //----------------------------------
+
+    private StepKeyboardMode mode = StepKeyboardMode.Step;
+
+    public StepKeyboardMode getMode() {
+        return mode;
+    }
+
+    public void setMode(StepKeyboardMode value) {
+        if (value == mode)
+            return;
+        StepKeyboardMode oldMode = mode;
+        mode = value;
+        for (OnMachineSequencerListener listener : onMachineSequencerListener) {
+            listener.onModeChange(mode, oldMode);
+        }
+    }
 
     //----------------------------------
     // pattern
@@ -185,11 +246,11 @@ public class MachineSequencer extends MachineComponentPart {
 
     protected void configureParts(Pattern pattern) throws CausticException {
         // add parts the the pattern
-        for (Part part : getMachine().getParts()) {
+        for (Part part : getParts()) {
             pattern.addPart(part);
         }
 
-        for (Part part : getMachine().getParts()) {
+        for (Part part : getParts()) {
             getMemory().getSelectedMemoryBank().copyPatch(part, pattern.getIndex());
             getMemory().getSelectedMemoryBank().copyPhrase(part, pattern.getIndex());
             //part.getPhrase().configure();
@@ -262,12 +323,13 @@ public class MachineSequencer extends MachineComponentPart {
         setCurrentMeasure(measure);
         setCurrentBeat(beat);
 
-        float localBeat = PhraseUtils.toLocalBeat(beat, getPattern().getLength());
-        int localMeasure = PhraseUtils.toLocalMeasure(beat, getPattern().getLength());
+        //float localBeat = PhraseUtils.toLocalBeat(beat, getPattern().getLength());
+        //int localMeasure = PhraseUtils.toLocalMeasure(beat, getPattern().getLength());
 
-        System.out.println("LocalBeat:" + localBeat + " LocalMeasure:" + localMeasure);
-        if (onMachineSequencerListener != null)
-            onMachineSequencerListener.onBeatChange(this);
+        //System.out.println("LocalBeat:" + localBeat + " LocalMeasure:" + localMeasure);
+        for (OnMachineSequencerListener listener : onMachineSequencerListener) {
+            listener.onBeatChange(this);
+        }
     }
 
     private void updateName(int pattern) {
@@ -277,13 +339,25 @@ public class MachineSequencer extends MachineComponentPart {
         System.out.println("Pattern:" + text);
     }
 
-    private OnMachineSequencerListener onMachineSequencerListener;
+    public void refresh() {
+        for (OnMachineSequencerListener listener : onMachineSequencerListener) {
+            listener.onRefresh();
+        }
+    }
 
-    public void setOnMachineSequencerListener(OnMachineSequencerListener l) {
-        this.onMachineSequencerListener = l;
+    private List<OnMachineSequencerListener> onMachineSequencerListener = new ArrayList<OnMachineSequencerListener>();
+
+    public void addOnMachineSequencerListener(OnMachineSequencerListener l) {
+        onMachineSequencerListener.add(l);
     }
 
     public interface OnMachineSequencerListener {
         void onBeatChange(MachineSequencer machineSequencer);
+
+        void onModeChange(StepKeyboardMode mode, StepKeyboardMode oldMode);
+
+        void onSelectedPartChange(Part part, Part oldPart);
+
+        void onRefresh();
     }
 }

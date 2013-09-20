@@ -73,10 +73,10 @@ public class GrooveMachineTest extends CaustkTestBase {
 
         File preset1a = RuntimeUtils.getCausticPresetsFile("bassline", "CLASSIC GROWL");
         File preset2a = RuntimeUtils.getCausticPresetsFile("bassline", "PWM TRANCE");
-        basslineMachine.getParts().get(0).getPatch().loadPreset(preset1a);
-        basslineMachine.getParts().get(1).getPatch().loadPreset(preset2a);
+        basslineMachine.getSequencer().getParts().get(0).getPatch().loadPreset(preset1a);
+        basslineMachine.getSequencer().getParts().get(1).getPatch().loadPreset(preset2a);
 
-        basslineMachine.getParts().get(0).getPhrase().triggerOn(2, 45, 0.5f, 1f, 1);
+        basslineMachine.getSequencer().getParts().get(0).getPhrase().triggerOn(2, 45, 0.5f, 1f, 1);
         controller.getSoundMixer().getChannel(0).setDelaySend(0.5f);
         controller.getSoundMixer().getChannel(2).setReverbSend(0.15f);
 
@@ -134,12 +134,12 @@ public class GrooveMachineTest extends CaustkTestBase {
         // is recreated from the init data when reselected. If a pattern is reselected
         // that was written to disk, the original pattern created will be used.
         assertFalse(currentPattern.isInMemory());
-        assertEquals(0, basslineMachine.getMemory().getSelectedMemoryBank()
-                .getInMemoryPatterns().size());
+        assertEquals(0, basslineMachine.getMemory().getSelectedMemoryBank().getInMemoryPatterns()
+                .size());
         basslineMachine.write();
         assertTrue(currentPattern.isInMemory());
-        assertEquals(1, basslineMachine.getMemory().getSelectedMemoryBank()
-                .getInMemoryPatterns().size());
+        assertEquals(1, basslineMachine.getMemory().getSelectedMemoryBank().getInMemoryPatterns()
+                .size());
 
         basslineMachine.setNextPatternIndex(42);
 
@@ -154,8 +154,8 @@ public class GrooveMachineTest extends CaustkTestBase {
 
         File preset1 = RuntimeUtils.getCausticPresetsFile("bassline", "CLASSIC GROWL");
         File preset2 = RuntimeUtils.getCausticPresetsFile("bassline", "PWM TRANCE");
-        basslineMachine.getParts().get(0).getPatch().loadPreset(preset1);
-        basslineMachine.getParts().get(1).getPatch().loadPreset(preset2);
+        basslineMachine.getSequencer().getParts().get(0).getPatch().loadPreset(preset1);
+        basslineMachine.getSequencer().getParts().get(1).getPatch().loadPreset(preset2);
 
         selectedPart.getPhrase().triggerOn(2, 45, 0.5f, 1f, 1);
 

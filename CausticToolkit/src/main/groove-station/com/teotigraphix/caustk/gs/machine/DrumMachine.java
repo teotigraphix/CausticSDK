@@ -63,33 +63,36 @@ public class DrumMachine extends GrooveMachine {
     public void triggerOn(int bank, int channel, int step, float velocity) {
         // need to use add/remove note since the beat box is polyphonic
         // can use "triggers" because we are working with pseudo channels in the sequencer
-        float beat = Resolution.toBeat(step, getParts().get(bank).getPhrase().getResolution());
-        getParts().get(bank).getPhrase().addNote(root + channel, beat, beat + 0.25f, 1f, 0);
+        float beat = Resolution.toBeat(step, getSequencer().getParts().get(bank).getPhrase()
+                .getResolution());
+        getSequencer().getParts().get(bank).getPhrase()
+                .addNote(root + channel, beat, beat + 0.25f, 1f, 0);
     }
 
     public void triggerOff(int bank, int channel, int step) {
         // same as triggerOn()
-        float beat = Resolution.toBeat(step, getParts().get(bank).getPhrase().getResolution());
-        getParts().get(bank).getPhrase().removeNote(root + channel, beat);
+        float beat = Resolution.toBeat(step, getSequencer().getParts().get(bank).getPhrase()
+                .getResolution());
+        getSequencer().getParts().get(bank).getPhrase().removeNote(root + channel, beat);
     }
 
     public void setSwing(int bank, float value) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSequencer().getParts().get(bank));
         tone.getPatternSequencer().setShuffleMode(ShuffleMode.SIXTEENTH);
         tone.getPatternSequencer().setShuffleAmount(value);
     }
 
     public void loadPreset(int bank, File presetFile) {
-        getParts().get(bank).getPatch().loadPreset(presetFile);
+        getSequencer().getParts().get(bank).getPatch().loadPreset(presetFile);
     }
 
     public void loadChannel(int bank, int channel, File sampleFile) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSequencer().getParts().get(bank));
         tone.getSampler().loadChannel(channel, sampleFile.getAbsolutePath());
     }
 
     public float getChannelProperty(int bank, int channel, ChannelProperty property) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSequencer().getParts().get(bank));
         WavSamplerChannel samplerChannel = tone.getSampler().getChannel(channel);
 
         if (samplerChannel == null)
@@ -123,7 +126,7 @@ public class DrumMachine extends GrooveMachine {
     }
 
     public void setChannelProperty(int bank, int channel, ChannelProperty property, float value) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSequencer().getParts().get(bank));
         WavSamplerChannel samplerChannel = tone.getSampler().getChannel(channel);
 
         if (samplerChannel == null)

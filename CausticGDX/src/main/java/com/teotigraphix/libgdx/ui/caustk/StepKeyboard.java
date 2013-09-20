@@ -30,6 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
 import com.teotigraphix.libgdx.ui.ControlTable;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.OnStepButtonListener;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.StepButtonItem;
@@ -58,42 +59,14 @@ public class StepKeyboard extends ControlTable {
 
     private OnStepKeyboardListener onStepKeyboardListener;
 
-    public enum StepKeyboardMode {
-
-        Step(0),
-
-        Key(1),
-
-        Shift(1);
-
-        private int index;
-
-        public int getIndex() {
-            return index;
-        }
-
-        StepKeyboardMode(int index) {
-            this.index = index;
-        }
-    }
-
     //----------------------------------
     // mode
     //----------------------------------
 
     private StepKeyboardMode mode;
 
-    public StepKeyboardMode getMode() {
-        return mode;
-    }
-
     public void setMode(StepKeyboardMode value) {
-        if (value == mode)
-            return;
-        StepKeyboardMode oldMode = mode;
         mode = value;
-        if (onStepKeyboardListener != null)
-            onStepKeyboardListener.onModeChange(mode, oldMode);
         invalidate();
     }
 
@@ -110,6 +83,10 @@ public class StepKeyboard extends ControlTable {
     // Overridden :: Methods
     //--------------------------------------------------------------------------
 
+    private void fireModeChange(StepKeyboardMode mode) {
+        onStepKeyboardListener.onModeStateChange(mode);
+    }
+
     @Override
     protected void createChildren() {
         debug();
@@ -124,12 +101,12 @@ public class StepKeyboard extends ControlTable {
                 }
                 Button button = (Button)actor;
                 if (button.isChecked()) {
-                    setMode(StepKeyboardMode.Key);
+                    fireModeChange(StepKeyboardMode.Key);
                 } else {
                     if (shiftToggle.isChecked()) {
-                        setMode(StepKeyboardMode.Shift);
+                        fireModeChange(StepKeyboardMode.Shift);
                     } else {
-                        setMode(StepKeyboardMode.Step);
+                        fireModeChange(StepKeyboardMode.Step);
                     }
                 }
             }
@@ -157,12 +134,12 @@ public class StepKeyboard extends ControlTable {
             public void changed(ChangeEvent event, Actor actor) {
                 Button button = (Button)actor;
                 if (button.isChecked()) {
-                    setMode(StepKeyboardMode.Shift);
+                    fireModeChange(StepKeyboardMode.Shift);
                 } else {
                     if (keyBoardToggle.isChecked()) {
-                        setMode(StepKeyboardMode.Key);
+                        fireModeChange(StepKeyboardMode.Key);
                     } else {
-                        setMode(StepKeyboardMode.Step);
+                        fireModeChange(StepKeyboardMode.Step);
                     }
                 }
             }
@@ -372,11 +349,11 @@ public class StepKeyboard extends ControlTable {
     public interface OnStepKeyboardListener {
         void onStepChange(int index, boolean selected);
 
+        void onModeStateChange(StepKeyboardMode mode);
+
         void onKeyDown(int index);
 
         void onKeyUp(int index);
-
-        void onModeChange(StepKeyboardMode mode, StepKeyboardMode oldMode);
     }
 
     //--------------------------------------------------------------------------
@@ -443,5 +420,4 @@ public class StepKeyboard extends ControlTable {
             this.name = name;
         }
     }
-
 }

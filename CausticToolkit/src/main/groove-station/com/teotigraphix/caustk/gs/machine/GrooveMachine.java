@@ -19,10 +19,6 @@
 
 package com.teotigraphix.caustk.gs.machine;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
@@ -239,19 +235,9 @@ public abstract class GrooveMachine {
      * @param muted Whether the machine is muted.
      */
     public void setMute(boolean muted) {
-        for (Part part : getParts()) {
+        for (Part part : getSequencer().getParts()) {
             part.setMute(muted);
         }
-    }
-
-    private List<Part> parts = new ArrayList<Part>();
-
-    public List<Part> getParts() {
-        return Collections.unmodifiableList(parts);
-    }
-
-    public void setSelectedPart(int partIndex) {
-        getPattern().setSelectedPart(partIndex);
     }
 
     public void setup(GrooveMachineDescriptor descriptor) throws CausticException {
@@ -266,7 +252,7 @@ public abstract class GrooveMachine {
                     partDescriptor.getToneType());
 
             Part part = createPart(tone);
-            parts.add(part);
+            getSequencer().addPart(part);
         }
     }
 
@@ -294,7 +280,7 @@ public abstract class GrooveMachine {
         }
 
         // reset bank/pattern to 0
-        for (Part part : parts) {
+        for (Part part : getSequencer().getParts()) {
             PartUtils.setBankPattern(part, 0, 0);
         }
     }
