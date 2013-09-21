@@ -26,7 +26,6 @@ import java.util.List;
 import com.sun.jna.Memory;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
-import com.teotigraphix.caustk.gs.machine.part.sequencer.StepSequencer;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
@@ -47,9 +46,6 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  * Holds all controls that control the machine's step sequencer.
  */
 public class MachineSequencer extends MachineComponentPart {
-
-    @SuppressWarnings("unused")
-    private StepSequencer stepSequencer;
 
     private List<Part> parts = new ArrayList<Part>();
 
@@ -199,8 +195,6 @@ public class MachineSequencer extends MachineComponentPart {
 
     public MachineSequencer(GrooveMachine grooveMachine) {
         super(grooveMachine);
-
-        stepSequencer = new StepSequencer();
     }
 
     //-----------------------------------------------------------------------------
