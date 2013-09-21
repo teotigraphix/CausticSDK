@@ -83,12 +83,12 @@ public class MachineKeyboard extends MachineComponentPart {
 
     public void noteOn(int relativePitch) {
         int pitch = relativePitch + (12 * octave);
-        getMachine().getSelectedPatch().noteOn(pitch, 1f);
+        getMachine().getSound().getSelectedPatch().noteOn(pitch, 1f);
     }
 
     public void noteOff(int relativePitch) {
         int pitch = relativePitch + (12 * octave);
-        getMachine().getSelectedPatch().noteOff(pitch);
+        getMachine().getSound().getSelectedPatch().noteOff(pitch);
     }
 
     public enum KeyboardMode {

@@ -19,15 +19,19 @@
 
 package com.teotigraphix.caustk.gs.machine.part;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
+import com.teotigraphix.caustk.gs.pattern.Part;
+import com.teotigraphix.caustk.gs.pattern.Pattern;
 
 /*
  * This class will implement and wrap the Tone API for each machine.
@@ -43,11 +47,53 @@ import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
  */
 public class MachineSound extends MachineComponentPart {
 
-    int[] octaves = new int[] {
+    //--------------------------------------------------------------------------
+    // Public API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // Parts
+    //----------------------------------
+
+    private List<Part> parts = new ArrayList<Part>();
+
+    public Part getPart(int index) {
+        return parts.get(index);
+    }
+
+    public List<Part> getParts() {
+        return Collections.unmodifiableList(parts);
+    }
+
+    public final Part getSelectedPart() {
+        final Pattern pattern = getMachine().getSequencer().getPattern();
+        return pattern.getSelectedPart();
+    }
+
+    public void setSelectedPart(int partIndex) {
+        final Pattern pattern = getMachine().getSequencer().getPattern();
+        final Part oldPart = pattern.getSelectedPart();
+        pattern.setSelectedPart(partIndex);
+        for (OnMachineSoundListener listener : onMachineSoundListener) {
+            listener.onSelectedPartChange(pattern.getSelectedPart(), oldPart);
+        }
+    }
+
+    public void addPart(Part part) {
+        parts.add(part);
+    }
+
+    public final Patch getSelectedPatch() {
+        return getSelectedPart().getPatch();
+    }
+
+    //----------------------------------
+    // octave
+    //----------------------------------
+
+    final int[] octaves = new int[] {
             -4, -3, -2, -1, 0, 2, 3, 4
     };
-
-    Map<Integer, Integer> octavex = new HashMap<Integer, Integer>();
 
     private int octaveIndex = 4;
 
@@ -85,8 +131,8 @@ public class MachineSound extends MachineComponentPart {
         return octave;
     }
 
-    public void setOctave(int octave) {
-        this.octave = octave;
+    public void setOctave(int value) {
+        octave = value;
     }
 
     //--------------------------------------------------------------------------
@@ -95,8 +141,19 @@ public class MachineSound extends MachineComponentPart {
 
     public MachineSound(GrooveMachine grooveMachine) {
         super(grooveMachine);
-        octavex.put(0, -5);
+    }
 
+    public void configure(Pattern pattern) {
+        // add parts the the pattern
+        for (Part part : getParts()) {
+            pattern.addPart(part);
+        }
+
+        for (Part part : getParts()) {
+            getMemoryBank().copyPatch(part, pattern.getIndex());
+            getMemoryBank().copyPhrase(part, pattern.getIndex());
+            //part.getPhrase().configure();
+        }
     }
 
     public MemorySlotItem createInitData(Category category) {
@@ -133,7 +190,7 @@ public class MachineSound extends MachineComponentPart {
      */
     public void noteOn(int pitch, float velocity) {
         int root = 60 + (octaves[octaveIndex] * 12);
-        getMachine().getSelectedPart().getPatch().noteOn(root + pitch, velocity);
+        getSelectedPart().getPatch().noteOn(root + pitch, velocity);
     }
 
     /**
@@ -143,7 +200,21 @@ public class MachineSound extends MachineComponentPart {
      */
     public void noteOff(int pitch) {
         int root = 60 + (octaves[octaveIndex] * 12);
-        getMachine().getSelectedPart().getPatch().noteOff(root + pitch);
+        getSelectedPart().getPatch().noteOff(root + pitch);
+    }
+
+    //--------------------------------------------------------------------------
+    // Listeners
+    //--------------------------------------------------------------------------
+
+    private List<OnMachineSoundListener> onMachineSoundListener = new ArrayList<OnMachineSoundListener>();
+
+    public void addOnMachineSequencerListener(OnMachineSoundListener l) {
+        onMachineSoundListener.add(l);
+    }
+
+    public interface OnMachineSoundListener {
+        void onSelectedPartChange(Part part, Part oldPart);
     }
 
 }

@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.gs.machine.part;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.sun.jna.Memory;
@@ -33,6 +32,7 @@ import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.PhraseUtils;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /*
@@ -47,42 +47,13 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class MachineSequencer extends MachineComponentPart {
 
-    private List<Part> parts = new ArrayList<Part>();
-
-    public List<Part> getParts() {
-        return Collections.unmodifiableList(parts);
+    public final Phrase getSelectedPhrase() {
+        return getPattern().getSelectedPart().getPhrase();
     }
 
-    public void setSelectedPart(int partIndex) {
-        Part oldPart = getPattern().getSelectedPart();
-        getPattern().setSelectedPart(partIndex);
-        for (OnMachineSequencerListener listener : onMachineSequencerListener) {
-            listener.onSelectedPartChange(getPattern().getSelectedPart(), oldPart);
-        }
-    }
-
-    public void addPart(Part part) {
-        parts.add(part);
-    }
-
-    public enum StepKeyboardMode {
-
-        Step(0),
-
-        Key(1),
-
-        Shift(1);
-
-        private int index;
-
-        public int getIndex() {
-            return index;
-        }
-
-        StepKeyboardMode(int index) {
-            this.index = index;
-        }
-    }
+    //--------------------------------------------------------------------------
+    // Property API
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // mode
@@ -156,7 +127,7 @@ public class MachineSequencer extends MachineComponentPart {
         nextPattern = pattern;
 
         // calls #configure(Pattern) from TemporaryMemory > UserMemory
-        pendingPattern = getMemory().getTemporaryMemory().copyPattern(pattern);
+        pendingPattern = getTemporaryMemory().copyPattern(pattern);
 
         // getDispatcher().trigger(new OnPatternSequencerPatternChangePending());
 
@@ -170,7 +141,7 @@ public class MachineSequencer extends MachineComponentPart {
         if (pendingPattern == null)
             return;
 
-        getMemory().getTemporaryMemory().commit();
+        getTemporaryMemory().commit();
         setPattern(pendingPattern);
     }
 
@@ -185,7 +156,7 @@ public class MachineSequencer extends MachineComponentPart {
         // into memory from the temporary memory
 
         // for now this is User
-        MemoryBank memoryBank = getMemory().getSelectedMemoryBank();
+        MemoryBank memoryBank = getMemoryBank();
         memoryBank.writePattern(getPattern());
     }
 
@@ -214,11 +185,7 @@ public class MachineSequencer extends MachineComponentPart {
         // configure length, it may have changed since the original init
         pattern.setLength(pattern.getMemoryItem().getLength());
 
-        try {
-            configureParts(pattern);
-        } catch (CausticException e) {
-            e.printStackTrace();
-        }
+        getMachine().getSound().configure(pattern);
     }
 
     public void commit(Pattern pattern) {
@@ -236,19 +203,6 @@ public class MachineSequencer extends MachineComponentPart {
         }
 
         commitPropertySettings(pattern);
-    }
-
-    protected void configureParts(Pattern pattern) throws CausticException {
-        // add parts the the pattern
-        for (Part part : getParts()) {
-            pattern.addPart(part);
-        }
-
-        for (Part part : getParts()) {
-            getMemory().getSelectedMemoryBank().copyPatch(part, pattern.getIndex());
-            getMemory().getSelectedMemoryBank().copyPhrase(part, pattern.getIndex());
-            //part.getPhrase().configure();
-        }
     }
 
     protected void commitPropertySettings(Pattern pattern) {
@@ -350,8 +304,26 @@ public class MachineSequencer extends MachineComponentPart {
 
         void onModeChange(StepKeyboardMode mode, StepKeyboardMode oldMode);
 
-        void onSelectedPartChange(Part part, Part oldPart);
-
         void onRefresh();
     }
+
+    public enum StepKeyboardMode {
+
+        Step(0),
+
+        Key(1),
+
+        Shift(1);
+
+        private int index;
+
+        public int getIndex() {
+            return index;
+        }
+
+        StepKeyboardMode(int index) {
+            this.index = index;
+        }
+    }
+
 }

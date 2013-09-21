@@ -21,7 +21,8 @@ package com.teotigraphix.caustk.gs.machine.part;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
-import com.teotigraphix.caustk.gs.memory.MemoryManager;
+import com.teotigraphix.caustk.gs.memory.MemoryBank;
+import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 
 /**
  * Abstract base class for all machine parts.
@@ -32,8 +33,12 @@ public abstract class MachineComponentPart {
         return machine.getController();
     }
 
-    protected final MemoryManager getMemory() {
-        return machine.getMemory();
+    protected final MemoryBank getMemoryBank() {
+        return machine.getMemory().getSelectedMemoryBank();
+    }
+
+    protected final TemporaryMemory getTemporaryMemory() {
+        return machine.getMemory().getTemporaryMemory();
     }
 
     //----------------------------------

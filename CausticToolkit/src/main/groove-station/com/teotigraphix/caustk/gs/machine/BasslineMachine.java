@@ -38,12 +38,12 @@ public class BasslineMachine extends GrooveMachine {
     }
 
     public float getSynthProperty(int channel, SynthProperty property) {
-        BasslinePatch patch = (BasslinePatch)getSequencer().getParts().get(channel).getPatch();
+        BasslinePatch patch = (BasslinePatch)getSound().getParts().get(channel).getPatch();
         return patch.getSynthProperty(property);
     }
 
     public void setSynthProperty(int channel, SynthProperty property, float value) {
-        BasslinePatch patch = (BasslinePatch)getSequencer().getParts().get(channel).getPatch();
+        BasslinePatch patch = (BasslinePatch)getSound().getParts().get(channel).getPatch();
         patch.setSynthProperty(property, value);
     }
 

@@ -30,7 +30,6 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 import com.teotigraphix.caustk.gs.machine.part.MachineSystem;
 import com.teotigraphix.caustk.gs.machine.part.MachineTransport;
-import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.Memory.Type;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
@@ -41,27 +40,10 @@ import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.caustk.gs.pattern.SynthPart;
-import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.Tone;
 
 public abstract class GrooveMachine {
-
-    protected final Pattern getPattern() {
-        return getSequencer().getPattern();
-    }
-
-    public final Part getSelectedPart() {
-        return getSequencer().getPattern().getSelectedPart();
-    }
-
-    public final Phrase getSelectedPhrase() {
-        return getSequencer().getPattern().getSelectedPart().getPhrase();
-    }
-
-    public final Patch getSelectedPatch() {
-        return getSequencer().getPattern().getSelectedPart().getPatch();
-    }
 
     //----------------------------------
     // nextPatternIndex
@@ -235,7 +217,7 @@ public abstract class GrooveMachine {
      * @param muted Whether the machine is muted.
      */
     public void setMute(boolean muted) {
-        for (Part part : getSequencer().getParts()) {
+        for (Part part : getSound().getParts()) {
             part.setMute(muted);
         }
     }
@@ -252,7 +234,7 @@ public abstract class GrooveMachine {
                     partDescriptor.getToneType());
 
             Part part = createPart(tone);
-            getSequencer().addPart(part);
+            getSound().addPart(part);
         }
     }
 
@@ -280,7 +262,7 @@ public abstract class GrooveMachine {
         }
 
         // reset bank/pattern to 0
-        for (Part part : getSequencer().getParts()) {
+        for (Part part : getSound().getParts()) {
             PartUtils.setBankPattern(part, 0, 0);
         }
     }
