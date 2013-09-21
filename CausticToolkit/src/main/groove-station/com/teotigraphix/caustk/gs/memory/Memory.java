@@ -224,7 +224,7 @@ public abstract class Memory {
         //LibraryItem item = (LibraryItem)getPatternSlot().getItem(index);
         //LibraryPattern item = getCurrentLibrary().getPatterns().get(index);
         PatternMemoryItem item = null;
-        Pattern pattern = new Pattern(machine.getController(), item);
+        Pattern pattern = new Pattern(machine, item);
         return pattern;
     }
 

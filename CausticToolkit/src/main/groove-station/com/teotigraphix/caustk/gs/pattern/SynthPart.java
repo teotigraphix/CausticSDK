@@ -23,8 +23,8 @@ import com.teotigraphix.caustk.tone.Tone;
 
 public class SynthPart extends Part {
 
-    public SynthPart(Tone tone) {
-        super(tone);
+    public SynthPart(int index, Tone tone) {
+        super(index, tone);
     }
 
 }

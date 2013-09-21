@@ -15,6 +15,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.DrumMachine.ChannelProperty;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveStationSetup;
+import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.SynthPart;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
@@ -114,14 +115,15 @@ public class GrooveMachineTest extends CaustkTestBase {
         basslineMachine.setNextPatternIndex(0);
 
         Pattern currentPattern = basslineMachine.getSequencer().getPattern();
-        assertEquals(2, currentPattern.getPartCount());
-        assertEquals(4, currentPattern.getPart(0).getPhrase().getTriggers().size());
-        assertEquals(4, currentPattern.getPart(1).getPhrase().getTriggers().size());
+        MachineSound machineSound = basslineMachine.getSound();
+        assertEquals(2, machineSound.getParts().size());
+        assertEquals(4, machineSound.getPart(0).getPhrase().getTriggers().size());
+        assertEquals(4, machineSound.getPart(1).getPhrase().getTriggers().size());
 
-        assertEquals(1, currentPattern.getPart(0).getPhrase().getTrigger(0f).getNotes().size());
-        assertEquals(1, currentPattern.getPart(1).getPhrase().getTrigger(0f).getNotes().size());
+        assertEquals(1, machineSound.getPart(0).getPhrase().getTrigger(0f).getNotes().size());
+        assertEquals(1, machineSound.getPart(1).getPhrase().getTrigger(0f).getNotes().size());
 
-        SynthPart selectedPart = currentPattern.getSelectedPart();
+        SynthPart selectedPart = machineSound.getSelectedPart();
         // test a default trigger/note is created for a "non" existing trigger location
         selectedPart.getPhrase().triggerOn(1);
         assertTrue(selectedPart.getPhrase().containsTrigger(1));
@@ -146,7 +148,7 @@ public class GrooveMachineTest extends CaustkTestBase {
         currentPattern = basslineMachine.getSequencer().getPattern();
         assertFalse(currentPattern.isInMemory());
 
-        currentPattern.getSelectedPart().getPhrase().triggerOn(1);
+        machineSound.getSelectedPart().getPhrase().triggerOn(1);
 
         basslineMachine.setNextPatternIndex(0);
         currentPattern = basslineMachine.getSequencer().getPattern();

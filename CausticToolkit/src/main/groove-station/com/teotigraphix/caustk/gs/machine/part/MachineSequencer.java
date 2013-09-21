@@ -48,7 +48,7 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 public class MachineSequencer extends MachineComponentPart {
 
     public final Phrase getSelectedPhrase() {
-        return getPattern().getSelectedPart().getPhrase();
+        return getMachine().getSound().getSelectedPart().getPhrase();
     }
 
     //--------------------------------------------------------------------------
@@ -117,7 +117,7 @@ public class MachineSequencer extends MachineComponentPart {
         if (getPattern() != null) {
             float beat = getCurrentBeat() + 1;
             int measure = getCurrentMeasure() + 1;
-            int position = getPattern().getSelectedPart().getPhrase().getPosition();
+            int position = getSelectedPhrase().getPosition();
             if (beat % 4 == 1 && position == measure - 1) // last beat, last measure
                 throw new RuntimeException("Pattern change locked");
         }
@@ -182,14 +182,16 @@ public class MachineSequencer extends MachineComponentPart {
         // this the 'configure', when 'commit' is called, all settings
         // of the Pattern model that apply to global devices get instantly applied
 
+        getMachine().getSound().configure(pattern);
+
         // configure length, it may have changed since the original init
         pattern.setLength(pattern.getMemoryItem().getLength());
-
-        getMachine().getSound().configure(pattern);
     }
 
     public void commit(Pattern pattern) {
-        for (Part part : pattern.getParts()) {
+        final MachineSound machineSound = getMachine().getSound();
+
+        for (Part part : machineSound.getParts()) {
 
             PhraseMemoryItem phraseMemoryItem = pattern.getMemoryItem().getPhrase(part.getIndex());
 
@@ -206,14 +208,16 @@ public class MachineSequencer extends MachineComponentPart {
     }
 
     protected void commitPropertySettings(Pattern pattern) {
+        final MachineSound machineSound = getMachine().getSound();
+
         // set the default tempo/bpm
         pattern.setTempo(pattern.getMemoryItem().getTempo());
 
-        for (Part part : pattern.getParts()) {
+        for (Part part : machineSound.getParts()) {
             PartUtils.setBankPattern(part, pattern.getBankIndex(), pattern.getPatternIndex());
         }
 
-        pattern.setSelectedPart(pattern.getPart(0));
+        machineSound.setSelectedPart(0);
     }
 
     //--------------------------------------------------------------------------

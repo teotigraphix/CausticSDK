@@ -19,15 +19,12 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
+import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
@@ -35,10 +32,10 @@ public class Pattern implements IDispatcher {
 
     private final IDispatcher dispatcher;
 
-    private final ICaustkController controller;
+    private final GrooveMachine machine;
 
     public ICaustkController getController() {
-        return controller;
+        return machine.getController();
     }
 
     //----------------------------------
@@ -63,24 +60,6 @@ public class Pattern implements IDispatcher {
 
     public PatternMemoryItem getMemoryItem() {
         return patternMemoryItem;
-    }
-
-    //----------------------------------
-    // parts
-    //----------------------------------
-
-    private ArrayList<Part> parts = new ArrayList<Part>();
-
-    public int getPartCount() {
-        return parts.size();
-    }
-
-    public List<Part> getParts() {
-        return Collections.unmodifiableList(parts);
-    }
-
-    public Part getPart(int index) {
-        return parts.get(index);
     }
 
     //----------------------------------
@@ -136,75 +115,19 @@ public class Pattern implements IDispatcher {
 
         length = value;
 
-        for (Part part : parts) {
+        for (Part part : machine.getSound().getParts()) {
             part.getPhrase().setLength(value);
         }
-    }
-
-    //----------------------------------
-    // selectedPart
-    //----------------------------------
-
-    private Part selectedPart;
-
-    /**
-     * The selected part of the pattern.
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends Part> T getSelectedPart() {
-        return (T)selectedPart;
-    }
-
-    /**
-     * Sets the selected part of the pattern using the index.
-     * 
-     * @param index The part index to be selected.
-     * @see OnPatternSelectedPartChange
-     * @see Pattern#setSelectedPart(Part)
-     */
-    public void setSelectedPart(int index) {
-        setSelectedPart(getPart(index));
-    }
-
-    /**
-     * Sets the selected part of the pattern.
-     * 
-     * @param value The part to be selected.
-     */
-    public void setSelectedPart(Part value) {
-        if (selectedPart == value)
-            return;
-
-        //GrooveMachinePart oldPart = selectedPart;
-        selectedPart = value;
-
-        //dispatch(new OnPatternSelectedPartChange(selectedPart, oldPart));
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Pattern(ICaustkController controller, PatternMemoryItem PatternMemoryItem) {
-        this.controller = controller;
+    public Pattern(GrooveMachine machine, PatternMemoryItem PatternMemoryItem) {
+        this.machine = machine;
         this.patternMemoryItem = PatternMemoryItem;
         dispatcher = new Dispatcher();
-    }
-
-    //--------------------------------------------------------------------------
-    // Public Method API
-    //--------------------------------------------------------------------------
-
-    public void addPart(Part part) {
-        if (parts.contains(part))
-            return;
-        parts.add(part);
-        part.setPattern(this);
-    }
-
-    public void removePart(Part part) {
-        parts.remove(part);
-        part.setPattern(null);
     }
 
     //--------------------------------------------------------------------------

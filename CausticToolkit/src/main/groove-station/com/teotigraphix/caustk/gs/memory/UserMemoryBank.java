@@ -10,8 +10,8 @@ import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
+import com.teotigraphix.caustk.sequencer.track.Track;
 
 public class UserMemoryBank extends MemoryBank {
 
@@ -47,7 +47,7 @@ public class UserMemoryBank extends MemoryBank {
 
         // user memory has no PatternItem data, all defaults until the user either
         // creates data with the step sequencer or copies another pattern into this
-        Pattern pattern = new Pattern(getMachine().getController(), item);
+        Pattern pattern = new Pattern(getMachine(), item);
         return pattern;
     }
 

@@ -39,11 +39,13 @@ public class Part {
     // index
     //----------------------------------
 
+    private final int index;
+
     /**
      * The {@link Part}'s index within it's parent {@link Pattern}.
      */
     public int getIndex() {
-        return pattern.getParts().indexOf(this);
+        return index;
     }
 
     /**
@@ -120,7 +122,8 @@ public class Part {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Part(Tone tone) {
+    public Part(int index, Tone tone) {
+        this.index = index;
         this.tone = tone;
     }
 

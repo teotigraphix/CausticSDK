@@ -23,8 +23,8 @@ import com.teotigraphix.caustk.tone.Tone;
 
 public class RhythmPart extends Part {
 
-    public RhythmPart(Tone tone) {
-        super(tone);
+    public RhythmPart(int index, Tone tone) {
+        super(index, tone);
     }
 
 }

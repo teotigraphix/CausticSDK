@@ -65,17 +65,22 @@ public class MachineSound extends MachineComponentPart {
         return Collections.unmodifiableList(parts);
     }
 
-    public final Part getSelectedPart() {
-        final Pattern pattern = getMachine().getSequencer().getPattern();
-        return pattern.getSelectedPart();
+    private Part selectedPart;
+
+    /**
+     * The selected part of the pattern.
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends Part> T getSelectedPart() {
+        return (T)selectedPart;
     }
 
     public void setSelectedPart(int partIndex) {
-        final Pattern pattern = getMachine().getSequencer().getPattern();
-        final Part oldPart = pattern.getSelectedPart();
-        pattern.setSelectedPart(partIndex);
+        Part part = parts.get(partIndex);
+        selectedPart = part;
+        final Part oldPart = selectedPart;
         for (OnMachineSoundListener listener : onMachineSoundListener) {
-            listener.onSelectedPartChange(pattern.getSelectedPart(), oldPart);
+            listener.onSelectedPartChange(selectedPart, oldPart);
         }
     }
 
@@ -146,7 +151,7 @@ public class MachineSound extends MachineComponentPart {
     public void configure(Pattern pattern) {
         // add parts the the pattern
         for (Part part : getParts()) {
-            pattern.addPart(part);
+            part.setPattern(pattern);
         }
 
         for (Part part : getParts()) {

@@ -228,13 +228,14 @@ public abstract class GrooveMachine {
     }
 
     private void setupParts(GrooveMachineDescriptor descriptor) throws CausticException {
+        int index = 0;
         for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
-
             Tone tone = controller.getSoundSource().createTone(partDescriptor.getName(),
                     partDescriptor.getToneType());
 
-            Part part = createPart(tone);
+            Part part = createPart(index, tone);
             getSound().addPart(part);
+            index++;
         }
     }
 
@@ -267,12 +268,12 @@ public abstract class GrooveMachine {
         }
     }
 
-    protected Part createPart(Tone tone) {
+    protected Part createPart(int index, Tone tone) {
         Part part = null;
         if (tone instanceof BeatboxTone) {
-            part = new RhythmPart(tone);
+            part = new RhythmPart(index, tone);
         } else {
-            part = new SynthPart(tone);
+            part = new SynthPart(index, tone);
         }
         return part;
     }
