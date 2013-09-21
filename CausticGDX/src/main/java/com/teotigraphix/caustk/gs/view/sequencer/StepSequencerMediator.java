@@ -101,10 +101,14 @@ public abstract class StepSequencerMediator extends CaustkMediator {
                         final int sixteenthStep = getController().getSystemSequencer()
                                 .getCurrentSixteenthStep();
                         int position = machine.getSequencer().getSelectedPhrase().getPosition();
-                        if (machine.getSequencer().getLocalMeasure() == position - 1)
-                            stepKeyboard.setCurrentIndex(sixteenthStep);
-                        else
-                            stepKeyboard.setCurrentIndex(-1);
+
+                        if (machine.getSequencer().getMode() == StepKeyboardMode.Step) {
+                            CtkDebug.log("XXX:" + sixteenthStep);
+                            if (machine.getSequencer().getLocalMeasure() == position - 1)
+                                stepKeyboard.setCurrentIndex(sixteenthStep);
+                            else
+                                stepKeyboard.setCurrentIndex(-1);
+                        }
                     }
                 });
     }
