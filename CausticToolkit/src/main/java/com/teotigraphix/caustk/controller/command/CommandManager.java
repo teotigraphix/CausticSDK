@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.controller.command.ICommandHistory.OnFastForwardC
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnRewindComplete;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CtkDebug;
 
 public class CommandManager implements ICommandManager {
 
@@ -174,9 +175,11 @@ public class CommandManager implements ICommandManager {
         System.err.println("  OSC[" + message.toString() + "]");
         String commandString = message.toCommandString();
         Class<?> command = getCommand(commandString);
-        // TODO should log these commands that cannot be found
-        if (command == null)
+
+        if (command == null) {
+            CtkDebug.warn("Command not registered:" + commandString);
             return;
+        }
 
         ICommand instance = null;
 

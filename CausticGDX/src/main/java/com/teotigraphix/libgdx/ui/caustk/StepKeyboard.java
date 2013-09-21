@@ -30,6 +30,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
+import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
 import com.teotigraphix.libgdx.ui.ControlTable;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.OnStepButtonListener;
@@ -51,7 +53,7 @@ public class StepKeyboard extends ControlTable {
 
     private Button shiftToggle;
 
-    private Array<FunctionGroup> groups;
+    private Array<FunctionGroup> functionGroups;
 
     int[] sharps = new int[] {
             1, 4, 6, 9, 11, 13
@@ -76,7 +78,7 @@ public class StepKeyboard extends ControlTable {
 
     public StepKeyboard(Array<FunctionGroup> groups, Skin skin) {
         super(skin);
-        this.groups = groups;
+        this.functionGroups = groups;
     }
 
     //--------------------------------------------------------------------------
@@ -147,7 +149,7 @@ public class StepKeyboard extends ControlTable {
 
         add(shiftToggle).size(40f, 40f).top().left();
         Table functionGroup = new Table(getSkin());
-        for (FunctionGroup group : groups) {
+        for (FunctionGroup group : functionGroups) {
             createGroup(group, functionGroup);
         }
         add(functionGroup).expandX().fillX();
@@ -176,8 +178,10 @@ public class StepKeyboard extends ControlTable {
         ButtonGroup buttonGroup = new ButtonGroup();
         Table table = new Table();
         for (int i = 0; i < 16; i++) {
-            StepButton stepButton = createButton(i, true);
-            stepButton.setButtonGroup(buttonGroup);
+            FunctionGroupItem item = getItem(i);
+            StepButton stepButton = createButton(i, !item.isAutoExecute());
+            if (!item.isAutoExecute())
+                stepButton.setButtonGroup(buttonGroup);
             stepButton.setOnStepButtonListener(new OnStepButtonListener() {
                 @Override
                 public void onChange(int index, boolean selected) {
@@ -190,6 +194,7 @@ public class StepKeyboard extends ControlTable {
 
                 @Override
                 public void onTouchDown(int index) {
+                    onStepKeyboardListener.onFunctionDown(index);
                 }
 
             });
@@ -197,6 +202,14 @@ public class StepKeyboard extends ControlTable {
         }
 
         return table;
+    }
+
+    public FunctionGroupItem getItem(int index) {
+        int bank = (int)Math.floor((index) / 4);
+        int itemIndex = index % 4;
+        FunctionGroup group = functionGroups.get(bank);
+        FunctionGroupItem item = group.getFunctions().get(itemIndex);
+        return item;
     }
 
     private Table createStepGroup() {
@@ -354,6 +367,8 @@ public class StepKeyboard extends ControlTable {
         void onKeyDown(int index);
 
         void onKeyUp(int index);
+
+        void onFunctionDown(int index);
     }
 
     //--------------------------------------------------------------------------
@@ -366,58 +381,5 @@ public class StepKeyboard extends ControlTable {
                 return true;
         }
         return false;
-    }
-
-    public interface IKeyFunction {
-        String getTitle();
-    }
-
-    public static class FunctionGroupItem {
-
-        private IKeyFunction function;
-
-        private int index;
-
-        public int getIndex() {
-            return index;
-        }
-
-        public IKeyFunction getFunction() {
-            return function;
-        }
-
-        public String getName() {
-            return function.getTitle();
-        }
-
-        public FunctionGroupItem(int index, IKeyFunction function) {
-            this.index = index;
-            this.function = function;
-        }
-    }
-
-    public static class FunctionGroup {
-
-        private Array<FunctionGroupItem> functions = new Array<FunctionGroupItem>();
-
-        public Array<FunctionGroupItem> getFunctions() {
-            return functions;
-        }
-
-        private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void addItem(IKeyFunction function) {
-            int index = getFunctions().size;
-            FunctionGroupItem item = new FunctionGroupItem(index, function);
-            getFunctions().add(item);
-        }
-
-        public FunctionGroup(String name) {
-            this.name = name;
-        }
     }
 }

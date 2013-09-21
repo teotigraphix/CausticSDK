@@ -1,11 +1,12 @@
 
 package com.teotigraphix.caustk.gs.model;
 
+import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.gs.config.IGrooveStationConfiguration;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.libgdx.model.ICaustkModel;
 
-public interface IGrooveStationModel extends ICaustkModel {
+public interface IGrooveStationModel extends ICaustkModel, IControllerComponent {
 
     IGrooveStationConfiguration getConfiguration();
 

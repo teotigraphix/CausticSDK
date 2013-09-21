@@ -71,6 +71,7 @@ public class GrooveStationModel extends CaustkModel implements IGrooveStationMod
 
     @Override
     public void onRegister() {
+        getController().addComponent(IGrooveStationModel.class, this);
     }
 
     @Override

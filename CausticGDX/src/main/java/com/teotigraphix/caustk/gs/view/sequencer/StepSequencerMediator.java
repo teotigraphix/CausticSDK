@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
+import com.teotigraphix.caustk.core.CtkDebug;
+import com.teotigraphix.caustk.gs.controller.IFunctionController;
+import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
+import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.OnMachineSequencerListener;
@@ -25,10 +29,12 @@ import com.teotigraphix.caustk.sequencer.track.Trigger;
 import com.teotigraphix.libgdx.controller.CaustkMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.StepKeyboard;
-import com.teotigraphix.libgdx.ui.caustk.StepKeyboard.FunctionGroup;
 import com.teotigraphix.libgdx.ui.caustk.StepKeyboard.OnStepKeyboardListener;
 
 public abstract class StepSequencerMediator extends CaustkMediator {
+
+    @Inject
+    IFunctionController functionController;
 
     @Inject
     IGrooveStationModel grooveStationModel;
@@ -120,8 +126,10 @@ public abstract class StepSequencerMediator extends CaustkMediator {
 
         //table.row();//.padTop(10f);
 
-        Array<FunctionGroup> groups = createFunctions();
-        stepKeyboard = new StepKeyboard(groups, screen.getSkin());
+        Array<FunctionGroup> functionGroups = createFunctions();
+        functionController.setFunctionGroups(functionGroups);
+
+        stepKeyboard = new StepKeyboard(functionGroups, screen.getSkin());
         stepKeyboard.setMode(grooveStationModel.getMachine(getMachineIndex()).getSequencer()
                 .getMode());
         stepKeyboard.setOnStepKeyboardListener(new OnStepKeyboardListener() {
@@ -154,6 +162,13 @@ public abstract class StepSequencerMediator extends CaustkMediator {
             public void onModeStateChange(StepKeyboardMode mode) {
                 // this will callback to the sequencer to update its ui
                 grooveStationModel.getMachine(getMachineIndex()).getSequencer().setMode(mode);
+            }
+
+            @Override
+            public void onFunctionDown(int index) {
+                FunctionGroupItem item = stepKeyboard.getItem(index);
+                CtkDebug.log("Func:" + item.getName());
+                functionController.execute(item.getFunction());
             }
 
         });
