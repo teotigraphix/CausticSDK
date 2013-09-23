@@ -274,7 +274,6 @@ public class Phrase implements ISerialize {
         return currentBeat;
     }
 
-    @SuppressWarnings("unused")
     private float beat = -1;
 
     private int localBeat;
@@ -291,7 +290,12 @@ public class Phrase implements ISerialize {
     }
 
     void setCurrentBeat(float value) {
+        if (value == beat)
+            return;
+
         beat = value;
+
+        getDispatcher().trigger(new OnPhraseChange(PhraseChangeKind.Beat, this, null));
     }
 
     void setCurrentBeat(int value) {
