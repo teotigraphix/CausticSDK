@@ -31,7 +31,7 @@ public class AutoRepeatButton extends OldSelectButton {
         super(text, skin);
     }
 
-    public AutoRepeatButton(String text, SelectButtonStyle style) {
+    public AutoRepeatButton(String text, OldSelectButtonStyle style) {
         super(text, style);
     }
 

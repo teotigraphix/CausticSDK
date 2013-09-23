@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.teotigraphix.libgdx.ui.OldSelectButton.SelectButtonStyle;
+import com.teotigraphix.libgdx.ui.OldSelectButton.OldSelectButtonStyle;
 
 public class ButtonBar extends Table {
 
@@ -90,7 +90,7 @@ public class ButtonBar extends Table {
         for (int i = 0; i < items.length; i++) {
             final int index = i;
             final OldSelectButton button = new OldSelectButton(items[i], skin.get(buttonStyleName,
-                    SelectButtonStyle.class));
+                    OldSelectButtonStyle.class));
             if (isVertical) {
                 add(button).fill().expand().minHeight(0).prefHeight(999);
                 row();

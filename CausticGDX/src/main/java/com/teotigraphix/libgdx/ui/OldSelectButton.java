@@ -52,7 +52,7 @@ public class OldSelectButton extends TextButton {
 
     boolean isToggle = false;
 
-    private SelectButtonStyle style;
+    private OldSelectButtonStyle style;
 
     public boolean isToggle() {
         return isToggle;
@@ -104,12 +104,12 @@ public class OldSelectButton extends TextButton {
     }
 
     @Override
-    public SelectButtonStyle getStyle() {
+    public OldSelectButtonStyle getStyle() {
         return style;
     }
 
-    protected Class<? extends SelectButtonStyle> getStyleType() {
-        return SelectButtonStyle.class;
+    protected Class<? extends OldSelectButtonStyle> getStyleType() {
+        return OldSelectButtonStyle.class;
     }
 
     //--------------------------------------------------------------------------
@@ -123,7 +123,7 @@ public class OldSelectButton extends TextButton {
         init();
     }
 
-    public OldSelectButton(String text, SelectButtonStyle style) {
+    public OldSelectButton(String text, OldSelectButtonStyle style) {
         super(text, style);
         // special constructor
         this.style = style;
@@ -160,18 +160,18 @@ public class OldSelectButton extends TextButton {
     // Style
     //--------------------------------------------------------------------------
 
-    public static class SelectButtonStyle extends TextButtonStyle {
+    public static class OldSelectButtonStyle extends TextButtonStyle {
 
         public Drawable progressOverlay;
 
-        public SelectButtonStyle() {
+        public OldSelectButtonStyle() {
         }
 
-        public SelectButtonStyle(Drawable up, Drawable down, Drawable checked, BitmapFont font) {
+        public OldSelectButtonStyle(Drawable up, Drawable down, Drawable checked, BitmapFont font) {
             super(up, down, checked, font);
         }
 
-        public SelectButtonStyle(TextButtonStyle style) {
+        public OldSelectButtonStyle(TextButtonStyle style) {
             super(style);
         }
 
