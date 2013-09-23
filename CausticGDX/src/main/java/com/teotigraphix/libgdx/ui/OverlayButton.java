@@ -29,12 +29,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
- * The {@link OldSelectButton} disables the checked property when
+ * The {@link OverlayButton} disables the checked property when
  * {@link #setToggle(boolean)} is set.
  * <p>
- * The {@link OldSelectButton} is not a toggle button.
+ * The {@link OverlayButton} is not a toggle button.
  */
-public class OldSelectButton extends TextButton {
+public class OverlayButton extends TextButton {
 
     //----------------------------------
     // properties
@@ -52,7 +52,7 @@ public class OldSelectButton extends TextButton {
 
     boolean isToggle = false;
 
-    private OldSelectButtonStyle style;
+    private OverlayButtonStyle style;
 
     public boolean isToggle() {
         return isToggle;
@@ -104,35 +104,32 @@ public class OldSelectButton extends TextButton {
     }
 
     @Override
-    public OldSelectButtonStyle getStyle() {
+    public OverlayButtonStyle getStyle() {
         return style;
     }
 
-    protected Class<? extends OldSelectButtonStyle> getStyleType() {
-        return OldSelectButtonStyle.class;
+    protected Class<? extends OverlayButtonStyle> getStyleType() {
+        return OverlayButtonStyle.class;
     }
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
-    public OldSelectButton(String text, Skin skin) {
+    public OverlayButton(String text, Skin skin) {
         super(text, skin);
-        // calls setStyle()
         style = skin.get(getStyleType());
         init();
     }
 
-    public OldSelectButton(String text, OldSelectButtonStyle style) {
+    public OverlayButton(String text, OverlayButtonStyle style) {
         super(text, style);
-        // special constructor
         this.style = style;
         init();
     }
 
-    public OldSelectButton(String text, Skin skin, String styleName) {
+    public OverlayButton(String text, Skin skin, String styleName) {
         super(text, skin, styleName);
-        // calls setStyle()
         style = skin.get(styleName, getStyleType());
         init();
     }
@@ -160,20 +157,19 @@ public class OldSelectButton extends TextButton {
     // Style
     //--------------------------------------------------------------------------
 
-    public static class OldSelectButtonStyle extends TextButtonStyle {
+    public static class OverlayButtonStyle extends TextButtonStyle {
 
         public Drawable progressOverlay;
 
-        public OldSelectButtonStyle() {
+        public OverlayButtonStyle() {
         }
 
-        public OldSelectButtonStyle(Drawable up, Drawable down, Drawable checked, BitmapFont font) {
+        public OverlayButtonStyle(Drawable up, Drawable down, Drawable checked, BitmapFont font) {
             super(up, down, checked, font);
         }
 
-        public OldSelectButtonStyle(TextButtonStyle style) {
+        public OverlayButtonStyle(TextButtonStyle style) {
             super(style);
         }
-
     }
 }

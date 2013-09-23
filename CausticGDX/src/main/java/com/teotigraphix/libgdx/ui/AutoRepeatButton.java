@@ -19,28 +19,39 @@
 
 package com.teotigraphix.libgdx.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class AutoRepeatButton extends OldSelectButton {
+public class AutoRepeatButton extends TextButton {
 
     public AutoRepeatButton(String text, Skin skin) {
         super(text, skin);
+        init();
     }
 
-    public AutoRepeatButton(String text, OldSelectButtonStyle style) {
+    public AutoRepeatButton(String text, TextButtonStyle style) {
         super(text, style);
+        init();
     }
 
     private Task task;
 
     private OnValueChangeListener listener;
 
-    @Override
     protected void init() {
+        addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                event.cancel();
+            }
+        });
+
         addListener(new ActorGestureListener() {
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {

@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.teotigraphix.libgdx.ui.OldSelectButton.OldSelectButtonStyle;
+import com.teotigraphix.libgdx.ui.OverlayButton.OverlayButtonStyle;
 
 public class ButtonBar extends Table {
 
@@ -58,7 +58,7 @@ public class ButtonBar extends Table {
     public void setProgressAt(int index, float percent) {
         Array<Button> buttons = group.getButtons();
         for (int i = 0; i < buttons.size; i++) {
-            OldSelectButton button = (OldSelectButton)buttons.get(i);
+            OverlayButton button = (OverlayButton)buttons.get(i);
             if (i == index) {
                 button.setIsProgress(true);
                 button.setProgress(percent);
@@ -89,8 +89,8 @@ public class ButtonBar extends Table {
     protected void createChildren() {
         for (int i = 0; i < items.length; i++) {
             final int index = i;
-            final OldSelectButton button = new OldSelectButton(items[i], skin.get(buttonStyleName,
-                    OldSelectButtonStyle.class));
+            final OverlayButton button = new OverlayButton(items[i], skin.get(buttonStyleName,
+                    OverlayButtonStyle.class));
             if (isVertical) {
                 add(button).fill().expand().minHeight(0).prefHeight(999);
                 row();
@@ -130,7 +130,7 @@ public class ButtonBar extends Table {
     public void disableFrom(int length) {
         SnapshotArray<Actor> children = getChildren();
         for (int i = 0; i < children.size; i++) {
-            OldSelectButton button = (OldSelectButton)children.get(i);
+            OverlayButton button = (OverlayButton)children.get(i);
             if (i < length) {
                 button.setDisabled(false);
                 button.invalidate();

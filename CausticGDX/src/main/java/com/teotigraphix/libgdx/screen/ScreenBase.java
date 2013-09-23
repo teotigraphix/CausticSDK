@@ -161,6 +161,11 @@ public class ScreenBase implements IScreen {
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
 
+        // for now, we draw() the stage so it creates the differed children
+        // of the mediated views, then when onShow() is called, all children
+        // are guaranteed to be created
+        stage.draw();
+
         for (ICaustkMediator mediator : mediators) {
             mediator.onShow(this);
         }
