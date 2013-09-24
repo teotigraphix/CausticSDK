@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 
 public class CausticFile {
@@ -134,6 +136,49 @@ public class CausticFile {
             }
         }
 
+    }
+
+    public void save() throws IOException {
+        StringBuilder desc = new StringBuilder();
+        desc.append(artist);
+        desc.append("|");
+        desc.append(title);
+        desc.append("|");
+        desc.append(description);
+        desc.append("|");
+        desc.append(linkText);
+        desc.append("|");
+        desc.append(linkUrl);
+        desc.append("|");
+
+        String info = desc.toString();
+
+        StringBuilder sb = new StringBuilder();
+        //sb.append("DESC");
+        //sb.append(info.getBytes().length);
+        sb.append(info);
+        //sb.append("DESC");
+
+        RandomAccessFile accessFile = new RandomAccessFile(file, "rw");
+        long len = accessFile.length();
+        accessFile.seek(len - 1);
+        byte[] d = new byte[] {
+                68, 69, 83, 67
+        };
+        accessFile.write(d);
+        int infoLen = desc.toString().getBytes().length;
+        //byte[] byteArray = BigInteger.valueOf(infoLen).toByteArray();
+        byte[] intToByteArray = intToByteArray(infoLen);
+        accessFile.write(intToByteArray);
+        accessFile.write(desc.toString().getBytes());
+        accessFile.write(d);
+        accessFile.write(intToByteArray);
+        accessFile.close();
+    }
+
+    public static final byte[] intToByteArray(int value) {
+        return ByteBuffer.allocate(Integer.SIZE / 8).order(ByteOrder.LITTLE_ENDIAN).putInt(value)
+                .array();
     }
 
     /*
