@@ -159,21 +159,20 @@ public class CausticFile {
         sb.append(info);
         //sb.append("DESC");
 
-        RandomAccessFile accessFile = new RandomAccessFile(file, "rw");
-        long len = accessFile.length();
-        accessFile.seek(len - 1);
+        RandomAccessFile raf = new RandomAccessFile(file, "rw");
+        long len = raf.length();
+        raf.seek(len);
         byte[] d = new byte[] {
                 68, 69, 83, 67
         };
-        accessFile.write(d);
+        raf.write(d);
         int infoLen = desc.toString().getBytes().length;
-        //byte[] byteArray = BigInteger.valueOf(infoLen).toByteArray();
         byte[] intToByteArray = intToByteArray(infoLen);
-        accessFile.write(intToByteArray);
-        accessFile.write(desc.toString().getBytes());
-        accessFile.write(d);
-        accessFile.write(intToByteArray);
-        accessFile.close();
+        raf.write(intToByteArray);
+        raf.write(desc.toString().getBytes());
+        raf.write(d);
+        raf.write(intToByteArray);
+        raf.close();
     }
 
     public static final byte[] intToByteArray(int value) {
