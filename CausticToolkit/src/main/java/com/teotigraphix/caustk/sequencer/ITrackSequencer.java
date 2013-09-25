@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.controller.core.IRackComponent;
 import com.teotigraphix.caustk.sequencer.track.Note;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;
@@ -16,7 +16,7 @@ import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
-public interface ITrackSequencer extends IControllerComponent {
+public interface ITrackSequencer extends IRackComponent {
 
     TrackSong getTrackSong();
 

@@ -24,9 +24,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.IRackComponent;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
@@ -37,11 +36,7 @@ import com.teotigraphix.caustk.tone.ToneType;
 /**
  * @author Michael Schmalle
  */
-public interface ISoundSource extends IRestore {
-
-    ICaustkController getController();
-
-    void setController(ICaustkController controller);
+public interface ISoundSource extends IRackComponent {
 
     int getToneCount();
 

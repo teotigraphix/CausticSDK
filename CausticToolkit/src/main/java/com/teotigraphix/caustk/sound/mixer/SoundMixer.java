@@ -28,27 +28,16 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixer implements ISoundMixer, Serializable {
+public class SoundMixer extends RackComponent implements ISoundMixer, Serializable {
 
     private static final long serialVersionUID = -7091528512172948750L;
-
-    private transient ICaustkController controller;
-
-    @Override
-    public ICaustkController getController() {
-        return controller;
-    }
-
-    @Override
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
-    }
 
     //----------------------------------
     // channels
@@ -73,10 +62,8 @@ public class SoundMixer implements ISoundMixer, Serializable {
         return masterMixer;
     }
 
-    @Override
-    public void setMasterMixer(MasterMixer value) {
+    void setMasterMixer(MasterMixer value) {
         masterMixer = value;
-        masterMixer.setController(controller);
     }
 
     @Override
@@ -96,23 +83,24 @@ public class SoundMixer implements ISoundMixer, Serializable {
 
     @Override
     public void executeSetValue(int toneIndex, MixerInput input, Number value) {
-        controller.execute(COMMAND_SET_VALUE, toneIndex, input, value);
+        getController().execute(COMMAND_SET_VALUE, toneIndex, input, value);
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public SoundMixer() {
+    public SoundMixer(ICaustkController controller) {
+        super(controller);
+        masterMixer = new MasterMixer(controller);
     }
 
-    public SoundMixer(ICaustkController controller) {
-        this.controller = controller;
-
-        masterMixer = new MasterMixer(controller);
+    @Override
+    protected void onAttach() {
+        super.onAttach();
 
         // listen for tone add/remove
-        controller.getDispatcher().register(OnSoundSourceToneAdd.class,
+        getController().getDispatcher().register(OnSoundSourceToneAdd.class,
                 new EventObserver<OnSoundSourceToneAdd>() {
                     @Override
                     public void trigger(OnSoundSourceToneAdd object) {
@@ -120,7 +108,7 @@ public class SoundMixer implements ISoundMixer, Serializable {
                     }
                 });
 
-        controller.getDispatcher().register(OnSoundSourceToneRemove.class,
+        getController().getDispatcher().register(OnSoundSourceToneRemove.class,
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
@@ -128,7 +116,7 @@ public class SoundMixer implements ISoundMixer, Serializable {
                     }
                 });
 
-        controller.getDispatcher().register(OnSoundSourceSongLoad.class,
+        getController().getDispatcher().register(OnSoundSourceSongLoad.class,
                 new EventObserver<OnSoundSourceSongLoad>() {
                     @Override
                     public void trigger(OnSoundSourceSongLoad object) {
@@ -136,8 +124,19 @@ public class SoundMixer implements ISoundMixer, Serializable {
                     }
                 });
 
-        controller.getCommandManager().put(ISoundMixer.COMMAND_SET_VALUE,
+        getController().getCommandManager().put(ISoundMixer.COMMAND_SET_VALUE,
                 SoundMixerSetSendCommand.class);
+    }
+
+    @Override
+    protected void commitController() {
+        super.commitController();
+
+        masterMixer.setController(getController());
+
+        for (SoundMixerChannel channel : getChannels().values()) {
+            channel.setController(getController());
+        }
     }
 
     @Override

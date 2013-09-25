@@ -1,9 +1,8 @@
 
 package com.teotigraphix.caustk.sequencer;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.controller.core.IRackComponent;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.ExportType;
 import com.teotigraphix.caustk.tone.Tone;
@@ -14,7 +13,7 @@ import com.teotigraphix.caustk.tone.Tone;
  * @see OnSystemSequencerBeatChange
  */
 @SuppressWarnings("unused")
-public interface ISystemSequencer extends IControllerComponent, IRestore {
+public interface ISystemSequencer extends IRackComponent {
 
     int getStep();
 

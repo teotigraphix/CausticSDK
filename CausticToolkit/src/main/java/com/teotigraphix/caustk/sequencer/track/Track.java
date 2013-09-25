@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.TrackChangeKind;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.Tone;
@@ -22,12 +22,28 @@ import com.teotigraphix.caustk.tone.Tone;
  * @see OnTrackBankChange
  * @see OnTrackPatternChange
  */
-public class Track implements ISerialize {
+public class Track implements Serializable {
+
+    private static final long serialVersionUID = -1609075233236673789L;
 
     private transient ICaustkController controller;
 
+    public ICaustkController getController() {
+        return controller;
+    }
+
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+
+        for (Map<Integer, Phrase> map : phrases.values()) {
+            for (Phrase phrase : map.values()) {
+                phrase.setController(controller);
+            }
+        }
+    }
+
     final IDispatcher getDispatcher() {
-        return controller.getTrackSequencer();
+        return controller;
     }
 
     Map<Integer, Map<Integer, Phrase>> phrases = new TreeMap<Integer, Map<Integer, Phrase>>();
@@ -205,24 +221,24 @@ public class Track implements ISerialize {
      * - EffectChannel slot1, slot2
      */
 
-    @Override
-    public void sleep() {
-        for (Map<Integer, Phrase> map : phrases.values()) {
-            for (Phrase phrase : map.values()) {
-                phrase.sleep();
-            }
-        }
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
-        for (Map<Integer, Phrase> bankMap : phrases.values()) {
-            for (Phrase phrase : bankMap.values()) {
-                phrase.wakeup(controller);
-            }
-        }
-    }
+    //    @Override
+    //    public void sleep() {
+    //        for (Map<Integer, Phrase> map : phrases.values()) {
+    //            for (Phrase phrase : map.values()) {
+    //                phrase.sleep();
+    //            }
+    //        }
+    //    }
+    //
+    //    @Override
+    //    public void wakeup(ICaustkController controller) {
+    //        this.controller = controller;
+    //        for (Map<Integer, Phrase> bankMap : phrases.values()) {
+    //            for (Phrase phrase : bankMap.values()) {
+    //                phrase.wakeup(controller);
+    //            }
+    //        }
+    //    }
 
     //--------------------------------------------------------------------------
     // Events
@@ -325,8 +341,8 @@ public class Track implements ISerialize {
 
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Add, this, item));
 
-        controller.getSystemSequencer().addPattern(getTone(), item.getBankIndex(),
-                item.getPatternIndex(), item.getStartMeasure(), item.getEndMeasure());
+        controller.getRack().addPattern(getTone(), item.getBankIndex(), item.getPatternIndex(),
+                item.getStartMeasure(), item.getEndMeasure());
 
         return item;
     }

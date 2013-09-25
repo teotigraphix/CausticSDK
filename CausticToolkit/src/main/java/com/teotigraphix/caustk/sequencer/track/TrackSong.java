@@ -2,23 +2,37 @@
 package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class TrackSong implements ISerialize {
+public class TrackSong implements Serializable {
+
+    private static final long serialVersionUID = -8098854940340766856L;
 
     private transient ICaustkController controller;
+
+    public ICaustkController getController() {
+        return controller;
+    }
+
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+
+        for (Track track : tracks.values()) {
+            track.setController(controller);
+        }
+    }
 
     private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
     IDispatcher getDispatcher() {
-        return controller.getTrackSequencer();
+        return controller;
     }
 
     //----------------------------------
@@ -166,8 +180,8 @@ public class TrackSong implements ISerialize {
     public TrackSong() {
     }
 
-    public TrackSong(File file) {
-        this();
+    public TrackSong(ICaustkController controller, File file) {
+        this.controller = controller;
         this.file = file;
     }
 
@@ -175,36 +189,36 @@ public class TrackSong implements ISerialize {
     // ISerialize API :: Methods
     //--------------------------------------------------------------------------
 
-    /*
-     * A song serializes;
-     * - MasterDelay , MasterReverb, MasterEqualizer, MasterLimiter
-     * - EffectChannel slot1, slot2
-     */
-    @Override
-    public void sleep() {
-        //        for (Track channel : tracks.values()) {
-        //            channel.sleep();
-        //        }
-        //        // save the .caustic file
-        //        try {
-        //            File absoluteTargetSongFile = getAbsoluteCausticFile();
-        //            controller.getRack().saveSongAs(absoluteTargetSongFile);
-        //            // masterMixer = controller.getSoundMixer().getMasterMixer();
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
-        //        if (!exists()) // dummy placeholder
-        //            return;
-        //
-        //        for (Track channel : tracks.values()) {
-        //            channel.wakeup(controller);
-        //        }
-    }
+    //    /*
+    //     * A song serializes;
+    //     * - MasterDelay , MasterReverb, MasterEqualizer, MasterLimiter
+    //     * - EffectChannel slot1, slot2
+    //     */
+    //    @Override
+    //    public void sleep() {
+    //        //        for (Track channel : tracks.values()) {
+    //        //            channel.sleep();
+    //        //        }
+    //        //        // save the .caustic file
+    //        //        try {
+    //        //            File absoluteTargetSongFile = getAbsoluteCausticFile();
+    //        //            controller.getRack().saveSongAs(absoluteTargetSongFile);
+    //        //            // masterMixer = controller.getSoundMixer().getMasterMixer();
+    //        //        } catch (IOException e) {
+    //        //            e.printStackTrace();
+    //        //        }
+    //    }
+    //
+    //    @Override
+    //    public void wakeup(ICaustkController controller) {
+    //        this.controller = controller;
+    //        //        if (!exists()) // dummy placeholder
+    //        //            return;
+    //        //
+    //        //        for (Track channel : tracks.values()) {
+    //        //            channel.wakeup(controller);
+    //        //        }
+    //    }
 
     void toneAdd(Tone tone) {
         Track channel = getTrack(tone.getIndex());
@@ -296,7 +310,7 @@ public class TrackSong implements ISerialize {
     }
 
     public int getTotalTime() {
-        float bpm = controller.getSystemSequencer().getTempo();
+        float bpm = controller.getRack().getTempo();
         float timeInSec = 60 / bpm;
         float totalNumBeats = getNumBeats() + getMeasureBeat();
         float total = timeInSec * totalNumBeats;
@@ -304,7 +318,7 @@ public class TrackSong implements ISerialize {
     }
 
     public int getCurrentTime() {
-        float bpm = controller.getSystemSequencer().getTempo();
+        float bpm = controller.getRack().getTempo();
         float timeInSec = 60 / bpm;
         float totalNumBeats = (getCurrentMeasure() * 4) + getMeasureBeat();
         float total = timeInSec * totalNumBeats;

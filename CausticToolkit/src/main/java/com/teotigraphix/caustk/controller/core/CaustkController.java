@@ -42,11 +42,7 @@ import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.queue.QueueSequencer;
-import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
-import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.serialize.SerializeService;
 
@@ -130,17 +126,6 @@ public class CaustkController implements ICaustkController {
     }
 
     //----------------------------------
-    // trackSequencer
-    //----------------------------------
-
-    private ITrackSequencer trackSequencer;
-
-    @Override
-    public ITrackSequencer getTrackSequencer() {
-        return trackSequencer;
-    }
-
-    //----------------------------------
     // queueSequencer
     //----------------------------------
 
@@ -160,17 +145,6 @@ public class CaustkController implements ICaustkController {
     @Override
     public ILibraryManager getLibraryManager() {
         return libraryManager;
-    }
-
-    //----------------------------------
-    // systemSequencer
-    //----------------------------------
-
-    private ISystemSequencer systemSequencer;
-
-    @Override
-    public ISystemSequencer getSystemSequencer() {
-        return systemSequencer;
     }
 
     //----------------------------------
@@ -228,13 +202,12 @@ public class CaustkController implements ICaustkController {
     // ControllerComponents
     //----------------------------------
 
-    private Map<Class<? extends IControllerComponent>, IControllerComponent> api = new HashMap<Class<? extends IControllerComponent>, IControllerComponent>();
+    private Map<Class<?>, Object> api = new HashMap<Class<?>, Object>();
 
     private List<IControllerComponent> components = new ArrayList<IControllerComponent>();
 
     @Override
-    public void addComponent(Class<? extends IControllerComponent> clazz,
-            IControllerComponent instance) {
+    public void addComponent(Class<?> clazz, Object instance) {
         api.put(clazz, instance);
     }
 
@@ -302,13 +275,9 @@ public class CaustkController implements ICaustkController {
         projectManager = new ProjectManager(this);
         libraryManager = new LibraryManager(this);
 
-        systemSequencer = new SystemSequencer(this);
-        trackSequencer = new TrackSequencer(this);
         queueSequencer = new QueueSequencer(this);
 
         components.add(libraryManager);
-        components.add(trackSequencer);
-        components.add(systemSequencer);
         components.add(queueSequencer);
 
         for (IControllerComponent component : components) {
@@ -320,9 +289,7 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void update() {
-        final float measure = getRack().getCurrentSongMeasure();
-        final float beat = getRack().getCurrentBeat();
-        getSystemSequencer().beatUpdate((int)measure, beat);
+        getRack().update();
     }
 
     void save() throws IOException {

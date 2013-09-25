@@ -13,16 +13,16 @@ public class TrackSequencerHandlers {
     private final TrackSequencer trackSequencer;
 
     private final IDispatcher getDispatcher() {
-        return trackSequencer;
+        return trackSequencer.getController();
     }
 
     public TrackSequencerHandlers(TrackSequencer trackSequencer) {
         this.trackSequencer = trackSequencer;
         // since we register in the constructor, we always know we will be called first
-        registerObservers();
+        //registerObservers();
     }
 
-    void registerObservers() {
+    void onAttach() {
         getDispatcher().register(OnTrackChange.class, onTrackPropertyChange);
         getDispatcher().register(OnPhraseChange.class, onTrackPhrasePropertyChange);
     }
@@ -36,7 +36,7 @@ public class TrackSequencerHandlers {
     // Handlers
     //--------------------------------------------------------------------------
 
-    private EventObserver<OnTrackChange> onTrackPropertyChange = new EventObserver<OnTrackChange>() {
+    private transient EventObserver<OnTrackChange> onTrackPropertyChange = new EventObserver<OnTrackChange>() {
         @Override
         public void trigger(OnTrackChange object) {
             final Track track = object.getTrack();
@@ -59,7 +59,7 @@ public class TrackSequencerHandlers {
         }
     };
 
-    private EventObserver<OnPhraseChange> onTrackPhrasePropertyChange = new EventObserver<OnPhraseChange>() {
+    private transient EventObserver<OnPhraseChange> onTrackPhrasePropertyChange = new EventObserver<OnPhraseChange>() {
         @Override
         public void trigger(OnPhraseChange object) {
             Tone tone = null;

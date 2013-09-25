@@ -25,7 +25,6 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
@@ -40,8 +39,12 @@ public class SoundMixerChannel implements Serializable, IRestore {
 
     private transient ICaustkController controller;
 
-    private ICausticEngine getEngine() {
+    public ICaustkController getController() {
         return controller;
+    }
+
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
     }
 
     private transient Map<Integer, IEffect> effects = new HashMap<Integer, IEffect>();
@@ -97,7 +100,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getBass(boolean restore) {
-        return MixerMessage.EQ_BASS.query(getEngine(), index);
+        return MixerMessage.EQ_BASS.query(getController(), index);
     }
 
     public final void setBass(float value) {
@@ -106,7 +109,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("bass", "-1.0..1.0", value);
         bass = value;
-        MixerMessage.EQ_BASS.send(getEngine(), getIndex(), value);
+        MixerMessage.EQ_BASS.send(getController(), getIndex(), value);
     }
 
     //----------------------------------
@@ -120,7 +123,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getMid(boolean restore) {
-        return MixerMessage.EQ_MID.query(getEngine(), index);
+        return MixerMessage.EQ_MID.query(getController(), index);
     }
 
     public void setMid(float value) {
@@ -129,7 +132,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("mid", "-1.0..1.0", value);
         mid = value;
-        MixerMessage.EQ_MID.send(getEngine(), getIndex(), value);
+        MixerMessage.EQ_MID.send(getController(), getIndex(), value);
     }
 
     //----------------------------------
@@ -143,7 +146,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getHigh(boolean restore) {
-        return MixerMessage.EQ_HIGH.query(getEngine(), index);
+        return MixerMessage.EQ_HIGH.query(getController(), index);
     }
 
     public final void setHigh(float value) {
@@ -152,7 +155,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("high", "-1.0..1.0", value);
         high = value;
-        MixerMessage.EQ_HIGH.send(getEngine(), getIndex(), value);
+        MixerMessage.EQ_HIGH.send(getController(), getIndex(), value);
     }
 
     //----------------------------------
@@ -166,7 +169,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getDelaySend(boolean restore) {
-        return MixerMessage.DELAY_SEND.query(getEngine(), index);
+        return MixerMessage.DELAY_SEND.query(getController(), index);
     }
 
     public void setDelaySend(float value) {
@@ -175,7 +178,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < 0f || value > 1f)
             throw newRangeException("delay_send", "0.0..1.0", value);
         delaySend = value;
-        MixerMessage.DELAY_SEND.send(getEngine(), getIndex(), value);
+        MixerMessage.DELAY_SEND.send(getController(), getIndex(), value);
     }
 
     //----------------------------------
@@ -189,7 +192,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getReverbSend(boolean restore) {
-        return MixerMessage.REVERB_SEND.query(getEngine(), index);
+        return MixerMessage.REVERB_SEND.query(getController(), index);
     }
 
     public void setReverbSend(float value) {
@@ -198,7 +201,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < 0f || value > 1f)
             throw newRangeException("reverb_send", "0.0..1.0", value);
         reverbSend = value;
-        MixerMessage.REVERB_SEND.send(getEngine(), getIndex(), value);
+        MixerMessage.REVERB_SEND.send(getController(), getIndex(), value);
     }
 
     //----------------------------------
@@ -212,7 +215,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getPan(boolean restore) {
-        return MixerMessage.PAN.query(getEngine(), index);
+        return MixerMessage.PAN.query(getController(), index);
     }
 
     public void setPan(float value) {
@@ -221,7 +224,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("pan", "-1.0..1.0", value);
         pan = value;
-        MixerMessage.PAN.send(getEngine(), index, value);
+        MixerMessage.PAN.send(getController(), index, value);
     }
 
     //----------------------------------
@@ -235,7 +238,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getStereoWidth(boolean restore) {
-        return MixerMessage.STEREO_WIDTH.query(getEngine(), index);
+        return MixerMessage.STEREO_WIDTH.query(getController(), index);
     }
 
     public void setStereoWidth(float value) {
@@ -244,7 +247,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < 0f || value > 1f)
             throw newRangeException("stereo_width", "0.0..1.0", value);
         stereoWidth = value;
-        MixerMessage.STEREO_WIDTH.send(getEngine(), index, value);
+        MixerMessage.STEREO_WIDTH.send(getController(), index, value);
     }
 
     //----------------------------------
@@ -258,14 +261,14 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     boolean isMute(boolean restore) {
-        return MixerMessage.MUTE.query(getEngine(), index) != 0f;
+        return MixerMessage.MUTE.query(getController(), index) != 0f;
     }
 
     public void setMute(boolean muted) {
         if (mute == muted)
             return;
         mute = muted;
-        MixerMessage.MUTE.send(getEngine(), index, muted ? 1 : 0);
+        MixerMessage.MUTE.send(getController(), index, muted ? 1 : 0);
     }
 
     //----------------------------------
@@ -279,14 +282,14 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     boolean isSolo(boolean restore) {
-        return MixerMessage.SOLO.query(getEngine(), index) != 0f;
+        return MixerMessage.SOLO.query(getController(), index) != 0f;
     }
 
     public void setSolo(boolean soloed) {
         if (solo == soloed)
             return;
         solo = soloed;
-        MixerMessage.SOLO.send(getEngine(), index, solo ? 1 : 0);
+        MixerMessage.SOLO.send(getController(), index, solo ? 1 : 0);
     }
 
     //----------------------------------
@@ -300,7 +303,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     float getVolume(boolean restore) {
-        return MixerMessage.VOLUME.query(getEngine(), index);
+        return MixerMessage.VOLUME.query(getController(), index);
     }
 
     public void setVolume(float value) {
@@ -309,7 +312,7 @@ public class SoundMixerChannel implements Serializable, IRestore {
         if (value < 0f || value > 2f)
             throw newRangeException("volume", "0.0..2.0", value);
         volume = value;
-        MixerMessage.VOLUME.send(getEngine(), index, value);
+        MixerMessage.VOLUME.send(getController(), index, value);
     }
 
     //--------------------------------------------------------------------------
@@ -358,15 +361,15 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     public void update() {
-        MixerMessage.EQ_BASS.send(getEngine(), getIndex(), getBass());
-        MixerMessage.EQ_MID.send(getEngine(), getIndex(), getMid());
-        MixerMessage.EQ_HIGH.send(getEngine(), getIndex(), getHigh());
-        MixerMessage.REVERB_SEND.send(getEngine(), getIndex(), getReverbSend());
-        MixerMessage.DELAY_SEND.send(getEngine(), getIndex(), getDelaySend());
-        MixerMessage.STEREO_WIDTH.send(getEngine(), getIndex(), getStereoWidth());
+        MixerMessage.EQ_BASS.send(getController(), getIndex(), getBass());
+        MixerMessage.EQ_MID.send(getController(), getIndex(), getMid());
+        MixerMessage.EQ_HIGH.send(getController(), getIndex(), getHigh());
+        MixerMessage.REVERB_SEND.send(getController(), getIndex(), getReverbSend());
+        MixerMessage.DELAY_SEND.send(getController(), getIndex(), getDelaySend());
+        MixerMessage.STEREO_WIDTH.send(getController(), getIndex(), getStereoWidth());
 
-        MixerMessage.PAN.send(getEngine(), getIndex(), getPan());
-        MixerMessage.VOLUME.send(getEngine(), getIndex(), getVolume());
+        MixerMessage.PAN.send(getController(), getIndex(), getPan());
+        MixerMessage.VOLUME.send(getController(), getIndex(), getVolume());
     }
 
 }

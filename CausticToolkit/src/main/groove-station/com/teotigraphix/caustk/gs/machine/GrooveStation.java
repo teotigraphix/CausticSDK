@@ -27,7 +27,6 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.tone.ToneType;
 
@@ -77,9 +76,7 @@ public class GrooveStation {
     }
 
     private void setupSystemSequencer() {
-        ISystemSequencer systemSequencer = controller.getSystemSequencer();
-
-        systemSequencer.register(OnSystemSequencerBeatChange.class,
+        controller.register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {

@@ -91,12 +91,12 @@ public abstract class StepSequencerMediator extends ScreenMediator {
                     }
                 });
 
-        register(getController().getSystemSequencer(), OnSystemSequencerStepChange.class,
+        register(getController(), OnSystemSequencerStepChange.class,
                 new EventObserver<OnSystemSequencerStepChange>() {
                     @Override
                     public void trigger(OnSystemSequencerStepChange object) {
                         GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
-                        final int sixteenthStep = getController().getSystemSequencer()
+                        final int sixteenthStep = getController().getRack()
                                 .getCurrentSixteenthStep();
                         int position = machine.getSequencer().getSelectedPhrase().getPosition();
 

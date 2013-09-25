@@ -9,6 +9,13 @@ import java.util.Collection;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer;
+import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.sequencer.ITrackSequencer;
+import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
+import com.teotigraphix.caustk.sequencer.track.Track;
+import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
+import com.teotigraphix.caustk.sequencer.track.TrackSong;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
@@ -40,13 +47,13 @@ public class Rack implements Serializable, ICausticEngine {
 
         soundSource.setController(controller);
         soundMixer.setController(controller);
+        systemSequencer.setController(controller);
+        trackSequencer.setController(controller);
     }
 
-    private void updateSoundGenerator() {
-        soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
-        // this does nothing on desktop and android at the moment
-        // soundGenerator.initialize();
-    }
+    //----------------------------------
+    // soundSource
+    //----------------------------------
 
     private ISoundSource soundSource;
 
@@ -54,10 +61,34 @@ public class Rack implements Serializable, ICausticEngine {
         return soundSource;
     }
 
+    //----------------------------------
+    // soundMixer
+    //----------------------------------
+
     private ISoundMixer soundMixer;
 
     ISoundMixer getSoundMixer() {
         return soundMixer;
+    }
+
+    //----------------------------------
+    // systemSequencer
+    //----------------------------------
+
+    private ISystemSequencer systemSequencer;
+
+    ISystemSequencer getSystemSequencer() {
+        return systemSequencer;
+    }
+
+    //----------------------------------
+    // trackSequencer
+    //----------------------------------
+
+    private ITrackSequencer trackSequencer;
+
+    public ITrackSequencer getTrackSequencer() {
+        return trackSequencer;
     }
 
     public Rack() {
@@ -65,9 +96,13 @@ public class Rack implements Serializable, ICausticEngine {
 
     public Rack(ICaustkController controller) {
         this.controller = controller;
+
         updateSoundGenerator();
+
         soundSource = new SoundSource(controller);
         soundMixer = new SoundMixer(controller);
+        systemSequencer = new SystemSequencer(controller);
+        trackSequencer = new TrackSequencer(controller);
     }
 
     //--------------------------------------------------------------------------
@@ -80,6 +115,39 @@ public class Rack implements Serializable, ICausticEngine {
 
     public final float getCurrentBeat() {
         return soundGenerator.getCurrentBeat();
+    }
+
+    //--------------------------------------------------------------------------
+    // SystemSequencer
+    //--------------------------------------------------------------------------
+
+    public float getTempo() {
+        return systemSequencer.getTempo();
+    }
+
+    public void setTempo(float value) {
+        systemSequencer.setTempo(value);
+    }
+
+    public boolean isPlaying() {
+        return systemSequencer.isPlaying();
+    }
+
+    public void stop() {
+        systemSequencer.stop();
+    }
+
+    public void play(SequencerMode sequencerMode) {
+        systemSequencer.play(sequencerMode);
+    }
+
+    public int getCurrentSixteenthStep() {
+        return systemSequencer.getCurrentSixteenthStep();
+    }
+
+    public void addPattern(Tone tone, int bank, int pattern, int start, int end)
+            throws CausticException {
+        systemSequencer.addPattern(tone, bank, pattern, start, end);
     }
 
     //--------------------------------------------------------------------------
@@ -193,6 +261,45 @@ public class Rack implements Serializable, ICausticEngine {
     }
 
     public void close() {
+    }
+
+    public void update() {
+        final float measure = getCurrentSongMeasure();
+        final float beat = getCurrentBeat();
+        getSystemSequencer().beatUpdate((int)measure, beat);
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
+
+    private void updateSoundGenerator() {
+        soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
+        soundGenerator.initialize();
+    }
+
+    //--------------------------------------------------------------------------
+    // TrackSequencer
+    //--------------------------------------------------------------------------
+
+    public TrackSong getTrackSong() {
+        return trackSequencer.getTrackSong();
+    }
+
+    public TrackSong createSong(File file) throws IOException {
+        return trackSequencer.createSong(file);
+    }
+
+    public void setCurrentTrack(int index) {
+        trackSequencer.setCurrentTrack(index);
+    }
+
+    public Track getTrack(int index) {
+        return trackSequencer.getTrack(index);
+    }
+
+    public Collection<Track> getTracks() {
+        return trackSequencer.getTracks();
     }
 
 }

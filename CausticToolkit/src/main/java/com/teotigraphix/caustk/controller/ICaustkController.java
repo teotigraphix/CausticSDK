@@ -27,8 +27,6 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**
@@ -47,7 +45,7 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
      * @param clazz The class type API key.
      * @param instance The implementing instance of the class type.
      */
-    void addComponent(Class<? extends IControllerComponent> clazz, IControllerComponent instance);
+    void addComponent(Class<?> clazz, Object instance);
 
     /**
      * Returns a registered API controller component.
@@ -79,10 +77,6 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
     void setRack(Rack value);
 
     ILibraryManager getLibraryManager();
-
-    ISystemSequencer getSystemSequencer();
-
-    ITrackSequencer getTrackSequencer();
 
     IQueueSequencer getQueueSequencer();
 

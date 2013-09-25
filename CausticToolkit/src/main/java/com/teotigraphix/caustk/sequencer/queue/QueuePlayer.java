@@ -23,7 +23,7 @@ public class QueuePlayer {
     }
 
     public final TrackSong getTrackSong() {
-        return getController().getTrackSequencer().getTrackSong();
+        return getController().getRack().getTrackSong();
     }
 
     private int currentLocalBeat;
@@ -211,7 +211,7 @@ public class QueuePlayer {
         //final float currentBeat = getTrackSong().getCurrentBeat();
         final int currentMeasure = getTrackSong().getCurrentMeasure();
 
-        for (Track track : getController().getTrackSequencer().getTracks()) {
+        for (Track track : getController().getRack().getTracks()) {
 
             // Find all tracks that are ending at the next measure
             TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);

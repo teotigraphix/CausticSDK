@@ -12,9 +12,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSongChange;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
@@ -49,10 +47,6 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     @Override
     public void setRecordMode(boolean value) {
         recordMode = value;
-    }
-
-    final ITrackSequencer getTrackSequencer() {
-        return getController().getTrackSequencer();
     }
 
     //----------------------------------
@@ -92,10 +86,7 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
 
     @Override
     public void onRegister() {
-
-        final ISystemSequencer systemSequencer = getController().getSystemSequencer();
-
-        systemSequencer.register(OnSystemSequencerBeatChange.class,
+        getController().register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {
@@ -103,32 +94,31 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
                     }
                 });
 
-        getTrackSequencer().register(OnTrackSongChange.class,
-                new EventObserver<OnTrackSongChange>() {
-                    @Override
-                    public void trigger(OnTrackSongChange object) {
-                        switch (object.getKind()) {
-                            case Create:
-                                create(object.getTrackSong());
-                                break;
+        getController().register(OnTrackSongChange.class, new EventObserver<OnTrackSongChange>() {
+            @Override
+            public void trigger(OnTrackSongChange object) {
+                switch (object.getKind()) {
+                    case Create:
+                        create(object.getTrackSong());
+                        break;
 
-                            case Load:
-                                load(object.getTrackSong());
-                                break;
+                    case Load:
+                        load(object.getTrackSong());
+                        break;
 
-                            case Save:
-                                try {
-                                    save();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-
-                            default:
-                                break;
+                    case Save:
+                        try {
+                            save();
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    }
-                });
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
     protected void save() throws IOException {

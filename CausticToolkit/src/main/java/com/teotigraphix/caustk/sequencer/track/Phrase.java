@@ -28,12 +28,16 @@ public class Phrase implements ISerialize {
 
     private transient ICaustkController controller;
 
-    public final ICaustkController getController() {
+    public ICaustkController getController() {
         return controller;
     }
 
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+    }
+
     final IDispatcher getDispatcher() {
-        return controller.getTrackSequencer();
+        return controller;
     }
 
     public final Tone getTone() {
@@ -41,7 +45,7 @@ public class Phrase implements ISerialize {
     }
 
     public final Track getTrack() {
-        return controller.getTrackSequencer().getTrack(toneIndex);
+        return controller.getRack().getTrack(toneIndex);
     }
 
     //--------------------------------------------------------------------------

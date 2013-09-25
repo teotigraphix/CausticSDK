@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,10 +11,9 @@ import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
@@ -25,10 +25,11 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 /**
  * @see OnTrackSequencerLoad
  */
-public class TrackSequencer extends ControllerComponent implements ITrackSequencer {
+public class TrackSequencer extends RackComponent implements ITrackSequencer, Serializable {
 
-    @SuppressWarnings("unused")
-    private TrackSequencerHandlers handlers;
+    private static final long serialVersionUID = 4786141580715087636L;
+
+    private transient TrackSequencerHandlers handlers;
 
     //----------------------------------
     // trackSong
@@ -122,15 +123,25 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     public TrackSequencer(ICaustkController controller) {
         super(controller);
-        handlers = new TrackSequencerHandlers(this);
-        // XXX Need to figure out how to avoid this (remove the facade?)
-        // straight access into the TrackSong
-        trackSong = new TrackSong();
-        trackSong.wakeup(controller);
     }
 
     @Override
-    public void onRegister() {
+    protected void construct() {
+        super.construct();
+        handlers = new TrackSequencerHandlers(this);
+    }
+
+    @Override
+    protected void commitController() {
+        super.commitController();
+
+        trackSong.setController(getController());
+    }
+
+    @Override
+    public void onAttach() {
+        handlers.onAttach();
+
         getController().register(OnSoundSourceToneAdd.class,
                 new EventObserver<OnSoundSourceToneAdd>() {
                     @Override
@@ -147,9 +158,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                     }
                 });
 
-        final ISystemSequencer systemSequencer = getController().getSystemSequencer();
-
-        systemSequencer.register(OnSystemSequencerBeatChange.class,
+        getController().register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {
@@ -229,11 +238,11 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
             }
         }
         //
-        //        MasterMixer masterMixer = new MasterMixer(getController());
-        //        getController().getSoundMixer().setMasterMixer(masterMixer);
+        //        MasterMixer masterMixer = new MasterMixer(controller);
+        //        controller.getSoundMixer().setMasterMixer(masterMixer);
         //
         //        // load all mixer channels
-        //        for (Tone tone : getController().getSoundSource().getTones()) {
+        //        for (Tone tone : controller.getSoundSource().getTones()) {
         //            masterMixer.addTone(tone);
         //        }
         //        // Restores volume, equalizer, limiter, delay, reverb
@@ -265,9 +274,8 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         if (!absoluteSongDir.exists())
             FileUtils.forceMkdir(absoluteSongDir);
 
-        trackSong = new TrackSong(songFile);
-        trackSong.wakeup(getController());
-        trigger(new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
+        trackSong = new TrackSong(getController(), songFile);
+        getController().trigger(new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
 
         saveTrackSong();
 
@@ -280,7 +288,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
         File absoluteTargetSongFile = getAbsoluteSongFile();
         getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
-        trigger(new OnTrackSongChange(TrackSongChangeKind.Save, trackSong));
+        getController().trigger(new OnTrackSongChange(TrackSongChangeKind.Save, trackSong));
     }
 
     protected File getAbsoluteSongFile() {
@@ -314,12 +322,12 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     //
     //        File file = getState().getSongFile();
     //        // XXX refactor and use with createSong() logic
-    //        File localFile = getController().getProjectManager().getProject()
+    //        File localFile = controller.getProjectManager().getProject()
     //                .getAbsoluteResource(new File("songs", file.getPath()).getPath());
     //        File absoluteTargetSongFile = localFile.getAbsoluteFile();
     //        if (absoluteTargetSongFile != null) {
     //
-    //            trackSong = getController().getSerializeService().fromFile(absoluteTargetSongFile,
+    //            trackSong = controller.getSerializeService().fromFile(absoluteTargetSongFile,
     //                    TrackSong.class);
     //            getDispatcher().trigger(
     //                    new OnTrackSequencerTrackSongChange(TrackSongChangeKind.Load, trackSong));
@@ -332,7 +340,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
     //        if (trackSong.exists()) {
     //            File causticFile = trackSong.getAbsoluteCausticFile();
     //            try {
-    //                getController().getSoundSource().loadSong(causticFile);
+    //                controller.getSoundSource().loadSong(causticFile);
     //            } catch (CausticException e) {
     //                e.printStackTrace();
     //            }

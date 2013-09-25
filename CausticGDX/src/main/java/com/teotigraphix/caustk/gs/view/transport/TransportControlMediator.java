@@ -24,11 +24,11 @@ public class TransportControlMediator extends ScreenMediator {
     @Override
     public void onRegister() {
         // listen for transport changes on the main sequencer
-        register(getController().getSystemSequencer(), OnSystemSequencerTransportChange.class,
+        register(getController(), OnSystemSequencerTransportChange.class,
                 new EventObserver<OnSystemSequencerTransportChange>() {
                     @Override
                     public void trigger(OnSystemSequencerTransportChange object) {
-                        view.selectPlayPause(getController().getSystemSequencer().isPlaying());
+                        view.selectPlayPause(getController().getRack().isPlaying());
                     }
                 });
     }

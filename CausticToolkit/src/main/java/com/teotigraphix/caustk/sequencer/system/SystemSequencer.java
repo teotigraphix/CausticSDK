@@ -19,18 +19,22 @@
 
 package com.teotigraphix.caustk.sequencer.system;
 
+import java.io.Serializable;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SystemSequencer extends ControllerComponent implements ISystemSequencer {
+public class SystemSequencer extends RackComponent implements ISystemSequencer, Serializable {
+
+    private static final long serialVersionUID = 3013567748100411152L;
 
     //--------------------------------------------------------------------------
     // Property API
@@ -99,8 +103,13 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
 
     public SystemSequencer(ICaustkController controller) {
         super(controller);
+    }
 
-        controller.addComponent(ISystemSequencer.class, this);
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+
+        getController().addComponent(ISystemSequencer.class, this);
 
         getController().getCommandManager().put(COMMAND_PLAY, SystemSequencerPlayCommand.class);
         getController().getCommandManager().put(COMMAND_STOP, SystemSequencerStopCommand.class);
@@ -115,13 +124,13 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
         setIsPlaying(true);
-        trigger(new OnSystemSequencerTransportChange());
+        getController().trigger(new OnSystemSequencerTransportChange());
     }
 
     @Override
     public void stop() {
         setIsPlaying(false);
-        trigger(new OnSystemSequencerTransportChange());
+        getController().trigger(new OnSystemSequencerTransportChange());
     }
 
     @Override
@@ -228,7 +237,7 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
         int step = (int)Math.floor((floatBeat % 4) * 4);
         if (step != currentSixteenthStep) {
             currentSixteenthStep = step;
-            trigger(new OnSystemSequencerStepChange());
+            getController().trigger(new OnSystemSequencerStepChange());
         }
     }
 
@@ -254,7 +263,7 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
         int last = currentBeat;
         currentBeat = value;
 
-        trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
+        getController().trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
 
         if (last < value) {
             // forward
@@ -405,9 +414,4 @@ public class SystemSequencer extends ControllerComponent implements ISystemSeque
     public void setShuffleAmount(float value) {
         OutputPanelMessage.SHUFFLE_AMOUNT.send(getController(), value);
     }
-
-    @Override
-    public void onRegister() {
-    }
-
 }

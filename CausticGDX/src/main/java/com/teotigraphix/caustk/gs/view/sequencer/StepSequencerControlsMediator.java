@@ -87,7 +87,7 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
                 // set bottom to octave index
                 selectLedControl.setMaxBottomIndex(7);
                 // only reset to zero if the sequencer is not playing
-                if (!getController().getSystemSequencer().isPlaying())
+                if (!getController().getRack().isPlaying())
                     selectLedControl.setTopIndex(0);
                 selectLedControl.setBottomIndex(machine.getSound().getOctaveIndex());
                 break;

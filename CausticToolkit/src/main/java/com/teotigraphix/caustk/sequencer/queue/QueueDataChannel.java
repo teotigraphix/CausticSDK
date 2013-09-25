@@ -130,7 +130,7 @@ public class QueueDataChannel implements ISerialize {
     //----------------------------------
 
     public int getCurrentBeat() {
-        return controller.getTrackSequencer().getTrack(toneIndex).getPhrase().getCurrentBeat();
+        return controller.getRack().getTrack(toneIndex).getPhrase().getCurrentBeat();
     }
 
     //----------------------------------
