@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
-import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.libgdx.controller.IApplicationController;
 
 public abstract class CaustkModelBase implements ICaustkModel {
@@ -20,20 +19,20 @@ public abstract class CaustkModelBase implements ICaustkModel {
         return controller;
     }
 
-    //----------------------------------
-    // state
-    //----------------------------------
-
-    private ModelState state;
-
-    public void setState(ModelState value) {
-        state = value;
-        getController().getComponent(IInjectorService.class).inject(state);
-    }
-
-    public ModelState getState() {
-        return state;
-    }
+    //    //----------------------------------
+    //    // state
+    //    //----------------------------------
+    //
+    //    private ModelState state;
+    //
+    //    public void setState(ModelState value) {
+    //        state = value;
+    //        getController().getComponent(IInjectorService.class).inject(state);
+    //    }
+    //
+    //    public ModelState getState() {
+    //        return state;
+    //    }
 
     //--------------------------------------------------------------------------
     // Constructor

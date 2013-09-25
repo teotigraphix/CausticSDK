@@ -32,12 +32,27 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
     private IApplicationRegistry applicationRegistry;
 
+    private ApplicationModelState state;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends ApplicationModelState> T getState() {
+        return (T)state;
+    }
+
+    @Override
+    public <T extends ApplicationModelState> void setState(T value) {
+        state = value;
+    }
+
     private Project project;
 
+    @Override
     public Project getProject() {
         return project;
     }
 
+    @Override
     public void setProject(Project value) {
         project = value;
     }
@@ -122,4 +137,5 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     public void registerModel(ICaustkModel model) {
         applicationRegistry.registerModel(model);
     }
+
 }
