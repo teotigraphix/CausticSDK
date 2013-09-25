@@ -21,7 +21,6 @@ package com.teotigraphix.libgdx.application;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
@@ -98,6 +97,6 @@ public interface IGame extends ApplicationListener {
      * 
      * @param modules
      */
-    void initialize(Module... modules);
+    //void initialize(Module... modules);
 
 }

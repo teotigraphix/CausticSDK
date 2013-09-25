@@ -30,11 +30,14 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.CtkDebug;
+import com.teotigraphix.caustk.controller.core.IApplicationHandler;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.libgdx.controller.IApplicationController;
+import com.teotigraphix.libgdx.model.IApplicationModel;
 
 /**
  * The main instrumentation class for application startup of the game.
@@ -54,6 +57,11 @@ public class StartupExecutor {
 
     @Inject
     IApplicationMediator applicationMediator;
+
+    @Inject
+    IApplicationModel applicationModel;
+
+    private ICaustkApplication caustkApplication;
 
     private ICaustkController controller;
 
@@ -92,7 +100,7 @@ public class StartupExecutor {
      *     - MediatorBase.onRegister()
      *   - applicationController.show()
      */
-    public void initialize(IGame game) {
+    public void create(IGame game) {
         File root = new File(Gdx.files.getExternalStoragePath());
         File causticDirectory = new File(root.getAbsolutePath());
         File applicationDirectory = new File(root, game.getAppName());
@@ -120,93 +128,50 @@ public class StartupExecutor {
         injector.injectMembers(instance);
         injector.injectMembers(game); // just need the injector
 
-        //CaustkApplication application = new CaustkApplication(configuration);
-        application.get().getConfiguration().setSoundGenerator(game.getSoundGenerator());
-        application.get().getConfiguration().setCausticStorage(causticDirectory);
-        application.get().getConfiguration().setApplicationRoot(applicationDirectory);
-        //application.get().initialize();
-        //application.get().start();
-
-        controller = application.get().getController();
+        caustkApplication = application.get();
+        controller = caustkApplication.getController();
         controller.addComponent(IInjectorService.class, injectorService);
 
-        applicationController.initialize();
-        applicationController.registerModels();
-        applicationController.registerMeditors();
+        caustkApplication.getConfiguration().setSoundGenerator(game.getSoundGenerator());
+        caustkApplication.getConfiguration().setCausticStorage(causticDirectory);
+        caustkApplication.getConfiguration().setApplicationRoot(applicationDirectory);
 
-        try {
-            applicationController.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        caustkApplication.setApplicationHandler(new IApplicationHandler() {
+            @Override
+            public void commitCreate() {
+                String path = getController().getProjectManager().getSessionPreferences()
+                        .getString("lastProject");
 
-        applicationController.load();
-    }
+                try {
+                    @SuppressWarnings("unused")
+                    Project project = null;
+                    if (path == null) {
+                        project = getController().getProjectManager().createProject(
+                                new File("UntitledProject"));
+                    } else {
+                        project = getController().getProjectManager().load(new File(path));
+                    }
 
-    /**
-     * @param game
-     * @see IGame#initialize(Module...)
-     * @throws IOException
-     */
-    public void start(IGame game) throws IOException {
-        //        File root = new File(Gdx.files.getExternalStoragePath());
-        //        File causticDirectory = new File(root.getAbsolutePath());
-        //        File applicationDirectory = new File(root, game.getAppName());
-        //
-        //        @SuppressWarnings("unchecked")
-        //        final Class<StartupExecutor> clazz = (Class<StartupExecutor>)getClass();
-        //        final StartupExecutor instance = this;
-        //
-        //        final Set<Module> additionalModules = new HashSet<Module>();
-        //        modules.add(new AbstractModule() {
-        //            @Override
-        //            protected void configure() {
-        //                bind(clazz).toInstance(instance);
-        //            }
-        //        });
-        //
-        //        // Propagates initialization of additional modules to the specific
-        //        // subclass of this Application instance.
-        //        modules.addAll(additionalModules);
-        //
-        //        // Creates an injector with all of the required modules.
-        //        injector = Guice.createInjector(modules);
-        //
-        //        // Injects all fields annotated with @Inject into this IGame instance.
-        //        injector.injectMembers(instance);
-        //        injector.injectMembers(game); // just need the injector
-        //
-        //        //CaustkApplication application = new CaustkApplication(configuration);
-        //        application.get().getConfiguration().setSoundGenerator(game.getSoundGenerator());
-        //        application.get().getConfiguration().setCausticStorage(causticDirectory);
-        //        application.get().getConfiguration().setApplicationRoot(applicationDirectory);
-        //        //application.get().initialize();
-        //        //application.get().start();
-        //
-        //        controller = application.get().getController();
-        //        controller.addComponent(IInjectorService.class, injectorService);
-        //
-        //        // registers screenManager which then will loop through all screens
-        //        applicationController.registerMediatorObservers();
-        //
-        //        CtkDebug.log("Start application controller");
-        CtkDebug.log("Start application controller");
-        // set roots, call initialize(), start() on application, start app model
-        // create or load last project
-        // applicationController.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        //        applicationController.load();
-        //
-        //        applicationController.registerModels();
-        //        applicationController.registerMeditors();
+            @Override
+            public void commitSave() {
+            }
 
-        applicationController.show();
+            @Override
+            public void commitClose() {
+            }
+        });
 
-        CtkDebug.log("Show the application");
+        // create app directory, initialize controller and sub components
+        // initialize projectmanager, create or load last project state
+        caustkApplication.create();
     }
 
     public final void addModule(Module module) {
         modules.add(module);
     }
-
 }

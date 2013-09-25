@@ -30,7 +30,6 @@ import org.androidtransfuse.event.EventObserver;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 // Mediators never dispatch events!, only listen and act with logic
@@ -60,7 +59,6 @@ public abstract class CaustkMediator implements ICaustkMediator {
     public void setApplicationController(IApplicationController applicationController) {
         this.applicationController = applicationController;
         controller = applicationController.getController();
-        applicationController.registerMeditor(this);
     }
 
     @Override
@@ -75,56 +73,6 @@ public abstract class CaustkMediator implements ICaustkMediator {
      * Called once when the controller is set.
      */
     private void registerObservers() {
-        register(getController(), OnProjectManagerChange.class,
-                new EventObserver<OnProjectManagerChange>() {
-                    @Override
-                    public void trigger(OnProjectManagerChange object) {
-
-                        switch (object.getKind()) {
-                            case CREATE:
-                                onProjectCreate();
-                                break;
-                            case CLOSE_COMPLETE:
-                                onProjectCloseComplete();
-                                break;
-                            case EXIT:
-                                onProjectExit();
-                                break;
-                            case LOAD:
-                                onProjectLoad();
-                                break;
-                            case LOAD_COMPLETE:
-                                onProjectLoadComplete();
-                                break;
-                            case SAVE:
-                                onProjectSave();
-                                break;
-                            case SAVE_COMPLETE:
-                                onProjectSaveComplete();
-                                break;
-                        }
-                    }
-                });
-    }
-
-    protected void onProjectSaveComplete() {
-        // TODO Auto-generated method stub
-
-    }
-
-    protected void onProjectExit() {
-        // TODO Auto-generated method stub
-
-    }
-
-    protected void onProjectCloseComplete() {
-        // TODO Auto-generated method stub
-
-    }
-
-    protected void onProjectLoadComplete() {
-        // TODO Auto-generated method stub
-
     }
 
     @SuppressWarnings("rawtypes")
@@ -157,12 +105,6 @@ public abstract class CaustkMediator implements ICaustkMediator {
         dispatcher.register(event, observer);
     }
 
-    //
-    //    @Override
-    //    public void onRegisterObservers() {
-    //        registerObservers();
-    //    }
-
     public void onAttach() {
     }
 
@@ -175,15 +117,6 @@ public abstract class CaustkMediator implements ICaustkMediator {
                 dispatcher.unregister(observer);
             }
         }
-    }
-
-    protected void onProjectSave() {
-    }
-
-    protected void onProjectLoad() {
-    }
-
-    protected void onProjectCreate() {
     }
 
     @Override

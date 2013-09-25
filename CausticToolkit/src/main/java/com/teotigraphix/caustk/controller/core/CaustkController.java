@@ -231,7 +231,7 @@ public class CaustkController implements ICaustkController {
     /**
      * Constructor, creates the {@link IDeviceFactory}, {@link IDispatcher}.
      * <p>
-     * {@link #initialize()} creates all sub components of the
+     * {@link #create()} creates all sub components of the
      * {@link ICaustkController}.
      * 
      * @param application The main application.
@@ -304,13 +304,13 @@ public class CaustkController implements ICaustkController {
     // ISystemController API
     //--------------------------------------------------------------------------
 
-    void initialize() {
-        CtkDebug.log("Controller: Create app root dir if not created");
+    void create() {
+        CtkDebug.log("CaustkController: Create app root dir if not created");
         File applicationRoot = application.getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
 
-        CtkDebug.log("!!! Controller: Create all Sub controllers");
+        CtkDebug.log("CaustkController: Create all Sub components");
         soundGenerator = application.getConfiguration().getSoundGenerator();
         soundGenerator.initialize();
 
@@ -342,16 +342,13 @@ public class CaustkController implements ICaustkController {
         projectManager.initialize();
     }
 
-    void start() {
-    }
-
     void save() throws IOException {
-        CtkDebug.log("Controller.save()");
+        CtkDebug.log("CaustkController: Save");
         projectManager.save();
     }
 
     void close() {
-        CtkDebug.log("Controller.close()");
+        CtkDebug.log("CaustkController: Close");
         soundGenerator.close();
     }
 

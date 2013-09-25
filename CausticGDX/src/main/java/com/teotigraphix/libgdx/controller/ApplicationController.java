@@ -19,23 +19,18 @@
 
 package com.teotigraphix.libgdx.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.androidtransfuse.event.EventObserver;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustk.controller.ICaustkApplication.OnCausticApplicationStateChange;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CtkDebug;
-import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
-import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.libgdx.application.ApplicationRegistry;
+import com.teotigraphix.libgdx.application.IApplicationRegistry;
 import com.teotigraphix.libgdx.model.ApplicationModel;
-import com.teotigraphix.libgdx.model.CaustkModel;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 import com.teotigraphix.libgdx.model.ICaustkModel;
 
@@ -48,123 +43,74 @@ public class ApplicationController implements IApplicationController {
     @Inject
     private IApplicationModel applicationModel;
 
+    private IApplicationRegistry applicationRegistry;
+
     private ICaustkController controller;
-
-    private List<ICaustkModel> models = new ArrayList<ICaustkModel>();
-
-    private List<ICaustkMediator> mediators = new ArrayList<ICaustkMediator>();
 
     @Override
     public ICaustkController getController() {
         return controller;
     }
 
-    @Override
-    public void registerMeditor(ICaustkMediator mediator) {
-        if (mediators.contains(mediator)) {
-            CtkDebug.warn("ApplicationController already contains " + mediator);
-            return;
-        }
-        mediators.add(mediator);
-    }
-
-    @Override
-    public void registerMeditors() {
-        CtkDebug.log("ApplicationController Register Mediators");
-        for (ICaustkMediator mediator : mediators) {
-            CtkDebug.log("   Register; " + mediator.getClass().getSimpleName());
-            mediator.onRegister(null); // No screen means ApplicationMediator
-        }
-    }
-
-    @Override
-    public void registerModel(ICaustkModel model) {
-        if (models.contains(model)) {
-            CtkDebug.warn("ApplicationController already contains " + model);
-            return;
-        }
-        models.add(model);
-    }
-
-    @Override
-    public void registerModels() {
-        CtkDebug.log("ApplicationController Register Models");
-        for (ICaustkModel model : models) {
-            CtkDebug.log("   Register; " + model.getClass().getSimpleName());
-            model.onRegister();
-        }
-    }
-
     @Inject
     public ApplicationController(ICaustkApplicationProvider provider) {
+        applicationRegistry = new ApplicationRegistry();
+
         controller = provider.get().getController();
         controller.register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
                     public void trigger(OnProjectManagerChange object) {
                         switch (object.getKind()) {
-                            case SAVE:
-                                onProjectSave();
+                            case Save:
+                                applicationModel.setDirty(false);
                                 break;
-                            default:
+
+                            case CloseComplete:
+                                break;
+                            case Create:
+                                break;
+                            case Exit:
+                                break;
+                            case Load:
+                                break;
+                            case LoadComplete:
+                                break;
+                            case SaveComplete:
                                 break;
                         }
                     }
                 });
-    }
 
-    @Override
-    public void initialize() {
-        getController().getApplication().initialize();
-    }
+        controller.register(OnCausticApplicationStateChange.class,
+                new EventObserver<OnCausticApplicationStateChange>() {
+                    @Override
+                    public void trigger(OnCausticApplicationStateChange object) {
+                        switch (object.getKind()) {
+                            case Create:
+                                // register all application level models, ApplicationModel
+                                // any models declared on the app's ApplicationMediator
+                                // all others are lazy loaded
+                                applicationRegistry.registerModels();
 
-    @Override
-    public void start() throws IOException {
-        getController().getApplication().start();
+                                // register all application level mediators
+                                applicationRegistry.registerMeditors();
 
-        applicationModel.start();
+                                for (ICaustkModel model : applicationRegistry.getModels()) {
+                                    CtkDebug.log("    Show " + model.getClass().getSimpleName());
+                                    model.onShow();
+                                }
 
-        IProjectManager projectManager = getController().getProjectManager();
-        String path = projectManager.getSessionPreferences().getString("lastProject");
+                                break;
 
-        @SuppressWarnings("unused")
-        Project project = null;
-        if (path == null) {
-            project = projectManager.createProject(new File("UntitledProject"));
-        } else {
-            project = projectManager.load(new File(path));
-        }
-    }
+                            case Save:
+                                break;
 
-    @Override
-    public void load() {
-        for (ICaustkModel model : models) {
-            if (model instanceof CaustkModel) {
-                CtkDebug.log("    Load; " + model.getClass().getSimpleName());
-                ((CaustkModel)model).setupState();
-            }
-        }
-    }
-
-    /**
-     * @see OnApplicationControllerShow
-     */
-    @Override
-    public void show() {
-        CtkDebug.log("ApplicationController.show()");
-        applicationModel.run();
-        for (ICaustkModel model : models) {
-            CtkDebug.log("    Show " + model.getClass().getSimpleName());
-            model.onShow();
-        }
-    }
-
-    protected void onProjectSave() {
-        applicationModel.setDirty(false);
-        for (ICaustkModel model : models) {
-            CtkDebug.log("    Saving; " + model.getClass().getSimpleName());
-            model.save();
-        }
+                            case Close:
+                                break;
+                        }
+                    }
+                });
     }
 
 }

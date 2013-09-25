@@ -23,6 +23,7 @@ public class CaustkApplicationTest {
     @Before
     public void setUp() throws Exception {
         application = new CaustkApplication(MockApplicationConfiguration.create());
+        //application.set
     }
 
     @After
@@ -40,16 +41,10 @@ public class CaustkApplicationTest {
                     @Override
                     public void trigger(OnCausticApplicationStateChange object) {
                         switch (object.getKind()) {
-                            case Initialize:
+                            case Create:
                                 // API components and all sub components of the controller
                                 // have been created
                                 info.isInitialized = true;
-                                break;
-
-                            case Start:
-                                // nothing really happens here on a framework level
-                                // models and mediators start processing their state
-                                info.isStarted = true;
                                 break;
 
                             case Close:
@@ -68,11 +63,10 @@ public class CaustkApplicationTest {
                 });
 
         // all sub components in Controller are now created
-        application.initialize();
-        application.start();
+        application.create();
+        //        application.start();
 
         Assert.assertTrue(info.isInitialized);
-        Assert.assertTrue(info.isStarted);
 
         //        application.save();
         //        Assert.assertTrue(info.isSaved);
@@ -90,7 +84,5 @@ public class CaustkApplicationTest {
         public boolean isClosed = false;
 
         public boolean isInitialized = false;
-
-        public boolean isStarted = false;
     }
 }

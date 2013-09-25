@@ -106,7 +106,7 @@ public class ProjectManager implements IProjectManager {
 
     @Override
     public void initialize() {
-        CtkDebug.log("IProjectManager.initialize()");
+        CtkDebug.log("ProjectManager: Initialize, setup/load .settings");
 
         File applicationRoot = controller.getApplicationRoot();
 
@@ -116,7 +116,7 @@ public class ProjectManager implements IProjectManager {
             try {
                 FileUtils.writeStringToFile(sessionPreferencesFile, "");
                 sessionPreferences = new SessionPreferences();
-                CtkDebug.log("Created new .settings file: "
+                CtkDebug.log("ProjectManager: Created new .settings file: "
                         + sessionPreferencesFile.getAbsolutePath());
                 saveProjectPreferences();
             } catch (IOException e) {
@@ -126,7 +126,8 @@ public class ProjectManager implements IProjectManager {
             if (sessionPreferencesFile.exists()) {
                 sessionPreferences = controller.getSerializeService().fromFile(
                         sessionPreferencesFile, SessionPreferences.class);
-                CtkDebug.log("Loaded .settings file: " + sessionPreferencesFile.getAbsolutePath());
+                CtkDebug.log("ProjectManager: Loaded .settings file: "
+                        + sessionPreferencesFile.getAbsolutePath());
             }
         }
     }
@@ -144,29 +145,29 @@ public class ProjectManager implements IProjectManager {
         Project oldProject = project;
         project.close();
         project = null;
-        controller.trigger(new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.EXIT));
+        controller.trigger(new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.Exit));
     }
 
     @Override
     public void save() throws IOException {
         // XXX project manager project.getFile absolute path doubled up
-        CtkDebug.log("IProjectManager.save(): " + project.getStateFile());
+        CtkDebug.log("ProjectManager: Save - " + project.getStateFile());
 
         sessionPreferences.put("lastProject", project.getDirectory().getPath());
         // set modified
         project.getInfo().setModified(new Date());
 
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.SAVE));
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Save));
 
         controller.trigger(new OnProjectManagerChange(project,
-                ProjectManagerChangeKind.SAVE_COMPLETE));
+                ProjectManagerChangeKind.SaveComplete));
 
         finalizeSaveComplete();
     }
 
     protected void finalizeSaveComplete() throws IOException {
         //System.out.println(">> SAVE_COMPLETE flushProjectFile()");
-        CtkDebug.log("IProjectManager; Save Complete, now saving project json file");
+        CtkDebug.log("ProjectManager: Save Complete, now saving project json file");
 
         String data = controller.getSerializeService().toPrettyString(project);
         FileUtils.writeStringToFile(project.getStateFile(), data);
@@ -189,7 +190,7 @@ public class ProjectManager implements IProjectManager {
 
         File absoluteDir = getDirectory(directory.getPath());
 
-        CtkDebug.log("IProjectManager.load():" + absoluteDir);
+        CtkDebug.log("ProjectManager: Load - " + absoluteDir);
 
         project = controller.getSerializeService().fromFile(new File(absoluteDir, ".project"),
                 Project.class);
@@ -197,11 +198,11 @@ public class ProjectManager implements IProjectManager {
         project.open();
 
         // all state objects are created here
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Load));
 
         // all clients can now act on the deserialized state objects (IControllerComponent)
         controller.trigger(new OnProjectManagerChange(project,
-                ProjectManagerChangeKind.LOAD_COMPLETE));
+                ProjectManagerChangeKind.LoadComplete));
 
         return project;
     }
@@ -223,8 +224,8 @@ public class ProjectManager implements IProjectManager {
         project.setDirectory(new File(file.getPath()));
         project.setInfo(createInfo());
         project.open();
-        CtkDebug.log("IProjectManager.create(): " + project.getAbsolutDirectory());
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.CREATE));
+        CtkDebug.log("ProjectManager: Create() - " + project.getAbsolutDirectory());
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Create));
 
         FileUtils.forceMkdir(project.getAbsolutDirectory());
 
@@ -246,7 +247,7 @@ public class ProjectManager implements IProjectManager {
     public void clear() {
         project.close();
         controller.trigger(new OnProjectManagerChange(project,
-                ProjectManagerChangeKind.CLOSE_COMPLETE));
+                ProjectManagerChangeKind.CloseComplete));
         project = null;
     }
 

@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.IOException;
 
+import com.teotigraphix.caustk.controller.core.IApplicationHandler;
 
 /**
  * The {@link ICaustkApplication} API is the startup instrumentation.
@@ -30,6 +31,13 @@ import java.io.IOException;
  * @author Michael Schmalle
  */
 public interface ICaustkApplication {
+
+    /**
+     * The application specific phase strategy.
+     * 
+     * @param value
+     */
+    void setApplicationHandler(IApplicationHandler value);
 
     /**
      * Returns the application's single {@link ICaustkConfiguration}.
@@ -45,7 +53,7 @@ public interface ICaustkApplication {
      * Template method; initializes the {@link ICaustkController} and call
      * configuration on the application.
      */
-    void initialize();
+    void create();
 
     /**
      * Template method; starts the application processing.
@@ -53,7 +61,7 @@ public interface ICaustkApplication {
      * @see ICaustkController#start()
      * @see OnApplicationStart
      */
-    void start();
+    //void start();
 
     /**
      * Closes the application.
@@ -73,12 +81,7 @@ public interface ICaustkApplication {
         /**
          * @see ICaustkApplication#initialize()
          */
-        Initialize,
-
-        /**
-         * @see ICaustkApplication#start()
-         */
-        Start,
+        Create,
 
         /**
          * @see ICaustkApplication#save()
@@ -103,4 +106,5 @@ public interface ICaustkApplication {
             this.kind = kind;
         }
     }
+
 }

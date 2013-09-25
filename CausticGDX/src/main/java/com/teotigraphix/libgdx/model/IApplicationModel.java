@@ -19,8 +19,6 @@
 
 package com.teotigraphix.libgdx.model;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
-
 public interface IApplicationModel {
 
     /**
@@ -46,21 +44,6 @@ public interface IApplicationModel {
      * @param value true sets dirty, false resets state after save.
      */
     void setDirty(boolean value);
-
-    /**
-     * Starts the model hierarchy.
-     * 
-     * @see OnApplicationModelStart
-     * @see ICaustkController#getDispatcher()
-     */
-    void start();
-
-    /**
-     * Called as the final phase of startup.
-     * <p>
-     * All mediators react to this final assignment of model data.
-     */
-    void run();
 
     //--------------------------------------------------------------------------
     // Events

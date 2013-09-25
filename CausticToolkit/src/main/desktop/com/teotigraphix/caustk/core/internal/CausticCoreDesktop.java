@@ -36,7 +36,7 @@ public class CausticCoreDesktop {
 
         Path currentRelativePath = Paths.get("");
         String s = currentRelativePath.toAbsolutePath().toString();
-        System.out.println("Current relative path is: " + s);
+        System.out.println("CausticCoreDesktop: Construct - relative path is: " + s);
 
         System.setProperty("jna.library.path", s + "\\libs");
 

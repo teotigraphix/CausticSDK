@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 
 @Singleton
-public class ApplicationModel extends CaustkModel implements IApplicationModel {
+public class ApplicationModel extends CaustkModelBase implements IApplicationModel {
 
     @Inject
     IScreenProvider screenProvider;
@@ -74,22 +74,8 @@ public class ApplicationModel extends CaustkModel implements IApplicationModel {
     }
 
     //--------------------------------------------------------------------------
-    // Public API
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void start() {
-        CtkDebug.model("ApplicationModel.start() fires OnApplicationModelStart");
-    }
-
-    //--------------------------------------------------------------------------
     // Project :: Events
     //--------------------------------------------------------------------------
-
-    @Override
-    public void run() {
-        CtkDebug.model(">>>>> ApplicationModel.run() fires OnApplicationModelRun");
-    }
 
     @Override
     public void onRegister() {

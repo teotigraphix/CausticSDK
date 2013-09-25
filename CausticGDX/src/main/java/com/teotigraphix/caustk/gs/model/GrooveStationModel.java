@@ -10,9 +10,9 @@ import com.teotigraphix.caustk.gs.config.IGrooveStationConfiguration;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.GrooveStation;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveStationSetup;
-import com.teotigraphix.libgdx.model.CaustkModel;
+import com.teotigraphix.libgdx.model.CaustkModelBase;
 
-public class GrooveStationModel extends CaustkModel implements IGrooveStationModel {
+public class GrooveStationModel extends CaustkModelBase implements IGrooveStationModel {
 
     @Inject
     IGrooveStationConfiguration configuration;
@@ -51,20 +51,6 @@ public class GrooveStationModel extends CaustkModel implements IGrooveStationMod
     public GrooveStationModel() {
     }
 
-    @Override
-    protected void construct() {
-        grooveStation = new GrooveStation(getController());
-
-        GrooveStationSetup setup = new GrooveStationSetup();
-        configureSetup(setup);
-
-        try {
-            grooveStation.setup(setup);
-        } catch (CausticException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void configureSetup(GrooveStationSetup setup) {
         configuration.setup(setup);
     }
@@ -78,6 +64,19 @@ public class GrooveStationModel extends CaustkModel implements IGrooveStationMod
     public void onShow() {
         construct(); // don't call in onRegister(), app mediators have not been attatched
         trigger(new OnGrooveStationStartMachines());
+    }
+
+    protected void construct() {
+        grooveStation = new GrooveStation(getController());
+
+        GrooveStationSetup setup = new GrooveStationSetup();
+        configureSetup(setup);
+
+        try {
+            grooveStation.setup(setup);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

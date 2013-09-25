@@ -108,23 +108,11 @@ public abstract class GDXGame implements IGame {
     }
 
     @Override
-    public void initialize(Module... modules) {
-        for (Module module : modules) {
-            executor.addModule(module);
-        }
-        executor.initialize(this);
-        setController(executor.getController());
-    }
-
-    @Override
     public void create() {
-        initialize(module);
+        executor.addModule(module);
+        executor.create(this);
+        setController(executor.getController());
         controller.onStart();
-        try {
-            executor.start(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

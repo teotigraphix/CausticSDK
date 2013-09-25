@@ -43,8 +43,8 @@ public interface IProjectManager {
     File getDirectory(String name);
 
     /**
-     * Returns the current {@link Project} instantiated by {@link #createProject(File)}
-     * or {@link #load(File)}.
+     * Returns the current {@link Project} instantiated by
+     * {@link #createProject(File)} or {@link #load(File)}.
      */
     Project getProject();
 
@@ -86,7 +86,7 @@ public interface IProjectManager {
      * @return
      * @throws IOException
      * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#CREATE
+     * @see ProjectManagerChangeKind#Create
      */
     Project createProject(File projectFile) throws IOException;
 
@@ -99,8 +99,8 @@ public interface IProjectManager {
      * @return A fully loaded <code>.ctk</code> project state.
      * @throws IOException Project file does not exist
      * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#LOAD
-     * @see ProjectManagerChangeKind#LOAD_COMPLETE
+     * @see ProjectManagerChangeKind#Load
+     * @see ProjectManagerChangeKind#LoadComplete
      */
     Project load(File directory) throws IOException;
 
@@ -110,21 +110,21 @@ public interface IProjectManager {
      * 
      * @throws IOException
      * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#SAVE
-     * @see ProjectManagerChangeKind#SAVE_COMPLETE
+     * @see ProjectManagerChangeKind#Save
+     * @see ProjectManagerChangeKind#SaveComplete
      */
     void save() throws IOException;
 
     /**
      * Saves the project state and exits.
      * <p>
-     * The {@link #createProject(File)} or {@link #load(File)} method has to be called
-     * again for the project to be active. Calling this method will remove the
-     * current {@link Project} instance.
+     * The {@link #createProject(File)} or {@link #load(File)} method has to be
+     * called again for the project to be active. Calling this method will
+     * remove the current {@link Project} instance.
      * 
      * @throws IOException
      * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#EXIT
+     * @see ProjectManagerChangeKind#Exit
      */
     void exit() throws IOException;
 
@@ -160,41 +160,41 @@ public interface IProjectManager {
          * Dispatched when a project has been created and is getting registered
          * with the system for the first time.
          */
-        CREATE,
+        Create,
 
         /**
          * Dispatched when a project has been loaded and has been deserialzed.
          */
-        LOAD,
+        Load,
 
         /**
          * No impl.
          */
-        LOAD_COMPLETE,
+        LoadComplete,
 
         /**
          * Dispatched when the project manager is about to save state.
          * <p>
          * Clients can listen to this event and save their state as necessary.
          */
-        SAVE,
+        Save,
 
         /**
          * Dispatched when the project manager has completely saved all state.
          */
-        SAVE_COMPLETE,
+        SaveComplete,
 
         /**
          * Dispatched when a project has been closed by
          * {@link IProjectManager#clear()}.
          */
-        CLOSE_COMPLETE,
+        CloseComplete,
 
         /**
          * Dispatched when the project manager has had its
          * {@link IProjectManager#exit()} method called.
          */
-        EXIT;
+        Exit;
     }
 
     /**

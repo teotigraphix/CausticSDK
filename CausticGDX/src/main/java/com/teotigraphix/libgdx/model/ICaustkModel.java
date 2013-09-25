@@ -37,8 +37,6 @@ import com.teotigraphix.libgdx.controller.ICaustkMediator;
  */
 public interface ICaustkModel extends IDispatcher {
 
-    boolean isInitialized();
-
     /**
      * The model's registration phase where state is created from deserialzed
      * project state.
@@ -60,6 +58,4 @@ public interface ICaustkModel extends IDispatcher {
      * from within this phase.
      */
     void onShow();
-
-    void save();
 }
