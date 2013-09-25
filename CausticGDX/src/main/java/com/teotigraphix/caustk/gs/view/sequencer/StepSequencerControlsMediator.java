@@ -15,12 +15,12 @@ import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.ui.UI;
 import com.teotigraphix.caustk.gs.ui.UIUtils;
-import com.teotigraphix.libgdx.controller.CaustkMediator;
+import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.SelectLedControl;
 import com.teotigraphix.libgdx.ui.caustk.SelectLedControl.OnSelectLedControlListener;
 
-public abstract class StepSequencerControlsMediator extends CaustkMediator {
+public abstract class StepSequencerControlsMediator extends ScreenMediator {
 
     @Inject
     IGrooveStationModel grooveStationModel;
@@ -43,9 +43,7 @@ public abstract class StepSequencerControlsMediator extends CaustkMediator {
     }
 
     @Override
-    public void onAttach() {
-        super.onAttach();
-
+    public void onRegister() {
         GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
         machine.getSequencer().addOnMachineSequencerListener(new OnMachineSequencerListener() {
             @Override
@@ -100,7 +98,7 @@ public abstract class StepSequencerControlsMediator extends CaustkMediator {
     }
 
     @Override
-    public void create(IScreen screen) {
+    public void onCreate(IScreen screen) {
         Table table = new Table();
         table.debug();
         table.align(Align.top);

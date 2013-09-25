@@ -19,7 +19,18 @@
 
 package com.teotigraphix.libgdx.model;
 
-public interface IApplicationModel {
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.project.Project;
+
+public interface IApplicationModel extends ICaustkModel {
+
+    boolean isInitialized();
+
+    void setInitialized(boolean value);
+
+    Project getProject();
+
+    void setProject(Project value);
 
     /**
      * Returns the application's name.
@@ -45,6 +56,8 @@ public interface IApplicationModel {
      */
     void setDirty(boolean value);
 
+    void registerModel(ICaustkModel model);
+
     //--------------------------------------------------------------------------
     // Events
     //--------------------------------------------------------------------------
@@ -65,6 +78,21 @@ public interface IApplicationModel {
 
         public OnApplicationModelDirtyChanged(boolean dirty) {
             this.dirty = dirty;
+        }
+    }
+
+    /**
+     * Dispatched from {@link ICaustkController}
+     */
+    public static class OnApplicationModelInitialize {
+        private IApplicationModel model;
+
+        public final IApplicationModel getModel() {
+            return model;
+        }
+
+        public OnApplicationModelInitialize(IApplicationModel model) {
+            this.model = model;
         }
     }
 

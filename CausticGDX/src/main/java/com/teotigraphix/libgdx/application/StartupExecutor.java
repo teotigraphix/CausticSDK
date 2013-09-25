@@ -20,7 +20,6 @@
 package com.teotigraphix.libgdx.application;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +33,6 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.IApplicationHandler;
-import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.libgdx.controller.IApplicationController;
 import com.teotigraphix.libgdx.model.IApplicationModel;
@@ -84,21 +82,6 @@ public class StartupExecutor {
      * - create application Injector using collected modules
      * - inject executor and game
      * - assign sound generator, caustic root, application root to configuration
-     * -  Call;
-     *   - applicationController.registerMediatorObservers()
-     *     - MediatorBase.registerObservers()
-     *   - applicationController.start()
-     *     - ICausticApplication.initialize()
-     *     - ICausticApplication.start()
-     *     - IApplicationModel.start()
-     *     - Find lastProject, if not null load(lastProject) else create()
-     *   - applicationController.load()
-     *     - foreach(model) ModelBase.setupState()
-     *   - applicationController.registerModels()
-     *     - ModelBase.onRegister()
-     *   - applicationController.registerMeditors()
-     *     - MediatorBase.onRegister()
-     *   - applicationController.show()
      */
     public void create(IGame game) {
         File root = new File(Gdx.files.getExternalStoragePath());
@@ -139,22 +122,6 @@ public class StartupExecutor {
         caustkApplication.setApplicationHandler(new IApplicationHandler() {
             @Override
             public void commitCreate() {
-                String path = getController().getProjectManager().getSessionPreferences()
-                        .getString("lastProject");
-
-                try {
-                    @SuppressWarnings("unused")
-                    Project project = null;
-                    if (path == null) {
-                        project = getController().getProjectManager().createProject(
-                                new File("UntitledProject"));
-                    } else {
-                        project = getController().getProjectManager().load(new File(path));
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 
             @Override

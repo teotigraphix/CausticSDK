@@ -19,17 +19,9 @@
 
 package com.teotigraphix.libgdx.application;
 
-import java.util.List;
-
-import com.teotigraphix.caustk.controller.IControllerComponent;
-import com.teotigraphix.libgdx.controller.ICaustkMediator;
 import com.teotigraphix.libgdx.model.ICaustkModel;
 
-public interface IApplicationRegistry extends IControllerComponent {
-
-    List<ICaustkModel> getModels();
-
-    List<ICaustkMediator> getMediators();
+public interface IApplicationRegistry {
 
     /**
      * Registers a model against the application controller.
@@ -45,30 +37,5 @@ public interface IApplicationRegistry extends IControllerComponent {
      * <p>
      * Main application calls this method in the startup sequence.
      */
-    void registerModels();
-
-    /**
-     * Registers a mediator against the application controller.
-     * <p>
-     * Clients do not call this method, all registration happens automatically.
-     * 
-     * @param mediator The mediator to register.
-     */
-    void registerMeditor(ICaustkMediator mediator);
-
-    /**
-     * Calls {@link ICaustkMediator#onRegisterObservers()} on all registered
-     * mediators.
-     * <p>
-     * Main application calls this method in the startup sequence.
-     */
-    //void registerMediatorObservers();
-
-    /**
-     * Calls {@link ICaustkMediator#onRegister()} on all registered mediators.
-     * <p>
-     * Main application calls this method in the startup sequence.
-     */
-    void registerMeditors();
-
+    void onRegisterModels();
 }

@@ -32,7 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.libgdx.application.IGame;
-import com.teotigraphix.libgdx.controller.ICaustkMediator;
+import com.teotigraphix.libgdx.controller.ScreenMediator;
 
 public class ScreenBase implements IScreen {
     public static final String LOG = ScreenBase.class.getSimpleName();
@@ -77,9 +77,9 @@ public class ScreenBase implements IScreen {
 
     private Table table;
 
-    List<ICaustkMediator> mediators = new ArrayList<ICaustkMediator>();
+    List<ScreenMediator> mediators = new ArrayList<ScreenMediator>();
 
-    protected void addMediator(ICaustkMediator mediator) {
+    protected void addMediator(ScreenMediator mediator) {
         mediators.add(mediator);
     }
 
@@ -147,10 +147,9 @@ public class ScreenBase implements IScreen {
     public void create() {
         Gdx.app.log(LOG, "Creating screen: " + getName());
 
-        for (ICaustkMediator mediator : mediators) {
-            mediator.create(this);
-            // mediator.onRegisterObservers();
+        for (ScreenMediator mediator : mediators) {
             mediator.onRegister(this);
+            mediator.onCreate(this);
         }
     }
 
@@ -166,7 +165,7 @@ public class ScreenBase implements IScreen {
         // are guaranteed to be created
         stage.draw();
 
-        for (ICaustkMediator mediator : mediators) {
+        for (ScreenMediator mediator : mediators) {
             mediator.onShow(this);
         }
     }
@@ -201,6 +200,10 @@ public class ScreenBase implements IScreen {
     public void hide() {
         Gdx.app.log(LOG, "Hiding screen: " + getName());
 
+        for (ScreenMediator mediator : mediators) {
+            mediator.onHide(this);
+        }
+
         // dispose the screen when leaving the screen;
         // note that the dipose() method is not called automatically by the
         // framework, so we must figure out when it's appropriate to call it
@@ -210,20 +213,29 @@ public class ScreenBase implements IScreen {
     @Override
     public void pause() {
         Gdx.app.log(LOG, "Pausing screen: " + getName());
+
+        for (ScreenMediator mediator : mediators) {
+            mediator.onPause(this);
+        }
     }
 
     @Override
     public void resume() {
         Gdx.app.log(LOG, "Resuming screen: " + getName());
+
+        for (ScreenMediator mediator : mediators) {
+            mediator.onResume(this);
+        }
     }
 
     @Override
     public void dispose() {
         Gdx.app.log(LOG, "Disposing screen: " + getName());
 
-        for (ICaustkMediator mediator : mediators) {
-            mediator.dispose();
+        for (ScreenMediator mediator : mediators) {
+            mediator.onDispose(this);
         }
+
         mediators.clear();
 
         // the following call disposes the screen's stage, but on my computer it
@@ -246,7 +258,5 @@ public class ScreenBase implements IScreen {
     public void initialize(IGame game) {
         initialized = true;
         this.game = game;
-
     }
-
 }

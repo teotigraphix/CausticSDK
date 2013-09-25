@@ -30,7 +30,6 @@ import org.androidtransfuse.event.EventObserver;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.libgdx.screen.IScreen;
 
 // Mediators never dispatch events!, only listen and act with logic
 // that could eventually be put in a Command
@@ -38,14 +37,13 @@ public abstract class CaustkMediator implements ICaustkMediator {
 
     private ICaustkController controller;
 
-    private IApplicationController applicationController;
-
-    public final IApplicationController getApplicationController() {
-        return applicationController;
-    }
-
     public final ICaustkController getController() {
         return controller;
+    }
+
+    @Inject
+    void setApplicationController(IApplicationController value) {
+        controller = value.getController();
     }
 
     //--------------------------------------------------------------------------
@@ -55,25 +53,13 @@ public abstract class CaustkMediator implements ICaustkMediator {
     public CaustkMediator() {
     }
 
-    @Inject
-    public void setApplicationController(IApplicationController applicationController) {
-        this.applicationController = applicationController;
-        controller = applicationController.getController();
-    }
-
     @Override
-    public void onRegister(IScreen screen) {
-        registerObservers();
-        onAttach();
+    public void onRegister() {
     }
 
-    /**
-     * Register {@link ICaustkController#getDispatcher()} events.
-     * <p>
-     * Called once when the controller is set.
-     */
-    private void registerObservers() {
-    }
+    //--------------------------------------------------------------------------
+    // Event
+    //--------------------------------------------------------------------------
 
     @SuppressWarnings("rawtypes")
     private Map<IDispatcher, List<EventObserver>> observers = new HashMap<IDispatcher, List<EventObserver>>();
@@ -105,9 +91,6 @@ public abstract class CaustkMediator implements ICaustkMediator {
         dispatcher.register(event, observer);
     }
 
-    public void onAttach() {
-    }
-
     @SuppressWarnings("rawtypes")
     @Override
     public void dispose() {
@@ -117,13 +100,5 @@ public abstract class CaustkMediator implements ICaustkMediator {
                 dispatcher.unregister(observer);
             }
         }
-    }
-
-    @Override
-    public void create(IScreen screen) {
-    }
-
-    @Override
-    public void onShow(IScreen screen) {
     }
 }

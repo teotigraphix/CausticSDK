@@ -22,10 +22,25 @@ package com.teotigraphix.libgdx.model;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CtkDebug;
+import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.libgdx.application.ApplicationRegistry;
+import com.teotigraphix.libgdx.application.IApplicationRegistry;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 
 @Singleton
 public class ApplicationModel extends CaustkModelBase implements IApplicationModel {
+
+    private IApplicationRegistry applicationRegistry;
+
+    private Project project;
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project value) {
+        project = value;
+    }
 
     @Inject
     IScreenProvider screenProvider;
@@ -33,6 +48,21 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     @Override
     public String getName() {
         return "TODO Resources";//resourceBundle.getString("APP_TITLE");
+    }
+
+    private boolean initialized = false;
+
+    @Override
+    public boolean isInitialized() {
+        return initialized;
+    }
+
+    @Override
+    public void setInitialized(boolean value) {
+        if (initialized)
+            return;
+        initialized = value;
+        getController().trigger(new OnApplicationModelInitialize(this));
     }
 
     //----------------------------------
@@ -71,17 +101,25 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
     public ApplicationModel() {
         super();
+        applicationRegistry = new ApplicationRegistry();
     }
 
-    //--------------------------------------------------------------------------
-    // Project :: Events
-    //--------------------------------------------------------------------------
-
+    // called from ApplicationController right after Project is created/Loaded
+    // and after the ApplicationMediator.onRegister() is called.
     @Override
     public void onRegister() {
+        CtkDebug.model("ApplicationModel onRegister()");
+
+        // register all application level models, ApplicationModel
+        // any models declared on the app's ApplicationMediator
+        // all others are lazy loaded
+        applicationRegistry.onRegisterModels();
+
+        setInitialized(true);
     }
 
     @Override
-    public void onShow() {
+    public void registerModel(ICaustkModel model) {
+        applicationRegistry.registerModel(model);
     }
 }

@@ -19,6 +19,9 @@
 
 package com.teotigraphix.libgdx.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.androidtransfuse.event.EventObserver;
 
 import com.google.inject.Inject;
@@ -26,13 +29,11 @@ import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.ICaustkApplication.OnCausticApplicationStateChange;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
-import com.teotigraphix.libgdx.application.ApplicationRegistry;
-import com.teotigraphix.libgdx.application.IApplicationRegistry;
+import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.libgdx.application.IApplicationMediator;
 import com.teotigraphix.libgdx.model.ApplicationModel;
 import com.teotigraphix.libgdx.model.IApplicationModel;
-import com.teotigraphix.libgdx.model.ICaustkModel;
 
 /**
  * Mediates the {@link ApplicationModel}.
@@ -43,7 +44,8 @@ public class ApplicationController implements IApplicationController {
     @Inject
     private IApplicationModel applicationModel;
 
-    private IApplicationRegistry applicationRegistry;
+    @Inject
+    private IApplicationMediator applicationMediator;
 
     private ICaustkController controller;
 
@@ -54,9 +56,10 @@ public class ApplicationController implements IApplicationController {
 
     @Inject
     public ApplicationController(ICaustkApplicationProvider provider) {
-        applicationRegistry = new ApplicationRegistry();
 
         controller = provider.get().getController();
+
+        // this is the only place ProjectManager events are listened to
         controller.register(OnProjectManagerChange.class,
                 new EventObserver<OnProjectManagerChange>() {
                     @Override
@@ -88,19 +91,7 @@ public class ApplicationController implements IApplicationController {
                     public void trigger(OnCausticApplicationStateChange object) {
                         switch (object.getKind()) {
                             case Create:
-                                // register all application level models, ApplicationModel
-                                // any models declared on the app's ApplicationMediator
-                                // all others are lazy loaded
-                                applicationRegistry.registerModels();
-
-                                // register all application level mediators
-                                applicationRegistry.registerMeditors();
-
-                                for (ICaustkModel model : applicationRegistry.getModels()) {
-                                    CtkDebug.log("    Show " + model.getClass().getSimpleName());
-                                    model.onShow();
-                                }
-
+                                onApplicationCreate();
                                 break;
 
                             case Save:
@@ -111,6 +102,39 @@ public class ApplicationController implements IApplicationController {
                         }
                     }
                 });
+    }
+
+    protected void onApplicationCreate() {
+
+        // - ICaustkController.create()
+        // - IApplicationHandler.create()
+        // - dispatch(Create)
+        // - we are here now
+
+        String path = getController().getProjectManager().getSessionPreferences()
+                .getString("lastProject");
+
+        Project project = null;
+
+        try {
+            if (path == null) {
+                project = getController().getProjectManager().createProject(
+                        new File("UntitledProject"));
+            } else {
+                project = getController().getProjectManager().load(new File(path));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        applicationModel.setProject(project);
+
+        applicationMediator.onRegister();
+
+        // last call in the startup chain
+        // Models/Mediators will hear no events until this call
+        applicationModel.onRegister();
     }
 
 }

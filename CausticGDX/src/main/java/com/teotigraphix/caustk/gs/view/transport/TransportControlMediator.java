@@ -9,12 +9,12 @@ import com.teotigraphix.caustk.gs.ui.UIUtils;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerTransportChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
-import com.teotigraphix.libgdx.controller.CaustkMediator;
+import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.TransportGroup;
 import com.teotigraphix.libgdx.ui.caustk.TransportGroup.OnTransportGroupListener;
 
-public class TransportControlMediator extends CaustkMediator {
+public class TransportControlMediator extends ScreenMediator {
 
     private TransportGroup view;
 
@@ -22,9 +22,7 @@ public class TransportControlMediator extends CaustkMediator {
     }
 
     @Override
-    public void onAttach() {
-        super.onAttach();
-
+    public void onRegister() {
         // listen for transport changes on the main sequencer
         register(getController().getSystemSequencer(), OnSystemSequencerTransportChange.class,
                 new EventObserver<OnSystemSequencerTransportChange>() {
@@ -36,7 +34,7 @@ public class TransportControlMediator extends CaustkMediator {
     }
 
     @Override
-    public void create(IScreen screen) {
+    public void onCreate(IScreen screen) {
         final Table table = new Table();
         table.debug();
 

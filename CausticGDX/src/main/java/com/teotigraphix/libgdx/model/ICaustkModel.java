@@ -45,17 +45,4 @@ public interface ICaustkModel extends IDispatcher {
      * the {@link #onShow()} method is where model's update deserialized state.
      */
     void onRegister();
-
-    /**
-     * The last phase of startup, where mediators have register, create ui and
-     * are ready to get the final update from model events.
-     * <p>
-     * All state the has been deserialized from the project session will get
-     * "executed" in the model here, the mediators will catch the model events
-     * and update the user interface according to the update logic.
-     * <p>
-     * Any logic that gets executed here should not depend on an state changes
-     * from within this phase.
-     */
-    void onShow();
 }

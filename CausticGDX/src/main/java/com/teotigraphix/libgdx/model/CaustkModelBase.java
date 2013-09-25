@@ -10,7 +10,7 @@ import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.libgdx.controller.IApplicationController;
 
-public class CaustkModelBase implements ICaustkModel {
+public abstract class CaustkModelBase implements ICaustkModel {
 
     private IDispatcher dispatcher;
 
@@ -44,8 +44,8 @@ public class CaustkModelBase implements ICaustkModel {
     @Inject
     public void setApplicationController(IApplicationController applicationController) {
         this.applicationController = applicationController;
-        controller = applicationController.getController();
         dispatcher = new Dispatcher();
+        controller = applicationController.getController();
     }
 
     protected final IApplicationController getApplicationController() {
@@ -74,10 +74,6 @@ public class CaustkModelBase implements ICaustkModel {
 
     @Override
     public void onRegister() {
-    }
-
-    @Override
-    public void onShow() {
     }
 
     public abstract static class ModelState {

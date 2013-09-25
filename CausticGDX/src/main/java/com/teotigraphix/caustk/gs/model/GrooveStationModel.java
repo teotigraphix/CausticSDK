@@ -58,10 +58,6 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
     @Override
     public void onRegister() {
         getController().addComponent(IGrooveStationModel.class, this);
-    }
-
-    @Override
-    public void onShow() {
         construct(); // don't call in onRegister(), app mediators have not been attatched
         trigger(new OnGrooveStationStartMachines());
     }

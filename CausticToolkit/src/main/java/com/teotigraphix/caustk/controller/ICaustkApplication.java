@@ -56,14 +56,6 @@ public interface ICaustkApplication {
     void create();
 
     /**
-     * Template method; starts the application processing.
-     * 
-     * @see ICaustkController#start()
-     * @see OnApplicationStart
-     */
-    //void start();
-
-    /**
      * Closes the application.
      * 
      * @see OnApplicationClose

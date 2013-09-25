@@ -5,10 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.caustk.gs.ui.UI;
 import com.teotigraphix.caustk.gs.ui.UIUtils;
-import com.teotigraphix.libgdx.controller.CaustkMediator;
+import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 
-public abstract class SynthControlsMediator extends CaustkMediator {
+public abstract class SynthControlsMediator extends ScreenMediator {
 
     private Skin skin;
 
@@ -26,7 +26,7 @@ public abstract class SynthControlsMediator extends CaustkMediator {
     }
 
     @Override
-    public void create(IScreen screen) {
+    public void onCreate(IScreen screen) {
         skin = screen.getSkin();
 
         table = new Table();

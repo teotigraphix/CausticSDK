@@ -22,10 +22,7 @@ package com.teotigraphix.libgdx.application;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.androidtransfuse.event.EventObserver;
-
 import com.teotigraphix.caustk.core.CtkDebug;
-import com.teotigraphix.libgdx.controller.ICaustkMediator;
 import com.teotigraphix.libgdx.model.ICaustkModel;
 
 public class ApplicationRegistry implements IApplicationRegistry {
@@ -33,73 +30,20 @@ public class ApplicationRegistry implements IApplicationRegistry {
     private List<ICaustkModel> models = new ArrayList<ICaustkModel>();
 
     @Override
-    public List<ICaustkModel> getModels() {
-        return models;
-    }
-
-    private List<ICaustkMediator> mediators = new ArrayList<ICaustkMediator>();
-
-    @Override
-    public List<ICaustkMediator> getMediators() {
-        return mediators;
-    }
-
-    @Override
-    public void registerMeditor(ICaustkMediator mediator) {
-        if (mediators.contains(mediator)) {
-            CtkDebug.warn("ApplicationController already contains " + mediator);
-            return;
-        }
-        mediators.add(mediator);
-    }
-
-    @Override
-    public void registerMeditors() {
-        CtkDebug.log("ApplicationController Register Mediators");
-        for (ICaustkMediator mediator : mediators) {
-            CtkDebug.log("   Register; " + mediator.getClass().getSimpleName());
-            mediator.onRegister(null); // No screen means ApplicationMediator
-        }
-    }
-
-    @Override
     public void registerModel(ICaustkModel model) {
         if (models.contains(model)) {
-            CtkDebug.warn("ApplicationController already contains " + model);
+            CtkDebug.warn("ApplicationRegistry: already contains " + model);
             return;
         }
         models.add(model);
     }
 
     @Override
-    public void registerModels() {
-        CtkDebug.log("ApplicationController Register Models");
+    public void onRegisterModels() {
+        CtkDebug.log("ApplicationRegistry: Register Models");
         for (ICaustkModel model : models) {
             CtkDebug.log("   Register; " + model.getClass().getSimpleName());
             model.onRegister();
         }
     }
-
-    // No op
-
-    @Override
-    public void onRegister() {
-    }
-
-    @Override
-    public <T> void register(Class<T> event, EventObserver<T> observer) {
-    }
-
-    @Override
-    public void unregister(EventObserver<?> observer) {
-    }
-
-    @Override
-    public void trigger(Object event) {
-    }
-
-    @Override
-    public void clear() {
-    }
-
 }
