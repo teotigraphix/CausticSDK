@@ -2,7 +2,6 @@
 package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -183,28 +182,28 @@ public class TrackSong implements ISerialize {
      */
     @Override
     public void sleep() {
-        for (Track channel : tracks.values()) {
-            channel.sleep();
-        }
-        // save the .caustic file
-        try {
-            File absoluteTargetSongFile = getAbsoluteCausticFile();
-            controller.getSoundSource().saveSongAs(absoluteTargetSongFile);
-            // masterMixer = controller.getSoundMixer().getMasterMixer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //        for (Track channel : tracks.values()) {
+        //            channel.sleep();
+        //        }
+        //        // save the .caustic file
+        //        try {
+        //            File absoluteTargetSongFile = getAbsoluteCausticFile();
+        //            controller.getRack().saveSongAs(absoluteTargetSongFile);
+        //            // masterMixer = controller.getSoundMixer().getMasterMixer();
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
     }
 
     @Override
     public void wakeup(ICaustkController controller) {
         this.controller = controller;
-        if (!exists()) // dummy placeholder
-            return;
-
-        for (Track channel : tracks.values()) {
-            channel.wakeup(controller);
-        }
+        //        if (!exists()) // dummy placeholder
+        //            return;
+        //
+        //        for (Track channel : tracks.values()) {
+        //            channel.wakeup(controller);
+        //        }
     }
 
     void toneAdd(Tone tone) {

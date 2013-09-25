@@ -41,7 +41,7 @@ public abstract class ControllerComponent implements IControllerComponent {
     // controller
     //----------------------------------
 
-    private final ICaustkController controller;
+    private transient ICaustkController controller;
 
     public final ICaustkController getController() {
         return controller;
@@ -51,7 +51,11 @@ public abstract class ControllerComponent implements IControllerComponent {
     // dispatcher
     //----------------------------------
 
-    private final IDispatcher dispatcher;
+    private transient IDispatcher dispatcher;
+
+    protected void setDispatcher(IDispatcher dispatcher) {
+        this.dispatcher = dispatcher;
+    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -59,7 +63,7 @@ public abstract class ControllerComponent implements IControllerComponent {
 
     public ControllerComponent(ICaustkController controller) {
         this.controller = controller;
-        dispatcher = new Dispatcher();
+        setDispatcher(new Dispatcher());
     }
 
     //--------------------------------------------------------------------------

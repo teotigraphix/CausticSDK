@@ -40,7 +40,7 @@ public class Track implements ISerialize {
      * Returns the {@link SoundMixerChannel} for the track.
      */
     public SoundMixerChannel getMixerChannel() {
-        return controller.getSoundMixer().getChannel(getIndex());
+        return controller.getRack().getMixerChannel(getIndex());
     }
 
     /**
@@ -48,7 +48,7 @@ public class Track implements ISerialize {
      * {@link ISoundSource}.
      */
     public Tone getTone() {
-        return controller.getSoundSource().getTone(getIndex());
+        return controller.getRack().getTone(getIndex());
     }
 
     //----------------------------------
@@ -173,8 +173,8 @@ public class Track implements ISerialize {
     }
 
     /**
-     * Returns the current {@link Phrase} of the {@link #getCurrentBank()}
-     * and {@link #getCurrentPattern()}.
+     * Returns the current {@link Phrase} of the {@link #getCurrentBank()} and
+     * {@link #getCurrentPattern()}.
      */
     public Phrase getPhrase() {
         return getPhrase(currentBank, currentPattern);
@@ -336,8 +336,7 @@ public class Track implements ISerialize {
             throw new CausticException("Patterns does not contain phrase at: " + startMeasure);
 
         TrackItem item = items.remove(startMeasure);
-        getDispatcher().trigger(
-                new OnTrackChange(TrackChangeKind.Remove, this, item));
+        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Remove, this, item));
     }
 
     /**

@@ -43,7 +43,6 @@ import com.teotigraphix.caustk.library.item.LibraryPattern;
 import com.teotigraphix.caustk.library.item.LibraryPattern.ToneSet;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.library.item.LibraryScene;
-import com.teotigraphix.caustk.library.item.SoundMixerDescriptor;
 import com.teotigraphix.caustk.library.item.SoundSourceDescriptor;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
@@ -228,32 +227,33 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     @Override
     public void importSong(Library library, File causticFile) throws IOException, CausticException {
         // Load the song, this automatically resets the sound source
-        getController().getSoundSource().loadSong(causticFile);
-
-        loadLibraryScene(library, causticFile, getController().getSoundSource());
-        loadLibraryPhrases(library, getController().getSoundSource());
-
-        getController().getSoundSource().clearAndReset();
-
-        getController().trigger(new OnLibraryManagerImportComplete());
+        //        getController().getSoundSource().loadSong(causticFile);
+        //
+        //        loadLibraryScene(library, causticFile, getController().getSoundSource());
+        //        loadLibraryPhrases(library, getController().getSoundSource());
+        //
+        //        getController().getSoundSource().clearAndReset();
+        //
+        //        getController().trigger(new OnLibraryManagerImportComplete());
     }
 
     @Override
     public void importPatterns(Library library, File causticFile) throws IOException,
             CausticException {
         // Load the song, this automatically resets the sound source
-        getController().getSoundSource().loadSong(causticFile);
-
-        loadLibraryScene(library, causticFile, getController().getSoundSource());
-        loadLibraryPhrases(library, getController().getSoundSource());
-
-        loadLibraryPatterns(library, getController().getSoundSource());
-
-        getController().getSoundSource().clearAndReset();
-
-        getController().trigger(new OnLibraryManagerImportComplete());
+        //        getController().getSoundSource().loadSong(causticFile);
+        //
+        //        loadLibraryScene(library, causticFile, getController().getSoundSource());
+        //        loadLibraryPhrases(library, getController().getSoundSource());
+        //
+        //        loadLibraryPatterns(library, getController().getSoundSource());
+        //
+        //        getController().getSoundSource().clearAndReset();
+        //
+        //        getController().trigger(new OnLibraryManagerImportComplete());
     }
 
+    @SuppressWarnings("unused")
     private void loadLibraryPatterns(Library library, ISoundSource soundSource) {
         Map<String, List<LibraryPatch>> map = new TreeMap<String, List<LibraryPatch>>();
 
@@ -349,6 +349,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         return null;
     }
 
+    @SuppressWarnings("unused")
     private void loadLibraryScene(Library library, File causticFile, ISoundSource soundSource)
             throws IOException {
         String name = causticFile.getName().replace(".caustic", "");
@@ -383,13 +384,14 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
         scene.setSoundSourceDescriptor(soundSourceDescriptor);
 
-        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
-        soundMixerDescriptor.setMasterMixer(getController().getSoundMixer().getMasterMixer());
-        scene.setSoundMixerDescriptor(soundMixerDescriptor);
+        //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
+        //        soundMixerDescriptor.setMasterMixer(getController().getSoundMixer().getMasterMixer());
+        //        scene.setSoundMixerDescriptor(soundMixerDescriptor);
 
         TagUtils.addDefaultTags(name, getController(), scene);
     }
 
+    @SuppressWarnings("unused")
     private void loadLibraryPhrases(Library library, ISoundSource soundSource) {
         for (int i = 0; i < 6; i++) {
             Tone tone = soundSource.getTone(i);
@@ -519,7 +521,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     @Override
     public void assignPatch(int toneIndex, LibraryPatch libraryPatch) {
-        assignPatch(getController().getSoundSource().getTone(toneIndex), libraryPatch);
+        //        assignPatch(getController().getSoundSource().getTone(toneIndex), libraryPatch);
     }
 
     @Override

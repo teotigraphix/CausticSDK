@@ -37,7 +37,7 @@ public class Phrase implements ISerialize {
     }
 
     public final Tone getTone() {
-        return controller.getSoundSource().getTone(toneIndex);
+        return controller.getRack().getTone(toneIndex);
     }
 
     public final Track getTrack() {

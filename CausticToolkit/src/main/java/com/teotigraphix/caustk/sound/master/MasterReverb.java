@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterReverb extends MasterComponent {
 
+    private static final long serialVersionUID = 5246569152430913050L;
+
     //--------------------------------------------------------------------------
     // API
     //--------------------------------------------------------------------------

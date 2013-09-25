@@ -28,4 +28,6 @@ public interface IApplicationController {
      */
     ICaustkController getController();
 
+    void create();
+
 }

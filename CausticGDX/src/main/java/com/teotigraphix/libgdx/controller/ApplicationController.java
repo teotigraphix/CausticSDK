@@ -91,7 +91,6 @@ public class ApplicationController implements IApplicationController {
                     public void trigger(OnCausticApplicationStateChange object) {
                         switch (object.getKind()) {
                             case Create:
-                                onApplicationCreate();
                                 break;
 
                             case Save:
@@ -104,7 +103,8 @@ public class ApplicationController implements IApplicationController {
                 });
     }
 
-    protected void onApplicationCreate() {
+    @Override
+    public void create() {
 
         // - ICaustkController.create()
         // - IApplicationHandler.create()

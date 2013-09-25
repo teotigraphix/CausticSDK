@@ -49,11 +49,6 @@ import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.serialize.SerializeService;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
-import com.teotigraphix.caustk.sound.ISoundMixer;
-import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.mixer.SoundMixer;
-import com.teotigraphix.caustk.sound.source.SoundSource;
 
 /**
  * @author Michael Schmalle
@@ -69,6 +64,11 @@ public class CaustkController implements ICaustkController {
     //----------------------------------
 
     private final IDispatcher dispatcher;
+
+    @Override
+    public IDispatcher getDispatcher() {
+        return dispatcher;
+    }
 
     //----------------------------------
     // application
@@ -114,6 +114,22 @@ public class CaustkController implements ICaustkController {
     }
 
     //----------------------------------
+    // rack
+    //----------------------------------
+
+    private Rack rack;
+
+    @Override
+    public Rack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(Rack value) {
+        rack = value;
+    }
+
+    //----------------------------------
     // trackSequencer
     //----------------------------------
 
@@ -144,39 +160,6 @@ public class CaustkController implements ICaustkController {
     @Override
     public ILibraryManager getLibraryManager() {
         return libraryManager;
-    }
-
-    //----------------------------------
-    // soundGenerator
-    //----------------------------------
-
-    private ISoundGenerator soundGenerator;
-
-    @Override
-    public ISoundGenerator getSoundGenerator() {
-        return soundGenerator;
-    }
-
-    //----------------------------------
-    // soundSource
-    //----------------------------------
-
-    private ISoundSource soundSource;
-
-    @Override
-    public ISoundSource getSoundSource() {
-        return soundSource;
-    }
-
-    //----------------------------------
-    // soundSource
-    //----------------------------------
-
-    private ISoundMixer soundMixer;
-
-    @Override
-    public ISoundMixer getSoundMixer() {
-        return soundMixer;
     }
 
     //----------------------------------
@@ -238,7 +221,6 @@ public class CaustkController implements ICaustkController {
      */
     public CaustkController(ICaustkApplication application) {
         this.application = application;
-
         dispatcher = new Dispatcher();
     }
 
@@ -257,7 +239,7 @@ public class CaustkController implements ICaustkController {
     }
 
     @Override
-    public <T extends IControllerComponent> T getComponent(Class<T> clazz) {
+    public <T> T getComponent(Class<T> clazz) {
         return clazz.cast(api.get(clazz));
     }
 
@@ -292,12 +274,12 @@ public class CaustkController implements ICaustkController {
     // we proxy the actual OSC impl so we can stop, or reroute
     @Override
     public final float sendMessage(String message) {
-        return soundGenerator.sendMessage(message);
+        return rack.sendMessage(message);
     }
 
     @Override
     public final String queryMessage(String message) {
-        return soundGenerator.queryMessage(message);
+        return rack.queryMessage(message);
     }
 
     //--------------------------------------------------------------------------
@@ -311,8 +293,6 @@ public class CaustkController implements ICaustkController {
             applicationRoot.mkdirs();
 
         CtkDebug.log("CaustkController: Create all Sub components");
-        soundGenerator = application.getConfiguration().getSoundGenerator();
-        soundGenerator.initialize();
 
         // sub composites will add their ICommands in their constructors
 
@@ -322,16 +302,12 @@ public class CaustkController implements ICaustkController {
         projectManager = new ProjectManager(this);
         libraryManager = new LibraryManager(this);
 
-        soundSource = new SoundSource(this);
-        soundMixer = new SoundMixer(this);
-
         systemSequencer = new SystemSequencer(this);
         trackSequencer = new TrackSequencer(this);
         queueSequencer = new QueueSequencer(this);
 
         components.add(libraryManager);
         components.add(trackSequencer);
-        components.add(soundMixer);
         components.add(systemSequencer);
         components.add(queueSequencer);
 
@@ -342,6 +318,13 @@ public class CaustkController implements ICaustkController {
         projectManager.initialize();
     }
 
+    @Override
+    public void update() {
+        final float measure = getRack().getCurrentSongMeasure();
+        final float beat = getRack().getCurrentBeat();
+        getSystemSequencer().beatUpdate((int)measure, beat);
+    }
+
     void save() throws IOException {
         CtkDebug.log("CaustkController: Save");
         projectManager.save();
@@ -349,7 +332,7 @@ public class CaustkController implements ICaustkController {
 
     void close() {
         CtkDebug.log("CaustkController: Close");
-        soundGenerator.close();
+        rack.close();
     }
 
     //--------------------------------------------------------------------------
@@ -358,36 +341,37 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void onStart() {
-        soundGenerator.onStart();
+        rack.onStart();
     }
 
     @Override
     public void onResume() {
-        soundGenerator.onResume();
+        rack.onResume();
     }
 
     @Override
     public void onPause() {
-        soundGenerator.onPause();
+        rack.onPause();
     }
 
     @Override
     public void onStop() {
-        soundGenerator.onStop();
+        rack.onStop();
     }
 
     @Override
     public void onDestroy() {
-        soundGenerator.onDestroy();
+        rack.onDestroy();
     }
 
     @Override
     public void onRestart() {
-        soundGenerator.onRestart();
+        rack.onRestart();
     }
 
     @Override
     public void dispose() {
-        soundGenerator.dispose();
+        rack.dispose();
     }
+
 }

@@ -20,14 +20,13 @@
 package com.teotigraphix.caustk.controller.command;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.IDispatcher;
 
 public class CommandContext {
 
     private final ICaustkController controller;
 
-    public final <T extends IControllerComponent> T getComponent(Class<T> clazz) {
+    public final <T> T getComponent(Class<T> clazz) {
         return controller.getComponent(clazz);
     }
 

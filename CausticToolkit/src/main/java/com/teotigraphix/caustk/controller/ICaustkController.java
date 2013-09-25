@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.controller;
 import java.io.File;
 
 import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
@@ -29,14 +30,16 @@ import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
-import com.teotigraphix.caustk.sound.ISoundMixer;
-import com.teotigraphix.caustk.sound.ISoundSource;
 
 /**
  * @author Michael Schmalle
  */
 public interface ICaustkController extends ICausticEngine, IDispatcher {
+
+    /**
+     * The controller's internal dispatcher.
+     */
+    IDispatcher getDispatcher();
 
     /**
      * Adds a controller component API.
@@ -56,7 +59,7 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
      * 
      * @param clazz The class type API key.
      */
-    <T extends IControllerComponent> T getComponent(Class<T> clazz);
+    <T> T getComponent(Class<T> clazz);
 
     /**
      * Returns the top level application created at startup.
@@ -71,11 +74,9 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
 
     IProjectManager getProjectManager();
 
-    ISoundGenerator getSoundGenerator();
+    Rack getRack();
 
-    ISoundSource getSoundSource();
-
-    ISoundMixer getSoundMixer();
+    void setRack(Rack value);
 
     ILibraryManager getLibraryManager();
 
@@ -92,5 +93,7 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
     void redo();
 
     void execute(String message, Object... args);
+
+    void update();
 
 }

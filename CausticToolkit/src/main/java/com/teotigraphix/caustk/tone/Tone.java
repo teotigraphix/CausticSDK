@@ -36,6 +36,18 @@ public abstract class Tone implements IRestore, Serializable {
 
     private transient ICaustkController controller;
 
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+
+        for (ToneComponent toneComponent : components.values()) {
+            toneComponent.setTone(this);
+        }
+    }
+
+    public ICaustkController getController() {
+        return controller;
+    }
+
     private final ToneType toneType;
 
     public final ToneType getToneType() {
@@ -86,7 +98,7 @@ public abstract class Tone implements IRestore, Serializable {
             return;
         muted = value;
         // firePropertyChange(TonePropertyKind.MUTE, mMuted);
-        controller.getSoundMixer().getChannel(getIndex()).setMute(muted);
+        controller.getRack().getMixerChannel(getIndex()).setMute(muted);
     }
 
     //----------------------------------
@@ -124,17 +136,13 @@ public abstract class Tone implements IRestore, Serializable {
     }
 
     int getComponentCount() {
-        return internalComponents.size();
+        return components.size();
     }
 
     /**
      * Returns the core audio engine interface.
      */
     public ICausticEngine getEngine() {
-        return controller;
-    }
-
-    public ICaustkController getController() {
         return controller;
     }
 
@@ -218,15 +226,15 @@ public abstract class Tone implements IRestore, Serializable {
     // Public Component API
     //--------------------------------------------------------------------------
 
-    private transient Map<Class<? extends ToneComponent>, ToneComponent> internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
+    private Map<Class<? extends ToneComponent>, ToneComponent> components = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
 
     public void addComponent(Class<? extends ToneComponent> clazz, ToneComponent instance) {
-        internalComponents.put(clazz, instance);
+        components.put(clazz, instance);
         instance.setTone(this);
     }
 
     public <T extends ToneComponent> T getComponent(Class<T> clazz) {
-        return clazz.cast(internalComponents.get(clazz));
+        return clazz.cast(components.get(clazz));
     }
 
     //--------------------------------------------------------------------------
@@ -294,7 +302,7 @@ public abstract class Tone implements IRestore, Serializable {
 
     @Override
     public void restore() {
-        for (ToneComponent toneComponent : internalComponents.values()) {
+        for (ToneComponent toneComponent : components.values()) {
             toneComponent.restore();
         }
     }

@@ -19,14 +19,17 @@
 
 package com.teotigraphix.caustk.sound.master;
 
+import java.io.Serializable;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MasterComponent implements ISerialize, IRestore {
+public class MasterComponent implements Serializable, IRestore {
+
+    private static final long serialVersionUID = 4281646159472145003L;
 
     private transient ICaustkController controller;
 
@@ -87,14 +90,5 @@ public class MasterComponent implements ISerialize, IRestore {
     @Override
     public void restore() {
         setBypass(isBypass(true));
-    }
-
-    @Override
-    public void sleep() {
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
     }
 }

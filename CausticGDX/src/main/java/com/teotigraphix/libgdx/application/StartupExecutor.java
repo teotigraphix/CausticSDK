@@ -122,6 +122,7 @@ public class StartupExecutor {
         caustkApplication.setApplicationHandler(new IApplicationHandler() {
             @Override
             public void commitCreate() {
+                applicationController.create();
             }
 
             @Override

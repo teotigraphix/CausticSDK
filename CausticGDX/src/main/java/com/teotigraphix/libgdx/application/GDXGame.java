@@ -155,9 +155,7 @@ public abstract class GDXGame implements IGame {
             fps.log();
 
         if (getController() != null) {
-            final float measure = getController().getSoundGenerator().getCurrentSongMeasure();
-            final float beat = getController().getSoundGenerator().getCurrentBeat();
-            getController().getSystemSequencer().beatUpdate((int)measure, beat);
+            getController().update();
         }
 
         if (screen != null)

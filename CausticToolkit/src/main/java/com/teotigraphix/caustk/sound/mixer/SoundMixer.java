@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.sound.mixer;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
@@ -27,15 +28,27 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.sound.ISoundMixer;
-import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixer extends ControllerComponent implements ISoundMixer {
+public class SoundMixer implements ISoundMixer, Serializable {
+
+    private static final long serialVersionUID = -7091528512172948750L;
+
+    private transient ICaustkController controller;
+
+    @Override
+    public ICaustkController getController() {
+        return controller;
+    }
+
+    @Override
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+    }
 
     //----------------------------------
     // channels
@@ -63,7 +76,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
     @Override
     public void setMasterMixer(MasterMixer value) {
         masterMixer = value;
-        masterMixer.setController(getController());
+        masterMixer.setController(controller);
     }
 
     @Override
@@ -83,31 +96,31 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
 
     @Override
     public void executeSetValue(int toneIndex, MixerInput input, Number value) {
-        getController().execute(COMMAND_SET_VALUE, toneIndex, input, value);
+        controller.execute(COMMAND_SET_VALUE, toneIndex, input, value);
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
+    public SoundMixer() {
+    }
+
     public SoundMixer(ICaustkController controller) {
-        super(controller);
+        this.controller = controller;
 
         masterMixer = new MasterMixer(controller);
 
-        controller.addComponent(ISoundMixer.class, this);
-
-        final ISoundSource soundSource = getController().getSoundSource();
-
         // listen for tone add/remove
-        soundSource.register(OnSoundSourceToneAdd.class, new EventObserver<OnSoundSourceToneAdd>() {
-            @Override
-            public void trigger(OnSoundSourceToneAdd object) {
-                masterMixer.addTone(object.getTone());
-            }
-        });
+        controller.getDispatcher().register(OnSoundSourceToneAdd.class,
+                new EventObserver<OnSoundSourceToneAdd>() {
+                    @Override
+                    public void trigger(OnSoundSourceToneAdd object) {
+                        masterMixer.addTone(object.getTone());
+                    }
+                });
 
-        soundSource.register(OnSoundSourceToneRemove.class,
+        controller.getDispatcher().register(OnSoundSourceToneRemove.class,
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
@@ -115,7 +128,7 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
                     }
                 });
 
-        soundSource.register(OnSoundSourceSongLoad.class,
+        controller.getDispatcher().register(OnSoundSourceSongLoad.class,
                 new EventObserver<OnSoundSourceSongLoad>() {
                     @Override
                     public void trigger(OnSoundSourceSongLoad object) {
@@ -139,10 +152,6 @@ public class SoundMixer extends ControllerComponent implements ISoundMixer {
         for (SoundMixerChannel channel : getChannels().values()) {
             channel.update();
         }
-    }
-
-    @Override
-    public void onRegister() {
     }
 
     //--------------------------------------------------------------------------

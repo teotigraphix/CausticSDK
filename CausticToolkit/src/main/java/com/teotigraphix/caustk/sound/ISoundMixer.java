@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.sound;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 import com.teotigraphix.caustk.sound.mixer.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.Tone;
 
-public interface ISoundMixer extends IControllerComponent, IRestore {
+public interface ISoundMixer extends IRestore {
 
     MasterMixer getMasterMixer();
 
@@ -51,5 +51,9 @@ public interface ISoundMixer extends IControllerComponent, IRestore {
      * @param value The value of the input's adjustment.
      */
     void executeSetValue(int toneIndex, MixerInput input, Number value);
+
+    ICaustkController getController();
+
+    void setController(ICaustkController controller);
 
 }

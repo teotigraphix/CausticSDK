@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.sound.source;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -31,11 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -59,7 +58,25 @@ import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-public class SoundSource extends ControllerComponent implements ISoundSource {
+public class SoundSource implements ISoundSource, Serializable {
+
+    private static final long serialVersionUID = 1785154952216484108L;
+
+    private transient ICaustkController controller;
+
+    @Override
+    public ICaustkController getController() {
+        return controller;
+    }
+
+    @Override
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+
+        for (Tone tone : tones.values()) {
+            tone.setController(controller);
+        }
+    }
 
     private int maxNumTones = 14;
 
@@ -115,19 +132,11 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         return null;
     }
 
-    public SoundSource(ICaustkController controller) {
-        super(controller);
-
+    public SoundSource() {
     }
 
-    @Override
-    public void onRegister() {
-        register(OnSoundSourceInitialValue.class, new EventObserver<OnSoundSourceInitialValue>() {
-            @Override
-            public void trigger(OnSoundSourceInitialValue object) {
-                System.out.println("Original value:" + object.getValue());
-            }
-        });
+    public SoundSource(ICaustkController controller) {
+        this.controller = controller;
     }
 
     //--------------------------------------------------------------------------
@@ -150,15 +159,15 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         for (ToneDescriptor descriptor : scene.getSoundSourceDescriptor().getDescriptors().values()) {
             Tone tone = createTone(descriptor);
             UUID patchId = descriptor.getPatchId();
-            Library library = getController().getLibraryManager().getSelectedLibrary();
+            Library library = controller.getLibraryManager().getSelectedLibrary();
             if (library != null && patchId != null) {
                 LibraryPatch libraryPatch = library.findPatchById(patchId);
-                getController().getLibraryManager().assignPatch(tone, libraryPatch);
+                controller.getLibraryManager().assignPatch(tone, libraryPatch);
             }
 
         }
         //        SoundMixerState mixerState = scene.getSoundMixerState();
-        //        SoundMixerModel model = getController().getSerializeService().fromString(
+        //        SoundMixerModel model = controller.getSerializeService().fromString(
         //                mixerState.getData(), SoundMixerModel.class);
         //        model.update();
     }
@@ -168,8 +177,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
     public <T extends Tone> T createTone(String data) throws CausticException {
         Tone tone = null;
         try {
-            tone = getController().getSerializeService().fromString(data,
-                    ToneUtils.getToneClass(data));
+            tone = controller.getSerializeService().fromString(data, ToneUtils.getToneClass(data));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,8 +185,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         int index = nextIndex();
         tone.setIndex(index);
 
-        RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
-                index);
+        RackMessage.CREATE.send(controller, tone.getToneType().getValue(), tone.getName(), index);
 
         toneAdd(index, tone);
 
@@ -193,7 +200,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         try {
             Constructor<? extends Tone> constructor = toneClass
                     .getConstructor(ICaustkController.class);
-            tone = (T)constructor.newInstance(getController());
+            tone = (T)constructor.newInstance(controller);
             initializeTone(tone, name, tone.getToneType(), index);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -211,7 +218,7 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
         SoundSourceUtils.setup(toneClass.cast(tone));
 
-        RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
+        RackMessage.CREATE.send(controller, tone.getToneType().getValue(), tone.getName(),
                 tone.getIndex());
 
         toneAdd(index, tone);
@@ -248,22 +255,22 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     public void destroyTone(Tone tone) {
         int index = tone.getIndex();
-        RackMessage.REMOVE.send(getController(), index);
+        RackMessage.REMOVE.send(controller, index);
         toneRemove(tone);
     }
 
     @Override
     public void clearAndReset() {
-        trigger(new OnSoundSourceClear());
+        controller.trigger(new OnSoundSourceClear());
 
         ArrayList<Tone> remove = new ArrayList<Tone>(tones.values());
         for (Tone tone : remove) {
             toneRemove(tone);
         }
 
-        RackMessage.BLANKRACK.send(getController());
+        RackMessage.BLANKRACK.send(controller);
 
-        trigger(new OnSoundSourceReset());
+        controller.trigger(new OnSoundSourceReset());
     }
 
     //--------------------------------------------------------------------------
@@ -278,57 +285,57 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
             throw new CausticException("{" + index + "} tone is already defined");
 
         if (!restoring)
-            RackMessage.CREATE.send(getController(), toneType.getValue(), toneName, index);
+            RackMessage.CREATE.send(controller, toneType.getValue(), toneName, index);
 
         Tone tone = null;
         switch (toneType) {
             case Bassline:
-                tone = new BasslineTone(getController());
+                tone = new BasslineTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Beatbox:
-                tone = new BeatboxTone(getController());
+                tone = new BeatboxTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case PCMSynth:
-                tone = new PCMSynthTone(getController());
+                tone = new PCMSynthTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case SubSynth:
-                tone = new SubSynthTone(getController());
+                tone = new SubSynthTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case PadSynth:
-                tone = new PadSynthTone(getController());
+                tone = new PadSynthTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Organ:
-                tone = new OrganTone(getController());
+                tone = new OrganTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Vocoder:
-                tone = new VocoderTone(getController());
+                tone = new VocoderTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case EightBitSynth:
-                tone = new EightBitSynth(getController());
+                tone = new EightBitSynth(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Modular:
-                tone = new ModularTone(getController());
+                tone = new ModularTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case FMSynth:
-                tone = new FMSynthTone(getController());
+                tone = new FMSynthTone(controller);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
@@ -349,18 +356,21 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     private void toneAdd(int index, Tone tone) {
         tones.put(index, tone);
-        trigger(new OnSoundSourceToneAdd(tone));
+        controller.trigger(new OnSoundSourceToneAdd(tone));
     }
 
     private void toneRemove(Tone tone) {
         tones.remove(tone.getIndex());
-        trigger(new OnSoundSourceToneRemove(tone));
+        controller.trigger(new OnSoundSourceToneRemove(tone));
     }
 
     //--------------------------------------------------------------------------
     // Public Observer API
     //--------------------------------------------------------------------------
 
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
     public static class OnSoundSourceToneAdd {
         private Tone tone;
 
@@ -373,6 +383,9 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         }
     }
 
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
     public static class OnSoundSourceToneRemove {
         private Tone tone;
 
@@ -385,6 +398,9 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         }
     }
 
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
     public static class OnSoundSourceInitialValue {
         private Object value;
 
@@ -397,12 +413,21 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
         }
     }
 
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
     public static class OnSoundSourceInitialValueReset {
     }
 
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
     public static class OnSoundSourceClear {
     }
 
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
     public static class OnSoundSourceReset {
     }
 
@@ -421,16 +446,16 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
 
     @Override
     public void loadSong(File causticFile) throws CausticException {
-        RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
+        RackMessage.LOAD_SONG.send(controller, causticFile.getAbsolutePath());
 
         loadMachines();
 
-        trigger(new OnSoundSourceSongLoad(causticFile));
+        controller.trigger(new OnSoundSourceSongLoad(causticFile));
     }
 
     @Override
     public File saveSong(String name) {
-        RackMessage.SAVE_SONG.send(getController(), name);
+        RackMessage.SAVE_SONG.send(controller, name);
         return RuntimeUtils.getCausticSongFile(name);
     }
 
@@ -450,8 +475,8 @@ public class SoundSource extends ControllerComponent implements ISoundSource {
     protected void loadMachines() {
         restoring = true;
         for (int i = 0; i < maxNumTones; i++) {
-            String name = RackMessage.QUERY_MACHINE_NAME.queryString(getController(), i);
-            String type = RackMessage.QUERY_MACHINE_TYPE.queryString(getController(), i);
+            String name = RackMessage.QUERY_MACHINE_NAME.queryString(controller, i);
+            String type = RackMessage.QUERY_MACHINE_TYPE.queryString(controller, i);
             if (name == null || name.equals(""))
                 continue;
 

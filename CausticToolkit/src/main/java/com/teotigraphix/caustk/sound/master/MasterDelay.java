@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterDelay extends MasterComponent {
 
+    private static final long serialVersionUID = 8432447801992841120L;
+
     //--------------------------------------------------------------------------
     // API
     //--------------------------------------------------------------------------

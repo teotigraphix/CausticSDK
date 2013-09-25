@@ -198,12 +198,12 @@ public class QueuePlayer {
     }
 
     private void mute(int trackIndex) {
-        getController().getSoundMixer().getChannel(trackIndex).setMute(true);
+        getController().getRack().getMixerChannel(trackIndex).setMute(true);
         log("Mute[" + trackIndex + "]");
     }
 
     private void unmute(int trackIndex) {
-        getController().getSoundMixer().getChannel(trackIndex).setMute(false);
+        getController().getRack().getMixerChannel(trackIndex).setMute(false);
         log("UnMute[" + trackIndex + "]");
     }
 

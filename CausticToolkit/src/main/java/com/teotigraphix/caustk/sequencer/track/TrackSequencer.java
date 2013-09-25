@@ -16,8 +16,6 @@ import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
-import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
@@ -133,16 +131,15 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
 
     @Override
     public void onRegister() {
+        getController().register(OnSoundSourceToneAdd.class,
+                new EventObserver<OnSoundSourceToneAdd>() {
+                    @Override
+                    public void trigger(OnSoundSourceToneAdd object) {
+                        trackAdd(object.getTone());
+                    }
+                });
 
-        final ISoundSource soundSource = getController().getSoundSource();
-        soundSource.register(OnSoundSourceToneAdd.class, new EventObserver<OnSoundSourceToneAdd>() {
-            @Override
-            public void trigger(OnSoundSourceToneAdd object) {
-                trackAdd(object.getTone());
-            }
-        });
-
-        soundSource.register(OnSoundSourceToneRemove.class,
+        getController().register(OnSoundSourceToneRemove.class,
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
@@ -168,11 +165,11 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
             throw new IOException("File does not exist:" + absoluteCausticFile);
 
         // clear sound source model
-        getController().getSoundSource().clearAndReset();
+        getController().getRack().clearAndReset();
 
         // load the machines, no restore
         try {
-            getController().getSoundSource().loadSong(absoluteCausticFile);
+            getController().getRack().loadSong(absoluteCausticFile);
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -181,7 +178,7 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
         trackSong = createSong(new File(name));
 
         // load all tone patterns into TrackPhrase/PhraseNote
-        for (Tone tone : getController().getSoundSource().getTones()) {
+        for (Tone tone : getController().getRack().getTones()) {
             int toneIndex = tone.getIndex();
             Track channel = getTrack(toneIndex);
             PatternSequencerComponent sequencer = tone.getPatternSequencer();
@@ -231,17 +228,17 @@ public class TrackSequencer extends ControllerComponent implements ITrackSequenc
                 }
             }
         }
-
-        MasterMixer masterMixer = new MasterMixer(getController());
-        getController().getSoundMixer().setMasterMixer(masterMixer);
-
-        // load all mixer channels
-        for (Tone tone : getController().getSoundSource().getTones()) {
-            masterMixer.addTone(tone);
-        }
-        // Restores volume, equalizer, limiter, delay, reverb
-        // all channel's eq and effects
-        masterMixer.restore();
+        //
+        //        MasterMixer masterMixer = new MasterMixer(getController());
+        //        getController().getSoundMixer().setMasterMixer(masterMixer);
+        //
+        //        // load all mixer channels
+        //        for (Tone tone : getController().getSoundSource().getTones()) {
+        //            masterMixer.addTone(tone);
+        //        }
+        //        // Restores volume, equalizer, limiter, delay, reverb
+        //        // all channel's eq and effects
+        //        masterMixer.restore();
 
     }
 

@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterEqualizer extends MasterComponent {
 
+    private static final long serialVersionUID = 8263605219136496486L;
+
     //--------------------------------------------------------------------------
     // API
     //--------------------------------------------------------------------------

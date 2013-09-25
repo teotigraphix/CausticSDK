@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.sound.mixer;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.sound.master.MasterDelay;
 import com.teotigraphix.caustk.sound.master.MasterEqualizer;
 import com.teotigraphix.caustk.sound.master.MasterLimiter;
@@ -34,7 +34,9 @@ import com.teotigraphix.caustk.sound.master.MasterReverb;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MasterMixer implements ISerialize, IRestore {
+public class MasterMixer implements IRestore, Serializable {
+
+    private static final long serialVersionUID = -1979870871424443494L;
 
     private transient ICaustkController controller;
 
@@ -170,18 +172,18 @@ public class MasterMixer implements ISerialize, IRestore {
         }
     }
 
-    @Override
-    public void sleep() {
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
-        equalizer.setController(controller);
-        limiter.setController(controller);
-        delay.setController(controller);
-        reverb.setController(controller);
-    }
+    //    @Override
+    //    public void sleep() {
+    //    }
+    //
+    //    @Override
+    //    public void wakeup(ICaustkController controller) {
+    //        this.controller = controller;
+    //        equalizer.setController(controller);
+    //        limiter.setController(controller);
+    //        delay.setController(controller);
+    //        reverb.setController(controller);
+    //    }
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {
         return ExceptionUtils.newRangeException(control, range, value);

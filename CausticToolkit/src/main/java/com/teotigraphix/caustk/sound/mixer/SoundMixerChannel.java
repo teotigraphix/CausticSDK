@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.sound.mixer;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,13 +29,14 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.MixerMessage;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.sound.IEffect;
 import com.teotigraphix.caustk.sound.effect.EffectType;
 import com.teotigraphix.caustk.sound.effect.EffectUtils;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class SoundMixerChannel implements ISerialize, IRestore {
+public class SoundMixerChannel implements Serializable, IRestore {
+
+    private static final long serialVersionUID = 2685245138702311763L;
 
     private transient ICaustkController controller;
 
@@ -318,19 +320,6 @@ public class SoundMixerChannel implements ISerialize, IRestore {
     }
 
     public SoundMixerChannel(ICaustkController controller) {
-        this.controller = controller;
-    }
-
-    //--------------------------------------------------------------------------
-    // ISerialize API
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void sleep() {
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
         this.controller = controller;
     }
 

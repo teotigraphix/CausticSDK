@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterLimiter extends MasterComponent {
 
+    private static final long serialVersionUID = 7366612792215282397L;
+
     //--------------------------------------------------------------------------
     // API
     //--------------------------------------------------------------------------
