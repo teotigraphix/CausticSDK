@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class WavSamplerChannel extends ToneComponent {
 
+    private static final long serialVersionUID = -6450972717386437242L;
+
     private boolean isSelected;
 
     private boolean isMute;

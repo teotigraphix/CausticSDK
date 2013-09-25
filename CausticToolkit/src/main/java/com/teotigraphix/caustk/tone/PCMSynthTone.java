@@ -30,6 +30,8 @@ import com.teotigraphix.caustk.tone.components.pcmsynth.PCMTunerComponent;
 
 public class PCMSynthTone extends Tone {
 
+    private static final long serialVersionUID = -2420559479487449269L;
+
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
     }

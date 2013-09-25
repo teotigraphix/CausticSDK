@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class StereoLPF extends ModularComponentBase {
 
+    private static final long serialVersionUID = -8979940053942709733L;
+
     //----------------------------------
     // slope
     //----------------------------------

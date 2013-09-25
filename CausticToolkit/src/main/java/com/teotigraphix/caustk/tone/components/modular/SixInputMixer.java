@@ -26,6 +26,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
  */
 public class SixInputMixer extends MixerBase {
 
+    private static final long serialVersionUID = 2843497326900355744L;
+
     public SixInputMixer() {
     }
 

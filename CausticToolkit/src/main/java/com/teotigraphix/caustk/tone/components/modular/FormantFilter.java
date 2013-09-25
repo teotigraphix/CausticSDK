@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class FormantFilter extends ModularComponentBase {
 
+    private static final long serialVersionUID = -4357584808914419776L;
+
     //----------------------------------
     // formant1
     //----------------------------------

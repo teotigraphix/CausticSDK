@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PCMTunerComponent extends ToneComponent {
 
+    private static final long serialVersionUID = 5398698218063578446L;
+
     //--------------------------------------------------------------------------
     //
     // IPitchTuner API :: Properties

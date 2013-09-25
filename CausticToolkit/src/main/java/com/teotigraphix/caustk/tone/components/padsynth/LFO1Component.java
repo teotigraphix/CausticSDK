@@ -6,6 +6,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class LFO1Component extends ToneComponent {
 
+    private static final long serialVersionUID = 2752827781264521808L;
+
     //--------------------------------------------------------------------------
     // Properties API
     //--------------------------------------------------------------------------

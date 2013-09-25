@@ -7,6 +7,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class VolumeComponent extends ToneComponent {
 
+    private static final long serialVersionUID = 2440829161130284151L;
+
     //----------------------------------
     // out
     //----------------------------------

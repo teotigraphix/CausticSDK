@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class Oscillator extends ModularComponentBase {
 
+    private static final long serialVersionUID = -4868841470853676163L;
+
     //----------------------------------
     // waveform
     //----------------------------------

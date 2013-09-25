@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class CrossoverModule extends ModularComponentBase {
 
+    private static final long serialVersionUID = -6816954399723677368L;
+
     //----------------------------------
     // frequency
     //----------------------------------

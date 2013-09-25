@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class Arpeggiator extends ModularComponentBase {
 
+    private static final long serialVersionUID = 3563528982076495580L;
+
     //----------------------------------
     // active
     //----------------------------------

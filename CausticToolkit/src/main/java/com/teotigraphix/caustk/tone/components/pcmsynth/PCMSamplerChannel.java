@@ -30,6 +30,8 @@ import com.teotigraphix.caustk.tone.components.pcmsynth.PCMSamplerComponent.Play
  */
 public class PCMSamplerChannel extends ToneComponent {
 
+    private static final long serialVersionUID = -8709245253837063500L;
+
     private transient PCMSamplerComponent sampler;
 
     private int mIndex;

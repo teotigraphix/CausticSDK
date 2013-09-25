@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class SubOscillator extends ModularComponentBase {
 
+    private static final long serialVersionUID = -7225324156594409550L;
+
     //----------------------------------
     // octave
     //----------------------------------

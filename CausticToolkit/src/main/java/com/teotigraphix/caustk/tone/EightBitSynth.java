@@ -23,13 +23,15 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class EightBitSynth extends Tone {
 
+    private static final long serialVersionUID = -156077068949440863L;
+
     public EightBitSynth(ICaustkController controller) {
         super(ToneType.EightBitSynth, controller);
     }
 
     public static void setup(Tone tone) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

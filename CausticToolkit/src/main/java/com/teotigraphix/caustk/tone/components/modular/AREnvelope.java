@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class AREnvelope extends ModularComponentBase {
 
+    private static final long serialVersionUID = -6467151820413369879L;
+
     //----------------------------------
     // attack
     //----------------------------------

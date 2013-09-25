@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.core.osc.FilterMessage;
 
 public class SynthFilterComponent extends FilterComponentBase {
 
+    private static final long serialVersionUID = 1449248365168587589L;
+
     //--------------------------------------------------------------------------
     //
     // IFilter API :: Properties

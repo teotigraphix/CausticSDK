@@ -27,6 +27,8 @@ import com.teotigraphix.caustk.tone.components.beatbox.WavSamplerComponent;
 
 public class BeatboxTone extends RhythmTone {
 
+    private static final long serialVersionUID = 8581751745248939541L;
+
     public VolumeComponent getVolume() {
         return getComponent(VolumeComponent.class);
     }

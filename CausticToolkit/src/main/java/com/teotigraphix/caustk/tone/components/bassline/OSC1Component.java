@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class OSC1Component extends ToneComponent {
 
+    private static final long serialVersionUID = -3059988203136380350L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

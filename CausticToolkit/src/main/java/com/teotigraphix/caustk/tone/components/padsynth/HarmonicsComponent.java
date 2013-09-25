@@ -6,6 +6,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class HarmonicsComponent extends ToneComponent {
 
+    private static final long serialVersionUID = 3331966880966325296L;
+
     //--------------------------------------------------------------------------
     // Public API
     //--------------------------------------------------------------------------

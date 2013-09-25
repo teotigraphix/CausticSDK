@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.tone.components.FilterComponentBase;
 
 public class FilterComponent extends FilterComponentBase {
 
+    private static final long serialVersionUID = 8804936771087356202L;
+
     //--------------------------------------------------------------------------
     //
     // IBasslineFilter API :: Properties

@@ -27,6 +27,8 @@ import com.teotigraphix.caustk.core.osc.ModularMessage;
 
 public abstract class MixerBase extends ModularComponentBase {
 
+    private static final long serialVersionUID = 699271036505535007L;
+
     private Map<Integer, Float> gains = new HashMap<Integer, Float>();
 
     //----------------------------------

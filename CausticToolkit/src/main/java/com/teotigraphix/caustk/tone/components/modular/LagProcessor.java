@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class LagProcessor extends ModularComponentBase {
 
+    private static final long serialVersionUID = -5684862774492928244L;
+
     //----------------------------------
     // rateA
     //----------------------------------

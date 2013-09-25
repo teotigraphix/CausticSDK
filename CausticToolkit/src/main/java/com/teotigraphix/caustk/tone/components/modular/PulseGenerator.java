@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class PulseGenerator extends ModularComponentBase {
 
+    private static final long serialVersionUID = 3812255300547222232L;
+
     //----------------------------------
     // octave
     //----------------------------------

@@ -23,13 +23,15 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class FMSynthTone extends Tone {
 
+    private static final long serialVersionUID = -5509574532999204394L;
+
     public FMSynthTone(ICaustkController controller) {
         super(ToneType.FMSynth, controller);
     }
 
     public static void setup(Tone tone) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

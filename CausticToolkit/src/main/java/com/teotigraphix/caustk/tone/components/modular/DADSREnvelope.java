@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class DADSREnvelope extends ModularComponentBase {
 
+    private static final long serialVersionUID = -5173941730219276482L;
+
     //----------------------------------
     // delay
     //----------------------------------

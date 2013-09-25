@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class Saturator extends ModularComponentBase {
 
+    private static final long serialVersionUID = 2687875569243893528L;
+
     //----------------------------------
     // amount
     //----------------------------------

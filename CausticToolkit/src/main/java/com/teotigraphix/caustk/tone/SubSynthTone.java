@@ -31,6 +31,8 @@ import com.teotigraphix.caustk.tone.components.subsynth.Osc2Component;
 
 public class SubSynthTone extends Tone {
 
+    private static final long serialVersionUID = -2297739026093635478L;
+
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
     }

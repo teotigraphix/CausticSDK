@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class MiniLFO extends ModularComponentBase {
 
+    private static final long serialVersionUID = 7892047313937319362L;
+
     //----------------------------------
     // waveForm
     //----------------------------------

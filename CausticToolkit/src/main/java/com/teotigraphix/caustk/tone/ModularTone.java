@@ -52,6 +52,8 @@ import com.teotigraphix.caustk.tone.components.modular.TwoInputMixer;
 
 public class ModularTone extends Tone {
 
+    private static final long serialVersionUID = 8381426654777785594L;
+
     private transient ModularPanel modularPanel;
 
     public ModularPanel getPanel() {

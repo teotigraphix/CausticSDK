@@ -6,6 +6,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class MorphComponent extends ToneComponent {
 
+    private static final long serialVersionUID = -4085406907937946325L;
+
     //----------------------------------
     // blend
     //----------------------------------

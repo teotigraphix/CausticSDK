@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class SVFilter extends ModularComponentBase {
 
+    private static final long serialVersionUID = 856191758036816442L;
+
     //----------------------------------
     // cutoff
     //----------------------------------

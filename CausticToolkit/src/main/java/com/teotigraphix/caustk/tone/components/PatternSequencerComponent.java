@@ -30,6 +30,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PatternSequencerComponent extends ToneComponent {
 
+    private static final long serialVersionUID = -6509903131350285187L;
+
     //--------------------------------------------------------------------------
     //
     // IPatternSequencer API :: Properties

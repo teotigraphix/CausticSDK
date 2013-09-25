@@ -25,6 +25,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public abstract class ModularComponentBase extends ToneComponent {
 
+    private static final long serialVersionUID = -3543223148580499919L;
+
     /**
      * Returns the number of bays this component requires.
      */

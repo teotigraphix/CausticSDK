@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class PanModule extends ModularComponentBase {
 
+    private static final long serialVersionUID = -2923138358491253694L;
+
     //----------------------------------
     // inGain
     //----------------------------------

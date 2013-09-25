@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class ModularBayComponent extends ToneComponent {
 
+    private static final long serialVersionUID = 8983595087609114981L;
+
     public ModularBayComponent() {
     }
 

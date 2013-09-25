@@ -6,6 +6,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class VolumeEnvelopeComponent extends ToneComponent {
 
+    private static final long serialVersionUID = 8080253779197423680L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

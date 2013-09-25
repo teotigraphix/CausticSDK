@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class FMPair extends ModularComponentBase {
 
+    private static final long serialVersionUID = 3047411645682868103L;
+
     //----------------------------------
     // octave1
     //----------------------------------

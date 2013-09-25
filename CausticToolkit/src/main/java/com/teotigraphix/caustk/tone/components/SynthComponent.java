@@ -27,6 +27,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class SynthComponent extends ToneComponent {
 
+    private static final long serialVersionUID = 697299464998834747L;
+
     private transient String absolutePresetPath;
 
     public String getPresetPath() {

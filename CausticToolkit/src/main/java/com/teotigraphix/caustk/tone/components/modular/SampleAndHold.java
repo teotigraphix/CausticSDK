@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class SampleAndHold extends ModularComponentBase {
 
+    private static final long serialVersionUID = 9043656708276056878L;
+
     //----------------------------------
     // rate
     //----------------------------------

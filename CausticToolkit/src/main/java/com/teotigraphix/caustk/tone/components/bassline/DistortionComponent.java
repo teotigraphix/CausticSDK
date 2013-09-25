@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class DistortionComponent extends ToneComponent {
 
+    private static final long serialVersionUID = -8956243012616301286L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

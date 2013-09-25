@@ -28,6 +28,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class WavSamplerComponent extends ToneComponent {
 
+    private static final long serialVersionUID = -2843334335489789702L;
+
     private static final int NUM_CHANNELS = 8;
 
     private Map<Integer, WavSamplerChannel> map;

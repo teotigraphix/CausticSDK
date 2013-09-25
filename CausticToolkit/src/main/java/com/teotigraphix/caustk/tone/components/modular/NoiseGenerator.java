@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class NoiseGenerator extends ModularComponentBase {
 
+    private static final long serialVersionUID = -7758596654170281716L;
+
     //----------------------------------
     // lfGain
     //----------------------------------

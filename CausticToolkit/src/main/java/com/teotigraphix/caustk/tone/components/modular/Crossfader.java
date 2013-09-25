@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class Crossfader extends ModularComponentBase {
 
+    private static final long serialVersionUID = -3655275878494551658L;
+
     //----------------------------------
     // gainA
     //----------------------------------

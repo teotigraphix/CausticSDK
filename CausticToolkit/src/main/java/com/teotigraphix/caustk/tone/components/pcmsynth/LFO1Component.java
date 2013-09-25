@@ -25,6 +25,8 @@ import com.teotigraphix.caustk.tone.components.subsynth.Osc2Component.Osc2WaveFo
 
 public class LFO1Component extends ToneComponent {
 
+    private static final long serialVersionUID = 7400508158628813253L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

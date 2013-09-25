@@ -23,6 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class ModularPanel extends ModularComponentBase {
 
+    private static final long serialVersionUID = 2758979796475610030L;
+
     public ModularPanel() {
     }
 

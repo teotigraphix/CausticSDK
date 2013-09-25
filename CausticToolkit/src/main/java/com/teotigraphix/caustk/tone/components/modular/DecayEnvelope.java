@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.tone.components.modular.DADSREnvelope.EnvelopeSlo
 
 public class DecayEnvelope extends ModularComponentBase {
 
+    private static final long serialVersionUID = -2779971374310641253L;
+
     //----------------------------------
     // decay
     //----------------------------------

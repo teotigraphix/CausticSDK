@@ -19,19 +19,20 @@
 
 package com.teotigraphix.caustk.tone;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 
-public abstract class Tone implements ISerialize, IRestore {
+public abstract class Tone implements IRestore, Serializable {
+
+    private static final long serialVersionUID = 2917863803738244084L;
 
     private transient ICaustkController controller;
 
@@ -219,8 +220,6 @@ public abstract class Tone implements ISerialize, IRestore {
 
     private transient Map<Class<? extends ToneComponent>, ToneComponent> internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
 
-    private Map<String, Map<String, String>> components = new HashMap<String, Map<String, String>>();
-
     public void addComponent(Class<? extends ToneComponent> clazz, ToneComponent instance) {
         internalComponents.put(clazz, instance);
         instance.setTone(this);
@@ -242,56 +241,56 @@ public abstract class Tone implements ISerialize, IRestore {
     //--------------------------------------------------------------------------
     // ISerialize API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public void sleep() {
-        components = new HashMap<String, Map<String, String>>();
-        for (ToneComponent toneComponent : internalComponents.values()) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            String className = toneComponent.getClass().getName();
-            if (toneComponent instanceof ISerialize) {
-                String data = getController().getSerializeService().toString(toneComponent);
-                map.put("state", data);
-            }
-            components.put(className, map);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void wakeup(ICaustkController controller) {
-        // the wakeup() method acts like the Constructor when the instance is deserialized
-        this.controller = controller;
-        internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
-        for (Entry<String, Map<String, String>> entry : components.entrySet()) {
-            String className = entry.getKey();
-            Map<String, String> component = entry.getValue();
-            String data = "";
-            Class<?> cls = null;
-            try {
-                cls = Class.forName(className);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            if (component.containsKey("state")) {
-                data = component.get("state");
-            }
-
-            ToneComponent instance = (ToneComponent)getController().getSerializeService()
-                    .fromString(data, cls);
-            if (instance == null) {
-                try {
-                    instance = (ToneComponent)cls.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-            addComponent((Class<? extends ToneComponent>)cls, instance);
-        }
-    }
+    //
+    //    @Override
+    //    public void sleep() {
+    //        components = new HashMap<String, Map<String, String>>();
+    //        for (ToneComponent toneComponent : internalComponents.values()) {
+    //            HashMap<String, String> map = new HashMap<String, String>();
+    //            String className = toneComponent.getClass().getName();
+    //            if (toneComponent instanceof ISerialize) {
+    //                String data = getController().getSerializeService().toString(toneComponent);
+    //                map.put("state", data);
+    //            }
+    //            components.put(className, map);
+    //        }
+    //    }
+    //
+    //    @SuppressWarnings("unchecked")
+    //    @Override
+    //    public void wakeup(ICaustkController controller) {
+    //        // the wakeup() method acts like the Constructor when the instance is deserialized
+    //        this.controller = controller;
+    //        internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
+    //        for (Entry<String, Map<String, String>> entry : components.entrySet()) {
+    //            String className = entry.getKey();
+    //            Map<String, String> component = entry.getValue();
+    //            String data = "";
+    //            Class<?> cls = null;
+    //            try {
+    //                cls = Class.forName(className);
+    //            } catch (ClassNotFoundException e) {
+    //                e.printStackTrace();
+    //            }
+    //
+    //            if (component.containsKey("state")) {
+    //                data = component.get("state");
+    //            }
+    //
+    //            ToneComponent instance = (ToneComponent)getController().getSerializeService()
+    //                    .fromString(data, cls);
+    //            if (instance == null) {
+    //                try {
+    //                    instance = (ToneComponent)cls.newInstance();
+    //                } catch (InstantiationException e) {
+    //                    e.printStackTrace();
+    //                } catch (IllegalAccessException e) {
+    //                    e.printStackTrace();
+    //                }
+    //            }
+    //            addComponent((Class<? extends ToneComponent>)cls, instance);
+    //        }
+    //    }
 
     @Override
     public void restore() {

@@ -5,6 +5,8 @@ import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 
 public class VolumeComponent extends com.teotigraphix.caustk.tone.components.VolumeComponent {
 
+    private static final long serialVersionUID = -4608825622962824885L;
+
     //----------------------------------
     // gain1
     //----------------------------------

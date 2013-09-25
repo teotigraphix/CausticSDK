@@ -26,6 +26,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
  */
 public class ThreeInputMixer extends MixerBase {
 
+    private static final long serialVersionUID = -1121981348309641758L;
+
     public ThreeInputMixer() {
     }
 

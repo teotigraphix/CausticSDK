@@ -28,6 +28,8 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PCMSamplerComponent extends ToneComponent {
 
+    private static final long serialVersionUID = -6958690619316633552L;
+
     private static final int NUM_SAMPLER_CHANNELS = 64;
 
     private Map<Integer, PCMSamplerChannel> channels;

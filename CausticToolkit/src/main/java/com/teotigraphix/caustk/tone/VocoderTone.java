@@ -23,13 +23,15 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class VocoderTone extends Tone {
 
+    private static final long serialVersionUID = 6169967393196891391L;
+
     public VocoderTone(ICaustkController controller) {
         super(ToneType.Vocoder, controller);
     }
 
     public static void setup(Tone tone) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }
