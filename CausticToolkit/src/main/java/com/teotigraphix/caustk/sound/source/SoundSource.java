@@ -55,7 +55,6 @@ import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
-import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -170,21 +169,21 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     @Override
     public <T extends Tone> T createTone(String data) throws CausticException {
         Tone tone = null;
-        try {
-            tone = getController().getSerializeService().fromString(data,
-                    ToneUtils.getToneClass(data));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        int index = nextIndex();
-        tone.setIndex(index);
-
-        RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
-                index);
-
-        toneAdd(index, tone);
-
+        //        try {
+        //            tone = getController().getSerializeService().fromString(data,
+        //                    ToneUtils.getToneClass(data));
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
+        //
+        //        int index = nextIndex();
+        //        tone.setIndex(index);
+        //
+        //        RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
+        //                index);
+        //
+        //        toneAdd(index, tone);
+        //
         return (T)tone;
     }
 

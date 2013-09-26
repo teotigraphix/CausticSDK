@@ -23,50 +23,86 @@ import java.io.Serializable;
 
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
+/**
+ * A single note held within a {@link TriggerMap}.
+ */
 public class Note implements Serializable {
 
     private static final long serialVersionUID = -3142765703303002851L;
 
-    @SuppressWarnings("unused")
-    private String data;
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
 
-    private transient int pitch;
+    //----------------------------------
+    // pitch
+    //----------------------------------
+
+    private int pitch;
 
     public int getPitch() {
         return pitch;
     }
 
-    private transient float start;
+    //----------------------------------
+    // start
+    //----------------------------------
+
+    private float start;
 
     public float getStart() {
         return start;
     }
 
-    private transient float end;
+    //----------------------------------
+    // end
+    //----------------------------------
+
+    private float end;
 
     public float getEnd() {
         return end;
     }
 
+    //----------------------------------
+    // gate
+    //----------------------------------
+
     public float getGate() {
         return end - start;
     }
 
-    private transient float velocity;
+    //----------------------------------
+    // velocity
+    //----------------------------------
+
+    private float velocity;
 
     public float getVelocity() {
         return velocity;
     }
 
-    private transient int flags;
+    //----------------------------------
+    // flags
+    //----------------------------------
+
+    private int flags;
 
     public int getFlags() {
         return flags;
     }
 
+    //----------------------------------
+    // step
+    //----------------------------------
+
     public final int getStep(Resolution resolution) {
         return Resolution.toStep(start, resolution);
     }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public Note(String data) {
         String[] split = data.split(" ");
@@ -78,12 +114,12 @@ public class Note implements Serializable {
     }
 
     public Note(int pitch, float start, float end, float velocity, int flags) {
-        this.pitch = pitch;
-        this.start = start;
-        this.end = end;
-        this.velocity = velocity;
-        this.flags = flags;
+        update(pitch, start, end, velocity, flags);
     }
+
+    //--------------------------------------------------------------------------
+    // Public Method API
+    //--------------------------------------------------------------------------
 
     public void update(int pitch, float start, float end, float velocity, int flags) {
         this.pitch = pitch;
@@ -108,28 +144,6 @@ public class Note implements Serializable {
         return sb.toString();
     }
 
-    //
-    //    @Override
-    //    public void sleep() {
-    //        data = getNoteData();
-    //    }
-    //
-    //    @Override
-    //    public void wakeup(ICaustkController controller) {
-    //        if (data != null) {
-    //            String[] split = data.split("\\|");
-    //            for (String notes : split) {
-    //                String[] chunks = notes.split(" ");
-    //                start = Float.valueOf(chunks[0]);
-    //                pitch = Integer.valueOf(chunks[1]);
-    //                velocity = Float.valueOf(chunks[2]);
-    //                end = Float.valueOf(chunks[3]);
-    //                flags = Integer.valueOf(chunks[4]);
-    //            }
-    //            data = null;
-    //        }
-    //    }
-
     public String serialze() {
         final StringBuilder sb = new StringBuilder();
         sb.append(start);
@@ -148,5 +162,4 @@ public class Note implements Serializable {
     public String toString() {
         return "[" + start + "]Pitch:" + pitch + " Gate:" + getGate();
     }
-
 }

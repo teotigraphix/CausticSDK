@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnPhraseChange;
@@ -28,26 +27,18 @@ public class Phrase implements Serializable {
 
     private TriggerMap triggerMap;
 
-    private transient ICaustkController controller;
+    private Track track;
 
-    public ICaustkController getController() {
-        return controller;
-    }
-
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
+    public final Track getTrack() {
+        return track;
     }
 
     final IDispatcher getDispatcher() {
-        return controller;
+        return track.getDispatcher();
     }
 
     public final Tone getTone() {
-        return controller.getRack().getTone(toneIndex);
-    }
-
-    public final Track getTrack() {
-        return controller.getRack().getTrack(toneIndex);
+        return track.getRack().getTone(toneIndex);
     }
 
     //--------------------------------------------------------------------------
@@ -350,8 +341,8 @@ public class Phrase implements Serializable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Phrase(ICaustkController controller, int toneIndex, int bank, int pattern) {
-        this.controller = controller;
+    public Phrase(Track track, int toneIndex, int bank, int pattern) {
+        this.track = track;
         this.toneIndex = toneIndex;
         this.bank = bank;
         this.pattern = pattern;

@@ -133,8 +133,6 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
     @Override
     protected void commitController() {
         super.commitController();
-
-        trackSong.setController(getController());
     }
 
     @Override
@@ -274,7 +272,7 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
         if (!absoluteSongDir.exists())
             FileUtils.forceMkdir(absoluteSongDir);
 
-        trackSong = new TrackSong(getController(), songFile);
+        trackSong = new TrackSong(this, songFile);
         getController().trigger(new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
 
         saveTrackSong();
@@ -286,9 +284,9 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
         if (!trackSong.exists())
             return;
 
-        File absoluteTargetSongFile = getAbsoluteSongFile();
-        getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
-        getController().trigger(new OnTrackSongChange(TrackSongChangeKind.Save, trackSong));
+        //        File absoluteTargetSongFile = getAbsoluteSongFile();
+        //        getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
+        //        getController().trigger(new OnTrackSongChange(TrackSongChangeKind.Save, trackSong));
     }
 
     protected File getAbsoluteSongFile() {

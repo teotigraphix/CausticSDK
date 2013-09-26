@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackChange;
@@ -26,24 +26,18 @@ public class Track implements Serializable {
 
     private static final long serialVersionUID = -1609075233236673789L;
 
-    private transient ICaustkController controller;
+    private TrackSong trackSong;
 
-    public ICaustkController getController() {
-        return controller;
+    public final TrackSong getTrackSong() {
+        return trackSong;
     }
 
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
-
-        for (Map<Integer, Phrase> map : phrases.values()) {
-            for (Phrase phrase : map.values()) {
-                phrase.setController(controller);
-            }
-        }
+    public final Rack getRack() {
+        return trackSong.getRack();
     }
 
     final IDispatcher getDispatcher() {
-        return controller;
+        return trackSong.getDispatcher();
     }
 
     Map<Integer, Map<Integer, Phrase>> phrases = new TreeMap<Integer, Map<Integer, Phrase>>();
@@ -56,7 +50,7 @@ public class Track implements Serializable {
      * Returns the {@link SoundMixerChannel} for the track.
      */
     public SoundMixerChannel getMixerChannel() {
-        return controller.getRack().getMixerChannel(getIndex());
+        return getTrackSong().getRack().getMixerChannel(getIndex());
     }
 
     /**
@@ -64,7 +58,7 @@ public class Track implements Serializable {
      * {@link ISoundSource}.
      */
     public Tone getTone() {
-        return controller.getRack().getTone(getIndex());
+        return getTrackSong().getRack().getTone(getIndex());
     }
 
     //----------------------------------
@@ -182,7 +176,7 @@ public class Track implements Serializable {
         }
         Phrase phrase = banks.get(pattern);
         if (phrase == null) {
-            phrase = new Phrase(controller, index, bank, pattern);
+            phrase = new Phrase(this, index, bank, pattern);
             banks.put(pattern, phrase);
         }
         return phrase;
@@ -200,8 +194,8 @@ public class Track implements Serializable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Track(ICaustkController controller, int index) {
-        this.controller = controller;
+    public Track(TrackSong trackSong, int index) {
+        this.trackSong = trackSong;
         this.index = index;
     }
 
@@ -341,7 +335,7 @@ public class Track implements Serializable {
 
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Add, this, item));
 
-        controller.getRack().addPattern(getTone(), item.getBankIndex(), item.getPatternIndex(),
+        getTrackSong().getRack().addPattern(getTone(), item.getBankIndex(), item.getPatternIndex(),
                 item.getStartMeasure(), item.getEndMeasure());
 
         return item;

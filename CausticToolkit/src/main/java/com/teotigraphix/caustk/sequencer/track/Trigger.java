@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
@@ -39,10 +40,18 @@ public class Trigger implements Serializable {
 
     private float beat;
 
+    /**
+     * The beat marker of this trigger.
+     */
     public float getBeat() {
         return beat;
     }
 
+    /**
+     * Convert the beat into a step based on the passed {@link Resolution}.
+     * 
+     * @param resolution The {@link Resolution} used to calculate the step.
+     */
     public int getStep(Resolution resolution) {
         return Resolution.toStep(beat, resolution);
     }
@@ -53,12 +62,21 @@ public class Trigger implements Serializable {
 
     private boolean selected = false;
 
-    public void setSelected(boolean value) {
-        selected = value;
-    }
-
+    /**
+     * Whether the trigger is selected.
+     */
     public boolean isSelected() {
         return selected;
+    }
+
+    /**
+     * Set the trigger selected, may mean different things in different
+     * applications.
+     * 
+     * @param value Selected or unselected.
+     */
+    public void setSelected(boolean value) {
+        selected = value;
     }
 
     //----------------------------------
@@ -67,7 +85,14 @@ public class Trigger implements Serializable {
 
     private List<Note> notes;
 
-    public List<Note> getNotes() {
+    /**
+     * The collections of notes the trigger holds.
+     * <p>
+     * Notes are added and removed with
+     * {@link #addNote(float, int, float, float, int)} and
+     * {@link #removeNote(int)}.
+     */
+    public Collection<Note> getNotes() {
         return notes;
     }
 
@@ -81,13 +106,24 @@ public class Trigger implements Serializable {
     }
 
     //--------------------------------------------------------------------------
-    // Method API
+    // Public Method API
     //--------------------------------------------------------------------------
 
+    /**
+     * Returns whether a note exists within the collection at the specified MIDI
+     * pitch.
+     * 
+     * @param pitch The note MIDI pitch.
+     */
     public boolean hasNote(int pitch) {
         return getNote(pitch) != null;
     }
 
+    /**
+     * Returns a {@link Note} at the specified pitch.
+     * 
+     * @param pitch The note MIDI pitch.
+     */
     public Note getNote(int pitch) {
         for (Note note : notes) {
             if (note.getPitch() == pitch)
@@ -96,6 +132,16 @@ public class Trigger implements Serializable {
         return null;
     }
 
+    /**
+     * Add a note to the collection.
+     * 
+     * @param beat The start float beat.
+     * @param pitch The note MIDI pitch
+     * @param gate The gate length. (0..1)
+     * @param velocity The velocity. (0..1)
+     * @param flags The note flags (0, 1, 2) bit shift.
+     * @throws IllegalStateException note already exists
+     */
     public Note addNote(float beat, int pitch, float gate, float velocity, int flags) {
         if (hasNote(pitch)) {
             throw new IllegalStateException("Note exists");
@@ -105,12 +151,22 @@ public class Trigger implements Serializable {
         return note;
     }
 
+    /**
+     * Adds a note to the collection.
+     * 
+     * @param note The note to add.
+     */
     public void addNote(Note note) {
         if (hasNote(note.getPitch()))
             return;
         getNotes().add(note);
     }
 
+    /**
+     * Removes a note at the specified pitch.
+     * 
+     * @param pitch The note pitch
+     */
     public Note removeNote(int pitch) {
         Note note = getNote(pitch);
         if (note != null) {
@@ -119,9 +175,18 @@ public class Trigger implements Serializable {
         return note;
     }
 
+    /**
+     * Removes a note using it's pitch as the key.
+     * 
+     * @param note The note to remove, must exist in the collection.
+     */
+    public void removeNote(Note note) {
+        removeNote(note.getPitch());
+    }
+
     @Override
     public String toString() {
-        return "[Trigger(" + beat + "," + getStep(Resolution.SIXTEENTH) + ")]";
+        return "[Trigger(" + getStep(Resolution.SIXTEENTH) + ", " + notes + ")]";
     }
 
 }

@@ -124,8 +124,9 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     protected void save() throws IOException {
         File localFile = getController().getProjectManager().getProject()
                 .getAbsoluteResource(new File("songs", queueSong.getFile().getPath()).getPath());
+        @SuppressWarnings("unused")
         File absoluteTargetSongFile = localFile.getAbsoluteFile();
-        getController().getSerializeService().save(absoluteTargetSongFile, queueSong);
+        //        getController().getSerializeService().save(absoluteTargetSongFile, queueSong);
     }
 
     private File toFile(TrackSong trackSong) {
@@ -144,9 +145,10 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
     protected void load(TrackSong trackSong) {
         File songsDirectory = trackSong.getAbsoluteFile().getParentFile();
         String fileName = trackSong.getFileName() + "Queue.ctks";
+        @SuppressWarnings("unused")
         File file = new File(songsDirectory, fileName);
 
-        queueSong = getController().getSerializeService().fromFile(file, QueueSong.class);
+        //        queueSong = getController().getSerializeService().fromFile(file, QueueSong.class);
     }
 
     @Override

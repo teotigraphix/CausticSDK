@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.sequencer.track;
 
@@ -20,22 +38,40 @@ public class TriggerMap implements Serializable {
 
     private static final long serialVersionUID = -7413118378233405467L;
 
+    private int indciesInView = 16;
+
     // <beat, Trigger<List<Note>>
     private Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
 
-    private Phrase trackPhrase;
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
-    protected Tone getTone() {
-        return trackPhrase.getTone();
+    private Phrase phrase;
+
+    public Phrase getPhrase() {
+        return phrase;
+    }
+
+    public Tone getTone() {
+        return phrase.getTone();
     }
 
     public PatternSequencerComponent getPatternSequencer() {
         return getTone().getPatternSequencer();
     }
 
-    public TriggerMap(Phrase trackPhrase) {
-        this.trackPhrase = trackPhrase;
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public TriggerMap(Phrase phrase) {
+        this.phrase = phrase;
     }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Returns the {@link Trigger} at the specified beat.
@@ -50,7 +86,7 @@ public class TriggerMap implements Serializable {
     }
 
     public final Trigger getTrigger(int step) {
-        return getTrigger(Resolution.toBeat(step, trackPhrase.getResolution()));
+        return getTrigger(Resolution.toBeat(step, phrase.getResolution()));
     }
 
     /**
@@ -65,11 +101,11 @@ public class TriggerMap implements Serializable {
     public List<Trigger> getViewTriggers() {
         ArrayList<Trigger> result = new ArrayList<Trigger>();
         // find the start (position - 1) * resolution
-        int fromStep = (trackPhrase.getPosition() - 1) * indciesInView;
+        int fromStep = (phrase.getPosition() - 1) * indciesInView;
         // find the end fromIndex + scale
         int toStep = endStepInView(fromStep);
         for (Trigger trigger : map.values()) {
-            int step = trigger.getStep(trackPhrase.getResolution());
+            int step = trigger.getStep(phrase.getResolution());
             if (step >= fromStep && step < toStep)
                 result.add(trigger);
         }
@@ -80,7 +116,7 @@ public class TriggerMap implements Serializable {
     public Map<Integer, Trigger> getViewTriggerMap() {
         Map<Integer, Trigger> result = new HashMap<Integer, Trigger>();
         for (Trigger trigger : getViewTriggers()) {
-            final int step = trigger.getStep(trackPhrase.getResolution());
+            final int step = trigger.getStep(phrase.getResolution());
             result.put(step, trigger);
         }
         return result;
@@ -174,7 +210,7 @@ public class TriggerMap implements Serializable {
      * @return
      */
     public Note addNote(int pitch, int step, float gate, float velocity, int flags) {
-        float beat = Resolution.toBeat(step, trackPhrase.getResolution());
+        float beat = Resolution.toBeat(step, phrase.getResolution());
         return addNote(pitch, beat, gate, velocity, flags);
     }
 
@@ -214,12 +250,14 @@ public class TriggerMap implements Serializable {
         Note note = trigger.getNote(pitch);
         if (note != null) {
             getPatternSequencer().removeNote(pitch, beat);
+            // with remove note, we actually take the note out of the collection
+            trigger.removeNote(note);
         }
         return note;
     }
 
     public Note removeNote(int step, int pitch) {
-        float beat = Resolution.toBeat(step, trackPhrase.getResolution());
+        float beat = Resolution.toBeat(step, phrase.getResolution());
         return removeNote(beat, pitch);
     }
 
@@ -236,7 +274,7 @@ public class TriggerMap implements Serializable {
     }
 
     public final boolean containsTrigger(int step) {
-        float beat = Resolution.toBeat(step, trackPhrase.getResolution());
+        float beat = Resolution.toBeat(step, phrase.getResolution());
         return containsTrigger(beat);
     }
 
@@ -253,7 +291,7 @@ public class TriggerMap implements Serializable {
      * @param flags
      */
     public void triggerOn(int step, int pitch, float gate, float velocity, int flags) {
-        float beat = Resolution.toBeat(step, trackPhrase.getResolution());
+        float beat = Resolution.toBeat(step, phrase.getResolution());
 
         Trigger trigger = getTrigger(step);
         if (trigger == null) {
@@ -285,7 +323,7 @@ public class TriggerMap implements Serializable {
         if (trigger == null) {
             trigger = createInitTrigger(step);
             trigger.setSelected(true);
-            map.put(Resolution.toBeat(step, trackPhrase.getResolution()), trigger);
+            map.put(Resolution.toBeat(step, phrase.getResolution()), trigger);
         }
         for (Note note : trigger.getNotes()) {
             triggerOn(step, note.getPitch(), note.getGate(), note.getVelocity(), note.getFlags());
@@ -302,7 +340,7 @@ public class TriggerMap implements Serializable {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
             getPatternSequencer().removeNote(note.getPitch(),
-                    Resolution.toBeat(step, trackPhrase.getResolution()));
+                    Resolution.toBeat(step, phrase.getResolution()));
         }
         trigger.setSelected(false);
         //        fireTriggerChange(TriggerChangeKind.Selected, trigger);
@@ -346,13 +384,11 @@ public class TriggerMap implements Serializable {
     }
 
     protected void fireChange(PhraseChangeKind kind, Note phraseNote) {
-        trackPhrase.getDispatcher().trigger(new OnPhraseChange(kind, trackPhrase, phraseNote));
+        phrase.getDispatcher().trigger(new OnPhraseChange(kind, phrase, phraseNote));
     }
 
-    private int indciesInView = 16;
-
     private int endStepInView(int fromStep) {
-        Scale scale = trackPhrase.getScale();
+        Scale scale = phrase.getScale();
         if (scale == Scale.SIXTEENTH)
             return fromStep + indciesInView;
         if (scale == Scale.THIRTYSECOND)
@@ -361,7 +397,7 @@ public class TriggerMap implements Serializable {
     }
 
     private Trigger createInitTrigger(int step) {
-        float beat = Resolution.toBeat(step, trackPhrase.getResolution());
+        float beat = Resolution.toBeat(step, phrase.getResolution());
         Trigger trigger = new Trigger(beat);
         trigger.addNote(beat, 60, 0.25f, 1f, 0);
         return trigger;

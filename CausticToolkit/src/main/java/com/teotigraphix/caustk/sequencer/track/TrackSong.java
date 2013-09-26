@@ -7,32 +7,28 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class TrackSong implements Serializable {
 
     private static final long serialVersionUID = -8098854940340766856L;
 
-    private transient ICaustkController controller;
+    private TrackSequencer trackSequencer;
 
-    public ICaustkController getController() {
-        return controller;
+    public TrackSequencer getTrackSequencer() {
+        return trackSequencer;
     }
 
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
-
-        for (Track track : tracks.values()) {
-            track.setController(controller);
-        }
+    final IDispatcher getDispatcher() {
+        return trackSequencer.getController();
     }
 
     private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
-    IDispatcher getDispatcher() {
-        return controller;
+    Rack getRack() {
+        return getTrackSequencer().getController().getRack();
     }
 
     //----------------------------------
@@ -61,8 +57,9 @@ public class TrackSong implements Serializable {
      * project's resource directory.
      */
     public File getAbsoluteFile() {
-        final File absoluteFile = controller.getProjectManager().getProject()
-                .getAbsoluteResource(new File("songs", file.getPath()).getPath());
+        // XXX This is breaking encapsulation
+        final File absoluteFile = getTrackSequencer().getController().getProjectManager()
+                .getProject().getAbsoluteResource(new File("songs", file.getPath()).getPath());
         return absoluteFile;
     }
 
@@ -167,7 +164,7 @@ public class TrackSong implements Serializable {
     public Track getTrack(int index) {
         Track track = tracks.get(index);
         if (track == null) {
-            track = new Track(controller, index);
+            track = new Track(this, index);
             tracks.put(index, track);
         }
         return track;
@@ -180,8 +177,8 @@ public class TrackSong implements Serializable {
     public TrackSong() {
     }
 
-    public TrackSong(ICaustkController controller, File file) {
-        this.controller = controller;
+    public TrackSong(TrackSequencer trackSequencer, File file) {
+        this.trackSequencer = trackSequencer;
         this.file = file;
     }
 
@@ -310,7 +307,7 @@ public class TrackSong implements Serializable {
     }
 
     public int getTotalTime() {
-        float bpm = controller.getRack().getTempo();
+        float bpm = getRack().getTempo();
         float timeInSec = 60 / bpm;
         float totalNumBeats = getNumBeats() + getMeasureBeat();
         float total = timeInSec * totalNumBeats;
@@ -318,7 +315,7 @@ public class TrackSong implements Serializable {
     }
 
     public int getCurrentTime() {
-        float bpm = controller.getRack().getTempo();
+        float bpm = getRack().getTempo();
         float timeInSec = 60 / bpm;
         float totalNumBeats = (getCurrentMeasure() * 4) + getMeasureBeat();
         float total = timeInSec * totalNumBeats;
