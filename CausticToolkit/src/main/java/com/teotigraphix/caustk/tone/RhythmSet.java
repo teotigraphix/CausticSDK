@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.tone;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 
 public class RhythmSet extends Tone {
 
@@ -34,19 +34,8 @@ public class RhythmSet extends Tone {
         return tones;
     }
 
-    public RhythmSet(ICaustkController controller) {
-        super(ToneType.Beatbox, controller);
-        createTones();
+    public RhythmSet(Rack rack) {
+        super(rack, ToneType.Beatbox);
     }
 
-    private void createTones() {
-        //        // Create the default 8 tones from the Beatbox channels
-        //        for (int i = 0; i < 8; i++) {
-        //            // a channel wraps a Beatbox channel, this could eventually
-        //            // wrap a PCMSynth channel or anything else that is  "sampler" like
-        //            RhythmChannel channel = new RhythmChannel(beatbox.getSampler().getChannel(i));
-        //            RhythmTone tone = new RhythmTone(channel);
-        //            tones.add(tone);
-        //        }
-    }
 }

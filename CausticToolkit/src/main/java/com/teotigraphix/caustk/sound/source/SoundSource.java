@@ -66,10 +66,6 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     @Override
     protected void commitController() {
         super.commitController();
-
-        for (Tone tone : tones.values()) {
-            tone.setController(getController());
-        }
     }
 
     private int maxNumTones = 14;
@@ -194,9 +190,8 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
             throws CausticException {
         T tone = null;
         try {
-            Constructor<? extends Tone> constructor = toneClass
-                    .getConstructor(ICaustkController.class);
-            tone = (T)constructor.newInstance(getController());
+            Constructor<? extends Tone> constructor = toneClass.getConstructor(Rack.class);
+            tone = (T)constructor.newInstance(rack);
             initializeTone(tone, name, tone.getToneType(), index);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -286,52 +281,52 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
         Tone tone = null;
         switch (toneType) {
             case Bassline:
-                tone = new BasslineTone(getController());
+                tone = new BasslineTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Beatbox:
-                tone = new BeatboxTone(getController());
+                tone = new BeatboxTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case PCMSynth:
-                tone = new PCMSynthTone(getController());
+                tone = new PCMSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case SubSynth:
-                tone = new SubSynthTone(getController());
+                tone = new SubSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case PadSynth:
-                tone = new PadSynthTone(getController());
+                tone = new PadSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Organ:
-                tone = new OrganTone(getController());
+                tone = new OrganTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Vocoder:
-                tone = new VocoderTone(getController());
+                tone = new VocoderTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case EightBitSynth:
-                tone = new EightBitSynth(getController());
+                tone = new EightBitSynth(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case Modular:
-                tone = new ModularTone(getController());
+                tone = new ModularTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
             case FMSynth:
-                tone = new FMSynthTone(getController());
+                tone = new FMSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
                 SoundSourceUtils.setup(tone);
                 break;
@@ -441,11 +436,14 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     }
 
     @Override
-    public void loadSong(File causticFile) throws CausticException {
+    public void loadSongRaw(File causticFile) throws CausticException {
         RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
+    }
 
+    @Override
+    public void loadSong(File causticFile) throws CausticException {
+        loadSongRaw(causticFile);
         loadMachines();
-
         getController().trigger(new OnSoundSourceSongLoad(causticFile));
     }
 

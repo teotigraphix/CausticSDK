@@ -33,7 +33,7 @@ public abstract class ToneComponent implements IRestore, Serializable {
     // tone
     //----------------------------------
 
-    private transient Tone tone;
+    private Tone tone;
 
     public Tone getTone() {
         return tone;

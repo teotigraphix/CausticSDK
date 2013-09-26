@@ -22,7 +22,7 @@ public class TrackSequencerHandlers {
         //registerObservers();
     }
 
-    void onAttach() {
+    void registerObservers() {
         getDispatcher().register(OnTrackChange.class, onTrackPropertyChange);
         getDispatcher().register(OnPhraseChange.class, onTrackPhrasePropertyChange);
     }

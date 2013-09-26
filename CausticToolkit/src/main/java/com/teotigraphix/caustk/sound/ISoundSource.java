@@ -125,6 +125,8 @@ public interface ISoundSource extends IRackComponent {
      */
     void loadSong(File causticFile) throws CausticException;
 
+    void loadSongRaw(File causticFile) throws CausticException;
+
     /**
      * Saves a <code>.caustic</code> song file to the <code>caustic/songs</code>
      * driectory.

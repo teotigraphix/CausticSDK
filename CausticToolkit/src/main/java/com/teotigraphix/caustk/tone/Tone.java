@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
@@ -34,18 +35,10 @@ public abstract class Tone implements IRestore, Serializable {
 
     private static final long serialVersionUID = 2917863803738244084L;
 
-    private transient ICaustkController controller;
-
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
-
-        for (ToneComponent toneComponent : components.values()) {
-            toneComponent.setTone(this);
-        }
-    }
+    private Rack rack;
 
     public ICaustkController getController() {
-        return controller;
+        return rack.getController();
     }
 
     private final ToneType toneType;
@@ -98,7 +91,7 @@ public abstract class Tone implements IRestore, Serializable {
             return;
         muted = value;
         // firePropertyChange(TonePropertyKind.MUTE, mMuted);
-        controller.getRack().getMixerChannel(getIndex()).setMute(muted);
+        rack.getMixerChannel(getIndex()).setMute(muted);
     }
 
     //----------------------------------
@@ -143,7 +136,7 @@ public abstract class Tone implements IRestore, Serializable {
      * Returns the core audio engine interface.
      */
     public ICausticEngine getEngine() {
-        return controller;
+        return rack.getController();
     }
 
     //--------------------------------------------------------------------------
@@ -241,64 +234,10 @@ public abstract class Tone implements IRestore, Serializable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Tone(ToneType toneType, ICaustkController controller) {
+    public Tone(Rack rack, ToneType toneType) {
+        this.rack = rack;
         this.toneType = toneType;
-        this.controller = controller;
     }
-
-    //--------------------------------------------------------------------------
-    // ISerialize API :: Methods
-    //--------------------------------------------------------------------------
-    //
-    //    @Override
-    //    public void sleep() {
-    //        components = new HashMap<String, Map<String, String>>();
-    //        for (ToneComponent toneComponent : internalComponents.values()) {
-    //            HashMap<String, String> map = new HashMap<String, String>();
-    //            String className = toneComponent.getClass().getName();
-    //            if (toneComponent instanceof ISerialize) {
-    //                String data = getController().getSerializeService().toString(toneComponent);
-    //                map.put("state", data);
-    //            }
-    //            components.put(className, map);
-    //        }
-    //    }
-    //
-    //    @SuppressWarnings("unchecked")
-    //    @Override
-    //    public void wakeup(ICaustkController controller) {
-    //        // the wakeup() method acts like the Constructor when the instance is deserialized
-    //        this.controller = controller;
-    //        internalComponents = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
-    //        for (Entry<String, Map<String, String>> entry : components.entrySet()) {
-    //            String className = entry.getKey();
-    //            Map<String, String> component = entry.getValue();
-    //            String data = "";
-    //            Class<?> cls = null;
-    //            try {
-    //                cls = Class.forName(className);
-    //            } catch (ClassNotFoundException e) {
-    //                e.printStackTrace();
-    //            }
-    //
-    //            if (component.containsKey("state")) {
-    //                data = component.get("state");
-    //            }
-    //
-    //            ToneComponent instance = (ToneComponent)getController().getSerializeService()
-    //                    .fromString(data, cls);
-    //            if (instance == null) {
-    //                try {
-    //                    instance = (ToneComponent)cls.newInstance();
-    //                } catch (InstantiationException e) {
-    //                    e.printStackTrace();
-    //                } catch (IllegalAccessException e) {
-    //                    e.printStackTrace();
-    //                }
-    //            }
-    //            addComponent((Class<? extends ToneComponent>)cls, instance);
-    //        }
-    //    }
 
     @Override
     public void restore() {

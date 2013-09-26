@@ -101,6 +101,13 @@ public class Rack implements Serializable, ICausticEngine {
         trackSequencer = new TrackSequencer(this);
     }
 
+    public void registerObservers() {
+        soundSource.registerObservers();
+        soundMixer.registerObservers();
+        systemSequencer.registerObservers();
+        trackSequencer.registerObservers();
+    }
+
     //--------------------------------------------------------------------------
     // SoundGenerator
     //--------------------------------------------------------------------------

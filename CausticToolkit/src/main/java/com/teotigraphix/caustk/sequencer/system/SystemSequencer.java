@@ -27,6 +27,7 @@ import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
@@ -106,8 +107,8 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     }
 
     @Override
-    protected void onAttach() {
-        super.onAttach();
+    public void registerObservers() {
+        super.registerObservers();
 
         getController().addComponent(ISystemSequencer.class, this);
 
@@ -231,12 +232,14 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
         int round = (int)Math.floor(floatBeat);
         if (round != currentBeat) {
             setCurrentBeat(round);
+            CtkDebug.log("Beat:" + currentBeat);
         }
 
         // sixteenth step calculation
         int step = (int)Math.floor((floatBeat % 4) * 4);
         if (step != currentSixteenthStep) {
             currentSixteenthStep = step;
+            CtkDebug.log("Step:" + currentSixteenthStep);
             getController().trigger(new OnSystemSequencerStepChange());
         }
     }

@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 
 public class EightBitSynth extends Tone {
 
     private static final long serialVersionUID = -156077068949440863L;
 
-    public EightBitSynth(ICaustkController controller) {
-        super(ToneType.EightBitSynth, controller);
+    public EightBitSynth(Rack rack) {
+        super(rack, ToneType.EightBitSynth);
     }
 
     public static void setup(Tone tone) {

@@ -10,6 +10,8 @@ public interface IRackComponent extends Serializable, IRestore {
 
     ICaustkController getController();
 
-    void setRack(Rack rack);
+    void registerObservers();
+
+    void unregisterObservers();
 
 }

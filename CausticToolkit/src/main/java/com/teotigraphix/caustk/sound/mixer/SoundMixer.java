@@ -96,8 +96,7 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
     }
 
     @Override
-    protected void onAttach() {
-        super.onAttach();
+    public void registerObservers() {
 
         // listen for tone add/remove
         getController().getDispatcher().register(OnSoundSourceToneAdd.class,

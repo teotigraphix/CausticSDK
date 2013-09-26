@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
@@ -239,11 +239,11 @@ public class ModularTone extends Tone {
     // To query the type of a component
     // /caustic/modular/type <component bay#> returns the type# from the list above
 
-    public ModularTone(ICaustkController controller) {
-        super(ToneType.Modular, controller);
+    public ModularTone(Rack rack) {
+        super(rack, ToneType.Modular);
 
-        modularPanel = new ModularPanel(controller);
-        modularPanel.setTone(this);
+        //modularPanel = new ModularPanel(controller);
+        //modularPanel.setTone(this);
     }
 
     public static void setup(Tone tone) {
