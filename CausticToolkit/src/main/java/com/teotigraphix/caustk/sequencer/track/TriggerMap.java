@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
-public class TriggerMap {
+public class TriggerMap implements Serializable {
+
+    private static final long serialVersionUID = -7413118378233405467L;
 
     // <beat, Trigger<List<Note>>
     private Map<Float, Trigger> map = new TreeMap<Float, Trigger>();

@@ -67,6 +67,7 @@ public class ApplicationController implements IApplicationController {
                         switch (object.getKind()) {
                             case Save:
                                 applicationModel.setDirty(false);
+                                applicationMediator.save();
                                 break;
 
                             case CloseComplete:

@@ -19,12 +19,15 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.service.ISerialize;
+import java.io.Serializable;
+
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
-public class Note implements ISerialize {
+public class Note implements Serializable {
 
+    private static final long serialVersionUID = -3142765703303002851L;
+
+    @SuppressWarnings("unused")
     private String data;
 
     private transient int pitch;
@@ -105,26 +108,27 @@ public class Note implements ISerialize {
         return sb.toString();
     }
 
-    @Override
-    public void sleep() {
-        data = getNoteData();
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        if (data != null) {
-            String[] split = data.split("\\|");
-            for (String notes : split) {
-                String[] chunks = notes.split(" ");
-                start = Float.valueOf(chunks[0]);
-                pitch = Integer.valueOf(chunks[1]);
-                velocity = Float.valueOf(chunks[2]);
-                end = Float.valueOf(chunks[3]);
-                flags = Integer.valueOf(chunks[4]);
-            }
-            data = null;
-        }
-    }
+    //
+    //    @Override
+    //    public void sleep() {
+    //        data = getNoteData();
+    //    }
+    //
+    //    @Override
+    //    public void wakeup(ICaustkController controller) {
+    //        if (data != null) {
+    //            String[] split = data.split("\\|");
+    //            for (String notes : split) {
+    //                String[] chunks = notes.split(" ");
+    //                start = Float.valueOf(chunks[0]);
+    //                pitch = Integer.valueOf(chunks[1]);
+    //                velocity = Float.valueOf(chunks[2]);
+    //                end = Float.valueOf(chunks[3]);
+    //                flags = Integer.valueOf(chunks[4]);
+    //            }
+    //            data = null;
+    //        }
+    //    }
 
     public String serialze() {
         final StringBuilder sb = new StringBuilder();

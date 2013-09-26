@@ -27,4 +27,6 @@ import com.teotigraphix.libgdx.controller.ICaustkMediator;
  * @see StartupExecutor
  */
 public interface IApplicationMediator extends ICaustkMediator {
+
+    void save();
 }

@@ -128,7 +128,6 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
     @Override
     protected void construct() {
         super.construct();
-        handlers = new TrackSequencerHandlers(this);
     }
 
     @Override
@@ -140,6 +139,7 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
 
     @Override
     public void onAttach() {
+        handlers = new TrackSequencerHandlers(this);
         handlers.onAttach();
 
         getController().register(OnSoundSourceToneAdd.class,

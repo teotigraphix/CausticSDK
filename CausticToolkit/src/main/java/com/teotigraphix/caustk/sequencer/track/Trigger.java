@@ -19,12 +19,15 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
-public class Trigger {
+public class Trigger implements Serializable {
+
+    private static final long serialVersionUID = 5159381498973786204L;
 
     //--------------------------------------------------------------------------
     // Public Property API
