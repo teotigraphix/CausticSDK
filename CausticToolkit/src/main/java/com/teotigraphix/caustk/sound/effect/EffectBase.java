@@ -19,14 +19,35 @@
 
 package com.teotigraphix.caustk.sound.effect;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.sound.IEffect;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public abstract class EffectBase implements IEffect {
 
-    private transient ICaustkController controller;
+    private static final long serialVersionUID = -173253129655285469L;
+
+    protected ICausticEngine getEngine() {
+        return rack.getController();
+    }
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    private Rack rack;
+
+    @Override
+    public Rack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(Rack rack) {
+        this.rack = rack;
+    }
 
     //----------------------------------
     // type
@@ -78,7 +99,7 @@ public abstract class EffectBase implements IEffect {
      * @return
      */
     protected final float get(IEffectControl control) {
-        return EffectRackMessage.GET.query(controller, getToneIndex(), getSlot(),
+        return EffectRackMessage.GET.query(getEngine(), getToneIndex(), getSlot(),
                 control.getControl());
     }
 
@@ -89,26 +110,17 @@ public abstract class EffectBase implements IEffect {
      * @param value
      */
     protected final void set(IEffectControl control, float value) {
-        EffectRackMessage.SET.send(controller, getToneIndex(), getSlot(), control.getControl(),
+        EffectRackMessage.SET.send(getEngine(), getToneIndex(), getSlot(), control.getControl(),
                 value);
     }
 
     protected final void set(IEffectControl control, int value) {
-        EffectRackMessage.SET.send(controller, getToneIndex(), getSlot(), control.getControl(),
+        EffectRackMessage.SET.send(getEngine(), getToneIndex(), getSlot(), control.getControl(),
                 value);
     }
 
     @Override
     public void restore() {
-    }
-
-    @Override
-    public void sleep() {
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
     }
 
     /**

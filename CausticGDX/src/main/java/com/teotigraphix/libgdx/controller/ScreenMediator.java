@@ -19,7 +19,7 @@ public class ScreenMediator extends CaustkMediator {
     public void onCreate(IScreen screen) {
     }
 
-    public void onRegister(IScreen screen) {
+    public void onAttach(IScreen screen) {
     }
 
     public void onShow(IScreen screen) {
@@ -37,4 +37,6 @@ public class ScreenMediator extends CaustkMediator {
     public void onDispose(IScreen screenBase) {
     }
 
+    public void onDetach(IScreen screen) {
+    }
 }

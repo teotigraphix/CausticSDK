@@ -21,10 +21,10 @@ package com.teotigraphix.caustk.sequencer.system;
 
 import java.io.Serializable;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
@@ -101,8 +101,8 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     // Constructor
     //--------------------------------------------------------------------------
 
-    public SystemSequencer(ICaustkController controller) {
-        super(controller);
+    public SystemSequencer(Rack rack) {
+        super(rack);
     }
 
     @Override

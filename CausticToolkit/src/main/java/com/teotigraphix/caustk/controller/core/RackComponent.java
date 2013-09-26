@@ -5,22 +5,24 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 
 public abstract class RackComponent implements IRackComponent {
 
-    private transient ICaustkController controller;
+    private static final long serialVersionUID = 3033291731368710036L;
+
+    private Rack rack;
 
     @Override
     public ICaustkController getController() {
-        return controller;
+        return rack.getController();
     }
 
     @Override
-    public void setController(ICaustkController controller) {
-        setControllerInternal(controller);
+    public void setRack(Rack rack) {
+        setRackInternal(rack);
         commitController();
     }
 
-    private void setControllerInternal(ICaustkController controller) {
-        this.controller = controller;
-        if (controller != null) {
+    private void setRackInternal(Rack rack) {
+        this.rack = rack;
+        if (rack != null) {
             onAttach();
         } else {
             onDetach();
@@ -31,8 +33,8 @@ public abstract class RackComponent implements IRackComponent {
         construct();
     }
 
-    public RackComponent(ICaustkController controller) {
-        setControllerInternal(controller);
+    public RackComponent(Rack rack) {
+        setRackInternal(rack);
         construct();
     }
 

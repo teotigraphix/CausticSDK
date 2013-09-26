@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class AutowahEffect extends EffectBase {
 
+    private static final long serialVersionUID = 5173843619795663375L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

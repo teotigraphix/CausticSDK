@@ -20,6 +20,7 @@ import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.mixer.SoundMixer;
+import com.teotigraphix.caustk.sound.mixer.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.sound.source.SoundSource;
 import com.teotigraphix.caustk.tone.Tone;
@@ -44,11 +45,6 @@ public class Rack implements Serializable, ICausticEngine {
         this.controller = controller;
 
         updateSoundGenerator();
-
-        soundSource.setController(controller);
-        soundMixer.setController(controller);
-        systemSequencer.setController(controller);
-        trackSequencer.setController(controller);
     }
 
     //----------------------------------
@@ -57,7 +53,7 @@ public class Rack implements Serializable, ICausticEngine {
 
     private ISoundSource soundSource;
 
-    ISoundSource getSoundSource() {
+    public ISoundSource getSoundSource() {
         return soundSource;
     }
 
@@ -67,7 +63,7 @@ public class Rack implements Serializable, ICausticEngine {
 
     private ISoundMixer soundMixer;
 
-    ISoundMixer getSoundMixer() {
+    public ISoundMixer getSoundMixer() {
         return soundMixer;
     }
 
@@ -77,7 +73,7 @@ public class Rack implements Serializable, ICausticEngine {
 
     private ISystemSequencer systemSequencer;
 
-    ISystemSequencer getSystemSequencer() {
+    public ISystemSequencer getSystemSequencer() {
         return systemSequencer;
     }
 
@@ -99,10 +95,10 @@ public class Rack implements Serializable, ICausticEngine {
 
         updateSoundGenerator();
 
-        soundSource = new SoundSource(controller);
-        soundMixer = new SoundMixer(controller);
-        systemSequencer = new SystemSequencer(controller);
-        trackSequencer = new TrackSequencer(controller);
+        soundSource = new SoundSource(this);
+        soundMixer = new SoundMixer(this);
+        systemSequencer = new SystemSequencer(this);
+        trackSequencer = new TrackSequencer(this);
     }
 
     //--------------------------------------------------------------------------
@@ -164,6 +160,10 @@ public class Rack implements Serializable, ICausticEngine {
 
     public SoundMixerChannel getMixerChannel(int index) {
         return getSoundMixer().getChannel(index);
+    }
+
+    public void executeSetValue(int toneIndex, MixerInput input, Number value) {
+        getSoundMixer().executeSetValue(toneIndex, input, value);
     }
 
     //--------------------------------------------------------------------------

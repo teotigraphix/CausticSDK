@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class BitcrusherEffect extends EffectBase {
 
+    private static final long serialVersionUID = -446049485878035744L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

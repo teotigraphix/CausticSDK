@@ -29,8 +29,6 @@ public interface ISoundMixer extends IRackComponent {
 
     MasterMixer getMasterMixer();
 
-    //void setMasterMixer(MasterMixer value);
-
     boolean hasChannel(int index);
 
     SoundMixerChannel getChannel(Tone tone);
@@ -51,4 +49,23 @@ public interface ISoundMixer extends IRackComponent {
      */
     void executeSetValue(int toneIndex, MixerInput input, Number value);
 
+    public static class OnSoundMixerChannelValueChange {
+
+        private MixerInput mixerInput;
+
+        public MixerInput getMixerInput() {
+            return mixerInput;
+        }
+
+        private Number value;
+
+        public Number getValue() {
+            return value;
+        }
+
+        public OnSoundMixerChannelValueChange(MixerInput mixerInput, Number value) {
+            this.mixerInput = mixerInput;
+            this.value = value;
+        }
+    }
 }

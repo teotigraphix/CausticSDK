@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
@@ -38,14 +38,10 @@ public class MasterMixer implements IRestore, Serializable {
 
     private static final long serialVersionUID = -1979870871424443494L;
 
-    private transient ICaustkController controller;
-
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
-    }
+    private Rack rack;
 
     private ICausticEngine getEngine() {
-        return controller;
+        return rack.getController();
     }
 
     //----------------------------------
@@ -135,23 +131,24 @@ public class MasterMixer implements IRestore, Serializable {
             throw newRangeException("volume", "0..2", value);
         volume = value;
         MasterMixerMessage.VOLUME.send(getEngine(), value);
+        fireChange(MasterMixerChangeKind.Volume, volume);
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MasterMixer(ICaustkController controller) {
-        this.controller = controller;
+    public MasterMixer(Rack rack) {
+        this.rack = rack;
 
-        equalizer = new MasterEqualizer(controller);
-        limiter = new MasterLimiter(controller);
-        delay = new MasterDelay(controller);
-        reverb = new MasterReverb(controller);
+        equalizer = new MasterEqualizer(rack);
+        limiter = new MasterLimiter(rack);
+        delay = new MasterDelay(rack);
+        reverb = new MasterReverb(rack);
     }
 
     public void addTone(Tone tone) {
-        SoundMixerChannel channel = new SoundMixerChannel(controller);
+        SoundMixerChannel channel = new SoundMixerChannel(rack);
         channel.setIndex(tone.getIndex());
         channels.put(tone.getIndex(), channel);
     }
@@ -172,21 +169,36 @@ public class MasterMixer implements IRestore, Serializable {
         }
     }
 
-    //    @Override
-    //    public void sleep() {
-    //    }
-    //
-    //    @Override
-    //    public void wakeup(ICaustkController controller) {
-    //        this.controller = controller;
-    //        equalizer.setController(controller);
-    //        limiter.setController(controller);
-    //        delay.setController(controller);
-    //        reverb.setController(controller);
-    //    }
+    protected void fireChange(MasterMixerChangeKind kind, float value) {
+        rack.getController().trigger(new OnMasterMixerChange(kind, value));
+    }
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {
         return ExceptionUtils.newRangeException(control, range, value);
+    }
+
+    public enum MasterMixerChangeKind {
+        Volume;
+    }
+
+    public static class OnMasterMixerChange {
+
+        private final Number value;
+
+        public final Number getValue() {
+            return value;
+        }
+
+        private final MasterMixerChangeKind kind;
+
+        public final MasterMixerChangeKind getKind() {
+            return kind;
+        }
+
+        public OnMasterMixerChange(MasterMixerChangeKind kind, Number value) {
+            this.kind = kind;
+            this.value = value;
+        }
     }
 
 }

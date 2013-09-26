@@ -10,7 +10,7 @@ import java.util.List;
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
@@ -121,8 +121,8 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
     // Constructor
     //--------------------------------------------------------------------------
 
-    public TrackSequencer(ICaustkController controller) {
-        super(controller);
+    public TrackSequencer(Rack rack) {
+        super(rack);
     }
 
     @Override

@@ -35,6 +35,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
@@ -128,8 +129,8 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     public SoundSource() {
     }
 
-    public SoundSource(ICaustkController controller) {
-        super(controller);
+    public SoundSource(Rack rack) {
+        super(rack);
     }
 
     //--------------------------------------------------------------------------

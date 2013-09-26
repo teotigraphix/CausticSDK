@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.sound.master;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterReverb extends MasterComponent {
@@ -268,8 +268,8 @@ public class MasterReverb extends MasterComponent {
         bypassMessage = MasterMixerMessage.REVERB_BYPASS;
     }
 
-    public MasterReverb(ICaustkController controller) {
-        super(controller);
+    public MasterReverb(Rack rack) {
+        super(rack);
         bypassMessage = MasterMixerMessage.REVERB_BYPASS;
     }
 

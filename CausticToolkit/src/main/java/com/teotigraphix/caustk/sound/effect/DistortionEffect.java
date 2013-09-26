@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class DistortionEffect extends EffectBase {
 
+    private static final long serialVersionUID = 7727552593282987957L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

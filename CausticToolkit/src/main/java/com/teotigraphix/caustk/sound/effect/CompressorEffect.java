@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class CompressorEffect extends EffectBase {
 
+    private static final long serialVersionUID = 2125317745521991193L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

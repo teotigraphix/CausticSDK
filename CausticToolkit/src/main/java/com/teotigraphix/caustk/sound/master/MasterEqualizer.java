@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.sound.master;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterEqualizer extends MasterComponent {
@@ -153,8 +153,8 @@ public class MasterEqualizer extends MasterComponent {
         bypassMessage = MasterMixerMessage.EQ_BYPASS;
     }
 
-    public MasterEqualizer(ICaustkController controller) {
-        super(controller);
+    public MasterEqualizer(Rack rack) {
+        super(rack);
         bypassMessage = MasterMixerMessage.EQ_BYPASS;
     }
 

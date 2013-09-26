@@ -24,10 +24,10 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
@@ -90,9 +90,9 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
     // Constructor
     //--------------------------------------------------------------------------
 
-    public SoundMixer(ICaustkController controller) {
-        super(controller);
-        masterMixer = new MasterMixer(controller);
+    public SoundMixer(Rack rack) {
+        super(rack);
+        masterMixer = new MasterMixer(rack);
     }
 
     @Override
@@ -131,12 +131,6 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
     @Override
     protected void commitController() {
         super.commitController();
-
-        masterMixer.setController(getController());
-
-        for (SoundMixerChannel channel : getChannels().values()) {
-            channel.setController(getController());
-        }
     }
 
     @Override
@@ -315,7 +309,5 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
         public String toString() {
             return getValue();
         }
-
     }
-
 }

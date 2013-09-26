@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.sound.master;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterDelay extends MasterComponent {
@@ -244,8 +244,8 @@ public class MasterDelay extends MasterComponent {
         bypassMessage = MasterMixerMessage.DELAY_BYPASS;
     }
 
-    public MasterDelay(ICaustkController controller) {
-        super(controller);
+    public MasterDelay(Rack rack) {
+        super(rack);
         bypassMessage = MasterMixerMessage.DELAY_BYPASS;
     }
 

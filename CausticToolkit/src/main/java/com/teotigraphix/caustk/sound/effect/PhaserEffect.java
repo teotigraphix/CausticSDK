@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class PhaserEffect extends EffectBase {
 
+    private static final long serialVersionUID = -2505861149382527L;
+
     //----------------------------------
     // depth
     //----------------------------------

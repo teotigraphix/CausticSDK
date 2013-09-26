@@ -148,7 +148,7 @@ public class ScreenBase implements IScreen {
         Gdx.app.log(LOG, "Creating screen: " + getName());
 
         for (ScreenMediator mediator : mediators) {
-            mediator.onRegister(this);
+            mediator.onAttach(this);
             mediator.onCreate(this);
         }
     }
@@ -233,6 +233,7 @@ public class ScreenBase implements IScreen {
         Gdx.app.log(LOG, "Disposing screen: " + getName());
 
         for (ScreenMediator mediator : mediators) {
+            mediator.onDetach(this);
             mediator.onDispose(this);
         }
 

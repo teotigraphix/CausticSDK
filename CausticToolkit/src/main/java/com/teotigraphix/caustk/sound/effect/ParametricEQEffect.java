@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class ParametricEQEffect extends EffectBase {
 
+    private static final long serialVersionUID = -2077276214520815273L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

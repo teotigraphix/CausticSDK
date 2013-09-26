@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.sound.master;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterLimiter extends MasterComponent {
@@ -130,8 +130,8 @@ public class MasterLimiter extends MasterComponent {
         bypassMessage = MasterMixerMessage.LIMITER_BYPASS;
     }
 
-    public MasterLimiter(ICaustkController controller) {
-        super(controller);
+    public MasterLimiter(Rack rack) {
+        super(rack);
         bypassMessage = MasterMixerMessage.LIMITER_BYPASS;
     }
 

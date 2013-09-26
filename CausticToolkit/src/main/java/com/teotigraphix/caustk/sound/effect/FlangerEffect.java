@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class FlangerEffect extends EffectBase {
 
+    private static final long serialVersionUID = 3642024469361965693L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------

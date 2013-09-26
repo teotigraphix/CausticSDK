@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.sound.effect;
 
 public class ChorusEffect extends EffectBase {
 
+    private static final long serialVersionUID = 5992998482184237710L;
+
     //--------------------------------------------------------------------------
     // API :: Properties
     //--------------------------------------------------------------------------
