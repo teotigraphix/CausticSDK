@@ -220,6 +220,7 @@ public class Rack implements Serializable, ICausticEngine {
     @Override
     public void onStart() {
         soundGenerator.onStart();
+        soundGenerator.onResume();
     }
 
     @Override

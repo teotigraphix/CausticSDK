@@ -22,9 +22,9 @@ package com.teotigraphix.caustk.gs.machine.part;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.jna.Memory;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+import com.teotigraphix.caustk.gs.memory.Memory;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;

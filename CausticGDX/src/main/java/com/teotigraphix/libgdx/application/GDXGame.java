@@ -109,6 +109,7 @@ public abstract class GDXGame implements IGame {
 
     @Override
     public void create() {
+        Gdx.app.log("GDXGame", "create()");
         executor.addModule(module);
         executor.create(this);
         setController(executor.getController());
@@ -151,8 +152,8 @@ public abstract class GDXGame implements IGame {
         }
 
         // output the current FPS
-        if (printFPS)
-            fps.log();
+        //if (printFPS)
+        fps.log();
 
         if (getController() != null) {
             getController().update();
@@ -164,6 +165,7 @@ public abstract class GDXGame implements IGame {
 
     @Override
     public void resize(int width, int height) {
+        Gdx.app.log("GDXGame", "resize()");
         if (screen != null)
             screen.resize(width, height);
     }

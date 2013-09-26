@@ -66,7 +66,6 @@ public class Led extends ControlTable {
 
     public Led(Skin skin) {
         super(skin);
-        styleClass = LedStyle.class;
     }
 
     public Led(LedItem item, LedPlacement ledPlacement, Skin skin) {
@@ -85,6 +84,12 @@ public class Led extends ControlTable {
         this(skin);
         this.drawable = drawable;
         this.ledPlacement = ledPlacement;
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        styleClass = LedStyle.class;
     }
 
     @Override

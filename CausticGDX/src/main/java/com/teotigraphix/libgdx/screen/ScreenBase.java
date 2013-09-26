@@ -24,7 +24,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -84,9 +84,16 @@ public class ScreenBase implements IScreen {
     }
 
     public ScreenBase() {
-        int width = (isGameScreen() ? GAME_VIEWPORT_WIDTH : MENU_VIEWPORT_WIDTH);
-        int height = (isGameScreen() ? GAME_VIEWPORT_HEIGHT : MENU_VIEWPORT_HEIGHT);
-        stage = new Stage(width, height, true);
+        //int width = (isGameScreen() ? GAME_VIEWPORT_WIDTH : MENU_VIEWPORT_WIDTH);
+        //int height = (isGameScreen() ? GAME_VIEWPORT_HEIGHT : MENU_VIEWPORT_HEIGHT);
+        //stage = new Stage(width, height, true);
+        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+
+        // set the stage as the input processor
+        Gdx.input.setInputProcessor(stage);
+
+        atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
+        skin = new Skin(atlas);
     }
 
     protected String getName() {
@@ -114,18 +121,11 @@ public class ScreenBase implements IScreen {
     }
 
     public TextureAtlas getAtlas() {
-        if (atlas == null) {
-            // image-atlases/pages.atlas
-            atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
-        }
         return atlas;
     }
 
     @Override
     public Skin getSkin() {
-        if (skin == null) {
-            skin = new Skin(getAtlas());
-        }
         return skin;
     }
 
@@ -157,14 +157,6 @@ public class ScreenBase implements IScreen {
     public void show() {
         Gdx.app.log(LOG, "Showing screen: " + getName());
 
-        // set the stage as the input processor
-        Gdx.input.setInputProcessor(stage);
-
-        // for now, we draw() the stage so it creates the differed children
-        // of the mediated views, then when onShow() is called, all children
-        // are guaranteed to be created
-        stage.draw();
-
         for (ScreenMediator mediator : mediators) {
             mediator.onShow(this);
         }
@@ -177,19 +169,16 @@ public class ScreenBase implements IScreen {
 
     @Override
     public void render(float delta) {
-        // (1) process the game logic
-
-        // update the actors
-        stage.act(delta);
-
-        // (2) draw the result
 
         // clear the screen with the given RGB color
-        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.b, backgroundColor.g,
-                backgroundColor.a);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.b, backgroundColor.g,
+        //                backgroundColor.a);
+        //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-        // draw the actors
+        stage.act(delta);
+
         stage.draw();
 
         // draw the table debug lines

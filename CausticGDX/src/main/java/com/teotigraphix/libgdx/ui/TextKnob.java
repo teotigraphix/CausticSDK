@@ -66,7 +66,6 @@ public class TextKnob extends Knob {
 
     public TextKnob(float min, float max, float stepSize, Skin skin) {
         super(min, max, stepSize, skin);
-        styleClass = TextKnobStyle.class;
     }
 
     public TextKnob(float min, float max, float stepSize, String text, Skin skin) {
@@ -77,6 +76,12 @@ public class TextKnob extends Knob {
     //--------------------------------------------------------------------------
     // Overridden :: Methods
     //--------------------------------------------------------------------------
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        styleClass = TextKnobStyle.class;
+    }
 
     @Override
     protected void createChildren() {
@@ -91,7 +96,9 @@ public class TextKnob extends Knob {
     }
 
     @Override
-    protected void commitProperties() {
+    public void layout() {
+        super.layout();
+
         if (!textIsValue) {
             label.setText(text);
         } else {

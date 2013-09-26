@@ -137,7 +137,6 @@ public class Knob extends ControlTable {
         maxValue = max;
         this.stepSize = stepSize;
         //setTouchable(Touchable.enabled);
-        styleClass = KnobStyle.class;
     }
 
     @Override
@@ -157,6 +156,8 @@ public class Knob extends ControlTable {
 
     @Override
     protected void initialize() {
+        styleClass = KnobStyle.class;
+
         addListener(new InputListener() {
 
             @Override
