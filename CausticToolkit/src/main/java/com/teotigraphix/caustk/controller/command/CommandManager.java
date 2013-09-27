@@ -177,7 +177,7 @@ public class CommandManager implements ICommandManager {
         Class<?> command = getCommand(commandString);
 
         if (command == null) {
-            CtkDebug.warn("Command not registered:" + commandString);
+            CtkDebug.warn("CommandManager", "Command not registered:" + commandString);
             return;
         }
 

@@ -33,10 +33,10 @@ public class ApplicationMediatorBase extends CaustkMediator implements IApplicat
     public void onRegister() {
         File file = getProjectBinaryFile();
         if (file.exists()) {
-            CtkDebug.view("ApplicationMediator: Load last State - " + file);
+            CtkDebug.view("ApplicationMediator", "Load last State - " + file);
             loadApplicationState(file, stateType);
         } else {
-            CtkDebug.view("ApplicationMediator: Create new State - " + file);
+            CtkDebug.view("ApplicationMediator", "Create new State - " + file);
 
             ApplicationModelState state = null;
             try {

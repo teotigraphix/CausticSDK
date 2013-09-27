@@ -101,7 +101,6 @@ public abstract class StepSequencerMediator extends ScreenMediator {
                         int position = machine.getSequencer().getSelectedPhrase().getPosition();
 
                         if (machine.getSequencer().getMode() == StepKeyboardMode.Step) {
-                            CtkDebug.log("XXX:" + sixteenthStep);
                             if (machine.getSequencer().getLocalMeasure() == position - 1)
                                 stepKeyboard.setCurrentIndex(sixteenthStep);
                             else
@@ -169,7 +168,7 @@ public abstract class StepSequencerMediator extends ScreenMediator {
             @Override
             public void onFunctionDown(int index) {
                 FunctionGroupItem item = stepKeyboard.getItem(index);
-                CtkDebug.log("Func:" + item.getName());
+                CtkDebug.view("StepSequencerMediator", "Func:" + item.getName());
                 functionController.execute(item.getFunction());
             }
 

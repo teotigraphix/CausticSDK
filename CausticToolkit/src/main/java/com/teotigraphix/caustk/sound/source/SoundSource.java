@@ -480,7 +480,7 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
             @SuppressWarnings("unused")
             Tone tone = null;
             try {
-                CtkDebug.log("Restore machine from load: " + name + ":" + type);
+                CtkDebug.log("SoundSource", "Restore machine from load: " + name + ":" + type);
                 tone = createTone(i, name, toneType);
             } catch (CausticException e) {
                 e.printStackTrace();

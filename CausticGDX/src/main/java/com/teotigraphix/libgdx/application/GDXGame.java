@@ -44,12 +44,6 @@ import com.teotigraphix.libgdx.screen.IScreen;
  */
 public abstract class GDXGame implements IGame {
 
-    private ArrayMap<Integer, IScreen> screens = new ArrayMap<Integer, IScreen>();
-
-    private ArrayMap<Integer, Class<? extends IScreen>> screenTypes = new ArrayMap<Integer, Class<? extends IScreen>>();
-
-    private StartupExecutor executor;
-
     @Inject
     Injector injector;
 
@@ -59,10 +53,47 @@ public abstract class GDXGame implements IGame {
     @Inject
     IScreenProvider screenProvider;
 
+    private ArrayMap<Integer, IScreen> screens = new ArrayMap<Integer, IScreen>();
+
+    private ArrayMap<Integer, Class<? extends IScreen>> screenTypes = new ArrayMap<Integer, Class<? extends IScreen>>();
+
+    private StartupExecutor executor;
+
+    private Module module;
+
+    private IScreen screen;
+
+    private IScreen pendingScreen;
+
+    private boolean printFps;
+
+    private FPSLogger fpsLogger;
+
+    public static final boolean DEV_MODE = true;
+
+    //----------------------------------
+    // dialogManager
+    //----------------------------------
+
     @Override
     public IDialogManager getDialogManager() {
         return dialogManager;
     }
+
+    //----------------------------------
+    // controller
+    //----------------------------------
+
+    private ISoundGenerator soundGenerator;
+
+    @Override
+    public ISoundGenerator getSoundGenerator() {
+        return soundGenerator;
+    }
+
+    //----------------------------------
+    // controller
+    //----------------------------------
 
     private ICaustkController controller;
 
@@ -75,13 +106,9 @@ public abstract class GDXGame implements IGame {
         controller = value;
     }
 
-    private IScreen screen;
-
-    private boolean printFPS;
-
-    private FPSLogger fps;
-
-    public static final boolean DEV_MODE = true;
+    //----------------------------------
+    // appName
+    //----------------------------------
 
     private String appName;
 
@@ -90,21 +117,17 @@ public abstract class GDXGame implements IGame {
         return appName;
     }
 
-    private ISoundGenerator soundGenerator;
-
-    private Module module;
-
-    @Override
-    public ISoundGenerator getSoundGenerator() {
-        return soundGenerator;
-    }
+    //--------------------------------------------------------------------------
+    // appName
+    //--------------------------------------------------------------------------
 
     public GDXGame(String appName, ISoundGenerator soundGenerator, Module module) {
         this.appName = appName;
         this.soundGenerator = soundGenerator;
         this.module = module;
+
         executor = new StartupExecutor();
-        fps = new FPSLogger();
+        fpsLogger = new FPSLogger();
     }
 
     @Override
@@ -151,9 +174,8 @@ public abstract class GDXGame implements IGame {
             pendingScreen = null;
         }
 
-        // output the current FPS
-        //if (printFPS)
-        fps.log();
+        if (printFps)
+            fpsLogger.log();
 
         if (getController() != null) {
             getController().update();
@@ -173,8 +195,6 @@ public abstract class GDXGame implements IGame {
     protected void addScreen(int id, Class<? extends IScreen> type) {
         screenTypes.put(id, type);
     }
-
-    private IScreen pendingScreen;
 
     @Override
     public void setScreen(int id) {
@@ -206,12 +226,8 @@ public abstract class GDXGame implements IGame {
         screen = value;
 
         if (screen != null) {
-            // this will only happen at first start up with the splash
-            // TODO Can I fix this?
             if (!screen.isInitialized()) {
-                if (injector != null) {
-                    injector.injectMembers(screen);
-                }
+                injector.injectMembers(screen);
                 screen.initialize(this);
                 screen.create();
             }

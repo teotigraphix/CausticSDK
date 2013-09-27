@@ -95,7 +95,7 @@ public class QueuePlayer {
         // QUEUE
         if (isLockBeat())
             return false;
-        log("queue(" + data + ")");
+        debug("queue(" + data + ")");
 
         // if the pattern is still playing but got unqueued, just update the state
         if (playQueue.contains(data)) {
@@ -199,12 +199,12 @@ public class QueuePlayer {
 
     private void mute(int trackIndex) {
         getController().getRack().getMixerChannel(trackIndex).setMute(true);
-        log("Mute[" + trackIndex + "]");
+        debug("Mute[" + trackIndex + "]");
     }
 
     private void unmute(int trackIndex) {
         getController().getRack().getMixerChannel(trackIndex).setMute(false);
-        log("UnMute[" + trackIndex + "]");
+        debug("UnMute[" + trackIndex + "]");
     }
 
     private void extendOrRemovePlayingTracks() {
@@ -319,7 +319,7 @@ public class QueuePlayer {
         }
     }
 
-    private void log(String message) {
-        CtkDebug.log(message);
+    private void debug(String message) {
+        CtkDebug.debug("QueuePlayer", message);
     }
 }

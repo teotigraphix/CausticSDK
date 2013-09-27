@@ -260,12 +260,12 @@ public class CaustkController implements ICaustkController {
     //--------------------------------------------------------------------------
 
     void create() {
-        CtkDebug.log("CaustkController: Create app root dir if not created");
+        CtkDebug.log("CaustkController", "Create app root dir if not created");
         File applicationRoot = application.getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
 
-        CtkDebug.log("CaustkController: Create all Sub components");
+        CtkDebug.log("CaustkController", "Create all Sub components");
 
         // sub composites will add their ICommands in their constructors
 
@@ -293,12 +293,12 @@ public class CaustkController implements ICaustkController {
     }
 
     void save() throws IOException {
-        CtkDebug.log("CaustkController: Save");
+        CtkDebug.log("CaustkController", "Save");
         projectManager.save();
     }
 
     void close() {
-        CtkDebug.log("CaustkController: Close");
+        CtkDebug.log("CaustkController", "Close");
         rack.close();
     }
 

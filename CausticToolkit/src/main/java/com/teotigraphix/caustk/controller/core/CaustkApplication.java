@@ -88,7 +88,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void create() {
-        CtkDebug.log("~Application.create()");
+        CtkDebug.log("Application", "create()");
         // creates all sub components of the controller
         controller.create();
         applicationHandler.commitCreate();
@@ -97,7 +97,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void save() throws IOException {
-        CtkDebug.log("~Application.save()");
+        CtkDebug.log("Application", "save()");
         controller.save();
         applicationHandler.commitSave();
         fireStateChange(StateChangeKind.Save);
@@ -105,7 +105,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void close() {
-        CtkDebug.log("~Application.close()");
+        CtkDebug.log("Application", "close()");
         controller.close();
         applicationHandler.commitClose();
         fireStateChange(StateChangeKind.Close);

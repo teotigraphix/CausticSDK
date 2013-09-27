@@ -113,7 +113,7 @@ public class MachineSound extends MachineComponentPart {
         else if (octaveIndex < 0)
             octaveIndex = 0;
         setOctave(octaves[octaveIndex]);
-        CtkDebug.log("O:" + octave);
+        CtkDebug.log("MachineSound", "O:" + octave);
     }
 
     public void incrementOctave() {

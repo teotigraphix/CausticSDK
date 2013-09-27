@@ -100,7 +100,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     public final void setDirty(boolean value) {
         if (value == dirty)
             return;
-        CtkDebug.model("ApplicationModel dirty: " + value);
+        CtkDebug.model("ApplicationModel", "dirty: " + value);
         dirty = value;
         trigger(new OnApplicationModelDirtyChanged(dirty));
     }
@@ -123,7 +123,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     // and after the ApplicationMediator.onRegister() is called.
     @Override
     public void onRegister() {
-        CtkDebug.model("ApplicationModel onRegister()");
+        CtkDebug.model("ApplicationModel", "onRegister()");
 
         // register all application level models, ApplicationModel
         // any models declared on the app's ApplicationMediator

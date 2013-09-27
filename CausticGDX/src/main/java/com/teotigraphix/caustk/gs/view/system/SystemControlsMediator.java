@@ -26,7 +26,7 @@ public class SystemControlsMediator extends ScreenMediator {
         dial.setOnDialListener(new OnDialListener() {
             @Override
             public void onIncrement() {
-                CtkDebug.log("Inc");
+                CtkDebug.view("SystemControlsMediator", "Inc");
             }
 
             @Override
@@ -35,7 +35,7 @@ public class SystemControlsMediator extends ScreenMediator {
 
             @Override
             public void onDecrement() {
-                CtkDebug.log("Dec");
+                CtkDebug.view("SystemControlsMediator", "Dec");
             }
         });
 

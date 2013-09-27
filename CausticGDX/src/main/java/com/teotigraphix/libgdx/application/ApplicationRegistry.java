@@ -32,7 +32,7 @@ public class ApplicationRegistry implements IApplicationRegistry {
     @Override
     public void registerModel(ICaustkModel model) {
         if (models.contains(model)) {
-            CtkDebug.warn("ApplicationRegistry: already contains " + model);
+            CtkDebug.warn("ApplicationRegistry", "already contains " + model);
             return;
         }
         models.add(model);
@@ -40,9 +40,9 @@ public class ApplicationRegistry implements IApplicationRegistry {
 
     @Override
     public void onRegisterModels() {
-        CtkDebug.log("ApplicationRegistry: Register Models");
+        CtkDebug.log("ApplicationRegistry", "Register Models");
         for (ICaustkModel model : models) {
-            CtkDebug.log("   Register; " + model.getClass().getSimpleName());
+            CtkDebug.log("ApplicationRegistry", "   Register; " + model.getClass().getSimpleName());
             model.onRegister();
         }
     }
