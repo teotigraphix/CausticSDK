@@ -148,6 +148,7 @@ public class ScreenBase implements IScreen {
         Gdx.app.log(LOG, "Creating screen: " + getName());
 
         for (ScreenMediator mediator : mediators) {
+            mediator.onInitialize(this);
             mediator.onAttach(this);
             mediator.onCreate(this);
         }

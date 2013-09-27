@@ -19,88 +19,43 @@
 
 package com.teotigraphix.libgdx.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.libgdx.screen.IScreen;
 
-public class ScreenMediator extends CaustkMediator {
-
-    private List<ScreenMediatorChild> subMediators = new ArrayList<ScreenMediatorChild>();
-
-    protected void addMediator(ScreenMediatorChild child) {
-        subMediators.add(child);
-    }
+public class ScreenMediatorChild extends CaustkMediator {
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ScreenMediator() {
+    public ScreenMediatorChild() {
     }
 
     //--------------------------------------------------------------------------
     // LifeCycle
     //--------------------------------------------------------------------------
 
-    public void onInitialize(IScreen screen) {
-    }
-
-    protected void createChildren(IScreen screen, Table parent) {
-        for (ScreenMediatorChild mediator : subMediators) {
-            mediator.onCreate(screen, parent);
-        }
-    }
-
-    /**
-     * Call {@link #createChildren(IScreen, Table)} from the
-     * {@link #onCreate(IScreen)} method in sub classes.
-     * 
-     * @param screen
-     */
-    public void onCreate(IScreen screen) {
+    public void onCreate(IScreen screen, Table parent) {
     }
 
     public void onAttach(IScreen screen) {
-        for (ScreenMediatorChild child : subMediators) {
-            child.onAttach(screen);
-        }
     }
 
     public void onShow(IScreen screen) {
-        for (ScreenMediatorChild child : subMediators) {
-            child.onShow(screen);
-        }
     }
 
     public void onHide(IScreen screen) {
-        for (ScreenMediatorChild child : subMediators) {
-            child.onHide(screen);
-        }
     }
 
     public void onResume(IScreen screen) {
-        for (ScreenMediatorChild child : subMediators) {
-            child.onResume(screen);
-        }
     }
 
     public void onPause(IScreen screen) {
-        for (ScreenMediatorChild child : subMediators) {
-            child.onPause(screen);
-        }
     }
 
     public void onDispose(IScreen screen) {
-        for (ScreenMediatorChild child : subMediators) {
-            child.onDispose(screen);
-        }
     }
 
     public void onDetach(IScreen screen) {
-        for (ScreenMediatorChild child : subMediators) {
-            child.onDetach(screen);
-        }
     }
 }

@@ -24,6 +24,10 @@ import com.badlogic.gdx.Gdx;
 
 public final class CtkDebug {
 
+    static {
+        setLogLevel(Application.LOG_DEBUG);
+    }
+
     /**
      * @param level
      * @see Application#LOG_DEBUG
