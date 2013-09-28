@@ -191,7 +191,7 @@ public class TriggerMap implements Serializable {
             map.put(beat, trigger);
         }
         Note note = trigger.addNote(beat, pitch, gate, velocity, flags);
-        getPatternSequencer().addNote(pitch, beat, beat = gate, velocity, flags);
+        getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
         fireChange(PhraseChangeKind.NoteAdd, note);
         return note;
     }
