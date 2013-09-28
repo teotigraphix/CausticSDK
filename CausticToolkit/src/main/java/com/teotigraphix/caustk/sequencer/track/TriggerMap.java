@@ -252,6 +252,7 @@ public class TriggerMap implements Serializable {
             getPatternSequencer().removeNote(pitch, beat);
             // with remove note, we actually take the note out of the collection
             trigger.removeNote(note);
+            fireChange(PhraseChangeKind.NoteRemove, note);
         }
         return note;
     }
