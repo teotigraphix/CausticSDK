@@ -24,7 +24,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -152,6 +152,11 @@ public class ScreenBase implements IScreen {
             mediator.onAttach(this);
             mediator.onCreate(this);
         }
+
+        // For now, this allows all constructors to run before children
+        // are created, we draw and create the Stage before the onShow()
+        // is called for mediators, this allows children to be available
+        render(0);
     }
 
     @Override
@@ -172,11 +177,9 @@ public class ScreenBase implements IScreen {
     public void render(float delta) {
 
         // clear the screen with the given RGB color
-        //        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.b, backgroundColor.g,
-        //                backgroundColor.a);
-        //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.b, backgroundColor.g,
+                backgroundColor.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
 

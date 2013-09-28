@@ -24,8 +24,10 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
@@ -36,13 +38,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  */
 public class OverlayButton extends TextButton {
 
+    private OverlayButtonStyle style;
+
+    private boolean noEvent;
+
     //----------------------------------
     // properties
     //----------------------------------
 
-    Map<String, Object> properties = new HashMap<String, Object>();
+    private Map<String, Object> properties;
 
     public final Map<String, Object> getProperties() {
+        if (properties == null)
+            properties = new HashMap<String, Object>();
         return properties;
     }
 
@@ -51,8 +59,6 @@ public class OverlayButton extends TextButton {
     //----------------------------------
 
     boolean isToggle = false;
-
-    private OverlayButtonStyle style;
 
     public boolean isToggle() {
         return isToggle;
@@ -135,7 +141,13 @@ public class OverlayButton extends TextButton {
     }
 
     protected void init() {
-        isToggle = true;
+        addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (noEvent)
+                    event.cancel();
+            }
+        });
     }
 
     //--------------------------------------------------------------------------
@@ -151,6 +163,21 @@ public class OverlayButton extends TextButton {
             float width = (progress / 100f) * getWidth();
             progressOverlay.draw(batch, getX(), getY(), width, getHeight());
         }
+    }
+
+    //--------------------------------------------------------------------------
+    // Public :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Checks the button without dispatching an event.
+     * 
+     * @param checked Whether the ui shows checked or unchecked.
+     */
+    public void check(boolean checked) {
+        noEvent = true;
+        setChecked(checked);
+        noEvent = false;
     }
 
     //--------------------------------------------------------------------------

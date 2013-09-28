@@ -23,19 +23,22 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.teotigraphix.libgdx.ui.OverlayButton.OverlayButtonStyle;
 
-public class ButtonBar extends Table {
+public class ButtonBar extends ControlTable {
+
+    private static final int MAX_WIDTH = 999;
+
+    private static final int MAX_HEIGHT = 999;
+
+    private static final int MIN_WIDTH = 0;
+
+    private static final int MIN_HEIGHT = 0;
 
     private ButtonGroup group;
-
-    private Skin skin;
-
-    private OnButtonBarListener listener;
 
     private String[] items;
 
@@ -46,6 +49,55 @@ public class ButtonBar extends Table {
     //----------------------------------
     // currentIndex
     //----------------------------------
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public ButtonBar(Skin skin, String[] items, boolean isVertical, String buttonStyleName) {
+        super(skin);
+        this.items = items;
+        this.isVertical = isVertical;
+        this.buttonStyleName = buttonStyleName;
+    }
+
+    @Override
+    protected void createChildren() {
+        group = new ButtonGroup();
+
+        final OverlayButtonStyle style = getSkin().get(buttonStyleName, OverlayButtonStyle.class);
+
+        for (int i = 0; i < items.length; i++) {
+            final OverlayButton button = createButton(i, style);
+            if (isVertical) {
+                add(button).fill().expand().minHeight(MIN_WIDTH).prefHeight(MAX_HEIGHT);
+                row();
+            } else {
+                add(button).fill().expand().minWidth(MIN_HEIGHT).prefWidth(MAX_WIDTH);
+            }
+        }
+    }
+
+    protected OverlayButton createButton(int index, OverlayButtonStyle style) {
+        final OverlayButton button = new OverlayButton(items[index], style);
+        button.setToggle(true);
+        group.add(button);
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (button.isChecked()) {
+                    if (listener != null) {
+                        listener.onChange(group.getButtons().indexOf(button, true));
+                    }
+                }
+            }
+        });
+        return button;
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Sets the progress bar percent and visible on the button index.
@@ -69,62 +121,14 @@ public class ButtonBar extends Table {
         invalidateHierarchy();
     }
 
-    public ButtonBar() {
+    public void select(int index, boolean selected) {
+        OverlayButton button = (OverlayButton)group.getButtons().get(index);
+        button.setChecked(selected);
     }
 
-    public ButtonBar(Skin skin, String[] items, boolean isVertical) {
-        super(skin);
-        this.skin = skin;
-        this.items = items;
-        this.isVertical = isVertical;
-        group = new ButtonGroup();
-        createChildren();
-    }
-
-    public ButtonBar(Skin skin, String[] items, boolean isViertical, String buttonStyleName) {
-        this(skin, items, isViertical);
-        this.buttonStyleName = buttonStyleName;
-    }
-
-    protected void createChildren() {
-        for (int i = 0; i < items.length; i++) {
-            final int index = i;
-            final OverlayButton button = new OverlayButton(items[i], skin.get(buttonStyleName,
-                    OverlayButtonStyle.class));
-            if (isVertical) {
-                add(button).fill().expand().minHeight(0).prefHeight(999);
-                row();
-            } else {
-                add(button).fill().expand().minWidth(0).prefWidth(999);
-            }
-
-            button.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    if (button.isChecked()) {
-                        if (listener != null)
-                            listener.onChange(index);
-                    }
-                }
-            });
-
-            group.add(button);
-        }
-    }
-
-    public void select(int index) {
-        if (index == -1)
-            return;
-        // XXX Need a way to not dispatch the change listener when programatically selecting
-        group.getButtons().get(index).setChecked(true);
-    }
-
-    public void setOnButtonBarListener(OnButtonBarListener l) {
-        listener = l;
-    }
-
-    public interface OnButtonBarListener {
-        void onChange(int index);
+    public void updateSelection(int index, boolean selected) {
+        OverlayButton button = (OverlayButton)group.getButtons().get(index);
+        button.check(selected);
     }
 
     public void disableFrom(int length) {
@@ -137,8 +141,20 @@ public class ButtonBar extends Table {
             } else {
                 button.setDisabled(true);
             }
-
         }
+    }
 
+    //--------------------------------------------------------------------------
+    // Event
+    //--------------------------------------------------------------------------
+
+    private OnButtonBarListener listener;
+
+    public void setOnButtonBarListener(OnButtonBarListener l) {
+        listener = l;
+    }
+
+    public interface OnButtonBarListener {
+        void onChange(int index);
     }
 }
