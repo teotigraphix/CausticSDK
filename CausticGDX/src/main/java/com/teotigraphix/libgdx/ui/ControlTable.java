@@ -27,8 +27,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class ControlTable extends Table implements ISkinAware {
 
-    //private boolean childrenCreated = false;
-
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
@@ -90,27 +88,11 @@ public abstract class ControlTable extends Table implements ISkinAware {
     // Constructors
     //--------------------------------------------------------------------------
 
-    //    public ControlTable() {
-    //        super();
-    //    }
-
     public ControlTable(Skin skin) {
         super(skin);
         setSkin(skin);
         initialize();
         createChildren();
-    }
-
-    @Override
-    public void validate() {
-        //        if (!childrenCreated) {
-        //            initialize();
-        //            createChildren();
-        //            setWidth(getPrefWidth());
-        //            setHeight(getPrefHeight());
-        //            childrenCreated = true;
-        //        }
-        super.validate();
     }
 
     protected void initialize() {
