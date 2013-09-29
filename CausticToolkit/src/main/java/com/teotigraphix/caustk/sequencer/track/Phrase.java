@@ -225,16 +225,6 @@ public class Phrase implements Serializable {
         fireChange(PhraseChangeKind.EditMeasure);
     }
 
-    public void onBeatChange(float beat) {
-        localBeat = (int)toLocalBeat(beat, getLength());
-
-        float fullMeasure = beat / 4;
-        float measure = fullMeasure % getLength();
-        setCurrentBeat(beat);
-
-        setPlayMeasure((int)measure);
-    }
-
     //----------------------------------
     //  currentMeasure
     //----------------------------------
@@ -264,6 +254,10 @@ public class Phrase implements Serializable {
 
     private int currentBeat = -1;
 
+    private float floatBeat = -1;
+
+    private int localBeat;
+
     /**
      * Return the ISong current beat.
      */
@@ -271,9 +265,14 @@ public class Phrase implements Serializable {
         return currentBeat;
     }
 
-    private float beat = -1;
+    void setCurrentBeat(float value) {
+        if (value == floatBeat)
+            return;
 
-    private int localBeat;
+        floatBeat = value;
+
+        getDispatcher().trigger(new OnPhraseChange(PhraseChangeKind.Beat, this, null));
+    }
 
     /**
      * Returns the actual beat in the current measure.
@@ -286,50 +285,18 @@ public class Phrase implements Serializable {
         return currentBeat % 4;
     }
 
-    void setCurrentBeat(float value) {
-        if (value == beat)
-            return;
-
-        beat = value;
-
-        getDispatcher().trigger(new OnPhraseChange(PhraseChangeKind.Beat, this, null));
+    public int getLocalBeat() {
+        return localBeat;
     }
 
-    void setCurrentBeat(int value) {
-        setCurrentBeat(value, false);
-    }
+    public void onBeatChange(float beat) {
+        localBeat = (int)toLocalBeat(beat, getLength());
 
-    void setCurrentBeat(int value, boolean seeking) {
-        int last = currentBeat;
-        if (value == currentBeat)
-            return;
+        float fullMeasure = beat / 4;
+        float measure = fullMeasure % getLength();
+        setCurrentBeat(beat);
 
-        currentBeat = value;
-
-        // getDispatcher().trigger(new OnTrackSequencerPropertyChange(PropertyChangeKind.Beat, this));
-
-        //        fireBeatChange(mCurrentBeat, last);
-
-        if (last < value) {
-            // forward
-            if (currentBeat == 0) {
-                setCurrentMeasure(0);
-            } else {
-                int remainder = currentBeat % 4;
-                if (seeking) {
-                    setCurrentMeasure(currentBeat / 4);
-                } else if (remainder == 0) {
-                    setCurrentMeasure(currentMeasure + 1);
-                }
-            }
-        } else if (last > value) {
-            // reverse
-            // if the last beat was a measure change, decrement measure
-            int remainder = last % 4;
-            if (remainder == 0) {
-                setCurrentMeasure(currentMeasure - 1);
-            }
-        }
+        setPlayMeasure((int)measure);
     }
 
     public static float toLocalBeat(float beat, int length) {
@@ -350,25 +317,13 @@ public class Phrase implements Serializable {
     }
 
     //--------------------------------------------------------------------------
-    // ISerialize API :: Methods
+    // Public API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public String toString() {
-        return "Bank:" + bank + ",Pattern:" + pattern;
-    }
-
-    public int getLocalBeat() {
-        return localBeat;
-
-    }
 
     /**
      * Clears all notes from all measures of the phrase.
      */
     public void clear() {
-        // TODO Auto-generated method stub
-
     }
 
     /**
@@ -380,14 +335,6 @@ public class Phrase implements Serializable {
             removeNote(note);
         }
         fireChange(PhraseChangeKind.ClearMeasure);
-    }
-
-    protected void fireChange(PhraseChangeKind kind) {
-        getDispatcher().trigger(new OnPhraseChange(kind, this, null));
-    }
-
-    protected void fireChange(PhraseChangeKind kind, Note phraseNote) {
-        getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
     }
 
     //--------------------------------------------------------------------------
@@ -590,4 +537,18 @@ public class Phrase implements Serializable {
     public final boolean containsTrigger(int step) {
         return triggerMap.containsTrigger(step);
     }
+
+    protected void fireChange(PhraseChangeKind kind) {
+        getDispatcher().trigger(new OnPhraseChange(kind, this, null));
+    }
+
+    protected void fireChange(PhraseChangeKind kind, Note phraseNote) {
+        getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
+    }
+
+    @Override
+    public String toString() {
+        return "Bank:" + bank + ",Pattern:" + pattern;
+    }
+
 }
