@@ -44,13 +44,13 @@ public class BasslineMachineSound extends MachineSound {
     protected MemorySlotItem createPhraseInitData() {
         PhraseMemoryItem item = new PhraseMemoryItem();
         StringBuilder sb = new StringBuilder();
-        sb.append(new Note(60, 0f, 0.25f, 1f, 0).serialze());
+        sb.append(new Note(60, 0f, 0.25f, 1f, 0).getNoteData());
         sb.append("|");
-        sb.append(new Note(60, 1f, 1.25f, 1f, 0).serialze());
+        sb.append(new Note(60, 1f, 1.25f, 1f, 0).getNoteData());
         sb.append("|");
-        sb.append(new Note(60, 2f, 2.25f, 1f, 0).serialze());
+        sb.append(new Note(60, 2f, 2.25f, 1f, 0).getNoteData());
         sb.append("|");
-        sb.append(new Note(60, 3f, 3.25f, 1f, 0).serialze());
+        sb.append(new Note(60, 3f, 3.25f, 1f, 0).getNoteData());
         item.setInitNoteData(sb.toString());
         return item;
     }

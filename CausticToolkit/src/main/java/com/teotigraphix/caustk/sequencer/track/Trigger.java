@@ -188,5 +188,4 @@ public class Trigger implements Serializable {
     public String toString() {
         return "[Trigger(" + getStep(Resolution.SIXTEENTH) + ", " + notes + ")]";
     }
-
 }

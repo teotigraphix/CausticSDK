@@ -27,13 +27,13 @@ public class DrumMachineSound extends MachineSound {
         // 48 - 55
         PhraseMemoryItem item = new PhraseMemoryItem();
         StringBuilder sb = new StringBuilder();
-        sb.append(new Note(48, 0f, 0.25f, 1f, 0).serialze());
+        sb.append(new Note(48, 0f, 0.25f, 1f, 0).getNoteData());
         sb.append("|");
-        sb.append(new Note(48, 1f, 1.25f, 1f, 0).serialze());
+        sb.append(new Note(48, 1f, 1.25f, 1f, 0).getNoteData());
         sb.append("|");
-        sb.append(new Note(48, 2f, 2.25f, 1f, 0).serialze());
+        sb.append(new Note(48, 2f, 2.25f, 1f, 0).getNoteData());
         sb.append("|");
-        sb.append(new Note(48, 3f, 3.25f, 1f, 0).serialze());
+        sb.append(new Note(48, 3f, 3.25f, 1f, 0).getNoteData());
         item.setInitNoteData(sb.toString());
         return item;
     }

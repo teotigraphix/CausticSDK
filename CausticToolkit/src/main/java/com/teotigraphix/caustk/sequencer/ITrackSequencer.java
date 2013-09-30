@@ -11,6 +11,7 @@ import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
+import com.teotigraphix.caustk.sequencer.track.Trigger;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
@@ -221,6 +222,41 @@ public interface ITrackSequencer extends IRackComponent {
             this.kind = kind;
             this.phrase = phrase;
             this.note = note;
+        }
+    }
+
+    public enum TriggerChangeKind {
+        Select,
+
+        Deselect,
+
+        Update;
+    }
+
+    public static class OnTriggerChange {
+
+        private final TriggerChangeKind kind;
+
+        public TriggerChangeKind getKind() {
+            return kind;
+        }
+
+        private final Phrase phrase;
+
+        public Phrase getPhrase() {
+            return phrase;
+        }
+
+        private final Trigger trigger;
+
+        public Trigger getTrigger() {
+            return trigger;
+        }
+
+        public OnTriggerChange(TriggerChangeKind kind, Phrase phrase, Trigger trigger) {
+            this.kind = kind;
+            this.phrase = phrase;
+            this.trigger = trigger;
         }
     }
 

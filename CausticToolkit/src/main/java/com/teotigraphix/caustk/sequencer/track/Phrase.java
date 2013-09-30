@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -498,7 +497,7 @@ public class Phrase implements Serializable {
         return triggerMap.getTriggers();
     }
 
-    public List<Trigger> getViewTriggers() {
+    public Collection<Trigger> getViewTriggers() {
         return triggerMap.getViewTriggers();
     }
 
