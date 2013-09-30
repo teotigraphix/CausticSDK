@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.Serializable;
 
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 /**
@@ -40,6 +41,9 @@ public class Note implements Serializable {
 
     private int pitch;
 
+    /**
+     * The MIDI pitch of the note.
+     */
     public int getPitch() {
         return pitch;
     }
@@ -50,6 +54,9 @@ public class Note implements Serializable {
 
     private float start;
 
+    /**
+     * The start beat of the note.
+     */
     public float getStart() {
         return start;
     }
@@ -60,6 +67,9 @@ public class Note implements Serializable {
 
     private float end;
 
+    /**
+     * Teh end beat of the note.
+     */
     public float getEnd() {
         return end;
     }
@@ -68,6 +78,9 @@ public class Note implements Serializable {
     // gate
     //----------------------------------
 
+    /**
+     * The gate time of the note, the length of time between the start and end.
+     */
     public float getGate() {
         return end - start;
     }
@@ -78,6 +91,9 @@ public class Note implements Serializable {
 
     private float velocity;
 
+    /**
+     * The velocity of the note (0..1).
+     */
     public float getVelocity() {
         return velocity;
     }
@@ -88,6 +104,9 @@ public class Note implements Serializable {
 
     private int flags;
 
+    /**
+     * The flags bitmasked, (0 none), (1 silde), (2 accent).
+     */
     public int getFlags() {
         return flags;
     }
@@ -96,6 +115,11 @@ public class Note implements Serializable {
     // step
     //----------------------------------
 
+    /**
+     * Returns a calculated step based on the passed {@link Resolution}.
+     * 
+     * @param resolution The resolution of the calculation.
+     */
     public final int getStep(Resolution resolution) {
         return Resolution.toStep(start, resolution);
     }
@@ -104,6 +128,12 @@ public class Note implements Serializable {
     // Constructors
     //--------------------------------------------------------------------------
 
+    /**
+     * Creates a new note using the Caustic Core's serialization.
+     * 
+     * @param data The serialized note data for one note.
+     * @see PatternSequencerMessage#QUERY_NOTE_DATA
+     */
     public Note(String data) {
         String[] split = data.split(" ");
         this.start = Float.valueOf(split[0]);
@@ -113,6 +143,15 @@ public class Note implements Serializable {
         this.flags = Float.valueOf(split[4]).intValue();
     }
 
+    /**
+     * Creates a new note using note values.
+     * 
+     * @param pitch The MIDI pitch.
+     * @param start The start beat.
+     * @param end The end beat.
+     * @param velocity The velocity (0..1).
+     * @param flags The bitmasked flags.
+     */
     public Note(int pitch, float start, float end, float velocity, int flags) {
         update(pitch, start, end, velocity, flags);
     }
@@ -121,6 +160,15 @@ public class Note implements Serializable {
     // Public Method API
     //--------------------------------------------------------------------------
 
+    /**
+     * Updates thew note using new note values.
+     * 
+     * @param pitch The MIDI pitch.
+     * @param start The start beat.
+     * @param end The end beat.
+     * @param velocity The velocity (0..1).
+     * @param flags The bitmasked flags.
+     */
     public void update(int pitch, float start, float end, float velocity, int flags) {
         this.pitch = pitch;
         this.start = start;
@@ -129,22 +177,11 @@ public class Note implements Serializable {
         this.flags = flags;
     }
 
+    /**
+     * Serializes the note data into the Caustic Core note string.
+     */
     public String getNoteData() {
         // [start] [note] [velocity] [end] [flags]
-        final StringBuilder sb = new StringBuilder();
-        sb.append(start);
-        sb.append(" ");
-        sb.append(pitch);
-        sb.append(" ");
-        sb.append(velocity);
-        sb.append(" ");
-        sb.append(end);
-        sb.append(" ");
-        sb.append(flags);
-        return sb.toString();
-    }
-
-    public String serialze() {
         final StringBuilder sb = new StringBuilder();
         sb.append(start);
         sb.append(" ");
