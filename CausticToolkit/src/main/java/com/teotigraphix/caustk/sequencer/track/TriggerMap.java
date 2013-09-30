@@ -227,13 +227,13 @@ public class TriggerMap implements Serializable {
     /**
      * Removes a {@link Note} at the specified beat and pitch.
      * 
-     * @param beat The start beat.
      * @param pitch The MIDI pitch value.
+     * @param beat The start beat.
      * @see OnPhraseChange
      * @see PhraseChangeKind#NoteRemove
      * @return <code>null</code> if the beat and pitch does not exist.
      */
-    public Note removeNote(float beat, int pitch) {
+    public Note removeNote(int pitch, float beat) {
         Trigger trigger = getTrigger(beat);
         if (trigger == null)
             return null;
@@ -251,14 +251,14 @@ public class TriggerMap implements Serializable {
      * Removes a {@link Note} at the specified step and pitch based on the
      * {@link Phrase#getResolution()}.
      * 
-     * @param step The start step.
      * @param pitch The MIDI pitch value.
+     * @param step The start step.
      * @return <code>null</code> if the beat and pitch does not exist.
      * @see #removeNote(float, int)
      */
-    public Note removeNote(int step, int pitch) {
+    public Note removeNote(int pitch, int step) {
         float beat = Resolution.toBeat(step, phrase.getResolution());
-        return removeNote(beat, pitch);
+        return removeNote(pitch, beat);
     }
 
     /**
@@ -270,7 +270,7 @@ public class TriggerMap implements Serializable {
      * @return <code>null</code> if the beat and pitch does not exist.
      */
     public Note removeNote(Note note) {
-        return removeNote(note.getStart(), note.getPitch());
+        return removeNote(note.getPitch(), note.getStart());
     }
 
     //----------------------------------
@@ -345,7 +345,7 @@ public class TriggerMap implements Serializable {
     }
 
     /**
-     * Returns a sorted map of all triggers with key as the step based on
+     * Returns a sorted map of all view triggers with key as the step based on
      * {@link Phrase#getResolution()} and value of {@link Trigger}.
      */
     public Map<Integer, Trigger> getViewTriggerMap() {

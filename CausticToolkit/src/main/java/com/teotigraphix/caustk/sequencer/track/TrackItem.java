@@ -19,11 +19,10 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
@@ -32,7 +31,9 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  * A new track item is created for every span of a {@link Phrase} inserted into
  * the Track with {@link Track#addPhrase(int, Phrase)}.
  */
-public class TrackItem implements ISerialize {
+public class TrackItem implements Serializable {
+
+    private static final long serialVersionUID = -6218774093346334285L;
 
     //--------------------------------------------------------------------------
     // Properties
@@ -206,18 +207,6 @@ public class TrackItem implements ISerialize {
         if (measure >= start && measure < end)
             return true;
         return false;
-    }
-
-    //--------------------------------------------------------------------------
-    // ISerialize API
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void sleep() {
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
     }
 
     @Override

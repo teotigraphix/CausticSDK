@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.sequencer.track;
 
@@ -7,18 +25,15 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.sequencer.ITrackSequencer;
+import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnPhraseChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.PhraseChangeKind;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 /**
- * @see ITrackSequencer#getDispatcher()
- * @see OnTrackPhraseLengthChange
- * @see OnTrackPhraseNoteDataChange
- * @see OnTrackPhrasePlayMeasureChange
- * @see OnTrackPhraseEditMeasureChange
+ * A {@link Phrase} exists as a "pattern" in a {@link Track} that has a location
+ * in a native pattern_sequencer with bank and pattern.
  */
 public class Phrase implements Serializable {
 
@@ -26,34 +41,56 @@ public class Phrase implements Serializable {
 
     private TriggerMap triggerMap;
 
-    private Track track;
-
-    public final Track getTrack() {
-        return track;
-    }
-
     final IDispatcher getDispatcher() {
         return track.getDispatcher();
-    }
-
-    public final Tone getTone() {
-        return track.getRack().getTone(toneIndex);
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
+    private Track track;
+
     //----------------------------------
-    // toneIndex
+    // track
+    //----------------------------------
+
+    /**
+     * Returns the {@link Track} that owns this phrase.
+     */
+    public final Track getTrack() {
+        return track;
+    }
+
+    //----------------------------------
+    // tone
+    //----------------------------------
+
+    /**
+     * Returns the {@link Tone} for the parent {@link Track}.
+     */
+    public final Tone getTone() {
+        return track.getRack().getTone(toneIndex);
+    }
+
+    //----------------------------------
+    // phraseId
     //----------------------------------
 
     private UUID phraseId;
 
+    /**
+     * Returns the {@link LibraryPhrase} id that was used to create this phrase.
+     */
     public UUID getPhraseId() {
         return phraseId;
     }
 
+    /**
+     * Sets the phrase id used to initialize this phrase.
+     * 
+     * @param value The id.
+     */
     public void setPhraseId(UUID value) {
         phraseId = value;
     }
@@ -298,11 +335,6 @@ public class Phrase implements Serializable {
         setPlayMeasure((int)measure);
     }
 
-    public static float toLocalBeat(float beat, int length) {
-        float r = (beat % (length * 4));
-        return r;
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -327,6 +359,9 @@ public class Phrase implements Serializable {
 
     /**
      * Clears all notes from measure.
+     * 
+     * @see OnPhraseChange
+     * @see PhraseChangeKind#ClearMeasure
      */
     public void clear(int measure) {
         Collection<Note> list = getNotes(measure);
@@ -350,6 +385,10 @@ public class Phrase implements Serializable {
 
     private Scale scale = Scale.SIXTEENTH;
 
+    /**
+     * Returns the current {@link Scale} used to determine the
+     * {@link Resolution}.
+     */
     public Scale getScale() {
         return scale;
     }
@@ -461,81 +500,195 @@ public class Phrase implements Serializable {
         setPosition(value);
     }
 
-    public Collection<Note> getNotes() {
-        return triggerMap.getNotes();
-    }
+    //--------------------------------------------------------------------------
+    // TriggerMap Method :: API
+    //--------------------------------------------------------------------------
 
-    public Collection<Note> getNotes(int measure) {
-        return triggerMap.getNotes(measure);
-    }
-
-    public void addNotes(Collection<Note> notes) {
-        triggerMap.addNotes(notes);
-    }
-
-    public Note addNote(int pitch, float start, float gate, float velocity, int flags) {
-        return triggerMap.addNote(pitch, start, gate, velocity, flags);
-    }
-
-    public Note removeNote(int pitch, float beat) {
-        return triggerMap.removeNote(beat, pitch);
-    }
-
-    public void removeNote(Note note) {
-        triggerMap.removeNote(note);
-    }
-
-    public Note getNote(int pitch, float start) {
-        return triggerMap.getNote(pitch, start);
-    }
-
+    /**
+     * @see TriggerMap#hasNote(int, float)
+     */
     public boolean hasNote(int pitch, float beat) {
         return triggerMap.hasNote(pitch, beat);
     }
 
-    public Collection<Trigger> getTriggers() {
-        return triggerMap.getTriggers();
+    /**
+     * @see TriggerMap#getNotes()
+     */
+    public Collection<Note> getNotes() {
+        return triggerMap.getNotes();
     }
 
-    public Collection<Trigger> getViewTriggers() {
-        return triggerMap.getViewTriggers();
+    /**
+     * @see TriggerMap#getNote(int, float)
+     */
+    public Note getNote(int pitch, float start) {
+        return triggerMap.getNote(pitch, start);
     }
 
-    public Map<Integer, Trigger> getViewTriggerMap() {
-        return triggerMap.getViewTriggerMap();
+    /**
+     * @see TriggerMap#getNotes(int)
+     */
+    public Collection<Note> getNotes(int measure) {
+        return triggerMap.getNotes(measure);
     }
 
-    public final Trigger getTrigger(float beat) {
-        return triggerMap.getTrigger(beat);
+    /**
+     * @see TriggerMap#addNote(int, float, float, float, int)
+     */
+    public Note addNote(int pitch, float beat, float gate, float velocity, int flags) {
+        return triggerMap.addNote(pitch, beat, gate, velocity, flags);
     }
 
-    public final Trigger getTrigger(int step) {
-        return triggerMap.getTrigger(step);
+    /**
+     * @see TriggerMap#addNote(int, int, float, float, int)
+     */
+    public Note addNote(int pitch, int step, float gate, float velocity, int flags) {
+        return triggerMap.addNote(pitch, step, gate, velocity, flags);
     }
 
-    public void triggerOn(int step) {
-        triggerMap.triggerOn(step);
+    /**
+     * @see TriggerMap#addNote(Note)
+     */
+    public void addNote(Note note) {
+        triggerMap.addNote(note);
     }
 
-    public void triggerOn(int step, int pitch, float gate, float velocity, int flags) {
-        triggerMap.triggerOn(step, pitch, gate, velocity, flags);
+    /**
+     * @see TriggerMap#addNotes(Collection)
+     */
+    public void addNotes(Collection<Note> notes) {
+        triggerMap.addNotes(notes);
     }
 
-    public void triggerOff(int step) {
-        triggerMap.triggerOff(step);
+    /**
+     * @see TriggerMap#removeNote(int, float)
+     */
+    public Note removeNote(int pitch, float beat) {
+        return triggerMap.removeNote(pitch, beat);
     }
 
-    public void triggerUpdateGate(int step, float gate) {
-        triggerMap.triggerUpdateGate(step, gate);
+    /**
+     * @see TriggerMap#removeNote(int, int)
+     */
+    public Note removeNote(int pitch, int step) {
+        return triggerMap.removeNote(pitch, step);
     }
 
+    /**
+     * @see TriggerMap#removeNote(Note)
+     */
+    public void removeNote(Note note) {
+        triggerMap.removeNote(note);
+    }
+
+    /**
+     * @see TriggerMap#containsTrigger(float)
+     */
     public final boolean containsTrigger(float beat) {
         return triggerMap.containsTrigger(beat);
     }
 
+    /**
+     * @see TriggerMap#containsTrigger(int)
+     */
     public final boolean containsTrigger(int step) {
         return triggerMap.containsTrigger(step);
     }
+
+    /**
+     * @see TriggerMap#getTrigger(float)
+     */
+    public final Trigger getTrigger(float beat) {
+        return triggerMap.getTrigger(beat);
+    }
+
+    /**
+     * @see TriggerMap#getTrigger(int)
+     */
+    public final Trigger getTrigger(int step) {
+        return triggerMap.getTrigger(step);
+    }
+
+    /**
+     * @see TriggerMap#getTriggers()
+     */
+    public Collection<Trigger> getTriggers() {
+        return triggerMap.getTriggers();
+    }
+
+    /**
+     * @see TriggerMap#getViewTriggers()
+     */
+    public Collection<Trigger> getViewTriggers() {
+        return triggerMap.getViewTriggers();
+    }
+
+    /**
+     * @see TriggerMap#getViewTriggerMap()
+     */
+    public Map<Integer, Trigger> getViewTriggerMap() {
+        return triggerMap.getViewTriggerMap();
+    }
+
+    /**
+     * @see TriggerMap#triggerOn(int, int, float, float, int)
+     */
+    public void triggerOn(int step, int pitch, float gate, float velocity, int flags) {
+        triggerMap.triggerOn(step, pitch, gate, velocity, flags);
+    }
+
+    /**
+     * @see TriggerMap#triggerOn(int)
+     */
+    public void triggerOn(int step) {
+        triggerMap.triggerOn(step);
+    }
+
+    /**
+     * @see TriggerMap#triggerOff(int)
+     */
+    public void triggerOff(int step) {
+        triggerMap.triggerOff(step);
+    }
+
+    /**
+     * @see TriggerMap#triggerUpdate(int, int, float, float, int)
+     */
+    public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags) {
+        triggerMap.triggerUpdate(step, pitch, gate, velocity, flags);
+    }
+
+    /**
+     * @see TriggerMap#triggerUpdatePitch(int, int)
+     */
+    public void triggerUpdatePitch(int step, int pitch) {
+        triggerMap.triggerUpdatePitch(step, pitch);
+    }
+
+    /**
+     * @see TriggerMap#triggerUpdateGate(int, float)
+     */
+    public void triggerUpdateGate(int step, float gate) {
+        triggerMap.triggerUpdateGate(step, gate);
+    }
+
+    /**
+     * @see TriggerMap#triggerUpdateVelocity(int, float)
+     */
+    public void triggerUpdateVelocity(int step, float velocity) {
+        triggerMap.triggerUpdateVelocity(step, velocity);
+    }
+
+    /**
+     * @see TriggerMap#triggerUpdateFlags(int, int)
+     */
+    public void triggerUpdateFlags(int step, int flags) {
+        triggerMap.triggerUpdateFlags(step, flags);
+    }
+
+    //--------------------------------------------------------------------------
+    // Private Method :: API
+    //--------------------------------------------------------------------------
 
     protected void fireChange(PhraseChangeKind kind) {
         getDispatcher().trigger(new OnPhraseChange(kind, this, null));
@@ -545,9 +698,13 @@ public class Phrase implements Serializable {
         getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
     }
 
+    public static float toLocalBeat(float beat, int length) {
+        float r = (beat % (length * 4));
+        return r;
+    }
+
     @Override
     public String toString() {
         return "Bank:" + bank + ",Pattern:" + pattern;
     }
-
 }
