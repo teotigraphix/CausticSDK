@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.sequencer.ISystemSequencer.ExportType;
 
 /**
  * The {@link SequencerMessage} holds all OSC messages associated with the
@@ -67,8 +66,6 @@ public class SequencerMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#addPattern(IMachine, int, int, int, int)
      */
     public static final SequencerMessage PATTERN_EVENT = new SequencerMessage(
             "/caustic/sequencer/pattern_event ${0} ${1} ${2} ${3} ${4}");
@@ -104,8 +101,6 @@ public class SequencerMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#setLoopPoints(int, int)
      */
     public static final SequencerMessage LOOP_POINTS = new SequencerMessage(
             "/caustic/sequencer/loop_points ${0} ${1}");
@@ -123,8 +118,6 @@ public class SequencerMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#playPosition(int)
      */
     public static final SequencerMessage PLAY_POSITION = new SequencerMessage(
             "/caustic/sequencer/play_position ${0}");
@@ -145,10 +138,6 @@ public class SequencerMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#exportSong(String, ExportType)
-     * @see ISequencer#exportSong(String, ExportType, int)
-     * @see ISequencer#exportSongProgress()
      */
     public static final SequencerMessage EXPORT_SONG = new SequencerMessage(
             "/caustic/sequencer/export_song ${0} ${1} ${2}");
@@ -167,9 +156,6 @@ public class SequencerMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#exportSong(String, ExportType)
-     * @see ISequencer#exportSongProgress()
      */
     public static final SequencerMessage EXPORT_SONG_DEFAULT = new SequencerMessage(
             "/caustic/sequencer/export_song ${0} ${1}");
@@ -188,8 +174,6 @@ public class SequencerMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code> (0-100) The progress of
      * exported samples.
-     * 
-     * @see ISequencer#exportSongProgress()
      */
     public static final SequencerMessage EXPORT_PROGRESS = new SequencerMessage(
             "/caustic/sequencer/export_progress");
@@ -207,8 +191,6 @@ public class SequencerMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#clearPatterns()
      */
     public static final SequencerMessage CLEAR_PATTERNS = new SequencerMessage(
             "/caustic/sequencer/clear_patterns");
@@ -225,8 +207,6 @@ public class SequencerMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#clearAutomation(IMachine)
      */
     public static final SequencerMessage CLEAR_MACHINE_AUTOMATION = new SequencerMessage(
             "/caustic/sequencer/clear_automation ${0}");
@@ -243,8 +223,6 @@ public class SequencerMessage extends CausticMessage {
      * <li><strong>N/A</strong></li>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see ISequencer#clearAutomation()
      */
     public static final SequencerMessage CLEAR_AUTOMATION = new SequencerMessage(
             "/caustic/sequencer/clear_automation");

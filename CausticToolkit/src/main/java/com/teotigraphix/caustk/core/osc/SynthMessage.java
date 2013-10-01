@@ -113,7 +113,7 @@ public class SynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IMachine#loadPreset(String)
+     * @see SynthComponent#loadPreset(String)
      */
     public static final SynthMessage LOAD_PRESET = new SynthMessage(
             "/caustic/${0}/load_preset ${1}");
@@ -135,7 +135,7 @@ public class SynthMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>N/A</code>
      * </p>
      * 
-     * @see IMachine#savePreset(String)
+     * @see SynthComponent#savePreset(String)
      */
     public static final SynthMessage SAVE_PRESET = new SynthMessage(
             "/caustic/${0}/save_preset ${1}");
@@ -153,7 +153,7 @@ public class SynthMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>String</code>The name of the preset
      * loaded in the machine if any.
      * 
-     * @see IMachine#getPresetName()
+     * @see SynthComponent#getPresetName()
      */
     public static final SynthMessage QUERY_PRESET = new SynthMessage("/caustic/${0}/preset");
 

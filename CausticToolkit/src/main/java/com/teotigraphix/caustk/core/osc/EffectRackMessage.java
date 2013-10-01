@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.core.osc;
 
 import com.teotigraphix.caustk.sound.effect.EffectType;
+import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 
 /**
  * The {@link EffectRackMessage} holds all OSC messages associated with the
@@ -55,7 +56,7 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IEffectsRack#putEffect(IMachine, int, EffectType)
+     * @see SoundMixerChannel#addEffect(EffectType, int)
      */
     public static final EffectRackMessage CREATE = new EffectRackMessage(
             "/caustic/effects_rack/create ${0} ${1} ${2}");
@@ -74,6 +75,8 @@ public class EffectRackMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
+     * 
+     * @see SoundMixerChannel#removeEffect(int)
      */
     public static final EffectRackMessage REMOVE = new EffectRackMessage(
             "/caustic/effects_rack/remove ${0} ${1}");

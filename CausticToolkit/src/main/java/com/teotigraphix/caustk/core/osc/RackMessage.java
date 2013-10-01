@@ -51,8 +51,6 @@ public class RackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IRack#addMachine(String, MachineType)
-     * @see IRack#addMachineAt(int, String, String)
      * @since 1.0
      */
     public static final RackMessage CREATE = new RackMessage("/caustic/create ${0} ${1} ${2}");
@@ -72,7 +70,6 @@ public class RackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IRack#removeMachineAt(int)
      * @since 1.0
      */
     public static final RackMessage REMOVE = new RackMessage("/caustic/remove ${0}");
@@ -93,7 +90,6 @@ public class RackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IRack#loadSong(String)
      * @since 1.0
      */
     public static final RackMessage LOAD_SONG = new RackMessage("/caustic/load_song ${0}");
@@ -118,7 +114,6 @@ public class RackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see IRack#saveSong(String)
      * @see RuntimeUtils#getCausticSongsDirectory()
      * @since 1.0
      */
@@ -141,7 +136,6 @@ public class RackMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>String</code> The machine name if it
      * exists, <code>null</code> if not.
      * 
-     * @see IRack#queryMachineName(int)
      * @since 1.0
      */
     public static final RackMessage QUERY_MACHINE_NAME = new RackMessage(
@@ -164,7 +158,6 @@ public class RackMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>String</code> The machine type (
      * <code>bassline, beatbox, pcmsynth, subsynth</code>)
      * 
-     * @see IRack#queryMachineType(int)
      * @since 1.0
      */
     public static final RackMessage QUERY_MACHINE_TYPE = new RackMessage(
@@ -192,5 +185,4 @@ public class RackMessage extends CausticMessage {
     RackMessage(String message) {
         super(message);
     }
-
 }

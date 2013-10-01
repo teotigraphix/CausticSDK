@@ -270,5 +270,4 @@ public class BasslineMessage extends CausticMessage {
     public BasslineMessage(String message) {
         super(message);
     }
-
 }
