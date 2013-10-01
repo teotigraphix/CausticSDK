@@ -19,13 +19,10 @@
 
 package com.teotigraphix.caustk.core;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-
 public final class CtkDebug {
 
     static {
-        setLogLevel(Application.LOG_DEBUG);
+        //setLogLevel(Application.LOG_DEBUG);
     }
 
     /**
@@ -36,7 +33,7 @@ public final class CtkDebug {
      * @see Application#LOG_NONE
      */
     public static void setLogLevel(int level) {
-        Gdx.app.setLogLevel(level);
+        //        Gdx.app.setLogLevel(level);
     }
 
     public static void model(String tag, String message) {
@@ -52,34 +49,34 @@ public final class CtkDebug {
     }
 
     public static void log(String tag, String message) {
-        Gdx.app.log(tag, message);
+        //        Gdx.app.log(tag, message);
     }
 
     public static void log(String tag, String message, Exception exception) {
-        Gdx.app.log(tag, message, exception);
+        //        Gdx.app.log(tag, message, exception);
     }
 
     public static void debug(String tag, String message) {
-        Gdx.app.debug(tag, message);
+        //        Gdx.app.debug(tag, message);
     }
 
     public static void debug(String tag, String message, Throwable throwable) {
-        Gdx.app.debug(tag, message, throwable);
+        //        Gdx.app.debug(tag, message, throwable);
     }
 
     public static void warn(String tag, String message) {
-        Gdx.app.error(tag, "WARNING: " + message);
+        //        Gdx.app.error(tag, "WARNING: " + message);
     }
 
     public static void warn(String tag, String message, Throwable throwable) {
-        Gdx.app.error(tag, "WARNING: " + message, throwable);
+        //        Gdx.app.error(tag, "WARNING: " + message, throwable);
     }
 
     public static void err(String tag, String message) {
-        Gdx.app.error(tag, message);
+        //        Gdx.app.error(tag, message);
     }
 
     public static void err(String tag, String message, Throwable throwable) {
-        Gdx.app.error(tag, message, throwable);
+        //        Gdx.app.error(tag, message, throwable);
     }
 }
