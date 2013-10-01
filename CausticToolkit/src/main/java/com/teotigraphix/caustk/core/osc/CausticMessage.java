@@ -37,14 +37,52 @@ public class CausticMessage {
 
     private static final String MESSAGE_PREFIX = "${";
 
-    private String mMessage;
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
-    private String mMessageHead;
+    //----------------------------------
+    // tokenMessage
+    //----------------------------------
 
-    public CausticMessage(String message) {
-        mMessage = message;
-        mMessageHead = mMessage.split(" ")[0];
+    private String tokenMessage;
+
+    /**
+     * Returns the message with tokens.
+     * <p>
+     * Example: <code>/caustic/outputpanel/bpm ${0}</code>.
+     */
+    public String getTokenMessage() {
+        return tokenMessage;
     }
+
+    //----------------------------------
+    // message
+    //----------------------------------
+
+    private String message;
+
+    /**
+     * Returns the trimmed message without tokens.
+     * <p>
+     * Example: <code>/caustic/outputpanel/bpm</code>.
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public CausticMessage(String tokenMessage) {
+        this.tokenMessage = tokenMessage;
+        this.message = tokenMessage.split(" ")[0];
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
     /**
      * Sends a message to the CausticCore using the args passed to be replaced
@@ -56,17 +94,17 @@ public class CausticMessage {
      * @see ICausticEngine#sendMessage(String)
      */
     public final float send(ICausticEngine engine, Object... args) {
-        StringBuffer sb = new StringBuffer();
-        String message = mMessage;
+        final StringBuffer sb = new StringBuffer();
+        String result = this.tokenMessage;
         int i = 0;
         for (Object arg : args) {
             sb.append(MESSAGE_PREFIX);
             sb.append(i++);
             sb.append(MESSAGE_POSTFIX);
-            message = message.replace(sb.toString(), arg.toString());
+            result = result.replace(sb.toString(), arg.toString());
             sb.setLength(0);
         }
-        return engine.sendMessage(message);
+        return engine.sendMessage(result);
     }
 
     /**
@@ -79,17 +117,17 @@ public class CausticMessage {
      * @see ICausticEngine#sendMessage(String)
      */
     public final float query(ICausticEngine engine, Object... args) {
-        StringBuffer sb = new StringBuffer();
-        String message = mMessageHead;
+        final StringBuffer sb = new StringBuffer();
+        String result = message;
         int i = 0;
         for (Object arg : args) {
             sb.append(MESSAGE_PREFIX);
             sb.append(i++);
             sb.append(MESSAGE_POSTFIX);
-            message = message.replace(sb.toString(), arg.toString());
+            result = result.replace(sb.toString(), arg.toString());
             sb.setLength(0);
         }
-        return engine.sendMessage(message);
+        return engine.sendMessage(result);
     }
 
     /**
@@ -102,21 +140,21 @@ public class CausticMessage {
      * @see ICausticEngine#queryMessage(String)
      */
     public final String queryString(ICausticEngine engine, Object... args) {
-        StringBuffer sb = new StringBuffer();
-        String message = mMessage;
+        final StringBuffer sb = new StringBuffer();
+        String result = this.tokenMessage;
         int i = 0;
         for (Object arg : args) {
             sb.append(MESSAGE_PREFIX);
             sb.append(i++);
             sb.append(MESSAGE_POSTFIX);
-            message = message.replace(sb.toString(), arg.toString());
+            result = result.replace(sb.toString(), arg.toString());
             sb.setLength(0);
         }
-        return engine.queryMessage(message);
+        return engine.queryMessage(result);
     }
 
     @Override
     public String toString() {
-        return mMessage;
+        return tokenMessage;
     }
 }
