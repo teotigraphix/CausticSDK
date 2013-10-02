@@ -96,6 +96,11 @@ public interface ITrackSequencer extends IRackComponent {
     Track getTrack(Tone tone);
 
     /**
+     * Creates a {@link TrackSong} with a dummy File.
+     */
+    TrackSong createSong();
+
+    /**
      * @see #createSong(File)
      * @param relativePath
      * @throws IOException
@@ -306,4 +311,5 @@ public interface ITrackSequencer extends IRackComponent {
             this.trackSong = trackSong;
         }
     }
+
 }

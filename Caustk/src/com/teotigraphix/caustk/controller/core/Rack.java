@@ -92,6 +92,7 @@ public class Rack implements Serializable, ICausticEngine {
 
     public Rack(ICaustkController controller) {
         this.controller = controller;
+        this.controller.setRack(this);
 
         updateSoundGenerator();
 
@@ -99,6 +100,8 @@ public class Rack implements Serializable, ICausticEngine {
         soundMixer = new SoundMixer(this);
         systemSequencer = new SystemSequencer(this);
         trackSequencer = new TrackSequencer(this);
+        // create a new TrackSong for the TrackSequencer
+        trackSequencer.createSong();
     }
 
     public void registerObservers() {
