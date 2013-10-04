@@ -137,7 +137,7 @@ public class Phrase implements Serializable {
     // length
     //----------------------------------
 
-    private int length;
+    private int length = 1;
 
     /**
      * Returns the assigned number of measurees for this phrase in the native

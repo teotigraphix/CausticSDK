@@ -156,6 +156,10 @@ public class Rack implements Serializable, ICausticEngine {
         systemSequencer.addPattern(tone, bank, pattern, start, end);
     }
 
+    public void removePattern(Tone tone, int start, int end) throws CausticException {
+        systemSequencer.removePattern(tone, start, end);
+    }
+
     //--------------------------------------------------------------------------
     // SoundMixer
     //--------------------------------------------------------------------------

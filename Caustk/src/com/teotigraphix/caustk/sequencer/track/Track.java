@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.CausticException;
@@ -40,6 +42,7 @@ import com.teotigraphix.caustk.tone.Tone;
  * @see OnTrackBankChange
  * @see OnTrackPatternChange
  */
+@SuppressLint("UseSparseArrays")
 public class Track implements Serializable {
 
     private static final long serialVersionUID = -1609075233236673789L;
@@ -310,6 +313,23 @@ public class Track implements Serializable {
         return null;
     }
 
+    /**
+     * Clears the all {@link TrackItem}s from the track.
+     * 
+     * @throws CausticException
+     */
+    public void clear() throws CausticException {
+        for (TrackItem item : items.values()) {
+            removePhrase(item.getStartMeasure());
+        }
+    }
+
+    /**
+     * @param numLoops
+     * @param phrase
+     * @return
+     * @throws CausticException
+     */
     public TrackItem addPhrase(int numLoops, Phrase phrase) throws CausticException {
         int startMeasure = getNextMeasure();
         return addPhraseAt(startMeasure, numLoops, phrase, true);
@@ -365,6 +385,9 @@ public class Track implements Serializable {
 
         TrackItem item = items.remove(startMeasure);
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Remove, this, item));
+
+        getTrackSong().getRack().removePattern(getTone(), item.getStartMeasure(),
+                item.getEndMeasure());
     }
 
     /**
@@ -409,4 +432,5 @@ public class Track implements Serializable {
     public String toString() {
         return items.values().toString();
     }
+
 }

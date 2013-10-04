@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core;
 
+import android.app.Application;
+
 public final class CtkDebug {
 
     static {
@@ -50,33 +52,41 @@ public final class CtkDebug {
 
     public static void log(String tag, String message) {
         //        Gdx.app.log(tag, message);
+        System.out.println(tag + ", " + message);
     }
 
     public static void log(String tag, String message, Exception exception) {
         //        Gdx.app.log(tag, message, exception);
+        System.out.println(tag + ", " + message);
     }
 
     public static void debug(String tag, String message) {
         //        Gdx.app.debug(tag, message);
+        System.out.println(tag + ", " + message);
     }
 
     public static void debug(String tag, String message, Throwable throwable) {
         //        Gdx.app.debug(tag, message, throwable);
+        System.out.println(tag + ", " + message);
     }
 
     public static void warn(String tag, String message) {
         //        Gdx.app.error(tag, "WARNING: " + message);
+        System.err.println("WARNING:" + tag + ", " + message);
     }
 
     public static void warn(String tag, String message, Throwable throwable) {
         //        Gdx.app.error(tag, "WARNING: " + message, throwable);
+        System.err.println("WARNING:" + tag + ", " + message);
     }
 
     public static void err(String tag, String message) {
         //        Gdx.app.error(tag, message);
+        System.err.println(tag + ", " + message);
     }
 
     public static void err(String tag, String message, Throwable throwable) {
         //        Gdx.app.error(tag, message, throwable);
+        System.err.println(tag + ", " + message);
     }
 }
