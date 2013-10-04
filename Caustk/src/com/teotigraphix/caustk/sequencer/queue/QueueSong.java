@@ -7,10 +7,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.service.ISerialize;
 
+@SuppressLint("UseSparseArrays")
 public class QueueSong implements ISerialize {
 
     private Map<Integer, Map<Integer, QueueData>> map = new HashMap<Integer, Map<Integer, QueueData>>();
@@ -38,7 +41,7 @@ public class QueueSong implements ISerialize {
     }
 
     IDispatcher getDispatcher() {
-        return controller.getQueueSequencer();
+        return controller;
     }
 
     public QueueSong() {

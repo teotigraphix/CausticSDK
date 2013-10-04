@@ -19,13 +19,13 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 
 public class FMSynthTone extends Tone {
 
     private static final long serialVersionUID = -5509574532999204394L;
 
-    public FMSynthTone(Rack rack) {
+    public FMSynthTone(IRack rack) {
         super(rack, ToneType.FMSynth);
     }
 

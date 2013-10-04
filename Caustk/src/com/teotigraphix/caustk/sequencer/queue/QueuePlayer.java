@@ -87,7 +87,11 @@ public class QueuePlayer {
     }
 
     public void stop() {
-        getController().execute(ISystemSequencer.COMMAND_STOP);
+        try {
+            getController().execute(ISystemSequencer.COMMAND_STOP);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean touch(QueueData data) {
@@ -315,7 +319,7 @@ public class QueuePlayer {
     private void setState(QueueData data, QueueDataState state) {
         if (!state.equals(data.getState())) {
             data.setState(state);
-            queueSequencer.trigger(new OnQueueSequencerDataChange(data));
+            getController().trigger(new OnQueueSequencerDataChange(data));
         }
     }
 

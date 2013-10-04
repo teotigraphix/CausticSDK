@@ -20,16 +20,24 @@
 package com.teotigraphix.caustk.controller;
 
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource;
+import com.teotigraphix.caustk.tone.Tone;
 
+/**
+ * The {@link IRack} is the top API for dealing with {@link Tone}s,
+ * {@link Phrase}s.
+ * <p>
+ * Manages the {@link ISoundMixer}, {@link ISoundSource},
+ * {@link ISystemSequencer}, {@link ITrackSequencer}.
+ */
 public interface IRack extends ICausticEngine {
 
     ICaustkController getController();
-
-    //void setController(ICaustkController controller);
 
     ISoundSource getSoundSource();
 
@@ -39,9 +47,14 @@ public interface IRack extends ICausticEngine {
 
     ITrackSequencer getTrackSequencer();
 
+    IQueueSequencer getQueueSequencer();
+
     float getCurrentSongMeasure();
 
     float getCurrentBeat();
 
+    void create();
+
     void update();
+
 }

@@ -19,13 +19,13 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 
 public class VocoderTone extends Tone {
 
     private static final long serialVersionUID = 6169967393196891391L;
 
-    public VocoderTone(Rack rack) {
+    public VocoderTone(IRack rack) {
         super(rack, ToneType.Vocoder);
     }
 

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.SynthFilterComponent;
@@ -57,7 +57,7 @@ public class SubSynthTone extends Tone {
         return getComponent(LFO2Component.class);
     }
 
-    public SubSynthTone(Rack rack) {
+    public SubSynthTone(IRack rack) {
         super(rack, ToneType.SubSynth);
     }
 

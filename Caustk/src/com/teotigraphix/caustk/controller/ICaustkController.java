@@ -21,14 +21,24 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.controller.command.ICommand;
+import com.teotigraphix.caustk.controller.command.ICommandHistory;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.caustk.sequencer.IQueueSequencer;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**
+ * The {@link ICaustkController} manages the high level components of the
+ * CaustkSDK.
+ * <p>
+ * To use the controller, more care needs to be taken to setup an application
+ * correctly with the {@link ICaustkApplication} and
+ * {@link ICaustkConfiguration} implementations.
+ * 
  * @author Michael Schmalle
  */
 public interface ICaustkController extends ICausticEngine, IDispatcher {
@@ -38,8 +48,14 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
      */
     IDispatcher getDispatcher();
 
+    //----------------------------------
+    // components
+    //----------------------------------
+
     /**
-     * Adds a controller component API.
+     * Adds an API to the controller.
+     * <p>
+     * A simple service locator pattern.
      * 
      * @param clazz The class type API key.
      * @param instance The implementing instance of the class type.
@@ -47,10 +63,10 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
     void addComponent(Class<?> clazz, Object instance);
 
     /**
-     * Returns a registered API controller component.
+     * Returns a registered API component.
      * 
      * <pre>
-     * ISoundSourceAPI api = context.getComponent(ISoundSourceAPI.class);
+     * ISoundSource api = context.getComponent(ISoundSource.class);
      * api.setMasterVolume(0.5f);
      * </pre>
      * 
@@ -58,37 +74,121 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
      */
     <T> T getComponent(Class<T> clazz);
 
+    //----------------------------------
+    // application
+    //----------------------------------
+
     /**
      * Returns the top level application created at startup.
+     * <p>
+     * This application instance will also hold the single
+     * {@link ICaustkConfiguration} created at startup as well.
      */
     ICaustkApplication getApplication();
 
+    /**
+     * Returns the base directory the application is installed add.
+     * <p>
+     * This directory will include the name of the application as a directory.
+     * 
+     * @see ICaustkConfiguration#getApplicationRoot()
+     */
     File getApplicationRoot();
 
+    /**
+     * Returns the application's id used in command messages with the
+     * {@link ICommandManager}.
+     * 
+     * @see ICaustkConfiguration#getApplicationId()
+     */
     String getApplicationId();
 
+    //----------------------------------
+    // logger
+    //----------------------------------
+
+    /**
+     * Returns the application logger implementation.
+     */
     ICausticLogger getLogger();
 
-    ISerializeService getSerializeService();
+    //----------------------------------
+    // rack
+    //----------------------------------
 
-    IProjectManager getProjectManager();
-
+    /**
+     * Returns the single instance of the {@link IRack} created at startup.
+     */
     IRack getRack();
 
-    void setRack(IRack value);
+    //----------------------------------
+    // Services API
+    //----------------------------------
 
+    /**
+     * JSon serialization service using Google GSon, this may be deprecated in
+     * the future.
+     */
+    ISerializeService getSerializeService();
+
+    /**
+     * The application's project manager for maintaing {@link Project} sessions.
+     * and storage areas within the {@link #getApplicationRoot()}.
+     */
+    IProjectManager getProjectManager();
+
+    /**
+     * The {@link ILibraryManager} can save and load .ctk libraries.
+     */
     ILibraryManager getLibraryManager();
 
-    IQueueSequencer getQueueSequencer();
+    //----------------------------------
+    // ICommandManger API
+    //----------------------------------
 
-    ICommandManager getCommandManager();
+    /**
+     * Adds an {@link ICommand} to the {@link ICommandManager}.
+     * 
+     * @param message The String message key without the application id.
+     * @param command The {@link ICommand} implementation class type.
+     */
+    void put(String message, Class<? extends ICommand> command);
 
-    void undo();
+    /**
+     * Executes a registered command from the {@link ICommandManager}.
+     * 
+     * @param message The String message key without the application id.
+     * @param args The command arguments, each command should document the in
+     *            the API.
+     */
+    void execute(String message, Object... args) throws CausticException;
 
-    void redo();
+    /**
+     * Undos the last command in the {@link ICommandHistory}.
+     * 
+     * @throws CausticException
+     */
+    void undo() throws CausticException;
 
-    void execute(String message, Object... args);
+    /**
+     * Redos the next command in the {@link ICommandHistory}.
+     * 
+     * @throws CausticException
+     */
+    void redo() throws CausticException;
 
+    /**
+     * Clears the whole {@link ICommandHistory} on the {@link ICommandManager}.
+     */
+    void clearHistory();
+
+    //----------------------------------
+    // Method API
+    //----------------------------------
+
+    /**
+     * Updated sub components.
+     */
     void update();
 
 }

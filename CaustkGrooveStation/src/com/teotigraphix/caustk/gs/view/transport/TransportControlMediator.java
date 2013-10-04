@@ -51,7 +51,11 @@ public class TransportControlMediator extends ScreenMediator {
 
             @Override
             public void onStopClick() {
-                getController().execute(ISystemSequencer.COMMAND_STOP);
+                try {
+                    getController().execute(ISystemSequencer.COMMAND_STOP);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -61,10 +65,18 @@ public class TransportControlMediator extends ScreenMediator {
             @Override
             public void onPlayChange(boolean selected) {
                 if (selected) {
-                    getController().execute(ISystemSequencer.COMMAND_PLAY,
-                            SequencerMode.PATTERN.getValue());
+                    try {
+                        getController().execute(ISystemSequencer.COMMAND_PLAY,
+                                SequencerMode.PATTERN.getValue());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    getController().execute(ISystemSequencer.COMMAND_STOP);
+                    try {
+                        getController().execute(ISystemSequencer.COMMAND_STOP);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

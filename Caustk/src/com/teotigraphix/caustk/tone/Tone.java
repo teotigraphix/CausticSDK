@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
@@ -35,7 +35,7 @@ public abstract class Tone implements IRestore, Serializable {
 
     private static final long serialVersionUID = 2917863803738244084L;
 
-    private Rack rack;
+    private IRack rack;
 
     public ICaustkController getController() {
         return rack.getController();
@@ -234,7 +234,7 @@ public abstract class Tone implements IRestore, Serializable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Tone(Rack rack, ToneType toneType) {
+    public Tone(IRack rack, ToneType toneType) {
         this.rack = rack;
         this.toneType = toneType;
     }

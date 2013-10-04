@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 
 public class RhythmTone extends Tone {
 
@@ -35,7 +35,7 @@ public class RhythmTone extends Tone {
         channel = value;
     }
 
-    public RhythmTone(Rack rack) {
+    public RhythmTone(IRack rack) {
         super(rack, ToneType.Beatbox);
     }
 

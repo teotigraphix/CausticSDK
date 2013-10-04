@@ -8,15 +8,17 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.core.ControllerComponent;
+import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackSongChange;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
-public class QueueSequencer extends ControllerComponent implements IQueueSequencer {
+public class QueueSequencer extends RackComponent implements IQueueSequencer {
+
+    private static final long serialVersionUID = -4761805431570067279L;
 
     private boolean audioEnabled = true;
 
@@ -79,13 +81,13 @@ public class QueueSequencer extends ControllerComponent implements IQueueSequenc
         return queueSong.getChannel(bankIndex, patternIndex, toneIndex);
     }
 
-    public QueueSequencer(ICaustkController controller) {
-        super(controller);
+    public QueueSequencer(IRack rack) {
+        super(rack);
         player = new QueuePlayer(this);
     }
 
     @Override
-    public void onRegister() {
+    public void registerObservers() {
         getController().register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override

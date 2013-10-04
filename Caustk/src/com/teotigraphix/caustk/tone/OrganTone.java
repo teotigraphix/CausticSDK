@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.VolumeComponent;
@@ -37,7 +37,7 @@ public class OrganTone extends Tone {
         return getComponent(LeslieComponent.class);
     }
 
-    public OrganTone(Rack rack) {
+    public OrganTone(IRack rack) {
         super(rack, ToneType.Organ);
     }
 

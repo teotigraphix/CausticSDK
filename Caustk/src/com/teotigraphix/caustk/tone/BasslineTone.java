@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.tone;
 
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.VolumeComponent;
@@ -52,7 +52,7 @@ public class BasslineTone extends Tone {
         return getComponent(DistortionComponent.class);
     }
 
-    public BasslineTone(Rack rack) {
+    public BasslineTone(IRack rack) {
         super(rack, ToneType.Bassline);
     }
 

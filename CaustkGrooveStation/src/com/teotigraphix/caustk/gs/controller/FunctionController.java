@@ -29,7 +29,7 @@ public class FunctionController implements IFunctionController {
         for (FunctionGroup functionGroup : functionGroups) {
             for (FunctionGroupItem item : functionGroup.getFunctions()) {
                 String commandMessage = item.getFunction().getCommand();
-                controller.getCommandManager().put(commandMessage, item.getCommand());
+                controller.put(commandMessage, item.getCommand());
             }
         }
     }
@@ -41,6 +41,10 @@ public class FunctionController implements IFunctionController {
     @Override
     public void execute(IKeyFunction key) {
         String commandMessage = key.getCommand();
-        controller.getCommandManager().execute(commandMessage);
+        try {
+            controller.execute(commandMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sound.ISoundMixer;
 import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
@@ -83,7 +84,11 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
 
     @Override
     public void executeSetValue(int toneIndex, MixerInput input, Number value) {
-        getController().execute(COMMAND_SET_VALUE, toneIndex, input, value);
+        try {
+            getController().execute(COMMAND_SET_VALUE, toneIndex, input, value);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -123,8 +128,7 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
                     }
                 });
 
-        getController().getCommandManager().put(ISoundMixer.COMMAND_SET_VALUE,
-                SoundMixerSetSendCommand.class);
+        getController().put(ISoundMixer.COMMAND_SET_VALUE, SoundMixerSetSendCommand.class);
     }
 
     @Override

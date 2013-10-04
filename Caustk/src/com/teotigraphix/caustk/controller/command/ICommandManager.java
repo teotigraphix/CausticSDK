@@ -19,15 +19,17 @@
 
 package com.teotigraphix.caustk.controller.command;
 
+import com.teotigraphix.caustk.core.CausticException;
+
 public interface ICommandManager {
 
-    void execute(String message, Object... args);
+    void execute(String message, Object... args) throws CausticException;;
 
-    int undo();
+    int undo() throws CausticException;;
 
-    int redo();
+    int redo() throws CausticException;;
 
-    void put(String message, Class<?> command);
+    void put(String message, Class<? extends ICommand> command);
 
     void clearHistory();
 

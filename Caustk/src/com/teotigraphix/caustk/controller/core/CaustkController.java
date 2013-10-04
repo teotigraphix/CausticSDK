@@ -38,13 +38,12 @@ import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
-import com.teotigraphix.caustk.sequencer.IQueueSequencer;
-import com.teotigraphix.caustk.sequencer.queue.QueueSequencer;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.serialize.SerializeService;
 
@@ -133,20 +132,8 @@ public class CaustkController implements ICaustkController {
         return rack;
     }
 
-    @Override
     public void setRack(IRack value) {
         rack = value;
-    }
-
-    //----------------------------------
-    // queueSequencer
-    //----------------------------------
-
-    private IQueueSequencer queueSequencer;
-
-    @Override
-    public IQueueSequencer getQueueSequencer() {
-        return queueSequencer;
     }
 
     //----------------------------------
@@ -166,9 +153,13 @@ public class CaustkController implements ICaustkController {
 
     private ICommandManager commandManager;
 
-    @Override
     public ICommandManager getCommandManager() {
         return commandManager;
+    }
+
+    @Override
+    public void put(String message, Class<? extends ICommand> command) {
+        commandManager.put(message, command);
     }
 
     /**
@@ -180,18 +171,23 @@ public class CaustkController implements ICaustkController {
      * @see #sendOSCCommand(OSCMessage)
      */
     @Override
-    public void execute(String message, Object... args) {
+    public void execute(String message, Object... args) throws CausticException {
         commandManager.execute(message, args);
     }
 
     @Override
-    public void undo() {
+    public void undo() throws CausticException {
         commandManager.undo();
     }
 
     @Override
-    public void redo() {
+    public void redo() throws CausticException {
         commandManager.redo();
+    }
+
+    @Override
+    public void clearHistory() {
+        commandManager.clearHistory();
     }
 
     //--------------------------------------------------------------------------
@@ -288,10 +284,7 @@ public class CaustkController implements ICaustkController {
         projectManager = new ProjectManager(this);
         libraryManager = new LibraryManager(this);
 
-        queueSequencer = new QueueSequencer(this);
-
         components.add(libraryManager);
-        components.add(queueSequencer);
 
         for (IControllerComponent component : components) {
             component.onRegister();

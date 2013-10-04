@@ -23,8 +23,10 @@ import java.io.Serializable;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
+import com.teotigraphix.caustk.sequencer.queue.QueueSequencer;
 import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
 import com.teotigraphix.caustk.sequencer.track.TrackSequencer;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
@@ -103,6 +105,17 @@ public class Rack implements IRack, Serializable {
         return trackSequencer;
     }
 
+    //----------------------------------
+    // queueSequencer
+    //----------------------------------
+
+    private IQueueSequencer queueSequencer;
+
+    @Override
+    public IQueueSequencer getQueueSequencer() {
+        return queueSequencer;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -112,7 +125,7 @@ public class Rack implements IRack, Serializable {
 
     public Rack(ICaustkController controller) {
         this.controller = controller;
-        this.controller.setRack(this);
+        ((CaustkController)this.controller).setRack(this);
 
         soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
 
@@ -120,20 +133,24 @@ public class Rack implements IRack, Serializable {
         soundMixer = new SoundMixer(this);
         systemSequencer = new SystemSequencer(this);
         trackSequencer = new TrackSequencer(this);
+        queueSequencer = new QueueSequencer(this);
+
         // create a new TrackSong for the TrackSequencer
         trackSequencer.createSong();
-    }
-
-    public void registerObservers() {
-        soundSource.registerObservers();
-        soundMixer.registerObservers();
-        systemSequencer.registerObservers();
-        trackSequencer.registerObservers();
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    @Override
+    public void create() {
+        soundSource.registerObservers();
+        soundMixer.registerObservers();
+        systemSequencer.registerObservers();
+        queueSequencer.registerObservers();
+        trackSequencer.registerObservers();
+    }
 
     @Override
     public void update() {

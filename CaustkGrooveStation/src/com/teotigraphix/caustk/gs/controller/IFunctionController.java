@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.gs.controller;
 
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.caustk.controller.command.ICommand;
 
 public interface IFunctionController {
 
@@ -31,9 +32,9 @@ public interface IFunctionController {
             return autoExecute;
         }
 
-        private Class<?> command;
+        private Class<? extends ICommand> command;
 
-        public Class<?> getCommand() {
+        public Class<? extends ICommand> getCommand() {
             return command;
         }
 
@@ -41,8 +42,8 @@ public interface IFunctionController {
             return function.getTitle();
         }
 
-        public FunctionGroupItem(int index, IKeyFunction function, Class<?> command,
-                boolean autoExecute) {
+        public FunctionGroupItem(int index, IKeyFunction function,
+                Class<? extends ICommand> command, boolean autoExecute) {
             this.index = index;
             this.function = function;
             this.command = command;
@@ -64,7 +65,8 @@ public interface IFunctionController {
             return name;
         }
 
-        public void addItem(IKeyFunction function, Class<?> command, boolean autoExecute) {
+        public void addItem(IKeyFunction function, Class<? extends ICommand> command,
+                boolean autoExecute) {
             int index = getFunctions().size;
             FunctionGroupItem item = new FunctionGroupItem(index, function, command, autoExecute);
             getFunctions().add(item);

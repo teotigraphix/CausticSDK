@@ -75,7 +75,7 @@ public class CommandManager implements ICommandManager {
      * @see OnRewindComplete
      */
     @Override
-    public int undo() {
+    public int undo() throws CausticException {
         try {
             return commandHistory.rewind(1);
         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class CommandManager implements ICommandManager {
      * @see OnFastForwardComplete
      */
     @Override
-    public int redo() {
+    public int redo() throws CausticException {
         try {
             return commandHistory.forward(1);
         } catch (Exception e) {
@@ -109,7 +109,7 @@ public class CommandManager implements ICommandManager {
      * @param command The Class that will be instantiated.
      */
     @Override
-    public void put(String message, Class<?> command) {
+    public void put(String message, Class<? extends ICommand> command) {
         final String controllerMessage = returnControllerMessage(message);
         if (commands.containsKey(controllerMessage))
             return;
@@ -132,7 +132,7 @@ public class CommandManager implements ICommandManager {
      * @see #sendOSCCommand(OSCMessage)
      */
     @Override
-    public void execute(String message, Object... args) {
+    public void execute(String message, Object... args) throws CausticException {
         try {
             OSCMessage result = OSCMessage.initialize(returnControllerMessage(message));
             for (Object value : args) {
