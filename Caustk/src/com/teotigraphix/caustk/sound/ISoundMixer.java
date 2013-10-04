@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.sound;
 
-import com.teotigraphix.caustk.controller.core.IRackComponent;
+import com.teotigraphix.caustk.controller.IRackComponent;
 import com.teotigraphix.caustk.sound.mixer.MasterMixer;
 import com.teotigraphix.caustk.sound.mixer.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;

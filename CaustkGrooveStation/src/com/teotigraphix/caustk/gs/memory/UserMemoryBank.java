@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
@@ -13,6 +15,7 @@ import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;
 
+@SuppressLint("UseSparseArrays")
 public class UserMemoryBank extends MemoryBank {
 
     /*
@@ -71,7 +74,8 @@ public class UserMemoryBank extends MemoryBank {
             item.setPhrase(index, phraseMemoryItem);
         }
         // the TrackSequencer holds all existing and lazy loaded pattern phrases
-        Track track = getMachine().getController().getRack().getTrack(part.getToneIndex());
+        Track track = getMachine().getController().getRack().getTrackSequencer()
+                .getTrack(part.getToneIndex());
         Phrase phrase = track.getPhrase(part.getPattern().getBankIndex(), part.getPattern()
                 .getPatternIndex());
 

@@ -70,7 +70,7 @@ public class Phrase implements Serializable {
      * Returns the {@link Tone} for the parent {@link Track}.
      */
     public final Tone getTone() {
-        return track.getRack().getTone(toneIndex);
+        return track.getRack().getSoundSource().getTone(toneIndex);
     }
 
     //----------------------------------

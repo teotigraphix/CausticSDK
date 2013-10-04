@@ -189,11 +189,11 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
             throw new IOException("File does not exist:" + absoluteCausticFile);
 
         // clear sound source model
-        getController().getRack().clearAndReset();
+        getController().getRack().getSoundSource().clearAndReset();
 
         // load the machines, no restore
         try {
-            getController().getRack().loadSong(absoluteCausticFile);
+            getController().getRack().getSoundSource().loadSong(absoluteCausticFile);
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -202,7 +202,7 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
         trackSong = createSong(new File(name));
 
         // load all tone patterns into TrackPhrase/PhraseNote
-        for (Tone tone : getController().getRack().getTones()) {
+        for (Tone tone : getController().getRack().getSoundSource().getTones()) {
             int toneIndex = tone.getIndex();
             Track channel = getTrack(toneIndex);
             PatternSequencerComponent sequencer = tone.getPatternSequencer();

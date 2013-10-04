@@ -28,7 +28,8 @@ public class TransportControlMediator extends ScreenMediator {
                 new EventObserver<OnSystemSequencerTransportChange>() {
                     @Override
                     public void trigger(OnSystemSequencerTransportChange object) {
-                        view.selectPlayPause(getController().getRack().isPlaying());
+                        view.selectPlayPause(getController().getRack().getSystemSequencer()
+                                .isPlaying());
                     }
                 });
     }

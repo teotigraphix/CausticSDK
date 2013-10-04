@@ -17,26 +17,14 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.sound;
+package com.teotigraphix.caustk.controller;
 
-import com.teotigraphix.caustk.core.ICausticEngine;
+public interface IApplicationHandler {
 
-/**
- * The {@link ISoundGenerator} API wraps the Native CausticCore audio loop and
- * JNI interface.
- * 
- * @author Michael Schmalle
- */
-public interface ISoundGenerator extends ICausticEngine {
+    void commitCreate();
 
-    /**
-     * Closes the CausticCore event loop and cleans up.
-     */
-    void close();
+    void commitSave();
 
-    float getCurrentBeat();
+    void commitClose();
 
-    float getCurrentSongMeasure();
-
-    int getVerison();
 }

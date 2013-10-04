@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import android.annotation.SuppressLint;
 
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTrackChange;
@@ -53,7 +53,7 @@ public class Track implements Serializable {
         return trackSong;
     }
 
-    public final Rack getRack() {
+    public final IRack getRack() {
         return trackSong.getRack();
     }
 
@@ -71,7 +71,7 @@ public class Track implements Serializable {
      * Returns the {@link SoundMixerChannel} for the track.
      */
     public SoundMixerChannel getMixerChannel() {
-        return getTrackSong().getRack().getMixerChannel(getIndex());
+        return getTrackSong().getRack().getSoundMixer().getChannel(getIndex());
     }
 
     /**
@@ -79,7 +79,7 @@ public class Track implements Serializable {
      * {@link ISoundSource}.
      */
     public Tone getTone() {
-        return getTrackSong().getRack().getTone(getIndex());
+        return getTrackSong().getRack().getSoundSource().getTone(getIndex());
     }
 
     //----------------------------------
@@ -373,8 +373,11 @@ public class Track implements Serializable {
 
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Add, this, item));
 
-        getTrackSong().getRack().addPattern(getTone(), item.getBankIndex(), item.getPatternIndex(),
-                item.getStartMeasure(), item.getEndMeasure());
+        getTrackSong()
+                .getRack()
+                .getSystemSequencer()
+                .addPattern(getTone(), item.getBankIndex(), item.getPatternIndex(),
+                        item.getStartMeasure(), item.getEndMeasure());
 
         return item;
     }
@@ -386,8 +389,8 @@ public class Track implements Serializable {
         TrackItem item = items.remove(startMeasure);
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Remove, this, item));
 
-        getTrackSong().getRack().removePattern(getTone(), item.getStartMeasure(),
-                item.getEndMeasure());
+        getTrackSong().getRack().getSystemSequencer()
+                .removePattern(getTone(), item.getStartMeasure(), item.getEndMeasure());
     }
 
     /**

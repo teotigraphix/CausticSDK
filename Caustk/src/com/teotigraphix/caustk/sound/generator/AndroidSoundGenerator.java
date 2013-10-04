@@ -140,10 +140,6 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     //--------------------------------------------------------------------------
 
     @Override
-    public void initialize() {
-    }
-
-    @Override
     public void close() {
     }
 

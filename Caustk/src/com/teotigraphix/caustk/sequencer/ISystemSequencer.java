@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.sequencer;
 
-import com.teotigraphix.caustk.controller.core.IRackComponent;
+import com.teotigraphix.caustk.controller.IRackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.ExportType;

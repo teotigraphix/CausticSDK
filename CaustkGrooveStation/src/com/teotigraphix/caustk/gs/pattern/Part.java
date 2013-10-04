@@ -140,10 +140,10 @@ public class Part {
     }
 
     public boolean istMute() {
-        return getController().getRack().getMixerChannel(getToneIndex()).isMute();
+        return getController().getRack().getSoundMixer().getChannel(getToneIndex()).isMute();
     }
 
     public void setMute(boolean muted) {
-        getController().getRack().getMixerChannel(getToneIndex()).setMute(muted);
+        getController().getRack().getSoundMixer().getChannel(getToneIndex()).setMute(muted);
     }
 }

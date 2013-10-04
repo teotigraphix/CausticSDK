@@ -230,8 +230,8 @@ public abstract class GrooveMachine {
     private void setupParts(GrooveMachineDescriptor descriptor) throws CausticException {
         int index = 0;
         for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
-            Tone tone = controller.getRack().createTone(partDescriptor.getName(),
-                    partDescriptor.getToneType());
+            Tone tone = controller.getRack().getSoundSource()
+                    .createTone(partDescriptor.getName(), partDescriptor.getToneType());
 
             Part part = createPart(index, tone);
             getSound().addPart(part);

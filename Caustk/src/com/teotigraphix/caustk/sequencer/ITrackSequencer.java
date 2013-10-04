@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import com.teotigraphix.caustk.controller.core.IRackComponent;
+import com.teotigraphix.caustk.controller.IRackComponent;
 import com.teotigraphix.caustk.sequencer.track.Note;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;

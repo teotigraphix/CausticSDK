@@ -22,7 +22,6 @@ package com.teotigraphix.caustk.controller;
 import java.io.File;
 
 import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
@@ -74,9 +73,9 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
 
     IProjectManager getProjectManager();
 
-    Rack getRack();
+    IRack getRack();
 
-    void setRack(Rack value);
+    void setRack(IRack value);
 
     ILibraryManager getLibraryManager();
 

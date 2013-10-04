@@ -115,7 +115,7 @@ public class ApplicationMediatorBase extends CaustkMediator implements IApplicat
             String projectName = applicationModel.getProject().getName();
             File absoluteTargetSongFile = applicationModel.getProject().getAbsoluteResource(
                     projectName + "Audio.caustic");
-            getController().getRack().saveSongAs(absoluteTargetSongFile);
+            getController().getRack().getSoundSource().saveSongAs(absoluteTargetSongFile);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

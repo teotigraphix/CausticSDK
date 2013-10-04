@@ -74,7 +74,7 @@ public class QueueDataChannel implements ISerialize {
     //----------------------------------
 
     public final Tone getTone() {
-        return controller.getRack().getTone(toneIndex);
+        return controller.getRack().getSoundSource().getTone(toneIndex);
     }
 
     private int toneIndex;
@@ -148,7 +148,8 @@ public class QueueDataChannel implements ISerialize {
     //----------------------------------
 
     public int getCurrentBeat() {
-        return controller.getRack().getTrack(toneIndex).getPhrase().getCurrentBeat();
+        return controller.getRack().getTrackSequencer().getTrack(toneIndex).getPhrase()
+                .getCurrentBeat();
     }
 
     //----------------------------------

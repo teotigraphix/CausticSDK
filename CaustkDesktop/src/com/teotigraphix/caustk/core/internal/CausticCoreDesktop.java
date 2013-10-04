@@ -77,7 +77,4 @@ public class CausticCoreDesktop {
     public void deinit() {
         caustic.CausticCore_Deinit();
     }
-
-    public void initialize() {
-    }
 }

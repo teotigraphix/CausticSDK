@@ -25,10 +25,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.core.Rack;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.tone.Tone;
 
+@SuppressLint("UseSparseArrays")
 public class TrackSong implements Serializable {
 
     private static final long serialVersionUID = -8098854940340766856L;
@@ -45,7 +48,7 @@ public class TrackSong implements Serializable {
 
     private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
-    Rack getRack() {
+    IRack getRack() {
         return getTrackSequencer().getController().getRack();
     }
 
@@ -325,7 +328,7 @@ public class TrackSong implements Serializable {
     }
 
     public int getTotalTime() {
-        float bpm = getRack().getTempo();
+        float bpm = getRack().getSystemSequencer().getTempo();
         float timeInSec = 60 / bpm;
         float totalNumBeats = getNumBeats() + getMeasureBeat();
         float total = timeInSec * totalNumBeats;
@@ -333,7 +336,7 @@ public class TrackSong implements Serializable {
     }
 
     public int getCurrentTime() {
-        float bpm = getRack().getTempo();
+        float bpm = getRack().getSystemSequencer().getTempo();
         float timeInSec = 60 / bpm;
         float totalNumBeats = (getCurrentMeasure() * 4) + getMeasureBeat();
         float total = timeInSec * totalNumBeats;

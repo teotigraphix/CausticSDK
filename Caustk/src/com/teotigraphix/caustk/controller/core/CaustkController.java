@@ -33,6 +33,7 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
@@ -125,15 +126,15 @@ public class CaustkController implements ICaustkController {
     // rack
     //----------------------------------
 
-    private Rack rack;
+    private IRack rack;
 
     @Override
-    public Rack getRack() {
+    public IRack getRack() {
         return rack;
     }
 
     @Override
-    public void setRack(Rack value) {
+    public void setRack(IRack value) {
         rack = value;
     }
 
@@ -311,7 +312,6 @@ public class CaustkController implements ICaustkController {
 
     void close() {
         CtkDebug.log("CaustkController", "Close");
-        rack.close();
     }
 
     //--------------------------------------------------------------------------

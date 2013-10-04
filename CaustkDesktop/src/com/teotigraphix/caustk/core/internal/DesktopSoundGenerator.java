@@ -72,11 +72,6 @@ public class DesktopSoundGenerator implements ISoundGenerator {
         return causticCore;
     }
 
-    @Override
-    public void initialize() {
-        core().initialize();
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------

@@ -91,7 +91,7 @@ public abstract class Tone implements IRestore, Serializable {
             return;
         muted = value;
         // firePropertyChange(TonePropertyKind.MUTE, mMuted);
-        rack.getMixerChannel(getIndex()).setMute(muted);
+        rack.getSoundMixer().getChannel(getIndex()).setMute(muted);
     }
 
     //----------------------------------
