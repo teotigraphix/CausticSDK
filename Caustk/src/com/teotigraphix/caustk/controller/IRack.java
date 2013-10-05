@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.controller;
 
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
@@ -46,8 +45,6 @@ public interface IRack extends ICausticEngine {
     ISystemSequencer getSystemSequencer();
 
     ITrackSequencer getTrackSequencer();
-
-    IQueueSequencer getQueueSequencer();
 
     float getCurrentSongMeasure();
 
