@@ -43,21 +43,10 @@ import com.teotigraphix.caustk.sound.ISoundGenerator;
 public class DesktopSoundGenerator implements ISoundGenerator {
     protected static final Logger log;
 
-    private static ICausticEngine instance;
+    private static DesktopSoundGenerator instance;
 
     static {
         log = Logger.getLogger(DesktopSoundGenerator.class.getPackage().getName());
-    }
-
-    /**
-     * For testing.
-     * 
-     * @return The single instance.
-     */
-    public static ICausticEngine getInstance() {
-        if (instance == null)
-            instance = new DesktopSoundGenerator();
-        return instance;
     }
 
     //----------------------------------
@@ -66,10 +55,13 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     private static CausticCoreDesktop causticCore;
 
-    public static final CausticCoreDesktop core() {
-        if (causticCore == null)
-            causticCore = new CausticCoreDesktop();
-        return causticCore;
+    /**
+     * For testing.
+     * 
+     * @return The single instance.
+     */
+    public static ICausticEngine getInstance() {
+        return instance;
     }
 
     //--------------------------------------------------------------------------
@@ -77,6 +69,12 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     //--------------------------------------------------------------------------
 
     public DesktopSoundGenerator() {
+    }
+
+    @Override
+    public void initialize() {
+        instance = new DesktopSoundGenerator();
+        causticCore = new CausticCoreDesktop();
     }
 
     @Override
@@ -92,14 +90,14 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     public float sendMessage(String message) {
         //System.out.println(message);
         //log.info("Message:" + message);
-        float value = core().SendOSCMessage(message);
+        float value = causticCore.SendOSCMessage(message);
         return value;
     }
 
     @Override
     public String queryMessage(String message) {
         //log.info("Query:" + message);
-        String result = core().QueryOSC(message);
+        String result = causticCore.QueryOSC(message);
         if (result != null && result.equals(""))
             return null;
         return result;
@@ -148,16 +146,16 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public float getCurrentBeat() {
-        return core().getCurrentBeat();
+        return causticCore.getCurrentBeat();
     }
 
     @Override
     public float getCurrentSongMeasure() {
-        return core().getCurrentSongMeasure();
+        return causticCore.getCurrentSongMeasure();
     }
 
     @Override
     public int getVerison() {
-        return core().getVersion();
+        return causticCore.getVersion();
     }
 }

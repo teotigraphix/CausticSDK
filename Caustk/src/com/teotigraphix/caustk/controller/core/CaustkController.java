@@ -265,6 +265,9 @@ public class CaustkController implements ICaustkController {
     // ISystemController API
     //--------------------------------------------------------------------------
 
+    void initialize() {
+    }
+
     void create() {
 
         getLogger().log("CaustkController", "Create app root dir if not created");

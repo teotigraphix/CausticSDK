@@ -71,6 +71,14 @@ public class AndroidSoundGenerator implements ISoundGenerator {
         }
     }
 
+    @Override
+    public void initialize() {
+    }
+
+    @Override
+    public void close() {
+    }
+
     //--------------------------------------------------------------------------
     //
     //  ICausticEngine API :: Methods
@@ -138,10 +146,6 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     //  IDispose API :: Methods
     //
     //--------------------------------------------------------------------------
-
-    @Override
-    public void close() {
-    }
 
     @Override
     public void dispose() {

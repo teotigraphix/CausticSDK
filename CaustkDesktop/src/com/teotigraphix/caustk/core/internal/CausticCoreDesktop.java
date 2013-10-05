@@ -23,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.sun.jna.Native;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class CausticCoreDesktop {
@@ -32,8 +31,6 @@ public class CausticCoreDesktop {
     private static CausticLibrary caustic;
 
     public CausticCoreDesktop() {
-        RuntimeUtils.STORAGE_ROOT = Constants.STORAGE_ROOT;
-
         Path currentRelativePath = Paths.get("");
         String s = currentRelativePath.toAbsolutePath().toString();
         System.out.println("CausticCoreDesktop: Construct - relative path is: " + s);
@@ -43,7 +40,9 @@ public class CausticCoreDesktop {
         m_byResponseString = new byte[4096];
         caustic = (CausticLibrary)Native.loadLibrary("CausticCore.dll", CausticLibrary.class);
         caustic.CausticCore_Init(1024);
-        caustic.CausticCore_SetStorageRootDir(Constants.STORAGE_ROOT);
+        String storageRoot = RuntimeUtils.STORAGE_ROOT;
+        System.out.println("CausticCoreDesktop: storage root : " + storageRoot);
+        caustic.CausticCore_SetStorageRootDir(storageRoot);
         SendOSCMessage("/caustic/blankrack");
     }
 
@@ -51,7 +50,7 @@ public class CausticCoreDesktop {
     }
 
     public float SendOSCMessage(String message) {
-        CtkDebug.osc(message);
+        System.out.println(message);
         return caustic.CausticCore_OSCMessage(message, null);
     }
 

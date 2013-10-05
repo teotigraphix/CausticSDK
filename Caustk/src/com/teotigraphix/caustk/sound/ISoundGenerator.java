@@ -29,6 +29,8 @@ import com.teotigraphix.caustk.core.ICausticEngine;
  */
 public interface ISoundGenerator extends ICausticEngine {
 
+    void initialize();
+
     /**
      * Closes the CausticCore event loop and cleans up.
      */

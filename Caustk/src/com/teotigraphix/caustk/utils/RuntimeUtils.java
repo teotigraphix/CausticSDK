@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
 
@@ -210,7 +211,7 @@ public class RuntimeUtils {
         sb.append(presetType);
         sb.append("/");
         if (presetType.equals("modular"))
-            sb.append(presetName.toUpperCase());
+            sb.append(presetName.toUpperCase(Locale.US));
         else
             sb.append(presetName);
         sb.append(".");

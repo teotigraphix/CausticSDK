@@ -123,7 +123,7 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     //--------------------------------------------------------------------------
 
     public CaustkConfigurationBase() {
-        setCausticStorage(new File(System.getProperty("user.home")));
+        //setCausticStorage(new File(System.getProperty("user.home")));
         initialize();
     }
 

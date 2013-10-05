@@ -30,6 +30,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
@@ -134,7 +135,13 @@ public abstract class GDXGame implements IGame {
     public void create() {
         Gdx.app.log("GDXGame", "create()");
         executor.addModule(module);
-        executor.create(this);
+        try {
+            executor.create(this);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         setController(executor.getController());
         controller.onStart();
     }

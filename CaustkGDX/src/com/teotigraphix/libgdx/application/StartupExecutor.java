@@ -20,6 +20,7 @@
 package com.teotigraphix.libgdx.application;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ import com.teotigraphix.caustk.controller.IApplicationHandler;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.libgdx.controller.IApplicationController;
 import com.teotigraphix.libgdx.model.IApplicationModel;
@@ -83,9 +85,18 @@ public class StartupExecutor {
      * - inject executor and game
      * - assign sound generator, caustic root, application root to configuration
      */
-    public void create(IGame game) {
+    public void create(IGame game) throws CausticException, IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
-        File causticDirectory = new File(root.getAbsolutePath());
+        // File causticDirectory = new File(root.getAbsolutePath());
+        File caustic = new File(root, "caustic");
+        if (!caustic.exists()) {
+            File newRoot = getContainedDirectory(root, new File("caustic"));
+            if (newRoot == null)
+                throw new CausticException(
+                        "the caustic folder does not exist, is caustic installed?");
+            root = newRoot;
+        }
+
         File applicationDirectory = new File(root, game.getAppName());
 
         @SuppressWarnings("unchecked")
@@ -116,7 +127,7 @@ public class StartupExecutor {
         controller.addComponent(IInjectorService.class, injectorService);
 
         caustkApplication.getConfiguration().setSoundGenerator(game.getSoundGenerator());
-        caustkApplication.getConfiguration().setCausticStorage(causticDirectory);
+        caustkApplication.getConfiguration().setCausticStorage(root);
         caustkApplication.getConfiguration().setApplicationRoot(applicationDirectory);
 
         caustkApplication.setApplicationHandler(new IApplicationHandler() {
@@ -134,9 +145,36 @@ public class StartupExecutor {
             }
         });
 
+        // initialize the sound generator, CausticCore
+        caustkApplication.initialize();
+
         // create app directory, initialize controller and sub components
         // initialize projectmanager, create or load last project state
         caustkApplication.create();
+    }
+
+    /**
+     * Searches for the directory 1 level deep.
+     * 
+     * @param parent
+     * @param directory
+     * @throws IOException
+     */
+    public static File getContainedDirectory(File parent, File directory) throws IOException {
+        File[] files = parent.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                File[] search = file.listFiles();
+                if (search != null) {
+                    for (File child : search) {
+                        if (child.isDirectory() && child.getName().equals(directory.getName()))
+                            return child.getParentFile();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public final void addModule(Module module) {

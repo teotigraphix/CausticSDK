@@ -37,6 +37,7 @@ import org.apache.commons.io.FileUtils;
 import android.annotation.SuppressLint;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
@@ -192,7 +193,7 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
             throws CausticException {
         T tone = null;
         try {
-            Constructor<? extends Tone> constructor = toneClass.getConstructor(Rack.class);
+            Constructor<? extends Tone> constructor = toneClass.getConstructor(IRack.class);
             tone = (T)constructor.newInstance(rack);
             initializeTone(tone, name, tone.getToneType(), index);
         } catch (NoSuchMethodException e) {

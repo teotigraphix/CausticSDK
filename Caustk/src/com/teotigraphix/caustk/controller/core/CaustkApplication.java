@@ -100,6 +100,13 @@ public final class CaustkApplication implements ICaustkApplication {
     //--------------------------------------------------------------------------
 
     @Override
+    public void initialize() {
+        getLogger().log("Application", "initialize()");
+        getConfiguration().getSoundGenerator().initialize();
+        controller.initialize();
+    }
+
+    @Override
     public final void create() {
         getLogger().log("Application", "create()");
         // creates all sub components of the controller
