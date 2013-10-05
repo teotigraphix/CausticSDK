@@ -26,7 +26,6 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.CtkDebug;
 
 /**
  * The project manager manages the single project loaded for an application.
@@ -37,6 +36,10 @@ import com.teotigraphix.caustk.core.CtkDebug;
 public class ProjectManager implements IProjectManager {
 
     private ICaustkController controller;
+
+    protected final ICaustkController getController() {
+        return controller;
+    }
 
     private File sessionPreferencesFile;
 
@@ -106,7 +109,7 @@ public class ProjectManager implements IProjectManager {
 
     @Override
     public void initialize() {
-        CtkDebug.log("ProjectManager", "Initialize, setup/load .settings");
+        getController().getLogger().log("ProjectManager", "Initialize, setup/load .settings");
 
         File applicationRoot = controller.getApplicationRoot();
 
@@ -116,8 +119,8 @@ public class ProjectManager implements IProjectManager {
             try {
                 FileUtils.writeStringToFile(sessionPreferencesFile, "");
                 sessionPreferences = new SessionPreferences();
-                CtkDebug.log("ProjectManager", "Created new .settings file: "
-                        + sessionPreferencesFile.getAbsolutePath());
+                getController().getLogger().log("ProjectManager",
+                        "Created new .settings file: " + sessionPreferencesFile.getAbsolutePath());
                 saveProjectPreferences();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -126,7 +129,7 @@ public class ProjectManager implements IProjectManager {
             if (sessionPreferencesFile.exists()) {
                 sessionPreferences = controller.getSerializeService().fromFile(
                         sessionPreferencesFile, SessionPreferences.class);
-                CtkDebug.log("ProjectManager",
+                getController().getLogger().log("ProjectManager",
                         "Loaded .settings file: " + sessionPreferencesFile.getAbsolutePath());
             }
         }
@@ -151,7 +154,7 @@ public class ProjectManager implements IProjectManager {
     @Override
     public void save() throws IOException {
         // XXX project manager project.getFile absolute path doubled up
-        CtkDebug.log("ProjectManager", "Save - " + project.getStateFile());
+        getController().getLogger().log("ProjectManager", "Save - " + project.getStateFile());
 
         sessionPreferences.put("lastProject", project.getDirectory().getPath());
         // set modified
@@ -167,7 +170,8 @@ public class ProjectManager implements IProjectManager {
 
     protected void finalizeSaveComplete() throws IOException {
         //System.out.println(">> SAVE_COMPLETE flushProjectFile()");
-        CtkDebug.log("ProjectManager", "Save Complete, now saving project json file");
+        getController().getLogger().log("ProjectManager",
+                "Save Complete, now saving project json file");
 
         String data = controller.getSerializeService().toPrettyString(project);
         FileUtils.writeStringToFile(project.getStateFile(), data);
@@ -190,7 +194,7 @@ public class ProjectManager implements IProjectManager {
 
         File absoluteDir = getDirectory(directory.getPath());
 
-        CtkDebug.log("ProjectManager", "Load - " + absoluteDir);
+        getController().getLogger().log("ProjectManager", "Load - " + absoluteDir);
 
         project = controller.getSerializeService().fromFile(new File(absoluteDir, ".project"),
                 Project.class);
@@ -224,7 +228,8 @@ public class ProjectManager implements IProjectManager {
         project.setDirectory(new File(file.getPath()));
         project.setInfo(createInfo());
         project.open();
-        CtkDebug.log("ProjectManager", "Create() - " + project.getAbsolutDirectory());
+        getController().getLogger().log("ProjectManager",
+                "Create() - " + project.getAbsolutDirectory());
         controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Create));
 
         FileUtils.forceMkdir(project.getAbsolutDirectory());

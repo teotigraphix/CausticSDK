@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -134,6 +135,11 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     //--------------------------------------------------------------------------
     // ICaustkConfiguration API :: Methods
     //--------------------------------------------------------------------------
+
+    @Override
+    public ICausticLogger createLogger() {
+        return new CaustkLogger();
+    }
 
     @Override
     public ICaustkController createController(ICaustkApplication application) {

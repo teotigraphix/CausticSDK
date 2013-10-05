@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer.OnQueueSequencerDataChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
@@ -324,6 +323,6 @@ public class QueuePlayer {
     }
 
     private void debug(String message) {
-        CtkDebug.debug("QueuePlayer", message);
+        getController().getLogger().debug("QueuePlayer", message);
     }
 }

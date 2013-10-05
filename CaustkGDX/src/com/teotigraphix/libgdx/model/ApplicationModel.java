@@ -21,7 +21,6 @@ package com.teotigraphix.libgdx.model;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.libgdx.application.ApplicationRegistry;
 import com.teotigraphix.libgdx.application.IApplicationRegistry;
@@ -100,7 +99,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     public final void setDirty(boolean value) {
         if (value == dirty)
             return;
-        CtkDebug.model("ApplicationModel", "dirty: " + value);
+        getController().getLogger().model("ApplicationModel", "dirty: " + value);
         dirty = value;
         trigger(new OnApplicationModelDirtyChanged(dirty));
     }
@@ -123,7 +122,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     // and after the ApplicationMediator.onRegister() is called.
     @Override
     public void onRegister() {
-        CtkDebug.model("ApplicationModel", "onRegister()");
+        getController().getLogger().model("ApplicationModel", "onRegister()");
 
         // register all application level models, ApplicationModel
         // any models declared on the app's ApplicationMediator

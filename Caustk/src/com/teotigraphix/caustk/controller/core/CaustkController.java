@@ -39,7 +39,6 @@ import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
@@ -92,11 +91,9 @@ public class CaustkController implements ICaustkController {
     // logger
     //----------------------------------
 
-    private ICausticLogger logger;
-
     @Override
     public ICausticLogger getLogger() {
-        return logger;
+        return application.getLogger();
     }
 
     //----------------------------------
@@ -269,12 +266,13 @@ public class CaustkController implements ICaustkController {
     //--------------------------------------------------------------------------
 
     void create() {
-        CtkDebug.log("CaustkController", "Create app root dir if not created");
+
+        getLogger().log("CaustkController", "Create app root dir if not created");
         File applicationRoot = application.getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
 
-        CtkDebug.log("CaustkController", "Create all Sub components");
+        getLogger().log("CaustkController", "Create all Sub components");
 
         // sub composites will add their ICommands in their constructors
 
@@ -299,12 +297,12 @@ public class CaustkController implements ICaustkController {
     }
 
     void save() throws IOException {
-        CtkDebug.log("CaustkController", "Save");
+        getLogger().log("CaustkController", "Save");
         projectManager.save();
     }
 
     void close() {
-        CtkDebug.log("CaustkController", "Close");
+        getLogger().log("CaustkController", "Close");
     }
 
     //--------------------------------------------------------------------------

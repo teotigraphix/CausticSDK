@@ -34,7 +34,6 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.library.ILibraryManager;
@@ -183,9 +182,9 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         File absoluteLocation = getController().getProjectManager().getProject()
                 .getAbsoluteResource(new File("libraries", directory.getPath()).getPath());
 
-        CtkDebug.log("LibraryManager", "Load library; " + absoluteLocation);
+        getController().getLogger().log("LibraryManager", "Load library; " + absoluteLocation);
         if (!absoluteLocation.exists()) {
-            CtkDebug.err("LibraryManager", "Library not found; " + directory);
+            getController().getLogger().err("LibraryManager", "Library not found; " + directory);
             return null;
         }
 

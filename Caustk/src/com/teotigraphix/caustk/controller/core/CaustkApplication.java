@@ -22,10 +22,10 @@ package com.teotigraphix.caustk.controller.core;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.IApplicationHandler;
+import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.core.CtkDebug;
 
 /**
  * @author Michael Schmalle
@@ -33,8 +33,19 @@ import com.teotigraphix.caustk.core.CtkDebug;
 public final class CaustkApplication implements ICaustkApplication {
 
     //--------------------------------------------------------------------------
-    // Public ICaustkApplication API
+    // ICaustkApplication API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // logger
+    //----------------------------------
+
+    private ICausticLogger logger;
+
+    @Override
+    public ICausticLogger getLogger() {
+        return logger;
+    }
 
     //----------------------------------
     // applicationHandler
@@ -80,6 +91,7 @@ public final class CaustkApplication implements ICaustkApplication {
      */
     public CaustkApplication(ICaustkConfiguration configuration) {
         this.configuration = configuration;
+        logger = getConfiguration().createLogger();
         controller = (CaustkController)getConfiguration().createController(this);
     }
 
@@ -89,7 +101,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void create() {
-        CtkDebug.log("Application", "create()");
+        getLogger().log("Application", "create()");
         // creates all sub components of the controller
         controller.create();
         if (applicationHandler != null)
@@ -99,7 +111,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void save() throws IOException {
-        CtkDebug.log("Application", "save()");
+        getLogger().log("Application", "save()");
         controller.save();
         if (applicationHandler != null)
             applicationHandler.commitSave();
@@ -108,7 +120,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void close() {
-        CtkDebug.log("Application", "close()");
+        getLogger().log("Application", "close()");
         controller.close();
         if (applicationHandler != null)
             applicationHandler.commitClose();

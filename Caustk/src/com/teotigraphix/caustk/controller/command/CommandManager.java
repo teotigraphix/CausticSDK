@@ -29,7 +29,6 @@ import com.teotigraphix.caustk.controller.command.ICommandHistory.OnFastForwardC
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnRewindComplete;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CtkDebug;
 
 public class CommandManager implements ICommandManager {
 
@@ -177,7 +176,8 @@ public class CommandManager implements ICommandManager {
         Class<?> command = getCommand(commandString);
 
         if (command == null) {
-            CtkDebug.warn("CommandManager", "Command not registered:" + commandString);
+            controller.getLogger()
+                    .warn("CommandManager", "Command not registered:" + commandString);
             return;
         }
 

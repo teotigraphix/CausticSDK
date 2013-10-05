@@ -14,7 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.libgdx.controller.CaustkMediator;
 import com.teotigraphix.libgdx.model.ApplicationModelState;
@@ -33,10 +32,10 @@ public class ApplicationMediatorBase extends CaustkMediator implements IApplicat
     public void onRegister() {
         File file = getProjectBinaryFile();
         if (file.exists()) {
-            CtkDebug.view("ApplicationMediator", "Load last State - " + file);
+            getController().getLogger().view("ApplicationMediator", "Load last State - " + file);
             loadApplicationState(file, stateType);
         } else {
-            CtkDebug.view("ApplicationMediator", "Create new State - " + file);
+            getController().getLogger().view("ApplicationMediator", "Create new State - " + file);
 
             ApplicationModelState state = null;
             try {

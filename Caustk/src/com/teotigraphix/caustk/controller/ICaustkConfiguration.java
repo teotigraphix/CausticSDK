@@ -30,6 +30,25 @@ import com.teotigraphix.caustk.sound.ISoundGenerator;
  */
 public interface ICaustkConfiguration {
 
+    //--------------------------------------------------------------------------
+    // Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // applicationId
+    //----------------------------------
+
+    /**
+     * Returns the application id used for the root param of OSC messages.
+     * <p>
+     * All lowercase, no spaces, alpha numeric.
+     */
+    String getApplicationId();
+
+    //----------------------------------
+    // applicationTitle
+    //----------------------------------
+
     /**
      * Returns the human readable application name with spaces.
      */
@@ -42,12 +61,9 @@ public interface ICaustkConfiguration {
      */
     void setApplicationTitle(String value);
 
-    /**
-     * Returns the application id used for the root param of OSC messages.
-     * <p>
-     * All lowercase, no spaces, alpha numeric.
-     */
-    String getApplicationId();
+    //----------------------------------
+    // applicationRoot
+    //----------------------------------
 
     /**
      * Returns the native root of the application's directory.
@@ -64,6 +80,10 @@ public interface ICaustkConfiguration {
      */
     void setApplicationRoot(File value);
 
+    //----------------------------------
+    // causticStorage
+    //----------------------------------
+
     /**
      * Returns the storage directory that holds the <code>caustic</code>
      * directory.
@@ -77,22 +97,9 @@ public interface ICaustkConfiguration {
      */
     void setCausticStorage(File value);
 
-    //--------------------------------------------------------------------------
-    // Factory Methods
-    //--------------------------------------------------------------------------
-
-    /**
-     * The main {@link CaustkController} instance that instrumentates the whole
-     * application sequencing from patterns, parts, presets, memory and all
-     * other things needing controlling.
-     * <p>
-     * If the device framework was a hierarchy which it kind of is, the
-     * {@link CaustkController} is the top device, other than a
-     * GrooveBoxApplication.
-     * 
-     * @param application
-     */
-    ICaustkController createController(ICaustkApplication application);
+    //----------------------------------
+    // soundGenerator
+    //----------------------------------
 
     /**
      * Returns the core {@link ICausticEngine} implementation for the desktop or
@@ -109,5 +116,24 @@ public interface ICaustkConfiguration {
      * @param soundGenerator The main sound generator.
      */
     void setSoundGenerator(ISoundGenerator soundGenerator);
+
+    //--------------------------------------------------------------------------
+    // Factory Methods
+    //--------------------------------------------------------------------------
+
+    ICausticLogger createLogger();
+
+    /**
+     * The main {@link CaustkController} instance that instrumentates the whole
+     * application sequencing from patterns, parts, presets, memory and all
+     * other things needing controlling.
+     * <p>
+     * If the device framework was a hierarchy which it kind of is, the
+     * {@link CaustkController} is the top device, other than a
+     * GrooveBoxApplication.
+     * 
+     * @param application
+     */
+    ICaustkController createController(ICaustkApplication application);
 
 }

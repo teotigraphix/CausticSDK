@@ -34,11 +34,12 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
@@ -59,6 +60,7 @@ import com.teotigraphix.caustk.tone.ToneType;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
+@SuppressLint("UseSparseArrays")
 public class SoundSource extends RackComponent implements ISoundSource, Serializable {
 
     private static final long serialVersionUID = 1785154952216484108L;
@@ -480,7 +482,8 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
             @SuppressWarnings("unused")
             Tone tone = null;
             try {
-                CtkDebug.log("SoundSource", "Restore machine from load: " + name + ":" + type);
+                getController().getLogger().log("SoundSource",
+                        "Restore machine from load: " + name + ":" + type);
                 tone = createTone(i, name, toneType);
             } catch (CausticException e) {
                 e.printStackTrace();
