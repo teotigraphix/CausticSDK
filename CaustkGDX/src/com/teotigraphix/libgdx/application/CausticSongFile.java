@@ -19,23 +19,35 @@
 
 package com.teotigraphix.libgdx.application;
 
-import com.teotigraphix.libgdx.controller.ICaustkMediator;
+import java.io.Serializable;
 
-/**
- * The application hook for apps, implement in the custom application.
- * 
- * @see StartupExecutor
- */
-public interface IApplicationMediator extends ICaustkMediator {
+public class CausticSongFile implements Serializable {
 
-    /**
-     * Called when the application state is created for the first time or
-     * deserialized from a previous state.
-     * <p>
-     * This method is called before {@link #onRegister()}.
-     */
-    void create();
+    private static final long serialVersionUID = 5370901667078304993L;
 
-    void save();
+    private String file;
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    private byte[] data;
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    CausticSongFile(String file, byte[] data) {
+        this.file = file;
+        this.data = data;
+    }
 
 }

@@ -131,6 +131,8 @@ public class ApplicationController implements IApplicationController {
 
         applicationModel.setProject(project);
 
+        applicationMediator.create();
+
         applicationMediator.onRegister();
 
         // last call in the startup chain
