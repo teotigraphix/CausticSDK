@@ -74,8 +74,8 @@ public class OutputPanelMessage extends CausticMessage {
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
-     * <li><strong>value</strong>: (0,1) 0 <code>play</code>, 1
-     * <code>stop</code>.</li>
+     * <li><strong>value</strong>: (0,1) 0 <code>stop</code>, 1
+     * <code>play</code>.</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
