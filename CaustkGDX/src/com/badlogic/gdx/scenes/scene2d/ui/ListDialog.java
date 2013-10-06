@@ -37,7 +37,7 @@ public class ListDialog extends AlertDialog {
     }
 
     public void setItems(Object[] items) {
-        debug();
+        //debug();
         this.items = items;
         list = new List(items, getSkin());
         list.addListener(new ChangeListener() {
@@ -48,7 +48,7 @@ public class ListDialog extends AlertDialog {
 
         ScrollPane pane = new ScrollPane(list, getSkin());
         pane.setOverscroll(false, false);
-        setContent(pane).size(420f, 400f).expandX();
+        setContent(pane);
     }
 
     public ListDialog(String title, Skin skin, String windowStyleName) {

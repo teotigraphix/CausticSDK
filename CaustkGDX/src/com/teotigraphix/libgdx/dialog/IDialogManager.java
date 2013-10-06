@@ -28,6 +28,7 @@ public interface IDialogManager {
 
     AlertDialog createAlert(IScreen screen, String title, Actor actor);
 
-    ListDialog createListDialog(IScreen screen, String title, Object[] items);
+    ListDialog createListDialog(IScreen screen, String title, Object[] items, float width,
+            float height);
 
 }

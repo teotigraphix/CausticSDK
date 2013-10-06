@@ -21,6 +21,7 @@ package com.badlogic.gdx.scenes.scene2d.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.esotericsoftware.tablelayout.Cell;
 import com.teotigraphix.libgdx.ui.OverlayButton;
@@ -58,6 +59,8 @@ public class AlertDialog extends Dialog {
 
     protected void createChildren() {
         // create buttons
+        setTitleAlignment(Align.top);
+
         okButton = new OverlayButton("OK", skin);
         okButton.addListener(new ClickListener() {
             @Override
@@ -104,7 +107,7 @@ public class AlertDialog extends Dialog {
 
     @SuppressWarnings("rawtypes")
     public Cell setContent(Actor actor) {
-        return contentTable.add(actor);
+        return contentTable.add(actor).size(getWidth(), getHeight());
     }
 
     /*

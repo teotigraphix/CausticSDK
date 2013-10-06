@@ -39,12 +39,12 @@ public class DialogManager implements IDialogManager {
     }
 
     @Override
-    public ListDialog createListDialog(IScreen screen, String title, Object[] items) {
+    public ListDialog createListDialog(IScreen screen, String title, Object[] items, float width,
+            float height) {
         final ListDialog dialog = new ListDialog(title, screen.getSkin());
+        dialog.setSize(width, height);
         dialog.setItems(items);
         dialog.setMovable(false);
-        dialog.setSize(500f, 400f);
-        center(dialog);
         return dialog;
     }
 
@@ -53,8 +53,6 @@ public class DialogManager implements IDialogManager {
         final AlertDialog dialog = new AlertDialog(title, screen.getSkin());
         dialog.setContent(actor);
         dialog.setMovable(false);
-        dialog.setSize(500f, 400f);
-        center(dialog);
         return dialog;
     }
 }
