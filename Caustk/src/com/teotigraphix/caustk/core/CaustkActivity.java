@@ -25,6 +25,39 @@ import android.os.Bundle;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.sound.generator.AndroidSoundGenerator;
 
+/*
+
+Open Application
+
+- onCreate()
+- onStart()
+- onResume()
+
+Back button to Home
+
+- onPause()
+- onStop()
+- onDestroy()
+
+Go back into application
+
+- onCreate()
+- onStart()
+- onResume()
+
+Go to another Activity
+
+- onPause()
+- onStop()
+
+Back into running App
+
+- onRestart()
+- onStart() [Threads are still alive in the core]
+- onResume() [Threads are told to run again to process audio data]
+
+*/
+
 /**
  * The {@link CaustkActivity} is a simple base class for a Caustk application
  * that creates the {@link AndroidSoundGenerator} and proxys it's life cycle

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HelloCaustkStepSequencer</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_tag_line">Bassline step sequencer</string>
+    <string name="stop">Stop</string>
+    <string name="play">Play</string>
+
+</resources>
