@@ -144,7 +144,7 @@ public class Trigger implements Serializable {
      */
     public Note addNote(float beat, int pitch, float gate, float velocity, int flags) {
         if (hasNote(pitch)) {
-            throw new IllegalStateException("Note exists");
+            throw new IllegalStateException("Note exists:" + beat + ", pitch:" + pitch);
         }
         Note note = new Note(pitch, beat, beat + gate, velocity, flags);
         addNote(note);
