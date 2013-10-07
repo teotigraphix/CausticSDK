@@ -57,6 +57,34 @@ public class Trigger implements Serializable {
     }
 
     //----------------------------------
+    // data
+    //----------------------------------
+
+    private Object data;
+
+    /**
+     * Returns the trigger's abstract data if any.
+     */
+    public Object getData() {
+        return data;
+    }
+
+    /**
+     * Sets the data for the trigger's.
+     * <p>
+     * Clients of the trigger's can use this property to tack on additional data
+     * that relates to the trigger's in the context of their application.
+     * <p>
+     * Works with serialization.
+     * 
+     * @param value The data associated with the trigger's and client
+     *            application.
+     */
+    public void setData(Object value) {
+        data = value;
+    }
+
+    //----------------------------------
     // selected
     //----------------------------------
 

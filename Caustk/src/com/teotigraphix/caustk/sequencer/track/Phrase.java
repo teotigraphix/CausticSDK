@@ -166,6 +166,33 @@ public class Phrase implements Serializable {
     // noteData
     //----------------------------------
 
+    private Object data;
+
+    /**
+     * Returns the phrase's abstract data if any.
+     */
+    public Object getData() {
+        return data;
+    }
+
+    /**
+     * Sets the data for the phrase.
+     * <p>
+     * Clients of the phrase can use this property to tack on additional data
+     * that relates to the phrase in the context of their application.
+     * <p>
+     * Works with serialization.
+     * 
+     * @param value The data associated with the phrase and client application.
+     */
+    public void setData(Object value) {
+        data = value;
+    }
+
+    //----------------------------------
+    // noteData
+    //----------------------------------
+
     String noteData;
 
     /**

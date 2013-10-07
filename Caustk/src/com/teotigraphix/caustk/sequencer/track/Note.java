@@ -117,12 +117,25 @@ public class Note implements Serializable {
 
     private Object data;
 
+    /**
+     * Returns the note's abstract data if any.
+     */
     public Object getData() {
         return data;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    /**
+     * Sets the data for the note.
+     * <p>
+     * Clients of the note can use this property to tack on additional data that
+     * relates to the note in the context of their application.
+     * <p>
+     * Works with serialization.
+     * 
+     * @param value The data associated with the note and client application.
+     */
+    public void setData(Object value) {
+        data = value;
     }
 
     //----------------------------------
