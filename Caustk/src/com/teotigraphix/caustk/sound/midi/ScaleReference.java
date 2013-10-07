@@ -149,9 +149,10 @@ public enum ScaleReference {
     }, TURKISH_SCALE = {
             0, 1, 3, 5, 7, 10, 11
     }, INDIAN_SCALE = {
-            0, 1, 1, 4, 5, 8, 10
+            0, 1, 4, 5, 8, 10
     }, SPANISH_GYPSY_SCALE = {
-            0, 1, 4, 5, 7, 8, 10, 12
+            0, 1, 4, 5, 7, 8, 10
+    /*, 12*/
     // 0, 1, 4, 5, 7, 8, 10, 12
             };
 

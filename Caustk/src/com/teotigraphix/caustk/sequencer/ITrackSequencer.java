@@ -206,6 +206,8 @@ public interface ITrackSequencer extends IRackComponent {
 
         ClearMeasure,
 
+        ClearPhrase,
+
         /**
          * @see TrackPhrase#setPlayMeasure(int)
          */

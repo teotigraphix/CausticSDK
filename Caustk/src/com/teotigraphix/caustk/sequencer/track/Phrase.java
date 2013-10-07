@@ -355,6 +355,11 @@ public class Phrase implements Serializable {
      * Clears all notes from all measures of the phrase.
      */
     public void clear() {
+        Collection<Note> list = getNotes();
+        for (Note note : list) {
+            removeNote(note);
+        }
+        fireChange(PhraseChangeKind.ClearMeasure);
     }
 
     /**
