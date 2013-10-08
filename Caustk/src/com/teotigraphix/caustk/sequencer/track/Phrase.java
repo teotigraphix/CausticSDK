@@ -155,7 +155,7 @@ public class Phrase implements Serializable {
         if (value == length)
             return;
         length = value;
-
+        getTone().getPatternSequencer().setLength(getBank(), getPattern(), length);
         fireChange(PhraseChangeKind.Length);
 
         if (position > value)
@@ -386,6 +386,8 @@ public class Phrase implements Serializable {
         for (Note note : list) {
             removeNote(note);
         }
+        if (getNotes().size() != 0)
+            throw new IllegalStateException("Phrase was not cleared");
         fireChange(PhraseChangeKind.ClearMeasure);
     }
 
@@ -400,6 +402,8 @@ public class Phrase implements Serializable {
         for (Note note : list) {
             removeNote(note);
         }
+        if (getNotes(measure).size() != 0)
+            throw new IllegalStateException("Phrase measure was not cleared");
         fireChange(PhraseChangeKind.ClearMeasure);
     }
 

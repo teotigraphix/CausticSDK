@@ -23,31 +23,26 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
-import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
-import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
- * @see OnTrackSequencerLoad
+ * The {@link TrackSequencer} wraps a {@link TrackSong} and delegates to the
+ * song's tracks.
  */
 public class TrackSequencer extends RackComponent implements ITrackSequencer, Serializable {
 
     private static final long serialVersionUID = 4786141580715087636L;
-
-    private transient TrackSequencerHandlers handlers;
 
     //----------------------------------
     // trackSong
@@ -147,16 +142,12 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
         super(rack);
     }
 
-    @Override
-    protected void commitController() {
-        super.commitController();
-    }
+    //--------------------------------------------------------------------------
+    // Overridden :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public void registerObservers() {
-        handlers = new TrackSequencerHandlers(this);
-        handlers.registerObservers();
-
         getController().register(OnSoundSourceToneAdd.class,
                 new EventObserver<OnSoundSourceToneAdd>() {
                     @Override
@@ -183,88 +174,92 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
                 });
     }
 
-    @Override
-    public void load(File absoluteCausticFile) throws IOException {
-        if (!absoluteCausticFile.exists())
-            throw new IOException("File does not exist:" + absoluteCausticFile);
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
-        // clear sound source model
-        getController().getRack().getSoundSource().clearAndReset();
-
-        // load the machines, no restore
-        try {
-            getController().getRack().getSoundSource().loadSong(absoluteCausticFile);
-        } catch (CausticException e) {
-            e.printStackTrace();
-        }
-
-        String name = absoluteCausticFile.getName().replace(".caustic", ".ctks");
-        trackSong = createSong(new File(name));
-
-        // load all tone patterns into TrackPhrase/PhraseNote
-        for (Tone tone : getController().getRack().getSoundSource().getTones()) {
-            int toneIndex = tone.getIndex();
-            Track channel = getTrack(toneIndex);
-            PatternSequencerComponent sequencer = tone.getPatternSequencer();
-            List<String> patterns = sequencer.getPatternListing();
-            for (String patternName : patterns) {
-                int bank = PatternUtils.toBank(patternName);
-                int pattern = PatternUtils.toPattern(patternName);
-                // get the note data
-                Collection<Note> notes = sequencer.getNotes(bank, pattern);
-                Phrase phrase = channel.getPhrase(bank, pattern);
-                phrase.setLength(sequencer.getLength(bank, pattern));
-                phrase.addNotes(notes);
-            }
-            tone.restore();
-        }
-
-        // load all song sequencer patterns into TrackItems
-        String patterns = SequencerMessage.QUERY_PATTERN_EVENT.queryString(getController());
-        if (patterns != null && !patterns.equals("")) {
-            String[] items = patterns.split("\\|");
-            for (String item : items) {
-                String[] spilt = item.split(" ");
-                int toneIndex = Integer.valueOf(spilt[0]);
-                int start = Integer.valueOf(spilt[1]);
-                int bank = Integer.valueOf(spilt[2]);
-                int pattern = Integer.valueOf(spilt[3]);
-                int end = Integer.valueOf(spilt[4]);
-
-                Track channel = getTrack(toneIndex);
-                Phrase phrase = channel.getPhrase(bank, pattern);
-                int phraseLength = phrase.getLength();
-
-                int span = end - start;
-                // multiple patterns
-                int loops = span / phraseLength;
-                int remainder = span % phraseLength;
-                if (remainder != 0) {
-                    throw new RuntimeException("IMPL, remainder on Song sequencer");
-                } else {
-                    for (int i = start; i < start + loops; i++) {
-                        try {
-                            channel.addPhraseAt(i, 1, phrase, false);
-                        } catch (CausticException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
-        //
-        //        MasterMixer masterMixer = new MasterMixer(controller);
-        //        controller.getSoundMixer().setMasterMixer(masterMixer);
-        //
-        //        // load all mixer channels
-        //        for (Tone tone : controller.getSoundSource().getTones()) {
-        //            masterMixer.addTone(tone);
-        //        }
-        //        // Restores volume, equalizer, limiter, delay, reverb
-        //        // all channel's eq and effects
-        //        masterMixer.restore();
-
-    }
+    //    @Override
+    //    public void load(File absoluteCausticFile) throws IOException {
+    //        if (!absoluteCausticFile.exists())
+    //            throw new IOException("File does not exist:" + absoluteCausticFile);
+    //
+    //        // clear sound source model
+    //        getController().getRack().getSoundSource().clearAndReset();
+    //
+    //        // load the machines, no restore
+    //        try {
+    //            getController().getRack().getSoundSource().loadSong(absoluteCausticFile);
+    //        } catch (CausticException e) {
+    //            e.printStackTrace();
+    //        }
+    //
+    //        String name = absoluteCausticFile.getName().replace(".caustic", ".ctks");
+    //        trackSong = createSong(new File(name));
+    //
+    //        // load all tone patterns into TrackPhrase/PhraseNote
+    //        for (Tone tone : getController().getRack().getSoundSource().getTones()) {
+    //            int toneIndex = tone.getIndex();
+    //            Track channel = getTrack(toneIndex);
+    //            PatternSequencerComponent sequencer = tone.getPatternSequencer();
+    //            List<String> patterns = sequencer.getPatternListing();
+    //            for (String patternName : patterns) {
+    //                int bank = PatternUtils.toBank(patternName);
+    //                int pattern = PatternUtils.toPattern(patternName);
+    //                // get the note data
+    //                Collection<Note> notes = sequencer.getNotes(bank, pattern);
+    //                Phrase phrase = channel.getPhrase(bank, pattern);
+    //                phrase.setLength(sequencer.getLength(bank, pattern));
+    //                phrase.addNotes(notes);
+    //            }
+    //            tone.restore();
+    //        }
+    //
+    //        // load all song sequencer patterns into TrackItems
+    //        String patterns = SequencerMessage.QUERY_PATTERN_EVENT.queryString(getController());
+    //        if (patterns != null && !patterns.equals("")) {
+    //            String[] items = patterns.split("\\|");
+    //            for (String item : items) {
+    //                String[] spilt = item.split(" ");
+    //                int toneIndex = Integer.valueOf(spilt[0]);
+    //                int start = Integer.valueOf(spilt[1]);
+    //                int bank = Integer.valueOf(spilt[2]);
+    //                int pattern = Integer.valueOf(spilt[3]);
+    //                int end = Integer.valueOf(spilt[4]);
+    //
+    //                Track channel = getTrack(toneIndex);
+    //                Phrase phrase = channel.getPhrase(bank, pattern);
+    //                int phraseLength = phrase.getLength();
+    //
+    //                int span = end - start;
+    //                // multiple patterns
+    //                int loops = span / phraseLength;
+    //                int remainder = span % phraseLength;
+    //                if (remainder != 0) {
+    //                    throw new RuntimeException("IMPL, remainder on Song sequencer");
+    //                } else {
+    //                    for (int i = start; i < start + loops; i++) {
+    //                        try {
+    //                            channel.addPhraseAt(i, 1, phrase, false);
+    //                        } catch (CausticException e) {
+    //                            e.printStackTrace();
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        //
+    //        //        MasterMixer masterMixer = new MasterMixer(controller);
+    //        //        controller.getSoundMixer().setMasterMixer(masterMixer);
+    //        //
+    //        //        // load all mixer channels
+    //        //        for (Tone tone : controller.getSoundSource().getTones()) {
+    //        //            masterMixer.addTone(tone);
+    //        //        }
+    //        //        // Restores volume, equalizer, limiter, delay, reverb
+    //        //        // all channel's eq and effects
+    //        //        masterMixer.restore();
+    //
+    //    }
 
     @Override
     public TrackSong createSong() {
@@ -304,22 +299,6 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
         return trackSong;
     }
 
-    private void saveTrackSong() throws IOException {
-        if (!trackSong.exists())
-            return;
-
-        //        File absoluteTargetSongFile = getAbsoluteSongFile();
-        //        getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
-        //        getController().trigger(new OnTrackSongChange(TrackSongChangeKind.Save, trackSong));
-    }
-
-    protected File getAbsoluteSongFile() {
-        File localFile = getController().getProjectManager().getProject()
-                .getAbsoluteResource(new File("songs", trackSong.getFile().getPath()).getPath());
-        File absoluteTargetSongFile = localFile.getAbsoluteFile();
-        return absoluteTargetSongFile;
-    }
-
     protected void trackAdd(Tone tone) {
         trackSong.toneAdd(tone);
     }
@@ -328,9 +307,14 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
         trackSong.toneRemove(tone);
     }
 
-    //--------------------------------------------------------------------------
-    // Song
-    //--------------------------------------------------------------------------
+    private void saveTrackSong() throws IOException {
+        if (!trackSong.exists())
+            return;
+
+        //        File absoluteTargetSongFile = getAbsoluteSongFile();
+        //        getController().getSerializeService().save(absoluteTargetSongFile, trackSong);
+        //        getController().trigger(new OnTrackSongChange(TrackSongChangeKind.Save, trackSong));
+    }
 
     //--------------------------------------------------------------------------
     // State
@@ -379,4 +363,12 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer, Se
     //            e.printStackTrace();
     //        }
     //    }
+
+    @SuppressWarnings("unused")
+    private static File getAbsoluteSongFile(Project project, TrackSong trackSong) {
+        File localFile = project.getAbsoluteResource(new File("songs", trackSong.getFile()
+                .getPath()).getPath());
+        File absoluteTargetSongFile = localFile.getAbsoluteFile();
+        return absoluteTargetSongFile;
+    }
 }

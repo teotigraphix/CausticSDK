@@ -126,7 +126,7 @@ public interface ITrackSequencer extends IRackComponent {
      *            <code>.caustic</code> file.
      * @throws IOException
      */
-    void load(File absoluteCausticFile) throws IOException;
+    //    void load(File absoluteCausticFile) throws IOException;
 
     public enum TrackChangeKind {
 

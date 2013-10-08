@@ -114,6 +114,7 @@ public class Track implements Serializable {
         if (value == currentBank)
             return;
         currentBank = value;
+        getTone().getPatternSequencer().setSelectedBank(currentBank);
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Bank, this));
     }
 
@@ -136,6 +137,7 @@ public class Track implements Serializable {
             return;
         currentPattern = value;
         bankEditor.put(currentBank, currentPattern);
+        getTone().getPatternSequencer().setSelectedPattern(currentPattern);
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Pattern, this));
     }
 
