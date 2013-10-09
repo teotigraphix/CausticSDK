@@ -28,6 +28,11 @@ import com.teotigraphix.caustk.tone.components.pcmsynth.LFO1Component;
 import com.teotigraphix.caustk.tone.components.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.tone.components.pcmsynth.PCMTunerComponent;
 
+/**
+ * The tone impl for the native PCMSynth machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class PCMSynthTone extends Tone {
 
     private static final long serialVersionUID = -2420559479487449269L;

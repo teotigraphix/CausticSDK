@@ -19,6 +19,11 @@
 
 package com.teotigraphix.caustk.tone;
 
+/**
+ * The type enum for the native Caustic machines.
+ * 
+ * @author Michael Schmalle
+ */
 public enum ToneType {
 
     /**

@@ -21,6 +21,9 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.IRack;
 
+/**
+ * @author Michael Schmalle
+ */
 public class RhythmTone extends Tone {
 
     private static final long serialVersionUID = -7766073265364101586L;

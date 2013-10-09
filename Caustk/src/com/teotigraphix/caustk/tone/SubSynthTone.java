@@ -29,6 +29,11 @@ import com.teotigraphix.caustk.tone.components.subsynth.LFO2Component;
 import com.teotigraphix.caustk.tone.components.subsynth.Osc1Component;
 import com.teotigraphix.caustk.tone.components.subsynth.Osc2Component;
 
+/**
+ * The tone impl for the native SubSynth machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class SubSynthTone extends Tone {
 
     private static final long serialVersionUID = -2297739026093635478L;

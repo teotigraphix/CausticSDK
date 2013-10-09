@@ -28,6 +28,11 @@ import com.teotigraphix.caustk.tone.components.padsynth.LFO2Component;
 import com.teotigraphix.caustk.tone.components.padsynth.MorphComponent;
 import com.teotigraphix.caustk.tone.components.padsynth.VolumeComponent;
 
+/**
+ * The tone impl for the native PadSynth machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class PadSynthTone extends Tone {
 
     private static final long serialVersionUID = -2333431858291077409L;

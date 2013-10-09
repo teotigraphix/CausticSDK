@@ -25,6 +25,11 @@ import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.VolumeComponent;
 import com.teotigraphix.caustk.tone.components.beatbox.WavSamplerComponent;
 
+/**
+ * The tone impl for the native Beatbox machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class BeatboxTone extends RhythmTone {
 
     private static final long serialVersionUID = 8581751745248939541L;

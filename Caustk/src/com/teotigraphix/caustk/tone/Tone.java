@@ -31,6 +31,11 @@ import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 
+/**
+ * The base class for all tone's that wrap a native Caustic machine.
+ * 
+ * @author Michael Schmalle
+ */
 public abstract class Tone implements IRestore, Serializable {
 
     private static final long serialVersionUID = 2917863803738244084L;

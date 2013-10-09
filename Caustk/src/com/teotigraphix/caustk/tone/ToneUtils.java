@@ -26,6 +26,8 @@ import com.google.gson.stream.JsonReader;
 
 /**
  * Various static methods used with the various Tone framework.
+ * 
+ * @author Michael Schmalle
  */
 public final class ToneUtils {
 

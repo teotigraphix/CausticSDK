@@ -21,6 +21,11 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.controller.IRack;
 
+/**
+ * The tone impl for the native 8BitSynth machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class EightBitSynth extends Tone {
 
     private static final long serialVersionUID = -156077068949440863L;

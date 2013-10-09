@@ -24,6 +24,8 @@ import java.util.UUID;
 /**
  * Each application must define the {@link Tone} instances that will get created
  * at startup.
+ * 
+ * @author Michael Schmalle
  */
 public class ToneDescriptor {
     private final int index;

@@ -25,6 +25,11 @@ import com.teotigraphix.caustk.tone.components.SynthComponent;
 import com.teotigraphix.caustk.tone.components.VolumeComponent;
 import com.teotigraphix.caustk.tone.components.organ.LeslieComponent;
 
+/**
+ * The tone impl for the native Organ machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class OrganTone extends Tone {
 
     private static final long serialVersionUID = 1726523720819411514L;

@@ -28,6 +28,11 @@ import com.teotigraphix.caustk.tone.components.bassline.FilterComponent;
 import com.teotigraphix.caustk.tone.components.bassline.LFO1Component;
 import com.teotigraphix.caustk.tone.components.bassline.OSC1Component;
 
+/**
+ * The tone impl for the native Bassline machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class BasslineTone extends Tone {
 
     private static final long serialVersionUID = -5367096279246221709L;

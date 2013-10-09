@@ -24,6 +24,9 @@ import java.util.List;
 
 import com.teotigraphix.caustk.controller.core.Rack;
 
+/**
+ * @author Michael Schmalle
+ */
 public class RhythmSet extends Tone {
 
     private static final long serialVersionUID = 5375402816071914238L;

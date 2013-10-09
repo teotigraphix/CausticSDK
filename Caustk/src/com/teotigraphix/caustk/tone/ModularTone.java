@@ -50,6 +50,11 @@ import com.teotigraphix.caustk.tone.components.modular.SubOscillator;
 import com.teotigraphix.caustk.tone.components.modular.ThreeInputMixer;
 import com.teotigraphix.caustk.tone.components.modular.TwoInputMixer;
 
+/**
+ * The tone impl for the native Modular machine.
+ * 
+ * @author Michael Schmalle
+ */
 public class ModularTone extends Tone {
 
     private static final long serialVersionUID = 8381426654777785594L;

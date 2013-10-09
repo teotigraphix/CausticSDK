@@ -25,6 +25,15 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
+/**
+ * The {@link ToneComponent} is a sub component held on a {@link Tone}.
+ * <p>
+ * Using the {@link Tone#getComponent(Class)} will return the component that was
+ * registered under the class type API passed, null if the component dosn't
+ * exist.
+ * 
+ * @author Michael Schmalle
+ */
 public abstract class ToneComponent implements IRestore, Serializable {
 
     private static final long serialVersionUID = 1176660130120258383L;

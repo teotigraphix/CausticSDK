@@ -21,6 +21,11 @@ package com.teotigraphix.caustk.tone;
 
 import com.teotigraphix.caustk.tone.components.beatbox.WavSamplerChannel;
 
+/**
+ * The channel impl for a Beatbox channel and wave sampler.
+ * 
+ * @author Michael Schmalle
+ */
 public class RhythmChannel {
 
     private WavSamplerChannel channel;
