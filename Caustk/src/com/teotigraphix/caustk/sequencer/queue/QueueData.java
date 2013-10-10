@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.sequencer.queue;
 
@@ -7,7 +25,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IRack;
 
 public class QueueData implements Serializable {
 
@@ -16,17 +34,21 @@ public class QueueData implements Serializable {
     private Map<Integer, QueueDataChannel> map = new TreeMap<Integer, QueueDataChannel>();
 
     //----------------------------------
-    // controller
+    // queueSong
     //----------------------------------
 
-    private transient ICaustkController controller;
+    private QueueSong queueSong;
 
-    public ICaustkController getController() {
-        return controller;
+    public QueueSong getQueueSong() {
+        return queueSong;
     }
 
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
+    public void setQueueSong(QueueSong value) {
+        queueSong = value;
+    }
+
+    public IRack getRack() {
+        return queueSong.getRack();
     }
 
     //----------------------------------
@@ -113,8 +135,8 @@ public class QueueData implements Serializable {
         QueueDataChannel channel = map.get(toneIndex);
         if (channel == null) {
             channel = new QueueDataChannel(toneIndex);
-            channel.setParent(this);
-            channel.wakeup(controller);
+            channel.setQueueData(this);
+            channel.setQueueData(this);
             map.put(toneIndex, channel);
         }
         return channel;

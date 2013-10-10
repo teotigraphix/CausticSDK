@@ -19,12 +19,11 @@
 
 package com.teotigraphix.caustk.sequencer.queue;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
-import com.teotigraphix.caustk.service.ISerialize;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
@@ -48,25 +47,25 @@ Channel;
 
 */
 
-public class QueueDataChannel implements ISerialize {
+public class QueueDataChannel implements Serializable {
 
-    private transient ICaustkController controller;
+    private static final long serialVersionUID = 12917435056063471L;
 
     //----------------------------------
     // parent
     //----------------------------------
 
-    private transient QueueData parent;
+    private QueueData queueData;
 
     /**
      * Returns the owner.
      */
-    public QueueData getParent() {
-        return parent;
+    public QueueData getQueueData() {
+        return queueData;
     }
 
-    void setParent(QueueData value) {
-        parent = value;
+    void setQueueData(QueueData value) {
+        queueData = value;
     }
 
     //----------------------------------
@@ -74,7 +73,7 @@ public class QueueDataChannel implements ISerialize {
     //----------------------------------
 
     public final Tone getTone() {
-        return controller.getRack().getSoundSource().getTone(toneIndex);
+        return getQueueData().getRack().getSoundSource().getTone(toneIndex);
     }
 
     private int toneIndex;
@@ -97,7 +96,7 @@ public class QueueDataChannel implements ISerialize {
      * Returns the pattern sequencer bank index this channel is assigned to.
      */
     public final int getBankIndex() {
-        return parent.getBankIndex();
+        return queueData.getBankIndex();
     }
 
     //----------------------------------
@@ -108,7 +107,7 @@ public class QueueDataChannel implements ISerialize {
      * Returns the pattern sequencer pattern index this channel is assigned to.
      */
     public final int getPatternIndex() {
-        return parent.getPatternIndex();
+        return queueData.getPatternIndex();
     }
 
     //----------------------------------
@@ -144,11 +143,11 @@ public class QueueDataChannel implements ISerialize {
     }
 
     //----------------------------------
-    // currentBeat
+    // currentBeat 
     //----------------------------------
 
     public int getCurrentBeat() {
-        return controller.getRack().getTrackSequencer().getTrack(toneIndex).getPhrase()
+        return getQueueData().getRack().getTrackSequencer().getTrack(toneIndex).getPhrase()
                 .getCurrentBeat();
     }
 
@@ -175,19 +174,6 @@ public class QueueDataChannel implements ISerialize {
      */
     public QueueDataChannel(int toneIndex) {
         this.toneIndex = toneIndex;
-    }
-
-    //--------------------------------------------------------------------------
-    // ISerialize API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void sleep() {
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
     }
 
     public void assignPhrase(Phrase phrase) {
