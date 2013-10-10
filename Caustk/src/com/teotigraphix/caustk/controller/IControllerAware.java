@@ -19,40 +19,34 @@
 
 package com.teotigraphix.caustk.controller;
 
-import java.io.Serializable;
-
-import com.teotigraphix.caustk.controller.command.ICommand;
-import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.core.IRestore;
-
 /**
- * The {@link IRackComponent} API specifies a component that can be added to the
- * {@link IRack}.
+ * The {@link IControllerAware} API is for sub components of the
+ * {@link ICaustkController}.
+ * <p>
+ * When {@link ICaustkController#addComponent(Class, Object)} is called, the
+ * {@link #onAttach()} method of the aware component is called. Then
+ * {@link ICaustkController#removeComponent(Class)} will call
+ * {@link #onDetach()}.
+ * <p>
+ * Clients should implement this API on the concrete class, so it's very obvious
+ * that the client needs to know when it is added and removed from the
+ * controller.
  * 
  * @author Michael Schmalle
  */
-public interface IRackComponent extends Serializable, IRestore {
+public interface IControllerAware {
 
     /**
-     * Returns the main {@link IRack}.
+     * Called when the component is added to the {@link ICaustkController}
+     * through the {@link ICaustkController#addComponent(Class, Object)}.
+     * 
+     * @param controller The {@link ICaustkController}.
      */
-    IRack getRack();
+    void onAttach(ICaustkController controller);
 
     /**
-     * Registers observers against the {@link IDispatcher} API on dispatchers.
-     * <p>
-     * Rack components also register their {@link ICommand}s on the
-     * {@link ICommandManager} during this phase.
-     * <p>
-     * Can also be a good time to add the component's API to the
-     * {@link ICaustkController#addComponent(Class, Object)} map.
+     * Called when the component is removed from the {@link ICaustkController}
+     * through the {@link ICaustkController#removeComponent(Class)}.
      */
-    void registerObservers();
-
-    /**
-     * Removes the observers and perform any other clean up needed, similar to a
-     * dispose() method.
-     */
-    void unregisterObservers();
-
+    void onDetach();
 }

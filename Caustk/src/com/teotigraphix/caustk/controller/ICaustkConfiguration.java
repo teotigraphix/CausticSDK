@@ -21,8 +21,12 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.library.ILibraryManager;
+import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 
 /**
@@ -135,5 +139,41 @@ public interface ICaustkConfiguration {
      * @param application
      */
     ICaustkController createController(ICaustkApplication application);
+
+    /**
+     * Creates the single {@link ISerializeService} for the application's
+     * controller.
+     * 
+     * @param controller The application controller.
+     * @return An instance of the {@link ISerializeService}
+     */
+    ISerializeService createSerializeService(ICaustkController controller);
+
+    /**
+     * Creates the single {@link ICommandManager} for the application's
+     * controller.
+     * 
+     * @param controller The application controller.
+     * @return An instance of the {@link ICommandManager}
+     */
+    ICommandManager createCommandManager(ICaustkController controller);
+
+    /**
+     * Creates the single {@link ILibraryManager} for the application's
+     * controller.
+     * 
+     * @param controller The application controller.
+     * @return An instance of the {@link ILibraryManager}
+     */
+    ILibraryManager createLibraryManager(ICaustkController controller);
+
+    /**
+     * Creates the single {@link IProjectManager} for the application's
+     * controller.
+     * 
+     * @param controller The application controller.
+     * @return An instance of the {@link IProjectManager}
+     */
+    IProjectManager createProjectManager(ICaustkController controller);
 
 }

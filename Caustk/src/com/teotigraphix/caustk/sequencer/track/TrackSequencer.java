@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collection;
 
 import org.androidtransfuse.event.EventObserver;
@@ -40,9 +39,13 @@ import com.teotigraphix.caustk.tone.Tone;
  * The {@link TrackSequencer} wraps a {@link TrackSong} and delegates to the
  * song's tracks.
  */
-public class TrackSequencer extends RackComponent implements ITrackSequencer, Serializable {
+public class TrackSequencer extends RackComponent implements ITrackSequencer {
 
     private static final long serialVersionUID = 4786141580715087636L;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // trackSong

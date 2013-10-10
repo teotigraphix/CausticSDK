@@ -21,6 +21,4 @@ package com.teotigraphix.caustk.controller;
 
 public interface IControllerComponent extends IDispatcher {
 
-    void onRegister();
-
 }

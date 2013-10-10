@@ -22,25 +22,42 @@ package com.teotigraphix.caustk.project;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
+/**
+ * The project manager manages the single project loaded for an application.
+ * <p>
+ * The manager will have a root directory passed to it when it is created. All
+ * project related files are stored within this directory.
+ */
 public interface IProjectManager {
 
     /**
      * The root application directory, all {@link Project}s are stored in the
      * <code>applicationRoot/projects</code> directory.
+     * 
+     * @return The absolute path to the directory.
      */
     File getApplicationRoot();
 
     /**
-     * Returns a directory within the {@link #getApplicationRoot()} directory.
+     * Returns the <code>projects</code> directory held within the
+     * {@link #getApplicationRoot()}.
+     * 
+     * @return The absolute path to the directory.
+     */
+    File getProjectDirectory();
+
+    /**
+     * Returns a directory within the {@link #getProjectDirectory()} directory.
      * <p>
      * Will create the directory if it doesn't exist.
      * 
-     * @param path The simple path of the directory.
+     * @param relativePath The simple path of the directory.
+     * @return The absolute File location of the relativePath within the
+     *         <code>projects</code> directory.
      */
-    File getDirectory(String name);
+    File getDirectory(String relativePath);
 
     /**
      * Returns the current {@link Project} instantiated by
@@ -51,16 +68,20 @@ public interface IProjectManager {
     /**
      * Returns the single {@link SessionPreferences} instance for the project
      * session.
+     * <p>
+     * The session preferences is a <code>.settings</code> file that gets saved
+     * in the {@link #getApplicationRoot()} directory. It's a simple key, value
+     * map of primitives that can hold simple session to session preferences.
+     * <p>
+     * Using this over native preference implementations will add the benefit of
+     * portability from one device to another since you would be copying the
+     * application root to transfer data. Which in doing so, you are copying the
+     * settings file as well.
+     * <p>
+     * It's up to the application developer and the needs of the application in
+     * the end whether to save in the native format or session settings format.
      */
     SessionPreferences getSessionPreferences();
-
-    /**
-     * Loads the {@link SessionPreferences} from the application root.
-     * <p>
-     * Must be called after the
-     * {@link ICaustkConfiguration#setApplicationRoot(File)} is called.
-     */
-    void initialize();
 
     /**
      * Creates a new {@link Project} file.

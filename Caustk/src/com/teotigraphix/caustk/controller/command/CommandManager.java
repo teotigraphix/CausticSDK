@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerAware;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnClearComplete;
 import com.teotigraphix.caustk.controller.command.ICommandHistory.OnFastForwardComplete;
@@ -30,7 +31,7 @@ import com.teotigraphix.caustk.controller.command.ICommandHistory.OnRewindComple
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 
-public class CommandManager implements ICommandManager {
+public class CommandManager implements ICommandManager, IControllerAware {
 
     private ICaustkController controller;
 
@@ -50,12 +51,19 @@ public class CommandManager implements ICommandManager {
         return dispatcher;
     }
 
-    public CommandManager(ICaustkController controller) {
+    public CommandManager() {
+    }
+
+    @Override
+    public void onAttach(ICaustkController controller) {
         this.controller = controller;
         applicationId = controller.getApplicationId();
         dispatcher = new Dispatcher();
         commandHistory = new CommandHistory(dispatcher);
+    }
 
+    @Override
+    public void onDetach() {
     }
 
     /**

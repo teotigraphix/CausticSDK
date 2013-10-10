@@ -132,11 +132,6 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
     }
 
     @Override
-    protected void commitController() {
-        super.commitController();
-    }
-
-    @Override
     public void restore() {
         // restores the already created channels from the just previous song load
         for (SoundMixerChannel channel : getChannels().values()) {

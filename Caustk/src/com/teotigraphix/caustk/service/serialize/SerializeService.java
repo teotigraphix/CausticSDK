@@ -25,14 +25,14 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerAware;
 import com.teotigraphix.caustk.service.ISerializeService;
 
-public class SerializeService implements ISerializeService {
+public class SerializeService implements ISerializeService, IControllerAware {
 
     private ICaustkController controller;
 
-    public SerializeService(ICaustkController controller) {
-        this.controller = controller;
+    public SerializeService() {
     }
 
     @Override
@@ -71,6 +71,16 @@ public class SerializeService implements ISerializeService {
     public void save(File target, Object serialized) throws IOException {
         String data = JsonUtils.toGson(serialized, true);
         FileUtils.writeStringToFile(target, data);
+    }
+
+    @Override
+    public void onAttach(ICaustkController controller) {
+        this.controller = controller;
+    }
+
+    @Override
+    public void onDetach() {
+        controller = null;
     }
 
 }

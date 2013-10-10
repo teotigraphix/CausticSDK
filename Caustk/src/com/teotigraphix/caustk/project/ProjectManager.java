@@ -26,14 +26,20 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerAware;
 
 /**
- * The project manager manages the single project loaded for an application.
- * <p>
- * The manager will have a root directory passed to it when it is created. All
- * project related files are stored within this directory.
+ * The base implementation of the {@link IProjectManager} API.
+ * 
+ * @author Michael Schmalle
  */
-public class ProjectManager implements IProjectManager {
+public class ProjectManager implements IProjectManager, IControllerAware {
+
+    private static final String DIR_PROJECTS = "projects";
+
+    //----------------------------------
+    // controller
+    //----------------------------------
 
     private ICaustkController controller;
 
@@ -41,47 +47,58 @@ public class ProjectManager implements IProjectManager {
         return controller;
     }
 
-    private File sessionPreferencesFile;
-
-    //----------------------------------
-    // sessionPreferences
-    //----------------------------------
-
-    private SessionPreferences sessionPreferences;
-
-    @Override
-    public SessionPreferences getSessionPreferences() {
-        return sessionPreferences;
-    }
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // applicationRoot
     //----------------------------------
 
-    /**
-     * The root application directory, all {@link Project}s are stored in the
-     * <code>applicationRoot/projects</code> directory.
-     */
     @Override
-    public File getApplicationRoot() {
+    public final File getApplicationRoot() {
         return controller.getApplicationRoot();
     }
 
-    public File getProjectDirectory() {
-        return new File(getApplicationRoot(), "projects");
+    //----------------------------------
+    // projectDirectory
+    //----------------------------------
+
+    @Override
+    public final File getProjectDirectory() {
+        return new File(controller.getApplicationRoot(), DIR_PROJECTS);
     }
 
     @Override
-    public File getDirectory(String path) {
-        File directory = new File(getProjectDirectory(), path);
+    public final File getDirectory(String relativepath) {
+        File directory = new File(getProjectDirectory(), relativepath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
         return directory;
     }
 
+    /**
+     * Returns the absolute File location of the <code>projects</code> directory
+     * located within the {@link #getApplicationRoot()}.
+     * 
+     * @return The absolute {@link File}.
+     */
     protected File getAbsoluteProjectDirectory() {
-        return getDirectory("projects");
+        return getDirectory(DIR_PROJECTS);
+    }
+
+    //----------------------------------
+    // sessionPreferences
+    //----------------------------------
+
+    private File sessionPreferencesFile;
+
+    private SessionPreferences sessionPreferences;
+
+    @Override
+    public final SessionPreferences getSessionPreferences() {
+        return sessionPreferences;
     }
 
     //----------------------------------
@@ -91,7 +108,7 @@ public class ProjectManager implements IProjectManager {
     private Project project;
 
     @Override
-    public Project getProject() {
+    public final Project getProject() {
         return project;
     }
 
@@ -99,16 +116,17 @@ public class ProjectManager implements IProjectManager {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ProjectManager(ICaustkController controller) {
-        this.controller = controller;
+    public ProjectManager() {
     }
 
     //-------------------------------------------------------------------------
-    // IProjectManager API
+    // IControllerAware API
     //--------------------------------------------------------------------------
 
     @Override
-    public void initialize() {
+    public void onAttach(ICaustkController controller) {
+        this.controller = controller;
+
         getController().getLogger().log("ProjectManager", "Initialize, setup/load .settings");
 
         File applicationRoot = controller.getApplicationRoot();
@@ -134,6 +152,14 @@ public class ProjectManager implements IProjectManager {
             }
         }
     }
+
+    @Override
+    public void onDetach() {
+    }
+
+    //-------------------------------------------------------------------------
+    // IProjectManager API
+    //--------------------------------------------------------------------------
 
     @Override
     public boolean isProject(File file) {

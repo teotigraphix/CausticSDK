@@ -32,6 +32,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IControllerAware;
 import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
@@ -52,7 +53,8 @@ import com.teotigraphix.caustk.utils.Compress;
 import com.teotigraphix.caustk.utils.PatternUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-public class LibraryManager extends ControllerComponent implements ILibraryManager {
+public class LibraryManager extends ControllerComponent implements ILibraryManager,
+        IControllerAware {
 
     private static final String LIBRARY_CTKL = "library.ctkl";
 
@@ -87,8 +89,17 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         getController().trigger(new OnLibraryManagerSelectedLibraryChange(value));
     }
 
-    public LibraryManager(ICaustkController controller) {
-        super(controller);
+    public LibraryManager() {
+        super(); // creates dispatcher
+    }
+
+    @Override
+    public void onAttach(ICaustkController controller) {
+        setController(controller);
+    }
+
+    @Override
+    public void onDetach() {
     }
 
     /**
@@ -521,11 +532,6 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     @Override
     public void assignPatch(int toneIndex, LibraryPatch libraryPatch) {
         //        assignPatch(getController().getSoundSource().getTone(toneIndex), libraryPatch);
-    }
-
-    @Override
-    public void onRegister() {
-
     }
 
     //    @Override

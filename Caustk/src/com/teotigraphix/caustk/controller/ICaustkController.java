@@ -58,9 +58,19 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
      * A simple service locator pattern.
      * 
      * @param clazz The class type API key.
-     * @param instance The implementing instance of the class type.
+     * @param component The implementing instance of the class type.
      */
-    void addComponent(Class<?> clazz, Object instance);
+    void addComponent(Class<?> clazz, Object component);
+
+    /**
+     * Removes a component previously registered with
+     * {@link #addComponent(Class, Object)}.
+     * 
+     * @param clazz The class type API used to register the component.
+     * @return The removed component instance or <code>null</code> if the
+     *         component was not found on the controller.
+     */
+    Object removeComponent(Class<?> clazz);
 
     /**
      * Returns a registered API component.

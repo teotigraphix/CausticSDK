@@ -25,7 +25,8 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
     /*
      * for unit testing
      */
-    boolean isAudioEnabled() {
+    @Override
+    public boolean isAudioEnabled() {
         return audioEnabled;
     }
 

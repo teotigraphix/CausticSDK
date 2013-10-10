@@ -21,9 +21,7 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
@@ -31,20 +29,16 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.IControllerComponent;
+import com.teotigraphix.caustk.controller.IControllerAware;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRack;
-import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.service.ISerializeService;
-import com.teotigraphix.caustk.service.serialize.SerializeService;
 
 /**
  * @author Michael Schmalle
@@ -210,11 +204,20 @@ public class CaustkController implements ICaustkController {
 
     private Map<Class<?>, Object> api = new HashMap<Class<?>, Object>();
 
-    private List<IControllerComponent> components = new ArrayList<IControllerComponent>();
+    @Override
+    public void addComponent(Class<?> clazz, Object component) {
+        getLogger().log("CaustkController", clazz + " added to CaustkController");
+        api.put(clazz, component);
+        if (component instanceof IControllerAware)
+            ((IControllerAware)component).onAttach(this);
+    }
 
     @Override
-    public void addComponent(Class<?> clazz, Object instance) {
-        api.put(clazz, instance);
+    public Object removeComponent(Class<?> clazz) {
+        Object component = api.remove(clazz);
+        if (component instanceof IControllerAware)
+            ((IControllerAware)component).onDetach();
+        return component;
     }
 
     @Override
@@ -278,20 +281,15 @@ public class CaustkController implements ICaustkController {
         getLogger().log("CaustkController", "Create all Sub components");
 
         // sub composites will add their ICommands in their constructors
+        serializeService = application.getConfiguration().createSerializeService(this);
+        commandManager = application.getConfiguration().createCommandManager(this);
+        libraryManager = application.getConfiguration().createLibraryManager(this);
+        projectManager = application.getConfiguration().createProjectManager(this);
 
-        serializeService = new SerializeService(this);
-
-        commandManager = new CommandManager(this);
-        projectManager = new ProjectManager(this);
-        libraryManager = new LibraryManager(this);
-
-        components.add(libraryManager);
-
-        for (IControllerComponent component : components) {
-            component.onRegister();
-        }
-
-        projectManager.initialize();
+        addComponent(ISerializeService.class, serializeService);
+        addComponent(ICommandManager.class, commandManager);
+        addComponent(ILibraryManager.class, libraryManager);
+        addComponent(IProjectManager.class, projectManager);
     }
 
     @Override

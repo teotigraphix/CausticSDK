@@ -47,6 +47,10 @@ public abstract class ControllerComponent implements IControllerComponent {
         return controller;
     }
 
+    protected void setController(ICaustkController controller) {
+        this.controller = controller;
+    }
+
     //----------------------------------
     // dispatcher
     //----------------------------------
@@ -61,17 +65,9 @@ public abstract class ControllerComponent implements IControllerComponent {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ControllerComponent(ICaustkController controller) {
-        this.controller = controller;
+    public ControllerComponent() {
         setDispatcher(new Dispatcher());
     }
-
-    //--------------------------------------------------------------------------
-    // Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public abstract void onRegister();
 
     //--------------------------------------------------------------------------
     // IDispatcher API

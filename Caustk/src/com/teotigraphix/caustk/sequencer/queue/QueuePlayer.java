@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer.OnQueueSequencerDataChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
@@ -18,7 +19,7 @@ import com.teotigraphix.caustk.sequencer.track.TrackSong;
 public class QueuePlayer {
 
     private final ICaustkController getController() {
-        return queueSequencer.getController();
+        return queueSequencer.getRack().getController();
     }
 
     public final TrackSong getTrackSong() {
@@ -51,9 +52,9 @@ public class QueuePlayer {
         return currentLocalBeat;
     }
 
-    private QueueSequencer queueSequencer;
+    private IQueueSequencer queueSequencer;
 
-    public QueuePlayer(QueueSequencer queueSequencer) {
+    public QueuePlayer(IQueueSequencer queueSequencer) {
         this.queueSequencer = queueSequencer;
     }
 

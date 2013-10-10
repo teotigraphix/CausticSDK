@@ -64,9 +64,4 @@ public class InjectorService implements IInjectorService {
     public void clear() {
         dispatcher.clear();
     }
-
-    @Override
-    public void onRegister() {
-    }
-
 }

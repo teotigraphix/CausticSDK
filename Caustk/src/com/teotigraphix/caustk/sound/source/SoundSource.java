@@ -66,11 +66,6 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
     private static final long serialVersionUID = 1785154952216484108L;
 
-    @Override
-    protected void commitController() {
-        super.commitController();
-    }
-
     private int maxNumTones = 14;
 
     private boolean restoring;
@@ -194,7 +189,7 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
         T tone = null;
         try {
             Constructor<? extends Tone> constructor = toneClass.getConstructor(IRack.class);
-            tone = (T)constructor.newInstance(rack);
+            tone = (T)constructor.newInstance(getRack());
             initializeTone(tone, name, tone.getToneType(), index);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -280,6 +275,8 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
         if (!restoring)
             RackMessage.CREATE.send(getController(), toneType.getValue(), toneName, index);
+
+        final IRack rack = getRack();
 
         Tone tone = null;
         switch (toneType) {

@@ -64,4 +64,6 @@ public interface IQueueSequencer extends IRackComponent {
         }
     }
 
+    boolean isAudioEnabled();
+
 }

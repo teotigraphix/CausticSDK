@@ -43,13 +43,13 @@ public class TrackSong implements Serializable {
     }
 
     final IDispatcher getDispatcher() {
-        return trackSequencer.getController();
+        return trackSequencer.getRack().getController();
     }
 
     private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
     IRack getRack() {
-        return getTrackSequencer().getController().getRack();
+        return getTrackSequencer().getRack();
     }
 
     //----------------------------------
@@ -79,7 +79,7 @@ public class TrackSong implements Serializable {
      */
     public File getAbsoluteFile() {
         // XXX This is breaking encapsulation
-        final File absoluteFile = getTrackSequencer().getController().getProjectManager()
+        final File absoluteFile = getTrackSequencer().getRack().getController().getProjectManager()
                 .getProject().getAbsoluteResource(new File("songs", file.getPath()).getPath());
         return absoluteFile;
     }
