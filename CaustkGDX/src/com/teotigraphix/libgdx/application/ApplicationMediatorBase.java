@@ -40,6 +40,13 @@ import com.teotigraphix.libgdx.controller.CaustkMediator;
 import com.teotigraphix.libgdx.model.ApplicationModelState;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 
+/**
+ * A bas application mediator for application state, first run and load logic.
+ * 
+ * @author Michael Schmalle
+ * @see #firstRun(ApplicationModelState)
+ * @see #onLoad()
+ */
 public class ApplicationMediatorBase extends CaustkMediator implements IApplicationMediator {
 
     private static final String TAG = "ApplicationMediatorBase";
