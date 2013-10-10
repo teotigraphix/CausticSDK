@@ -35,7 +35,13 @@ import com.teotigraphix.caustk.controller.IControllerAware;
  */
 public class ProjectManager implements IProjectManager, IControllerAware {
 
+    private static final String FILE_SETTINGS = ".settings";
+
     private static final String DIR_PROJECTS = "projects";
+
+    //-------------------------------------------------------------------------
+    // Protected :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // controller
@@ -43,12 +49,15 @@ public class ProjectManager implements IProjectManager, IControllerAware {
 
     private ICaustkController controller;
 
+    /**
+     * Returns the application controller.
+     */
     protected final ICaustkController getController() {
         return controller;
     }
 
     //--------------------------------------------------------------------------
-    // Public API :: Properties
+    // IProjectManager API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
@@ -84,7 +93,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
      * 
      * @return The absolute {@link File}.
      */
-    protected File getAbsoluteProjectDirectory() {
+    protected final File getAbsoluteProjectDirectory() {
         return getDirectory(DIR_PROJECTS);
     }
 
@@ -120,7 +129,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
     }
 
     //-------------------------------------------------------------------------
-    // IControllerAware API
+    // IControllerAware API :: Methods
     //--------------------------------------------------------------------------
 
     @Override
@@ -129,17 +138,19 @@ public class ProjectManager implements IProjectManager, IControllerAware {
 
         getController().getLogger().log("ProjectManager", "Initialize, setup/load .settings");
 
-        File applicationRoot = controller.getApplicationRoot();
-
-        sessionPreferencesFile = new File(applicationRoot, ".settings");
+        sessionPreferencesFile = new File(controller.getApplicationRoot(), FILE_SETTINGS);
 
         if (!sessionPreferencesFile.exists()) {
             try {
                 FileUtils.writeStringToFile(sessionPreferencesFile, "");
-                sessionPreferences = new SessionPreferences();
+
                 getController().getLogger().log("ProjectManager",
                         "Created new .settings file: " + sessionPreferencesFile.getAbsolutePath());
-                saveProjectPreferences();
+
+                sessionPreferences = new SessionPreferences();
+
+                ProjectUtils.saveProjectPreferences(getController(), sessionPreferences,
+                        sessionPreferencesFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -158,56 +169,37 @@ public class ProjectManager implements IProjectManager, IControllerAware {
     }
 
     //-------------------------------------------------------------------------
-    // IProjectManager API
+    // IProjectManager API :: Methods
     //--------------------------------------------------------------------------
 
     @Override
     public boolean isProject(File file) {
-        if (file.isAbsolute())
-            return file.exists();
-        return toProjectFile(file).exists();
+        return ProjectUtils.isProject(getAbsoluteProjectDirectory(), file);
     }
 
     @Override
-    public void exit() throws IOException {
-        save();
-        Project oldProject = project;
-        project.close();
-        project = null;
-        controller.trigger(new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.Exit));
+    public Project createProject(String relativePath) throws IOException {
+        return createProject(new File(relativePath));
     }
 
     @Override
-    public void save() throws IOException {
-        // XXX project manager project.getFile absolute path doubled up
-        getController().getLogger().log("ProjectManager", "Save - " + project.getStateFile());
+    public Project createProject(File file) throws IOException {
+        if (file.getName().contains("."))
+            throw new IOException("Project is not a directory");
 
-        sessionPreferences.put("lastProject", project.getDirectory().getPath());
-        // set modified
-        project.getInfo().setModified(new Date());
+        project = ProjectUtils.createProject(file);
 
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Save));
-
-        controller.trigger(new OnProjectManagerChange(project,
-                ProjectManagerChangeKind.SaveComplete));
-
-        finalizeSaveComplete();
-    }
-
-    protected void finalizeSaveComplete() throws IOException {
-        //System.out.println(">> SAVE_COMPLETE flushProjectFile()");
         getController().getLogger().log("ProjectManager",
-                "Save Complete, now saving project json file");
+                "Created Project - " + project.getAbsolutDirectory());
 
-        String data = controller.getSerializeService().toPrettyString(project);
-        FileUtils.writeStringToFile(project.getStateFile(), data);
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Create));
 
-        saveProjectPreferences();
-    }
+        // save the new Project
+        finalizeSaveComplete();
 
-    private void saveProjectPreferences() throws IOException {
-        String data = controller.getSerializeService().toPrettyString(sessionPreferences);
-        FileUtils.writeStringToFile(sessionPreferencesFile, data);
+        project.setInitializing(false);
+
+        return project;
     }
 
     @Override
@@ -238,40 +230,22 @@ public class ProjectManager implements IProjectManager, IControllerAware {
     }
 
     @Override
-    public Project createProject(String relativePath) throws IOException {
-        return createProject(new File(relativePath));
-    }
+    public void save() throws IOException {
+        getController().getLogger().log("ProjectManager", "Save - " + project.getStateFile());
+        getController().getLogger().log("ProjectManager", "Save - " + sessionPreferencesFile);
 
-    @Override
-    public Project createProject(File file) throws IOException {
-        if (file.getName().contains("."))
-            throw new IOException("Project is not a directory");
+        // saves the relative path e.g. 'UntitledProject' in the 'projects/' directory
+        sessionPreferences.put("lastProject", project.getDirectory().getPath());
+        // set last modified date
+        project.getInfo().setModified(new Date());
+        // observers will save their data into the Project if implemented
+        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Save));
 
-        project = new Project();
-        project.wakeup(controller);
-        project.setInitializing(true);
-        // set the project sub directory in the /projects directory
-        project.setDirectory(new File(file.getPath()));
-        project.setInfo(createInfo());
-        project.open();
-        getController().getLogger().log("ProjectManager",
-                "Create() - " + project.getAbsolutDirectory());
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Create));
+        controller.trigger(new OnProjectManagerChange(project,
+                ProjectManagerChangeKind.SaveComplete));
 
-        FileUtils.forceMkdir(project.getAbsolutDirectory());
-
-        // save the new Project
+        // save the .project and .settings files now that the state is stable
         finalizeSaveComplete();
-
-        // adding a LOAD event here to keep consistent with all startup.
-        // whether a project is created or loaded on start, mediators will always
-        // get a load event at start.
-        //        controller.getDispatcher().trigger(
-        //                new OnProjectManagerChange(project, ProjectManagerChangeKind.LOAD));
-
-        project.setInitializing(false);
-
-        return project;
     }
 
     @Override
@@ -282,24 +256,34 @@ public class ProjectManager implements IProjectManager, IControllerAware {
         project = null;
     }
 
-    //--------------------------------------------------------------------------
-    // 
-    //--------------------------------------------------------------------------
-
-    private ProjectInfo createInfo() {
-        ProjectInfo info = new ProjectInfo();
-        info.setName("Untitled Project");
-        info.setAuthor("Untitled Author");
-        info.setCreated(new Date());
-        info.setModified(new Date());
-        info.setDescription("A new project");
-        return info;
+    @Override
+    public void exit() throws IOException {
+        save();
+        Project oldProject = project;
+        project.close();
+        project = null;
+        controller.trigger(new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.Exit));
     }
 
-    private File toProjectFile(File file) {
-        if (file.isAbsolute())
-            return file;
-        return new File(getAbsoluteProjectDirectory(), file.getPath());
-    }
+    //-------------------------------------------------------------------------
+    // Protected :: Methods
+    //--------------------------------------------------------------------------
 
+    /**
+     * After all observers have handled the
+     * {@link ProjectManagerChangeKind#Save} event, this method will write the
+     * <code>.project</code> and <code>.settings</code> files to disk.
+     * 
+     * @throws IOException
+     */
+    protected void finalizeSaveComplete() throws IOException {
+        getController().getLogger().log("ProjectManager",
+                "Save Complete, now saving project json file");
+
+        String data = controller.getSerializeService().toPrettyString(project);
+        FileUtils.writeStringToFile(project.getStateFile(), data);
+
+        ProjectUtils.saveProjectPreferences(getController(), sessionPreferences,
+                sessionPreferencesFile);
+    }
 }

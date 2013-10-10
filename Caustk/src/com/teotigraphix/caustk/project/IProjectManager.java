@@ -84,6 +84,14 @@ public interface IProjectManager {
     SessionPreferences getSessionPreferences();
 
     /**
+     * Returns whether the project exists and is a valid caustk project.
+     * 
+     * @param file The project {@link File} relative to the projects directory
+     *            of the application.
+     */
+    boolean isProject(File file);
+
+    /**
      * Creates a new {@link Project} file.
      * 
      * @param relativePath The path within the <code>projects</code> directory
@@ -96,15 +104,15 @@ public interface IProjectManager {
     /**
      * Creates a new {@link Project} file.
      * <p>
-     * This method will NOT save the {@link Project}. This allows for clients to
-     * add data entries before the initial save.
+     * This method will save the {@link Project} after creation.
      * <p>
      * A default {@link ProjectInfo} is created for the empty project.
      * 
-     * @param projectFile the relative path and name of the <code>.ctk</code>
-     *            file without the <code>project</code> sub directory. This is
-     *            the file path located within the projects app directory.
-     * @return
+     * @param projectFile the relative path and name of the project path within
+     *            the <code>projects</code> directory. The name of the
+     *            {@link File} is used for the project directory name upon
+     *            creation.
+     * @return A new {@link Project} instance that is not yet on disk.
      * @throws IOException
      * @see OnProjectManagerChange
      * @see ProjectManagerChangeKind#Create
@@ -112,12 +120,12 @@ public interface IProjectManager {
     Project createProject(File projectFile) throws IOException;
 
     /**
-     * Loads a project from disk using the <code>.ctk</code> project format.
-     * <p>
+     * Loads a project from disk using the <code>.project</code> project format.
      * 
      * @param directory The project directory path; contained in the
-     *            <code>projects</code> directory.
-     * @return A fully loaded <code>.ctk</code> project state.
+     *            <code>projects</code> directory holding a
+     *            <code>.project</code> file.
+     * @return A fully loaded <code>.project</code> project state.
      * @throws IOException Project file does not exist
      * @see OnProjectManagerChange
      * @see ProjectManagerChangeKind#Load
@@ -128,6 +136,10 @@ public interface IProjectManager {
     /**
      * Saves the current {@link Project} to disk using the project's file
      * location.
+     * <p>
+     * This will save the <code>.project</code> and <code>.settings</code>
+     * files, as well as any clients that were observing the
+     * {@link ProjectManagerChangeKind#Save} event.
      * 
      * @throws IOException
      * @see OnProjectManagerChange
@@ -150,13 +162,12 @@ public interface IProjectManager {
     void exit() throws IOException;
 
     /**
-     * Returns whether the project exists and is a valid caustk project.
+     * Closes the {@link Project#close()} and clears the project from the
+     * project manager.
      * 
-     * @param file The project {@link File} relative to the projects directory
-     *            of the application.
+     * @see OnProjectManagerChange
+     * @see ProjectManagerChangeKind$#CloseComplete
      */
-    boolean isProject(File file);
-
     void clear();
 
     /**
@@ -235,5 +246,4 @@ public interface IProjectManager {
             this.kind = kind;
         }
     }
-
 }
