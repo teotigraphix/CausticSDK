@@ -142,7 +142,7 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
     protected void create(TrackSong trackSong) {
         File queueFile = toFile(trackSong);
         queueSong = new QueueSong(queueFile);
-        queueSong.wakeup(getController());
+        queueSong.setController(getController());
     }
 
     protected void load(TrackSong trackSong) {

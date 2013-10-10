@@ -199,4 +199,8 @@ public class OverlayButton extends TextButton {
             super(style);
         }
     }
+
+    public interface OnPadButtonListener {
+        void onLongPress(Integer index, float x, float y);
+    }
 }

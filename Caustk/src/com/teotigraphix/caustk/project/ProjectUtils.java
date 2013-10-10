@@ -62,8 +62,9 @@ public final class ProjectUtils {
         return info;
     }
 
-    static Project createProject(File file) throws IOException {
+    static Project createProject(ICaustkController controller, File file) throws IOException {
         Project project = new Project();
+        project.setController(controller);
         project.setInitializing(true);
         // set the project sub directory in the /projects directory
         project.setDirectory(new File(file.getPath()));

@@ -24,18 +24,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.service.ISerialize;
 
 /**
  * The main class that is serialized in a <code>ctk</code> file.
  */
-public class Project implements ISerialize {
+public class Project {
 
     private transient boolean isClosed;
 
     private transient boolean initializing = false;
 
     private transient ICaustkController controller;
+
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+    }
 
     public boolean isInitializing() {
         return initializing;
@@ -183,8 +186,8 @@ public class Project implements ISerialize {
     /**
      * Returns whether the project is open or closed.
      * <p>
-     * The project is open when the {@link IProjectManager#createProject(File)} or
-     * {@link IProjectManager#load(File)} has been called.
+     * The project is open when the {@link IProjectManager#createProject(File)}
+     * or {@link IProjectManager#load(File)} has been called.
      * <p>
      * The project is closed when the {@link IProjectManager#exit()} has been
      * called.
@@ -206,14 +209,4 @@ public class Project implements ISerialize {
     public void close() {
         isClosed = true;
     }
-
-    @Override
-    public void sleep() {
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
-    }
-
 }

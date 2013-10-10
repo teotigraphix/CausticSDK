@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.sequencer.queue;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,14 +12,19 @@ import android.annotation.SuppressLint;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.service.ISerialize;
 
 @SuppressLint("UseSparseArrays")
-public class QueueSong implements ISerialize {
+public class QueueSong implements Serializable {
+
+    private static final long serialVersionUID = 8256614789907587765L;
 
     private Map<Integer, Map<Integer, QueueData>> map = new HashMap<Integer, Map<Integer, QueueData>>();
 
     private transient ICaustkController controller;
+
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+    }
 
     //----------------------------------
     // file
@@ -75,7 +81,7 @@ public class QueueSong implements ISerialize {
         QueueData queueData = bankMap.get(patternIndex);
         if (queueData == null) {
             queueData = new QueueData(bankIndex, patternIndex);
-            queueData.wakeup(controller);
+            queueData.setController(controller);
             bankMap.put(patternIndex, queueData);
         }
         return queueData;
@@ -96,24 +102,4 @@ public class QueueSong implements ISerialize {
         QueueDataChannel channel = queueData.getChannel(toneIndex);
         return channel;
     }
-
-    @Override
-    public void sleep() {
-        for (Map<Integer, QueueData> bankMap : map.values()) {
-            for (QueueData queueData : bankMap.values()) {
-                queueData.sleep();
-            }
-        }
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
-        for (Map<Integer, QueueData> bankMap : map.values()) {
-            for (QueueData queueData : bankMap.values()) {
-                queueData.wakeup(controller);
-            }
-        }
-    }
-
 }

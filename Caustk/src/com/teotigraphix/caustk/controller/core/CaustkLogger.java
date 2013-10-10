@@ -53,6 +53,7 @@ public class CaustkLogger implements ICausticLogger {
     @Override
     public void log(String tag, String message, Exception exception) {
         System.out.println(tag + ", " + message);
+        exception.printStackTrace();
     }
 
     @Override
@@ -63,6 +64,7 @@ public class CaustkLogger implements ICausticLogger {
     @Override
     public void debug(String tag, String message, Throwable throwable) {
         System.out.println(tag + ", " + message);
+        throwable.printStackTrace();
     }
 
     @Override
@@ -73,6 +75,7 @@ public class CaustkLogger implements ICausticLogger {
     @Override
     public void warn(String tag, String message, Throwable throwable) {
         System.err.println("WARNING:" + tag + ", " + message);
+        throwable.printStackTrace();
     }
 
     @Override
@@ -83,6 +86,7 @@ public class CaustkLogger implements ICausticLogger {
     @Override
     public void err(String tag, String message, Throwable throwable) {
         System.err.println(tag + ", " + message);
+        throwable.printStackTrace();
     }
 
 }

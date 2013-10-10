@@ -1,15 +1,23 @@
 
 package com.teotigraphix.caustk.sequencer.queue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.service.ISerialize;
 
-public class QueueData implements ISerialize {
+public class QueueData implements Serializable {
+
+    private static final long serialVersionUID = 8360462328524344204L;
+
+    private Map<Integer, QueueDataChannel> map = new TreeMap<Integer, QueueDataChannel>();
+
+    //----------------------------------
+    // controller
+    //----------------------------------
 
     private transient ICaustkController controller;
 
@@ -17,7 +25,9 @@ public class QueueData implements ISerialize {
         return controller;
     }
 
-    private Map<Integer, QueueDataChannel> map = new TreeMap<Integer, QueueDataChannel>();
+    public void setController(ICaustkController controller) {
+        this.controller = controller;
+    }
 
     //----------------------------------
     // bankIndex
@@ -121,28 +131,6 @@ public class QueueData implements ISerialize {
     public QueueData(int bankIndex, int patternIndex) {
         this.bankIndex = bankIndex;
         this.patternIndex = patternIndex;
-    }
-
-    //--------------------------------------------------------------------------
-    // ISerialize API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void sleep() {
-        //if (state == QueueDataState.Queued)
-        //    state = QueueDataState.Idle;
-        for (QueueDataChannel channel : map.values()) {
-            channel.sleep();
-        }
-    }
-
-    @Override
-    public void wakeup(ICaustkController controller) {
-        this.controller = controller;
-        for (QueueDataChannel channel : map.values()) {
-            channel.setParent(this);
-            channel.wakeup(controller);
-        }
     }
 
     @Override

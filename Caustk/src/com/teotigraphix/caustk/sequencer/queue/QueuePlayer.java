@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.sequencer.queue;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,9 @@ import com.teotigraphix.caustk.sequencer.track.Track;
 import com.teotigraphix.caustk.sequencer.track.TrackItem;
 import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
-public class QueuePlayer {
+public class QueuePlayer implements Serializable {
+
+    private static final long serialVersionUID = -2644355130242774038L;
 
     private final ICaustkController getController() {
         return queueSequencer.getRack().getController();

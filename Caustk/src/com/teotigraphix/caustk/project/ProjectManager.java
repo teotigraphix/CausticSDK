@@ -187,7 +187,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
         if (file.getName().contains("."))
             throw new IOException("Project is not a directory");
 
-        project = ProjectUtils.createProject(file);
+        project = ProjectUtils.createProject(controller, file);
 
         getController().getLogger().log("ProjectManager",
                 "Created Project - " + project.getAbsolutDirectory());
@@ -216,6 +216,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
 
         project = controller.getSerializeService().fromFile(new File(absoluteDir, ".project"),
                 Project.class);
+        project.setController(controller);
 
         project.open();
 
