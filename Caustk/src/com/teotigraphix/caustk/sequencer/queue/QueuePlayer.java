@@ -103,8 +103,9 @@ public class QueuePlayer implements Serializable {
                 queued.remove(data);
             }
         }
-        if (queueSequencer.isAudioEnabled())
-            getController().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG);
+        if (queueSequencer.isAudioEnabled()) {
+            getController().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG.getValue());
+        }
     }
 
     public void stop() {
@@ -185,8 +186,7 @@ public class QueuePlayer implements Serializable {
     public void beatChange(int measure, float beat) {
         getTrackSong().setPosition(measure, beat);
 
-        //System.out.println("M:" + getTrackSong().getCurrentMeasure() + "B:"
-        //        + getTrackSong().getCurrentBeat());
+        debug("M:" + getTrackSong().getCurrentMeasure() + "B:" + getTrackSong().getCurrentBeat());
 
         currentLocalBeat = (int)(beat % 4);
 
@@ -221,12 +221,12 @@ public class QueuePlayer implements Serializable {
     }
 
     private void mute(int trackIndex) {
-        getController().getRack().getSoundMixer().getChannel(trackIndex).setMute(true);
+        //getController().getRack().getSoundMixer().getChannel(trackIndex).setMute(true);
         debug("Mute[" + trackIndex + "]");
     }
 
     private void unmute(int trackIndex) {
-        getController().getRack().getSoundMixer().getChannel(trackIndex).setMute(false);
+        //getController().getRack().getSoundMixer().getChannel(trackIndex).setMute(false);
         debug("UnMute[" + trackIndex + "]");
     }
 
@@ -269,13 +269,11 @@ public class QueuePlayer implements Serializable {
             }
 
         } else {
-
             // oneshot remove
             flushedQueue.add(data);
             playQueue.remove(data);
             // things will get set to idle in flush if not queued again
             setState(data, QueueDataState.PlayUnqueued);
-
         }
     }
 

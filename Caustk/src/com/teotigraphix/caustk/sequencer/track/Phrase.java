@@ -227,7 +227,7 @@ public class Phrase implements Serializable {
             float velocity = Float.valueOf(split[2]);
             float end = Float.valueOf(split[3]);
             int flags = Float.valueOf(split[4]).intValue();
-            addNote(pitch, start, end, velocity, flags);
+            addNote(pitch, start, end - start, velocity, flags);
         }
 
         fireChange(PhraseChangeKind.NoteData);
