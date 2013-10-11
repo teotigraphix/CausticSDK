@@ -141,7 +141,7 @@ public class OverlayButton extends TextButton {
     }
 
     protected void init() {
-        addListener(new ChangeListener() {
+        addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (noEvent)

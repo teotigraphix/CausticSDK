@@ -36,6 +36,12 @@ public interface IApplicationMediator extends ICaustkMediator {
      */
     void create();
 
+    /**
+     * Called at the end of the load/start phase where all models and mediators
+     * have been registered.
+     */
+    void run();
+
     void save();
 
 }

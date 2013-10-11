@@ -47,7 +47,8 @@ import com.teotigraphix.libgdx.model.IApplicationModel;
  * @see #firstRun(ApplicationModelState)
  * @see #onLoad()
  */
-public class ApplicationMediatorBase extends CaustkMediator implements IApplicationMediator {
+public abstract class ApplicationMediatorBase extends CaustkMediator implements
+        IApplicationMediator {
 
     private static final String TAG = "ApplicationMediatorBase";
 
@@ -55,6 +56,12 @@ public class ApplicationMediatorBase extends CaustkMediator implements IApplicat
     protected IApplicationModel applicationModel;
 
     protected Class<? extends ApplicationModelState> stateType;
+
+    private boolean isFirstRun;
+
+    public final boolean isFirstRun() {
+        return isFirstRun;
+    }
 
     @Override
     public void create() {
@@ -67,6 +74,8 @@ public class ApplicationMediatorBase extends CaustkMediator implements IApplicat
                 e.printStackTrace();
             }
         } else {
+            isFirstRun = true;
+
             getController().getLogger().view("ApplicationMediator", "Create new State - " + file);
 
             ApplicationModelState state = null;
@@ -114,6 +123,16 @@ public class ApplicationMediatorBase extends CaustkMediator implements IApplicat
      * deserialized.
      */
     protected void onLoad() {
+    }
+
+    @Override
+    public void run() {
+        onRun();
+        isFirstRun = false;
+    }
+
+    protected void onRun() {
+
     }
 
     @Override

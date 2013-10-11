@@ -138,6 +138,8 @@ public class ApplicationController implements IApplicationController {
         // last call in the startup chain
         // Models/Mediators will hear no events until this call
         applicationModel.onRegister();
+
+        applicationMediator.run();
     }
 
 }

@@ -19,21 +19,6 @@ public abstract class CaustkModelBase implements ICaustkModel {
         return controller;
     }
 
-    //    //----------------------------------
-    //    // state
-    //    //----------------------------------
-    //
-    //    private ModelState state;
-    //
-    //    public void setState(ModelState value) {
-    //        state = value;
-    //        getController().getComponent(IInjectorService.class).inject(state);
-    //    }
-    //
-    //    public ModelState getState() {
-    //        return state;
-    //    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------

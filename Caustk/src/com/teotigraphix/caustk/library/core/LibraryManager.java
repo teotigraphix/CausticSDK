@@ -236,15 +236,16 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     @Override
     public void importSong(Library library, File causticFile) throws IOException, CausticException {
+        final ISoundSource soundSource = getController().getRack().getSoundSource();
         // Load the song, this automatically resets the sound source
-        //        getController().getSoundSource().loadSong(causticFile);
-        //
-        //        loadLibraryScene(library, causticFile, getController().getSoundSource());
-        //        loadLibraryPhrases(library, getController().getSoundSource());
-        //
-        //        getController().getSoundSource().clearAndReset();
-        //
-        //        getController().trigger(new OnLibraryManagerImportComplete());
+        soundSource.loadSong(causticFile);
+
+        loadLibraryScene(library, causticFile, soundSource);
+        loadLibraryPhrases(library, soundSource);
+
+        soundSource.clearAndReset();
+
+        getController().trigger(new OnLibraryManagerImportComplete());
     }
 
     @Override
@@ -359,7 +360,6 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         return null;
     }
 
-    @SuppressWarnings("unused")
     private void loadLibraryScene(Library library, File causticFile, ISoundSource soundSource)
             throws IOException {
         String name = causticFile.getName().replace(".caustic", "");
@@ -395,13 +395,13 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         scene.setSoundSourceDescriptor(soundSourceDescriptor);
 
         //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
-        //        soundMixerDescriptor.setMasterMixer(getController().getSoundMixer().getMasterMixer());
+        //        soundMixerDescriptor.setMasterMixer(getController().getRack().getSoundMixer()
+        //                .getMasterMixer());
         //        scene.setSoundMixerDescriptor(soundMixerDescriptor);
 
         TagUtils.addDefaultTags(name, getController(), scene);
     }
 
-    @SuppressWarnings("unused")
     private void loadLibraryPhrases(Library library, ISoundSource soundSource) {
         for (int i = 0; i < 6; i++) {
             Tone tone = soundSource.getTone(i);
