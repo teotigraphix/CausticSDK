@@ -100,6 +100,14 @@ public interface ICaustkApplication {
     void create();
 
     /**
+     * Template method; the last phase in startup after {@link #initialize()}
+     * and {@link #create()} have been called.
+     * <p>
+     * Restore state before first UI is created.
+     */
+    void run();
+
+    /**
      * Closes the application.
      * 
      * @see OnApplicationClose
@@ -107,7 +115,7 @@ public interface ICaustkApplication {
     void close();
 
     /**
-     * @see OnApplicationSave
+     * @see StateChangeKind#Close
      * @throws IOException
      */
     void save() throws IOException;
@@ -118,6 +126,11 @@ public interface ICaustkApplication {
          * @see ICaustkApplication#initialize()
          */
         Create,
+
+        /**
+         * @see ICaustkApplication#run()
+         */
+        Run,
 
         /**
          * @see ICaustkApplication#save()

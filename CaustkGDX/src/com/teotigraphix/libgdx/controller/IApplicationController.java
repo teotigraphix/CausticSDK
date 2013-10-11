@@ -30,4 +30,6 @@ public interface IApplicationController {
 
     void create();
 
+    void run();
+
 }

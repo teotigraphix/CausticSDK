@@ -101,6 +101,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public void initialize() {
+        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "initialize()");
         getConfiguration().getSoundGenerator().initialize();
         controller.initialize();
@@ -108,6 +109,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void create() {
+        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "create()");
         // creates all sub components of the controller
         controller.create();
@@ -117,7 +119,19 @@ public final class CaustkApplication implements ICaustkApplication {
     }
 
     @Override
+    public void run() {
+        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
+        getLogger().log("Application", "run()");
+        // creates all sub components of the controller
+        // controller.run();
+        if (applicationHandler != null)
+            applicationHandler.commitRun();
+        fireStateChange(StateChangeKind.Run);
+    }
+
+    @Override
     public final void save() throws IOException {
+        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "save()");
         controller.save();
         if (applicationHandler != null)
@@ -127,6 +141,7 @@ public final class CaustkApplication implements ICaustkApplication {
 
     @Override
     public final void close() {
+        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "close()");
         controller.close();
         if (applicationHandler != null)

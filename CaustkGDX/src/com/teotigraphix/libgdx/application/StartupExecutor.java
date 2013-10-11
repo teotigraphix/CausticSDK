@@ -137,12 +137,18 @@ public class StartupExecutor {
             }
 
             @Override
+            public void commitRun() {
+                applicationController.run();
+            }
+
+            @Override
             public void commitSave() {
             }
 
             @Override
             public void commitClose() {
             }
+
         });
 
         // initialize the sound generator, CausticCore
@@ -151,6 +157,9 @@ public class StartupExecutor {
         // create app directory, initialize controller and sub components
         // initialize projectmanager, create or load last project state
         caustkApplication.create();
+
+        // loads the model state before any UI is created
+        caustkApplication.run();
     }
 
     /**

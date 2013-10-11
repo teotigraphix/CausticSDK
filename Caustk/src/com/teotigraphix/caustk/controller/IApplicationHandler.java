@@ -23,6 +23,8 @@ public interface IApplicationHandler {
 
     void commitCreate();
 
+    void commitRun();
+
     void commitSave();
 
     void commitClose();

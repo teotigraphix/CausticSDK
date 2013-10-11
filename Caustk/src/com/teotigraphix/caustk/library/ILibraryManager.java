@@ -38,9 +38,9 @@ public interface ILibraryManager extends IControllerComponent {
      */
     void setSelectedLibrary(Library value);
 
-    Library loadLibrary(File file);
+    Library loadLibrary(File file) throws IOException;
 
-    Library loadLibrary(String relativePath);
+    Library loadLibrary(String relativePath) throws IOException;
 
     void saveLibrary(Library library) throws IOException;
 
@@ -76,6 +76,7 @@ public interface ILibraryManager extends IControllerComponent {
 
     //Library createLibrary(String name) throws IOException;
 
+    @Override
     void clear();
 
     //    boolean isLibrary(File libraryFile);

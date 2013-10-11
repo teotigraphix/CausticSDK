@@ -184,12 +184,12 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     }
 
     @Override
-    public Library loadLibrary(String relativePath) {
+    public Library loadLibrary(String relativePath) throws IOException {
         return loadLibrary(new File(relativePath));
     }
 
     @Override
-    public Library loadLibrary(File directory) {
+    public Library loadLibrary(File directory) throws IOException {
         File absoluteLocation = getController().getProjectManager().getProject()
                 .getAbsoluteResource(new File("libraries", directory.getPath()).getPath());
 

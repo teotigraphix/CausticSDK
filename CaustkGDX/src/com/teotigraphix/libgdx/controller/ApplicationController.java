@@ -93,10 +93,10 @@ public class ApplicationController implements IApplicationController {
                         switch (object.getKind()) {
                             case Create:
                                 break;
-
+                            case Run:
+                                break;
                             case Save:
                                 break;
-
                             case Close:
                                 break;
                         }
@@ -138,7 +138,10 @@ public class ApplicationController implements IApplicationController {
         // last call in the startup chain
         // Models/Mediators will hear no events until this call
         applicationModel.onRegister();
+    }
 
+    @Override
+    public void run() {
         applicationMediator.run();
     }
 
