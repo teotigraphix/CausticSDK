@@ -55,6 +55,8 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
     @Inject
     protected IApplicationModel applicationModel;
 
+    protected boolean deleteCausticFile = true;
+
     protected Class<? extends ApplicationModelState> stateType;
 
     private boolean isFirstRun;
@@ -186,7 +188,8 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
             out.close();
 
-            FileUtils.deleteQuietly(causticFile);
+            if (deleteCausticFile)
+                FileUtils.deleteQuietly(causticFile);
 
         } catch (FileNotFoundException e) {
             getController().getLogger().err(TAG, "FileNotFoundException", e);

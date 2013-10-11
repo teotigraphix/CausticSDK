@@ -64,6 +64,16 @@ public class Led extends ControlTable {
 
     private LedItem item;
 
+    private boolean showOnlyOn = false;
+
+    public boolean isShowOnlyOn() {
+        return showOnlyOn;
+    }
+
+    public void setShowOnlyOn(boolean value) {
+        showOnlyOn = value;
+    }
+
     public Led(Skin skin) {
         super(skin);
     }
@@ -100,6 +110,7 @@ public class Led extends ControlTable {
         LedStyle style = getStyle();
 
         offImage = new Image(style.off);
+        offImage.setVisible(!showOnlyOn);
         onImage = new Image(style.on);
         onImage.setVisible(false);
 
