@@ -107,7 +107,10 @@ public class AlertDialog extends Dialog {
 
     @SuppressWarnings("rawtypes")
     public Cell setContent(Actor actor) {
-        return contentTable.add(actor).size(getWidth(), getHeight());
+        Cell cell = contentTable.add(actor);//.size(getWidth(), getHeight());
+        ((WidgetGroup)actor).validate();
+        cell.size(actor.getWidth(), actor.getHeight());
+        return cell;
     }
 
     /*
