@@ -29,6 +29,7 @@ import android.annotation.SuppressLint;
 
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.tone.Tone;
 
 @SuppressLint("UseSparseArrays")
@@ -203,41 +204,6 @@ public class TrackSong implements Serializable {
         this.file = file;
     }
 
-    //--------------------------------------------------------------------------
-    // ISerialize API :: Methods
-    //--------------------------------------------------------------------------
-
-    //    /*
-    //     * A song serializes;
-    //     * - MasterDelay , MasterReverb, MasterEqualizer, MasterLimiter
-    //     * - EffectChannel slot1, slot2
-    //     */
-    //    @Override
-    //    public void sleep() {
-    //        //        for (Track channel : tracks.values()) {
-    //        //            channel.sleep();
-    //        //        }
-    //        //        // save the .caustic file
-    //        //        try {
-    //        //            File absoluteTargetSongFile = getAbsoluteCausticFile();
-    //        //            controller.getRack().saveSongAs(absoluteTargetSongFile);
-    //        //            // masterMixer = controller.getSoundMixer().getMasterMixer();
-    //        //        } catch (IOException e) {
-    //        //            e.printStackTrace();
-    //        //        }
-    //    }
-    //
-    //    @Override
-    //    public void wakeup(ICaustkController controller) {
-    //        this.controller = controller;
-    //        //        if (!exists()) // dummy placeholder
-    //        //            return;
-    //        //
-    //        //        for (Track channel : tracks.values()) {
-    //        //            channel.wakeup(controller);
-    //        //        }
-    //    }
-
     void toneAdd(Tone tone) {
         Track channel = getTrack(tone.getIndex());
         tracks.put(tone.getIndex(), channel);
@@ -346,4 +312,9 @@ public class TrackSong implements Serializable {
     public void dispose() {
     }
 
+    public void clear() throws CausticException {
+        for (Track track : tracks.values()) {
+            track.clear();
+        }
+    }
 }

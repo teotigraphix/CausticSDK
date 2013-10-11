@@ -45,6 +45,7 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.library.item.LibraryScene;
+import com.teotigraphix.caustk.library.item.SoundMixerChannelDescriptor;
 import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
@@ -153,7 +154,11 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
                 getController().getLibraryManager().assignPatch(tone, libraryPatch);
             }
 
+            SoundMixerChannelDescriptor channelDescriptor = scene.getSoundSourceDescriptor()
+                    .getChannels().get(tone.getIndex());
+            channelDescriptor.update(tone);
         }
+
         //        SoundMixerState mixerState = scene.getSoundMixerState();
         //        SoundMixerModel model = controller.getSerializeService().fromString(
         //                mixerState.getData(), SoundMixerModel.class);

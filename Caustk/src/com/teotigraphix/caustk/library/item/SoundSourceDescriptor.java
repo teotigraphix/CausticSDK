@@ -23,9 +23,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 
+@SuppressLint("UseSparseArrays")
 public class SoundSourceDescriptor {
 
     private Map<Integer, ToneDescriptor> descriptors = new HashMap<Integer, ToneDescriptor>();
@@ -34,13 +37,24 @@ public class SoundSourceDescriptor {
         return descriptors;
     }
 
+    private Map<Integer, SoundMixerChannelDescriptor> channels = new HashMap<Integer, SoundMixerChannelDescriptor>();
+
+    public Map<Integer, SoundMixerChannelDescriptor> getChannels() {
+        return channels;
+    }
+
     public SoundSourceDescriptor() {
     }
 
     public void addTone(Tone tone, UUID patchId) {
+        // create the tone descriptor
         ToneDescriptor descriptor = new ToneDescriptor(tone.getIndex(), tone.getName(),
                 tone.getToneType());
         descriptor.setPatchId(patchId);
         descriptors.put(tone.getIndex(), descriptor);
+
+        // create the mixer channel descriptor
+        SoundMixerChannelDescriptor channelDescriptor = new SoundMixerChannelDescriptor(tone);
+        channels.put(tone.getIndex(), channelDescriptor);
     }
 }

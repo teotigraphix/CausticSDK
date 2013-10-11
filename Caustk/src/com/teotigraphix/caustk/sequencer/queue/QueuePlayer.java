@@ -47,6 +47,12 @@ public class QueuePlayer implements Serializable {
         return getController().getRack().getTrackSequencer().getTrackSong();
     }
 
+    /**
+     * Temp, whether the sequencer just got put back to 0 and needs to queue the
+     * PLAY state items.
+     */
+    private boolean restarting;
+
     private int currentLocalBeat;
 
     private List<QueueData> playQueue = new ArrayList<QueueData>();
@@ -103,6 +109,13 @@ public class QueuePlayer implements Serializable {
                 queued.remove(data);
             }
         }
+        if (restarting) {
+            for (QueueData data : playQueue) {
+                Track track = getTrackSong().getTrack(data.getViewChannelIndex());
+                addPhraseAt(track, 0, data);
+            }
+            restarting = false;
+        }
         if (queueSequencer.isAudioEnabled()) {
             getController().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG.getValue());
         }
@@ -111,9 +124,18 @@ public class QueuePlayer implements Serializable {
     public void stop() {
         try {
             getController().execute(ISystemSequencer.COMMAND_STOP);
+            restartSequencer();
         } catch (CausticException e) {
             e.printStackTrace();
         }
+    }
+
+    private void restartSequencer() throws CausticException {
+        // XXX until recording is implemented, each time the sequencer
+        // is stopped, erase all track items and set position back to 0
+        getTrackSong().clear();
+        getController().getRack().getSystemSequencer().playPosition(0);
+        restarting = true;
     }
 
     public boolean touch(QueueData data) {

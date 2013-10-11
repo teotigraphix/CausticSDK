@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -321,7 +322,8 @@ public class Track implements Serializable {
      * @throws CausticException
      */
     public void clear() throws CausticException {
-        for (TrackItem item : items.values()) {
+        Collection<TrackItem> collection = new ArrayList<TrackItem>(items.values());
+        for (TrackItem item : collection) {
             removePhrase(item.getStartMeasure());
         }
     }

@@ -394,10 +394,12 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
         scene.setSoundSourceDescriptor(soundSourceDescriptor);
 
+        //SoundMixerDescriptor soundMixerDescriptor;
+
         //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
         //        soundMixerDescriptor.setMasterMixer(getController().getRack().getSoundMixer()
         //                .getMasterMixer());
-        //        scene.setSoundMixerDescriptor(soundMixerDescriptor);
+        //scene.setSoundMixerDescriptor(soundMixerDescriptor);
 
         TagUtils.addDefaultTags(name, getController(), scene);
     }
