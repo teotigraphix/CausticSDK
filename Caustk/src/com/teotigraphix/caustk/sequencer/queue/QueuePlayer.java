@@ -208,7 +208,7 @@ public class QueuePlayer implements Serializable {
     public void beatChange(int measure, float beat) {
         getTrackSong().setPosition(measure, beat);
 
-        debug("M:" + getTrackSong().getCurrentMeasure() + "B:" + getTrackSong().getCurrentBeat());
+        //debug("M:" + getTrackSong().getCurrentMeasure() + "B:" + getTrackSong().getCurrentBeat());
 
         currentLocalBeat = (int)(beat % 4);
 
@@ -231,6 +231,17 @@ public class QueuePlayer implements Serializable {
             }
 
             flushedQueue.clear();
+        }
+
+        // XXX Temp until I figure out if this works right
+        for (QueueData data : playQueue) {
+            QueueDataChannel viewChannel = data.getViewChannel();
+            if (viewChannel != null) {
+                Track track = getTrackSong().getTrack(viewChannel.getToneIndex());
+                Phrase phrase = track.getPhrase(data.getBankIndex(), data.getPatternIndex());
+                phrase.onBeatChange(beat);
+                //debug("beat:" + phrase.getLocalBeat());
+            }
         }
 
         // last beat in measure

@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.sequencer.track.Phrase;
+import com.teotigraphix.caustk.sequencer.track.Track;
 
 public class QueueData implements Serializable {
 
@@ -136,7 +138,6 @@ public class QueueData implements Serializable {
         if (channel == null) {
             channel = new QueueDataChannel(toneIndex);
             channel.setQueueData(this);
-            channel.setQueueData(this);
             map.put(toneIndex, channel);
         }
         return channel;
@@ -153,6 +154,32 @@ public class QueueData implements Serializable {
     public QueueData(int bankIndex, int patternIndex) {
         this.bankIndex = bankIndex;
         this.patternIndex = patternIndex;
+    }
+
+    /**
+     * Returns the {@link Phrase} for the {@link #getViewChannelIndex()},
+     * <code>null</code> if the view channel has not been assigned (-1).
+     * <p>
+     * Uses the {@link #getBankIndex()} and {@link #getPatternIndex()} to find
+     * the corresponding {@link Phrase} in the owner {@link Track}.
+     */
+    public Phrase getPhrase() {
+        if (viewChannelIndex == -1)
+            return null;
+        return getPhrase(viewChannelIndex);
+    }
+
+    /**
+     * Returns the {@link Phrase} for the toneIndex channel.
+     * <p>
+     * Uses the {@link #getBankIndex()} and {@link #getPatternIndex()} to find
+     * the corresponding {@link Phrase} in the owner {@link Track}.
+     * 
+     * @param toneIndex The index to retrieve this data's {@link Phrase}.
+     */
+    public Phrase getPhrase(int toneIndex) {
+        Track track = getQueueSong().getRack().getTrackSequencer().getTrack(toneIndex);
+        return track.getPhrase(bankIndex, patternIndex);
     }
 
     @Override

@@ -89,9 +89,6 @@ public class ScreenBase implements IScreen {
         //stage = new Stage(width, height, true);
         stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 
-        // set the stage as the input processor
-        Gdx.input.setInputProcessor(stage);
-
         atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
         skin = new Skin(atlas);
     }
@@ -162,6 +159,8 @@ public class ScreenBase implements IScreen {
     @Override
     public void show() {
         Gdx.app.log(LOG, "Showing screen: " + getName());
+        // set the stage as the input processor
+        Gdx.input.setInputProcessor(stage);
 
         for (ScreenMediator mediator : mediators) {
             mediator.onShow(this);

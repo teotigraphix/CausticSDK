@@ -148,13 +148,17 @@ public abstract class GDXGame implements IGame {
 
     @Override
     public void dispose() {
+        for (Object screen : screens.values) {
+            if (screen != null)
+                ((IScreen)screen).dispose();
+        }
+
         try {
             getController().getApplication().save();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (screen != null)
-            screen.dispose();
+
         soundGenerator.onDestroy();
         controller.onDestroy();
     }
@@ -205,6 +209,7 @@ public abstract class GDXGame implements IGame {
     @Override
     public void setScreen(int id) {
         IScreen screen = screens.get(id);
+        pendingScreen = screen;
         if (screen == null) {
             Class<? extends IScreen> type = screenTypes.get(id);
             try {
@@ -214,7 +219,7 @@ public abstract class GDXGame implements IGame {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            screens.put(id, screen);
+            screens.put(id, pendingScreen);
         }
     }
 
