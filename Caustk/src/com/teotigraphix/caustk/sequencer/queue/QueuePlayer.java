@@ -85,7 +85,7 @@ public class QueuePlayer implements Serializable {
         this.queueSequencer = queueSequencer;
     }
 
-    public final boolean isLockBeat() {
+    public final boolean isLastBeatInMeasure() {
         return currentLocalBeat == 3;
     }
 
@@ -139,8 +139,7 @@ public class QueuePlayer implements Serializable {
     }
 
     public boolean touch(QueueData data) {
-        // QUEUE
-        if (isLockBeat())
+        if (data.getState() == QueueDataState.Play && data.getPhrase().isLastBeat())
             return false;
 
         // if the pattern is still playing but got unqueued, just update the state
@@ -245,7 +244,7 @@ public class QueuePlayer implements Serializable {
         }
 
         // last beat in measure
-        if (isLockBeat()) {
+        if (isLastBeatInMeasure()) {
 
             extendOrRemovePlayingTracks();
 
