@@ -352,6 +352,11 @@ public class Phrase implements Serializable {
         return localBeat;
     }
 
+    public boolean isLastBeat() {
+        int beats = length * 4;
+        return localBeat % beats == beats - 1;
+    }
+
     public void onBeatChange(float beat) {
         localBeat = (int)toLocalBeat(beat, getLength());
 
