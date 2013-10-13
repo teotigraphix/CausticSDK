@@ -69,6 +69,8 @@ public class QueueData implements Serializable {
      */
     public String getName() {
         if (name == null) {
+            if (viewChannelIndex == -1)
+                return "Unassigned";
             String result = getViewChannel().getTone().getName();
             result = result + ":" + PatternUtils.toString(getPhrase());
             return result;

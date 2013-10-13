@@ -95,10 +95,29 @@ public class TextSlider extends ControlTable {
                     onTextSliderListener.onChange(slider.getValue());
             }
         });
-        add(slider);
+        add(slider).fill().expand().pad(4f);
         row();
         label = new Label(text, new LabelStyle(style.font, style.fontColor));
         add(label);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns the value of the {@link Slider} composite.
+     */
+    public float getValue() {
+        return slider.getValue();
+    }
+
+    public void setValue(float value) {
+        slider.setValue(value);
+    }
+
+    public void setRange(float minimum, float maximum) {
+        slider.setRange(minimum, maximum);
     }
 
     //--------------------------------------------------------------------------
@@ -131,4 +150,5 @@ public class TextSlider extends ControlTable {
     public interface OnTextSliderListener {
         void onChange(float value);
     }
+
 }

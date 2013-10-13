@@ -77,7 +77,9 @@ public class Knob extends ControlTable {
         boolean cancelled = fire(changeEvent);
         if (cancelled)
             this.value = oldValue;
-
+        invalidate();
+        // XXX figure out if this affects things and if there is a better way
+        currentAngle = null;
         Pools.free(changeEvent);
         return !cancelled;
     }
