@@ -180,6 +180,10 @@ public class QueueDataChannel implements Serializable {
         setPhraseId(phrase.getPhraseId());
     }
 
+    public void unassignPhrase() {
+        setPhraseId(null);
+    }
+
     @SuppressWarnings("unused")
     private void clearPhrase() {
         //        if (channelPhrase != null) {
