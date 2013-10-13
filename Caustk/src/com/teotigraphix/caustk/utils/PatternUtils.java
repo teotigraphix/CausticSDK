@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.utils;
 
+import com.teotigraphix.caustk.sequencer.track.Phrase;
+
 /**
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -60,6 +62,10 @@ public final class PatternUtils {
         return toBank(bank) + toPattern(index);
     }
 
+    public static String toString(Phrase phrase) {
+        return toString(phrase.getBank(), phrase.getPattern());
+    }
+
     public static int getPattern(int index) {
         return index % 16;
     }
@@ -68,4 +74,5 @@ public final class PatternUtils {
         float num = index / 16;
         return (int)num % 4;
     }
+
 }

@@ -28,6 +28,7 @@ import java.util.TreeMap;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;
+import com.teotigraphix.caustk.utils.PatternUtils;
 
 public class QueueData implements Serializable {
 
@@ -51,6 +52,37 @@ public class QueueData implements Serializable {
 
     public IRack getRack() {
         return queueSong.getRack();
+    }
+
+    //----------------------------------
+    // name
+    //----------------------------------
+
+    private String name;
+
+    /**
+     * Returns the human readable name of the data.
+     * <p>
+     * The default value is the name of the {@link #getViewChannel()}'s tone
+     * name and phrase name eg A01. When set explicitly, the explicit name is
+     * returned.
+     */
+    public String getName() {
+        if (name == null) {
+            String result = getViewChannel().getTone().getName();
+            result = result + ":" + PatternUtils.toString(getPhrase());
+            return result;
+        }
+        return name;
+    }
+
+    /**
+     * Set the human readable name of the data used as a label in the UI.
+     * 
+     * @param name The String name.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     //----------------------------------
