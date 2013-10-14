@@ -87,8 +87,8 @@ public class ScreenBase implements IScreen {
         //int width = (isGameScreen() ? GAME_VIEWPORT_WIDTH : MENU_VIEWPORT_WIDTH);
         //int height = (isGameScreen() ? GAME_VIEWPORT_HEIGHT : MENU_VIEWPORT_HEIGHT);
         //stage = new Stage(width, height, true);
-        stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
-
+        //stage = new Stage(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
+        stage = new Stage();
         atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
         skin = new Skin(atlas);
     }
@@ -167,9 +167,23 @@ public class ScreenBase implements IScreen {
         }
     }
 
+    public final static int WIDTH = 800;
+
+    public final static int HEIGHT = 480;
+
     @Override
     public void resize(int width, int height) {
         Gdx.app.log(LOG, "Resizing screen: " + getName() + " to: " + width + " x " + height);
+        //        Vector2 size = Scaling.fit.apply(800, 480, width, height);
+        //        int viewportX = (int)(width - size.x) / 2;
+        //        int viewportY = (int)(height - size.y) / 2;
+        //        int viewportWidth = (int)size.x;
+        //        int viewportHeight = (int)size.y;
+        //        Gdx.gl.glViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+        //        stage.setViewport(800, 480, true, viewportX, viewportY, viewportWidth, viewportHeight);
+
+        stage.setViewport(WIDTH, HEIGHT, true);
+        stage.getCamera().translate(-stage.getGutterWidth(), -stage.getGutterHeight(), 0);
     }
 
     @Override
