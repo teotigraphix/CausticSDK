@@ -30,14 +30,6 @@ import com.teotigraphix.libgdx.ui.OverlayButton.OverlayButtonStyle;
 
 public class ButtonBar extends ControlTable {
 
-    private static final int MAX_WIDTH = 999;
-
-    private static final int MAX_HEIGHT = 999;
-
-    private static final int MIN_WIDTH = 0;
-
-    private static final int MIN_HEIGHT = 0;
-
     private ButtonGroup group;
 
     private String[] items;
@@ -70,10 +62,10 @@ public class ButtonBar extends ControlTable {
         for (int i = 0; i < items.length; i++) {
             final OverlayButton button = createButton(i, style);
             if (isVertical) {
-                add(button).fill().expand().minHeight(MIN_WIDTH).prefHeight(MAX_HEIGHT);
+                add(button).uniform().fill().expand();
                 row();
             } else {
-                add(button).fill().expand().minWidth(MIN_HEIGHT).prefWidth(MAX_WIDTH);
+                add(button).uniform().fill().expand();
             }
         }
     }
