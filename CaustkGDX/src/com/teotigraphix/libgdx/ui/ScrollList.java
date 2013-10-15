@@ -20,7 +20,8 @@
 package com.teotigraphix.libgdx.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.AdvancedList;
+import com.badlogic.gdx.scenes.scene2d.ui.ListRowRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
@@ -38,14 +39,27 @@ public class ScrollList extends ScrollPane {
     public void setItems(Array<?> scenes) {
         items = scenes;
         if (list == null) {
-            list = new List(scenes.toArray(), skin);
+            list = new AdvancedList<LabelRow>(scenes.toArray(), LabelRow.class);
+            list.createChildren(skin);
             setWidget(list);
         } else {
-            list.setItems(scenes.toArray());
+            //list.setItems(scenes.toArray());
         }
     }
 
-    private List list;
+    private AdvancedList<LabelRow> list;
+
+    public static class LabelRow extends ListRowRenderer {
+
+        public LabelRow(Skin skin, String styleName) {
+            super(skin, styleName);
+        }
+
+        public LabelRow(Skin skin) {
+            super(skin);
+        }
+
+    }
 
     public ScrollList(Skin skin) {
         super(null, skin);
@@ -68,7 +82,7 @@ public class ScrollList extends ScrollPane {
 
     private void initialize() {
         if (items != null) {
-            list = new List(items.toArray(), skin);
+            list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class);
             setWidget(list);
         }
     }
@@ -78,7 +92,7 @@ public class ScrollList extends ScrollPane {
     }
 
     public void setSelectedIndex(int value) {
-        list.setSelectedIndex(value);
+        //list.setSelectedIndex(value);
     }
 
     public Object getItem(int index) {
