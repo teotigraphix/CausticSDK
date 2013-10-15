@@ -17,21 +17,20 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.libgdx.dialog;
+package com.badlogic.gdx.scenes.scene2d.ui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.AlertDialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ListDialog;
-import com.badlogic.gdx.scenes.scene2d.ui.PopUp;
-import com.teotigraphix.libgdx.screen.IScreen;
+public class PopUp extends DialogBase {
 
-public interface IDialogManager {
+    public PopUp(String title, Skin skin) {
+        super(title, skin);
+    }
 
-    AlertDialog createAlert(IScreen screen, String title, Actor actor);
+    public PopUp(String title, WindowStyle windowStyle) {
+        super(title, windowStyle);
+    }
 
-    PopUp createPopUp(IScreen screen, String title, Actor actor);
-
-    ListDialog createListDialog(IScreen screen, String title, Object[] items, float width,
-            float height);
+    public PopUp(String title, Skin skin, String windowStyleName) {
+        super(title, skin, windowStyleName);
+    }
 
 }

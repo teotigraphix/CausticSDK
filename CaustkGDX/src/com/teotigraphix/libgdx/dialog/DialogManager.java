@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.AlertDialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ListDialog;
+import com.badlogic.gdx.scenes.scene2d.ui.PopUp;
 import com.google.inject.Singleton;
 import com.teotigraphix.libgdx.screen.IScreen;
 
@@ -49,8 +50,8 @@ public class DialogManager implements IDialogManager {
     }
 
     @Override
-    public Dialog createDialog(IScreen screen, String title, Actor actor) {
-        final Dialog dialog = new Dialog(title, screen.getSkin());
+    public PopUp createPopUp(IScreen screen, String title, Actor actor) {
+        final PopUp dialog = new PopUp(title, screen.getSkin());
         dialog.setModal(false);
         //dialog.setContent(actor);
         dialog.setMovable(true);
