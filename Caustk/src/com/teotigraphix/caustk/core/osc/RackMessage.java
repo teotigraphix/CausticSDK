@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -118,6 +119,29 @@ public class RackMessage extends CausticMessage {
      * @since 1.0
      */
     public static final RackMessage SAVE_SONG = new RackMessage("/caustic/save_song ${0}");
+
+    /**
+     * Message: <code>/caustic/machine_name [machine_index] [new_name]</code>
+     * <p>
+     * Changes the name of the machine at <code>machine_index</code> to the
+     * <code>new_name</code>.
+     * <p>
+     * <strong>Default</strong>: <code>N/A</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * </p>
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine's index that will have
+     * it's name changed.</li>
+     * <li><strong>new_name</strong>: The machine's new name.</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>N/A</code>
+     * 
+     * @since 1.0
+     */
+    public static final RackMessage MACHINE_NAME = new RackMessage(
+            "/caustic/machine_name ${0} ${1}");
 
     /**
      * Query: <code>/caustic/machine_name [machine_index]</code>

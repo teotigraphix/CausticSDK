@@ -28,6 +28,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 
@@ -189,7 +190,7 @@ public abstract class Tone implements IRestore, Serializable {
     // name
     //----------------------------------
 
-    private String name;
+    private String name = "";
 
     /**
      * The name loaded into/from the core rack.
@@ -198,8 +199,17 @@ public abstract class Tone implements IRestore, Serializable {
         return name;
     }
 
+    /**
+     * Sets the new name of the tone, will send the
+     * {@link RackMessage#MACHINE_NAME} message to the core.
+     * 
+     * @param value The new name of the tone, 10 character limit.
+     */
     public final void setName(String value) {
+        if (name.equals(value))
+            return;
         name = value;
+        RackMessage.MACHINE_NAME.send(getEngine(), index, name);
     }
 
     //----------------------------------
