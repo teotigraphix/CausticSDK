@@ -28,7 +28,6 @@ import java.util.TreeMap;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Track;
-import com.teotigraphix.caustk.utils.PatternUtils;
 
 public class QueueData implements Serializable {
 
@@ -72,7 +71,7 @@ public class QueueData implements Serializable {
             if (viewChannelIndex == -1)
                 return "Unassigned";
             String result = getViewChannel().getTone().getName();
-            result = result + ":" + PatternUtils.toString(getPhrase());
+            // result = result + ":" + PatternUtils.toString(getPhrase());
             return result;
         }
         return name;

@@ -73,6 +73,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         return renderers.get(selectedIndex);
     }
 
+    @SuppressWarnings("unchecked")
     public void createChildren(Skin skin) {
         for (Object item : items) {
             String text = item.toString();

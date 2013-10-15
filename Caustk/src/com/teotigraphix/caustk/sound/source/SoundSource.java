@@ -103,6 +103,11 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     }
 
     @Override
+    public boolean hasTone(int index) {
+        return tones.containsKey(index);
+    }
+
+    @Override
     public Collection<Tone> getTones() {
         return Collections.unmodifiableCollection(tones.values());
     }

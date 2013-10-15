@@ -40,6 +40,14 @@ public interface ISoundSource extends IRackComponent {
 
     int getToneCount();
 
+    /**
+     * Returns whether a {@link Tone} exists in the native rack at the specified
+     * index.
+     * 
+     * @param index The tone index
+     */
+    boolean hasTone(int index);
+
     Collection<Tone> getTones();
 
     Tone getTone(int index);
