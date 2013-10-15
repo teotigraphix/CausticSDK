@@ -20,16 +20,24 @@
 package com.teotigraphix.libgdx.dialog;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.AlertDialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ListDialog;
 import com.badlogic.gdx.scenes.scene2d.ui.PopUp;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 @Singleton
 public class DialogManager implements IDialogManager {
+
+    @Inject
+    IScreenProvider screenProvider;
 
     public DialogManager() {
     }
@@ -50,6 +58,23 @@ public class DialogManager implements IDialogManager {
     }
 
     @Override
+    public void createToast(String message, float duration) {
+        final IScreen screen = screenProvider.getScreen();
+        final PopUp popUp = createPopUp(screen, "", null);
+        popUp.add(new Label(message, screen.getSkin()));
+
+        popUp.show(screen.getStage());
+        popUp.pad(0f);
+        popUp.addAction(Actions.delay(duration, new Action() {
+            @Override
+            public boolean act(float delta) {
+                popUp.hide();
+                return true;
+            }
+        }));
+    }
+
+    @Override
     public PopUp createPopUp(IScreen screen, String title, Actor actor) {
         final PopUp dialog = new PopUp(title, screen.getSkin());
         dialog.setModal(false);
@@ -65,4 +90,5 @@ public class DialogManager implements IDialogManager {
         dialog.setMovable(false);
         return dialog;
     }
+
 }

@@ -31,6 +31,8 @@ public interface IDialogManager {
 
     PopUp createPopUp(IScreen screen, String title, Actor actor);
 
+    void createToast(String message, float duration);
+
     ListDialog createListDialog(IScreen screen, String title, Object[] items, float width,
             float height);
 

@@ -190,4 +190,9 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
     public void stop() {
         player.stop();
     }
+
+    @Override
+    public void remove(QueueData data) {
+        player.remove(data);
+    }
 }

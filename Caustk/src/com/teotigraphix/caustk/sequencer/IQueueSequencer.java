@@ -66,4 +66,12 @@ public interface IQueueSequencer extends IRackComponent {
 
     boolean isAudioEnabled();
 
+    /**
+     * Removes the {@link QueueData} from any current queues and sets it's state
+     * to idle.
+     * 
+     * @param data The data to remove from the sequencer.
+     */
+    void remove(QueueData data);
+
 }

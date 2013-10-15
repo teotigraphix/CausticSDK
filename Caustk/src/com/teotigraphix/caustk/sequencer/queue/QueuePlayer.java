@@ -376,4 +376,14 @@ public class QueuePlayer implements Serializable {
     private void debug(String message) {
         getController().getLogger().debug("QueuePlayer", message);
     }
+
+    public void remove(QueueData data) {
+        // XXX this is a band aide for temp tests, if the player is NOT stopped
+        // the forceful removal will screw things up
+        playQueue.remove(data);
+        tempPlayQueue.remove(data);
+        queued.remove(data);
+        flushedQueue.remove(data);
+        setState(data, QueueDataState.Idle);
+    }
 }
