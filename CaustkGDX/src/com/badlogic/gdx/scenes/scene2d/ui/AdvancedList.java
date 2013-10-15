@@ -4,6 +4,9 @@ package com.badlogic.gdx.scenes.scene2d.ui;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -22,6 +25,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     private Object[] items;
 
     private Class<T> type;
+
+    //private OnAdvancedListListener listener;
 
     protected Class<T> getType() {
         return type;
@@ -135,4 +140,38 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         removeRenderItem(renderers.get(selectedIndex));
     }
 
+    public void setOnAdvancedListListener(OnAdvancedListListener l) {
+        //this.listener = l;
+    }
+
+    public interface OnAdvancedListListener {
+        void onDoubleTap(int index);
+    }
+
+    public static abstract class AdvancedListListener implements EventListener {
+        @Override
+        public boolean handle(Event event) {
+            if (!(event instanceof AdvancedListEvent))
+                return false;
+            if (event instanceof AdvancedListChangeEvent)
+                changed((AdvancedListChangeEvent)event, event.getTarget());
+            if (event instanceof AdvancedListDoubleTapEvent)
+                doubleTap((AdvancedListDoubleTapEvent)event, event.getTarget());
+            return false;
+        }
+
+        public abstract void changed(AdvancedListChangeEvent event, Actor actor);
+
+        public abstract void doubleTap(AdvancedListDoubleTapEvent event, Actor actor);
+
+    }
+
+    public static abstract class AdvancedListEvent extends Event {
+    }
+
+    public static class AdvancedListDoubleTapEvent extends AdvancedListEvent {
+    }
+
+    public static class AdvancedListChangeEvent extends AdvancedListEvent {
+    }
 }

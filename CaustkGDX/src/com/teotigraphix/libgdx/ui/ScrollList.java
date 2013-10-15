@@ -58,7 +58,6 @@ public class ScrollList extends ScrollPane {
         public LabelRow(Skin skin) {
             super(skin);
         }
-
     }
 
     public ScrollList(Skin skin) {

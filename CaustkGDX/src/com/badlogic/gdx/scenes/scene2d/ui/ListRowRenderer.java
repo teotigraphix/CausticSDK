@@ -1,9 +1,14 @@
 
 package com.badlogic.gdx.scenes.scene2d.ui;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.AdvancedList.AdvancedListChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.AdvancedList.AdvancedListDoubleTapEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Pools;
 
 public abstract class ListRowRenderer extends Table {
 
@@ -36,6 +41,16 @@ public abstract class ListRowRenderer extends Table {
         align(Align.left);
         setTouchable(Touchable.enabled);
         setStyle(skin.get(styleName, ListRowRendererStyle.class));
+        addListener(new ActorGestureListener() {
+            @Override
+            public void tap(InputEvent event, float x, float y, int count, int button) {
+                if (count == 2) {
+                    AdvancedListDoubleTapEvent e = Pools.obtain(AdvancedListDoubleTapEvent.class);
+                    fire(e);
+                    Pools.free(e);
+                }
+            }
+        });
     }
 
     public void createChildren() {
@@ -57,7 +72,16 @@ public abstract class ListRowRenderer extends Table {
     }
 
     public void setIsSelected(boolean isSelected) {
+        if (isSelected == this.isSelected)
+            return;
+
         this.isSelected = isSelected;
+
+        if (isSelected) {
+            AdvancedListChangeEvent e = Pools.obtain(AdvancedListChangeEvent.class);
+            fire(e);
+            Pools.free(e);
+        }
 
         if (style == null)
             return;
@@ -83,4 +107,5 @@ public abstract class ListRowRenderer extends Table {
         }
 
     }
+
 }
