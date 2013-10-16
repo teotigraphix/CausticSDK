@@ -37,6 +37,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.libgdx.controller.CaustkMediator;
+import com.teotigraphix.libgdx.model.ApplicationModel;
 import com.teotigraphix.libgdx.model.ApplicationModelState;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 
@@ -54,6 +55,10 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
     @Inject
     protected IApplicationModel applicationModel;
+
+    public ApplicationModel getApplicationModel() {
+        return (ApplicationModel)applicationModel;
+    }
 
     protected boolean deleteCausticFile = true;
 
@@ -100,7 +105,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
             }
 
             saveApplicationState(file, state);
-            applicationModel.setState(state);
+            getApplicationModel().setState(state);
 
             firstRun(state);
         }
@@ -139,7 +144,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
     @Override
     public void save() {
-        saveApplicationState(getProjectBinaryFile(), applicationModel.getState());
+        saveApplicationState(getProjectBinaryFile(), getApplicationModel().getState());
     }
 
     protected ApplicationModelState loadApplicationState(File file,
@@ -152,7 +157,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
             // save a temp .caustic file to load the binary data into the native core
             File absoluteCausticFile = getTempCausticFile();
-            FileUtils.writeByteArrayToFile(absoluteCausticFile, applicationModel.getState()
+            FileUtils.writeByteArrayToFile(absoluteCausticFile, getApplicationModel().getState()
                     .getSongFile().getData());
 
             // only load the song into the core memory, we already have
@@ -220,7 +225,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
         // load the application model with the deserialized state
         state.setController(getController());
-        applicationModel.setState(state);
+        getApplicationModel().setState(state);
     }
 
     protected File getTempCausticFile() {

@@ -28,10 +28,6 @@ public interface IApplicationModel extends ICaustkModel {
 
     void setInitialized(boolean value);
 
-    <T extends ApplicationModelState> T getState();
-
-    <T extends ApplicationModelState> void setState(T value);
-
     Project getProject();
 
     void setProject(Project value);

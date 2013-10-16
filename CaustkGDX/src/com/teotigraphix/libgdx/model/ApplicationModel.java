@@ -34,13 +34,11 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     private ApplicationModelState state;
 
     @SuppressWarnings("unchecked")
-    @Override
-    public <T extends ApplicationModelState> T getState() {
+    public final <T extends ApplicationModelState> T getState() {
         return (T)state;
     }
 
-    @Override
-    public <T extends ApplicationModelState> void setState(T value) {
+    public final <T extends ApplicationModelState> void setState(T value) {
         state = value;
     }
 
