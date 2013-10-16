@@ -19,7 +19,7 @@
 
 package com.teotigraphix.libgdx.controller;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 public class ScreenMediatorChild extends CaustkMediator {
@@ -35,7 +35,7 @@ public class ScreenMediatorChild extends CaustkMediator {
     // LifeCycle
     //--------------------------------------------------------------------------
 
-    public void onCreate(IScreen screen, Table parent) {
+    public void onCreate(IScreen screen, WidgetGroup parent) {
     }
 
     public void onAttach(IScreen screen) {
