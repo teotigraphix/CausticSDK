@@ -34,6 +34,18 @@ public class ButtonBar extends ControlTable {
 
     private String[] items;
 
+    private boolean itemsChanged;
+
+    public String[] getItems() {
+        return items;
+    }
+
+    public void setItems(String[] value) {
+        items = value;
+        itemsChanged = true;
+        invalidateHierarchy();
+    }
+
     private boolean isVertical;
 
     private String buttonStyleName = "default";
@@ -48,13 +60,22 @@ public class ButtonBar extends ControlTable {
 
     public ButtonBar(Skin skin, String[] items, boolean isVertical, String buttonStyleName) {
         super(skin);
-        this.items = items;
+        setItems(items);
         this.isVertical = isVertical;
         this.buttonStyleName = buttonStyleName;
     }
 
     @Override
     protected void createChildren() {
+        if (itemsChanged) {
+            refreshButtons();
+            itemsChanged = false;
+        }
+    }
+
+    private void refreshButtons() {
+        clearChildren();
+
         group = new ButtonGroup();
 
         final OverlayButtonStyle style = getSkin().get(buttonStyleName, OverlayButtonStyle.class);
@@ -67,6 +88,16 @@ public class ButtonBar extends ControlTable {
             } else {
                 add(button).uniform().fill().expand();
             }
+        }
+    }
+
+    @Override
+    public void layout() {
+        super.layout();
+
+        if (itemsChanged) {
+            refreshButtons();
+            itemsChanged = false;
         }
     }
 
