@@ -125,6 +125,8 @@ public class ApplicationController implements IApplicationController {
         // it would happen automatically based on the project's initialized (first run) prop
         applicationModel.setProject(project);
 
+        applicationMediator.onCreate();
+
         // last call in the startup chain
         // Models/Mediators will hear no events until this call
         applicationModel.onRegister();
@@ -155,11 +157,13 @@ public class ApplicationController implements IApplicationController {
         applicationMediator.run();
     }
 
+    @Override
     public Project createProject(String projectPath) throws IOException {
         Project project = getController().getProjectManager().createProject(new File(projectPath));
         return project;
     }
 
+    @Override
     public Project loadProject(String projectPath) throws IOException {
         Project project = getController().getProjectManager().load(new File(projectPath));
         return project;

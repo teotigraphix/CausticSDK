@@ -54,7 +54,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
         project = value;
         // creates new state or deserializes the saved state
         getController().trigger(new OnApplicationModelProjectChange(project));
-        // have to set up rack state observers outside of the event or we get locked
+
         state.registerObservers();
 
         // all models need to reset here

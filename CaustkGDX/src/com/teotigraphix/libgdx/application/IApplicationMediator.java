@@ -29,6 +29,11 @@ import com.teotigraphix.libgdx.controller.ICaustkMediator;
 public interface IApplicationMediator extends ICaustkMediator {
 
     /**
+     * Follows setProject() of application model.
+     */
+    void onCreate();
+
+    /**
      * Called at the end of the load/start phase where all models and mediators
      * have been registered.
      */

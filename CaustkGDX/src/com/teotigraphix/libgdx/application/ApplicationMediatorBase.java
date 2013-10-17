@@ -135,6 +135,10 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
     }
 
     @Override
+    public void onCreate() {
+    }
+
+    @Override
     public void run() {
         onRun();
     }
@@ -226,6 +230,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
         // load the application model with the deserialized state
         state.setController(getController());
+
         getApplicationModel().setState(state);
     }
 
