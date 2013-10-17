@@ -38,6 +38,10 @@ public class MetadataInfo {
 
     private String name = "Untitled";
 
+    public boolean hasName() {
+        return name != null && !name.equals("Untitled");
+    }
+
     public final String getName() {
         return name;
     }

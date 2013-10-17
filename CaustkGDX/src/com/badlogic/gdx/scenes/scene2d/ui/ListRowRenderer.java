@@ -1,10 +1,12 @@
 
 package com.badlogic.gdx.scenes.scene2d.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.AdvancedList.AdvancedListChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.AdvancedList.AdvancedListDoubleTapEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.AdvancedList.AdvancedListLongPressEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -49,6 +51,14 @@ public abstract class ListRowRenderer extends Table {
                     fire(e);
                     Pools.free(e);
                 }
+            }
+
+            @Override
+            public boolean longPress(Actor actor, float x, float y) {
+                AdvancedListLongPressEvent e = Pools.obtain(AdvancedListLongPressEvent.class);
+                fire(e);
+                Pools.free(e);
+                return true;
             }
         });
     }

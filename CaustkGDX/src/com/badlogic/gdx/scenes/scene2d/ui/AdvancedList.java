@@ -140,14 +140,6 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         removeRenderItem(renderers.get(selectedIndex));
     }
 
-    public void setOnAdvancedListListener(OnAdvancedListListener l) {
-        //this.listener = l;
-    }
-
-    public interface OnAdvancedListListener {
-        void onDoubleTap(int index);
-    }
-
     public static abstract class AdvancedListListener implements EventListener {
         @Override
         public boolean handle(Event event) {
@@ -155,12 +147,16 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
                 return false;
             if (event instanceof AdvancedListChangeEvent)
                 changed((AdvancedListChangeEvent)event, event.getTarget());
+            if (event instanceof AdvancedListLongPressEvent)
+                longPress((AdvancedListLongPressEvent)event, event.getTarget());
             if (event instanceof AdvancedListDoubleTapEvent)
                 doubleTap((AdvancedListDoubleTapEvent)event, event.getTarget());
             return false;
         }
 
         public abstract void changed(AdvancedListChangeEvent event, Actor actor);
+
+        public abstract void longPress(AdvancedListLongPressEvent event, Actor actor);
 
         public abstract void doubleTap(AdvancedListDoubleTapEvent event, Actor actor);
 
@@ -169,9 +165,25 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     public static abstract class AdvancedListEvent extends Event {
     }
 
+    public static class AdvancedListLongPressEvent extends AdvancedListEvent {
+    }
+
     public static class AdvancedListDoubleTapEvent extends AdvancedListEvent {
     }
 
     public static class AdvancedListChangeEvent extends AdvancedListEvent {
+    }
+
+    /**
+     * Refreshes the item renderers.
+     */
+    public void refresh() {
+        int index = 0;
+        for (Object item : items) {
+            String text = item.toString();
+            LabelRow instance = (LabelRow)getChildren().get(index);
+            instance.setText(text);
+            index++;
+        }
     }
 }

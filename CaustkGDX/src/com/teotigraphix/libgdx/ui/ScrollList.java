@@ -43,7 +43,7 @@ public class ScrollList extends ScrollPane {
             list.createChildren(skin);
             setWidget(list);
         } else {
-            //list.setItems(scenes.toArray());
+            // XXX list.setItems(scenes.toArray());
         }
     }
 
@@ -100,5 +100,9 @@ public class ScrollList extends ScrollPane {
 
     public Object getSelectedItem() {
         return getItem(getSelectedIndex());
+    }
+
+    public void refresh() {
+        list.refresh();
     }
 }

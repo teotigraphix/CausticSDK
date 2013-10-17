@@ -60,20 +60,11 @@ public class QueueData implements Serializable {
     private String name;
 
     /**
-     * Returns the human readable name of the data.
+     * Returns the human readable name of the data the was explicitly set.
      * <p>
-     * The default value is the name of the {@link #getViewChannel()}'s tone
-     * name and phrase name eg A01. When set explicitly, the explicit name is
-     * returned.
+     * Can be <code>null</code> if {@link #setName(String)} has not be called.
      */
     public String getName() {
-        if (name == null) {
-            if (viewChannelIndex == -1)
-                return "Unassigned";
-            String result = getViewChannel().getTone().getName();
-            // result = result + ":" + PatternUtils.toString(getPhrase());
-            return result;
-        }
         return name;
     }
 

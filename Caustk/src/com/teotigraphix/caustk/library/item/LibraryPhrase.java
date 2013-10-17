@@ -160,10 +160,13 @@ public class LibraryPhrase extends LibraryItem {
     @Override
     public String toString() {
         String name = getMetadataInfo().getName();
-        if (name.equals("Untitled"))
+        if (name.equals("Untitled")) {
             name = "";
-        String pat = PatternUtils.toString(getBankIndex(), getPatternIndex());
-        return name + "[" + pat + "] " + getMetadataInfo().getTags().toString();
+            String pat = PatternUtils.toString(getBankIndex(), getPatternIndex());
+            return name + "[" + pat + "] " + getMetadataInfo().getTags().toString();
+        } else {
+            return name;
+        }
     }
 
 }
