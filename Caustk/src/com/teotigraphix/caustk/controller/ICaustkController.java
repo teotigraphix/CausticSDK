@@ -165,6 +165,13 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
     void put(String message, Class<? extends ICommand> command);
 
     /**
+     * Removes a message from the {@link ICommandManager}.
+     * 
+     * @param message The String message key without the application id.
+     */
+    void remove(String message);
+
+    /**
      * Executes a registered command from the {@link ICommandManager}.
      * 
      * @param message The String message key without the application id.

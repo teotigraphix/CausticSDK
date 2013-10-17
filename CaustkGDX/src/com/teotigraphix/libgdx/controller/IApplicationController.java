@@ -19,7 +19,10 @@
 
 package com.teotigraphix.libgdx.controller;
 
+import java.io.IOException;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.project.Project;
 
 public interface IApplicationController {
 
@@ -31,5 +34,9 @@ public interface IApplicationController {
     void create();
 
     void run();
+
+    Project createProject(String projectPath) throws IOException;
+
+    Project loadProject(String projectPath) throws IOException;
 
 }

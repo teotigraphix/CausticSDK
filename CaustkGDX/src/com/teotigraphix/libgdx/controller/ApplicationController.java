@@ -41,6 +41,8 @@ import com.teotigraphix.libgdx.model.IApplicationModel;
 @Singleton
 public class ApplicationController implements IApplicationController {
 
+    private static final String LAST_PROJECT = "lastProject";
+
     @Inject
     private IApplicationModel applicationModel;
 
@@ -112,32 +114,40 @@ public class ApplicationController implements IApplicationController {
         // - dispatch(Create)
         // - we are here now
 
+        // onLoad(), register observers
+        applicationMediator.onRegister();
+
+        // create or load the last Project
+        Project project = createOrLoadLastProject();
+
+        // loads or creates application state, if this was bound to
+        // a project change event, we wouldn't need to call it here,
+        // it would happen automatically based on the project's initialized (first run) prop
+        applicationModel.setProject(project);
+
+        // last call in the startup chain
+        // Models/Mediators will hear no events until this call
+        applicationModel.onRegister();
+    }
+
+    protected Project createOrLoadLastProject() {
         String path = getController().getProjectManager().getSessionPreferences()
-                .getString("lastProject");
+                .getString(LAST_PROJECT);
 
         Project project = null;
 
         try {
             if (path == null) {
-                project = getController().getProjectManager().createProject(
-                        new File("UntitledProject"));
+                project = createProject("UntitledProject");
             } else {
-                project = getController().getProjectManager().load(new File(path));
+                project = loadProject(path);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        applicationModel.setProject(project);
-
-        applicationMediator.create();
-
-        applicationMediator.onRegister();
-
-        // last call in the startup chain
-        // Models/Mediators will hear no events until this call
-        applicationModel.onRegister();
+        return project;
     }
 
     @Override
@@ -145,4 +155,13 @@ public class ApplicationController implements IApplicationController {
         applicationMediator.run();
     }
 
+    public Project createProject(String projectPath) throws IOException {
+        Project project = getController().getProjectManager().createProject(new File(projectPath));
+        return project;
+    }
+
+    public Project loadProject(String projectPath) throws IOException {
+        Project project = getController().getProjectManager().load(new File(projectPath));
+        return project;
+    }
 }

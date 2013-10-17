@@ -44,7 +44,6 @@ public abstract class RackApplicationState extends ApplicationModelState {
         super.setController(controller);
         rack.setController(controller);
         ((CaustkController)controller).setRack(rack);
-        rack.create();
     }
 
     public RackApplicationState(ICaustkController controller) {
@@ -54,4 +53,9 @@ public abstract class RackApplicationState extends ApplicationModelState {
         setController(controller);
     }
 
+    @Override
+    public void registerObservers() {
+        super.registerObservers();
+        rack.registerObservers();
+    }
 }

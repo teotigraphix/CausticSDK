@@ -52,6 +52,17 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     @Override
     public void setProject(Project value) {
         project = value;
+        // creates new state or deserializes the saved state
+        getController().trigger(new OnApplicationModelProjectChange(project));
+        // have to set up rack state observers outside of the event or we get locked
+        state.registerObservers();
+
+        // all models need to reset here
+        if (project.isFirstRun()) {
+            // reload User into the LibraryModel
+        }
+
+        getController().trigger(new OnApplicationModelProjectLoadComplete(project));
     }
 
     @Inject

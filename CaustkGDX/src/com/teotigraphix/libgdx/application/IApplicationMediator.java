@@ -29,14 +29,6 @@ import com.teotigraphix.libgdx.controller.ICaustkMediator;
 public interface IApplicationMediator extends ICaustkMediator {
 
     /**
-     * Called when the application state is created for the first time or
-     * deserialized from a previous state.
-     * <p>
-     * This method is called before {@link #onRegister()}.
-     */
-    void create();
-
-    /**
      * Called at the end of the load/start phase where all models and mediators
      * have been registered.
      */

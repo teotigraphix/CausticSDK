@@ -30,6 +30,7 @@ import java.io.StreamCorruptedException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.google.inject.Inject;
@@ -40,6 +41,7 @@ import com.teotigraphix.libgdx.controller.CaustkMediator;
 import com.teotigraphix.libgdx.model.ApplicationModel;
 import com.teotigraphix.libgdx.model.ApplicationModelState;
 import com.teotigraphix.libgdx.model.IApplicationModel;
+import com.teotigraphix.libgdx.model.IApplicationModel.OnApplicationModelProjectChange;
 
 /**
  * A bas application mediator for application state, first run and load logic.
@@ -64,60 +66,67 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
     protected Class<? extends ApplicationModelState> stateType;
 
-    private boolean isFirstRun;
-
     public final boolean isFirstRun() {
-        return isFirstRun;
+        return applicationModel.getProject().isFirstRun();
     }
 
-    @Override
-    public void create() {
-        File file = getProjectBinaryFile();
-        if (file.exists()) {
-            getController().getLogger().view("ApplicationMediator", "Load last State - " + file);
-            try {
-                loadApplicationState(file, stateType);
-            } catch (CausticException e) {
-                e.printStackTrace();
-            }
-        } else {
-            isFirstRun = true;
-
-            getController().getLogger().view("ApplicationMediator", "Create new State - " + file);
-
-            ApplicationModelState state = null;
-            try {
-                Constructor<? extends ApplicationModelState> constructor = stateType
-                        .getConstructor(ICaustkController.class);
-                state = constructor.newInstance(getController());
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-
-            saveApplicationState(file, state);
-            getApplicationModel().setState(state);
-
-            firstRun(state);
+    protected void doLoadRun(File file) {
+        getController().getLogger().view("ApplicationMediator", "Load last State - " + file);
+        try {
+            loadApplicationState(file, stateType);
+        } catch (CausticException e) {
+            e.printStackTrace();
         }
+    }
+
+    protected void doFirstRun(File file) {
+        getController().getLogger().view("ApplicationMediator", "Create new State - " + file);
+
+        ApplicationModelState state = null;
+        try {
+            Constructor<? extends ApplicationModelState> constructor = stateType
+                    .getConstructor(ICaustkController.class);
+            state = constructor.newInstance(getController());
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        saveApplicationState(file, state);
+        getApplicationModel().setState(state);
+
+        firstRun(state);
     }
 
     @Override
     public void onRegister() {
-        onLoad();
+        register(OnApplicationModelProjectChange.class,
+                new EventObserver<OnApplicationModelProjectChange>() {
+                    @Override
+                    public void trigger(OnApplicationModelProjectChange object) {
+                        Project project = object.getProject();
+                        File file = getProjectBinaryFile(project);
+                        if (project.isFirstRun()) {
+                            doFirstRun(file);
+                        } else {
+                            doLoadRun(file);
+                        }
+                    }
+                });
     }
 
     /**
-     * Called during {@link #create()} when the state does not exist on disk.
+     * Called during {@link #registerObservers()} when the state does not exist
+     * on disk.
      * 
      * @param state The current application state after creation or
      *            deserialization.
@@ -125,26 +134,18 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
     protected void firstRun(ApplicationModelState state) {
     }
 
-    /**
-     * Called form {@link #onRegister()} after the state has been create or
-     * deserialized.
-     */
-    protected void onLoad() {
-    }
-
     @Override
     public void run() {
         onRun();
-        isFirstRun = false;
     }
 
     protected void onRun() {
-
     }
 
     @Override
     public void save() {
-        saveApplicationState(getProjectBinaryFile(), getApplicationModel().getState());
+        saveApplicationState(getProjectBinaryFile(getApplicationModel().getProject()),
+                getApplicationModel().getState());
     }
 
     protected ApplicationModelState loadApplicationState(File file,
@@ -235,8 +236,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
         return file;
     }
 
-    protected File getProjectBinaryFile() {
-        Project project = applicationModel.getProject();
+    protected File getProjectBinaryFile(Project project) {
         File file = project.getAbsoluteResource(project.getName() + ".bin");
         return file;
     }

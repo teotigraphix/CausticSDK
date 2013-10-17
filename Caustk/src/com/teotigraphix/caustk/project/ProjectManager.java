@@ -217,6 +217,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
         project = controller.getSerializeService().fromFile(new File(absoluteDir, ".project"),
                 Project.class);
         project.setController(controller);
+        project.setFirstRun(false);
 
         project.open();
 

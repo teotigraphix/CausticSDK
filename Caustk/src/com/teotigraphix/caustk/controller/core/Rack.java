@@ -130,11 +130,19 @@ public class Rack implements IRack, Serializable {
     //--------------------------------------------------------------------------
 
     @Override
-    public void create() {
+    public void registerObservers() {
         soundSource.registerObservers();
         soundMixer.registerObservers();
         systemSequencer.registerObservers();
         trackSequencer.registerObservers();
+    }
+
+    @Override
+    public void unregisterObservers() {
+        soundSource.unregisterObservers();
+        soundMixer.unregisterObservers();
+        systemSequencer.unregisterObservers();
+        trackSequencer.unregisterObservers();
     }
 
     @Override

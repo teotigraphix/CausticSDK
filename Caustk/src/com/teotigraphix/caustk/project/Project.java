@@ -32,13 +32,17 @@ public class Project {
 
     private transient boolean isClosed;
 
-    private transient boolean initializing = false;
-
     private transient ICaustkController controller;
 
     public void setController(ICaustkController controller) {
         this.controller = controller;
     }
+
+    //----------------------------------
+    // initializing
+    //----------------------------------
+
+    private transient boolean initializing = false;
 
     public boolean isInitializing() {
         return initializing;
@@ -46,6 +50,24 @@ public class Project {
 
     public void setInitializing(boolean value) {
         initializing = value;
+    }
+
+    //----------------------------------
+    // isFirstRun
+    //----------------------------------
+
+    private transient boolean isFirstRun;
+
+    public void setFirstRun(boolean value) {
+        isFirstRun = value;
+    }
+
+    /**
+     * Returns whether this {@link Project} was just created <code>true</code>
+     * or loaded from disk <code>false</code>.
+     */
+    public boolean isFirstRun() {
+        return isFirstRun;
     }
 
     //----------------------------------
@@ -209,4 +231,5 @@ public class Project {
     public void close() {
         isClosed = true;
     }
+
 }

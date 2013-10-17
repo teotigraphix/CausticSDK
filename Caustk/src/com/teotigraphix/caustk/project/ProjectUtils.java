@@ -66,6 +66,7 @@ public final class ProjectUtils {
         Project project = new Project();
         project.setController(controller);
         project.setInitializing(true);
+        project.setFirstRun(true);
         // set the project sub directory in the /projects directory
         project.setDirectory(new File(file.getPath()));
         project.setInfo(ProjectUtils.createDefaultInfo());

@@ -21,6 +21,8 @@ package com.teotigraphix.libgdx.application;
 
 import java.io.IOException;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -33,6 +35,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
+import com.teotigraphix.libgdx.model.IApplicationModel.OnApplicationModelProjectLoadComplete;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 import com.teotigraphix.libgdx.screen.IScreen;
 
@@ -144,6 +147,15 @@ public abstract class GDXGame implements IGame {
         }
         setController(executor.getController());
         controller.onStart();
+
+        getController().register(OnApplicationModelProjectLoadComplete.class,
+                new EventObserver<OnApplicationModelProjectLoadComplete>() {
+                    @Override
+                    public void trigger(OnApplicationModelProjectLoadComplete object) {
+                        screen.show();
+                        screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                    }
+                });
     }
 
     @Override

@@ -31,7 +31,6 @@ import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sound.ISoundMixer;
-import com.teotigraphix.caustk.sound.ISoundSource.OnSoundSourceSongLoad;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
@@ -102,34 +101,35 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
 
     @Override
     public void registerObservers() {
-
-        // listen for tone add/remove
-        getController().getDispatcher().register(OnSoundSourceToneAdd.class,
-                new EventObserver<OnSoundSourceToneAdd>() {
-                    @Override
-                    public void trigger(OnSoundSourceToneAdd object) {
-                        masterMixer.addTone(object.getTone());
-                    }
-                });
-
-        getController().getDispatcher().register(OnSoundSourceToneRemove.class,
-                new EventObserver<OnSoundSourceToneRemove>() {
-                    @Override
-                    public void trigger(OnSoundSourceToneRemove object) {
-                        masterMixer.removeTone(object.getTone());
-                    }
-                });
-
-        getController().getDispatcher().register(OnSoundSourceSongLoad.class,
-                new EventObserver<OnSoundSourceSongLoad>() {
-                    @Override
-                    public void trigger(OnSoundSourceSongLoad object) {
-                        // restore();
-                    }
-                });
-
+        getController().getLogger().err("SoundMixer", "registerObservers()");
+        toneAdd = new EventObserver<OnSoundSourceToneAdd>() {
+            @Override
+            public void trigger(OnSoundSourceToneAdd object) {
+                getController().getLogger().err("SoundMixer", "OnSoundSourceToneAdd()");
+                masterMixer.addTone(object.getTone());
+            }
+        };
+        toneRemove = new EventObserver<OnSoundSourceToneRemove>() {
+            @Override
+            public void trigger(OnSoundSourceToneRemove object) {
+                masterMixer.removeTone(object.getTone());
+            }
+        };
+        getController().getDispatcher().register(OnSoundSourceToneAdd.class, toneAdd);
+        getController().getDispatcher().register(OnSoundSourceToneRemove.class, toneRemove);
         getController().put(ISoundMixer.COMMAND_SET_VALUE, SoundMixerSetSendCommand.class);
     }
+
+    @Override
+    public void unregisterObservers() {
+        getController().getDispatcher().unregister(toneAdd);
+        getController().getDispatcher().unregister(toneRemove);
+        getController().remove(ISoundMixer.COMMAND_SET_VALUE);
+    }
+
+    private transient EventObserver<OnSoundSourceToneAdd> toneAdd;
+
+    private transient EventObserver<OnSoundSourceToneRemove> toneRemove;
 
     @Override
     public void restore() {

@@ -31,6 +31,8 @@ public interface ICommandManager {
 
     void put(String message, Class<? extends ICommand> command);
 
+    void remove(String message);
+
     void clearHistory();
 
 }

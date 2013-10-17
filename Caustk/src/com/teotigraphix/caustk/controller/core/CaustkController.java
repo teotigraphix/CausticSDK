@@ -153,6 +153,11 @@ public class CaustkController implements ICaustkController {
         commandManager.put(message, command);
     }
 
+    @Override
+    public void remove(String message) {
+        commandManager.remove(message);
+    }
+
     /**
      * Executes an {@link ICommand} against a registered message.
      * 

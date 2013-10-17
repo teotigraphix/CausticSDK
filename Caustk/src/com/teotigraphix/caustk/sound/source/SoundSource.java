@@ -243,7 +243,8 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
     @Override
     public Tone createTone(ToneDescriptor descriptor) throws CausticException {
-        Tone tone = createSynthChannel(nextIndex(), descriptor.getName(), descriptor.getToneType());
+        Tone tone = createSynthChannel(descriptor.getIndex(), descriptor.getName(),
+                descriptor.getToneType());
         return tone;
     }
 
@@ -351,12 +352,13 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
     private void initializeTone(Tone tone, String toneName, ToneType toneType, int index) {
         tone.setId(UUID.randomUUID());
-        tone.setName(toneName);
         tone.setIndex(index);
+        tone.setName(toneName);
     }
 
     private void toneAdd(int index, Tone tone) {
         tones.put(index, tone);
+        getController().getLogger().err("SoundSource", "toneAdd()");
         getController().trigger(new OnSoundSourceToneAdd(tone));
     }
 

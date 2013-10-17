@@ -50,7 +50,9 @@ public interface IRack extends ICausticEngine {
 
     float getCurrentBeat();
 
-    void create();
+    void registerObservers();
+
+    void unregisterObservers();
 
     void update();
 

@@ -82,4 +82,7 @@ public abstract class ApplicationModelState implements Serializable {
     public void save() {
     }
 
+    public void registerObservers() {
+    }
+
 }

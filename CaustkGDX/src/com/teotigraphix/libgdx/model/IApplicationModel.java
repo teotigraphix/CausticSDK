@@ -30,6 +30,10 @@ public interface IApplicationModel extends ICaustkModel {
 
     Project getProject();
 
+    /**
+     * @see OnApplicationModelProjectChange
+     * @param value
+     */
     void setProject(Project value);
 
     /**
@@ -61,6 +65,32 @@ public interface IApplicationModel extends ICaustkModel {
     //--------------------------------------------------------------------------
     // Events
     //--------------------------------------------------------------------------
+
+    public static class OnApplicationModelProjectChange {
+
+        private final Project project;
+
+        public final Project getProject() {
+            return project;
+        }
+
+        public OnApplicationModelProjectChange(Project project) {
+            this.project = project;
+        }
+    }
+
+    public static class OnApplicationModelProjectLoadComplete {
+
+        private final Project project;
+
+        public final Project getProject() {
+            return project;
+        }
+
+        public OnApplicationModelProjectLoadComplete(Project project) {
+            this.project = project;
+        }
+    }
 
     /**
      * Dispatched when the Application has become dirty or was cleaned by a
