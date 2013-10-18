@@ -4,8 +4,6 @@ package com.teotigraphix.caustk.gs.view.transport;
 import org.androidtransfuse.event.EventObserver;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.caustk.gs.ui.UI;
-import com.teotigraphix.caustk.gs.ui.UIUtils;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerTransportChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
@@ -34,10 +32,14 @@ public class TransportControlMediator extends ScreenMediator {
                 });
     }
 
+    public Table createTable(IScreen screen) {
+        return new Table();
+    }
+
     @Override
     public void onCreate(IScreen screen) {
-        final Table table = new Table();
-        table.debug();
+        final Table table = createTable(screen);
+        //table.debug();
 
         view = new TransportGroup(screen.getSkin());
         view.setOnTransportGroupListener(new OnTransportGroupListener() {
@@ -81,8 +83,5 @@ public class TransportControlMediator extends ScreenMediator {
             }
         });
         table.add(view);
-
-        UIUtils.setBounds(table, UI.boundsTransport);
-        screen.getStage().addActor(table);
     }
 }

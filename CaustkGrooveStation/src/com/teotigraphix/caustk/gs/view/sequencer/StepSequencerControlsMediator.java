@@ -108,7 +108,7 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
     @Override
     public void onCreate(IScreen screen) {
         Table table = createTable(screen);
-        table.debug();
+        //table.debug();
         table.align(Align.top);
 
         // table.add().width(50f).expand(false, false);

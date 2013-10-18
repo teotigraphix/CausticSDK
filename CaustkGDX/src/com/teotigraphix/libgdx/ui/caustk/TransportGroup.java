@@ -32,7 +32,7 @@ public class TransportGroup extends ControlTable {
 
     @Override
     protected void createChildren() {
-        defaults().pad(10f);
+        defaults().padRight(15f);
 
         createRecordButton();
         createStopButton();
@@ -120,7 +120,7 @@ public class TransportGroup extends ControlTable {
     private Button createButton(String imagePath) {
         Image image = new Image(getSkin().getDrawable(imagePath));
         Button button = new Button(image, getSkin(), "default");
-        add(button);
+        add(button).minSize(10f);
         return button;
     }
 
