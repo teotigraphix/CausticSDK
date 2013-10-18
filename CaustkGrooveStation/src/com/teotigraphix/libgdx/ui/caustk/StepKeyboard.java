@@ -19,16 +19,10 @@
 
 package com.teotigraphix.libgdx.ui.caustk;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
@@ -48,10 +42,6 @@ public class StepKeyboard extends ControlTable {
     private Table keyGroup;
 
     private Table shiftGroup;
-
-    private Button keyBoardToggle;
-
-    private Button shiftToggle;
 
     private Array<FunctionGroup> functionGroups;
 
@@ -85,37 +75,8 @@ public class StepKeyboard extends ControlTable {
     // Overridden :: Methods
     //--------------------------------------------------------------------------
 
-    private void fireModeChange(StepKeyboardMode mode) {
-        onStepKeyboardListener.onModeStateChange(mode);
-    }
-
     @Override
     protected void createChildren() {
-        debug();
-
-        keyBoardToggle = new Button(getSkin());
-        keyBoardToggle.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (shiftToggle.isChecked()) {
-                    event.cancel();
-                    return;
-                }
-                Button button = (Button)actor;
-                if (button.isChecked()) {
-                    fireModeChange(StepKeyboardMode.Key);
-                } else {
-                    if (shiftToggle.isChecked()) {
-                        fireModeChange(StepKeyboardMode.Shift);
-                    } else {
-                        fireModeChange(StepKeyboardMode.Step);
-                    }
-                }
-            }
-        });
-
-        add(keyBoardToggle).size(40f, 60f).top().left().padRight(10f);
-
         stack = new Stack();
 
         shiftGroup = createShiftGroup();
@@ -126,33 +87,15 @@ public class StepKeyboard extends ControlTable {
         stack.add(stepGroup);
         stack.add(keyGroup);
 
-        add(stack);
+        add(stack).fill().expand();
 
-        row();
+        //row();
 
-        shiftToggle = new TextButton("SHIFT", getSkin());
-        shiftToggle.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Button button = (Button)actor;
-                if (button.isChecked()) {
-                    fireModeChange(StepKeyboardMode.Shift);
-                } else {
-                    if (keyBoardToggle.isChecked()) {
-                        fireModeChange(StepKeyboardMode.Key);
-                    } else {
-                        fireModeChange(StepKeyboardMode.Step);
-                    }
-                }
-            }
-        });
-
-        add(shiftToggle).size(40f, 40f).top().left();
-        Table functionGroup = new Table(getSkin());
-        for (FunctionGroup group : functionGroups) {
-            createGroup(group, functionGroup);
-        }
-        add(functionGroup).expandX().fillX();
+        //        Table functionGroup = new Table(getSkin());
+        //        for (FunctionGroup group : functionGroups) {
+        //            createGroup(group, functionGroup);
+        //        }
+        //        add(functionGroup).expandX().fillX();
     }
 
     @Override
@@ -198,7 +141,7 @@ public class StepKeyboard extends ControlTable {
                 }
 
             });
-            table.add(stepButton).space(10f).size(50f, 70f);
+            table.add(stepButton).space(5f).fillY().expandY();
         }
 
         return table;
@@ -231,7 +174,7 @@ public class StepKeyboard extends ControlTable {
                 }
 
             });
-            table.add(stepButton).space(10f).size(50f, 70f);
+            table.add(stepButton).space(5f).fillY().expandY();
         }
         return table;
     }
@@ -256,7 +199,7 @@ public class StepKeyboard extends ControlTable {
                 }
 
             });
-            table.add(stepButton).space(10f).size(50f, 70f);
+            table.add(stepButton).space(5f).fillY().expandY();
         }
 
         return table;
@@ -274,6 +217,7 @@ public class StepKeyboard extends ControlTable {
         return stepButton;
     }
 
+    @SuppressWarnings("unused")
     private void createGroup(FunctionGroup functionGroup, Table parent) {
         //parent.debug();
         parent.padTop(0f);
@@ -282,20 +226,20 @@ public class StepKeyboard extends ControlTable {
         Table topGroup = new Table(getSkin());
 
         topGroup.setBackground(getSkin().getDrawable("keyboard/black_background"));
-        topGroup.add(functionGroup.getName()).expandX().padTop(-4f);
+        topGroup.add(functionGroup.getName()).expandX().padTop(-2f);
 
-        fullGroup.add(topGroup).expandX().fillX().height(15f);
-        fullGroup.row();
-
-        Table elements = new Table(getSkin());
-        //elements.debug();
-        for (FunctionGroupItem item : functionGroup.getFunctions()) {
-            Label label = new Label(item.getName(), getSkin());
-            label.setAlignment(Align.center);
-            elements.add(label).expandX().center().uniformX();
-        }
-
-        fullGroup.add(elements).fillX().expandX();
+        fullGroup.add(topGroup).expandX().fillX().height(10f);
+        //        fullGroup.row();
+        //
+        //        Table elements = new Table(getSkin());
+        //        elements.debug();
+        //        for (FunctionGroupItem item : functionGroup.getFunctions()) {
+        //            Label label = new Label(item.getName(), getSkin());
+        //            label.setAlignment(Align.center);
+        //            elements.add(label).expandX().center().uniformX();
+        //        }
+        //
+        //        fullGroup.add(elements).fillX().expandX();
         parent.add(fullGroup).expandX().fillX().top().space(10f).uniformX();
 
     }

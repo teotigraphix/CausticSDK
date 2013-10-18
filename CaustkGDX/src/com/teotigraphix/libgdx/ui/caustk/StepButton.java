@@ -95,7 +95,7 @@ public class StepButton extends ControlTable {
             }
         });
         stack.add(button);
-        add(stack).size(50f, 70f);
+        add(stack).fill().expand().minWidth(10f);
 
         overlay = new StepButtonOverlayGroup(getSkin());
         stack.add(overlay);

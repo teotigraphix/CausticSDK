@@ -1,10 +1,14 @@
 
 package com.teotigraphix.caustk.gs.view.sequencer;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
@@ -13,8 +17,6 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode
 import com.teotigraphix.caustk.gs.machine.part.MachineSound.OnMachineSoundListener;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
 import com.teotigraphix.caustk.gs.pattern.Part;
-import com.teotigraphix.caustk.gs.ui.UI;
-import com.teotigraphix.caustk.gs.ui.UIUtils;
 import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.SelectLedControl;
@@ -31,6 +33,10 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
 
     private int machineIndex = 0;
 
+    private TextButton shiftToggle;
+
+    private Button keyBoardToggle;
+
     /**
      * Since the sequencer is abstract and shared, it will need an index to work
      * on the correct machine.
@@ -41,6 +47,8 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
 
     public StepSequencerControlsMediator() {
     }
+
+    protected abstract Table createTable(IScreen screen);
 
     @Override
     public void onRegister() {
@@ -99,11 +107,53 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
 
     @Override
     public void onCreate(IScreen screen) {
-        Table table = new Table();
+        Table table = createTable(screen);
         table.debug();
         table.align(Align.top);
 
-        table.add().width(50f).expand(false, false);
+        // table.add().width(50f).expand(false, false);
+
+        shiftToggle = new TextButton("SHIFT", screen.getSkin());
+        shiftToggle.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Button button = (Button)actor;
+                if (button.isChecked()) {
+                    fireModeChange(StepKeyboardMode.Shift);
+                } else {
+                    if (keyBoardToggle.isChecked()) {
+                        fireModeChange(StepKeyboardMode.Key);
+                    } else {
+                        fireModeChange(StepKeyboardMode.Step);
+                    }
+                }
+            }
+        });
+        table.add(shiftToggle).minSize(10f).pad(5f);
+
+        //
+        keyBoardToggle = new TextButton("KEYBOARD", screen.getSkin());
+        keyBoardToggle.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (shiftToggle.isChecked()) {
+                    event.cancel();
+                    return;
+                }
+                Button button = (Button)actor;
+                if (button.isChecked()) {
+                    fireModeChange(StepKeyboardMode.Key);
+                } else {
+                    if (shiftToggle.isChecked()) {
+                        fireModeChange(StepKeyboardMode.Shift);
+                    } else {
+                        fireModeChange(StepKeyboardMode.Step);
+                    }
+                }
+            }
+        });
+
+        table.add(keyBoardToggle).minSize(10f).pad(5f);
 
         //
         selectLedControl = new SelectLedControl(screen.getSkin());
@@ -144,15 +194,16 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
         selectLedControl.setBottomIndex(0);
         selectLedControl.setMaxBottomIndex(3);
 
-        table.add(selectLedControl).left().expandX();
+        table.add(selectLedControl).left().expandX().pad(5f);
 
         //
 
         keyboardToolsGroup = createToolGroup(screen.getSkin());
         table.add(keyboardToolsGroup).right();
+    }
 
-        UIUtils.setBounds(table, UI.boundsStepSequencerControls);
-        screen.getStage().addActor(table);
+    private void fireModeChange(StepKeyboardMode mode) {
+        //onStepKeyboardListener.onModeStateChange(mode);
     }
 
     protected abstract WidgetGroup createToolGroup(Skin skin);

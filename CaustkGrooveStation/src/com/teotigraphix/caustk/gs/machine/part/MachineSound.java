@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
@@ -113,7 +112,7 @@ public class MachineSound extends MachineComponentPart {
         else if (octaveIndex < 0)
             octaveIndex = 0;
         setOctave(octaves[octaveIndex]);
-        CtkDebug.log("MachineSound", "O:" + octave);
+        getController().getLogger().log("MachineSound", "O:" + octave);
     }
 
     public void incrementOctave() {

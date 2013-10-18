@@ -2,7 +2,6 @@
 package com.teotigraphix.caustk.gs.view.system;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.gs.ui.UI;
 import com.teotigraphix.caustk.gs.ui.UIUtils;
 import com.teotigraphix.libgdx.controller.ScreenMediator;
@@ -26,7 +25,7 @@ public class SystemControlsMediator extends ScreenMediator {
         dial.setOnDialListener(new OnDialListener() {
             @Override
             public void onIncrement() {
-                CtkDebug.view("SystemControlsMediator", "Inc");
+                getController().getLogger().view("SystemControlsMediator", "Inc");
             }
 
             @Override
@@ -35,7 +34,7 @@ public class SystemControlsMediator extends ScreenMediator {
 
             @Override
             public void onDecrement() {
-                CtkDebug.view("SystemControlsMediator", "Dec");
+                getController().getLogger().view("SystemControlsMediator", "Dec");
             }
         });
 

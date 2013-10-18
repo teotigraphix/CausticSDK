@@ -1,18 +1,14 @@
 
 package com.teotigraphix.caustk.gs.view.sequencer;
 
-import java.util.Map;
-
 import org.androidtransfuse.event.EventObserver;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.core.CtkDebug;
 import com.teotigraphix.caustk.gs.controller.IFunctionController;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
-import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.OnMachineSequencerListener;
@@ -21,15 +17,10 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSound.OnMachineSoundListen
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel.OnGrooveStationModelChange;
 import com.teotigraphix.caustk.gs.pattern.Part;
-import com.teotigraphix.caustk.gs.ui.UI;
-import com.teotigraphix.caustk.gs.ui.UIUtils;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerStepChange;
-import com.teotigraphix.caustk.sequencer.track.Phrase;
-import com.teotigraphix.caustk.sequencer.track.Trigger;
 import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.StepKeyboard;
-import com.teotigraphix.libgdx.ui.caustk.StepKeyboard.OnStepKeyboardListener;
 
 public abstract class StepSequencerMediator extends ScreenMediator {
 
@@ -112,77 +103,77 @@ public abstract class StepSequencerMediator extends ScreenMediator {
 
     protected abstract Array<FunctionGroup> createFunctions();
 
+    protected abstract Table createTable(IScreen screen);
+
     @Override
     public void onCreate(IScreen screen) {
 
-        Table table = new Table();
-        table.debug();
+        Table table = createTable(screen);
         table.align(Align.top);
 
         //        table = new Table();
         //        //table.debug();
-        table.add().width(50f).expand(false, false);
-
-        //---------------------------------------------
-
-        //table.row();//.padTop(10f);
-
+        //        table.add().width(50f).expand(false, false);
+        //
+        //        //---------------------------------------------
+        //
+        //        //table.row();//.padTop(10f);
+        //
         Array<FunctionGroup> functionGroups = createFunctions();
         functionController.setFunctionGroups(functionGroups);
 
         stepKeyboard = new StepKeyboard(functionGroups, screen.getSkin());
-        stepKeyboard.setMode(grooveStationModel.getMachine(getMachineIndex()).getSequencer()
-                .getMode());
-        stepKeyboard.setOnStepKeyboardListener(new OnStepKeyboardListener() {
-            @Override
-            public void onStepChange(int index, boolean selected) {
-                GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
-                // stepButton trigger on/off ONLY from user gesture
-                // XXX this mediator is going to end up being abstract
-                // so the index here will point to the currently showing machine index
-                Phrase phrase = machine.getSequencer().getSelectedPhrase();
-                int step = index + ((phrase.getPosition() - 1) * 16);
-                if (selected) {
-                    phrase.triggerOn(step);
-                } else {
-                    phrase.triggerOff(step);
-                }
-            }
+        //        stepKeyboard.setMode(grooveStationModel.getMachine(getMachineIndex()).getSequencer()
+        //                .getMode());
+        //        stepKeyboard.setOnStepKeyboardListener(new OnStepKeyboardListener() {
+        //            @Override
+        //            public void onStepChange(int index, boolean selected) {
+        //                GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
+        //                // stepButton trigger on/off ONLY from user gesture
+        //                // XXX this mediator is going to end up being abstract
+        //                // so the index here will point to the currently showing machine index
+        //                Phrase phrase = machine.getSequencer().getSelectedPhrase();
+        //                int step = index + ((phrase.getPosition() - 1) * 16);
+        //                if (selected) {
+        //                    phrase.triggerOn(step);
+        //                } else {
+        //                    phrase.triggerOff(step);
+        //                }
+        //            }
+        //
+        //            @Override
+        //            public void onKeyUp(int index) {
+        //                grooveStationModel.getCurrentMachine().getSound().noteOff(index - 3);
+        //            }
+        //
+        //            @Override
+        //            public void onKeyDown(int index) {
+        //                grooveStationModel.getCurrentMachine().getSound().noteOn(index - 3, 1f);
+        //            }
+        //
+        //            @Override
+        //            public void onModeStateChange(StepKeyboardMode mode) {
+        //                // this will callback to the sequencer to update its ui
+        //                grooveStationModel.getMachine(getMachineIndex()).getSequencer().setMode(mode);
+        //            }
+        //
+        //            @Override
+        //            public void onFunctionDown(int index) {
+        //                FunctionGroupItem item = stepKeyboard.getItem(index);
+        //                getController().getLogger().view("StepSequencerMediator", "Func:" + item.getName());
+        //                functionController.execute(item.getFunction());
+        //            }
+        //
+        //        });
+        //
+        //        grooveStationModel.getMachine(getMachineIndex()).getSequencer()
+        //                .setMode(StepKeyboardMode.Step);
+        //
+        //        stepKeyboard.validate();
+        //        stepKeyboard.size(stepKeyboard.getPrefWidth(), stepKeyboard.getPrefHeight());
+        //        table.add(stepKeyboard).colspan(3).align(Align.right);
 
-            @Override
-            public void onKeyUp(int index) {
-                grooveStationModel.getCurrentMachine().getSound().noteOff(index - 3);
-            }
-
-            @Override
-            public void onKeyDown(int index) {
-                grooveStationModel.getCurrentMachine().getSound().noteOn(index - 3, 1f);
-            }
-
-            @Override
-            public void onModeStateChange(StepKeyboardMode mode) {
-                // this will callback to the sequencer to update its ui
-                grooveStationModel.getMachine(getMachineIndex()).getSequencer().setMode(mode);
-            }
-
-            @Override
-            public void onFunctionDown(int index) {
-                FunctionGroupItem item = stepKeyboard.getItem(index);
-                CtkDebug.view("StepSequencerMediator", "Func:" + item.getName());
-                functionController.execute(item.getFunction());
-            }
-
-        });
-
-        grooveStationModel.getMachine(getMachineIndex()).getSequencer()
-                .setMode(StepKeyboardMode.Step);
-
-        stepKeyboard.validate();
-        stepKeyboard.size(stepKeyboard.getPrefWidth(), stepKeyboard.getPrefHeight());
-        table.add(stepKeyboard).colspan(3).align(Align.right);
-
-        UIUtils.setBounds(table, UI.boundsStepSequencer);
-        screen.getStage().addActor(table);
+        table.add(stepKeyboard).fill().expand().padLeft(5f).padRight(5f).padBottom(5f);
     }
 
     @Override
@@ -193,23 +184,24 @@ public abstract class StepSequencerMediator extends ScreenMediator {
     }
 
     private void refreshView() {
-        Phrase phrase = grooveStationModel.getMachine(getMachineIndex()).getSequencer()
-                .getSelectedPhrase();
-        Map<Integer, Trigger> map = phrase.getViewTriggerMap();
-        int position = phrase.getPosition();
-        int start = 16 * (position - 1);
-        int top = 16 * position;
-        int index = 0;
-        for (int i = start; i < top; i++) {
-            if (map.containsKey(i)) {
-                if (map.get(i).isSelected())
-                    stepKeyboard.select(index, true);
-                else
-                    stepKeyboard.select(index, false);
-            } else {
-                stepKeyboard.select(index, false);
-            }
-            index++;
-        }
+        return;
+        //        Phrase phrase = grooveStationModel.getMachine(getMachineIndex()).getSequencer()
+        //                .getSelectedPhrase();
+        //        Map<Integer, Trigger> map = phrase.getViewTriggerMap();
+        //        int position = phrase.getPosition();
+        //        int start = 16 * (position - 1);
+        //        int top = 16 * position;
+        //        int index = 0;
+        //        for (int i = start; i < top; i++) {
+        //            if (map.containsKey(i)) {
+        //                if (map.get(i).isSelected())
+        //                    stepKeyboard.select(index, true);
+        //                else
+        //                    stepKeyboard.select(index, false);
+        //            } else {
+        //                stepKeyboard.select(index, false);
+        //            }
+        //            index++;
+        //        }
     }
 }
