@@ -112,6 +112,8 @@ public class GrooveStation {
             return parts;
         }
 
+        private GrooveMachine machine;
+
         private MachineType machineType;
 
         public MachineType getMachineType() {
@@ -122,7 +124,17 @@ public class GrooveStation {
             this.machineType = machineType;
         }
 
+        public GrooveMachineDescriptor(MachineType machineType, GrooveMachine machine) {
+            this.machineType = machineType;
+            this.machine = machine;
+        }
+
         public GrooveMachine createMachine() {
+            // for an app like MS1, it is only using one machine type
+            // and sets the instance in the descriptor
+            if (machine != null)
+                return machine;
+
             switch (machineType) {
                 case Bassline:
                     return new BasslineMachine();

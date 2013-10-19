@@ -82,7 +82,7 @@ public abstract class GrooveMachine {
         return machineSound;
     }
 
-    void setSound(MachineSound value) {
+    protected void setSound(MachineSound value) {
         machineSound = value;
     }
 

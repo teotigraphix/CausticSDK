@@ -6,5 +6,7 @@ public enum MachineType {
 
     Synth,
 
-    Drum;
+    Drum,
+
+    MS1;
 }
