@@ -23,6 +23,16 @@ import com.teotigraphix.caustk.tone.Tone;
 
 public class RhythmPart extends Part {
 
+    private int selectedChannel;
+
+    public int getSelectedChannel() {
+        return selectedChannel;
+    }
+
+    public void setSelectedChannel(int value) {
+        selectedChannel = value;
+    }
+
     public RhythmPart(int index, Tone tone) {
         super(index, tone);
     }

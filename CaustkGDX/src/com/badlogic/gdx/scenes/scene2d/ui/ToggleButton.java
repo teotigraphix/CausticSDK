@@ -30,7 +30,7 @@ public class ToggleButton extends TextButton {
     // isToggle
     //----------------------------------
 
-    boolean isToggle = false;
+    boolean isToggle = true;
 
     public boolean isToggle() {
         return isToggle;

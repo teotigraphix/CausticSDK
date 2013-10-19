@@ -15,6 +15,7 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.OnMachineSequencerListener;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
 import com.teotigraphix.caustk.gs.machine.part.MachineSound.OnMachineSoundListener;
+import com.teotigraphix.caustk.gs.machine.part.MachineSound.PartSelectState;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.libgdx.controller.ScreenMediator;
@@ -73,6 +74,11 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
             @Override
             public void onSelectedPartChange(Part part, Part oldPart) {
                 refreshView();
+            }
+
+            @Override
+            public void onPartSelectStateChange(PartSelectState state, PartSelectState oldState) {
+
             }
         });
     }

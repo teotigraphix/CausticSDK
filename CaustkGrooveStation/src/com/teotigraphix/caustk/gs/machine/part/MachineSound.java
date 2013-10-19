@@ -50,6 +50,22 @@ public class MachineSound extends MachineComponentPart {
     // Public API
     //--------------------------------------------------------------------------
 
+    private PartSelectState partSelectState = PartSelectState.Select;
+
+    public PartSelectState getPartSelectState() {
+        return partSelectState;
+    }
+
+    public void setPartSelectState(PartSelectState value) {
+        if (value == partSelectState)
+            return;
+        final PartSelectState oldState = partSelectState;
+        partSelectState = value;
+        for (OnMachineSoundListener listener : onMachineSoundListener) {
+            listener.onPartSelectStateChange(partSelectState, oldState);
+        }
+    }
+
     //----------------------------------
     // Parts
     //----------------------------------
@@ -207,6 +223,17 @@ public class MachineSound extends MachineComponentPart {
         getSelectedPart().getPatch().noteOff(root + pitch);
     }
 
+    public enum PartSelectState {
+        Mute,
+
+        Solo,
+
+        /**
+         * In most implementations, select is the same as preview.
+         */
+        Select
+    }
+
     //--------------------------------------------------------------------------
     // Listeners
     //--------------------------------------------------------------------------
@@ -219,6 +246,8 @@ public class MachineSound extends MachineComponentPart {
 
     public interface OnMachineSoundListener {
         void onSelectedPartChange(Part part, Part oldPart);
+
+        void onPartSelectStateChange(PartSelectState state, PartSelectState oldState);
     }
 
 }

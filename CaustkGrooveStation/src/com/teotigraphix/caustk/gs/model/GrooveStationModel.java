@@ -10,6 +10,7 @@ import com.teotigraphix.caustk.gs.config.IGrooveStationConfiguration;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.GrooveStation;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveStationSetup;
+import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.libgdx.model.CaustkModelBase;
 
 public class GrooveStationModel extends CaustkModelBase implements IGrooveStationModel {
@@ -22,12 +23,20 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
         return configuration;
     }
 
+    //----------------------------------
+    // grooveStation
+    //----------------------------------
+
     private GrooveStation grooveStation;
 
     @Override
     public GrooveMachine getMachine(int machineIndex) {
         return getMachines().get(machineIndex);
     }
+
+    //----------------------------------
+    // currentMachineIndex
+    //----------------------------------
 
     private int currentMachineIndex;
 
@@ -39,27 +48,66 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
         currentMachineIndex = value;
     }
 
+    //----------------------------------
+    // currentMachine
+    //----------------------------------
+
     @Override
     public GrooveMachine getCurrentMachine() {
         return getMachines().get(currentMachineIndex);
     }
 
+    //----------------------------------
+    // machines
+    //----------------------------------
+
     public List<GrooveMachine> getMachines() {
         return Collections.unmodifiableList(grooveStation.getMachines());
     }
 
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
     public GrooveStationModel() {
     }
 
-    private void configureSetup(GrooveStationSetup setup) {
-        configuration.setup(setup);
-    }
+    //--------------------------------------------------------------------------
+    // Overridden :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public void onRegister() {
         getController().addComponent(IGrooveStationModel.class, this);
         construct(); // don't call in onRegister(), app mediators have not been attatched
         trigger(new OnGrooveStationStartMachines());
+    }
+
+    //--------------------------------------------------------------------------
+    // IGrooveStationModel API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void selectPart(int machineIndex, int partIndex) {
+        final GrooveMachine machine = getMachines().get(machineIndex);
+        machine.getSound().setSelectedPart(partIndex);
+        trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.SelectedPart));
+    }
+
+    @Override
+    public void selectRhythmPart(int machineIndex, int partIndex, int channelIndex) {
+        final GrooveMachine machine = getMachines().get(machineIndex);
+        machine.getSound().setSelectedPart(partIndex);
+        RhythmPart selectedPart = machine.getSound().getSelectedPart();
+        selectedPart.setSelectedChannel(channelIndex);
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected :: Methods
+    //--------------------------------------------------------------------------
+
+    private void configureSetup(GrooveStationSetup setup) {
+        configuration.setup(setup);
     }
 
     protected void construct() {
@@ -75,10 +123,4 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
         }
     }
 
-    @Override
-    public void selectPart(int machineIndex, int partIndex) {
-        GrooveMachine machine = getMachines().get(machineIndex);
-        machine.getSound().setSelectedPart(partIndex);
-        trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.SelectedPart));
-    }
 }
