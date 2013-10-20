@@ -19,7 +19,11 @@
 
 package com.teotigraphix.caustk.gs.machine;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachinePart;
@@ -43,7 +47,9 @@ import com.teotigraphix.caustk.gs.pattern.SynthPart;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.Tone;
 
-public abstract class GrooveMachine {
+public abstract class GrooveMachine implements IDispatcher {
+
+    private transient IDispatcher dispatcher;
 
     //----------------------------------
     // nextPatternIndex
@@ -191,7 +197,7 @@ public abstract class GrooveMachine {
     //--------------------------------------------------------------------------
 
     public GrooveMachine() {
-
+        dispatcher = new Dispatcher();
     }
 
     protected void createMainComponentParts() {
@@ -283,4 +289,27 @@ public abstract class GrooveMachine {
         machineSequencer.beatChange(measure, beat);
     }
 
+    //--------------------------------------------------------------------------
+    // IDispatcher API
+    //--------------------------------------------------------------------------
+
+    @Override
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        dispatcher.register(event, observer);
+    }
+
+    @Override
+    public void unregister(EventObserver<?> observer) {
+        dispatcher.unregister(observer);
+    }
+
+    @Override
+    public void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
+    @Override
+    public void clear() {
+        dispatcher.clear();
+    }
 }

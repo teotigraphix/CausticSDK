@@ -59,11 +59,9 @@ public class MachineSound extends MachineComponentPart {
     public void setPartSelectState(PartSelectState value) {
         if (value == partSelectState)
             return;
-        final PartSelectState oldState = partSelectState;
         partSelectState = value;
-        for (OnMachineSoundListener listener : onMachineSoundListener) {
-            listener.onPartSelectStateChange(partSelectState, oldState);
-        }
+        getController().trigger(
+                new OnMachineSoundListener(MachineSoundChangeKind.SelectedPart, this));
     }
 
     //----------------------------------
@@ -98,11 +96,9 @@ public class MachineSound extends MachineComponentPart {
 
     public void setSelectedPart(int partIndex) {
         Part part = parts.get(partIndex);
-        final Part oldPart = selectedPart;
         selectedPart = part;
-        for (OnMachineSoundListener listener : onMachineSoundListener) {
-            listener.onSelectedPartChange(selectedPart, oldPart);
-        }
+        getController().trigger(
+                new OnMachineSoundListener(MachineSoundChangeKind.PartSelectState, this));
     }
 
     public void addPart(Part part) {
@@ -240,20 +236,34 @@ public class MachineSound extends MachineComponentPart {
         Select
     }
 
+    public enum MachineSoundChangeKind {
+        SelectedPart,
+
+        PartSelectState;
+    }
+
     //--------------------------------------------------------------------------
     // Listeners
     //--------------------------------------------------------------------------
 
-    private List<OnMachineSoundListener> onMachineSoundListener = new ArrayList<OnMachineSoundListener>();
+    public static class OnMachineSoundListener {
 
-    public void addOnMachineSequencerListener(OnMachineSoundListener l) {
-        onMachineSoundListener.add(l);
-    }
+        private MachineSoundChangeKind kind;
 
-    public interface OnMachineSoundListener {
-        void onSelectedPartChange(Part part, Part oldPart);
+        public final MachineSoundChangeKind getKind() {
+            return kind;
+        }
 
-        void onPartSelectStateChange(PartSelectState state, PartSelectState oldState);
+        private MachineSound machineSound;
+
+        public final MachineSound getMachineSound() {
+            return machineSound;
+        }
+
+        public OnMachineSoundListener(MachineSoundChangeKind kind, MachineSound machineSound) {
+            this.kind = kind;
+            this.machineSound = machineSound;
+        }
     }
 
 }

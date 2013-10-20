@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.gs.view.sequencer;
 
+import org.androidtransfuse.event.EventObserver;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,9 +17,7 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.OnMachineSequencerListener;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
 import com.teotigraphix.caustk.gs.machine.part.MachineSound.OnMachineSoundListener;
-import com.teotigraphix.caustk.gs.machine.part.MachineSound.PartSelectState;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
-import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.SelectLedControl;
@@ -70,15 +70,16 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
             }
         });
 
-        machine.getSound().addOnMachineSequencerListener(new OnMachineSoundListener() {
+        register(OnMachineSoundListener.class, new EventObserver<OnMachineSoundListener>() {
             @Override
-            public void onSelectedPartChange(Part part, Part oldPart) {
-                refreshView();
-            }
-
-            @Override
-            public void onPartSelectStateChange(PartSelectState state, PartSelectState oldState) {
-
+            public void trigger(OnMachineSoundListener object) {
+                switch (object.getKind()) {
+                    case SelectedPart:
+                        refreshView();
+                        break;
+                    case PartSelectState:
+                        break;
+                }
             }
         });
     }
