@@ -16,11 +16,10 @@ import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.OnMachineSequencerListener;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
-import com.teotigraphix.caustk.gs.machine.part.MachineSound.OnMachineSoundListener;
-import com.teotigraphix.caustk.gs.machine.part.MachineSound.PartSelectState;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel.OnGrooveStationModelChange;
 import com.teotigraphix.caustk.gs.pattern.Part;
+import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerStepChange;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Trigger;
@@ -72,16 +71,16 @@ public abstract class StepSequencerMediator extends ScreenMediator {
                 refreshView();
             }
         });
-
-        machine.getSound().addOnMachineSequencerListener(new OnMachineSoundListener() {
-            @Override
-            public void onSelectedPartChange(Part part, Part oldPart) {
-            }
-
-            @Override
-            public void onPartSelectStateChange(PartSelectState state, PartSelectState oldState) {
-            }
-        });
+        //
+        //        machine.getSound().addOnMachineSequencerListener(new OnMachineSoundListener() {
+        //            @Override
+        //            public void onSelectedPartChange(Part part, Part oldPart) {
+        //            }
+        //
+        //            @Override
+        //            public void onPartSelectStateChange(PartSelectState state, PartSelectState oldState) {
+        //            }
+        //        });
 
         register(grooveStationModel, OnGrooveStationModelChange.class,
                 new EventObserver<OnGrooveStationModelChange>() {
@@ -89,6 +88,9 @@ public abstract class StepSequencerMediator extends ScreenMediator {
                     public void trigger(OnGrooveStationModelChange object) {
                         switch (object.getKind()) {
                             case SelectedPart:
+                                refreshView();
+                                break;
+                            case RhythmChannel:
                                 refreshView();
                                 break;
                         }
@@ -141,18 +143,7 @@ public abstract class StepSequencerMediator extends ScreenMediator {
         stepKeyboard.setOnStepKeyboardListener(new OnStepKeyboardListener() {
             @Override
             public void onStepChange(int index, boolean selected) {
-                GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
-                // stepButton trigger on/off ONLY from user gesture
-                // XXX this mediator is going to end up being abstract
-                // so the index here will point to the currently showing machine index
-                Phrase phrase = machine.getSequencer().getSelectedPhrase();
-                int position = phrase.getPosition();
-                int step = index + ((position - 1) * 16);
-                if (selected) {
-                    phrase.triggerOn(step);
-                } else {
-                    phrase.triggerOff(step);
-                }
+                trigger(index, selected);
             }
 
             @Override
@@ -190,6 +181,42 @@ public abstract class StepSequencerMediator extends ScreenMediator {
         table.add(stepKeyboard).fill().expand().padLeft(5f).padRight(5f).padBottom(5f);
     }
 
+    protected void trigger(int index, boolean selected) {
+        GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
+        Part selectedPart = machine.getSound().getSelectedPart();
+        if (!selectedPart.isRhythm()) {
+            triggerSynth(index, selected);
+        } else {
+            triggerRhythm(index, selected);
+        }
+    }
+
+    private void triggerRhythm(int index, boolean selected) {
+        GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
+        RhythmPart selectedPart = machine.getSound().getSelectedPart();
+        int channel = selectedPart.getSelectedChannel();
+        if (selected) {
+            selectedPart.triggerOn(channel, index, 1f);
+        } else {
+            selectedPart.triggerOff(channel, index);
+        }
+    }
+
+    private void triggerSynth(int index, boolean selected) {
+        GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
+        // stepButton trigger on/off ONLY from user gesture
+        // XXX this mediator is going to end up being abstract
+        // so the index here will point to the currently showing machine index
+        Phrase phrase = machine.getSequencer().getSelectedPhrase();
+        int position = phrase.getPosition();
+        int step = index + ((position - 1) * 16);
+        if (selected) {
+            phrase.triggerOn(step);
+        } else {
+            phrase.triggerOff(step);
+        }
+    }
+
     @Override
     public void onShow(IScreen screen) {
         super.onShow(screen);
@@ -198,8 +225,16 @@ public abstract class StepSequencerMediator extends ScreenMediator {
     }
 
     private void refreshView() {
-        Phrase phrase = grooveStationModel.getMachine(getMachineIndex()).getSequencer()
-                .getSelectedPhrase();
+        Part selectedPart = grooveStationModel.getCurrentMachine().getSound().getSelectedPart();
+        if (selectedPart.isRhythm()) {
+            refreshRhythmPart((RhythmPart)selectedPart);
+        } else {
+            refreshSynthPart(selectedPart);
+        }
+    }
+
+    private void refreshSynthPart(Part selectedPart) {
+        Phrase phrase = selectedPart.getPhrase();
         Map<Integer, Trigger> map = phrase.getViewTriggerMap();
         int position = phrase.getPosition();
         int start = 16 * (position - 1);
@@ -208,6 +243,31 @@ public abstract class StepSequencerMediator extends ScreenMediator {
         for (int i = start; i < top; i++) {
             if (map.containsKey(i)) {
                 if (map.get(i).isSelected())
+                    stepKeyboard.select(index, true);
+                else
+                    stepKeyboard.select(index, false);
+            } else {
+                stepKeyboard.select(index, false);
+            }
+            index++;
+        }
+    }
+
+    private void refreshRhythmPart(RhythmPart selectedPart) {
+        Phrase phrase = selectedPart.getPhrase();
+        Map<Integer, Trigger> map = phrase.getViewTriggerMap();
+
+        int selectedChannel = selectedPart.getSelectedChannel();
+        int pitch = selectedPart.toPitch(selectedChannel);
+
+        int position = phrase.getPosition();
+        int start = 16 * (position - 1);
+        int top = 16 * position;
+        int index = 0;
+        for (int localStep = start; localStep < top; localStep++) {
+            if (map.containsKey(localStep)) {
+                Trigger trigger = map.get(localStep);
+                if (trigger.hasNote(pitch) && trigger.isSelected(pitch))
                     stepKeyboard.select(index, true);
                 else
                     stepKeyboard.select(index, false);

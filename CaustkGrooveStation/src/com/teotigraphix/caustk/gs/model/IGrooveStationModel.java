@@ -46,7 +46,9 @@ public interface IGrooveStationModel extends ICaustkModel, IControllerComponent 
     }
 
     public enum GrooveStationModelChangeKind {
-        SelectedPart;
+        SelectedPart,
+
+        RhythmChannel;
     }
 
     public static class OnGrooveStationModelChange {

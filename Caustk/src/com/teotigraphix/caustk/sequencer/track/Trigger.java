@@ -107,6 +107,18 @@ public class Trigger implements Serializable {
         selected = value;
     }
 
+    /**
+     * Returns whether a {@link Note} has been selected.
+     * 
+     * @param pitch The pitch to test for selection.
+     */
+    public boolean isSelected(int pitch) {
+        Note note = getNote(pitch);
+        if (note == null)
+            return false;
+        return note.isSelected();
+    }
+
     //----------------------------------
     // notes
     //----------------------------------
@@ -175,6 +187,7 @@ public class Trigger implements Serializable {
             throw new IllegalStateException("Note exists:" + beat + ", pitch:" + pitch);
         }
         Note note = new Note(pitch, beat, beat + gate, velocity, flags);
+        note.setSelected(true);
         addNote(note);
         return note;
     }
@@ -198,6 +211,7 @@ public class Trigger implements Serializable {
     public Note removeNote(int pitch) {
         Note note = getNote(pitch);
         if (note != null) {
+            note.setSelected(false);
             notes.remove(note);
         }
         return note;
@@ -216,4 +230,5 @@ public class Trigger implements Serializable {
     public String toString() {
         return "[Trigger(" + getStep(Resolution.SIXTEENTH) + ", " + notes + ")]";
     }
+
 }

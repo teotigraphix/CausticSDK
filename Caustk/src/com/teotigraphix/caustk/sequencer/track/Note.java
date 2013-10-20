@@ -112,6 +112,20 @@ public class Note implements Serializable {
     }
 
     //----------------------------------
+    // selected
+    //----------------------------------
+
+    private boolean selected;
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean value) {
+        selected = value;
+    }
+
+    //----------------------------------
     // data
     //----------------------------------
 

@@ -90,16 +90,21 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
     @Override
     public void selectPart(int machineIndex, int partIndex) {
         final GrooveMachine machine = getMachines().get(machineIndex);
-        machine.getSound().setSelectedPart(partIndex);
-        trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.SelectedPart));
+        if (!machine.getSound().isSelectedPart(partIndex)) {
+            machine.getSound().setSelectedPart(partIndex);
+            trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.SelectedPart));
+        }
     }
 
     @Override
     public void selectRhythmPart(int machineIndex, int partIndex, int channelIndex) {
         final GrooveMachine machine = getMachines().get(machineIndex);
-        machine.getSound().setSelectedPart(partIndex);
+
+        selectPart(machineIndex, partIndex);
+
         RhythmPart selectedPart = machine.getSound().getSelectedPart();
         selectedPart.setSelectedChannel(channelIndex);
+        trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.RhythmChannel));
     }
 
     //--------------------------------------------------------------------------

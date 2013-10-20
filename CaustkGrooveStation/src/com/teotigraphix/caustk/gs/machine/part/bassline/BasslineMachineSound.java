@@ -24,6 +24,7 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
+import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.sequencer.track.Note;
 
 public class BasslineMachineSound extends MachineSound {
@@ -41,7 +42,7 @@ public class BasslineMachineSound extends MachineSound {
     }
 
     @Override
-    protected MemorySlotItem createPhraseInitData() {
+    protected MemorySlotItem createPhraseInitData(Part part) {
         PhraseMemoryItem item = new PhraseMemoryItem();
         StringBuilder sb = new StringBuilder();
         sb.append(new Note(60, 0f, 0.25f, 1f, 0).getNoteData());

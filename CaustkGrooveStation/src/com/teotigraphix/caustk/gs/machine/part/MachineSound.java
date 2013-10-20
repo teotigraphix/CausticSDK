@@ -80,6 +80,12 @@ public class MachineSound extends MachineComponentPart {
         return Collections.unmodifiableList(parts);
     }
 
+    public boolean isSelectedPart(int partIndex) {
+        if (selectedPart == null)
+            return false;
+        return selectedPart.getIndex() == partIndex;
+    }
+
     private Part selectedPart;
 
     /**
@@ -176,7 +182,7 @@ public class MachineSound extends MachineComponentPart {
         }
     }
 
-    public MemorySlotItem createInitData(Category category) {
+    public MemorySlotItem createInitData(Part part, Category category) {
         switch (category) {
             case PATCH:
                 return null;
@@ -185,7 +191,7 @@ public class MachineSound extends MachineComponentPart {
             case PATTERN_SET:
                 return null;
             case PHRASE:
-                return createPhraseInitData();
+                return createPhraseInitData(part);
             case RPSSET:
                 return null;
             case SONG:
@@ -198,7 +204,7 @@ public class MachineSound extends MachineComponentPart {
         return new PatternMemoryItem();
     }
 
-    protected MemorySlotItem createPhraseInitData() {
+    protected MemorySlotItem createPhraseInitData(Part part) {
         return new PhraseMemoryItem();
     }
 

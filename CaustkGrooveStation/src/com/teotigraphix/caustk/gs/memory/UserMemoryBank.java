@@ -45,7 +45,8 @@ public class UserMemoryBank extends MemoryBank {
 
         PatternMemoryItem item = (PatternMemoryItem)getPatternSlot().getItem(index);
         if (item == null) {
-            item = (PatternMemoryItem)getMachine().getSound().createInitData(Category.PATTERN);
+            item = (PatternMemoryItem)getMachine().getSound()
+                    .createInitData(null, Category.PATTERN);
         }
 
         // user memory has no PatternItem data, all defaults until the user either
@@ -69,7 +70,7 @@ public class UserMemoryBank extends MemoryBank {
         PatternMemoryItem item = part.getPattern().getMemoryItem();
         PhraseMemoryItem phraseMemoryItem = item.getPhrase(index);
         if (phraseMemoryItem == null) {
-            phraseMemoryItem = (PhraseMemoryItem)getMachine().getSound().createInitData(
+            phraseMemoryItem = (PhraseMemoryItem)getMachine().getSound().createInitData(part,
                     Category.PHRASE);
             item.setPhrase(index, phraseMemoryItem);
         }

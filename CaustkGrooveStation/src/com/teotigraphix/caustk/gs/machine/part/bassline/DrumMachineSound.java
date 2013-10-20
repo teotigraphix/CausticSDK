@@ -6,6 +6,7 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
+import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.sequencer.track.Note;
 
 public class DrumMachineSound extends MachineSound {
@@ -23,7 +24,7 @@ public class DrumMachineSound extends MachineSound {
     }
 
     @Override
-    protected MemorySlotItem createPhraseInitData() {
+    protected MemorySlotItem createPhraseInitData(Part part) {
         // 48 - 55
         PhraseMemoryItem item = new PhraseMemoryItem();
         StringBuilder sb = new StringBuilder();
