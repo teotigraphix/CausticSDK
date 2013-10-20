@@ -92,8 +92,8 @@ public class MachineSound extends MachineComponentPart {
 
     public void setSelectedPart(int partIndex) {
         Part part = parts.get(partIndex);
-        selectedPart = part;
         final Part oldPart = selectedPart;
+        selectedPart = part;
         for (OnMachineSoundListener listener : onMachineSoundListener) {
             listener.onSelectedPartChange(selectedPart, oldPart);
         }

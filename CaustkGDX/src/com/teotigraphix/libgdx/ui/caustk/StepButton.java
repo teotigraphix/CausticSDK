@@ -42,7 +42,7 @@ public class StepButton extends ControlTable {
 
     private Stack stack;
 
-    private StepButtonOverlayGroup overlay;
+    private ButtonActiveOverlayGroup overlay;
 
     private ButtonGroup buttonGroup;
 
@@ -97,7 +97,7 @@ public class StepButton extends ControlTable {
         stack.add(button);
         add(stack).fill().expand().minWidth(10f);
 
-        overlay = new StepButtonOverlayGroup(getSkin());
+        overlay = new ButtonActiveOverlayGroup(getSkin());
         stack.add(overlay);
     }
 

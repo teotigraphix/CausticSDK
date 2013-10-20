@@ -53,7 +53,9 @@ public abstract class StepSequencerMediator extends ScreenMediator {
     }
 
     @Override
-    public void onRegister() {
+    public void onAttach(IScreen screen) {
+        super.onAttach(screen);
+
         GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
         machine.getSequencer().addOnMachineSequencerListener(new OnMachineSequencerListener() {
             @Override

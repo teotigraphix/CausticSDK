@@ -26,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 
-public class StepButtonOverlayGroup extends WidgetGroup {
+public class ButtonActiveOverlayGroup extends WidgetGroup {
 
     private Skin skin;
 
@@ -36,7 +36,7 @@ public class StepButtonOverlayGroup extends WidgetGroup {
 
     float activeDuration = 0.2f;
 
-    public StepButtonOverlayGroup(Skin skin) {
+    public ButtonActiveOverlayGroup(Skin skin) {
         this.skin = skin;
         setTouchable(Touchable.disabled);
         createChildren();
