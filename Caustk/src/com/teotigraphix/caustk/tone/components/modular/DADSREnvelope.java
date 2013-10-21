@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class DADSREnvelope extends ModularComponentBase {
 
@@ -308,8 +307,8 @@ public class DADSREnvelope extends ModularComponentBase {
     public DADSREnvelope() {
     }
 
-    public DADSREnvelope(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public DADSREnvelope(int bay) {
+        super(bay);
     }
 
     @Override

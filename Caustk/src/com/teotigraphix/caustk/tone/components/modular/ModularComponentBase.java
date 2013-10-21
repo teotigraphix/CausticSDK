@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
@@ -45,7 +44,7 @@ public abstract class ModularComponentBase extends ToneComponent {
     public ModularComponentBase() {
     }
 
-    public ModularComponentBase(ICaustkController controller, int bay) {
+    public ModularComponentBase(int bay) {
         super();
         this.bay = bay;
     }

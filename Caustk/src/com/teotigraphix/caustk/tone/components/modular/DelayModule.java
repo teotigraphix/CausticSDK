@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class DelayModule extends ModularComponentBase {
 
@@ -106,8 +105,8 @@ public class DelayModule extends ModularComponentBase {
     public DelayModule() {
     }
 
-    public DelayModule(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public DelayModule(int bay) {
+        super(bay);
     }
 
     @Override

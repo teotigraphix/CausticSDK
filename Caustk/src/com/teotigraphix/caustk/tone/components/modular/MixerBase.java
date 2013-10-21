@@ -22,13 +22,15 @@ package com.teotigraphix.caustk.tone.components.modular;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 
 public abstract class MixerBase extends ModularComponentBase {
 
     private static final long serialVersionUID = 699271036505535007L;
 
+    @SuppressLint("UseSparseArrays")
     private Map<Integer, Float> gains = new HashMap<Integer, Float>();
 
     //----------------------------------
@@ -90,8 +92,8 @@ public abstract class MixerBase extends ModularComponentBase {
     public MixerBase() {
     }
 
-    public MixerBase(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public MixerBase(int bay) {
+        super(bay);
     }
 
     public enum MixerJack implements IModularJack {

@@ -25,8 +25,6 @@ import java.io.IOException;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.core.Library;
-import com.teotigraphix.caustk.library.item.LibraryPatch;
-import com.teotigraphix.caustk.tone.Tone;
 
 public interface ILibraryManager extends IControllerComponent {
 
@@ -116,9 +114,4 @@ public interface ILibraryManager extends IControllerComponent {
      * Creates an empty library with no directory
      */
     Library createLibrary();
-
-    void assignPatch(Tone tone, LibraryPatch libraryPatch);
-
-    void assignPatch(int toneIndex, LibraryPatch libraryPatch);
-
 }

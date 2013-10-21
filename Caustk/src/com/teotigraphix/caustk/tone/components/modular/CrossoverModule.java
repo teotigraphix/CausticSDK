@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class CrossoverModule extends ModularComponentBase {
 
@@ -132,8 +131,8 @@ public class CrossoverModule extends ModularComponentBase {
     public CrossoverModule() {
     }
 
-    public CrossoverModule(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public CrossoverModule(int bay) {
+        super(bay);
     }
 
     @Override

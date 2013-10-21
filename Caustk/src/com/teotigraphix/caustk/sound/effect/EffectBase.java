@@ -30,7 +30,7 @@ public abstract class EffectBase implements IEffect {
     private static final long serialVersionUID = -173253129655285469L;
 
     protected ICausticEngine getEngine() {
-        return rack.getController();
+        return rack;
     }
 
     //----------------------------------

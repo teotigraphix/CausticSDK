@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class Arpeggiator extends ModularComponentBase {
 
@@ -130,8 +129,8 @@ public class Arpeggiator extends ModularComponentBase {
     public Arpeggiator() {
     }
 
-    public Arpeggiator(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public Arpeggiator(int bay) {
+        super(bay);
     }
 
     @Override

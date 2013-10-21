@@ -21,8 +21,16 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.Serializable;
 
+import org.androidtransfuse.event.EventObserver;
+
+import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.controller.command.ICommand;
+import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.library.core.Library;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.system.SystemSequencer;
@@ -44,12 +52,14 @@ public class Rack implements IRack, Serializable {
 
     private transient ICaustkController controller;
 
+    private transient IDispatcher dispatcher;
+
     //----------------------------------
     // soundSource
     //----------------------------------
 
     @Override
-    public ICaustkController getController() {
+    public ICaustkController _getController() {
         return controller;
     }
 
@@ -112,6 +122,8 @@ public class Rack implements IRack, Serializable {
 
     public Rack(ICaustkController controller) {
         this.controller = controller;
+        this.dispatcher = new Dispatcher();
+
         ((CaustkController)this.controller).setRack(this);
 
         soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
@@ -135,6 +147,13 @@ public class Rack implements IRack, Serializable {
         soundMixer.registerObservers();
         systemSequencer.registerObservers();
         trackSequencer.registerObservers();
+
+        // XXX this is not going to work unless there is NO way
+        // a client can hold onto things if the rack gets recreated
+        controller.addComponent(ISoundSource.class, soundSource);
+        controller.addComponent(ISoundMixer.class, soundMixer);
+        controller.addComponent(ISystemSequencer.class, systemSequencer);
+        controller.addComponent(ITrackSequencer.class, trackSequencer);
     }
 
     @Override
@@ -207,6 +226,45 @@ public class Rack implements IRack, Serializable {
     }
 
     //--------------------------------------------------------------------------
+    // IDispatcher API
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void put(String message, Class<? extends ICommand> command) {
+        controller.put(message, command);
+    }
+
+    @Override
+    public void remove(String message) {
+        controller.remove(message);
+    }
+
+    @Override
+    public void execute(String message, Object... args) throws CausticException {
+        controller.execute(message, args);
+    }
+
+    @Override
+    public <T> void register(Class<T> event, EventObserver<T> observer) {
+        dispatcher.register(event, observer);
+    }
+
+    @Override
+    public void unregister(EventObserver<?> observer) {
+        dispatcher.unregister(observer);
+    }
+
+    @Override
+    public void trigger(Object event) {
+        dispatcher.trigger(event);
+    }
+
+    @Override
+    public void clear() {
+        dispatcher.clear();
+    }
+
+    //--------------------------------------------------------------------------
     // ICausticEngine API
     //--------------------------------------------------------------------------
 
@@ -219,6 +277,21 @@ public class Rack implements IRack, Serializable {
     @Override
     public final String queryMessage(String message) {
         return soundGenerator.queryMessage(message);
+    }
+
+    @Override
+    public ICausticLogger getLogger() {
+        return controller.getLogger();
+    }
+
+    @Override
+    public Project getProject() {
+        return controller.getProjectManager().getProject();
+    }
+
+    @Override
+    public Library getLibrary() {
+        return controller.getLibraryManager().getSelectedLibrary();
     }
 
     //--------------------------------------------------------------------------

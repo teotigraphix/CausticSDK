@@ -21,12 +21,13 @@ package com.teotigraphix.caustk.gs.machine;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
-import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachinePart;
 import com.teotigraphix.caustk.gs.machine.part.MachineControls;
 import com.teotigraphix.caustk.gs.machine.part.MachineFooter;
 import com.teotigraphix.caustk.gs.machine.part.MachineHeader;
@@ -42,14 +43,18 @@ import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.gs.pattern.RhythmPart;
-import com.teotigraphix.caustk.gs.pattern.SynthPart;
-import com.teotigraphix.caustk.tone.BeatboxTone;
-import com.teotigraphix.caustk.tone.Tone;
 
 public abstract class GrooveMachine implements IDispatcher {
 
     private transient IDispatcher dispatcher;
+
+    public final IRack getRack() {
+        return controller.getRack();
+    }
+
+    public final ICausticLogger getLogger() {
+        return controller.getLogger();
+    }
 
     //----------------------------------
     // nextPatternIndex
@@ -234,15 +239,7 @@ public abstract class GrooveMachine implements IDispatcher {
     }
 
     private void setupParts(GrooveMachineDescriptor descriptor) throws CausticException {
-        int index = 0;
-        for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
-            Tone tone = controller.getRack().getSoundSource()
-                    .createTone(partDescriptor.getName(), partDescriptor.getToneType());
-
-            Part part = createPart(index, tone);
-            getSound().addPart(part);
-            index++;
-        }
+        getSound().setupParts(descriptor);
     }
 
     protected void setupPatterns() {
@@ -274,16 +271,6 @@ public abstract class GrooveMachine implements IDispatcher {
         }
     }
 
-    protected Part createPart(int index, Tone tone) {
-        Part part = null;
-        if (tone instanceof BeatboxTone) {
-            part = new RhythmPart(index, tone);
-        } else {
-            part = new SynthPart(index, tone);
-        }
-        return part;
-    }
-
     void beatChange(int measure, float beat) {
         // CausticCore > IGame > ISystemSequencer > GrooveStation > GrooveMachine
         machineSequencer.beatChange(measure, beat);
@@ -312,4 +299,5 @@ public abstract class GrooveMachine implements IDispatcher {
     public void clear() {
         dispatcher.clear();
     }
+
 }

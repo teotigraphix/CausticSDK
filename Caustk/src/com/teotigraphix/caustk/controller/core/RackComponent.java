@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.controller.core;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.IRackComponent;
 
@@ -43,12 +43,16 @@ public class RackComponent implements IRackComponent {
         return rack;
     }
 
+    protected final ICausticLogger getLogger() {
+        return rack.getLogger();
+    }
+
     /**
      * Returns the main application controller from the {@link IRack}.
      */
-    protected final ICaustkController getController() {
-        return rack.getController();
-    }
+    //    protected final ICaustkController getController() {
+    //        return rack.getController();
+    //    }
 
     //--------------------------------------------------------------------------
     // Constructors

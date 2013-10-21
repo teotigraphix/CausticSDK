@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class SubOscillator extends ModularComponentBase {
 
@@ -107,8 +106,8 @@ public class SubOscillator extends ModularComponentBase {
         super();
     }
 
-    public SubOscillator(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public SubOscillator(int bay) {
+        super(bay);
     }
 
     @Override

@@ -82,7 +82,8 @@ public class Patch {
 
     public void commit() {
         try {
-            File presetFile = getTone().getController().getLibraryManager().getSelectedLibrary()
+            // XXX may tomany access points, this needs to change
+            File presetFile = getPart().getMachine().getRack().getLibrary()
                     .getPresetFile(patchItem.getPresetFile());
             loadPreset(presetFile);
         } catch (Exception e) {

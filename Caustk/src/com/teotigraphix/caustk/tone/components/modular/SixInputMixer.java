@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 /**
  * 6 gain input mixer.
@@ -31,8 +30,8 @@ public class SixInputMixer extends MixerBase {
     public SixInputMixer() {
     }
 
-    public SixInputMixer(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public SixInputMixer(int bay) {
+        super(bay);
     }
 
     @Override

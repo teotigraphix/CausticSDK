@@ -154,14 +154,15 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
         for (ToneDescriptor descriptor : scene.getSoundSourceDescriptor().getDescriptors().values()) {
             Tone tone = createTone(descriptor);
             UUID patchId = descriptor.getPatchId();
-            Library library = getController().getLibraryManager().getSelectedLibrary();
+            Library library = getRack().getLibrary();
             if (library != null && patchId != null) {
                 LibraryPatch libraryPatch = library.findPatchById(patchId);
-                getController().getLibraryManager().assignPatch(tone, libraryPatch);
+                library.assignPatch(tone, libraryPatch);
             }
 
             SoundMixerChannelDescriptor channelDescriptor = scene.getSoundSourceDescriptor()
                     .getChannels().get(tone.getIndex());
+
             channelDescriptor.update(tone);
         }
 
@@ -218,7 +219,7 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
         SoundSourceUtils.setup(toneClass.cast(tone));
 
-        RackMessage.CREATE.send(getController(), tone.getToneType().getValue(), tone.getName(),
+        RackMessage.CREATE.send(getRack(), tone.getToneType().getValue(), tone.getName(),
                 tone.getIndex());
 
         toneAdd(index, tone);
@@ -256,22 +257,22 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
     public void destroyTone(Tone tone) {
         int index = tone.getIndex();
-        RackMessage.REMOVE.send(getController(), index);
+        RackMessage.REMOVE.send(getRack(), index);
         toneRemove(tone);
     }
 
     @Override
     public void clearAndReset() {
-        getController().trigger(new OnSoundSourceClear());
+        getRack().trigger(new OnSoundSourceClear());
 
         ArrayList<Tone> remove = new ArrayList<Tone>(tones.values());
         for (Tone tone : remove) {
             toneRemove(tone);
         }
 
-        RackMessage.BLANKRACK.send(getController());
+        RackMessage.BLANKRACK.send(getRack());
 
-        getController().trigger(new OnSoundSourceReset());
+        getRack().trigger(new OnSoundSourceReset());
     }
 
     //--------------------------------------------------------------------------
@@ -286,7 +287,7 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
             throw new CausticException("{" + index + "} tone is already defined");
 
         if (!restoring)
-            RackMessage.CREATE.send(getController(), toneType.getValue(), toneName, index);
+            RackMessage.CREATE.send(getRack(), toneType.getValue(), toneName, index);
 
         final IRack rack = getRack();
 
@@ -359,13 +360,13 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
     private void toneAdd(int index, Tone tone) {
         tones.put(index, tone);
-        getController().getLogger().err("SoundSource", "toneAdd()");
-        getController().trigger(new OnSoundSourceToneAdd(tone));
+        getRack().getLogger().err("SoundSource", "toneAdd()");
+        getRack().trigger(new OnSoundSourceToneAdd(tone));
     }
 
     private void toneRemove(Tone tone) {
         tones.remove(tone.getIndex());
-        getController().trigger(new OnSoundSourceToneRemove(tone));
+        getRack().trigger(new OnSoundSourceToneRemove(tone));
     }
 
     //--------------------------------------------------------------------------
@@ -450,19 +451,19 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
 
     @Override
     public void loadSongRaw(File causticFile) throws CausticException {
-        RackMessage.LOAD_SONG.send(getController(), causticFile.getAbsolutePath());
+        RackMessage.LOAD_SONG.send(getRack(), causticFile.getAbsolutePath());
     }
 
     @Override
     public void loadSong(File causticFile) throws CausticException {
         loadSongRaw(causticFile);
         loadMachines();
-        getController().trigger(new OnSoundSourceSongLoad(causticFile));
+        getRack().trigger(new OnSoundSourceSongLoad(causticFile));
     }
 
     @Override
     public File saveSong(String name) {
-        RackMessage.SAVE_SONG.send(getController(), name);
+        RackMessage.SAVE_SONG.send(getRack(), name);
         return RuntimeUtils.getCausticSongFile(name);
     }
 
@@ -482,8 +483,8 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     protected void loadMachines() {
         restoring = true;
         for (int i = 0; i < maxNumTones; i++) {
-            String name = RackMessage.QUERY_MACHINE_NAME.queryString(getController(), i);
-            String type = RackMessage.QUERY_MACHINE_TYPE.queryString(getController(), i);
+            String name = RackMessage.QUERY_MACHINE_NAME.queryString(getRack(), i);
+            String type = RackMessage.QUERY_MACHINE_TYPE.queryString(getRack(), i);
             if (name == null || name.equals(""))
                 continue;
 
@@ -493,7 +494,7 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
             @SuppressWarnings("unused")
             Tone tone = null;
             try {
-                getController().getLogger().log("SoundSource",
+                getRack().getLogger().log("SoundSource",
                         "Restore machine from load: " + name + ":" + type);
                 tone = createTone(i, name, toneType);
             } catch (CausticException e) {

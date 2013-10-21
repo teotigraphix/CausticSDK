@@ -22,6 +22,8 @@ package com.teotigraphix.caustk.sequencer;
 import java.util.Collection;
 import java.util.Map;
 
+import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.IRackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.queue.QueueData;
@@ -51,6 +53,9 @@ public interface IQueueSequencer extends IRackComponent {
 
     void setRecordMode(boolean value);
 
+    /**
+     * The {@link IRack} is the {@link IDispatcher}.
+     */
     public static class OnQueueSequencerDataChange {
 
         private QueueData data;

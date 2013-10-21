@@ -354,4 +354,13 @@ public class Library implements ISerialize {
             item.setLibrary(this);
         }
     }
+
+    //--------------------------------------------------------------------------
+    // 
+    //--------------------------------------------------------------------------
+
+    public void assignPatch(Tone tone, LibraryPatch libraryPatch) {
+        final File presetFile = getPresetFile(libraryPatch.getPresetFile());
+        tone.getSynth().loadPreset(presetFile.getAbsolutePath());
+    }
 }

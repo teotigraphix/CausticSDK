@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer;
 import com.teotigraphix.caustk.sequencer.IQueueSequencer.OnQueueSequencerDataChange;
@@ -39,12 +39,16 @@ public class QueuePlayer implements Serializable {
 
     private static final long serialVersionUID = -2644355130242774038L;
 
-    private final ICaustkController getController() {
-        return queueSequencer.getRack().getController();
+    //    private final ICaustkController _getController() {
+    //        return queueSequencer.getRack().getController();
+    //    }
+
+    private final IRack getRack() {
+        return queueSequencer.getRack();
     }
 
     public final TrackSong getTrackSong() {
-        return getController().getRack().getTrackSequencer().getTrackSong();
+        return getRack().getTrackSequencer().getTrackSong();
     }
 
     /**
@@ -117,13 +121,13 @@ public class QueuePlayer implements Serializable {
             restarting = false;
         }
         if (queueSequencer.isAudioEnabled()) {
-            getController().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG.getValue());
+            getRack().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG.getValue());
         }
     }
 
     public void stop() {
         try {
-            getController().execute(ISystemSequencer.COMMAND_STOP);
+            getRack().execute(ISystemSequencer.COMMAND_STOP);
             restartSequencer();
         } catch (CausticException e) {
             e.printStackTrace();
@@ -134,7 +138,7 @@ public class QueuePlayer implements Serializable {
         // XXX until recording is implemented, each time the sequencer
         // is stopped, erase all track items and set position back to 0
         getTrackSong().clear();
-        getController().getRack().getSystemSequencer().playPosition(0);
+        getRack().getSystemSequencer().playPosition(0);
         restarting = true;
     }
 
@@ -266,7 +270,7 @@ public class QueuePlayer implements Serializable {
         //final float currentBeat = getTrackSong().getCurrentBeat();
         final int currentMeasure = getTrackSong().getCurrentMeasure();
 
-        for (Track track : getController().getRack().getTrackSequencer().getTracks()) {
+        for (Track track : getRack().getTrackSequencer().getTracks()) {
 
             // Find all tracks that are ending at the next measure
             TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
@@ -369,12 +373,12 @@ public class QueuePlayer implements Serializable {
         if (!state.equals(data.getState())) {
             data.setState(state);
             debug("setState(" + data + ")");
-            getController().trigger(new OnQueueSequencerDataChange(data));
+            getRack().trigger(new OnQueueSequencerDataChange(data));
         }
     }
 
     private void debug(String message) {
-        getController().getLogger().debug("QueuePlayer", message);
+        getRack().getLogger().debug("QueuePlayer", message);
     }
 
     public void remove(QueueData data) {

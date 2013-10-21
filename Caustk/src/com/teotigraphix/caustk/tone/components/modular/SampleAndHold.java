@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class SampleAndHold extends ModularComponentBase {
 
@@ -80,8 +79,8 @@ public class SampleAndHold extends ModularComponentBase {
     public SampleAndHold() {
     }
 
-    public SampleAndHold(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public SampleAndHold(int bay) {
+        super(bay);
     }
 
     @Override

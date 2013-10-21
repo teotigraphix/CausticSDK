@@ -23,7 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
+import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachinePart;
 import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
@@ -32,6 +35,9 @@ import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
+import com.teotigraphix.caustk.gs.pattern.SynthPart;
+import com.teotigraphix.caustk.tone.BeatboxTone;
+import com.teotigraphix.caustk.tone.Tone;
 
 /*
  * This class will implement and wrap the Tone API for each machine.
@@ -110,10 +116,6 @@ public class MachineSound extends MachineComponentPart {
         trigger(new OnMachineSoundListener(MachineSoundChangeKind.PartSelectState, this));
     }
 
-    public void addPart(Part part) {
-        parts.add(part);
-    }
-
     public final Patch getSelectedPatch() {
         return getSelectedPart().getPatch();
     }
@@ -147,7 +149,7 @@ public class MachineSound extends MachineComponentPart {
         else if (octaveIndex < 0)
             octaveIndex = 0;
         setOctave(octaves[octaveIndex]);
-        getController().getLogger().log("MachineSound", "O:" + octave);
+        getLogger().log("MachineSound", "O:" + octave);
     }
 
     public void incrementOctave() {
@@ -289,4 +291,26 @@ public class MachineSound extends MachineComponentPart {
         }
     }
 
+    public void setupParts(GrooveMachineDescriptor descriptor) throws CausticException {
+        for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
+            Tone tone = getMachine().getRack().getSoundSource()
+                    .createTone(partDescriptor.getName(), partDescriptor.getToneType());
+            Part part = createPart(tone);
+            addPart(part);
+        }
+    }
+
+    protected Part createPart(Tone tone) {
+        Part part = null;
+        if (tone instanceof BeatboxTone) {
+            part = new RhythmPart(getMachine(), tone);
+        } else {
+            part = new SynthPart(getMachine(), tone);
+        }
+        return part;
+    }
+
+    void addPart(Part part) {
+        parts.add(part);
+    }
 }

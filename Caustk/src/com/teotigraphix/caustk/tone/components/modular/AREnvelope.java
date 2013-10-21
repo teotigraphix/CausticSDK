@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class AREnvelope extends ModularComponentBase {
 
@@ -180,8 +179,8 @@ public class AREnvelope extends ModularComponentBase {
     public AREnvelope() {
     }
 
-    public AREnvelope(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public AREnvelope(int bay) {
+        super(bay);
     }
 
     @Override

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class Saturator extends ModularComponentBase {
 
@@ -106,8 +105,8 @@ public class Saturator extends ModularComponentBase {
     public Saturator() {
     }
 
-    public Saturator(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public Saturator(int bay) {
+        super(bay);
     }
 
     @Override

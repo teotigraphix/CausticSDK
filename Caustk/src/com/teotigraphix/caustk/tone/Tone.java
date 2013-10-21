@@ -24,11 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.tone.components.SynthComponent;
 
@@ -43,9 +43,17 @@ public abstract class Tone implements IRestore, Serializable {
 
     private IRack rack;
 
-    public ICaustkController getController() {
-        return rack.getController();
+    public IRack _getRack() {
+        return null;
     }
+
+    public SoundMixerChannel getMixerChannel() {
+        return rack.getSoundMixer().getChannel(this);
+    }
+
+    //    public ICaustkController getController() {
+    //        return rack.getController();
+    //    }
 
     private final ToneType toneType;
 
@@ -142,7 +150,7 @@ public abstract class Tone implements IRestore, Serializable {
      * Returns the core audio engine interface.
      */
     public ICausticEngine getEngine() {
-        return rack.getController();
+        return rack;
     }
 
     //--------------------------------------------------------------------------
@@ -200,6 +208,15 @@ public abstract class Tone implements IRestore, Serializable {
     }
 
     /**
+     * Returns the native machine name in the caustic rack.
+     * 
+     * @param restore Retrieve the native machine name.
+     */
+    public final String getName(boolean restore) {
+        return RackMessage.QUERY_MACHINE_NAME.queryString(getEngine(), index);
+    }
+
+    /**
      * Sets the new name of the tone, will send the
      * {@link RackMessage#MACHINE_NAME} message to the core.
      * 
@@ -224,7 +241,7 @@ public abstract class Tone implements IRestore, Serializable {
     private UUID defaultPatchId;
 
     /**
-     * If loaded from the library as a {@link SoundSourceState} item, will point
+     * If loaded from the library as a {@link ToneDescriptor} item, will point
      * to the patch that was created when the tone was serialized.
      */
     public UUID getDefaultPatchId() {
@@ -241,11 +258,23 @@ public abstract class Tone implements IRestore, Serializable {
 
     private Map<Class<? extends ToneComponent>, ToneComponent> components = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
 
-    public void addComponent(Class<? extends ToneComponent> clazz, ToneComponent instance) {
+    /**
+     * Adds a {@link ToneComponent} to the tone's component map and sets the
+     * component's tone reference.
+     * 
+     * @param clazz The component API class.
+     * @param instance The component instance.
+     */
+    void addComponent(Class<? extends ToneComponent> clazz, ToneComponent instance) {
         components.put(clazz, instance);
         instance.setTone(this);
     }
 
+    /**
+     * Returns a {@link ToneComponent} by class type.
+     * 
+     * @param clazz The component API class.
+     */
     public <T extends ToneComponent> T getComponent(Class<T> clazz) {
         return clazz.cast(components.get(clazz));
     }
@@ -259,8 +288,13 @@ public abstract class Tone implements IRestore, Serializable {
         this.toneType = toneType;
     }
 
+    //--------------------------------------------------------------------------
+    // IRestore API :: Methods
+    //--------------------------------------------------------------------------
+
     @Override
     public void restore() {
+        setNameInternal(getName(true));
         for (ToneComponent toneComponent : components.values()) {
             toneComponent.restore();
         }

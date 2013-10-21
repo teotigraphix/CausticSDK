@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.gs.pattern;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
@@ -34,9 +33,9 @@ public class Pattern implements IDispatcher {
 
     private final GrooveMachine machine;
 
-    public ICaustkController getController() {
-        return machine.getController();
-    }
+    //    public IRack getRack() {
+    //        return machine.getRack();
+    //    }
 
     //----------------------------------
     // inMemory

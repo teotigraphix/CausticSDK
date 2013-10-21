@@ -133,95 +133,95 @@ public class ModularTone extends Tone {
         ModularComponentBase component = null;
         switch (componentType) {
             case TwoToOneMixerModulator:
-                component = new TwoInputMixer(getController(), bay);
+                component = new TwoInputMixer(bay);
                 component.setTone(this);
                 break;
             case ThreeToOneMixer:
-                component = new ThreeInputMixer(getController(), bay);
+                component = new ThreeInputMixer(bay);
                 component.setTone(this);
                 break;
             case SixToOneMixer:
-                component = new SixInputMixer(getController(), bay);
+                component = new SixInputMixer(bay);
                 component.setTone(this);
                 break;
             case Oscillator:
-                component = new Oscillator(getController(), bay);
+                component = new Oscillator(bay);
                 component.setTone(this);
                 break;
             case SubOscillator:
-                component = new SubOscillator(getController(), bay);
+                component = new SubOscillator(bay);
                 component.setTone(this);
                 break;
             case PulseGenerator:
-                component = new PulseGenerator(getController(), bay);
+                component = new PulseGenerator(bay);
                 component.setTone(this);
                 break;
             case DADSREnvelope:
-                component = new DADSREnvelope(getController(), bay);
+                component = new DADSREnvelope(bay);
                 component.setTone(this);
                 break;
             case AREnvelope:
-                component = new AREnvelope(getController(), bay);
+                component = new AREnvelope(bay);
                 component.setTone(this);
                 break;
             case DecayEnvelope:
-                component = new DecayEnvelope(getController(), bay);
+                component = new DecayEnvelope(bay);
                 component.setTone(this);
                 break;
             case SVFilter:
-                component = new SVFilter(getController(), bay);
+                component = new SVFilter(bay);
                 component.setTone(this);
                 break;
             case StereoLPF:
-                component = new StereoLPF(getController(), bay);
+                component = new StereoLPF(bay);
                 component.setTone(this);
                 break;
             case FormantFilter:
-                component = new FormantFilter(getController(), bay);
+                component = new FormantFilter(bay);
                 component.setTone(this);
                 break;
             case MiniLFO:
-                component = new MiniLFO(getController(), bay);
+                component = new MiniLFO(bay);
                 component.setTone(this);
                 break;
             case NoiseGenerator:
-                component = new NoiseGenerator(getController(), bay);
+                component = new NoiseGenerator(bay);
                 component.setTone(this);
                 break;
             case PanModule:
-                component = new PanModule(getController(), bay);
+                component = new PanModule(bay);
                 component.setTone(this);
                 break;
             case CrossFade:
-                component = new Crossfader(getController(), bay);
+                component = new Crossfader(bay);
                 component.setTone(this);
                 break;
             case LagProcessor:
-                component = new LagProcessor(getController(), bay);
+                component = new LagProcessor(bay);
                 component.setTone(this);
                 break;
             case Delay:
-                component = new DelayModule(getController(), bay);
+                component = new DelayModule(bay);
                 component.setTone(this);
                 break;
             case SampleAndHold:
-                component = new SampleAndHold(getController(), bay);
+                component = new SampleAndHold(bay);
                 component.setTone(this);
                 break;
             case CrossOver:
-                component = new CrossoverModule(getController(), bay);
+                component = new CrossoverModule(bay);
                 component.setTone(this);
                 break;
             case Saturator:
-                component = new Saturator(getController(), bay);
+                component = new Saturator(bay);
                 component.setTone(this);
                 break;
             case FMPair:
-                component = new FMPair(getController(), bay);
+                component = new FMPair(bay);
                 component.setTone(this);
                 break;
             case Arpeggiator:
-                component = new Arpeggiator(getController(), bay);
+                component = new Arpeggiator(bay);
                 component.setTone(this);
                 break;
 

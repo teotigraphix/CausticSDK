@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class FMPair extends ModularComponentBase {
 
@@ -210,8 +209,8 @@ public class FMPair extends ModularComponentBase {
     public FMPair() {
     }
 
-    public FMPair(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public FMPair(int bay) {
+        super(bay);
     }
 
     @Override

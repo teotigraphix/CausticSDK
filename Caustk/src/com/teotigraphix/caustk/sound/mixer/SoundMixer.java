@@ -84,7 +84,7 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
     @Override
     public void executeSetValue(int toneIndex, MixerInput input, Number value) {
         try {
-            getController().execute(COMMAND_SET_VALUE, toneIndex, input, value);
+            getRack().execute(COMMAND_SET_VALUE, toneIndex, input, value);
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -101,11 +101,11 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
 
     @Override
     public void registerObservers() {
-        getController().getLogger().err("SoundMixer", "registerObservers()");
+        getLogger().err("SoundMixer", "registerObservers()");
         toneAdd = new EventObserver<OnSoundSourceToneAdd>() {
             @Override
             public void trigger(OnSoundSourceToneAdd object) {
-                getController().getLogger().err("SoundMixer", "OnSoundSourceToneAdd()");
+                getLogger().err("SoundMixer", "OnSoundSourceToneAdd()");
                 masterMixer.addTone(object.getTone());
             }
         };
@@ -115,16 +115,16 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
                 masterMixer.removeTone(object.getTone());
             }
         };
-        getController().getDispatcher().register(OnSoundSourceToneAdd.class, toneAdd);
-        getController().getDispatcher().register(OnSoundSourceToneRemove.class, toneRemove);
-        getController().put(ISoundMixer.COMMAND_SET_VALUE, SoundMixerSetSendCommand.class);
+        getRack().register(OnSoundSourceToneAdd.class, toneAdd);
+        getRack().register(OnSoundSourceToneRemove.class, toneRemove);
+        getRack().put(ISoundMixer.COMMAND_SET_VALUE, SoundMixerSetSendCommand.class);
     }
 
     @Override
     public void unregisterObservers() {
-        getController().getDispatcher().unregister(toneAdd);
-        getController().getDispatcher().unregister(toneRemove);
-        getController().remove(ISoundMixer.COMMAND_SET_VALUE);
+        getRack().unregister(toneAdd);
+        getRack().unregister(toneRemove);
+        getRack().remove(ISoundMixer.COMMAND_SET_VALUE);
     }
 
     private transient EventObserver<OnSoundSourceToneAdd> toneAdd;

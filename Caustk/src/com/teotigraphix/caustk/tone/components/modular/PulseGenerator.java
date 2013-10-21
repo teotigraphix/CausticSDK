@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class PulseGenerator extends ModularComponentBase {
 
@@ -184,8 +183,8 @@ public class PulseGenerator extends ModularComponentBase {
     public PulseGenerator() {
     }
 
-    public PulseGenerator(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public PulseGenerator(int bay) {
+        super(bay);
     }
 
     @Override

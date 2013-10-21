@@ -44,7 +44,7 @@ public class TrackSong implements Serializable {
     }
 
     final IDispatcher getDispatcher() {
-        return trackSequencer.getRack().getController();
+        return trackSequencer.getRack();
     }
 
     private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
@@ -80,8 +80,8 @@ public class TrackSong implements Serializable {
      */
     public File getAbsoluteFile() {
         // XXX This is breaking encapsulation
-        final File absoluteFile = getTrackSequencer().getRack().getController().getProjectManager()
-                .getProject().getAbsoluteResource(new File("songs", file.getPath()).getPath());
+        final File absoluteFile = getTrackSequencer().getRack().getProject()
+                .getAbsoluteResource(new File("songs", file.getPath()).getPath());
         return absoluteFile;
     }
 

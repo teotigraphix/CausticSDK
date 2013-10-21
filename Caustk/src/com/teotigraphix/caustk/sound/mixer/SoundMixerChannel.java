@@ -382,6 +382,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     }
 
     protected void fireValueChange(MixerInput mixerInput, Number value) {
-        rack.getController().trigger(new OnSoundMixerChannelValueChange(mixerInput, value));
+        rack.trigger(new OnSoundMixerChannelValueChange(mixerInput, value));
     }
 }

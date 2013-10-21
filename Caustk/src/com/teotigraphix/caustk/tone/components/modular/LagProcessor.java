@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class LagProcessor extends ModularComponentBase {
 
@@ -80,8 +79,8 @@ public class LagProcessor extends ModularComponentBase {
     public LagProcessor() {
     }
 
-    public LagProcessor(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public LagProcessor(int bay) {
+        super(bay);
     }
 
     @Override

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class StereoLPF extends ModularComponentBase {
 
@@ -161,8 +160,8 @@ public class StereoLPF extends ModularComponentBase {
         //ComponentType.StereoLPF;
     }
 
-    public StereoLPF(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public StereoLPF(int bay) {
+        super(bay);
     }
 
     @Override

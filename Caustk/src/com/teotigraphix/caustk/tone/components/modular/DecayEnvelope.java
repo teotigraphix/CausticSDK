@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.tone.components.modular.DADSREnvelope.EnvelopeSlope;
 
 public class DecayEnvelope extends ModularComponentBase {
@@ -105,8 +104,8 @@ public class DecayEnvelope extends ModularComponentBase {
     public DecayEnvelope() {
     }
 
-    public DecayEnvelope(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public DecayEnvelope(int bay) {
+        super(bay);
     }
 
     @Override

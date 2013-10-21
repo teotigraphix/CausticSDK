@@ -23,6 +23,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
@@ -41,13 +43,14 @@ public class MasterMixer implements IRestore, Serializable {
     private Rack rack;
 
     private ICausticEngine getEngine() {
-        return rack.getController();
+        return rack;
     }
 
     //----------------------------------
     // channels
     //----------------------------------
 
+    @SuppressLint("UseSparseArrays")
     Map<Integer, SoundMixerChannel> channels = new HashMap<Integer, SoundMixerChannel>();
 
     Map<Integer, SoundMixerChannel> getChannels() {
@@ -170,7 +173,7 @@ public class MasterMixer implements IRestore, Serializable {
     }
 
     protected void fireChange(MasterMixerChangeKind kind, float value) {
-        rack.getController().trigger(new OnMasterMixerChange(kind, value));
+        rack.trigger(new OnMasterMixerChange(kind, value));
     }
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {

@@ -19,16 +19,17 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
-import com.teotigraphix.caustk.sound.ISoundSource;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class Part {
 
-    ICaustkController getController() {
-        return pattern.getController();
+    private GrooveMachine machine;
+
+    public final GrooveMachine getMachine() {
+        return machine;
     }
 
     //--------------------------------------------------------------------------
@@ -39,19 +40,11 @@ public class Part {
     // index
     //----------------------------------
 
-    private final int index;
-
     /**
-     * The {@link Part}'s index within it's parent {@link Pattern}.
+     * The {@link Part}'s index within it's parent {@link Pattern} and also
+     * represents the {@link Tone}s index within the native rack.
      */
     public int getIndex() {
-        return index;
-    }
-
-    /**
-     * The index of the decorated {@link Tone} in the {@link ISoundSource}.
-     */
-    public int getToneIndex() {
         return tone.getIndex();
     }
 
@@ -122,8 +115,8 @@ public class Part {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Part(int index, Tone tone) {
-        this.index = index;
+    public Part(GrooveMachine machine, Tone tone) {
+        this.machine = machine;
         this.tone = tone;
     }
 
@@ -140,10 +133,10 @@ public class Part {
     }
 
     public boolean istMute() {
-        return getController().getRack().getSoundMixer().getChannel(getToneIndex()).isMute();
+        return getMachine().getRack().getSoundMixer().getChannel(getIndex()).isMute();
     }
 
     public void setMute(boolean muted) {
-        getController().getRack().getSoundMixer().getChannel(getToneIndex()).setMute(muted);
+        getMachine().getRack().getSoundMixer().getChannel(getIndex()).setMute(muted);
     }
 }

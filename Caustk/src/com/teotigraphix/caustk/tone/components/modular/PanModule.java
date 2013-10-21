@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class PanModule extends ModularComponentBase {
 
@@ -106,8 +105,8 @@ public class PanModule extends ModularComponentBase {
     public PanModule() {
     }
 
-    public PanModule(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public PanModule(int bay) {
+        super(bay);
     }
 
     @Override

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class Crossfader extends ModularComponentBase {
 
@@ -106,8 +105,8 @@ public class Crossfader extends ModularComponentBase {
     public Crossfader() {
     }
 
-    public Crossfader(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public Crossfader(int bay) {
+        super(bay);
     }
 
     @Override

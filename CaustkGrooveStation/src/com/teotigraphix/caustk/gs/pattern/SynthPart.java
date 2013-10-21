@@ -19,12 +19,13 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
+import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.tone.Tone;
 
 public class SynthPart extends Part {
 
-    public SynthPart(int index, Tone tone) {
-        super(index, tone);
+    public SynthPart(GrooveMachine machine, Tone tone) {
+        super(machine, tone);
     }
 
 }

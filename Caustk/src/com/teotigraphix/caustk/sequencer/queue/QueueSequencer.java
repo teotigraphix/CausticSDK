@@ -107,7 +107,7 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
 
     @Override
     public void registerObservers() {
-        getController().register(OnSystemSequencerBeatChange.class,
+        getRack().register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {
@@ -115,7 +115,7 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
                     }
                 });
 
-        getController().register(OnTrackSongChange.class, new EventObserver<OnTrackSongChange>() {
+        getRack().register(OnTrackSongChange.class, new EventObserver<OnTrackSongChange>() {
             @Override
             public void trigger(OnTrackSongChange object) {
                 switch (object.getKind()) {
@@ -143,8 +143,8 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
     }
 
     protected void save() throws IOException {
-        File localFile = getController().getProjectManager().getProject()
-                .getAbsoluteResource(new File("songs", queueSong.getFile().getPath()).getPath());
+        File localFile = getRack().getProject().getAbsoluteResource(
+                new File("songs", queueSong.getFile().getPath()).getPath());
         @SuppressWarnings("unused")
         File absoluteTargetSongFile = localFile.getAbsoluteFile();
         //        getController().getSerializeService().save(absoluteTargetSongFile, queueSong);

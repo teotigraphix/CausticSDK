@@ -21,8 +21,9 @@ package com.teotigraphix.caustk.gs.machine.part;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
@@ -32,8 +33,12 @@ import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
  */
 public abstract class MachineComponentPart implements IDispatcher {
 
-    protected final ICaustkController getController() {
-        return machine.getController();
+    protected final IRack getRack() {
+        return machine.getRack();
+    }
+
+    protected final ICausticLogger getLogger() {
+        return machine.getLogger();
     }
 
     protected final MemoryBank getMemoryBank() {

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class FormantFilter extends ModularComponentBase {
 
@@ -240,8 +239,8 @@ public class FormantFilter extends ModularComponentBase {
     public FormantFilter() {
     }
 
-    public FormantFilter(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public FormantFilter(int bay) {
+        super(bay);
     }
 
     @Override

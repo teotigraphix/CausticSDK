@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 /**
  * 3 gain input mixer.
@@ -31,8 +30,8 @@ public class ThreeInputMixer extends MixerBase {
     public ThreeInputMixer() {
     }
 
-    public ThreeInputMixer(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public ThreeInputMixer(int bay) {
+        super(bay);
     }
 
     @Override

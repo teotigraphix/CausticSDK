@@ -19,7 +19,11 @@
 
 package com.teotigraphix.caustk.controller;
 
+import com.teotigraphix.caustk.controller.command.ICommand;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.library.core.Library;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
@@ -34,9 +38,9 @@ import com.teotigraphix.caustk.tone.Tone;
  * Manages the {@link ISoundMixer}, {@link ISoundSource},
  * {@link ISystemSequencer}, {@link ITrackSequencer}.
  */
-public interface IRack extends ICausticEngine {
+public interface IRack extends ICausticEngine, IDispatcher {
 
-    ICaustkController getController();
+    ICaustkController _getController();
 
     ISoundSource getSoundSource();
 
@@ -56,4 +60,17 @@ public interface IRack extends ICausticEngine {
 
     void update();
 
+    // proxy
+
+    void put(String message, Class<? extends ICommand> command);
+
+    void remove(String message);
+
+    void execute(String message, Object... args) throws CausticException;
+
+    ICausticLogger getLogger();
+
+    Project getProject();
+
+    Library getLibrary();
 }

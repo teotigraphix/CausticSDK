@@ -1,7 +1,6 @@
 
 package com.teotigraphix.caustk.library.item;
 
-import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.tone.Tone;
 
@@ -60,10 +59,8 @@ public class SoundMixerChannelDescriptor {
     }
 
     public SoundMixerChannelDescriptor(Tone tone) {
-        final IRack rack = tone.getController().getRack();
-        SoundMixerChannel channel = rack.getSoundMixer().getChannel(tone);
+        final SoundMixerChannel channel = tone.getMixerChannel();
         channel.restore();
-
         bass = channel.getBass();
         mid = channel.getMid();
         high = channel.getHigh();
@@ -75,9 +72,7 @@ public class SoundMixerChannelDescriptor {
     }
 
     public void update(Tone tone) {
-        final IRack rack = tone.getController().getRack();
-        SoundMixerChannel channel = rack.getSoundMixer().getChannel(tone);
-
+        final SoundMixerChannel channel = tone.getMixerChannel();
         channel.setBass(bass);
         channel.setMid(mid);
         channel.setHigh(high);
@@ -87,5 +82,4 @@ public class SoundMixerChannelDescriptor {
         channel.setStereoWidth(steroWidth);
         channel.setVolume(volume);
     }
-
 }

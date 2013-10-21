@@ -76,7 +76,7 @@ public class UserMemoryBank extends MemoryBank {
         }
         // the TrackSequencer holds all existing and lazy loaded pattern phrases
         Track track = getMachine().getController().getRack().getTrackSequencer()
-                .getTrack(part.getToneIndex());
+                .getTrack(part.getIndex());
         Phrase phrase = track.getPhrase(part.getPattern().getBankIndex(), part.getPattern()
                 .getPatternIndex());
 

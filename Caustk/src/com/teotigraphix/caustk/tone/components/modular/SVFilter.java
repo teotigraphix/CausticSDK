@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class SVFilter extends ModularComponentBase {
 
@@ -106,8 +105,8 @@ public class SVFilter extends ModularComponentBase {
     public SVFilter() {
     }
 
-    public SVFilter(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public SVFilter(int bay) {
+        super(bay);
     }
 
     @Override

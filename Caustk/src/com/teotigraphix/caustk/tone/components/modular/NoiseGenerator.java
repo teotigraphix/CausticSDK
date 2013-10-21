@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class NoiseGenerator extends ModularComponentBase {
 
@@ -106,8 +105,8 @@ public class NoiseGenerator extends ModularComponentBase {
     public NoiseGenerator() {
     }
 
-    public NoiseGenerator(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public NoiseGenerator(int bay) {
+        super(bay);
     }
 
     @Override

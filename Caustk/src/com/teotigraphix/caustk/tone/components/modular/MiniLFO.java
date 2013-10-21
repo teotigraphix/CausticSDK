@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 
 public class MiniLFO extends ModularComponentBase {
 
@@ -104,8 +103,8 @@ public class MiniLFO extends ModularComponentBase {
     public MiniLFO() {
     }
 
-    public MiniLFO(ICaustkController controller, int bay) {
-        super(controller, bay);
+    public MiniLFO(int bay) {
+        super(bay);
     }
 
     @Override

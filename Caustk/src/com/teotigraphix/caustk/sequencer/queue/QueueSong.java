@@ -67,13 +67,13 @@ public class QueueSong implements Serializable {
      * project's resource directory.
      */
     public File getAbsoluteFile() {
-        final File absoluteFile = queueSequencer.getRack().getController().getProjectManager()
-                .getProject().getResource(file.getPath()).getAbsoluteFile();
+        final File absoluteFile = queueSequencer.getRack().getProject().getResource(file.getPath())
+                .getAbsoluteFile();
         return absoluteFile;
     }
 
     IDispatcher getDispatcher() {
-        return queueSequencer.getRack().getController();
+        return queueSequencer.getRack();
     }
 
     public QueueSong() {
