@@ -97,4 +97,8 @@ public final class ToneUtils {
 
         return null;
     }
+
+    public static void setName(Tone tone, String name) {
+        tone.setNameInternal(name);
+    }
 }

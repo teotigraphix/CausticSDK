@@ -59,6 +59,7 @@ import com.teotigraphix.caustk.tone.SubSynthTone;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneDescriptor;
 import com.teotigraphix.caustk.tone.ToneType;
+import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -353,7 +354,7 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     private void initializeTone(Tone tone, String toneName, ToneType toneType, int index) {
         tone.setId(UUID.randomUUID());
         tone.setIndex(index);
-        tone.setName(toneName);
+        ToneUtils.setName(tone, toneName);
     }
 
     private void toneAdd(int index, Tone tone) {

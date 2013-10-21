@@ -203,13 +203,18 @@ public abstract class Tone implements IRestore, Serializable {
      * Sets the new name of the tone, will send the
      * {@link RackMessage#MACHINE_NAME} message to the core.
      * 
-     * @param value The new name of the tone, 10 character limit.
+     * @param value The new name of the tone, 10 character limit, cannot be
+     *            <code>null</code>.
      */
     public final void setName(String value) {
-        if (name.equals(value))
+        if (value.equals(name))
             return;
-        name = value;
+        setNameInternal(value);
         RackMessage.MACHINE_NAME.send(getEngine(), index, name);
+    }
+
+    void setNameInternal(String value) {
+        name = value;
     }
 
     //----------------------------------
