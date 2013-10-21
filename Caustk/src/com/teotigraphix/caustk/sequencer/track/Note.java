@@ -19,17 +19,13 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import java.io.Serializable;
-
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
 /**
  * A single note held within a {@link TriggerMap}.
  */
-public class Note implements Serializable {
-
-    private static final long serialVersionUID = -3142765703303002851L;
+public class Note {
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -168,6 +164,9 @@ public class Note implements Serializable {
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
+
+    public Note() {
+    }
 
     /**
      * Creates a new note using the Caustic Core's serialization.

@@ -34,6 +34,9 @@ public class RhythmChannel {
         return channel;
     }
 
+    public RhythmChannel() {
+    }
+
     public RhythmChannel(WavSamplerChannel channel) {
         this.channel = channel;
 

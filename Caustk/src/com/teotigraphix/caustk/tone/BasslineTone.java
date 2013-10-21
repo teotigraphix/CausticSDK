@@ -35,8 +35,6 @@ import com.teotigraphix.caustk.tone.components.bassline.OSC1Component;
  */
 public class BasslineTone extends Tone {
 
-    private static final long serialVersionUID = -5367096279246221709L;
-
     public VolumeComponent getVolume() {
         return getComponent(VolumeComponent.class);
     }
@@ -55,6 +53,9 @@ public class BasslineTone extends Tone {
 
     public DistortionComponent getDistortion() {
         return getComponent(DistortionComponent.class);
+    }
+
+    public BasslineTone() {
     }
 
     public BasslineTone(IRack rack) {

@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.tone;
 
-import java.io.Serializable;
-
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -34,9 +32,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
  * 
  * @author Michael Schmalle
  */
-public abstract class ToneComponent implements IRestore, Serializable {
-
-    private static final long serialVersionUID = 1176660130120258383L;
+public abstract class ToneComponent implements IRestore {
 
     //----------------------------------
     // tone

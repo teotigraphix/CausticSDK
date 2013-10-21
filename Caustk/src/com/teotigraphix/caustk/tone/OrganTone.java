@@ -32,14 +32,15 @@ import com.teotigraphix.caustk.tone.components.organ.LeslieComponent;
  */
 public class OrganTone extends Tone {
 
-    private static final long serialVersionUID = 1726523720819411514L;
-
     public VolumeComponent getVolume() {
         return getComponent(VolumeComponent.class);
     }
 
     public LeslieComponent getLeslie() {
         return getComponent(LeslieComponent.class);
+    }
+
+    public OrganTone() {
     }
 
     public OrganTone(IRack rack) {

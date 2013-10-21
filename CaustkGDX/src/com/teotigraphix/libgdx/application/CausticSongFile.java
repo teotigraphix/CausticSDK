@@ -45,6 +45,9 @@ public class CausticSongFile implements Serializable {
         this.data = data;
     }
 
+    CausticSongFile() {
+    }
+
     CausticSongFile(String file, byte[] data) {
         this.file = file;
         this.data = data;

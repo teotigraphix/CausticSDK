@@ -28,7 +28,8 @@ import com.teotigraphix.caustk.controller.IRack;
  */
 public class FMSynthTone extends Tone {
 
-    private static final long serialVersionUID = -5509574532999204394L;
+    public FMSynthTone() {
+    }
 
     public FMSynthTone(IRack rack) {
         super(rack, ToneType.FMSynth);

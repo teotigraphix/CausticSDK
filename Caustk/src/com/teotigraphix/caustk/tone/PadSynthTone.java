@@ -35,8 +35,6 @@ import com.teotigraphix.caustk.tone.components.padsynth.VolumeComponent;
  */
 public class PadSynthTone extends Tone {
 
-    private static final long serialVersionUID = -2333431858291077409L;
-
     public HarmonicsComponent getHarmonics() {
         return getComponent(HarmonicsComponent.class);
     }
@@ -55,6 +53,9 @@ public class PadSynthTone extends Tone {
 
     public VolumeComponent getVolume() {
         return getComponent(VolumeComponent.class);
+    }
+
+    public PadSynthTone() {
     }
 
     public PadSynthTone(IRack rack) {

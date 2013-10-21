@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,9 +43,7 @@ import com.teotigraphix.caustk.tone.Tone;
  * @see OnTrackPatternChange
  */
 @SuppressLint("UseSparseArrays")
-public class Track implements Serializable {
-
-    private static final long serialVersionUID = -1609075233236673789L;
+public class Track {
 
     private TrackSong trackSong;
 
@@ -87,7 +84,7 @@ public class Track implements Serializable {
     // index
     //----------------------------------
 
-    private final int index;
+    private int index;
 
     /**
      * Returns the index within the {@link ISoundSource}, the same index as the
@@ -217,6 +214,9 @@ public class Track implements Serializable {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
+
+    public Track() {
+    }
 
     public Track(TrackSong trackSong, int index) {
         this.trackSong = trackSong;

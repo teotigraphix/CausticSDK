@@ -94,6 +94,9 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
     // Constructor
     //--------------------------------------------------------------------------
 
+    public SoundMixer() {
+    }
+
     public SoundMixer(Rack rack) {
         super(rack);
         masterMixer = new MasterMixer(rack);

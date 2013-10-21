@@ -57,8 +57,6 @@ import com.teotigraphix.caustk.tone.components.modular.TwoInputMixer;
  */
 public class ModularTone extends Tone {
 
-    private static final long serialVersionUID = 8381426654777785594L;
-
     private transient ModularPanel modularPanel;
 
     public ModularPanel getPanel() {
@@ -243,6 +241,9 @@ public class ModularTone extends Tone {
 
     // To query the type of a component
     // /caustic/modular/type <component bay#> returns the type# from the list above
+
+    public ModularTone() {
+    }
 
     public ModularTone(IRack rack) {
         super(rack, ToneType.Modular);

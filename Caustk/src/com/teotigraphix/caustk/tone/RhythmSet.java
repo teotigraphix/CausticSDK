@@ -29,12 +29,13 @@ import com.teotigraphix.caustk.controller.core.Rack;
  */
 public class RhythmSet extends Tone {
 
-    private static final long serialVersionUID = 5375402816071914238L;
-
     private List<RhythmTone> tones = new ArrayList<RhythmTone>();
 
     public List<RhythmTone> getTones() {
         return tones;
+    }
+
+    public RhythmSet() {
     }
 
     public RhythmSet(Rack rack) {

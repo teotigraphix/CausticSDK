@@ -26,8 +26,6 @@ import com.teotigraphix.caustk.controller.IRack;
  */
 public class RhythmTone extends Tone {
 
-    private static final long serialVersionUID = -7766073265364101586L;
-
     private RhythmChannel channel;
 
     public RhythmChannel getChannel() {
@@ -36,6 +34,9 @@ public class RhythmTone extends Tone {
 
     public void setChannel(RhythmChannel value) {
         channel = value;
+    }
+
+    public RhythmTone() {
     }
 
     public RhythmTone(IRack rack) {

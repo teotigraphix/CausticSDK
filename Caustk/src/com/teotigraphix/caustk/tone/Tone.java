@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.tone;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -37,9 +36,7 @@ import com.teotigraphix.caustk.tone.components.SynthComponent;
  * 
  * @author Michael Schmalle
  */
-public abstract class Tone implements IRestore, Serializable {
-
-    private static final long serialVersionUID = 2917863803738244084L;
+public abstract class Tone implements IRestore {
 
     private IRack rack;
 
@@ -55,7 +52,7 @@ public abstract class Tone implements IRestore, Serializable {
     //        return rack.getController();
     //    }
 
-    private final ToneType toneType;
+    private ToneType toneType;
 
     public final ToneType getToneType() {
         return toneType;
@@ -282,6 +279,9 @@ public abstract class Tone implements IRestore, Serializable {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
+
+    public Tone() {
+    }
 
     public Tone(IRack rack, ToneType toneType) {
         this.rack = rack;

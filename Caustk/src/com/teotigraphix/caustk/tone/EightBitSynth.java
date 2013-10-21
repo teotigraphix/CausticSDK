@@ -28,7 +28,8 @@ import com.teotigraphix.caustk.controller.IRack;
  */
 public class EightBitSynth extends Tone {
 
-    private static final long serialVersionUID = -156077068949440863L;
+    public EightBitSynth() {
+    }
 
     public EightBitSynth(IRack rack) {
         super(rack, ToneType.EightBitSynth);

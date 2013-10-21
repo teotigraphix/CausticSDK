@@ -19,8 +19,7 @@
 
 package com.teotigraphix.libgdx.model;
 
-import java.io.Serializable;
-
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.libgdx.application.CausticSongFile;
 
@@ -30,9 +29,7 @@ import com.teotigraphix.libgdx.application.CausticSongFile;
  * Each application creates a specific model used within it's
  * {@link ICaustkModel} implementations.
  */
-public abstract class ApplicationModelState implements Serializable {
-
-    private static final long serialVersionUID = 7409599794451779182L;
+public abstract class ApplicationModelState {
 
     //----------------------------------
     // controller
@@ -52,6 +49,7 @@ public abstract class ApplicationModelState implements Serializable {
     // id
     //----------------------------------
 
+    @Tag(0)
     private String id;
 
     public String getId() {

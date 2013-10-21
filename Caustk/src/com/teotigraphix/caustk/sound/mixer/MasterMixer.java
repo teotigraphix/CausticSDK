@@ -141,6 +141,9 @@ public class MasterMixer implements IRestore, Serializable {
     // Constructor
     //--------------------------------------------------------------------------
 
+    public MasterMixer() {
+    }
+
     public MasterMixer(Rack rack) {
         this.rack = rack;
 

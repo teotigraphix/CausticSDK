@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -35,9 +34,7 @@ import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolut
  * A {@link Phrase} exists as a "pattern" in a {@link Track} that has a location
  * in a native pattern_sequencer with bank and pattern.
  */
-public class Phrase implements Serializable {
-
-    private static final long serialVersionUID = -7976616079239236670L;
+public class Phrase {
 
     private TriggerMap triggerMap;
 
@@ -99,7 +96,7 @@ public class Phrase implements Serializable {
     // toneIndex
     //----------------------------------
 
-    private final int toneIndex;
+    private int toneIndex;
 
     public final int getToneIndex() {
         return toneIndex;
@@ -109,7 +106,7 @@ public class Phrase implements Serializable {
     // bank
     //----------------------------------
 
-    private final int bank;
+    private int bank;
 
     /**
      * Returns the assigned bank for this phrase in the native pattern
@@ -123,7 +120,7 @@ public class Phrase implements Serializable {
     // pattern
     //----------------------------------
 
-    private final int pattern;
+    private int pattern;
 
     /**
      * Returns the assigned pattern for this phrase in the native pattern
@@ -370,6 +367,9 @@ public class Phrase implements Serializable {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
+
+    public Phrase() {
+    }
 
     public Phrase(Track track, int toneIndex, int bank, int pattern) {
         this.track = track;

@@ -54,6 +54,10 @@ public class Rack implements IRack, Serializable {
 
     private transient IDispatcher dispatcher;
 
+    //    public int addedone;
+    //
+    //    public ICaustkController addedtwo;
+
     //----------------------------------
     // soundSource
     //----------------------------------
@@ -65,6 +69,8 @@ public class Rack implements IRack, Serializable {
 
     public void setController(ICaustkController controller) {
         this.controller = controller;
+        if (dispatcher == null)
+            dispatcher = new Dispatcher();
 
         soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
     }

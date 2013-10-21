@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -38,11 +37,9 @@ import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolut
  * A {@link TriggerMap} holds all {@link Trigger} instances for a {@link Phrase}
  * with the key being the trigger's start beat.
  */
-public class TriggerMap implements Serializable {
+public class TriggerMap {
 
     private static final int BEATS_IN_MEASURE = 4;
-
-    private static final long serialVersionUID = -7413118378233405467L;
 
     private int indciesInView = 16;
 
@@ -70,6 +67,9 @@ public class TriggerMap implements Serializable {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
+
+    public TriggerMap() {
+    }
 
     public TriggerMap(Phrase phrase) {
         this.phrase = phrase;

@@ -46,6 +46,9 @@ public abstract class RackApplicationState extends ApplicationModelState {
         ((CaustkController)controller).setRack(rack);
     }
 
+    public RackApplicationState() {
+    }
+
     public RackApplicationState(ICaustkController controller) {
         super();
         setId(getClass().getName());

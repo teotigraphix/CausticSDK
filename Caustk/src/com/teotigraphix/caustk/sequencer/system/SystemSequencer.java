@@ -101,6 +101,9 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     // Constructor
     //--------------------------------------------------------------------------
 
+    public SystemSequencer() {
+    }
+
     public SystemSequencer(Rack rack) {
         super(rack);
     }
