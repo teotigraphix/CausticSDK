@@ -20,24 +20,20 @@
 package com.teotigraphix.caustk.sequencer.track;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.tone.Tone;
 
 @SuppressLint("UseSparseArrays")
-public class TrackSong implements Serializable {
-
-    private static final long serialVersionUID = -8098854940340766856L;
-
-    private TrackSequencer trackSequencer;
+public class TrackSong {
 
     public TrackSequencer getTrackSequencer() {
         return trackSequencer;
@@ -47,11 +43,37 @@ public class TrackSong implements Serializable {
         return trackSequencer.getRack();
     }
 
-    private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
-
-    IRack getRack() {
+    final IRack getRack() {
         return getTrackSequencer().getRack();
     }
+
+    //--------------------------------------------------------------------------
+    // Private :: variables
+    //--------------------------------------------------------------------------
+
+    //    private TrackItem lastPatternInTracks;
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private TrackSequencer trackSequencer;
+
+    @Tag(1)
+    private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
+
+    @Tag(2)
+    private int currentTrack = -1;
+
+    @Tag(3)
+    private File file;
+
+    @Tag(4)
+    private int currentMeasure = 0;
+
+    @Tag(5)
+    private float currentBeat = -1;
 
     //----------------------------------
     // file
@@ -60,8 +82,6 @@ public class TrackSong implements Serializable {
     public boolean exists() {
         return file != null;
     }
-
-    private File file;
 
     /**
      * The relative path within the project directory.
@@ -125,8 +145,6 @@ public class TrackSong implements Serializable {
     //----------------------------------
     // currentTrack
     //----------------------------------
-
-    private int currentTrack = -1;
 
     public int getCurrentTrack() {
         return currentTrack;
@@ -223,8 +241,6 @@ public class TrackSong implements Serializable {
     //  currentMeasure
     //----------------------------------
 
-    private int currentMeasure = 0;
-
     /**
      * Returns the current measure playing in Song mode.
      * <p>
@@ -260,8 +276,6 @@ public class TrackSong implements Serializable {
     //  currentBeat
     //----------------------------------
 
-    private float currentBeat = -1;
-
     /**
      * Return the ISong current beat.
      */
@@ -276,30 +290,28 @@ public class TrackSong implements Serializable {
         }
     }
 
-    private TrackItem lastPatternInTracks;
-
-    public int getNumBeats() {
-        if (lastPatternInTracks == null)
-            return 0;
-        int measures = lastPatternInTracks.getEndMeasure();
-        return measures * 4;
-    }
-
-    public int getNumMeasures() {
-        if (lastPatternInTracks == null)
-            return 0;
-        // 0 index, we need to use the end measure that is measures + 1
-        int measures = lastPatternInTracks.getEndMeasure();
-        return measures;
-    }
-
-    public int getTotalTime() {
-        float bpm = getRack().getSystemSequencer().getTempo();
-        float timeInSec = 60 / bpm;
-        float totalNumBeats = getNumBeats() + getMeasureBeat();
-        float total = timeInSec * totalNumBeats;
-        return (int)total;
-    }
+    //    public int getNumBeats() {
+    //        if (lastPatternInTracks == null)
+    //            return 0;
+    //        int measures = lastPatternInTracks.getEndMeasure();
+    //        return measures * 4;
+    //    }
+    //
+    //    public int getNumMeasures() {
+    //        if (lastPatternInTracks == null)
+    //            return 0;
+    //        // 0 index, we need to use the end measure that is measures + 1
+    //        int measures = lastPatternInTracks.getEndMeasure();
+    //        return measures;
+    //    }
+    //
+    //    public int getTotalTime() {
+    //        float bpm = getRack().getSystemSequencer().getTempo();
+    //        float timeInSec = 60 / bpm;
+    //        float totalNumBeats = getNumBeats() + getMeasureBeat();
+    //        float total = timeInSec * totalNumBeats;
+    //        return (int)total;
+    //    }
 
     public int getCurrentTime() {
         float bpm = getRack().getSystemSequencer().getTempo();

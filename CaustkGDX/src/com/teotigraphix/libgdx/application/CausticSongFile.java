@@ -19,13 +19,15 @@
 
 package com.teotigraphix.libgdx.application;
 
-import java.io.Serializable;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
-public class CausticSongFile implements Serializable {
+public class CausticSongFile {
 
-    private static final long serialVersionUID = 5370901667078304993L;
-
+    @Tag(0)
     private String file;
+
+    @Tag(1)
+    private byte[] data;
 
     public String getFile() {
         return file;
@@ -34,8 +36,6 @@ public class CausticSongFile implements Serializable {
     public void setFile(String file) {
         this.file = file;
     }
-
-    private byte[] data;
 
     public byte[] getData() {
         return data;

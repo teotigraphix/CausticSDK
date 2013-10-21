@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.sound.mixer;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
@@ -35,9 +35,18 @@ import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneAdd;
 import com.teotigraphix.caustk.sound.source.SoundSource.OnSoundSourceToneRemove;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SoundMixer extends RackComponent implements ISoundMixer, Serializable {
+public class SoundMixer extends RackComponent implements ISoundMixer {
 
-    private static final long serialVersionUID = -7091528512172948750L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private MasterMixer masterMixer;
+
+    //--------------------------------------------------------------------------
+    // ISoundMixer API
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // channels
@@ -47,15 +56,9 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
         return masterMixer.getChannels();
     }
 
-    //--------------------------------------------------------------------------
-    // ISoundMixer API
-    //--------------------------------------------------------------------------
-
     //----------------------------------
     // masterMixer
     //----------------------------------
-
-    private MasterMixer masterMixer;
 
     @Override
     public MasterMixer getMasterMixer() {
@@ -105,34 +108,28 @@ public class SoundMixer extends RackComponent implements ISoundMixer, Serializab
     @Override
     public void registerObservers() {
         getLogger().err("SoundMixer", "registerObservers()");
-        toneAdd = new EventObserver<OnSoundSourceToneAdd>() {
+
+        getRack().register(OnSoundSourceToneAdd.class, new EventObserver<OnSoundSourceToneAdd>() {
             @Override
             public void trigger(OnSoundSourceToneAdd object) {
                 getLogger().err("SoundMixer", "OnSoundSourceToneAdd()");
                 masterMixer.addTone(object.getTone());
             }
-        };
-        toneRemove = new EventObserver<OnSoundSourceToneRemove>() {
-            @Override
-            public void trigger(OnSoundSourceToneRemove object) {
-                masterMixer.removeTone(object.getTone());
-            }
-        };
-        getRack().register(OnSoundSourceToneAdd.class, toneAdd);
-        getRack().register(OnSoundSourceToneRemove.class, toneRemove);
+        });
+        getRack().register(OnSoundSourceToneRemove.class,
+                new EventObserver<OnSoundSourceToneRemove>() {
+                    @Override
+                    public void trigger(OnSoundSourceToneRemove object) {
+                        masterMixer.removeTone(object.getTone());
+                    }
+                });
         getRack().put(ISoundMixer.COMMAND_SET_VALUE, SoundMixerSetSendCommand.class);
     }
 
     @Override
     public void unregisterObservers() {
-        getRack().unregister(toneAdd);
-        getRack().unregister(toneRemove);
         getRack().remove(ISoundMixer.COMMAND_SET_VALUE);
     }
-
-    private transient EventObserver<OnSoundSourceToneAdd> toneAdd;
-
-    private transient EventObserver<OnSoundSourceToneRemove> toneRemove;
 
     @Override
     public void restore() {

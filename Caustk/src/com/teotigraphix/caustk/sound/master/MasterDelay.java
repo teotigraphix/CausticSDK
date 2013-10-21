@@ -19,22 +19,47 @@
 
 package com.teotigraphix.caustk.sound.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterDelay extends MasterComponent {
 
-    private static final long serialVersionUID = 8432447801992841120L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int steps = 2;
+
+    @Tag(110)
+    private int loop = 2;
+
+    @Tag(120)
+    private int time = 8;
+
+    @Tag(130)
+    private int sync = 1;
+
+    @Tag(140)
+    private float feedback = 0.5f;
+
+    @Tag(150)
+    private int feedbackFirst = 0;
+
+    @Tag(160)
+    private float damping = 0f;
+
+    @Tag(170)
+    private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
-    // API
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // steps
     //----------------------------------
-
-    private int steps = 2;
 
     public int getSteps() {
         return steps;
@@ -57,8 +82,6 @@ public class MasterDelay extends MasterComponent {
     // loop
     //----------------------------------
 
-    private int loop = 2;
-
     public int getLoop() {
         return steps;
     }
@@ -79,8 +102,6 @@ public class MasterDelay extends MasterComponent {
     //----------------------------------
     // time
     //----------------------------------
-
-    private int time = 8;
 
     public int getTime() {
         return time;
@@ -103,8 +124,6 @@ public class MasterDelay extends MasterComponent {
     // sync
     //----------------------------------
 
-    private int sync = 1;
-
     public int getSync() {
         return sync;
     }
@@ -125,8 +144,6 @@ public class MasterDelay extends MasterComponent {
     //----------------------------------
     // feedback
     //----------------------------------
-
-    private float feedback = 0.5f;
 
     public float getFeedback() {
         return feedback;
@@ -149,8 +166,6 @@ public class MasterDelay extends MasterComponent {
     // feedbackFirst
     //----------------------------------
 
-    private int feedbackFirst = 0;
-
     public int getFeedbackFirst() {
         return feedbackFirst;
     }
@@ -172,8 +187,6 @@ public class MasterDelay extends MasterComponent {
     // damping
     //----------------------------------
 
-    private float damping = 0f;
-
     public float getDamping() {
         return damping;
     }
@@ -194,8 +207,6 @@ public class MasterDelay extends MasterComponent {
     //----------------------------------
     // wet
     //----------------------------------
-
-    private float wet = 0.5f;
 
     public float getWet() {
         return wet;

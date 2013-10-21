@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.sound.source;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -34,8 +33,7 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
-import android.annotation.SuppressLint;
-
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.core.Rack;
@@ -63,14 +61,25 @@ import com.teotigraphix.caustk.tone.ToneUtils;
 import com.teotigraphix.caustk.tone.VocoderTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-@SuppressLint("UseSparseArrays")
-public class SoundSource extends RackComponent implements ISoundSource, Serializable {
+public class SoundSource extends RackComponent implements ISoundSource {
 
-    private static final long serialVersionUID = 1785154952216484108L;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
 
-    private int maxNumTones = 14;
+    private transient int maxNumTones = 14;
 
-    private boolean restoring;
+    private transient boolean restoring;
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
+
+    @Tag(101)
+    private int transpose;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -79,8 +88,6 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     //----------------------------------
     // transpose
     //----------------------------------
-
-    private int transpose;
 
     @Override
     public int getTranspose() {
@@ -95,8 +102,6 @@ public class SoundSource extends RackComponent implements ISoundSource, Serializ
     //----------------------------------
     // tones
     //----------------------------------
-
-    private Map<Integer, Tone> tones = new HashMap<Integer, Tone>();
 
     @Override
     public int getToneCount() {

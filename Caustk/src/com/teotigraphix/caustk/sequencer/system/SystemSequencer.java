@@ -19,8 +19,7 @@
 
 package com.teotigraphix.caustk.sequencer.system;
 
-import java.io.Serializable;
-
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
@@ -32,9 +31,33 @@ import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.tone.Tone;
 
-public class SystemSequencer extends RackComponent implements ISystemSequencer, Serializable {
+public class SystemSequencer extends RackComponent implements ISystemSequencer {
 
-    private static final long serialVersionUID = 3013567748100411152L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private boolean isPlaying = false;
+
+    @Tag(101)
+    private SequencerMode sequencerMode = SequencerMode.PATTERN;
+
+    @Tag(102)
+    private float tempo = 120f;
+
+    @Tag(103)
+    private int currentMeasure;
+
+    @Tag(104)
+    private int currentBeat;
+
+    @Tag(105)
+    private float floatBeat;
+
+    @Tag(106)
+    // XXX Should this be serialized?
+    private int currentSixteenthStep;
 
     //--------------------------------------------------------------------------
     // Property API
@@ -43,8 +66,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     //----------------------------------
     // isPlaying
     //----------------------------------
-
-    private boolean isPlaying = false;
 
     @Override
     public void setIsPlaying(boolean value) {
@@ -64,8 +85,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     // sequencerMode
     //----------------------------------
 
-    private SequencerMode sequencerMode = SequencerMode.PATTERN;
-
     @Override
     public final SequencerMode getSequencerMode() {
         return sequencerMode;
@@ -80,8 +99,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     //----------------------------------
     // tempo
     //----------------------------------
-
-    private float tempo = 120f;
 
     @Override
     public void setTempo(float value) {
@@ -111,8 +128,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     @Override
     public void registerObservers() {
         super.registerObservers();
-
-        //        getController().addComponent(ISystemSequencer.class, this);
 
         getRack().put(COMMAND_PLAY, SystemSequencerPlayCommand.class);
         getRack().put(COMMAND_STOP, SystemSequencerStopCommand.class);
@@ -181,26 +196,9 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
     // currentMeasure
     //----------------------------------
 
-    private int mCurrentMeasure = 0;
-
-    private int currentMeasure;
-
     @Override
     public int getCurrentMeasure() {
-        return mCurrentMeasure;
-    }
-
-    void setCurrentMeasure(int value) {
-        mCurrentMeasure = value;
-        //        
-        //        final int numMeasures = getPattern().getLength();
-        //        int last = 1;
-        //        if (numMeasures == 2)
-        //            last = 
-        if (mCurrentMeasure == 0) {
-            //controller.getPatternSequencer().playNextPattern();
-        }
-        //        getDispatcher().trigger(new OnSystemSequencerMeasureChange(mCurrentMeasure));
+        return currentMeasure;
     }
 
     public int getMeasureBeat() {
@@ -216,8 +214,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
         int step = (currentBeat % 4) * 4;
         return step;
     }
-
-    private int currentSixteenthStep;
 
     @Override
     public int getCurrentSixteenthStep() {
@@ -246,10 +242,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
         }
     }
 
-    private float floatBeat;
-
-    private int currentBeat = -1;
-
     @Override
     public int getCurrentBeat() {
         return currentBeat;
@@ -263,60 +255,9 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer, 
         if (value == currentBeat)
             return;
 
-        int beatsInLength = 4;
-
-        int last = currentBeat;
         currentBeat = value;
 
         getRack().trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
-
-        if (last < value) {
-            // forward
-            if (currentBeat == 0) {
-                setCurrentMeasure(0);
-            } else {
-                int remainder = currentBeat % beatsInLength;
-                //System.out.println("    remainder " + getMeasureBeat());
-                if (seeking) {
-                    setCurrentMeasure(currentBeat / beatsInLength);
-                } else if (remainder == 0) {
-                    setCurrentMeasure(mCurrentMeasure + 1);
-                }
-            }
-        } else if (last > value) {
-            // reverse
-            // if the last beat was a measure change, decrement measure
-            int remainder = last % 4;
-            if (remainder == 0) {
-                setCurrentMeasure(mCurrentMeasure - 1);
-            }
-        }
-
-    }
-
-    int updateMeasure(int beat) {
-        int len = 1; //controller.getPatternSequencer().getPattern().getLength();
-        final int remainder = (beat + 1) % 4;
-        if (len == 1) {
-            if (remainder == 0)
-                setCurrentMeasure(0);
-        } else if (len == 2) {
-            if (beat == 0 || beat == 8 || beat == 16 || beat == 24 || beat == 32)
-                setCurrentMeasure(0);
-            else if (beat == 4 || beat == 12 || beat == 20 || beat == 28)
-                setCurrentMeasure(mCurrentMeasure + 1);
-        } else if (len == 4) {
-            if (beat == 0 || beat == 16 || beat == 32)
-                setCurrentMeasure(0);
-            else if (beat == 4 || beat == 8 || beat == 12 || beat == 20 || beat == 24 || beat == 28)
-                setCurrentMeasure(mCurrentMeasure + 1);
-        } else if (len == 8) {
-            if (beat == 0)
-                setCurrentMeasure(0);
-            else if (remainder == 0)
-                setCurrentMeasure(mCurrentMeasure + 1);
-        }
-        return 0;
     }
 
     //--------------------------------------------------------------------------

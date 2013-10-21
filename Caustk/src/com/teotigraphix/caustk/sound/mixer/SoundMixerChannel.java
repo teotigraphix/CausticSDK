@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.sound.mixer;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
@@ -36,17 +36,58 @@ import com.teotigraphix.caustk.sound.effect.EffectUtils;
 import com.teotigraphix.caustk.sound.mixer.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class SoundMixerChannel implements Serializable, IRestore {
+public class SoundMixerChannel implements IRestore {
 
-    private static final long serialVersionUID = 2685245138702311763L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
+    @Tag(0)
     private Rack rack;
+
+    @Tag(1)
+    private Map<Integer, IEffect> effects = new HashMap<Integer, IEffect>();
+
+    @Tag(2)
+    private int index = -1;
+
+    @Tag(3)
+    private float bass = 0f;
+
+    @Tag(4)
+    private float mid = 0f;
+
+    @Tag(5)
+    private float high = 0f;
+
+    @Tag(6)
+    private float delaySend = 0f;
+
+    @Tag(7)
+    private float reverbSend = 0f;
+
+    @Tag(8)
+    private float pan = 0f;
+
+    @Tag(9)
+    private float stereoWidth = 0f;
+
+    @Tag(10)
+    private boolean mute = false;
+
+    @Tag(11)
+    private boolean solo = false;
+
+    @Tag(12)
+    private float volume = 0f;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     protected ICausticEngine getEngine() {
         return rack;
     }
-
-    private transient Map<Integer, IEffect> effects = new HashMap<Integer, IEffect>();
 
     public IEffect getEffect(int slot) {
         return effects.get(slot);
@@ -78,8 +119,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     // index
     //----------------------------------
 
-    private int index = -1;
-
     public final int getIndex() {
         return index;
     }
@@ -91,8 +130,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     //----------------------------------
     // bass
     //----------------------------------
-
-    private float bass = 0f;
 
     public final float getBass() {
         return bass;
@@ -116,8 +153,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     // mid
     //----------------------------------
 
-    private float mid = 0f;
-
     public float getMid() {
         return mid;
     }
@@ -139,8 +174,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     //----------------------------------
     // high
     //----------------------------------
-
-    private float high = 0f;
 
     public final float getHigh() {
         return high;
@@ -164,8 +197,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     // delaySend
     //----------------------------------
 
-    private float delaySend = 0f;
-
     public final float getDelaySend() {
         return delaySend;
     }
@@ -187,8 +218,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     //----------------------------------
     // reverbSend
     //----------------------------------
-
-    private float reverbSend = 0f;
 
     public final float getReverbSend() {
         return reverbSend;
@@ -212,8 +241,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     // pan
     //----------------------------------
 
-    private float pan = 0f;
-
     public final float getPan() {
         return pan;
     }
@@ -235,8 +262,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     //----------------------------------
     // stereoWidth
     //----------------------------------
-
-    private float stereoWidth = 0f;
 
     public final float getStereoWidth() {
         return stereoWidth;
@@ -260,8 +285,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     // mute
     //----------------------------------
 
-    private boolean mute = false;
-
     public final boolean isMute() {
         return mute;
     }
@@ -282,8 +305,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     // solo
     //----------------------------------
 
-    private boolean solo = false;
-
     public final boolean isSolo() {
         return solo;
     }
@@ -303,8 +324,6 @@ public class SoundMixerChannel implements Serializable, IRestore {
     //----------------------------------
     // volume
     //----------------------------------
-
-    private float volume = 0f;
 
     public final float getVolume() {
         return volume;

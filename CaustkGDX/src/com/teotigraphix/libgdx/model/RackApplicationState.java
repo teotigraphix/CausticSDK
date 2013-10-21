@@ -19,6 +19,7 @@
 
 package com.teotigraphix.libgdx.model;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.core.CaustkController;
@@ -31,8 +32,7 @@ import com.teotigraphix.caustk.controller.core.Rack;
  */
 public abstract class RackApplicationState extends ApplicationModelState {
 
-    private static final long serialVersionUID = -6095586546318899840L;
-
+    @Tag(10)
     private Rack rack;
 
     public IRack getRack() {

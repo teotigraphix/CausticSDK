@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnPhraseChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnTriggerChange;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.PhraseChangeKind;
@@ -41,16 +42,26 @@ public class TriggerMap {
 
     private static final int BEATS_IN_MEASURE = 4;
 
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
     private int indciesInView = 16;
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
     // <beat, Trigger<List<Note>>
+    @Tag(0)
     private Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
+
+    @Tag(1)
+    private Phrase phrase;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    private Phrase phrase;
 
     final Phrase getPhrase() {
         return phrase;

@@ -31,6 +31,16 @@ import com.teotigraphix.libgdx.application.CausticSongFile;
  */
 public abstract class ApplicationModelState {
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private String id;
+
+    @Tag(1)
+    private CausticSongFile songFile;
+
     //----------------------------------
     // controller
     //----------------------------------
@@ -49,9 +59,6 @@ public abstract class ApplicationModelState {
     // id
     //----------------------------------
 
-    @Tag(0)
-    private String id;
-
     public String getId() {
         return id;
     }
@@ -63,8 +70,6 @@ public abstract class ApplicationModelState {
     //----------------------------------
     // songFile
     //----------------------------------
-
-    private CausticSongFile songFile;
 
     public CausticSongFile getSongFile() {
         return songFile;

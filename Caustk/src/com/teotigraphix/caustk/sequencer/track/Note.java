@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
@@ -28,14 +29,37 @@ import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolut
 public class Note {
 
     //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private int pitch;
+
+    @Tag(1)
+    private float start;
+
+    @Tag(2)
+    private float end;
+
+    @Tag(3)
+    private float velocity;
+
+    @Tag(4)
+    private int flags;
+
+    @Tag(5)
+    private boolean selected;
+
+    @Tag(6)
+    private Object data;
+
+    //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // pitch
     //----------------------------------
-
-    private int pitch;
 
     /**
      * The MIDI pitch of the note.
@@ -48,8 +72,6 @@ public class Note {
     // start
     //----------------------------------
 
-    private float start;
-
     /**
      * The start beat of the note.
      */
@@ -60,8 +82,6 @@ public class Note {
     //----------------------------------
     // end
     //----------------------------------
-
-    private float end;
 
     /**
      * Teh end beat of the note.
@@ -85,8 +105,6 @@ public class Note {
     // velocity
     //----------------------------------
 
-    private float velocity;
-
     /**
      * The velocity of the note (0..1).
      */
@@ -97,8 +115,6 @@ public class Note {
     //----------------------------------
     // flags
     //----------------------------------
-
-    private int flags;
 
     /**
      * The flags bitmasked, (0 none), (1 silde), (2 accent).
@@ -111,8 +127,6 @@ public class Note {
     // selected
     //----------------------------------
 
-    private boolean selected;
-
     public boolean isSelected() {
         return selected;
     }
@@ -124,8 +138,6 @@ public class Note {
     //----------------------------------
     // data
     //----------------------------------
-
-    private Object data;
 
     /**
      * Returns the note's abstract data if any.

@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.sequencer.ITrackSequencer.OnPhraseChange;
@@ -36,17 +37,56 @@ import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolut
  */
 public class Phrase {
 
-    private TriggerMap triggerMap;
-
     final IDispatcher getDispatcher() {
         return track.getDispatcher();
     }
 
     //--------------------------------------------------------------------------
-    // Public API :: Properties
+    // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(0)
     private Track track;
+
+    @Tag(1)
+    private TriggerMap triggerMap;
+
+    @Tag(2)
+    private UUID phraseId;
+
+    @Tag(3)
+    private int toneIndex;
+
+    @Tag(4)
+    private int bank;
+
+    @Tag(5)
+    private int pattern;
+
+    @Tag(6)
+    private int position = 1;
+
+    @Tag(7)
+    private int length = 1;
+
+    @Tag(8)
+    private Object data;
+
+    @Tag(9)
+    private int playMeasure;
+
+    @Tag(10)
+    private int editMeasure;
+
+    @Tag(11)
+    private int currentMeasure = 0;
+
+    @Tag(12)
+    private Scale scale = Scale.SIXTEENTH;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // track
@@ -74,8 +114,6 @@ public class Phrase {
     // phraseId
     //----------------------------------
 
-    private UUID phraseId;
-
     /**
      * Returns the {@link LibraryPhrase} id that was used to create this phrase.
      */
@@ -96,8 +134,6 @@ public class Phrase {
     // toneIndex
     //----------------------------------
 
-    private int toneIndex;
-
     public final int getToneIndex() {
         return toneIndex;
     }
@@ -105,8 +141,6 @@ public class Phrase {
     //----------------------------------
     // bank
     //----------------------------------
-
-    private int bank;
 
     /**
      * Returns the assigned bank for this phrase in the native pattern
@@ -120,8 +154,6 @@ public class Phrase {
     // pattern
     //----------------------------------
 
-    private int pattern;
-
     /**
      * Returns the assigned pattern for this phrase in the native pattern
      * sequencer.
@@ -133,8 +165,6 @@ public class Phrase {
     //----------------------------------
     // length
     //----------------------------------
-
-    private int length = 1;
 
     /**
      * Returns the assigned number of measurees for this phrase in the native
@@ -162,8 +192,6 @@ public class Phrase {
     //----------------------------------
     // noteData
     //----------------------------------
-
-    private Object data;
 
     /**
      * Returns the phrase's abstract data if any.
@@ -238,8 +266,6 @@ public class Phrase {
     // playMeasure
     //----------------------------------
 
-    private int playMeasure;
-
     /**
      * Returns the current measure of the playhead during a pattern or song
      * play.
@@ -264,8 +290,6 @@ public class Phrase {
     // editMeasure
     //----------------------------------
 
-    private int editMeasure;
-
     /**
      * Returns the current editing measure, this value is based of a specific
      * application implementation.
@@ -288,8 +312,6 @@ public class Phrase {
     //----------------------------------
     //  currentMeasure
     //----------------------------------
-
-    private int currentMeasure = 0;
 
     /**
      * Returns the current measure playing in Song mode.
@@ -424,8 +446,6 @@ public class Phrase {
         SIXTEENTH, SIXTEENTH_TRIPLET, THIRTYSECOND, THIRTYSECOND_TRIPLET, SIXTYFORTH
     }
 
-    private Scale scale = Scale.SIXTEENTH;
-
     /**
      * Returns the current {@link Scale} used to determine the
      * {@link Resolution}.
@@ -458,8 +478,6 @@ public class Phrase {
     //----------------------------------
     // position
     //----------------------------------
-
-    private int position = 1;
 
     /**
      * Returns the current position in the phrase based on the rules of the

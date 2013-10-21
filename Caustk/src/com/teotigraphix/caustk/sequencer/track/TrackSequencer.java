@@ -26,6 +26,7 @@ import java.util.Collection;
 import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.project.Project;
@@ -41,7 +42,12 @@ import com.teotigraphix.caustk.tone.Tone;
  */
 public class TrackSequencer extends RackComponent implements ITrackSequencer {
 
-    private static final long serialVersionUID = 4786141580715087636L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private TrackSong trackSong;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -50,8 +56,6 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
     //----------------------------------
     // trackSong
     //----------------------------------
-
-    private TrackSong trackSong;
 
     @Override
     public final TrackSong getTrackSong() {

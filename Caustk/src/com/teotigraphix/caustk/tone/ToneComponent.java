@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.tone;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -34,11 +35,16 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
  */
 public abstract class ToneComponent implements IRestore {
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private Tone tone;
+
     //----------------------------------
     // tone
     //----------------------------------
-
-    private Tone tone;
 
     public Tone getTone() {
         return tone;

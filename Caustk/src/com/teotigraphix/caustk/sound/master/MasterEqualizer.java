@@ -19,22 +19,38 @@
 
 package com.teotigraphix.caustk.sound.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterEqualizer extends MasterComponent {
 
-    private static final long serialVersionUID = 8263605219136496486L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float bass = 1.1f;
+
+    @Tag(110)
+    private float bassMidFreq = 0.5f;
+
+    @Tag(120)
+    private float mid = 1f;
+
+    @Tag(130)
+    private float midHighFreq = 0.5f;
+
+    @Tag(140)
+    private float high = 1.1f;
 
     //--------------------------------------------------------------------------
-    // API
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // bass
     //----------------------------------
-
-    private float bass = 1.1f;
 
     public float getBass() {
         return bass;
@@ -57,8 +73,6 @@ public class MasterEqualizer extends MasterComponent {
     // bassMidFreq
     //----------------------------------
 
-    private float bassMidFreq = 0.5f;
-
     public float getBassMidFreq() {
         return bassMidFreq;
     }
@@ -79,8 +93,6 @@ public class MasterEqualizer extends MasterComponent {
     //----------------------------------
     // mid
     //----------------------------------
-
-    private float mid = 1f;
 
     public float getMid() {
         return mid;
@@ -103,8 +115,6 @@ public class MasterEqualizer extends MasterComponent {
     // midHighFreq
     //----------------------------------
 
-    private float midHighFreq = 0.5f;
-
     public float getMidHighFreq() {
         return midHighFreq;
     }
@@ -125,8 +135,6 @@ public class MasterEqualizer extends MasterComponent {
     //----------------------------------
     // high
     //----------------------------------
-
-    private float high = 1.1f;
 
     public float getHigh() {
         return high;

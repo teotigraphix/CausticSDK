@@ -19,10 +19,9 @@
 
 package com.teotigraphix.caustk.controller.core;
 
-import java.io.Serializable;
-
 import org.androidtransfuse.event.EventObserver;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
@@ -44,9 +43,11 @@ import com.teotigraphix.caustk.sound.source.SoundSource;
 /**
  * The {@link Rack} is a fully serializable state instance.
  */
-public class Rack implements IRack, Serializable {
+public class Rack implements IRack {
 
-    private static final long serialVersionUID = 3465185099859140754L;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
 
     private transient ISoundGenerator soundGenerator;
 
@@ -54,9 +55,21 @@ public class Rack implements IRack, Serializable {
 
     private transient IDispatcher dispatcher;
 
-    //    public int addedone;
-    //
-    //    public ICaustkController addedtwo;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private ISoundSource soundSource;
+
+    @Tag(1)
+    private ISoundMixer soundMixer;
+
+    @Tag(2)
+    private ISystemSequencer systemSequencer;
+
+    @Tag(3)
+    private ITrackSequencer trackSequencer;
 
     //----------------------------------
     // soundSource
@@ -79,8 +92,6 @@ public class Rack implements IRack, Serializable {
     // soundSource
     //----------------------------------
 
-    private ISoundSource soundSource;
-
     @Override
     public ISoundSource getSoundSource() {
         return soundSource;
@@ -89,8 +100,6 @@ public class Rack implements IRack, Serializable {
     //----------------------------------
     // soundMixer
     //----------------------------------
-
-    private ISoundMixer soundMixer;
 
     @Override
     public ISoundMixer getSoundMixer() {
@@ -101,8 +110,6 @@ public class Rack implements IRack, Serializable {
     // systemSequencer
     //----------------------------------
 
-    private ISystemSequencer systemSequencer;
-
     @Override
     public ISystemSequencer getSystemSequencer() {
         return systemSequencer;
@@ -111,8 +118,6 @@ public class Rack implements IRack, Serializable {
     //----------------------------------
     // trackSequencer
     //----------------------------------
-
-    private ITrackSequencer trackSequencer;
 
     @Override
     public ITrackSequencer getTrackSequencer() {

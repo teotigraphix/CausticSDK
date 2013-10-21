@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.sequencer.track;
 
-import java.io.Serializable;
 import java.util.UUID;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
@@ -31,21 +31,43 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  * A new track item is created for every span of a {@link Phrase} inserted into
  * the Track with {@link Track#addPhrase(int, Phrase)}.
  */
-public class TrackItem implements Serializable {
+public class TrackItem {
 
-    private static final long serialVersionUID = -6218774093346334285L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private int trackIndex;
+
+    @Tag(1)
+    private int bankIndex;
+
+    @Tag(2)
+    private int patternIndex;
+
+    @Tag(3)
+    private int startMeasure;
+
+    @Tag(4)
+    private int endMeasure;
+
+    @Tag(5)
+    private int numMeasures;
+
+    @Tag(6)
+    private int numLoops;
+
+    @Tag(7)
+    private UUID phraseId;
 
     //--------------------------------------------------------------------------
     // Properties
     //--------------------------------------------------------------------------
 
-    private int numMeasures;
-
     //----------------------------------
     //  trackIndex
     //----------------------------------
-
-    private int trackIndex;
 
     /**
      * The track/tone index.
@@ -59,28 +81,8 @@ public class TrackItem implements Serializable {
     }
 
     //----------------------------------
-    //  phraseId
-    //----------------------------------
-
-    private UUID phraseId;
-
-    /**
-     * Returns the {@link LibraryPhrase} id that was copied when the channel had
-     * its phrase assigned.
-     */
-    public final UUID getPhraseId() {
-        return phraseId;
-    }
-
-    public final void setPhraseId(UUID value) {
-        phraseId = value;
-    }
-
-    //----------------------------------
     //  bankIndex
     //----------------------------------
-
-    private int bankIndex;
 
     /**
      * The bank index in the pattern sequencer where the phrase data is located
@@ -98,8 +100,6 @@ public class TrackItem implements Serializable {
     //  patternIndex
     //----------------------------------
 
-    private int patternIndex;
-
     /**
      * The pattern index in the pattern sequencer where the phrase data is
      * located 0-15, (1-16).
@@ -116,8 +116,6 @@ public class TrackItem implements Serializable {
     //  startMeasure
     //----------------------------------
 
-    private int startMeasure;
-
     /**
      * The measure at which this item starts in the song sequencer.
      */
@@ -133,8 +131,6 @@ public class TrackItem implements Serializable {
     //  endMeasure
     //----------------------------------
 
-    private int endMeasure;
-
     /**
      * The measure at which this item ends in the song sequencer.
      */
@@ -146,6 +142,10 @@ public class TrackItem implements Serializable {
         endMeasure = value;
     }
 
+    //----------------------------------
+    //  numMeasures
+    //----------------------------------
+
     public int getNumMeasures() {
         return numMeasures;
     }
@@ -153,6 +153,10 @@ public class TrackItem implements Serializable {
     public void setNumMeasures(int value) {
         numMeasures = value;
     }
+
+    //----------------------------------
+    //  length
+    //----------------------------------
 
     /**
      * Returns the length of the item span, end - start measure.
@@ -168,8 +172,6 @@ public class TrackItem implements Serializable {
     //  numLoops
     //----------------------------------
 
-    private int numLoops;
-
     /**
      * The number of loops that the original phrase num measures is multiplied
      * by.
@@ -182,6 +184,22 @@ public class TrackItem implements Serializable {
 
     public void setNumLoops(int value) {
         numLoops = value;
+    }
+
+    //----------------------------------
+    //  phraseId
+    //----------------------------------
+
+    /**
+     * Returns the {@link LibraryPhrase} id that was copied when the channel had
+     * its phrase assigned.
+     */
+    public final UUID getPhraseId() {
+        return phraseId;
+    }
+
+    public final void setPhraseId(UUID value) {
+        phraseId = value;
     }
 
     //--------------------------------------------------------------------------

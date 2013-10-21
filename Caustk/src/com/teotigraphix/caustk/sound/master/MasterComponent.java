@@ -19,31 +19,42 @@
 
 package com.teotigraphix.caustk.sound.master;
 
-import java.io.Serializable;
-
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MasterComponent implements Serializable, IRestore {
+public class MasterComponent implements IRestore {
 
-    private static final long serialVersionUID = 4281646159472145003L;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
 
+    protected CausticMessage bypassMessage;
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
     private Rack rack;
+
+    @Tag(1)
+    private boolean bypass = false;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     protected ICausticEngine getEngine() {
         return rack;
     }
 
-    protected transient CausticMessage bypassMessage;
-
     //----------------------------------
     // bypass
     //----------------------------------
-
-    private boolean bypass = false;
 
     public boolean isBypass() {
         return bypass;

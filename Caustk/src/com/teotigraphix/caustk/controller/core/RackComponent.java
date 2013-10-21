@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.controller.core;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.IRackComponent;
@@ -30,13 +31,16 @@ import com.teotigraphix.caustk.controller.IRackComponent;
  */
 public class RackComponent implements IRackComponent {
 
-    private static final long serialVersionUID = 3033291731368710036L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private IRack rack;
 
     //--------------------------------------------------------------------------
     // IRackComponent API :: Properties
     //--------------------------------------------------------------------------
-
-    private IRack rack;
 
     @Override
     public final IRack getRack() {
@@ -46,13 +50,6 @@ public class RackComponent implements IRackComponent {
     protected final ICausticLogger getLogger() {
         return rack.getLogger();
     }
-
-    /**
-     * Returns the main application controller from the {@link IRack}.
-     */
-    //    protected final ICaustkController getController() {
-    //        return rack.getController();
-    //    }
 
     //--------------------------------------------------------------------------
     // Constructors

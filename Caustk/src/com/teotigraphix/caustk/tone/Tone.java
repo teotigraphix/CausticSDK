@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
@@ -38,29 +39,54 @@ import com.teotigraphix.caustk.tone.components.SynthComponent;
  */
 public abstract class Tone implements IRestore {
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
     private IRack rack;
 
-    public IRack _getRack() {
-        return null;
-    }
+    @Tag(1)
+    private Map<Class<? extends ToneComponent>, ToneComponent> components = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
 
-    public SoundMixerChannel getMixerChannel() {
-        return rack.getSoundMixer().getChannel(this);
-    }
+    @Tag(2)
+    private UUID id;
 
-    //    public ICaustkController getController() {
-    //        return rack.getController();
-    //    }
+    @Tag(3)
+    private String name = "";
 
+    @Tag(4)
     private ToneType toneType;
+
+    @Tag(5)
+    private int index;
+
+    @Tag(6)
+    private boolean enabled = false;
+
+    @Tag(7)
+    private boolean muted = false;
+
+    @Tag(8)
+    private String presetBank;
+
+    @Tag(9)
+    private boolean selected = false;
+
+    @Tag(10)
+    private UUID defaultPatchId;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     public final ToneType getToneType() {
         return toneType;
     }
 
-    //    public VolumeComponent getVolume() {
-    //        return getComponent(VolumeComponent.class);
-    //    }
+    public SoundMixerChannel getMixerChannel() {
+        return rack.getSoundMixer().getChannel(this);
+    }
 
     public SynthComponent getSynth() {
         return getComponent(SynthComponent.class);
@@ -73,8 +99,6 @@ public abstract class Tone implements IRestore {
     //----------------------------------
     // enabled
     //----------------------------------
-
-    private boolean enabled = false;
 
     public final boolean isEnabled() {
         return enabled;
@@ -90,8 +114,6 @@ public abstract class Tone implements IRestore {
     //----------------------------------
     // muted
     //----------------------------------
-
-    private boolean muted = false;
 
     public boolean isMuted() {
         return muted;
@@ -109,8 +131,6 @@ public abstract class Tone implements IRestore {
     // presetBank
     //----------------------------------
 
-    private String presetBank;
-
     public final String getPresetBank() {
         return presetBank;
     }
@@ -125,8 +145,6 @@ public abstract class Tone implements IRestore {
     //----------------------------------
     // selected
     //----------------------------------
-
-    private boolean selected = false;
 
     public boolean isSelected() {
         return selected;
@@ -158,8 +176,6 @@ public abstract class Tone implements IRestore {
     // id
     //----------------------------------
 
-    private UUID id;
-
     /**
      * The tone's unique id within a session.
      * <p>
@@ -178,8 +194,6 @@ public abstract class Tone implements IRestore {
     // index
     //----------------------------------
 
-    private int index;
-
     /**
      * The index location of the tone loaded into/from the core rack.
      */
@@ -194,8 +208,6 @@ public abstract class Tone implements IRestore {
     //----------------------------------
     // name
     //----------------------------------
-
-    private String name = "";
 
     /**
      * The name loaded into/from the core rack.
@@ -235,8 +247,6 @@ public abstract class Tone implements IRestore {
     // defaultPatchId
     //----------------------------------
 
-    private UUID defaultPatchId;
-
     /**
      * If loaded from the library as a {@link ToneDescriptor} item, will point
      * to the patch that was created when the tone was serialized.
@@ -252,8 +262,6 @@ public abstract class Tone implements IRestore {
     //--------------------------------------------------------------------------
     // Public Component API
     //--------------------------------------------------------------------------
-
-    private Map<Class<? extends ToneComponent>, ToneComponent> components = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
 
     /**
      * Adds a {@link ToneComponent} to the tone's component map and sets the
@@ -299,5 +307,4 @@ public abstract class Tone implements IRestore {
             toneComponent.restore();
         }
     }
-
 }

@@ -23,9 +23,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 
+/**
+ * The {@link Trigger} manages a list of {@link Note} instances.
+ */
 public class Trigger {
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private float beat;
+
+    @Tag(1)
+    private Object data;
+
+    @Tag(2)
+    private boolean selected = false;
+
+    @Tag(3)
+    private List<Note> notes;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -34,8 +54,6 @@ public class Trigger {
     //----------------------------------
     // beat
     //----------------------------------
-
-    private float beat;
 
     /**
      * The beat marker of this trigger.
@@ -56,8 +74,6 @@ public class Trigger {
     //----------------------------------
     // data
     //----------------------------------
-
-    private Object data;
 
     /**
      * Returns the trigger's abstract data if any.
@@ -84,8 +100,6 @@ public class Trigger {
     //----------------------------------
     // selected
     //----------------------------------
-
-    private boolean selected = false;
 
     /**
      * Whether the trigger is selected.
@@ -119,8 +133,6 @@ public class Trigger {
     //----------------------------------
     // notes
     //----------------------------------
-
-    private List<Note> notes;
 
     /**
      * The collections of notes the trigger holds.

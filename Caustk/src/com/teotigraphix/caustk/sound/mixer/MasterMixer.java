@@ -19,12 +19,10 @@
 
 package com.teotigraphix.caustk.sound.mixer;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
-
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
@@ -36,11 +34,36 @@ import com.teotigraphix.caustk.sound.master.MasterReverb;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MasterMixer implements IRestore, Serializable {
+public class MasterMixer implements IRestore {
 
-    private static final long serialVersionUID = -1979870871424443494L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
+    @Tag(0)
     private Rack rack;
+
+    @Tag(1)
+    private MasterDelay delay;
+
+    @Tag(2)
+    private MasterReverb reverb;
+
+    @Tag(3)
+    private MasterEqualizer equalizer;
+
+    @Tag(4)
+    private MasterLimiter limiter;
+
+    @Tag(5)
+    private float volume = 1f;
+
+    @Tag(6)
+    private Map<Integer, SoundMixerChannel> channels = new HashMap<Integer, SoundMixerChannel>();
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     private ICausticEngine getEngine() {
         return rack;
@@ -50,9 +73,6 @@ public class MasterMixer implements IRestore, Serializable {
     // channels
     //----------------------------------
 
-    @SuppressLint("UseSparseArrays")
-    Map<Integer, SoundMixerChannel> channels = new HashMap<Integer, SoundMixerChannel>();
-
     Map<Integer, SoundMixerChannel> getChannels() {
         return channels;
     }
@@ -60,8 +80,6 @@ public class MasterMixer implements IRestore, Serializable {
     //----------------------------------
     // equalizer
     //----------------------------------
-
-    private MasterEqualizer equalizer;
 
     public final MasterEqualizer getEqualizer() {
         return equalizer;
@@ -75,8 +93,6 @@ public class MasterMixer implements IRestore, Serializable {
     // limiter
     //----------------------------------
 
-    private MasterLimiter limiter;
-
     public final MasterLimiter getLimiter() {
         return limiter;
     }
@@ -88,8 +104,6 @@ public class MasterMixer implements IRestore, Serializable {
     //----------------------------------
     // delay
     //----------------------------------
-
-    private MasterDelay delay;
 
     public final MasterDelay getDelay() {
         return delay;
@@ -103,8 +117,6 @@ public class MasterMixer implements IRestore, Serializable {
     // reverb
     //----------------------------------
 
-    private MasterReverb reverb;
-
     public final MasterReverb getReverb() {
         return reverb;
     }
@@ -116,8 +128,6 @@ public class MasterMixer implements IRestore, Serializable {
     //----------------------------------
     // volume
     //----------------------------------
-
-    private float volume = 1f;
 
     public float getVolume() {
         return volume;

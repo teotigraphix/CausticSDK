@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.controller;
 
-import java.io.Serializable;
-
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.IRestore;
@@ -31,7 +29,7 @@ import com.teotigraphix.caustk.core.IRestore;
  * 
  * @author Michael Schmalle
  */
-public interface IRackComponent extends Serializable, IRestore {
+public interface IRackComponent extends IRestore {
 
     /**
      * Returns the main {@link IRack}.

@@ -19,22 +19,53 @@
 
 package com.teotigraphix.caustk.sound.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterReverb extends MasterComponent {
 
-    private static final long serialVersionUID = 5246569152430913050L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float preDelay = 0.02f;
+
+    @Tag(110)
+    private float roomSize = 0.75f;
+
+    @Tag(120)
+    private float hfDamping = 0.156f;
+
+    @Tag(130)
+    private float diffuse = 0.7f;
+
+    @Tag(140)
+    private int ditherEchoes = 0;
+
+    @Tag(150)
+    private float erGain = 1f;
+
+    @Tag(160)
+    private float erDecay = 0.25f;
+
+    @Tag(170)
+    private float stereoDelay = 0.5f;
+
+    @Tag(180)
+    private float stereoSpread = 0.25f;
+
+    @Tag(100)
+    private float wet = 0.25f;
 
     //--------------------------------------------------------------------------
-    // API
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // preDelay
     //----------------------------------
-
-    private float preDelay = 0.02f;
 
     public float getPreDelay() {
         return preDelay;
@@ -57,8 +88,6 @@ public class MasterReverb extends MasterComponent {
     // roomSize
     //----------------------------------
 
-    private float roomSize = 0.75f;
-
     public float getRoomSize() {
         return roomSize;
     }
@@ -79,8 +108,6 @@ public class MasterReverb extends MasterComponent {
     //----------------------------------
     // hfDamping
     //----------------------------------
-
-    private float hfDamping = 0.156f;
 
     public float getHFDamping() {
         return hfDamping;
@@ -103,8 +130,6 @@ public class MasterReverb extends MasterComponent {
     // diffuse
     //----------------------------------
 
-    private float diffuse = 0.7f;
-
     public float getDiffuse() {
         return diffuse;
     }
@@ -125,8 +150,6 @@ public class MasterReverb extends MasterComponent {
     //----------------------------------
     // ditherEchoes
     //----------------------------------
-
-    private int ditherEchoes = 0;
 
     public int getDitherEchoes() {
         return ditherEchoes;
@@ -149,8 +172,6 @@ public class MasterReverb extends MasterComponent {
     // erGain
     //----------------------------------
 
-    private float erGain = 1f;
-
     public float getERGain() {
         return erGain;
     }
@@ -171,8 +192,6 @@ public class MasterReverb extends MasterComponent {
     //----------------------------------
     // erDecay
     //----------------------------------
-
-    private float erDecay = 0.25f;
 
     public float getERDecay() {
         return erDecay;
@@ -195,8 +214,6 @@ public class MasterReverb extends MasterComponent {
     // stereoDelay
     //----------------------------------
 
-    private float stereoDelay = 0.5f;
-
     public float getStereoDelay() {
         return stereoDelay;
     }
@@ -218,8 +235,6 @@ public class MasterReverb extends MasterComponent {
     // stereoSpread
     //----------------------------------
 
-    private float stereoSpread = 0.25f;
-
     public float getStereoSpread() {
         return stereoSpread;
     }
@@ -240,8 +255,6 @@ public class MasterReverb extends MasterComponent {
     //----------------------------------
     // wet
     //----------------------------------
-
-    private float wet = 0.25f;
 
     public float getWet() {
         return wet;

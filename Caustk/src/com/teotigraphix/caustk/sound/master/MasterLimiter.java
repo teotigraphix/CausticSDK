@@ -19,22 +19,35 @@
 
 package com.teotigraphix.caustk.sound.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.core.Rack;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterLimiter extends MasterComponent {
 
-    private static final long serialVersionUID = 7366612792215282397L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float pre = 1f;
+
+    @Tag(110)
+    private float attack = 0.02f;
+
+    @Tag(120)
+    private float release = 0.25f;
+
+    @Tag(130)
+    private float post = 1f;
 
     //--------------------------------------------------------------------------
-    // API
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // pre
     //----------------------------------
-
-    private float pre = 1f;
 
     public float getPre() {
         return pre;
@@ -57,8 +70,6 @@ public class MasterLimiter extends MasterComponent {
     // attack
     //----------------------------------
 
-    private float attack = 0.02f;
-
     public float getAttack() {
         return attack;
     }
@@ -80,8 +91,6 @@ public class MasterLimiter extends MasterComponent {
     // release
     //----------------------------------
 
-    private float release = 0.25f;
-
     public float getRelease() {
         return release;
     }
@@ -102,8 +111,6 @@ public class MasterLimiter extends MasterComponent {
     //----------------------------------
     // post
     //----------------------------------
-
-    private float post = 1f;
 
     public float getPost() {
         return post;

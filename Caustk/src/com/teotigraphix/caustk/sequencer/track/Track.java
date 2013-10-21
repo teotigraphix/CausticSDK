@@ -27,6 +27,7 @@ import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.core.CausticException;
@@ -45,8 +46,6 @@ import com.teotigraphix.caustk.tone.Tone;
 @SuppressLint("UseSparseArrays")
 public class Track {
 
-    private TrackSong trackSong;
-
     public final TrackSong getTrackSong() {
         return trackSong;
     }
@@ -59,7 +58,31 @@ public class Track {
         return trackSong.getDispatcher();
     }
 
-    Map<Integer, Map<Integer, Phrase>> phrases = new TreeMap<Integer, Map<Integer, Phrase>>();
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private TrackSong trackSong;
+
+    @Tag(1)
+    private Map<Integer, Map<Integer, Phrase>> phrases = new TreeMap<Integer, Map<Integer, Phrase>>();
+
+    // the phrase map is keyed on the measure start
+    @Tag(2)
+    Map<Integer, TrackItem> items = new HashMap<Integer, TrackItem>();
+
+    @Tag(3)
+    private int index;
+
+    @Tag(4)
+    private int currentBank;
+
+    @Tag(5)
+    private int currentPattern;
+
+    @Tag(6)
+    private Map<Integer, Integer> bankEditor = new HashMap<Integer, Integer>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -84,8 +107,6 @@ public class Track {
     // index
     //----------------------------------
 
-    private int index;
-
     /**
      * Returns the index within the {@link ISoundSource}, the same index as the
      * {@link #getTone()}.
@@ -97,8 +118,6 @@ public class Track {
     //----------------------------------
     // currentBank
     //----------------------------------
-
-    private int currentBank;
 
     public int getCurrentBank() {
         return currentBank;
@@ -120,8 +139,6 @@ public class Track {
     // currentPattern
     //----------------------------------
 
-    private int currentPattern;
-
     public int getCurrentPattern() {
         return currentPattern;
     }
@@ -138,8 +155,6 @@ public class Track {
         getTone().getPatternSequencer().setSelectedPattern(currentPattern);
         getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Pattern, this));
     }
-
-    private Map<Integer, Integer> bankEditor = new HashMap<Integer, Integer>();
 
     public int getEditPattern() {
         if (!bankEditor.containsKey(currentBank))
@@ -263,9 +278,6 @@ public class Track {
     //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
-
-    // the phrase map is keyed on the measure start
-    Map<Integer, TrackItem> items = new HashMap<Integer, TrackItem>();
 
     public void setCurrentBeat(float currentBeat) {
         // TODO Auto-generated method stub
