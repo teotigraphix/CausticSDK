@@ -23,6 +23,7 @@ import java.io.File;
 
 import com.teotigraphix.caustk.gs.machine.part.bassline.DrumMachineSound;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
+import com.teotigraphix.caustk.gs.pattern.RhythmPart.ChannelProperty;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.ShuffleMode;
@@ -155,22 +156,6 @@ public class DrumMachine extends GrooveMachine {
                 samplerChannel.setVolume(value);
                 break;
         }
-    }
-
-    public enum ChannelProperty {
-        Tune,
-
-        Punch,
-
-        Decay,
-
-        Pan,
-
-        Volume,
-
-        Mute,
-
-        Solo;
     }
 
     //--------------------------------------------------------------------------

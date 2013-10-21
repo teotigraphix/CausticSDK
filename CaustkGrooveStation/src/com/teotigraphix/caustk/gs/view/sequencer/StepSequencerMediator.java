@@ -16,19 +16,19 @@ import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.OnMachineSequencerListener;
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
+import com.teotigraphix.caustk.gs.machine.part.MachineSound.OnMachineSoundListener;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
-import com.teotigraphix.caustk.gs.model.IGrooveStationModel.OnGrooveStationModelChange;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
+import com.teotigraphix.caustk.gs.view.screen.MachineMediatorBase;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerStepChange;
 import com.teotigraphix.caustk.sequencer.track.Phrase;
 import com.teotigraphix.caustk.sequencer.track.Trigger;
-import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.StepKeyboard;
 import com.teotigraphix.libgdx.ui.caustk.StepKeyboard.OnStepKeyboardListener;
 
-public abstract class StepSequencerMediator extends ScreenMediator {
+public abstract class StepSequencerMediator extends MachineMediatorBase {
 
     @Inject
     IFunctionController functionController;
@@ -82,16 +82,18 @@ public abstract class StepSequencerMediator extends ScreenMediator {
         //            }
         //        });
 
-        register(grooveStationModel, OnGrooveStationModelChange.class,
-                new EventObserver<OnGrooveStationModelChange>() {
+        register(getMachine(), OnMachineSoundListener.class,
+                new EventObserver<OnMachineSoundListener>() {
                     @Override
-                    public void trigger(OnGrooveStationModelChange object) {
+                    public void trigger(OnMachineSoundListener object) {
                         switch (object.getKind()) {
                             case SelectedPart:
                                 refreshView();
                                 break;
                             case RhythmChannel:
                                 refreshView();
+                                break;
+                            case PartSelectState:
                                 break;
                         }
                     }

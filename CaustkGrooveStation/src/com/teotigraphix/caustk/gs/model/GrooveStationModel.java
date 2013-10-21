@@ -10,7 +10,6 @@ import com.teotigraphix.caustk.gs.config.IGrooveStationConfiguration;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.GrooveStation;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveStationSetup;
-import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.libgdx.model.CaustkModelBase;
 
 public class GrooveStationModel extends CaustkModelBase implements IGrooveStationModel {
@@ -86,26 +85,26 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
     //--------------------------------------------------------------------------
     // IGrooveStationModel API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public void selectPart(int machineIndex, int partIndex) {
-        final GrooveMachine machine = getMachines().get(machineIndex);
-        if (!machine.getSound().isSelectedPart(partIndex)) {
-            machine.getSound().setSelectedPart(partIndex);
-            trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.SelectedPart));
-        }
-    }
-
-    @Override
-    public void selectRhythmPart(int machineIndex, int partIndex, int channelIndex) {
-        final GrooveMachine machine = getMachines().get(machineIndex);
-
-        selectPart(machineIndex, partIndex);
-
-        RhythmPart selectedPart = machine.getSound().getSelectedPart();
-        selectedPart.setSelectedChannel(channelIndex);
-        trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.RhythmChannel));
-    }
+    //
+    //    @Override
+    //    public void selectPart(int machineIndex, int partIndex) {
+    //        final GrooveMachine machine = getMachines().get(machineIndex);
+    //        if (!machine.getSound().isSelectedPart(partIndex)) {
+    //            machine.getSound().setSelectedPart(partIndex);
+    //            trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.SelectedPart));
+    //        }
+    //    }
+    //
+    //    @Override
+    //    public void selectRhythmPart(int machineIndex, int partIndex, int channelIndex) {
+    //        final GrooveMachine machine = getMachines().get(machineIndex);
+    //
+    //        selectPart(machineIndex, partIndex);
+    //
+    //        RhythmPart selectedPart = machine.getSound().getSelectedPart();
+    //        selectedPart.setSelectedChannel(channelIndex);
+    //        trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.RhythmChannel));
+    //    }
 
     //--------------------------------------------------------------------------
     // Protected :: Methods

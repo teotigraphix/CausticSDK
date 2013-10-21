@@ -4,15 +4,15 @@ package com.teotigraphix.caustk.gs.view.transport;
 import org.androidtransfuse.event.EventObserver;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.teotigraphix.caustk.gs.view.screen.MachineMediatorBase;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerTransportChange;
 import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
-import com.teotigraphix.libgdx.controller.ScreenMediator;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.TransportGroup;
 import com.teotigraphix.libgdx.ui.caustk.TransportGroup.OnTransportGroupListener;
 
-public class TransportControlMediator extends ScreenMediator {
+public class TransportControlMediator extends MachineMediatorBase {
 
     private TransportGroup view;
 
@@ -20,7 +20,9 @@ public class TransportControlMediator extends ScreenMediator {
     }
 
     @Override
-    public void onRegister() {
+    public void onAttach(IScreen screen) {
+        super.onAttach(screen);
+
         // listen for transport changes on the main sequencer
         register(getController(), OnSystemSequencerTransportChange.class,
                 new EventObserver<OnSystemSequencerTransportChange>() {

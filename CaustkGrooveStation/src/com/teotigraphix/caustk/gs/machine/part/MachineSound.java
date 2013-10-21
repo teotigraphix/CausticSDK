@@ -31,6 +31,7 @@ import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
+import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 
 /*
  * This class will implement and wrap the Tone API for each machine.
@@ -56,12 +57,16 @@ public class MachineSound extends MachineComponentPart {
         return partSelectState;
     }
 
+    /**
+     * @param value
+     * @see OnMachineSoundListener
+     * @see MachineSoundChangeKind#PartSelectState
+     */
     public void setPartSelectState(PartSelectState value) {
         if (value == partSelectState)
             return;
         partSelectState = value;
-        getController().trigger(
-                new OnMachineSoundListener(MachineSoundChangeKind.SelectedPart, this));
+        trigger(new OnMachineSoundListener(MachineSoundChangeKind.PartSelectState, this));
     }
 
     //----------------------------------
@@ -94,11 +99,15 @@ public class MachineSound extends MachineComponentPart {
         return (T)selectedPart;
     }
 
+    /**
+     * @param value
+     * @see OnMachineSoundListener
+     * @see MachineSoundChangeKind#PartSelectState
+     */
     public void setSelectedPart(int partIndex) {
         Part part = parts.get(partIndex);
         selectedPart = part;
-        getController().trigger(
-                new OnMachineSoundListener(MachineSoundChangeKind.PartSelectState, this));
+        trigger(new OnMachineSoundListener(MachineSoundChangeKind.PartSelectState, this));
     }
 
     public void addPart(Part part) {
@@ -107,6 +116,14 @@ public class MachineSound extends MachineComponentPart {
 
     public final Patch getSelectedPatch() {
         return getSelectedPart().getPatch();
+    }
+
+    public void selectRhythmPart(int partIndex, int channelIndex) {
+        setSelectedPart(partIndex);
+
+        RhythmPart selectedPart = getSelectedPart();
+        selectedPart.setSelectedChannel(channelIndex);
+        trigger(new OnMachineSoundListener(MachineSoundChangeKind.RhythmChannel, this));
     }
 
     //----------------------------------
@@ -239,6 +256,8 @@ public class MachineSound extends MachineComponentPart {
     public enum MachineSoundChangeKind {
         SelectedPart,
 
+        RhythmChannel,
+
         PartSelectState;
     }
 
@@ -246,6 +265,10 @@ public class MachineSound extends MachineComponentPart {
     // Listeners
     //--------------------------------------------------------------------------
 
+    /**
+     * @see MachineSound#register(Class,
+     *      org.androidtransfuse.event.EventObserver)
+     */
     public static class OnMachineSoundListener {
 
         private MachineSoundChangeKind kind;

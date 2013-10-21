@@ -18,12 +18,12 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.OnMachineSequenc
 import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
 import com.teotigraphix.caustk.gs.machine.part.MachineSound.OnMachineSoundListener;
 import com.teotigraphix.caustk.gs.model.IGrooveStationModel;
-import com.teotigraphix.libgdx.controller.ScreenMediator;
+import com.teotigraphix.caustk.gs.view.screen.MachineMediatorBase;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.SelectLedControl;
 import com.teotigraphix.libgdx.ui.caustk.SelectLedControl.OnSelectLedControlListener;
 
-public abstract class StepSequencerControlsMediator extends ScreenMediator {
+public abstract class StepSequencerControlsMediator extends MachineMediatorBase {
 
     @Inject
     IGrooveStationModel grooveStationModel;
@@ -52,7 +52,9 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
     protected abstract Table createTable(IScreen screen);
 
     @Override
-    public void onRegister() {
+    public void onAttach(IScreen screen) {
+        super.onAttach(screen);
+
         GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
         machine.getSequencer().addOnMachineSequencerListener(new OnMachineSequencerListener() {
             @Override
@@ -70,18 +72,21 @@ public abstract class StepSequencerControlsMediator extends ScreenMediator {
             }
         });
 
-        register(OnMachineSoundListener.class, new EventObserver<OnMachineSoundListener>() {
-            @Override
-            public void trigger(OnMachineSoundListener object) {
-                switch (object.getKind()) {
-                    case SelectedPart:
-                        refreshView();
-                        break;
-                    case PartSelectState:
-                        break;
-                }
-            }
-        });
+        register(machine, OnMachineSoundListener.class,
+                new EventObserver<OnMachineSoundListener>() {
+                    @Override
+                    public void trigger(OnMachineSoundListener object) {
+                        switch (object.getKind()) {
+                            case SelectedPart:
+                                refreshView();
+                                break;
+                            case PartSelectState:
+                                break;
+                            case RhythmChannel:
+                                break;
+                        }
+                    }
+                });
     }
 
     protected void refreshView() {

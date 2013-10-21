@@ -103,6 +103,12 @@ public class RhythmPart extends Part {
         tone.getSampler().loadChannel(channel, sampleFile.getAbsolutePath());
     }
 
+    public void preview(int channel) {
+        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(this);
+        //tone.getSynth().notePreview(toPitch(channel), true);
+        tone.getSynth().noteOn(toPitch(channel), 1f);
+    }
+
     public float getChannelProperty(int bank, int channel, ChannelProperty property) {
         BeatboxTone tone = (BeatboxTone)PartUtils.getTone(this);
         WavSamplerChannel samplerChannel = tone.getSampler().getChannel(channel);
@@ -149,7 +155,7 @@ public class RhythmPart extends Part {
                 samplerChannel.setDecay(value);
                 break;
             case Mute:
-                samplerChannel.setMute(value == 0f ? true : false);
+                samplerChannel.setMute(value == 1f ? true : false);
                 break;
             case Pan:
                 samplerChannel.setPan(value);
@@ -158,7 +164,7 @@ public class RhythmPart extends Part {
                 samplerChannel.setPunch(value);
                 break;
             case Solo:
-                samplerChannel.setSolo(value == 0f ? true : false);
+                samplerChannel.setSolo(value == 1f ? true : false);
                 break;
             case Tune:
                 samplerChannel.setTune(value);

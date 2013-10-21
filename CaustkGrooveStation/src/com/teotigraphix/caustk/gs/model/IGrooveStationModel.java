@@ -4,7 +4,6 @@ package com.teotigraphix.caustk.gs.model;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.gs.config.IGrooveStationConfiguration;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
-import com.teotigraphix.caustk.gs.machine.part.MachineSound;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.PCMSynthTone;
 import com.teotigraphix.libgdx.model.ICaustkModel;
@@ -28,7 +27,7 @@ public interface IGrooveStationModel extends ICaustkModel, IControllerComponent 
      * @see OnGrooveStationModelChange
      * @see GrooveStationModelChangeKind#SelectedPart
      */
-    void selectPart(int machineIndex, int partIndex);
+    //    void selectPart(int machineIndex, int partIndex);
 
     /**
      * Selects a current channel held in a rhythm part such as the
@@ -40,15 +39,12 @@ public interface IGrooveStationModel extends ICaustkModel, IControllerComponent 
      * @see OnGrooveStationModelChange
      * @see GrooveStationModelChangeKind#SelectedPart
      */
-    void selectRhythmPart(int machineIndex, int partIndex, int channelIndex);
+    //    void selectRhythmPart(int machineIndex, int partIndex, int channelIndex);
 
     public static class OnGrooveStationStartMachines {
     }
 
     public enum GrooveStationModelChangeKind {
-        SelectedPart,
-
-        RhythmChannel;
     }
 
     public static class OnGrooveStationModelChange {
