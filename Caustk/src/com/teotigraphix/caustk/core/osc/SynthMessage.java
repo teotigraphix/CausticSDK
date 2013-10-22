@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
 /**
  * The {@link SynthMessage} holds all OSC messages associated with the

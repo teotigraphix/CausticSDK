@@ -22,7 +22,7 @@ package com.teotigraphix.libgdx.application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.caustk.rack.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.screen.IScreen;
 

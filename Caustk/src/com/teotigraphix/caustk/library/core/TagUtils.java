@@ -23,8 +23,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.library.item.LibraryScene;
-import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
 public class TagUtils {
 

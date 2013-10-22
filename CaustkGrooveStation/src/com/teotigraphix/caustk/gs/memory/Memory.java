@@ -32,9 +32,9 @@ import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
-import com.teotigraphix.caustk.sequencer.track.Phrase;
-import com.teotigraphix.caustk.tone.BasslineTone;
-import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.rack.sequencer.track.Phrase;
+import com.teotigraphix.caustk.rack.tone.BasslineTone;
+import com.teotigraphix.caustk.rack.tone.Tone;
 
 /**
  * Represents an abstract memory bank, USER, PRESET etc.

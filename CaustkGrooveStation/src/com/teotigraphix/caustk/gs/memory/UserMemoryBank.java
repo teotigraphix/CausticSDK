@@ -12,8 +12,8 @@ import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.sequencer.track.Phrase;
-import com.teotigraphix.caustk.sequencer.track.Track;
+import com.teotigraphix.caustk.rack.sequencer.track.Phrase;
+import com.teotigraphix.caustk.rack.sequencer.track.Track;
 
 @SuppressLint("UseSparseArrays")
 public class UserMemoryBank extends MemoryBank {

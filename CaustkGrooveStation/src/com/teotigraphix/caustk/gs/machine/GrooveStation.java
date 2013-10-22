@@ -27,8 +27,9 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
-import com.teotigraphix.caustk.tone.ToneType;
+import com.teotigraphix.caustk.rack.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
+import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.tone.ToneType;
 
 /**
  * Holds all {@link GrooveMachine}s in an application, tha main controller for
@@ -146,29 +147,40 @@ public class GrooveStation {
             return null;
         }
 
-        public void addPart(String name, ToneType toneType) {
-            GrooveMachinePart part = new GrooveMachinePart(name, toneType);
+        public void addPart(int index, String name, ToneType toneType) {
+            GrooveMachinePart part = new GrooveMachinePart(index, name, toneType);
             parts.add(part);
         }
     }
 
     public static class GrooveMachinePart {
 
+        private int index;
+
+        public final int getIndex() {
+            return index;
+        }
+
         private String name;
 
-        public String getName() {
+        public final String getName() {
             return name;
         }
 
         private ToneType toneType;
 
-        public ToneType getToneType() {
+        public final ToneType getToneType() {
             return toneType;
         }
 
-        public GrooveMachinePart(String name, ToneType toneType) {
+        public GrooveMachinePart(int index, String name, ToneType toneType) {
+            this.index = index;
             this.name = name;
             this.toneType = toneType;
+        }
+
+        public ToneDescriptor createDescriptor() {
+            return new ToneDescriptor(index, name, toneType);
         }
     }
 

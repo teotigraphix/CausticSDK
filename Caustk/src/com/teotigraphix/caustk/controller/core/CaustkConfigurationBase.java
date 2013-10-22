@@ -31,9 +31,9 @@ import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
+import com.teotigraphix.caustk.rack.sound.ISoundGenerator;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.serialize.SerializeService;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**

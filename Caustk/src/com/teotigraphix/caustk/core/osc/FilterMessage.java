@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.tone.components.FilterComponentBase;
-import com.teotigraphix.caustk.tone.components.SynthFilterComponent;
-import com.teotigraphix.caustk.tone.components.SynthFilterComponent.FilterType;
-import com.teotigraphix.caustk.tone.components.bassline.FilterComponent;
+import com.teotigraphix.caustk.rack.tone.components.FilterComponentBase;
+import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
+import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent.FilterType;
+import com.teotigraphix.caustk.rack.tone.components.bassline.FilterComponent;
 
 /**
  * The {@link FilterMessage} holds all OSC messages associated with the

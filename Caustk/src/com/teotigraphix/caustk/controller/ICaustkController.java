@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**

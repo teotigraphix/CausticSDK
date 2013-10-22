@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.library.core.MetadataInfo;
-import com.teotigraphix.caustk.tone.ToneDescriptor;
-import com.teotigraphix.caustk.tone.ToneType;
+import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.tone.ToneType;
 
 /**
  * The {@link LibraryPattern} is a collection of library items linked together

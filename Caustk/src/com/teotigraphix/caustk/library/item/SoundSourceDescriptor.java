@@ -25,8 +25,8 @@ import java.util.UUID;
 
 import android.annotation.SuppressLint;
 
-import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 
 @SuppressLint("UseSparseArrays")
 public class SoundSourceDescriptor {

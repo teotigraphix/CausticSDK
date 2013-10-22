@@ -19,11 +19,9 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.tone.components.bassline.DistortionComponent;
-import com.teotigraphix.caustk.tone.components.bassline.DistortionComponent.Program;
-import com.teotigraphix.caustk.tone.components.bassline.LFO1Component;
-import com.teotigraphix.caustk.tone.components.bassline.OSC1Component;
-import com.teotigraphix.caustk.tone.components.bassline.OSC1Component.Waveform;
+import com.teotigraphix.caustk.rack.tone.components.bassline.DistortionComponent;
+import com.teotigraphix.caustk.rack.tone.components.bassline.OSC1Component;
+import com.teotigraphix.caustk.rack.tone.components.bassline.OSC1Component.Waveform;
 
 public class BasslineMessage extends CausticMessage {
 

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.sound.mixer.SoundMixerChannel;
+import com.teotigraphix.caustk.rack.sound.mixer.SoundMixerChannel;
 
 /**
  * The {@link MixerChannelMessage} holds all OSC messages associated with the

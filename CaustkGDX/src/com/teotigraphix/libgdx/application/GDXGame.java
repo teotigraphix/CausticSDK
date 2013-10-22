@@ -33,7 +33,7 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
+import com.teotigraphix.caustk.rack.sound.ISoundGenerator;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.model.IApplicationModel.OnApplicationModelProjectLoadComplete;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;

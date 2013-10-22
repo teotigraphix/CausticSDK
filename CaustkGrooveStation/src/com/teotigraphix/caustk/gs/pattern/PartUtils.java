@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.Tone;
 
 public class PartUtils {
 

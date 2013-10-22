@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.core;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.teotigraphix.caustk.sound.ISoundGenerator;
-import com.teotigraphix.caustk.sound.generator.AndroidSoundGenerator;
+import com.teotigraphix.caustk.rack.sound.ISoundGenerator;
+import com.teotigraphix.caustk.rack.sound.generator.AndroidSoundGenerator;
 
 /*
 

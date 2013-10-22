@@ -31,13 +31,13 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IControllerAware;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**

@@ -24,10 +24,10 @@ import java.io.File;
 import com.teotigraphix.caustk.gs.machine.part.bassline.DrumMachineSound;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart.ChannelProperty;
-import com.teotigraphix.caustk.tone.BeatboxTone;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.ShuffleMode;
-import com.teotigraphix.caustk.tone.components.beatbox.WavSamplerChannel;
+import com.teotigraphix.caustk.rack.tone.BeatboxTone;
+import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.ShuffleMode;
+import com.teotigraphix.caustk.rack.tone.components.beatbox.WavSamplerChannel;
 
 /*
  * Part1 - Beatbox 

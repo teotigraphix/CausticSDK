@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**

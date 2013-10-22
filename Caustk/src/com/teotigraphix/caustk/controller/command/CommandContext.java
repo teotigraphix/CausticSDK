@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.controller.command;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.rack.IRack;
 
 public class CommandContext {
 

@@ -2,7 +2,7 @@
 package com.teotigraphix.caustk.gs.memory.item;
 
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 
 public class PhraseMemoryItem extends MemorySlotItem {
 

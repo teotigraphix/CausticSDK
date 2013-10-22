@@ -23,10 +23,10 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
+import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * Abstract base class for all machine parts.

@@ -44,11 +44,11 @@ import com.teotigraphix.caustk.library.item.LibraryPattern.ToneSet;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.library.item.SoundSourceDescriptor;
-import com.teotigraphix.caustk.sound.ISoundSource;
-import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.ToneDescriptor;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
-import com.teotigraphix.caustk.tone.components.SynthComponent;
+import com.teotigraphix.caustk.rack.sound.ISoundSource;
+import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.utils.Compress;
 import com.teotigraphix.caustk.utils.PatternUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
@@ -238,12 +238,12 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     public void importSong(Library library, File causticFile) throws IOException, CausticException {
         final ISoundSource soundSource = getController().getRack().getSoundSource();
         // Load the song, this automatically resets the sound source
-        soundSource.loadSong(causticFile);
+        getController().getRack().loadSong(causticFile);
 
         loadLibraryScene(library, causticFile, soundSource);
         loadLibraryPhrases(library, soundSource);
 
-        soundSource.clearAndReset();
+        getController().getRack().clearAndReset();
 
         getController().trigger(new OnLibraryManagerImportComplete());
     }

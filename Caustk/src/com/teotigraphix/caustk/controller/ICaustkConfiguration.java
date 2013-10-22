@@ -26,8 +26,8 @@ import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.rack.sound.ISoundGenerator;
 import com.teotigraphix.caustk.service.ISerializeService;
-import com.teotigraphix.caustk.sound.ISoundGenerator;
 
 /**
  * @author Michael Schmalle

@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.gs.pattern;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
-import com.teotigraphix.caustk.sequencer.track.Phrase;
-import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.rack.sequencer.track.Phrase;
+import com.teotigraphix.caustk.rack.tone.Tone;
 
 public class Part {
 

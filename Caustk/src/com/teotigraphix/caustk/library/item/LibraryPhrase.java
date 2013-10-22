@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.library.item;
 
-import com.teotigraphix.caustk.tone.ToneType;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.rack.tone.ToneType;
+import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 public class LibraryPhrase extends LibraryItem {

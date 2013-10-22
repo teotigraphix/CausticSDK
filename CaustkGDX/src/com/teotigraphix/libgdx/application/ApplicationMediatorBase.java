@@ -222,7 +222,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
 
             // only load the song into the core memory, we already have
             // the object graph mirrored in the Rack
-            getController().getRack().getSoundSource().loadSongRaw(absoluteCausticFile);
+            getController().getRack().loadSongRaw(absoluteCausticFile);
 
             // remove the temp file
             FileUtils.deleteQuietly(absoluteCausticFile);
@@ -269,7 +269,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
             final File causticFile = getTempCausticFile();
 
             state.save();
-            getController().getRack().getSoundSource().saveSongAs(causticFile);
+            getController().getRack().saveSongAs(causticFile);
 
             //            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
 

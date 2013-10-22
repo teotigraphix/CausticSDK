@@ -36,8 +36,8 @@ import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
 import com.teotigraphix.caustk.gs.pattern.SynthPart;
-import com.teotigraphix.caustk.tone.BeatboxTone;
-import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.BeatboxTone;
+import com.teotigraphix.caustk.rack.tone.Tone;
 
 /*
  * This class will implement and wrap the Tone API for each machine.
@@ -293,8 +293,7 @@ public class MachineSound extends MachineComponentPart {
 
     public void setupParts(GrooveMachineDescriptor descriptor) throws CausticException {
         for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
-            Tone tone = getMachine().getRack().getSoundSource()
-                    .createTone(partDescriptor.getName(), partDescriptor.getToneType());
+            Tone tone = getMachine().getRack().createTone(partDescriptor.createDescriptor());
             Part part = createPart(tone);
             addPart(part);
         }

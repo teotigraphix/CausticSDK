@@ -33,8 +33,8 @@ import com.teotigraphix.caustk.library.item.LibraryPattern;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.service.ISerialize;
-import com.teotigraphix.caustk.tone.Tone;
 
 public class Library implements ISerialize {
 

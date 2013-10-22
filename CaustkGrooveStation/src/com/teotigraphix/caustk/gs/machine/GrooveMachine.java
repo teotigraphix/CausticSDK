@@ -24,7 +24,6 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
@@ -43,6 +42,7 @@ import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
+import com.teotigraphix.caustk.rack.IRack;
 
 public abstract class GrooveMachine implements IDispatcher {
 

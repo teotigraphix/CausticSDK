@@ -4,8 +4,8 @@ package com.teotigraphix.caustk.gs.model;
 import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.gs.config.IGrooveStationConfiguration;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
-import com.teotigraphix.caustk.tone.BeatboxTone;
-import com.teotigraphix.caustk.tone.PCMSynthTone;
+import com.teotigraphix.caustk.rack.tone.BeatboxTone;
+import com.teotigraphix.caustk.rack.tone.PCMSynthTone;
 import com.teotigraphix.libgdx.model.ICaustkModel;
 
 public interface IGrooveStationModel extends ICaustkModel, IControllerComponent {

@@ -3,7 +3,7 @@ package com.teotigraphix.caustk.gs.machine.part.sound;
 
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
-import com.teotigraphix.caustk.tone.BasslineTone;
+import com.teotigraphix.caustk.rack.tone.BasslineTone;
 
 public class BasslinePatch extends Patch {
 

@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core;
 
+import com.singlecellsoftware.causticcore.CausticCore;
+
 /**
  * The {@link ICausticEngine} API is the basic interface that communicates with
  * the {@link CausticCore} using OSC String messages.
