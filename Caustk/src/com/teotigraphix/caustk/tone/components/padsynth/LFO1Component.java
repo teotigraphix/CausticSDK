@@ -1,22 +1,35 @@
 
 package com.teotigraphix.caustk.tone.components.padsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class LFO1Component extends ToneComponent {
 
-    private static final long serialVersionUID = 2752827781264521808L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected Target target = Target.Off;
+
+    @Tag(101)
+    protected int rate = 6;
+
+    @Tag(102)
+    protected float depth;
+
+    @Tag(103)
+    protected float phase;
 
     //--------------------------------------------------------------------------
-    // Properties API
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // target
     //----------------------------------
-
-    protected Target target = Target.Off;
 
     public Target getTarget() {
         return target;
@@ -36,8 +49,6 @@ public class LFO1Component extends ToneComponent {
     //----------------------------------
     // rate
     //----------------------------------
-
-    protected int rate = 6;
 
     public int getRate() {
         return rate;
@@ -60,8 +71,6 @@ public class LFO1Component extends ToneComponent {
     // depth
     //----------------------------------
 
-    protected float depth;
-
     public float getDepth() {
         return depth;
     }
@@ -82,8 +91,6 @@ public class LFO1Component extends ToneComponent {
     //----------------------------------
     // phase
     //----------------------------------
-
-    protected float phase;
 
     public float getPhase() {
         return phase;

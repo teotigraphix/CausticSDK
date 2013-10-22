@@ -19,39 +19,54 @@
 
 package com.teotigraphix.caustk.tone.components.beatbox;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class WavSamplerChannel extends ToneComponent {
 
-    private static final long serialVersionUID = -6450972717386437242L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
-    private boolean isSelected;
+    @Tag(100)
+    private WavSamplerComponent sampler;
 
-    private boolean isMute;
-
+    @Tag(101)
     private int index;
 
-    private boolean isSolo;
-
-    private float tune;
-
-    private float punch;
-
-    private float decay;
-
-    private float pan;
-
-    private float volume;
-
+    @Tag(102)
     private String name;
 
-    private transient WavSamplerComponent sampler;
+    @Tag(103)
+    private boolean isSelected;
+
+    @Tag(104)
+    private boolean isMute;
+
+    @Tag(105)
+    private boolean isSolo;
+
+    @Tag(106)
+    private float tune;
+
+    @Tag(107)
+    private float punch;
+
+    @Tag(108)
+    private float decay;
+
+    @Tag(109)
+    private float pan;
+
+    @Tag(110)
+    private float volume;
+
+    @Tag(100)
+    private int muteGroups;
 
     //--------------------------------------------------------------------------
-    //
-    // IBeatboxSampler API :: Properties
-    //
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     public boolean hasSample() {
@@ -112,8 +127,6 @@ public class WavSamplerChannel extends ToneComponent {
     //----------------------------------
     // muteGroups
     //----------------------------------
-
-    private int muteGroups;
 
     public int getMuteGroups() {
         return (int)BeatboxMessage.CHANNEL_MUTE_GROUPS.query(getEngine(), getToneIndex(), index);

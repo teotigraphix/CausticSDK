@@ -1,17 +1,43 @@
 
 package com.teotigraphix.caustk.tone.components.padsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 
 public class VolumeComponent extends com.teotigraphix.caustk.tone.components.VolumeComponent {
 
-    private static final long serialVersionUID = -4608825622962824885L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected float gain1;
+
+    @Tag(101)
+    protected float gain2;
+
+    @Tag(102)
+    protected float attack;
+
+    @Tag(103)
+    protected float decay;
+
+    @Tag(104)
+    protected float sustain;
+
+    @Tag(105)
+    protected float release;
+
+    @Tag(106)
+    protected float out;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // gain1
     //----------------------------------
-
-    protected float gain1;
 
     public float getGain1() {
         return gain1;
@@ -34,8 +60,6 @@ public class VolumeComponent extends com.teotigraphix.caustk.tone.components.Vol
     // gain2
     //----------------------------------
 
-    protected float gain2;
-
     public float getGain2() {
         return gain2;
     }
@@ -56,8 +80,6 @@ public class VolumeComponent extends com.teotigraphix.caustk.tone.components.Vol
     //----------------------------------
     // attack
     //----------------------------------
-
-    protected float attack;
 
     public float getAttack() {
         return attack;
@@ -80,8 +102,6 @@ public class VolumeComponent extends com.teotigraphix.caustk.tone.components.Vol
     // decay
     //----------------------------------
 
-    protected float decay;
-
     public float getDecay() {
         return decay;
     }
@@ -102,8 +122,6 @@ public class VolumeComponent extends com.teotigraphix.caustk.tone.components.Vol
     //----------------------------------
     // sustain
     //----------------------------------
-
-    protected float sustain;
 
     public float getSustain() {
         return sustain;
@@ -126,8 +144,6 @@ public class VolumeComponent extends com.teotigraphix.caustk.tone.components.Vol
     // release
     //----------------------------------
 
-    protected float release;
-
     public float getRelease() {
         return release;
     }
@@ -148,8 +164,6 @@ public class VolumeComponent extends com.teotigraphix.caustk.tone.components.Vol
     //----------------------------------
     // out
     //----------------------------------
-
-    protected float out;
 
     @Override
     public float getOut() {

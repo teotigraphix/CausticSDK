@@ -19,16 +19,27 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class LagProcessor extends ModularComponentBase {
 
-    private static final long serialVersionUID = -5684862774492928244L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float rateA;
+
+    @Tag(101)
+    private float rateB;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // rateA
     //----------------------------------
-
-    private float rateA;
 
     public float getRateA() {
         return rateA;
@@ -53,8 +64,6 @@ public class LagProcessor extends ModularComponentBase {
     //----------------------------------
     // rateB
     //----------------------------------
-
-    private float rateB;
 
     public float getRateB() {
         return rateB;

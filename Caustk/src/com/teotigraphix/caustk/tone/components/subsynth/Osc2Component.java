@@ -19,22 +19,41 @@
 
 package com.teotigraphix.caustk.tone.components.subsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class Osc2Component extends ToneComponent {
 
-    private static final long serialVersionUID = 716026572761466394L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int cents = 0;
+
+    @Tag(101)
+    private int octave = 0;
+
+    @Tag(102)
+    private float phase = 0f;
+
+    @Tag(103)
+    private int semis = 0;
+
+    @Tag(104)
+    private CentsMode centsMode = CentsMode.CENTS;
+
+    @Tag(105)
+    private Osc2WaveForm waveForm = Osc2WaveForm.NONE;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // cents
     //----------------------------------
-
-    private int cents = 0;
 
     public int getCents() {
         return cents;
@@ -57,8 +76,6 @@ public class Osc2Component extends ToneComponent {
     // octave
     //----------------------------------
 
-    private int octave = 0;
-
     public int getOctave() {
         return octave;
     }
@@ -79,8 +96,6 @@ public class Osc2Component extends ToneComponent {
     //----------------------------------
     // phase
     //----------------------------------
-
-    private float phase = 0f;
 
     public float getPhase() {
         return phase;
@@ -103,8 +118,6 @@ public class Osc2Component extends ToneComponent {
     // semis
     //----------------------------------
 
-    private int semis = 0;
-
     public int getSemis() {
         return semis;
     }
@@ -126,8 +139,6 @@ public class Osc2Component extends ToneComponent {
     // centsMode
     //----------------------------------
 
-    private CentsMode centsMode = CentsMode.CENTS;
-
     public CentsMode getCentsMode() {
         return centsMode;
     }
@@ -147,8 +158,6 @@ public class Osc2Component extends ToneComponent {
     //----------------------------------
     // waveForm
     //----------------------------------
-
-    private Osc2WaveForm waveForm = Osc2WaveForm.NONE;
 
     public Osc2WaveForm getWaveform() {
         return waveForm;

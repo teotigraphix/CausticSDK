@@ -19,16 +19,30 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class Crossfader extends ModularComponentBase {
 
-    private static final long serialVersionUID = -3655275878494551658L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float gainA;
+
+    @Tag(101)
+    private float gainB;
+
+    @Tag(102)
+    private float gainOut;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // gainA
     //----------------------------------
-
-    private float gainA;
 
     public float getGainA() {
         return gainA;
@@ -54,8 +68,6 @@ public class Crossfader extends ModularComponentBase {
     // gainB
     //----------------------------------
 
-    private float gainB;
-
     public float getGainB() {
         return gainB;
     }
@@ -79,8 +91,6 @@ public class Crossfader extends ModularComponentBase {
     //----------------------------------
     // gainOut
     //----------------------------------
-
-    private float gainOut;
 
     public float getGainOut() {
         return gainOut;

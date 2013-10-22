@@ -19,16 +19,30 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class NoiseGenerator extends ModularComponentBase {
 
-    private static final long serialVersionUID = -7758596654170281716L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float lfGain;
+
+    @Tag(101)
+    private float pinkGain;
+
+    @Tag(102)
+    private float whiteGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // lfGain
     //----------------------------------
-
-    private float lfGain;
 
     public float getLFGain() {
         return lfGain;
@@ -54,8 +68,6 @@ public class NoiseGenerator extends ModularComponentBase {
     // pinkGain
     //----------------------------------
 
-    private float pinkGain;
-
     public float getPinkGain() {
         return pinkGain;
     }
@@ -79,8 +91,6 @@ public class NoiseGenerator extends ModularComponentBase {
     //----------------------------------
     // whiteGain
     //----------------------------------
-
-    private float whiteGain;
 
     public float getWhiteGain() {
         return whiteGain;

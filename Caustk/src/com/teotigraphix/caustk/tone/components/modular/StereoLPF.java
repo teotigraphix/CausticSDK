@@ -19,16 +19,36 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class StereoLPF extends ModularComponentBase {
 
-    private static final long serialVersionUID = -8979940053942709733L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int slope;
+
+    @Tag(101)
+    private float cutoff;
+
+    @Tag(102)
+    private float resonance;
+
+    @Tag(103)
+    private float cutoffModulation;
+
+    @Tag(104)
+    private float resonanceModulation;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // slope
     //----------------------------------
-
-    private int slope;
 
     public int getSlope() {
         return slope;
@@ -56,8 +76,6 @@ public class StereoLPF extends ModularComponentBase {
     // cutoff
     //----------------------------------
 
-    private float cutoff;
-
     public float getCutoff() {
         return cutoff;
     }
@@ -81,8 +99,6 @@ public class StereoLPF extends ModularComponentBase {
     //----------------------------------
     // resonance
     //----------------------------------
-
-    private float resonance;
 
     public float getResonance() {
         return resonance;
@@ -108,8 +124,6 @@ public class StereoLPF extends ModularComponentBase {
     // cutoffModulation
     //----------------------------------
 
-    private float cutoffModulation;
-
     public float getCutoffModulation() {
         return cutoffModulation;
     }
@@ -133,8 +147,6 @@ public class StereoLPF extends ModularComponentBase {
     //----------------------------------
     // resonanceModulation
     //----------------------------------
-
-    private float resonanceModulation;
 
     public float getResonanceModulation() {
         return resonanceModulation;

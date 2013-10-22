@@ -19,16 +19,42 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class FMPair extends ModularComponentBase {
 
-    private static final long serialVersionUID = 3047411645682868103L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int octave1;
+
+    @Tag(101)
+    private int octave2;
+
+    @Tag(102)
+    private int semis2;
+
+    @Tag(103)
+    private float fm;
+
+    @Tag(104)
+    private float feedback;
+
+    @Tag(105)
+    private float fmModulation;
+
+    @Tag(106)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // octave1
     //----------------------------------
-
-    private int octave1;
 
     public float getOctave1() {
         return octave1;
@@ -54,8 +80,6 @@ public class FMPair extends ModularComponentBase {
     // octave2
     //----------------------------------
 
-    private int octave2;
-
     public float getOctave2() {
         return octave1;
     }
@@ -79,8 +103,6 @@ public class FMPair extends ModularComponentBase {
     //----------------------------------
     // semis2
     //----------------------------------
-
-    private int semis2;
 
     public float getSemis2() {
         return octave1;
@@ -106,8 +128,6 @@ public class FMPair extends ModularComponentBase {
     // fm
     //----------------------------------
 
-    private float fm;
-
     public float getFM() {
         return fm;
     }
@@ -131,8 +151,6 @@ public class FMPair extends ModularComponentBase {
     //----------------------------------
     // feedback
     //----------------------------------
-
-    private float feedback;
 
     public float getFeedback() {
         return feedback;
@@ -158,8 +176,6 @@ public class FMPair extends ModularComponentBase {
     // fmModulation
     //----------------------------------
 
-    private float fmModulation;
-
     public float getFMModulation() {
         return fmModulation;
     }
@@ -183,8 +199,6 @@ public class FMPair extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

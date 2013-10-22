@@ -19,16 +19,30 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class Saturator extends ModularComponentBase {
 
-    private static final long serialVersionUID = 2687875569243893528L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float amount;
+
+    @Tag(101)
+    private float inGain;
+
+    @Tag(102)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // amount
     //----------------------------------
-
-    private float amount;
 
     public float getAmount() {
         return amount;
@@ -54,8 +68,6 @@ public class Saturator extends ModularComponentBase {
     // inGain
     //----------------------------------
 
-    private float inGain;
-
     public float getInGain() {
         return inGain;
     }
@@ -79,8 +91,6 @@ public class Saturator extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

@@ -22,17 +22,31 @@ package com.teotigraphix.caustk.tone.components.pcmsynth;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PCMSamplerComponent extends ToneComponent {
 
-    private static final long serialVersionUID = -6958690619316633552L;
-
     private static final int NUM_SAMPLER_CHANNELS = 64;
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
     private Map<Integer, PCMSamplerChannel> channels;
+
+    @Tag(101)
+    private PCMSamplerChannel currentSample;
+
+    @Tag(102)
+    private int activeIndex = 0;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     @Override
     public void setTone(Tone value) {
@@ -55,12 +69,6 @@ public class PCMSamplerComponent extends ToneComponent {
     //----------------------------------
     // currentChannel
     //----------------------------------
-
-    private int activeIndex = 0;
-
-    private PCMSamplerChannel currentSample;
-
-    //private IPCMSynthSamplerListener mListener;
 
     public int getActiveIndex() {
         return activeIndex;

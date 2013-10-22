@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.tone.components;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.tone.BasslineTone;
 import com.teotigraphix.caustk.tone.BeatboxTone;
@@ -27,7 +28,16 @@ import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class SynthComponent extends ToneComponent {
 
-    private static final long serialVersionUID = 697299464998834747L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int polyphony = 4;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     private transient String absolutePresetPath;
 
@@ -46,8 +56,6 @@ public class SynthComponent extends ToneComponent {
     //----------------------------------
     // polyphony
     //----------------------------------
-
-    private int polyphony = 4;
 
     public int getPolyphony() {
         return polyphony;

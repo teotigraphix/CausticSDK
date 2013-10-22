@@ -19,24 +19,29 @@
 
 package com.teotigraphix.caustk.tone.components.bassline;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.tone.components.FilterComponentBase;
 
 public class FilterComponent extends FilterComponentBase {
 
-    private static final long serialVersionUID = 8804936771087356202L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float decay = 0f;
+
+    @Tag(101)
+    private float envMod = 0.99f;
 
     //--------------------------------------------------------------------------
-    //
-    // IBasslineFilter API :: Properties
-    //
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // decay
     //----------------------------------
-
-    private float decay = 0f;
 
     public float getDecay() {
         return decay;
@@ -58,8 +63,6 @@ public class FilterComponent extends FilterComponentBase {
     //----------------------------------
     // envMod
     //----------------------------------
-
-    private float envMod = 0.99f;
 
     public float getEnvMod() {
         return envMod;

@@ -19,16 +19,30 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class SVFilter extends ModularComponentBase {
 
-    private static final long serialVersionUID = 856191758036816442L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float cutoff;
+
+    @Tag(101)
+    private float resonance;
+
+    @Tag(102)
+    private float inGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // cutoff
     //----------------------------------
-
-    private float cutoff;
 
     public float getCutoff() {
         return cutoff;
@@ -54,8 +68,6 @@ public class SVFilter extends ModularComponentBase {
     // resonance
     //----------------------------------
 
-    private float resonance;
-
     public float getResonance() {
         return resonance;
     }
@@ -79,8 +91,6 @@ public class SVFilter extends ModularComponentBase {
     //----------------------------------
     // inGain
     //----------------------------------
-
-    private float inGain;
 
     public float getInGain() {
         return inGain;

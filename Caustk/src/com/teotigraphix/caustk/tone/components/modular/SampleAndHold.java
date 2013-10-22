@@ -19,16 +19,27 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class SampleAndHold extends ModularComponentBase {
 
-    private static final long serialVersionUID = 9043656708276056878L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int rate;
+
+    @Tag(101)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // rate
     //----------------------------------
-
-    private int rate;
 
     public int getRate() {
         return rate;
@@ -53,8 +64,6 @@ public class SampleAndHold extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

@@ -19,16 +19,35 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class AREnvelope extends ModularComponentBase {
 
-    private static final long serialVersionUID = -6467151820413369879L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float attack;
+
+    @Tag(101)
+    private float release;
+
+    @Tag(102)
+    private int legato;
+
+    @Tag(103)
+    private EnvelopeSlope attackSlope;
+
+    @Tag(104)
+    private EnvelopeSlope releaseSlope;
+
+    @Tag(105)
+    private float outGain;
 
     //----------------------------------
     // attack
     //----------------------------------
-
-    private float attack;
 
     public float getAttack() {
         return attack;
@@ -54,8 +73,6 @@ public class AREnvelope extends ModularComponentBase {
     // release
     //----------------------------------
 
-    private float release;
-
     public float getRelease() {
         return release;
     }
@@ -79,8 +96,6 @@ public class AREnvelope extends ModularComponentBase {
     //----------------------------------
     // legato
     //----------------------------------
-
-    private int legato;
 
     public int getLagato() {
         return legato;
@@ -106,8 +121,6 @@ public class AREnvelope extends ModularComponentBase {
     // attackSlope
     //----------------------------------
 
-    private EnvelopeSlope attackSlope;
-
     public EnvelopeSlope getAttackSlope() {
         return attackSlope;
     }
@@ -130,8 +143,6 @@ public class AREnvelope extends ModularComponentBase {
     // releaseSlope
     //----------------------------------
 
-    private EnvelopeSlope releaseSlope;
-
     public EnvelopeSlope getReleaseSlope() {
         return releaseSlope;
     }
@@ -153,8 +164,6 @@ public class AREnvelope extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

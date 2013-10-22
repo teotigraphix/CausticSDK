@@ -19,16 +19,33 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class Arpeggiator extends ModularComponentBase {
 
-    private static final long serialVersionUID = 3563528982076495580L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int active;
+
+    @Tag(101)
+    private Sequence sequence;
+
+    @Tag(102)
+    private int octaves;
+
+    @Tag(103)
+    private int rate;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // active
     //----------------------------------
-
-    private int active;
 
     public float getActive() {
         return active;
@@ -54,8 +71,6 @@ public class Arpeggiator extends ModularComponentBase {
     // sequence
     //----------------------------------
 
-    private Sequence sequence;
-
     public Sequence getSequence() {
         return sequence;
     }
@@ -77,8 +92,6 @@ public class Arpeggiator extends ModularComponentBase {
     //----------------------------------
     // octaves
     //----------------------------------
-
-    private int octaves;
 
     public float getOctaves() {
         return octaves;
@@ -103,8 +116,6 @@ public class Arpeggiator extends ModularComponentBase {
     //----------------------------------
     // rate
     //----------------------------------
-
-    private int rate;
 
     public float getRate() {
         return rate;

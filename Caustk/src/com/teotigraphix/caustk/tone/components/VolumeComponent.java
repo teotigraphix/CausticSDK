@@ -1,19 +1,27 @@
 
 package com.teotigraphix.caustk.tone.components;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
 import com.teotigraphix.caustk.tone.BeatboxTone;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class VolumeComponent extends ToneComponent {
 
-    private static final long serialVersionUID = 2440829161130284151L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected float out;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // out
     //----------------------------------
-
-    protected float out;
 
     public float getOut() {
         return out;

@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.core.RackComponent;
 import com.teotigraphix.caustk.core.CausticException;
@@ -36,9 +37,25 @@ import com.teotigraphix.caustk.sequencer.track.TrackSong;
 
 public class QueueSequencer extends RackComponent implements IQueueSequencer {
 
-    private static final long serialVersionUID = -4761805431570067279L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
+    @Tag(100)
+    private QueuePlayer player;
+
+    @Tag(101)
+    private QueueSong queueSong;
+
+    @Tag(102)
+    private boolean recordMode;
+
+    @Tag(103)
     private boolean audioEnabled = true;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     /*
      * for unit testing
@@ -52,13 +69,9 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
         audioEnabled = value;
     }
 
-    private QueuePlayer player;
-
     QueuePlayer getPlayer() {
         return player;
     }
-
-    private boolean recordMode;
 
     @Override
     public boolean isRecordMode() {
@@ -73,8 +86,6 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
     //----------------------------------
     // queueSong
     //----------------------------------
-
-    private QueueSong queueSong;
 
     public final QueueSong getQueueSong() {
         return queueSong;

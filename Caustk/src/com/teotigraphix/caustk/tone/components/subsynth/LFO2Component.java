@@ -19,22 +19,32 @@
 
 package com.teotigraphix.caustk.tone.components.subsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class LFO2Component extends ToneComponent {
 
-    private static final long serialVersionUID = 2708223679089356321L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected int rate = 1;
+
+    @Tag(101)
+    private float depth = 0.0f;
+
+    @Tag(102)
+    private LFO2Target target = LFO2Target.NONE;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // rate
     //----------------------------------
-
-    protected int rate = 1;
 
     public int getRate() {
         return rate;
@@ -57,8 +67,6 @@ public class LFO2Component extends ToneComponent {
     // depth
     //----------------------------------
 
-    private float depth = 0.0f;
-
     public float getDepth() {
         return depth;
     }
@@ -79,8 +87,6 @@ public class LFO2Component extends ToneComponent {
     //----------------------------------
     // target
     //----------------------------------
-
-    private LFO2Target target = LFO2Target.NONE;
 
     public LFO2Target getTarget() {
         return target;

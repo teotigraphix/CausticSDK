@@ -19,22 +19,29 @@
 
 package com.teotigraphix.caustk.tone.components;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class FilterComponentBase extends ToneComponent {
 
-    private static final long serialVersionUID = 9068477400573620309L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(50)
+    protected float cutoff = 1.0f;
+
+    @Tag(51)
+    protected float resonance = 0f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // cutoff
     //----------------------------------
-
-    protected float cutoff = 1.0f;
 
     public float getCutoff() {
         return cutoff;
@@ -56,8 +63,6 @@ public class FilterComponentBase extends ToneComponent {
     //----------------------------------
     // resonance
     //----------------------------------
-
-    protected float resonance = 0f;
 
     public float getResonance() {
         return resonance;

@@ -19,16 +19,39 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class PulseGenerator extends ModularComponentBase {
 
-    private static final long serialVersionUID = 3812255300547222232L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int octave;
+
+    @Tag(101)
+    private int semis;
+
+    @Tag(102)
+    private int cents;
+
+    @Tag(103)
+    private float pulseWidth;
+
+    @Tag(104)
+    private float width;
+
+    @Tag(105)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // octave
     //----------------------------------
-
-    private int octave;
 
     public int getOctave() {
         return octave;
@@ -54,8 +77,6 @@ public class PulseGenerator extends ModularComponentBase {
     // semis
     //----------------------------------
 
-    private int semis;
-
     public int getSemis() {
         return semis;
     }
@@ -79,8 +100,6 @@ public class PulseGenerator extends ModularComponentBase {
     //----------------------------------
     // cents
     //----------------------------------
-
-    private int cents;
 
     public int getCents() {
         return cents;
@@ -106,8 +125,6 @@ public class PulseGenerator extends ModularComponentBase {
     // pulseWidth
     //----------------------------------
 
-    private float pulseWidth;
-
     public float getPulseWidth() {
         return pulseWidth;
     }
@@ -132,8 +149,6 @@ public class PulseGenerator extends ModularComponentBase {
     // width
     //----------------------------------
 
-    private float width;
-
     public float getWidth() {
         return width;
     }
@@ -157,8 +172,6 @@ public class PulseGenerator extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

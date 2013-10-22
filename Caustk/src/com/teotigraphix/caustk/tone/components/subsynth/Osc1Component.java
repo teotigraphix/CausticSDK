@@ -19,24 +19,38 @@
 
 package com.teotigraphix.caustk.tone.components.subsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class Osc1Component extends ToneComponent {
 
-    private static final long serialVersionUID = -7520440818537280143L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float bend = 0.0f;
+
+    @Tag(101)
+    private float modulation = 0.0f;
+
+    @Tag(102)
+    private ModulationMode modulationMode = ModulationMode.FM;
+
+    @Tag(103)
+    private float mix = 0.5f;
+
+    @Tag(104)
+    private Osc1Waveform waveform = Osc1Waveform.SINE;
 
     //--------------------------------------------------------------------------
-    //
-    // API :: Properties
-    //
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // bend
     //----------------------------------
-
-    private float bend = 0.0f;
 
     public float getBend() {
         return bend;
@@ -59,8 +73,6 @@ public class Osc1Component extends ToneComponent {
     // modulation
     //----------------------------------
 
-    private float modulation = 0.0f;
-
     public float getModulation() {
         return modulation;
     }
@@ -81,8 +93,6 @@ public class Osc1Component extends ToneComponent {
     //----------------------------------
     // modulationMode
     //----------------------------------
-
-    private ModulationMode modulationMode = ModulationMode.FM;
 
     public ModulationMode getModulationMode() {
         return modulationMode;
@@ -105,8 +115,6 @@ public class Osc1Component extends ToneComponent {
     // mix
     //----------------------------------
 
-    private float mix = 0.5f;
-
     public float getMix() {
         return mix;
     }
@@ -127,8 +135,6 @@ public class Osc1Component extends ToneComponent {
     //----------------------------------
     // waveform
     //----------------------------------
-
-    private Osc1Waveform waveform = Osc1Waveform.SINE;
 
     public Osc1Waveform getWaveform() {
         return waveform;

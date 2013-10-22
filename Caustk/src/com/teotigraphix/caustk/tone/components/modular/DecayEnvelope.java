@@ -19,17 +19,31 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.tone.components.modular.DADSREnvelope.EnvelopeSlope;
 
 public class DecayEnvelope extends ModularComponentBase {
 
-    private static final long serialVersionUID = -2779971374310641253L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float decay;
+
+    @Tag(101)
+    private EnvelopeSlope decaySlope;
+
+    @Tag(102)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // decay
     //----------------------------------
-
-    private float decay;
 
     public float getDecay() {
         return decay;
@@ -55,8 +69,6 @@ public class DecayEnvelope extends ModularComponentBase {
     // decaySlope
     //----------------------------------
 
-    private EnvelopeSlope decaySlope;
-
     public EnvelopeSlope getDecaySlope() {
         return decaySlope;
     }
@@ -78,8 +90,6 @@ public class DecayEnvelope extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

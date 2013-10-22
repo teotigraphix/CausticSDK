@@ -19,16 +19,54 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class DADSREnvelope extends ModularComponentBase {
 
-    private static final long serialVersionUID = -5173941730219276482L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float delay;
+
+    @Tag(101)
+    private float attack;
+
+    @Tag(102)
+    private float decay;
+
+    @Tag(103)
+    private float sustain;
+
+    @Tag(104)
+    private float release;
+
+    @Tag(105)
+    private int legato;
+
+    @Tag(106)
+    private EnvelopeSlope attackSlope;
+
+    @Tag(107)
+    private EnvelopeSlope decaySlope;
+
+    @Tag(108)
+    private EnvelopeSlope releaseSlope;
+
+    @Tag(109)
+    private float outGain;
+
+    @Tag(110)
+    private float invOutGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // delay
     //----------------------------------
-
-    private float delay;
 
     public float getDelay() {
         return delay;
@@ -54,8 +92,6 @@ public class DADSREnvelope extends ModularComponentBase {
     // attack
     //----------------------------------
 
-    private float attack;
-
     public float getAttack() {
         return attack;
     }
@@ -79,8 +115,6 @@ public class DADSREnvelope extends ModularComponentBase {
     //----------------------------------
     // decay
     //----------------------------------
-
-    private float decay;
 
     public float getDecay() {
         return decay;
@@ -106,8 +140,6 @@ public class DADSREnvelope extends ModularComponentBase {
     // sustain
     //----------------------------------
 
-    private float sustain;
-
     public float getSustain() {
         return sustain;
     }
@@ -131,8 +163,6 @@ public class DADSREnvelope extends ModularComponentBase {
     //----------------------------------
     // release
     //----------------------------------
-
-    private float release;
 
     public float getRelease() {
         return release;
@@ -158,8 +188,6 @@ public class DADSREnvelope extends ModularComponentBase {
     // legato
     //----------------------------------
 
-    private int legato;
-
     public int getLagato() {
         return legato;
     }
@@ -184,8 +212,6 @@ public class DADSREnvelope extends ModularComponentBase {
     // attackSlope
     //----------------------------------
 
-    private EnvelopeSlope attackSlope;
-
     public EnvelopeSlope getAttackSlope() {
         return attackSlope;
     }
@@ -207,8 +233,6 @@ public class DADSREnvelope extends ModularComponentBase {
     //----------------------------------
     // decaySlope
     //----------------------------------
-
-    private EnvelopeSlope decaySlope;
 
     public EnvelopeSlope getDecaySlope() {
         return decaySlope;
@@ -232,8 +256,6 @@ public class DADSREnvelope extends ModularComponentBase {
     // releaseSlope
     //----------------------------------
 
-    private EnvelopeSlope releaseSlope;
-
     public EnvelopeSlope getReleaseSlope() {
         return releaseSlope;
     }
@@ -255,8 +277,6 @@ public class DADSREnvelope extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;
@@ -281,8 +301,6 @@ public class DADSREnvelope extends ModularComponentBase {
     //----------------------------------
     // invOutGain
     //----------------------------------
-
-    private float invOutGain;
 
     public float getInvOutGain() {
         return invOutGain;

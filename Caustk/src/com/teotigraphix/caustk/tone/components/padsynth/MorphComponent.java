@@ -1,18 +1,41 @@
 
 package com.teotigraphix.caustk.tone.components.padsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class MorphComponent extends ToneComponent {
 
-    private static final long serialVersionUID = -4085406907937946325L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float blend;
+
+    @Tag(101)
+    private int evelopeEnabled = 0;
+
+    @Tag(102)
+    private float attack;
+
+    @Tag(103)
+    private float decay;
+
+    @Tag(104)
+    private float sustain;
+
+    @Tag(105)
+    private float release;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // blend
     //----------------------------------
-
-    protected float blend;
 
     public float getBlend() {
         return blend;
@@ -35,8 +58,6 @@ public class MorphComponent extends ToneComponent {
     // evelopeEnabled
     //----------------------------------
 
-    protected int evelopeEnabled = 0;
-
     public int getEnvelopeEnabled() {
         return evelopeEnabled;
     }
@@ -57,8 +78,6 @@ public class MorphComponent extends ToneComponent {
     //----------------------------------
     // attack
     //----------------------------------
-
-    protected float attack;
 
     public float getAttack() {
         return attack;
@@ -81,8 +100,6 @@ public class MorphComponent extends ToneComponent {
     // decay
     //----------------------------------
 
-    protected float decay;
-
     public float getDecay() {
         return decay;
     }
@@ -104,8 +121,6 @@ public class MorphComponent extends ToneComponent {
     // sustain
     //----------------------------------
 
-    protected float sustain;
-
     public float getSustain() {
         return sustain;
     }
@@ -126,8 +141,6 @@ public class MorphComponent extends ToneComponent {
     //----------------------------------
     // release
     //----------------------------------
-
-    protected float release;
 
     public float getRelease() {
         return release;

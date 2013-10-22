@@ -22,17 +22,25 @@ package com.teotigraphix.caustk.tone.components.beatbox;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.tone.Tone;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class WavSamplerComponent extends ToneComponent {
 
-    private static final long serialVersionUID = -2843334335489789702L;
-
     private static final int NUM_CHANNELS = 8;
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
     private Map<Integer, WavSamplerChannel> map;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     @Override
     public void setTone(Tone value) {

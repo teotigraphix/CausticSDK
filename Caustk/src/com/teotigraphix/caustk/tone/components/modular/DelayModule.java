@@ -19,16 +19,30 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class DelayModule extends ModularComponentBase {
 
-    private static final long serialVersionUID = 2564452846220434596L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int rate;
+
+    @Tag(101)
+    private float inGain;
+
+    @Tag(102)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // rate
     //----------------------------------
-
-    private int rate;
 
     public int getRate() {
         return rate;
@@ -54,8 +68,6 @@ public class DelayModule extends ModularComponentBase {
     // inGain
     //----------------------------------
 
-    private float inGain;
-
     public float getInGain() {
         return inGain;
     }
@@ -79,8 +91,6 @@ public class DelayModule extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

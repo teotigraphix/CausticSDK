@@ -19,23 +19,36 @@
 
 package com.teotigraphix.caustk.tone.components.subsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 import com.teotigraphix.caustk.tone.components.subsynth.Osc2Component.Osc2WaveForm;
 
 public class LFO1Component extends ToneComponent { //LFOComponentBase {
 
-    private static final long serialVersionUID = 7793996708080779556L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected int rate = 1;
+
+    @Tag(101)
+    private float depth = 0.0f;
+
+    @Tag(102)
+    private LFO1Target target = LFO1Target.NONE;
+
+    @Tag(103)
+    private Osc2WaveForm waveForm = Osc2WaveForm.SINE;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // rate
     //----------------------------------
-
-    protected int rate = 1;
 
     public int getRate() {
         return rate;
@@ -58,8 +71,6 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
     // depth
     //----------------------------------
 
-    private float depth = 0.0f;
-
     public float getDepth() {
         return depth;
     }
@@ -81,8 +92,6 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
     // target
     //----------------------------------
 
-    private LFO1Target target = LFO1Target.NONE;
-
     public LFO1Target getTarget() {
         return target;
     }
@@ -101,8 +110,6 @@ public class LFO1Component extends ToneComponent { //LFOComponentBase {
     //----------------------------------
     // waveForm
     //----------------------------------
-
-    private Osc2WaveForm waveForm = Osc2WaveForm.SINE;
 
     public Osc2WaveForm getWaveform() {
         return waveForm;

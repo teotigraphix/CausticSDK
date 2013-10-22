@@ -19,22 +19,35 @@
 
 package com.teotigraphix.caustk.tone.components.bassline;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class OSC1Component extends ToneComponent {
 
-    private static final long serialVersionUID = -3059988203136380350L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float accent = 0.5f;
+
+    @Tag(101)
+    private float pulseWidth = 0.5f;
+
+    @Tag(102)
+    private int tune = 0;
+
+    @Tag(103)
+    private Waveform waveForm = Waveform.SAW;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // accent
     //----------------------------------
-
-    private float accent = 0.5f;
 
     public float getAccent() {
         return accent;
@@ -58,8 +71,6 @@ public class OSC1Component extends ToneComponent {
     // pulseWidth
     //----------------------------------
 
-    private float pulseWidth = 0.5f;
-
     public float getPulseWidth() {
         return pulseWidth;
     }
@@ -81,8 +92,6 @@ public class OSC1Component extends ToneComponent {
     // tune
     //----------------------------------
 
-    private int tune = 0;
-
     public int getTune() {
         return tune;
     }
@@ -103,8 +112,6 @@ public class OSC1Component extends ToneComponent {
     //----------------------------------
     // waveform
     //----------------------------------
-
-    private Waveform waveForm = Waveform.SAW;
 
     public Waveform getWaveForm() {
         return waveForm;

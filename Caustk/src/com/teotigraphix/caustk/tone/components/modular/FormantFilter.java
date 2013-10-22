@@ -19,16 +19,45 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class FormantFilter extends ModularComponentBase {
 
-    private static final long serialVersionUID = -4357584808914419776L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int formant1;
+
+    @Tag(101)
+    private float morph;
+
+    @Tag(102)
+    private int formant2;
+
+    @Tag(103)
+    private float gain;
+
+    @Tag(104)
+    private float inGain;
+
+    @Tag(105)
+    private float morphModulation;
+
+    @Tag(106)
+    private float gainModulation;
+
+    @Tag(107)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // formant1
     //----------------------------------
-
-    private int formant1;
 
     public int getFormant1() {
         return formant1;
@@ -56,8 +85,6 @@ public class FormantFilter extends ModularComponentBase {
     // morph
     //----------------------------------
 
-    private float morph;
-
     public float getMorph() {
         return morph;
     }
@@ -81,8 +108,6 @@ public class FormantFilter extends ModularComponentBase {
     //----------------------------------
     // formant2
     //----------------------------------
-
-    private int formant2;
 
     public int getFormant2() {
         return formant2;
@@ -110,8 +135,6 @@ public class FormantFilter extends ModularComponentBase {
     // gain
     //----------------------------------
 
-    private float gain;
-
     public float getGain() {
         return gain;
     }
@@ -135,8 +158,6 @@ public class FormantFilter extends ModularComponentBase {
     //----------------------------------
     // inGain
     //----------------------------------
-
-    private float inGain;
 
     public float getInGain() {
         return inGain;
@@ -162,8 +183,6 @@ public class FormantFilter extends ModularComponentBase {
     // morphModulation
     //----------------------------------
 
-    private float morphModulation;
-
     public float getMorphModulation() {
         return morphModulation;
     }
@@ -188,8 +207,6 @@ public class FormantFilter extends ModularComponentBase {
     // gainModulation
     //----------------------------------
 
-    private float gainModulation;
-
     public float getGainModulation() {
         return gainModulation;
     }
@@ -213,8 +230,6 @@ public class FormantFilter extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

@@ -19,22 +19,35 @@
 
 package com.teotigraphix.caustk.tone.components.bassline;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class DistortionComponent extends ToneComponent {
 
-    private static final long serialVersionUID = -8956243012616301286L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float amount = 15f;
+
+    @Tag(101)
+    private float postGain = 0.2f;
+
+    @Tag(102)
+    private float preGain = 4.05f;
+
+    @Tag(103)
+    private Program program = Program.OFF;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // amount
     //----------------------------------
-
-    private float amount = 15f;
 
     public float getAmount() {
         return amount;
@@ -57,8 +70,6 @@ public class DistortionComponent extends ToneComponent {
     // postGain
     //----------------------------------
 
-    private float postGain = 0.2f;
-
     public float getPostGain() {
         return postGain;
     }
@@ -80,8 +91,6 @@ public class DistortionComponent extends ToneComponent {
     // preGain
     //----------------------------------
 
-    private float preGain = 4.05f;
-
     public float getPreGain() {
         return preGain;
     }
@@ -102,8 +111,6 @@ public class DistortionComponent extends ToneComponent {
     //----------------------------------
     // program
     //----------------------------------
-
-    private Program program = Program.OFF;
 
     public Program getProgram() {
         return program;

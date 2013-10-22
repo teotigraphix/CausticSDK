@@ -19,16 +19,30 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class SubOscillator extends ModularComponentBase {
 
-    private static final long serialVersionUID = -7225324156594409550L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int octave;
+
+    @Tag(101)
+    private int semis;
+
+    @Tag(102)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // octave
     //----------------------------------
-
-    private int octave;
 
     public int getOctave() {
         return octave;
@@ -54,8 +68,6 @@ public class SubOscillator extends ModularComponentBase {
     // semis
     //----------------------------------
 
-    private int semis;
-
     public int getSemis() {
         return semis;
     }
@@ -79,8 +91,6 @@ public class SubOscillator extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

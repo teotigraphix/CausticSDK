@@ -19,13 +19,10 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-
 /**
  * 2 gain input mixer.
  */
 public class TwoInputMixer extends MixerBase {
-
-    private static final long serialVersionUID = -2383072809340973776L;
 
     public TwoInputMixer() {
     }

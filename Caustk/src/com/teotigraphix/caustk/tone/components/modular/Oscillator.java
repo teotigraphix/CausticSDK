@@ -19,16 +19,45 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class Oscillator extends ModularComponentBase {
 
-    private static final long serialVersionUID = -4868841470853676163L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float waveform;
+
+    @Tag(101)
+    private int octave;
+
+    @Tag(102)
+    private int semis;
+
+    @Tag(103)
+    private int cents;
+
+    @Tag(104)
+    private float fm;
+
+    @Tag(105)
+    private float am;
+
+    @Tag(106)
+    private float pitch;
+
+    @Tag(107)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // waveform
     //----------------------------------
-
-    private float waveform;
 
     public float getWaveform() {
         return waveform;
@@ -55,8 +84,6 @@ public class Oscillator extends ModularComponentBase {
     // octave
     //----------------------------------
 
-    private int octave;
-
     public int getOctave() {
         return octave;
     }
@@ -80,8 +107,6 @@ public class Oscillator extends ModularComponentBase {
     //----------------------------------
     // semis
     //----------------------------------
-
-    private int semis;
 
     public int getSemis() {
         return semis;
@@ -107,8 +132,6 @@ public class Oscillator extends ModularComponentBase {
     // cents
     //----------------------------------
 
-    private int cents;
-
     public int getCents() {
         return cents;
     }
@@ -132,8 +155,6 @@ public class Oscillator extends ModularComponentBase {
     //----------------------------------
     // fm
     //----------------------------------
-
-    private float fm;
 
     public float getFM() {
         return fm;
@@ -159,8 +180,6 @@ public class Oscillator extends ModularComponentBase {
     // am
     //----------------------------------
 
-    private float am;
-
     public float getAM() {
         return am;
     }
@@ -185,8 +204,6 @@ public class Oscillator extends ModularComponentBase {
     // pitch
     //----------------------------------
 
-    private float pitch;
-
     public float getPitch() {
         return pitch;
     }
@@ -210,8 +227,6 @@ public class Oscillator extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

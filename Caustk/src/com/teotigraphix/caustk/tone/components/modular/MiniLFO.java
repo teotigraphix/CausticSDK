@@ -19,16 +19,33 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class MiniLFO extends ModularComponentBase {
 
-    private static final long serialVersionUID = 7892047313937319362L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private WaveForm waveForm;
+
+    @Tag(101)
+    private int rate;
+
+    @Tag(102)
+    private int noteSync;
+
+    @Tag(103)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // waveForm
     //----------------------------------
-
-    private WaveForm waveForm;
 
     public WaveForm getWaveForm() {
         return waveForm;
@@ -42,8 +59,6 @@ public class MiniLFO extends ModularComponentBase {
     //----------------------------------
     // rate
     //----------------------------------
-
-    private int rate;
 
     public int getRate() {
         return rate;
@@ -62,8 +77,6 @@ public class MiniLFO extends ModularComponentBase {
     // noteSync
     //----------------------------------
 
-    private int noteSync;
-
     public int getNoteSync() {
         return noteSync;
     }
@@ -77,8 +90,6 @@ public class MiniLFO extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

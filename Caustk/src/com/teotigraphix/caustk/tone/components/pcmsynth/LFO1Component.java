@@ -19,23 +19,36 @@
 
 package com.teotigraphix.caustk.tone.components.pcmsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 import com.teotigraphix.caustk.tone.components.subsynth.Osc2Component.Osc2WaveForm;
 
 public class LFO1Component extends ToneComponent {
 
-    private static final long serialVersionUID = 7400508158628813253L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected int rate = 1;
+
+    @Tag(101)
+    private float depth = 0.0f;
+
+    @Tag(102)
+    private LFOTarget target = LFOTarget.NONE;
+
+    @Tag(103)
+    private Osc2WaveForm waveform = Osc2WaveForm.SINE;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // rate
     //----------------------------------
-
-    protected int rate = 1;
 
     public int getRate() {
         return rate;
@@ -58,8 +71,6 @@ public class LFO1Component extends ToneComponent {
     // depth
     //----------------------------------
 
-    private float depth = 0.0f;
-
     public float getDepth() {
         return depth;
     }
@@ -81,8 +92,6 @@ public class LFO1Component extends ToneComponent {
     // target
     //----------------------------------
 
-    private LFOTarget target = LFOTarget.NONE;
-
     public LFOTarget getTarget() {
         return target;
     }
@@ -101,8 +110,6 @@ public class LFO1Component extends ToneComponent {
     //----------------------------------
     // waveform
     //----------------------------------
-
-    private Osc2WaveForm waveform = Osc2WaveForm.SINE;
 
     public Osc2WaveForm getWaveform() {
         return waveform;

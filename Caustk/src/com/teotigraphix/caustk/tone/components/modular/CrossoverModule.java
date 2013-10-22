@@ -19,16 +19,33 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class CrossoverModule extends ModularComponentBase {
 
-    private static final long serialVersionUID = -6816954399723677368L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float frequency;
+
+    @Tag(101)
+    private float inGain;
+
+    @Tag(102)
+    private float lowGain;
+
+    @Tag(103)
+    private float highGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // frequency
     //----------------------------------
-
-    private float frequency;
 
     public float getFrequency() {
         return frequency;
@@ -54,8 +71,6 @@ public class CrossoverModule extends ModularComponentBase {
     // inGain
     //----------------------------------
 
-    private float inGain;
-
     public float getInGain() {
         return inGain;
     }
@@ -80,8 +95,6 @@ public class CrossoverModule extends ModularComponentBase {
     // lowGain
     //----------------------------------
 
-    private float lowGain;
-
     public float getLowGain() {
         return lowGain;
     }
@@ -105,8 +118,6 @@ public class CrossoverModule extends ModularComponentBase {
     //----------------------------------
     // highGain
     //----------------------------------
-
-    private float highGain;
 
     public float getHighGain() {
         return highGain;

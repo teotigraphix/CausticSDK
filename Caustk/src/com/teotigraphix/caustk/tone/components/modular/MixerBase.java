@@ -22,16 +22,24 @@ package com.teotigraphix.caustk.tone.components.modular;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
-
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 
 public abstract class MixerBase extends ModularComponentBase {
 
-    private static final long serialVersionUID = 699271036505535007L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
-    @SuppressLint("UseSparseArrays")
+    @Tag(100)
     private Map<Integer, Float> gains = new HashMap<Integer, Float>();
+
+    @Tag(101)
+    private float outGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // gain[i]
@@ -62,8 +70,6 @@ public abstract class MixerBase extends ModularComponentBase {
     //----------------------------------
     // outGain
     //----------------------------------
-
-    private float outGain;
 
     public float getOutGain() {
         return outGain;

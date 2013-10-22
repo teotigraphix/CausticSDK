@@ -19,22 +19,35 @@
 
 package com.teotigraphix.caustk.tone.components.bassline;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class LFO1Component extends ToneComponent {
 
-    private static final long serialVersionUID = -1809057753124150435L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected int rate = 1;
+
+    @Tag(101)
+    private float depth = 0.0f;
+
+    @Tag(102)
+    private float phase = 0f;
+
+    @Tag(103)
+    private LFOTarget target = LFOTarget.OFF;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // rate
     //----------------------------------
-
-    protected int rate = 1;
 
     public int getRate() {
         return rate;
@@ -57,8 +70,6 @@ public class LFO1Component extends ToneComponent {
     // depth
     //----------------------------------
 
-    private float depth = 0.0f;
-
     public float getDepth() {
         return depth;
     }
@@ -80,8 +91,6 @@ public class LFO1Component extends ToneComponent {
     // phase
     //----------------------------------
 
-    private float phase = 0f;
-
     public float getPhase() {
         return phase;
     }
@@ -102,8 +111,6 @@ public class LFO1Component extends ToneComponent {
     //----------------------------------
     // target
     //----------------------------------
-
-    private LFOTarget target = LFOTarget.OFF;
 
     public LFOTarget getTarget() {
         return target;

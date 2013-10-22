@@ -1,18 +1,41 @@
 
 package com.teotigraphix.caustk.tone.components.organ;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OrganMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class LeslieComponent extends ToneComponent {
 
-    private static final long serialVersionUID = -4417342100797811607L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    protected int drawbar;
+
+    @Tag(101)
+    protected float percTone;
+
+    @Tag(102)
+    protected float percDecay;
+
+    @Tag(103)
+    protected float leslieRate;
+
+    @Tag(104)
+    protected float leslieDepth;
+
+    @Tag(105)
+    protected float drive;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // drawbar
     //----------------------------------
-
-    protected int drawbar;
 
     public float getDrawBar(int index) {
         return drawbar;
@@ -31,8 +54,6 @@ public class LeslieComponent extends ToneComponent {
     //----------------------------------
     // percTone
     //----------------------------------
-
-    protected float percTone;
 
     public float getPercTone() {
         return percTone;
@@ -55,8 +76,6 @@ public class LeslieComponent extends ToneComponent {
     // percDecay
     //----------------------------------
 
-    protected float percDecay;
-
     public float getPercDecay() {
         return percDecay;
     }
@@ -77,8 +96,6 @@ public class LeslieComponent extends ToneComponent {
     //----------------------------------
     // leslieRate
     //----------------------------------
-
-    protected float leslieRate;
 
     public float getLeslieRate() {
         return leslieRate;
@@ -101,8 +118,6 @@ public class LeslieComponent extends ToneComponent {
     // leslieDepth
     //----------------------------------
 
-    protected float leslieDepth;
-
     public float getLeslieDepth() {
         return leslieDepth;
     }
@@ -123,8 +138,6 @@ public class LeslieComponent extends ToneComponent {
     //----------------------------------
     // drive
     //----------------------------------
-
-    protected float drive;
 
     public float getDrive() {
         return drive;

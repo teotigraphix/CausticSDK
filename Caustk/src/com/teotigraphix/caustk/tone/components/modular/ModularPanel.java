@@ -19,9 +19,8 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
-public class ModularPanel extends ModularComponentBase {
 
-    private static final long serialVersionUID = 2758979796475610030L;
+public class ModularPanel extends ModularComponentBase {
 
     public ModularPanel() {
         super(16);

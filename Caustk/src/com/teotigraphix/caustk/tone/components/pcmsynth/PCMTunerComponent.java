@@ -19,24 +19,32 @@
 
 package com.teotigraphix.caustk.tone.components.pcmsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PCMTunerComponent extends ToneComponent {
 
-    private static final long serialVersionUID = 5398698218063578446L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int cents = 0;
+
+    @Tag(101)
+    private int octave = 0;
+
+    @Tag(102)
+    private int semis = 0;
 
     //--------------------------------------------------------------------------
-    //
-    // IPitchTuner API :: Properties
-    //
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // cents
     //----------------------------------
-
-    private int cents = 0;
 
     public int getCents() {
         return cents;
@@ -59,8 +67,6 @@ public class PCMTunerComponent extends ToneComponent {
     // octave
     //----------------------------------
 
-    private int octave = 0;
-
     public int getOctave() {
         return octave;
     }
@@ -81,8 +87,6 @@ public class PCMTunerComponent extends ToneComponent {
     //----------------------------------
     // semis
     //----------------------------------
-
-    private int semis = 0;
 
     public int getSemis() {
         return semis;

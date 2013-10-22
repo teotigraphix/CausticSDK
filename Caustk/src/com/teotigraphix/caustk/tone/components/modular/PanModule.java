@@ -19,16 +19,30 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class PanModule extends ModularComponentBase {
 
-    private static final long serialVersionUID = -2923138358491253694L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float inGain;
+
+    @Tag(101)
+    private float outAGain;
+
+    @Tag(102)
+    private float outBGain;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // inGain
     //----------------------------------
-
-    private float inGain;
 
     public float getInGain() {
         return inGain;
@@ -54,8 +68,6 @@ public class PanModule extends ModularComponentBase {
     // outAGain
     //----------------------------------
 
-    private float outAGain;
-
     public float getOutAGain() {
         return outAGain;
     }
@@ -79,8 +91,6 @@ public class PanModule extends ModularComponentBase {
     //----------------------------------
     // outBGain
     //----------------------------------
-
-    private float outBGain;
 
     public float getOutBGain() {
         return outBGain;

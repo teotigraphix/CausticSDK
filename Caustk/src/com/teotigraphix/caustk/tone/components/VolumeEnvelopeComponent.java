@@ -1,22 +1,35 @@
 
 package com.teotigraphix.caustk.tone.components;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class VolumeEnvelopeComponent extends ToneComponent {
 
-    private static final long serialVersionUID = 8080253779197423680L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float attack = 0.0f;
+
+    @Tag(101)
+    private float decay = 0.0f;
+
+    @Tag(102)
+    private float sustain = 1.0f;
+
+    @Tag(103)
+    private float release = 0.0f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // attack
     //----------------------------------
-
-    private float attack = 0.0f;
 
     public float getAttack() {
         return attack;
@@ -39,8 +52,6 @@ public class VolumeEnvelopeComponent extends ToneComponent {
     // decay
     //----------------------------------
 
-    private float decay = 0.0f;
-
     public float getDecay() {
         return decay;
     }
@@ -62,8 +73,6 @@ public class VolumeEnvelopeComponent extends ToneComponent {
     // sustain
     //----------------------------------
 
-    private float sustain = 1.0f;
-
     public float getSustain() {
         return sustain;
     }
@@ -84,8 +93,6 @@ public class VolumeEnvelopeComponent extends ToneComponent {
     //----------------------------------
     // release
     //----------------------------------
-
-    private float release = 0.0f;
 
     public float getRelease() {
         return release;

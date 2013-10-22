@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.tone.components.pcmsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 import com.teotigraphix.caustk.tone.components.pcmsynth.PCMSamplerComponent.PlayMode;
@@ -30,40 +31,57 @@ import com.teotigraphix.caustk.tone.components.pcmsynth.PCMSamplerComponent.Play
  */
 public class PCMSamplerChannel extends ToneComponent {
 
-    private static final long serialVersionUID = -8709245253837063500L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
-    private transient PCMSamplerComponent sampler;
+    @Tag(100)
+    private PCMSamplerComponent sampler;
 
-    private int mIndex;
+    @Tag(101)
+    private int index;
 
+    @Tag(102)
     private String name;
 
+    @Tag(103)
     private float level = 1.0f;
 
+    @Tag(104)
     private int tune;
 
+    @Tag(105)
     private int rootKey;
 
+    @Tag(106)
     private int lowKey;
 
+    @Tag(107)
     private int highKey;
 
+    @Tag(108)
     private PlayMode mode;
 
+    @Tag(109)
     private int start;
 
+    @Tag(110)
     private int end;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     public boolean hasSample() {
         return name != null;
     }
 
     public final int getIndex() {
-        return mIndex;
+        return index;
     }
 
     public final void setIndex(int value) {
-        mIndex = value;
+        index = value;
     }
 
     public final String getName() {
@@ -168,7 +186,7 @@ public class PCMSamplerChannel extends ToneComponent {
 
     @Override
     public void restore() {
-        name = sampler.getSampleName(mIndex);
+        name = sampler.getSampleName(index);
         if (name == null)
             return;
 

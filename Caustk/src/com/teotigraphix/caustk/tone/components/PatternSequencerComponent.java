@@ -24,18 +24,25 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.sequencer.track.Note;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public class PatternSequencerComponent extends ToneComponent {
 
-    private static final long serialVersionUID = -6509903131350285187L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int selectedBank = 0;
+
+    @Tag(101)
+    private int selectedPattern = 0;
 
     //--------------------------------------------------------------------------
-    //
-    // IPatternSequencer API :: Properties
-    //
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
@@ -81,8 +88,6 @@ public class PatternSequencerComponent extends ToneComponent {
     // selectedBank
     //----------------------------------
 
-    private int selectedBank = 0;
-
     public int getSelectedBank() {
         return selectedBank;
     }
@@ -101,8 +106,6 @@ public class PatternSequencerComponent extends ToneComponent {
     //----------------------------------
     // selectedPattern
     //----------------------------------
-
-    private int selectedPattern = 0;
 
     public int getSelectedPattern() {
         return selectedPattern;

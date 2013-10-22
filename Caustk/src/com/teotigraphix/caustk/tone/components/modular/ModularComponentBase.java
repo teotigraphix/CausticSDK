@@ -19,19 +19,27 @@
 
 package com.teotigraphix.caustk.tone.components.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.tone.ToneComponent;
 
 public abstract class ModularComponentBase extends ToneComponent {
 
-    private static final long serialVersionUID = -3543223148580499919L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(75)
+    private int bay;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     /**
      * Returns the number of bays this component requires.
      */
     protected abstract int getNumBays();
-
-    private int bay;
 
     protected int getBay() {
         return bay;
