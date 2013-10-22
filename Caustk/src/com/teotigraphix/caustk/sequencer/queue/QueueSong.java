@@ -73,7 +73,7 @@ public class QueueSong implements Serializable {
     }
 
     IDispatcher getDispatcher() {
-        return queueSequencer.getRack();
+        return queueSequencer.getRack().getGlobalDispatcher();
     }
 
     public QueueSong() {

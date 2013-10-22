@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.IRackComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.item.LibraryScene;
@@ -157,6 +158,9 @@ public interface ISoundSource extends IRackComponent {
      */
     File saveSongAs(File file) throws IOException;
 
+    /**
+     * Dispatcher: {@link IRack#getDispatcher()}.
+     */
     public static class OnSoundSourceSongLoad {
 
         private File file;

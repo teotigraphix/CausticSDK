@@ -38,9 +38,13 @@ import com.teotigraphix.caustk.tone.Tone;
  * Manages the {@link ISoundMixer}, {@link ISoundSource},
  * {@link ISystemSequencer}, {@link ITrackSequencer}.
  */
-public interface IRack extends ICausticEngine, IDispatcher {
+public interface IRack extends ICausticEngine {
 
-    ICaustkController _getController();
+    IDispatcher getDispatcher();
+
+    IDispatcher getGlobalDispatcher();
+
+    //    ICaustkController _getController();
 
     ISoundSource getSoundSource();
 

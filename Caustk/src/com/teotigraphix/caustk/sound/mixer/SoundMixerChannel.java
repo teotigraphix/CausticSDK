@@ -401,6 +401,6 @@ public class SoundMixerChannel implements IRestore {
     }
 
     protected void fireValueChange(MixerInput mixerInput, Number value) {
-        rack.trigger(new OnSoundMixerChannelValueChange(mixerInput, value));
+        rack.getGlobalDispatcher().trigger(new OnSoundMixerChannelValueChange(mixerInput, value));
     }
 }

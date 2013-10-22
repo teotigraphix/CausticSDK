@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.controller.core;
 
-import org.androidtransfuse.event.EventObserver;
-
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -55,6 +53,16 @@ public class Rack implements IRack {
 
     private transient IDispatcher dispatcher;
 
+    @Override
+    public IDispatcher getDispatcher() {
+        return dispatcher;
+    }
+
+    @Override
+    public IDispatcher getGlobalDispatcher() {
+        return controller;
+    }
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -75,7 +83,6 @@ public class Rack implements IRack {
     // soundSource
     //----------------------------------
 
-    @Override
     public ICaustkController _getController() {
         return controller;
     }
@@ -253,26 +260,6 @@ public class Rack implements IRack {
     @Override
     public void execute(String message, Object... args) throws CausticException {
         controller.execute(message, args);
-    }
-
-    @Override
-    public <T> void register(Class<T> event, EventObserver<T> observer) {
-        dispatcher.register(event, observer);
-    }
-
-    @Override
-    public void unregister(EventObserver<?> observer) {
-        dispatcher.unregister(observer);
-    }
-
-    @Override
-    public void trigger(Object event) {
-        dispatcher.trigger(event);
-    }
-
-    @Override
-    public void clear() {
-        dispatcher.clear();
     }
 
     //--------------------------------------------------------------------------

@@ -186,7 +186,7 @@ public class MasterMixer implements IRestore {
     }
 
     protected void fireChange(MasterMixerChangeKind kind, float value) {
-        rack.trigger(new OnMasterMixerChange(kind, value));
+        rack.getGlobalDispatcher().trigger(new OnMasterMixerChange(kind, value));
     }
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {

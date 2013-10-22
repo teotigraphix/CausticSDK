@@ -155,14 +155,15 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
 
     @Override
     public void registerObservers() {
-        getRack().register(OnSoundSourceToneAdd.class, new EventObserver<OnSoundSourceToneAdd>() {
-            @Override
-            public void trigger(OnSoundSourceToneAdd object) {
-                trackAdd(object.getTone());
-            }
-        });
+        getRack().getDispatcher().register(OnSoundSourceToneAdd.class,
+                new EventObserver<OnSoundSourceToneAdd>() {
+                    @Override
+                    public void trigger(OnSoundSourceToneAdd object) {
+                        trackAdd(object.getTone());
+                    }
+                });
 
-        getRack().register(OnSoundSourceToneRemove.class,
+        getRack().getDispatcher().register(OnSoundSourceToneRemove.class,
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {
@@ -170,7 +171,7 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
                     }
                 });
 
-        getRack().register(OnSystemSequencerBeatChange.class,
+        getRack().getGlobalDispatcher().register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {
@@ -270,7 +271,8 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
     @Override
     public TrackSong createSong() {
         trackSong = new TrackSong(this, null);
-        getRack().trigger(new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
+        getRack().getGlobalDispatcher().trigger(
+                new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
         return trackSong;
     }
 
@@ -298,7 +300,8 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
             FileUtils.forceMkdir(absoluteSongDir);
 
         trackSong = new TrackSong(this, songFile);
-        getRack().trigger(new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
+        getRack().getGlobalDispatcher().trigger(
+                new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
 
         saveTrackSong();
 

@@ -118,7 +118,7 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
 
     @Override
     public void registerObservers() {
-        getRack().register(OnSystemSequencerBeatChange.class,
+        getRack().getGlobalDispatcher().register(OnSystemSequencerBeatChange.class,
                 new EventObserver<OnSystemSequencerBeatChange>() {
                     @Override
                     public void trigger(OnSystemSequencerBeatChange object) {
@@ -126,31 +126,32 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
                     }
                 });
 
-        getRack().register(OnTrackSongChange.class, new EventObserver<OnTrackSongChange>() {
-            @Override
-            public void trigger(OnTrackSongChange object) {
-                switch (object.getKind()) {
-                    case Create:
-                        // XXX                        create(object.getTrackSong());
-                        break;
+        getRack().getGlobalDispatcher().register(OnTrackSongChange.class,
+                new EventObserver<OnTrackSongChange>() {
+                    @Override
+                    public void trigger(OnTrackSongChange object) {
+                        switch (object.getKind()) {
+                            case Create:
+                                // XXX                        create(object.getTrackSong());
+                                break;
 
-                    case Load:
-                        load(object.getTrackSong());
-                        break;
+                            case Load:
+                                load(object.getTrackSong());
+                                break;
 
-                    case Save:
-                        try {
-                            save();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            case Save:
+                                try {
+                                    save();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+
+                            default:
+                                break;
                         }
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-        });
+                    }
+                });
     }
 
     protected void save() throws IOException {

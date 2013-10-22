@@ -268,7 +268,7 @@ public class SoundSource extends RackComponent implements ISoundSource {
 
     @Override
     public void clearAndReset() {
-        getRack().trigger(new OnSoundSourceClear());
+        getRack().getDispatcher().trigger(new OnSoundSourceClear());
 
         ArrayList<Tone> remove = new ArrayList<Tone>(tones.values());
         for (Tone tone : remove) {
@@ -277,7 +277,7 @@ public class SoundSource extends RackComponent implements ISoundSource {
 
         RackMessage.BLANKRACK.send(getRack());
 
-        getRack().trigger(new OnSoundSourceReset());
+        getRack().getDispatcher().trigger(new OnSoundSourceReset());
     }
 
     //--------------------------------------------------------------------------
@@ -366,12 +366,12 @@ public class SoundSource extends RackComponent implements ISoundSource {
     private void toneAdd(int index, Tone tone) {
         tones.put(index, tone);
         getRack().getLogger().err("SoundSource", "toneAdd()");
-        getRack().trigger(new OnSoundSourceToneAdd(tone));
+        getRack().getDispatcher().trigger(new OnSoundSourceToneAdd(tone));
     }
 
     private void toneRemove(Tone tone) {
         tones.remove(tone.getIndex());
-        getRack().trigger(new OnSoundSourceToneRemove(tone));
+        getRack().getDispatcher().trigger(new OnSoundSourceToneRemove(tone));
     }
 
     //--------------------------------------------------------------------------
@@ -379,7 +379,7 @@ public class SoundSource extends RackComponent implements ISoundSource {
     //--------------------------------------------------------------------------
 
     /**
-     * Dispatcher: {@link ICaustkController}
+     * Dispatcher: {@link IRack#getDispatcher()}
      */
     public static class OnSoundSourceToneAdd {
         private Tone tone;
@@ -394,7 +394,7 @@ public class SoundSource extends RackComponent implements ISoundSource {
     }
 
     /**
-     * Dispatcher: {@link ICaustkController}
+     * Dispatcher: {@link IRack#getDispatcher()}
      */
     public static class OnSoundSourceToneRemove {
         private Tone tone;
@@ -424,19 +424,19 @@ public class SoundSource extends RackComponent implements ISoundSource {
     }
 
     /**
-     * Dispatcher: {@link ICaustkController}
+     * Dispatcher: {@link IRack#getDispatcher()}
      */
     public static class OnSoundSourceInitialValueReset {
     }
 
     /**
-     * Dispatcher: {@link ICaustkController}
+     * Dispatcher: {@link IRack#getDispatcher()}
      */
     public static class OnSoundSourceClear {
     }
 
     /**
-     * Dispatcher: {@link ICaustkController}
+     * Dispatcher: {@link IRack#getDispatcher()}
      */
     public static class OnSoundSourceReset {
     }
@@ -463,7 +463,7 @@ public class SoundSource extends RackComponent implements ISoundSource {
     public void loadSong(File causticFile) throws CausticException {
         loadSongRaw(causticFile);
         loadMachines();
-        getRack().trigger(new OnSoundSourceSongLoad(causticFile));
+        getRack().getDispatcher().trigger(new OnSoundSourceSongLoad(causticFile));
     }
 
     @Override

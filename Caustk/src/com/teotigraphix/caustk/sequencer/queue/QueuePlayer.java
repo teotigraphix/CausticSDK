@@ -373,7 +373,7 @@ public class QueuePlayer implements Serializable {
         if (!state.equals(data.getState())) {
             data.setState(state);
             debug("setState(" + data + ")");
-            getRack().trigger(new OnQueueSequencerDataChange(data));
+            getRack().getGlobalDispatcher().trigger(new OnQueueSequencerDataChange(data));
         }
     }
 

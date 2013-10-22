@@ -40,7 +40,7 @@ public class TrackSong {
     }
 
     final IDispatcher getDispatcher() {
-        return trackSequencer.getRack();
+        return trackSequencer.getRack().getGlobalDispatcher();
     }
 
     final IRack getRack() {

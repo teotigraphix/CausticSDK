@@ -109,14 +109,15 @@ public class SoundMixer extends RackComponent implements ISoundMixer {
     public void registerObservers() {
         getLogger().err("SoundMixer", "registerObservers()");
 
-        getRack().register(OnSoundSourceToneAdd.class, new EventObserver<OnSoundSourceToneAdd>() {
-            @Override
-            public void trigger(OnSoundSourceToneAdd object) {
-                getLogger().err("SoundMixer", "OnSoundSourceToneAdd()");
-                masterMixer.addTone(object.getTone());
-            }
-        });
-        getRack().register(OnSoundSourceToneRemove.class,
+        getRack().getDispatcher().register(OnSoundSourceToneAdd.class,
+                new EventObserver<OnSoundSourceToneAdd>() {
+                    @Override
+                    public void trigger(OnSoundSourceToneAdd object) {
+                        getLogger().err("SoundMixer", "OnSoundSourceToneAdd()");
+                        masterMixer.addTone(object.getTone());
+                    }
+                });
+        getRack().getDispatcher().register(OnSoundSourceToneRemove.class,
                 new EventObserver<OnSoundSourceToneRemove>() {
                     @Override
                     public void trigger(OnSoundSourceToneRemove object) {

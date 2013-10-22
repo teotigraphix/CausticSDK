@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.controller.core;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICausticLogger;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRack;
 import com.teotigraphix.caustk.controller.IRackComponent;
 
@@ -49,6 +50,10 @@ public class RackComponent implements IRackComponent {
 
     protected final ICausticLogger getLogger() {
         return rack.getLogger();
+    }
+
+    protected final IDispatcher getGlobalDispatcher() {
+        return rack.getGlobalDispatcher();
     }
 
     //--------------------------------------------------------------------------

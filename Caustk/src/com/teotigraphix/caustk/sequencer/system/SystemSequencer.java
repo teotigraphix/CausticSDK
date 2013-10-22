@@ -106,7 +106,7 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
             return;
         tempo = value;
         OutputPanelMessage.BPM.send(getRack(), tempo);
-        getRack().trigger(new OnSystemSequencerTempoChange(value));
+        getRack().getGlobalDispatcher().trigger(new OnSystemSequencerTempoChange(value));
     }
 
     @Override
@@ -142,13 +142,13 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
         setIsPlaying(true);
-        getRack().trigger(new OnSystemSequencerTransportChange());
+        getRack().getGlobalDispatcher().trigger(new OnSystemSequencerTransportChange());
     }
 
     @Override
     public void stop() {
         setIsPlaying(false);
-        getRack().trigger(new OnSystemSequencerTransportChange());
+        getRack().getGlobalDispatcher().trigger(new OnSystemSequencerTransportChange());
     }
 
     @Override
@@ -238,7 +238,7 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         if (step != currentSixteenthStep) {
             currentSixteenthStep = step;
             //CtkDebug.log("Step:" + currentSixteenthStep);
-            getRack().trigger(new OnSystemSequencerStepChange());
+            getGlobalDispatcher().trigger(new OnSystemSequencerStepChange());
         }
     }
 
@@ -257,7 +257,7 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
 
         currentBeat = value;
 
-        getRack().trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
+        getGlobalDispatcher().trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
     }
 
     //--------------------------------------------------------------------------
