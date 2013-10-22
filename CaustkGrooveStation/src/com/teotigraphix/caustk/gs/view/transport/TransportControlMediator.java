@@ -5,9 +5,9 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.caustk.gs.view.screen.MachineMediatorBase;
-import com.teotigraphix.caustk.rack.sequencer.ISystemSequencer;
-import com.teotigraphix.caustk.rack.sequencer.ISystemSequencer.OnSystemSequencerTransportChange;
-import com.teotigraphix.caustk.rack.sequencer.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.rack.ISystemSequencer;
+import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerTransportChange;
+import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 import com.teotigraphix.libgdx.screen.IScreen;
 import com.teotigraphix.libgdx.ui.caustk.TransportGroup;
 import com.teotigraphix.libgdx.ui.caustk.TransportGroup.OnTransportGroupListener;

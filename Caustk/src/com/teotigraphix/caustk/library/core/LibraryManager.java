@@ -44,7 +44,7 @@ import com.teotigraphix.caustk.library.item.LibraryPattern.ToneSet;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.library.item.SoundSourceDescriptor;
-import com.teotigraphix.caustk.rack.sound.ISoundSource;
+import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;

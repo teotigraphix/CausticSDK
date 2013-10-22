@@ -27,7 +27,7 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.rack.sequencer.ISystemSequencer.OnSystemSequencerBeatChange;
+import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.ToneType;
 

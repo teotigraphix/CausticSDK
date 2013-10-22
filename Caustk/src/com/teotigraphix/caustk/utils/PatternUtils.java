@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.utils;
 
-import com.teotigraphix.caustk.rack.sequencer.track.Phrase;
+import com.teotigraphix.caustk.rack.track.Phrase;
 
 /**
  * @author Michael Schmalle

@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
-import com.teotigraphix.caustk.rack.sequencer.track.Note;
+import com.teotigraphix.caustk.rack.track.Note;
 
 public class BasslineMachineSound extends MachineSound {
 

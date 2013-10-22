@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.core.Rack;
+import com.teotigraphix.caustk.rack.Rack;
 
 /**
  * Base class for an application state that uses the IRack.

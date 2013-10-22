@@ -30,13 +30,9 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.rack.sequencer.ISystemSequencer;
-import com.teotigraphix.caustk.rack.sequencer.ITrackSequencer;
-import com.teotigraphix.caustk.rack.sequencer.track.Phrase;
-import com.teotigraphix.caustk.rack.sound.ISoundMixer;
-import com.teotigraphix.caustk.rack.sound.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.track.Phrase;
 
 /**
  * The {@link IRack} is the top API for dealing with {@link Tone}s,

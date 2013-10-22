@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.sound.mixer.SoundMixerChannel;
+import com.teotigraphix.caustk.rack.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 

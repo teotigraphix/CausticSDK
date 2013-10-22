@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.library.item;
 
-import com.teotigraphix.caustk.rack.sound.mixer.SoundMixerChannel;
+import com.teotigraphix.caustk.rack.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
 public class SoundMixerChannelDescriptor {

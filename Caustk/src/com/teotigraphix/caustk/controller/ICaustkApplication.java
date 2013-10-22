@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.controller;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
-import com.teotigraphix.caustk.rack.sound.ISoundGenerator;
+import com.teotigraphix.caustk.rack.ISoundGenerator;
 
 /**
  * The {@link ICaustkApplication} API is the startup instrumentation for the

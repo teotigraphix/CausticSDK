@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.controller.core;
 
-import com.teotigraphix.caustk.rack.sound.ISoundMixer;
+import com.teotigraphix.caustk.rack.ISoundMixer;
 
 public class CaustkControllerUtils {
     //

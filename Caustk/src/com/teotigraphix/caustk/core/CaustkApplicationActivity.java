@@ -27,7 +27,7 @@ import android.os.Environment;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkApplication;
-import com.teotigraphix.caustk.rack.core.Rack;
+import com.teotigraphix.caustk.rack.Rack;
 
 /**
  * The {@link CaustkApplicationActivity} adds the {@link ICaustkController}
