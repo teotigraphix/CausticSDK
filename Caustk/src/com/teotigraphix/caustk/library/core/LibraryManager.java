@@ -58,6 +58,10 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     private static final String LIBRARY_CTKL = "library.ctkl";
 
+    private transient Map<UUID, Library> libraries = new TreeMap<UUID, Library>();
+
+    private Library selectedLibrary;
+
     //--------------------------------------------------------------------------
     // API
     //--------------------------------------------------------------------------
@@ -66,8 +70,6 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     // libraries
     //----------------------------------
 
-    private transient Map<UUID, Library> libraries = new TreeMap<UUID, Library>();
-
     Map<UUID, Library> getLibraries() {
         return libraries;
     }
@@ -75,8 +77,6 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
     //----------------------------------
     // selectedLibrary
     //----------------------------------
-
-    private Library selectedLibrary;
 
     @Override
     public Library getSelectedLibrary() {
@@ -230,8 +230,9 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         clear();
     }
 
-    @Override
-    public void clear() {
+    public void reset() {
+        libraries.clear();
+        selectedLibrary = null;
     }
 
     @Override

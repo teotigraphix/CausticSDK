@@ -24,6 +24,8 @@ import java.io.IOException;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.libgdx.dialog.IDialogManager;
+import com.teotigraphix.libgdx.screen.IScreen;
 
 public interface IApplicationModel extends ICaustkModel {
 
@@ -32,6 +34,10 @@ public interface IApplicationModel extends ICaustkModel {
     //--------------------------------------------------------------------------
 
     ICaustkController getController();
+
+    IScreen getCurrentScreen();
+
+    IDialogManager getDialogManager();
 
     //----------------------------------
     // state

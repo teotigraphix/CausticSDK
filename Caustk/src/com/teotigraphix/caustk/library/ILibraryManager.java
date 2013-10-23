@@ -114,4 +114,6 @@ public interface ILibraryManager extends IControllerComponent {
      * Creates an empty library with no directory
      */
     Library createLibrary();
+
+    void reset();
 }

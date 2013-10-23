@@ -31,7 +31,9 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.libgdx.application.ApplicationRegistry;
 import com.teotigraphix.libgdx.application.IApplicationRegistry;
+import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
+import com.teotigraphix.libgdx.screen.IScreen;
 
 @Singleton
 public class ApplicationModel extends CaustkModelBase implements IApplicationModel {
@@ -40,6 +42,9 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
     @Inject
     IScreenProvider screenProvider;
+
+    @Inject
+    IDialogManager dialogManager;
 
     private Kryo kryo;
 
@@ -50,6 +55,16 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    @Override
+    public IDialogManager getDialogManager() {
+        return dialogManager;
+    }
+
+    @Override
+    public IScreen getCurrentScreen() {
+        return screenProvider.getScreen();
+    }
 
     //----------------------------------
     // state
