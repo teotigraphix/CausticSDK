@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
-import com.teotigraphix.libgdx.controller.IApplicationController;
+import com.teotigraphix.libgdx.controller.ICaustkControllerProvider;
 
 public abstract class CaustkModelBase implements ICaustkModel {
 
@@ -15,7 +15,7 @@ public abstract class CaustkModelBase implements ICaustkModel {
 
     private ICaustkController controller;
 
-    protected final ICaustkController getController() {
+    public final ICaustkController getController() {
         return controller;
     }
 
@@ -23,17 +23,10 @@ public abstract class CaustkModelBase implements ICaustkModel {
     // Constructor
     //--------------------------------------------------------------------------
 
-    private IApplicationController applicationController;
-
     @Inject
-    public void setApplicationController(IApplicationController applicationController) {
-        this.applicationController = applicationController;
+    public void setApplicationController(ICaustkControllerProvider provider) {
         dispatcher = new Dispatcher();
-        controller = applicationController.getController();
-    }
-
-    protected final IApplicationController getApplicationController() {
-        return applicationController;
+        controller = provider.get();
     }
 
     @Override

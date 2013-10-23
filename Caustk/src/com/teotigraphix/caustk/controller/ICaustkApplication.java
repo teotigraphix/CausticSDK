@@ -51,7 +51,7 @@ public interface ICaustkApplication {
      * @param value The handler instance the application will use during it's
      *            phase callbacks.
      */
-    void setApplicationHandler(IApplicationHandler value);
+    //    void setApplicationHandler(IApplicationHandler value);
 
     /**
      * Returns the application's single {@link ICaustkConfiguration}.

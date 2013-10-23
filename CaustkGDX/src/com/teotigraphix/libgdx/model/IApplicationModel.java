@@ -19,29 +19,51 @@
 
 package com.teotigraphix.libgdx.model;
 
+import java.io.IOException;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
 
 public interface IApplicationModel extends ICaustkModel {
+
+    //--------------------------------------------------------------------------
+    // Properties
+    //--------------------------------------------------------------------------
+
+    ICaustkController getController();
+
+    //----------------------------------
+    // state
+    //----------------------------------
+
+    void setStateType(Class<? extends ApplicationModelState> classType);
+
+    Class<? extends ApplicationModelState> getStateType();
+
+    <T extends ApplicationModelState> T getState(Class<T> stateType);
+
+    //----------------------------------
+    // initialized
+    //----------------------------------
 
     boolean isInitialized();
 
     void setInitialized(boolean value);
 
+    //----------------------------------
+    // project
+    //----------------------------------
+
+    boolean isFirstRun();
+
     Project getProject();
 
-    /**
-     * @see OnApplicationModelProjectChange
-     * @param value
-     */
-    void setProject(Project value);
+    String[] getProjectsAsArray();
 
-    /**
-     * Returns the application's name.
-     */
-    String getName();
-
-    void setScreen(int screenId);
+    //----------------------------------
+    // dirty
+    //----------------------------------
 
     /**
      * Returns whether the application state is dirty.
@@ -60,26 +82,59 @@ public interface IApplicationModel extends ICaustkModel {
      */
     void setDirty(boolean value);
 
+    /**
+     * Returns the application's name.
+     */
+    String getName();
+
+    //--------------------------------------------------------------------------
+    // Methods
+    //--------------------------------------------------------------------------
+
+    void create() throws CausticException;
+
+    Project createNewProject(String projectName) throws CausticException;
+
+    Project loadProject(String projectName) throws IOException;
+
+    void run();
+
+    void save();
+
+    void pushScreen(int screenId);
+
     void registerModel(ICaustkModel model);
 
     //--------------------------------------------------------------------------
     // Events
     //--------------------------------------------------------------------------
 
-    public static class OnApplicationModelProjectChange {
+    public enum ApplicationModelPhase {
+        InitializeProject,
 
-        private final Project project;
+        ReloadProject;
+    }
 
-        public final Project getProject() {
-            return project;
+    public static class OnApplicationModelPhaseChange {
+
+        private ApplicationModelPhase phase;
+
+        public final ApplicationModelPhase getPhase() {
+            return phase;
         }
 
-        public OnApplicationModelProjectChange(Project project) {
-            this.project = project;
+        //        private final Project project;
+        //
+        //        public final Project getProject() {
+        //            return project;
+        //        }
+
+        public OnApplicationModelPhaseChange(ApplicationModelPhase phase) {
+            this.phase = phase;
         }
     }
 
-    public static class OnApplicationModelProjectLoadComplete {
+    public static class OnApplicationModelNewProjectComplete {
 
         private final Project project;
 
@@ -87,7 +142,7 @@ public interface IApplicationModel extends ICaustkModel {
             return project;
         }
 
-        public OnApplicationModelProjectLoadComplete(Project project) {
+        public OnApplicationModelNewProjectComplete(Project project) {
             this.project = project;
         }
     }

@@ -48,9 +48,14 @@ public class CausticSongFile {
     CausticSongFile() {
     }
 
-    CausticSongFile(String file, byte[] data) {
+    public CausticSongFile(String file, byte[] data) {
         this.file = file;
         this.data = data;
+    }
+
+    public void dispose() {
+        file = null;
+        data = null;
     }
 
 }

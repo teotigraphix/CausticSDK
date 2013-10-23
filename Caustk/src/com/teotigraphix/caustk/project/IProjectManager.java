@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 
@@ -82,6 +83,11 @@ public interface IProjectManager {
      * the end whether to save in the native format or session settings format.
      */
     SessionPreferences getSessionPreferences();
+
+    /**
+     * Returns a List of all Projects in the <code>projects</code> directory.
+     */
+    List<File> listProjects();
 
     /**
      * Returns whether the project exists and is a valid caustk project.
@@ -246,4 +252,5 @@ public interface IProjectManager {
             this.kind = kind;
         }
     }
+
 }

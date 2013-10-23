@@ -22,13 +22,14 @@ package com.teotigraphix.caustk.rack;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommand;
-import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -69,15 +70,18 @@ public class Rack implements IRack {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private SoundSource soundSource;
+    private Map<Class<? extends IRackComponent>, IRackComponent> components;
 
     @Tag(1)
-    private SoundMixer soundMixer;
+    private SoundSource soundSource;
 
     @Tag(2)
-    private SystemSequencer systemSequencer;
+    private SoundMixer soundMixer;
 
     @Tag(3)
+    private SystemSequencer systemSequencer;
+
+    @Tag(4)
     private TrackSequencer trackSequencer;
 
     //----------------------------------
@@ -90,10 +94,23 @@ public class Rack implements IRack {
 
     public void setController(ICaustkController controller) {
         this.controller = controller;
-        if (dispatcher == null)
-            dispatcher = new Dispatcher();
+        this.dispatcher = new Dispatcher();
+
+        controller.addComponent(IRack.class, this);
 
         soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
+
+        if (components == null) {
+            components = new HashMap<Class<? extends IRackComponent>, IRackComponent>();
+
+            soundSource = new SoundSource(this);
+            soundMixer = new SoundMixer(this);
+            systemSequencer = new SystemSequencer(this);
+            trackSequencer = new TrackSequencer(this);
+
+            // create a new TrackSong for the TrackSequencer
+            trackSequencer.createSong();
+        }
     }
 
     //----------------------------------
@@ -101,7 +118,7 @@ public class Rack implements IRack {
     //----------------------------------
 
     @Override
-    public ISoundSource getSoundSource() {
+    public final ISoundSource getSoundSource() {
         return soundSource;
     }
 
@@ -112,7 +129,6 @@ public class Rack implements IRack {
             destroyTone(tone);
         }
         RackMessage.BLANKRACK.send(this);
-        //         getRack().getDispatcher().trigger(new OnSoundSourceReset());
     }
 
     @Override
@@ -189,7 +205,7 @@ public class Rack implements IRack {
     //----------------------------------
 
     @Override
-    public ISoundMixer getSoundMixer() {
+    public final ISoundMixer getSoundMixer() {
         return soundMixer;
     }
 
@@ -198,7 +214,7 @@ public class Rack implements IRack {
     //----------------------------------
 
     @Override
-    public ISystemSequencer getSystemSequencer() {
+    public final ISystemSequencer getSystemSequencer() {
         return systemSequencer;
     }
 
@@ -207,7 +223,7 @@ public class Rack implements IRack {
     //----------------------------------
 
     @Override
-    public ITrackSequencer getTrackSequencer() {
+    public final ITrackSequencer getTrackSequencer() {
         return trackSequencer;
     }
 
@@ -218,55 +234,34 @@ public class Rack implements IRack {
     public Rack() {
     }
 
-    public Rack(ICaustkController controller) {
-        this.controller = controller;
-        this.dispatcher = new Dispatcher();
-
-        ((CaustkController)this.controller).setRack(this);
-
-        soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
-
-        soundSource = new SoundSource(this);
-        soundMixer = new SoundMixer(this);
-        systemSequencer = new SystemSequencer(this);
-        trackSequencer = new TrackSequencer(this);
-
-        // create a new TrackSong for the TrackSequencer
-        trackSequencer.createSong();
-    }
-
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    public void addComponent(Class<? extends IRackComponent> classType, IRackComponent component) {
+        components.put(classType, component);
+    }
+
+    public <T extends IRackComponent> T getComponent(Class<T> clazz) {
+        return clazz.cast(components.get(clazz));
+    }
+
     @Override
     public void registerObservers() {
-        soundSource.registerObservers();
-        soundMixer.registerObservers();
-        systemSequencer.registerObservers();
-        trackSequencer.registerObservers();
 
-        // XXX this is not going to work unless there is NO way
-        // a client can hold onto things if the rack gets recreated
-        controller.addComponent(ISoundSource.class, soundSource);
-        controller.addComponent(ISoundMixer.class, soundMixer);
-        controller.addComponent(ISystemSequencer.class, systemSequencer);
-        controller.addComponent(ITrackSequencer.class, trackSequencer);
     }
 
     @Override
     public void unregisterObservers() {
-        soundSource.unregisterObservers();
-        soundMixer.unregisterObservers();
-        systemSequencer.unregisterObservers();
-        trackSequencer.unregisterObservers();
+
     }
 
     @Override
     public void update() {
-        final float measure = getCurrentSongMeasure();
+        final int measure = (int)getCurrentSongMeasure();
         final float beat = getCurrentBeat();
-        getSystemSequencer().beatUpdate((int)measure, beat);
+        systemSequencer.beatChange(measure, beat);
+        trackSequencer.beatChange(measure, beat);
     }
 
     //--------------------------------------------------------------------------
@@ -320,7 +315,17 @@ public class Rack implements IRack {
 
     @Override
     public void dispose() {
-        soundGenerator.dispose();
+        RackMessage.BLANKRACK.send(this);
+
+        controller.removeComponent(IRack.class);
+        components.clear();
+
+        controller = null;
+        soundGenerator = null;
+        soundSource = null;
+        soundMixer = null;
+        systemSequencer = null;
+        trackSequencer = null;
     }
 
     //--------------------------------------------------------------------------
@@ -370,6 +375,15 @@ public class Rack implements IRack {
     @Override
     public Library getLibrary() {
         return controller.getLibraryManager().getSelectedLibrary();
+    }
+
+    private transient boolean initalized = false;
+
+    public void setInitialized(boolean value) {
+        if (initalized)
+            throw new IllegalStateException("Rack already initialized");
+
+        initalized = true;
     }
 
     //--------------------------------------------------------------------------

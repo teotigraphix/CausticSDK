@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 
 @Singleton
-public class ControllerProvider implements IControllerProvider {
+public class ControllerProvider implements ICaustkControllerProvider {
 
     @Inject
     ICaustkApplicationProvider provider;

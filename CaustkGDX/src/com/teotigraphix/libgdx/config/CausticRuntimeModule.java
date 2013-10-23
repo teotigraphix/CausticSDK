@@ -25,10 +25,8 @@ import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.service.IInjectorService;
 import com.teotigraphix.libgdx.application.ApplicationRegistry;
 import com.teotigraphix.libgdx.application.IApplicationRegistry;
-import com.teotigraphix.libgdx.controller.ApplicationController;
 import com.teotigraphix.libgdx.controller.ControllerProvider;
-import com.teotigraphix.libgdx.controller.IApplicationController;
-import com.teotigraphix.libgdx.controller.IControllerProvider;
+import com.teotigraphix.libgdx.controller.ICaustkControllerProvider;
 import com.teotigraphix.libgdx.model.ApplicationModel;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 import com.teotigraphix.libgdx.service.InjectorService;
@@ -39,8 +37,7 @@ public abstract class CausticRuntimeModule extends AbstractModule {
     protected void configure() {
         bind(ICaustkApplicationProvider.class).to(ApplicationProvider.class).in(Singleton.class);
         bind(IApplicationModel.class).to(ApplicationModel.class).in(Singleton.class);
-        bind(IApplicationController.class).to(ApplicationController.class).in(Singleton.class);
-        bind(IControllerProvider.class).to(ControllerProvider.class).in(Singleton.class);
+        bind(ICaustkControllerProvider.class).to(ControllerProvider.class).in(Singleton.class);
         bind(IInjectorService.class).to(InjectorService.class).in(Singleton.class);
         bind(IApplicationRegistry.class).to(ApplicationRegistry.class).in(Singleton.class);
 

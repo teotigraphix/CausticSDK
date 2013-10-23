@@ -43,8 +43,8 @@ public abstract class CaustkMediator implements ICaustkMediator {
     }
 
     @Inject
-    void setApplicationController(IApplicationController value) {
-        controller = value.getController();
+    void setController(ICaustkControllerProvider value) {
+        controller = value.get();
     }
 
     //--------------------------------------------------------------------------

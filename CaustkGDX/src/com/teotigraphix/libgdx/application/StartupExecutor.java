@@ -30,13 +30,11 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Module;
-import com.teotigraphix.caustk.controller.IApplicationHandler;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.service.IInjectorService;
-import com.teotigraphix.libgdx.controller.IApplicationController;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 
 /**
@@ -51,9 +49,6 @@ public class StartupExecutor {
 
     @Inject
     IInjectorService injectorService;
-
-    @Inject
-    IApplicationController applicationController;
 
     @Inject
     IApplicationMediator applicationMediator;
@@ -130,36 +125,33 @@ public class StartupExecutor {
         caustkApplication.getConfiguration().setCausticStorage(root);
         caustkApplication.getConfiguration().setApplicationRoot(applicationDirectory);
 
-        caustkApplication.setApplicationHandler(new IApplicationHandler() {
-            @Override
-            public void commitCreate() {
-                applicationController.create();
-            }
-
-            @Override
-            public void commitRun() {
-                applicationController.run();
-            }
-
-            @Override
-            public void commitSave() {
-            }
-
-            @Override
-            public void commitClose() {
-            }
-
-        });
-
-        // initialize the sound generator, CausticCore
+        // initialize the sound generator(CausticCore), ICaustkController 
         caustkApplication.initialize();
+
+        // register app mediator, registers app models with applicationModel.registerModel()
+        // Register OnProjectManagerChange, OnCausticApplicationStateChange
+        // having registered the app mediator here, it will listen to the 
+        // Creat, Run events of the app model
+        applicationMediator.onRegister();
 
         // create app directory, initialize controller and sub components
         // initialize projectmanager, create or load last project state
         caustkApplication.create();
 
-        // loads the model state before any UI is created
+        // Register all App level ICaustkModels that were registered in app mediator
+        // the project is now pending waiting to be assigned in run() with setProject()
+        applicationModel.onRegister();
+
+        // Creates or loads the lastProject in the .settings for the app
+        applicationModel.create();
+    }
+
+    public void run() {
+        // N/A at the moment, calls controller.run()
         caustkApplication.run();
+
+        // calls setProject(pending) and sets initialized to true
+        applicationModel.run();
     }
 
     /**

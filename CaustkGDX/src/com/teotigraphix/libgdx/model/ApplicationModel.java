@@ -19,9 +19,17 @@
 
 package com.teotigraphix.libgdx.model;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import com.esotericsoftware.kryo.Kryo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.libgdx.application.ApplicationRegistry;
 import com.teotigraphix.libgdx.application.IApplicationRegistry;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
@@ -29,49 +37,94 @@ import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 @Singleton
 public class ApplicationModel extends CaustkModelBase implements IApplicationModel {
 
+    private static final String TAG = "ApplicationModel";
+
+    @Inject
+    IScreenProvider screenProvider;
+
+    private Kryo kryo;
+
     private IApplicationRegistry applicationRegistry;
+
+    protected boolean deleteCausticFile = true;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // state
+    //----------------------------------
 
     private ApplicationModelState state;
 
-    @SuppressWarnings("unchecked")
-    public final <T extends ApplicationModelState> T getState() {
-        return (T)state;
+    @Override
+    public final <T extends ApplicationModelState> T getState(Class<T> stateType) {
+        return stateType.cast(state);
     }
 
     public final <T extends ApplicationModelState> void setState(T value) {
         state = value;
     }
 
+    //----------------------------------
+    // stateType
+    //----------------------------------
+
+    protected Class<? extends ApplicationModelState> stateType;
+
+    @Override
+    public void setStateType(Class<? extends ApplicationModelState> value) {
+        stateType = value;
+    }
+
+    @Override
+    public Class<? extends ApplicationModelState> getStateType() {
+        return stateType;
+    }
+
+    //----------------------------------
+    // project
+    //----------------------------------
+
+    @Override
+    public final boolean isFirstRun() {
+        return project.isFirstRun();
+    }
+
     private Project project;
+
+    private Project pendingProject;
 
     @Override
     public Project getProject() {
         return project;
     }
 
-    @Override
-    public void setProject(Project value) {
+    void setProject(Project value) {
         project = value;
-        // creates new state or deserializes the saved state
-        getController().trigger(new OnApplicationModelProjectChange(project));
-
-        state.registerObservers();
-
-        // all models need to reset here
-        if (project.isFirstRun()) {
-            // reload User into the LibraryModel
+        if (isFirstRun()) {
+            initializeProject(project);
+            trigger(new OnApplicationModelPhaseChange(ApplicationModelPhase.InitializeProject));
+        } else {
+            reloadProject(project);
+            trigger(new OnApplicationModelPhaseChange(ApplicationModelPhase.ReloadProject));
         }
-
-        getController().trigger(new OnApplicationModelProjectLoadComplete(project));
     }
-
-    @Inject
-    IScreenProvider screenProvider;
 
     @Override
-    public String getName() {
-        return "TODO Resources";//resourceBundle.getString("APP_TITLE");
+    public String[] getProjectsAsArray() {
+        List<File> projects = getController().getProjectManager().listProjects();
+        String[] result = new String[projects.size()];
+        for (int i = 0; i < projects.size(); i++) {
+            result[i] = projects.get(i).getName();
+        }
+        return result;
     }
+
+    //----------------------------------
+    // initialized
+    //----------------------------------
 
     private boolean initialized = false;
 
@@ -114,21 +167,30 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     }
 
     @Override
-    public void setScreen(int screenId) {
+    public void pushScreen(int screenId) {
         screenProvider.getScreen().getGame().setScreen(screenId);
+    }
+
+    @Override
+    public String getName() {
+        return "TODO Resources";//resourceBundle.getString("APP_TITLE");
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ApplicationModel() {
+    @Inject
+    public ApplicationModel(ICaustkApplicationProvider provider) {
         super();
         applicationRegistry = new ApplicationRegistry();
+        createKryo();
     }
 
-    // called from ApplicationController right after Project is created/Loaded
-    // and after the ApplicationMediator.onRegister() is called.
+    //--------------------------------------------------------------------------
+    // Overridden :: Methods
+    //--------------------------------------------------------------------------
+
     @Override
     public void onRegister() {
         getController().getLogger().model("ApplicationModel", "onRegister()");
@@ -137,13 +199,149 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
         // any models declared on the app's ApplicationMediator
         // all others are lazy loaded
         applicationRegistry.onRegisterModels();
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void registerModel(ICaustkModel model) {
+        applicationRegistry.registerModel(model);
+    }
+
+    @Override
+    public void create() throws CausticException {
+        // create or load the last Project
+        pendingProject = ApplicationModelUtils.createOrLoadLastProject(getController());
+        if (pendingProject == null)
+            throw new CausticException("Project creation/load failed");
+    }
+
+    @Override
+    public Project createNewProject(String projectName) throws CausticException {
+        if (state != null) {
+            disposeState(state);
+        }
+
+        Project project = ApplicationModelUtils.createNewProject(getController(), projectName);
+        setProject(project);
+
+        trigger(new OnApplicationModelNewProjectComplete(project));
+
+        return project;
+    }
+
+    @Override
+    public Project loadProject(String projectName) throws IOException {
+        if (state != null) {
+            disposeState(state);
+        }
+
+        Project project = ApplicationModelUtils.loadProject(getController(), projectName);
+        setProject(project);
+
+        trigger(new OnApplicationModelNewProjectComplete(project));
+
+        return project;
+    }
+
+    @Override
+    public void run() {
+        // loads or creates application state, if this was bound to
+        // a project change event, we wouldn't need to call it here,
+        // it would happen automatically based on the project's initialized (first run) prop
+        setProject(pendingProject);
 
         setInitialized(true);
     }
 
     @Override
-    public void registerModel(ICaustkModel model) {
-        applicationRegistry.registerModel(model);
+    public void save() {
+        try {
+            ApplicationModelUtils.saveApplicationState(this, kryo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setDirty(false);
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //--------------------------------------------------------------------------
+
+    private void createKryo() {
+        kryo = ApplicationModelUtils.createKryo();
+    }
+
+    protected void initializeProject(Project project) {
+        getController().getLogger().view("ApplicationMediator",
+                "Create new State - " + ApplicationModelUtils.getProjectBinaryFile(project));
+
+        ApplicationModelState state = null;
+
+        try {
+            state = stateType.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        setupState(state);
+        setState(state);
+
+        try {
+            ApplicationModelUtils.saveApplicationState(this, kryo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void reloadProject(Project project) {
+        getController().getLogger().view("ApplicationMediator",
+                "Load last State - " + ApplicationModelUtils.getProjectBinaryFile(project));
+
+        try {
+            ApplicationModelState state = ApplicationModelUtils.loadApplicationState(this, kryo);
+            setupState(state);
+
+            ApplicationModelUtils.loadSongBytesIntoRack(getController(), project, state
+                    .getSongFile().getData());
+
+            setState(state);
+
+        } catch (CausticException e) {
+            getController().getLogger().err(TAG, "CausticException", e);
+        } catch (IOException e) {
+            getController().getLogger().err(TAG, "IOException", e);
+        }
+    }
+
+    private void setupState(ApplicationModelState state) {
+
+        state.setController(getController());
+
+        Rack rack = (Rack)state.getRack();
+        if (rack == null) {
+            // creating the state for the first time
+            rack = new Rack();
+        }
+
+        // creates sub components if this is the first load
+        rack.setController(getController());
+
+        // hook up controller, rack and state refs
+        getController().setRack(rack);
+        state.setRack(rack);
+    }
+
+    private void disposeState(ApplicationModelState state) {
+        state.setController(null);
+        getController().setRack(null);
+        // will call native clearrack
+        state.dispose();
+        this.state = null;
     }
 
 }

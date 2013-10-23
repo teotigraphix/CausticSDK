@@ -21,9 +21,13 @@ package com.teotigraphix.caustk.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IControllerAware;
@@ -119,6 +123,40 @@ public class ProjectManager implements IProjectManager, IControllerAware {
     @Override
     public final Project getProject() {
         return project;
+    }
+
+    @Override
+    public List<File> listProjects() {
+        List<File> result = new ArrayList<File>();
+        Collection<File> contents = FileUtils.listFilesAndDirs(getProjectDirectory(),
+                new IOFileFilter() {
+                    @Override
+                    public boolean accept(File arg0, String arg1) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean accept(File arg0) {
+                        return false;
+                    }
+                }, new IOFileFilter() {
+                    @Override
+                    public boolean accept(File arg0, String arg1) {
+                        return true;
+                    }
+
+                    @Override
+                    public boolean accept(File arg0) {
+                        return true;
+                    }
+                });
+
+        for (File file : contents) {
+            if (file.isDirectory() && new File(file, ".project").exists()) {
+                result.add(file);
+            }
+        }
+        return result;
     }
 
     //--------------------------------------------------------------------------

@@ -78,6 +78,10 @@ public class RackComponent implements IRackComponent {
     //--------------------------------------------------------------------------
 
     @Override
+    public void beatChange(int measure, float beat) {
+    }
+
+    @Override
     public void registerObservers() {
     }
 

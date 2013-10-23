@@ -28,7 +28,6 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.rack.ITrackSequencer.OnTrackSongChange;
 import com.teotigraphix.caustk.rack.queue.QueueData;
 import com.teotigraphix.caustk.rack.queue.QueueDataChannel;
@@ -119,13 +118,6 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
 
     @Override
     public void registerObservers() {
-        getRack().getGlobalDispatcher().register(OnSystemSequencerBeatChange.class,
-                new EventObserver<OnSystemSequencerBeatChange>() {
-                    @Override
-                    public void trigger(OnSystemSequencerBeatChange object) {
-                        beatChange(object.getMeasure(), object.getBeat());
-                    }
-                });
 
         getRack().getGlobalDispatcher().register(OnTrackSongChange.class,
                 new EventObserver<OnTrackSongChange>() {
@@ -190,6 +182,7 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
         return player.touch(data);
     }
 
+    @Override
     public void beatChange(int measure, float beat) {
         player.beatChange(measure, beat);
     }

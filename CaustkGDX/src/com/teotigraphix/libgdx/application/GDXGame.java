@@ -35,7 +35,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
-import com.teotigraphix.libgdx.model.IApplicationModel.OnApplicationModelProjectLoadComplete;
+import com.teotigraphix.libgdx.model.IApplicationModel;
+import com.teotigraphix.libgdx.model.IApplicationModel.OnApplicationModelNewProjectComplete;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 import com.teotigraphix.libgdx.screen.IScreen;
 
@@ -56,6 +57,9 @@ public abstract class GDXGame implements IGame {
 
     @Inject
     IScreenProvider screenProvider;
+
+    @Inject
+    IApplicationModel applicationModel;
 
     private ArrayMap<Integer, IScreen> screens = new ArrayMap<Integer, IScreen>();
 
@@ -140,18 +144,22 @@ public abstract class GDXGame implements IGame {
         executor.addModule(module);
         try {
             executor.create(this);
+
+            executor.run();
+
+            setController(executor.getController());
+            // calls onStart() of the rack and sound engine
+            controller.onStart();
         } catch (CausticException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setController(executor.getController());
-        controller.onStart();
 
-        getController().register(OnApplicationModelProjectLoadComplete.class,
-                new EventObserver<OnApplicationModelProjectLoadComplete>() {
+        applicationModel.register(OnApplicationModelNewProjectComplete.class,
+                new EventObserver<OnApplicationModelNewProjectComplete>() {
                     @Override
-                    public void trigger(OnApplicationModelProjectLoadComplete object) {
+                    public void trigger(OnApplicationModelNewProjectComplete object) {
                         screen.show();
                         screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                     }

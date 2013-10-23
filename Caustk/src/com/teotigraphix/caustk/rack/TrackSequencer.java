@@ -23,12 +23,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
-import org.androidtransfuse.event.EventObserver;
 import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.track.Phrase;
 import com.teotigraphix.caustk.rack.track.Track;
@@ -152,15 +150,9 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
     //--------------------------------------------------------------------------
 
     @Override
-    public void registerObservers() {
-        getRack().getGlobalDispatcher().register(OnSystemSequencerBeatChange.class,
-                new EventObserver<OnSystemSequencerBeatChange>() {
-                    @Override
-                    public void trigger(OnSystemSequencerBeatChange object) {
-                        //System.err.println(object.getBeat());
-                        getSelectedTrack().getPhrase().onBeatChange(object.getBeat());
-                    }
-                });
+    public void beatChange(int measure, float beat) {
+        super.beatChange(measure, beat);
+        getSelectedTrack().getPhrase().onBeatChange(beat);
     }
 
     //--------------------------------------------------------------------------

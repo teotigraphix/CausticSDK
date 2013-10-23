@@ -123,6 +123,7 @@ public class CaustkController implements ICaustkController {
         return rack;
     }
 
+    @Override
     public void setRack(IRack value) {
         rack = value;
     }
@@ -274,11 +275,7 @@ public class CaustkController implements ICaustkController {
     //--------------------------------------------------------------------------
 
     void initialize() {
-    }
-
-    void create() {
-
-        getLogger().log("CaustkController", "Create app root dir if not created");
+        getLogger().log("CaustkController", "Initialize app root dir if not created");
         File applicationRoot = application.getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
             applicationRoot.mkdirs();
@@ -295,6 +292,12 @@ public class CaustkController implements ICaustkController {
         addComponent(ICommandManager.class, commandManager);
         addComponent(ILibraryManager.class, libraryManager);
         addComponent(IProjectManager.class, projectManager);
+    }
+
+    void create() {
+    }
+
+    void run() {
     }
 
     @Override

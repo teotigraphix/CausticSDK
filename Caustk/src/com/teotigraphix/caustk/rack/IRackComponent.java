@@ -19,10 +19,6 @@
 
 package com.teotigraphix.caustk.rack;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.command.ICommand;
-import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.IRestore;
 
 /**
@@ -38,21 +34,9 @@ public interface IRackComponent extends IRestore {
      */
     IRack getRack();
 
-    /**
-     * Registers observers against the {@link IDispatcher} API on dispatchers.
-     * <p>
-     * Rack components also register their {@link ICommand}s on the
-     * {@link ICommandManager} during this phase.
-     * <p>
-     * Can also be a good time to add the component's API to the
-     * {@link ICaustkController#addComponent(Class, Object)} map.
-     */
+    void beatChange(int measure, float beat);
+
     void registerObservers();
 
-    /**
-     * Removes the observers and perform any other clean up needed, similar to a
-     * dispose() method.
-     */
     void unregisterObservers();
-
 }

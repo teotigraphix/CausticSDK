@@ -65,13 +65,13 @@ public class TrackSong {
     private Map<Integer, Track> tracks = new HashMap<Integer, Track>();
 
     @Tag(2)
-    private int currentTrack = -1;
+    private int currentTrack = 0;
 
     @Tag(3)
     private File file;
 
     @Tag(4)
-    private int currentMeasure = 0;
+    private int currentMeasure = -1;
 
     @Tag(5)
     private float currentBeat = -1;

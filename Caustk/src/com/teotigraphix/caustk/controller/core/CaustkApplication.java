@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.IOException;
 
-import com.teotigraphix.caustk.controller.IApplicationHandler;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
@@ -45,17 +44,6 @@ public final class CaustkApplication implements ICaustkApplication {
     @Override
     public ICausticLogger getLogger() {
         return logger;
-    }
-
-    //----------------------------------
-    // applicationHandler
-    //----------------------------------
-
-    private IApplicationHandler applicationHandler;
-
-    @Override
-    public void setApplicationHandler(IApplicationHandler value) {
-        applicationHandler = value;
     }
 
     //----------------------------------
@@ -99,33 +87,31 @@ public final class CaustkApplication implements ICaustkApplication {
     // Public ICaustkApplication API
     //--------------------------------------------------------------------------
 
+    // 1
     @Override
     public void initialize() {
-        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
+        getLogger().log("Application", "1) ++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "initialize()");
         getConfiguration().getSoundGenerator().initialize();
         controller.initialize();
     }
 
+    // 2
     @Override
     public final void create() {
-        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
+        getLogger().log("Application", "2) ++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "create()");
         // creates all sub components of the controller
         controller.create();
-        if (applicationHandler != null)
-            applicationHandler.commitCreate();
         fireStateChange(StateChangeKind.Create);
     }
 
+    // 3
     @Override
     public void run() {
-        getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
+        getLogger().log("Application", "3) ++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "run()");
-        // creates all sub components of the controller
-        // controller.run();
-        if (applicationHandler != null)
-            applicationHandler.commitRun();
+        controller.run();
         fireStateChange(StateChangeKind.Run);
     }
 
@@ -134,8 +120,6 @@ public final class CaustkApplication implements ICaustkApplication {
         getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "save()");
         controller.save();
-        if (applicationHandler != null)
-            applicationHandler.commitSave();
         fireStateChange(StateChangeKind.Save);
     }
 
@@ -144,8 +128,6 @@ public final class CaustkApplication implements ICaustkApplication {
         getLogger().log("Application", "++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "close()");
         controller.close();
-        if (applicationHandler != null)
-            applicationHandler.commitClose();
         fireStateChange(StateChangeKind.Close);
     }
 
