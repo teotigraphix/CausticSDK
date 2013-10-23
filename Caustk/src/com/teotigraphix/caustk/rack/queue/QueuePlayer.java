@@ -27,7 +27,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IQueueSequencer;
 import com.teotigraphix.caustk.rack.IQueueSequencer.OnQueueSequencerDataChange;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.ISystemSequencer;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.rack.queue.QueueData.QueueDataState;
 import com.teotigraphix.caustk.rack.track.Phrase;
@@ -121,13 +120,15 @@ public class QueuePlayer implements Serializable {
             restarting = false;
         }
         if (queueSequencer.isAudioEnabled()) {
-            getRack().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG.getValue());
+            //getRack().execute(ISystemSequencer.COMMAND_PLAY, SequencerMode.SONG.getValue());
+            getRack().getSystemSequencer().play(SequencerMode.SONG);
         }
     }
 
     public void stop() {
         try {
-            getRack().execute(ISystemSequencer.COMMAND_STOP);
+            //getRack().execute(ISystemSequencer.COMMAND_STOP);
+            getRack().getSystemSequencer().stop();
             restartSequencer();
         } catch (CausticException e) {
             e.printStackTrace();

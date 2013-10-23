@@ -238,10 +238,12 @@ public class Rack implements IRack {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    @Override
     public void addComponent(Class<? extends IRackComponent> classType, IRackComponent component) {
         components.put(classType, component);
     }
 
+    @Override
     public <T extends IRackComponent> T getComponent(Class<T> clazz) {
         return clazz.cast(components.get(clazz));
     }
@@ -260,8 +262,14 @@ public class Rack implements IRack {
     public void update() {
         final int measure = (int)getCurrentSongMeasure();
         final float beat = getCurrentBeat();
-        systemSequencer.beatChange(measure, beat);
-        trackSequencer.beatChange(measure, beat);
+        final boolean changed = systemSequencer.updatePosition(measure, beat);
+        if (changed) {
+            systemSequencer.beatChange(measure, beat);
+            trackSequencer.beatChange(measure, beat);
+            for (IRackComponent component : components.values()) {
+                component.beatChange(measure, beat);
+            }
+        }
     }
 
     //--------------------------------------------------------------------------

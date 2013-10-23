@@ -151,7 +151,6 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
 
     @Override
     public void beatChange(int measure, float beat) {
-        super.beatChange(measure, beat);
         getSelectedTrack().getPhrase().onBeatChange(beat);
     }
 

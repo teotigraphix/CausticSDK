@@ -217,16 +217,18 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         return currentSixteenthStep;
     }
 
-    @Override
-    public void beatChange(int measure, float beat) {
+    public boolean updatePosition(int measure, float beat) {
         if (!isPlaying())
-            return;
+            return false;
+
+        boolean changed = false;
+
         currentMeasure = measure;
         floatBeat = beat;
 
         int round = (int)Math.floor(floatBeat);
         if (round != currentBeat) {
-            setCurrentBeat(round);
+            changed = setCurrentBeat(round);
             //CtkDebug.log("Beat:" + currentBeat);
         }
 
@@ -237,6 +239,8 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
             //CtkDebug.log("Step:" + currentSixteenthStep);
             getGlobalDispatcher().trigger(new OnSystemSequencerStepChange());
         }
+
+        return changed;
     }
 
     @Override
@@ -244,17 +248,15 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         return currentBeat;
     }
 
-    void setCurrentBeat(int value) {
-        setCurrentBeat(value, false);
-    }
-
-    void setCurrentBeat(int value, boolean seeking) {
+    boolean setCurrentBeat(int value) {
         if (value == currentBeat)
-            return;
+            return false;
 
         currentBeat = value;
 
         getGlobalDispatcher().trigger(new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
+
+        return true;
     }
 
     //--------------------------------------------------------------------------

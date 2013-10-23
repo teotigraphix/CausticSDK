@@ -169,6 +169,8 @@ public interface ISystemSequencer extends IRackComponent {
 
     void setShuffleAmount(float value);
 
+    boolean updatePosition(int measure, float beat);
+
     public enum ShuffleMode {
 
         EIGTH(1),
@@ -415,4 +417,5 @@ public interface ISystemSequencer extends IRackComponent {
     }
 
     int getCurrentSixteenthStep();
+
 }

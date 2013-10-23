@@ -148,4 +148,8 @@ public interface IRack extends ICausticEngine {
     Project getProject();
 
     Library getLibrary();
+
+    void addComponent(Class<? extends IRackComponent> classType, IRackComponent component);
+
+    <T extends IRackComponent> T getComponent(Class<T> clazz);
 }
