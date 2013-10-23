@@ -180,6 +180,9 @@ public class PCMSamplerChannel extends ToneComponent {
         PCMSynthMessage.SAMPLE_END.send(getEngine(), getToneIndex(), end);
     }
 
+    PCMSamplerChannel() {
+    }
+
     public PCMSamplerChannel(PCMSamplerComponent sampler) {
         this.sampler = sampler;
     }

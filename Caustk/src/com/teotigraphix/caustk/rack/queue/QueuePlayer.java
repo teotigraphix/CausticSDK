@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.rack.queue;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IQueueSequencer;
 import com.teotigraphix.caustk.rack.IQueueSequencer.OnQueueSequencerDataChange;
@@ -34,13 +34,30 @@ import com.teotigraphix.caustk.rack.track.Track;
 import com.teotigraphix.caustk.rack.track.TrackItem;
 import com.teotigraphix.caustk.rack.track.TrackSong;
 
-public class QueuePlayer implements Serializable {
+public class QueuePlayer {
 
-    private static final long serialVersionUID = -2644355130242774038L;
+    /**
+     * Temp, whether the sequencer just got put back to 0 and needs to queue the
+     * PLAY state items.
+     */
+    private transient boolean restarting = true;
 
-    //    private final ICaustkController _getController() {
-    //        return queueSequencer.getRack().getController();
-    //    }
+    private transient int currentLocalBeat;
+
+    @Tag(0)
+    private IQueueSequencer queueSequencer;
+
+    @Tag(1)
+    private List<QueueData> playQueue = new ArrayList<QueueData>();
+
+    @Tag(2)
+    private List<QueueData> tempPlayQueue = new ArrayList<QueueData>();
+
+    @Tag(3)
+    private List<QueueData> queued = new ArrayList<QueueData>();
+
+    @Tag(4)
+    private List<QueueData> flushedQueue = new ArrayList<QueueData>();
 
     private final IRack getRack() {
         return queueSequencer.getRack();
@@ -49,22 +66,6 @@ public class QueuePlayer implements Serializable {
     public final TrackSong getTrackSong() {
         return getRack().getTrackSequencer().getTrackSong();
     }
-
-    /**
-     * Temp, whether the sequencer just got put back to 0 and needs to queue the
-     * PLAY state items.
-     */
-    private boolean restarting;
-
-    private int currentLocalBeat;
-
-    private List<QueueData> playQueue = new ArrayList<QueueData>();
-
-    private List<QueueData> tempPlayQueue = new ArrayList<QueueData>();
-
-    private List<QueueData> queued = new ArrayList<QueueData>();
-
-    private List<QueueData> flushedQueue = new ArrayList<QueueData>();
 
     List<QueueData> getPlayQueue() {
         return playQueue;
@@ -82,7 +83,8 @@ public class QueuePlayer implements Serializable {
         return currentLocalBeat;
     }
 
-    private IQueueSequencer queueSequencer;
+    QueuePlayer() {
+    }
 
     public QueuePlayer(IQueueSequencer queueSequencer) {
         this.queueSequencer = queueSequencer;

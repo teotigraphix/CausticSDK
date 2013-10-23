@@ -62,7 +62,7 @@ public class WavSamplerChannel extends ToneComponent {
     @Tag(110)
     private float volume;
 
-    @Tag(100)
+    @Tag(111)
     private int muteGroups;
 
     //--------------------------------------------------------------------------
@@ -227,6 +227,9 @@ public class WavSamplerChannel extends ToneComponent {
             return;
         volume = value;
         BeatboxMessage.CHANNEL_VOLUME.send(getEngine(), getToneIndex(), index, volume);
+    }
+
+    WavSamplerChannel() {
     }
 
     public WavSamplerChannel(WavSamplerComponent sampler) {

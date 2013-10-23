@@ -111,6 +111,9 @@ public class QueueSequencer extends RackComponent implements IQueueSequencer {
         return queueSong.getChannel(bankIndex, patternIndex, toneIndex);
     }
 
+    QueueSequencer() {
+    }
+
     public QueueSequencer(IRack rack) {
         super(rack);
         player = new QueuePlayer(this);

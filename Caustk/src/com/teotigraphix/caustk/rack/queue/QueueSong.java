@@ -20,26 +20,26 @@
 package com.teotigraphix.caustk.rack.queue;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
-
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.QueueSequencer;
 
-@SuppressLint("UseSparseArrays")
-public class QueueSong implements Serializable {
+public class QueueSong {
 
-    private static final long serialVersionUID = 8256614789907587765L;
+    @Tag(0)
+    private QueueSequencer queueSequencer;
 
+    @Tag(1)
     private Map<Integer, Map<Integer, QueueData>> map = new HashMap<Integer, Map<Integer, QueueData>>();
 
-    private QueueSequencer queueSequencer;
+    @Tag(2)
+    private File file;
 
     public QueueSequencer getQueueSequencer() {
         return queueSequencer;
@@ -56,8 +56,6 @@ public class QueueSong implements Serializable {
     //----------------------------------
     // file
     //----------------------------------
-
-    private File file;
 
     public final File getFile() {
         return file;
@@ -77,7 +75,7 @@ public class QueueSong implements Serializable {
         return queueSequencer.getRack().getGlobalDispatcher();
     }
 
-    public QueueSong() {
+    QueueSong() {
     }
 
     public QueueSong(File file) {

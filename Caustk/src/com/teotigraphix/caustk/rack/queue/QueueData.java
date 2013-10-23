@@ -19,27 +19,46 @@
 
 package com.teotigraphix.caustk.rack.queue;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.track.Phrase;
 import com.teotigraphix.caustk.rack.track.Track;
 
-public class QueueData implements Serializable {
+public class QueueData {
 
-    private static final long serialVersionUID = 8360462328524344204L;
+    private transient QueueData theInvalidatedData;
 
+    private transient QueueData dataThatInvalidated;
+
+    @Tag(0)
+    private QueueSong queueSong;
+
+    @Tag(1)
     private Map<Integer, QueueDataChannel> map = new TreeMap<Integer, QueueDataChannel>();
+
+    @Tag(2)
+    private String name;
+
+    @Tag(3)
+    private int bankIndex;
+
+    @Tag(4)
+    private int patternIndex;
+
+    @Tag(5)
+    private QueueDataState state = QueueDataState.Idle;
+
+    @Tag(6)
+    private int viewChannelIndex = -1;
 
     //----------------------------------
     // queueSong
     //----------------------------------
-
-    private QueueSong queueSong;
 
     public QueueSong getQueueSong() {
         return queueSong;
@@ -56,8 +75,6 @@ public class QueueData implements Serializable {
     //----------------------------------
     // name
     //----------------------------------
-
-    private String name;
 
     /**
      * Returns the human readable name of the data the was explicitly set.
@@ -81,8 +98,6 @@ public class QueueData implements Serializable {
     // bankIndex
     //----------------------------------
 
-    private final int bankIndex;
-
     public final int getBankIndex() {
         return bankIndex;
     }
@@ -91,8 +106,6 @@ public class QueueData implements Serializable {
     // patternIndex
     //----------------------------------
 
-    private final int patternIndex;
-
     public final int getPatternIndex() {
         return patternIndex;
     }
@@ -100,8 +113,6 @@ public class QueueData implements Serializable {
     //----------------------------------
     // state
     //----------------------------------
-
-    private QueueDataState state = QueueDataState.Idle;
 
     public final QueueDataState getState() {
         return state;
@@ -114,8 +125,6 @@ public class QueueData implements Serializable {
     //----------------------------------
     // viewChannel
     //----------------------------------
-
-    private int viewChannelIndex = -1;
 
     /**
      * Returns the {@link QueueDataChannel} index that is considered the top
@@ -175,6 +184,9 @@ public class QueueData implements Serializable {
     // Constructor
     //--------------------------------------------------------------------------
 
+    QueueData() {
+    }
+
     public QueueData(int bankIndex, int patternIndex) {
         this.bankIndex = bankIndex;
         this.patternIndex = patternIndex;
@@ -223,8 +235,6 @@ public class QueueData implements Serializable {
         UnQueued;
     }
 
-    private transient QueueData theInvalidatedData;
-
     public QueueData getTheInvalidatedData() {
         return theInvalidatedData;
     }
@@ -232,8 +242,6 @@ public class QueueData implements Serializable {
     public void setTheInvalidatedData(QueueData theInvalidatedData) {
         this.theInvalidatedData = theInvalidatedData;
     }
-
-    private transient QueueData dataThatInvalidated;
 
     public QueueData getDataThatInvalidated() {
         return dataThatInvalidated;

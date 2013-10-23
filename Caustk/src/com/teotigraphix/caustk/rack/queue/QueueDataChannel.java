@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.rack.queue;
 
-import java.io.Serializable;
 import java.util.UUID;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.track.Phrase;
@@ -47,15 +47,26 @@ Channel;
 
 */
 
-public class QueueDataChannel implements Serializable {
+public class QueueDataChannel {
 
-    private static final long serialVersionUID = 12917435056063471L;
+    @Tag(0)
+    private QueueData queueData;
+
+    @Tag(1)
+    private int toneIndex;
+
+    @Tag(2)
+    private boolean enabled;
+
+    @Tag(3)
+    private boolean loopEnabled = true;
+
+    @Tag(4)
+    private UUID phraseId;
 
     //----------------------------------
     // parent
     //----------------------------------
-
-    private QueueData queueData;
 
     /**
      * Returns the owner.
@@ -75,8 +86,6 @@ public class QueueDataChannel implements Serializable {
     public final Tone getTone() {
         return getQueueData().getRack().getSoundSource().getTone(toneIndex);
     }
-
-    private int toneIndex;
 
     /**
      * Returns the index of the channel within it's {@link QueueData} stack.
@@ -114,8 +123,6 @@ public class QueueDataChannel implements Serializable {
     // enabled
     //----------------------------------
 
-    private UUID phraseId;
-
     /**
      * Returns the id of the {@link LibraryPhrase} that initialized this
      * channel.
@@ -131,8 +138,6 @@ public class QueueDataChannel implements Serializable {
     //----------------------------------
     // enabled
     //----------------------------------
-
-    private boolean enabled;
 
     public boolean isEnabled() {
         return enabled;
@@ -155,8 +160,6 @@ public class QueueDataChannel implements Serializable {
     // loopEnabled
     //----------------------------------
 
-    private boolean loopEnabled = true;
-
     public boolean isLoopEnabled() {
         return loopEnabled;
     }
@@ -168,6 +171,9 @@ public class QueueDataChannel implements Serializable {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
+
+    QueueDataChannel() {
+    }
 
     /**
      * @param toneIndex The tone index.
