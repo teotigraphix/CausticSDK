@@ -218,7 +218,7 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     }
 
     @Override
-    public void beatUpdate(int measure, float beat) {
+    public void beatChange(int measure, float beat) {
         if (!isPlaying())
             return;
         currentMeasure = measure;

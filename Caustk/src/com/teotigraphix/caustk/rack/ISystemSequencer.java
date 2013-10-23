@@ -346,13 +346,6 @@ public interface ISystemSequencer extends IRackComponent {
     }
 
     /**
-     * The single entry point for a beat change from the caustic core audio.
-     * 
-     * @param beat The beat and decimal fraction in between the beat.
-     */
-    void beatUpdate(int measure, float beat);
-
-    /**
      * Returns the current measure of the song sequencer, calculated from the
      * {@link #getCurrentBeat()}.
      */
