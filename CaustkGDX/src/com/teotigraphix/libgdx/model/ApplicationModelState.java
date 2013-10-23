@@ -20,7 +20,9 @@
 package com.teotigraphix.libgdx.model;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.libgdx.application.CausticSongFile;
@@ -108,6 +110,57 @@ public abstract class ApplicationModelState {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    /**
+     * Called when the state has just been created due to a new {@link Project}
+     * being initialized.
+     * <p>
+     * Create subclass state instances in this method.
+     * <p>
+     * The {@link #getController()} is guaranteed to be non <code>null</code> at
+     * this point.
+     * <p>
+     * The super must be called in order to create the state {@link Rack}
+     * instance.
+     * 
+     * @see #createRack()
+     */
+    public void create() {
+        createRack();
+    }
+
+    /**
+     * Creates the state {@link Rack} instance.
+     * 
+     * @see #create()
+     */
+    protected void createRack() {
+        rack = new Rack();
+        rack.setController(getController());
+        getController().setRack(rack);
+    }
+
+    /**
+     * Called just after the state has been deserialized and the {@link Project}
+     * has been reloaded from disk.
+     * <p>
+     * All subclass state instances exist and hold their previous serialized
+     * state.
+     * <p>
+     * The {@link #getController()} and {@link #getRack()} is guaranteed to be
+     * non <code>null</code> at this point.
+     * <p>
+     * The super must be called in order to assign the {@link ICaustkController}
+     * to the {@link IRack} instance.
+     */
+    public void update() {
+        rack.setController(getController());
+        getController().setRack(rack);
+    }
+
+    /**
+     * Called when the {@link ICaustkApplication#save()} is issued by the client
+     * application.
+     */
     public void save() {
     }
 

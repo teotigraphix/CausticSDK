@@ -139,7 +139,7 @@ public class SoundSource extends RackComponent implements ISoundSource {
         // make tones
         for (ToneDescriptor descriptor : libraryScene.getSoundSourceDescriptor().getDescriptors()
                 .values()) {
-            Tone tone = createTone(descriptor);
+            Tone tone = getRack().createTone(descriptor);
             UUID patchId = descriptor.getPatchId();
             Library library = getRack().getLibrary();
             if (library != null && patchId != null) {
@@ -334,7 +334,10 @@ public class SoundSource extends RackComponent implements ISoundSource {
             try {
                 getRack().getLogger().log("SoundSource",
                         "Restore machine from load: " + name + ":" + type);
-                tone = createTone(i, name, toneType);
+                ToneDescriptor descriptor = new ToneDescriptor(i, name, toneType);
+                // have to call from rack for callbacks on mixer
+                // XXX this is wrong, need to figure out proper callback mechanism
+                tone = getRack().createTone(descriptor);
             } catch (CausticException e) {
                 e.printStackTrace();
             }

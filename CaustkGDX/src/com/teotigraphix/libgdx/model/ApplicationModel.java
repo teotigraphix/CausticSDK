@@ -29,7 +29,6 @@ import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.libgdx.application.ApplicationRegistry;
 import com.teotigraphix.libgdx.application.IApplicationRegistry;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
@@ -288,7 +287,9 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
             e.printStackTrace();
         }
 
-        setupState(state);
+        state.setController(getController());
+        state.create();
+
         setState(state);
 
         try {
@@ -304,7 +305,9 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
         try {
             ApplicationModelState state = ApplicationModelUtils.loadApplicationState(this, kryo);
-            setupState(state);
+
+            state.setController(getController());
+            state.update();
 
             ApplicationModelUtils.loadSongBytesIntoRack(getController(), project, state
                     .getSongFile().getData());
@@ -316,24 +319,6 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
         } catch (IOException e) {
             getController().getLogger().err(TAG, "IOException", e);
         }
-    }
-
-    private void setupState(ApplicationModelState state) {
-
-        state.setController(getController());
-
-        Rack rack = (Rack)state.getRack();
-        if (rack == null) {
-            // creating the state for the first time
-            rack = new Rack();
-        }
-
-        // creates sub components if this is the first load
-        rack.setController(getController());
-
-        // hook up controller, rack and state refs
-        getController().setRack(rack);
-        state.setRack(rack);
     }
 
     private void disposeState(ApplicationModelState state) {
