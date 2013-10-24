@@ -37,6 +37,8 @@ import com.teotigraphix.caustk.controller.core.ControllerComponent;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.library.item.LibraryPattern;
@@ -47,6 +49,7 @@ import com.teotigraphix.caustk.library.item.SoundSourceDescriptor;
 import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.utils.Compress;
@@ -55,6 +58,8 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class LibraryManager extends ControllerComponent implements ILibraryManager,
         IControllerAware {
+
+    private static final int MAX_NUM_MACHINES = 14;
 
     private static final String LIBRARY_CTKL = "library.ctkl";
 
@@ -230,9 +235,157 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         clear();
     }
 
+    @Override
     public void reset() {
         libraries.clear();
         selectedLibrary = null;
+    }
+
+    @Override
+    public void importSongLive(Library library, File causticFile) throws IOException,
+            CausticException {
+        File file = getController().getProjectManager().getProject()
+                .getAbsoluteResource("Foo.caustic");
+        getController().getRack().saveSongAs(file);
+
+        final ISoundSource soundSource = getController().getRack().getSoundSource();
+        RackMessage.BLANKRACK.send(getController().getRack());
+
+        // getController().getRack().loadSong(causticFile);
+        RackMessage.LOAD_SONG.send(getController().getRack(), causticFile.getAbsolutePath());
+
+        loadLibrarySceneLive(library, causticFile, soundSource);
+        loadLibraryPhrasesLive(library, soundSource);
+
+        // getController().getRack().clearAndReset();
+        RackMessage.BLANKRACK.send(getController().getRack());
+
+        getController().trigger(new OnLibraryManagerImportComplete());
+
+        RackMessage.LOAD_SONG.send(getController().getRack(), file.getAbsolutePath());
+    }
+
+    private void loadLibrarySceneLive(Library library, File causticFile, ISoundSource soundSource)
+            throws IOException {
+        String name = causticFile.getName().replace(".caustic", "");
+        LibraryScene scene = new LibraryScene();
+        scene.setMetadataInfo(new MetadataInfo());
+
+        scene.setId(UUID.randomUUID());
+        library.addScene(scene);
+
+        //--------------------------------------
+        SoundSourceDescriptor soundSourceDescriptor = new SoundSourceDescriptor();
+
+        for (int i = 0; i < MAX_NUM_MACHINES; i++) {
+            String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(getController()
+                    .getRack(), i);
+            String machineType = RackMessage.QUERY_MACHINE_TYPE.queryString(getController()
+                    .getRack(), i);
+
+            LibraryPatch patch = null;
+
+            if (machineName != null && !"".equals(machineName)) {
+
+                ToneType toneType = ToneType.fromString(machineType);
+
+                patch = new LibraryPatch();
+                patch.setName(machineName);
+                patch.setToneType(toneType);
+                patch.setMetadataInfo(new MetadataInfo());
+                patch.setId(UUID.randomUUID());
+                TagUtils.addDefaultTags(machineName, patch);
+                relocatePresetFileLive(i, toneType, library, patch);
+                library.addPatch(patch);
+
+                //                tone.setDefaultPatchId(patch.getId());
+                soundSourceDescriptor.addTone(getController().getRack(), i, machineName, toneType,
+                        patch.getId());
+            }
+        }
+
+        scene.setSoundSourceDescriptor(soundSourceDescriptor);
+
+        //SoundMixerDescriptor soundMixerDescriptor;
+
+        //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
+        //        soundMixerDescriptor.setMasterMixer(getController().getRack().getSoundMixer()
+        //                .getMasterMixer());
+        //scene.setSoundMixerDescriptor(soundMixerDescriptor);
+
+        TagUtils.addDefaultTags(name, getController(), scene);
+    }
+
+    protected void relocatePresetFileLive(int toneIndex, ToneType toneType, Library library,
+            LibraryPatch patch) throws IOException {
+        String id = patch.getId().toString();
+
+        //        tone.getComponent(SynthComponent.class).savePreset(id);
+        SynthMessage.SAVE_PRESET.send(getController(), toneIndex, id);
+
+        File presetFile = RuntimeUtils.getCausticPresetsFile(toneType.getValue(), id);
+        if (!presetFile.exists()) {
+            throw new IOException("Preset file does not exist");
+        }
+
+        File presetsDirectory = library.getPresetsDirectory();
+        File destFile = new File(presetsDirectory, presetFile.getName());
+        FileUtils.copyFile(presetFile, destFile);
+        FileUtils.deleteQuietly(presetFile);
+    }
+
+    private void loadLibraryPhrasesLive(Library library, ISoundSource soundSource) {
+        for (int i = 0; i < MAX_NUM_MACHINES; i++) {
+            String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(getController()
+                    .getRack(), i);
+            String machineType = RackMessage.QUERY_MACHINE_TYPE.queryString(getController()
+                    .getRack(), i);
+
+            if (machineName != null && !machineName.equals("")) {
+
+                String result = PatternSequencerMessage.QUERY_PATTERNS_WITH_DATA.queryString(
+                        getController(), i);
+
+                if (result == null)
+                    continue;
+
+                for (String patternName : result.split(" ")) {
+                    int bankIndex = PatternUtils.toBank(patternName);
+                    int patternIndex = PatternUtils.toPattern(patternName);
+
+                    // set the current bank and pattern of the machine to query
+                    // the string pattern data
+                    PatternSequencerMessage.BANK.send(getController(), i, bankIndex);
+                    PatternSequencerMessage.PATTERN.send(getController(), i, patternIndex);
+
+                    //----------------------------------------------------------------
+                    // Load Pattern
+                    //----------------------------------------------------------------
+
+                    // load one phrase per pattern; load ALL patterns
+                    // as caustic machine patterns
+                    int length = (int)PatternSequencerMessage.NUM_MEASURES
+                            .query(getController(), i);
+                    float tempo = OutputPanelMessage.BPM.query(getController());
+                    String noteData = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(
+                            getController(), i);
+
+                    LibraryPhrase phrase = new LibraryPhrase();
+                    phrase.setBankIndex(bankIndex);
+                    phrase.setPatternIndex(patternIndex);
+                    phrase.setMachineName(machineName);
+                    phrase.setMetadataInfo(new MetadataInfo());
+                    phrase.setId(UUID.randomUUID());
+                    phrase.setLength(length);
+                    phrase.setTempo(tempo);
+                    phrase.setToneType(ToneType.fromString(machineType));
+                    phrase.setNoteData(noteData);
+                    phrase.setResolution(calculateResolution(noteData));
+                    TagUtils.addDefaultTags(phrase);
+                    library.addPhrase(phrase);
+                }
+            }
+        }
     }
 
     @Override

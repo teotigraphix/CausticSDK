@@ -19,6 +19,10 @@
 
 package com.teotigraphix.caustk.library.core;
 
+import java.util.Locale;
+
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
@@ -28,6 +32,16 @@ import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
 public class TagUtils {
 
+    public static void addDefaultTags(String name, LibraryPatch item) {
+        MetadataInfo info = item.getMetadataInfo();
+        info.getTags().add(item.getToneType().getValue());
+        info.getTags().add(name);
+        //        String preset = tone.getComponent(SynthComponent.class).getPresetName();
+        //        if (preset != null && !preset.isEmpty())
+        //            info.getTags().add(preset);
+    }
+
+    @SuppressLint("NewApi")
     public static void addDefaultTags(Tone tone, LibraryPatch item) {
         MetadataInfo info = item.getMetadataInfo();
         info.getTags().add(item.getToneType().getValue());
@@ -43,7 +57,7 @@ public class TagUtils {
         info.getTags().add("length-" + item.getLength());
         info.getTags().add(item.getTempo() + "");
         info.getTags().add(item.getToneType().getValue());
-        info.getTags().add(item.getResolution().toString().toLowerCase());
+        info.getTags().add(item.getResolution().toString().toLowerCase(Locale.US));
     }
 
     public static void addDefaultTags(String name, ICaustkController controller, LibraryScene item) {

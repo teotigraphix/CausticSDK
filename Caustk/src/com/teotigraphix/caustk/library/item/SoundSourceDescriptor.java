@@ -25,8 +25,10 @@ import java.util.UUID;
 
 import android.annotation.SuppressLint;
 
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.tone.ToneType;
 
 @SuppressLint("UseSparseArrays")
 public class SoundSourceDescriptor {
@@ -44,6 +46,17 @@ public class SoundSourceDescriptor {
     }
 
     public SoundSourceDescriptor() {
+    }
+
+    public void addTone(IRack rack, int index, String name, ToneType toneType, UUID patchId) {
+        // create the tone descriptor
+        ToneDescriptor descriptor = new ToneDescriptor(index, name, toneType);
+        descriptor.setPatchId(patchId);
+        descriptors.put(index, descriptor);
+
+        // create the mixer channel descriptor
+        SoundMixerChannelDescriptor channelDescriptor = new SoundMixerChannelDescriptor(rack, index);
+        channels.put(index, channelDescriptor);
     }
 
     public void addTone(Tone tone, UUID patchId) {

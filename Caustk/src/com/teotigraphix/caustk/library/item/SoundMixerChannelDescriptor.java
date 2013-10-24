@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.library.item;
 
+import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
 import com.teotigraphix.caustk.rack.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
@@ -56,6 +58,17 @@ public class SoundMixerChannelDescriptor {
 
     public float getVolume() {
         return volume;
+    }
+
+    public SoundMixerChannelDescriptor(ICausticEngine engine, int toneIndex) {
+        bass = MixerChannelMessage.EQ_BASS.query(engine, toneIndex);
+        mid = MixerChannelMessage.EQ_MID.query(engine, toneIndex);
+        high = MixerChannelMessage.EQ_HIGH.query(engine, toneIndex);
+        delaySend = MixerChannelMessage.DELAY_SEND.query(engine, toneIndex);
+        reverbSend = MixerChannelMessage.REVERB_SEND.query(engine, toneIndex);
+        pan = MixerChannelMessage.PAN.query(engine, toneIndex);
+        steroWidth = MixerChannelMessage.STEREO_WIDTH.query(engine, toneIndex);
+        volume = MixerChannelMessage.VOLUME.query(engine, toneIndex);
     }
 
     public SoundMixerChannelDescriptor(Tone tone) {

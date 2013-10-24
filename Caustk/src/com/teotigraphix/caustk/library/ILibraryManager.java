@@ -59,6 +59,8 @@ public interface ILibraryManager extends IControllerComponent {
      */
     Library createLibrary(File file) throws IOException;
 
+    void importSongLive(Library library, File causticFile) throws IOException, CausticException;
+
     /**
      * @param library
      * @param causticFile
@@ -116,4 +118,5 @@ public interface ILibraryManager extends IControllerComponent {
     Library createLibrary();
 
     void reset();
+
 }
