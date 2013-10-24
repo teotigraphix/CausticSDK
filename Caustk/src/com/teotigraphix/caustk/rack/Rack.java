@@ -132,6 +132,11 @@ public class Rack implements IRack {
     }
 
     @Override
+    public boolean isEmpty() {
+        return soundSource.getToneCount() == 0;
+    }
+
+    @Override
     public <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
             throws CausticException {
         T tone = soundSource.createTone(name, toneClass);

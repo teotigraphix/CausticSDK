@@ -39,6 +39,12 @@ public interface IApplicationModel extends ICaustkModel {
 
     IDialogManager getDialogManager();
 
+    /**
+     * Returns the last project's relative path, <code>null</code> if this is
+     * the first start of the application.
+     */
+    String getLastProject();
+
     //----------------------------------
     // state
     //----------------------------------

@@ -66,6 +66,11 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
         return screenProvider.getScreen();
     }
 
+    @Override
+    public String getLastProject() {
+        return getController().getProjectManager().getLastProject();
+    }
+
     //----------------------------------
     // state
     //----------------------------------

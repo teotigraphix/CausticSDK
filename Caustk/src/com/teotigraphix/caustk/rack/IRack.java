@@ -79,6 +79,8 @@ public interface IRack extends ICausticEngine {
      */
     void clearAndReset() throws CausticException;
 
+    boolean isEmpty();
+
     <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
             throws CausticException;
 
@@ -152,4 +154,5 @@ public interface IRack extends ICausticEngine {
     void addComponent(Class<? extends IRackComponent> classType, IRackComponent component);
 
     <T extends IRackComponent> T getComponent(Class<T> clazz);
+
 }

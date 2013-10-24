@@ -78,6 +78,11 @@ public class ProjectManager implements IProjectManager, IControllerAware {
     //----------------------------------
 
     @Override
+    public String getLastProject() {
+        return sessionPreferences.getString(PREF_LAST_PROJECT);
+    }
+
+    @Override
     public final File getProjectDirectory() {
         return new File(controller.getApplicationRoot(), DIR_PROJECTS);
     }
@@ -275,7 +280,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
         getController().getLogger().log("ProjectManager", "Save - " + sessionPreferencesFile);
 
         // saves the relative path e.g. 'UntitledProject' in the 'projects/' directory
-        sessionPreferences.put("lastProject", project.getDirectory().getPath());
+        sessionPreferences.put(PREF_LAST_PROJECT, project.getDirectory().getPath());
         // set last modified date
         project.getInfo().setModified(new Date());
         // observers will save their data into the Project if implemented

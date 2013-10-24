@@ -22,13 +22,10 @@ import com.teotigraphix.libgdx.application.CausticSongFile;
 
 public final class ApplicationModelUtils {
 
-    private static final String LAST_PROJECT = "lastProject";
-
     private static boolean deleteCausticFile = true;
 
     static Project createOrLoadLastProject(ICaustkController controller) {
-        String path = controller.getProjectManager().getSessionPreferences()
-                .getString(LAST_PROJECT);
+        String path = controller.getProjectManager().getLastProject();
 
         Project project = null;
 

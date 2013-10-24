@@ -73,6 +73,9 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public void setSelectedIndex(int value) {
+        if (renderers.size == 0)
+            return;
+
         renderers.get(selectedIndex).setIsSelected(false);
         selectedIndex = value;
         renderers.get(selectedIndex).setIsSelected(true);

@@ -33,6 +33,8 @@ import com.teotigraphix.caustk.controller.ICaustkController;
  */
 public interface IProjectManager {
 
+    public static final String PREF_LAST_PROJECT = "lastProject";
+
     /**
      * The root application directory, all {@link Project}s are stored in the
      * <code>applicationRoot/projects</code> directory.
@@ -40,6 +42,12 @@ public interface IProjectManager {
      * @return The absolute path to the directory.
      */
     File getApplicationRoot();
+
+    /**
+     * Returns the last project's relative path, <code>null</code> if this is
+     * the first start of the application.
+     */
+    String getLastProject();
 
     /**
      * Returns the <code>projects</code> directory held within the
