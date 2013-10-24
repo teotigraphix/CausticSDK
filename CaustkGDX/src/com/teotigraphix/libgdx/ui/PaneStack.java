@@ -61,6 +61,8 @@ public class PaneStack extends ControlTable {
 
     private Table toolBar;
 
+    private OnPaneStackListener listener;
+
     public int getSelectedIndex() {
         return selectedIndex;
     }
@@ -69,6 +71,8 @@ public class PaneStack extends ControlTable {
         if (value == selectedIndex)
             return;
         selectedIndex = value;
+        if (listener != null)
+            listener.onChange(selectedIndex);
         invalidate();
     }
 
@@ -121,7 +125,6 @@ public class PaneStack extends ControlTable {
             //add(extrasBar);
             add(toolBar).expandX().fillX();
         }
-
     }
 
     protected void updateSelectedIndex() {
@@ -157,5 +160,13 @@ public class PaneStack extends ControlTable {
 
     public void addPane(Pane actor) {
         pendingPanes.add(actor);
+    }
+
+    public void setOnOnPaneStackListener(OnPaneStackListener l) {
+        listener = l;
+    }
+
+    public interface OnPaneStackListener {
+        void onChange(int index);
     }
 }
