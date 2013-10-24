@@ -23,14 +23,20 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.esotericsoftware.tablelayout.Cell;
 import com.teotigraphix.libgdx.ui.OverlayButton.OverlayButtonStyle;
 
 public class ButtonBar extends ControlTable {
 
     private ButtonGroup group;
+
+    //----------------------------------
+    // items
+    //----------------------------------
 
     private String[] items;
 
@@ -46,13 +52,23 @@ public class ButtonBar extends ControlTable {
         invalidateHierarchy();
     }
 
+    //----------------------------------
+    // maxButtonSize
+    //----------------------------------
+
+    private Float maxButtonSize;
+
+    public void setMaxButtonSize(Float value) {
+        maxButtonSize = value;
+    }
+
+    public Float getMaxButtonSize() {
+        return maxButtonSize;
+    }
+
     private boolean isVertical;
 
     private String buttonStyleName = "default";
-
-    //----------------------------------
-    // currentIndex
-    //----------------------------------
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -73,6 +89,7 @@ public class ButtonBar extends ControlTable {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private void refreshButtons() {
         clearChildren();
 
@@ -83,10 +100,17 @@ public class ButtonBar extends ControlTable {
         for (int i = 0; i < items.length; i++) {
             final OverlayButton button = createButton(i, style);
             if (isVertical) {
-                add(button).uniform().fill().expand();
+                Cell cell = add(button).uniform().align(Align.top);
+                if (maxButtonSize != null) {
+                    cell.fillX().expandX().maxHeight(maxButtonSize).prefHeight(maxButtonSize);
+                } else {
+                    cell.fill().expand().align(Align.top);
+                }
                 row();
             } else {
-                add(button).uniform().fill().expand();
+                Cell cell = add(button).uniform().fill().expand().align(Align.left).minHeight(35f);
+                if (maxButtonSize != null)
+                    cell.maxWidth(maxButtonSize);
             }
         }
     }

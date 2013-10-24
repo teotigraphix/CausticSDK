@@ -257,12 +257,12 @@ public abstract class GDXGame implements IGame {
         screen = value;
 
         if (screen != null) {
+            screenProvider.setScreen(screen);
             if (!screen.isInitialized()) {
                 injector.injectMembers(screen);
                 screen.initialize(this);
                 screen.create();
             }
-            screenProvider.setScreen(screen);
             screen.show();
             screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }

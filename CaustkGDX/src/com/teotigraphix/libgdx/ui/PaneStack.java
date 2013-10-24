@@ -4,6 +4,7 @@ package com.teotigraphix.libgdx.ui;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.libgdx.ui.ButtonBar.OnButtonBarListener;
@@ -23,11 +24,30 @@ public class PaneStack extends ControlTable {
 
     private ButtonBar buttonBar;
 
+    private Table extrasBar;
+
+    public Table getToolsBar() {
+        if (extrasBar == null)
+            extrasBar = new Table(getSkin());
+        return extrasBar;
+    }
+
     private String buttonStyleName = "default";
 
     Array<Pane> pendingPanes = new Array<Pane>();
 
     private int buttonBarAlign;
+
+    private Float maxButtonSize;
+
+    public void setMaxButtonSize(Float value) {
+        maxButtonSize = value;
+        invalidateHierarchy();
+    }
+
+    public Float getMaxButtonSize() {
+        return maxButtonSize;
+    }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -38,6 +58,8 @@ public class PaneStack extends ControlTable {
     //----------------------------------
 
     private int selectedIndex;
+
+    private Table toolBar;
 
     public int getSelectedIndex() {
         return selectedIndex;
@@ -67,7 +89,10 @@ public class PaneStack extends ControlTable {
     protected void createChildren() {
         super.createChildren();
 
+        toolBar = new Table(getSkin());
+
         buttonBar = new ButtonBar(getSkin(), new String[] {}, false, buttonStyleName);
+        buttonBar.setMaxButtonSize(maxButtonSize);
         buttonBar.setOnButtonBarListener(new OnButtonBarListener() {
             @Override
             public void onChange(int index) {
@@ -75,16 +100,26 @@ public class PaneStack extends ControlTable {
             }
         });
 
+        if (extrasBar == null)
+            extrasBar = new Table(getSkin());
+
+        toolBar.add(buttonBar).fill().expand();
+        toolBar.add(extrasBar).fillY();
+
         stack = new Stack();
 
         if (buttonBarAlign == Align.top) {
-            add(buttonBar).expandX().height(30f).align(Align.left);
+            //add(buttonBar).expandX().height(30f).align(Align.left);
+            //add(extrasBar);
+            add(toolBar).expandX().fillX();
             row();
             add(stack).fill().expand();
         } else {
             add(stack).fill().expand();
             row();
-            add(buttonBar).expandX().height(30f).align(Align.left);
+            //add(buttonBar).expandX().height(30f).align(Align.left);
+            //add(extrasBar);
+            add(toolBar).expandX().fillX();
         }
 
     }
