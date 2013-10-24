@@ -280,8 +280,6 @@ public class Track {
     //--------------------------------------------------------------------------
 
     public void setCurrentBeat(float currentBeat) {
-        // TODO Auto-generated method stub
-
     }
 
     /**

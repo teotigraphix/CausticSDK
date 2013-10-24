@@ -36,8 +36,6 @@ public class VocoderTone extends Tone {
     }
 
     public static void setup(Tone tone) {
-        // TODO Auto-generated method stub
-
     }
 
 }

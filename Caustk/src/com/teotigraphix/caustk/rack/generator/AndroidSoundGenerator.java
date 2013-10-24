@@ -67,7 +67,6 @@ public class AndroidSoundGenerator implements ISoundGenerator {
         } catch (UnsatisfiedLinkError e) {
             causticCore.setDebug(true);
             // Debug tests, or can't find the .so on the device
-            // TODO Log UnsatisfiedLinkError for CasuticCore
         }
     }
 

@@ -105,26 +105,18 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public void onStart() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onResume() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onPause() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void onStop() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -134,14 +126,10 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public void onRestart() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
