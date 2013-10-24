@@ -134,7 +134,6 @@ public class PaneStack extends ControlTable {
 
     @Override
     public void layout() {
-
         if (pendingPanes.size > 0) {
             Array<String> labels = new Array<String>();
             for (Pane pane : pendingPanes) {

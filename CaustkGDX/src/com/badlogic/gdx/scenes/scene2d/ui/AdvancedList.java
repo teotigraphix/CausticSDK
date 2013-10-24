@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.libgdx.ui.ScrollList.LabelRow;
@@ -46,6 +47,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         setWidth(getPrefWidth());
         setHeight(getPrefHeight());
 
+        align(Align.top);
         defaults().expandX().fillX();
     }
 

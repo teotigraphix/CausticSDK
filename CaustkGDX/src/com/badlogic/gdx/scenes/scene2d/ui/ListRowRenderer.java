@@ -115,7 +115,5 @@ public abstract class ListRowRenderer extends Table {
         public ListRowRendererStyle() {
 
         }
-
     }
-
 }
