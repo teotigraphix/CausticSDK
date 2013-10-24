@@ -78,8 +78,6 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
     @Override
     public void onRegister() {
         getController().addComponent(IGrooveStationModel.class, this);
-        construct(); // don't call in onRegister(), app mediators have not been attatched
-        trigger(new OnGrooveStationStartMachines());
     }
 
     //--------------------------------------------------------------------------
@@ -106,15 +104,8 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
     //        trigger(new OnGrooveStationModelChange(GrooveStationModelChangeKind.RhythmChannel));
     //    }
 
-    //--------------------------------------------------------------------------
-    // Protected :: Methods
-    //--------------------------------------------------------------------------
-
-    private void configureSetup(GrooveStationSetup setup) {
-        configuration.setup(setup);
-    }
-
-    protected void construct() {
+    @Override
+    public void create() {
         grooveStation = new GrooveStation(getController());
 
         GrooveStationSetup setup = new GrooveStationSetup();
@@ -125,6 +116,16 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
         } catch (CausticException e) {
             e.printStackTrace();
         }
+
+        trigger(new OnGrooveStationStartMachines());
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected :: Methods
+    //--------------------------------------------------------------------------
+
+    private void configureSetup(GrooveStationSetup setup) {
+        configuration.setup(setup);
     }
 
 }

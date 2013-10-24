@@ -19,6 +19,8 @@ public interface IGrooveStationModel extends ICaustkModel, IControllerComponent 
 
     GrooveMachine getMachine(int machineIndex);
 
+    void create();
+
     /**
      * Selects the current part held in the {@link MachineSound#getParts()}.
      * 

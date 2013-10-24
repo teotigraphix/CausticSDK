@@ -5,7 +5,6 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.caustk.gs.view.screen.MachineMediatorBase;
-import com.teotigraphix.caustk.rack.ISystemSequencer;
 import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerTransportChange;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 import com.teotigraphix.libgdx.screen.IScreen;
@@ -56,7 +55,8 @@ public class TransportControlMediator extends MachineMediatorBase {
             @Override
             public void onStopClick() {
                 try {
-                    getController().execute(ISystemSequencer.COMMAND_STOP);
+                    //getController().execute(ISystemSequencer.COMMAND_STOP);
+                    getController().getRack().getSystemSequencer().stop();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -70,14 +70,16 @@ public class TransportControlMediator extends MachineMediatorBase {
             public void onPlayChange(boolean selected) {
                 if (selected) {
                     try {
-                        getController().execute(ISystemSequencer.COMMAND_PLAY,
-                                SequencerMode.PATTERN.getValue());
+                        //getController().execute(ISystemSequencer.COMMAND_PLAY,
+                        //        SequencerMode.PATTERN.getValue());
+                        getController().getRack().getSystemSequencer().play(SequencerMode.PATTERN);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
-                        getController().execute(ISystemSequencer.COMMAND_STOP);
+                        //getController().execute(ISystemSequencer.COMMAND_STOP);
+                        getController().getRack().getSystemSequencer().stop();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
