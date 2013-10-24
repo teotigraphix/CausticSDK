@@ -36,6 +36,8 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 // that could eventually be put in a Command
 public abstract class CaustkMediator implements ICaustkMediator {
 
+    private String PREF_TAG;
+
     private ICaustkController controller;
 
     public final ICaustkController getController() {
@@ -47,11 +49,32 @@ public abstract class CaustkMediator implements ICaustkMediator {
         controller = value.get();
     }
 
+    protected void putPref(String key, Object value) {
+        controller.getProjectManager().getProject().put(PREF_TAG + key, value);
+    }
+
+    protected int getInteger(String key, int defaultValue) {
+        return controller.getProjectManager().getProject().getInteger(PREF_TAG + key, defaultValue);
+    }
+
+    protected float getFloat(String key, int defaultValue) {
+        return controller.getProjectManager().getProject().getFloat(PREF_TAG + key, defaultValue);
+    }
+
+    protected String getString(String key, String defaultValue) {
+        return controller.getProjectManager().getProject().getString(PREF_TAG + key, defaultValue);
+    }
+
+    protected boolean getBoolean(String key, boolean defaultValue) {
+        return controller.getProjectManager().getProject().getBoolean(PREF_TAG + key, defaultValue);
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public CaustkMediator() {
+        PREF_TAG = this.getClass().getName() + "/";
     }
 
     @Override

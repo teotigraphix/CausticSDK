@@ -26,6 +26,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
     private Class<T> type;
 
+    private Skin skin;
+
     //private OnAdvancedListListener listener;
 
     protected Class<T> getType() {
@@ -33,12 +35,13 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public AdvancedList() {
-        this(null, null);
+        this(null, null, null);
     }
 
-    public AdvancedList(Object[] items, Class<T> type) {
+    public AdvancedList(Object[] items, Class<T> type, Skin skin) {
         this.items = items;
         this.type = type;
+        this.skin = skin;
 
         setWidth(getPrefWidth());
         setHeight(getPrefHeight());
@@ -65,6 +68,13 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
      */
     public int getSelectedIndex() {
         return selectedIndex;
+    }
+
+    public void setSelectedIndex(int value) {
+        renderers.get(selectedIndex).setIsSelected(false);
+        selectedIndex = value;
+        renderers.get(selectedIndex).setIsSelected(true);
+        invalidate();
     }
 
     /**
@@ -108,14 +118,10 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
     public void addRenderItem(final T item) {
         item.addListener(new ClickListener() {
-
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                renderers.get(selectedIndex).setIsSelected(false);
-                selectedIndex = renderers.indexOf(item, false);
-                item.setIsSelected(true);
+                setSelectedIndex(renderers.indexOf(item, false));
             }
-
         });
 
         renderers.add(item);
@@ -186,4 +192,13 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
             index++;
         }
     }
+
+    public void setItems(Object[] items) {
+        this.items = items;
+        renderers.clear();
+        clearChildren();
+        createChildren(skin);
+        invalidateHierarchy();
+    }
+
 }

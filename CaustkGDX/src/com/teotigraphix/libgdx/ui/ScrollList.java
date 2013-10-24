@@ -39,11 +39,11 @@ public class ScrollList extends ScrollPane {
     public void setItems(Array<?> scenes) {
         items = scenes;
         if (list == null) {
-            list = new AdvancedList<LabelRow>(scenes.toArray(), LabelRow.class);
+            list = new AdvancedList<LabelRow>(scenes.toArray(), LabelRow.class, skin);
             list.createChildren(skin);
             setWidget(list);
         } else {
-            // XXX list.setItems(scenes.toArray());
+            list.setItems(scenes.toArray());
         }
     }
 
@@ -81,7 +81,7 @@ public class ScrollList extends ScrollPane {
 
     private void initialize() {
         if (items != null) {
-            list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class);
+            list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class, skin);
             setWidget(list);
         }
     }
@@ -91,7 +91,7 @@ public class ScrollList extends ScrollPane {
     }
 
     public void setSelectedIndex(int value) {
-        //list.setSelectedIndex(value);
+        list.setSelectedIndex(value);
     }
 
     public Object getItem(int index) {

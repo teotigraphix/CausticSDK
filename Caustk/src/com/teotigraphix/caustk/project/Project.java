@@ -178,9 +178,9 @@ public class Project {
      * 
      * @param key The String key.
      */
-    public Integer getInteger(String key) {
+    public Integer getInteger(String key, int defaultValue) {
         if (!map.containsKey(key))
-            return null;
+            return defaultValue;
         Object value = map.get(key);
         if (value instanceof Double)
             return ((Double)value).intValue();
@@ -192,10 +192,16 @@ public class Project {
      * 
      * @param key The String key.
      */
-    public Float getFloat(String key) {
+    public Float getFloat(String key, float defaultValue) {
         if (!map.containsKey(key))
-            return null;
+            return defaultValue;
         return Float.parseFloat((String)map.get(key));
+    }
+
+    public Boolean getBoolean(String key, boolean defaultValue) {
+        if (!map.containsKey(key))
+            return defaultValue;
+        return Boolean.valueOf((String)map.get(key));
     }
 
     //--------------------------------------------------------------------------

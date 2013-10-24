@@ -36,4 +36,5 @@ public final class DialogFactory {
         });
         dialog.show(applicationModel.getCurrentScreen().getStage());
     }
+
 }
