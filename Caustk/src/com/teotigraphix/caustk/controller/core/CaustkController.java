@@ -287,14 +287,14 @@ public class CaustkController implements ICaustkController {
         commandManager = application.getConfiguration().createCommandManager(this);
         libraryManager = application.getConfiguration().createLibraryManager(this);
         projectManager = application.getConfiguration().createProjectManager(this);
-
-        addComponent(ISerializeService.class, serializeService);
-        addComponent(ICommandManager.class, commandManager);
-        addComponent(ILibraryManager.class, libraryManager);
-        addComponent(IProjectManager.class, projectManager);
     }
 
     void create() {
+        // all controller component's onAttatch() are called
+        addComponent(ISerializeService.class, serializeService);
+        addComponent(ICommandManager.class, commandManager);
+        addComponent(IProjectManager.class, projectManager);
+        addComponent(ILibraryManager.class, libraryManager);
     }
 
     void run() {

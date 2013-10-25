@@ -50,23 +50,27 @@ public abstract class CaustkMediator implements ICaustkMediator {
     }
 
     protected void putPref(String key, Object value) {
-        controller.getProjectManager().getProject().put(PREF_TAG + key, value);
+        controller.getProjectManager().getProject().getPreferences().put(PREF_TAG + key, value);
     }
 
     protected int getInteger(String key, int defaultValue) {
-        return controller.getProjectManager().getProject().getInteger(PREF_TAG + key, defaultValue);
+        return controller.getProjectManager().getProject().getPreferences()
+                .getInteger(PREF_TAG + key, defaultValue);
     }
 
     protected float getFloat(String key, int defaultValue) {
-        return controller.getProjectManager().getProject().getFloat(PREF_TAG + key, defaultValue);
+        return controller.getProjectManager().getProject().getPreferences()
+                .getFloat(PREF_TAG + key, defaultValue);
     }
 
     protected String getString(String key, String defaultValue) {
-        return controller.getProjectManager().getProject().getString(PREF_TAG + key, defaultValue);
+        return controller.getProjectManager().getProject().getPreferences()
+                .getString(PREF_TAG + key, defaultValue);
     }
 
     protected boolean getBoolean(String key, boolean defaultValue) {
-        return controller.getProjectManager().getProject().getBoolean(PREF_TAG + key, defaultValue);
+        return controller.getProjectManager().getProject().getPreferences()
+                .getBoolean(PREF_TAG + key, defaultValue);
     }
 
     //--------------------------------------------------------------------------

@@ -21,13 +21,41 @@ package com.teotigraphix.caustk.project;
 
 import java.util.Date;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * Holds the custom {@link Project} information.
+ * 
+ * @author Michael Schmalle
+ */
 public class ProjectInfo {
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private String name;
+
+    @Tag(1)
+    private String author;
+
+    @Tag(2)
+    private String description;
+
+    @Tag(3)
+    private Date created;
+
+    @Tag(4)
+    private Date modified;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // name
     //----------------------------------
-
-    private String name;
 
     /**
      * Returns the project's human readable name.
@@ -49,8 +77,6 @@ public class ProjectInfo {
     // author
     //----------------------------------
 
-    private String author;
-
     /**
      * Returns the project's author.
      */
@@ -58,6 +84,11 @@ public class ProjectInfo {
         return author;
     }
 
+    /**
+     * Set the project author name.
+     * 
+     * @param value The author's name.
+     */
     public final void setAuthor(String value) {
         author = value;
     }
@@ -66,8 +97,6 @@ public class ProjectInfo {
     // description
     //----------------------------------
 
-    private String description;
-
     /**
      * Returns the project's description.
      */
@@ -75,6 +104,11 @@ public class ProjectInfo {
         return description;
     }
 
+    /**
+     * Set the project description.
+     * 
+     * @param value The description.
+     */
     public final void setDescription(String value) {
         description = value;
     }
@@ -83,8 +117,6 @@ public class ProjectInfo {
     // created
     //----------------------------------
 
-    private Date created;
-
     /**
      * Returns the date the project was created.
      */
@@ -92,6 +124,11 @@ public class ProjectInfo {
         return created;
     }
 
+    /**
+     * Set the created data.
+     * 
+     * @param value The date this project was created.
+     */
     public final void setCreated(Date value) {
         created = value;
     }
@@ -100,8 +137,6 @@ public class ProjectInfo {
     // modified
     //----------------------------------
 
-    private Date modified;
-
     /**
      * Returns the date the project was modified.
      */
@@ -109,6 +144,11 @@ public class ProjectInfo {
         return modified;
     }
 
+    /**
+     * Set the modified data.
+     * 
+     * @param value The date this project was modified.
+     */
     public final void setModified(Date value) {
         modified = value;
     }
@@ -117,7 +157,6 @@ public class ProjectInfo {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ProjectInfo() {
+    ProjectInfo() {
     }
-
 }

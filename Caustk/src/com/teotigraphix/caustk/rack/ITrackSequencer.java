@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -31,6 +30,7 @@ import com.teotigraphix.caustk.rack.track.TrackItem;
 import com.teotigraphix.caustk.rack.track.TrackSong;
 import com.teotigraphix.caustk.rack.track.Trigger;
 
+@SuppressWarnings("unused")
 public interface ITrackSequencer extends IRackComponent {
 
     TrackSong getTrackSong();
@@ -94,14 +94,14 @@ public interface ITrackSequencer extends IRackComponent {
     /**
      * Creates a {@link TrackSong} with a dummy File.
      */
-    TrackSong createSong();
+    //    TrackSong createSong();
 
     /**
      * @see #createSong(File)
      * @param relativePath
      * @throws IOException
      */
-    TrackSong createSong(String relativePath) throws IOException;
+    //    TrackSong createSong(String relativePath) throws IOException;
 
     /**
      * Creates a new {@link TrackSong}.
@@ -112,7 +112,7 @@ public interface ITrackSequencer extends IRackComponent {
      * @see OnTrackSongChange
      * @throws IOException
      */
-    TrackSong createSong(File songFile) throws IOException;
+    //    TrackSong createSong(File songFile) throws IOException;
 
     /**
      * Loads the complete state of a <code>.caustic</code> file into the current

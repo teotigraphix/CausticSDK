@@ -241,21 +241,21 @@ public class TrackSequencer extends RackComponent implements ITrackSequencer {
     //
     //    }
 
-    @Override
-    public TrackSong createSong() {
+    //    @Override
+    TrackSong createSong() {
         trackSong = new TrackSong(this, null);
         getRack().getGlobalDispatcher().trigger(
                 new OnTrackSongChange(TrackSongChangeKind.Create, trackSong));
         return trackSong;
     }
 
-    @Override
-    public TrackSong createSong(String relativePath) throws IOException {
+    //    @Override
+    TrackSong createSong(String relativePath) throws IOException {
         return createSong(new File(relativePath));
     }
 
-    @Override
-    public TrackSong createSong(File songFile) throws IOException {
+    //    @Override
+    TrackSong createSong(File songFile) throws IOException {
         if (trackSong != null) {
             trackSong.dispose();
         }

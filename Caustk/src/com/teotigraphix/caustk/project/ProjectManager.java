@@ -230,17 +230,13 @@ public class ProjectManager implements IProjectManager, IControllerAware {
         if (file.getName().contains("."))
             throw new IOException("Project is not a directory");
 
-        project = ProjectUtils.createProject(controller, file);
+        project = ProjectUtils.createProject(this, file);
 
         getController().getLogger().log("ProjectManager",
                 "Created Project - " + project.getAbsolutDirectory());
 
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Create));
-
         // save the new Project
         finalizeSaveComplete();
-
-        project.setInitializing(false);
 
         return project;
     }
@@ -259,35 +255,23 @@ public class ProjectManager implements IProjectManager, IControllerAware {
 
         project = controller.getSerializeService().fromFile(new File(absoluteDir, ".project"),
                 Project.class);
-        project.setController(controller);
+        project.setProjectManager(this);
         project.setFirstRun(false);
 
         project.open();
-
-        // all state objects are created here
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Load));
-
-        // all clients can now act on the deserialized state objects (IControllerComponent)
-        controller.trigger(new OnProjectManagerChange(project,
-                ProjectManagerChangeKind.LoadComplete));
 
         return project;
     }
 
     @Override
     public void save() throws IOException {
-        getController().getLogger().log("ProjectManager", "Save - " + project.getStateFile());
+        getController().getLogger().log("ProjectManager", "Save - " + project.getProjectFile());
         getController().getLogger().log("ProjectManager", "Save - " + sessionPreferencesFile);
 
         // saves the relative path e.g. 'UntitledProject' in the 'projects/' directory
         sessionPreferences.put(PREF_LAST_PROJECT, project.getDirectory().getPath());
         // set last modified date
         project.getInfo().setModified(new Date());
-        // observers will save their data into the Project if implemented
-        controller.trigger(new OnProjectManagerChange(project, ProjectManagerChangeKind.Save));
-
-        controller.trigger(new OnProjectManagerChange(project,
-                ProjectManagerChangeKind.SaveComplete));
 
         // save the .project and .settings files now that the state is stable
         finalizeSaveComplete();
@@ -296,18 +280,14 @@ public class ProjectManager implements IProjectManager, IControllerAware {
     @Override
     public void clear() {
         project.close();
-        controller.trigger(new OnProjectManagerChange(project,
-                ProjectManagerChangeKind.CloseComplete));
         project = null;
     }
 
     @Override
     public void exit() throws IOException {
         save();
-        Project oldProject = project;
         project.close();
         project = null;
-        controller.trigger(new OnProjectManagerChange(oldProject, ProjectManagerChangeKind.Exit));
     }
 
     //-------------------------------------------------------------------------
@@ -326,7 +306,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
                 "Save Complete, now saving project json file");
 
         String data = controller.getSerializeService().toPrettyString(project);
-        FileUtils.writeStringToFile(project.getStateFile(), data);
+        FileUtils.writeStringToFile(project.getProjectFile(), data);
 
         ProjectUtils.saveProjectPreferences(getController(), sessionPreferences,
                 sessionPreferencesFile);

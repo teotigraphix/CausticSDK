@@ -23,7 +23,6 @@ import org.androidtransfuse.event.EventObserver;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkApplication.OnCausticApplicationStateChange;
-import com.teotigraphix.caustk.project.IProjectManager.OnProjectManagerChange;
 import com.teotigraphix.libgdx.controller.CaustkMediator;
 import com.teotigraphix.libgdx.model.ApplicationModelState;
 import com.teotigraphix.libgdx.model.IApplicationModel;
@@ -64,32 +63,6 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
                     }
                 });
 
-        // this is the only place ProjectManager events are listened to
-        getController().register(OnProjectManagerChange.class,
-                new EventObserver<OnProjectManagerChange>() {
-                    @Override
-                    public void trigger(OnProjectManagerChange object) {
-                        switch (object.getKind()) {
-                            case Save:
-                                applicationModel.save();
-                                break;
-
-                            case CloseComplete:
-                                break;
-                            case Create:
-                                break;
-                            case Exit:
-                                break;
-                            case Load:
-                                break;
-                            case LoadComplete:
-                                break;
-                            case SaveComplete:
-                                break;
-                        }
-                    }
-                });
-
         getController().register(OnCausticApplicationStateChange.class,
                 new EventObserver<OnCausticApplicationStateChange>() {
                     @Override
@@ -100,6 +73,7 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
                             case Run:
                                 break;
                             case Save:
+                                applicationModel.save();
                                 break;
                             case Close:
                                 break;

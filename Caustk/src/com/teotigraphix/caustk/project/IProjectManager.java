@@ -23,8 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
-
 /**
  * The project manager manages the single project loaded for an application.
  * <p>
@@ -128,8 +126,6 @@ public interface IProjectManager {
      *            creation.
      * @return A new {@link Project} instance that is not yet on disk.
      * @throws IOException
-     * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#Create
      */
     Project createProject(File projectFile) throws IOException;
 
@@ -141,9 +137,6 @@ public interface IProjectManager {
      *            <code>.project</code> file.
      * @return A fully loaded <code>.project</code> project state.
      * @throws IOException Project file does not exist
-     * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#Load
-     * @see ProjectManagerChangeKind#LoadComplete
      */
     Project load(File directory) throws IOException;
 
@@ -156,9 +149,6 @@ public interface IProjectManager {
      * {@link ProjectManagerChangeKind#Save} event.
      * 
      * @throws IOException
-     * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#Save
-     * @see ProjectManagerChangeKind#SaveComplete
      */
     void save() throws IOException;
 
@@ -170,95 +160,12 @@ public interface IProjectManager {
      * remove the current {@link Project} instance.
      * 
      * @throws IOException
-     * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind#Exit
      */
     void exit() throws IOException;
 
     /**
      * Closes the {@link Project#close()} and clears the project from the
      * project manager.
-     * 
-     * @see OnProjectManagerChange
-     * @see ProjectManagerChangeKind$#CloseComplete
      */
     void clear();
-
-    /**
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class ProjectEvent {
-
-        private Project project;
-
-        public Project getProject() {
-            return project;
-        }
-
-        public ProjectEvent(Project project) {
-            this.project = project;
-        }
-    }
-
-    public enum ProjectManagerChangeKind {
-
-        /**
-         * Dispatched when a project has been created and is getting registered
-         * with the system for the first time.
-         */
-        Create,
-
-        /**
-         * Dispatched when a project has been loaded and has been deserialzed.
-         */
-        Load,
-
-        /**
-         * No impl.
-         */
-        LoadComplete,
-
-        /**
-         * Dispatched when the project manager is about to save state.
-         * <p>
-         * Clients can listen to this event and save their state as necessary.
-         */
-        Save,
-
-        /**
-         * Dispatched when the project manager has completely saved all state.
-         */
-        SaveComplete,
-
-        /**
-         * Dispatched when a project has been closed by
-         * {@link IProjectManager#clear()}.
-         */
-        CloseComplete,
-
-        /**
-         * Dispatched when the project manager has had its
-         * {@link IProjectManager#exit()} method called.
-         */
-        Exit;
-    }
-
-    /**
-     * Dispatched when the project manager's state changes.
-     * 
-     * @see ICaustkController#getDispatcher()
-     */
-    public static class OnProjectManagerChange extends ProjectEvent {
-        private ProjectManagerChangeKind kind;
-
-        public final ProjectManagerChangeKind getKind() {
-            return kind;
-        }
-
-        public OnProjectManagerChange(Project project, ProjectManagerChangeKind kind) {
-            super(project);
-            this.kind = kind;
-        }
-    }
-
 }

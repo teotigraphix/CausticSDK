@@ -60,6 +60,13 @@ public class SessionPreferences {
         return String.valueOf(map.get(key));
     }
 
+    public String getString(String key, String defaultValue) {
+        String result = getString(key);
+        if (result == null)
+            return defaultValue;
+        return result;
+    }
+
     /**
      * Returns a Integer for the key, <code>null</code> if the key does not
      * exist.
@@ -72,15 +79,30 @@ public class SessionPreferences {
         return Integer.parseInt((String)map.get(key));
     }
 
+    public Integer getInteger(String key, int defaultValue) {
+        if (!map.containsKey(key))
+            return defaultValue;
+        Object value = map.get(key);
+        if (value instanceof Double)
+            return ((Double)value).intValue();
+        return (Integer)value;
+    }
+
     /**
      * Returns a Float for the key, <code>null</code> if the key does not exist.
      * 
      * @param key The String key.
      */
-    public Float getFloat(String key) {
+    public Float getFloat(String key, float defaultValue) {
         if (!map.containsKey(key))
-            return null;
+            return defaultValue;
         return Float.parseFloat((String)map.get(key));
+    }
+
+    public Boolean getBoolean(String key, boolean defaultValue) {
+        if (!map.containsKey(key))
+            return defaultValue;
+        return Boolean.valueOf((String)map.get(key));
     }
 
 }

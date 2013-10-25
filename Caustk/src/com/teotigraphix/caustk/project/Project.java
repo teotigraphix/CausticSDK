@@ -20,45 +20,54 @@
 package com.teotigraphix.caustk.project;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
- * The main class that is serialized in a <code>ctk</code> file.
+ * The main class that is serialized in a <code>.project</code> file.
+ * 
+ * @author Michael Schmalle
  */
 public class Project {
 
+    static final String FILE_PROJECT = ".project";
+
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private transient IProjectManager projectManager;
+
+    void setProjectManager(IProjectManager projectManager) {
+        this.projectManager = projectManager;
+    }
+
+    private transient boolean isFirstRun;
+
     private transient boolean isClosed;
 
-    private transient ICaustkController controller;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
-    public void setController(ICaustkController controller) {
-        this.controller = controller;
-    }
+    @Tag(0)
+    private File directory;
 
-    //----------------------------------
-    // initializing
-    //----------------------------------
+    @Tag(1)
+    private ProjectInfo info;
 
-    private transient boolean initializing = false;
+    @Tag(2)
+    private ProjectPreferences preferences;
 
-    public boolean isInitializing() {
-        return initializing;
-    }
-
-    public void setInitializing(boolean value) {
-        initializing = value;
-    }
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // isFirstRun
     //----------------------------------
 
-    private transient boolean isFirstRun;
-
-    public void setFirstRun(boolean value) {
+    void setFirstRun(boolean value) {
         isFirstRun = value;
     }
 
@@ -74,34 +83,41 @@ public class Project {
     // file
     //----------------------------------
 
+    /**
+     * Returns the name of the project's directory.
+     */
     public String getName() {
-        return directory.getName().replace(".ctk", "");
-    }
-
-    private File directory;
-
-    public void setDirectory(File value) {
-        directory = value;
+        return directory.getName();
     }
 
     /**
-     * Returns the project's resource directory which is the same name oas the
-     * project descriptor file.
+     * Returns the project's relative location within the application root's
+     * <code>project</code> directory. e.g.
+     * <code>MyAp/projects/[MyProject]</code> or
+     * <code>MyAp/projects/[sub/MyProject]</code>.
      */
     public File getDirectory() {
         return directory;
     }
 
+    void setDirectory(File value) {
+        directory = value;
+    }
+
+    /**
+     * Returns the absolute location of the project's directory on the current
+     * disk drive. e.g. <code>[/sdcard/MyAp/projects/MyProject]</code>
+     */
     public File getAbsolutDirectory() {
-        return controller.getProjectManager().getDirectory(directory.getPath());
+        return projectManager.getDirectory(directory.getPath());
     }
 
     /**
      * Returns the <code>.project</code> state file located at the root of the
      * project directory.
      */
-    public File getStateFile() {
-        return getAbsoluteResource(".project");
+    public File getProjectFile() {
+        return getAbsoluteResource(FILE_PROJECT);
     }
 
     /**
@@ -113,6 +129,14 @@ public class Project {
         return new File(getDirectory(), relativePath);
     }
 
+    /**
+     * Returns an absolute File handle using the relativePath passed to
+     * construct a file from the <code>MyApp/projects/MyProject</code>
+     * directory.
+     * 
+     * @par* @param relativePath The path inside the project's resource
+     *      directory.
+     */
     public File getAbsoluteResource(String relativePath) {
         return new File(getAbsolutDirectory(), relativePath);
     }
@@ -120,8 +144,6 @@ public class Project {
     //----------------------------------
     // info
     //----------------------------------
-
-    private ProjectInfo info;
 
     /**
      * Returns the project's meta data containing the project's name, author
@@ -131,84 +153,29 @@ public class Project {
         return info;
     }
 
-    public void setInfo(ProjectInfo value) {
+    void setInfo(ProjectInfo value) {
         info = value;
     }
 
     //----------------------------------
-    // map
+    // preferences
     //----------------------------------
 
-    private Map<String, Object> map = new HashMap<String, Object>();
-
     /**
-     * Adds a key/value pair to the session map.
-     * <p>
-     * The value must be of primitive type.
-     * 
-     * @param key The String key.
-     * @param value The primitive value.
+     * Returns the preferences that are save with the <code>.project</code> file
+     * in JSON format.
      */
-    public void put(String key, Object value) {
-        map.put(key, value);
-    }
-
-    /**
-     * Returns a String for the key, <code>null</code> if the key does not
-     * exist.
-     * 
-     * @param key The String key.
-     */
-    public String getString(String key) {
-        if (!map.containsKey(key))
-            return null;
-        return String.valueOf(map.get(key));
-    }
-
-    public String getString(String key, String defaultValue) {
-        String result = getString(key);
-        if (result == null)
-            return defaultValue;
-        return result;
-    }
-
-    /**
-     * Returns a Integer for the key, <code>null</code> if the key does not
-     * exist.
-     * 
-     * @param key The String key.
-     */
-    public Integer getInteger(String key, int defaultValue) {
-        if (!map.containsKey(key))
-            return defaultValue;
-        Object value = map.get(key);
-        if (value instanceof Double)
-            return ((Double)value).intValue();
-        return (Integer)value;
-    }
-
-    /**
-     * Returns a Float for the key, <code>null</code> if the key does not exist.
-     * 
-     * @param key The String key.
-     */
-    public Float getFloat(String key, float defaultValue) {
-        if (!map.containsKey(key))
-            return defaultValue;
-        return Float.parseFloat((String)map.get(key));
-    }
-
-    public Boolean getBoolean(String key, boolean defaultValue) {
-        if (!map.containsKey(key))
-            return defaultValue;
-        return Boolean.valueOf((String)map.get(key));
+    public final ProjectPreferences getPreferences() {
+        if (preferences == null)
+            preferences = new ProjectPreferences();
+        return preferences;
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Project() {
+    Project() {
     }
 
     /**
@@ -237,5 +204,4 @@ public class Project {
     public void close() {
         isClosed = true;
     }
-
 }
