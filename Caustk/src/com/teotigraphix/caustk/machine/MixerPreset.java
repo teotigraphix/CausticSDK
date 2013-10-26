@@ -21,10 +21,11 @@ package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MixerPreset {
+public class MixerPreset implements IRestore {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -312,6 +313,7 @@ public class MixerPreset {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    @Override
     public void restore() {
         setBass(getBass(true));
         setMid(getMid(true));

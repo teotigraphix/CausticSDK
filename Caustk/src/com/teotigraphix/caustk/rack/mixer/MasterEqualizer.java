@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.rack.IRack;
 
 public class MasterEqualizer extends MasterComponent {
 
@@ -161,19 +161,29 @@ public class MasterEqualizer extends MasterComponent {
         bypassMessage = MasterMixerMessage.EQ_BYPASS;
     }
 
-    public MasterEqualizer(Rack rack) {
+    public MasterEqualizer(IRack rack) {
         super(rack);
         bypassMessage = MasterMixerMessage.EQ_BYPASS;
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    public void restore(IRack rack) {
+        super.restore(rack);
         setBass(getBass(true));
         setBassMidFreq(getBassMidFreq(true));
         setHigh(getHigh(true));
         setMid(getMid(true));
         setMidHighFreq(getMidHighFreq(true));
+    }
+
+    @Override
+    public void update(IRack rack) {
+        super.update(rack);
+        MasterMixerMessage.EQ_BASS.send(getEngine(), bass);
+        MasterMixerMessage.EQ_BASSMID_FREQ.send(getEngine(), bassMidFreq);
+        MasterMixerMessage.EQ_HIGH.send(getEngine(), high);
+        MasterMixerMessage.EQ_MID.send(getEngine(), mid);
+        MasterMixerMessage.EQ_MIDHIGH_FREQ.send(getEngine(), midHighFreq);
     }
 
 }

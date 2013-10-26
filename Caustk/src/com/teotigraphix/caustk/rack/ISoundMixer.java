@@ -28,10 +28,35 @@ public interface ISoundMixer extends IRackComponent {
 
     MasterMixer getMasterMixer();
 
+    /**
+     * Sets the {@link MasterMixer} on the main sound mixer.
+     * 
+     * @param masterMixer
+     */
+    void setMasterMixer(MasterMixer masterMixer);
+
+    /**
+     * @deprecated
+     * @param index
+     * @return
+     */
+    @Deprecated
     boolean hasChannel(int index);
 
+    /**
+     * @deprecated
+     * @param tone
+     * @return
+     */
+    @Deprecated
     SoundMixerChannel getChannel(Tone tone);
 
+    /**
+     * @deprecated
+     * @param index
+     * @return
+     */
+    @Deprecated
     SoundMixerChannel getChannel(int index);
 
     /**

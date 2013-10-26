@@ -88,16 +88,28 @@ public class CaustkEffect {
     CaustkEffect() {
     }
 
-    public CaustkEffect(int index, EffectType effectType) {
+    CaustkEffect(int index, EffectType effectType) {
         this.index = index;
         this.effectType = effectType;
+    }
+
+    CaustkEffect(int index, EffectType effectType, CaustkPatch caustkPatch) {
+        this.index = index;
+        this.effectType = effectType;
+        this.patch = caustkPatch;
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public void restore(CaustkPatch caustkPatch) {
-        effect = EffectUtils.create(effectType, index, caustkPatch.getMachine().getIndex());
+    /**
+     * Loads and restores the {@link IEffect} for the machine.
+     * 
+     * @param factory The library factory.
+     */
+    public void load(CaustkLibraryFactory factory) {
+        effect = EffectUtils.create(effectType, index, patch.getMachine().getIndex());
+        effect.restore();
     }
 }

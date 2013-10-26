@@ -21,12 +21,12 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
-import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MasterComponent implements IRestore {
+public class MasterComponent implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -39,7 +39,7 @@ public class MasterComponent implements IRestore {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private Rack rack;
+    private IRack rack;
 
     @Tag(1)
     private boolean bypass = false;
@@ -78,7 +78,7 @@ public class MasterComponent implements IRestore {
     public MasterComponent() {
     }
 
-    public MasterComponent(Rack rack) {
+    public MasterComponent(IRack rack) {
         this.rack = rack;
     }
 
@@ -95,7 +95,12 @@ public class MasterComponent implements IRestore {
     }
 
     @Override
-    public void restore() {
+    public void restore(IRack rack) {
         setBypass(isBypass(true));
+    }
+
+    @Override
+    public void update(IRack rack) {
+        bypassMessage.send(rack, bypass ? 1 : 0);
     }
 }

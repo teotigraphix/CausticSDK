@@ -68,8 +68,8 @@ public class CaustkPatchFactory {
      * @param livePatch
      * @throws IOException
      */
-    public void activatePatch(CaustkPatch caustkPatch) throws IOException {
-        CaustkLibraryUtils.assignAndUpdatePresetFile(caustkPatch.getMachine(), caustkPatch, rack);
-        CaustkLibraryUtils.assignEffects(caustkPatch.getMachine(), caustkPatch, rack);
+    public void _activatePatch(CaustkPatch caustkPatch) throws IOException {
+        //CaustkLibraryUtils.assignAndUpdatePresetFile(caustkPatch.getMachine(), caustkPatch, rack);
+        //CaustkLibraryUtils.assignEffects(caustkPatch.getMachine(), caustkPatch, rack);
     }
 }

@@ -26,7 +26,10 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.osc.EffectRackMessage;
+import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.effect.EffectType;
 
 /*
  * - LivePatch can be copied to another LiveMachine of the same toneType
@@ -163,9 +166,49 @@ public class CaustkPatch {
     //--------------------------------------------------------------------------
 
     public void load(CaustkLibraryFactory factory) throws IOException, CausticException {
+        loadMachinePreset(factory);
+        loadMixerPreset(factory);
+        loadEffects(factory);
+    }
+
+    void loadMixerPreset(CaustkLibraryFactory factory) {
+        mixerPreset = new MixerPreset(this);
+        mixerPreset.restore();
+    }
+
+    void loadMachinePreset(CaustkLibraryFactory factory) throws IOException {
         final IRack rack = factory.getRack();
 
-        CaustkLibraryUtils.assignAndUpdatePresetFile(machine, this, rack);
-        CaustkLibraryUtils.assignEffects(machine, this, rack);
+        // get the preset name if machine has a loaded preset
+        String presetName = SynthMessage.QUERY_PRESET.queryString(rack, machine.getIndex());
+        // create the preset file
+        machinePreset = new MachinePreset(presetName, this);
+
+        // get the bytes of the machine's preset and put them into the preset file
+        machinePreset.restore();
+    }
+
+    void loadEffects(CaustkLibraryFactory factory) {
+        final IRack rack = factory.getRack();
+
+        final CaustkMachine machine = getMachine();
+        final int machineIndex = machine.getIndex();
+
+        EffectType effect0 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(rack,
+                machineIndex, 0));
+        EffectType effect1 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(rack,
+                machineIndex, 1));
+
+        if (effect0 != null) {
+            CaustkEffect effect = factory.createEffect(0, effect0, this);
+            putEffect(0, effect);
+            effect.load(factory);
+        }
+
+        if (effect1 != null) {
+            CaustkEffect effect = factory.createEffect(1, effect1, this);
+            putEffect(1, effect);
+            effect.load(factory);
+        }
     }
 }

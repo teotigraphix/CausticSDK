@@ -26,6 +26,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -41,7 +42,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * 
  * @author Michael Schmalle
  */
-public class MachinePreset {
+public class MachinePreset implements IRestore {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -157,7 +158,7 @@ public class MachinePreset {
     }
 
     /**
-     * Updates the {@link #getData()} bytes with the {@link Tone}'s preset file
+     * Restores the {@link #getData()} bytes with the {@link Tone}'s preset file
      * as currently loaded in the rack.
      * <p>
      * The {@link #getPatch()}'s {@link CaustkMachine} and {@link Tone} must be
@@ -165,7 +166,8 @@ public class MachinePreset {
      * 
      * @throws IOException
      */
-    public void update() throws IOException {
+    @Override
+    public void restore() {
         CaustkMachine machine = getPatch().getMachine();
         if (machine == null)
             throw new IllegalStateException(
@@ -189,7 +191,7 @@ public class MachinePreset {
      * @param tone The {@link Tone} to use when updating the preset bytes.
      * @throws IOException
      */
-    public void update(Tone tone) throws IOException {
+    public void update(Tone tone) {
         if (!tone.getToneType().getValue().equals(getPatch().getMachineType().getType()))
             throw new IllegalStateException("Tone's type does not match the LivePhrase's type");
 
@@ -200,10 +202,15 @@ public class MachinePreset {
         // get the preset file from the caustic presets directory
         File presetFile = toPresetFile(getPatch().getMachineType(), presetName);
         if (!presetFile.exists())
-            throw new IOException("Error saving preset file to: " + presetFile);
+            throw new RuntimeException("Error saving preset file to: " + presetFile);
 
         // read into the data byte array
-        data = FileUtils.readFileToByteArray(presetFile);
+        try {
+            data = FileUtils.readFileToByteArray(presetFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         // delete the temp preset file
         FileUtils.deleteQuietly(presetFile);
     }

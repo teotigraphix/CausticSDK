@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.rack.IRack;
 
 public class MasterReverb extends MasterComponent {
 
@@ -281,14 +281,14 @@ public class MasterReverb extends MasterComponent {
         bypassMessage = MasterMixerMessage.REVERB_BYPASS;
     }
 
-    public MasterReverb(Rack rack) {
+    public MasterReverb(IRack rack) {
         super(rack);
         bypassMessage = MasterMixerMessage.REVERB_BYPASS;
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    public void restore(IRack rack) {
+        super.restore(rack);
         setDiffuse(getDiffuse(true));
         setDitherEchoes(getDitherEchoes(true));
         setERDecay(getERDecay(true));
@@ -299,5 +299,20 @@ public class MasterReverb extends MasterComponent {
         setStereoDelay(getStereoDelay(true));
         setStereoSpread(getStereoSpread(true));
         setWet(getWet(true));
+    }
+
+    @Override
+    public void update(IRack rack) {
+        super.update(rack);
+        MasterMixerMessage.REVERB_DIFFUSE.send(getEngine(), diffuse);
+        MasterMixerMessage.REVERB_DITHER_ECHOS.send(getEngine(), ditherEchoes);
+        MasterMixerMessage.REVERB_ER_DECAY.send(getEngine(), erDecay);
+        MasterMixerMessage.REVERB_ER_GAIN.send(getEngine(), erGain);
+        MasterMixerMessage.REVERB_HF_DAMPING.send(getEngine(), hfDamping);
+        MasterMixerMessage.REVERB_PRE_DELAY.send(getEngine(), preDelay);
+        MasterMixerMessage.REVERB_ROOM_SIZE.send(getEngine(), roomSize);
+        MasterMixerMessage.REVERB_STEREO_DELAY.send(getEngine(), stereoDelay);
+        MasterMixerMessage.REVERB_STEREO_SPREAD.send(getEngine(), stereoSpread);
+        MasterMixerMessage.REVERB_WET.send(getEngine(), wet);
     }
 }

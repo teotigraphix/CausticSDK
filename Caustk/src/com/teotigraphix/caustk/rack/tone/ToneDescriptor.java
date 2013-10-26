@@ -62,4 +62,8 @@ public class ToneDescriptor {
 
     private UUID patchId;
 
+    @Override
+    public String toString() {
+        return "[ToneDescriptor(" + index + "," + toneType.getValue() + "," + name + ")]";
+    }
 }

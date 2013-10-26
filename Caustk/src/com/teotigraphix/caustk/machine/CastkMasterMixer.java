@@ -19,10 +19,34 @@
 
 package com.teotigraphix.caustk.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.mixer.MasterMixer;
+
 public class CastkMasterMixer {
 
-    public CastkMasterMixer() {
-        // TODO Auto-generated constructor stub
+    @Tag(0)
+    private CaustkScene caustkScene;
+
+    @Tag(1)
+    private MasterMixer masterMixer;
+
+    public CaustkScene getCaustkScene() {
+        return caustkScene;
     }
 
+    CastkMasterMixer() {
+    }
+
+    CastkMasterMixer(CaustkScene caustkScene) {
+        this.caustkScene = caustkScene;
+    }
+
+    public void load(CaustkLibraryFactory factory) {
+        final IRack rack = factory.getRack();
+
+        masterMixer = new MasterMixer(rack);
+        masterMixer.restore(rack);
+        rack.getSoundMixer().setMasterMixer(masterMixer);
+    }
 }

@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.rack.IRack;
 
 public class MasterDelay extends MasterComponent {
 
@@ -255,14 +255,14 @@ public class MasterDelay extends MasterComponent {
         bypassMessage = MasterMixerMessage.DELAY_BYPASS;
     }
 
-    public MasterDelay(Rack rack) {
+    public MasterDelay(IRack rack) {
         super(rack);
         bypassMessage = MasterMixerMessage.DELAY_BYPASS;
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    public void restore(IRack rack) {
+        super.restore(rack);
         setDamping(getDamping(true));
         setFeedback(getFeedback(true));
         setFeedbackFirst(getFeedbackFirst(true));
@@ -274,4 +274,16 @@ public class MasterDelay extends MasterComponent {
         setWet(getWet(true));
     }
 
+    @Override
+    public void update(IRack rack) {
+        super.update(rack);
+        MasterMixerMessage.DELAY_DAMPING.send(getEngine(), damping);
+        MasterMixerMessage.DELAY_FEEDBACK.send(getEngine(), feedback);
+        MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(getEngine(), feedbackFirst);
+        MasterMixerMessage.DELAY_LOOP.send(getEngine(), loop);
+        MasterMixerMessage.DELAY_STEPS.send(getEngine(), steps);
+        MasterMixerMessage.DELAY_SYNC.send(getEngine(), sync);
+        MasterMixerMessage.DELAY_TIME.send(getEngine(), time);
+        MasterMixerMessage.DELAY_WET.send(getEngine(), wet);
+    }
 }

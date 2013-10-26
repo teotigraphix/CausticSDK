@@ -24,6 +24,7 @@ import java.io.IOException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
 public final class CaustkLibraryUtils {
@@ -36,19 +37,25 @@ public final class CaustkLibraryUtils {
         MachinePreset presetFile = new MachinePreset(presetName, livePatch);
         livePatch.setMachinePreset(presetFile);
         // get the bytes of the machine's preset and put them into the preset file
-        presetFile.update();
+        presetFile.restore();
     }
 
-    static void assignEffects(CaustkMachine machine, CaustkPatch livePatch, ICausticEngine engine) {
+    static void assignEffects(CaustkLibraryFactory factory, CaustkPatch livePatch) {
+        final IRack rack = factory.getRack();
+
+        final CaustkMachine machine = livePatch.getMachine();
         final int machineIndex = machine.getIndex();
-        EffectType effect0 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(engine,
+
+        EffectType effect0 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(rack,
                 machineIndex, 0));
-        EffectType effect1 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(engine,
+        EffectType effect1 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(rack,
                 machineIndex, 1));
+
         if (effect0 != null) {
             CaustkEffect liveEffect = new CaustkEffect(0, effect0);
             livePatch.putEffect(0, liveEffect);
         }
+
         if (effect1 != null) {
             CaustkEffect liveEffect = new CaustkEffect(1, effect1);
             livePatch.putEffect(1, liveEffect);

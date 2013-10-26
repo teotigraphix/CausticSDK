@@ -192,8 +192,8 @@ public class CaustkLibraryFactory {
      * @param livePatch
      * @throws IOException
      */
-    public void activatePatch(CaustkPatch caustkPatch) throws IOException {
-        patchFactory.activatePatch(caustkPatch);
+    public void _activatePatch(CaustkPatch caustkPatch) throws IOException {
+        //        patchFactory.activatePatch(caustkPatch);
     }
 
     public CaustkPhrase createPhrase(MachineType machineType, int bankIndex, int patternIndex) {
@@ -202,6 +202,14 @@ public class CaustkLibraryFactory {
 
     public CaustkPhrase createPhrase(CaustkMachine caustkMachine, int bankIndex, int patternIndex) {
         return phraseFactory.createPhrase(caustkMachine, bankIndex, patternIndex);
+    }
+
+    public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {
+        return effectFactory.createEffect(slot, effectType, caustkPatch);
+    }
+
+    public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
+        return masterMixerFactory.createMasterMixer(caustkScene);
     }
 
 }

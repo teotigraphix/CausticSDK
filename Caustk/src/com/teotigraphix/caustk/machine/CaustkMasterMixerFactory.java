@@ -28,4 +28,9 @@ public class CaustkMasterMixerFactory {
     public CaustkMasterMixerFactory(IRack rack) {
         this.rack = rack;
     }
+
+    public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
+        CastkMasterMixer castkMasterMixer = new CastkMasterMixer(caustkScene);
+        return castkMasterMixer;
+    }
 }
