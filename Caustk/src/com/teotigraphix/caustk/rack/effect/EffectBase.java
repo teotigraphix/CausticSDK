@@ -22,12 +22,10 @@ package com.teotigraphix.caustk.rack.effect;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.rack.IEffect;
-import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public abstract class EffectBase implements IEffect {
-
-    private static final long serialVersionUID = -173253129655285469L;
 
     protected ICausticEngine getEngine() {
         return rack;
@@ -37,15 +35,15 @@ public abstract class EffectBase implements IEffect {
     // rack
     //----------------------------------
 
-    private Rack rack;
+    private IRack rack;
 
     @Override
-    public Rack getRack() {
+    public IRack getRack() {
         return rack;
     }
 
     @Override
-    public void setRack(Rack rack) {
+    public void setRack(IRack rack) {
         this.rack = rack;
     }
 

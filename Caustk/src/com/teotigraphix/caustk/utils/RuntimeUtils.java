@@ -34,12 +34,19 @@ import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustk.machine.MachineType;
+
 /**
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
 public class RuntimeUtils {
+
+    private static final String FORWARD_SLASH = "/";
+
+    private static final String DOT = ".";
+
     private static final String CAUSTIC = "caustic";
 
     private static final String CAUSTIC_EXTENSION = ".caustic";
@@ -205,19 +212,44 @@ public class RuntimeUtils {
      *            <code>subsynth</code>).
      * @param presetName The name of the preset file without the preset
      *            extension.
+     * @deprecated
      */
+    @Deprecated
     public static File getCausticPresetsFile(String presetType, String presetName) {
         final StringBuilder sb = new StringBuilder();
         sb.append(presetType);
-        sb.append("/");
+        sb.append(FORWARD_SLASH);
         if (presetType.equals("modular"))
             sb.append(presetName.toUpperCase(Locale.US));
         else
             sb.append(presetName);
-        sb.append(".");
+        sb.append(DOT);
         if (presetType.equals("modular"))
             presetType = "modularsynth";
         sb.append(presetType);
+        return new File(getCausticPresetsDirectory(), sb.toString());
+    }
+
+    /**
+     * Returns a preset file located in the native Caustic app
+     * <code>/caustic/presets</code> directory.
+     * <p>
+     * If a relative path is provided, the prefix preset type directory should
+     * not be included, this is added automatically such as
+     * <code>subsynth</code> or <code>modular</code>.
+     * 
+     * @param machineType The {@link MachineType}.
+     * @param nameOrRelativePath The preset name or preset name with relative
+     *            path without extension. e.g <code>MyPreset</code>,
+     *            <code>sub/dir/MyPreset</code>.
+     */
+    public static File getCausticPresetsFile(MachineType machineType, String nameOrRelativePath) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(machineType.getType());
+        sb.append(FORWARD_SLASH);
+        sb.append(nameOrRelativePath);
+        sb.append(DOT);
+        sb.append(machineType.getExtension());
         return new File(getCausticPresetsDirectory(), sb.toString());
     }
 
@@ -231,7 +263,7 @@ public class RuntimeUtils {
     public static File getCausticSamplesFile(final String sampleType, final String sampleName) {
         final StringBuilder sb = new StringBuilder();
         sb.append(sampleType);
-        sb.append("/");
+        sb.append(FORWARD_SLASH);
         sb.append(sampleName);
         sb.append(".wav");
         return new File(getCausticSamplesDirectory(), sb.toString());

@@ -1,18 +1,16 @@
 
 package com.teotigraphix.caustk.rack;
 
-import java.io.Serializable;
-
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
-public interface IEffect extends Serializable, IRestore {
+public interface IEffect extends IRestore {
 
     EffectType getType();
 
-    Rack getRack();
+    IRack getRack();
 
-    void setRack(Rack rack);
+    void setRack(IRack rack);
 
     int getToneIndex();
 
