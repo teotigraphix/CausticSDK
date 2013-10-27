@@ -141,6 +141,10 @@ public class CaustkPatch {
         return effects.get(slot);
     }
 
+    public final MixerPreset getMixerPreset() {
+        return mixerPreset;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

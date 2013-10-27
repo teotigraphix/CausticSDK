@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
+import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -130,6 +131,10 @@ public abstract class EffectBase implements IEffect {
     //--------------------------------------------------------------------------
     // IRackSerializer API
     //--------------------------------------------------------------------------
+
+    @Override
+    public void load(CaustkLibraryFactory factory) {
+    }
 
     @Override
     public void restore() {

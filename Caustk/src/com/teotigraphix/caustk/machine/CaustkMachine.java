@@ -132,6 +132,10 @@ public class CaustkMachine implements ICaustkComponent {
         return patch;
     }
 
+    public final MixerPreset getMixer() {
+        return patch.getMixerPreset();
+    }
+
     //----------------------------------
     // phrases
     //----------------------------------

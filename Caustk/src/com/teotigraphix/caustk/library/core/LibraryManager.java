@@ -44,8 +44,6 @@ import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.library.item.LibraryPattern;
 import com.teotigraphix.caustk.library.item.LibraryPattern.ToneSet;
 import com.teotigraphix.caustk.library.item.LibraryPhrase;
-import com.teotigraphix.caustk.library.item.LibraryScene;
-import com.teotigraphix.caustk.library.item.SoundSourceDescriptor;
 import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
@@ -267,53 +265,53 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     private void loadLibrarySceneLive(Library library, File causticFile, ISoundSource soundSource)
             throws IOException {
-        String name = causticFile.getName().replace(".caustic", "");
-        LibraryScene scene = new LibraryScene();
-        scene.setMetadataInfo(new MetadataInfo());
-
-        scene.setId(UUID.randomUUID());
-        library.addScene(scene);
-
-        //--------------------------------------
-        SoundSourceDescriptor soundSourceDescriptor = new SoundSourceDescriptor();
-
-        for (int i = 0; i < MAX_NUM_MACHINES; i++) {
-            String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(getController()
-                    .getRack(), i);
-            String machineType = RackMessage.QUERY_MACHINE_TYPE.queryString(getController()
-                    .getRack(), i);
-
-            LibraryPatch patch = null;
-
-            if (machineName != null && !"".equals(machineName)) {
-
-                ToneType toneType = ToneType.fromString(machineType);
-
-                patch = new LibraryPatch();
-                patch.setName(machineName);
-                patch.setToneType(toneType);
-                patch.setMetadataInfo(new MetadataInfo());
-                patch.setId(UUID.randomUUID());
-                TagUtils.addDefaultTags(machineName, patch);
-                relocatePresetFileLive(i, toneType, library, patch);
-                library.addPatch(patch);
-
-                //                tone.setDefaultPatchId(patch.getId());
-                soundSourceDescriptor.addTone(getController().getRack(), i, machineName, toneType,
-                        patch.getId());
-            }
-        }
-
-        scene.setSoundSourceDescriptor(soundSourceDescriptor);
-
-        //SoundMixerDescriptor soundMixerDescriptor;
-
-        //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
-        //        soundMixerDescriptor.setMasterMixer(getController().getRack().getSoundMixer()
-        //                .getMasterMixer());
-        //scene.setSoundMixerDescriptor(soundMixerDescriptor);
-
-        TagUtils.addDefaultTags(name, getController(), scene);
+        //        String name = causticFile.getName().replace(".caustic", "");
+        //        LibraryScene scene = new LibraryScene();
+        //        scene.setMetadataInfo(new MetadataInfo());
+        //
+        //        scene.setId(UUID.randomUUID());
+        //        library.addScene(scene);
+        //
+        //        //--------------------------------------
+        //        SoundSourceDescriptor soundSourceDescriptor = new SoundSourceDescriptor();
+        //
+        //        for (int i = 0; i < MAX_NUM_MACHINES; i++) {
+        //            String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(getController()
+        //                    .getRack(), i);
+        //            String machineType = RackMessage.QUERY_MACHINE_TYPE.queryString(getController()
+        //                    .getRack(), i);
+        //
+        //            LibraryPatch patch = null;
+        //
+        //            if (machineName != null && !"".equals(machineName)) {
+        //
+        //                ToneType toneType = ToneType.fromString(machineType);
+        //
+        //                patch = new LibraryPatch();
+        //                patch.setName(machineName);
+        //                patch.setToneType(toneType);
+        //                patch.setMetadataInfo(new MetadataInfo());
+        //                patch.setId(UUID.randomUUID());
+        //                TagUtils.addDefaultTags(machineName, patch);
+        //                relocatePresetFileLive(i, toneType, library, patch);
+        //                library.addPatch(patch);
+        //
+        //                //                tone.setDefaultPatchId(patch.getId());
+        //                soundSourceDescriptor.addTone(getController().getRack(), i, machineName, toneType,
+        //                        patch.getId());
+        //            }
+        //        }
+        //
+        //        scene.setSoundSourceDescriptor(soundSourceDescriptor);
+        //
+        //        //SoundMixerDescriptor soundMixerDescriptor;
+        //
+        //        //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
+        //        //        soundMixerDescriptor.setMasterMixer(getController().getRack().getSoundMixer()
+        //        //                .getMasterMixer());
+        //        //scene.setSoundMixerDescriptor(soundMixerDescriptor);
+        //
+        //        TagUtils.addDefaultTags(name, getController(), scene);
     }
 
     protected void relocatePresetFileLive(int toneIndex, ToneType toneType, Library library,
@@ -516,46 +514,46 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
 
     private void loadLibraryScene(Library library, File causticFile, ISoundSource soundSource)
             throws IOException {
-        String name = causticFile.getName().replace(".caustic", "");
-        LibraryScene scene = new LibraryScene();
-        scene.setMetadataInfo(new MetadataInfo());
-
-        scene.setId(UUID.randomUUID());
-        library.addScene(scene);
-
-        //--------------------------------------
-        SoundSourceDescriptor soundSourceDescriptor = new SoundSourceDescriptor();
-
-        for (int i = 0; i < 6; i++) {
-            Tone tone = soundSource.getTone(i);
-            LibraryPatch patch = null;
-
-            if (tone != null) {
-
-                patch = new LibraryPatch();
-                patch.setName(tone.getName());
-                patch.setToneType(tone.getToneType());
-                patch.setMetadataInfo(new MetadataInfo());
-                patch.setId(UUID.randomUUID());
-                TagUtils.addDefaultTags(tone, patch);
-                relocatePresetFile(tone, library, patch);
-                library.addPatch(patch);
-
-                tone.setDefaultPatchId(patch.getId());
-                soundSourceDescriptor.addTone(tone, patch.getId());
-            }
-        }
-
-        scene.setSoundSourceDescriptor(soundSourceDescriptor);
-
-        //SoundMixerDescriptor soundMixerDescriptor;
-
-        //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
-        //        soundMixerDescriptor.setMasterMixer(getController().getRack().getSoundMixer()
-        //                .getMasterMixer());
-        //scene.setSoundMixerDescriptor(soundMixerDescriptor);
-
-        TagUtils.addDefaultTags(name, getController(), scene);
+        //        String name = causticFile.getName().replace(".caustic", "");
+        //        LibraryScene scene = new LibraryScene();
+        //        scene.setMetadataInfo(new MetadataInfo());
+        //
+        //        scene.setId(UUID.randomUUID());
+        //        library.addScene(scene);
+        //
+        //        //--------------------------------------
+        //        SoundSourceDescriptor soundSourceDescriptor = new SoundSourceDescriptor();
+        //
+        //        for (int i = 0; i < 6; i++) {
+        //            Tone tone = soundSource.getTone(i);
+        //            LibraryPatch patch = null;
+        //
+        //            if (tone != null) {
+        //
+        //                patch = new LibraryPatch();
+        //                patch.setName(tone.getName());
+        //                patch.setToneType(tone.getToneType());
+        //                patch.setMetadataInfo(new MetadataInfo());
+        //                patch.setId(UUID.randomUUID());
+        //                TagUtils.addDefaultTags(tone, patch);
+        //                relocatePresetFile(tone, library, patch);
+        //                library.addPatch(patch);
+        //
+        //                tone.setDefaultPatchId(patch.getId());
+        //                soundSourceDescriptor.addTone(tone, patch.getId());
+        //            }
+        //        }
+        //
+        //        scene.setSoundSourceDescriptor(soundSourceDescriptor);
+        //
+        //        //SoundMixerDescriptor soundMixerDescriptor;
+        //
+        //        //        SoundMixerDescriptor soundMixerDescriptor = new SoundMixerDescriptor();
+        //        //        soundMixerDescriptor.setMasterMixer(getController().getRack().getSoundMixer()
+        //        //                .getMasterMixer());
+        //        //scene.setSoundMixerDescriptor(soundMixerDescriptor);
+        //
+        //        TagUtils.addDefaultTags(name, getController(), scene);
     }
 
     private void loadLibraryPhrases(Library library, ISoundSource soundSource) {

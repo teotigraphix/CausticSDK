@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.rack.mixer.SoundMixerChannel;
-
 /**
  * The {@link MixerChannelMessage} holds all OSC messages associated with the
  * {@link SoundMixerChannel} API foreach machine.

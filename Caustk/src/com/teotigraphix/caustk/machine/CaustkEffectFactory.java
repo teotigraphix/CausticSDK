@@ -19,15 +19,11 @@
 
 package com.teotigraphix.caustk.machine;
 
-import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
 public class CaustkEffectFactory {
 
-    private IRack rack;
-
-    public CaustkEffectFactory(IRack rack) {
-        this.rack = rack;
+    public CaustkEffectFactory() {
     }
 
     public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {

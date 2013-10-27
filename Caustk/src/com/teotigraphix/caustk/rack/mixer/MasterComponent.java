@@ -20,17 +20,23 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
+import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MasterComponent implements IRackSerializer {
+public class MasterComponent implements IRackSerializer, IRackAware {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
+
+    // Note; This should be private but, since this runs on Android, referencing
+    // a property is faster than method access, so this is package public for 
+    // subclasses
+    IRack rack;
 
     protected CausticMessage bypassMessage;
 
@@ -39,17 +45,24 @@ public class MasterComponent implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private IRack rack;
-
-    @Tag(1)
     private boolean bypass = false;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    protected ICausticEngine getEngine() {
+    //----------------------------------
+    // bypass
+    //----------------------------------
+
+    @Override
+    public final IRack getRack() {
         return rack;
+    }
+
+    @Override
+    public final void setRack(IRack value) {
+        rack = value;
     }
 
     //----------------------------------
@@ -61,14 +74,14 @@ public class MasterComponent implements IRackSerializer {
     }
 
     boolean isBypass(boolean restore) {
-        return bypassMessage.query(getEngine()) == 1 ? true : false;
+        return bypassMessage.query(rack) == 1 ? true : false;
     }
 
     public void setBypass(boolean value) {
         if (bypass == value)
             return;
         bypass = value;
-        bypassMessage.send(getEngine(), value ? 1 : 0);
+        bypassMessage.send(rack, value ? 1 : 0);
     }
 
     //--------------------------------------------------------------------------
@@ -76,10 +89,6 @@ public class MasterComponent implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     public MasterComponent() {
-    }
-
-    public MasterComponent(IRack rack) {
-        this.rack = rack;
     }
 
     /**
@@ -92,6 +101,11 @@ public class MasterComponent implements IRackSerializer {
      */
     protected final RuntimeException newRangeException(String control, String range, Object value) {
         return ExceptionUtils.newRangeException(control, range, value);
+    }
+
+    @Override
+    public void load(CaustkLibraryFactory factory) {
+        setRack(factory.getRack());
     }
 
     @Override

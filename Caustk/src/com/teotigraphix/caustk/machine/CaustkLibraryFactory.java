@@ -29,7 +29,6 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 import com.teotigraphix.caustk.rack.mixer.MasterDelay;
 import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
 import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
-import com.teotigraphix.caustk.rack.mixer.MasterMixer;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 
 public class CaustkLibraryFactory {
@@ -95,6 +94,7 @@ public class CaustkLibraryFactory {
 
     private CaustkMasterMixerFactory masterMixerFactory;
 
+    @SuppressWarnings("unused")
     private CaustkMasterSequencerFactory masterSequencerFactory;
 
     private IRack rack;
@@ -106,13 +106,13 @@ public class CaustkLibraryFactory {
     public void setRack(IRack value) {
         rack = value;
 
-        sceneFactory = new CaustkSceneFactory(rack);
-        machineFactory = new CaustkMachineFactory(rack);
-        patchFactory = new CaustkPatchFactory(rack);
-        effectFactory = new CaustkEffectFactory(rack);
-        phraseFactory = new CaustkPhraseFactory(rack);
-        masterMixerFactory = new CaustkMasterMixerFactory(rack);
-        masterSequencerFactory = new CaustkMasterSequencerFactory(rack);
+        sceneFactory = new CaustkSceneFactory();
+        machineFactory = new CaustkMachineFactory();
+        patchFactory = new CaustkPatchFactory();
+        effectFactory = new CaustkEffectFactory();
+        phraseFactory = new CaustkPhraseFactory();
+        masterMixerFactory = new CaustkMasterMixerFactory();
+        masterSequencerFactory = new CaustkMasterSequencerFactory();
     }
 
     public CaustkLibraryFactory(IRack rack) {

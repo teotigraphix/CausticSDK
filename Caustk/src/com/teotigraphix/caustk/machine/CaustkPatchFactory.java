@@ -23,15 +23,11 @@ import java.io.IOException;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.rack.IEffect;
-import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
 public class CaustkPatchFactory {
 
-    private IRack rack;
-
-    public CaustkPatchFactory(IRack rack) {
-        this.rack = rack;
+    public CaustkPatchFactory() {
     }
 
     /**

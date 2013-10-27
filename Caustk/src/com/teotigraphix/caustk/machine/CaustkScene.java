@@ -133,6 +133,16 @@ public class CaustkScene implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     /**
+     * Returns the {@link CaustkMachine} at the specified index,
+     * <code>null</code> if does not exist.
+     * 
+     * @param index The machine index.
+     */
+    public CaustkMachine getMachine(int index) {
+        return machines.get(index);
+    }
+
+    /**
      * Loads the {@link CaustkScene} using the {@link #getCausticFile()} passed
      * during scene construction.
      * <p>
@@ -191,4 +201,5 @@ public class CaustkScene implements ICaustkComponent {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
         caustkMachine.load(factory, populateTones);
     }
+
 }

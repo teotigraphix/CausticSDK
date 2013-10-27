@@ -30,12 +30,12 @@ import android.annotation.SuppressLint;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.machine.MixerPreset;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.ITrackSequencer;
 import com.teotigraphix.caustk.rack.ITrackSequencer.OnTrackChange;
 import com.teotigraphix.caustk.rack.ITrackSequencer.TrackChangeKind;
-import com.teotigraphix.caustk.rack.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
 /**
@@ -89,10 +89,10 @@ public class Track {
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the {@link SoundMixerChannel} for the track.
+     * Returns the {@link MixerPreset} for the track.
      */
-    public SoundMixerChannel getMixerChannel() {
-        return getTrackSong().getRack().getSoundMixer().getChannel(getIndex());
+    public MixerPreset getMixer() {
+        return getTrackSong().getRack().getScene().getMachine(index).getMixer();
     }
 
     /**

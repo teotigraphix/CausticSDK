@@ -35,8 +35,8 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryScene;
+import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.rack.mixer.SoundMixer;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 
@@ -75,9 +75,6 @@ public class Rack implements IRack {
     @Tag(1)
     private SoundSource soundSource;
 
-    @Tag(2)
-    private SoundMixer soundMixer;
-
     @Tag(3)
     private SystemSequencer systemSequencer;
 
@@ -104,7 +101,6 @@ public class Rack implements IRack {
             components = new HashMap<Class<? extends IRackComponent>, IRackComponent>();
 
             soundSource = new SoundSource(this);
-            soundMixer = new SoundMixer(this);
             systemSequencer = new SystemSequencer(this);
             trackSequencer = new TrackSequencer(this);
 
@@ -160,12 +156,10 @@ public class Rack implements IRack {
     }
 
     private void toneAdd(Tone tone) {
-        soundMixer.toneAdd(tone);
         trackSequencer.toneAdd(tone);
     }
 
     private void toneRemove(Tone tone) {
-        soundMixer.toneRemove(tone);
         trackSequencer.toneRemove(tone);
     }
 
@@ -206,12 +200,19 @@ public class Rack implements IRack {
     }
 
     //----------------------------------
-    // soundMixer
+    // scene
     //----------------------------------
 
+    private CaustkScene scene;
+
     @Override
-    public final ISoundMixer getSoundMixer() {
-        return soundMixer;
+    public final CaustkScene getScene() {
+        return scene;
+    }
+
+    @Override
+    public void setScene(CaustkScene scene) {
+        this.scene = scene;
     }
 
     //----------------------------------
@@ -336,7 +337,6 @@ public class Rack implements IRack {
         controller = null;
         soundGenerator = null;
         soundSource = null;
-        soundMixer = null;
         systemSequencer = null;
         trackSequencer = null;
     }

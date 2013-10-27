@@ -22,14 +22,9 @@ package com.teotigraphix.caustk.machine;
 import java.io.File;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.rack.IRack;
-
 public class CaustkSceneFactory {
 
-    private IRack rack;
-
-    public CaustkSceneFactory(IRack rack) {
-        this.rack = rack;
+    public CaustkSceneFactory() {
     }
 
     public CaustkScene createScene(String name) {

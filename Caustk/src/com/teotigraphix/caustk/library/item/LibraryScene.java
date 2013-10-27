@@ -21,25 +21,25 @@ package com.teotigraphix.caustk.library.item;
 
 public class LibraryScene extends LibraryItem {
 
-    private SoundSourceDescriptor soundSourceDescriptor;
-
-    public SoundSourceDescriptor getSoundSourceDescriptor() {
-        return soundSourceDescriptor;
-    }
-
-    public void setSoundSourceDescriptor(SoundSourceDescriptor value) {
-        soundSourceDescriptor = value;
-    }
-
-    private SoundMixerDescriptor soundMixerDescriptor;
-
-    public SoundMixerDescriptor getSoundMixerDescriptor() {
-        return soundMixerDescriptor;
-    }
-
-    public void setSoundMixerDescriptor(SoundMixerDescriptor value) {
-        soundMixerDescriptor = value;
-    }
+    //    private SoundSourceDescriptor soundSourceDescriptor;
+    //
+    //    public SoundSourceDescriptor getSoundSourceDescriptor() {
+    //        return soundSourceDescriptor;
+    //    }
+    //
+    //    public void setSoundSourceDescriptor(SoundSourceDescriptor value) {
+    //        soundSourceDescriptor = value;
+    //    }
+    //
+    //    private SoundMixerDescriptor soundMixerDescriptor;
+    //
+    //    public SoundMixerDescriptor getSoundMixerDescriptor() {
+    //        return soundMixerDescriptor;
+    //    }
+    //
+    //    public void setSoundMixerDescriptor(SoundMixerDescriptor value) {
+    //        soundMixerDescriptor = value;
+    //    }
 
     public LibraryScene() {
     }

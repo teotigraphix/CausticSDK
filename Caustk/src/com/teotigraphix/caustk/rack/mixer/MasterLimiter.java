@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 
 public class MasterLimiter extends MasterComponent {
 
@@ -54,7 +54,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getPre(boolean restore) {
-        return MasterMixerMessage.LIMITER_PRE.query(getEngine());
+        return MasterMixerMessage.LIMITER_PRE.query(rack);
     }
 
     public void setPre(float value) {
@@ -63,7 +63,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 8f)
             throw newRangeException("pre", "0..8", value);
         pre = value;
-        MasterMixerMessage.LIMITER_PRE.send(getEngine(), value);
+        MasterMixerMessage.LIMITER_PRE.send(rack, value);
     }
 
     //----------------------------------
@@ -75,7 +75,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getAttack(boolean restore) {
-        return MasterMixerMessage.LIMITER_ATTACK.query(getEngine());
+        return MasterMixerMessage.LIMITER_ATTACK.query(rack);
     }
 
     public void setAttack(float value) {
@@ -84,7 +84,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 0.1f)
             throw newRangeException("attack", "0..0.1", value);
         attack = value;
-        MasterMixerMessage.LIMITER_ATTACK.send(getEngine(), value);
+        MasterMixerMessage.LIMITER_ATTACK.send(rack, value);
     }
 
     //----------------------------------
@@ -96,7 +96,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getRelease(boolean restore) {
-        return MasterMixerMessage.LIMITER_RELEASE.query(getEngine());
+        return MasterMixerMessage.LIMITER_RELEASE.query(rack);
     }
 
     public void setRelease(float value) {
@@ -105,7 +105,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 0.5f)
             throw newRangeException("release", "0..0.5", value);
         release = value;
-        MasterMixerMessage.LIMITER_RELEASE.send(getEngine(), value);
+        MasterMixerMessage.LIMITER_RELEASE.send(rack, value);
     }
 
     //----------------------------------
@@ -117,7 +117,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getPost(boolean restore) {
-        return MasterMixerMessage.LIMITER_POST.query(getEngine());
+        return MasterMixerMessage.LIMITER_POST.query(rack);
     }
 
     public void setPost(float value) {
@@ -126,7 +126,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 2f)
             throw newRangeException("post", "0..2", value);
         post = value;
-        MasterMixerMessage.LIMITER_POST.send(getEngine(), value);
+        MasterMixerMessage.LIMITER_POST.send(rack, value);
     }
 
     //--------------------------------------------------------------------------
@@ -137,9 +137,13 @@ public class MasterLimiter extends MasterComponent {
         bypassMessage = MasterMixerMessage.LIMITER_BYPASS;
     }
 
-    public MasterLimiter(IRack rack) {
-        super(rack);
-        bypassMessage = MasterMixerMessage.LIMITER_BYPASS;
+    //--------------------------------------------------------------------------
+    // IRackSerializer API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void load(CaustkLibraryFactory factory) {
+        super.load(factory);
     }
 
     @Override
@@ -154,9 +158,9 @@ public class MasterLimiter extends MasterComponent {
     @Override
     public void update() {
         super.update();
-        MasterMixerMessage.LIMITER_ATTACK.send(getEngine(), attack);
-        MasterMixerMessage.LIMITER_POST.send(getEngine(), post);
-        MasterMixerMessage.LIMITER_PRE.send(getEngine(), pre);
-        MasterMixerMessage.LIMITER_RELEASE.send(getEngine(), release);
+        MasterMixerMessage.LIMITER_ATTACK.send(rack, attack);
+        MasterMixerMessage.LIMITER_POST.send(rack, post);
+        MasterMixerMessage.LIMITER_PRE.send(rack, pre);
+        MasterMixerMessage.LIMITER_RELEASE.send(rack, release);
     }
 }

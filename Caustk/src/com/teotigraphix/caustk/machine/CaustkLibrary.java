@@ -100,6 +100,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * 
  * @author Michael Schmalle
  */
+@SuppressWarnings("unused")
 public class CaustkLibrary {
 
     private static final String LIBRARIES = "libraries";

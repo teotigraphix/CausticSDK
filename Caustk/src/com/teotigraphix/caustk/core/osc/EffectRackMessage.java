@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.core.osc;
 
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.mixer.SoundMixerChannel;
 
 /**
  * The {@link EffectRackMessage} holds all OSC messages associated with the

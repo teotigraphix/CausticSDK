@@ -19,9 +19,47 @@
 
 package com.teotigraphix.caustk.core;
 
+import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
+import com.teotigraphix.caustk.rack.IRack;
+
+/**
+ * @author Michael Schmalle
+ */
 public interface IRackSerializer {
 
+    /**
+     * Loads the rack component from a <code>.caustic</code> file.
+     * <p>
+     * The class that implements this method if {@link IRackAware} will call
+     * {@link IRackAware#setRack(IRack)} on itself using the
+     * {@link CaustkLibraryFactory#getRack()} which is the current rack loading
+     * the file.
+     * <p>
+     * Calling this method will wipe out all state, rack references and sub
+     * components creating new components and loading from a caustic file.
+     * <p>
+     * The quickest way to wipe state is loading a blank <code>.caustic</code>
+     * file where all defaults are loaded by query from a restore() call after
+     * the load.
+     * 
+     * @param factory The library factory.
+     */
+    void load(CaustkLibraryFactory factory);
+
+    /**
+     * Restores the rack, each component implementing the method will use OSC
+     * message queries to set instance properties.
+     * <p>
+     * The restore() method differs from the load() in that the load() method
+     * will actually create sub components. Where restore() just updates state
+     * on the existing components.
+     */
     void restore();
 
+    /**
+     * Updates the native rack with instance property state that exists on the
+     * rack component, the component will send setter commands to the native
+     * rack.
+     */
     void update();
 }

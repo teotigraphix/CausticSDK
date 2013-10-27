@@ -27,8 +27,8 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.machine.MixerPreset;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.mixer.SoundMixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
@@ -84,8 +84,8 @@ public abstract class Tone implements IRestore {
         return toneType;
     }
 
-    public SoundMixerChannel getMixerChannel() {
-        return rack.getSoundMixer().getChannel(this);
+    public MixerPreset getMixer() {
+        return rack.getScene().getMachine(index).getMixer();
     }
 
     public SynthComponent getSynth() {
@@ -124,7 +124,7 @@ public abstract class Tone implements IRestore {
             return;
         muted = value;
         // firePropertyChange(TonePropertyKind.MUTE, mMuted);
-        rack.getSoundMixer().getChannel(getIndex()).setMute(muted);
+        getMixer().setMute(muted);
     }
 
     //----------------------------------

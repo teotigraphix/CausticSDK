@@ -21,14 +21,9 @@ package com.teotigraphix.caustk.machine;
 
 import java.util.UUID;
 
-import com.teotigraphix.caustk.rack.IRack;
-
 public class CaustkMachineFactory {
 
-    private IRack rack;
-
-    public CaustkMachineFactory(IRack rack) {
-        this.rack = rack;
+    public CaustkMachineFactory() {
     }
 
     public CaustkMachine createMachine(MachineType machineType) {

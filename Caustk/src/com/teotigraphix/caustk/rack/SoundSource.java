@@ -36,10 +36,7 @@ import org.apache.commons.io.FileUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.library.core.Library;
-import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.library.item.LibraryScene;
-import com.teotigraphix.caustk.library.item.SoundMixerChannelDescriptor;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
 import com.teotigraphix.caustk.rack.tone.EightBitSynth;
@@ -136,27 +133,27 @@ public class SoundSource extends RackComponent implements ISoundSource {
     //--------------------------------------------------------------------------
 
     public void createScene(LibraryScene libraryScene) throws CausticException {
-        // make tones
-        for (ToneDescriptor descriptor : libraryScene.getSoundSourceDescriptor().getDescriptors()
-                .values()) {
-            Tone tone = getRack().createTone(descriptor);
-            UUID patchId = descriptor.getPatchId();
-            Library library = getRack().getLibrary();
-            if (library != null && patchId != null) {
-                LibraryPatch libraryPatch = library.findPatchById(patchId);
-                library.assignPatch(tone, libraryPatch);
-            }
-
-            SoundMixerChannelDescriptor channelDescriptor = libraryScene.getSoundSourceDescriptor()
-                    .getChannels().get(tone.getIndex());
-
-            channelDescriptor.update(tone);
-        }
-
-        //        SoundMixerState mixerState = scene.getSoundMixerState();
-        //        SoundMixerModel model = controller.getSerializeService().fromString(
-        //                mixerState.getData(), SoundMixerModel.class);
-        //        model.update();
+        //        // make tones
+        //        for (ToneDescriptor descriptor : libraryScene.getSoundSourceDescriptor().getDescriptors()
+        //                .values()) {
+        //            Tone tone = getRack().createTone(descriptor);
+        //            UUID patchId = descriptor.getPatchId();
+        //            Library library = getRack().getLibrary();
+        //            if (library != null && patchId != null) {
+        //                LibraryPatch libraryPatch = library.findPatchById(patchId);
+        //                library.assignPatch(tone, libraryPatch);
+        //            }
+        //
+        //            //            SoundMixerChannelDescriptor channelDescriptor = libraryScene.getSoundSourceDescriptor()
+        //            //                    .getChannels().get(tone.getIndex());
+        //            //
+        //            //            channelDescriptor.update(tone);
+        //        }
+        //
+        //        //        SoundMixerState mixerState = scene.getSoundMixerState();
+        //        //        SoundMixerModel model = controller.getSerializeService().fromString(
+        //        //                mixerState.getData(), SoundMixerModel.class);
+        //        //        model.update();
     }
 
     @SuppressWarnings("unchecked")
