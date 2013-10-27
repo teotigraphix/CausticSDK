@@ -19,19 +19,33 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class ChorusEffect extends EffectBase {
 
-    private static final long serialVersionUID = 5992998482184237710L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float depth = 0.25f;
+
+    @Tag(101)
+    private float rate = 0.4f;
+
+    @Tag(102)
+    private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // depth
     //----------------------------------
-
-    private float depth = 0.25f;
 
     public float getDepth() {
         return depth;
@@ -54,8 +68,6 @@ public class ChorusEffect extends EffectBase {
     // rate
     //----------------------------------
 
-    private float rate = 0.4f;
-
     public float getRate() {
         return rate;
     }
@@ -76,8 +88,6 @@ public class ChorusEffect extends EffectBase {
     //----------------------------------
     // wet
     //----------------------------------
-
-    private float wet = 0.5f;
 
     public float getWet() {
         return wet;

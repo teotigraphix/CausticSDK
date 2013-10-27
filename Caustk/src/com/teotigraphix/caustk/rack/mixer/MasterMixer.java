@@ -171,21 +171,21 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
-    public void restore(IRack rack) {
+    public void restore() {
         setVolume(getVolume(true));
-        equalizer.restore(rack);
-        limiter.restore(rack);
-        delay.restore(rack);
-        reverb.restore(rack);
+        equalizer.restore();
+        limiter.restore();
+        delay.restore();
+        reverb.restore();
     }
 
     @Override
-    public void update(IRack rack) {
+    public void update() {
         MasterMixerMessage.VOLUME.send(rack, volume);
-        equalizer.update(rack);
-        limiter.update(rack);
-        delay.update(rack);
-        reverb.update(rack);
+        equalizer.update();
+        limiter.update();
+        delay.update();
+        reverb.update();
     }
 
     protected void fireChange(MasterMixerChangeKind kind, float value) {

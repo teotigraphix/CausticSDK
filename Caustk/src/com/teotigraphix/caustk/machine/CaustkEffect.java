@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.machine;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.effect.EffectUtils;
+import com.teotigraphix.caustk.rack.effect.EffectFactory;
 
 public class CaustkEffect {
 
@@ -109,7 +109,7 @@ public class CaustkEffect {
      * @param factory The library factory.
      */
     public void load(CaustkLibraryFactory factory) {
-        effect = EffectUtils.create(effectType, index, patch.getMachine().getIndex());
+        effect = EffectFactory.create(effectType, index, patch.getMachine().getIndex());
         effect.restore();
     }
 }

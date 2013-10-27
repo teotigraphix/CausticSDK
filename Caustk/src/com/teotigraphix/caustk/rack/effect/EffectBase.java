@@ -19,23 +19,84 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
-import com.teotigraphix.caustk.core.ICausticEngine;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
+/**
+ * @author Michael Schmalle
+ */
 public abstract class EffectBase implements IEffect {
 
-    protected ICausticEngine getEngine() {
-        return rack;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private IRack rack;
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private EffectType type;
+
+    @Tag(1)
+    private int toneIndex;
+
+    @Tag(2)
+    private int slot;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // type
+    //----------------------------------
+
+    @Override
+    public final EffectType getType() {
+        return type;
     }
+
+    //----------------------------------
+    // slot
+    //----------------------------------
+
+    @Override
+    public int getSlot() {
+        return slot;
+    }
+
+    @Override
+    public void setSlot(int value) {
+        slot = value;
+    }
+
+    //----------------------------------
+    // toneIndex
+    //----------------------------------
+
+    @Override
+    public int getToneIndex() {
+        return toneIndex;
+    }
+
+    @Override
+    public void setToneIndex(int value) {
+        toneIndex = value;
+    }
+
+    //--------------------------------------------------------------------------
+    // IRackAware API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // rack
     //----------------------------------
-
-    private IRack rack;
 
     @Override
     public IRack getRack() {
@@ -47,78 +108,70 @@ public abstract class EffectBase implements IEffect {
         this.rack = rack;
     }
 
-    //----------------------------------
-    // type
-    //----------------------------------
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
-    private EffectType type;
-
-    @Override
-    public final EffectType getType() {
-        return type;
+    /*
+     * Serialization.
+     */
+    EffectBase() {
     }
 
-    //----------------------------------
-    // toneIndex
-    //----------------------------------
-
-    private int toneIndex;
-
-    @Override
-    public int getToneIndex() {
-        return toneIndex;
-    }
-
-    //----------------------------------
-    // slot
-    //----------------------------------
-
-    private int slot;
-
-    @Override
-    public int getSlot() {
-        return slot;
-    }
-
-    protected void setSlot(int value) {
-        slot = value;
-    }
-
+    /**
+     * @see EffectFactory#create(EffectType, int, int)
+     */
     public EffectBase(EffectType type, int slot, int toneIndex) {
         this.type = type;
         this.slot = slot;
         this.toneIndex = toneIndex;
     }
 
-    /**
-     * /caustic/effects_rack/[machine_index]/[slot]/[param]
-     * 
-     * @param control
-     * @return
-     */
-    protected final float get(IEffectControl control) {
-        return EffectRackMessage.GET.query(getEngine(), getToneIndex(), getSlot(),
-                control.getControl());
-    }
-
-    /**
-     * /caustic/effects_rack/[machine_index]/[slot]/[param] [value]
-     * 
-     * @param control
-     * @param value
-     */
-    protected final void set(IEffectControl control, float value) {
-        EffectRackMessage.SET.send(getEngine(), getToneIndex(), getSlot(), control.getControl(),
-                value);
-    }
-
-    protected final void set(IEffectControl control, int value) {
-        EffectRackMessage.SET.send(getEngine(), getToneIndex(), getSlot(), control.getControl(),
-                value);
-    }
+    //--------------------------------------------------------------------------
+    // IRackSerializer API
+    //--------------------------------------------------------------------------
 
     @Override
     public void restore() {
+    }
+
+    @Override
+    public void update() {
+    }
+
+    //--------------------------------------------------------------------------
+    // Protected :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns a float value for the {@link IEffectControl} parameter.
+     * 
+     * @param control The control to query.
+     */
+    protected final float get(IEffectControl control) {
+        return EffectRackMessage.GET.query(rack, getToneIndex(), getSlot(), control.getControl());
+    }
+
+    /**
+     * Sets a float value using the {@link IEffectControl} parameter on the
+     * effect.
+     * 
+     * @param control The target control on the effect.
+     * @param value The new float value for the control.
+     */
+    protected final void set(IEffectControl control, float value) {
+        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
+    }
+
+    /**
+     * Sets a int value using the {@link IEffectControl} parameter on the
+     * effect.
+     * 
+     * @param control The target control on the effect.
+     * @param value The new int value for the control.
+     */
+    protected final void set(IEffectControl control, int value) {
+        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
     }
 
     /**

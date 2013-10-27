@@ -19,19 +19,36 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class FlangerEffect extends EffectBase {
 
-    private static final long serialVersionUID = 3642024469361965693L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float depth = 0.25f;
+
+    @Tag(101)
+    private float feedback = 0.4f;
+
+    @Tag(102)
+    private float rate = 0.4f;
+
+    @Tag(103)
+    private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // depth
     //----------------------------------
-
-    private float depth = 0.25f;
 
     public float getDepth() {
         return depth;
@@ -54,8 +71,6 @@ public class FlangerEffect extends EffectBase {
     // feedback
     //----------------------------------
 
-    private float feedback = 0.4f;
-
     public float getFeedback() {
         return feedback;
     }
@@ -77,8 +92,6 @@ public class FlangerEffect extends EffectBase {
     // rate
     //----------------------------------
 
-    private float rate = 0.4f;
-
     public float getRate() {
         return rate;
     }
@@ -99,8 +112,6 @@ public class FlangerEffect extends EffectBase {
     //----------------------------------
     // wet
     //----------------------------------
-
-    private float wet = 0.5f;
 
     public float getWet() {
         return wet;

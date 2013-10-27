@@ -1,6 +1,9 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+/**
+ * @author Michael Schmalle
+ */
 public enum EffectType {
 
     /**

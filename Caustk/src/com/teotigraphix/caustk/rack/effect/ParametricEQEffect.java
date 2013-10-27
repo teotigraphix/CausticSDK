@@ -19,19 +19,33 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class ParametricEQEffect extends EffectBase {
 
-    private static final long serialVersionUID = -2077276214520815273L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float frequency = 0.54f;
+
+    @Tag(101)
+    private int gain = 0;
+
+    @Tag(102)
+    private float width = 0.49999994f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // frequency
     //----------------------------------
-
-    private float frequency = 0.54f;
 
     public float getFrequency() {
         return frequency;
@@ -54,8 +68,6 @@ public class ParametricEQEffect extends EffectBase {
     // gain
     //----------------------------------
 
-    private int gain = 0;
-
     public int getGain() {
         return gain;
     }
@@ -76,8 +88,6 @@ public class ParametricEQEffect extends EffectBase {
     //----------------------------------
     // wet
     //----------------------------------
-
-    private float width = 0.49999994f;
 
     public float getWidth() {
         return width;

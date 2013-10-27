@@ -19,19 +19,36 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class DistortionEffect extends EffectBase {
 
-    private static final long serialVersionUID = 7727552593282987957L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private Program mProgram = Program.OVERDRIVE;
+
+    @Tag(101)
+    private float preGain;
+
+    @Tag(102)
+    private float amount = 16.3f;
+
+    @Tag(103)
+    private float postGain;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // program
     //----------------------------------
-
-    private Program mProgram = Program.OVERDRIVE;
 
     public Program getProgram() {
         return mProgram;
@@ -51,8 +68,6 @@ public class DistortionEffect extends EffectBase {
     //----------------------------------
     // pre
     //----------------------------------
-
-    private float preGain;
 
     public float getPreGain() {
         return preGain;
@@ -75,8 +90,6 @@ public class DistortionEffect extends EffectBase {
     // amount
     //----------------------------------
 
-    private float amount = 16.3f;
-
     public float getAmount() {
         return amount;
     }
@@ -97,8 +110,6 @@ public class DistortionEffect extends EffectBase {
     //----------------------------------
     // post
     //----------------------------------
-
-    private float postGain;
 
     public float getPostGain() {
         return postGain;

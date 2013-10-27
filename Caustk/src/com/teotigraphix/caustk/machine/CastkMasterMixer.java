@@ -46,7 +46,7 @@ public class CastkMasterMixer {
         final IRack rack = factory.getRack();
 
         masterMixer = new MasterMixer(rack);
-        masterMixer.restore(rack);
+        masterMixer.restore();
         rack.getSoundMixer().setMasterMixer(masterMixer);
     }
 }

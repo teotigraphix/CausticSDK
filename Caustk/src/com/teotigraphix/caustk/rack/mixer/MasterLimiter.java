@@ -143,8 +143,8 @@ public class MasterLimiter extends MasterComponent {
     }
 
     @Override
-    public void restore(IRack rack) {
-        super.restore(rack);
+    public void restore() {
+        super.restore();
         setAttack(getAttack(true));
         setPost(getPost(true));
         setPre(getPre(true));
@@ -152,8 +152,8 @@ public class MasterLimiter extends MasterComponent {
     }
 
     @Override
-    public void update(IRack rack) {
-        super.update(rack);
+    public void update() {
+        super.update();
         MasterMixerMessage.LIMITER_ATTACK.send(getEngine(), attack);
         MasterMixerMessage.LIMITER_POST.send(getEngine(), post);
         MasterMixerMessage.LIMITER_PRE.send(getEngine(), pre);

@@ -19,15 +19,33 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class PhaserEffect extends EffectBase {
 
-    private static final long serialVersionUID = -2505861149382527L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float mDepth = 0.8f;
+
+    @Tag(101)
+    private float mFeedback = 0.47f;
+
+    @Tag(102)
+    private int mRate = 10;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // depth
     //----------------------------------
-
-    private float mDepth = 0.8f;
 
     public float getDepth() {
         return mDepth;
@@ -50,8 +68,6 @@ public class PhaserEffect extends EffectBase {
     // feedback
     //----------------------------------
 
-    private float mFeedback = 0.47f;
-
     public float getFeedback() {
         return mFeedback;
     }
@@ -72,8 +88,6 @@ public class PhaserEffect extends EffectBase {
     //----------------------------------
     // rate
     //----------------------------------
-
-    private int mRate = 10;
 
     public int getRate() {
         return mRate;

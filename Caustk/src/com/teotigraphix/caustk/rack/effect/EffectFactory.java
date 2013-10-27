@@ -21,7 +21,10 @@ package com.teotigraphix.caustk.rack.effect;
 
 import com.teotigraphix.caustk.rack.IEffect;
 
-public final class EffectUtils {
+/**
+ * @author Michael Schmalle
+ */
+public final class EffectFactory {
 
     public static IEffect create(EffectType type, int slot, int toneIndex) {
         IEffect effect = null;

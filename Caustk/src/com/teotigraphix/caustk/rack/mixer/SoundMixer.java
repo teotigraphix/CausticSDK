@@ -64,7 +64,7 @@ public class SoundMixer extends RackComponent implements ISoundMixer {
     @Override
     public void setMasterMixer(MasterMixer value) {
         masterMixer = value;
-        masterMixer.update(getRack());
+        masterMixer.update();
     }
 
     @Override

@@ -95,12 +95,12 @@ public class MasterComponent implements IRackSerializer {
     }
 
     @Override
-    public void restore(IRack rack) {
+    public void restore() {
         setBypass(isBypass(true));
     }
 
     @Override
-    public void update(IRack rack) {
+    public void update() {
         bypassMessage.send(rack, bypass ? 1 : 0);
     }
 }

@@ -19,19 +19,39 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class CompressorEffect extends EffectBase {
 
-    private static final long serialVersionUID = 2125317745521991193L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float attack = 0.01f;
+
+    @Tag(101)
+    private float ratio = 1f;
+
+    @Tag(102)
+    private float release = 0.05f;
+
+    @Tag(103)
+    private int sidechain = -1;
+
+    @Tag(104)
+    private float threshold = 0.1f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // attack
     //----------------------------------
-
-    private float attack = 0.01f;
 
     public float getAttack() {
         return attack;
@@ -54,8 +74,6 @@ public class CompressorEffect extends EffectBase {
     // ratio
     //----------------------------------
 
-    private float ratio = 1f;
-
     public float getRatio() {
         return ratio;
     }
@@ -76,8 +94,6 @@ public class CompressorEffect extends EffectBase {
     //----------------------------------
     // release
     //----------------------------------
-
-    private float release = 0.05f;
 
     public float getRelease() {
         return release;
@@ -100,8 +116,6 @@ public class CompressorEffect extends EffectBase {
     // sidechain
     //----------------------------------
 
-    private int sidechain = -1;
-
     public int getSidechain() {
         return sidechain;
     }
@@ -122,8 +136,6 @@ public class CompressorEffect extends EffectBase {
     //----------------------------------
     // threshold
     //----------------------------------
-
-    private float threshold = 0.1f;
 
     public float getThreshold() {
         return threshold;

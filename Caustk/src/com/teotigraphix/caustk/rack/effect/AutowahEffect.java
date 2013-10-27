@@ -19,19 +19,39 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class AutowahEffect extends EffectBase {
 
-    private static final long serialVersionUID = 5173843619795663375L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private float cutoff = 2.23f;
+
+    @Tag(101)
+    private float depth = 1f;
+
+    @Tag(102)
+    private float resonance = 0.5f;
+
+    @Tag(103)
+    private float speed = 0.4f;
+
+    @Tag(104)
+    private float wet = 1f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // cutoff
     //----------------------------------
-
-    private float cutoff = 2.23f;
 
     public float getCutoff() {
         return cutoff;
@@ -54,8 +74,6 @@ public class AutowahEffect extends EffectBase {
     // depth
     //----------------------------------
 
-    private float depth = 1f;
-
     public float getDepth() {
         return depth;
     }
@@ -76,8 +94,6 @@ public class AutowahEffect extends EffectBase {
     //----------------------------------
     // resonance
     //----------------------------------
-
-    private float resonance = 0.5f;
 
     public float getResonance() {
         return resonance;
@@ -100,8 +116,6 @@ public class AutowahEffect extends EffectBase {
     // speed
     //----------------------------------
 
-    private float speed = 0.4f;
-
     public float getSpeed() {
         return speed;
     }
@@ -123,10 +137,8 @@ public class AutowahEffect extends EffectBase {
     // wet
     //----------------------------------
 
-    private float mWet = 1f;
-
     public float getWet() {
-        return mWet;
+        return wet;
     }
 
     float getWet(boolean restore) {
@@ -134,12 +146,12 @@ public class AutowahEffect extends EffectBase {
     }
 
     public void setWet(float value) {
-        if (value == mWet)
+        if (value == wet)
             return;
         if (value < 0f || value > 1f)
             throw newRangeException(AutowahControl.Wet, "0..1", value);
-        mWet = value;
-        set(AutowahControl.Wet, mWet);
+        wet = value;
+        set(AutowahControl.Wet, wet);
     }
 
     public AutowahEffect(int slot, int toneIndex) {

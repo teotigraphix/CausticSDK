@@ -261,8 +261,8 @@ public class MasterDelay extends MasterComponent {
     }
 
     @Override
-    public void restore(IRack rack) {
-        super.restore(rack);
+    public void restore() {
+        super.restore();
         setDamping(getDamping(true));
         setFeedback(getFeedback(true));
         setFeedbackFirst(getFeedbackFirst(true));
@@ -275,8 +275,8 @@ public class MasterDelay extends MasterComponent {
     }
 
     @Override
-    public void update(IRack rack) {
-        super.update(rack);
+    public void update() {
+        super.update();
         MasterMixerMessage.DELAY_DAMPING.send(getEngine(), damping);
         MasterMixerMessage.DELAY_FEEDBACK.send(getEngine(), feedback);
         MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(getEngine(), feedbackFirst);

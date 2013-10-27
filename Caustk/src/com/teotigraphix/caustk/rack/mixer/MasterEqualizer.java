@@ -167,8 +167,8 @@ public class MasterEqualizer extends MasterComponent {
     }
 
     @Override
-    public void restore(IRack rack) {
-        super.restore(rack);
+    public void restore() {
+        super.restore();
         setBass(getBass(true));
         setBassMidFreq(getBassMidFreq(true));
         setHigh(getHigh(true));
@@ -177,8 +177,8 @@ public class MasterEqualizer extends MasterComponent {
     }
 
     @Override
-    public void update(IRack rack) {
-        super.update(rack);
+    public void update() {
+        super.update();
         MasterMixerMessage.EQ_BASS.send(getEngine(), bass);
         MasterMixerMessage.EQ_BASSMID_FREQ.send(getEngine(), bassMidFreq);
         MasterMixerMessage.EQ_HIGH.send(getEngine(), high);

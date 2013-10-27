@@ -19,19 +19,36 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
+/**
+ * @author Michael Schmalle
+ */
 public class BitcrusherEffect extends EffectBase {
 
-    private static final long serialVersionUID = -446049485878035744L;
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private int depth = 3;
+
+    @Tag(101)
+    private float jitter = 0f;
+
+    @Tag(102)
+    private float rate = 0.1f;
+
+    @Tag(103)
+    private float wet = 1f;
 
     //--------------------------------------------------------------------------
-    // API :: Properties
+    // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
     // depth
     //----------------------------------
-
-    private int depth = 3;
 
     public int getDepth() {
         return depth;
@@ -54,8 +71,6 @@ public class BitcrusherEffect extends EffectBase {
     // jitter
     //----------------------------------
 
-    private float jitter = 0f;
-
     public float getJitter() {
         return jitter;
     }
@@ -77,8 +92,6 @@ public class BitcrusherEffect extends EffectBase {
     // rate
     //----------------------------------
 
-    private float rate = 0.1f;
-
     public float getRate() {
         return rate;
     }
@@ -99,8 +112,6 @@ public class BitcrusherEffect extends EffectBase {
     //----------------------------------
     // wet
     //----------------------------------
-
-    private float wet = 1f;
 
     public float getWet() {
         return wet;

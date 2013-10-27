@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.ISoundMixer.OnSoundMixerChannelValueChange;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.effect.EffectUtils;
+import com.teotigraphix.caustk.rack.effect.EffectFactory;
 import com.teotigraphix.caustk.rack.mixer.SoundMixer.MixerInput;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
@@ -100,7 +100,7 @@ public class SoundMixerChannel implements IRestore {
     public IEffect addEffect(EffectType type, int slot) throws CausticException {
         if (effects.containsKey(slot))
             throw new CausticException("Channel already contains slot:" + slot);
-        IEffect effect = EffectUtils.create(type, slot, getIndex());
+        IEffect effect = EffectFactory.create(type, slot, getIndex());
         effect.setRack(rack);
         EffectRackMessage.CREATE.send(getEngine(), getIndex(), slot, type.getValue());
         effects.put(slot, effect);
@@ -382,7 +382,7 @@ public class SoundMixerChannel implements IRestore {
     }
 
     private void restoreEffect(EffectType type, int slot) {
-        IEffect effect = EffectUtils.create(type, slot, getIndex());
+        IEffect effect = EffectFactory.create(type, slot, getIndex());
         effect.setRack(rack);
         effects.put(slot, effect);
         effect.restore();

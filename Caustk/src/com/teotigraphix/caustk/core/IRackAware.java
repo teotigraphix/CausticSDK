@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2012 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,13 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack.effect;
+package com.teotigraphix.caustk.core;
 
-/**
- * @author Michael Schmalle
- */
-public interface IEffectControl {
-    String getControl();
+import com.teotigraphix.caustk.rack.IRack;
+
+public interface IRackAware {
+
+    IRack getRack();
+
+    void setRack(IRack rack);
 }

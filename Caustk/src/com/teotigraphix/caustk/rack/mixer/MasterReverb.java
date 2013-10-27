@@ -287,8 +287,8 @@ public class MasterReverb extends MasterComponent {
     }
 
     @Override
-    public void restore(IRack rack) {
-        super.restore(rack);
+    public void restore() {
+        super.restore();
         setDiffuse(getDiffuse(true));
         setDitherEchoes(getDitherEchoes(true));
         setERDecay(getERDecay(true));
@@ -302,8 +302,8 @@ public class MasterReverb extends MasterComponent {
     }
 
     @Override
-    public void update(IRack rack) {
-        super.update(rack);
+    public void update() {
+        super.update();
         MasterMixerMessage.REVERB_DIFFUSE.send(getEngine(), diffuse);
         MasterMixerMessage.REVERB_DITHER_ECHOS.send(getEngine(), ditherEchoes);
         MasterMixerMessage.REVERB_ER_DECAY.send(getEngine(), erDecay);
