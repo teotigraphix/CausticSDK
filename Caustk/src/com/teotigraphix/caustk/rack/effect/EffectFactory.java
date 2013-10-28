@@ -26,6 +26,20 @@ import com.teotigraphix.caustk.rack.IEffect;
  */
 public final class EffectFactory {
 
+    /**
+     * Creates an empty {@link IEffect} instance.
+     * 
+     * @param type The type of effect to create.
+     */
+    public static IEffect create(EffectType type) {
+        return create(type, -1, -1);
+    }
+
+    /**
+     * @param type
+     * @param slot
+     * @param toneIndex
+     */
     public static IEffect create(EffectType type, int slot, int toneIndex) {
         IEffect effect = null;
         switch (type) {
@@ -63,5 +77,4 @@ public final class EffectFactory {
         }
         return effect;
     }
-
 }

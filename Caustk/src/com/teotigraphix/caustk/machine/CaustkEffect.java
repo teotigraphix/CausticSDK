@@ -19,9 +19,6 @@
 
 package com.teotigraphix.caustk.machine;
 
-import java.io.File;
-import java.util.UUID;
-
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.rack.IEffect;
@@ -38,13 +35,7 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private UUID id;
-
-    @Tag(1)
-    private String name;
-
-    @Tag(2)
-    private File file;
+    private ComponentInfo info;
 
     @Tag(10)
     private int index = -1;
@@ -63,30 +54,12 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // id
+    // info
     //----------------------------------
 
     @Override
-    public UUID getId() {
-        return id;
-    }
-
-    //----------------------------------
-    // name
-    //----------------------------------
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    //----------------------------------
-    // file
-    //----------------------------------
-
-    @Override
-    public File getFile() {
-        return file;
+    public final ComponentInfo getInfo() {
+        return info;
     }
 
     //----------------------------------
@@ -117,8 +90,9 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     // effect
     //----------------------------------
 
-    public IEffect getEffect() {
-        return effect;
+    @SuppressWarnings("unchecked")
+    public <T extends IEffect> T getEffect() {
+        return (T)effect;
     }
 
     //----------------------------------
@@ -139,19 +113,19 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     CaustkEffect() {
     }
 
-    CaustkEffect(UUID id, EffectType effectType) {
-        this.id = id;
+    CaustkEffect(ComponentInfo info, EffectType effectType) {
+        this.info = info;
         this.effectType = effectType;
     }
 
-    CaustkEffect(UUID id, int index, EffectType effectType) {
-        this.id = id;
+    CaustkEffect(ComponentInfo info, int index, EffectType effectType) {
+        this.info = info;
         this.index = index;
         this.effectType = effectType;
     }
 
-    CaustkEffect(UUID id, int index, EffectType effectType, CaustkPatch caustkPatch) {
-        this.id = id;
+    CaustkEffect(ComponentInfo info, int index, EffectType effectType, CaustkPatch caustkPatch) {
+        this.info = info;
         this.index = index;
         this.effectType = effectType;
         this.patch = caustkPatch;
@@ -162,13 +136,20 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     //--------------------------------------------------------------------------
 
     /**
+     * Creates the {@link IEffect} but assigns -1 to the slot and machine index.
+     */
+    public void create() {
+        effect = createEffect(-1, -1);
+    }
+
+    /**
      * Loads and restores the {@link IEffect} for the machine.
      * 
      * @param factory The library factory.
      */
     @Override
     public void load(CaustkLibraryFactory factory) {
-        effect = EffectFactory.create(effectType, index, patch.getMachine().getIndex());
+        effect = createEffect(index, patch.getMachine().getIndex());
     }
 
     @Override
@@ -180,4 +161,7 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     public void update() {
     }
 
+    IEffect createEffect(int slot, int toneIndex) {
+        return EffectFactory.create(effectType, slot, toneIndex);
+    }
 }

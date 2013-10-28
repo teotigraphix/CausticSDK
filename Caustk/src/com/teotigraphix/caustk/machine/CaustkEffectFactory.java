@@ -19,28 +19,29 @@
 
 package com.teotigraphix.caustk.machine;
 
-import java.util.UUID;
-
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
-public class CaustkEffectFactory {
+public class CaustkEffectFactory extends CaustkFactoryBase {
 
     public CaustkEffectFactory() {
     }
 
-    public CaustkEffect createEffect(EffectType effectType) {
-        CaustkEffect caustkEffect = new CaustkEffect(UUID.randomUUID(), effectType);
+    public CaustkEffect createEffect(ComponentInfo info, EffectType effectType) {
+        CaustkEffect caustkEffect = new CaustkEffect(info, effectType);
+        // create the internal IEffect instance with slot and toneIndex set to -1
+        caustkEffect.create();
         return caustkEffect;
     }
 
     public CaustkEffect createEffect(int slot, EffectType effectType) {
-        CaustkEffect caustkEffect = new CaustkEffect(UUID.randomUUID(), slot, effectType);
+        ComponentInfo info = getFactory().createInfo(ComponentType.Effect);
+        CaustkEffect caustkEffect = new CaustkEffect(info, slot, effectType);
         return caustkEffect;
     }
 
     public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {
-        CaustkEffect caustkEffect = new CaustkEffect(UUID.randomUUID(), slot, effectType,
-                caustkPatch);
+        ComponentInfo info = getFactory().createInfo(ComponentType.Effect);
+        CaustkEffect caustkEffect = new CaustkEffect(info, slot, effectType, caustkPatch);
         return caustkEffect;
     }
 

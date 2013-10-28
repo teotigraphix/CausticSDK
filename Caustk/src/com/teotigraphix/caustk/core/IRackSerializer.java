@@ -62,4 +62,5 @@ public interface IRackSerializer {
      * rack.
      */
     void update();
+
 }

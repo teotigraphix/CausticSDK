@@ -154,7 +154,11 @@ public abstract class EffectBase implements IEffect {
      * @param control The control to query.
      */
     protected final float get(IEffectControl control) {
-        return EffectRackMessage.GET.query(rack, getToneIndex(), getSlot(), control.getControl());
+        if (rack != null) {
+            return EffectRackMessage.GET.query(rack, getToneIndex(), getSlot(),
+                    control.getControl());
+        }
+        return Float.NaN;
     }
 
     /**
@@ -165,7 +169,10 @@ public abstract class EffectBase implements IEffect {
      * @param value The new float value for the control.
      */
     protected final void set(IEffectControl control, float value) {
-        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
+        if (rack != null) {
+            EffectRackMessage.SET
+                    .send(rack, getToneIndex(), getSlot(), control.getControl(), value);
+        }
     }
 
     /**
@@ -176,7 +183,10 @@ public abstract class EffectBase implements IEffect {
      * @param value The new int value for the control.
      */
     protected final void set(IEffectControl control, int value) {
-        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
+        if (rack != null) {
+            EffectRackMessage.SET
+                    .send(rack, getToneIndex(), getSlot(), control.getControl(), value);
+        }
     }
 
     /**

@@ -29,6 +29,7 @@ import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.libgdx.application.ApplicationRegistry;
 import com.teotigraphix.libgdx.application.IApplicationRegistry;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
@@ -290,7 +291,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     //--------------------------------------------------------------------------
 
     private void createKryo() {
-        kryo = ApplicationModelUtils.createKryo();
+        kryo = KryoUtils.createKryo();
     }
 
     protected void initializeProject(Project project) {

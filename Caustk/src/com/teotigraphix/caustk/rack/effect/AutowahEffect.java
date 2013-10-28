@@ -154,6 +154,9 @@ public class AutowahEffect extends EffectBase {
         set(AutowahControl.Wet, wet);
     }
 
+    AutowahEffect() {
+    }
+
     public AutowahEffect(int slot, int toneIndex) {
         super(EffectType.AUTOWAH, slot, toneIndex);
     }

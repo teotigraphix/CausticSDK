@@ -19,30 +19,13 @@
 
 package com.teotigraphix.caustk.machine;
 
-import java.io.File;
-import java.util.UUID;
-
+/**
+ * @author Michael Schmalle
+ */
 public interface ICaustkComponent {
 
     /**
-     * Returns the unique id of the component.
-     * <p>
-     * <strong>Assigned only at construction.</strong>
+     * Returns the {@link ComponentInfo} for the component.
      */
-    UUID getId();
-
-    /**
-     * Returns the display name of the component.
-     */
-    String getName();
-
-    /**
-     * Returns the relative path from the owning {@link CaustkLibrary}.
-     * <p>
-     * The path could be something like;
-     * <code>machines/subsynth/Trance/FM Synth Setup.ctkmachine</code>
-     * 
-     * @see CaustkLibrary#getAbsoluteComponentLocation(ICaustkComponent)
-     */
-    File getFile();
+    ComponentInfo getInfo();
 }

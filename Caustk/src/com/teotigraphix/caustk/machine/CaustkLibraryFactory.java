@@ -20,67 +20,17 @@
 package com.teotigraphix.caustk.machine;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.mixer.MasterDelay;
-import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
-import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
-import com.teotigraphix.caustk.rack.mixer.MasterReverb;
+import com.teotigraphix.caustk.utils.KryoUtils;
 
 public class CaustkLibraryFactory {
-
-    public enum CaustkComponent {
-
-        /**
-         * A {@link CaustkLibrary} holds {@link CaustkScene},
-         * {@link CaustkMachine}, {@link CaustkPatch}, {@link CaustkEffect},
-         * {@link CaustkPhrase}, {@link CastkMasterMixer} and
-         * {@link CaustkMasterSequencer} components.
-         */
-        Library,
-
-        /**
-         * A {@link CaustkScene} holds {@link CaustkMachine} components.
-         */
-        Scene,
-
-        /**
-         * A {@link CaustkMachine} holds one {@link CaustkPatch} and multiple
-         * {@link CaustkPhrase} components.
-         */
-        Machine,
-
-        /**
-         * A {@link CaustkPatch} holds one {@link MachinePreset}, one
-         * {@link MixerPreset} and up to two {@link CaustkEffect} components.
-         */
-        Patch,
-
-        /**
-         * A {@link CaustkEffect} hold up to 2 live or serialized
-         * {@link IEffect} components.
-         */
-        Effect,
-
-        /**
-         * A {@link CaustkPhrase} holds a
-         */
-        Phrase,
-
-        /**
-         * A {@link CastkMasterMixer} holds a live or serialized
-         * {@link MasterMixer} which in turn contains a {@link MasterDelay},
-         * {@link MasterReverb}, {@link MasterEqualizer} and
-         * {@link MasterLimiter} component.
-         */
-        MasterMixer,
-
-        MasterSequencer;
-    }
 
     private CaustkSceneFactory sceneFactory;
 
@@ -110,6 +60,7 @@ public class CaustkLibraryFactory {
         machineFactory = new CaustkMachineFactory();
         patchFactory = new CaustkPatchFactory();
         effectFactory = new CaustkEffectFactory();
+        effectFactory.setFactory(this);
         phraseFactory = new CaustkPhraseFactory();
         masterMixerFactory = new CaustkMasterMixerFactory();
         masterSequencerFactory = new CaustkMasterSequencerFactory();
@@ -137,8 +88,8 @@ public class CaustkLibraryFactory {
      * 
      * @param name The name of the scene.
      */
-    public CaustkScene createScene(String name) {
-        return sceneFactory.createScene(name);
+    public CaustkScene createScene(ComponentInfo info) {
+        return sceneFactory.createScene(info);
     }
 
     /**
@@ -152,8 +103,8 @@ public class CaustkLibraryFactory {
         return sceneFactory.createScene(absoluteCausticFile);
     }
 
-    public CaustkMachine createMachine(MachineType machineType) {
-        return machineFactory.createMachine(machineType);
+    public CaustkMachine createMachine(ComponentInfo info, MachineType machineType) {
+        return machineFactory.createMachine(info, machineType);
     }
 
     public CaustkMachine createMachine(MachineType machineType, int index, String machineName) {
@@ -196,8 +147,9 @@ public class CaustkLibraryFactory {
         //        patchFactory.activatePatch(caustkPatch);
     }
 
-    public CaustkPhrase createPhrase(MachineType machineType, int bankIndex, int patternIndex) {
-        return phraseFactory.createPhrase(machineType, bankIndex, patternIndex);
+    public CaustkPhrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
+            int patternIndex) {
+        return phraseFactory.createPhrase(info, machineType, bankIndex, patternIndex);
     }
 
     public CaustkPhrase createPhrase(CaustkMachine caustkMachine, int bankIndex, int patternIndex) {
@@ -208,20 +160,101 @@ public class CaustkLibraryFactory {
     // Effect
     //----------------------------------
 
-    public CaustkEffect createEffect(EffectType effectType) {
-        return effectFactory.createEffect(effectType);
+    /**
+     * Creates an non attached {@link CaustkEffect} with the internal
+     * {@link IEffect} created.
+     * <p>
+     * Non attached means no {@link CaustkPatch} or {@link CaustkMachine}
+     * references.
+     * 
+     * @param info The {@link ComponentInfo}.
+     * @param effectType The {@link EffectType}.
+     */
+    public CaustkEffect createEffect(ComponentInfo info, EffectType effectType) {
+        return effectFactory.createEffect(info, effectType);
     }
 
     public CaustkEffect createEffect(int slot, EffectType effectType) {
         return effectFactory.createEffect(slot, effectType);
     }
 
+    /**
+     * @param slot
+     * @param effectType
+     * @param caustkPatch
+     * @see CaustkPatch#load(CaustkLibraryFactory)
+     */
     public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {
         return effectFactory.createEffect(slot, effectType, caustkPatch);
     }
 
     public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
         return masterMixerFactory.createMasterMixer(caustkScene);
+    }
+
+    //----------------------------------
+    // ComponentInfo
+    //----------------------------------
+
+    /**
+     * Creates a new {@link ComponentInfo} instance empty.
+     * <p>
+     * The id, type, creation and modified date are populated during
+     * construction.
+     * 
+     * @param type The {@link ComponentType} being created.
+     */
+    public ComponentInfo createInfo(ComponentType type) {
+        final ComponentInfo result = new ComponentInfo(UUID.randomUUID(), type);
+        result.setCreated(new Date());
+        result.setModified(new Date());
+        return result;
+    }
+
+    /**
+     * Creates a new info instance constructing the {@link File} instance from
+     * the relativePath and name using the {@link ComponentType#getExtension()}
+     * of the type.
+     * 
+     * @param type The type of component.
+     * @param relativePath The relative path of the component.
+     * @param name The display name of the component, is used as the file name
+     *            also.
+     */
+    public ComponentInfo createInfo(ComponentType type, String relativePath, String name) {
+        return createInfo(type, new File(relativePath), name);
+    }
+
+    /**
+     * Creates a new info instance constructing the {@link File} instance from
+     * the relativePath and name using the {@link ComponentType#getExtension()}
+     * of the type.
+     * 
+     * @param type The type of component.
+     * @param relativePath The relative path File of the component.
+     * @param name The display name of the component, is used as the file name
+     *            also.
+     */
+    public ComponentInfo createInfo(ComponentType type, File relativePath, String name) {
+        File file = new File(relativePath, name + "." + type.getExtension());
+        ComponentInfo result = new ComponentInfo(UUID.randomUUID(), type, file, name);
+        result.setCreated(new Date());
+        result.setModified(new Date());
+        return result;
+    }
+
+    /**
+     * Creates an {@link ICaustkComponent} from the component File passed.
+     * 
+     * @param componentFile The serialized Caustk component.
+     * @param clazz The class type of the component to deserialize.
+     * @throws FileNotFoundException
+     */
+    public ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
+            throws FileNotFoundException {
+        ICaustkComponent component = KryoUtils.readFileObject(KryoUtils.getKryo(), componentFile,
+                clazz);
+        return component;
     }
 
 }

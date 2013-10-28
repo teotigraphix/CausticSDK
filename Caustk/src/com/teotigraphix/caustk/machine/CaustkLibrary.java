@@ -20,12 +20,15 @@
 package com.teotigraphix.caustk.machine;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
@@ -100,20 +103,9 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * 
  * @author Michael Schmalle
  */
-@SuppressWarnings("unused")
 public class CaustkLibrary {
 
     private static final String LIBRARIES = "libraries";
-
-    private static final String EFFECTS = "libraries/effects";
-
-    private static final String MACHINES = "libraries/machines";
-
-    private static final String PATCHES = "libraries/patches";
-
-    private static final String PHRASES = "libraries/phrases";
-
-    private static final String SCENES = "libraries/scenes";
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -197,8 +189,13 @@ public class CaustkLibrary {
      * 
      * @param component The component to resolve absolute location.
      */
-    public File getAbsoluteComponentLocation(ICaustkComponent component) {
-        return new File(getDirectory(), component.getFile().getPath());
+    public final File resolveLocation(ICaustkComponent component) {
+        return resolveLocation(component.getInfo());
+    }
+
+    public final File resolveLocation(ComponentInfo info) {
+        String name = info.getType().name();
+        return new File(getDirectory(), name + File.separator + info.getFile().getPath());
     }
 
     //--------------------------------------------------------------------------
@@ -219,5 +216,59 @@ public class CaustkLibrary {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    /**
+     * Adds a {@link CaustkEffect} to the library.
+     * <p>
+     * Will not add the instance if the library already contains the reference.
+     * 
+     * @param effect The {@link CaustkEffect} to add.
+     * @throws IOException
+     */
+    public void add(CaustkEffect effect) throws IOException {
+        if (effects.contains(effect))
+            return;
+        effects.add(effect);
+        save(effect);
+    }
+
+    public boolean contains(ICaustkComponent component) {
+        return getCollection(component).contains(component);
+    }
+
+    public boolean remove(ICaustkComponent component) {
+        return getCollection(component).remove(component);
+    }
+
+    public void save(ICaustkComponent component) throws FileNotFoundException {
+        // component must exist in Library
+        if (!contains(component))
+            throw new FileNotFoundException("Library does not contian component; " + component);
+
+        File location = resolveLocation(component);
+        KryoUtils.writeFileObject(KryoUtils.getKryo(), location, component);
+    }
+
+    private Collection<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
+        switch (component.getInfo().getType()) {
+            case Effect:
+                return effects;
+            case Library:
+                break;
+            case Machine:
+                break;
+            case MasterMixer:
+                break;
+            case MasterSequencer:
+                break;
+            case Patch:
+                break;
+            case Phrase:
+                break;
+            case Scene:
+                break;
+        }
+        return null;
+    }
 
 }

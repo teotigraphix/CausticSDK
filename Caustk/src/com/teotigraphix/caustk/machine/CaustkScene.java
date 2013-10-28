@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
@@ -39,13 +38,7 @@ public class CaustkScene implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private UUID id;
-
-    @Tag(1)
-    private String name;
-
-    @Tag(2)
-    private File file;
+    private ComponentInfo info;
 
     @Tag(2)
     private File causticFile;
@@ -61,38 +54,12 @@ public class CaustkScene implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // id
+    // info
     //----------------------------------
 
     @Override
-    public final UUID getId() {
-        return id;
-    }
-
-    //----------------------------------
-    // name
-    //----------------------------------
-
-    @Override
-    public final String getName() {
-        return name;
-    }
-
-    void setName(String value) {
-        name = value;
-    }
-
-    //----------------------------------
-    // file
-    //----------------------------------
-
-    @Override
-    public File getFile() {
-        return file;
-    }
-
-    void setFile(File value) {
-        file = value;
+    public final ComponentInfo getInfo() {
+        return info;
     }
 
     //----------------------------------
@@ -117,15 +84,14 @@ public class CaustkScene implements ICaustkComponent {
     CaustkScene() {
     }
 
-    CaustkScene(UUID id, String name) {
-        this.id = id;
-        this.name = name;
+    CaustkScene(ComponentInfo info) {
+        this.info = info;
     }
 
-    CaustkScene(UUID id, File absoluteCausticFile) {
-        this.id = id;
+    CaustkScene(ComponentInfo info, File absoluteCausticFile) {
+        this.info = info;
         this.causticFile = absoluteCausticFile;
-        this.name = absoluteCausticFile.getName().replace(".caustic", "");
+        this.info.setName(absoluteCausticFile.getName().replace(".caustic", ""));
     }
 
     //--------------------------------------------------------------------------

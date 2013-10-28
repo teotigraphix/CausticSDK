@@ -20,20 +20,20 @@
 package com.teotigraphix.caustk.machine;
 
 import java.io.File;
-import java.util.UUID;
 
-public class CaustkSceneFactory {
+public class CaustkSceneFactory extends CaustkFactoryBase {
 
     public CaustkSceneFactory() {
     }
 
-    public CaustkScene createScene(String name) {
-        CaustkScene caustkScene = new CaustkScene(UUID.randomUUID(), name);
+    public CaustkScene createScene(ComponentInfo info) {
+        CaustkScene caustkScene = new CaustkScene(info);
         return caustkScene;
     }
 
     public CaustkScene createScene(File absoluteCausticFile) {
-        CaustkScene caustkScene = new CaustkScene(UUID.randomUUID(), absoluteCausticFile);
+        ComponentInfo info = getFactory().createInfo(ComponentType.Scene);
+        CaustkScene caustkScene = new CaustkScene(info, absoluteCausticFile);
         return caustkScene;
     }
 

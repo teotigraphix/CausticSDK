@@ -19,11 +19,9 @@
 
 package com.teotigraphix.caustk.machine;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
@@ -48,19 +46,16 @@ public class CaustkMachine implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private UUID id;
-
-    @Tag(1)
-    private String name;
-
-    @Tag(2)
-    private File file;
+    private ComponentInfo info;
 
     @Tag(3)
     private int index;
 
     @Tag(4)
     private MachineType machineType;
+
+    @Tag(5)
+    private String machineName;
 
     @Tag(10)
     private int currentBank;
@@ -82,30 +77,12 @@ public class CaustkMachine implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // id
+    // info
     //----------------------------------
 
     @Override
-    public UUID getId() {
-        return id;
-    }
-
-    //----------------------------------
-    // name
-    //----------------------------------
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    //----------------------------------
-    // file
-    //----------------------------------
-
-    @Override
-    public File getFile() {
-        return file;
+    public ComponentInfo getInfo() {
+        return info;
     }
 
     //----------------------------------
@@ -216,16 +193,16 @@ public class CaustkMachine implements ICaustkComponent {
     CaustkMachine() {
     }
 
-    CaustkMachine(UUID id, MachineType machineType) {
-        this.id = id;
+    CaustkMachine(ComponentInfo info, MachineType machineType) {
+        this.info = info;
         this.machineType = machineType;
     }
 
-    CaustkMachine(UUID id, MachineType machineType, int index, String name) {
-        this.id = id;
+    CaustkMachine(ComponentInfo info, MachineType machineType, int index, String machineName) {
+        this.info = info;
         this.machineType = machineType;
         this.index = index;
-        this.name = name;
+        this.machineName = machineName;
     }
 
     /**
@@ -255,8 +232,8 @@ public class CaustkMachine implements ICaustkComponent {
         if (soundSource.hasTone(index))
             throw new IllegalStateException("Tone exists in ISoundSource at index:" + index);
 
-        ToneDescriptor descriptor = new ToneDescriptor(index, name, ToneType.fromString(machineType
-                .getType()));
+        ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
+                ToneType.fromString(machineType.getType()));
         tone = rack.createTone(descriptor);
         if (tone == null)
             throw new CausticException("Failed to create " + descriptor.toString());

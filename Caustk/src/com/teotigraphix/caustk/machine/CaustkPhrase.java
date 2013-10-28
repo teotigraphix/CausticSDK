@@ -19,10 +19,8 @@
 
 package com.teotigraphix.caustk.machine;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
@@ -49,13 +47,7 @@ public class CaustkPhrase implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private UUID id;
-
-    @Tag(1)
-    private String name;
-
-    @Tag(2)
-    private File file;
+    private ComponentInfo info;
 
     @Tag(3)
     private int index;
@@ -105,30 +97,12 @@ public class CaustkPhrase implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // id
+    // info
     //----------------------------------
 
     @Override
-    public final UUID getId() {
-        return id;
-    }
-
-    //----------------------------------
-    // name
-    //----------------------------------
-
-    @Override
-    public final String getName() {
-        return name;
-    }
-
-    //----------------------------------
-    // file
-    //----------------------------------
-
-    @Override
-    public final File getFile() {
-        return file;
+    public final ComponentInfo getInfo() {
+        return info;
     }
 
     //----------------------------------
@@ -520,15 +494,15 @@ public class CaustkPhrase implements ICaustkComponent {
     CaustkPhrase() {
     }
 
-    CaustkPhrase(UUID id, int index, MachineType machineType) {
-        this.id = id;
+    CaustkPhrase(ComponentInfo info, int index, MachineType machineType) {
+        this.info = info;
         this.index = index;
         this.machineType = machineType;
         this.triggerMap = new CaustkTriggerMap(this);
     }
 
-    CaustkPhrase(UUID id, int index, CaustkMachine machine) {
-        this.id = id;
+    CaustkPhrase(ComponentInfo info, int index, CaustkMachine machine) {
+        this.info = info;
         this.index = index;
         this.machine = machine;
         this.machineType = machine.getMachineType();

@@ -19,21 +19,22 @@
 
 package com.teotigraphix.caustk.machine;
 
-import java.util.UUID;
+public class CaustkPhraseFactory extends CaustkFactoryBase {
 
-public class CaustkPhraseFactory {
     public CaustkPhraseFactory() {
     }
 
-    public CaustkPhrase createPhrase(MachineType machineType, int bankIndex, int patternIndex) {
+    public CaustkPhrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
+            int patternIndex) {
         final int index = bankIndex * patternIndex;
-        CaustkPhrase caustkPhrase = new CaustkPhrase(UUID.randomUUID(), index, machineType);
+        CaustkPhrase caustkPhrase = new CaustkPhrase(info, index, machineType);
         return caustkPhrase;
     }
 
     public CaustkPhrase createPhrase(CaustkMachine caustkMachine, int bankIndex, int patternIndex) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.Phrase);
         final int index = bankIndex * patternIndex;
-        CaustkPhrase caustkPhrase = new CaustkPhrase(UUID.randomUUID(), index, caustkMachine);
+        CaustkPhrase caustkPhrase = new CaustkPhrase(info, index, caustkMachine);
         return caustkPhrase;
     }
 }

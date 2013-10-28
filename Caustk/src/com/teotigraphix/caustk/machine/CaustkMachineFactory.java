@@ -19,21 +19,19 @@
 
 package com.teotigraphix.caustk.machine;
 
-import java.util.UUID;
-
-public class CaustkMachineFactory {
+public class CaustkMachineFactory extends CaustkFactoryBase {
 
     public CaustkMachineFactory() {
     }
 
-    public CaustkMachine createMachine(MachineType machineType) {
-        CaustkMachine caustkMachine = new CaustkMachine(UUID.randomUUID(), machineType);
+    public CaustkMachine createMachine(ComponentInfo info, MachineType machineType) {
+        CaustkMachine caustkMachine = new CaustkMachine(info, machineType);
         return caustkMachine;
     }
 
     public CaustkMachine createMachine(MachineType machineType, int index, String machineName) {
-        CaustkMachine caustkMachine = new CaustkMachine(UUID.randomUUID(), machineType, index,
-                machineName);
+        ComponentInfo info = getFactory().createInfo(ComponentType.Machine);
+        CaustkMachine caustkMachine = new CaustkMachine(info, machineType, index, machineName);
         return caustkMachine;
     }
 }
