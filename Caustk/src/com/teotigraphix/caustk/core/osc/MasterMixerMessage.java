@@ -559,6 +559,12 @@ public class MasterMixerMessage extends CausticMessage {
     public static final MasterMixerMessage VOLUME = new MasterMixerMessage(
             "/caustic/master/volume ${0}");
 
+    /**
+     * Not IMPL.
+     */
+    public static final MasterMixerMessage VOLUME_BYPASS = new MasterMixerMessage(
+            "/caustic/master/volume/bypass ${0}");
+
     MasterMixerMessage(String message) {
         super(message);
     }

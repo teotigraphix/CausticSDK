@@ -107,6 +107,7 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     @Override
     public void setApplicationRoot(File value) {
         applicationRoot = value;
+        RuntimeUtils.APP_ROOT = value.getAbsolutePath();
     }
 
     //----------------------------------

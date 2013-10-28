@@ -25,6 +25,7 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundSource;
@@ -33,13 +34,25 @@ import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class CaustkMachine implements ICaustkComponent {
+public class CaustkMachine implements ICaustkComponent, IRackAware {
 
     /*
      * The tone is only set when the LiveMachine is actually assigned to a channel
      * in the LiveScene.
      */
     private transient Tone tone;
+
+    private transient IRack rack;
+
+    @Override
+    public IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack rack) {
+        this.rack = rack;
+    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -49,7 +62,7 @@ public class CaustkMachine implements ICaustkComponent {
     private ComponentInfo info;
 
     @Tag(3)
-    private int index;
+    private int index = -1;
 
     @Tag(4)
     private MachineType machineType;
@@ -99,6 +112,14 @@ public class CaustkMachine implements ICaustkComponent {
 
     public MachineType getMachineType() {
         return machineType;
+    }
+
+    //----------------------------------
+    // machineName
+    //----------------------------------
+
+    public String getMachineName() {
+        return machineName;
     }
 
     //----------------------------------
@@ -193,16 +214,36 @@ public class CaustkMachine implements ICaustkComponent {
     CaustkMachine() {
     }
 
-    CaustkMachine(ComponentInfo info, MachineType machineType) {
+    CaustkMachine(ComponentInfo info, MachineType machineType, String machineName) {
         this.info = info;
         this.machineType = machineType;
+        this.machineName = machineName;
     }
 
-    CaustkMachine(ComponentInfo info, MachineType machineType, int index, String machineName) {
+    CaustkMachine(ComponentInfo info, int index, MachineType machineType, String machineName) {
         this.info = info;
-        this.machineType = machineType;
         this.index = index;
+        this.machineType = machineType;
         this.machineName = machineName;
+    }
+
+    public void restore() {
+
+    }
+
+    public void update() {
+        // create the Tone
+        ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
+                ToneType.fromString(machineType.getType()));
+        try {
+            tone = rack.createTone(descriptor);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
+
+        // assign the patch
+
+        // create the phrases
     }
 
     /**
@@ -251,7 +292,7 @@ public class CaustkMachine implements ICaustkComponent {
         patch = factory.createPatch(this);
         patch.load(factory);
         if (tone != null)
-            tone.setDefaultPatchId(patch.getId());
+            tone.setDefaultPatchId(patch.getInfo().getId());
     }
 
     /**
@@ -280,4 +321,5 @@ public class CaustkMachine implements ICaustkComponent {
             caustkPhrase.load(factory);
         }
     }
+
 }

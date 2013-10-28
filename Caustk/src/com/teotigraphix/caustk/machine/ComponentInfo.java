@@ -117,12 +117,22 @@ public class ComponentInfo {
      * Returns the relative path from the owning {@link CaustkLibrary}.
      * <p>
      * The path could be something like;
-     * <code>machines/subsynth/Trance/FM Synth Setup.ctkmachine</code>
-     * 
-     * @see CaustkLibrary#resolveLocation(ICaustkComponent)
+     * <code>Machine/SubSynth/Trance/FM Synth Setup.cmc</code>
+     * <p>
+     * <strong>Do not</strong> use getAbsolutePath() on this File, use
+     * {@link CaustkLibrary#resolveLocation(ICaustkComponent)} instead to
+     * resolve the directory correctly.
      */
     public File getFile() {
         return file;
+    }
+
+    /**
+     * Returns the relative path within the {@link ComponentType}'s sub
+     * directory.
+     */
+    public String getPath() {
+        return file.getPath();
     }
 
     //--------------------------------------------------------------------------

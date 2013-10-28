@@ -172,7 +172,7 @@ public class CaustkLibrary {
      * Returns the <code>/storageRoot/AppName/libraries</code> directory.
      */
     public final File getLibrariesDirectory() {
-        return RuntimeUtils.getDirectory(LIBRARIES);
+        return RuntimeUtils.getApplicationDirectory(LIBRARIES);
     }
 
     /**
@@ -190,12 +190,39 @@ public class CaustkLibrary {
      * @param component The component to resolve absolute location.
      */
     public final File resolveLocation(ICaustkComponent component) {
-        return resolveLocation(component.getInfo());
-    }
-
-    public final File resolveLocation(ComponentInfo info) {
+        ComponentInfo info = component.getInfo();
         String name = info.getType().name();
-        return new File(getDirectory(), name + File.separator + info.getFile().getPath());
+
+        final StringBuilder sb = new StringBuilder();
+
+        // add the ComponentType sub directory
+        sb.append(name);
+        sb.append(File.separator);
+
+        // add the specific sub directory after component type
+        if (info.getType() == ComponentType.Scene) {
+            // Scene uses root
+            // CaustkScene caustkScene = (CaustkScene)component;
+        } else if (info.getType() == ComponentType.Patch) {
+            // Patch uses MachineType
+            CaustkPatch caustkPatch = (CaustkPatch)component;
+            sb.append(caustkPatch.getMachineType().name());
+            sb.append(File.separator);
+        } else if (info.getType() == ComponentType.Phrase) {
+            // Phrase uses MachineType
+            CaustkPhrase caustkPhrase = (CaustkPhrase)component;
+            sb.append(caustkPhrase.getMachineType().name());
+            sb.append(File.separator);
+        } else if (info.getType() == ComponentType.Effect) {
+            // Effect uses EffectType
+            CaustkEffect caustkEffect = (CaustkEffect)component;
+            sb.append(caustkEffect.getEffectType().name());
+            sb.append(File.separator);
+        }
+
+        sb.append(info.getFile().getPath());
+
+        return new File(getDirectory(), sb.toString());
     }
 
     //--------------------------------------------------------------------------
@@ -217,6 +244,22 @@ public class CaustkLibrary {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    public boolean add(CaustkScene scene) throws IOException {
+        if (scenes.contains(scene))
+            return false;
+        scenes.add(scene);
+        save(scene);
+        return true;
+    }
+
+    public boolean add(CaustkMachine machine) throws IOException {
+        if (machines.contains(machine))
+            return false;
+        machines.add(machine);
+        save(machine);
+        return true;
+    }
+
     /**
      * Adds a {@link CaustkEffect} to the library.
      * <p>
@@ -225,11 +268,28 @@ public class CaustkLibrary {
      * @param effect The {@link CaustkEffect} to add.
      * @throws IOException
      */
-    public void add(CaustkEffect effect) throws IOException {
+    public boolean add(CaustkEffect effect) throws IOException {
         if (effects.contains(effect))
-            return;
+            return false;
         effects.add(effect);
         save(effect);
+        return true;
+    }
+
+    public boolean add(CaustkPatch patch) throws IOException {
+        if (patches.contains(patch))
+            return false;
+        patches.add(patch);
+        save(patch);
+        return true;
+    }
+
+    public boolean add(CaustkPhrase phrase) throws IOException {
+        if (phrases.contains(phrase))
+            return false;
+        phrases.add(phrase);
+        save(phrase);
+        return true;
     }
 
     public boolean contains(ICaustkComponent component) {
@@ -256,17 +316,17 @@ public class CaustkLibrary {
             case Library:
                 break;
             case Machine:
-                break;
+                return machines;
             case MasterMixer:
                 break;
             case MasterSequencer:
                 break;
             case Patch:
-                break;
+                return patches;
             case Phrase:
-                break;
+                return phrases;
             case Scene:
-                break;
+                return scenes;
         }
         return null;
     }

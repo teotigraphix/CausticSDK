@@ -196,7 +196,9 @@ public class Trigger {
      */
     public Note addNote(float beat, int pitch, float gate, float velocity, int flags) {
         if (hasNote(pitch)) {
-            throw new IllegalStateException("Note exists:" + beat + ", pitch:" + pitch);
+            //throw new IllegalStateException("Note exists:" + beat + ", pitch:" + pitch);
+            System.err.println("Note exists:" + beat + ", pitch:" + pitch);
+            return getNote(pitch);
         }
         Note note = new Note(pitch, beat, beat + gate, velocity, flags);
         note.setSelected(true);

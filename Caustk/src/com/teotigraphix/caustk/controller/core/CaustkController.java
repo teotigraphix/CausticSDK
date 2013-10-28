@@ -38,6 +38,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**
@@ -125,7 +126,11 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void setRack(IRack value) {
+        if (rack != null)
+            ((Rack)rack).setController(null);
         rack = value;
+        if (rack != null)
+            ((Rack)rack).setController(this);
     }
 
     //----------------------------------

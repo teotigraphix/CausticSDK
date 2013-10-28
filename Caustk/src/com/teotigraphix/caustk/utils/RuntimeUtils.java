@@ -63,6 +63,8 @@ public class RuntimeUtils {
      */
     public static String STORAGE_ROOT = null;
 
+    public static String APP_ROOT = null;
+
     /**
      * /mnt/sdcard/
      */
@@ -70,8 +72,20 @@ public class RuntimeUtils {
         //File file = Environment.getExternalStorageDirectory();
         if (STORAGE_ROOT == null)
             throw new RuntimeException("STORAGE_ROOT is null, set in RuntimeUtils");
-        File file = new File(STORAGE_ROOT);
-        return file;
+        File directory = new File(STORAGE_ROOT);
+        return directory;
+    }
+
+    public static final File getApplicationDirectory() {
+        if (APP_ROOT == null)
+            throw new RuntimeException("APP_ROOT is null, set in RuntimeUtils");
+        File directory = new File(APP_ROOT);
+        return directory;
+    }
+
+    public static final File getApplicationDirectory(String path) {
+        File directory = new File(getApplicationDirectory(), path);
+        return directory;
     }
 
     /**

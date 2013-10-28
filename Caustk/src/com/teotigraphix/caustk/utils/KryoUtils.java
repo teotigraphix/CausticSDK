@@ -148,7 +148,7 @@ public class KryoUtils {
 
         @Override
         public void write(Kryo kryo, Output output, File object) {
-            output.writeString(object.getAbsolutePath());
+            output.writeString(object.toString());
         }
     }
 }

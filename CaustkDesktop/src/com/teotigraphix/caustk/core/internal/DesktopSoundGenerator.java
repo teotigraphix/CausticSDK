@@ -73,6 +73,8 @@ public class DesktopSoundGenerator implements ISoundGenerator {
 
     @Override
     public void initialize() {
+        if (instance != null)
+            return;
         instance = new DesktopSoundGenerator();
         causticCore = new CausticCoreDesktop();
     }

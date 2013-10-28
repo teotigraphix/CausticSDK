@@ -106,8 +106,11 @@ public class ChorusEffect extends EffectBase {
         set(ChorusControl.Wet, wet);
     }
 
+    ChorusEffect() {
+    }
+
     public ChorusEffect(int slot, int toneIndex) {
-        super(EffectType.CHORUS, slot, toneIndex);
+        super(EffectType.Chorus, slot, toneIndex);
     }
 
     @Override

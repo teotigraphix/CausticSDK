@@ -154,8 +154,11 @@ public class CompressorEffect extends EffectBase {
         set(CompressorControl.Threshold, threshold);
     }
 
+    CompressorEffect() {
+    }
+
     public CompressorEffect(int slot, int toneIndex) {
-        super(EffectType.COMPRESSOR, slot, toneIndex);
+        super(EffectType.Compressor, slot, toneIndex);
     }
 
     @Override

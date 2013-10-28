@@ -106,8 +106,11 @@ public class PhaserEffect extends EffectBase {
         set(ParametricEQControl.Rate, mRate);
     }
 
+    PhaserEffect() {
+    }
+
     public PhaserEffect(int slot, int toneIndex) {
-        super(EffectType.PHASER, slot, toneIndex);
+        super(EffectType.Phaser, slot, toneIndex);
     }
 
     @Override

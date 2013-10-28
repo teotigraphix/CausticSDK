@@ -130,8 +130,11 @@ public class BitcrusherEffect extends EffectBase {
         set(BitcrusherControl.Wet, wet);
     }
 
+    BitcrusherEffect() {
+    }
+
     public BitcrusherEffect(int slot, int toneIndex) {
-        super(EffectType.BITCRUSHER, slot, toneIndex);
+        super(EffectType.Bitcrusher, slot, toneIndex);
     }
 
     @Override

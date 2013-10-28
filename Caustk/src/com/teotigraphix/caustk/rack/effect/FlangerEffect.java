@@ -130,8 +130,11 @@ public class FlangerEffect extends EffectBase {
         set(FlangerControl.Wet, wet);
     }
 
+    FlangerEffect() {
+    }
+
     public FlangerEffect(int slot, int toneIndex) {
-        super(EffectType.FLANGER, slot, toneIndex);
+        super(EffectType.Flanger, slot, toneIndex);
     }
 
     @Override

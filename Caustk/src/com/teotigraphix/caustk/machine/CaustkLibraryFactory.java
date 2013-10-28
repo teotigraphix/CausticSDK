@@ -57,11 +57,15 @@ public class CaustkLibraryFactory {
         rack = value;
 
         sceneFactory = new CaustkSceneFactory();
+        sceneFactory.setFactory(this);
         machineFactory = new CaustkMachineFactory();
+        machineFactory.setFactory(this);
         patchFactory = new CaustkPatchFactory();
+        patchFactory.setFactory(this);
         effectFactory = new CaustkEffectFactory();
         effectFactory.setFactory(this);
         phraseFactory = new CaustkPhraseFactory();
+        phraseFactory.setFactory(this);
         masterMixerFactory = new CaustkMasterMixerFactory();
         masterSequencerFactory = new CaustkMasterSequencerFactory();
     }
@@ -99,25 +103,30 @@ public class CaustkLibraryFactory {
      * @param absoluteCausticFile The absolute location of the
      *            <code>.caustic</code> song file.
      */
-    public CaustkScene createScene(File absoluteCausticFile) {
-        return sceneFactory.createScene(absoluteCausticFile);
+    public CaustkScene createScene(ComponentInfo info, File absoluteCausticFile) {
+        return sceneFactory.createScene(info, absoluteCausticFile);
     }
 
-    public CaustkMachine createMachine(ComponentInfo info, MachineType machineType) {
-        return machineFactory.createMachine(info, machineType);
+    public CaustkMachine createMachine(ComponentInfo info, MachineType machineType,
+            String machineName) {
+        return machineFactory.createMachine(info, machineType, machineName);
     }
 
-    public CaustkMachine createMachine(MachineType machineType, int index, String machineName) {
-        return machineFactory.createMachine(machineType, index, machineName);
+    public CaustkMachine createMachine(int index, MachineType machineType, String machineName) {
+        return machineFactory.createMachine(index, machineType, machineName);
     }
+
+    //----------------------------------
+    // CaustkPatch
+    //----------------------------------
 
     /**
      * Creates a {@link CaustkPatch} with {@link UUID} and {@link MachineType}.
      * 
      * @param toneType The {@link MachineType} of the
      */
-    public CaustkPatch createPatch(MachineType machineType) {
-        return patchFactory.createPatch(machineType);
+    public CaustkPatch createPatch(ComponentInfo info, MachineType machineType) {
+        return patchFactory.createPatch(info, machineType);
     }
 
     /**
@@ -211,6 +220,10 @@ public class CaustkLibraryFactory {
         return result;
     }
 
+    public ComponentInfo createInfo(ComponentType type, String name) {
+        return createInfo(type, new File("."), name);
+    }
+
     /**
      * Creates a new info instance constructing the {@link File} instance from
      * the relativePath and name using the {@link ComponentType#getExtension()}
@@ -237,6 +250,9 @@ public class CaustkLibraryFactory {
      */
     public ComponentInfo createInfo(ComponentType type, File relativePath, String name) {
         File file = new File(relativePath, name + "." + type.getExtension());
+        // if we have no directory, just construct from name
+        if (relativePath.getName().equals("."))
+            file = new File(name + "." + type.getExtension());
         ComponentInfo result = new ComponentInfo(UUID.randomUUID(), type, file, name);
         result.setCreated(new Date());
         result.setModified(new Date());
@@ -250,6 +266,7 @@ public class CaustkLibraryFactory {
      * @param clazz The class type of the component to deserialize.
      * @throws FileNotFoundException
      */
+    // XXX Make generic returning T
     public ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
             throws FileNotFoundException {
         ICaustkComponent component = KryoUtils.readFileObject(KryoUtils.getKryo(), componentFile,

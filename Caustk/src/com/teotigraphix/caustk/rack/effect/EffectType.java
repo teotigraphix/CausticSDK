@@ -9,24 +9,24 @@ public enum EffectType {
     /**
      * Adds distortion to the machine's signal.
      */
-    DISTORTION(2),
+    Distortion(2),
 
     /**
      * Compresses the machine's signal.
      */
-    COMPRESSOR(3),
+    Compressor(3),
 
-    BITCRUSHER(4),
+    Bitcrusher(4),
 
-    FLANGER(5),
+    Flanger(5),
 
-    PHASER(6),
+    Phaser(6),
 
-    CHORUS(7),
+    Chorus(7),
 
-    AUTOWAH(8),
+    Autowah(8),
 
-    PARAMETRICEQ(9);
+    ParametricEQ(9);
 
     private int value;
 

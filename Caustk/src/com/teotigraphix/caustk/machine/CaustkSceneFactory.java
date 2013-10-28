@@ -31,8 +31,7 @@ public class CaustkSceneFactory extends CaustkFactoryBase {
         return caustkScene;
     }
 
-    public CaustkScene createScene(File absoluteCausticFile) {
-        ComponentInfo info = getFactory().createInfo(ComponentType.Scene);
+    public CaustkScene createScene(ComponentInfo info, File absoluteCausticFile) {
         CaustkScene caustkScene = new CaustkScene(info, absoluteCausticFile);
         return caustkScene;
     }

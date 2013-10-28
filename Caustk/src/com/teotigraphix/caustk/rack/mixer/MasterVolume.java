@@ -66,6 +66,7 @@ public class MasterVolume extends MasterComponent {
     //--------------------------------------------------------------------------
 
     public MasterVolume() {
+        bypassMessage = MasterMixerMessage.VOLUME_BYPASS;
     }
 
     //--------------------------------------------------------------------------

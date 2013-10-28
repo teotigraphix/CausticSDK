@@ -75,6 +75,10 @@ public class CaustkTriggerMap {
     }
 
     final PatternSequencerComponent getPatternSequencer() {
+        // XXX Temp until how to access the getMachine() correctly is figured out
+        // we allow notes to be added with a null sequencer for CaustkPhrase serialization
+        if (phrase.getMachine() == null || phrase.getMachine().getTone() == null)
+            return null;
         return getTone().getPatternSequencer();
     }
 
@@ -186,8 +190,10 @@ public class CaustkTriggerMap {
             map.put(beat, trigger);
         }
         Note note = trigger.addNote(beat, pitch, gate, velocity, flags);
-        getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
-        firePhraseChange(CaustkPhraseChangeKind.NoteAdd, note);
+        if (getPatternSequencer() != null) {
+            getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
+            firePhraseChange(CaustkPhraseChangeKind.NoteAdd, note);
+        }
         return note;
     }
 

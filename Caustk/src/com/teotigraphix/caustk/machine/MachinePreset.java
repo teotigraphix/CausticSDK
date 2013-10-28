@@ -27,6 +27,8 @@ import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.osc.SynthMessage;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -157,6 +159,33 @@ public class MachinePreset implements IRestore {
         return savedFile;
     }
 
+    public void load(CaustkLibraryFactory factory) {
+        CaustkMachine machine = getPatch().getMachine();
+        if (machine == null)
+            throw new IllegalStateException("CaustkMachine cannot be null calling load()");
+
+        final IRack rack = factory.getRack();
+
+        // save the temp preset file to get its bytes
+        String presetName = constructPresetName(false);
+        SynthMessage.SAVE_PRESET.send(rack, machine.getIndex(), presetName);
+
+        // get the preset file from the caustic presets directory
+        File presetFile = toPresetFile(getPatch().getMachineType(), presetName);
+        if (!presetFile.exists())
+            throw new RuntimeException("Error saving preset file to: " + presetFile);
+
+        // read into the data byte array
+        try {
+            data = FileUtils.readFileToByteArray(presetFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // delete the temp preset file
+        FileUtils.deleteQuietly(presetFile);
+    }
+
     /**
      * Restores the {@link #getData()} bytes with the {@link Tone}'s preset file
      * as currently loaded in the rack.
@@ -227,10 +256,12 @@ public class MachinePreset implements IRestore {
     }
 
     private String constructPresetName(boolean addExtension) {
-        String result = patch.getId().toString();
+        String result = patch.getInfo().getId().toString();
         // append the original prest name if it had one
-        if (name != null && !name.equals(""))
+        if (name != null && !name.equals("")) {
+            name = name.replace(" ", "_");
             result = name + "-" + result;
+        }
         // add the correct extension for ToneType
         if (addExtension)
             result = result + "." + toPresetExtension(this);
@@ -244,4 +275,5 @@ public class MachinePreset implements IRestore {
     private static String toPresetExtension(MachinePreset file) {
         return file.getPatch().getMachineType().getExtension();
     }
+
 }

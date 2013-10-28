@@ -108,6 +108,19 @@ public class CaustkScene implements ICaustkComponent {
         return machines.get(index);
     }
 
+    public void update(CaustkLibraryFactory factory) {
+        final IRack rack = factory.getRack();
+        RackMessage.BLANKRACK.send(rack);
+
+        masterMixer.setRack(rack);
+        masterMixer.update();
+
+        for (CaustkMachine machine : machines.values()) {
+            machine.setRack(rack);
+            machine.update();
+        }
+    }
+
     /**
      * Loads the {@link CaustkScene} using the {@link #getCausticFile()} passed
      * during scene construction.
@@ -161,7 +174,7 @@ public class CaustkScene implements ICaustkComponent {
 
         MachineType machineType = MachineType.fromString(RackMessage.QUERY_MACHINE_TYPE
                 .queryString(rack, index));
-        CaustkMachine caustkMachine = factory.createMachine(machineType, index, machineName);
+        CaustkMachine caustkMachine = factory.createMachine(index, machineType, machineName);
         machines.put(index, caustkMachine);
 
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases

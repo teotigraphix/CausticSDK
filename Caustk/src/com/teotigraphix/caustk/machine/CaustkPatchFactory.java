@@ -25,7 +25,7 @@ import java.util.UUID;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
-public class CaustkPatchFactory {
+public class CaustkPatchFactory extends CaustkFactoryBase {
 
     public CaustkPatchFactory() {
     }
@@ -35,8 +35,9 @@ public class CaustkPatchFactory {
      * 
      * @param toneType The {@link MachineType} of the
      */
-    public CaustkPatch createPatch(MachineType machineType) {
-        CaustkPatch livePatch = new CaustkPatch(UUID.randomUUID(), machineType);
+    public CaustkPatch createPatch(ComponentInfo info, MachineType machineType) {
+        CaustkPatch livePatch = new CaustkPatch(info, machineType);
+        livePatch.create();
         return livePatch;
     }
 
@@ -47,7 +48,8 @@ public class CaustkPatchFactory {
      *            rack.
      */
     public CaustkPatch createPatch(CaustkMachine machine) {
-        CaustkPatch livePatch = new CaustkPatch(UUID.randomUUID(), machine);
+        ComponentInfo info = getFactory().createInfo(ComponentType.Patch);
+        CaustkPatch livePatch = new CaustkPatch(info, machine);
         return livePatch;
     }
 
@@ -68,4 +70,5 @@ public class CaustkPatchFactory {
         //CaustkLibraryUtils.assignAndUpdatePresetFile(caustkPatch.getMachine(), caustkPatch, rack);
         //CaustkLibraryUtils.assignEffects(caustkPatch.getMachine(), caustkPatch, rack);
     }
+
 }

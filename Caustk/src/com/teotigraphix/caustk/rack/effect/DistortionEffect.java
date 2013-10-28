@@ -128,8 +128,11 @@ public class DistortionEffect extends EffectBase {
         set(DistortionControl.Post, postGain);
     }
 
+    DistortionEffect() {
+    }
+
     public DistortionEffect(int slot, int toneIndex) {
-        super(EffectType.DISTORTION, slot, toneIndex);
+        super(EffectType.Distortion, slot, toneIndex);
     }
 
     @Override

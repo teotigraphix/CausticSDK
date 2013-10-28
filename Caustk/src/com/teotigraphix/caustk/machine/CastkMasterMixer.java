@@ -120,6 +120,8 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
         delay.load(factory);
         reverb.load(factory);
         volume.load(factory);
+
+        restore();
     }
 
     @Override

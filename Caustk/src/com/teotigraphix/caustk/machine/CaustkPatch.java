@@ -22,12 +22,12 @@ package com.teotigraphix.caustk.machine;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
+import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
@@ -44,14 +44,14 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 /**
  * @author Michael Schmalle
  */
-public class CaustkPatch {
+public class CaustkPatch implements ICaustkComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private UUID id;
+    private ComponentInfo info;
 
     @Tag(1)
     private MachineType machineType;
@@ -73,16 +73,12 @@ public class CaustkPatch {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // id
+    // info
     //----------------------------------
 
-    /**
-     * Returns the unique id for this {@link CaustkPatch}.
-     * <p>
-     * <strong>Assigned only at construction.</strong>
-     */
-    public UUID getId() {
-        return id;
+    @Override
+    public ComponentInfo getInfo() {
+        return info;
     }
 
     //----------------------------------
@@ -122,6 +118,25 @@ public class CaustkPatch {
         machinePreset = value;
     }
 
+    /**
+     * Adds and returns an effect without sending a message to the core.
+     * <p>
+     * Using this method will call {@link CaustkEffect#create()} to create the
+     * {@link IEffect} instance in the {@link CaustkEffect}.
+     * 
+     * @param factory The library factory.
+     * @param slot The effect slot.
+     * @param effectType The {@link EffectType}.
+     */
+    public CaustkEffect createEffect(CaustkLibraryFactory factory, int slot, EffectType effectType) {
+        CaustkEffect effect = factory.createEffect(0, effectType, this);
+        // since we are creating the effect from the outside, we create
+        // the internal effect here
+        effect.create();
+        effects.put(slot, effect);
+        return effect;
+    }
+
     void putEffect(int slot, CaustkEffect effect) {
         if (slot != effect.getIndex())
             throw new IllegalStateException("Changing effect index is not implemented");
@@ -155,19 +170,25 @@ public class CaustkPatch {
     CaustkPatch() {
     }
 
-    CaustkPatch(UUID id, MachineType machineType) {
-        this.id = id;
+    CaustkPatch(ComponentInfo info, MachineType machineType) {
+        this.info = info;
         this.machineType = machineType;
     }
 
-    CaustkPatch(UUID id, CaustkMachine machine) {
-        this.id = id;
+    CaustkPatch(ComponentInfo info, CaustkMachine machine) {
+        this.info = info;
         this.machine = machine;
+        this.machineType = machine.getMachineType();
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    public void create() {
+        machinePreset = new MachinePreset(null, this);
+        mixerPreset = new MixerPreset(this);
+    }
 
     public void load(CaustkLibraryFactory factory) throws IOException, CausticException {
         loadMachinePreset(factory);
@@ -177,7 +198,8 @@ public class CaustkPatch {
 
     void loadMixerPreset(CaustkLibraryFactory factory) {
         mixerPreset = new MixerPreset(this);
-        mixerPreset.restore();
+        //mixerPreset.restore();
+        mixerPreset.load(factory);
     }
 
     void loadMachinePreset(CaustkLibraryFactory factory) throws IOException {
@@ -189,7 +211,8 @@ public class CaustkPatch {
         machinePreset = new MachinePreset(presetName, this);
 
         // get the bytes of the machine's preset and put them into the preset file
-        machinePreset.restore();
+        //machinePreset.restore();
+        machinePreset.load(factory);
     }
 
     void loadEffects(CaustkLibraryFactory factory) {
@@ -215,4 +238,5 @@ public class CaustkPatch {
             effect.load(factory);
         }
     }
+
 }

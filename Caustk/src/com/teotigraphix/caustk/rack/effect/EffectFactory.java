@@ -43,35 +43,35 @@ public final class EffectFactory {
     public static IEffect create(EffectType type, int slot, int toneIndex) {
         IEffect effect = null;
         switch (type) {
-            case AUTOWAH:
+            case Autowah:
                 effect = new AutowahEffect(slot, toneIndex);
                 break;
 
-            case BITCRUSHER:
+            case Bitcrusher:
                 effect = new BitcrusherEffect(slot, toneIndex);
                 break;
 
-            case CHORUS:
+            case Chorus:
                 effect = new ChorusEffect(slot, toneIndex);
                 break;
 
-            case COMPRESSOR:
+            case Compressor:
                 effect = new CompressorEffect(slot, toneIndex);
                 break;
 
-            case DISTORTION:
+            case Distortion:
                 effect = new DistortionEffect(slot, toneIndex);
                 break;
 
-            case FLANGER:
+            case Flanger:
                 effect = new FlangerEffect(slot, toneIndex);
                 break;
 
-            case PARAMETRICEQ:
+            case ParametricEQ:
                 effect = new ParametricEQEffect(slot, toneIndex);
                 break;
 
-            case PHASER:
+            case Phaser:
                 effect = new PhaserEffect(slot, toneIndex);
                 break;
         }

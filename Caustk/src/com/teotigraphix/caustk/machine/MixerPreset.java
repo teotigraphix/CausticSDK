@@ -20,12 +20,15 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.IRackAware;
+import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MixerPreset implements IRestore {
+public class MixerPreset implements IRackAware, IRackSerializer {
+
+    private IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -69,6 +72,20 @@ public class MixerPreset implements IRestore {
     //--------------------------------------------------------------------------
 
     //----------------------------------
+    // rack
+    //----------------------------------
+
+    @Override
+    public IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack value) {
+        rack = value;
+    }
+
+    //----------------------------------
     // patch
     //----------------------------------
 
@@ -88,7 +105,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getBass(boolean restore) {
-        return MixerChannelMessage.EQ_BASS.query(getEngine(), getIndex());
+        return MixerChannelMessage.EQ_BASS.query(rack, getIndex());
     }
 
     public final void setBass(float value) {
@@ -97,7 +114,7 @@ public class MixerPreset implements IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("bass", "-1.0..1.0", value);
         bass = value;
-        MixerChannelMessage.EQ_BASS.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.EQ_BASS.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.Bass, bass);
     }
 
@@ -110,7 +127,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getMid(boolean restore) {
-        return MixerChannelMessage.EQ_MID.query(getEngine(), getIndex());
+        return MixerChannelMessage.EQ_MID.query(rack, getIndex());
     }
 
     public void setMid(float value) {
@@ -119,7 +136,7 @@ public class MixerPreset implements IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("mid", "-1.0..1.0", value);
         mid = value;
-        MixerChannelMessage.EQ_MID.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.EQ_MID.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.Mid, mid);
     }
 
@@ -132,7 +149,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getHigh(boolean restore) {
-        return MixerChannelMessage.EQ_HIGH.query(getEngine(), getIndex());
+        return MixerChannelMessage.EQ_HIGH.query(rack, getIndex());
     }
 
     public final void setHigh(float value) {
@@ -141,7 +158,7 @@ public class MixerPreset implements IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("high", "-1.0..1.0", value);
         high = value;
-        MixerChannelMessage.EQ_HIGH.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.EQ_HIGH.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.High, high);
     }
 
@@ -154,7 +171,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getDelaySend(boolean restore) {
-        return MixerChannelMessage.DELAY_SEND.query(getEngine(), getIndex());
+        return MixerChannelMessage.DELAY_SEND.query(rack, getIndex());
     }
 
     public void setDelaySend(float value) {
@@ -163,7 +180,7 @@ public class MixerPreset implements IRestore {
         if (value < 0f || value > 1f)
             throw newRangeException("delay_send", "0.0..1.0", value);
         delaySend = value;
-        MixerChannelMessage.DELAY_SEND.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.DELAY_SEND.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.DelaySend, delaySend);
     }
 
@@ -176,7 +193,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getReverbSend(boolean restore) {
-        return MixerChannelMessage.REVERB_SEND.query(getEngine(), getIndex());
+        return MixerChannelMessage.REVERB_SEND.query(rack, getIndex());
     }
 
     public void setReverbSend(float value) {
@@ -185,7 +202,7 @@ public class MixerPreset implements IRestore {
         if (value < 0f || value > 1f)
             throw newRangeException("reverb_send", "0.0..1.0", value);
         reverbSend = value;
-        MixerChannelMessage.REVERB_SEND.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.REVERB_SEND.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.ReverbSend, reverbSend);
     }
 
@@ -198,7 +215,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getPan(boolean restore) {
-        return MixerChannelMessage.PAN.query(getEngine(), getIndex());
+        return MixerChannelMessage.PAN.query(rack, getIndex());
     }
 
     public void setPan(float value) {
@@ -207,7 +224,7 @@ public class MixerPreset implements IRestore {
         if (value < -1f || value > 1f)
             throw newRangeException("pan", "-1.0..1.0", value);
         pan = value;
-        MixerChannelMessage.PAN.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.PAN.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.Pan, pan);
     }
 
@@ -220,7 +237,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getStereoWidth(boolean restore) {
-        return MixerChannelMessage.STEREO_WIDTH.query(getEngine(), getIndex());
+        return MixerChannelMessage.STEREO_WIDTH.query(rack, getIndex());
     }
 
     public void setStereoWidth(float value) {
@@ -229,7 +246,7 @@ public class MixerPreset implements IRestore {
         if (value < 0f || value > 1f)
             throw newRangeException("stereo_width", "0.0..1.0", value);
         stereoWidth = value;
-        MixerChannelMessage.STEREO_WIDTH.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.STEREO_WIDTH.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.StereoWidth, stereoWidth);
     }
 
@@ -242,14 +259,14 @@ public class MixerPreset implements IRestore {
     }
 
     boolean isMute(boolean restore) {
-        return MixerChannelMessage.MUTE.query(getEngine(), getIndex()) != 0f;
+        return MixerChannelMessage.MUTE.query(rack, getIndex()) != 0f;
     }
 
     public void setMute(boolean muted) {
         if (mute == muted)
             return;
         mute = muted;
-        MixerChannelMessage.MUTE.send(getEngine(), getIndex(), muted ? 1 : 0);
+        MixerChannelMessage.MUTE.send(rack, getIndex(), muted ? 1 : 0);
         //        fireValueChange(MixerInput.Mute, muted ? 1 : 0);
     }
 
@@ -262,14 +279,14 @@ public class MixerPreset implements IRestore {
     }
 
     boolean isSolo(boolean restore) {
-        return MixerChannelMessage.SOLO.query(getEngine(), getIndex()) != 0f;
+        return MixerChannelMessage.SOLO.query(rack, getIndex()) != 0f;
     }
 
     public void setSolo(boolean soloed) {
         if (solo == soloed)
             return;
         solo = soloed;
-        MixerChannelMessage.SOLO.send(getEngine(), getIndex(), solo ? 1 : 0);
+        MixerChannelMessage.SOLO.send(rack, getIndex(), solo ? 1 : 0);
         //        fireValueChange(MixerInput.Solo, solo ? 1 : 0);
     }
 
@@ -282,7 +299,7 @@ public class MixerPreset implements IRestore {
     }
 
     float getVolume(boolean restore) {
-        return MixerChannelMessage.VOLUME.query(getEngine(), getIndex());
+        return MixerChannelMessage.VOLUME.query(rack, getIndex());
     }
 
     public void setVolume(float value) {
@@ -291,7 +308,7 @@ public class MixerPreset implements IRestore {
         if (value < 0f || value > 2f)
             throw newRangeException("volume", "0.0..2.0", value);
         volume = value;
-        MixerChannelMessage.VOLUME.send(getEngine(), getIndex(), value);
+        MixerChannelMessage.VOLUME.send(rack, getIndex(), value);
         //        fireValueChange(MixerInput.Volume, volume);
     }
 
@@ -314,6 +331,12 @@ public class MixerPreset implements IRestore {
     //--------------------------------------------------------------------------
 
     @Override
+    public void load(CaustkLibraryFactory factory) {
+        setRack(factory.getRack());
+        restore();
+    }
+
+    @Override
     public void restore() {
         setBass(getBass(true));
         setMid(getMid(true));
@@ -330,19 +353,20 @@ public class MixerPreset implements IRestore {
      * Updates the native rack with the current values of this mixer preset,
      * using it's parent patch's machine index.
      */
+    @Override
     public void update() {
-        MixerChannelMessage.EQ_BASS.send(getEngine(), getIndex(), getBass());
-        MixerChannelMessage.EQ_MID.send(getEngine(), getIndex(), getMid());
-        MixerChannelMessage.EQ_HIGH.send(getEngine(), getIndex(), getHigh());
-        MixerChannelMessage.REVERB_SEND.send(getEngine(), getIndex(), getReverbSend());
-        MixerChannelMessage.DELAY_SEND.send(getEngine(), getIndex(), getDelaySend());
-        MixerChannelMessage.STEREO_WIDTH.send(getEngine(), getIndex(), getStereoWidth());
+        MixerChannelMessage.EQ_BASS.send(rack, getIndex(), getBass());
+        MixerChannelMessage.EQ_MID.send(rack, getIndex(), getMid());
+        MixerChannelMessage.EQ_HIGH.send(rack, getIndex(), getHigh());
+        MixerChannelMessage.REVERB_SEND.send(rack, getIndex(), getReverbSend());
+        MixerChannelMessage.DELAY_SEND.send(rack, getIndex(), getDelaySend());
+        MixerChannelMessage.STEREO_WIDTH.send(rack, getIndex(), getStereoWidth());
 
-        MixerChannelMessage.PAN.send(getEngine(), getIndex(), getPan());
-        MixerChannelMessage.VOLUME.send(getEngine(), getIndex(), getVolume());
+        MixerChannelMessage.PAN.send(rack, getIndex(), getPan());
+        MixerChannelMessage.VOLUME.send(rack, getIndex(), getVolume());
 
-        MixerChannelMessage.MUTE.send(getEngine(), getIndex(), mute ? 1 : 0);
-        MixerChannelMessage.SOLO.send(getEngine(), getIndex(), solo ? 1 : 0);
+        MixerChannelMessage.MUTE.send(rack, getIndex(), mute ? 1 : 0);
+        MixerChannelMessage.SOLO.send(rack, getIndex(), solo ? 1 : 0);
     }
 
     //--------------------------------------------------------------------------
@@ -351,11 +375,6 @@ public class MixerPreset implements IRestore {
 
     protected final int getIndex() {
         return getPatch().getMachine().getIndex();
-    }
-
-    protected final ICausticEngine getEngine() {
-        // XXX Hack, this is temp
-        return getPatch().getMachine().getTone().getEngine();
     }
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {

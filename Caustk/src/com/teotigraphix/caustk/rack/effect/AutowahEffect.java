@@ -158,7 +158,7 @@ public class AutowahEffect extends EffectBase {
     }
 
     public AutowahEffect(int slot, int toneIndex) {
-        super(EffectType.AUTOWAH, slot, toneIndex);
+        super(EffectType.Autowah, slot, toneIndex);
     }
 
     @Override

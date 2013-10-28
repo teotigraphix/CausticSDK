@@ -68,9 +68,6 @@ public class CaustkPhrase implements ICaustkComponent {
     @Tag(11)
     private String noteData;
 
-    @Tag(12)
-    private float tempo;
-
     @Tag(13)
     private int length;
 
@@ -152,9 +149,9 @@ public class CaustkPhrase implements ICaustkComponent {
     // tempo
     //----------------------------------
 
-    public final float getTempo() {
-        return tempo;
-    }
+    //    public final float getTempo() {
+    //        return tempo;
+    //    }
 
     //----------------------------------
     // length
@@ -166,6 +163,26 @@ public class CaustkPhrase implements ICaustkComponent {
      */
     public final int getLength() {
         return length;
+    }
+
+    /**
+     * @param value 1, 2, 4, 8
+     * @see OnTrackPhraseLengthChange
+     */
+    public void setLength(int value) {
+        if (value == length)
+            return;
+        length = value;
+
+        if (getMachine() != null) {
+            getMachine().getTone().getPatternSequencer()
+                    .setLength(getBankIndex(), getPatternIndex(), length);
+        }
+
+        //        fireChange(CaustkPhraseChangeKind.Length);
+
+        if (position > value)
+            setPosition(value);
     }
 
     //----------------------------------
@@ -506,22 +523,29 @@ public class CaustkPhrase implements ICaustkComponent {
         this.index = index;
         this.machine = machine;
         this.machineType = machine.getMachineType();
+        this.triggerMap = new CaustkTriggerMap(this);
     }
 
     public void load(CaustkLibraryFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
 
+        final int machineIndex = machine.getIndex();
+
         // set the current bank and pattern of the machine to query
         // the string pattern data
         // XXX when pattern_sequencer takes bank, pattern FIX THIS
-        PatternSequencerMessage.BANK.send(rack, index, getBankIndex());
-        PatternSequencerMessage.PATTERN.send(rack, index, getPatternIndex());
+        PatternSequencerMessage.BANK.send(rack, machineIndex, getBankIndex());
+        PatternSequencerMessage.PATTERN.send(rack, machineIndex, getPatternIndex());
 
         // load one phrase per pattern; load ALL patterns
         // as caustic machine patterns
-        length = (int)PatternSequencerMessage.NUM_MEASURES.query(rack, index);
-        tempo = OutputPanelMessage.BPM.query(rack);
-        noteData = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(rack, index);
+        length = (int)PatternSequencerMessage.NUM_MEASURES.query(rack, machineIndex);
+        noteData = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(rack, machineIndex);
+
+        setNoteData(noteData);
+
+        float tempo = OutputPanelMessage.BPM.query(rack);
+        getInfo().addTag("" + tempo);
     }
 
     /**
@@ -744,11 +768,11 @@ public class CaustkPhrase implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     protected void fireChange(CaustkPhraseChangeKind kind) {
-        getDispatcher().trigger(new OnCaustkPhraseChange(kind, this, null));
+        // XXX        getDispatcher().trigger(new OnCaustkPhraseChange(kind, this, null));
     }
 
     protected void fireChange(CaustkPhraseChangeKind kind, Note phraseNote) {
-        getDispatcher().trigger(new OnCaustkPhraseChange(kind, this, phraseNote));
+        // XXX         getDispatcher().trigger(new OnCaustkPhraseChange(kind, this, phraseNote));
     }
 
     public static float toLocalBeat(float beat, int length) {
