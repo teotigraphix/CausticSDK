@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.machine;
 
+import java.util.UUID;
+
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
 public class CaustkEffectFactory {
@@ -26,8 +28,19 @@ public class CaustkEffectFactory {
     public CaustkEffectFactory() {
     }
 
+    public CaustkEffect createEffect(EffectType effectType) {
+        CaustkEffect caustkEffect = new CaustkEffect(UUID.randomUUID(), effectType);
+        return caustkEffect;
+    }
+
+    public CaustkEffect createEffect(int slot, EffectType effectType) {
+        CaustkEffect caustkEffect = new CaustkEffect(UUID.randomUUID(), slot, effectType);
+        return caustkEffect;
+    }
+
     public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {
-        CaustkEffect caustkEffect = new CaustkEffect(slot, effectType, caustkPatch);
+        CaustkEffect caustkEffect = new CaustkEffect(UUID.randomUUID(), slot, effectType,
+                caustkPatch);
         return caustkEffect;
     }
 

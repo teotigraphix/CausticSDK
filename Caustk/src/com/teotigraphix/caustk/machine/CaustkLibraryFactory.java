@@ -204,6 +204,18 @@ public class CaustkLibraryFactory {
         return phraseFactory.createPhrase(caustkMachine, bankIndex, patternIndex);
     }
 
+    //----------------------------------
+    // Effect
+    //----------------------------------
+
+    public CaustkEffect createEffect(EffectType effectType) {
+        return effectFactory.createEffect(effectType);
+    }
+
+    public CaustkEffect createEffect(int slot, EffectType effectType) {
+        return effectFactory.createEffect(slot, effectType);
+    }
+
     public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {
         return effectFactory.createEffect(slot, effectType, caustkPatch);
     }

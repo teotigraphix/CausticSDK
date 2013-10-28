@@ -321,6 +321,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
         //        tone.getComponent(SynthComponent.class).savePreset(id);
         SynthMessage.SAVE_PRESET.send(getController(), toneIndex, id);
 
+        @SuppressWarnings("deprecation")
         File presetFile = RuntimeUtils.getCausticPresetsFile(toneType.getValue(), id);
         if (!presetFile.exists()) {
             throw new IOException("Preset file does not exist");
@@ -610,6 +611,7 @@ public class LibraryManager extends ControllerComponent implements ILibraryManag
             throws IOException {
         String id = patch.getId().toString();
         tone.getComponent(SynthComponent.class).savePreset(id);
+        @SuppressWarnings("deprecation")
         File presetFile = RuntimeUtils.getCausticPresetsFile(tone.getToneType().getValue(), id);
         if (!presetFile.exists()) {
             throw new IOException("Preset file does not exist");
