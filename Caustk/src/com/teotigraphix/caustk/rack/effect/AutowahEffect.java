@@ -163,11 +163,22 @@ public class AutowahEffect extends EffectBase {
 
     @Override
     public void restore() {
+        super.restore();
         setCutoff(getCutoff(true));
         setDepth(getDepth(true));
         setResonance(getResonance(true));
         setSpeed(getSpeed(true));
         setWet(getWet(true));
+    }
+
+    @Override
+    public void update() {
+        super.update();
+        set(AutowahControl.Cutoff, cutoff);
+        set(AutowahControl.Depth, depth);
+        set(AutowahControl.Resonance, resonance);
+        set(AutowahControl.Speed, speed);
+        set(AutowahControl.Wet, wet);
     }
 
     public enum AutowahControl implements IEffectControl {

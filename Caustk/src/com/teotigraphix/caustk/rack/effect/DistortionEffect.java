@@ -31,7 +31,7 @@ public class DistortionEffect extends EffectBase {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private Program mProgram = Program.OVERDRIVE;
+    private Program program = Program.OVERDRIVE;
 
     @Tag(101)
     private float preGain;
@@ -51,7 +51,7 @@ public class DistortionEffect extends EffectBase {
     //----------------------------------
 
     public Program getProgram() {
-        return mProgram;
+        return program;
     }
 
     Program getProgram(boolean restore) {
@@ -59,10 +59,10 @@ public class DistortionEffect extends EffectBase {
     }
 
     public void setProgram(Program value) {
-        if (value == mProgram)
+        if (value == program)
             return;
-        mProgram = value;
-        set(DistortionControl.Program, mProgram.getValue());
+        program = value;
+        set(DistortionControl.Program, program.getValue());
     }
 
     //----------------------------------
@@ -141,6 +141,16 @@ public class DistortionEffect extends EffectBase {
         setPreGain(getPreGain(true));
         setProgram(getProgram(true));
         setPostGain(getPostGain(true));
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        set(DistortionControl.Amount, amount);
+        set(DistortionControl.Post, postGain);
+        set(DistortionControl.Pre, preGain);
+        set(DistortionControl.Program, program.getValue());
     }
 
     public enum Program {

@@ -120,6 +120,15 @@ public class ChorusEffect extends EffectBase {
         setWet(getWet(true));
     }
 
+    @Override
+    public void update() {
+        super.update();
+
+        set(ChorusControl.Depth, depth);
+        set(ChorusControl.Rate, rate);
+        set(ChorusControl.Wet, wet);
+    }
+
     public enum ChorusControl implements IEffectControl {
 
         /**

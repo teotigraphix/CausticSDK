@@ -170,6 +170,17 @@ public class CompressorEffect extends EffectBase {
         setThreshold(getThreshold(true));
     }
 
+    @Override
+    public void update() {
+        super.update();
+
+        set(CompressorControl.Attack, attack);
+        set(CompressorControl.Ratio, ratio);
+        set(CompressorControl.Release, release);
+        set(CompressorControl.Sidechain, sidechain);
+        set(CompressorControl.Threshold, threshold);
+    }
+
     public enum CompressorControl implements IEffectControl {
 
         /**

@@ -31,13 +31,13 @@ public class PhaserEffect extends EffectBase {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private float mDepth = 0.8f;
+    private float depth = 0.8f;
 
     @Tag(101)
-    private float mFeedback = 0.47f;
+    private float feedback = 0.47f;
 
     @Tag(102)
-    private int mRate = 10;
+    private int rate = 10;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -48,7 +48,7 @@ public class PhaserEffect extends EffectBase {
     //----------------------------------
 
     public float getDepth() {
-        return mDepth;
+        return depth;
     }
 
     float getDepth(boolean restore) {
@@ -56,12 +56,12 @@ public class PhaserEffect extends EffectBase {
     }
 
     public void setDepth(float value) {
-        if (value == mDepth)
+        if (value == depth)
             return;
         if (value < 0.1f || value > 0.95f)
             throw newRangeException(PhaserControl.Depth, "0.1..0.95", value);
-        mDepth = value;
-        set(PhaserControl.Depth, mDepth);
+        depth = value;
+        set(PhaserControl.Depth, depth);
     }
 
     //----------------------------------
@@ -69,7 +69,7 @@ public class PhaserEffect extends EffectBase {
     //----------------------------------
 
     public float getFeedback() {
-        return mFeedback;
+        return feedback;
     }
 
     float getFeedback(boolean restore) {
@@ -77,12 +77,12 @@ public class PhaserEffect extends EffectBase {
     }
 
     public void setFeedback(float value) {
-        if (value == mFeedback)
+        if (value == feedback)
             return;
         if (value < 0.1f || value > 0.95f)
             throw newRangeException(PhaserControl.Feedback, "0.1..0.95", value);
-        mFeedback = value;
-        set(PhaserControl.Feedback, mFeedback);
+        feedback = value;
+        set(PhaserControl.Feedback, feedback);
     }
 
     //----------------------------------
@@ -90,7 +90,7 @@ public class PhaserEffect extends EffectBase {
     //----------------------------------
 
     public int getRate() {
-        return mRate;
+        return rate;
     }
 
     int getRate(boolean restore) {
@@ -98,12 +98,12 @@ public class PhaserEffect extends EffectBase {
     }
 
     public void setRate(int value) {
-        if (value == mRate)
+        if (value == rate)
             return;
         if (value < 0/*2 XXX*/|| value > 50)
             throw newRangeException(PhaserControl.Rate, "2..50", value);
-        mRate = value;
-        set(PhaserControl.Rate, mRate);
+        rate = value;
+        set(PhaserControl.Rate, rate);
     }
 
     PhaserEffect() {
@@ -118,6 +118,15 @@ public class PhaserEffect extends EffectBase {
         setDepth(getDepth(true));
         setFeedback(getFeedback(true));
         setRate(getRate(true));
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        set(PhaserControl.Depth, depth);
+        set(PhaserControl.Feedback, feedback);
+        set(PhaserControl.Rate, rate);
     }
 
     public enum PhaserControl implements IEffectControl {

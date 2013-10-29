@@ -145,6 +145,16 @@ public class BitcrusherEffect extends EffectBase {
         setWet(getWet(true));
     }
 
+    @Override
+    public void update() {
+        super.update();
+
+        set(BitcrusherControl.Depth, depth);
+        set(BitcrusherControl.Jitter, jitter);
+        set(BitcrusherControl.Rate, rate);
+        set(BitcrusherControl.Wet, wet);
+    }
+
     public enum BitcrusherControl implements IEffectControl {
 
         /**

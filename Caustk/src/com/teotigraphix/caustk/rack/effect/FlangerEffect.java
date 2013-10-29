@@ -145,6 +145,16 @@ public class FlangerEffect extends EffectBase {
         setWet(getWet(true));
     }
 
+    @Override
+    public void update() {
+        super.update();
+
+        set(FlangerControl.Depth, depth);
+        set(FlangerControl.Feedback, feedback);
+        set(FlangerControl.Rate, rate);
+        set(FlangerControl.Wet, wet);
+    }
+
     public enum FlangerControl implements IEffectControl {
 
         /**
