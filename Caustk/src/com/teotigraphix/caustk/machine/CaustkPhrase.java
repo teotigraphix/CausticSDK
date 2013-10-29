@@ -885,6 +885,7 @@ public class CaustkPhrase implements IRackAware, ICaustkComponent, IRackSerializ
 
     @Override
     public void update() {
+        PatternSequencerMessage.NUM_MEASURES.send(rack, machine.getIndex(), length);
         for (Note note : triggerMap.getNotes()) {
             if (note.isSelected()) {
                 triggerMap.update(note);

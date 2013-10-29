@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.machine;
 
+import com.teotigraphix.caustk.utils.PatternUtils;
+
 public class CaustkPhraseFactory extends CaustkFactoryBase {
 
     public CaustkPhraseFactory() {
@@ -26,14 +28,14 @@ public class CaustkPhraseFactory extends CaustkFactoryBase {
 
     public CaustkPhrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
             int patternIndex) {
-        final int index = bankIndex * patternIndex;
+        final int index = PatternUtils.getIndex(bankIndex, patternIndex);
         CaustkPhrase caustkPhrase = new CaustkPhrase(info, index, machineType);
         return caustkPhrase;
     }
 
     public CaustkPhrase createPhrase(CaustkMachine caustkMachine, int bankIndex, int patternIndex) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Phrase);
-        final int index = bankIndex * patternIndex;
+        final int index = PatternUtils.getIndex(bankIndex, patternIndex);
         CaustkPhrase caustkPhrase = new CaustkPhrase(info, index, caustkMachine);
         return caustkPhrase;
     }
