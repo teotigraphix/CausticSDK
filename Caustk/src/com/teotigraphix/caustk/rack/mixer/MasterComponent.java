@@ -27,6 +27,9 @@ import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
+/**
+ * @author Michael Schmalle
+ */
 public class MasterComponent implements IRackSerializer, IRackAware {
 
     //--------------------------------------------------------------------------
@@ -36,9 +39,9 @@ public class MasterComponent implements IRackSerializer, IRackAware {
     // Note; This should be private but, since this runs on Android, referencing
     // a property is faster than method access, so this is package public for 
     // subclasses
-    IRack rack;
+    transient IRack rack;
 
-    protected CausticMessage bypassMessage;
+    protected transient CausticMessage bypassMessage;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -52,7 +55,7 @@ public class MasterComponent implements IRackSerializer, IRackAware {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // bypass
+    // rack
     //----------------------------------
 
     @Override
@@ -103,9 +106,14 @@ public class MasterComponent implements IRackSerializer, IRackAware {
         return ExceptionUtils.newRangeException(control, range, value);
     }
 
+    //--------------------------------------------------------------------------
+    // IRackSerializer API :: Methods
+    //--------------------------------------------------------------------------
+
     @Override
     public void load(CaustkLibraryFactory factory) {
         setRack(factory.getRack());
+        restore();
     }
 
     @Override

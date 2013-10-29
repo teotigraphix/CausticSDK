@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 
 public class MasterLimiter extends MasterComponent {
 
@@ -32,13 +31,13 @@ public class MasterLimiter extends MasterComponent {
     @Tag(100)
     private float pre = 1f;
 
-    @Tag(110)
+    @Tag(101)
     private float attack = 0.02f;
 
-    @Tag(120)
+    @Tag(102)
     private float release = 0.25f;
 
-    @Tag(130)
+    @Tag(103)
     private float post = 1f;
 
     //--------------------------------------------------------------------------
@@ -140,11 +139,6 @@ public class MasterLimiter extends MasterComponent {
     //--------------------------------------------------------------------------
     // IRackSerializer API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public void load(CaustkLibraryFactory factory) {
-        super.load(factory);
-    }
 
     @Override
     public void restore() {

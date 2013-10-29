@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 
 public class MasterReverb extends MasterComponent {
 
@@ -32,31 +31,31 @@ public class MasterReverb extends MasterComponent {
     @Tag(100)
     private float preDelay = 0.02f;
 
-    @Tag(110)
+    @Tag(101)
     private float roomSize = 0.75f;
 
-    @Tag(120)
+    @Tag(102)
     private float hfDamping = 0.156f;
 
-    @Tag(130)
+    @Tag(103)
     private float diffuse = 0.7f;
 
-    @Tag(140)
+    @Tag(104)
     private int ditherEchoes = 0;
 
-    @Tag(150)
+    @Tag(105)
     private float erGain = 1f;
 
-    @Tag(160)
+    @Tag(106)
     private float erDecay = 0.25f;
 
-    @Tag(170)
+    @Tag(107)
     private float stereoDelay = 0.5f;
 
-    @Tag(180)
+    @Tag(108)
     private float stereoSpread = 0.25f;
 
-    @Tag(100)
+    @Tag(109)
     private float wet = 0.25f;
 
     //--------------------------------------------------------------------------
@@ -284,11 +283,6 @@ public class MasterReverb extends MasterComponent {
     //--------------------------------------------------------------------------
     // IRackSerializer API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public void load(CaustkLibraryFactory factory) {
-        super.load(factory);
-    }
 
     @Override
     public void restore() {

@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 
 /**
  * @author Michael Schmalle
@@ -74,14 +73,9 @@ public class MasterVolume extends MasterComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void load(CaustkLibraryFactory factory) {
-        super.load(factory);
-    }
-
-    @Override
     public void restore() {
         super.restore();
-        //        setVolume(getVolume(true));
+        // XXX OSC BUG        setVolume(getVolume(true));
     }
 
     @Override

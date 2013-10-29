@@ -21,6 +21,9 @@ package com.teotigraphix.caustk.core;
 
 import com.teotigraphix.caustk.rack.IRack;
 
+/**
+ * @author Michael Schmalle
+ */
 public interface IRackAware {
 
     IRack getRack();

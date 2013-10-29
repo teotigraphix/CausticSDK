@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 
 public class MasterDelay extends MasterComponent {
 
@@ -32,25 +31,25 @@ public class MasterDelay extends MasterComponent {
     @Tag(100)
     private int steps = 2;
 
-    @Tag(110)
+    @Tag(101)
     private int loop = 2;
 
-    @Tag(120)
+    @Tag(102)
     private int time = 8;
 
-    @Tag(130)
+    @Tag(103)
     private int sync = 1;
 
-    @Tag(140)
+    @Tag(104)
     private float feedback = 0.5f;
 
-    @Tag(150)
+    @Tag(105)
     private int feedbackFirst = 0;
 
-    @Tag(160)
+    @Tag(106)
     private float damping = 0f;
 
-    @Tag(170)
+    @Tag(107)
     private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
@@ -258,11 +257,6 @@ public class MasterDelay extends MasterComponent {
     //--------------------------------------------------------------------------
     // IRackSerializer API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public void load(CaustkLibraryFactory factory) {
-        super.load(factory);
-    }
 
     @Override
     public void restore() {

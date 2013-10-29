@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 
 /**
  * @author Michael Schmalle
@@ -35,16 +34,16 @@ public class MasterEqualizer extends MasterComponent {
     @Tag(100)
     private float bass = 1.1f;
 
-    @Tag(110)
+    @Tag(101)
     private float bassMidFreq = 0.5f;
 
-    @Tag(120)
+    @Tag(102)
     private float mid = 1f;
 
-    @Tag(130)
+    @Tag(103)
     private float midHighFreq = 0.5f;
 
-    @Tag(140)
+    @Tag(104)
     private float high = 1.1f;
 
     //--------------------------------------------------------------------------
@@ -167,11 +166,6 @@ public class MasterEqualizer extends MasterComponent {
     //--------------------------------------------------------------------------
     // IRackSerializer API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public void load(CaustkLibraryFactory factory) {
-        super.load(factory);
-    }
 
     @Override
     public void restore() {
