@@ -43,8 +43,9 @@ public interface IRackSerializer {
      * the load.
      * 
      * @param factory The library factory.
+     * @throws CausticException
      */
-    void load(CaustkLibraryFactory factory);
+    void load(CaustkLibraryFactory factory) throws CausticException;
 
     /**
      * Restores the rack, each component implementing the method will use OSC

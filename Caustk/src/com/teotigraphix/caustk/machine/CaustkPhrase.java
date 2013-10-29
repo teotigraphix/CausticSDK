@@ -25,6 +25,8 @@ import java.util.Map;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.IRackAware;
+import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
@@ -36,7 +38,9 @@ import com.teotigraphix.caustk.rack.track.Trigger;
 import com.teotigraphix.caustk.rack.track.TriggerMap;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class CaustkPhrase implements ICaustkComponent {
+public class CaustkPhrase implements IRackAware, ICaustkComponent, IRackSerializer {
+
+    private transient IRack rack;
 
     final IDispatcher getDispatcher() {
         return null;// machine.
@@ -92,6 +96,20 @@ public class CaustkPhrase implements ICaustkComponent {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    @Override
+    public IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack value) {
+        rack = value;
+    }
 
     //----------------------------------
     // info
@@ -526,6 +544,7 @@ public class CaustkPhrase implements ICaustkComponent {
         this.triggerMap = new CaustkTriggerMap(this);
     }
 
+    @Override
     public void load(CaustkLibraryFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
 
@@ -855,6 +874,23 @@ public class CaustkPhrase implements ICaustkComponent {
             this.kind = kind;
             this.phrase = phrase;
             this.note = note;
+        }
+    }
+
+    @Override
+    public void restore() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void update() {
+        for (Note note : triggerMap.getNotes()) {
+            if (note.isSelected()) {
+                triggerMap.update(note);
+            } else {
+                System.err.println("Didn't add note: " + note.toString());
+            }
         }
     }
 }

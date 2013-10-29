@@ -52,16 +52,16 @@ public class PhaserEffect extends EffectBase {
     }
 
     float getDepth(boolean restore) {
-        return get(ParametricEQControl.Depth);
+        return get(PhaserControl.Depth);
     }
 
     public void setDepth(float value) {
         if (value == mDepth)
             return;
         if (value < 0.1f || value > 0.95f)
-            throw newRangeException(ParametricEQControl.Depth, "0.1..0.95", value);
+            throw newRangeException(PhaserControl.Depth, "0.1..0.95", value);
         mDepth = value;
-        set(ParametricEQControl.Depth, mDepth);
+        set(PhaserControl.Depth, mDepth);
     }
 
     //----------------------------------
@@ -73,16 +73,16 @@ public class PhaserEffect extends EffectBase {
     }
 
     float getFeedback(boolean restore) {
-        return get(ParametricEQControl.Feedback);
+        return get(PhaserControl.Feedback);
     }
 
     public void setFeedback(float value) {
         if (value == mFeedback)
             return;
         if (value < 0.1f || value > 0.95f)
-            throw newRangeException(ParametricEQControl.Feedback, "0.1..0.95", value);
+            throw newRangeException(PhaserControl.Feedback, "0.1..0.95", value);
         mFeedback = value;
-        set(ParametricEQControl.Feedback, mFeedback);
+        set(PhaserControl.Feedback, mFeedback);
     }
 
     //----------------------------------
@@ -94,16 +94,16 @@ public class PhaserEffect extends EffectBase {
     }
 
     int getRate(boolean restore) {
-        return (int)get(ParametricEQControl.Rate);
+        return (int)get(PhaserControl.Rate);
     }
 
     public void setRate(int value) {
         if (value == mRate)
             return;
-        if (value < 2 || value > 50)
-            throw newRangeException(ParametricEQControl.Rate, "2..50", value);
+        if (value < 0/*2 XXX*/|| value > 50)
+            throw newRangeException(PhaserControl.Rate, "2..50", value);
         mRate = value;
-        set(ParametricEQControl.Rate, mRate);
+        set(PhaserControl.Rate, mRate);
     }
 
     PhaserEffect() {
@@ -120,7 +120,7 @@ public class PhaserEffect extends EffectBase {
         setRate(getRate(true));
     }
 
-    public enum ParametricEQControl implements IEffectControl {
+    public enum PhaserControl implements IEffectControl {
 
         /**
          * 0.1..0.95
@@ -144,7 +144,7 @@ public class PhaserEffect extends EffectBase {
             return control;
         }
 
-        private ParametricEQControl(String control) {
+        private PhaserControl(String control) {
             this.control = control;
         }
     }

@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 public class MixerPreset implements IRackAware, IRackSerializer {
 
-    private IRack rack;
+    private transient IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -65,7 +65,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     private boolean solo = false;
 
     @Tag(12)
-    private float volume = 0f;
+    private float volume = 1f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties

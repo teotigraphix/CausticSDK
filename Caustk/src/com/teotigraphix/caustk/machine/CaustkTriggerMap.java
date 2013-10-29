@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.machine.CaustkPhrase.CaustkPhraseChangeKind;
 import com.teotigraphix.caustk.machine.CaustkPhrase.OnCaustkPhraseChange;
 import com.teotigraphix.caustk.machine.CaustkPhrase.Scale;
@@ -80,6 +81,12 @@ public class CaustkTriggerMap {
         if (phrase.getMachine() == null || phrase.getMachine().getTone() == null)
             return null;
         return getTone().getPatternSequencer();
+    }
+
+    public void update(Note note) {
+        PatternSequencerMessage.NOTE_DATA.send(phrase.getMachine().getRack(), phrase.getMachine()
+                .getIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note.getEnd(),
+                note.getFlags());
     }
 
     //--------------------------------------------------------------------------
@@ -581,4 +588,5 @@ public class CaustkTriggerMap {
             this.trigger = trigger;
         }
     }
+
 }

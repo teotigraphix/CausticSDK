@@ -81,7 +81,7 @@ public class MasterVolume extends MasterComponent {
     @Override
     public void restore() {
         super.restore();
-        setVolume(getVolume(true));
+        //        setVolume(getVolume(true));
     }
 
     @Override

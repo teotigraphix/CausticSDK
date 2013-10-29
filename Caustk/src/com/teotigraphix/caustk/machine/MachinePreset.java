@@ -26,7 +26,8 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.core.IRackAware;
+import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.Tone;
@@ -44,7 +45,9 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * 
  * @author Michael Schmalle
  */
-public class MachinePreset implements IRestore {
+public class MachinePreset implements IRackAware, IRackSerializer {
+
+    private transient IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -62,6 +65,20 @@ public class MachinePreset implements IRestore {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    @Override
+    public IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack value) {
+        rack = value;
+    }
 
     //----------------------------------
     // patch
@@ -159,6 +176,7 @@ public class MachinePreset implements IRestore {
         return savedFile;
     }
 
+    @Override
     public void load(CaustkLibraryFactory factory) {
         CaustkMachine machine = getPatch().getMachine();
         if (machine == null)
@@ -207,7 +225,33 @@ public class MachinePreset implements IRestore {
             throw new IllegalStateException(
                     "CaustkMachine Tone cannot be null when trying to update preset file");
 
-        update(tone);
+        restore(tone);
+    }
+
+    @Override
+    public void update() {
+        // take the byte data, save it temporarily, load as preset
+        File temp = new File(RuntimeUtils.getApplicationDirectory(), ".temp");
+        temp.mkdirs();
+
+        File presetFile = null;
+        String presetName = constructPresetName(true);
+
+        try {
+            presetFile = save(temp, presetName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (!presetFile.exists())
+            throw new IllegalStateException("Preset data was not updated "
+                    + "correctly, File not created.");
+
+        SynthMessage.LOAD_PRESET.send(rack, patch.getMachine().getIndex(),
+                presetFile.getAbsolutePath());
+
+        // delete the temp preset file
+        FileUtils.deleteQuietly(presetFile);
     }
 
     /**
@@ -220,7 +264,7 @@ public class MachinePreset implements IRestore {
      * @param tone The {@link Tone} to use when updating the preset bytes.
      * @throws IOException
      */
-    public void update(Tone tone) {
+    public void restore(Tone tone) {
         if (!tone.getToneType().getValue().equals(getPatch().getMachineType().getType()))
             throw new IllegalStateException("Tone's type does not match the LivePhrase's type");
 

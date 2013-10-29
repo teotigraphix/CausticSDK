@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
 
 /**
  * @author Michael Schmalle
@@ -114,10 +115,24 @@ public class ParametricEQEffect extends EffectBase {
     }
 
     @Override
+    public void load(CaustkLibraryFactory factory) {
+        super.load(factory);
+    }
+
+    @Override
     public void restore() {
         setFrequency(getFrequency(true));
         setGain(getGain(true));
         setWidth(getWidth(true));
+    }
+
+    @Override
+    public void update() {
+        super.update();
+
+        set(ParametricEQControl.Frequency, frequency);
+        set(ParametricEQControl.Gain, gain);
+        set(ParametricEQControl.Width, width);
     }
 
     public enum ParametricEQControl implements IEffectControl {

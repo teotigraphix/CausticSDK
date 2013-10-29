@@ -134,6 +134,8 @@ public abstract class EffectBase implements IEffect {
 
     @Override
     public void load(CaustkLibraryFactory factory) {
+        setRack(factory.getRack());
+        restore();
     }
 
     @Override
@@ -154,11 +156,7 @@ public abstract class EffectBase implements IEffect {
      * @param control The control to query.
      */
     protected final float get(IEffectControl control) {
-        if (rack != null) {
-            return EffectRackMessage.GET.query(rack, getToneIndex(), getSlot(),
-                    control.getControl());
-        }
-        return Float.NaN;
+        return EffectRackMessage.GET.query(rack, getToneIndex(), getSlot(), control.getControl());
     }
 
     /**
@@ -169,10 +167,7 @@ public abstract class EffectBase implements IEffect {
      * @param value The new float value for the control.
      */
     protected final void set(IEffectControl control, float value) {
-        if (rack != null) {
-            EffectRackMessage.SET
-                    .send(rack, getToneIndex(), getSlot(), control.getControl(), value);
-        }
+        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
     }
 
     /**
@@ -183,10 +178,7 @@ public abstract class EffectBase implements IEffect {
      * @param value The new int value for the control.
      */
     protected final void set(IEffectControl control, int value) {
-        if (rack != null) {
-            EffectRackMessage.SET
-                    .send(rack, getToneIndex(), getSlot(), control.getControl(), value);
-        }
+        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
     }
 
     /**

@@ -233,6 +233,16 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
 
     public void update() {
         // create the Tone
+        updateTone();
+
+        // assign the patch
+        updatePatch();
+
+        // create the phrases
+        updatePhrases();
+    }
+
+    private void updateTone() {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
         try {
@@ -240,10 +250,24 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
         } catch (CausticException e) {
             e.printStackTrace();
         }
+    }
 
-        // assign the patch
+    private void updatePatch() {
+        patch.setRack(rack);
+        patch.update();
+    }
 
-        // create the phrases
+    private void updatePhrases() {
+        int currentBank = getCurrentBank();
+        int currentPattern = getCurrentPattern();
+        for (CaustkPhrase caustkPhrase : phrases.values()) {
+            PatternSequencerMessage.BANK.send(rack, index, caustkPhrase.getBankIndex());
+            PatternSequencerMessage.PATTERN.send(rack, index, caustkPhrase.getPatternIndex());
+            caustkPhrase.setRack(rack);
+            caustkPhrase.update();
+        }
+        PatternSequencerMessage.BANK.send(rack, index, currentBank);
+        PatternSequencerMessage.PATTERN.send(rack, index, currentPattern);
     }
 
     /**

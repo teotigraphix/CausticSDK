@@ -25,6 +25,8 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.IRackAware;
+import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IEffect;
@@ -44,7 +46,9 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 /**
  * @author Michael Schmalle
  */
-public class CaustkPatch implements ICaustkComponent {
+public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerializer {
+
+    private IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -71,6 +75,20 @@ public class CaustkPatch implements ICaustkComponent {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    @Override
+    public IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack value) {
+        rack = value;
+    }
 
     //----------------------------------
     // info
@@ -190,8 +208,27 @@ public class CaustkPatch implements ICaustkComponent {
         mixerPreset = new MixerPreset(this);
     }
 
-    public void load(CaustkLibraryFactory factory) throws IOException, CausticException {
-        loadMachinePreset(factory);
+    @Override
+    public void update() {
+        machinePreset.setRack(rack);
+        mixerPreset.setRack(rack);
+
+        machinePreset.update();
+        mixerPreset.update();
+
+        for (CaustkEffect caustkEffect : effects.values()) {
+            caustkEffect.setRack(rack);
+            caustkEffect.update();
+        }
+    }
+
+    @Override
+    public void load(CaustkLibraryFactory factory) throws CausticException {
+        try {
+            loadMachinePreset(factory);
+        } catch (IOException e) {
+            throw new CausticException(e);
+        }
         loadMixerPreset(factory);
         loadEffects(factory);
     }
@@ -215,7 +252,7 @@ public class CaustkPatch implements ICaustkComponent {
         machinePreset.load(factory);
     }
 
-    void loadEffects(CaustkLibraryFactory factory) {
+    void loadEffects(CaustkLibraryFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
 
         final CaustkMachine machine = getMachine();
@@ -237,6 +274,12 @@ public class CaustkPatch implements ICaustkComponent {
             putEffect(1, effect);
             effect.load(factory);
         }
+    }
+
+    @Override
+    public void restore() {
+        // TODO Auto-generated method stub
+
     }
 
 }
