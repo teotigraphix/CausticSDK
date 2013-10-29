@@ -19,14 +19,18 @@
 
 package com.teotigraphix.caustk.rack;
 
-import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
+import com.teotigraphix.caustk.machine.CaustkEffect;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
 /**
  * @author Michael Schmalle
  */
-public interface IEffect extends IRackAware, IRackSerializer {
+public interface IEffect extends IRackSerializer {
+
+    CaustkEffect getEffect();
+
+    void setEffect(CaustkEffect caustkEffect);
 
     /**
      * Returns the {@link EffectType} of the effect, assigned when constructed.

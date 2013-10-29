@@ -20,15 +20,12 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
-public class MixerPreset implements IRackAware, IRackSerializer {
-
-    private transient IRack rack;
+public class MixerPreset implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -75,14 +72,8 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     // rack
     //----------------------------------
 
-    @Override
-    public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
+    public final IRack getRack() {
+        return patch.getMachine().getRack();
     }
 
     //----------------------------------
@@ -105,7 +96,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getBass(boolean restore) {
-        return MixerChannelMessage.EQ_BASS.query(rack, getIndex());
+        return MixerChannelMessage.EQ_BASS.query(getRack(), getIndex());
     }
 
     public final void setBass(float value) {
@@ -114,7 +105,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < -1f || value > 1f)
             throw newRangeException("bass", "-1.0..1.0", value);
         bass = value;
-        MixerChannelMessage.EQ_BASS.send(rack, getIndex(), value);
+        MixerChannelMessage.EQ_BASS.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.Bass, bass);
     }
 
@@ -127,7 +118,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getMid(boolean restore) {
-        return MixerChannelMessage.EQ_MID.query(rack, getIndex());
+        return MixerChannelMessage.EQ_MID.query(getRack(), getIndex());
     }
 
     public void setMid(float value) {
@@ -136,7 +127,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < -1f || value > 1f)
             throw newRangeException("mid", "-1.0..1.0", value);
         mid = value;
-        MixerChannelMessage.EQ_MID.send(rack, getIndex(), value);
+        MixerChannelMessage.EQ_MID.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.Mid, mid);
     }
 
@@ -149,7 +140,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getHigh(boolean restore) {
-        return MixerChannelMessage.EQ_HIGH.query(rack, getIndex());
+        return MixerChannelMessage.EQ_HIGH.query(getRack(), getIndex());
     }
 
     public final void setHigh(float value) {
@@ -158,7 +149,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < -1f || value > 1f)
             throw newRangeException("high", "-1.0..1.0", value);
         high = value;
-        MixerChannelMessage.EQ_HIGH.send(rack, getIndex(), value);
+        MixerChannelMessage.EQ_HIGH.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.High, high);
     }
 
@@ -171,7 +162,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getDelaySend(boolean restore) {
-        return MixerChannelMessage.DELAY_SEND.query(rack, getIndex());
+        return MixerChannelMessage.DELAY_SEND.query(getRack(), getIndex());
     }
 
     public void setDelaySend(float value) {
@@ -180,7 +171,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < 0f || value > 1f)
             throw newRangeException("delay_send", "0.0..1.0", value);
         delaySend = value;
-        MixerChannelMessage.DELAY_SEND.send(rack, getIndex(), value);
+        MixerChannelMessage.DELAY_SEND.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.DelaySend, delaySend);
     }
 
@@ -193,7 +184,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getReverbSend(boolean restore) {
-        return MixerChannelMessage.REVERB_SEND.query(rack, getIndex());
+        return MixerChannelMessage.REVERB_SEND.query(getRack(), getIndex());
     }
 
     public void setReverbSend(float value) {
@@ -202,7 +193,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < 0f || value > 1f)
             throw newRangeException("reverb_send", "0.0..1.0", value);
         reverbSend = value;
-        MixerChannelMessage.REVERB_SEND.send(rack, getIndex(), value);
+        MixerChannelMessage.REVERB_SEND.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.ReverbSend, reverbSend);
     }
 
@@ -215,7 +206,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getPan(boolean restore) {
-        return MixerChannelMessage.PAN.query(rack, getIndex());
+        return MixerChannelMessage.PAN.query(getRack(), getIndex());
     }
 
     public void setPan(float value) {
@@ -224,7 +215,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < -1f || value > 1f)
             throw newRangeException("pan", "-1.0..1.0", value);
         pan = value;
-        MixerChannelMessage.PAN.send(rack, getIndex(), value);
+        MixerChannelMessage.PAN.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.Pan, pan);
     }
 
@@ -237,7 +228,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getStereoWidth(boolean restore) {
-        return MixerChannelMessage.STEREO_WIDTH.query(rack, getIndex());
+        return MixerChannelMessage.STEREO_WIDTH.query(getRack(), getIndex());
     }
 
     public void setStereoWidth(float value) {
@@ -246,7 +237,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < 0f || value > 1f)
             throw newRangeException("stereo_width", "0.0..1.0", value);
         stereoWidth = value;
-        MixerChannelMessage.STEREO_WIDTH.send(rack, getIndex(), value);
+        MixerChannelMessage.STEREO_WIDTH.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.StereoWidth, stereoWidth);
     }
 
@@ -259,14 +250,14 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     boolean isMute(boolean restore) {
-        return MixerChannelMessage.MUTE.query(rack, getIndex()) != 0f;
+        return MixerChannelMessage.MUTE.query(getRack(), getIndex()) != 0f;
     }
 
     public void setMute(boolean muted) {
         if (mute == muted)
             return;
         mute = muted;
-        MixerChannelMessage.MUTE.send(rack, getIndex(), muted ? 1 : 0);
+        MixerChannelMessage.MUTE.send(getRack(), getIndex(), muted ? 1 : 0);
         //        fireValueChange(MixerInput.Mute, muted ? 1 : 0);
     }
 
@@ -279,14 +270,14 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     boolean isSolo(boolean restore) {
-        return MixerChannelMessage.SOLO.query(rack, getIndex()) != 0f;
+        return MixerChannelMessage.SOLO.query(getRack(), getIndex()) != 0f;
     }
 
     public void setSolo(boolean soloed) {
         if (solo == soloed)
             return;
         solo = soloed;
-        MixerChannelMessage.SOLO.send(rack, getIndex(), solo ? 1 : 0);
+        MixerChannelMessage.SOLO.send(getRack(), getIndex(), solo ? 1 : 0);
         //        fireValueChange(MixerInput.Solo, solo ? 1 : 0);
     }
 
@@ -299,7 +290,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     }
 
     float getVolume(boolean restore) {
-        return MixerChannelMessage.VOLUME.query(rack, getIndex());
+        return MixerChannelMessage.VOLUME.query(getRack(), getIndex());
     }
 
     public void setVolume(float value) {
@@ -308,7 +299,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         if (value < 0f || value > 2f)
             throw newRangeException("volume", "0.0..2.0", value);
         volume = value;
-        MixerChannelMessage.VOLUME.send(rack, getIndex(), value);
+        MixerChannelMessage.VOLUME.send(getRack(), getIndex(), value);
         //        fireValueChange(MixerInput.Volume, volume);
     }
 
@@ -331,8 +322,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Override
-    public void load(CaustkLibraryFactory factory) {
-        setRack(factory.getRack());
+    public void load(CaustkFactory factory) {
         restore();
     }
 
@@ -347,6 +337,7 @@ public class MixerPreset implements IRackAware, IRackSerializer {
         setPan(getPan(true));
         setMute(isMute(true));
         setSolo(isSolo(true));
+        setVolume(getVolume(true));
     }
 
     /**
@@ -355,18 +346,18 @@ public class MixerPreset implements IRackAware, IRackSerializer {
      */
     @Override
     public void update() {
-        MixerChannelMessage.EQ_BASS.send(rack, getIndex(), getBass());
-        MixerChannelMessage.EQ_MID.send(rack, getIndex(), getMid());
-        MixerChannelMessage.EQ_HIGH.send(rack, getIndex(), getHigh());
-        MixerChannelMessage.REVERB_SEND.send(rack, getIndex(), getReverbSend());
-        MixerChannelMessage.DELAY_SEND.send(rack, getIndex(), getDelaySend());
-        MixerChannelMessage.STEREO_WIDTH.send(rack, getIndex(), getStereoWidth());
+        MixerChannelMessage.EQ_BASS.send(getRack(), getIndex(), getBass());
+        MixerChannelMessage.EQ_MID.send(getRack(), getIndex(), getMid());
+        MixerChannelMessage.EQ_HIGH.send(getRack(), getIndex(), getHigh());
+        MixerChannelMessage.REVERB_SEND.send(getRack(), getIndex(), getReverbSend());
+        MixerChannelMessage.DELAY_SEND.send(getRack(), getIndex(), getDelaySend());
+        MixerChannelMessage.STEREO_WIDTH.send(getRack(), getIndex(), getStereoWidth());
 
-        MixerChannelMessage.PAN.send(rack, getIndex(), getPan());
-        MixerChannelMessage.VOLUME.send(rack, getIndex(), getVolume());
+        MixerChannelMessage.PAN.send(getRack(), getIndex(), getPan());
+        MixerChannelMessage.VOLUME.send(getRack(), getIndex(), getVolume());
 
-        MixerChannelMessage.MUTE.send(rack, getIndex(), mute ? 1 : 0);
-        MixerChannelMessage.SOLO.send(rack, getIndex(), solo ? 1 : 0);
+        MixerChannelMessage.MUTE.send(getRack(), getIndex(), mute ? 1 : 0);
+        MixerChannelMessage.SOLO.send(getRack(), getIndex(), solo ? 1 : 0);
     }
 
     //--------------------------------------------------------------------------
@@ -380,5 +371,4 @@ public class MixerPreset implements IRackAware, IRackSerializer {
     protected final RuntimeException newRangeException(String control, String range, Object value) {
         return ExceptionUtils.newRangeException(control, range, value);
     }
-
 }

@@ -19,10 +19,105 @@
 
 package com.teotigraphix.caustk.machine;
 
-public class CaustkMasterSequencer {
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.IRackAware;
+import com.teotigraphix.caustk.core.IRackSerializer;
+import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.rack.IRack;
 
-    public CaustkMasterSequencer() {
-        // TODO Auto-generated constructor stub
+public class CaustkMasterSequencer implements IRackSerializer, IRackAware {
+
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private IRack rack;
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private CaustkScene scene;
+
+    public CaustkScene getScene() {
+        return scene;
     }
 
+    //--------------------------------------------------------------------------
+    // IRackAware API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    @Override
+    public IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack value) {
+        rack = value;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /*
+     * Serialization.
+     */
+    CaustkMasterSequencer() {
+    }
+
+    CaustkMasterSequencer(CaustkScene caustkScene) {
+        this.scene = caustkScene;
+    }
+
+    @Override
+    public void load(CaustkFactory factory) {
+        setRack(factory.getRack());
+        restore();
+    }
+
+    @Override
+    public void restore() {
+        String patterns = rack.getSystemSequencer().getPatterns();
+        if (patterns != null) {
+            loadPatterns(patterns);
+        }
+    }
+
+    private void loadPatterns(String patterns) {
+        // [machin_index] [start_measure] [bank] [pattern] [end_measure]
+        String[] split = patterns.split("\\|");
+        for (String group : split) {
+            String[] parts = group.split(" ");
+            int index = Integer.valueOf(parts[0]);
+            int start = Integer.valueOf(parts[1]);
+            int bank = Integer.valueOf(parts[2]);
+            int pattern = Integer.valueOf(parts[3]);
+            int end = Integer.valueOf(parts[4]);
+
+            CaustkMachine caustkMachine = scene.getMachine(index);
+            caustkMachine.addPattern(bank, pattern, start, end);
+        }
+    }
+
+    public void updateMachine(CaustkMachine caustkMachine) {
+        for (CaustkSequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
+            SequencerMessage.PATTERN_EVENT.send(rack, caustkMachine.getIndex(),
+                    caustkSequencerPattern.getStartBeat(), caustkSequencerPattern.getBankIndex(),
+                    caustkSequencerPattern.getPatternIndex(), caustkSequencerPattern.getEndBeat());
+        }
+    }
+
+    @Override
+    public void update() {
+        for (CaustkMachine caustkMachine : scene.getMachines()) {
+            updateMachine(caustkMachine);
+        }
+    }
 }

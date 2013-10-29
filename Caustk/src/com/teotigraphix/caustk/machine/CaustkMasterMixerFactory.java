@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.machine;
 
-
-public class CaustkMasterMixerFactory {
+public class CaustkMasterMixerFactory extends CaustkFactoryBase {
 
     public CaustkMasterMixerFactory() {
     }
 
     public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
         CastkMasterMixer castkMasterMixer = new CastkMasterMixer(caustkScene);
+        castkMasterMixer.setRack(getFactory().getRack());
         return castkMasterMixer;
     }
 }

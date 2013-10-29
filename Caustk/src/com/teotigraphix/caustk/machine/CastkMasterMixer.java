@@ -86,16 +86,12 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
     @Override
     public void setRack(IRack value) {
         rack = value;
-        if (equalizer != null)
-            equalizer.setRack(rack);
-        if (limiter != null)
-            limiter.setRack(rack);
-        if (delay != null)
-            delay.setRack(rack);
-        if (reverb != null)
-            reverb.setRack(rack);
-        if (volume != null)
-            volume.setRack(rack);
+
+        equalizer.setRack(rack);
+        limiter.setRack(rack);
+        delay.setRack(rack);
+        reverb.setRack(rack);
+        volume.setRack(rack);
     }
 
     CastkMasterMixer() {
@@ -103,18 +99,16 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
 
     CastkMasterMixer(CaustkScene caustkScene) {
         this.scene = caustkScene;
-    }
-
-    @Override
-    public void load(CaustkLibraryFactory factory) {
-        setRack(factory.getRack());
 
         equalizer = new MasterEqualizer();
         limiter = new MasterLimiter();
         delay = new MasterDelay();
         reverb = new MasterReverb();
         volume = new MasterVolume();
+    }
 
+    @Override
+    public void load(CaustkFactory factory) {
         equalizer.load(factory);
         limiter.load(factory);
         delay.load(factory);

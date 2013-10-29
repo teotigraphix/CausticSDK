@@ -78,7 +78,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * components that can be serialized.
  * <p>
  * When components are added to a library, they are either created using the
- * {@link CaustkLibraryFactory} or copied from and existing component. Any
+ * {@link CaustkFactory} or copied from and existing component. Any
  * component existing in the library has no reference to the {@link IRack} that
  * may have referenced it. This is to make sure the rack instance is not
  * serialized into the library.

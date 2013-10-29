@@ -26,7 +26,6 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IRack;
@@ -45,9 +44,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * 
  * @author Michael Schmalle
  */
-public class MachinePreset implements IRackAware, IRackSerializer {
-
-    private transient IRack rack;
+public class MachinePreset implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -66,18 +63,8 @@ public class MachinePreset implements IRackAware, IRackSerializer {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // rack
-    //----------------------------------
-
-    @Override
     public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
+        return patch.getMachine().getRack();
     }
 
     //----------------------------------
@@ -177,7 +164,7 @@ public class MachinePreset implements IRackAware, IRackSerializer {
     }
 
     @Override
-    public void load(CaustkLibraryFactory factory) {
+    public void load(CaustkFactory factory) {
         CaustkMachine machine = getPatch().getMachine();
         if (machine == null)
             throw new IllegalStateException("CaustkMachine cannot be null calling load()");
@@ -247,7 +234,7 @@ public class MachinePreset implements IRackAware, IRackSerializer {
             throw new IllegalStateException("Preset data was not updated "
                     + "correctly, File not created.");
 
-        SynthMessage.LOAD_PRESET.send(rack, patch.getMachine().getIndex(),
+        SynthMessage.LOAD_PRESET.send(getRack(), patch.getMachine().getIndex(),
                 presetFile.getAbsolutePath());
 
         // delete the temp preset file

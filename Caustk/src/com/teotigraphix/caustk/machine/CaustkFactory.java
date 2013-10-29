@@ -25,12 +25,14 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
 
+import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 import com.teotigraphix.caustk.utils.KryoUtils;
 
-public class CaustkLibraryFactory {
+public class CaustkFactory {
 
     private CaustkSceneFactory sceneFactory;
 
@@ -44,17 +46,34 @@ public class CaustkLibraryFactory {
 
     private CaustkMasterMixerFactory masterMixerFactory;
 
-    @SuppressWarnings("unused")
     private CaustkMasterSequencerFactory masterSequencerFactory;
 
     private IRack rack;
+
+    private ICaustkApplication application;
+
+    public ICaustkApplication getApplication() {
+        return application;
+    }
 
     public IRack getRack() {
         return rack;
     }
 
-    public void setRack(IRack value) {
+    void setRack(IRack value) {
         rack = value;
+    }
+
+    public IRack createRack() {
+        Rack rack = new Rack();
+        rack.setFactory(this);
+        rack.setController(application.getController());
+        setRack(rack);
+        return rack;
+    }
+
+    public CaustkFactory(ICaustkApplication application) {
+        this.application = application;
 
         sceneFactory = new CaustkSceneFactory();
         sceneFactory.setFactory(this);
@@ -67,11 +86,9 @@ public class CaustkLibraryFactory {
         phraseFactory = new CaustkPhraseFactory();
         phraseFactory.setFactory(this);
         masterMixerFactory = new CaustkMasterMixerFactory();
+        masterMixerFactory.setFactory(this);
         masterSequencerFactory = new CaustkMasterSequencerFactory();
-    }
-
-    public CaustkLibraryFactory(IRack rack) {
-        setRack(rack);
+        masterSequencerFactory.setFactory(this);
     }
 
     /**
@@ -199,6 +216,10 @@ public class CaustkLibraryFactory {
 
     public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
         return masterMixerFactory.createMasterMixer(caustkScene);
+    }
+
+    public CaustkMasterSequencer createMasterSequencer(CaustkScene caustkScene) {
+        return masterSequencerFactory.createMasterSequencer(caustkScene);
     }
 
     //----------------------------------

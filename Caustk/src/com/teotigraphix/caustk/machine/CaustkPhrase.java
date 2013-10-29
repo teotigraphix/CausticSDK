@@ -25,7 +25,6 @@ import java.util.Map;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
@@ -38,12 +37,10 @@ import com.teotigraphix.caustk.rack.track.Trigger;
 import com.teotigraphix.caustk.rack.track.TriggerMap;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class CaustkPhrase implements IRackAware, ICaustkComponent, IRackSerializer {
-
-    private transient IRack rack;
+public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
 
     final IDispatcher getDispatcher() {
-        return null;// machine.
+        return machine.getRack().getDispatcher();
     }
 
     //--------------------------------------------------------------------------
@@ -96,20 +93,6 @@ public class CaustkPhrase implements IRackAware, ICaustkComponent, IRackSerializ
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // rack
-    //----------------------------------
-
-    @Override
-    public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
-    }
 
     //----------------------------------
     // info
@@ -545,7 +528,7 @@ public class CaustkPhrase implements IRackAware, ICaustkComponent, IRackSerializ
     }
 
     @Override
-    public void load(CaustkLibraryFactory factory) throws CausticException {
+    public void load(CaustkFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
 
         final int machineIndex = machine.getIndex();
@@ -885,7 +868,7 @@ public class CaustkPhrase implements IRackAware, ICaustkComponent, IRackSerializ
 
     @Override
     public void update() {
-        PatternSequencerMessage.NUM_MEASURES.send(rack, machine.getIndex(), length);
+        PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(), machine.getIndex(), length);
         for (Note note : triggerMap.getNotes()) {
             if (note.isSelected()) {
                 triggerMap.update(note);

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core;
 
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
+import com.teotigraphix.caustk.machine.CaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
@@ -32,7 +32,7 @@ public interface IRackSerializer {
      * <p>
      * The class that implements this method if {@link IRackAware} will call
      * {@link IRackAware#setRack(IRack)} on itself using the
-     * {@link CaustkLibraryFactory#getRack()} which is the current rack loading
+     * {@link CaustkFactory#getRack()} which is the current rack loading
      * the file.
      * <p>
      * Calling this method will wipe out all state, rack references and sub
@@ -45,7 +45,7 @@ public interface IRackSerializer {
      * @param factory The library factory.
      * @throws CausticException
      */
-    void load(CaustkLibraryFactory factory) throws CausticException;
+    void load(CaustkFactory factory) throws CausticException;
 
     /**
      * Restores the rack, each component implementing the method will use OSC

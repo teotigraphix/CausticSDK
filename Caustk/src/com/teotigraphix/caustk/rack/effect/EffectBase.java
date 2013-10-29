@@ -21,7 +21,8 @@ package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
+import com.teotigraphix.caustk.machine.CaustkEffect;
+import com.teotigraphix.caustk.machine.CaustkFactory;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -34,8 +35,6 @@ public abstract class EffectBase implements IEffect {
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
-
-    private IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -50,9 +49,22 @@ public abstract class EffectBase implements IEffect {
     @Tag(2)
     private int slot;
 
+    @Tag(10)
+    private CaustkEffect effect;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    @Override
+    public CaustkEffect getEffect() {
+        return effect;
+    }
+
+    @Override
+    public void setEffect(CaustkEffect value) {
+        effect = value;
+    }
 
     //----------------------------------
     // type
@@ -99,14 +111,8 @@ public abstract class EffectBase implements IEffect {
     // rack
     //----------------------------------
 
-    @Override
     public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack rack) {
-        this.rack = rack;
+        return effect.getRack();
     }
 
     //--------------------------------------------------------------------------
@@ -133,8 +139,7 @@ public abstract class EffectBase implements IEffect {
     //--------------------------------------------------------------------------
 
     @Override
-    public void load(CaustkLibraryFactory factory) {
-        setRack(factory.getRack());
+    public void load(CaustkFactory factory) {
         restore();
     }
 
@@ -156,7 +161,8 @@ public abstract class EffectBase implements IEffect {
      * @param control The control to query.
      */
     protected final float get(IEffectControl control) {
-        return EffectRackMessage.GET.query(rack, getToneIndex(), getSlot(), control.getControl());
+        return EffectRackMessage.GET.query(getRack(), getToneIndex(), getSlot(),
+                control.getControl());
     }
 
     /**
@@ -167,7 +173,8 @@ public abstract class EffectBase implements IEffect {
      * @param value The new float value for the control.
      */
     protected final void set(IEffectControl control, float value) {
-        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
+        EffectRackMessage.SET.send(getRack(), getToneIndex(), getSlot(), control.getControl(),
+                value);
     }
 
     /**
@@ -178,7 +185,8 @@ public abstract class EffectBase implements IEffect {
      * @param value The new int value for the control.
      */
     protected final void set(IEffectControl control, int value) {
-        EffectRackMessage.SET.send(rack, getToneIndex(), getSlot(), control.getControl(), value);
+        EffectRackMessage.SET.send(getRack(), getToneIndex(), getSlot(), control.getControl(),
+                value);
     }
 
     /**

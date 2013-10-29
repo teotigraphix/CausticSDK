@@ -26,7 +26,9 @@ import java.util.Map;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRackAware;
+import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
@@ -34,7 +36,7 @@ import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class CaustkMachine implements ICaustkComponent, IRackAware {
+public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSerializer {
 
     /*
      * The tone is only set when the LiveMachine is actually assigned to a channel
@@ -83,6 +85,9 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
     private Map<Integer, CaustkPhrase> phrases = new HashMap<Integer, CaustkPhrase>();
 
     @Tag(14)
+    private Map<Integer, CaustkSequencerPattern> patterns = new HashMap<Integer, CaustkSequencerPattern>();
+
+    @Tag(15)
     private Map<Integer, Integer> bankEditor = new HashMap<Integer, Integer>();
 
     //--------------------------------------------------------------------------
@@ -106,6 +111,10 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
         return index;
     }
 
+    void setIndex(int value) {
+        index = value;
+    }
+
     //----------------------------------
     // machineType
     //----------------------------------
@@ -120,6 +129,11 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
 
     public String getMachineName() {
         return machineName;
+    }
+
+    public void setMachineName(String value) {
+        machineName = value;
+        RackMessage.MACHINE_NAME.send(rack, index, machineName);
     }
 
     //----------------------------------
@@ -140,6 +154,31 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
 
     public Map<Integer, CaustkPhrase> getPhrases() {
         return phrases;
+    }
+
+    /**
+     * Returns the {@link CaustkPhrase} using the {@link #getCurrentBank()} and
+     * {@link #getCurrentPattern()}.
+     */
+    public CaustkPhrase getPhrase() {
+        return getPhrase(currentBank, currentPattern);
+    }
+
+    /**
+     * Returns a {@link CaustkPhrase} at the bank and pattern index,
+     * <code>null</code> if the machine has no note data assigned at the
+     * specific pattern.
+     * 
+     * @param bankIndex The bank index.
+     * @param patternIndex The pattern index.
+     */
+    public CaustkPhrase getPhrase(int bankIndex, int patternIndex) {
+        int index = PatternUtils.getIndex(bankIndex, patternIndex);
+        return phrases.get(index);
+    }
+
+    public Map<Integer, CaustkSequencerPattern> getPatterns() {
+        return patterns;
     }
 
     //----------------------------------
@@ -227,10 +266,12 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
         this.machineName = machineName;
     }
 
+    @Override
     public void restore() {
 
     }
 
+    @Override
     public void update() {
         // create the Tone
         updateTone();
@@ -253,7 +294,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
     }
 
     private void updatePatch() {
-        patch.setRack(rack);
+        //        patch.setRack(rack);
         patch.update();
     }
 
@@ -263,7 +304,6 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
         for (CaustkPhrase caustkPhrase : phrases.values()) {
             PatternSequencerMessage.BANK.send(rack, index, caustkPhrase.getBankIndex());
             PatternSequencerMessage.PATTERN.send(rack, index, caustkPhrase.getPatternIndex());
-            caustkPhrase.setRack(rack);
             caustkPhrase.update();
         }
         PatternSequencerMessage.BANK.send(rack, index, currentBank);
@@ -278,19 +318,24 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
      * {@link ISoundSource} if populateTone is true.
      * 
      * @param factory The library factory.
-     * @throws IOException
      * @throws CausticException
      */
-    public void load(CaustkLibraryFactory factory, boolean populateTone) throws IOException,
-            CausticException {
-        if (populateTone) {
-            loadTone(factory);
+    // XXX Figure out if this matters in the Phase?
+    @Override
+    public void load(CaustkFactory factory) throws CausticException {
+        //        if (populateTone) {
+        //            loadTone(factory);
+        //        }
+        try {
+            loadPatch(factory);
+        } catch (IOException e) {
+            throw new CausticException(e);
         }
-        loadPatch(factory);
         loadPhrases(factory);
     }
 
-    private void loadTone(CaustkLibraryFactory factory) throws CausticException {
+    @SuppressWarnings("unused")
+    private void loadTone(CaustkFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
         ISoundSource soundSource = rack.getSoundSource();
 
@@ -312,7 +357,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
      * @throws IOException
      * @throws CausticException
      */
-    public void loadPatch(CaustkLibraryFactory factory) throws IOException, CausticException {
+    public void loadPatch(CaustkFactory factory) throws IOException, CausticException {
         patch = factory.createPatch(this);
         patch.load(factory);
         if (tone != null)
@@ -326,7 +371,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
      * @param factory The library factory.
      * @throws CausticException
      */
-    public void loadPhrases(CaustkLibraryFactory factory) throws CausticException {
+    public void loadPhrases(CaustkFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
         String patterns = PatternSequencerMessage.QUERY_PATTERNS_WITH_DATA.queryString(rack, index);
         if (patterns != null) {
@@ -334,7 +379,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
         }
     }
 
-    private void createPatternsFromLoadOperation(CaustkLibraryFactory factory, String patterns)
+    private void createPatternsFromLoadOperation(CaustkFactory factory, String patterns)
             throws CausticException {
         for (String patternName : patterns.split(" ")) {
             int bankIndex = PatternUtils.toBank(patternName);
@@ -344,6 +389,20 @@ public class CaustkMachine implements ICaustkComponent, IRackAware {
             phrases.put(caustkPhrase.getIndex(), caustkPhrase);
             caustkPhrase.load(factory);
         }
+    }
+
+    public void addPattern(int bankIndex, int patternIndex, int startBeat, int endBeat) {
+        CaustkSequencerPattern pattern = new CaustkSequencerPattern(this);
+        pattern.setBankPattern(bankIndex, patternIndex);
+        pattern.setLocation(startBeat, endBeat);
+        patterns.put(startBeat, pattern);
+        System.out.println("Add pattern:" + pattern.toString());
+    }
+
+    public CaustkSequencerPattern removePattern(int bankIndex, int patternIndex, int startBeat,
+            int endBeat) {
+        CaustkSequencerPattern pattern = patterns.remove(startBeat);
+        return pattern;
     }
 
 }

@@ -35,6 +35,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryScene;
+import com.teotigraphix.caustk.machine.CaustkFactory;
 import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.tone.Tone;
@@ -54,6 +55,16 @@ public class Rack implements IRack {
     private transient ICaustkController controller;
 
     private transient IDispatcher dispatcher;
+
+    private transient CaustkFactory factory;
+
+    public CaustkFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(CaustkFactory value) {
+        factory = value;
+    }
 
     @Override
     public IDispatcher getDispatcher() {
@@ -211,8 +222,26 @@ public class Rack implements IRack {
     }
 
     @Override
-    public void setScene(CaustkScene scene) {
-        this.scene = scene;
+    public void setScene(CaustkScene value) {
+        if (scene != null) {
+            unload(scene);
+        }
+        scene = value;
+        load(scene);
+    }
+
+    private void unload(CaustkScene scene) {
+        scene.setRack(null);
+    }
+
+    private void load(CaustkScene scene) {
+        // since the is a restoration of deserialized components, all sub
+        // components a guaranteed to be created, setRack() recurses and sets
+        // all components rack
+        scene.setRack(this);
+        // recursively updates all scene components based on their previous 
+        // saved state
+        scene.update();
     }
 
     //----------------------------------

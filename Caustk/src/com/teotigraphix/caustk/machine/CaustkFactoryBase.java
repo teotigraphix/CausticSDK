@@ -3,13 +3,13 @@ package com.teotigraphix.caustk.machine;
 
 public abstract class CaustkFactoryBase {
 
-    private CaustkLibraryFactory factory;
+    private CaustkFactory factory;
 
-    public CaustkLibraryFactory getFactory() {
+    public CaustkFactory getFactory() {
         return factory;
     }
 
-    public void setFactory(CaustkLibraryFactory factory) {
+    public void setFactory(CaustkFactory factory) {
         this.factory = factory;
     }
 

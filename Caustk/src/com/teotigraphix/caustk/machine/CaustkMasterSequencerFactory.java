@@ -19,8 +19,14 @@
 
 package com.teotigraphix.caustk.machine;
 
+public class CaustkMasterSequencerFactory extends CaustkFactoryBase {
 
-public class CaustkMasterSequencerFactory {
     public CaustkMasterSequencerFactory() {
+    }
+
+    public CaustkMasterSequencer createMasterSequencer(CaustkScene caustkScene) {
+        CaustkMasterSequencer caustkMasterSequencer = new CaustkMasterSequencer(caustkScene);
+        caustkMasterSequencer.setRack(getFactory().getRack());
+        return caustkMasterSequencer;
     }
 }

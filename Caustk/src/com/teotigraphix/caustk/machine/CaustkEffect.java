@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.rack.IEffect;
@@ -32,9 +31,7 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 /**
  * @author Michael Schmalle
  */
-public class CaustkEffect implements IRackAware, IRackSerializer, ICaustkComponent {
-
-    private transient IRack rack;
+public class CaustkEffect implements IRackSerializer, ICaustkComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -63,14 +60,8 @@ public class CaustkEffect implements IRackAware, IRackSerializer, ICaustkCompone
     // rack
     //----------------------------------
 
-    @Override
     public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
+        return patch.getMachine().getRack();
     }
 
     //----------------------------------
@@ -123,6 +114,10 @@ public class CaustkEffect implements IRackAware, IRackSerializer, ICaustkCompone
         return patch;
     }
 
+    void setPatch(CaustkPatch value) {
+        patch = value;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -169,8 +164,9 @@ public class CaustkEffect implements IRackAware, IRackSerializer, ICaustkCompone
      * @throws CausticException
      */
     @Override
-    public void load(CaustkLibraryFactory factory) throws CausticException {
+    public void load(CaustkFactory factory) throws CausticException {
         effect = createEffect(index, patch.getMachine().getIndex());
+        effect.setEffect(this);
         effect.load(factory);
     }
 
@@ -181,13 +177,14 @@ public class CaustkEffect implements IRackAware, IRackSerializer, ICaustkCompone
 
     @Override
     public void update() {
-        EffectRackMessage.CREATE.send(rack, getPatch().getMachine().getIndex(), index,
+        EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getIndex(), index,
                 effectType.getValue());
-        effect.setRack(rack);
+        effect.setEffect(this);
         effect.update();
     }
 
     IEffect createEffect(int slot, int toneIndex) {
         return EffectFactory.create(effectType, slot, toneIndex);
     }
+
 }

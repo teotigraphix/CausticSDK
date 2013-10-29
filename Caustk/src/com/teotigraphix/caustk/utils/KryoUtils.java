@@ -45,6 +45,10 @@ public class KryoUtils {
         return kryo;
     }
 
+    public static <T> T copy(T instance) {
+        return getKryo().copy(instance);
+    }
+
     public static Kryo createKryo() {
         Kryo kryo = new Kryo();
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);

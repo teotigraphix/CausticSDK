@@ -33,6 +33,7 @@ public class CaustkMachineFactory extends CaustkFactoryBase {
     public CaustkMachine createMachine(int index, MachineType machineType, String machineName) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Machine);
         CaustkMachine caustkMachine = new CaustkMachine(info, index, machineType, machineName);
+        caustkMachine.setRack(getFactory().getRack());
         return caustkMachine;
     }
 }

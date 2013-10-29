@@ -25,7 +25,6 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
@@ -46,9 +45,9 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 /**
  * @author Michael Schmalle
  */
-public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerializer {
+public class CaustkPatch implements ICaustkComponent, IRackSerializer {
 
-    private IRack rack;
+    // private IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -80,15 +79,15 @@ public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerialize
     // rack
     //----------------------------------
 
-    @Override
-    public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
-    }
+    //    @Override
+    //    public IRack getRack() {
+    //        return rack;
+    //    }
+    //
+    //    @Override
+    //    public void setRack(IRack value) {
+    //        rack = value;
+    //    }
 
     //----------------------------------
     // info
@@ -146,7 +145,7 @@ public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerialize
      * @param slot The effect slot.
      * @param effectType The {@link EffectType}.
      */
-    public CaustkEffect createEffect(CaustkLibraryFactory factory, int slot, EffectType effectType) {
+    public CaustkEffect createEffect(CaustkFactory factory, int slot, EffectType effectType) {
         CaustkEffect effect = factory.createEffect(0, effectType, this);
         // since we are creating the effect from the outside, we create
         // the internal effect here
@@ -160,6 +159,12 @@ public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerialize
             throw new IllegalStateException("Changing effect index is not implemented");
         //effect.setIndex(slot);
         effects.put(slot, effect);
+    }
+
+    public void replaceEffect(int slot, CaustkEffect effect) {
+        // 
+        effect.setPatch(this);
+        effect.update();
     }
 
     CaustkEffect removeEffect(int slot) {
@@ -210,20 +215,20 @@ public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerialize
 
     @Override
     public void update() {
-        machinePreset.setRack(rack);
-        mixerPreset.setRack(rack);
+        //machinePreset.setRack(rack);
+        //mixerPreset.setRack(rack);
 
         machinePreset.update();
         mixerPreset.update();
 
         for (CaustkEffect caustkEffect : effects.values()) {
-            caustkEffect.setRack(rack);
+            //caustkEffect.setRack(rack);
             caustkEffect.update();
         }
     }
 
     @Override
-    public void load(CaustkLibraryFactory factory) throws CausticException {
+    public void load(CaustkFactory factory) throws CausticException {
         try {
             loadMachinePreset(factory);
         } catch (IOException e) {
@@ -233,13 +238,13 @@ public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerialize
         loadEffects(factory);
     }
 
-    void loadMixerPreset(CaustkLibraryFactory factory) {
+    void loadMixerPreset(CaustkFactory factory) {
         mixerPreset = new MixerPreset(this);
         //mixerPreset.restore();
         mixerPreset.load(factory);
     }
 
-    void loadMachinePreset(CaustkLibraryFactory factory) throws IOException {
+    void loadMachinePreset(CaustkFactory factory) throws IOException {
         final IRack rack = factory.getRack();
 
         // get the preset name if machine has a loaded preset
@@ -252,7 +257,7 @@ public class CaustkPatch implements ICaustkComponent, IRackAware, IRackSerialize
         machinePreset.load(factory);
     }
 
-    void loadEffects(CaustkLibraryFactory factory) throws CausticException {
+    void loadEffects(CaustkFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
 
         final CaustkMachine machine = getMachine();

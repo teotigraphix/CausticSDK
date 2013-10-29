@@ -21,17 +21,21 @@ package com.teotigraphix.caustk.machine;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
-public class CaustkScene implements ICaustkComponent {
+public class CaustkScene implements ICaustkComponent, IRackAware {
+
+    private transient IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -40,18 +44,42 @@ public class CaustkScene implements ICaustkComponent {
     @Tag(0)
     private ComponentInfo info;
 
-    @Tag(2)
+    @Tag(1)
     private File causticFile;
 
-    @Tag(10)
+    @Tag(2)
     private Map<Integer, CaustkMachine> machines = new HashMap<Integer, CaustkMachine>(14);
 
-    @Tag(11)
+    @Tag(3)
     private CastkMasterMixer masterMixer;
+
+    @Tag(4)
+    private CaustkMasterSequencer masterSequencer;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    @Override
+    public IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack value) {
+        rack = value;
+        if (masterMixer != null)
+            masterMixer.setRack(rack);
+        for (CaustkMachine machine : machines.values()) {
+            machine.setRack(rack);
+        }
+        if (masterSequencer != null)
+            masterSequencer.setRack(rack);
+    }
 
     //----------------------------------
     // info
@@ -72,6 +100,10 @@ public class CaustkScene implements ICaustkComponent {
      */
     public File getCausticFile() {
         return causticFile;
+    }
+
+    public Collection<CaustkMachine> getMachines() {
+        return machines.values();
     }
 
     //--------------------------------------------------------------------------
@@ -98,6 +130,16 @@ public class CaustkScene implements ICaustkComponent {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    public void addMachine(int index, CaustkMachine caustkMachine) {
+        // XXX This is going to be complex but just try adding to empty
+        // if the index is right, should be able to call update()
+        // and have the majic happen
+        caustkMachine.setIndex(index);
+        machines.put(index, caustkMachine);
+        caustkMachine.update();
+        masterSequencer.updateMachine(caustkMachine);
+    }
+
     /**
      * Returns the {@link CaustkMachine} at the specified index,
      * <code>null</code> if does not exist.
@@ -108,17 +150,19 @@ public class CaustkScene implements ICaustkComponent {
         return machines.get(index);
     }
 
-    public void update(CaustkLibraryFactory factory) {
-        final IRack rack = factory.getRack();
+    public void update() {
+        if (rack == null)
+            throw new IllegalStateException("Rack cannot be null");
+
         RackMessage.BLANKRACK.send(rack);
 
-        masterMixer.setRack(rack);
         masterMixer.update();
 
         for (CaustkMachine machine : machines.values()) {
-            machine.setRack(rack);
             machine.update();
         }
+
+        masterSequencer.update();
     }
 
     /**
@@ -136,38 +180,45 @@ public class CaustkScene implements ICaustkComponent {
      * @throws IOException
      * @throws CausticException
      */
-    public void load(CaustkLibraryFactory factory, boolean populateTones) throws IOException,
-            CausticException {
+    public void load(CaustkFactory factory) throws IOException, CausticException {
         if (causticFile == null || !causticFile.exists())
             throw new IllegalStateException("Caustic song file null or not found on file system: "
                     + causticFile);
 
-        // load CaustkMachines
-        IRack rack = factory.getRack();
+        setRack(factory.getRack());
 
-        RackMessage.BLANKRACK.send(rack);
-        RackMessage.LOAD_SONG.send(rack, causticFile.getAbsolutePath());
+        // reset the rack and sound source to empty
+        getRack().clearAndReset();
+        // load the song raw, don not create tones
+        getRack().loadSongRaw(causticFile);
 
-        loadMasterMixer(factory);
-        loadMachines(factory, populateTones);
-        // XXX loadMasterSequencer()        
+        // create the scene sub components
+        createComponents(factory);
+        // load the current song rack state into the sub components
+        loadComponents(factory);
     }
 
-    private void loadMasterMixer(CaustkLibraryFactory factory) {
+    private void createComponents(CaustkFactory factory) throws IOException, CausticException {
         masterMixer = factory.createMasterMixer(this);
-        masterMixer.load(factory);
-    }
-
-    private void loadMachines(CaustkLibraryFactory factory, boolean populateTones)
-            throws IOException, CausticException {
         for (int i = 0; i < 14; i++) {
-            createMachineForLoadOperation(i, factory, populateTones);
+            createMachine(i, factory);
         }
+        masterSequencer = factory.createMasterSequencer(this);
     }
 
-    private void createMachineForLoadOperation(int index, CaustkLibraryFactory factory,
-            boolean populateTones) throws IOException, CausticException {
-        IRack rack = factory.getRack();
+    private void loadComponents(CaustkFactory factory) throws IOException, CausticException {
+        masterMixer.load(factory);
+        for (int i = 0; i < 14; i++) {
+            CaustkMachine caustkMachine = getMachine(i);
+            if (caustkMachine != null) {
+                loadMachine(caustkMachine, factory);
+            }
+        }
+        masterSequencer.load(factory);
+    }
+
+    private void createMachine(int index, CaustkFactory factory) throws IOException,
+            CausticException {
         String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(rack, index);
         if (machineName == null)
             return;
@@ -176,9 +227,12 @@ public class CaustkScene implements ICaustkComponent {
                 .queryString(rack, index));
         CaustkMachine caustkMachine = factory.createMachine(index, machineType, machineName);
         machines.put(index, caustkMachine);
+    }
 
+    private void loadMachine(CaustkMachine caustkMachine, CaustkFactory factory)
+            throws IOException, CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
-        caustkMachine.load(factory, populateTones);
+        caustkMachine.load(factory);
     }
 
 }
