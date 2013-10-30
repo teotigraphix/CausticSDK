@@ -26,9 +26,9 @@ import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
-import com.teotigraphix.caustk.machine.CaustkPhrase.CaustkPhraseChangeKind;
-import com.teotigraphix.caustk.machine.CaustkPhrase.OnCaustkPhraseChange;
-import com.teotigraphix.caustk.machine.CaustkPhrase.Scale;
+import com.teotigraphix.caustk.machine.Phrase.CaustkPhraseChangeKind;
+import com.teotigraphix.caustk.machine.Phrase.OnCaustkPhraseChange;
+import com.teotigraphix.caustk.machine.Phrase.Scale;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
@@ -56,13 +56,13 @@ public class TriggerMap {
     private Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
 
     @Tag(1)
-    private CaustkPhrase phrase;
+    private Phrase phrase;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    final CaustkPhrase getPhrase() {
+    final Phrase getPhrase() {
         return phrase;
     }
 
@@ -91,7 +91,7 @@ public class TriggerMap {
     public TriggerMap() {
     }
 
-    public TriggerMap(CaustkPhrase phrase) {
+    public TriggerMap(Phrase phrase) {
         this.phrase = phrase;
     }
 
@@ -564,9 +564,9 @@ public class TriggerMap {
             return kind;
         }
 
-        private final CaustkPhrase phrase;
+        private final Phrase phrase;
 
-        public CaustkPhrase getPhrase() {
+        public Phrase getPhrase() {
             return phrase;
         }
 
@@ -576,7 +576,7 @@ public class TriggerMap {
             return trigger;
         }
 
-        public OnCaustkTriggerChange(CaustkTriggerChangeKind kind, CaustkPhrase phrase,
+        public OnCaustkTriggerChange(CaustkTriggerChangeKind kind, Phrase phrase,
                 Trigger trigger) {
             this.kind = kind;
             this.phrase = phrase;

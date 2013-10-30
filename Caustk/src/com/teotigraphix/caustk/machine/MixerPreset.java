@@ -33,7 +33,7 @@ public class MixerPreset implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private CaustkPatch patch;
+    private Patch patch;
 
     @Tag(3)
     private float bass = 0f;
@@ -82,9 +82,9 @@ public class MixerPreset implements IRackSerializer {
     //----------------------------------
 
     /**
-     * Returns the id of the {@link CaustkPatch} that created the preset.
+     * Returns the id of the {@link Patch} that created the preset.
      */
-    public CaustkPatch getPatch() {
+    public Patch getPatch() {
         return patch;
     }
 
@@ -314,7 +314,7 @@ public class MixerPreset implements IRackSerializer {
     MixerPreset() {
     }
 
-    MixerPreset(CaustkPatch patch) {
+    MixerPreset(Patch patch) {
         this.patch = patch;
     }
 

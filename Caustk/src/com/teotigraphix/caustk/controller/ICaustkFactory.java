@@ -7,18 +7,18 @@ import java.io.FileNotFoundException;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.machine.CastkMasterMixer;
-import com.teotigraphix.caustk.machine.CaustkEffect;
-import com.teotigraphix.caustk.machine.CaustkLibrary;
-import com.teotigraphix.caustk.machine.CaustkMachine;
-import com.teotigraphix.caustk.machine.CaustkMasterSequencer;
-import com.teotigraphix.caustk.machine.CaustkPatch;
-import com.teotigraphix.caustk.machine.CaustkPhrase;
-import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.machine.ComponentInfo;
 import com.teotigraphix.caustk.machine.ComponentType;
+import com.teotigraphix.caustk.machine.Effect;
 import com.teotigraphix.caustk.machine.ICaustkComponent;
+import com.teotigraphix.caustk.machine.Library;
+import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.machine.MachineType;
+import com.teotigraphix.caustk.machine.MasterMixer;
+import com.teotigraphix.caustk.machine.MasterSequencer;
+import com.teotigraphix.caustk.machine.Patch;
+import com.teotigraphix.caustk.machine.Phrase;
+import com.teotigraphix.caustk.machine.Scene;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
@@ -30,6 +30,11 @@ import com.teotigraphix.caustk.service.ISerializeService;
  * @author Michael Schmalle
  */
 public interface ICaustkFactory {
+
+    /**
+     * Proxied from {@link ICaustkApplication#getRack()}.
+     */
+    IRack getRack();
 
     /**
      * The main {@link CaustkController} instance that instrumentates the whole
@@ -64,34 +69,33 @@ public interface ICaustkFactory {
 
     IRack createRack();
 
-    CaustkLibrary createLibrary(String name);
+    Library createLibrary(String name);
 
-    CaustkScene createScene(ComponentInfo info);
+    Scene createScene(ComponentInfo info);
 
-    CaustkScene createScene(ComponentInfo info, File absoluteCausticFile);
+    Scene createScene(ComponentInfo info, File absoluteCausticFile);
 
-    CaustkMachine createMachine(ComponentInfo info, MachineType machineType, String machineName);
+    Machine createMachine(ComponentInfo info, MachineType machineType, String machineName);
 
-    CaustkMachine createMachine(int index, MachineType machineType, String machineName);
+    Machine createMachine(int index, MachineType machineType, String machineName);
 
-    CaustkPatch createPatch(ComponentInfo info, MachineType machineType);
+    Patch createPatch(ComponentInfo info, MachineType machineType);
 
-    CaustkPatch createPatch(CaustkMachine machine);
+    Patch createPatch(Machine machine);
 
-    CaustkPhrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
-            int patternIndex);
+    Phrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex, int patternIndex);
 
-    CaustkPhrase createPhrase(CaustkMachine caustkMachine, int bankIndex, int patternIndex);
+    Phrase createPhrase(Machine caustkMachine, int bankIndex, int patternIndex);
 
-    CaustkEffect createEffect(ComponentInfo info, EffectType effectType);
+    Effect createEffect(ComponentInfo info, EffectType effectType);
 
-    CaustkEffect createEffect(int slot, EffectType effectType);
+    Effect createEffect(int slot, EffectType effectType);
 
-    CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch);
+    Effect createEffect(int slot, EffectType effectType, Patch caustkPatch);
 
-    CastkMasterMixer createMasterMixer(CaustkScene caustkScene);
+    MasterMixer createMasterMixer(Scene caustkScene);
 
-    CaustkMasterSequencer createMasterSequencer(CaustkScene caustkScene);
+    MasterSequencer createMasterSequencer(Scene caustkScene);
 
     ComponentInfo createInfo(ComponentType type);
 
@@ -105,4 +109,5 @@ public interface ICaustkFactory {
             throws FileNotFoundException;
 
     Tone createTone(ToneDescriptor descriptor) throws CausticException;
+
 }

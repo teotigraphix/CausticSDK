@@ -19,14 +19,22 @@
 
 package com.teotigraphix.caustk.machine;
 
-public class CaustkMasterMixerFactory extends CaustkFactoryBase {
+import java.io.File;
 
-    public CaustkMasterMixerFactory() {
+public class SceneFactory extends CaustkSubFactoryBase {
+
+    public SceneFactory() {
     }
 
-    public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
-        CastkMasterMixer castkMasterMixer = new CastkMasterMixer(caustkScene);
-        castkMasterMixer.setRack(getFactory().getRack());
-        return castkMasterMixer;
+    public Scene createScene(ComponentInfo info) {
+        Scene caustkScene = new Scene(info);
+        return caustkScene;
     }
+
+    public Scene createScene(ComponentInfo info, File absoluteCausticFile) {
+        Scene caustkScene = new Scene(info, absoluteCausticFile);
+        caustkScene.setRack(getFactory().getRack());
+        return caustkScene;
+    }
+
 }

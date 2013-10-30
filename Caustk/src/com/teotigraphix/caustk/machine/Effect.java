@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 /**
  * @author Michael Schmalle
  */
-public class CaustkEffect implements IRackSerializer, ICaustkComponent {
+public class Effect implements IRackSerializer, ICaustkComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -48,7 +48,7 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     private EffectType effectType;
 
     @Tag(12)
-    private CaustkPatch patch;
+    private Patch patch;
 
     @Tag(13)
     private IEffect effect;
@@ -111,11 +111,11 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     // effect
     //----------------------------------
 
-    public CaustkPatch getPatch() {
+    public Patch getPatch() {
         return patch;
     }
 
-    void setPatch(CaustkPatch value) {
+    void setPatch(Patch value) {
         patch = value;
     }
 
@@ -126,21 +126,21 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
     /*
      * Serialization.
      */
-    CaustkEffect() {
+    Effect() {
     }
 
-    CaustkEffect(ComponentInfo info, EffectType effectType) {
+    Effect(ComponentInfo info, EffectType effectType) {
         this.info = info;
         this.effectType = effectType;
     }
 
-    CaustkEffect(ComponentInfo info, int index, EffectType effectType) {
+    Effect(ComponentInfo info, int index, EffectType effectType) {
         this.info = info;
         this.index = index;
         this.effectType = effectType;
     }
 
-    CaustkEffect(ComponentInfo info, int index, EffectType effectType, CaustkPatch caustkPatch) {
+    Effect(ComponentInfo info, int index, EffectType effectType, Patch caustkPatch) {
         this.info = info;
         this.index = index;
         this.effectType = effectType;

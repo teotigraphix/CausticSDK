@@ -30,28 +30,28 @@ import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.machine.CastkMasterMixer;
-import com.teotigraphix.caustk.machine.CaustkEffect;
-import com.teotigraphix.caustk.machine.CaustkEffectFactory;
-import com.teotigraphix.caustk.machine.CaustkInfoFactory;
-import com.teotigraphix.caustk.machine.CaustkLibrary;
-import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
-import com.teotigraphix.caustk.machine.CaustkMachine;
-import com.teotigraphix.caustk.machine.CaustkMachineFactory;
-import com.teotigraphix.caustk.machine.CaustkMasterMixerFactory;
-import com.teotigraphix.caustk.machine.CaustkMasterSequencer;
-import com.teotigraphix.caustk.machine.CaustkMasterSequencerFactory;
-import com.teotigraphix.caustk.machine.CaustkPatch;
-import com.teotigraphix.caustk.machine.CaustkPatchFactory;
-import com.teotigraphix.caustk.machine.CaustkPhrase;
-import com.teotigraphix.caustk.machine.CaustkPhraseFactory;
-import com.teotigraphix.caustk.machine.CaustkScene;
-import com.teotigraphix.caustk.machine.CaustkSceneFactory;
 import com.teotigraphix.caustk.machine.ComponentInfo;
+import com.teotigraphix.caustk.machine.ComponentInfoFactory;
 import com.teotigraphix.caustk.machine.ComponentType;
+import com.teotigraphix.caustk.machine.Effect;
+import com.teotigraphix.caustk.machine.EffectFactory;
 import com.teotigraphix.caustk.machine.ICaustkComponent;
+import com.teotigraphix.caustk.machine.Library;
+import com.teotigraphix.caustk.machine.LibraryFactory;
+import com.teotigraphix.caustk.machine.Machine;
+import com.teotigraphix.caustk.machine.MachineFactory;
 import com.teotigraphix.caustk.machine.MachinePreset;
 import com.teotigraphix.caustk.machine.MachineType;
+import com.teotigraphix.caustk.machine.MasterMixer;
+import com.teotigraphix.caustk.machine.MasterMixerFactory;
+import com.teotigraphix.caustk.machine.MasterSequencer;
+import com.teotigraphix.caustk.machine.MasterSequencerFactory;
+import com.teotigraphix.caustk.machine.Patch;
+import com.teotigraphix.caustk.machine.PatchFactory;
+import com.teotigraphix.caustk.machine.Phrase;
+import com.teotigraphix.caustk.machine.PhraseFactory;
+import com.teotigraphix.caustk.machine.Scene;
+import com.teotigraphix.caustk.machine.SceneFactory;
 import com.teotigraphix.caustk.machine.ToneFactory;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
@@ -81,23 +81,23 @@ public class CaustkFactory implements ICaustkFactory {
     // Factories
     //----------------------------------
 
-    private CaustkInfoFactory infoFactory;
+    private ComponentInfoFactory infoFactory;
 
-    private CaustkLibraryFactory libraryFactory;
+    private LibraryFactory libraryFactory;
 
-    private CaustkSceneFactory sceneFactory;
+    private SceneFactory sceneFactory;
 
-    private CaustkMachineFactory machineFactory;
+    private MachineFactory machineFactory;
 
-    private CaustkPatchFactory patchFactory;
+    private PatchFactory patchFactory;
 
-    private CaustkEffectFactory effectFactory;
+    private EffectFactory effectFactory;
 
-    private CaustkPhraseFactory phraseFactory;
+    private PhraseFactory phraseFactory;
 
-    private CaustkMasterMixerFactory masterMixerFactory;
+    private MasterMixerFactory masterMixerFactory;
 
-    private CaustkMasterSequencerFactory masterSequencerFactory;
+    private MasterSequencerFactory masterSequencerFactory;
 
     private ToneFactory toneFactory;
 
@@ -115,6 +115,7 @@ public class CaustkFactory implements ICaustkFactory {
     // rack
     //----------------------------------
 
+    @Override
     public IRack getRack() {
         return application.getRack();
     }
@@ -126,23 +127,23 @@ public class CaustkFactory implements ICaustkFactory {
     public CaustkFactory(ICaustkApplication application) {
         this.application = application;
 
-        infoFactory = new CaustkInfoFactory();
+        infoFactory = new ComponentInfoFactory();
         infoFactory.setFactory(this);
-        libraryFactory = new CaustkLibraryFactory();
+        libraryFactory = new LibraryFactory();
         libraryFactory.setFactory(this);
-        sceneFactory = new CaustkSceneFactory();
+        sceneFactory = new SceneFactory();
         sceneFactory.setFactory(this);
-        machineFactory = new CaustkMachineFactory();
+        machineFactory = new MachineFactory();
         machineFactory.setFactory(this);
-        patchFactory = new CaustkPatchFactory();
+        patchFactory = new PatchFactory();
         patchFactory.setFactory(this);
-        effectFactory = new CaustkEffectFactory();
+        effectFactory = new EffectFactory();
         effectFactory.setFactory(this);
-        phraseFactory = new CaustkPhraseFactory();
+        phraseFactory = new PhraseFactory();
         phraseFactory.setFactory(this);
-        masterMixerFactory = new CaustkMasterMixerFactory();
+        masterMixerFactory = new MasterMixerFactory();
         masterMixerFactory.setFactory(this);
-        masterSequencerFactory = new CaustkMasterSequencerFactory();
+        masterSequencerFactory = new MasterSequencerFactory();
         masterSequencerFactory.setFactory(this);
         toneFactory = new ToneFactory();
         toneFactory.setFactory(this);
@@ -184,7 +185,7 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     /**
-     * Creates an empty {@link CaustkLibrary} with a name.
+     * Creates an empty {@link Library} with a name.
      * <p>
      * The name is used for the directory name held within the
      * <code>/storageRoot/AppName/libraries</code> directory.
@@ -192,40 +193,38 @@ public class CaustkFactory implements ICaustkFactory {
      * @param name The name of the library, used as the directory name.
      */
     @Override
-    public CaustkLibrary createLibrary(String name) {
+    public Library createLibrary(String name) {
         return libraryFactory.createLibrary(name);
     }
 
     /**
-     * Creates an empty {@link CaustkScene} with name.
+     * Creates an empty {@link Scene} with name.
      * 
      * @param name The name of the scene.
      */
     @Override
-    public CaustkScene createScene(ComponentInfo info) {
+    public Scene createScene(ComponentInfo info) {
         return sceneFactory.createScene(info);
     }
 
     /**
-     * Creates a {@link CaustkScene} from a <code>.caustic</code> song file
-     * import.
+     * Creates a {@link Scene} from a <code>.caustic</code> song file import.
      * 
      * @param absoluteCausticFile The absolute location of the
      *            <code>.caustic</code> song file.
      */
     @Override
-    public CaustkScene createScene(ComponentInfo info, File absoluteCausticFile) {
+    public Scene createScene(ComponentInfo info, File absoluteCausticFile) {
         return sceneFactory.createScene(info, absoluteCausticFile);
     }
 
     @Override
-    public CaustkMachine createMachine(ComponentInfo info, MachineType machineType,
-            String machineName) {
+    public Machine createMachine(ComponentInfo info, MachineType machineType, String machineName) {
         return machineFactory.createMachine(info, machineType, machineName);
     }
 
     @Override
-    public CaustkMachine createMachine(int index, MachineType machineType, String machineName) {
+    public Machine createMachine(int index, MachineType machineType, String machineName) {
         return machineFactory.createMachine(index, machineType, machineName);
     }
 
@@ -234,23 +233,22 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     /**
-     * Creates a {@link CaustkPatch} with {@link UUID} and {@link MachineType}.
+     * Creates a {@link Patch} with {@link UUID} and {@link MachineType}.
      * 
      * @param toneType The {@link MachineType} of the
      */
     @Override
-    public CaustkPatch createPatch(ComponentInfo info, MachineType machineType) {
+    public Patch createPatch(ComponentInfo info, MachineType machineType) {
         return patchFactory.createPatch(info, machineType);
     }
 
     /**
-     * Creates a new {@link CaustkPatch}, assigns the {@link CaustkMachine}.
+     * Creates a new {@link Patch}, assigns the {@link Machine}.
      * 
-     * @param machine A {@link CaustkMachine} that does not exist in the native
-     *            rack.
+     * @param machine A {@link Machine} that does not exist in the native rack.
      */
     @Override
-    public CaustkPatch createPatch(CaustkMachine machine) {
+    public Patch createPatch(Machine machine) {
         return patchFactory.createPatch(machine);
     }
 
@@ -259,26 +257,26 @@ public class CaustkFactory implements ICaustkFactory {
      * <p>
      * - Creates and assigns the bytes for the {@link MachinePreset}.
      * <p>
-     * - Creates and assigns the {@link CaustkPatch} which will then create 0-2
-     * {@link CaustkEffect}s. When the {@link CaustkEffect} is created, only the
+     * - Creates and assigns the {@link Patch} which will then create 0-2
+     * {@link Effect}s. When the {@link Effect} is created, only the
      * {@link EffectType} is saved and slot index. The {@link IEffect} instance
      * is not restored at this point.
      * 
      * @param livePatch
      * @throws IOException
      */
-    public void _activatePatch(CaustkPatch caustkPatch) throws IOException {
+    public void _activatePatch(Patch caustkPatch) throws IOException {
         //        patchFactory.activatePatch(caustkPatch);
     }
 
     @Override
-    public CaustkPhrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
+    public Phrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
             int patternIndex) {
         return phraseFactory.createPhrase(info, machineType, bankIndex, patternIndex);
     }
 
     @Override
-    public CaustkPhrase createPhrase(CaustkMachine caustkMachine, int bankIndex, int patternIndex) {
+    public Phrase createPhrase(Machine caustkMachine, int bankIndex, int patternIndex) {
         return phraseFactory.createPhrase(caustkMachine, bankIndex, patternIndex);
     }
 
@@ -287,22 +285,21 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     /**
-     * Creates an non attached {@link CaustkEffect} with the internal
-     * {@link IEffect} created.
+     * Creates an non attached {@link Effect} with the internal {@link IEffect}
+     * created.
      * <p>
-     * Non attached means no {@link CaustkPatch} or {@link CaustkMachine}
-     * references.
+     * Non attached means no {@link Patch} or {@link Machine} references.
      * 
      * @param info The {@link ComponentInfo}.
      * @param effectType The {@link EffectType}.
      */
     @Override
-    public CaustkEffect createEffect(ComponentInfo info, EffectType effectType) {
+    public Effect createEffect(ComponentInfo info, EffectType effectType) {
         return effectFactory.createEffect(info, effectType);
     }
 
     @Override
-    public CaustkEffect createEffect(int slot, EffectType effectType) {
+    public Effect createEffect(int slot, EffectType effectType) {
         return effectFactory.createEffect(slot, effectType);
     }
 
@@ -310,20 +307,20 @@ public class CaustkFactory implements ICaustkFactory {
      * @param slot
      * @param effectType
      * @param caustkPatch
-     * @see CaustkPatch#load(CaustkLibraryFactory)
+     * @see Patch#load(LibraryFactory)
      */
     @Override
-    public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {
+    public Effect createEffect(int slot, EffectType effectType, Patch caustkPatch) {
         return effectFactory.createEffect(slot, effectType, caustkPatch);
     }
 
     @Override
-    public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
+    public MasterMixer createMasterMixer(Scene caustkScene) {
         return masterMixerFactory.createMasterMixer(caustkScene);
     }
 
     @Override
-    public CaustkMasterSequencer createMasterSequencer(CaustkScene caustkScene) {
+    public MasterSequencer createMasterSequencer(Scene caustkScene) {
         return masterSequencerFactory.createMasterSequencer(caustkScene);
     }
 
@@ -399,6 +396,7 @@ public class CaustkFactory implements ICaustkFactory {
     // Tones
     //----------------------------------
 
+    @Override
     public Tone createTone(ToneDescriptor descriptor) throws CausticException {
         return toneFactory.createTone(descriptor);
     }

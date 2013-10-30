@@ -45,7 +45,7 @@ import com.teotigraphix.caustk.rack.tone.VocoderTone;
 /**
  * @author Michael Schmalle
  */
-public class ToneFactory extends CaustkFactoryBase {
+public class ToneFactory extends CaustkSubFactoryBase {
 
     private static final int NUM_MACHINES = 14;
 
@@ -161,7 +161,7 @@ public class ToneFactory extends CaustkFactoryBase {
         ToneUtils.setName(tone, toneName);
     }
 
-    public static int nextIndex(Map<Integer, CaustkMachine> machines) {
+    public static int nextIndex(Map<Integer, Machine> machines) {
         int index = 0;
         for (index = 0; index < NUM_MACHINES; index++) {
             if (!machines.containsKey(index))

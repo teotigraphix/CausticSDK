@@ -32,8 +32,8 @@ import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.machine.CaustkMachine;
-import com.teotigraphix.caustk.machine.CaustkScene;
+import com.teotigraphix.caustk.machine.Machine;
+import com.teotigraphix.caustk.machine.Scene;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -104,8 +104,8 @@ public class Rack implements IRack {
 
     @Override
     public void clearAndReset() throws CausticException {
-        ArrayList<CaustkMachine> list = new ArrayList<CaustkMachine>(scene.getMachines());
-        for (CaustkMachine machine : list) {
+        ArrayList<Machine> list = new ArrayList<Machine>(scene.getMachines());
+        for (Machine machine : list) {
             scene.removeMachine(machine);
         }
         RackMessage.BLANKRACK.send(this);
@@ -145,24 +145,24 @@ public class Rack implements IRack {
     // scene
     //----------------------------------
 
-    private CaustkScene scene;
+    private Scene scene;
 
     @Override
-    public final CaustkScene getScene() {
+    public final Scene getScene() {
         return scene;
     }
 
     @Override
-    public void setScene(CaustkScene value) {
+    public void setScene(Scene value) {
         if (value == scene)
             return;
 
-        CaustkScene oldScene = scene;
+        Scene oldScene = scene;
         scene = value;
         sceneChanged(scene, oldScene);
     }
 
-    private void sceneChanged(CaustkScene newScene, CaustkScene oldScene) {
+    private void sceneChanged(Scene newScene, Scene oldScene) {
         if (oldScene != null) {
             removeScene(oldScene);
         }
@@ -180,7 +180,7 @@ public class Rack implements IRack {
         newScene.update();
     }
 
-    private void removeScene(CaustkScene scene) {
+    private void removeScene(Scene scene) {
         scene.setRack(null);
     }
 

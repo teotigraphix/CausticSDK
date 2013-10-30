@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import com.esotericsoftware.kryo.Kryo;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
@@ -36,6 +35,9 @@ import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
 import com.teotigraphix.libgdx.screen.IScreen;
 
+/**
+ * @author Michael Schmalle
+ */
 @Singleton
 public class ApplicationModel extends CaustkModelBase implements IApplicationModel {
 
@@ -46,8 +48,6 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
     @Inject
     IDialogManager dialogManager;
-
-    private Kryo kryo;
 
     private IApplicationRegistry applicationRegistry;
 
@@ -204,7 +204,6 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     public ApplicationModel(ICaustkApplicationProvider provider) {
         super();
         applicationRegistry = new ApplicationRegistry();
-        createKryo();
     }
 
     //--------------------------------------------------------------------------
@@ -279,7 +278,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     @Override
     public void save() {
         try {
-            ApplicationModelUtils.saveApplicationState(this, kryo);
+            ApplicationModelUtils.saveApplicationState(this, KryoUtils.getKryo());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -289,10 +288,6 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     //--------------------------------------------------------------------------
     //
     //--------------------------------------------------------------------------
-
-    private void createKryo() {
-        kryo = KryoUtils.createKryo();
-    }
 
     protected void initializeProject(Project project) {
         getController().getLogger().view("ApplicationMediator",
@@ -314,7 +309,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
         setState(state);
 
         try {
-            ApplicationModelUtils.saveApplicationState(this, kryo);
+            ApplicationModelUtils.saveApplicationState(this, KryoUtils.getKryo());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -325,7 +320,8 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
                 "Load last State - " + ApplicationModelUtils.getProjectBinaryFile(project));
 
         try {
-            ApplicationModelState state = ApplicationModelUtils.loadApplicationState(this, kryo);
+            ApplicationModelState state = ApplicationModelUtils.loadApplicationState(this,
+                    KryoUtils.getKryo());
 
             state.setController(getController());
             state.update();
@@ -344,10 +340,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
     private void disposeState(ApplicationModelState state) {
         state.setController(null);
-        getController().setRack(null);
-        // will call native clearrack
         state.dispose();
         this.state = null;
     }
-
 }

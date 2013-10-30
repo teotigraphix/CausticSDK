@@ -25,31 +25,31 @@ import java.util.UUID;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
-public class CaustkPatchFactory extends CaustkFactoryBase {
+public class PatchFactory extends CaustkSubFactoryBase {
 
-    public CaustkPatchFactory() {
+    public PatchFactory() {
     }
 
     /**
-     * Creates a {@link CaustkPatch} with {@link UUID} and {@link MachineType}.
+     * Creates a {@link Patch} with {@link UUID} and {@link MachineType}.
      * 
      * @param toneType The {@link MachineType} of the
      */
-    public CaustkPatch createPatch(ComponentInfo info, MachineType machineType) {
-        CaustkPatch livePatch = new CaustkPatch(info, machineType);
+    public Patch createPatch(ComponentInfo info, MachineType machineType) {
+        Patch livePatch = new Patch(info, machineType);
         livePatch.create();
         return livePatch;
     }
 
     /**
-     * Creates a new {@link CaustkPatch}, assigns the {@link CaustkMachine}.
+     * Creates a new {@link Patch}, assigns the {@link Machine}.
      * 
-     * @param machine A {@link CaustkMachine} that does not exist in the native
+     * @param machine A {@link Machine} that does not exist in the native
      *            rack.
      */
-    public CaustkPatch createPatch(CaustkMachine machine) {
+    public Patch createPatch(Machine machine) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Patch);
-        CaustkPatch livePatch = new CaustkPatch(info, machine);
+        Patch livePatch = new Patch(info, machine);
         return livePatch;
     }
 
@@ -58,15 +58,15 @@ public class CaustkPatchFactory extends CaustkFactoryBase {
      * <p>
      * - Creates and assigns the bytes for the {@link MachinePreset}.
      * <p>
-     * - Creates and assigns the {@link CaustkPatch} which will then create 0-2
-     * {@link CaustkEffect}s. When the {@link CaustkEffect} is created, only the
+     * - Creates and assigns the {@link Patch} which will then create 0-2
+     * {@link Effect}s. When the {@link Effect} is created, only the
      * {@link EffectType} is saved and slot index. The {@link IEffect} instance
      * is not restored at this point.
      * 
      * @param livePatch
      * @throws IOException
      */
-    public void _activatePatch(CaustkPatch caustkPatch) throws IOException {
+    public void _activatePatch(Patch caustkPatch) throws IOException {
         //CaustkLibraryUtils.assignAndUpdatePresetFile(caustkPatch.getMachine(), caustkPatch, rack);
         //CaustkLibraryUtils.assignEffects(caustkPatch.getMachine(), caustkPatch, rack);
     }

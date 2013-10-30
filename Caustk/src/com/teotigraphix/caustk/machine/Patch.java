@@ -47,7 +47,7 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 /**
  * @author Michael Schmalle
  */
-public class CaustkPatch implements ICaustkComponent, IRackSerializer {
+public class Patch implements ICaustkComponent, IRackSerializer {
 
     // private IRack rack;
 
@@ -62,7 +62,7 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     private MachineType machineType;
 
     @Tag(2)
-    private CaustkMachine machine;
+    private Machine machine;
 
     @Tag(3)
     private MachinePreset machinePreset;
@@ -71,7 +71,7 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     private MixerPreset mixerPreset;
 
     @Tag(5)
-    private Map<Integer, CaustkEffect> effects = new HashMap<Integer, CaustkEffect>(2);
+    private Map<Integer, Effect> effects = new HashMap<Integer, Effect>(2);
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -105,7 +105,7 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     //----------------------------------
 
     /**
-     * Returns the type of {@link CaustkMachine} this patch can be assigned to.
+     * Returns the type of {@link Machine} this patch can be assigned to.
      * <p>
      * <strong>Assigned only at construction.</strong>
      */
@@ -117,7 +117,7 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     // machine
     //----------------------------------
 
-    public CaustkMachine getMachine() {
+    public Machine getMachine() {
         return machine;
     }
 
@@ -140,15 +140,15 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     /**
      * Adds and returns an effect without sending a message to the core.
      * <p>
-     * Using this method will call {@link CaustkEffect#create()} to create the
-     * {@link IEffect} instance in the {@link CaustkEffect}.
+     * Using this method will call {@link Effect#create()} to create the
+     * {@link IEffect} instance in the {@link Effect}.
      * 
      * @param factory The library factory.
      * @param slot The effect slot.
      * @param effectType The {@link EffectType}.
      */
-    public CaustkEffect createEffect(ICaustkFactory factory, int slot, EffectType effectType) {
-        CaustkEffect effect = factory.createEffect(0, effectType, this);
+    public Effect createEffect(ICaustkFactory factory, int slot, EffectType effectType) {
+        Effect effect = factory.createEffect(0, effectType, this);
         // since we are creating the effect from the outside, we create
         // the internal effect here
         effect.create();
@@ -156,28 +156,28 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
         return effect;
     }
 
-    void putEffect(int slot, CaustkEffect effect) {
+    void putEffect(int slot, Effect effect) {
         if (slot != effect.getIndex())
             throw new IllegalStateException("Changing effect index is not implemented");
         //effect.setIndex(slot);
         effects.put(slot, effect);
     }
 
-    public void replaceEffect(int slot, CaustkEffect effect) {
+    public void replaceEffect(int slot, Effect effect) {
         // 
         effect.setPatch(this);
         effect.update();
     }
 
-    CaustkEffect removeEffect(int slot) {
-        CaustkEffect effect = effects.remove(slot);
+    Effect removeEffect(int slot) {
+        Effect effect = effects.remove(slot);
         if (effect == null)
             return null;
         effect.setIndex(-1);
         return effect;
     }
 
-    public CaustkEffect getEffect(int slot) {
+    public Effect getEffect(int slot) {
         return effects.get(slot);
     }
 
@@ -192,15 +192,15 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     /*
      * Serialization.
      */
-    CaustkPatch() {
+    Patch() {
     }
 
-    CaustkPatch(ComponentInfo info, MachineType machineType) {
+    Patch(ComponentInfo info, MachineType machineType) {
         this.info = info;
         this.machineType = machineType;
     }
 
-    CaustkPatch(ComponentInfo info, CaustkMachine machine) {
+    Patch(ComponentInfo info, Machine machine) {
         this.info = info;
         this.machine = machine;
         this.machineType = machine.getMachineType();
@@ -223,7 +223,7 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
         machinePreset.update();
         mixerPreset.update();
 
-        for (CaustkEffect caustkEffect : effects.values()) {
+        for (Effect caustkEffect : effects.values()) {
             //caustkEffect.setRack(rack);
             caustkEffect.update();
         }
@@ -262,7 +262,7 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     void loadEffects(IRackContext context) throws CausticException {
         final IRack rack = context.getRack();
 
-        final CaustkMachine machine = getMachine();
+        final Machine machine = getMachine();
         final int machineIndex = machine.getIndex();
 
         EffectType effect0 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(rack,
@@ -271,13 +271,13 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
                 machineIndex, 1));
 
         if (effect0 != null) {
-            CaustkEffect effect = context.getFactory().createEffect(0, effect0, this);
+            Effect effect = context.getFactory().createEffect(0, effect0, this);
             putEffect(0, effect);
             effect.load(context);
         }
 
         if (effect1 != null) {
-            CaustkEffect effect = context.getFactory().createEffect(1, effect1, this);
+            Effect effect = context.getFactory().createEffect(1, effect1, this);
             putEffect(1, effect);
             effect.load(context);
         }

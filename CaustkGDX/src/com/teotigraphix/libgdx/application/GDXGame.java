@@ -208,7 +208,7 @@ public abstract class GDXGame implements IGame {
             fpsLogger.log();
 
         if (getController() != null) {
-            getController().update();
+            getController().frameChanged(Gdx.graphics.getDeltaTime());
         }
 
         if (screen != null)

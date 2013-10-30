@@ -17,11 +17,26 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.libgdx.model;
+package com.teotigraphix.caustk.machine;
 
-/**
- * @see ModelStateBase
- */
-public interface ICaustkModelState {
+import com.teotigraphix.caustk.utils.PatternUtils;
 
+public class PhraseFactory extends CaustkSubFactoryBase {
+
+    public PhraseFactory() {
+    }
+
+    public Phrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
+            int patternIndex) {
+        final int index = PatternUtils.getIndex(bankIndex, patternIndex);
+        Phrase caustkPhrase = new Phrase(info, index, machineType);
+        return caustkPhrase;
+    }
+
+    public Phrase createPhrase(Machine caustkMachine, int bankIndex, int patternIndex) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.Phrase);
+        final int index = PatternUtils.getIndex(bankIndex, patternIndex);
+        Phrase caustkPhrase = new Phrase(info, index, caustkMachine);
+        return caustkPhrase;
+    }
 }

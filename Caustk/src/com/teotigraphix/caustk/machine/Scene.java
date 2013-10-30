@@ -34,9 +34,13 @@ import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.mixer.MasterDelay;
+import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
+import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
+import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
-public class CaustkScene implements ICaustkComponent, IRackAware {
+public class Scene implements ICaustkComponent, IRackAware {
 
     private transient IRack rack;
 
@@ -51,13 +55,13 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
     private File causticFile;
 
     @Tag(2)
-    private Map<Integer, CaustkMachine> machines = new HashMap<Integer, CaustkMachine>(14);
+    private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
 
     @Tag(3)
-    private CastkMasterMixer masterMixer;
+    private MasterMixer masterMixer;
 
     @Tag(4)
-    private CaustkMasterSequencer masterSequencer;
+    private MasterSequencer masterSequencer;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -77,7 +81,7 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
         rack = value;
         if (masterMixer != null)
             masterMixer.setRack(rack);
-        for (CaustkMachine machine : machines.values()) {
+        for (Machine machine : machines.values()) {
             machine.setRack(rack);
         }
         if (masterSequencer != null)
@@ -105,6 +109,30 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
         return causticFile;
     }
 
+    public final MasterDelay getDelay() {
+        return masterMixer.getDelay();
+    }
+
+    public final MasterReverb getReverb() {
+        return masterMixer.getReverb();
+    }
+
+    public final MasterEqualizer getEqualizer() {
+        return masterMixer.getEqualizer();
+    }
+
+    public final MasterLimiter getLimiter() {
+        return masterMixer.getLimiter();
+    }
+
+    public final float getVolume() {
+        return masterMixer.getVolume().getVolume();
+    }
+
+    public final void setVolume(float value) {
+        masterMixer.getVolume().setVolume(value);
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -112,14 +140,14 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
     /*
      * Serialization.
      */
-    CaustkScene() {
+    Scene() {
     }
 
-    CaustkScene(ComponentInfo info) {
+    Scene(ComponentInfo info) {
         this.info = info;
     }
 
-    CaustkScene(ComponentInfo info, File absoluteCausticFile) {
+    Scene(ComponentInfo info, File absoluteCausticFile) {
         this.info = info;
         this.causticFile = absoluteCausticFile;
         this.info.setName(absoluteCausticFile.getName().replace(".caustic", ""));
@@ -129,7 +157,7 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public void addMachine(int index, CaustkMachine caustkMachine) {
+    public void addMachine(int index, Machine caustkMachine) {
         // XXX This is going to be complex but just try adding to empty
         // if the index is right, should be able to call update()
         // and have the majic happen
@@ -139,7 +167,7 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
         masterSequencer.updateMachine(caustkMachine);
     }
 
-    public boolean removeMachine(CaustkMachine caustkMachine) {
+    public boolean removeMachine(Machine caustkMachine) {
         if (machines.remove(caustkMachine.getIndex()) == null)
             return false;
         RackMessage.REMOVE.send(rack, caustkMachine.getIndex());
@@ -154,39 +182,39 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
         return machines.containsKey(index);
     }
 
-    public Collection<CaustkMachine> getMachines() {
+    public Collection<Machine> getMachines() {
         return Collections.unmodifiableCollection(machines.values());
     }
 
     public Collection<Tone> getTones() {
         ArrayList<Tone> result = new ArrayList<Tone>();
-        for (CaustkMachine machine : machines.values()) {
+        for (Machine machine : machines.values()) {
             result.add(machine.getTone());
         }
         return result;
     }
 
     /**
-     * Returns the {@link CaustkMachine} at the specified index,
+     * Returns the {@link Machine} at the specified index,
      * <code>null</code> if does not exist.
      * 
      * @param index The machine index.
      */
-    public CaustkMachine getMachine(int index) {
+    public Machine getMachine(int index) {
         return machines.get(index);
     }
 
-    public CaustkMachine getMachineByName(String value) {
-        for (CaustkMachine caustkMachine : machines.values()) {
+    public Machine getMachineByName(String value) {
+        for (Machine caustkMachine : machines.values()) {
             if (caustkMachine.getMachineName().equals(value))
                 return caustkMachine;
         }
         return null;
     }
 
-    public List<CaustkMachine> findMachineStartsWith(String name) {
-        List<CaustkMachine> result = new ArrayList<CaustkMachine>();
-        for (CaustkMachine tone : machines.values()) {
+    public List<Machine> findMachineStartsWith(String name) {
+        List<Machine> result = new ArrayList<Machine>();
+        for (Machine tone : machines.values()) {
             if (tone.getMachineName().startsWith(name))
                 result.add(tone);
         }
@@ -201,7 +229,7 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
 
         masterMixer.update();
 
-        for (CaustkMachine machine : machines.values()) {
+        for (Machine machine : machines.values()) {
             machine.update();
         }
 
@@ -209,7 +237,7 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
     }
 
     /**
-     * Loads the {@link CaustkScene} using the {@link #getCausticFile()} passed
+     * Loads the {@link Scene} using the {@link #getCausticFile()} passed
      * during scene construction.
      * <p>
      * Calling this method will issue a <code>BLANKRACK</code> command and
@@ -259,7 +287,7 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
     private void loadComponents(IRackContext context) throws IOException, CausticException {
         masterMixer.load(context);
         for (int i = 0; i < 14; i++) {
-            CaustkMachine caustkMachine = getMachine(i);
+            Machine caustkMachine = getMachine(i);
             if (caustkMachine != null) {
                 loadMachine(caustkMachine, context);
             }
@@ -275,12 +303,12 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
 
         MachineType machineType = MachineType.fromString(RackMessage.QUERY_MACHINE_TYPE
                 .queryString(rack, index));
-        CaustkMachine caustkMachine = context.getFactory().createMachine(index, machineType,
+        Machine caustkMachine = context.getFactory().createMachine(index, machineType,
                 machineName);
         machines.put(index, caustkMachine);
     }
 
-    private void loadMachine(CaustkMachine caustkMachine, IRackContext context) throws IOException,
+    private void loadMachine(Machine caustkMachine, IRackContext context) throws IOException,
             CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
         caustkMachine.load(context);

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.utils;
 
-import com.teotigraphix.caustk.machine.CaustkPhrase;
+import com.teotigraphix.caustk.machine.Phrase;
 
 /**
  * @author Michael Schmalle
@@ -62,7 +62,7 @@ public final class PatternUtils {
         return toBank(bank) + toPattern(index);
     }
 
-    public static String toString(CaustkPhrase phrase) {
+    public static String toString(Phrase phrase) {
         return toString(phrase.getBankIndex(), phrase.getPatternIndex());
     }
 

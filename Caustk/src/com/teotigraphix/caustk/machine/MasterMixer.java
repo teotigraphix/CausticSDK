@@ -38,7 +38,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
 /**
  * @author Michael Schmalle
  */
-public class CastkMasterMixer implements IRackSerializer, IRackAware {
+public class MasterMixer implements IRackSerializer, IRackAware {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -51,7 +51,7 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private CaustkScene scene;
+    private Scene scene;
 
     @Tag(1)
     private MasterDelay delay;
@@ -68,7 +68,7 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
     @Tag(5)
     private MasterVolume volume;
 
-    public CaustkScene getScene() {
+    public Scene getScene() {
         return scene;
     }
 
@@ -96,10 +96,30 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
         volume.setRack(rack);
     }
 
-    CastkMasterMixer() {
+    public final MasterDelay getDelay() {
+        return delay;
     }
 
-    CastkMasterMixer(CaustkScene caustkScene) {
+    public final MasterReverb getReverb() {
+        return reverb;
+    }
+
+    public final MasterEqualizer getEqualizer() {
+        return equalizer;
+    }
+
+    public final MasterLimiter getLimiter() {
+        return limiter;
+    }
+
+    public final MasterVolume getVolume() {
+        return volume;
+    }
+
+    MasterMixer() {
+    }
+
+    MasterMixer(Scene caustkScene) {
         this.scene = caustkScene;
 
         equalizer = new MasterEqualizer();
@@ -156,7 +176,7 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
             // save the current state into the 'last' state if this command
             // has redo() called on it
 
-            CaustkMachine machine = getContext().getRack().getScene().getMachine(current.index);
+            Machine machine = getContext().getRack().getScene().getMachine(current.index);
             MixerPreset channel = machine.getMixer();
 
             last = new VO(channel, current);
@@ -172,7 +192,7 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
 
         private void update(VO vo) {
             int index = vo.index;
-            CaustkMachine machine = getContext().getRack().getScene().getMachine(index);
+            Machine machine = getContext().getRack().getScene().getMachine(index);
             MixerPreset channel = machine.getMixer();
 
             final float value = vo.value;

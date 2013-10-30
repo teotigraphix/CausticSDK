@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.rack.IRack;
 /**
  * @author Michael Schmalle
  */
-public class CaustkMasterSequencer implements IRackSerializer, IRackAware {
+public class MasterSequencer implements IRackSerializer, IRackAware {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -42,9 +42,9 @@ public class CaustkMasterSequencer implements IRackSerializer, IRackAware {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private CaustkScene scene;
+    private Scene scene;
 
-    public CaustkScene getScene() {
+    public Scene getScene() {
         return scene;
     }
 
@@ -73,10 +73,10 @@ public class CaustkMasterSequencer implements IRackSerializer, IRackAware {
     /*
      * Serialization.
      */
-    CaustkMasterSequencer() {
+    MasterSequencer() {
     }
 
-    CaustkMasterSequencer(CaustkScene caustkScene) {
+    MasterSequencer(Scene caustkScene) {
         this.scene = caustkScene;
     }
 
@@ -105,13 +105,13 @@ public class CaustkMasterSequencer implements IRackSerializer, IRackAware {
             int pattern = Integer.valueOf(parts[3]);
             int end = Integer.valueOf(parts[4]);
 
-            CaustkMachine caustkMachine = scene.getMachine(index);
+            Machine caustkMachine = scene.getMachine(index);
             caustkMachine.addPattern(bank, pattern, start, end);
         }
     }
 
-    public void updateMachine(CaustkMachine caustkMachine) {
-        for (CaustkSequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
+    public void updateMachine(Machine caustkMachine) {
+        for (SequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
             SequencerMessage.PATTERN_EVENT.send(rack, caustkMachine.getIndex(),
                     caustkSequencerPattern.getStartBeat(), caustkSequencerPattern.getBankIndex(),
                     caustkSequencerPattern.getPatternIndex(), caustkSequencerPattern.getEndBeat());
@@ -120,7 +120,7 @@ public class CaustkMasterSequencer implements IRackSerializer, IRackAware {
 
     @Override
     public void update() {
-        for (CaustkMachine caustkMachine : scene.getMachines()) {
+        for (Machine caustkMachine : scene.getMachines()) {
             updateMachine(caustkMachine);
         }
     }

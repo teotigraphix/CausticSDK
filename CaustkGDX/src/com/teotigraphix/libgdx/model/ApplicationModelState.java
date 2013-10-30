@@ -32,6 +32,8 @@ import com.teotigraphix.libgdx.application.CausticSongFile;
  * <p>
  * Each application creates a specific model used within it's
  * {@link ICaustkModel} implementations.
+ * 
+ * @author Michael Schmalle
  */
 public abstract class ApplicationModelState {
 
@@ -44,9 +46,6 @@ public abstract class ApplicationModelState {
 
     @Tag(1)
     private CausticSongFile songFile;
-
-    @Tag(2)
-    private Rack rack;
 
     //----------------------------------
     // controller
@@ -86,18 +85,6 @@ public abstract class ApplicationModelState {
         songFile = value;
     }
 
-    //----------------------------------
-    // rack
-    //----------------------------------
-
-    public IRack getRack() {
-        return rack;
-    }
-
-    public void setRack(Rack value) {
-        rack = value;
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -121,22 +108,8 @@ public abstract class ApplicationModelState {
      * <p>
      * The super must be called in order to create the state {@link Rack}
      * instance.
-     * 
-     * @see #createRack()
      */
     public void create() {
-        createRack();
-    }
-
-    /**
-     * Creates the state {@link Rack} instance.
-     * 
-     * @see #create()
-     */
-    protected void createRack() {
-        rack = new Rack();
-        rack.setController(getController());
-        getController().setRack(rack);
     }
 
     /**
@@ -153,8 +126,6 @@ public abstract class ApplicationModelState {
      * to the {@link IRack} instance.
      */
     public void update() {
-        rack.setController(getController());
-        getController().setRack(rack);
     }
 
     /**
@@ -165,14 +136,11 @@ public abstract class ApplicationModelState {
     }
 
     public void registerObservers() {
-        rack.registerObservers();
     }
 
     public void dispose() {
-        rack.dispose();
         songFile.dispose();
         id = null;
         songFile = null;
-        rack = null;
     }
 }

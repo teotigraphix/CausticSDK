@@ -19,20 +19,20 @@
 
 package com.teotigraphix.caustk.machine;
 
-public class CaustkMachineFactory extends CaustkFactoryBase {
+public class MachineFactory extends CaustkSubFactoryBase {
 
-    public CaustkMachineFactory() {
+    public MachineFactory() {
     }
 
-    public CaustkMachine createMachine(ComponentInfo info, MachineType machineType,
+    public Machine createMachine(ComponentInfo info, MachineType machineType,
             String machineName) {
-        CaustkMachine caustkMachine = new CaustkMachine(info, machineType, machineName);
+        Machine caustkMachine = new Machine(info, machineType, machineName);
         return caustkMachine;
     }
 
-    public CaustkMachine createMachine(int index, MachineType machineType, String machineName) {
+    public Machine createMachine(int index, MachineType machineType, String machineName) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Machine);
-        CaustkMachine caustkMachine = new CaustkMachine(info, index, machineType, machineName);
+        Machine caustkMachine = new Machine(info, index, machineType, machineName);
         caustkMachine.setRack(getFactory().getRack());
         return caustkMachine;
     }

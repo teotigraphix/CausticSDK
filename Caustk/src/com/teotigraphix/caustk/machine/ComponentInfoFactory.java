@@ -26,9 +26,9 @@ import java.util.UUID;
 /**
  * @author Michael Schmalle
  */
-public class CaustkInfoFactory extends CaustkFactoryBase {
+public class ComponentInfoFactory extends CaustkSubFactoryBase {
 
-    public CaustkInfoFactory() {
+    public ComponentInfoFactory() {
     }
 
     public ComponentInfo createInfo(ComponentType type) {

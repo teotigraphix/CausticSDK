@@ -25,10 +25,10 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 /**
  * @author Michael Schmalle
  */
-public class CaustkSequencerPattern implements ICaustkComponent {
+public class SequencerPattern implements ICaustkComponent {
 
     @Tag(0)
-    private CaustkMachine machine;
+    private Machine machine;
 
     @Tag(1)
     private int bankIndex;
@@ -42,7 +42,7 @@ public class CaustkSequencerPattern implements ICaustkComponent {
     @Tag(4)
     private int endBeat;
 
-    public CaustkMachine getMachine() {
+    public Machine getMachine() {
         return machine;
     }
 
@@ -67,10 +67,10 @@ public class CaustkSequencerPattern implements ICaustkComponent {
         return null;
     }
 
-    CaustkSequencerPattern() {
+    SequencerPattern() {
     }
 
-    CaustkSequencerPattern(CaustkMachine machine) {
+    SequencerPattern(Machine machine) {
         this.machine = machine;
     }
 

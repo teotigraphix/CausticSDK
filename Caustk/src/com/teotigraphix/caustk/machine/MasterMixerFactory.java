@@ -17,10 +17,16 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.libgdx.model;
+package com.teotigraphix.caustk.machine;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
+public class MasterMixerFactory extends CaustkSubFactoryBase {
 
-public interface IControllerModel extends IControllerComponent {
+    public MasterMixerFactory() {
+    }
 
+    public MasterMixer createMasterMixer(Scene caustkScene) {
+        MasterMixer castkMasterMixer = new MasterMixer(caustkScene);
+        castkMasterMixer.setRack(getFactory().getRack());
+        return castkMasterMixer;
+    }
 }

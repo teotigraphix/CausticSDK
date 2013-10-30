@@ -37,7 +37,7 @@ import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSerializer {
+public class Machine implements ICaustkComponent, IRackAware, IRackSerializer {
 
     /*
      * The tone is only set when the LiveMachine is actually assigned to a channel
@@ -80,13 +80,13 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     private int currentPattern;
 
     @Tag(12)
-    private CaustkPatch patch;
+    private Patch patch;
 
     @Tag(13)
-    private Map<Integer, CaustkPhrase> phrases = new HashMap<Integer, CaustkPhrase>();
+    private Map<Integer, Phrase> phrases = new HashMap<Integer, Phrase>();
 
     @Tag(14)
-    private Map<Integer, CaustkSequencerPattern> patterns = new HashMap<Integer, CaustkSequencerPattern>();
+    private Map<Integer, SequencerPattern> patterns = new HashMap<Integer, SequencerPattern>();
 
     @Tag(15)
     private Map<Integer, Integer> bankEditor = new HashMap<Integer, Integer>();
@@ -141,7 +141,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     // patch
     //----------------------------------
 
-    public CaustkPatch getPatch() {
+    public Patch getPatch() {
         return patch;
     }
 
@@ -153,32 +153,32 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     // phrases
     //----------------------------------
 
-    public Map<Integer, CaustkPhrase> getPhrases() {
+    public Map<Integer, Phrase> getPhrases() {
         return phrases;
     }
 
     /**
-     * Returns the {@link CaustkPhrase} using the {@link #getCurrentBank()} and
+     * Returns the {@link Phrase} using the {@link #getCurrentBank()} and
      * {@link #getCurrentPattern()}.
      */
-    public CaustkPhrase getPhrase() {
+    public Phrase getPhrase() {
         return getPhrase(currentBank, currentPattern);
     }
 
     /**
-     * Returns a {@link CaustkPhrase} at the bank and pattern index,
+     * Returns a {@link Phrase} at the bank and pattern index,
      * <code>null</code> if the machine has no note data assigned at the
      * specific pattern.
      * 
      * @param bankIndex The bank index.
      * @param patternIndex The pattern index.
      */
-    public CaustkPhrase getPhrase(int bankIndex, int patternIndex) {
+    public Phrase getPhrase(int bankIndex, int patternIndex) {
         int index = PatternUtils.getIndex(bankIndex, patternIndex);
         return phrases.get(index);
     }
 
-    public Map<Integer, CaustkSequencerPattern> getPatterns() {
+    public Map<Integer, SequencerPattern> getPatterns() {
         return patterns;
     }
 
@@ -251,16 +251,16 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     /*
      * Serialization.
      */
-    CaustkMachine() {
+    Machine() {
     }
 
-    CaustkMachine(ComponentInfo info, MachineType machineType, String machineName) {
+    Machine(ComponentInfo info, MachineType machineType, String machineName) {
         this.info = info;
         this.machineType = machineType;
         this.machineName = machineName;
     }
 
-    CaustkMachine(ComponentInfo info, int index, MachineType machineType, String machineName) {
+    Machine(ComponentInfo info, int index, MachineType machineType, String machineName) {
         this.info = info;
         this.index = index;
         this.machineType = machineType;
@@ -301,7 +301,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     private void updatePhrases() {
         int currentBank = getCurrentBank();
         int currentPattern = getCurrentPattern();
-        for (CaustkPhrase caustkPhrase : phrases.values()) {
+        for (Phrase caustkPhrase : phrases.values()) {
             PatternSequencerMessage.BANK.send(rack, index, caustkPhrase.getBankIndex());
             PatternSequencerMessage.PATTERN.send(rack, index, caustkPhrase.getPatternIndex());
             caustkPhrase.update();
@@ -349,7 +349,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     }
 
     /**
-     * Loads the machine's {@link CaustkPatch} from the mative machine's preset
+     * Loads the machine's {@link Patch} from the mative machine's preset
      * values and mixer channel.
      * 
      * @param factory The library factory.
@@ -364,7 +364,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     }
 
     /**
-     * Loads the machine's {@link CaustkPhrase}s that currently exist in the
+     * Loads the machine's {@link Phrase}s that currently exist in the
      * native rack.
      * 
      * @param factory The library factory.
@@ -384,7 +384,7 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
             int bankIndex = PatternUtils.toBank(patternName);
             int patternIndex = PatternUtils.toPattern(patternName);
 
-            CaustkPhrase caustkPhrase = context.getFactory().createPhrase(this, bankIndex,
+            Phrase caustkPhrase = context.getFactory().createPhrase(this, bankIndex,
                     patternIndex);
             phrases.put(caustkPhrase.getIndex(), caustkPhrase);
             caustkPhrase.load(context);
@@ -392,16 +392,16 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     }
 
     public void addPattern(int bankIndex, int patternIndex, int startBeat, int endBeat) {
-        CaustkSequencerPattern pattern = new CaustkSequencerPattern(this);
+        SequencerPattern pattern = new SequencerPattern(this);
         pattern.setBankPattern(bankIndex, patternIndex);
         pattern.setLocation(startBeat, endBeat);
         patterns.put(startBeat, pattern);
         System.out.println("Add pattern:" + pattern.toString());
     }
 
-    public CaustkSequencerPattern removePattern(int bankIndex, int patternIndex, int startBeat,
+    public SequencerPattern removePattern(int bankIndex, int patternIndex, int startBeat,
             int endBeat) {
-        CaustkSequencerPattern pattern = patterns.remove(startBeat);
+        SequencerPattern pattern = patterns.remove(startBeat);
         return pattern;
     }
 }

@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
-import com.teotigraphix.caustk.machine.CaustkEffect;
+import com.teotigraphix.caustk.machine.Effect;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -47,19 +47,19 @@ public abstract class EffectBase implements IEffect {
     private int slot;
 
     @Tag(3)
-    private CaustkEffect effect;
+    private Effect effect;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     @Override
-    public CaustkEffect getEffect() {
+    public Effect getEffect() {
         return effect;
     }
 
     @Override
-    public void setEffect(CaustkEffect value) {
+    public void setEffect(Effect value) {
         effect = value;
     }
 
@@ -156,7 +156,7 @@ public abstract class EffectBase implements IEffect {
      * Returns a float value for the {@link IEffectControl} parameter.
      * <p>
      * If the {@link #getRack()} is null, meaning it has not
-     * {@link CaustkEffect} parent, the method will return {@link Float#NaN}.
+     * {@link Effect} parent, the method will return {@link Float#NaN}.
      * 
      * @param control The control to query.
      */
@@ -173,7 +173,7 @@ public abstract class EffectBase implements IEffect {
      * effect.
      * <p>
      * Will send the OSC message only if the {@link IEffect} has a
-     * {@link CaustkEffect} parent.
+     * {@link Effect} parent.
      * 
      * @param control The target control on the effect.
      * @param value The new float value for the control.
@@ -190,7 +190,7 @@ public abstract class EffectBase implements IEffect {
      * effect.
      * <p>
      * Will send the OSC message only if the {@link IEffect} has a
-     * {@link CaustkEffect} parent.
+     * {@link Effect} parent.
      * 
      * @param control The target control on the effect.
      * @param value The new int value for the control.

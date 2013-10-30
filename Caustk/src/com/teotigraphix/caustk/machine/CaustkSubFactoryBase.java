@@ -19,18 +19,25 @@
 
 package com.teotigraphix.caustk.machine;
 
+import com.teotigraphix.caustk.controller.ICaustkFactory;
+import com.teotigraphix.caustk.controller.core.CaustkFactory;
+
 /**
  * @author Michael Schmalle
  */
-public class CaustkLibraryFactory extends CaustkFactoryBase {
+public abstract class CaustkSubFactoryBase {
 
-    public CaustkLibraryFactory() {
+    private CaustkFactory factory;
+
+    public ICaustkFactory getFactory() {
+        return factory;
     }
 
-    public CaustkLibrary createLibrary(String name) {
-        ComponentInfo info = getFactory().createInfo(ComponentType.Library, name);
-        CaustkLibrary caustkLibrary = new CaustkLibrary(info);
-        return caustkLibrary;
+    public void setFactory(ICaustkFactory factory) {
+        this.factory = (CaustkFactory)factory;
+    }
+
+    public CaustkSubFactoryBase() {
     }
 
 }

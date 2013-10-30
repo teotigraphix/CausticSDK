@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
+public class Phrase implements ICaustkComponent, IRackSerializer {
 
     final IDispatcher getDispatcher() {
         return machine.getRack().getDispatcher();
@@ -50,7 +50,7 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
     private int index;
 
     @Tag(4)
-    private CaustkMachine machine;
+    private Machine machine;
 
     @Tag(5)
     private MachineType machineType;
@@ -130,7 +130,7 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
     // machine
     //----------------------------------
 
-    public final CaustkMachine getMachine() {
+    public final Machine getMachine() {
         return machine;
     }
 
@@ -505,17 +505,17 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
     /*
      * Serialization.
      */
-    CaustkPhrase() {
+    Phrase() {
     }
 
-    CaustkPhrase(ComponentInfo info, int index, MachineType machineType) {
+    Phrase(ComponentInfo info, int index, MachineType machineType) {
         this.info = info;
         this.index = index;
         this.machineType = machineType;
         this.triggerMap = new TriggerMap(this);
     }
 
-    CaustkPhrase(ComponentInfo info, int index, CaustkMachine machine) {
+    Phrase(ComponentInfo info, int index, Machine machine) {
         this.info = info;
         this.index = index;
         this.machine = machine;
@@ -837,9 +837,9 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
             return kind;
         }
 
-        private final CaustkPhrase phrase;
+        private final Phrase phrase;
 
-        public CaustkPhrase getPhrase() {
+        public Phrase getPhrase() {
             return phrase;
         }
 
@@ -849,7 +849,7 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
             return note;
         }
 
-        public OnCaustkPhraseChange(CaustkPhraseChangeKind kind, CaustkPhrase phrase, Note note) {
+        public OnCaustkPhraseChange(CaustkPhraseChangeKind kind, Phrase phrase, Note note) {
             this.kind = kind;
             this.phrase = phrase;
             this.note = note;

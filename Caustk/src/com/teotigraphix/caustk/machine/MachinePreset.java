@@ -40,7 +40,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 
 /**
- * The {@link MachinePreset} represents a {@link CaustkPatch}'s preset bytes and
+ * The {@link MachinePreset} represents a {@link Patch}'s preset bytes and
  * holds the name of the preset originally saved from the native machine.
  * 
  * @author Michael Schmalle
@@ -52,7 +52,7 @@ public class MachinePreset implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private CaustkPatch patch;
+    private Patch patch;
 
     @Tag(1)
     private String name;
@@ -73,9 +73,9 @@ public class MachinePreset implements IRackSerializer {
     //----------------------------------
 
     /**
-     * Returns the id of the {@link CaustkPatch} that created the preset.
+     * Returns the id of the {@link Patch} that created the preset.
      */
-    public CaustkPatch getPatch() {
+    public Patch getPatch() {
         return patch;
     }
 
@@ -124,7 +124,7 @@ public class MachinePreset implements IRackSerializer {
     MachinePreset() {
     }
 
-    MachinePreset(String name, CaustkPatch caustkPatch) {
+    MachinePreset(String name, Patch caustkPatch) {
         this.name = name;
         this.patch = caustkPatch;
     }
@@ -166,7 +166,7 @@ public class MachinePreset implements IRackSerializer {
 
     @Override
     public void load(IRackContext context) {
-        CaustkMachine machine = getPatch().getMachine();
+        Machine machine = getPatch().getMachine();
         if (machine == null)
             throw new IllegalStateException("CaustkMachine cannot be null calling load()");
 
@@ -196,14 +196,14 @@ public class MachinePreset implements IRackSerializer {
      * Restores the {@link #getData()} bytes with the {@link Tone}'s preset file
      * as currently loaded in the rack.
      * <p>
-     * The {@link #getPatch()}'s {@link CaustkMachine} and {@link Tone} must be
+     * The {@link #getPatch()}'s {@link Machine} and {@link Tone} must be
      * non <code>null</code> for the method to not throw an error.
      * 
      * @throws IOException
      */
     @Override
     public void restore() {
-        CaustkMachine machine = getPatch().getMachine();
+        Machine machine = getPatch().getMachine();
         if (machine == null)
             throw new IllegalStateException(
                     "CaustkMachine cannot be null when trying to update preset file");
@@ -247,7 +247,7 @@ public class MachinePreset implements IRackSerializer {
      * as currently loaded in the rack.
      * <p>
      * The {@link Tone#getToneType()} must match the
-     * {@link CaustkPatch#getToneType()} for the method to be successful.
+     * {@link Patch#getToneType()} for the method to be successful.
      * 
      * @param tone The {@link Tone} to use when updating the preset bytes.
      * @throws IOException

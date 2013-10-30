@@ -74,7 +74,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 
 /**
- * The {@link CaustkLibrary} is a collection container for all library
+ * The {@link Library} is a collection container for all library
  * components that can be serialized.
  * <p>
  * When components are added to a library, they are either created using the
@@ -85,25 +85,25 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * <p>
  * <strong>Note;</strong> A component can have a reference to it's parent
  * composite depending on where in the chain a component is added. For example,
- * if a {@link CaustkMachine} is added to the library, its reference to the
- * {@link CaustkScene} will be disconnected before serialization. If a
- * {@link CaustkEffect} is added to the library, it's reference to the
- * {@link CaustkPatch} will be disconnected.
+ * if a {@link Machine} is added to the library, its reference to the
+ * {@link Scene} will be disconnected before serialization. If a
+ * {@link Effect} is added to the library, it's reference to the
+ * {@link Patch} will be disconnected.
  * <p>
  * A library holds;
  * <ul>
- * <li>{@link CaustkScene}</li>
- * <li>{@link CaustkMachine}</li>
- * <li>{@link CaustkPatch}</li>
- * <li>{@link CaustkEffect}</li>
- * <li>{@link CaustkPhrase}</li>
- * <li>{@link CastkMasterMixer}</li>
- * <li>{@link CaustkMasterSequencer}</li>
+ * <li>{@link Scene}</li>
+ * <li>{@link Machine}</li>
+ * <li>{@link Patch}</li>
+ * <li>{@link Effect}</li>
+ * <li>{@link Phrase}</li>
+ * <li>{@link MasterMixer}</li>
+ * <li>{@link MasterSequencer}</li>
  * </ul>
  * 
  * @author Michael Schmalle
  */
-public class CaustkLibrary implements ICaustkComponent {
+public class Library implements ICaustkComponent {
 
     private static final String LIBRARIES = "Libraries";
 
@@ -115,25 +115,25 @@ public class CaustkLibrary implements ICaustkComponent {
     private ComponentInfo info;
 
     @Tag(1)
-    private Collection<CaustkScene> scenes = new ArrayList<CaustkScene>();
+    private Collection<Scene> scenes = new ArrayList<Scene>();
 
     @Tag(2)
-    private Collection<CaustkMachine> machines = new ArrayList<CaustkMachine>();
+    private Collection<Machine> machines = new ArrayList<Machine>();
 
     @Tag(3)
-    private Collection<CaustkPatch> patches = new ArrayList<CaustkPatch>();
+    private Collection<Patch> patches = new ArrayList<Patch>();
 
     @Tag(4)
-    private Collection<CaustkEffect> effects = new ArrayList<CaustkEffect>();
+    private Collection<Effect> effects = new ArrayList<Effect>();
 
     @Tag(5)
-    private Collection<CaustkPhrase> phrases = new ArrayList<CaustkPhrase>();
+    private Collection<Phrase> phrases = new ArrayList<Phrase>();
 
     @Tag(6)
-    private Collection<CastkMasterMixer> mixers = new ArrayList<CastkMasterMixer>();
+    private Collection<MasterMixer> mixers = new ArrayList<MasterMixer>();
 
     @Tag(7)
-    private Collection<CaustkMasterSequencer> sequencers = new ArrayList<CaustkMasterSequencer>();
+    private Collection<MasterSequencer> sequencers = new ArrayList<MasterSequencer>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -198,17 +198,17 @@ public class CaustkLibrary implements ICaustkComponent {
             // CaustkScene caustkScene = (CaustkScene)component;
         } else if (info.getType() == ComponentType.Patch) {
             // Patch uses MachineType
-            CaustkPatch caustkPatch = (CaustkPatch)component;
+            Patch caustkPatch = (Patch)component;
             sb.append(caustkPatch.getMachineType().name());
             sb.append(File.separator);
         } else if (info.getType() == ComponentType.Phrase) {
             // Phrase uses MachineType
-            CaustkPhrase caustkPhrase = (CaustkPhrase)component;
+            Phrase caustkPhrase = (Phrase)component;
             sb.append(caustkPhrase.getMachineType().name());
             sb.append(File.separator);
         } else if (info.getType() == ComponentType.Effect) {
             // Effect uses EffectType
-            CaustkEffect caustkEffect = (CaustkEffect)component;
+            Effect caustkEffect = (Effect)component;
             sb.append(caustkEffect.getEffectType().name());
             sb.append(File.separator);
         }
@@ -225,10 +225,10 @@ public class CaustkLibrary implements ICaustkComponent {
     /*
      * Serialization.
      */
-    CaustkLibrary() {
+    Library() {
     }
 
-    CaustkLibrary(ComponentInfo info) {
+    Library(ComponentInfo info) {
         this.info = info;
     }
 
@@ -247,7 +247,7 @@ public class CaustkLibrary implements ICaustkComponent {
         return getCollection(component).contains(component);
     }
 
-    public boolean add(CaustkScene scene) throws IOException {
+    public boolean add(Scene scene) throws IOException {
         if (scenes.contains(scene))
             return false;
         scenes.add(scene);
@@ -255,7 +255,7 @@ public class CaustkLibrary implements ICaustkComponent {
         return true;
     }
 
-    public boolean add(CaustkMachine machine) throws IOException {
+    public boolean add(Machine machine) throws IOException {
         if (machines.contains(machine))
             return false;
         machines.add(machine);
@@ -264,14 +264,14 @@ public class CaustkLibrary implements ICaustkComponent {
     }
 
     /**
-     * Adds a {@link CaustkEffect} to the library.
+     * Adds a {@link Effect} to the library.
      * <p>
      * Will not add the instance if the library already contains the reference.
      * 
-     * @param effect The {@link CaustkEffect} to add.
+     * @param effect The {@link Effect} to add.
      * @throws IOException
      */
-    public boolean add(CaustkEffect effect) throws IOException {
+    public boolean add(Effect effect) throws IOException {
         if (effects.contains(effect))
             return false;
         effects.add(effect);
@@ -279,7 +279,7 @@ public class CaustkLibrary implements ICaustkComponent {
         return true;
     }
 
-    public boolean add(CaustkPatch patch) throws IOException {
+    public boolean add(Patch patch) throws IOException {
         if (patches.contains(patch))
             return false;
         patches.add(patch);
@@ -287,7 +287,7 @@ public class CaustkLibrary implements ICaustkComponent {
         return true;
     }
 
-    public boolean add(CaustkPhrase phrase) throws IOException {
+    public boolean add(Phrase phrase) throws IOException {
         if (phrases.contains(phrase))
             return false;
         phrases.add(phrase);
