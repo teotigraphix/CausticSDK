@@ -20,7 +20,8 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.machine.CaustkEffect;
 import com.teotigraphix.caustk.rack.IEffect;
@@ -139,7 +140,7 @@ public abstract class EffectBase implements IEffect {
     //--------------------------------------------------------------------------
 
     @Override
-    public void load(CaustkFactory factory) {
+    public void load(IRackContext context) throws CausticException {
         restore();
     }
 

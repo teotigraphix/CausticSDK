@@ -17,16 +17,18 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller;
+package com.teotigraphix.caustk.controller.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.machine.CastkMasterMixer;
@@ -173,6 +175,7 @@ public class CaustkFactory implements ICaustkFactory {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    @Override
     public IRack createRack() {
         Rack rack = new Rack();
         rack.setFactory(this);
@@ -187,6 +190,7 @@ public class CaustkFactory implements ICaustkFactory {
      * 
      * @param name The name of the library, used as the directory name.
      */
+    @Override
     public CaustkLibrary createLibrary(String name) {
         return libraryFactory.createLibrary(name);
     }
@@ -196,6 +200,7 @@ public class CaustkFactory implements ICaustkFactory {
      * 
      * @param name The name of the scene.
      */
+    @Override
     public CaustkScene createScene(ComponentInfo info) {
         return sceneFactory.createScene(info);
     }
@@ -207,15 +212,18 @@ public class CaustkFactory implements ICaustkFactory {
      * @param absoluteCausticFile The absolute location of the
      *            <code>.caustic</code> song file.
      */
+    @Override
     public CaustkScene createScene(ComponentInfo info, File absoluteCausticFile) {
         return sceneFactory.createScene(info, absoluteCausticFile);
     }
 
+    @Override
     public CaustkMachine createMachine(ComponentInfo info, MachineType machineType,
             String machineName) {
         return machineFactory.createMachine(info, machineType, machineName);
     }
 
+    @Override
     public CaustkMachine createMachine(int index, MachineType machineType, String machineName) {
         return machineFactory.createMachine(index, machineType, machineName);
     }
@@ -229,6 +237,7 @@ public class CaustkFactory implements ICaustkFactory {
      * 
      * @param toneType The {@link MachineType} of the
      */
+    @Override
     public CaustkPatch createPatch(ComponentInfo info, MachineType machineType) {
         return patchFactory.createPatch(info, machineType);
     }
@@ -239,6 +248,7 @@ public class CaustkFactory implements ICaustkFactory {
      * @param machine A {@link CaustkMachine} that does not exist in the native
      *            rack.
      */
+    @Override
     public CaustkPatch createPatch(CaustkMachine machine) {
         return patchFactory.createPatch(machine);
     }
@@ -260,11 +270,13 @@ public class CaustkFactory implements ICaustkFactory {
         //        patchFactory.activatePatch(caustkPatch);
     }
 
+    @Override
     public CaustkPhrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
             int patternIndex) {
         return phraseFactory.createPhrase(info, machineType, bankIndex, patternIndex);
     }
 
+    @Override
     public CaustkPhrase createPhrase(CaustkMachine caustkMachine, int bankIndex, int patternIndex) {
         return phraseFactory.createPhrase(caustkMachine, bankIndex, patternIndex);
     }
@@ -283,10 +295,12 @@ public class CaustkFactory implements ICaustkFactory {
      * @param info The {@link ComponentInfo}.
      * @param effectType The {@link EffectType}.
      */
+    @Override
     public CaustkEffect createEffect(ComponentInfo info, EffectType effectType) {
         return effectFactory.createEffect(info, effectType);
     }
 
+    @Override
     public CaustkEffect createEffect(int slot, EffectType effectType) {
         return effectFactory.createEffect(slot, effectType);
     }
@@ -297,14 +311,17 @@ public class CaustkFactory implements ICaustkFactory {
      * @param caustkPatch
      * @see CaustkPatch#load(CaustkLibraryFactory)
      */
+    @Override
     public CaustkEffect createEffect(int slot, EffectType effectType, CaustkPatch caustkPatch) {
         return effectFactory.createEffect(slot, effectType, caustkPatch);
     }
 
+    @Override
     public CastkMasterMixer createMasterMixer(CaustkScene caustkScene) {
         return masterMixerFactory.createMasterMixer(caustkScene);
     }
 
+    @Override
     public CaustkMasterSequencer createMasterSequencer(CaustkScene caustkScene) {
         return masterSequencerFactory.createMasterSequencer(caustkScene);
     }
@@ -321,10 +338,12 @@ public class CaustkFactory implements ICaustkFactory {
      * 
      * @param type The {@link ComponentType} being created.
      */
+    @Override
     public ComponentInfo createInfo(ComponentType type) {
         return infoFactory.createInfo(type);
     }
 
+    @Override
     public ComponentInfo createInfo(ComponentType type, String name) {
         return infoFactory.createInfo(type, name);
     }
@@ -353,6 +372,7 @@ public class CaustkFactory implements ICaustkFactory {
      * @param name The display name of the component, is used as the file name
      *            also.
      */
+    @Override
     public ComponentInfo createInfo(ComponentType type, File relativePath, String name) {
         return infoFactory.createInfo(type, relativePath, name);
     }
@@ -364,7 +384,8 @@ public class CaustkFactory implements ICaustkFactory {
      * @param clazz The class type of the component to deserialize.
      * @throws FileNotFoundException
      */
-    // XXX Make generic returning T
+    // XXX Make generic returning T 
+    @Override
     public ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
             throws FileNotFoundException {
         ICaustkComponent component = KryoUtils.readFileObject(KryoUtils.getKryo(), componentFile,

@@ -17,9 +17,10 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.controller;
 
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.core.CaustkFactory;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
@@ -32,8 +33,8 @@ public interface IRackSerializer {
      * <p>
      * The class that implements this method if {@link IRackAware} will call
      * {@link IRackAware#setRack(IRack)} on itself using the
-     * {@link CaustkFactory#getRack()} which is the current rack loading
-     * the file.
+     * {@link CaustkFactory#getRack()} which is the current rack loading the
+     * file.
      * <p>
      * Calling this method will wipe out all state, rack references and sub
      * components creating new components and loading from a caustic file.
@@ -42,10 +43,10 @@ public interface IRackSerializer {
      * file where all defaults are loaded by query from a restore() call after
      * the load.
      * 
-     * @param factory The library factory.
+     * @param context The current context.
      * @throws CausticException
      */
-    void load(CaustkFactory factory) throws CausticException;
+    void load(IRackContext context) throws CausticException;
 
     /**
      * Restores the rack, each component implementing the method will use OSC

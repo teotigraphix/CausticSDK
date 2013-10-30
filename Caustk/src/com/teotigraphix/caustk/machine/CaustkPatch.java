@@ -24,9 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IEffect;
@@ -229,24 +230,24 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void load(CaustkFactory factory) throws CausticException {
+    public void load(IRackContext context) throws CausticException {
         try {
-            loadMachinePreset(factory);
+            loadMachinePreset(context);
         } catch (IOException e) {
             throw new CausticException(e);
         }
-        loadMixerPreset(factory);
-        loadEffects(factory);
+        loadMixerPreset(context);
+        loadEffects(context);
     }
 
-    void loadMixerPreset(CaustkFactory factory) {
+    void loadMixerPreset(IRackContext context) throws CausticException {
         mixerPreset = new MixerPreset(this);
         //mixerPreset.restore();
-        mixerPreset.load(factory);
+        mixerPreset.load(context);
     }
 
-    void loadMachinePreset(CaustkFactory factory) throws IOException {
-        final IRack rack = factory.getRack();
+    void loadMachinePreset(IRackContext context) throws IOException {
+        final IRack rack = context.getRack();
 
         // get the preset name if machine has a loaded preset
         String presetName = SynthMessage.QUERY_PRESET.queryString(rack, machine.getIndex());
@@ -255,11 +256,11 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
 
         // get the bytes of the machine's preset and put them into the preset file
         //machinePreset.restore();
-        machinePreset.load(factory);
+        machinePreset.load(context);
     }
 
-    void loadEffects(CaustkFactory factory) throws CausticException {
-        final IRack rack = factory.getRack();
+    void loadEffects(IRackContext context) throws CausticException {
+        final IRack rack = context.getRack();
 
         final CaustkMachine machine = getMachine();
         final int machineIndex = machine.getIndex();
@@ -270,15 +271,15 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
                 machineIndex, 1));
 
         if (effect0 != null) {
-            CaustkEffect effect = factory.createEffect(0, effect0, this);
+            CaustkEffect effect = context.getFactory().createEffect(0, effect0, this);
             putEffect(0, effect);
-            effect.load(factory);
+            effect.load(context);
         }
 
         if (effect1 != null) {
-            CaustkEffect effect = factory.createEffect(1, effect1, this);
+            CaustkEffect effect = context.getFactory().createEffect(1, effect1, this);
             putEffect(1, effect);
-            effect.load(factory);
+            effect.load(context);
         }
     }
 

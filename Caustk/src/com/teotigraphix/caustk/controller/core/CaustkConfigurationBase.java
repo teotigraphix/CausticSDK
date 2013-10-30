@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;

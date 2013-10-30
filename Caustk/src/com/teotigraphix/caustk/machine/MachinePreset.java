@@ -26,8 +26,8 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
-import com.teotigraphix.caustk.core.IRackSerializer;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.Tone;
@@ -165,12 +165,12 @@ public class MachinePreset implements IRackSerializer {
     }
 
     @Override
-    public void load(CaustkFactory factory) {
+    public void load(IRackContext context) {
         CaustkMachine machine = getPatch().getMachine();
         if (machine == null)
             throw new IllegalStateException("CaustkMachine cannot be null calling load()");
 
-        final IRack rack = factory.getRack();
+        final IRack rack = context.getRack();
 
         // save the temp preset file to get its bytes
         String presetName = constructPresetName(false);

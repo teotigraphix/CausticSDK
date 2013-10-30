@@ -24,10 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.IRackAware;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRackAware;
-import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
@@ -323,16 +324,16 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
      */
     // XXX Figure out if this matters in the Phase?
     @Override
-    public void load(CaustkFactory factory) throws CausticException {
+    public void load(IRackContext context) throws CausticException {
         //        if (populateTone) {
         //            loadTone(factory);
         //        }
         try {
-            loadPatch(factory);
+            loadPatch(context);
         } catch (IOException e) {
             throw new CausticException(e);
         }
-        loadPhrases(factory);
+        loadPhrases(context);
     }
 
     @SuppressWarnings("unused")
@@ -358,9 +359,9 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
      * @throws IOException
      * @throws CausticException
      */
-    public void loadPatch(CaustkFactory factory) throws IOException, CausticException {
-        patch = factory.createPatch(this);
-        patch.load(factory);
+    public void loadPatch(IRackContext context) throws IOException, CausticException {
+        patch = context.getFactory().createPatch(this);
+        patch.load(context);
         if (tone != null)
             tone.setDefaultPatchId(patch.getInfo().getId());
     }
@@ -372,23 +373,24 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
      * @param factory The library factory.
      * @throws CausticException
      */
-    public void loadPhrases(CaustkFactory factory) throws CausticException {
-        final IRack rack = factory.getRack();
+    public void loadPhrases(IRackContext context) throws CausticException {
+        final IRack rack = context.getRack();
         String patterns = PatternSequencerMessage.QUERY_PATTERNS_WITH_DATA.queryString(rack, index);
         if (patterns != null) {
-            createPatternsFromLoadOperation(factory, patterns);
+            createPatternsFromLoadOperation(context, patterns);
         }
     }
 
-    private void createPatternsFromLoadOperation(CaustkFactory factory, String patterns)
+    private void createPatternsFromLoadOperation(IRackContext context, String patterns)
             throws CausticException {
         for (String patternName : patterns.split(" ")) {
             int bankIndex = PatternUtils.toBank(patternName);
             int patternIndex = PatternUtils.toPattern(patternName);
 
-            CaustkPhrase caustkPhrase = factory.createPhrase(this, bankIndex, patternIndex);
+            CaustkPhrase caustkPhrase = context.getFactory().createPhrase(this, bankIndex,
+                    patternIndex);
             phrases.put(caustkPhrase.getIndex(), caustkPhrase);
-            caustkPhrase.load(factory);
+            caustkPhrase.load(context);
         }
     }
 
@@ -405,5 +407,4 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
         CaustkSequencerPattern pattern = patterns.remove(startBeat);
         return pattern;
     }
-
 }

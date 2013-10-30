@@ -17,16 +17,32 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.controller.core;
 
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
+import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
-public interface IRackAware {
+public class RackContext implements IRackContext {
 
-    IRack getRack();
+    private ICaustkApplication application;
 
-    void setRack(IRack rack);
+    public RackContext(ICaustkApplication application) {
+        this.application = application;
+    }
+
+    @Override
+    public ICaustkFactory getFactory() {
+        return application.getFactory();
+    }
+
+    @Override
+    public IRack getRack() {
+        return application.getRack();
+    }
+
 }

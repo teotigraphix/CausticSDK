@@ -20,9 +20,9 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
@@ -165,10 +165,10 @@ public class CaustkEffect implements IRackSerializer, ICaustkComponent {
      * @throws CausticException
      */
     @Override
-    public void load(CaustkFactory factory) throws CausticException {
+    public void load(IRackContext context) throws CausticException {
         effect = createEffect(index, patch.getMachine().getIndex());
         effect.setEffect(this);
-        effect.load(factory);
+        effect.load(context);
     }
 
     @Override

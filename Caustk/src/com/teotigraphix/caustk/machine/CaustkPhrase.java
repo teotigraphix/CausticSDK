@@ -23,10 +23,10 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
@@ -529,8 +529,8 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void load(CaustkFactory factory) throws CausticException {
-        final IRack rack = factory.getRack();
+    public void load(IRackContext context) throws CausticException {
+        final IRack rack = context.getRack();
 
         final int machineIndex = machine.getIndex();
 

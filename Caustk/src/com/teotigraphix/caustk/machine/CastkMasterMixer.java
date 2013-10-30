@@ -20,12 +20,13 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.IRackAware;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
-import com.teotigraphix.caustk.core.IRackAware;
-import com.teotigraphix.caustk.core.IRackSerializer;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.mixer.MasterDelay;
 import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
@@ -109,12 +110,12 @@ public class CastkMasterMixer implements IRackSerializer, IRackAware {
     }
 
     @Override
-    public void load(CaustkFactory factory) {
-        equalizer.load(factory);
-        limiter.load(factory);
-        delay.load(factory);
-        reverb.load(factory);
-        volume.load(factory);
+    public void load(IRackContext context) throws CausticException {
+        equalizer.load(context);
+        limiter.load(context);
+        delay.load(context);
+        reverb.load(context);
+        volume.load(context);
 
         restore();
     }

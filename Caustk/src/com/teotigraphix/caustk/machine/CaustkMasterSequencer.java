@@ -20,9 +20,9 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
-import com.teotigraphix.caustk.core.IRackAware;
-import com.teotigraphix.caustk.core.IRackSerializer;
+import com.teotigraphix.caustk.controller.IRackAware;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
 
@@ -81,8 +81,8 @@ public class CaustkMasterSequencer implements IRackSerializer, IRackAware {
     }
 
     @Override
-    public void load(CaustkFactory factory) {
-        setRack(factory.getRack());
+    public void load(IRackContext context) {
+        setRack(context.getRack());
         restore();
     }
 

@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.machine;
 
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.core.CaustkFactory;
 
 public abstract class CaustkFactoryBase {
 

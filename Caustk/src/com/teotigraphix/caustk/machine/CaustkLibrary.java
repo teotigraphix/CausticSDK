@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.CaustkFactory;
+import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
