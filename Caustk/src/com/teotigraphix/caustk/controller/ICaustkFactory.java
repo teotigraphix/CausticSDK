@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.core.CaustkController;
-import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.machine.CastkMasterMixer;
 import com.teotigraphix.caustk.machine.CaustkEffect;
 import com.teotigraphix.caustk.machine.CaustkLibrary;
@@ -51,14 +50,6 @@ public interface ICaustkFactory {
      * @return An instance of the {@link ICommandManager}
      */
     ICommandManager createCommandManager();
-
-    /**
-     * Creates the single {@link ILibraryManager} for the application's
-     * controller.
-     * 
-     * @return An instance of the {@link ILibraryManager}
-     */
-    ILibraryManager createLibraryManager();
 
     /**
      * Creates the single {@link IProjectManager} for the application's

@@ -27,8 +27,6 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.library.core.Library;
-import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.tone.Tone;
@@ -135,8 +133,6 @@ public interface IRack extends ICausticEngine {
      */
     File saveSongAs(File file) throws IOException;
 
-    void createScene(LibraryScene libraryScene) throws CausticException;
-
     //----------------------------------
     // CommandManager
     //----------------------------------
@@ -150,8 +146,6 @@ public interface IRack extends ICausticEngine {
     ICausticLogger getLogger();
 
     Project getProject();
-
-    Library getLibrary();
 
     void addComponent(Class<? extends IRackComponent> classType, IRackComponent component);
 

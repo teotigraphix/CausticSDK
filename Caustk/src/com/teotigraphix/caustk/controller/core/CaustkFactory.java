@@ -29,8 +29,6 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.library.core.LibraryManager;
 import com.teotigraphix.caustk.machine.CastkMasterMixer;
 import com.teotigraphix.caustk.machine.CaustkEffect;
 import com.teotigraphix.caustk.machine.CaustkEffectFactory;
@@ -159,11 +157,6 @@ public class CaustkFactory implements ICaustkFactory {
     @Override
     public ICommandManager createCommandManager() {
         return new CommandManager();
-    }
-
-    @Override
-    public ILibraryManager createLibraryManager() {
-        return new LibraryManager();
     }
 
     @Override
@@ -358,6 +351,7 @@ public class CaustkFactory implements ICaustkFactory {
      * @param name The display name of the component, is used as the file name
      *            also.
      */
+    @Override
     public ComponentInfo createInfo(ComponentType type, String relativePath, String name) {
         return infoFactory.createInfo(type, relativePath, name);
     }

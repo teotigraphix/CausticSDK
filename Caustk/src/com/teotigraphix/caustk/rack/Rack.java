@@ -33,8 +33,6 @@ import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.library.core.Library;
-import com.teotigraphix.caustk.library.item.LibraryScene;
 import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.tone.Tone;
@@ -191,11 +189,6 @@ public class Rack implements IRack {
     @Override
     public File saveSongAs(File file) throws IOException {
         return soundSource.saveSongAs(file);
-    }
-
-    @Override
-    public void createScene(LibraryScene libraryScene) throws CausticException {
-        soundSource.createScene(libraryScene);
     }
 
     //----------------------------------
@@ -389,11 +382,6 @@ public class Rack implements IRack {
     @Override
     public Project getProject() {
         return controller.getProjectManager().getProject();
-    }
-
-    @Override
-    public Library getLibrary() {
-        return controller.getLibraryManager().getSelectedLibrary();
     }
 
     private transient boolean initalized = false;
