@@ -108,7 +108,6 @@ public final class CaustkApplication implements ICaustkApplication {
         factory = getConfiguration().createFactory(this);
 
         controller = (CaustkController)factory.createController();
-        rack = factory.createRack();
     }
 
     //--------------------------------------------------------------------------
@@ -122,6 +121,7 @@ public final class CaustkApplication implements ICaustkApplication {
         getLogger().log("Application", "initialize()");
         getConfiguration().getSoundGenerator().initialize();
         controller.initialize();
+        rack = factory.createRack();
     }
 
     // 2

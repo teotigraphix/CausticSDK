@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
-import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
@@ -147,7 +147,7 @@ public class CaustkPatch implements ICaustkComponent, IRackSerializer {
      * @param slot The effect slot.
      * @param effectType The {@link EffectType}.
      */
-    public CaustkEffect createEffect(CaustkFactory factory, int slot, EffectType effectType) {
+    public CaustkEffect createEffect(ICaustkFactory factory, int slot, EffectType effectType) {
         CaustkEffect effect = factory.createEffect(0, effectType, this);
         // since we are creating the effect from the outside, we create
         // the internal effect here

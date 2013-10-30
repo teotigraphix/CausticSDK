@@ -285,18 +285,16 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     }
 
     private void updateTone() {
-        // XXX Need the factory if we are doing it here
-        //        ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
-        //                ToneType.fromString(machineType.getType()));
-        //        try {
-        //            tone = getRack().getScene().createTone(descriptor);
-        //        } catch (CausticException e) {
-        //            e.printStackTrace();
-        //        }
+        ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
+                ToneType.fromString(machineType.getType()));
+        try {
+            tone = getRack().getFactory().createTone(descriptor);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updatePatch() {
-        //        patch.setRack(rack);
         patch.update();
     }
 

@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.core.CaustkFactory;
@@ -72,14 +74,14 @@ public class Rack implements IRack {
     // factory
     //----------------------------------
 
-    private transient CaustkFactory factory;
+    private CaustkFactory factory;
 
-    public CaustkFactory getFactory() {
+    public ICaustkFactory getFactory() {
         return factory;
     }
 
-    public void setFactory(CaustkFactory value) {
-        factory = value;
+    public void setFactory(ICaustkFactory value) {
+        factory = (CaustkFactory)value;
         setController(factory.getApplication().getController());
     }
 
@@ -108,7 +110,10 @@ public class Rack implements IRack {
 
     @Override
     public void clearAndReset() throws CausticException {
-        scene.clearAndReset();
+        ArrayList<CaustkMachine> list = new ArrayList<CaustkMachine>(scene.getMachines());
+        for (CaustkMachine machine : list) {
+            scene.removeMachine(machine);
+        }
         RackMessage.BLANKRACK.send(this);
     }
 
@@ -117,13 +122,13 @@ public class Rack implements IRack {
         return scene.getMachineCount() == 0;
     }
 
-    public void createMachine(CaustkMachine caustkMachine) {
-        RackMessage.CREATE.send(this, caustkMachine.getIndex());
-    }
-
-    public void removeMachine(CaustkMachine caustkMachine) {
-        RackMessage.REMOVE.send(this, caustkMachine.getIndex());
-    }
+    //    public void createMachine(CaustkMachine caustkMachine) {
+    //        RackMessage.CREATE.send(this, caustkMachine.getIndex());
+    //    }
+    //
+    //    public void removeMachine(CaustkMachine caustkMachine) {
+    //        RackMessage.REMOVE.send(this, caustkMachine.getIndex());
+    //    }
 
     @Override
     public void loadSongRaw(File causticFile) throws CausticException {
@@ -163,25 +168,34 @@ public class Rack implements IRack {
 
     @Override
     public void setScene(CaustkScene value) {
-        if (scene != null) {
-            unload(scene);
-        }
+        if (value == scene)
+            return;
+
+        CaustkScene oldScene = scene;
         scene = value;
-        load(scene);
+        sceneChanged(scene, oldScene);
     }
 
-    private void unload(CaustkScene scene) {
-        scene.setRack(null);
-    }
+    private void sceneChanged(CaustkScene newScene, CaustkScene oldScene) {
+        if (oldScene != null) {
+            removeScene(oldScene);
+        }
+        // when a scene is set, the Rack does not care or want to care
+        // how the scene was load, unserialized etc., it will just call update()
+        // and restore whatever is there.
 
-    private void load(CaustkScene scene) {
         // since the is a restoration of deserialized components, all sub
-        // components a guaranteed to be created, setRack() recurses and sets
+        // components are guaranteed to be created, setRack() recurses and sets
         // all components rack
-        scene.setRack(this);
+        newScene.setRack(this);
+
         // recursively updates all scene components based on their previous 
         // saved state
-        scene.update();
+        newScene.update();
+    }
+
+    private void removeScene(CaustkScene scene) {
+        scene.setRack(null);
     }
 
     //----------------------------------

@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.core.CaustkController;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.machine.CastkMasterMixer;
 import com.teotigraphix.caustk.machine.CaustkEffect;
 import com.teotigraphix.caustk.machine.CaustkLibrary;
@@ -21,6 +22,8 @@ import com.teotigraphix.caustk.machine.MachineType;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
+import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**
@@ -100,4 +103,6 @@ public interface ICaustkFactory {
 
     ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
             throws FileNotFoundException;
+
+    Tone createTone(ToneDescriptor descriptor) throws CausticException;
 }

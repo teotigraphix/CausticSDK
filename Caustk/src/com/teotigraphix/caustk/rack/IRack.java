@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.ICausticLogger;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.core.CausticException;
@@ -43,6 +44,8 @@ public interface IRack extends ICausticEngine {
     IDispatcher getDispatcher();
 
     IDispatcher getGlobalDispatcher();
+
+    ICaustkFactory getFactory();
 
     //----------------------------------
     // scene

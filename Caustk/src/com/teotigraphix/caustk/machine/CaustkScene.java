@@ -139,6 +139,13 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
         masterSequencer.updateMachine(caustkMachine);
     }
 
+    public boolean removeMachine(CaustkMachine caustkMachine) {
+        if (machines.remove(caustkMachine.getIndex()) == null)
+            return false;
+        RackMessage.REMOVE.send(rack, caustkMachine.getIndex());
+        return true;
+    }
+
     public int getMachineCount() {
         return machines.size();
     }
@@ -208,11 +215,12 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
      * Calling this method will issue a <code>BLANKRACK</code> command and
      * <code>LOAD_SONG</code>, all song state is reset to default before
      * loading.
+     * <p>
+     * So; any client calling this needs to do it in an initialize phase or save
+     * the state of the rack into a temp <code>.caustic</code> file to reload
+     * after this method returns.
      * 
-     * @param factory The library factory.
-     * @param populateTones Whether to create and populate the
-     *            {@link ISoundSource} with {@link Tone} instances based of the
-     *            restoration of the native rack state.
+     * @param context
      * @throws IOException
      * @throws CausticException
      */
@@ -221,12 +229,14 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
             throw new IllegalStateException("Caustic song file null or not found on file system: "
                     + causticFile);
 
-        setRack(context.getRack());
+        if (rack == null)
+            throw new IllegalStateException("Rack must not be null");
 
         // reset the rack and sound source to empty
-        getRack().clearAndReset();
+        RackMessage.BLANKRACK.send(rack);
+
         // load the song raw, don not create tones
-        getRack().loadSongRaw(causticFile);
+        RackMessage.LOAD_SONG.send(rack, causticFile.getAbsolutePath());
 
         try {
             // create the scene sub components
@@ -274,17 +284,6 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
             CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
         caustkMachine.load(context);
-    }
-
-    public void clearAndReset() {
-        ArrayList<CaustkMachine> list = new ArrayList<CaustkMachine>(machines.values());
-        for (CaustkMachine tone : list) {
-            removeMachine(tone);
-        }
-    }
-
-    private void removeMachine(CaustkMachine tone) {
-
     }
 
 }

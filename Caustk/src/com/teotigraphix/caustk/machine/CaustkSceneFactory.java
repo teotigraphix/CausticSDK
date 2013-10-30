@@ -33,6 +33,7 @@ public class CaustkSceneFactory extends CaustkFactoryBase {
 
     public CaustkScene createScene(ComponentInfo info, File absoluteCausticFile) {
         CaustkScene caustkScene = new CaustkScene(info, absoluteCausticFile);
+        caustkScene.setRack(getFactory().getRack());
         return caustkScene;
     }
 

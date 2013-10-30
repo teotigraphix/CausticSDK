@@ -34,10 +34,6 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
 public abstract class EffectBase implements IEffect {
 
     //--------------------------------------------------------------------------
-    // Private :: Variables
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
@@ -50,7 +46,7 @@ public abstract class EffectBase implements IEffect {
     @Tag(2)
     private int slot;
 
-    @Tag(10)
+    @Tag(3)
     private CaustkEffect effect;
 
     //--------------------------------------------------------------------------
@@ -158,36 +154,52 @@ public abstract class EffectBase implements IEffect {
 
     /**
      * Returns a float value for the {@link IEffectControl} parameter.
+     * <p>
+     * If the {@link #getRack()} is null, meaning it has not
+     * {@link CaustkEffect} parent, the method will return {@link Float#NaN}.
      * 
      * @param control The control to query.
      */
     protected final float get(IEffectControl control) {
-        return EffectRackMessage.GET.query(getRack(), getToneIndex(), getSlot(),
-                control.getControl());
+        if (effect != null) {
+            return EffectRackMessage.GET.query(effect.getRack(), getToneIndex(), getSlot(),
+                    control.getControl());
+        }
+        return Float.NaN;
     }
 
     /**
      * Sets a float value using the {@link IEffectControl} parameter on the
      * effect.
+     * <p>
+     * Will send the OSC message only if the {@link IEffect} has a
+     * {@link CaustkEffect} parent.
      * 
      * @param control The target control on the effect.
      * @param value The new float value for the control.
      */
     protected final void set(IEffectControl control, float value) {
-        EffectRackMessage.SET.send(getRack(), getToneIndex(), getSlot(), control.getControl(),
-                value);
+        if (effect != null) {
+            EffectRackMessage.SET.send(effect.getRack(), getToneIndex(), getSlot(),
+                    control.getControl(), value);
+        }
     }
 
     /**
      * Sets a int value using the {@link IEffectControl} parameter on the
      * effect.
+     * <p>
+     * Will send the OSC message only if the {@link IEffect} has a
+     * {@link CaustkEffect} parent.
      * 
      * @param control The target control on the effect.
      * @param value The new int value for the control.
      */
     protected final void set(IEffectControl control, int value) {
-        EffectRackMessage.SET.send(getRack(), getToneIndex(), getSlot(), control.getControl(),
-                value);
+        if (effect != null) {
+            EffectRackMessage.SET.send(effect.getRack(), getToneIndex(), getSlot(),
+                    control.getControl(), value);
+        }
     }
 
     /**
