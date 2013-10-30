@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack.track;
+package com.teotigraphix.caustk.machine;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,18 +25,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.rack.ITrackSequencer.OnPhraseChange;
-import com.teotigraphix.caustk.rack.ITrackSequencer.OnTriggerChange;
-import com.teotigraphix.caustk.rack.ITrackSequencer.PhraseChangeKind;
-import com.teotigraphix.caustk.rack.ITrackSequencer.TriggerChangeKind;
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.machine.CaustkPhrase.CaustkPhraseChangeKind;
+import com.teotigraphix.caustk.machine.CaustkPhrase.OnCaustkPhraseChange;
+import com.teotigraphix.caustk.machine.CaustkPhrase.Scale;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
-import com.teotigraphix.caustk.rack.track.Phrase.Scale;
 
 /**
- * A {@link TriggerMap} holds all {@link Trigger} instances for a {@link Phrase}
- * with the key being the trigger's start beat.
+ * A {@link TriggerMap} holds all {@link Trigger} instances for a
+ * {@link Phrase} with the key being the trigger's start beat.
  */
 public class TriggerMap {
 
@@ -57,22 +56,32 @@ public class TriggerMap {
     private Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
 
     @Tag(1)
-    private Phrase phrase;
+    private CaustkPhrase phrase;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    final Phrase getPhrase() {
+    final CaustkPhrase getPhrase() {
         return phrase;
     }
 
     final Tone getTone() {
-        return phrase.getTone();
+        return phrase.getMachine().getTone();
     }
 
     final PatternSequencerComponent getPatternSequencer() {
+        // XXX Temp until how to access the getMachine() correctly is figured out
+        // we allow notes to be added with a null sequencer for CaustkPhrase serialization
+        if (phrase.getMachine() == null || phrase.getMachine().getTone() == null)
+            return null;
         return getTone().getPatternSequencer();
+    }
+
+    public void update(Note note) {
+        PatternSequencerMessage.NOTE_DATA.send(phrase.getMachine().getRack(), phrase.getMachine()
+                .getIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note.getEnd(),
+                note.getFlags());
     }
 
     //--------------------------------------------------------------------------
@@ -82,7 +91,7 @@ public class TriggerMap {
     public TriggerMap() {
     }
 
-    public TriggerMap(Phrase phrase) {
+    public TriggerMap(CaustkPhrase phrase) {
         this.phrase = phrase;
     }
 
@@ -183,8 +192,10 @@ public class TriggerMap {
             map.put(beat, trigger);
         }
         Note note = trigger.addNote(beat, pitch, gate, velocity, flags);
-        getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
-        firePhraseChange(PhraseChangeKind.NoteAdd, note);
+        if (getPatternSequencer() != null) {
+            getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
+            firePhraseChange(CaustkPhraseChangeKind.NoteAdd, note);
+        }
         return note;
     }
 
@@ -253,7 +264,7 @@ public class TriggerMap {
             getPatternSequencer().removeNote(pitch, beat);
             // with remove note, we actually take the note out of the collection
             trigger.removeNote(note);
-            firePhraseChange(PhraseChangeKind.NoteRemove, note);
+            firePhraseChange(CaustkPhraseChangeKind.NoteRemove, note);
         }
         return note;
     }
@@ -395,7 +406,7 @@ public class TriggerMap {
         }
         trigger.setSelected(true);
         getTone().getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
-        fireTriggerChange(TriggerChangeKind.Select, trigger);
+        fireTriggerChange(CaustkTriggerChangeKind.Select, trigger);
     }
 
     /**
@@ -428,7 +439,7 @@ public class TriggerMap {
                     Resolution.toBeat(step, phrase.getResolution()));
         }
         trigger.setSelected(false);
-        fireTriggerChange(TriggerChangeKind.Deselect, trigger);
+        fireTriggerChange(CaustkTriggerChangeKind.Deselect, trigger);
     }
 
     /**
@@ -450,7 +461,7 @@ public class TriggerMap {
         if (note == null)
             return;
         note.update(pitch, beat, beat + gate, velocity, flags);
-        fireTriggerChange(TriggerChangeKind.Update, trigger);
+        fireTriggerChange(CaustkTriggerChangeKind.Update, trigger);
     }
 
     /**
@@ -509,12 +520,12 @@ public class TriggerMap {
     // Private API :: Methods
     //--------------------------------------------------------------------------
 
-    protected void firePhraseChange(PhraseChangeKind kind, Note note) {
-        phrase.getDispatcher().trigger(new OnPhraseChange(kind, phrase, note));
+    protected void firePhraseChange(CaustkPhraseChangeKind kind, Note note) {
+        phrase.getDispatcher().trigger(new OnCaustkPhraseChange(kind, phrase, note));
     }
 
-    protected void fireTriggerChange(TriggerChangeKind kind, Trigger trigger) {
-        phrase.getDispatcher().trigger(new OnTriggerChange(kind, phrase, trigger));
+    protected void fireTriggerChange(CaustkTriggerChangeKind kind, Trigger trigger) {
+        phrase.getDispatcher().trigger(new OnCaustkTriggerChange(kind, phrase, trigger));
     }
 
     private int endStepInView(int fromStep) {
@@ -536,4 +547,41 @@ public class TriggerMap {
     public void setSelectedBankPattern(int bank, int pattern) {
         getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
     }
+
+    public enum CaustkTriggerChangeKind {
+        Select,
+
+        Deselect,
+
+        Update;
+    }
+
+    public static class OnCaustkTriggerChange {
+
+        private final CaustkTriggerChangeKind kind;
+
+        public CaustkTriggerChangeKind getKind() {
+            return kind;
+        }
+
+        private final CaustkPhrase phrase;
+
+        public CaustkPhrase getPhrase() {
+            return phrase;
+        }
+
+        private final Trigger trigger;
+
+        public Trigger getTrigger() {
+            return trigger;
+        }
+
+        public OnCaustkTriggerChange(CaustkTriggerChangeKind kind, CaustkPhrase phrase,
+                Trigger trigger) {
+            this.kind = kind;
+            this.phrase = phrase;
+            this.trigger = trigger;
+        }
+    }
+
 }

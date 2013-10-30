@@ -33,7 +33,6 @@ import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.rack.track.Phrase;
 
 /**
  * The {@link IRack} is the top API for dealing with {@link Tone}s,

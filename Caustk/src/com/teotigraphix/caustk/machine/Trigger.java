@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack.track;
+package com.teotigraphix.caustk.machine;
 
 import java.util.ArrayList;
 import java.util.Collection;

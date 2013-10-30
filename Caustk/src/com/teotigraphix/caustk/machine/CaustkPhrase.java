@@ -30,12 +30,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.ITrackSequencer.OnPhraseChange;
-import com.teotigraphix.caustk.rack.ITrackSequencer.PhraseChangeKind;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
-import com.teotigraphix.caustk.rack.track.Note;
-import com.teotigraphix.caustk.rack.track.Trigger;
-import com.teotigraphix.caustk.rack.track.TriggerMap;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
@@ -65,7 +60,7 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(10)
-    private CaustkTriggerMap triggerMap;
+    private TriggerMap triggerMap;
 
     @Tag(11)
     private String noteData;
@@ -517,7 +512,7 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
         this.info = info;
         this.index = index;
         this.machineType = machineType;
-        this.triggerMap = new CaustkTriggerMap(this);
+        this.triggerMap = new TriggerMap(this);
     }
 
     CaustkPhrase(ComponentInfo info, int index, CaustkMachine machine) {
@@ -525,7 +520,7 @@ public class CaustkPhrase implements ICaustkComponent, IRackSerializer {
         this.index = index;
         this.machine = machine;
         this.machineType = machine.getMachineType();
-        this.triggerMap = new CaustkTriggerMap(this);
+        this.triggerMap = new TriggerMap(this);
     }
 
     @Override
