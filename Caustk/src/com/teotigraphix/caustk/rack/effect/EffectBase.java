@@ -20,9 +20,9 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.machine.CaustkEffect;
-import com.teotigraphix.caustk.machine.CaustkFactory;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;

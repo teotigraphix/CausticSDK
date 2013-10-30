@@ -132,8 +132,6 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
      */
     IRack getRack();
 
-    void setRack(IRack value);
-
     //----------------------------------
     // Services API
     //----------------------------------

@@ -38,7 +38,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.library.ILibraryManager;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.service.ISerializeService;
 
 /**
@@ -122,15 +121,6 @@ public class CaustkController implements ICaustkController {
     @Override
     public IRack getRack() {
         return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        if (rack != null)
-            ((Rack)rack).setController(null);
-        rack = value;
-        if (rack != null)
-            ((Rack)rack).setController(this);
     }
 
     //----------------------------------
@@ -288,10 +278,10 @@ public class CaustkController implements ICaustkController {
         getLogger().log("CaustkController", "Create all Sub components");
 
         // sub composites will add their ICommands in their constructors
-        serializeService = application.getConfiguration().createSerializeService(this);
-        commandManager = application.getConfiguration().createCommandManager(this);
-        libraryManager = application.getConfiguration().createLibraryManager(this);
-        projectManager = application.getConfiguration().createProjectManager(this);
+        serializeService = application.getFactory().createSerializeService();
+        commandManager = application.getFactory().createCommandManager();
+        libraryManager = application.getFactory().createLibraryManager();
+        projectManager = application.getFactory().createProjectManager();
     }
 
     void create() {

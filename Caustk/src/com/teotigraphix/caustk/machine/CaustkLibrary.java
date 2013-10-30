@@ -24,9 +24,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
@@ -78,10 +78,10 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * components that can be serialized.
  * <p>
  * When components are added to a library, they are either created using the
- * {@link CaustkFactory} or copied from and existing component. Any
- * component existing in the library has no reference to the {@link IRack} that
- * may have referenced it. This is to make sure the rack instance is not
- * serialized into the library.
+ * {@link CaustkFactory} or copied from and existing component. Any component
+ * existing in the library has no reference to the {@link IRack} that may have
+ * referenced it. This is to make sure the rack instance is not serialized into
+ * the library.
  * <p>
  * <strong>Note;</strong> A component can have a reference to it's parent
  * composite depending on where in the chain a component is added. For example,
@@ -103,19 +103,16 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * 
  * @author Michael Schmalle
  */
-public class CaustkLibrary {
+public class CaustkLibrary implements ICaustkComponent {
 
-    private static final String LIBRARIES = "libraries";
+    private static final String LIBRARIES = "Libraries";
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private UUID id;
-
-    @Tag(0)
-    private String name;
+    private ComponentInfo info;
 
     @Tag(1)
     private Collection<CaustkScene> scenes = new ArrayList<CaustkScene>();
@@ -143,16 +140,12 @@ public class CaustkLibrary {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // id
+    // info
     //----------------------------------
 
-    /**
-     * Returns the unique id for this {@link CaustkLibrary}.
-     * <p>
-     * <strong>Assigned only at construction.</strong>
-     */
-    public final UUID getId() {
-        return id;
+    @Override
+    public ComponentInfo getInfo() {
+        return info;
     }
 
     //----------------------------------
@@ -165,22 +158,22 @@ public class CaustkLibrary {
      * directory.
      */
     public final String getName() {
-        return name;
+        return info.getName();
     }
 
     /**
-     * Returns the <code>/storageRoot/AppName/libraries</code> directory.
+     * Returns the <code>/storageRoot/AppName/Libraries</code> directory.
      */
-    public final File getLibrariesDirectory() {
+    final File getLibrariesDirectory() {
         return RuntimeUtils.getApplicationDirectory(LIBRARIES);
     }
 
     /**
-     * Returns the <code>/storageRoot/AppName/libraries/[library_name]</code>
+     * Returns the <code>/storageRoot/AppName/Libraries/[library_name]</code>
      * directory.
      */
     public final File getDirectory() {
-        return new File(getLibrariesDirectory(), name);
+        return new File(getLibrariesDirectory(), getName());
     }
 
     /**
@@ -235,14 +228,24 @@ public class CaustkLibrary {
     CaustkLibrary() {
     }
 
-    CaustkLibrary(UUID id, String name) {
-        this.id = id;
-        this.name = name;
+    CaustkLibrary(ComponentInfo info) {
+        this.info = info;
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    /**
+     * Returns whether the library contains the component by reference in the
+     * component collection.
+     * 
+     * @param component The library component.
+     * @return
+     */
+    public boolean contains(ICaustkComponent component) {
+        return getCollection(component).contains(component);
+    }
 
     public boolean add(CaustkScene scene) throws IOException {
         if (scenes.contains(scene))
@@ -292,21 +295,33 @@ public class CaustkLibrary {
         return true;
     }
 
-    public boolean contains(ICaustkComponent component) {
-        return getCollection(component).contains(component);
-    }
-
     public boolean remove(ICaustkComponent component) {
         return getCollection(component).remove(component);
     }
 
-    public void save(ICaustkComponent component) throws FileNotFoundException {
+    /**
+     * Saves the library component to it's specific File location on disk.
+     * <p>
+     * Uses {@link #resolveLocation(ICaustkComponent)} to calculate where the
+     * component is saved. The component is serialized into it's binary format.
+     * 
+     * @param component The library component.
+     * @return A File pointing to the serialized component if serialization was
+     *         successful.
+     * @throws FileNotFoundException
+     */
+    public File save(ICaustkComponent component) throws FileNotFoundException {
         // component must exist in Library
         if (!contains(component))
             throw new FileNotFoundException("Library does not contian component; " + component);
 
         File location = resolveLocation(component);
         KryoUtils.writeFileObject(KryoUtils.getKryo(), location, component);
+        return location;
+    }
+
+    public void save() throws IOException {
+
     }
 
     private Collection<? extends ICaustkComponent> getCollection(ICaustkComponent component) {

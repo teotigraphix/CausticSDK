@@ -22,6 +22,8 @@ package com.teotigraphix.caustk.controller;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
+import com.teotigraphix.caustk.machine.CaustkScene;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
 
 /**
@@ -44,16 +46,6 @@ public interface ICaustkApplication {
     ICausticLogger getLogger();
 
     /**
-     * The application specific phase strategy. A strategy for custom
-     * application implementation of application phases such as create, save and
-     * close.
-     * 
-     * @param value The handler instance the application will use during it's
-     *            phase callbacks.
-     */
-    //    void setApplicationHandler(IApplicationHandler value);
-
-    /**
      * Returns the application's single {@link ICaustkConfiguration}.
      * <p>
      * The {@link ICaustkConfiguration} is the initialize instance for the
@@ -66,6 +58,11 @@ public interface ICaustkApplication {
      * basic configuration setup.
      */
     ICaustkConfiguration getConfiguration();
+
+    /**
+     * Returns the {@link ICaustkFactory} for this application.
+     */
+    ICaustkFactory getFactory();
 
     /**
      * Returns the application's single {@link ICaustkController}.
@@ -87,6 +84,15 @@ public interface ICaustkApplication {
      * same method, just facaded.
      */
     ICaustkController getController();
+
+    /**
+     * Returns the single instance of the {@link IRack} for the application.
+     * <p>
+     * The {@link IRack} is not serialized so it's instance stays around the
+     * whole application life cycle. The {@link CaustkScene} is plugged into the
+     * rack which is actually the {@link IRack}s internal state.
+     */
+    IRack getRack();
 
     /**
      * Initializes the {@link ISoundGenerator}.

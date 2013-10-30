@@ -21,24 +21,19 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
-import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.command.CommandManager;
-import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.library.core.LibraryManager;
-import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.caustk.project.ProjectManager;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
-import com.teotigraphix.caustk.service.ISerializeService;
-import com.teotigraphix.caustk.service.serialize.SerializeService;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * Used in unit tests of the toolkit framework. Need the
  * {@link DesktopSoundGenerator} desktop access for tool kit tests.
+ * 
+ * @author Michael Schmalle
  */
 public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
 
@@ -151,27 +146,7 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     }
 
     @Override
-    public ICaustkController createController(ICaustkApplication application) {
-        return new CaustkController(application);
-    }
-
-    @Override
-    public ISerializeService createSerializeService(ICaustkController controller) {
-        return new SerializeService();
-    }
-
-    @Override
-    public ICommandManager createCommandManager(ICaustkController controller) {
-        return new CommandManager();
-    }
-
-    @Override
-    public ILibraryManager createLibraryManager(ICaustkController controller) {
-        return new LibraryManager();
-    }
-
-    @Override
-    public IProjectManager createProjectManager(ICaustkController controller) {
-        return new ProjectManager();
+    public ICaustkFactory createFactory(ICaustkApplication application) {
+        return new CaustkFactory(application);
     }
 }

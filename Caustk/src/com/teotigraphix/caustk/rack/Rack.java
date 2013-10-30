@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
@@ -35,7 +35,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.library.core.Library;
 import com.teotigraphix.caustk.library.item.LibraryScene;
-import com.teotigraphix.caustk.machine.CaustkFactory;
 import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.tone.Tone;
@@ -56,16 +55,6 @@ public class Rack implements IRack {
 
     private transient IDispatcher dispatcher;
 
-    private transient CaustkFactory factory;
-
-    public CaustkFactory getFactory() {
-        return factory;
-    }
-
-    public void setFactory(CaustkFactory value) {
-        factory = value;
-    }
-
     @Override
     public IDispatcher getDispatcher() {
         return dispatcher;
@@ -76,31 +65,36 @@ public class Rack implements IRack {
         return controller;
     }
 
-    //--------------------------------------------------------------------------
-    // Serialized API
-    //--------------------------------------------------------------------------
-
-    @Tag(0)
     private Map<Class<? extends IRackComponent>, IRackComponent> components;
 
-    @Tag(1)
     private SoundSource soundSource;
 
-    @Tag(3)
     private SystemSequencer systemSequencer;
 
-    @Tag(4)
-    private TrackSequencer trackSequencer;
+    //----------------------------------
+    // factory
+    //----------------------------------
+
+    private transient CaustkFactory factory;
+
+    public CaustkFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(CaustkFactory value) {
+        factory = value;
+        setController(factory.getApplication().getController());
+    }
 
     //----------------------------------
     // soundSource
     //----------------------------------
 
-    public ICaustkController _getController() {
+    public ICaustkController __getController() {
         return controller;
     }
 
-    public void setController(ICaustkController controller) {
+    private void setController(ICaustkController controller) {
         this.controller = controller;
         this.dispatcher = new Dispatcher();
 
@@ -113,10 +107,6 @@ public class Rack implements IRack {
 
             soundSource = new SoundSource(this);
             systemSequencer = new SystemSequencer(this);
-            trackSequencer = new TrackSequencer(this);
-
-            // create a new TrackSong for the TrackSequencer
-            trackSequencer.createSong();
         }
     }
 
@@ -167,11 +157,9 @@ public class Rack implements IRack {
     }
 
     private void toneAdd(Tone tone) {
-        trackSequencer.toneAdd(tone);
     }
 
     private void toneRemove(Tone tone) {
-        trackSequencer.toneRemove(tone);
     }
 
     @Override
@@ -253,15 +241,6 @@ public class Rack implements IRack {
         return systemSequencer;
     }
 
-    //----------------------------------
-    // trackSequencer
-    //----------------------------------
-
-    @Override
-    public final ITrackSequencer getTrackSequencer() {
-        return trackSequencer;
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -300,7 +279,6 @@ public class Rack implements IRack {
         final boolean changed = systemSequencer.updatePosition(measure, beat);
         if (changed) {
             systemSequencer.beatChange(measure, beat);
-            trackSequencer.beatChange(measure, beat);
             for (IRackComponent component : components.values()) {
                 component.beatChange(measure, beat);
             }
@@ -367,7 +345,6 @@ public class Rack implements IRack {
         soundGenerator = null;
         soundSource = null;
         systemSequencer = null;
-        trackSequencer = null;
     }
 
     //--------------------------------------------------------------------------

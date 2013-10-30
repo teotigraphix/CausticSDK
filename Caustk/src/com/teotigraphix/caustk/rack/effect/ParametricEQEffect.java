@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.machine.CaustkFactory;
+import com.teotigraphix.caustk.controller.CaustkFactory;
 
 /**
  * @author Michael Schmalle

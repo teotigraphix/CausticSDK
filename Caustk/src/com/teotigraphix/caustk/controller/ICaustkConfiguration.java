@@ -21,13 +21,8 @@ package com.teotigraphix.caustk.controller;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.library.ILibraryManager;
-import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
-import com.teotigraphix.caustk.service.ISerializeService;
 
 /**
  * @author Michael Schmalle
@@ -128,52 +123,10 @@ public interface ICaustkConfiguration {
     ICausticLogger createLogger();
 
     /**
-     * The main {@link CaustkController} instance that instrumentates the whole
-     * application sequencing from patterns, parts, presets, memory and all
-     * other things needing controlling.
-     * <p>
-     * If the device framework was a hierarchy which it kind of is, the
-     * {@link CaustkController} is the top device, other than a
-     * GrooveBoxApplication.
+     * Creates the single {@link CaustkFactory} used to create all Caustk
+     * components for the application.
      * 
-     * @param application
+     * @param application The {@link ICaustkApplication}
      */
-    ICaustkController createController(ICaustkApplication application);
-
-    /**
-     * Creates the single {@link ISerializeService} for the application's
-     * controller.
-     * 
-     * @param controller The application controller.
-     * @return An instance of the {@link ISerializeService}
-     */
-    ISerializeService createSerializeService(ICaustkController controller);
-
-    /**
-     * Creates the single {@link ICommandManager} for the application's
-     * controller.
-     * 
-     * @param controller The application controller.
-     * @return An instance of the {@link ICommandManager}
-     */
-    ICommandManager createCommandManager(ICaustkController controller);
-
-    /**
-     * Creates the single {@link ILibraryManager} for the application's
-     * controller.
-     * 
-     * @param controller The application controller.
-     * @return An instance of the {@link ILibraryManager}
-     */
-    ILibraryManager createLibraryManager(ICaustkController controller);
-
-    /**
-     * Creates the single {@link IProjectManager} for the application's
-     * controller.
-     * 
-     * @param controller The application controller.
-     * @return An instance of the {@link IProjectManager}
-     */
-    IProjectManager createProjectManager(ICaustkController controller);
-
+    ICaustkFactory createFactory(ICaustkApplication application);
 }

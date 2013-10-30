@@ -214,8 +214,9 @@ public class QueueData {
      * @param toneIndex The index to retrieve this data's {@link Phrase}.
      */
     public Phrase getPhrase(int toneIndex) {
-        Track track = getQueueSong().getRack().getTrackSequencer().getTrack(toneIndex);
-        return track.getPhrase(bankIndex, patternIndex);
+        // XXX        Track track = getQueueSong().getRack().getTrackSequencer().getTrack(toneIndex);
+        //        return track.getPhrase(bankIndex, patternIndex);
+        return null;
     }
 
     @Override

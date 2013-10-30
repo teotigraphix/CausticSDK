@@ -152,8 +152,9 @@ public class QueueDataChannel {
     //----------------------------------
 
     public int getCurrentBeat() {
-        return getQueueData().getRack().getTrackSequencer().getTrack(toneIndex).getPhrase()
-                .getCurrentBeat();
+        // XXX        return getQueueData().getRack().getTrackSequencer().getTrack(toneIndex).getPhrase()
+        //                .getCurrentBeat();
+        return -1;
     }
 
     //----------------------------------

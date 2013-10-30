@@ -64,7 +64,8 @@ public class QueuePlayer {
     }
 
     public final TrackSong getTrackSong() {
-        return getRack().getTrackSequencer().getTrackSong();
+        // XXX       return getRack().getTrackSequencer().getTrackSong();
+        return null;
     }
 
     List<QueueData> getPlayQueue() {
@@ -271,19 +272,20 @@ public class QueuePlayer {
 
     private void extendOrRemovePlayingTracks() {
         //final float currentBeat = getTrackSong().getCurrentBeat();
-        final int currentMeasure = getTrackSong().getCurrentMeasure();
-
-        for (Track track : getRack().getTrackSequencer().getTracks()) {
-
-            // Find all tracks that are ending at the next measure
-            TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
-            // no item queued or playing at the measure
-            if (item != null) {
-                updateChannel(track, item);
-            }
-        }
+        //        final int currentMeasure = getTrackSong().getCurrentMeasure();
+        //
+        //        for (Track track : getRack().getTrackSequencer().getTracks()) {
+        //
+        //            // Find all tracks that are ending at the next measure
+        //            TrackItem item = track.getItemAtEndMeasure(currentMeasure + 1);
+        //            // no item queued or playing at the measure
+        //            if (item != null) {
+        //                updateChannel(track, item);
+        //            }
+        //        }
     }
 
+    @SuppressWarnings("unused")
     private void updateChannel(Track track, TrackItem item) {
         final int currentMeasure = getTrackSong().getCurrentMeasure();
 

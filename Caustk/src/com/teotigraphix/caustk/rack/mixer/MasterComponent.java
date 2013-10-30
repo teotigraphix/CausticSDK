@@ -20,10 +20,10 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.core.IRackAware;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
-import com.teotigraphix.caustk.machine.CaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 

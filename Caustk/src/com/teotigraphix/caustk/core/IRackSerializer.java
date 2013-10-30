@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core;
 
-import com.teotigraphix.caustk.machine.CaustkFactory;
+import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**

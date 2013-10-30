@@ -25,6 +25,8 @@ import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
+import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
@@ -68,6 +70,28 @@ public final class CaustkApplication implements ICaustkApplication {
         return controller;
     }
 
+    //----------------------------------
+    // factory
+    //----------------------------------
+
+    private final ICaustkFactory factory;
+
+    @Override
+    public final ICaustkFactory getFactory() {
+        return factory;
+    }
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    private IRack rack;
+
+    @Override
+    public final IRack getRack() {
+        return rack;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -79,8 +103,12 @@ public final class CaustkApplication implements ICaustkApplication {
      */
     public CaustkApplication(ICaustkConfiguration configuration) {
         this.configuration = configuration;
+
         logger = getConfiguration().createLogger();
-        controller = (CaustkController)getConfiguration().createController(this);
+        factory = getConfiguration().createFactory(this);
+
+        controller = (CaustkController)factory.createController();
+        rack = factory.createRack();
     }
 
     //--------------------------------------------------------------------------

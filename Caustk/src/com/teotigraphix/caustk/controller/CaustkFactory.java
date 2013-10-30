@@ -17,22 +17,69 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.machine;
+package com.teotigraphix.caustk.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.command.CommandManager;
+import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.controller.core.CaustkController;
+import com.teotigraphix.caustk.library.ILibraryManager;
+import com.teotigraphix.caustk.library.core.LibraryManager;
+import com.teotigraphix.caustk.machine.CastkMasterMixer;
+import com.teotigraphix.caustk.machine.CaustkEffect;
+import com.teotigraphix.caustk.machine.CaustkEffectFactory;
+import com.teotigraphix.caustk.machine.CaustkInfoFactory;
+import com.teotigraphix.caustk.machine.CaustkLibrary;
+import com.teotigraphix.caustk.machine.CaustkLibraryFactory;
+import com.teotigraphix.caustk.machine.CaustkMachine;
+import com.teotigraphix.caustk.machine.CaustkMachineFactory;
+import com.teotigraphix.caustk.machine.CaustkMasterMixerFactory;
+import com.teotigraphix.caustk.machine.CaustkMasterSequencer;
+import com.teotigraphix.caustk.machine.CaustkMasterSequencerFactory;
+import com.teotigraphix.caustk.machine.CaustkPatch;
+import com.teotigraphix.caustk.machine.CaustkPatchFactory;
+import com.teotigraphix.caustk.machine.CaustkPhrase;
+import com.teotigraphix.caustk.machine.CaustkPhraseFactory;
+import com.teotigraphix.caustk.machine.CaustkScene;
+import com.teotigraphix.caustk.machine.CaustkSceneFactory;
+import com.teotigraphix.caustk.machine.ComponentInfo;
+import com.teotigraphix.caustk.machine.ComponentType;
+import com.teotigraphix.caustk.machine.ICaustkComponent;
+import com.teotigraphix.caustk.machine.MachinePreset;
+import com.teotigraphix.caustk.machine.MachineType;
+import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
+import com.teotigraphix.caustk.service.ISerializeService;
+import com.teotigraphix.caustk.service.serialize.SerializeService;
 import com.teotigraphix.caustk.utils.KryoUtils;
 
-public class CaustkFactory {
+/**
+ * One {@link CaustkFactory} per {@link ICaustkApplication}.
+ * <p>
+ * The factory holds no state, only creates instances. The factory does hold the
+ * single {@link ICaustkApplication} and {@link IRack} instance. These are
+ * singleton top level application components that are needed during
+ * construction.
+ * 
+ * @author Michael Schmalle
+ */
+public class CaustkFactory implements ICaustkFactory {
+
+    //----------------------------------
+    // Factories
+    //----------------------------------
+
+    private CaustkInfoFactory infoFactory;
+
+    private CaustkLibraryFactory libraryFactory;
 
     private CaustkSceneFactory sceneFactory;
 
@@ -48,7 +95,9 @@ public class CaustkFactory {
 
     private CaustkMasterSequencerFactory masterSequencerFactory;
 
-    private IRack rack;
+    //----------------------------------
+    // application
+    //----------------------------------
 
     private ICaustkApplication application;
 
@@ -56,25 +105,25 @@ public class CaustkFactory {
         return application;
     }
 
+    //----------------------------------
+    // rack
+    //----------------------------------
+
     public IRack getRack() {
-        return rack;
+        return application.getRack();
     }
 
-    void setRack(IRack value) {
-        rack = value;
-    }
-
-    public IRack createRack() {
-        Rack rack = new Rack();
-        rack.setFactory(this);
-        rack.setController(application.getController());
-        setRack(rack);
-        return rack;
-    }
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public CaustkFactory(ICaustkApplication application) {
         this.application = application;
 
+        infoFactory = new CaustkInfoFactory();
+        infoFactory.setFactory(this);
+        libraryFactory = new CaustkLibraryFactory();
+        libraryFactory.setFactory(this);
         sceneFactory = new CaustkSceneFactory();
         sceneFactory.setFactory(this);
         machineFactory = new CaustkMachineFactory();
@@ -91,6 +140,45 @@ public class CaustkFactory {
         masterSequencerFactory.setFactory(this);
     }
 
+    //--------------------------------------------------------------------------
+    // Public Application Component Creation API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public ICaustkController createController() {
+        return new CaustkController(application);
+    }
+
+    @Override
+    public ISerializeService createSerializeService() {
+        return new SerializeService();
+    }
+
+    @Override
+    public ICommandManager createCommandManager() {
+        return new CommandManager();
+    }
+
+    @Override
+    public ILibraryManager createLibraryManager() {
+        return new LibraryManager();
+    }
+
+    @Override
+    public IProjectManager createProjectManager() {
+        return new ProjectManager();
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    public IRack createRack() {
+        Rack rack = new Rack();
+        rack.setFactory(this);
+        return rack;
+    }
+
     /**
      * Creates an empty {@link CaustkLibrary} with a name.
      * <p>
@@ -100,8 +188,7 @@ public class CaustkFactory {
      * @param name The name of the library, used as the directory name.
      */
     public CaustkLibrary createLibrary(String name) {
-        CaustkLibrary caustkLibrary = new CaustkLibrary(UUID.randomUUID(), name);
-        return caustkLibrary;
+        return libraryFactory.createLibrary(name);
     }
 
     /**
@@ -235,14 +322,11 @@ public class CaustkFactory {
      * @param type The {@link ComponentType} being created.
      */
     public ComponentInfo createInfo(ComponentType type) {
-        final ComponentInfo result = new ComponentInfo(UUID.randomUUID(), type);
-        result.setCreated(new Date());
-        result.setModified(new Date());
-        return result;
+        return infoFactory.createInfo(type);
     }
 
     public ComponentInfo createInfo(ComponentType type, String name) {
-        return createInfo(type, new File("."), name);
+        return infoFactory.createInfo(type, name);
     }
 
     /**
@@ -256,7 +340,7 @@ public class CaustkFactory {
      *            also.
      */
     public ComponentInfo createInfo(ComponentType type, String relativePath, String name) {
-        return createInfo(type, new File(relativePath), name);
+        return infoFactory.createInfo(type, relativePath, name);
     }
 
     /**
@@ -270,14 +354,7 @@ public class CaustkFactory {
      *            also.
      */
     public ComponentInfo createInfo(ComponentType type, File relativePath, String name) {
-        File file = new File(relativePath, name + "." + type.getExtension());
-        // if we have no directory, just construct from name
-        if (relativePath.getName().equals("."))
-            file = new File(name + "." + type.getExtension());
-        ComponentInfo result = new ComponentInfo(UUID.randomUUID(), type, file, name);
-        result.setCreated(new Date());
-        result.setModified(new Date());
-        return result;
+        return infoFactory.createInfo(type, relativePath, name);
     }
 
     /**

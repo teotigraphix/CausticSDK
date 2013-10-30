@@ -27,6 +27,7 @@ import android.os.Environment;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkApplication;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 
 /**
@@ -52,13 +53,11 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
         return application.getController();
     }
 
-    private Rack rack;
-
     /**
      * Returns the single instance of the {@link Rack}.
      */
-    protected Rack getRack() {
-        return rack;
+    protected IRack getRack() {
+        return application.getRack();
     }
 
     @Override
@@ -77,10 +76,9 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
         application = new CaustkApplication(configuration);
         application.initialize();
         application.create();
+        application.run();
 
-        rack = new Rack();
-        rack.setController(application.getController());
-        rack.registerObservers();
+        getRack().registerObservers();
     }
 
     /**

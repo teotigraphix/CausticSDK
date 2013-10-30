@@ -48,19 +48,17 @@ public interface IRack extends ICausticEngine {
 
     IDispatcher getGlobalDispatcher();
 
+    //----------------------------------
+    // scene
+    //----------------------------------
+
     CaustkScene getScene();
 
     void setScene(CaustkScene scene);
 
-    //    ICaustkController _getController();
-
     ISoundSource getSoundSource();
 
-    //    ISoundMixer getSoundMixer();
-
     ISystemSequencer getSystemSequencer();
-
-    ITrackSequencer getTrackSequencer();
 
     float getCurrentSongMeasure();
 

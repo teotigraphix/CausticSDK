@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.CaustkFactory;
 import com.teotigraphix.caustk.core.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
 import com.teotigraphix.caustk.rack.IRack;
