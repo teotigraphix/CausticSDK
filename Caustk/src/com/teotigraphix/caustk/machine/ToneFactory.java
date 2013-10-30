@@ -27,7 +27,6 @@ import java.util.UUID;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.SoundSourceUtils;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
 import com.teotigraphix.caustk.rack.tone.EightBitSynth;
@@ -70,52 +69,52 @@ public class ToneFactory extends CaustkFactoryBase {
             case Bassline:
                 tone = new BasslineTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case Beatbox:
                 tone = new BeatboxTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case PCMSynth:
                 tone = new PCMSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case SubSynth:
                 tone = new SubSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case PadSynth:
                 tone = new PadSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case Organ:
                 tone = new OrganTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case Vocoder:
                 tone = new VocoderTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case EightBitSynth:
                 tone = new EightBitSynth(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case Modular:
                 tone = new ModularTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             case FMSynth:
                 tone = new FMSynthTone(rack);
                 initializeTone(tone, toneName, toneType, index);
-                SoundSourceUtils.setup(tone);
+                ToneUtils.setup(tone);
                 break;
             default:
                 break;
@@ -148,7 +147,7 @@ public class ToneFactory extends CaustkFactoryBase {
             e.printStackTrace();
         }
 
-        SoundSourceUtils.setup(toneClass.cast(tone));
+        ToneUtils.setup(toneClass.cast(tone));
 
         RackMessage.CREATE.send(rack, tone.getToneType().getValue(), tone.getName(),
                 tone.getIndex());

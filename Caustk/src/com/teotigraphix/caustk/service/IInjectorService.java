@@ -19,8 +19,15 @@
 
 package com.teotigraphix.caustk.service;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
+/**
+ * @author Michael Schmalle
+ */
+public interface IInjectorService {
 
-public interface IInjectorService extends IControllerComponent {
+    /**
+     * Injects the instance with the current injector.
+     * 
+     * @param instance The instance to inject.
+     */
     void inject(Object instance);
 }

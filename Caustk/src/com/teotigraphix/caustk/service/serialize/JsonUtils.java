@@ -32,7 +32,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.service.IInjectorService;
-import com.teotigraphix.caustk.service.ISerialize;
 
 public class JsonUtils {
 
@@ -42,8 +41,6 @@ public class JsonUtils {
             builder.setPrettyPrinting();
         }
         Gson gson = builder.create();
-        if (serialized instanceof ISerialize)
-            ((ISerialize)serialized).sleep();
         return gson.toJson(serialized);
     }
 
@@ -67,8 +64,6 @@ public class JsonUtils {
         IInjectorService injectorService = controller.getComponent(IInjectorService.class);
         if (injectorService != null)
             injectorService.inject(result);
-        if (result instanceof ISerialize)
-            ((ISerialize)result).wakeup(controller);
         return result;
     }
 
@@ -86,8 +81,6 @@ public class JsonUtils {
         IInjectorService injectorService = controller.getComponent(IInjectorService.class);
         if (injectorService != null)
             injectorService.inject(result);
-        if (result instanceof ISerialize)
-            ((ISerialize)result).wakeup(controller);
         return result;
     }
 

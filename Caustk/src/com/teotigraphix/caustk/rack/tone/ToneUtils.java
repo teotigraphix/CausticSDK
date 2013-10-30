@@ -98,6 +98,41 @@ public final class ToneUtils {
         return null;
     }
 
+    public static void setup(Tone tone) {
+        switch (tone.getToneType()) {
+            case Bassline:
+                BasslineTone.setup(tone);
+                break;
+            case Beatbox:
+                BeatboxTone.setup(tone);
+                break;
+            case EightBitSynth:
+                EightBitSynth.setup(tone);
+                break;
+            case FMSynth:
+                FMSynthTone.setup(tone);
+                break;
+            case Modular:
+                ModularTone.setup(tone);
+                break;
+            case Organ:
+                OrganTone.setup(tone);
+                break;
+            case PadSynth:
+                PadSynthTone.setup(tone);
+                break;
+            case PCMSynth:
+                PCMSynthTone.setup(tone);
+                break;
+            case SubSynth:
+                SubSynthTone.setup(tone);
+                break;
+            case Vocoder:
+                VocoderTone.setup(tone);
+                break;
+        }
+    }
+
     public static void setName(Tone tone, String name) {
         tone.setNameInternal(name);
     }
