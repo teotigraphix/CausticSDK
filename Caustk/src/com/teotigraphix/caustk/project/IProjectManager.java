@@ -35,7 +35,7 @@ public interface IProjectManager {
 
     /**
      * The root application directory, all {@link Project}s are stored in the
-     * <code>applicationRoot/projects</code> directory.
+     * <code>applicationRoot/Projects</code> directory.
      * 
      * @return The absolute path to the directory.
      */
@@ -48,7 +48,7 @@ public interface IProjectManager {
     String getLastProject();
 
     /**
-     * Returns the <code>projects</code> directory held within the
+     * Returns the <code>Projects</code> directory held within the
      * {@link #getApplicationRoot()}.
      * 
      * @return The absolute path to the directory.
@@ -91,7 +91,7 @@ public interface IProjectManager {
     SessionPreferences getSessionPreferences();
 
     /**
-     * Returns a List of all Projects in the <code>projects</code> directory.
+     * Returns a List of all Projects in the <code>Projects</code> directory.
      */
     List<File> listProjects();
 
@@ -106,7 +106,7 @@ public interface IProjectManager {
     /**
      * Creates a new {@link Project} file.
      * 
-     * @param relativePath The path within the <code>projects</code> directory
+     * @param relativePath The path within the <code>Projects</code> directory
      *            of the application root.
      * @throws IOException
      * @see #createProject(File)
@@ -121,7 +121,7 @@ public interface IProjectManager {
      * A default {@link ProjectInfo} is created for the empty project.
      * 
      * @param projectFile the relative path and name of the project path within
-     *            the <code>projects</code> directory. The name of the
+     *            the <code>Projects</code> directory. The name of the
      *            {@link File} is used for the project directory name upon
      *            creation.
      * @return A new {@link Project} instance that is not yet on disk.
@@ -133,7 +133,7 @@ public interface IProjectManager {
      * Loads a project from disk using the <code>.project</code> project format.
      * 
      * @param directory The project directory path; contained in the
-     *            <code>projects</code> directory holding a
+     *            <code>Projects</code> directory holding a
      *            <code>.project</code> file.
      * @return A fully loaded <code>.project</code> project state.
      * @throws IOException Project file does not exist

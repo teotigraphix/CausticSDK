@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 public interface IRackComponent extends IRackAware, IRestore {
 
     /**
-     * Callback for a beat change from the {@link IRack#update()}.
+     * Callback for a beat change from the {@link IRack#frameChanged()}.
      * <p>
      * Gives rack component's chance to operate on a beat change event.
      * 

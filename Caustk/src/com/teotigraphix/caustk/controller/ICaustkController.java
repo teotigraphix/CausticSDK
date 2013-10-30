@@ -201,6 +201,6 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
     /**
      * Updated sub components.
      */
-    void update();
+    void frameChanged(float delta);
 
 }

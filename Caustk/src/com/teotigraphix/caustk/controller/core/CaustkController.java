@@ -282,8 +282,8 @@ public class CaustkController implements ICaustkController {
     }
 
     @Override
-    public void update() {
-        getRack().update();
+    public void frameChanged(float delta) {
+        rack.frameChanged(delta);
     }
 
     void save() throws IOException {
@@ -333,5 +333,4 @@ public class CaustkController implements ICaustkController {
     public void dispose() {
         rack.dispose();
     }
-
 }

@@ -93,8 +93,8 @@ public class Project {
     /**
      * Returns the project's relative location within the application root's
      * <code>project</code> directory. e.g.
-     * <code>MyAp/projects/[MyProject]</code> or
-     * <code>MyAp/projects/[sub/MyProject]</code>.
+     * <code>MyAp/Projects/[MyProject]</code> or
+     * <code>MyAp/Projects/[sub/MyProject]</code>.
      */
     public File getDirectory() {
         return directory;
@@ -106,7 +106,7 @@ public class Project {
 
     /**
      * Returns the absolute location of the project's directory on the current
-     * disk drive. e.g. <code>[/sdcard/MyAp/projects/MyProject]</code>
+     * disk drive. e.g. <code>[/sdcard/MyAp/Projects/MyProject]</code>
      */
     public File getAbsolutDirectory() {
         return projectManager.getDirectory(directory.getPath());
@@ -131,7 +131,7 @@ public class Project {
 
     /**
      * Returns an absolute File handle using the relativePath passed to
-     * construct a file from the <code>MyApp/projects/MyProject</code>
+     * construct a file from the <code>MyApp/Projects/MyProject</code>
      * directory.
      * 
      * @par* @param relativePath The path inside the project's resource

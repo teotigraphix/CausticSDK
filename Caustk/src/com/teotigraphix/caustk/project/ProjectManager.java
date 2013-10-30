@@ -41,7 +41,9 @@ public class ProjectManager implements IProjectManager, IControllerAware {
 
     private static final String FILE_SETTINGS = ".settings";
 
-    private static final String DIR_PROJECTS = "projects";
+    private static final String FILE_PROJECT = ".project";
+
+    private static final String DIR_PROJECTS = "Projects";
 
     //-------------------------------------------------------------------------
     // Protected :: Properties
@@ -97,7 +99,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
     }
 
     /**
-     * Returns the absolute File location of the <code>projects</code> directory
+     * Returns the absolute File location of the <code>Projects</code> directory
      * located within the {@link #getApplicationRoot()}.
      * 
      * @return The absolute {@link File}.
@@ -157,7 +159,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
                 });
 
         for (File file : contents) {
-            if (file.isDirectory() && new File(file, ".project").exists()) {
+            if (file.isDirectory() && new File(file, FILE_PROJECT).exists()) {
                 result.add(file);
             }
         }
@@ -253,7 +255,7 @@ public class ProjectManager implements IProjectManager, IControllerAware {
 
         getController().getLogger().log("ProjectManager", "Load - " + absoluteDir);
 
-        project = controller.getSerializeService().fromFile(new File(absoluteDir, ".project"),
+        project = controller.getSerializeService().fromFile(new File(absoluteDir, FILE_PROJECT),
                 Project.class);
         project.setProjectManager(this);
         project.setFirstRun(false);

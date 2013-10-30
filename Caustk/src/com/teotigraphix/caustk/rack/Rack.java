@@ -22,23 +22,18 @@ package com.teotigraphix.caustk.rack;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.machine.CaustkMachine;
 import com.teotigraphix.caustk.machine.CaustkScene;
-import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -56,6 +51,10 @@ public class Rack implements IRack {
 
     private transient IDispatcher dispatcher;
 
+    // - The Rack is the dispatcher for all events coming from a Scene, 
+    // so listeners in apps can safely listen to the Rack without getting coupled 
+    // with a Scene reference, the Rack is ONLY CREATED ONCE
+
     @Override
     public IDispatcher getDispatcher() {
         return dispatcher;
@@ -66,16 +65,13 @@ public class Rack implements IRack {
         return controller;
     }
 
-    private Map<Class<? extends IRackComponent>, IRackComponent> components;
-
-    private SystemSequencer systemSequencer;
-
     //----------------------------------
     // factory
     //----------------------------------
 
     private CaustkFactory factory;
 
+    @Override
     public ICaustkFactory getFactory() {
         return factory;
     }
@@ -89,7 +85,7 @@ public class Rack implements IRack {
     // controller
     //----------------------------------
 
-    public ICaustkController __getController() {
+    ICaustkController getController() {
         return controller;
     }
 
@@ -101,11 +97,9 @@ public class Rack implements IRack {
 
         soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
 
-        if (components == null) {
-            components = new HashMap<Class<? extends IRackComponent>, IRackComponent>();
-            systemSequencer = new SystemSequencer();
-            systemSequencer.setRack(this);
-        }
+        systemSequencer = new SystemSequencer();
+        systemSequencer.setRack(this);
+        controller.addComponent(ISystemSequencer.class, systemSequencer);
     }
 
     @Override
@@ -121,14 +115,6 @@ public class Rack implements IRack {
     public boolean isEmpty() {
         return scene.getMachineCount() == 0;
     }
-
-    //    public void createMachine(CaustkMachine caustkMachine) {
-    //        RackMessage.CREATE.send(this, caustkMachine.getIndex());
-    //    }
-    //
-    //    public void removeMachine(CaustkMachine caustkMachine) {
-    //        RackMessage.REMOVE.send(this, caustkMachine.getIndex());
-    //    }
 
     @Override
     public void loadSongRaw(File causticFile) throws CausticException {
@@ -202,6 +188,8 @@ public class Rack implements IRack {
     // systemSequencer
     //----------------------------------
 
+    private SystemSequencer systemSequencer;
+
     @Override
     public final ISystemSequencer getSystemSequencer() {
         return systemSequencer;
@@ -219,25 +207,15 @@ public class Rack implements IRack {
     //--------------------------------------------------------------------------
 
     @Override
-    public void addComponent(Class<? extends IRackComponent> classType, IRackComponent component) {
-        components.put(classType, component);
-    }
-
-    @Override
-    public <T extends IRackComponent> T getComponent(Class<T> clazz) {
-        return clazz.cast(components.get(clazz));
-    }
-
-    @Override
-    public void update() {
+    public void frameChanged(float delta) {
         final int measure = (int)getCurrentSongMeasure();
         final float beat = getCurrentBeat();
         final boolean changed = systemSequencer.updatePosition(measure, beat);
         if (changed) {
             systemSequencer.beatChange(measure, beat);
-            for (IRackComponent component : components.values()) {
-                component.beatChange(measure, beat);
-            }
+            //for (IRackComponent component : components.values()) {
+            //    component.beatChange(measure, beat);
+            //}
         }
     }
 
@@ -295,30 +273,11 @@ public class Rack implements IRack {
         RackMessage.BLANKRACK.send(this);
 
         controller.removeComponent(IRack.class);
-        components.clear();
+        controller.removeComponent(ISystemSequencer.class);
 
         controller = null;
         soundGenerator = null;
         systemSequencer = null;
-    }
-
-    //--------------------------------------------------------------------------
-    // IDispatcher API
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void put(String message, Class<? extends ICommand> command) {
-        controller.put(message, command);
-    }
-
-    @Override
-    public void remove(String message) {
-        controller.remove(message);
-    }
-
-    @Override
-    public void execute(String message, Object... args) throws CausticException {
-        controller.execute(message, args);
     }
 
     //--------------------------------------------------------------------------
@@ -334,24 +293,5 @@ public class Rack implements IRack {
     @Override
     public final String queryMessage(String message) {
         return soundGenerator.queryMessage(message);
-    }
-
-    @Override
-    public ICausticLogger getLogger() {
-        return controller.getLogger();
-    }
-
-    @Override
-    public Project getProject() {
-        return controller.getProjectManager().getProject();
-    }
-
-    private transient boolean initalized = false;
-
-    public void setInitialized(boolean value) {
-        if (initalized)
-            throw new IllegalStateException("Rack already initialized");
-
-        initalized = true;
     }
 }

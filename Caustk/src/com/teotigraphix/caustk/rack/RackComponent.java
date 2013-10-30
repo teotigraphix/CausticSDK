@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack;
 
 import com.teotigraphix.caustk.controller.ICausticLogger;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 
 /**
@@ -34,11 +35,15 @@ public class RackComponent implements IRackComponent {
     //--------------------------------------------------------------------------
 
     protected final ICausticLogger getLogger() {
-        return rack.getLogger();
+        return getController().getLogger();
     }
 
     protected final IDispatcher getGlobalDispatcher() {
         return rack.getGlobalDispatcher();
+    }
+
+    protected final ICaustkController getController() {
+        return rack.getController();
     }
 
     //--------------------------------------------------------------------------
@@ -49,7 +54,7 @@ public class RackComponent implements IRackComponent {
     // rack
     //----------------------------------
 
-    private IRack rack;
+    private Rack rack;
 
     @Override
     public final IRack getRack() {
@@ -58,7 +63,7 @@ public class RackComponent implements IRackComponent {
 
     @Override
     public void setRack(IRack value) {
-        rack = value;
+        rack = (Rack)value;
     }
 
     //--------------------------------------------------------------------------

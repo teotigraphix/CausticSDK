@@ -118,9 +118,9 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     public void setRack(IRack value) {
         super.setRack(value);
 
-        value.put(COMMAND_PLAY, SystemSequencerPlayCommand.class);
-        value.put(COMMAND_STOP, SystemSequencerStopCommand.class);
-        value.put(COMMAND_U_TEMPO, SystemSequencerTempoCommand.class);
+        getController().put(COMMAND_PLAY, SystemSequencerPlayCommand.class);
+        getController().put(COMMAND_STOP, SystemSequencerStopCommand.class);
+        getController().put(COMMAND_U_TEMPO, SystemSequencerTempoCommand.class);
     }
 
     //--------------------------------------------------------------------------

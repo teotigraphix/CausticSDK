@@ -22,14 +22,11 @@ package com.teotigraphix.caustk.rack;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.machine.CaustkScene;
-import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
 /**
@@ -61,7 +58,7 @@ public interface IRack extends ICausticEngine {
 
     float getCurrentBeat();
 
-    void update();
+    void frameChanged(float delta);
 
     //----------------------------------
     // SoundSource
@@ -116,23 +113,4 @@ public interface IRack extends ICausticEngine {
      * @throws IOException
      */
     File saveSongAs(File file) throws IOException;
-
-    //----------------------------------
-    // CommandManager
-    //----------------------------------
-
-    void put(String message, Class<? extends ICommand> command);
-
-    void remove(String message);
-
-    void execute(String message, Object... args) throws CausticException;
-
-    ICausticLogger getLogger();
-
-    Project getProject();
-
-    void addComponent(Class<? extends IRackComponent> classType, IRackComponent component);
-
-    <T extends IRackComponent> T getComponent(Class<T> clazz);
-
 }

@@ -60,7 +60,9 @@ public class DesktopSoundGenerator implements ISoundGenerator {
      * 
      * @return The single instance.
      */
-    public static ICausticEngine getInstance() {
+    public static DesktopSoundGenerator getInstance() {
+        if (instance == null)
+            instance = new DesktopSoundGenerator();
         return instance;
     }
 
@@ -69,13 +71,13 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     //--------------------------------------------------------------------------
 
     public DesktopSoundGenerator() {
+        instance = this;
     }
 
     @Override
     public void initialize() {
-        if (instance != null)
+        if (causticCore != null)
             return;
-        instance = new DesktopSoundGenerator();
         causticCore = new CausticCoreDesktop();
     }
 
