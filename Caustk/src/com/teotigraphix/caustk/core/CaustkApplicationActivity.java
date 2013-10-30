@@ -77,8 +77,6 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
         application.initialize();
         application.create();
         application.run();
-
-        getRack().registerObservers();
     }
 
     /**

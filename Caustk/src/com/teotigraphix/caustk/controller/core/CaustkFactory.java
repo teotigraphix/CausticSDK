@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.machine.CastkMasterMixer;
 import com.teotigraphix.caustk.machine.CaustkEffect;
 import com.teotigraphix.caustk.machine.CaustkEffectFactory;
@@ -51,12 +52,15 @@ import com.teotigraphix.caustk.machine.ComponentType;
 import com.teotigraphix.caustk.machine.ICaustkComponent;
 import com.teotigraphix.caustk.machine.MachinePreset;
 import com.teotigraphix.caustk.machine.MachineType;
+import com.teotigraphix.caustk.machine.ToneFactory;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
+import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.serialize.SerializeService;
 import com.teotigraphix.caustk.utils.KryoUtils;
@@ -94,6 +98,8 @@ public class CaustkFactory implements ICaustkFactory {
     private CaustkMasterMixerFactory masterMixerFactory;
 
     private CaustkMasterSequencerFactory masterSequencerFactory;
+
+    private ToneFactory toneFactory;
 
     //----------------------------------
     // application
@@ -138,6 +144,8 @@ public class CaustkFactory implements ICaustkFactory {
         masterMixerFactory.setFactory(this);
         masterSequencerFactory = new CaustkMasterSequencerFactory();
         masterSequencerFactory.setFactory(this);
+        toneFactory = new ToneFactory();
+        toneFactory.setFactory(this);
     }
 
     //--------------------------------------------------------------------------
@@ -387,4 +395,11 @@ public class CaustkFactory implements ICaustkFactory {
         return component;
     }
 
+    //----------------------------------
+    // Tones
+    //----------------------------------
+
+    public Tone createTone(ToneDescriptor descriptor) throws CausticException {
+        return toneFactory.createTone(descriptor);
+    }
 }

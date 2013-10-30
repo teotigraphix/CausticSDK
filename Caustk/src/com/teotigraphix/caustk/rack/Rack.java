@@ -21,9 +21,10 @@ package com.teotigraphix.caustk.rack;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -33,10 +34,10 @@ import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.machine.CaustkMachine;
 import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.rack.tone.Tone;
-import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * The {@link Rack} is a fully serializable state instance.
@@ -64,8 +65,6 @@ public class Rack implements IRack {
     }
 
     private Map<Class<? extends IRackComponent>, IRackComponent> components;
-
-    private SoundSource soundSource;
 
     private SystemSequencer systemSequencer;
 
@@ -102,8 +101,6 @@ public class Rack implements IRack {
 
         if (components == null) {
             components = new HashMap<Class<? extends IRackComponent>, IRackComponent>();
-
-            soundSource = new SoundSource(this);
             systemSequencer = new SystemSequencer(this);
         }
     }
@@ -113,82 +110,47 @@ public class Rack implements IRack {
     //----------------------------------
 
     @Override
-    public final ISoundSource getSoundSource() {
-        return soundSource;
-    }
-
-    @Override
     public void clearAndReset() throws CausticException {
-        ArrayList<Tone> remove = new ArrayList<Tone>(soundSource.getTones());
-        for (Tone tone : remove) {
-            destroyTone(tone);
-        }
+        scene.clearAndReset();
         RackMessage.BLANKRACK.send(this);
     }
 
     @Override
     public boolean isEmpty() {
-        return soundSource.getToneCount() == 0;
+        return scene.getMachineCount() == 0;
     }
 
-    @Override
-    public <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
-            throws CausticException {
-        T tone = soundSource.createTone(name, toneClass);
-        toneAdd(tone);
-        return tone;
+    public void createMachine(CaustkMachine caustkMachine) {
+        RackMessage.CREATE.send(this, caustkMachine.getIndex());
     }
 
-    @Override
-    public <T extends Tone> T createTone(int index, String name, Class<? extends Tone> toneClass)
-            throws CausticException {
-        T tone = soundSource.createTone(index, name, toneClass);
-        toneAdd(tone);
-        return tone;
-    }
-
-    @Override
-    public Tone createTone(ToneDescriptor descriptor) throws CausticException {
-        Tone tone = soundSource.createTone(descriptor);
-        toneAdd(tone);
-        return tone;
-    }
-
-    private void toneAdd(Tone tone) {
-    }
-
-    private void toneRemove(Tone tone) {
-    }
-
-    @Override
-    public void destroyTone(int index) {
-        destroyTone(soundSource.getTone(index));
-    }
-
-    @Override
-    public void destroyTone(Tone tone) {
-        soundSource.destroyTone(tone);
-        toneRemove(tone);
+    public void removeMachine(CaustkMachine caustkMachine) {
+        RackMessage.REMOVE.send(this, caustkMachine.getIndex());
     }
 
     @Override
     public void loadSongRaw(File causticFile) throws CausticException {
-        soundSource.loadSongRaw(causticFile);
+        RackMessage.LOAD_SONG.send(this, causticFile.getAbsolutePath());
     }
 
     @Override
     public void loadSong(File causticFile) throws CausticException {
-        soundSource.loadSong(causticFile);
+        loadSongRaw(causticFile);
+        //        loadMachines();
     }
 
     @Override
     public File saveSong(String name) {
-        return soundSource.saveSong(name);
+        RackMessage.SAVE_SONG.send(this, name);
+        return RuntimeUtils.getCausticSongFile(name);
     }
 
     @Override
     public File saveSongAs(File file) throws IOException {
-        return soundSource.saveSongAs(file);
+        File song = saveSong(file.getName().replace(".caustic", ""));
+        FileUtils.copyFileToDirectory(song, file.getParentFile(), true);
+        song.delete();
+        return file;
     }
 
     //----------------------------------
@@ -253,16 +215,6 @@ public class Rack implements IRack {
     @Override
     public <T extends IRackComponent> T getComponent(Class<T> clazz) {
         return clazz.cast(components.get(clazz));
-    }
-
-    @Override
-    public void registerObservers() {
-
-    }
-
-    @Override
-    public void unregisterObservers() {
-
     }
 
     @Override
@@ -336,7 +288,6 @@ public class Rack implements IRack {
 
         controller = null;
         soundGenerator = null;
-        soundSource = null;
         systemSequencer = null;
     }
 
@@ -392,9 +343,4 @@ public class Rack implements IRack {
 
         initalized = true;
     }
-
-    //--------------------------------------------------------------------------
-    // Private :: Methods
-    //--------------------------------------------------------------------------
-
 }

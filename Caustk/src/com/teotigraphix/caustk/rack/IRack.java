@@ -30,7 +30,6 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.machine.CaustkScene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.tone.Tone;
-import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 
 /**
  * The {@link IRack} is the top API for dealing with {@link Tone}s,
@@ -53,17 +52,11 @@ public interface IRack extends ICausticEngine {
 
     void setScene(CaustkScene scene);
 
-    ISoundSource getSoundSource();
-
     ISystemSequencer getSystemSequencer();
 
     float getCurrentSongMeasure();
 
     float getCurrentBeat();
-
-    void registerObservers();
-
-    void unregisterObservers();
 
     void update();
 
@@ -80,18 +73,6 @@ public interface IRack extends ICausticEngine {
     void clearAndReset() throws CausticException;
 
     boolean isEmpty();
-
-    <T extends Tone> T createTone(String name, Class<? extends Tone> toneClass)
-            throws CausticException;
-
-    <T extends Tone> T createTone(int index, String name, Class<? extends Tone> toneClass)
-            throws CausticException;
-
-    Tone createTone(ToneDescriptor descriptor) throws CausticException;
-
-    void destroyTone(int index);
-
-    void destroyTone(Tone tone);
 
     /**
      * Loads a <code>.caustic</code> file from disk.

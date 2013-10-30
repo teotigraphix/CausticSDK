@@ -21,8 +21,11 @@ package com.teotigraphix.caustk.machine;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
@@ -31,7 +34,6 @@ import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
 public class CaustkScene implements ICaustkComponent, IRackAware {
@@ -103,10 +105,6 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
         return causticFile;
     }
 
-    public Collection<CaustkMachine> getMachines() {
-        return machines.values();
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -141,6 +139,26 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
         masterSequencer.updateMachine(caustkMachine);
     }
 
+    public int getMachineCount() {
+        return machines.size();
+    }
+
+    public boolean hasMachine(int index) {
+        return machines.containsKey(index);
+    }
+
+    public Collection<CaustkMachine> getMachines() {
+        return Collections.unmodifiableCollection(machines.values());
+    }
+
+    public Collection<Tone> getTones() {
+        ArrayList<Tone> result = new ArrayList<Tone>();
+        for (CaustkMachine machine : machines.values()) {
+            result.add(machine.getTone());
+        }
+        return result;
+    }
+
     /**
      * Returns the {@link CaustkMachine} at the specified index,
      * <code>null</code> if does not exist.
@@ -149,6 +167,23 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
      */
     public CaustkMachine getMachine(int index) {
         return machines.get(index);
+    }
+
+    public CaustkMachine getMachineByName(String value) {
+        for (CaustkMachine caustkMachine : machines.values()) {
+            if (caustkMachine.getMachineName().equals(value))
+                return caustkMachine;
+        }
+        return null;
+    }
+
+    public List<CaustkMachine> findMachineStartsWith(String name) {
+        List<CaustkMachine> result = new ArrayList<CaustkMachine>();
+        for (CaustkMachine tone : machines.values()) {
+            if (tone.getMachineName().startsWith(name))
+                result.add(tone);
+        }
+        return result;
     }
 
     public void update() {
@@ -239,6 +274,17 @@ public class CaustkScene implements ICaustkComponent, IRackAware {
             CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
         caustkMachine.load(context);
+    }
+
+    public void clearAndReset() {
+        ArrayList<CaustkMachine> list = new ArrayList<CaustkMachine>(machines.values());
+        for (CaustkMachine tone : list) {
+            removeMachine(tone);
+        }
+    }
+
+    private void removeMachine(CaustkMachine tone) {
+
     }
 
 }

@@ -32,7 +32,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.ISoundSource;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.ToneType;
@@ -286,13 +285,14 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     }
 
     private void updateTone() {
-        ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
-                ToneType.fromString(machineType.getType()));
-        try {
-            tone = rack.createTone(descriptor);
-        } catch (CausticException e) {
-            e.printStackTrace();
-        }
+        // XXX Need the factory if we are doing it here
+        //        ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
+        //                ToneType.fromString(machineType.getType()));
+        //        try {
+        //            tone = getRack().getScene().createTone(descriptor);
+        //        } catch (CausticException e) {
+        //            e.printStackTrace();
+        //        }
     }
 
     private void updatePatch() {
@@ -339,14 +339,13 @@ public class CaustkMachine implements ICaustkComponent, IRackAware, IRackSeriali
     @SuppressWarnings("unused")
     private void loadTone(CaustkFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
-        ISoundSource soundSource = rack.getSoundSource();
 
-        if (soundSource.hasTone(index))
+        if (rack.getScene().hasMachine(index))
             throw new IllegalStateException("Tone exists in ISoundSource at index:" + index);
 
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
-        tone = rack.createTone(descriptor);
+        tone = factory.createTone(descriptor);
         if (tone == null)
             throw new CausticException("Failed to create " + descriptor.toString());
     }
