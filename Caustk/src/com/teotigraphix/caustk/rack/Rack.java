@@ -84,7 +84,7 @@ public class Rack implements IRack {
     }
 
     //----------------------------------
-    // soundSource
+    // controller
     //----------------------------------
 
     public ICaustkController __getController() {
@@ -101,13 +101,10 @@ public class Rack implements IRack {
 
         if (components == null) {
             components = new HashMap<Class<? extends IRackComponent>, IRackComponent>();
-            systemSequencer = new SystemSequencer(this);
+            systemSequencer = new SystemSequencer();
+            systemSequencer.setRack(this);
         }
     }
-
-    //----------------------------------
-    // soundSource
-    //----------------------------------
 
     @Override
     public void clearAndReset() throws CausticException {

@@ -19,7 +19,9 @@
 
 package com.teotigraphix.caustk.rack;
 
+import com.teotigraphix.caustk.controller.IRackAware;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 
 /**
  * The {@link IRackComponent} API specifies a component that can be added to the
@@ -27,16 +29,18 @@ import com.teotigraphix.caustk.core.IRestore;
  * 
  * @author Michael Schmalle
  */
-public interface IRackComponent extends IRestore {
+public interface IRackComponent extends IRackAware, IRestore {
 
     /**
-     * Returns the main {@link IRack}.
+     * Callback for a beat change from the {@link IRack#update()}.
+     * <p>
+     * Gives rack component's chance to operate on a beat change event.
+     * 
+     * @param measure The current measure.
+     * @param beat The current float beat If the {@link SequencerMode} is
+     *            Pattern this will be (0..31), the the mode is Song, the beat
+     *            value will be the current beat in the entire song, the play
+     *            head of the song sequencer.
      */
-    IRack getRack();
-
     void beatChange(int measure, float beat);
-
-    void registerObservers();
-
-    void unregisterObservers();
 }

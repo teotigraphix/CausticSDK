@@ -21,12 +21,13 @@ package com.teotigraphix.caustk.controller;
 
 import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
-public interface IRackSerializer {
+public interface IRackSerializer extends IRestore {
 
     /**
      * Loads the rack component from a <code>.caustic</code> file.
@@ -56,6 +57,7 @@ public interface IRackSerializer {
      * will actually create sub components. Where restore() just updates state
      * on the existing components.
      */
+    @Override
     void restore();
 
     /**

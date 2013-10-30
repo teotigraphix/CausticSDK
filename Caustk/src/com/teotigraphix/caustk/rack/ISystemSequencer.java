@@ -36,8 +36,12 @@ public interface ISystemSequencer extends IRackComponent {
     int getStep();
 
     //--------------------------------------------------------------------------
-    // Native Song sequencer
+    // Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // songEndMode
+    //----------------------------------
 
     /**
      * Sets the mode for the song sequencers end.
@@ -50,6 +54,42 @@ public interface ISystemSequencer extends IRackComponent {
      * Returns the current value form the core's song sequencer's song end mode.
      */
     SongEndMode getSongEndMode();
+
+    //----------------------------------
+    // bpm
+    //----------------------------------
+
+    void setBPM(float bpm);
+
+    float getBPM();
+
+    //----------------------------------
+    // sequencerMode
+    //----------------------------------
+
+    SequencerMode getSequencerMode();
+
+    void setSequencerMode(SequencerMode value);
+
+    //----------------------------------
+    // shuffleMode
+    //----------------------------------
+
+    ShuffleMode getShuffleMode();
+
+    void setShuffleMode(ShuffleMode value);
+
+    //----------------------------------
+    // shuffleAmount
+    //----------------------------------
+
+    float getShuffleAmount();
+
+    void setShuffleAmount(float value);
+
+    //----------------------------------
+    // patterns
+    //----------------------------------
 
     /**
      * Returns the raw token string of patterns in the song sequencer.
@@ -161,21 +201,177 @@ public interface ISystemSequencer extends IRackComponent {
      */
     void clearAutomation(Tone machine);
 
-    ShuffleMode getShuffleMode();
-
-    void setShuffleMode(ShuffleMode value);
-
-    float getShuffleAmount();
-
-    void setShuffleAmount(float value);
-
     boolean updatePosition(int measure, float beat);
+
+    /**
+     * Plays the song sequencer in pattern or song mode.
+     * <p>
+     * <code>[app_id]/system_sequencer/play [sequencer_mode]</code>
+     * <ul>
+     * <li><code>sequencer_mode</code> - {@link SequencerMode}; the int value</li>
+     * </ul>
+     * 
+     * @see OnSystemSequencerPlay
+     */
+    public static final String COMMAND_PLAY = "system_sequencer/play";
+
+    /**
+     * Stops the song sequencer.
+     * <p>
+     * <code>[app_id]/system_sequencer/stop</code>
+     * <ul>
+     * <li>N/A</li>
+     * </ul>
+     * 
+     * @see OnSystemSequencerStop
+     */
+    public static final String COMMAND_STOP = "system_sequencer/stop";
+
+    /**
+     * Sets the bpm of the OutputPanel.
+     * <p>
+     * <code>[app_id]/system_sequencer/tempo [value]</code>
+     * <ul>
+     * <li><code>value</code> - float; (60.0..250.0)</li>
+     * </ul>
+     */
+    public static final String COMMAND_U_TEMPO = "system_sequencer/tempo";
+
+    boolean isPlaying();
+
+    /**
+     * Plays the sequencer in default {@link SequencerMode#Pattern}.
+     * 
+     * @see #play(SequencerMode)
+     */
+    void play();
+
+    /**
+     * Play the sequencer in the given sequencer mode.
+     * 
+     * @param mode The play {@link SequencerMode}.
+     */
+    void play(SequencerMode mode);
+
+    /**
+     * Stops the sequencer.
+     */
+    void stop();
+
+    /**
+     * Returns the current measure of the song sequencer, calculated from the
+     * {@link #getCurrentBeat()}.
+     */
+    int getCurrentMeasure();
+
+    /**
+     * Returns the current beat of the song sequencer.
+     */
+    int getCurrentBeat();
+
+    int getCurrentSixteenthStep();
+
+    /**
+     * Dispatched by {@link ICaustkController} when play or stop is executed on
+     * the sequencer.
+     * 
+     * @see ISystemSequencer#isPlaying()
+     */
+    public static class OnSystemSequencerTransportChange {
+    }
+
+    /**
+     * Dispatched by {@link ICaustkController}.
+     * 
+     * @see ISystemSequencer#setBPM(float)
+     */
+    public static class OnSystemSequencerBPMChange {
+
+        private float tempo;
+
+        public float getTempo() {
+            return tempo;
+        }
+
+        public OnSystemSequencerBPMChange(float tempo) {
+            this.tempo = tempo;
+        }
+    }
+
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
+    public static class OnSystemSequencerStepChange {
+        public OnSystemSequencerStepChange() {
+        }
+    }
+
+    /**
+     * Dispatcher: {@link ICaustkController}
+     */
+    public static class OnSystemSequencerBeatChange {
+
+        private final int measure;
+
+        private final float beat;
+
+        public final int getMeasure() {
+            return measure;
+        }
+
+        public final float getBeat() {
+            return beat;
+        }
+
+        public OnSystemSequencerBeatChange(int measure, float beat) {
+            this.measure = measure;
+            this.beat = beat;
+        }
+    }
+
+    /**
+     * The {@link ISystemSequencer#setSequencerMode(SequencerMode)} when using
+     * {@link ISystemSequencer#play(SequencerMode)}.
+     * 
+     * @author Michael Schmalle
+     */
+    public enum SequencerMode {
+
+        /**
+         * Sequencer pattern mode.
+         */
+        Pattern(0),
+
+        /**
+         * Sequencer song mode.
+         */
+        Song(1);
+
+        private int value;
+
+        public final int getValue() {
+            return value;
+        }
+
+        SequencerMode(int value) {
+            this.value = value;
+        }
+
+        public static SequencerMode fromInt(int smode) {
+            switch (smode) {
+                case 1:
+                    return Song;
+                default:
+                    return Pattern;
+            }
+        }
+    }
 
     public enum ShuffleMode {
 
-        EIGTH(1),
+        Eighth(1),
 
-        SIXTEENTH(2);
+        Sixteenth(2);
 
         private final int value;
 
@@ -243,17 +439,17 @@ public interface ISystemSequencer extends IRackComponent {
         /**
          * Keep playing.
          */
-        PLAY(0),
+        Play(0),
 
         /**
          * Stop at last measure.
          */
-        STOP(1),
+        Stop(1),
 
         /**
          * Loop to start measure from end.
          */
-        LOOP(2);
+        Loop(2);
 
         private int value;
 
@@ -273,149 +469,4 @@ public interface ISystemSequencer extends IRackComponent {
             return null;
         }
     }
-
-    /**
-     * Plays the song sequencer in pattern or song mode.
-     * <p>
-     * <code>[app_id]/system_sequencer/play [sequencer_mode]</code>
-     * <ul>
-     * <li><code>sequencer_mode</code> - {@link SequencerMode}; the int value</li>
-     * </ul>
-     * 
-     * @see OnSystemSequencerPlay
-     */
-    public static final String COMMAND_PLAY = "system_sequencer/play";
-
-    /**
-     * Stops the song sequencer.
-     * <p>
-     * <code>[app_id]/system_sequencer/stop</code>
-     * <ul>
-     * <li>N/A</li>
-     * </ul>
-     * 
-     * @see OnSystemSequencerStop
-     */
-    public static final String COMMAND_STOP = "system_sequencer/stop";
-
-    /**
-     * Sets the bpm of the OutputPanel.
-     * <p>
-     * <code>[app_id]/system_sequencer/tempo [value]</code>
-     * <ul>
-     * <li><code>value</code> - float; (60.0..250.0)</li>
-     * </ul>
-     */
-    public static final String COMMAND_U_TEMPO = "system_sequencer/tempo";
-
-    void setTempo(float bpm);
-
-    float getTempo();
-
-    SequencerMode getSequencerMode();
-
-    boolean isPlaying();
-
-    void setIsPlaying(boolean value);
-
-    void setSequencerMode(SequencerMode value);
-
-    void play(SequencerMode mode);
-
-    void stop();
-
-    public enum SequencerMode {
-        PATTERN(0), SONG(1);
-
-        private int value;
-
-        public final int getValue() {
-            return value;
-        }
-
-        SequencerMode(int value) {
-            this.value = value;
-        }
-
-        public static SequencerMode fromInt(int smode) {
-            switch (smode) {
-                case 1:
-                    return SONG;
-                default:
-                    return PATTERN;
-            }
-        }
-    }
-
-    /**
-     * Returns the current measure of the song sequencer, calculated from the
-     * {@link #getCurrentBeat()}.
-     */
-    int getCurrentMeasure();
-
-    /**
-     * Returns the current beat of the song sequencer.
-     */
-    int getCurrentBeat();
-
-    /**
-     * Dispatched by {@link ICaustkController} when play or stop is executed on
-     * the sequencer.
-     * 
-     * @see ISystemSequencer#isPlaying()
-     */
-    public static class OnSystemSequencerTransportChange {
-    }
-
-    /**
-     * Dispatched by {@link ICaustkController}.
-     * 
-     * @see ISystemSequencer#setTempo(float)
-     */
-    public static class OnSystemSequencerTempoChange {
-
-        private float tempo;
-
-        public float getTempo() {
-            return tempo;
-        }
-
-        public OnSystemSequencerTempoChange(float tempo) {
-            this.tempo = tempo;
-        }
-    }
-
-    /**
-     * Dispatcher: {@link ICaustkController}
-     */
-    public static class OnSystemSequencerStepChange {
-        public OnSystemSequencerStepChange() {
-        }
-    }
-
-    /**
-     * Dispatcher: {@link ICaustkController}
-     */
-    public static class OnSystemSequencerBeatChange {
-
-        private final int measure;
-
-        private final float beat;
-
-        public final int getMeasure() {
-            return measure;
-        }
-
-        public final float getBeat() {
-            return beat;
-        }
-
-        public OnSystemSequencerBeatChange(int measure, float beat) {
-            this.measure = measure;
-            this.beat = beat;
-        }
-    }
-
-    int getCurrentSixteenthStep();
-
 }

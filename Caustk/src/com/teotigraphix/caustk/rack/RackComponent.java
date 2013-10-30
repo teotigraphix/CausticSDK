@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
 
@@ -31,20 +30,8 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 public class RackComponent implements IRackComponent {
 
     //--------------------------------------------------------------------------
-    // Serialized API
+    // Private :: Variables
     //--------------------------------------------------------------------------
-
-    @Tag(0)
-    private IRack rack;
-
-    //--------------------------------------------------------------------------
-    // IRackComponent API :: Properties
-    //--------------------------------------------------------------------------
-
-    @Override
-    public final IRack getRack() {
-        return rack;
-    }
 
     protected final ICausticLogger getLogger() {
         return rack.getLogger();
@@ -55,22 +42,30 @@ public class RackComponent implements IRackComponent {
     }
 
     //--------------------------------------------------------------------------
+    // IRackComponent API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    private IRack rack;
+
+    @Override
+    public final IRack getRack() {
+        return rack;
+    }
+
+    @Override
+    public void setRack(IRack value) {
+        rack = value;
+    }
+
+    //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     public RackComponent() {
-    }
-
-    public RackComponent(IRack rack) {
-        this.rack = rack;
-    }
-
-    //--------------------------------------------------------------------------
-    // IRestore API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void restore() {
     }
 
     //--------------------------------------------------------------------------
@@ -81,11 +76,11 @@ public class RackComponent implements IRackComponent {
     public void beatChange(int measure, float beat) {
     }
 
-    @Override
-    public void registerObservers() {
-    }
+    //--------------------------------------------------------------------------
+    // IRestore API :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
-    public void unregisterObservers() {
+    public void restore() {
     }
 }
