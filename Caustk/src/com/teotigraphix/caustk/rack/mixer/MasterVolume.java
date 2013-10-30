@@ -47,7 +47,7 @@ public class MasterVolume extends MasterComponent {
     }
 
     float getVolume(boolean restore) {
-        return MasterMixerMessage.VOLUME.query(rack);
+        return MasterMixerMessage.VOLUME.query(getRack());
     }
 
     public void setVolume(float value) {
@@ -56,7 +56,7 @@ public class MasterVolume extends MasterComponent {
         if (value < 0f || value > 2f)
             throw newRangeException("volume", "0..2", value);
         volume = value;
-        MasterMixerMessage.VOLUME.send(rack, value);
+        MasterMixerMessage.VOLUME.send(getRack(), value);
         //        fireChange(MasterMixerChangeKind.Volume, volume);
     }
 
@@ -81,6 +81,6 @@ public class MasterVolume extends MasterComponent {
     @Override
     public void update() {
         super.update();
-        MasterMixerMessage.VOLUME.send(rack, volume);
+        MasterMixerMessage.VOLUME.send(getRack(), volume);
     }
 }

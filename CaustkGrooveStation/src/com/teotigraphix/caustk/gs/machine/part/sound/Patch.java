@@ -23,7 +23,6 @@ import java.io.File;
 
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
-import com.teotigraphix.caustk.library.item.LibraryPatch;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 

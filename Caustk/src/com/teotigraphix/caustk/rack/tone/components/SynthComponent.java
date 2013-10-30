@@ -19,12 +19,20 @@
 
 package com.teotigraphix.caustk.rack.tone.components;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
+import com.teotigraphix.caustk.machine.MachineType;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
 import com.teotigraphix.caustk.rack.tone.ModularTone;
 import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class SynthComponent extends ToneComponent {
 
@@ -92,13 +100,53 @@ public class SynthComponent extends ToneComponent {
     //
     //--------------------------------------------------------------------------
 
-    public void loadPreset(String path) {
-        absolutePresetPath = path;
-        SynthMessage.LOAD_PRESET.send(getEngine(), getToneIndex(), path);
+    public void loadPreset(File file) throws IOException {
+        if (!file.exists())
+            throw new FileNotFoundException("Preset file does not exist:" + file);
+
+        absolutePresetPath = file.getAbsolutePath();
+        SynthMessage.LOAD_PRESET.send(getEngine(), getToneIndex(), absolutePresetPath);
     }
 
-    public void savePreset(String name) {
+    public void loadPreset(String path) throws IOException {
+        loadPreset(new File(path));
+    }
+
+    /**
+     * Saves a machine preset to the <code>caustic/presets/[machineType]</code>
+     * directory in the specific machine type sub directory.
+     * 
+     * @param name The simple name of the preset.
+     * @return A File handle of the new preset File location in the
+     *         <code>caustic/presets/[machineType]</code> directory.
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+    public File savePreset(String name) throws IOException {
         SynthMessage.SAVE_PRESET.send(getEngine(), getToneIndex(), name);
+        MachineType machineType = MachineType.fromString(getTone().getToneType().getValue());
+        File file = RuntimeUtils.getCausticPresetsFile(machineType, name);
+        if (!file.exists())
+            throw new FileNotFoundException("Preset file was not saved:" + file);
+        return file;
+    }
+
+    /**
+     * Saves a machine preset to the destination directory.
+     * 
+     * @param name The simple name of the preset.
+     * @param destinationDirectory The directory to copy preset file to.
+     * @return A File handle of the new copied preset File location.
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+    public File savePresetAs(String name, File destinationDirectory) throws IOException {
+        File localFile = savePreset(name);
+        FileUtils.copyFileToDirectory(localFile, destinationDirectory);
+        File newFile = new File(destinationDirectory, localFile.getName());
+        if (!newFile.exists())
+            throw new FileNotFoundException("Preset file was not copied:" + newFile);
+        return newFile;
     }
 
     public void noteOn(int pitch) {
@@ -121,5 +169,4 @@ public class SynthComponent extends ToneComponent {
     public void restore() {
         setPolyphony(getPolyphony(true));
     }
-
 }

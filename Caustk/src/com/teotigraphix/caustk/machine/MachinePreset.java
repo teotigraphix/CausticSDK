@@ -40,8 +40,8 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 
 /**
- * The {@link MachinePreset} represents a {@link Patch}'s preset bytes and
- * holds the name of the preset originally saved from the native machine.
+ * The {@link MachinePreset} represents a {@link Patch}'s preset bytes and holds
+ * the name of the preset originally saved from the native machine.
  * 
  * @author Michael Schmalle
  */
@@ -196,8 +196,8 @@ public class MachinePreset implements IRackSerializer {
      * Restores the {@link #getData()} bytes with the {@link Tone}'s preset file
      * as currently loaded in the rack.
      * <p>
-     * The {@link #getPatch()}'s {@link Machine} and {@link Tone} must be
-     * non <code>null</code> for the method to not throw an error.
+     * The {@link #getPatch()}'s {@link Machine} and {@link Tone} must be non
+     * <code>null</code> for the method to not throw an error.
      * 
      * @throws IOException
      */
@@ -246,19 +246,24 @@ public class MachinePreset implements IRackSerializer {
      * Updates the {@link #getData()} bytes with the {@link Tone}'s preset file
      * as currently loaded in the rack.
      * <p>
-     * The {@link Tone#getToneType()} must match the
-     * {@link Patch#getToneType()} for the method to be successful.
+     * The {@link Tone#getToneType()} must match the {@link Patch#getToneType()}
+     * for the method to be successful.
      * 
      * @param tone The {@link Tone} to use when updating the preset bytes.
      * @throws IOException
      */
+    // XXX throw exception?
     public void restore(Tone tone) {
         if (!tone.getToneType().getValue().equals(getPatch().getMachineType().getType()))
             throw new IllegalStateException("Tone's type does not match the LivePhrase's type");
 
         // save the temp preset file to get its bytes
         String presetName = constructPresetName(false);
-        tone.getSynth().savePreset(presetName);
+        try {
+            tone.getSynth().savePreset(presetName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // get the preset file from the caustic presets directory
         File presetFile = toPresetFile(getPatch().getMachineType(), presetName);

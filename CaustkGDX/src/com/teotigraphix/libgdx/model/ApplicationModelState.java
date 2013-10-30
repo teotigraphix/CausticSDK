@@ -22,6 +22,9 @@ package com.teotigraphix.libgdx.model;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.machine.ComponentInfo;
+import com.teotigraphix.caustk.machine.ComponentType;
+import com.teotigraphix.caustk.machine.Scene;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
@@ -46,6 +49,9 @@ public abstract class ApplicationModelState {
 
     @Tag(1)
     private CausticSongFile songFile;
+
+    @Tag(2)
+    private Scene scene;
 
     //----------------------------------
     // controller
@@ -110,6 +116,11 @@ public abstract class ApplicationModelState {
      * instance.
      */
     public void create() {
+        IRack rack = getController().getRack();
+        ComponentInfo info = rack.getFactory().createInfo(ComponentType.Scene, "Untitle Scene");
+        scene = rack.getFactory().createScene(info);
+        scene.setInternal();
+        rack.setScene(scene);
     }
 
     /**
@@ -126,6 +137,8 @@ public abstract class ApplicationModelState {
      * to the {@link IRack} instance.
      */
     public void update() {
+        IRack rack = getController().getRack();
+        rack.setScene(scene);
     }
 
     /**

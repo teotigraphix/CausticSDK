@@ -71,7 +71,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getPreDelay(boolean restore) {
-        return MasterMixerMessage.REVERB_PRE_DELAY.query(rack);
+        return MasterMixerMessage.REVERB_PRE_DELAY.query(getRack());
     }
 
     public void setPreDelay(float value) {
@@ -80,7 +80,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 0.1f)
             throw newRangeException("pre_delay", "0..0.1", value);
         preDelay = value;
-        MasterMixerMessage.REVERB_PRE_DELAY.send(rack, value);
+        MasterMixerMessage.REVERB_PRE_DELAY.send(getRack(), value);
     }
 
     //----------------------------------
@@ -92,7 +92,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getRoomSize(boolean restore) {
-        return MasterMixerMessage.REVERB_ROOM_SIZE.query(rack);
+        return MasterMixerMessage.REVERB_ROOM_SIZE.query(getRack());
     }
 
     public void setRoomSize(float value) {
@@ -101,7 +101,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("room_size", "0..1", value);
         roomSize = value;
-        MasterMixerMessage.REVERB_ROOM_SIZE.send(rack, value);
+        MasterMixerMessage.REVERB_ROOM_SIZE.send(getRack(), value);
     }
 
     //----------------------------------
@@ -113,7 +113,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getHFDamping(boolean restore) {
-        return MasterMixerMessage.REVERB_HF_DAMPING.query(rack);
+        return MasterMixerMessage.REVERB_HF_DAMPING.query(getRack());
     }
 
     public void setHFDamping(float value) {
@@ -122,7 +122,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 0.8f)
             throw newRangeException("hf_damping", "0..0.8", value);
         hfDamping = value;
-        MasterMixerMessage.REVERB_HF_DAMPING.send(rack, value);
+        MasterMixerMessage.REVERB_HF_DAMPING.send(getRack(), value);
     }
 
     //----------------------------------
@@ -134,7 +134,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getDiffuse(boolean restore) {
-        return MasterMixerMessage.REVERB_DIFFUSE.query(rack);
+        return MasterMixerMessage.REVERB_DIFFUSE.query(getRack());
     }
 
     public void setDiffuse(float value) {
@@ -143,7 +143,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 0.7f)
             throw newRangeException("diffuse", "0..0.7", value);
         diffuse = value;
-        MasterMixerMessage.REVERB_DIFFUSE.send(rack, value);
+        MasterMixerMessage.REVERB_DIFFUSE.send(getRack(), value);
     }
 
     //----------------------------------
@@ -155,7 +155,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     int getDitherEchoes(boolean restore) {
-        return (int)MasterMixerMessage.REVERB_DITHER_ECHOS.query(rack);
+        return (int)MasterMixerMessage.REVERB_DITHER_ECHOS.query(getRack());
     }
 
     public void setDitherEchoes(int value) {
@@ -164,7 +164,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0 || value > 1)
             throw newRangeException("dither_echoes", "0,1", value);
         ditherEchoes = value;
-        MasterMixerMessage.REVERB_DITHER_ECHOS.send(rack, value);
+        MasterMixerMessage.REVERB_DITHER_ECHOS.send(getRack(), value);
     }
 
     //----------------------------------
@@ -176,7 +176,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getERGain(boolean restore) {
-        return MasterMixerMessage.REVERB_ER_GAIN.query(rack);
+        return MasterMixerMessage.REVERB_ER_GAIN.query(getRack());
     }
 
     public void setERGain(float value) {
@@ -185,7 +185,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("er_gain", "0..1", value);
         erGain = value;
-        MasterMixerMessage.REVERB_ER_GAIN.send(rack, value);
+        MasterMixerMessage.REVERB_ER_GAIN.send(getRack(), value);
     }
 
     //----------------------------------
@@ -197,7 +197,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getERDecay(boolean restore) {
-        return MasterMixerMessage.REVERB_ER_DECAY.query(rack);
+        return MasterMixerMessage.REVERB_ER_DECAY.query(getRack());
     }
 
     public void setERDecay(float value) {
@@ -206,7 +206,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("er_decay", "0..1", value);
         erDecay = value;
-        MasterMixerMessage.REVERB_ER_DECAY.send(rack, value);
+        MasterMixerMessage.REVERB_ER_DECAY.send(getRack(), value);
     }
 
     //----------------------------------
@@ -218,7 +218,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getStereoDelay(boolean restore) {
-        return MasterMixerMessage.REVERB_STEREO_DELAY.query(rack);
+        return MasterMixerMessage.REVERB_STEREO_DELAY.query(getRack());
     }
 
     public void setStereoDelay(float value) {
@@ -227,7 +227,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("stereo_delay", "0..1", value);
         stereoDelay = value;
-        MasterMixerMessage.REVERB_STEREO_DELAY.send(rack, value);
+        MasterMixerMessage.REVERB_STEREO_DELAY.send(getRack(), value);
     }
 
     //----------------------------------
@@ -239,7 +239,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getStereoSpread(boolean restore) {
-        return MasterMixerMessage.REVERB_STEREO_SPREAD.query(rack);
+        return MasterMixerMessage.REVERB_STEREO_SPREAD.query(getRack());
     }
 
     public void setStereoSpread(float value) {
@@ -248,7 +248,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("stereo_spread", "0..1", value);
         stereoSpread = value;
-        MasterMixerMessage.REVERB_STEREO_SPREAD.send(rack, value);
+        MasterMixerMessage.REVERB_STEREO_SPREAD.send(getRack(), value);
     }
 
     //----------------------------------
@@ -260,7 +260,7 @@ public class MasterReverb extends MasterComponent {
     }
 
     float getWet(boolean restore) {
-        return MasterMixerMessage.REVERB_WET.query(rack);
+        return MasterMixerMessage.REVERB_WET.query(getRack());
     }
 
     public void setWet(float value) {
@@ -269,7 +269,7 @@ public class MasterReverb extends MasterComponent {
         if (value < 0f || value > 0.5f)
             throw newRangeException("wet", "0..0.5", value);
         wet = value;
-        MasterMixerMessage.REVERB_WET.send(rack, value);
+        MasterMixerMessage.REVERB_WET.send(getRack(), value);
     }
 
     //--------------------------------------------------------------------------
@@ -302,15 +302,15 @@ public class MasterReverb extends MasterComponent {
     @Override
     public void update() {
         super.update();
-        MasterMixerMessage.REVERB_DIFFUSE.send(rack, diffuse);
-        MasterMixerMessage.REVERB_DITHER_ECHOS.send(rack, ditherEchoes);
-        MasterMixerMessage.REVERB_ER_DECAY.send(rack, erDecay);
-        MasterMixerMessage.REVERB_ER_GAIN.send(rack, erGain);
-        MasterMixerMessage.REVERB_HF_DAMPING.send(rack, hfDamping);
-        MasterMixerMessage.REVERB_PRE_DELAY.send(rack, preDelay);
-        MasterMixerMessage.REVERB_ROOM_SIZE.send(rack, roomSize);
-        MasterMixerMessage.REVERB_STEREO_DELAY.send(rack, stereoDelay);
-        MasterMixerMessage.REVERB_STEREO_SPREAD.send(rack, stereoSpread);
-        MasterMixerMessage.REVERB_WET.send(rack, wet);
+        MasterMixerMessage.REVERB_DIFFUSE.send(getRack(), diffuse);
+        MasterMixerMessage.REVERB_DITHER_ECHOS.send(getRack(), ditherEchoes);
+        MasterMixerMessage.REVERB_ER_DECAY.send(getRack(), erDecay);
+        MasterMixerMessage.REVERB_ER_GAIN.send(getRack(), erGain);
+        MasterMixerMessage.REVERB_HF_DAMPING.send(getRack(), hfDamping);
+        MasterMixerMessage.REVERB_PRE_DELAY.send(getRack(), preDelay);
+        MasterMixerMessage.REVERB_ROOM_SIZE.send(getRack(), roomSize);
+        MasterMixerMessage.REVERB_STEREO_DELAY.send(getRack(), stereoDelay);
+        MasterMixerMessage.REVERB_STEREO_SPREAD.send(getRack(), stereoSpread);
+        MasterMixerMessage.REVERB_WET.send(getRack(), wet);
     }
 }

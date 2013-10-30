@@ -136,7 +136,7 @@ public class Rack implements IRack {
     @Override
     public File saveSongAs(File file) throws IOException {
         File song = saveSong(file.getName().replace(".caustic", ""));
-        FileUtils.copyFileToDirectory(song, file.getParentFile(), true);
+        FileUtils.copyFileToDirectory(song, file.getParentFile());
         song.delete();
         return file;
     }
@@ -170,14 +170,13 @@ public class Rack implements IRack {
         // how the scene was load, unserialized etc., it will just call update()
         // and restore whatever is there.
 
-        // since the is a restoration of deserialized components, all sub
-        // components are guaranteed to be created, setRack() recurses and sets
-        // all components rack
-        newScene.setRack(this);
-
-        // recursively updates all scene components based on their previous 
+        // recursively create OR updates all scene components based on their previous 
         // saved state
-        newScene.update();
+        try {
+            newScene.rackChanged(this);
+        } catch (CausticException e) {
+            getController().getLogger().err("Rack", "Error assigning Scene to Rack", e);
+        }
     }
 
     private void removeScene(Scene scene) {

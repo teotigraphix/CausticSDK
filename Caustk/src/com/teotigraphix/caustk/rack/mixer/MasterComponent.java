@@ -20,26 +20,21 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackAware;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
+import com.teotigraphix.caustk.machine.Scene;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
  * @author Michael Schmalle
  */
-public class MasterComponent implements IRackSerializer, IRackAware {
+public class MasterComponent implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
-
-    // Note; This should be private but, since this runs on Android, referencing
-    // a property is faster than method access, so this is package public for 
-    // subclasses
-    transient IRack rack;
 
     protected transient CausticMessage bypassMessage;
 
@@ -48,24 +43,29 @@ public class MasterComponent implements IRackSerializer, IRackAware {
     //--------------------------------------------------------------------------
 
     @Tag(0)
+    private Scene scene;
+
+    @Tag(1)
     private boolean bypass = false;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
+    public Scene getScene() {
+        return scene;
+    }
+
+    public void setScene(Scene value) {
+        scene = value;
+    }
+
     //----------------------------------
     // rack
     //----------------------------------
 
-    @Override
-    public final IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public final void setRack(IRack value) {
-        rack = value;
+    protected final IRack getRack() {
+        return scene.getRack();
     }
 
     //----------------------------------
@@ -77,14 +77,14 @@ public class MasterComponent implements IRackSerializer, IRackAware {
     }
 
     boolean isBypass(boolean restore) {
-        return bypassMessage.query(rack) == 1 ? true : false;
+        return bypassMessage.query(getRack()) == 1 ? true : false;
     }
 
     public void setBypass(boolean value) {
         if (bypass == value)
             return;
         bypass = value;
-        bypassMessage.send(rack, value ? 1 : 0);
+        bypassMessage.send(getRack(), value ? 1 : 0);
     }
 
     //--------------------------------------------------------------------------
@@ -122,6 +122,6 @@ public class MasterComponent implements IRackSerializer, IRackAware {
 
     @Override
     public void update() {
-        bypassMessage.send(rack, bypass ? 1 : 0);
+        bypassMessage.send(getRack(), bypass ? 1 : 0);
     }
 }

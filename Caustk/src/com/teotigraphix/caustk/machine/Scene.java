@@ -55,12 +55,15 @@ public class Scene implements ICaustkComponent, IRackAware {
     private File causticFile;
 
     @Tag(2)
-    private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
+    private boolean isInternal;
 
     @Tag(3)
-    private MasterMixer masterMixer;
+    private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
 
     @Tag(4)
+    private MasterMixer masterMixer;
+
+    @Tag(5)
     private MasterSequencer masterSequencer;
 
     //--------------------------------------------------------------------------
@@ -79,13 +82,6 @@ public class Scene implements ICaustkComponent, IRackAware {
     @Override
     public void setRack(IRack value) {
         rack = value;
-        if (masterMixer != null)
-            masterMixer.setRack(rack);
-        for (Machine machine : machines.values()) {
-            machine.setRack(rack);
-        }
-        if (masterSequencer != null)
-            masterSequencer.setRack(rack);
     }
 
     //----------------------------------
@@ -107,6 +103,27 @@ public class Scene implements ICaustkComponent, IRackAware {
      */
     public File getCausticFile() {
         return causticFile;
+    }
+
+    //----------------------------------
+    // causticFile
+    //----------------------------------
+
+    /**
+     * Sets the {@link Scene} as an internal scene(not saved to disk), meaning
+     * it is treated as a application state scene loaded when the application is
+     * loaded with the application's state.
+     */
+    public final void setInternal() {
+        isInternal = true;
+    }
+
+    /**
+     * Returns whether the {@link Scene} is an internal scene. (not saved to
+     * disk)
+     */
+    public boolean isInternal() {
+        return isInternal;
     }
 
     public final MasterDelay getDelay() {
@@ -195,8 +212,8 @@ public class Scene implements ICaustkComponent, IRackAware {
     }
 
     /**
-     * Returns the {@link Machine} at the specified index,
-     * <code>null</code> if does not exist.
+     * Returns the {@link Machine} at the specified index, <code>null</code> if
+     * does not exist.
      * 
      * @param index The machine index.
      */
@@ -221,6 +238,28 @@ public class Scene implements ICaustkComponent, IRackAware {
         return result;
     }
 
+    public void rackChanged(IRack rack) throws CausticException {
+        // since the is a restoration of deserialized components, all sub
+        // components are guaranteed to be created, setRack() recurses and sets
+        // all components rack
+        this.rack = rack;
+
+        if (masterMixer == null && masterSequencer == null) {
+            create();
+        } else if (!isInternal) {
+            // if this scene is internal, the rack state is already in the correct state
+            // no need to update the native rack with the scene's serialized properties
+            update();
+        }
+    }
+
+    public void create() throws CausticException {
+        masterMixer = rack.getFactory().createMasterMixer(this);
+        masterSequencer = rack.getFactory().createMasterSequencer(this);
+        masterMixer.create();
+        masterSequencer.create();
+    }
+
     public void update() {
         if (rack == null)
             throw new IllegalStateException("Rack cannot be null");
@@ -237,8 +276,8 @@ public class Scene implements ICaustkComponent, IRackAware {
     }
 
     /**
-     * Loads the {@link Scene} using the {@link #getCausticFile()} passed
-     * during scene construction.
+     * Loads the {@link Scene} using the {@link #getCausticFile()} passed during
+     * scene construction.
      * <p>
      * Calling this method will issue a <code>BLANKRACK</code> command and
      * <code>LOAD_SONG</code>, all song state is reset to default before
@@ -295,6 +334,15 @@ public class Scene implements ICaustkComponent, IRackAware {
         masterSequencer.load(context);
     }
 
+    public Machine createMachine(int index, String machineName, MachineType machineType)
+            throws CausticException {
+        Machine caustkMachine = getRack().getFactory().createMachine(this, index, machineType,
+                machineName);
+        machines.put(index, caustkMachine);
+        caustkMachine.create();
+        return caustkMachine;
+    }
+
     private void createMachine(int index, IRackContext context) throws IOException,
             CausticException {
         String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(rack, index);
@@ -303,7 +351,7 @@ public class Scene implements ICaustkComponent, IRackAware {
 
         MachineType machineType = MachineType.fromString(RackMessage.QUERY_MACHINE_TYPE
                 .queryString(rack, index));
-        Machine caustkMachine = context.getFactory().createMachine(index, machineType,
+        Machine caustkMachine = context.getFactory().createMachine(this, index, machineType,
                 machineName);
         machines.put(index, caustkMachine);
     }

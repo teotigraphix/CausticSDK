@@ -115,11 +115,9 @@ public class CaustkController implements ICaustkController {
     // rack
     //----------------------------------
 
-    private IRack rack;
-
     @Override
-    public IRack getRack() {
-        return rack;
+    public final IRack getRack() {
+        return application.getRack();
     }
 
     //----------------------------------
@@ -245,12 +243,12 @@ public class CaustkController implements ICaustkController {
     // we proxy the actual OSC impl so we can stop, or reroute
     @Override
     public final float sendMessage(String message) {
-        return rack.sendMessage(message);
+        return getRack().sendMessage(message);
     }
 
     @Override
     public final String queryMessage(String message) {
-        return rack.queryMessage(message);
+        return getRack().queryMessage(message);
     }
 
     //--------------------------------------------------------------------------
@@ -283,7 +281,7 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void frameChanged(float delta) {
-        rack.frameChanged(delta);
+        getRack().frameChanged(delta);
     }
 
     void save() throws IOException {
@@ -301,36 +299,36 @@ public class CaustkController implements ICaustkController {
 
     @Override
     public void onStart() {
-        rack.onStart();
+        getRack().onStart();
     }
 
     @Override
     public void onResume() {
-        rack.onResume();
+        getRack().onResume();
     }
 
     @Override
     public void onPause() {
-        rack.onPause();
+        getRack().onPause();
     }
 
     @Override
     public void onStop() {
-        rack.onStop();
+        getRack().onStop();
     }
 
     @Override
     public void onDestroy() {
-        rack.onDestroy();
+        getRack().onDestroy();
     }
 
     @Override
     public void onRestart() {
-        rack.onRestart();
+        getRack().onRestart();
     }
 
     @Override
     public void dispose() {
-        rack.dispose();
+        getRack().dispose();
     }
 }

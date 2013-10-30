@@ -224,8 +224,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public Machine createMachine(int index, MachineType machineType, String machineName) {
-        return machineFactory.createMachine(index, machineType, machineName);
+    public Machine createMachine(Scene scene, int index, MachineType machineType, String machineName) {
+        return machineFactory.createMachine(scene, index, machineType, machineName);
     }
 
     //----------------------------------

@@ -287,14 +287,14 @@ public interface ISystemSequencer extends IRackComponent {
      */
     public static class OnSystemSequencerBPMChange {
 
-        private float tempo;
+        private float bpm;
 
-        public float getTempo() {
-            return tempo;
+        public float getBPM() {
+            return bpm;
         }
 
-        public OnSystemSequencerBPMChange(float tempo) {
-            this.tempo = tempo;
+        public OnSystemSequencerBPMChange(float bpm) {
+            this.bpm = bpm;
         }
     }
 

@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.gs.machine.part.MachineSequencer;
 import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.rack.track.Phrase;
+import com.teotigraphix.caustk.machine.Phrase;
 
 public class TemporaryMemory extends Memory {
 

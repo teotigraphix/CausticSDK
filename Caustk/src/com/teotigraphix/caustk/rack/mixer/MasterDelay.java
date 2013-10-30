@@ -65,7 +65,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     int getSteps(boolean restore) {
-        return (int)MasterMixerMessage.DELAY_STEPS.query(rack);
+        return (int)MasterMixerMessage.DELAY_STEPS.query(getRack());
     }
 
     public void setSteps(int value) {
@@ -74,7 +74,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 1 || value > 5)
             throw newRangeException("steps", "1,2,3,4,5", value);
         steps = value;
-        MasterMixerMessage.DELAY_STEPS.send(rack, value);
+        MasterMixerMessage.DELAY_STEPS.send(getRack(), value);
     }
 
     //----------------------------------
@@ -86,7 +86,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     int getLoop(boolean restore) {
-        return (int)MasterMixerMessage.DELAY_LOOP.query(rack);
+        return (int)MasterMixerMessage.DELAY_LOOP.query(getRack());
     }
 
     public void setLoop(int value) {
@@ -95,7 +95,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 0 || value > 1)
             throw newRangeException("loop", "0,1", value);
         loop = value;
-        MasterMixerMessage.DELAY_LOOP.send(rack, value);
+        MasterMixerMessage.DELAY_LOOP.send(getRack(), value);
     }
 
     //----------------------------------
@@ -107,7 +107,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     int getTime(boolean restore) {
-        return (int)MasterMixerMessage.DELAY_TIME.query(rack);
+        return (int)MasterMixerMessage.DELAY_TIME.query(getRack());
     }
 
     public void setTime(int value) {
@@ -116,7 +116,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 1 || value > 12)
             throw newRangeException("time", "1..12", value);
         time = value;
-        MasterMixerMessage.DELAY_TIME.send(rack, value);
+        MasterMixerMessage.DELAY_TIME.send(getRack(), value);
     }
 
     //----------------------------------
@@ -128,7 +128,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     int getSync(boolean restore) {
-        return (int)MasterMixerMessage.DELAY_SYNC.query(rack);
+        return (int)MasterMixerMessage.DELAY_SYNC.query(getRack());
     }
 
     public void setSync(int value) {
@@ -137,7 +137,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 0 || value > 1)
             throw newRangeException("sync", "0,1", value);
         sync = value;
-        MasterMixerMessage.DELAY_SYNC.send(rack, value);
+        MasterMixerMessage.DELAY_SYNC.send(getRack(), value);
     }
 
     //----------------------------------
@@ -149,7 +149,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     float getFeedback(boolean restore) {
-        return MasterMixerMessage.DELAY_FEEDBACK.query(rack);
+        return MasterMixerMessage.DELAY_FEEDBACK.query(getRack());
     }
 
     public void setFeedback(float value) {
@@ -158,7 +158,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("feedback", "0..1", value);
         feedback = value;
-        MasterMixerMessage.DELAY_FEEDBACK.send(rack, value);
+        MasterMixerMessage.DELAY_FEEDBACK.send(getRack(), value);
     }
 
     //----------------------------------
@@ -170,7 +170,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     int getFeedbackFirst(boolean restore) {
-        return (int)MasterMixerMessage.DELAY_FEEDBACK_FIRST.query(rack);
+        return (int)MasterMixerMessage.DELAY_FEEDBACK_FIRST.query(getRack());
     }
 
     public void setFeedbackFirst(int value) {
@@ -179,7 +179,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 0 || value > 1)
             throw newRangeException("feedback_first", "0,1", value);
         feedbackFirst = value;
-        MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(rack, value);
+        MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(getRack(), value);
     }
 
     //----------------------------------
@@ -191,7 +191,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     float getDamping(boolean restore) {
-        return MasterMixerMessage.DELAY_DAMPING.query(rack);
+        return MasterMixerMessage.DELAY_DAMPING.query(getRack());
     }
 
     public void setDamping(float value) {
@@ -200,7 +200,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("damping", "0..1", value);
         damping = value;
-        MasterMixerMessage.DELAY_DAMPING.send(rack, value);
+        MasterMixerMessage.DELAY_DAMPING.send(getRack(), value);
     }
 
     //----------------------------------
@@ -212,7 +212,7 @@ public class MasterDelay extends MasterComponent {
     }
 
     float getWet(boolean restore) {
-        return MasterMixerMessage.DELAY_WET.query(rack);
+        return MasterMixerMessage.DELAY_WET.query(getRack());
     }
 
     public void setWet(float value) {
@@ -221,7 +221,7 @@ public class MasterDelay extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("wet", "0..1", value);
         wet = value;
-        MasterMixerMessage.DELAY_WET.send(rack, value);
+        MasterMixerMessage.DELAY_WET.send(getRack(), value);
     }
 
     //----------------------------------
@@ -229,12 +229,12 @@ public class MasterDelay extends MasterComponent {
     //----------------------------------
 
     public float getPan(int step) {
-        return (int)MasterMixerMessage.DELAY_PAN.send(rack, step);
+        return (int)MasterMixerMessage.DELAY_PAN.send(getRack(), step);
     }
 
     // XXX todo impl panMap
     float getPan(boolean restore) {
-        return (int)MasterMixerMessage.DELAY_PAN.send(rack, 0);
+        return (int)MasterMixerMessage.DELAY_PAN.send(getRack(), 0);
     }
 
     public void setPan(int step, float value) {
@@ -243,7 +243,7 @@ public class MasterDelay extends MasterComponent {
         if (value < -1f || value > 40f)
             throw newRangeException("pan", "-1..1", value);
         //pan = value;
-        MasterMixerMessage.DELAY_PAN.send(rack, step, value);
+        MasterMixerMessage.DELAY_PAN.send(getRack(), step, value);
     }
 
     //--------------------------------------------------------------------------
@@ -275,13 +275,13 @@ public class MasterDelay extends MasterComponent {
     @Override
     public void update() {
         super.update();
-        MasterMixerMessage.DELAY_DAMPING.send(rack, damping);
-        MasterMixerMessage.DELAY_FEEDBACK.send(rack, feedback);
-        MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(rack, feedbackFirst);
-        MasterMixerMessage.DELAY_LOOP.send(rack, loop);
-        MasterMixerMessage.DELAY_STEPS.send(rack, steps);
-        MasterMixerMessage.DELAY_SYNC.send(rack, sync);
-        MasterMixerMessage.DELAY_TIME.send(rack, time);
-        MasterMixerMessage.DELAY_WET.send(rack, wet);
+        MasterMixerMessage.DELAY_DAMPING.send(getRack(), damping);
+        MasterMixerMessage.DELAY_FEEDBACK.send(getRack(), feedback);
+        MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(getRack(), feedbackFirst);
+        MasterMixerMessage.DELAY_LOOP.send(getRack(), loop);
+        MasterMixerMessage.DELAY_STEPS.send(getRack(), steps);
+        MasterMixerMessage.DELAY_SYNC.send(getRack(), sync);
+        MasterMixerMessage.DELAY_TIME.send(getRack(), time);
+        MasterMixerMessage.DELAY_WET.send(getRack(), wet);
     }
 }

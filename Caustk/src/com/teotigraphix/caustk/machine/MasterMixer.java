@@ -20,14 +20,12 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackAware;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.mixer.MasterDelay;
 import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
 import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
@@ -38,13 +36,13 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
 /**
  * @author Michael Schmalle
  */
-public class MasterMixer implements IRackSerializer, IRackAware {
+public class MasterMixer implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private IRack rack;
+    //private IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -76,26 +74,6 @@ public class MasterMixer implements IRackSerializer, IRackAware {
     // IRackAware API :: Properties
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // rack
-    //----------------------------------
-
-    @Override
-    public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
-
-        equalizer.setRack(rack);
-        limiter.setRack(rack);
-        delay.setRack(rack);
-        reverb.setRack(rack);
-        volume.setRack(rack);
-    }
-
     public final MasterDelay getDelay() {
         return delay;
     }
@@ -119,14 +97,22 @@ public class MasterMixer implements IRackSerializer, IRackAware {
     MasterMixer() {
     }
 
-    MasterMixer(Scene caustkScene) {
-        this.scene = caustkScene;
+    MasterMixer(Scene scene) {
+        this.scene = scene;
+    }
 
+    public void create() throws CausticException {
         equalizer = new MasterEqualizer();
         limiter = new MasterLimiter();
         delay = new MasterDelay();
         reverb = new MasterReverb();
         volume = new MasterVolume();
+
+        equalizer.setScene(scene);
+        limiter.setScene(scene);
+        delay.setScene(scene);
+        reverb.setScene(scene);
+        volume.setScene(scene);
     }
 
     @Override
@@ -328,4 +314,5 @@ public class MasterMixer implements IRackSerializer, IRackAware {
             return getValue();
         }
     }
+
 }

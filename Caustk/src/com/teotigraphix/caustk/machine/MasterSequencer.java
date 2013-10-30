@@ -20,22 +20,15 @@
 package com.teotigraphix.caustk.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackAware;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
-public class MasterSequencer implements IRackSerializer, IRackAware {
-
-    //--------------------------------------------------------------------------
-    // Private :: Variables
-    //--------------------------------------------------------------------------
-
-    private IRack rack;
+public class MasterSequencer implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -52,20 +45,6 @@ public class MasterSequencer implements IRackSerializer, IRackAware {
     // IRackAware API :: Properties
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // rack
-    //----------------------------------
-
-    @Override
-    public IRack getRack() {
-        return rack;
-    }
-
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -80,15 +59,17 @@ public class MasterSequencer implements IRackSerializer, IRackAware {
         this.scene = caustkScene;
     }
 
+    public void create() throws CausticException {
+    }
+
     @Override
     public void load(IRackContext context) {
-        setRack(context.getRack());
         restore();
     }
 
     @Override
     public void restore() {
-        String patterns = rack.getSystemSequencer().getPatterns();
+        String patterns = scene.getRack().getSystemSequencer().getPatterns();
         if (patterns != null) {
             loadPatterns(patterns);
         }
@@ -112,7 +93,7 @@ public class MasterSequencer implements IRackSerializer, IRackAware {
 
     public void updateMachine(Machine caustkMachine) {
         for (SequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
-            SequencerMessage.PATTERN_EVENT.send(rack, caustkMachine.getIndex(),
+            SequencerMessage.PATTERN_EVENT.send(scene.getRack(), caustkMachine.getIndex(),
                     caustkSequencerPattern.getStartBeat(), caustkSequencerPattern.getBankIndex(),
                     caustkSequencerPattern.getPatternIndex(), caustkSequencerPattern.getEndBeat());
         }
@@ -124,4 +105,5 @@ public class MasterSequencer implements IRackSerializer, IRackAware {
             updateMachine(caustkMachine);
         }
     }
+
 }

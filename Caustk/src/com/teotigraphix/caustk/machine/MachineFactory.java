@@ -24,16 +24,14 @@ public class MachineFactory extends CaustkSubFactoryBase {
     public MachineFactory() {
     }
 
-    public Machine createMachine(ComponentInfo info, MachineType machineType,
-            String machineName) {
+    public Machine createMachine(ComponentInfo info, MachineType machineType, String machineName) {
         Machine caustkMachine = new Machine(info, machineType, machineName);
         return caustkMachine;
     }
 
-    public Machine createMachine(int index, MachineType machineType, String machineName) {
+    public Machine createMachine(Scene scene, int index, MachineType machineType, String machineName) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Machine);
-        Machine caustkMachine = new Machine(info, index, machineType, machineName);
-        caustkMachine.setRack(getFactory().getRack());
+        Machine caustkMachine = new Machine(info, scene, index, machineType, machineName);
         return caustkMachine;
     }
 }

@@ -59,7 +59,7 @@ public class MasterEqualizer extends MasterComponent {
     }
 
     float getBass(boolean restore) {
-        return MasterMixerMessage.EQ_BASS.query(rack);
+        return MasterMixerMessage.EQ_BASS.query(getRack());
     }
 
     public void setBass(float value) {
@@ -68,7 +68,7 @@ public class MasterEqualizer extends MasterComponent {
         if (value < 0f || value > 2f)
             throw newRangeException("bass", "0..2", value);
         bass = value;
-        MasterMixerMessage.EQ_BASS.send(rack, value);
+        MasterMixerMessage.EQ_BASS.send(getRack(), value);
     }
 
     //----------------------------------
@@ -80,7 +80,7 @@ public class MasterEqualizer extends MasterComponent {
     }
 
     float getBassMidFreq(boolean restore) {
-        return MasterMixerMessage.EQ_BASSMID_FREQ.query(rack);
+        return MasterMixerMessage.EQ_BASSMID_FREQ.query(getRack());
     }
 
     public void setBassMidFreq(float value) {
@@ -89,7 +89,7 @@ public class MasterEqualizer extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("bassmid_freq", "0..1", value);
         bassMidFreq = value;
-        MasterMixerMessage.EQ_BASSMID_FREQ.send(rack, value);
+        MasterMixerMessage.EQ_BASSMID_FREQ.send(getRack(), value);
     }
 
     //----------------------------------
@@ -101,7 +101,7 @@ public class MasterEqualizer extends MasterComponent {
     }
 
     float getMid(boolean restore) {
-        return MasterMixerMessage.EQ_MID.query(rack);
+        return MasterMixerMessage.EQ_MID.query(getRack());
     }
 
     public void setMid(float value) {
@@ -110,7 +110,7 @@ public class MasterEqualizer extends MasterComponent {
         if (value < 0f || value > 2f)
             throw newRangeException("mid ", "0..2", value);
         mid = value;
-        MasterMixerMessage.EQ_MID.send(rack, value);
+        MasterMixerMessage.EQ_MID.send(getRack(), value);
     }
 
     //----------------------------------
@@ -122,7 +122,7 @@ public class MasterEqualizer extends MasterComponent {
     }
 
     float getMidHighFreq(boolean restore) {
-        return MasterMixerMessage.EQ_MIDHIGH_FREQ.query(rack);
+        return MasterMixerMessage.EQ_MIDHIGH_FREQ.query(getRack());
     }
 
     public void setMidHighFreq(float value) {
@@ -131,7 +131,7 @@ public class MasterEqualizer extends MasterComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("midhigh_freq ", "0..1", value);
         midHighFreq = value;
-        MasterMixerMessage.EQ_MIDHIGH_FREQ.send(rack, value);
+        MasterMixerMessage.EQ_MIDHIGH_FREQ.send(getRack(), value);
     }
 
     //----------------------------------
@@ -143,7 +143,7 @@ public class MasterEqualizer extends MasterComponent {
     }
 
     float getHigh(boolean restore) {
-        return MasterMixerMessage.EQ_HIGH.query(rack);
+        return MasterMixerMessage.EQ_HIGH.query(getRack());
     }
 
     public void setHigh(float value) {
@@ -152,7 +152,7 @@ public class MasterEqualizer extends MasterComponent {
         if (value < 0f || value > 2f)
             throw newRangeException("high ", "0..2", value);
         high = value;
-        MasterMixerMessage.EQ_HIGH.send(rack, value);
+        MasterMixerMessage.EQ_HIGH.send(getRack(), value);
     }
 
     //--------------------------------------------------------------------------
@@ -180,10 +180,10 @@ public class MasterEqualizer extends MasterComponent {
     @Override
     public void update() {
         super.update();
-        MasterMixerMessage.EQ_BASS.send(rack, bass);
-        MasterMixerMessage.EQ_BASSMID_FREQ.send(rack, bassMidFreq);
-        MasterMixerMessage.EQ_HIGH.send(rack, high);
-        MasterMixerMessage.EQ_MID.send(rack, mid);
-        MasterMixerMessage.EQ_MIDHIGH_FREQ.send(rack, midHighFreq);
+        MasterMixerMessage.EQ_BASS.send(getRack(), bass);
+        MasterMixerMessage.EQ_BASSMID_FREQ.send(getRack(), bassMidFreq);
+        MasterMixerMessage.EQ_HIGH.send(getRack(), high);
+        MasterMixerMessage.EQ_MID.send(getRack(), mid);
+        MasterMixerMessage.EQ_MIDHIGH_FREQ.send(getRack(), midHighFreq);
     }
 }

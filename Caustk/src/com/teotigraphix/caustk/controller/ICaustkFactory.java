@@ -77,7 +77,7 @@ public interface ICaustkFactory {
 
     Machine createMachine(ComponentInfo info, MachineType machineType, String machineName);
 
-    Machine createMachine(int index, MachineType machineType, String machineName);
+    Machine createMachine(Scene scene, int index, MachineType machineType, String machineName);
 
     Patch createPatch(ComponentInfo info, MachineType machineType);
 

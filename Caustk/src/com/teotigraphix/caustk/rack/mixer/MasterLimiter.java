@@ -53,7 +53,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getPre(boolean restore) {
-        return MasterMixerMessage.LIMITER_PRE.query(rack);
+        return MasterMixerMessage.LIMITER_PRE.query(getRack());
     }
 
     public void setPre(float value) {
@@ -62,7 +62,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 8f)
             throw newRangeException("pre", "0..8", value);
         pre = value;
-        MasterMixerMessage.LIMITER_PRE.send(rack, value);
+        MasterMixerMessage.LIMITER_PRE.send(getRack(), value);
     }
 
     //----------------------------------
@@ -74,7 +74,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getAttack(boolean restore) {
-        return MasterMixerMessage.LIMITER_ATTACK.query(rack);
+        return MasterMixerMessage.LIMITER_ATTACK.query(getRack());
     }
 
     public void setAttack(float value) {
@@ -83,7 +83,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 0.1f)
             throw newRangeException("attack", "0..0.1", value);
         attack = value;
-        MasterMixerMessage.LIMITER_ATTACK.send(rack, value);
+        MasterMixerMessage.LIMITER_ATTACK.send(getRack(), value);
     }
 
     //----------------------------------
@@ -95,7 +95,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getRelease(boolean restore) {
-        return MasterMixerMessage.LIMITER_RELEASE.query(rack);
+        return MasterMixerMessage.LIMITER_RELEASE.query(getRack());
     }
 
     public void setRelease(float value) {
@@ -104,7 +104,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 0.5f)
             throw newRangeException("release", "0..0.5", value);
         release = value;
-        MasterMixerMessage.LIMITER_RELEASE.send(rack, value);
+        MasterMixerMessage.LIMITER_RELEASE.send(getRack(), value);
     }
 
     //----------------------------------
@@ -116,7 +116,7 @@ public class MasterLimiter extends MasterComponent {
     }
 
     float getPost(boolean restore) {
-        return MasterMixerMessage.LIMITER_POST.query(rack);
+        return MasterMixerMessage.LIMITER_POST.query(getRack());
     }
 
     public void setPost(float value) {
@@ -125,7 +125,7 @@ public class MasterLimiter extends MasterComponent {
         if (value < 0f || value > 2f)
             throw newRangeException("post", "0..2", value);
         post = value;
-        MasterMixerMessage.LIMITER_POST.send(rack, value);
+        MasterMixerMessage.LIMITER_POST.send(getRack(), value);
     }
 
     //--------------------------------------------------------------------------
@@ -152,9 +152,9 @@ public class MasterLimiter extends MasterComponent {
     @Override
     public void update() {
         super.update();
-        MasterMixerMessage.LIMITER_ATTACK.send(rack, attack);
-        MasterMixerMessage.LIMITER_POST.send(rack, post);
-        MasterMixerMessage.LIMITER_PRE.send(rack, pre);
-        MasterMixerMessage.LIMITER_RELEASE.send(rack, release);
+        MasterMixerMessage.LIMITER_ATTACK.send(getRack(), attack);
+        MasterMixerMessage.LIMITER_POST.send(getRack(), post);
+        MasterMixerMessage.LIMITER_PRE.send(getRack(), pre);
+        MasterMixerMessage.LIMITER_RELEASE.send(getRack(), release);
     }
 }

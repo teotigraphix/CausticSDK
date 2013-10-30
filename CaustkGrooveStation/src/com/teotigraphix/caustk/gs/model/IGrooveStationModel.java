@@ -1,7 +1,6 @@
 
 package com.teotigraphix.caustk.gs.model;
 
-import com.teotigraphix.caustk.controller.IControllerComponent;
 import com.teotigraphix.caustk.gs.config.IGrooveStationConfiguration;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
