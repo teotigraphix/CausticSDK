@@ -23,6 +23,7 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.machine.ComponentInfo;
 import com.teotigraphix.caustk.machine.ComponentType;
 import com.teotigraphix.caustk.machine.Scene;
@@ -118,6 +119,9 @@ public abstract class ApplicationModelState {
      */
     public void create() {
         IRack rack = getController().getRack();
+        // XXX don't know exactly where to put this but when a new Project
+        // is created, when reiniting the state, the Rack needs to be wiped
+        RackMessage.BLANKRACK.send(rack);
         ComponentInfo info = rack.getFactory().createInfo(ComponentType.Scene, "Untitle Scene");
         scene = rack.getFactory().createScene(info);
         scene.setInternal();

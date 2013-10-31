@@ -75,13 +75,13 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     private Object data;
 
     @Tag(16)
-    private int playMeasure = 1;
+    private int playMeasure = 0;
 
     @Tag(17)
-    private int editMeasure = 1;
+    private int editMeasure = 0;
 
     @Tag(18)
-    private int currentMeasure = 1;
+    private int currentMeasure = 0;
 
     @Tag(19)
     private Scale scale = Scale.SIXTEENTH;

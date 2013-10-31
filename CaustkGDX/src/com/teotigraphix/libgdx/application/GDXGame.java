@@ -160,8 +160,14 @@ public abstract class GDXGame implements IGame {
                 new EventObserver<OnApplicationModelNewProjectComplete>() {
                     @Override
                     public void trigger(OnApplicationModelNewProjectComplete object) {
-                        screen.show();
-                        screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                getController().getRack().restore();
+                                screen.show();
+                                screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                            }
+                        });
                     }
                 });
     }
