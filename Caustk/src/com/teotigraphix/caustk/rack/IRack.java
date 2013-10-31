@@ -26,6 +26,8 @@ import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.machine.Phrase;
 import com.teotigraphix.caustk.machine.Scene;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
@@ -36,7 +38,7 @@ import com.teotigraphix.caustk.rack.tone.Tone;
  * Manages the {@link ISoundMixer}, {@link ISoundSource},
  * {@link ISystemSequencer}, {@link ITrackSequencer}.
  */
-public interface IRack extends ICausticEngine {
+public interface IRack extends ICausticEngine, IRestore {
 
     IDispatcher getDispatcher();
 

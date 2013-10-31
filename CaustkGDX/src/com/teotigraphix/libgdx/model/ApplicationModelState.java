@@ -19,6 +19,7 @@
 
 package com.teotigraphix.libgdx.model;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
@@ -137,8 +138,17 @@ public abstract class ApplicationModelState {
      * to the {@link IRack} instance.
      */
     public void update() {
-        IRack rack = getController().getRack();
-        rack.setScene(scene);
+        getController().getRack().setScene(scene);
+        // XXX This runs right before the first screen is created in GDX game
+        // which is a good place to restore things because mediators are not
+        // around yet, for now this fixes the "bpm" bug with the outputpanel
+        // not returning the correct bpm right when a song is loaded
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                getController().getRack().restore();
+            }
+        });
     }
 
     /**

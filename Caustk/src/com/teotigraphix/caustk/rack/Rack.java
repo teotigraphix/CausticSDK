@@ -218,6 +218,11 @@ public class Rack implements IRack {
         }
     }
 
+    @Override
+    public void restore() {
+        systemSequencer.restore();
+    }
+
     //--------------------------------------------------------------------------
     // SoundGenerator
     //--------------------------------------------------------------------------
