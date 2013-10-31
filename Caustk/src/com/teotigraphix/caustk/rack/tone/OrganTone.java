@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
@@ -43,8 +43,8 @@ public class OrganTone extends Tone {
     public OrganTone() {
     }
 
-    public OrganTone(IRack rack) {
-        super(rack, ToneType.Organ);
+    public OrganTone(Machine machine) {
+        super(machine, ToneType.Organ);
     }
 
     public static void setup(Tone tone) {

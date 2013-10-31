@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.Machine;
 
 /**
  * @author Michael Schmalle
@@ -39,8 +39,8 @@ public class RhythmTone extends Tone {
     public RhythmTone() {
     }
 
-    public RhythmTone(IRack rack) {
-        super(rack, ToneType.Beatbox);
+    public RhythmTone(Machine machine) {
+        super(machine, ToneType.Beatbox);
     }
 
 }

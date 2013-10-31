@@ -397,7 +397,7 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     @Override
-    public Tone createTone(ToneDescriptor descriptor) throws CausticException {
-        return toneFactory.createTone(descriptor);
+    public Tone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException {
+        return toneFactory.createTone(machine, descriptor);
     }
 }

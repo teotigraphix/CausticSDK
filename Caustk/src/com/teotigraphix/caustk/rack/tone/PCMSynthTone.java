@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
@@ -58,8 +58,8 @@ public class PCMSynthTone extends Tone {
     public PCMSynthTone() {
     }
 
-    public PCMSynthTone(IRack rack) {
-        super(rack, ToneType.PCMSynth);
+    public PCMSynthTone(Machine machine) {
+        super(machine, ToneType.PCMSynth);
     }
 
     public static void setup(Tone tone) {

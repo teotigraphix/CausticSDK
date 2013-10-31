@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
@@ -43,8 +43,8 @@ public class BeatboxTone extends RhythmTone {
     public BeatboxTone() {
     }
 
-    public BeatboxTone(IRack rack) {
-        super(rack);
+    public BeatboxTone(Machine machine) {
+        super(machine);
     }
 
     public static void setup(Tone tone) {

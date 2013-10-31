@@ -66,7 +66,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     private String noteData;
 
     @Tag(13)
-    private int length;
+    private int length = 1;
 
     @Tag(14)
     private int position = 1;
@@ -75,13 +75,13 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     private Object data;
 
     @Tag(16)
-    private int playMeasure;
+    private int playMeasure = 1;
 
     @Tag(17)
-    private int editMeasure;
+    private int editMeasure = 1;
 
     @Tag(18)
-    private int currentMeasure = 0;
+    private int currentMeasure = 1;
 
     @Tag(19)
     private Scale scale = Scale.SIXTEENTH;
@@ -176,7 +176,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
                     .setLength(getBankIndex(), getPatternIndex(), length);
         }
 
-        //        fireChange(CaustkPhraseChangeKind.Length);
+        fireChange(PhraseChangeKind.Length);
 
         if (position > value)
             setPosition(value);
@@ -246,7 +246,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
             addNote(pitch, start, end - start, velocity, flags);
         }
 
-        fireChange(CaustkPhraseChangeKind.NoteData);
+        fireChange(PhraseChangeKind.NoteData);
     }
 
     //----------------------------------
@@ -283,7 +283,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         if (scale == value)
             return;
         scale = value;
-        fireChange(CaustkPhraseChangeKind.Scale);
+        fireChange(PhraseChangeKind.Scale);
     }
 
     //----------------------------------
@@ -317,7 +317,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         if (value < 0 || value > getLength())
             return;
         position = value;
-        fireChange(CaustkPhraseChangeKind.Position);
+        fireChange(PhraseChangeKind.Position);
     }
 
     //----------------------------------
@@ -356,7 +356,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
             return;
 
         playMeasure = value;
-        fireChange(CaustkPhraseChangeKind.PlayMeasure);
+        fireChange(PhraseChangeKind.PlayMeasure);
     }
 
     //----------------------------------
@@ -383,7 +383,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         if (value == editMeasure)
             return;
         editMeasure = value;
-        fireChange(CaustkPhraseChangeKind.EditMeasure);
+        fireChange(PhraseChangeKind.EditMeasure);
     }
 
     //----------------------------------
@@ -556,7 +556,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         }
         if (getNotes().size() != 0)
             throw new IllegalStateException("Phrase was not cleared");
-        fireChange(CaustkPhraseChangeKind.ClearMeasure);
+        fireChange(PhraseChangeKind.ClearMeasure);
     }
 
     /**
@@ -572,7 +572,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         }
         if (getNotes(measure).size() != 0)
             throw new IllegalStateException("Phrase measure was not cleared");
-        fireChange(CaustkPhraseChangeKind.ClearMeasure);
+        fireChange(PhraseChangeKind.ClearMeasure);
     }
 
     //--------------------------------------------------------------------------
@@ -765,12 +765,12 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     // Private Method :: API
     //--------------------------------------------------------------------------
 
-    protected void fireChange(CaustkPhraseChangeKind kind) {
-        // XXX        getDispatcher().trigger(new OnCaustkPhraseChange(kind, this, null));
+    protected void fireChange(PhraseChangeKind kind) {
+        getDispatcher().trigger(new OnPhraseChange(kind, this, null));
     }
 
-    protected void fireChange(CaustkPhraseChangeKind kind, Note phraseNote) {
-        // XXX         getDispatcher().trigger(new OnCaustkPhraseChange(kind, this, phraseNote));
+    protected void fireChange(PhraseChangeKind kind, Note phraseNote) {
+        getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
     }
 
     public static float toLocalBeat(float beat, int length) {
@@ -783,7 +783,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         return "Bank:" + getBankIndex() + ",Pattern:" + getPatternIndex();
     }
 
-    public enum CaustkPhraseChangeKind {
+    public enum PhraseChangeKind {
 
         /**
          * Dispatched every beat when the phrase is active.
@@ -829,11 +829,15 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         Position;
     }
 
-    public static class OnCaustkPhraseChange {
+    /**
+     * @author Michael Schmalle
+     * @see IRack#getDispatcher()
+     */
+    public static class OnPhraseChange {
 
-        private final CaustkPhraseChangeKind kind;
+        private final PhraseChangeKind kind;
 
-        public CaustkPhraseChangeKind getKind() {
+        public PhraseChangeKind getKind() {
             return kind;
         }
 
@@ -849,7 +853,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
             return note;
         }
 
-        public OnCaustkPhraseChange(CaustkPhraseChangeKind kind, Phrase phrase, Note note) {
+        public OnPhraseChange(PhraseChangeKind kind, Phrase phrase, Note note) {
             this.kind = kind;
             this.phrase = phrase;
             this.note = note;

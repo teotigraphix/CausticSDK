@@ -52,7 +52,8 @@ public class ToneFactory extends CaustkSubFactoryBase {
     public ToneFactory() {
     }
 
-    Tone createTone(int index, String toneName, ToneType toneType) throws CausticException {
+    Tone createTone(Machine machine, int index, String toneName, ToneType toneType)
+            throws CausticException {
         final IRack rack = getFactory().getRack();
 
         if (index > NUM_MACHINES - 1)
@@ -67,52 +68,52 @@ public class ToneFactory extends CaustkSubFactoryBase {
         Tone tone = null;
         switch (toneType) {
             case Bassline:
-                tone = new BasslineTone(rack);
+                tone = new BasslineTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case Beatbox:
-                tone = new BeatboxTone(rack);
+                tone = new BeatboxTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case PCMSynth:
-                tone = new PCMSynthTone(rack);
+                tone = new PCMSynthTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case SubSynth:
-                tone = new SubSynthTone(rack);
+                tone = new SubSynthTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case PadSynth:
-                tone = new PadSynthTone(rack);
+                tone = new PadSynthTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case Organ:
-                tone = new OrganTone(rack);
+                tone = new OrganTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case Vocoder:
-                tone = new VocoderTone(rack);
+                tone = new VocoderTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case EightBitSynth:
-                tone = new EightBitSynth(rack);
+                tone = new EightBitSynth(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case Modular:
-                tone = new ModularTone(rack);
+                tone = new ModularTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
             case FMSynth:
-                tone = new FMSynthTone(rack);
+                tone = new FMSynthTone(machine);
                 initializeTone(tone, toneName, toneType, index);
                 ToneUtils.setup(tone);
                 break;
@@ -170,7 +171,8 @@ public class ToneFactory extends CaustkSubFactoryBase {
         return index;
     }
 
-    public Tone createTone(ToneDescriptor descriptor) throws CausticException {
-        return createTone(descriptor.getIndex(), descriptor.getName(), descriptor.getToneType());
+    public Tone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException {
+        return createTone(machine, descriptor.getIndex(), descriptor.getName(),
+                descriptor.getToneType());
     }
 }

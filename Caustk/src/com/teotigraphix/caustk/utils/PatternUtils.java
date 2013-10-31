@@ -76,7 +76,7 @@ public final class PatternUtils {
     }
 
     public static int getIndex(int bankIndex, int patternIndex) {
-        return (bankIndex + 1) * patternIndex;
+        return (bankIndex * 16) + patternIndex;
     }
 
 }

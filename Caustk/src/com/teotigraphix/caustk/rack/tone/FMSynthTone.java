@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.Machine;
 
 /**
  * The tone impl for the native FMSynth machine.
@@ -31,8 +31,8 @@ public class FMSynthTone extends Tone {
     public FMSynthTone() {
     }
 
-    public FMSynthTone(IRack rack) {
-        super(rack, ToneType.FMSynth);
+    public FMSynthTone(Machine machine) {
+        super(machine, ToneType.FMSynth);
     }
 
     public static void setup(Tone tone) {

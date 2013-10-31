@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.Machine;
 
 /**
  * The tone impl for the native Vocoder machine.
@@ -31,8 +31,8 @@ public class VocoderTone extends Tone {
     public VocoderTone() {
     }
 
-    public VocoderTone(IRack rack) {
-        super(rack, ToneType.Vocoder);
+    public VocoderTone(Machine machine) {
+        super(machine, ToneType.Vocoder);
     }
 
     public static void setup(Tone tone) {

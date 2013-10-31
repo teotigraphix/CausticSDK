@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.padsynth.HarmonicsComponent;
@@ -58,8 +58,8 @@ public class PadSynthTone extends Tone {
     public PadSynthTone() {
     }
 
-    public PadSynthTone(IRack rack) {
-        super(rack, ToneType.PadSynth);
+    public PadSynthTone(Machine machine) {
+        super(machine, ToneType.PadSynth);
     }
 
     public static void setup(Tone tone) {

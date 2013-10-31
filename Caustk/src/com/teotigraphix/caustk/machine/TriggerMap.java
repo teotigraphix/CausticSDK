@@ -26,8 +26,8 @@ import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
-import com.teotigraphix.caustk.machine.Phrase.CaustkPhraseChangeKind;
-import com.teotigraphix.caustk.machine.Phrase.OnCaustkPhraseChange;
+import com.teotigraphix.caustk.machine.Phrase.PhraseChangeKind;
+import com.teotigraphix.caustk.machine.Phrase.OnPhraseChange;
 import com.teotigraphix.caustk.machine.Phrase.Scale;
 import com.teotigraphix.caustk.rack.tone.Tone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
@@ -194,7 +194,7 @@ public class TriggerMap {
         Note note = trigger.addNote(beat, pitch, gate, velocity, flags);
         if (getPatternSequencer() != null) {
             getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
-            firePhraseChange(CaustkPhraseChangeKind.NoteAdd, note);
+            firePhraseChange(PhraseChangeKind.NoteAdd, note);
         }
         return note;
     }
@@ -264,7 +264,7 @@ public class TriggerMap {
             getPatternSequencer().removeNote(pitch, beat);
             // with remove note, we actually take the note out of the collection
             trigger.removeNote(note);
-            firePhraseChange(CaustkPhraseChangeKind.NoteRemove, note);
+            firePhraseChange(PhraseChangeKind.NoteRemove, note);
         }
         return note;
     }
@@ -520,8 +520,8 @@ public class TriggerMap {
     // Private API :: Methods
     //--------------------------------------------------------------------------
 
-    protected void firePhraseChange(CaustkPhraseChangeKind kind, Note note) {
-        phrase.getDispatcher().trigger(new OnCaustkPhraseChange(kind, phrase, note));
+    protected void firePhraseChange(PhraseChangeKind kind, Note note) {
+        phrase.getDispatcher().trigger(new OnPhraseChange(kind, phrase, note));
     }
 
     protected void fireTriggerChange(CaustkTriggerChangeKind kind, Trigger trigger) {

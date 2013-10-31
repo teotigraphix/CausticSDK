@@ -27,8 +27,8 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.machine.MixerPreset;
-import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
@@ -44,7 +44,7 @@ public abstract class Tone implements IRestore {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private IRack rack;
+    private Machine machine;
 
     @Tag(1)
     private Map<Class<? extends ToneComponent>, ToneComponent> components = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
@@ -85,7 +85,7 @@ public abstract class Tone implements IRestore {
     }
 
     public MixerPreset getMixer() {
-        return rack.getScene().getMachine(index).getMixer();
+        return machine.getMixer();
     }
 
     public SynthComponent getSynth() {
@@ -164,8 +164,8 @@ public abstract class Tone implements IRestore {
     /**
      * Returns the core audio engine interface.
      */
-    public ICausticEngine getEngine() {
-        return rack;
+    public final ICausticEngine getEngine() {
+        return machine.getRack();
     }
 
     //--------------------------------------------------------------------------
@@ -288,11 +288,11 @@ public abstract class Tone implements IRestore {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Tone() {
+    Tone() {
     }
 
-    public Tone(IRack rack, ToneType toneType) {
-        this.rack = rack;
+    public Tone(Machine machine, ToneType toneType) {
+        this.machine = machine;
         this.toneType = toneType;
     }
 

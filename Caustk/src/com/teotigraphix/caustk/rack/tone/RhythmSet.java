@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.rack.tone;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.machine.Machine;
 
 /**
  * @author Michael Schmalle
@@ -38,8 +38,8 @@ public class RhythmSet extends Tone {
     public RhythmSet() {
     }
 
-    public RhythmSet(Rack rack) {
-        super(rack, ToneType.Beatbox);
+    public RhythmSet(Machine machine) {
+        super(machine, ToneType.Beatbox);
     }
 
 }

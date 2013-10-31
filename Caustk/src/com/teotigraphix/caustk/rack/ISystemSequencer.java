@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack;
 
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.rack.ISystemSequencer.ExportType;
@@ -272,8 +271,7 @@ public interface ISystemSequencer extends IRackComponent {
     int getCurrentSixteenthStep();
 
     /**
-     * Dispatched by {@link ICaustkController} when play or stop is executed on
-     * the sequencer.
+     * Dispatcher: {@link IRack#getDispatcher()}
      * 
      * @see ISystemSequencer#isPlaying()
      */
@@ -281,7 +279,7 @@ public interface ISystemSequencer extends IRackComponent {
     }
 
     /**
-     * Dispatched by {@link ICaustkController}.
+     * Dispatcher: {@link IRack#getDispatcher()}
      * 
      * @see ISystemSequencer#setBPM(float)
      */
@@ -299,7 +297,7 @@ public interface ISystemSequencer extends IRackComponent {
     }
 
     /**
-     * Dispatcher: {@link ICaustkController}
+     * Dispatcher: {@link IRack#getDispatcher()}
      */
     public static class OnSystemSequencerStepChange {
         public OnSystemSequencerStepChange() {
@@ -307,7 +305,7 @@ public interface ISystemSequencer extends IRackComponent {
     }
 
     /**
-     * Dispatcher: {@link ICaustkController}
+     * Dispatcher: {@link IRack#getDispatcher()}
      */
     public static class OnSystemSequencerBeatChange {
 

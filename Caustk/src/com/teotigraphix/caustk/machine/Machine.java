@@ -36,13 +36,10 @@ import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
+/**
+ * @author Michael Schmalle
+ */
 public class Machine implements ICaustkComponent, IRackSerializer {
-
-    /*
-     * The tone is only set when the LiveMachine is actually assigned to a channel
-     * in the LiveScene.
-     */
-    private transient Tone tone;
 
     public final IRack getRack() {
         return scene.getRack();
@@ -56,6 +53,9 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     private ComponentInfo info;
 
     @Tag(1)
+    private Tone tone;
+
+    @Tag(2)
     private Scene scene;
 
     @Tag(3)
@@ -210,7 +210,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
             return;
         currentBank = value;
         getTone().getPatternSequencer().setSelectedBank(currentBank);
-        //        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Bank, this));
+        getRack().getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Bank));
     }
 
     //----------------------------------
@@ -231,7 +231,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         currentPattern = value;
         bankEditor.put(currentBank, currentPattern);
         getTone().getPatternSequencer().setSelectedPattern(currentPattern);
-        //        getDispatcher().trigger(new OnTrackChange(TrackChangeKind.Pattern, this));
+        getRack().getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Pattern));
     }
 
     public int getEditPattern() {
@@ -300,7 +300,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
         try {
-            tone = getRack().getFactory().createTone(descriptor);
+            tone = getRack().getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
             throw e;
         }
@@ -330,7 +330,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
         try {
-            tone = getRack().getFactory().createTone(descriptor);
+            tone = getRack().getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -385,7 +385,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
 
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
-        tone = factory.createTone(descriptor);
+        tone = factory.createTone(this, descriptor);
         if (tone == null)
             throw new CausticException("Failed to create " + descriptor.toString());
     }
@@ -449,5 +449,35 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     @Override
     public String toString() {
         return "[Machine(" + index + ", " + machineType.getType() + ", " + machineName + ")]";
+    }
+
+    public enum MachineChangeKind {
+        Bank,
+
+        Pattern;
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @see IRack#getDispatcher()
+     */
+    public static class OnMachineChange {
+
+        private Machine machine;
+
+        public Machine getMachine() {
+            return machine;
+        }
+
+        private MachineChangeKind kind;
+
+        public MachineChangeKind getKind() {
+            return kind;
+        }
+
+        public OnMachineChange(Machine machine, MachineChangeKind kind) {
+            this.machine = machine;
+            this.kind = kind;
+        }
     }
 }

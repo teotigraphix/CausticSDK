@@ -108,6 +108,6 @@ public interface ICaustkFactory {
     ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
             throws FileNotFoundException;
 
-    Tone createTone(ToneDescriptor descriptor) throws CausticException;
+    Tone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException;
 
 }
