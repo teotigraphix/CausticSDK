@@ -40,7 +40,7 @@ import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
-public class Scene implements ICaustkComponent, IRackAware {
+public class RackSet implements ICaustkComponent, IRackAware {
 
     private transient IRack rack;
 
@@ -110,7 +110,7 @@ public class Scene implements ICaustkComponent, IRackAware {
     //----------------------------------
 
     /**
-     * Sets the {@link Scene} as an internal scene(not saved to disk), meaning
+     * Sets the {@link RackSet} as an internal scene(not saved to disk), meaning
      * it is treated as a application state scene loaded when the application is
      * loaded with the application's state.
      */
@@ -119,7 +119,7 @@ public class Scene implements ICaustkComponent, IRackAware {
     }
 
     /**
-     * Returns whether the {@link Scene} is an internal scene. (not saved to
+     * Returns whether the {@link RackSet} is an internal scene. (not saved to
      * disk)
      */
     public boolean isInternal() {
@@ -157,14 +157,14 @@ public class Scene implements ICaustkComponent, IRackAware {
     /*
      * Serialization.
      */
-    Scene() {
+    RackSet() {
     }
 
-    Scene(ComponentInfo info) {
+    RackSet(ComponentInfo info) {
         this.info = info;
     }
 
-    Scene(ComponentInfo info, File absoluteCausticFile) {
+    RackSet(ComponentInfo info, File absoluteCausticFile) {
         this.info = info;
         this.causticFile = absoluteCausticFile;
         this.info.setName(absoluteCausticFile.getName().replace(".caustic", ""));
@@ -276,7 +276,7 @@ public class Scene implements ICaustkComponent, IRackAware {
     }
 
     /**
-     * Loads the {@link Scene} using the {@link #getCausticFile()} passed during
+     * Loads the {@link RackSet} using the {@link #getCausticFile()} passed during
      * scene construction.
      * <p>
      * Calling this method will issue a <code>BLANKRACK</code> command and

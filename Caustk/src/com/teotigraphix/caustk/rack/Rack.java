@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.machine.Machine;
-import com.teotigraphix.caustk.machine.Scene;
+import com.teotigraphix.caustk.machine.RackSet;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -104,16 +104,16 @@ public class Rack implements IRack {
 
     @Override
     public void clearAndReset() throws CausticException {
-        ArrayList<Machine> list = new ArrayList<Machine>(scene.getMachines());
+        ArrayList<Machine> list = new ArrayList<Machine>(rackSet.getMachines());
         for (Machine machine : list) {
-            scene.removeMachine(machine);
+            rackSet.removeMachine(machine);
         }
         RackMessage.BLANKRACK.send(this);
     }
 
     @Override
     public boolean isEmpty() {
-        return scene.getMachineCount() == 0;
+        return rackSet.getMachineCount() == 0;
     }
 
     @Override
@@ -145,42 +145,42 @@ public class Rack implements IRack {
     // scene
     //----------------------------------
 
-    private Scene scene;
+    private RackSet rackSet;
 
     @Override
-    public final Scene getScene() {
-        return scene;
+    public final RackSet getRackSet() {
+        return rackSet;
     }
 
     @Override
-    public void setScene(Scene value) {
-        if (value == scene)
+    public void setRackSet(RackSet value) {
+        if (value == rackSet)
             return;
 
-        Scene oldScene = scene;
-        scene = value;
-        sceneChanged(scene, oldScene);
+        RackSet oldSet = rackSet;
+        rackSet = value;
+        sceneChanged(rackSet, oldSet);
     }
 
-    private void sceneChanged(Scene newScene, Scene oldScene) {
-        if (oldScene != null) {
-            removeScene(oldScene);
+    private void sceneChanged(RackSet newSet, RackSet oldSet) {
+        if (oldSet != null) {
+            removeRackSet(oldSet);
         }
-        // when a scene is set, the Rack does not care or want to care
-        // how the scene was load, unserialized etc., it will just call update()
+        // when a rackSet is assigned, the Rack does not care or want to care
+        // how the rackSet was loaded, unserialized etc., it will just call update()
         // and restore whatever is there.
 
         // recursively create OR updates all scene components based on their previous 
         // saved state
         try {
-            newScene.rackChanged(this);
+            newSet.rackChanged(this);
         } catch (CausticException e) {
-            getController().getLogger().err("Rack", "Error assigning Scene to Rack", e);
+            getController().getLogger().err("Rack", "Error assigning RackSet to Rack", e);
         }
     }
 
-    private void removeScene(Scene scene) {
-        scene.setRack(null);
+    private void removeRackSet(RackSet rackSet) {
+        rackSet.setRack(null);
     }
 
     //----------------------------------

@@ -31,24 +31,24 @@ import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 public enum ComponentType {
 
     /**
-     * A {@link CaustkLibrary} holds {@link CaustkScene}, {@link CaustkMachine},
-     * {@link CaustkPatch}, {@link CaustkEffect}, {@link CaustkPhrase},
-     * {@link CastkMasterMixer} and {@link CaustkMasterSequencer} components.
+     * A {@link Library} holds {@link RackSet}, {@link Machine}, {@link Patch},
+     * {@link Effect}, {@link Phrase}, {@link MasterMixer} and
+     * {@link MasterSequencer} components.
      * <p>
      * Extension: <strong>.clb</strong>
      */
     Library("clb"),
 
     /**
-     * A {@link CaustkScene} holds {@link CaustkMachine} components.
+     * A {@link RackSet} holds {@link Machine} components.
      * <p>
      * Extension: <strong>.csc</strong>
      */
-    Scene("csc"),
+    RackSet("crs"),
 
     /**
-     * A {@link CaustkMachine} holds one {@link CaustkPatch} and multiple
-     * {@link CaustkPhrase} components.
+     * A {@link Machine} holds one {@link Patch} and multiple {@link Phrase}
+     * components.
      * <p>
      * Extension: <strong>.cmc</strong>
      */
@@ -56,7 +56,7 @@ public enum ComponentType {
 
     /**
      * A {@link CaustkPatch} holds one {@link MachinePreset}, one
-     * {@link MixerPreset} and up to two {@link CaustkEffect} components.
+     * {@link MixerPreset} and up to two {@link Effect} components.
      * <p>
      * Extension: <strong>.cpt</strong>
      */

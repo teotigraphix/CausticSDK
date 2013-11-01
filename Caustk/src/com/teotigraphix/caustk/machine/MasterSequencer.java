@@ -35,10 +35,10 @@ public class MasterSequencer implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private Scene scene;
+    private RackSet rackSet;
 
-    public Scene getScene() {
-        return scene;
+    public RackSet getScene() {
+        return rackSet;
     }
 
     //--------------------------------------------------------------------------
@@ -55,8 +55,8 @@ public class MasterSequencer implements IRackSerializer {
     MasterSequencer() {
     }
 
-    MasterSequencer(Scene caustkScene) {
-        this.scene = caustkScene;
+    MasterSequencer(RackSet rackSet) {
+        this.rackSet = rackSet;
     }
 
     public void create() throws CausticException {
@@ -69,7 +69,7 @@ public class MasterSequencer implements IRackSerializer {
 
     @Override
     public void restore() {
-        String patterns = scene.getRack().getSystemSequencer().getPatterns();
+        String patterns = rackSet.getRack().getSystemSequencer().getPatterns();
         if (patterns != null) {
             loadPatterns(patterns);
         }
@@ -86,14 +86,14 @@ public class MasterSequencer implements IRackSerializer {
             int pattern = Integer.valueOf(parts[3]);
             int end = Integer.valueOf(parts[4]);
 
-            Machine caustkMachine = scene.getMachine(index);
+            Machine caustkMachine = rackSet.getMachine(index);
             caustkMachine.addPattern(bank, pattern, start, end);
         }
     }
 
     public void updateMachine(Machine caustkMachine) {
         for (SequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
-            SequencerMessage.PATTERN_EVENT.send(scene.getRack(), caustkMachine.getIndex(),
+            SequencerMessage.PATTERN_EVENT.send(rackSet.getRack(), caustkMachine.getIndex(),
                     caustkSequencerPattern.getStartBeat(), caustkSequencerPattern.getBankIndex(),
                     caustkSequencerPattern.getPatternIndex(), caustkSequencerPattern.getEndBeat());
         }
@@ -101,7 +101,7 @@ public class MasterSequencer implements IRackSerializer {
 
     @Override
     public void update() {
-        for (Machine caustkMachine : scene.getMachines()) {
+        for (Machine caustkMachine : rackSet.getMachines()) {
             updateMachine(caustkMachine);
         }
     }

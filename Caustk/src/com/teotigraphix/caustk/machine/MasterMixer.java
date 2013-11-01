@@ -49,7 +49,7 @@ public class MasterMixer implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private Scene scene;
+    private RackSet rackSet;
 
     @Tag(1)
     private MasterDelay delay;
@@ -66,8 +66,8 @@ public class MasterMixer implements IRackSerializer {
     @Tag(5)
     private MasterVolume volume;
 
-    public Scene getScene() {
-        return scene;
+    public RackSet getRackSet() {
+        return rackSet;
     }
 
     //--------------------------------------------------------------------------
@@ -97,8 +97,8 @@ public class MasterMixer implements IRackSerializer {
     MasterMixer() {
     }
 
-    MasterMixer(Scene scene) {
-        this.scene = scene;
+    MasterMixer(RackSet rackSet) {
+        this.rackSet = rackSet;
     }
 
     public void create() throws CausticException {
@@ -108,11 +108,11 @@ public class MasterMixer implements IRackSerializer {
         reverb = new MasterReverb();
         volume = new MasterVolume();
 
-        equalizer.setScene(scene);
-        limiter.setScene(scene);
-        delay.setScene(scene);
-        reverb.setScene(scene);
-        volume.setScene(scene);
+        equalizer.setRackSet(rackSet);
+        limiter.setRackSet(rackSet);
+        delay.setRackSet(rackSet);
+        reverb.setRackSet(rackSet);
+        volume.setRackSet(rackSet);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class MasterMixer implements IRackSerializer {
             // save the current state into the 'last' state if this command
             // has redo() called on it
 
-            Machine machine = getContext().getRack().getScene().getMachine(current.index);
+            Machine machine = getContext().getRack().getRackSet().getMachine(current.index);
             MixerPreset channel = machine.getMixer();
 
             last = new VO(channel, current);
@@ -178,7 +178,7 @@ public class MasterMixer implements IRackSerializer {
 
         private void update(VO vo) {
             int index = vo.index;
-            Machine machine = getContext().getRack().getScene().getMachine(index);
+            Machine machine = getContext().getRack().getRackSet().getMachine(index);
             MixerPreset channel = machine.getMixer();
 
             final float value = vo.value;

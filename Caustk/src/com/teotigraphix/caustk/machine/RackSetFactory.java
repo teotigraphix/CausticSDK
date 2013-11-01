@@ -21,20 +21,20 @@ package com.teotigraphix.caustk.machine;
 
 import java.io.File;
 
-public class SceneFactory extends CaustkSubFactoryBase {
+public class RackSetFactory extends CaustkSubFactoryBase {
 
-    public SceneFactory() {
+    public RackSetFactory() {
     }
 
-    public Scene createScene(ComponentInfo info) {
-        Scene caustkScene = new Scene(info);
-        return caustkScene;
+    public RackSet createRackSet(ComponentInfo info) {
+        RackSet rackSet = new RackSet(info);
+        return rackSet;
     }
 
-    public Scene createScene(ComponentInfo info, File absoluteCausticFile) {
-        Scene caustkScene = new Scene(info, absoluteCausticFile);
-        caustkScene.setRack(getFactory().getRack());
-        return caustkScene;
+    public RackSet createRackSet(ComponentInfo info, File absoluteCausticFile) {
+        RackSet rackSet = new RackSet(info, absoluteCausticFile);
+        rackSet.setRack(getFactory().getRack());
+        return rackSet;
     }
 
 }

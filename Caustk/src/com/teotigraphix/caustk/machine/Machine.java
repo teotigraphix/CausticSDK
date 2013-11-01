@@ -42,7 +42,7 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 public class Machine implements ICaustkComponent, IRackSerializer {
 
     public final IRack getRack() {
-        return scene.getRack();
+        return rackSet.getRack();
     }
 
     //--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     private Tone tone;
 
     @Tag(2)
-    private Scene scene;
+    private RackSet rackSet;
 
     @Tag(3)
     private int index = -1;
@@ -278,9 +278,9 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         this.machineName = machineName;
     }
 
-    Machine(ComponentInfo info, Scene scene, int index, MachineType machineType, String machineName) {
+    Machine(ComponentInfo info, RackSet rackSet, int index, MachineType machineType, String machineName) {
         this.info = info;
-        this.scene = scene;
+        this.rackSet = rackSet;
         this.index = index;
         this.machineType = machineType;
         this.machineName = machineName;
@@ -380,7 +380,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     private void loadTone(CaustkFactory factory) throws CausticException {
         final IRack rack = factory.getRack();
 
-        if (rack.getScene().hasMachine(index))
+        if (rack.getRackSet().hasMachine(index))
             throw new IllegalStateException("Tone exists in ISoundSource at index:" + index);
 
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,

@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.machine.ComponentInfo;
 import com.teotigraphix.caustk.machine.ComponentType;
-import com.teotigraphix.caustk.machine.Scene;
+import com.teotigraphix.caustk.machine.RackSet;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
@@ -53,7 +53,7 @@ public abstract class ApplicationModelState {
     private CausticSongFile songFile;
 
     @Tag(2)
-    private Scene scene;
+    private RackSet rackSet;
 
     //----------------------------------
     // controller
@@ -122,10 +122,11 @@ public abstract class ApplicationModelState {
         // XXX don't know exactly where to put this but when a new Project
         // is created, when reiniting the state, the Rack needs to be wiped
         RackMessage.BLANKRACK.send(rack);
-        ComponentInfo info = rack.getFactory().createInfo(ComponentType.Scene, "Untitle Scene");
-        scene = rack.getFactory().createScene(info);
-        scene.setInternal();
-        rack.setScene(scene);
+        ComponentInfo info = rack.getFactory()
+                .createInfo(ComponentType.RackSet, "Untitled RackSet");
+        rackSet = rack.getFactory().createScene(info);
+        rackSet.setInternal();
+        rack.setRackSet(rackSet);
     }
 
     /**
@@ -142,7 +143,7 @@ public abstract class ApplicationModelState {
      * to the {@link IRack} instance.
      */
     public void update() {
-        getController().getRack().setScene(scene);
+        getController().getRack().setRackSet(rackSet);
         // XXX This runs right before the first screen is created in GDX game
         // which is a good place to restore things because mediators are not
         // around yet, for now this fixes the "bpm" bug with the outputpanel

@@ -18,7 +18,7 @@ import com.teotigraphix.caustk.machine.MasterMixer;
 import com.teotigraphix.caustk.machine.MasterSequencer;
 import com.teotigraphix.caustk.machine.Patch;
 import com.teotigraphix.caustk.machine.Phrase;
-import com.teotigraphix.caustk.machine.Scene;
+import com.teotigraphix.caustk.machine.RackSet;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
@@ -71,13 +71,13 @@ public interface ICaustkFactory {
 
     Library createLibrary(String name);
 
-    Scene createScene(ComponentInfo info);
+    RackSet createScene(ComponentInfo info);
 
-    Scene createScene(ComponentInfo info, File absoluteCausticFile);
+    RackSet createScene(ComponentInfo info, File absoluteCausticFile);
 
     Machine createMachine(ComponentInfo info, MachineType machineType, String machineName);
 
-    Machine createMachine(Scene scene, int index, MachineType machineType, String machineName);
+    Machine createMachine(RackSet rackSet, int index, MachineType machineType, String machineName);
 
     Patch createPatch(ComponentInfo info, MachineType machineType);
 
@@ -93,9 +93,9 @@ public interface ICaustkFactory {
 
     Effect createEffect(int slot, EffectType effectType, Patch caustkPatch);
 
-    MasterMixer createMasterMixer(Scene caustkScene);
+    MasterMixer createMasterMixer(RackSet caustkScene);
 
-    MasterSequencer createMasterSequencer(Scene caustkScene);
+    MasterSequencer createMasterSequencer(RackSet caustkScene);
 
     ComponentInfo createInfo(ComponentType type);
 

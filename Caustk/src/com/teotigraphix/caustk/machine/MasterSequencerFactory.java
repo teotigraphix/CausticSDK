@@ -24,8 +24,8 @@ public class MasterSequencerFactory extends CaustkSubFactoryBase {
     public MasterSequencerFactory() {
     }
 
-    public MasterSequencer createMasterSequencer(Scene caustkScene) {
-        MasterSequencer caustkMasterSequencer = new MasterSequencer(caustkScene);
+    public MasterSequencer createMasterSequencer(RackSet rackSet) {
+        MasterSequencer caustkMasterSequencer = new MasterSequencer(rackSet);
         return caustkMasterSequencer;
     }
 }

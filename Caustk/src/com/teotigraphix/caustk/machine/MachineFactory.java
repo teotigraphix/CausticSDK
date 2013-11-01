@@ -29,9 +29,9 @@ public class MachineFactory extends CaustkSubFactoryBase {
         return caustkMachine;
     }
 
-    public Machine createMachine(Scene scene, int index, MachineType machineType, String machineName) {
+    public Machine createMachine(RackSet rackSet, int index, MachineType machineType, String machineName) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Machine);
-        Machine caustkMachine = new Machine(info, scene, index, machineType, machineName);
+        Machine caustkMachine = new Machine(info, rackSet, index, machineType, machineName);
         return caustkMachine;
     }
 }

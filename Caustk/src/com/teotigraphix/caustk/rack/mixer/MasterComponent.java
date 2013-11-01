@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
-import com.teotigraphix.caustk.machine.Scene;
+import com.teotigraphix.caustk.machine.RackSet;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
@@ -43,7 +43,7 @@ public class MasterComponent implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private Scene scene;
+    private RackSet rackSet;
 
     @Tag(1)
     private boolean bypass = false;
@@ -52,12 +52,12 @@ public class MasterComponent implements IRackSerializer {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    public Scene getScene() {
-        return scene;
+    public RackSet getRackSet() {
+        return rackSet;
     }
 
-    public void setScene(Scene value) {
-        scene = value;
+    public void setRackSet(RackSet value) {
+        rackSet = value;
     }
 
     //----------------------------------
@@ -65,7 +65,7 @@ public class MasterComponent implements IRackSerializer {
     //----------------------------------
 
     protected final IRack getRack() {
-        return scene.getRack();
+        return rackSet.getRack();
     }
 
     //----------------------------------

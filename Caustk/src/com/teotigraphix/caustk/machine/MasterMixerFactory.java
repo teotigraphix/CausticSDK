@@ -24,8 +24,8 @@ public class MasterMixerFactory extends CaustkSubFactoryBase {
     public MasterMixerFactory() {
     }
 
-    public MasterMixer createMasterMixer(Scene caustkScene) {
-        MasterMixer castkMasterMixer = new MasterMixer(caustkScene);
+    public MasterMixer createMasterMixer(RackSet rackSet) {
+        MasterMixer castkMasterMixer = new MasterMixer(rackSet);
         return castkMasterMixer;
     }
 }

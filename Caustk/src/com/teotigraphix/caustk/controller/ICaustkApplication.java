@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.controller;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
-import com.teotigraphix.caustk.machine.Scene;
+import com.teotigraphix.caustk.machine.RackSet;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
 
@@ -89,7 +89,7 @@ public interface ICaustkApplication {
      * Returns the single instance of the {@link IRack} for the application.
      * <p>
      * The {@link IRack} is not serialized so it's instance stays around the
-     * whole application life cycle. The {@link Scene} is plugged into the
+     * whole application life cycle. The {@link RackSet} is plugged into the
      * rack which is actually the {@link IRack}s internal state.
      */
     IRack getRack();

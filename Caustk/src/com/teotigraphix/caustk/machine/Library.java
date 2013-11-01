@@ -74,8 +74,8 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 
 /**
- * The {@link Library} is a collection container for all library
- * components that can be serialized.
+ * The {@link Library} is a collection container for all library components that
+ * can be serialized.
  * <p>
  * When components are added to a library, they are either created using the
  * {@link CaustkFactory} or copied from and existing component. Any component
@@ -86,13 +86,13 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * <strong>Note;</strong> A component can have a reference to it's parent
  * composite depending on where in the chain a component is added. For example,
  * if a {@link Machine} is added to the library, its reference to the
- * {@link Scene} will be disconnected before serialization. If a
- * {@link Effect} is added to the library, it's reference to the
- * {@link Patch} will be disconnected.
+ * {@link RackSet} will be disconnected before serialization. If a
+ * {@link Effect} is added to the library, it's reference to the {@link Patch}
+ * will be disconnected.
  * <p>
  * A library holds;
  * <ul>
- * <li>{@link Scene}</li>
+ * <li>{@link RackSet}</li>
  * <li>{@link Machine}</li>
  * <li>{@link Patch}</li>
  * <li>{@link Effect}</li>
@@ -115,7 +115,7 @@ public class Library implements ICaustkComponent {
     private ComponentInfo info;
 
     @Tag(1)
-    private Collection<Scene> scenes = new ArrayList<Scene>();
+    private Collection<RackSet> sets = new ArrayList<RackSet>();
 
     @Tag(2)
     private Collection<Machine> machines = new ArrayList<Machine>();
@@ -193,23 +193,23 @@ public class Library implements ICaustkComponent {
         sb.append(File.separator);
 
         // add the specific sub directory after component type
-        if (info.getType() == ComponentType.Scene) {
-            // Scene uses root
-            // CaustkScene caustkScene = (CaustkScene)component;
+        if (info.getType() == ComponentType.RackSet) {
+            // RackSet uses root
+            // RackSet rackSet = (RackSet)component;
         } else if (info.getType() == ComponentType.Patch) {
             // Patch uses MachineType
-            Patch caustkPatch = (Patch)component;
-            sb.append(caustkPatch.getMachineType().name());
+            Patch patch = (Patch)component;
+            sb.append(patch.getMachineType().name());
             sb.append(File.separator);
         } else if (info.getType() == ComponentType.Phrase) {
             // Phrase uses MachineType
-            Phrase caustkPhrase = (Phrase)component;
-            sb.append(caustkPhrase.getMachineType().name());
+            Phrase phrase = (Phrase)component;
+            sb.append(phrase.getMachineType().name());
             sb.append(File.separator);
         } else if (info.getType() == ComponentType.Effect) {
             // Effect uses EffectType
-            Effect caustkEffect = (Effect)component;
-            sb.append(caustkEffect.getEffectType().name());
+            Effect effect = (Effect)component;
+            sb.append(effect.getEffectType().name());
             sb.append(File.separator);
         }
 
@@ -247,11 +247,11 @@ public class Library implements ICaustkComponent {
         return getCollection(component).contains(component);
     }
 
-    public boolean add(Scene scene) throws IOException {
-        if (scenes.contains(scene))
+    public boolean add(RackSet rackSet) throws IOException {
+        if (sets.contains(rackSet))
             return false;
-        scenes.add(scene);
-        save(scene);
+        sets.add(rackSet);
+        save(rackSet);
         return true;
     }
 
@@ -340,8 +340,8 @@ public class Library implements ICaustkComponent {
                 return patches;
             case Phrase:
                 return phrases;
-            case Scene:
-                return scenes;
+            case RackSet:
+                return sets;
         }
         return null;
     }

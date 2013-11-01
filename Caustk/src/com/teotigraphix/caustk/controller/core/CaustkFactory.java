@@ -50,8 +50,8 @@ import com.teotigraphix.caustk.machine.Patch;
 import com.teotigraphix.caustk.machine.PatchFactory;
 import com.teotigraphix.caustk.machine.Phrase;
 import com.teotigraphix.caustk.machine.PhraseFactory;
-import com.teotigraphix.caustk.machine.Scene;
-import com.teotigraphix.caustk.machine.SceneFactory;
+import com.teotigraphix.caustk.machine.RackSet;
+import com.teotigraphix.caustk.machine.RackSetFactory;
 import com.teotigraphix.caustk.machine.ToneFactory;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
@@ -85,7 +85,7 @@ public class CaustkFactory implements ICaustkFactory {
 
     private LibraryFactory libraryFactory;
 
-    private SceneFactory sceneFactory;
+    private RackSetFactory rackSetFactory;
 
     private MachineFactory machineFactory;
 
@@ -131,8 +131,8 @@ public class CaustkFactory implements ICaustkFactory {
         infoFactory.setFactory(this);
         libraryFactory = new LibraryFactory();
         libraryFactory.setFactory(this);
-        sceneFactory = new SceneFactory();
-        sceneFactory.setFactory(this);
+        rackSetFactory = new RackSetFactory();
+        rackSetFactory.setFactory(this);
         machineFactory = new MachineFactory();
         machineFactory.setFactory(this);
         patchFactory = new PatchFactory();
@@ -198,24 +198,24 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     /**
-     * Creates an empty {@link Scene} with name.
+     * Creates an empty {@link RackSet} with name.
      * 
      * @param name The name of the scene.
      */
     @Override
-    public Scene createScene(ComponentInfo info) {
-        return sceneFactory.createScene(info);
+    public RackSet createScene(ComponentInfo info) {
+        return rackSetFactory.createRackSet(info);
     }
 
     /**
-     * Creates a {@link Scene} from a <code>.caustic</code> song file import.
+     * Creates a {@link RackSet} from a <code>.caustic</code> song file import.
      * 
      * @param absoluteCausticFile The absolute location of the
      *            <code>.caustic</code> song file.
      */
     @Override
-    public Scene createScene(ComponentInfo info, File absoluteCausticFile) {
-        return sceneFactory.createScene(info, absoluteCausticFile);
+    public RackSet createScene(ComponentInfo info, File absoluteCausticFile) {
+        return rackSetFactory.createRackSet(info, absoluteCausticFile);
     }
 
     @Override
@@ -224,8 +224,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public Machine createMachine(Scene scene, int index, MachineType machineType, String machineName) {
-        return machineFactory.createMachine(scene, index, machineType, machineName);
+    public Machine createMachine(RackSet rackSet, int index, MachineType machineType, String machineName) {
+        return machineFactory.createMachine(rackSet, index, machineType, machineName);
     }
 
     //----------------------------------
@@ -315,12 +315,12 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public MasterMixer createMasterMixer(Scene caustkScene) {
+    public MasterMixer createMasterMixer(RackSet caustkScene) {
         return masterMixerFactory.createMasterMixer(caustkScene);
     }
 
     @Override
-    public MasterSequencer createMasterSequencer(Scene caustkScene) {
+    public MasterSequencer createMasterSequencer(RackSet caustkScene) {
         return masterSequencerFactory.createMasterSequencer(caustkScene);
     }
 
