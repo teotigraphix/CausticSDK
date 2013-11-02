@@ -40,6 +40,13 @@ public enum ComponentType {
     Library("clb"),
 
     /**
+     * A {@link LiveSet} holds TODO components.
+     * <p>
+     * Extension: <strong>.cls</strong>
+     */
+    LiveSet("cls"),
+
+    /**
      * A {@link RackSet} holds {@link Machine} components.
      * <p>
      * Extension: <strong>.csc</strong>

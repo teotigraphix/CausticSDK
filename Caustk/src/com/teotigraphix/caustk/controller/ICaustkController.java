@@ -124,6 +124,15 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
     ICausticLogger getLogger();
 
     //----------------------------------
+    // factory
+    //----------------------------------
+
+    /**
+     * Returns the {@link ICaustkFactory} for the application.
+     */
+    ICaustkFactory getFactory();
+
+    //----------------------------------
     // rack
     //----------------------------------
 

@@ -165,7 +165,7 @@ public abstract class Tone implements IRestore {
      * Returns the core audio engine interface.
      */
     public final ICausticEngine getEngine() {
-        return machine.getRack();
+        return machine.getRackSet().getRack();
     }
 
     //--------------------------------------------------------------------------

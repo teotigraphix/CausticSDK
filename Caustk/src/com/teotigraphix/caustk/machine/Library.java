@@ -92,6 +92,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * <p>
  * A library holds;
  * <ul>
+ * <li>{@link LiveSet}</li>
  * <li>{@link RackSet}</li>
  * <li>{@link Machine}</li>
  * <li>{@link Patch}</li>
@@ -115,24 +116,27 @@ public class Library implements ICaustkComponent {
     private ComponentInfo info;
 
     @Tag(1)
-    private Collection<RackSet> sets = new ArrayList<RackSet>();
+    private Collection<LiveSet> liveSets = new ArrayList<LiveSet>();
 
     @Tag(2)
+    private Collection<RackSet> rackSets = new ArrayList<RackSet>();
+
+    @Tag(20)
     private Collection<Machine> machines = new ArrayList<Machine>();
 
-    @Tag(3)
+    @Tag(21)
     private Collection<Patch> patches = new ArrayList<Patch>();
 
-    @Tag(4)
+    @Tag(22)
     private Collection<Effect> effects = new ArrayList<Effect>();
 
-    @Tag(5)
+    @Tag(23)
     private Collection<Phrase> phrases = new ArrayList<Phrase>();
 
-    @Tag(6)
+    @Tag(24)
     private Collection<MasterMixer> mixers = new ArrayList<MasterMixer>();
 
-    @Tag(7)
+    @Tag(25)
     private Collection<MasterSequencer> sequencers = new ArrayList<MasterSequencer>();
 
     //--------------------------------------------------------------------------
@@ -193,7 +197,10 @@ public class Library implements ICaustkComponent {
         sb.append(File.separator);
 
         // add the specific sub directory after component type
-        if (info.getType() == ComponentType.RackSet) {
+        if (info.getType() == ComponentType.LiveSet) {
+            // RackSet uses root
+            // RackSet rackSet = (RackSet)component;
+        } else if (info.getType() == ComponentType.RackSet) {
             // RackSet uses root
             // RackSet rackSet = (RackSet)component;
         } else if (info.getType() == ComponentType.Patch) {
@@ -247,10 +254,18 @@ public class Library implements ICaustkComponent {
         return getCollection(component).contains(component);
     }
 
-    public boolean add(RackSet rackSet) throws IOException {
-        if (sets.contains(rackSet))
+    public boolean add(LiveSet liveSet) throws IOException {
+        if (liveSets.contains(liveSet))
             return false;
-        sets.add(rackSet);
+        liveSets.add(liveSet);
+        save(liveSet);
+        return true;
+    }
+
+    public boolean add(RackSet rackSet) throws IOException {
+        if (rackSets.contains(rackSet))
+            return false;
+        rackSets.add(rackSet);
         save(rackSet);
         return true;
     }
@@ -326,6 +341,10 @@ public class Library implements ICaustkComponent {
 
     private Collection<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
         switch (component.getInfo().getType()) {
+            case LiveSet:
+                return liveSets;
+            case RackSet:
+                return rackSets;
             case Effect:
                 return effects;
             case Library:
@@ -340,8 +359,6 @@ public class Library implements ICaustkComponent {
                 return patches;
             case Phrase:
                 return phrases;
-            case RackSet:
-                return sets;
         }
         return null;
     }

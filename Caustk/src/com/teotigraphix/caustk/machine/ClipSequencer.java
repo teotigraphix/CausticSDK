@@ -17,15 +17,33 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.live;
+package com.teotigraphix.caustk.machine;
+
+import com.teotigraphix.caustk.machine.LiveSet.OnLiveSetListener;
 
 /**
  * @author Michael Schmalle
  */
-public class LiveSet {
+public abstract class ClipSequencer implements OnLiveSetListener {
 
-    public LiveSet() {
-        // TODO Auto-generated constructor stub
+    private LiveSet liveSet;
+
+    public LiveSet getLiveSet() {
+        return liveSet;
     }
 
+    ClipSequencer() {
+    }
+
+    ClipSequencer(LiveSet liveSet) {
+        this.liveSet = liveSet;
+    }
+
+    public abstract void create();
+
+    @Override
+    public abstract void onTrackAdded(AudioTrack track, Machine machine);
+
+    @Override
+    public abstract void onTrackRemoved(AudioTrack track);
 }

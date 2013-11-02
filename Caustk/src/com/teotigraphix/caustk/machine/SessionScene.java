@@ -17,15 +17,23 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.live;
+package com.teotigraphix.caustk.machine;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.teotigraphix.caustk.machine.LiveSet.OnLiveSetListener;
+
 /**
  * @author Michael Schmalle
  */
-public class SessionScene {
+public class SessionScene implements OnLiveSetListener {
+
+    private SessionSequencer sessionSequencer;
+
+    public SessionSequencer getSessionSequencer() {
+        return sessionSequencer;
+    }
 
     private String name;
 
@@ -57,7 +65,41 @@ public class SessionScene {
         return map.get(index);
     }
 
-    public SessionScene() {
+    SessionScene() {
     }
 
+    SessionScene(SessionSequencer sessionSequencer) {
+        this.sessionSequencer = sessionSequencer;
+    }
+
+    //--------------------------------------------------------------------------
+
+    /*
+     * A session scene holds SessionClips, when play() or stop() is called
+     * the scene proxies to all clips it holds
+     */
+
+    public void play() {
+
+    }
+
+    public void stop() {
+
+    }
+
+    public void togglePlay() {
+
+    }
+
+    @Override
+    public void onTrackAdded(AudioTrack track, Machine machine) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onTrackRemoved(AudioTrack track) {
+        // TODO Auto-generated method stub
+
+    }
 }

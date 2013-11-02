@@ -17,14 +17,31 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.live;
+package com.teotigraphix.caustk.machine;
+
 
 /**
  * @author Michael Schmalle
  */
-public abstract class ClipSequencer {
+public class ArrangementSequencer extends ClipSequencer {
 
-    public ClipSequencer() {
+    ArrangementSequencer() {
+    }
+
+    public ArrangementSequencer(LiveSet liveSet) {
+        super(liveSet);
+    }
+
+    @Override
+    public void create() {
+    }
+
+    @Override
+    public void onTrackAdded(AudioTrack track, Machine machine) {
+    }
+
+    @Override
+    public void onTrackRemoved(AudioTrack track) {
     }
 
 }

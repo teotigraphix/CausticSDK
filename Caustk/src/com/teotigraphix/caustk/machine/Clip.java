@@ -17,14 +17,14 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.live;
+package com.teotigraphix.caustk.machine;
 
 /**
  * @author Michael Schmalle
  */
-public class SessionSequencer extends ClipSequencer {
+public class Clip {
 
-    public SessionSequencer() {
+    public Clip() {
         // TODO Auto-generated constructor stub
     }
 

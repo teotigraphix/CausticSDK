@@ -17,15 +17,19 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.live;
+package com.teotigraphix.caustk.machine;
 
 /**
  * @author Michael Schmalle
  */
-public class ArrangementSequencer extends ClipSequencer {
+public class LiveSetFactory extends CaustkSubFactoryBase {
 
-    public ArrangementSequencer() {
-        // TODO Auto-generated constructor stub
+    public LiveSetFactory() {
+    }
+
+    public LiveSet createLiveSet(ComponentInfo info) {
+        LiveSet liveSet = new LiveSet(info);
+        return liveSet;
     }
 
 }

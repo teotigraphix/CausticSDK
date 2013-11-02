@@ -17,22 +17,15 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.live;
-
-import com.teotigraphix.caustk.machine.Machine;
+package com.teotigraphix.caustk.machine;
 
 /**
  * @author Michael Schmalle
  */
-public class AudioTrack {
+public class ArrangementClip {
 
-    private Machine machine;
-
-    public Machine getMachine() {
-        return machine;
-    }
-
-    public AudioTrack() {
+    public ArrangementClip() {
+        // TODO Auto-generated constructor stub
     }
 
 }

@@ -124,7 +124,7 @@ public abstract class ApplicationModelState {
         RackMessage.BLANKRACK.send(rack);
         ComponentInfo info = rack.getFactory()
                 .createInfo(ComponentType.RackSet, "Untitled RackSet");
-        rackSet = rack.getFactory().createScene(info);
+        rackSet = rack.getFactory().createRackSet(info);
         rackSet.setInternal();
         rack.setRackSet(rackSet);
     }

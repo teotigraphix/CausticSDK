@@ -38,6 +38,8 @@ import com.teotigraphix.caustk.machine.EffectFactory;
 import com.teotigraphix.caustk.machine.ICaustkComponent;
 import com.teotigraphix.caustk.machine.Library;
 import com.teotigraphix.caustk.machine.LibraryFactory;
+import com.teotigraphix.caustk.machine.LiveSet;
+import com.teotigraphix.caustk.machine.LiveSetFactory;
 import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.machine.MachineFactory;
 import com.teotigraphix.caustk.machine.MachinePreset;
@@ -85,6 +87,8 @@ public class CaustkFactory implements ICaustkFactory {
 
     private LibraryFactory libraryFactory;
 
+    private LiveSetFactory liveSetFactory;
+
     private RackSetFactory rackSetFactory;
 
     private MachineFactory machineFactory;
@@ -131,6 +135,8 @@ public class CaustkFactory implements ICaustkFactory {
         infoFactory.setFactory(this);
         libraryFactory = new LibraryFactory();
         libraryFactory.setFactory(this);
+        liveSetFactory = new LiveSetFactory();
+        liveSetFactory.setFactory(this);
         rackSetFactory = new RackSetFactory();
         rackSetFactory.setFactory(this);
         machineFactory = new MachineFactory();
@@ -197,13 +203,18 @@ public class CaustkFactory implements ICaustkFactory {
         return libraryFactory.createLibrary(name);
     }
 
+    @Override
+    public LiveSet createLiveSet(ComponentInfo info) {
+        return liveSetFactory.createLiveSet(info);
+    }
+
     /**
      * Creates an empty {@link RackSet} with name.
      * 
      * @param name The name of the scene.
      */
     @Override
-    public RackSet createScene(ComponentInfo info) {
+    public RackSet createRackSet(ComponentInfo info) {
         return rackSetFactory.createRackSet(info);
     }
 
@@ -214,7 +225,7 @@ public class CaustkFactory implements ICaustkFactory {
      *            <code>.caustic</code> song file.
      */
     @Override
-    public RackSet createScene(ComponentInfo info, File absoluteCausticFile) {
+    public RackSet createRackSet(ComponentInfo info, File absoluteCausticFile) {
         return rackSetFactory.createRackSet(info, absoluteCausticFile);
     }
 
@@ -224,7 +235,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public Machine createMachine(RackSet rackSet, int index, MachineType machineType, String machineName) {
+    public Machine createMachine(RackSet rackSet, int index, MachineType machineType,
+            String machineName) {
         return machineFactory.createMachine(rackSet, index, machineType, machineName);
     }
 

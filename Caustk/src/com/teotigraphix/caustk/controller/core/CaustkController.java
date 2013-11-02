@@ -29,6 +29,7 @@ import org.androidtransfuse.event.EventObserver;
 import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IControllerAware;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommand;
@@ -88,6 +89,15 @@ public class CaustkController implements ICaustkController {
     @Override
     public ICausticLogger getLogger() {
         return application.getLogger();
+    }
+
+    //----------------------------------
+    // factory
+    //----------------------------------
+
+    @Override
+    public ICaustkFactory getFactory() {
+        return application.getFactory();
     }
 
     //----------------------------------

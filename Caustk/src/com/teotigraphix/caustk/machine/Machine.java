@@ -41,8 +41,12 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class Machine implements ICaustkComponent, IRackSerializer {
 
-    public final IRack getRack() {
+    protected final IRack getRack() {
         return rackSet.getRack();
+    }
+
+    public final RackSet getRackSet() {
+        return rackSet;
     }
 
     //--------------------------------------------------------------------------
@@ -278,7 +282,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         this.machineName = machineName;
     }
 
-    Machine(ComponentInfo info, RackSet rackSet, int index, MachineType machineType, String machineName) {
+    Machine(ComponentInfo info, RackSet rackSet, int index, MachineType machineType,
+            String machineName) {
         this.info = info;
         this.rackSet = rackSet;
         this.index = index;

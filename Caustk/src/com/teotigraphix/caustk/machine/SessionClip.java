@@ -17,15 +17,48 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.live;
+package com.teotigraphix.caustk.machine;
 
 /**
  * @author Michael Schmalle
  */
-public class ArrangementClip {
+public class SessionClip {
 
-    public ArrangementClip() {
-        // TODO Auto-generated constructor stub
+    private String name;
+
+    private SessionClipState state;
+
+    private SessionScene scene;
+
+    public String getName() {
+        return name;
+    }
+
+    public SessionClipState getState() {
+        return state;
+    }
+
+    public SessionScene getScene() {
+        return scene;
+    }
+
+    public AudioTrack getTrack() {
+        return scene.getTrack();
+    }
+
+    public SessionClip() {
+    }
+
+    public void play() {
+
+    }
+
+    public void stop() {
+
+    }
+
+    public void togglePlay() {
+
     }
 
 }

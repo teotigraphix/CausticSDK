@@ -12,6 +12,7 @@ import com.teotigraphix.caustk.machine.ComponentType;
 import com.teotigraphix.caustk.machine.Effect;
 import com.teotigraphix.caustk.machine.ICaustkComponent;
 import com.teotigraphix.caustk.machine.Library;
+import com.teotigraphix.caustk.machine.LiveSet;
 import com.teotigraphix.caustk.machine.Machine;
 import com.teotigraphix.caustk.machine.MachineType;
 import com.teotigraphix.caustk.machine.MasterMixer;
@@ -71,9 +72,11 @@ public interface ICaustkFactory {
 
     Library createLibrary(String name);
 
-    RackSet createScene(ComponentInfo info);
+    LiveSet createLiveSet(ComponentInfo info);
 
-    RackSet createScene(ComponentInfo info, File absoluteCausticFile);
+    RackSet createRackSet(ComponentInfo info);
+
+    RackSet createRackSet(ComponentInfo info, File absoluteCausticFile);
 
     Machine createMachine(ComponentInfo info, MachineType machineType, String machineName);
 
