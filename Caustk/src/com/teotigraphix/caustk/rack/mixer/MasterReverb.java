@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.rack.mixer;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
-public class MasterReverb extends MasterComponent {
+public class MasterReverb extends RackMasterComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

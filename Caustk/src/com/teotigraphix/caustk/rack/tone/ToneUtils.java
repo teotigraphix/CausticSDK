@@ -31,8 +31,8 @@ import com.google.gson.stream.JsonReader;
  */
 public final class ToneUtils {
 
-    public static int getComponentCount(Tone tone) {
-        return tone.getComponentCount();
+    public static int getComponentCount(RackTone rackTone) {
+        return rackTone.getComponentCount();
     }
 
     /**
@@ -42,7 +42,7 @@ public final class ToneUtils {
      * @param data Valid serialized Tone data.
      * @throws IOException
      */
-    public static Class<? extends Tone> getToneClass(String data) throws IOException {
+    public static Class<? extends RackTone> getToneClass(String data) throws IOException {
         ToneType type = readToneType(data);
         switch (type) {
             case Bassline:
@@ -98,42 +98,42 @@ public final class ToneUtils {
         return null;
     }
 
-    public static void setup(Tone tone) {
-        switch (tone.getToneType()) {
+    public static void setup(RackTone rackTone) {
+        switch (rackTone.getToneType()) {
             case Bassline:
-                BasslineTone.setup(tone);
+                BasslineTone.setup(rackTone);
                 break;
             case Beatbox:
-                BeatboxTone.setup(tone);
+                BeatboxTone.setup(rackTone);
                 break;
             case EightBitSynth:
-                EightBitSynth.setup(tone);
+                EightBitSynth.setup(rackTone);
                 break;
             case FMSynth:
-                FMSynthTone.setup(tone);
+                FMSynthTone.setup(rackTone);
                 break;
             case Modular:
-                ModularTone.setup(tone);
+                ModularTone.setup(rackTone);
                 break;
             case Organ:
-                OrganTone.setup(tone);
+                OrganTone.setup(rackTone);
                 break;
             case PadSynth:
-                PadSynthTone.setup(tone);
+                PadSynthTone.setup(rackTone);
                 break;
             case PCMSynth:
-                PCMSynthTone.setup(tone);
+                PCMSynthTone.setup(rackTone);
                 break;
             case SubSynth:
-                SubSynthTone.setup(tone);
+                SubSynthTone.setup(rackTone);
                 break;
             case Vocoder:
-                VocoderTone.setup(tone);
+                VocoderTone.setup(rackTone);
                 break;
         }
     }
 
-    public static void setName(Tone tone, String name) {
-        tone.setNameInternal(name);
+    public static void setName(RackTone rackTone, String name) {
+        rackTone.setNameInternal(name);
     }
 }

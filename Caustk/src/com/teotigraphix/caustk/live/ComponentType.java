@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.live;
 
-import com.teotigraphix.caustk.rack.IEffect;
+import com.teotigraphix.caustk.rack.effect.RackEffect;
 import com.teotigraphix.caustk.rack.mixer.MasterDelay;
 import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
 import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
@@ -70,7 +70,7 @@ public enum ComponentType {
     Patch("cpt"),
 
     /**
-     * A {@link CaustkEffect} hold up to 2 live or serialized {@link IEffect}
+     * A {@link CaustkEffect} hold up to 2 live or serialized {@link RackEffect}
      * components.
      * <p>
      * Extension: <strong>.cef</strong>

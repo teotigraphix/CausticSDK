@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMTunerComponent;
  * 
  * @author Michael Schmalle
  */
-public class PCMSynthTone extends Tone {
+public class PCMSynthTone extends RackTone {
 
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
@@ -62,14 +62,14 @@ public class PCMSynthTone extends Tone {
         super(machine, ToneType.PCMSynth);
     }
 
-    public static void setup(Tone tone) {
-        tone.addComponent(SynthComponent.class, new SynthComponent());
-        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        tone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
-        tone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
-        tone.addComponent(LFO1Component.class, new LFO1Component());
-        tone.addComponent(PCMSamplerComponent.class, new PCMSamplerComponent());
-        tone.addComponent(PCMTunerComponent.class, new PCMTunerComponent());
+    public static void setup(RackTone rackTone) {
+        rackTone.addComponent(SynthComponent.class, new SynthComponent());
+        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        rackTone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
+        rackTone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        rackTone.addComponent(LFO1Component.class, new LFO1Component());
+        rackTone.addComponent(PCMSamplerComponent.class, new PCMSamplerComponent());
+        rackTone.addComponent(PCMTunerComponent.class, new PCMTunerComponent());
     }
 
 }

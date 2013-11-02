@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class FlangerEffect extends EffectBase {
+public class FlangerEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API

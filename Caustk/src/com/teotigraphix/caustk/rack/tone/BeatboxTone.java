@@ -47,11 +47,11 @@ public class BeatboxTone extends RhythmTone {
         super(machine);
     }
 
-    public static void setup(Tone tone) {
-        tone.addComponent(SynthComponent.class, new SynthComponent());
-        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        tone.addComponent(VolumeComponent.class, new VolumeComponent());
-        tone.addComponent(WavSamplerComponent.class, new WavSamplerComponent());
+    public static void setup(RackTone rackTone) {
+        rackTone.addComponent(SynthComponent.class, new SynthComponent());
+        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
+        rackTone.addComponent(WavSamplerComponent.class, new WavSamplerComponent());
     }
 
 }

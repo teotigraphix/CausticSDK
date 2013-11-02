@@ -24,10 +24,10 @@ import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
-import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectFactory;
 import com.teotigraphix.caustk.rack.effect.EffectType;
+import com.teotigraphix.caustk.rack.effect.RackEffect;
 
 /**
  * @author Michael Schmalle
@@ -51,7 +51,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     private Patch patch;
 
     @Tag(13)
-    private IEffect effect;
+    private RackEffect rackEffect;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -103,8 +103,8 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     //----------------------------------
 
     @SuppressWarnings("unchecked")
-    public <T extends IEffect> T getEffect() {
-        return (T)effect;
+    public <T extends RackEffect> T getEffect() {
+        return (T)rackEffect;
     }
 
     //----------------------------------
@@ -155,7 +155,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
      * Creates the {@link IEffect} but assigns -1 to the slot and machine index.
      */
     public void create() {
-        effect = createEffect(-1, -1);
+        rackEffect = createEffect(-1, -1);
     }
 
     /**
@@ -166,25 +166,25 @@ public class Effect implements IRackSerializer, ICaustkComponent {
      */
     @Override
     public void load(IRackContext context) throws CausticException {
-        effect = createEffect(index, patch.getMachine().getIndex());
-        effect.setEffect(this);
-        effect.load(context);
+        rackEffect = createEffect(index, patch.getMachine().getIndex());
+        rackEffect.setEffect(this);
+        rackEffect.load(context);
     }
 
     @Override
     public void restore() {
-        effect.restore();
+        rackEffect.restore();
     }
 
     @Override
     public void update() {
         EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getIndex(), index,
                 effectType.getValue());
-        effect.setEffect(this);
-        effect.update();
+        rackEffect.setEffect(this);
+        rackEffect.update();
     }
 
-    IEffect createEffect(int slot, int toneIndex) {
+    RackEffect createEffect(int slot, int toneIndex) {
         return EffectFactory.create(effectType, slot, toneIndex);
     }
 

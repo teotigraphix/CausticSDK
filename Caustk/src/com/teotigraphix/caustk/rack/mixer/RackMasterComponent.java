@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
 /**
  * @author Michael Schmalle
  */
-public class MasterComponent implements IRackSerializer {
+public class RackMasterComponent implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -91,7 +91,7 @@ public class MasterComponent implements IRackSerializer {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MasterComponent() {
+    public RackMasterComponent() {
     }
 
     /**

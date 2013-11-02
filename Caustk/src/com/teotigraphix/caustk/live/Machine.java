@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.utils.PatternUtils;
@@ -57,7 +57,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     private ComponentInfo info;
 
     @Tag(1)
-    private Tone tone;
+    private RackTone rackTone;
 
     @Tag(2)
     private RackSet rackSet;
@@ -213,7 +213,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         if (value == currentBank)
             return;
         currentBank = value;
-        getTone().getPatternSequencer().setSelectedBank(currentBank);
+        getRackTone().getPatternSequencer().setSelectedBank(currentBank);
         getRack().getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Bank));
     }
 
@@ -234,7 +234,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
             return;
         currentPattern = value;
         bankEditor.put(currentBank, currentPattern);
-        getTone().getPatternSequencer().setSelectedPattern(currentPattern);
+        getRackTone().getPatternSequencer().setSelectedPattern(currentPattern);
         getRack().getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Pattern));
     }
 
@@ -255,8 +255,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         setCurrentPattern(pattern);
     }
 
-    public Tone getTone() {
-        return tone;
+    public RackTone getRackTone() {
+        return rackTone;
     }
 
     //--------------------------------------------------------------------------
@@ -292,20 +292,20 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     }
 
     /**
-     * Creates the underlying {@link Tone} instance for the machine using the
+     * Creates the underlying {@link RackTone} instance for the machine using the
      * {@link #getIndex()}, {@link #getMachineName()} and
      * {@link #getMachineType()}.
      * 
      * @throws CausticException Error creating Tone
      */
     public void create() throws CausticException {
-        if (tone != null)
+        if (rackTone != null)
             throw new IllegalStateException("Tone exists in machine");
 
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
         try {
-            tone = getRack().getFactory().createTone(this, descriptor);
+            rackTone = getRack().getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
             throw e;
         }
@@ -335,7 +335,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
         try {
-            tone = getRack().getFactory().createTone(this, descriptor);
+            rackTone = getRack().getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -361,7 +361,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
      * Loads the machine's patch and phrases from the native machine at
      * {@link #getIndex()} in the current native rack.
      * <p>
-     * Calling this method will create a {@link Tone} in the rack's
+     * Calling this method will create a {@link RackTone} in the rack's
      * {@link ISoundSource} if populateTone is true.
      * 
      * @param factory The library factory.
@@ -390,8 +390,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
 
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 ToneType.fromString(machineType.getType()));
-        tone = factory.createTone(this, descriptor);
-        if (tone == null)
+        rackTone = factory.createTone(this, descriptor);
+        if (rackTone == null)
             throw new CausticException("Failed to create " + descriptor.toString());
     }
 
@@ -406,8 +406,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     public void loadPatch(IRackContext context) throws IOException, CausticException {
         patch = context.getFactory().createPatch(this);
         patch.load(context);
-        if (tone != null)
-            tone.setDefaultPatchId(patch.getInfo().getId());
+        if (rackTone != null)
+            rackTone.setDefaultPatchId(patch.getInfo().getId());
     }
 
     /**

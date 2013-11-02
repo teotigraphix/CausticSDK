@@ -23,7 +23,7 @@ import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.service.ISerializeService;
 
@@ -111,6 +111,6 @@ public interface ICaustkFactory {
     ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
             throws FileNotFoundException;
 
-    Tone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException;
+    RackTone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException;
 
 }

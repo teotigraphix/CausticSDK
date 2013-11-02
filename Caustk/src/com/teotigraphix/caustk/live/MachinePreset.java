@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
@@ -193,10 +193,10 @@ public class MachinePreset implements IRackSerializer {
     }
 
     /**
-     * Restores the {@link #getData()} bytes with the {@link Tone}'s preset file
+     * Restores the {@link #getData()} bytes with the {@link RackTone}'s preset file
      * as currently loaded in the rack.
      * <p>
-     * The {@link #getPatch()}'s {@link Machine} and {@link Tone} must be non
+     * The {@link #getPatch()}'s {@link Machine} and {@link RackTone} must be non
      * <code>null</code> for the method to not throw an error.
      * 
      * @throws IOException
@@ -208,12 +208,12 @@ public class MachinePreset implements IRackSerializer {
             throw new IllegalStateException(
                     "CaustkMachine cannot be null when trying to update preset file");
 
-        Tone tone = machine.getTone();
-        if (tone == null)
+        RackTone rackTone = machine.getRackTone();
+        if (rackTone == null)
             throw new IllegalStateException(
                     "CaustkMachine Tone cannot be null when trying to update preset file");
 
-        restore(tone);
+        restore(rackTone);
     }
 
     @Override
@@ -243,24 +243,24 @@ public class MachinePreset implements IRackSerializer {
     }
 
     /**
-     * Updates the {@link #getData()} bytes with the {@link Tone}'s preset file
+     * Updates the {@link #getData()} bytes with the {@link RackTone}'s preset file
      * as currently loaded in the rack.
      * <p>
-     * The {@link Tone#getToneType()} must match the {@link Patch#getToneType()}
+     * The {@link RackTone#getToneType()} must match the {@link Patch#getToneType()}
      * for the method to be successful.
      * 
-     * @param tone The {@link Tone} to use when updating the preset bytes.
+     * @param rackTone The {@link RackTone} to use when updating the preset bytes.
      * @throws IOException
      */
     // XXX throw exception?
-    public void restore(Tone tone) {
-        if (!tone.getToneType().getValue().equals(getPatch().getMachineType().getType()))
+    public void restore(RackTone rackTone) {
+        if (!rackTone.getToneType().getValue().equals(getPatch().getMachineType().getType()))
             throw new IllegalStateException("Tone's type does not match the LivePhrase's type");
 
         // save the temp preset file to get its bytes
         String presetName = constructPresetName(false);
         try {
-            tone.getSynth().savePreset(presetName);
+            rackTone.getSynth().savePreset(presetName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -281,13 +281,13 @@ public class MachinePreset implements IRackSerializer {
         FileUtils.deleteQuietly(presetFile);
     }
 
-    public void load(File targetDirectory, Tone tone) throws IOException {
+    public void load(File targetDirectory, RackTone rackTone) throws IOException {
         if (!targetDirectory.exists())
             throw new IOException("Directory does no exist for preset load: " + targetDirectory);
         // something like MyPreset-12sd1323-123qadsd12-12312qwed.subsynth
         String presetName = constructPresetName(true);
         File savedFile = new File(targetDirectory, presetName);
-        tone.getSynth().loadPreset(savedFile.getAbsolutePath());
+        rackTone.getSynth().loadPreset(savedFile.getAbsolutePath());
         if (!savedFile.exists())
             throw new IOException("Error saving preset file to: " + savedFile);
     }

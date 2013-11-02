@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.rack.tone.components.organ.LeslieComponent;
  * 
  * @author Michael Schmalle
  */
-public class OrganTone extends Tone {
+public class OrganTone extends RackTone {
 
     public VolumeComponent getVolume() {
         return getComponent(VolumeComponent.class);
@@ -47,11 +47,11 @@ public class OrganTone extends Tone {
         super(machine, ToneType.Organ);
     }
 
-    public static void setup(Tone tone) {
-        tone.addComponent(SynthComponent.class, new SynthComponent());
-        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        tone.addComponent(VolumeComponent.class, new VolumeComponent());
-        tone.addComponent(LeslieComponent.class, new LeslieComponent());
+    public static void setup(RackTone rackTone) {
+        rackTone.addComponent(SynthComponent.class, new SynthComponent());
+        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
+        rackTone.addComponent(LeslieComponent.class, new LeslieComponent());
     }
 
 }

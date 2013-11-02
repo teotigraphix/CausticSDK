@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.live.Machine;
 /**
  * @author Michael Schmalle
  */
-public class RhythmTone extends Tone {
+public class RhythmTone extends RackTone {
 
     private RhythmChannel channel;
 

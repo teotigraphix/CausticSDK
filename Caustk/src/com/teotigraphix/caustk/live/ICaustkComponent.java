@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.live;
 
 /**
+ * A component found in a {@link Library}.
+ * 
  * @author Michael Schmalle
  */
 public interface ICaustkComponent {

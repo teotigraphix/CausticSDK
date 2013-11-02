@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 /**
  * @author Michael Schmalle
  */
-public class MasterVolume extends MasterComponent {
+public class MasterVolume extends RackMasterComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

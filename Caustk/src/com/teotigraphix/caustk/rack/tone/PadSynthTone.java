@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.rack.tone.components.padsynth.VolumeComponent;
  * 
  * @author Michael Schmalle
  */
-public class PadSynthTone extends Tone {
+public class PadSynthTone extends RackTone {
 
     public HarmonicsComponent getHarmonics() {
         return getComponent(HarmonicsComponent.class);
@@ -62,14 +62,14 @@ public class PadSynthTone extends Tone {
         super(machine, ToneType.PadSynth);
     }
 
-    public static void setup(Tone tone) {
-        tone.addComponent(SynthComponent.class, new SynthComponent());
-        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        tone.addComponent(VolumeComponent.class, new VolumeComponent());
-        tone.addComponent(HarmonicsComponent.class, new HarmonicsComponent());
-        tone.addComponent(LFO1Component.class, new LFO1Component());
-        tone.addComponent(LFO2Component.class, new LFO2Component());
-        tone.addComponent(MorphComponent.class, new MorphComponent());
+    public static void setup(RackTone rackTone) {
+        rackTone.addComponent(SynthComponent.class, new SynthComponent());
+        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
+        rackTone.addComponent(HarmonicsComponent.class, new HarmonicsComponent());
+        rackTone.addComponent(LFO1Component.class, new LFO1Component());
+        rackTone.addComponent(LFO2Component.class, new LFO2Component());
+        rackTone.addComponent(MorphComponent.class, new MorphComponent());
     }
 
 }

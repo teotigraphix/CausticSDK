@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.rack;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.rack.ISystemSequencer.ExportType;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 /**
  * Controls the outputpanel (transport).
@@ -98,7 +98,7 @@ public interface ISystemSequencer extends IRackComponent {
     String getPatterns();
 
     /**
-     * Adds {@link Tone} bank patterns into the song sequencer.
+     * Adds {@link RackTone} bank patterns into the song sequencer.
      * <p>
      * Patterns span whole measures whether a patterns length is 1, 2, 4 or 8,
      * does not matter.
@@ -107,24 +107,24 @@ public interface ISystemSequencer extends IRackComponent {
      * placed at 0 and end at 1 would only get half the pattern played in the
      * song sequencer.
      * 
-     * @param tone The {@link Tone} to sequence.
+     * @param rackTone The {@link RackTone} to sequence.
      * @param bank The bank of the pattern.
      * @param pattern The pattern of the IMachine.
      * @param start The start measure of the insert
      * @param end The end measure of insert.
      * @throws CausticException Invalid values
      */
-    void addPattern(Tone tone, int bank, int pattern, int start, int end) throws CausticException;
+    void addPattern(RackTone rackTone, int bank, int pattern, int start, int end) throws CausticException;
 
     /**
-     * Removes {@link Tone} bank pattern from the song sequencer.
+     * Removes {@link RackTone} bank pattern from the song sequencer.
      * 
-     * @param tone The {@link Tone} sequenced.
+     * @param rackTone The {@link RackTone} sequenced.
      * @param start The start measure to remove.
      * @param end The measure bar to remove to.
      * @throws CausticException Invalid values
      */
-    void removePattern(Tone tone, int start, int end) throws CausticException;
+    void removePattern(RackTone rackTone, int start, int end) throws CausticException;
 
     /**
      * Sets loop points for a song loop of patterns.
@@ -198,7 +198,7 @@ public interface ISystemSequencer extends IRackComponent {
      * 
      * @param machine The {@link IMachine} to clear automation from.
      */
-    void clearAutomation(Tone machine);
+    void clearAutomation(RackTone machine);
 
     boolean updatePosition(int measure, float beat);
 

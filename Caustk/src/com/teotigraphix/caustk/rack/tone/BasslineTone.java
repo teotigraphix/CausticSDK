@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.rack.tone.components.bassline.OSC1Component;
  * 
  * @author Michael Schmalle
  */
-public class BasslineTone extends Tone {
+public class BasslineTone extends RackTone {
 
     public VolumeComponent getVolume() {
         return getComponent(VolumeComponent.class);
@@ -62,14 +62,14 @@ public class BasslineTone extends Tone {
         super(machine, ToneType.Bassline);
     }
 
-    public static void setup(Tone tone) {
-        tone.addComponent(SynthComponent.class, new SynthComponent());
-        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        tone.addComponent(VolumeComponent.class, new VolumeComponent());
-        tone.addComponent(DistortionComponent.class, new DistortionComponent());
-        tone.addComponent(FilterComponent.class, new FilterComponent());
-        tone.addComponent(LFO1Component.class, new LFO1Component());
-        tone.addComponent(OSC1Component.class, new OSC1Component());
+    public static void setup(RackTone rackTone) {
+        rackTone.addComponent(SynthComponent.class, new SynthComponent());
+        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
+        rackTone.addComponent(DistortionComponent.class, new DistortionComponent());
+        rackTone.addComponent(FilterComponent.class, new FilterComponent());
+        rackTone.addComponent(LFO1Component.class, new LFO1Component());
+        rackTone.addComponent(OSC1Component.class, new OSC1Component());
     }
 
 }

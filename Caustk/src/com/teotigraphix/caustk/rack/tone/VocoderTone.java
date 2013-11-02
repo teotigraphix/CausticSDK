@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.live.Machine;
  * 
  * @author Michael Schmalle
  */
-public class VocoderTone extends Tone {
+public class VocoderTone extends RackTone {
 
     public VocoderTone() {
     }
@@ -35,7 +35,7 @@ public class VocoderTone extends Tone {
         super(machine, ToneType.Vocoder);
     }
 
-    public static void setup(Tone tone) {
+    public static void setup(RackTone rackTone) {
     }
 
 }

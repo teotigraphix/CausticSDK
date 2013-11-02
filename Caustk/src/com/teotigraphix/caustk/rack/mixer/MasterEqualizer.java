@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 /**
  * @author Michael Schmalle
  */
-public class MasterEqualizer extends MasterComponent {
+public class MasterEqualizer extends RackMasterComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

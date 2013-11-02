@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.live.Phrase.OnPhraseChange;
 import com.teotigraphix.caustk.live.Phrase.PhraseChangeKind;
 import com.teotigraphix.caustk.live.Phrase.Scale;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 
@@ -66,14 +66,14 @@ public class TriggerMap {
         return phrase;
     }
 
-    final Tone getTone() {
-        return phrase.getMachine().getTone();
+    final RackTone getTone() {
+        return phrase.getMachine().getRackTone();
     }
 
     final PatternSequencerComponent getPatternSequencer() {
         // XXX Temp until how to access the getMachine() correctly is figured out
         // we allow notes to be added with a null sequencer for CaustkPhrase serialization
-        if (phrase.getMachine() == null || phrase.getMachine().getTone() == null)
+        if (phrase.getMachine() == null || phrase.getMachine().getRackTone() == null)
             return null;
         return getTone().getPatternSequencer();
     }
@@ -220,7 +220,7 @@ public class TriggerMap {
     /**
      * Adds an existing {@link Note} instance to the trigger.
      * <p>
-     * This does not dispatch an Add event nor does it call the {@link Tone}'s
+     * This does not dispatch an Add event nor does it call the {@link RackTone}'s
      * native pattern sequencer, just adds the note to the trigger model.
      * 
      * @param note The {@link Note} to add.
@@ -236,7 +236,7 @@ public class TriggerMap {
 
     /**
      * Adds the collection of notes to the model, will not dispatch Add or add
-     * to the {@link Tone}'s pattern sequencer.
+     * to the {@link RackTone}'s pattern sequencer.
      * 
      * @param notes The collection of notes.
      */

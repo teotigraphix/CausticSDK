@@ -34,7 +34,7 @@ import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc2Component;
  * 
  * @author Michael Schmalle
  */
-public class SubSynthTone extends Tone {
+public class SubSynthTone extends RackTone {
 
     public VolumeEnvelopeComponent getVolume() {
         return getComponent(VolumeEnvelopeComponent.class);
@@ -67,15 +67,15 @@ public class SubSynthTone extends Tone {
         super(machine, ToneType.SubSynth);
     }
 
-    public static void setup(Tone tone) {
-        tone.addComponent(SynthComponent.class, new SynthComponent());
-        tone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        tone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
-        tone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
-        tone.addComponent(Osc1Component.class, new Osc1Component());
-        tone.addComponent(Osc2Component.class, new Osc2Component());
-        tone.addComponent(LFO1Component.class, new LFO1Component());
-        tone.addComponent(LFO2Component.class, new LFO2Component());
+    public static void setup(RackTone rackTone) {
+        rackTone.addComponent(SynthComponent.class, new SynthComponent());
+        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        rackTone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
+        rackTone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        rackTone.addComponent(Osc1Component.class, new Osc1Component());
+        rackTone.addComponent(Osc2Component.class, new Osc2Component());
+        rackTone.addComponent(LFO1Component.class, new LFO1Component());
+        rackTone.addComponent(LFO2Component.class, new LFO2Component());
     }
 
 }

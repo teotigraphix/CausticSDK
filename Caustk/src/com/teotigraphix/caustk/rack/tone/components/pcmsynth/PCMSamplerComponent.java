@@ -24,7 +24,7 @@ import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneComponent;
 
 public class PCMSamplerComponent extends ToneComponent {
@@ -49,7 +49,7 @@ public class PCMSamplerComponent extends ToneComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void setTone(Tone value) {
+    public void setTone(RackTone value) {
         super.setTone(value);
         if (channels == null) {
             createChannels();

@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.live.Machine;
  * 
  * @author Michael Schmalle
  */
-public class FMSynthTone extends Tone {
+public class FMSynthTone extends RackTone {
 
     public FMSynthTone() {
     }
@@ -35,7 +35,7 @@ public class FMSynthTone extends Tone {
         super(machine, ToneType.FMSynth);
     }
 
-    public static void setup(Tone tone) {
+    public static void setup(RackTone rackTone) {
     }
 
 }

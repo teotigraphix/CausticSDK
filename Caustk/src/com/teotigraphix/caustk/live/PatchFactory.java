@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.live;
 import java.io.IOException;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.effect.EffectType;
+import com.teotigraphix.caustk.rack.effect.RackEffect;
 
 public class PatchFactory extends CaustkSubFactoryBase {
 
@@ -44,8 +44,7 @@ public class PatchFactory extends CaustkSubFactoryBase {
     /**
      * Creates a new {@link Patch}, assigns the {@link Machine}.
      * 
-     * @param machine A {@link Machine} that does not exist in the native
-     *            rack.
+     * @param machine A {@link Machine} that does not exist in the native rack.
      */
     public Patch createPatch(Machine machine) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Patch);
@@ -60,8 +59,8 @@ public class PatchFactory extends CaustkSubFactoryBase {
      * <p>
      * - Creates and assigns the {@link Patch} which will then create 0-2
      * {@link Effect}s. When the {@link Effect} is created, only the
-     * {@link EffectType} is saved and slot index. The {@link IEffect} instance
-     * is not restored at this point.
+     * {@link EffectType} is saved and slot index. The {@link RackEffect}
+     * instance is not restored at this point.
      * 
      * @param livePatch
      * @throws IOException

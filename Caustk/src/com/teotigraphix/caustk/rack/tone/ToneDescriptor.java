@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.rack.tone;
 import java.util.UUID;
 
 /**
- * Each application must define the {@link Tone} instances that will get created
+ * Each application must define the {@link RackTone} instances that will get created
  * at startup.
  * 
  * @author Michael Schmalle

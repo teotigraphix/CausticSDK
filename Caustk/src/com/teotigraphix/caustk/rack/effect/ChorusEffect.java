@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class ChorusEffect extends EffectBase {
+public class ChorusEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API

@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class ParametricEQEffect extends EffectBase {
+public class ParametricEQEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API

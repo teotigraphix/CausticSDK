@@ -30,9 +30,9 @@ import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
-import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
+import com.teotigraphix.caustk.rack.effect.RackEffect;
 
 /*
  * - LivePatch can be copied to another LiveMachine of the same toneType
@@ -141,7 +141,7 @@ public class Patch implements ICaustkComponent, IRackSerializer {
      * Adds and returns an effect without sending a message to the core.
      * <p>
      * Using this method will call {@link Effect#create()} to create the
-     * {@link IEffect} instance in the {@link Effect}.
+     * {@link RackEffect} instance in the {@link Effect}.
      * 
      * @param factory The library factory.
      * @param slot The effect slot.

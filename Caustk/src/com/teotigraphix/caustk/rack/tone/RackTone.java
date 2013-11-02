@@ -37,7 +37,7 @@ import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
  * 
  * @author Michael Schmalle
  */
-public abstract class Tone implements IRestore {
+public abstract class RackTone implements IRestore {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -288,10 +288,10 @@ public abstract class Tone implements IRestore {
     // Constructor
     //--------------------------------------------------------------------------
 
-    Tone() {
+    RackTone() {
     }
 
-    public Tone(Machine machine, ToneType toneType) {
+    public RackTone(Machine machine, ToneType toneType) {
         this.machine = machine;
         this.toneType = toneType;
     }

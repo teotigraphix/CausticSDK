@@ -19,19 +19,17 @@
 
 package com.teotigraphix.caustk.rack.effect;
 
-import com.teotigraphix.caustk.rack.IEffect;
-
 /**
  * @author Michael Schmalle
  */
 public final class EffectFactory {
 
     /**
-     * Creates an empty {@link IEffect} instance.
+     * Creates an empty {@link RackEffect} instance.
      * 
      * @param type The type of effect to create.
      */
-    public static IEffect create(EffectType type) {
+    public static RackEffect create(EffectType type) {
         return create(type, -1, -1);
     }
 
@@ -40,8 +38,8 @@ public final class EffectFactory {
      * @param slot
      * @param toneIndex
      */
-    public static IEffect create(EffectType type, int slot, int toneIndex) {
-        IEffect effect = null;
+    public static RackEffect create(EffectType type, int slot, int toneIndex) {
+        RackEffect effect = null;
         switch (type) {
             case Autowah:
                 effect = new AutowahEffect(slot, toneIndex);

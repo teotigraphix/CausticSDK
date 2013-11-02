@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 /**
  * The {@link SystemSequencer} manages the native pattern and song sequencer OSC
@@ -284,14 +284,14 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     }
 
     @Override
-    public void addPattern(Tone tone, int bank, int pattern, int start, int end)
+    public void addPattern(RackTone rackTone, int bank, int pattern, int start, int end)
             throws CausticException {
-        SequencerMessage.PATTERN_EVENT.send(getRack(), tone.getIndex(), start, bank, pattern, end);
+        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getIndex(), start, bank, pattern, end);
     }
 
     @Override
-    public void removePattern(Tone tone, int start, int end) throws CausticException {
-        SequencerMessage.PATTERN_EVENT.send(getRack(), tone.getIndex(), start, -1, -1, end);
+    public void removePattern(RackTone rackTone, int start, int end) throws CausticException {
+        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getIndex(), start, -1, -1, end);
     }
 
     @Override
@@ -341,8 +341,8 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     }
 
     @Override
-    public void clearAutomation(Tone tone) {
-        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getRack(), tone.getIndex());
+    public void clearAutomation(RackTone rackTone) {
+        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getRack(), rackTone.getIndex());
     }
 
     @Override

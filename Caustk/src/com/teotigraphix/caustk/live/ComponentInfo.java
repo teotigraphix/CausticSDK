@@ -31,6 +31,8 @@ import java.util.UUID;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 /**
+ * General information object for all {@link ICaustkComponent}s.
+ * 
  * @author Michael Schmalle
  */
 public class ComponentInfo {
@@ -120,8 +122,8 @@ public class ComponentInfo {
      * <code>Machine/SubSynth/Trance/FM Synth Setup.cmc</code>
      * <p>
      * <strong>Do not</strong> use getAbsolutePath() on this File, use
-     * {@link Library#resolveLocation(ICaustkComponent)} instead to
-     * resolve the directory correctly.
+     * {@link Library#resolveLocation(ICaustkComponent)} instead to resolve the
+     * directory correctly.
      */
     public File getFile() {
         return file;

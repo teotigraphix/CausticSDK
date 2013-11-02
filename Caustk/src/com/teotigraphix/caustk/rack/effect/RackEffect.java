@@ -21,17 +21,17 @@ package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.live.Effect;
-import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
  * @author Michael Schmalle
  */
-public abstract class EffectBase implements IEffect {
+public abstract class RackEffect implements IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -53,12 +53,10 @@ public abstract class EffectBase implements IEffect {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    @Override
     public Effect getEffect() {
         return effect;
     }
 
-    @Override
     public void setEffect(Effect value) {
         effect = value;
     }
@@ -67,7 +65,6 @@ public abstract class EffectBase implements IEffect {
     // type
     //----------------------------------
 
-    @Override
     public final EffectType getType() {
         return type;
     }
@@ -76,12 +73,10 @@ public abstract class EffectBase implements IEffect {
     // slot
     //----------------------------------
 
-    @Override
     public int getSlot() {
         return slot;
     }
 
-    @Override
     public void setSlot(int value) {
         slot = value;
     }
@@ -90,12 +85,10 @@ public abstract class EffectBase implements IEffect {
     // toneIndex
     //----------------------------------
 
-    @Override
     public int getToneIndex() {
         return toneIndex;
     }
 
-    @Override
     public void setToneIndex(int value) {
         toneIndex = value;
     }
@@ -119,13 +112,13 @@ public abstract class EffectBase implements IEffect {
     /*
      * Serialization.
      */
-    EffectBase() {
+    RackEffect() {
     }
 
     /**
      * @see EffectFactory#create(EffectType, int, int)
      */
-    public EffectBase(EffectType type, int slot, int toneIndex) {
+    public RackEffect(EffectType type, int slot, int toneIndex) {
         this.type = type;
         this.slot = slot;
         this.toneIndex = toneIndex;
@@ -155,8 +148,8 @@ public abstract class EffectBase implements IEffect {
     /**
      * Returns a float value for the {@link IEffectControl} parameter.
      * <p>
-     * If the {@link #getRack()} is null, meaning it has not
-     * {@link Effect} parent, the method will return {@link Float#NaN}.
+     * If the {@link #getRack()} is null, meaning it has not {@link Effect}
+     * parent, the method will return {@link Float#NaN}.
      * 
      * @param control The control to query.
      */

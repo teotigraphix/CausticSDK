@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class PhaserEffect extends EffectBase {
+public class PhaserEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API

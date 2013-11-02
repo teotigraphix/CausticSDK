@@ -27,7 +27,7 @@ import com.teotigraphix.caustk.live.Machine;
 /**
  * @author Michael Schmalle
  */
-public class RhythmSet extends Tone {
+public class RhythmSet extends RackTone {
 
     private List<RhythmTone> tones = new ArrayList<RhythmTone>();
 

@@ -38,7 +38,7 @@ import com.teotigraphix.caustk.rack.mixer.MasterDelay;
 import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
 import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 public class RackSet implements ICaustkComponent, IRackAware {
 
@@ -203,10 +203,10 @@ public class RackSet implements ICaustkComponent, IRackAware {
         return Collections.unmodifiableCollection(machines.values());
     }
 
-    public Collection<Tone> getTones() {
-        ArrayList<Tone> result = new ArrayList<Tone>();
+    public Collection<RackTone> getRackTones() {
+        ArrayList<RackTone> result = new ArrayList<RackTone>();
         for (Machine machine : machines.values()) {
-            result.add(machine.getTone());
+            result.add(machine.getRackTone());
         }
         return result;
     }

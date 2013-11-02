@@ -34,12 +34,6 @@ import com.singlecellsoftware.causticcore.CausticCore;
  */
 public interface ICausticEngine extends IActivityCycle {
 
-    //--------------------------------------------------------------------------
-    //
-    // Methods
-    //
-    //--------------------------------------------------------------------------
-
     /**
      * Sends an OSC message to the {@link CausticCore}.
      * <p>

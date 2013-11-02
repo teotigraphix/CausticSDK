@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class DistortionEffect extends EffectBase {
+public class DistortionEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API

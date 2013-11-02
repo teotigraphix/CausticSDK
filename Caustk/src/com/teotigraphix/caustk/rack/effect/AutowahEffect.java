@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class AutowahEffect extends EffectBase {
+public class AutowahEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API

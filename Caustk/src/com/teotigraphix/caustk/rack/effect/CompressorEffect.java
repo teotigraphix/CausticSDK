@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class CompressorEffect extends EffectBase {
+public class CompressorEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API

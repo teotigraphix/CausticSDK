@@ -29,10 +29,10 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.live.Phrase;
 import com.teotigraphix.caustk.live.RackSet;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 /**
- * The {@link IRack} is the top API for dealing with {@link Tone}s,
+ * The {@link IRack} is the top API for dealing with {@link RackTone}s,
  * {@link Phrase}s.
  * <p>
  * Manages the {@link ISoundMixer}, {@link ISoundSource},
@@ -67,7 +67,7 @@ public interface IRack extends ICausticEngine, IRestore {
     //----------------------------------
 
     /**
-     * Clears all {@link Tone}s from the sound source and resets the core audio
+     * Clears all {@link RackTone}s from the sound source and resets the core audio
      * rack.
      * 
      * @throws CausticException

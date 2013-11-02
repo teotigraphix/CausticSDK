@@ -172,7 +172,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         length = value;
 
         if (getMachine() != null) {
-            getMachine().getTone().getPatternSequencer()
+            getMachine().getRackTone().getPatternSequencer()
                     .setLength(getBankIndex(), getPatternIndex(), length);
         }
 

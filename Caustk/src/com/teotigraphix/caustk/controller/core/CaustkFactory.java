@@ -54,14 +54,14 @@ import com.teotigraphix.caustk.live.Phrase;
 import com.teotigraphix.caustk.live.PhraseFactory;
 import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.live.RackSetFactory;
-import com.teotigraphix.caustk.live.ToneFactory;
+import com.teotigraphix.caustk.live.RackToneFactory;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
-import com.teotigraphix.caustk.rack.IEffect;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.effect.RackEffect;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.serialize.SerializeService;
@@ -103,7 +103,7 @@ public class CaustkFactory implements ICaustkFactory {
 
     private MasterSequencerFactory masterSequencerFactory;
 
-    private ToneFactory toneFactory;
+    private RackToneFactory rackToneFactory;
 
     //----------------------------------
     // application
@@ -151,8 +151,8 @@ public class CaustkFactory implements ICaustkFactory {
         masterMixerFactory.setFactory(this);
         masterSequencerFactory = new MasterSequencerFactory();
         masterSequencerFactory.setFactory(this);
-        toneFactory = new ToneFactory();
-        toneFactory.setFactory(this);
+        rackToneFactory = new RackToneFactory();
+        rackToneFactory.setFactory(this);
     }
 
     //--------------------------------------------------------------------------
@@ -271,8 +271,8 @@ public class CaustkFactory implements ICaustkFactory {
      * <p>
      * - Creates and assigns the {@link Patch} which will then create 0-2
      * {@link Effect}s. When the {@link Effect} is created, only the
-     * {@link EffectType} is saved and slot index. The {@link IEffect} instance
-     * is not restored at this point.
+     * {@link EffectType} is saved and slot index. The {@link RackEffect}
+     * instance is not restored at this point.
      * 
      * @param livePatch
      * @throws IOException
@@ -409,7 +409,7 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     @Override
-    public Tone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException {
-        return toneFactory.createTone(machine, descriptor);
+    public RackTone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException {
+        return rackToneFactory.createRackTone(machine, descriptor);
     }
 }

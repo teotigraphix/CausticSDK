@@ -24,7 +24,7 @@ import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneComponent;
 
 public class WavSamplerComponent extends ToneComponent {
@@ -43,7 +43,7 @@ public class WavSamplerComponent extends ToneComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void setTone(Tone value) {
+    public void setTone(RackTone value) {
         super.setTone(value);
         map = new TreeMap<Integer, WavSamplerChannel>();
 

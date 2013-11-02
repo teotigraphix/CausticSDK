@@ -24,7 +24,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 /**
  * @author Michael Schmalle
  */
-public class BitcrusherEffect extends EffectBase {
+public class BitcrusherEffect extends RackEffect {
 
     //--------------------------------------------------------------------------
     // Serialized API
