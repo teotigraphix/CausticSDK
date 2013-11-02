@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.controller.command.ICommandHistory;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.machine.RackSet;
+import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.IRack;

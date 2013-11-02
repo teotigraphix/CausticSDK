@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.utils;
 
-import com.teotigraphix.caustk.machine.Phrase;
+import com.teotigraphix.caustk.live.Phrase;
 
 /**
  * @author Michael Schmalle

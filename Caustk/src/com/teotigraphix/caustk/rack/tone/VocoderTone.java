@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.machine.Machine;
+import com.teotigraphix.caustk.live.Machine;
 
 /**
  * The tone impl for the native Vocoder machine.

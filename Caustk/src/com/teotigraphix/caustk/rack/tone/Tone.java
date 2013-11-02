@@ -27,8 +27,8 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.machine.Machine;
-import com.teotigraphix.caustk.machine.MixerPreset;
+import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MixerPreset;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 

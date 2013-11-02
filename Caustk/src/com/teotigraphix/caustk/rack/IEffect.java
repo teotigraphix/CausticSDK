@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.rack;
 
 import com.teotigraphix.caustk.controller.IRackSerializer;
-import com.teotigraphix.caustk.machine.Effect;
+import com.teotigraphix.caustk.live.Effect;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
 /**

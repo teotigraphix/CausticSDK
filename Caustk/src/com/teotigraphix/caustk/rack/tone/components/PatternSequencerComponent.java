@@ -26,7 +26,7 @@ import java.util.List;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
-import com.teotigraphix.caustk.machine.Note;
+import com.teotigraphix.caustk.live.Note;
 import com.teotigraphix.caustk.rack.tone.ToneComponent;
 
 public class PatternSequencerComponent extends ToneComponent {

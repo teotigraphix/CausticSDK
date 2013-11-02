@@ -36,7 +36,7 @@ import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.command.OSCMessage;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.machine.RackSet;
+import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.service.ISerializeService;

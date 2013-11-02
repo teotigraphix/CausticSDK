@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.rack.tone;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.machine.Machine;
+import com.teotigraphix.caustk.live.Machine;
 
 /**
  * @author Michael Schmalle

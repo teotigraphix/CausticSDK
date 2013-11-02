@@ -32,8 +32,8 @@ import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.machine.Machine;
-import com.teotigraphix.caustk.machine.RackSet;
+import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**

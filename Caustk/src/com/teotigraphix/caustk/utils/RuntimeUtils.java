@@ -34,7 +34,7 @@ import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.machine.MachineType;
+import com.teotigraphix.caustk.live.MachineType;
 
 /**
  * @author Michael Schmalle

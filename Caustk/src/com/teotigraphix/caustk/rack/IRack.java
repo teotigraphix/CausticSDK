@@ -27,8 +27,8 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
-import com.teotigraphix.caustk.machine.Phrase;
-import com.teotigraphix.caustk.machine.RackSet;
+import com.teotigraphix.caustk.live.Phrase;
+import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.rack.tone.Tone;
 
 /**
