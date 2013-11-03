@@ -31,6 +31,7 @@ import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
 import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 import com.teotigraphix.caustk.rack.mixer.MasterVolume;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
@@ -101,6 +102,7 @@ public class MasterMixer implements IRackSerializer {
         this.rackSet = rackSet;
     }
 
+    @Override
     public void create() throws CausticException {
         equalizer = new MasterEqualizer();
         limiter = new MasterLimiter();
@@ -163,7 +165,7 @@ public class MasterMixer implements IRackSerializer {
             // has redo() called on it
 
             Machine machine = getContext().getRack().getRackSet().getMachine(current.index);
-            MixerPreset channel = machine.getMixer();
+            MixerChannel channel = machine.getMixer();
 
             last = new VO(channel, current);
             // execute the OSC command for this current command
@@ -179,7 +181,7 @@ public class MasterMixer implements IRackSerializer {
         private void update(VO vo) {
             int index = vo.index;
             Machine machine = getContext().getRack().getRackSet().getMachine(index);
-            MixerPreset channel = machine.getMixer();
+            MixerChannel channel = machine.getMixer();
 
             final float value = vo.value;
             switch (vo.type) {
@@ -230,7 +232,7 @@ public class MasterMixer implements IRackSerializer {
                 value = CommandUtils.getFloat(getContext(), 2);
             }
 
-            public VO(MixerPreset channel, VO current) {
+            public VO(MixerChannel channel, VO current) {
                 index = current.index;
                 type = current.type;
                 switch (type) {

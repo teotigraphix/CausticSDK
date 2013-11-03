@@ -21,11 +21,11 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.IOException;
 
-import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
@@ -41,10 +41,10 @@ public final class CaustkApplication implements ICaustkApplication {
     // logger
     //----------------------------------
 
-    private ICausticLogger logger;
+    private ICaustkLogger logger;
 
     @Override
-    public ICausticLogger getLogger() {
+    public ICaustkLogger getLogger() {
         return logger;
     }
 
@@ -63,7 +63,7 @@ public final class CaustkApplication implements ICaustkApplication {
     // controller
     //----------------------------------
 
-    private final CaustkController controller;
+    private final ICaustkController controller;
 
     @Override
     public final ICaustkController getController() {
@@ -103,11 +103,14 @@ public final class CaustkApplication implements ICaustkApplication {
      */
     public CaustkApplication(ICaustkConfiguration configuration) {
         this.configuration = configuration;
+        this.configuration.setApplication(this);
 
         logger = getConfiguration().createLogger();
-        factory = getConfiguration().createFactory(this);
 
-        controller = (CaustkController)factory.createController();
+        controller = configuration.createController();
+
+        factory = getConfiguration().createFactory(this);
+        rack = factory.createRack();
     }
 
     //--------------------------------------------------------------------------
@@ -121,7 +124,6 @@ public final class CaustkApplication implements ICaustkApplication {
         getLogger().log("Application", "initialize()");
         getConfiguration().getSoundGenerator().initialize();
         controller.initialize();
-        rack = factory.createRack();
     }
 
     // 2
@@ -134,7 +136,7 @@ public final class CaustkApplication implements ICaustkApplication {
         fireStateChange(StateChangeKind.Create);
     }
 
-    // 3
+    // 3 
     @Override
     public void run() {
         getLogger().log("Application", "3) ++++++++++++++++++++++++++++++++++++++++");

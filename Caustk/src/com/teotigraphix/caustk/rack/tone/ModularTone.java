@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.rack.tone;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.modular.AREnvelope;
@@ -227,7 +228,7 @@ public class ModularTone extends RackTone {
             default:
                 break;
         }
-        ModularMessage.CREATE.send(getEngine(), getIndex(), bay, componentType.getValue());
+        ModularMessage.CREATE.send(getEngine(), getMachineIndex(), bay, componentType.getValue());
         return component;
     }
 
@@ -243,21 +244,20 @@ public class ModularTone extends RackTone {
     // To query the type of a component
     // /caustic/modular/type <component bay#> returns the type# from the list above
 
-    public ModularTone() {
+    ModularTone() {
     }
 
-    public ModularTone(Machine machine) {
-        super(machine, MachineType.Modular);
-
-        //modularPanel = new ModularPanel(controller);
-        //modularPanel.setTone(this);
+    public ModularTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.Modular, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
-        rackTone.addComponent(SynthComponent.class, new SynthComponent());
-        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        //tone.addComponent(VolumeComponent.class, new VolumeComponent());
-        rackTone.addComponent(ModularBayComponent.class, new ModularBayComponent());
+    @Override
+    public void create() {
+        addComponent(MixerChannel.class, new MixerChannel());
+        addComponent(SynthComponent.class, new SynthComponent());
+        addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        //addComponent(VolumeComponent.class, new VolumeComponent());
+        addComponent(ModularBayComponent.class, new ModularBayComponent());
     }
 
 }

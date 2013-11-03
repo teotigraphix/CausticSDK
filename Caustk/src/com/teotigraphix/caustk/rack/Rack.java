@@ -25,10 +25,10 @@ import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 
+import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -66,19 +66,36 @@ public class Rack implements IRack {
     }
 
     //----------------------------------
+    // application
+    //----------------------------------
+
+    private ICaustkApplication application;
+
+    public ICaustkApplication getApplication() {
+        return application;
+    }
+
+    void setApplication(ICaustkApplication application) {
+        this.application = application;
+        this.dispatcher = new Dispatcher();
+        this.controller = application.getController();
+
+        soundGenerator = application.getConfiguration().getSoundGenerator();
+
+        controller.addComponent(IRack.class, this);
+
+        systemSequencer = new SystemSequencer();
+        systemSequencer.setRack(this);
+        controller.addComponent(ISystemSequencer.class, systemSequencer);
+    }
+
+    //----------------------------------
     // factory
     //----------------------------------
 
-    private CaustkFactory factory;
-
     @Override
-    public ICaustkFactory getFactory() {
-        return factory;
-    }
-
-    public void setFactory(ICaustkFactory value) {
-        factory = (CaustkFactory)value;
-        setController(factory.getApplication().getController());
+    public final ICaustkFactory getFactory() {
+        return application.getFactory();
     }
 
     //----------------------------------
@@ -86,20 +103,85 @@ public class Rack implements IRack {
     //----------------------------------
 
     ICaustkController getController() {
-        return controller;
+        return application.getController();
     }
 
-    private void setController(ICaustkController controller) {
-        this.controller = controller;
-        this.dispatcher = new Dispatcher();
+    //----------------------------------
+    // scene
+    //----------------------------------
 
-        controller.addComponent(IRack.class, this);
+    private RackSet rackSet;
 
-        soundGenerator = controller.getApplication().getConfiguration().getSoundGenerator();
+    @Override
+    public final RackSet getRackSet() {
+        return rackSet;
+    }
 
-        systemSequencer = new SystemSequencer();
-        systemSequencer.setRack(this);
-        controller.addComponent(ISystemSequencer.class, systemSequencer);
+    @Override
+    public void setRackSet(RackSet value) {
+        if (value == rackSet)
+            return;
+
+        RackSet oldSet = rackSet;
+        rackSet = value;
+        rackSetChanged(rackSet, oldSet);
+    }
+
+    private void rackSetChanged(RackSet newSet, RackSet oldSet) {
+        if (oldSet != null) {
+            removeRackSet(oldSet);
+        }
+        // when a rackSet is assigned, the Rack does not care or want to care
+        // how the rackSet was loaded, unserialized etc., it will just call update()
+        // and restore whatever is there.
+
+        // recursively create OR updates all scene components based on their previous 
+        // saved state
+        try {
+            newSet.rackChanged(this);
+        } catch (CausticException e) {
+            getController().getLogger().err("Rack", "Error assigning RackSet to Rack", e);
+        }
+    }
+
+    private void removeRackSet(RackSet rackSet) {
+        rackSet.setRack(null);
+    }
+
+    //----------------------------------
+    // systemSequencer
+    //----------------------------------
+
+    private SystemSequencer systemSequencer;
+
+    @Override
+    public final ISystemSequencer getSystemSequencer() {
+        return systemSequencer;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    public Rack(ICaustkApplication application) {
+        setApplication(application);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void frameChanged(float delta) {
+        final int measure = (int)getCurrentSongMeasure();
+        final float beat = getCurrentBeat();
+        final boolean changed = systemSequencer.updatePosition(measure, beat);
+        if (changed) {
+            systemSequencer.beatChange(measure, beat);
+            //for (IRackComponent component : components.values()) {
+            //    component.beatChange(measure, beat);
+            //}
+        }
     }
 
     @Override
@@ -139,83 +221,6 @@ public class Rack implements IRack {
         FileUtils.copyFileToDirectory(song, file.getParentFile());
         song.delete();
         return file;
-    }
-
-    //----------------------------------
-    // scene
-    //----------------------------------
-
-    private RackSet rackSet;
-
-    @Override
-    public final RackSet getRackSet() {
-        return rackSet;
-    }
-
-    @Override
-    public void setRackSet(RackSet value) {
-        if (value == rackSet)
-            return;
-
-        RackSet oldSet = rackSet;
-        rackSet = value;
-        sceneChanged(rackSet, oldSet);
-    }
-
-    private void sceneChanged(RackSet newSet, RackSet oldSet) {
-        if (oldSet != null) {
-            removeRackSet(oldSet);
-        }
-        // when a rackSet is assigned, the Rack does not care or want to care
-        // how the rackSet was loaded, unserialized etc., it will just call update()
-        // and restore whatever is there.
-
-        // recursively create OR updates all scene components based on their previous 
-        // saved state
-        try {
-            newSet.rackChanged(this);
-        } catch (CausticException e) {
-            getController().getLogger().err("Rack", "Error assigning RackSet to Rack", e);
-        }
-    }
-
-    private void removeRackSet(RackSet rackSet) {
-        rackSet.setRack(null);
-    }
-
-    //----------------------------------
-    // systemSequencer
-    //----------------------------------
-
-    private SystemSequencer systemSequencer;
-
-    @Override
-    public final ISystemSequencer getSystemSequencer() {
-        return systemSequencer;
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-
-    public Rack() {
-    }
-
-    //--------------------------------------------------------------------------
-    // Public API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void frameChanged(float delta) {
-        final int measure = (int)getCurrentSongMeasure();
-        final float beat = getCurrentBeat();
-        final boolean changed = systemSequencer.updatePosition(measure, beat);
-        if (changed) {
-            systemSequencer.beatChange(measure, beat);
-            //for (IRackComponent component : components.values()) {
-            //    component.beatChange(measure, beat);
-            //}
-        }
     }
 
     @Override
@@ -279,6 +284,7 @@ public class Rack implements IRack {
         controller.removeComponent(IRack.class);
         controller.removeComponent(ISystemSequencer.class);
 
+        application = null;
         controller = null;
         soundGenerator = null;
         systemSequencer = null;

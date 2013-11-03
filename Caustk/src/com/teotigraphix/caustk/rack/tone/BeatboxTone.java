@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
@@ -40,18 +41,19 @@ public class BeatboxTone extends RhythmTone {
         return getComponent(WavSamplerComponent.class);
     }
 
-    public BeatboxTone() {
+    BeatboxTone() {
     }
 
-    public BeatboxTone(Machine machine) {
-        super(machine);
+    public BeatboxTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
-        rackTone.addComponent(SynthComponent.class, new SynthComponent());
-        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
-        rackTone.addComponent(WavSamplerComponent.class, new WavSamplerComponent());
+    @Override
+    public void create() {
+        addComponent(MixerChannel.class, new MixerChannel());
+        addComponent(SynthComponent.class, new SynthComponent());
+        addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        addComponent(VolumeComponent.class, new VolumeComponent());
+        addComponent(WavSamplerComponent.class, new WavSamplerComponent());
     }
-
 }

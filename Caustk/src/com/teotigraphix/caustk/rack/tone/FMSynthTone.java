@@ -29,14 +29,14 @@ import com.teotigraphix.caustk.live.MachineType;
  */
 public class FMSynthTone extends RackTone {
 
-    public FMSynthTone() {
+    FMSynthTone() {
     }
 
-    public FMSynthTone(Machine machine) {
-        super(machine, MachineType.FMSynth);
+    public FMSynthTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.FMSynth, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
+    @Override
+    public void create() {
     }
-
 }

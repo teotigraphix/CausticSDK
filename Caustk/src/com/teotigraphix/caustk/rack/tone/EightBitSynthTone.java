@@ -27,16 +27,16 @@ import com.teotigraphix.caustk.live.MachineType;
  * 
  * @author Michael Schmalle
  */
-public class EightBitSynth extends RackTone {
+public class EightBitSynthTone extends RackTone {
 
-    public EightBitSynth() {
+    EightBitSynthTone() {
     }
 
-    public EightBitSynth(Machine machine) {
-        super(machine, MachineType.EightBitSynth);
+    public EightBitSynthTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.EightBitSynth, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
+    @Override
+    public void create() {
     }
-
 }

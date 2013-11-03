@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
@@ -56,21 +57,22 @@ public class PCMSynthTone extends RackTone {
         return getComponent(PCMSamplerComponent.class);
     }
 
-    public PCMSynthTone() {
+    PCMSynthTone() {
     }
 
-    public PCMSynthTone(Machine machine) {
-        super(machine, MachineType.PCMSynth);
+    public PCMSynthTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.PCMSynth, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
-        rackTone.addComponent(SynthComponent.class, new SynthComponent());
-        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        rackTone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
-        rackTone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
-        rackTone.addComponent(LFO1Component.class, new LFO1Component());
-        rackTone.addComponent(PCMSamplerComponent.class, new PCMSamplerComponent());
-        rackTone.addComponent(PCMTunerComponent.class, new PCMTunerComponent());
+    @Override
+    public void create() {
+        addComponent(MixerChannel.class, new MixerChannel());
+        addComponent(SynthComponent.class, new SynthComponent());
+        addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
+        addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        addComponent(LFO1Component.class, new LFO1Component());
+        addComponent(PCMSamplerComponent.class, new PCMSamplerComponent());
+        addComponent(PCMTunerComponent.class, new PCMTunerComponent());
     }
-
 }

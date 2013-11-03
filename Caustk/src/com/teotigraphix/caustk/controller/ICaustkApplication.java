@@ -43,7 +43,7 @@ public interface ICaustkApplication {
     /**
      * Returns the application logger.
      */
-    ICausticLogger getLogger();
+    ICaustkLogger getLogger();
 
     /**
      * Returns the application's single {@link ICaustkConfiguration}.

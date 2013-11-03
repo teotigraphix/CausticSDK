@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.controller;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.command.ICommand;
 import com.teotigraphix.caustk.controller.command.ICommandHistory;
@@ -121,7 +122,7 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
     /**
      * Returns the application logger implementation.
      */
-    ICausticLogger getLogger();
+    ICaustkLogger getLogger();
 
     //----------------------------------
     // factory
@@ -214,5 +215,15 @@ public interface ICaustkController extends ICausticEngine, IDispatcher {
      * Updated sub components.
      */
     void frameChanged(float delta);
+
+    void initialize();
+
+    void create();
+
+    void run();
+
+    void save() throws IOException;
+
+    void close();
 
 }

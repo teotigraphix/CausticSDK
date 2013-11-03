@@ -286,12 +286,12 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     @Override
     public void addPattern(RackTone rackTone, int bank, int pattern, int start, int end)
             throws CausticException {
-        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getIndex(), start, bank, pattern, end);
+        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getMachineIndex(), start, bank, pattern, end);
     }
 
     @Override
     public void removePattern(RackTone rackTone, int start, int end) throws CausticException {
-        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getIndex(), start, -1, -1, end);
+        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getMachineIndex(), start, -1, -1, end);
     }
 
     @Override
@@ -342,7 +342,7 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
 
     @Override
     public void clearAutomation(RackTone rackTone) {
-        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getRack(), rackTone.getIndex());
+        SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getRack(), rackTone.getMachineIndex());
     }
 
     @Override

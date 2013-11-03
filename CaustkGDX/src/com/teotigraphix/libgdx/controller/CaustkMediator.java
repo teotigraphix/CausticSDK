@@ -28,7 +28,7 @@ import java.util.Map.Entry;
 import org.androidtransfuse.event.EventObserver;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.controller.ICausticLogger;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 
@@ -85,7 +85,7 @@ public abstract class CaustkMediator implements ICaustkMediator {
     public void onRegister() {
     }
 
-    protected final ICausticLogger getLogger() {
+    protected final ICaustkLogger getLogger() {
         return getController().getLogger();
     }
 

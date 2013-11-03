@@ -44,5 +44,4 @@ public class RackContext implements IRackContext {
     public IRack getRack() {
         return application.getRack();
     }
-
 }

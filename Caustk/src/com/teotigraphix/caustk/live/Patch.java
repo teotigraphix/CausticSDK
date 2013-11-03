@@ -68,9 +68,6 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     private MachinePreset machinePreset;
 
     @Tag(4)
-    private MixerPreset mixerPreset;
-
-    @Tag(5)
     private Map<Integer, Effect> effects = new HashMap<Integer, Effect>(2);
 
     //--------------------------------------------------------------------------
@@ -181,10 +178,6 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         return effects.get(slot);
     }
 
-    public final MixerPreset getMixerPreset() {
-        return mixerPreset;
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -210,9 +203,9 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    @Override
     public void create() {
         machinePreset = new MachinePreset(null, this);
-        mixerPreset = new MixerPreset(this);
     }
 
     @Override
@@ -221,7 +214,6 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         //mixerPreset.setRack(rack);
 
         machinePreset.update();
-        mixerPreset.update();
 
         for (Effect caustkEffect : effects.values()) {
             //caustkEffect.setRack(rack);
@@ -236,19 +228,11 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         } catch (IOException e) {
             throw new CausticException(e);
         }
-        loadMixerPreset(context);
         loadEffects(context);
-    }
-
-    void loadMixerPreset(IRackContext context) throws CausticException {
-        mixerPreset = new MixerPreset(this);
-        //mixerPreset.restore();
-        mixerPreset.load(context);
     }
 
     void loadMachinePreset(IRackContext context) throws IOException {
         final IRack rack = context.getRack();
-
         // get the preset name if machine has a loaded preset
         String presetName = SynthMessage.QUERY_PRESET.queryString(rack, machine.getIndex());
         // create the preset file

@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.live.MachineType;
 /**
  * @author Michael Schmalle
  */
-public class RhythmTone extends RackTone {
+public abstract class RhythmTone extends RackTone {
 
     private RhythmChannel channel;
 
@@ -37,11 +37,11 @@ public class RhythmTone extends RackTone {
         channel = value;
     }
 
-    public RhythmTone() {
+    RhythmTone() {
     }
 
-    public RhythmTone(Machine machine) {
-        super(machine, MachineType.Beatbox);
+    public RhythmTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.Beatbox, machineName, machineIndex);
     }
 
 }

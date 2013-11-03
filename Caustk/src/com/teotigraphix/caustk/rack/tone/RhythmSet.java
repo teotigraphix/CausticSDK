@@ -36,11 +36,14 @@ public class RhythmSet extends RackTone {
         return tones;
     }
 
-    public RhythmSet() {
+    RhythmSet() {
     }
 
-    public RhythmSet(Machine machine) {
-        super(machine, MachineType.Beatbox);
+    public RhythmSet(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.Beatbox, machineName, machineIndex);
     }
 
+    @Override
+    public void create() {
+    }
 }

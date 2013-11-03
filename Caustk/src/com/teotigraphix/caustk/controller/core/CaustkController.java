@@ -26,10 +26,10 @@ import java.util.Map;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.IControllerAware;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.command.ICommand;
@@ -87,7 +87,7 @@ public class CaustkController implements ICaustkController {
     //----------------------------------
 
     @Override
-    public ICausticLogger getLogger() {
+    public ICaustkLogger getLogger() {
         return application.getLogger();
     }
 
@@ -271,7 +271,8 @@ public class CaustkController implements ICaustkController {
     // ISystemController API
     //--------------------------------------------------------------------------
 
-    void initialize() {
+    @Override
+    public void initialize() {
         getLogger().log("CaustkController", "Initialize app root dir if not created");
         File applicationRoot = application.getConfiguration().getApplicationRoot();
         if (!applicationRoot.exists())
@@ -280,19 +281,21 @@ public class CaustkController implements ICaustkController {
         getLogger().log("CaustkController", "Create all Sub components");
 
         // sub composites will add their ICommands in their constructors
-        serializeService = application.getFactory().createSerializeService();
-        commandManager = application.getFactory().createCommandManager();
-        projectManager = application.getFactory().createProjectManager();
+        serializeService = application.getConfiguration().createSerializeService();
+        commandManager = application.getConfiguration().createCommandManager();
+        projectManager = application.getConfiguration().createProjectManager();
     }
 
-    void create() {
+    @Override
+    public void create() {
         // all controller component's onAttatch() are called
         addComponent(ISerializeService.class, serializeService);
         addComponent(ICommandManager.class, commandManager);
         addComponent(IProjectManager.class, projectManager);
     }
 
-    void run() {
+    @Override
+    public void run() {
     }
 
     @Override
@@ -300,12 +303,14 @@ public class CaustkController implements ICaustkController {
         getRack().frameChanged(delta);
     }
 
-    void save() throws IOException {
+    @Override
+    public void save() throws IOException {
         getLogger().log("CaustkController", "Save");
         projectManager.save();
     }
 
-    void close() {
+    @Override
+    public void close() {
         getLogger().log("CaustkController", "Close");
     }
 

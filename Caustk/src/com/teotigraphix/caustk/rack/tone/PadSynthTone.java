@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.padsynth.HarmonicsComponent;
@@ -56,21 +57,22 @@ public class PadSynthTone extends RackTone {
         return getComponent(VolumeComponent.class);
     }
 
-    public PadSynthTone() {
+    PadSynthTone() {
     }
 
-    public PadSynthTone(Machine machine) {
-        super(machine, MachineType.PadSynth);
+    public PadSynthTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.PadSynth, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
-        rackTone.addComponent(SynthComponent.class, new SynthComponent());
-        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
-        rackTone.addComponent(HarmonicsComponent.class, new HarmonicsComponent());
-        rackTone.addComponent(LFO1Component.class, new LFO1Component());
-        rackTone.addComponent(LFO2Component.class, new LFO2Component());
-        rackTone.addComponent(MorphComponent.class, new MorphComponent());
+    @Override
+    public void create() {
+        addComponent(MixerChannel.class, new MixerChannel());
+        addComponent(SynthComponent.class, new SynthComponent());
+        addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        addComponent(VolumeComponent.class, new VolumeComponent());
+        addComponent(HarmonicsComponent.class, new HarmonicsComponent());
+        addComponent(LFO1Component.class, new LFO1Component());
+        addComponent(LFO2Component.class, new LFO2Component());
+        addComponent(MorphComponent.class, new MorphComponent());
     }
-
 }

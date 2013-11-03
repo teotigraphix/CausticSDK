@@ -21,11 +21,18 @@ package com.teotigraphix.caustk.controller.core;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.controller.ICausticLogger;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
+import com.teotigraphix.caustk.controller.command.CommandManager;
+import com.teotigraphix.caustk.controller.command.ICommandManager;
+import com.teotigraphix.caustk.project.IProjectManager;
+import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
+import com.teotigraphix.caustk.service.ISerializeService;
+import com.teotigraphix.caustk.service.serialize.SerializeService;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -54,6 +61,22 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     @Override
     public void setSoundGenerator(ISoundGenerator value) {
         soundGenerator = value;
+    }
+
+    //----------------------------------
+    // application
+    //----------------------------------
+
+    private ICaustkApplication application;
+
+    @Override
+    public ICaustkApplication getApplication() {
+        return application;
+    }
+
+    @Override
+    public void setApplication(ICaustkApplication value) {
+        application = value;
     }
 
     //----------------------------------
@@ -140,8 +163,32 @@ public abstract class CaustkConfigurationBase implements ICaustkConfiguration {
     //--------------------------------------------------------------------------
 
     @Override
-    public ICausticLogger createLogger() {
+    public ICaustkLogger createLogger() {
         return new CaustkLogger();
+    }
+
+    //--------------------------------------------------------------------------
+    // Public Application Component Creation API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public ICaustkController createController() {
+        return new CaustkController(application);
+    }
+
+    @Override
+    public ISerializeService createSerializeService() {
+        return new SerializeService();
+    }
+
+    @Override
+    public ICommandManager createCommandManager() {
+        return new CommandManager();
+    }
+
+    @Override
+    public IProjectManager createProjectManager() {
+        return new ProjectManager();
     }
 
     @Override

@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
@@ -61,22 +62,23 @@ public class SubSynthTone extends RackTone {
         return getComponent(LFO2Component.class);
     }
 
-    public SubSynthTone() {
+    SubSynthTone() {
     }
 
-    public SubSynthTone(Machine machine) {
-        super(machine, MachineType.SubSynth);
+    public SubSynthTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.SubSynth, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
-        rackTone.addComponent(SynthComponent.class, new SynthComponent());
-        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        rackTone.addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
-        rackTone.addComponent(SynthFilterComponent.class, new SynthFilterComponent());
-        rackTone.addComponent(Osc1Component.class, new Osc1Component());
-        rackTone.addComponent(Osc2Component.class, new Osc2Component());
-        rackTone.addComponent(LFO1Component.class, new LFO1Component());
-        rackTone.addComponent(LFO2Component.class, new LFO2Component());
+    @Override
+    public void create() {
+        addComponent(MixerChannel.class, new MixerChannel());
+        addComponent(SynthComponent.class, new SynthComponent());
+        addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        addComponent(VolumeEnvelopeComponent.class, new VolumeEnvelopeComponent());
+        addComponent(SynthFilterComponent.class, new SynthFilterComponent());
+        addComponent(Osc1Component.class, new Osc1Component());
+        addComponent(Osc2Component.class, new Osc2Component());
+        addComponent(LFO1Component.class, new LFO1Component());
+        addComponent(LFO2Component.class, new LFO2Component());
     }
-
 }

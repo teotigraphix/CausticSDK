@@ -19,17 +19,14 @@
 
 package com.teotigraphix.caustk.live;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.UUID;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
-import com.teotigraphix.caustk.rack.tone.EightBitSynth;
+import com.teotigraphix.caustk.rack.tone.EightBitSynthTone;
 import com.teotigraphix.caustk.rack.tone.FMSynthTone;
 import com.teotigraphix.caustk.rack.tone.ModularTone;
 import com.teotigraphix.caustk.rack.tone.OrganTone;
@@ -38,7 +35,6 @@ import com.teotigraphix.caustk.rack.tone.PadSynthTone;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.SubSynthTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.rack.tone.ToneUtils;
 import com.teotigraphix.caustk.rack.tone.VocoderTone;
 
 /**
@@ -51,7 +47,13 @@ public class RackToneFactory extends CaustkSubFactoryBase {
     public RackToneFactory() {
     }
 
-    RackTone createRackTone(Machine machine, int index, String toneName, MachineType toneType)
+    public RackTone createRackTone(Machine machine, ToneDescriptor descriptor)
+            throws CausticException {
+        return createRackTone(machine, descriptor.getIndex(), descriptor.getName(),
+                descriptor.getMachineType());
+    }
+
+    RackTone createRackTone(Machine machine, int index, String machineName, MachineType machineType)
             throws CausticException {
         final IRack rack = getFactory().getRack();
 
@@ -62,104 +64,48 @@ public class RackToneFactory extends CaustkSubFactoryBase {
         //            throw new CausticException("{" + index + "} tone is already defined");
 
         //        if (!restoring)
-        RackMessage.CREATE.send(rack, toneType.getType(), toneName, index);
+
+        RackMessage.CREATE.send(rack, machineType.getType(), machineName, index);
 
         RackTone rackTone = null;
-        switch (toneType) {
+        switch (machineType) {
             case Bassline:
-                rackTone = new BasslineTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new BasslineTone(machine, machineName, index);
                 break;
             case Beatbox:
-                rackTone = new BeatboxTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new BeatboxTone(machine, machineName, index);
                 break;
             case PCMSynth:
-                rackTone = new PCMSynthTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new PCMSynthTone(machine, machineName, index);
                 break;
             case SubSynth:
-                rackTone = new SubSynthTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new SubSynthTone(machine, machineName, index);
                 break;
             case PadSynth:
-                rackTone = new PadSynthTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new PadSynthTone(machine, machineName, index);
                 break;
             case Organ:
-                rackTone = new OrganTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new OrganTone(machine, machineName, index);
                 break;
             case Vocoder:
-                rackTone = new VocoderTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new VocoderTone(machine, machineName, index);
                 break;
             case EightBitSynth:
-                rackTone = new EightBitSynth(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new EightBitSynthTone(machine, machineName, index);
                 break;
             case Modular:
-                rackTone = new ModularTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new ModularTone(machine, machineName, index);
                 break;
             case FMSynth:
-                rackTone = new FMSynthTone(machine);
-                initializeTone(rackTone, toneName, toneType, index);
-                ToneUtils.setup(rackTone);
+                rackTone = new FMSynthTone(machine, machineName, index);
                 break;
             default:
                 break;
         }
 
+        rackTone.create();
+
         return rackTone;
-    }
-
-    @SuppressWarnings("unchecked")
-    <T extends RackTone> T createTone(int index, String name, Class<? extends RackTone> toneClass)
-            throws CausticException {
-        final IRack rack = getFactory().getRack();
-
-        T tone = null;
-        try {
-            Constructor<? extends RackTone> constructor = toneClass.getConstructor(IRack.class);
-            tone = (T)constructor.newInstance(rack);
-            initializeTone(tone, name, tone.getMachineType(), index);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        ToneUtils.setup(toneClass.cast(tone));
-
-        RackMessage.CREATE.send(rack, tone.getMachineType().getType(), tone.getName(),
-                tone.getIndex());
-
-        return tone;
-    }
-
-    private void initializeTone(RackTone rackTone, String toneName, MachineType machineType,
-            int index) {
-        rackTone.setId(UUID.randomUUID());
-        rackTone.setIndex(index);
-        ToneUtils.setName(rackTone, toneName);
     }
 
     public static int nextIndex(Map<Integer, Machine> machines) {
@@ -169,11 +115,5 @@ public class RackToneFactory extends CaustkSubFactoryBase {
                 break;
         }
         return index;
-    }
-
-    public RackTone createRackTone(Machine machine, ToneDescriptor descriptor)
-            throws CausticException {
-        return createRackTone(machine, descriptor.getIndex(), descriptor.getName(),
-                descriptor.getMachineType());
     }
 }

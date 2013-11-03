@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.rack.tone;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICausticEngine;
@@ -29,7 +28,7 @@ import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
-import com.teotigraphix.caustk.live.MixerPreset;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
@@ -48,125 +47,22 @@ public abstract class RackTone implements IRestore {
     private Machine machine;
 
     @Tag(1)
-    private Map<Class<? extends RackToneComponent>, RackToneComponent> components = new HashMap<Class<? extends RackToneComponent>, RackToneComponent>();
+    private int machineIndex;
 
     @Tag(2)
-    private UUID id;
-
-    @Tag(3)
-    private String name = "";
-
-    @Tag(4)
     private MachineType machineType;
 
-    @Tag(5)
-    private int index;
+    @Tag(3)
+    private String machineName;
 
-    @Tag(6)
-    private boolean enabled = false;
-
-    @Tag(7)
-    private boolean muted = false;
-
-    @Tag(8)
-    private String presetBank;
-
-    @Tag(9)
-    private boolean selected = false;
-
-    @Tag(10)
-    private UUID defaultPatchId;
-
-    //--------------------------------------------------------------------------
-    // Public API :: Properties
-    //--------------------------------------------------------------------------
-
-    public final MachineType getMachineType() {
-        return machineType;
-    }
-
-    public MixerPreset getMixer() {
-        return machine.getMixer();
-    }
-
-    public SynthComponent getSynth() {
-        return getComponent(SynthComponent.class);
-    }
-
-    public PatternSequencerComponent getPatternSequencer() {
-        return getComponent(PatternSequencerComponent.class);
-    }
-
-    //----------------------------------
-    // enabled
-    //----------------------------------
-
-    public final boolean isEnabled() {
-        return enabled;
-    }
-
-    public final void setEnabled(boolean value) {
-        if (value == enabled)
-            return;
-        enabled = value;
-        // firePropertyChange(TonePropertyKind.ENABLED, mEnabled);
-    }
-
-    //----------------------------------
-    // muted
-    //----------------------------------
-
-    public boolean isMuted() {
-        return muted;
-    }
-
-    public void setMuted(boolean value) {
-        if (value == muted)
-            return;
-        muted = value;
-        // firePropertyChange(TonePropertyKind.MUTE, mMuted);
-        getMixer().setMute(muted);
-    }
-
-    //----------------------------------
-    // presetBank
-    //----------------------------------
-
-    public final String getPresetBank() {
-        return presetBank;
-    }
-
-    public final void setPresetBank(String value) {
-        if (value == presetBank)
-            return;
-        presetBank = value;
-        // firePropertyChange(TonePropertyKind.PRESET_BANK, mPresetBank);
-    }
-
-    //----------------------------------
-    // selected
-    //----------------------------------
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean value) {
-        if (value == selected)
-            return;
-        selected = value;
-        // firePropertyChange(TonePropertyKind.SELECTED, mSelected);
-    }
-
-    int getComponentCount() {
-        return components.size();
-    }
+    @Tag(4)
+    private Map<Class<? extends RackToneComponent>, RackToneComponent> components = new HashMap<Class<? extends RackToneComponent>, RackToneComponent>();
 
     /**
      * Returns the core audio engine interface.
      */
     public final ICausticEngine getEngine() {
-        return machine.getRackSet().getRack();
+        return machine.getRack();
     }
 
     //--------------------------------------------------------------------------
@@ -174,47 +70,41 @@ public abstract class RackTone implements IRestore {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // id
+    // machine
     //----------------------------------
 
-    /**
-     * The tone's unique id within a session.
-     * <p>
-     * This id is assigned at creation of the tone or set when deserialized from
-     * the sleep state (which will be it's original id when created).
-     */
-    public final UUID getId() {
-        return id;
-    }
-
-    public final void setId(UUID value) {
-        id = value;
+    public Machine getMachine() {
+        return machine;
     }
 
     //----------------------------------
-    // index
+    // machineIndex
     //----------------------------------
 
     /**
      * The index location of the tone loaded into/from the core rack.
      */
-    public final int getIndex() {
-        return index;
-    }
-
-    public final void setIndex(int value) {
-        index = value;
+    public final int getMachineIndex() {
+        return machineIndex;
     }
 
     //----------------------------------
-    // name
+    // machineType
+    //----------------------------------
+
+    public final MachineType getMachineType() {
+        return machineType;
+    }
+
+    //----------------------------------
+    // machineName
     //----------------------------------
 
     /**
      * The name loaded into/from the core rack.
      */
-    public final String getName() {
-        return name;
+    public final String getMachineName() {
+        return machineName;
     }
 
     /**
@@ -222,8 +112,8 @@ public abstract class RackTone implements IRestore {
      * 
      * @param restore Retrieve the native machine name.
      */
-    public final String getName(boolean restore) {
-        return RackMessage.QUERY_MACHINE_NAME.queryString(getEngine(), index);
+    public final String getMachineName(boolean restore) {
+        return RackMessage.QUERY_MACHINE_NAME.queryString(getEngine(), machineIndex);
     }
 
     /**
@@ -233,36 +123,25 @@ public abstract class RackTone implements IRestore {
      * @param value The new name of the tone, 10 character limit, cannot be
      *            <code>null</code>.
      */
-    public final void setName(String value) {
-        if (value.equals(name))
+    public final void setMachineName(String value) {
+        setMachineName(value, false);
+    }
+
+    public void setMachineName(String value, boolean noUpdate) {
+        if (value.equals(machineName))
             return;
-        setNameInternal(value);
-        RackMessage.MACHINE_NAME.send(getEngine(), index, name);
-    }
-
-    void setNameInternal(String value) {
-        name = value;
-    }
-
-    //----------------------------------
-    // defaultPatchId
-    //----------------------------------
-
-    /**
-     * If loaded from the library as a {@link ToneDescriptor} item, will point
-     * to the patch that was created when the tone was serialized.
-     */
-    public UUID getDefaultPatchId() {
-        return defaultPatchId;
-    }
-
-    public void setDefaultPatchId(UUID value) {
-        defaultPatchId = value;
+        machineName = value;
+        if (!noUpdate)
+            RackMessage.MACHINE_NAME.send(getEngine(), machineIndex, machineName);
     }
 
     //--------------------------------------------------------------------------
     // Public Component API
     //--------------------------------------------------------------------------
+
+    public int getComponentCount() {
+        return components.size();
+    }
 
     /**
      * Adds a {@link RackToneComponent} to the tone's component map and sets the
@@ -285,6 +164,18 @@ public abstract class RackTone implements IRestore {
         return clazz.cast(components.get(clazz));
     }
 
+    public MixerChannel getMixer() {
+        return getComponent(MixerChannel.class);
+    }
+
+    public SynthComponent getSynth() {
+        return getComponent(SynthComponent.class);
+    }
+
+    public PatternSequencerComponent getPatternSequencer() {
+        return getComponent(PatternSequencerComponent.class);
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -292,10 +183,14 @@ public abstract class RackTone implements IRestore {
     RackTone() {
     }
 
-    public RackTone(Machine machine, MachineType machineType) {
+    RackTone(Machine machine, MachineType machineType, String machineName, int index) {
         this.machine = machine;
         this.machineType = machineType;
+        this.machineName = machineName;
+        this.machineIndex = index;
     }
+
+    public abstract void create();
 
     //--------------------------------------------------------------------------
     // IRestore API :: Methods
@@ -303,9 +198,9 @@ public abstract class RackTone implements IRestore {
 
     @Override
     public void restore() {
-        setNameInternal(getName(true));
-        for (RackToneComponent rackToneComponent : components.values()) {
-            rackToneComponent.restore();
+        setMachineName(getMachineName(true), true);
+        for (RackToneComponent component : components.values()) {
+            component.restore();
         }
     }
 }

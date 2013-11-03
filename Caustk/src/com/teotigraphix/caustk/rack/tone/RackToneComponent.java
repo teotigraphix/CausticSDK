@@ -55,7 +55,7 @@ public abstract class RackToneComponent implements IRestore {
     }
 
     protected final int getToneIndex() {
-        return rackTone.getIndex();
+        return rackTone.getMachineIndex();
     }
 
     protected final ICausticEngine getEngine() {

@@ -33,6 +33,7 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
@@ -40,53 +41,63 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class Machine implements ICaustkComponent, IRackSerializer {
 
-    protected final IRack getRack() {
-        return rackSet.getRack();
-    }
-
-    public final RackSet getRackSet() {
-        return rackSet;
-    }
+    /**
+     * This reference allows fast calls to the native Rack, this instance will
+     * always be the same reference as rackSet.getRack();
+     * <p>
+     * This instance is set in the constructor with rackSet passed and is also
+     * set in the load(CaustkFactory) method.
+     */
+    //private transient IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
+    @Tag(100)
     private ComponentInfo info;
 
-    @Tag(1)
+    @Tag(101)
     private RackTone rackTone;
 
-    @Tag(2)
+    @Tag(102)
     private RackSet rackSet;
 
-    @Tag(3)
+    @Tag(103)
     private int index = -1;
 
-    @Tag(4)
+    @Tag(104)
     private MachineType machineType;
 
-    @Tag(5)
+    @Tag(105)
     private String machineName;
 
-    @Tag(10)
+    @Tag(110)
     private int currentBank;
 
-    @Tag(11)
+    @Tag(111)
     private int currentPattern;
 
-    @Tag(12)
+    @Tag(112)
     private Patch patch;
 
-    @Tag(13)
+    @Tag(113)
     private Map<Integer, Phrase> phrases = new HashMap<Integer, Phrase>();
 
-    @Tag(14)
+    @Tag(114)
     private Map<Integer, SequencerPattern> patterns = new HashMap<Integer, SequencerPattern>();
 
-    @Tag(15)
+    @Tag(115)
     private Map<Integer, Integer> bankEditor = new HashMap<Integer, Integer>();
+
+    @Tag(120)
+    private boolean enabled = false;
+
+    @Tag(121)
+    private boolean muted = false;
+
+    @Tag(122)
+    private boolean selected = false;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -99,6 +110,26 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     @Override
     public ComponentInfo getInfo() {
         return info;
+    }
+
+    //----------------------------------
+    // rackTone
+    //----------------------------------
+
+    public RackTone getRackTone() {
+        return rackTone;
+    }
+
+    //----------------------------------
+    // rackSet
+    //----------------------------------
+
+    public final RackSet getRackSet() {
+        return rackSet;
+    }
+
+    public final IRack getRack() {
+        return rackSet.getRack();
     }
 
     //----------------------------------
@@ -140,10 +171,6 @@ public class Machine implements ICaustkComponent, IRackSerializer {
 
     public Patch getPatch() {
         return patch;
-    }
-
-    public final MixerPreset getMixer() {
-        return patch.getMixerPreset();
     }
 
     //----------------------------------
@@ -254,8 +281,58 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         setCurrentPattern(pattern);
     }
 
-    public RackTone getRackTone() {
-        return rackTone;
+    //----------------------------------
+    // mixer
+    //----------------------------------
+
+    public final MixerChannel getMixer() {
+        return rackTone.getMixer();
+    }
+
+    //----------------------------------
+    // enabled
+    //----------------------------------
+
+    public final boolean isEnabled() {
+        return enabled;
+    }
+
+    public final void setEnabled(boolean value) {
+        if (value == enabled)
+            return;
+        enabled = value;
+        // firePropertyChange(TonePropertyKind.ENABLED, mEnabled);
+    }
+
+    //----------------------------------
+    // muted
+    //----------------------------------
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(boolean value) {
+        if (value == muted)
+            return;
+        muted = value;
+        // firePropertyChange(TonePropertyKind.MUTE, mMuted);
+        getMixer().setMute(muted);
+    }
+
+    //----------------------------------
+    // selected
+    //----------------------------------
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean value) {
+        if (value == selected)
+            return;
+        selected = value;
+        // firePropertyChange(TonePropertyKind.SELECTED, mSelected);
     }
 
     //--------------------------------------------------------------------------
@@ -370,6 +447,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     // XXX Figure out if this matters in the Phase?
     @Override
     public void load(IRackContext context) throws CausticException {
+        //        setRackSet(context.getRackSet());
+
         //        if (populateTone) {
         //            loadTone(factory);
         //        }
@@ -406,8 +485,6 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     public void loadPatch(IRackContext context) throws IOException, CausticException {
         patch = context.getFactory().createPatch(this);
         patch.load(context);
-        if (rackTone != null)
-            rackTone.setDefaultPatchId(patch.getInfo().getId());
     }
 
     /**

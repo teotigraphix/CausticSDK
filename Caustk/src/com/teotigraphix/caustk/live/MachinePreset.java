@@ -175,11 +175,9 @@ public class MachinePreset implements IRackSerializer {
         if (machine == null)
             throw new IllegalStateException("CaustkMachine cannot be null calling load()");
 
-        final IRack rack = context.getRack();
-
         // save the temp preset file to get its bytes
         String presetName = constructPresetName(false);
-        SynthMessage.SAVE_PRESET.send(rack, machine.getIndex(), presetName);
+        SynthMessage.SAVE_PRESET.send(machine.getRack(), machine.getIndex(), presetName);
 
         // get the preset file from the caustic presets directory
         File presetFile = toPresetFile(getPatch().getMachineType(), presetName);

@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
@@ -41,18 +42,19 @@ public class OrganTone extends RackTone {
         return getComponent(LeslieComponent.class);
     }
 
-    public OrganTone() {
+    OrganTone() {
     }
 
-    public OrganTone(Machine machine) {
-        super(machine, MachineType.Organ);
+    public OrganTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.Organ, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
-        rackTone.addComponent(SynthComponent.class, new SynthComponent());
-        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
-        rackTone.addComponent(LeslieComponent.class, new LeslieComponent());
+    @Override
+    public void create() {
+        addComponent(MixerChannel.class, new MixerChannel());
+        addComponent(SynthComponent.class, new SynthComponent());
+        addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        addComponent(VolumeComponent.class, new VolumeComponent());
+        addComponent(LeslieComponent.class, new LeslieComponent());
     }
-
 }

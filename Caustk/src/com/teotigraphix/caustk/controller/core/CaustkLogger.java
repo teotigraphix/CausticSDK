@@ -19,12 +19,12 @@
 
 package com.teotigraphix.caustk.controller.core;
 
-import com.teotigraphix.caustk.controller.ICausticLogger;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 
 /**
- * Default implementation of the {@link ICausticLogger}.
+ * Default implementation of the {@link ICaustkLogger}.
  */
-public class CaustkLogger implements ICausticLogger {
+public class CaustkLogger implements ICaustkLogger {
 
     @Override
     public void setLogLevel(int level) {

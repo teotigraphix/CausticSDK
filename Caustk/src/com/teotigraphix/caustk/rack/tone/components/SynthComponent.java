@@ -58,7 +58,7 @@ public class SynthComponent extends RackToneComponent {
     //--------------------------------------------------------------------------
 
     public String getPresetName() {
-        return SynthMessage.QUERY_PRESET.queryString(getEngine(), getTone().getIndex());
+        return SynthMessage.QUERY_PRESET.queryString(getEngine(), getTone().getMachineIndex());
     }
 
     //----------------------------------

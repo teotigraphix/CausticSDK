@@ -25,10 +25,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
-import com.teotigraphix.caustk.controller.command.CommandManager;
-import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.live.ComponentInfo;
 import com.teotigraphix.caustk.live.ComponentInfoFactory;
@@ -55,16 +52,12 @@ import com.teotigraphix.caustk.live.PhraseFactory;
 import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.live.RackSetFactory;
 import com.teotigraphix.caustk.live.RackToneFactory;
-import com.teotigraphix.caustk.project.IProjectManager;
-import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 import com.teotigraphix.caustk.rack.effect.RackEffect;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.service.ISerializeService;
-import com.teotigraphix.caustk.service.serialize.SerializeService;
 import com.teotigraphix.caustk.utils.KryoUtils;
 
 /**
@@ -156,37 +149,12 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     //--------------------------------------------------------------------------
-    // Public Application Component Creation API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public ICaustkController createController() {
-        return new CaustkController(application);
-    }
-
-    @Override
-    public ISerializeService createSerializeService() {
-        return new SerializeService();
-    }
-
-    @Override
-    public ICommandManager createCommandManager() {
-        return new CommandManager();
-    }
-
-    @Override
-    public IProjectManager createProjectManager() {
-        return new ProjectManager();
-    }
-
-    //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
     @Override
     public IRack createRack() {
-        Rack rack = new Rack();
-        rack.setFactory(this);
+        Rack rack = new Rack(application);
         return rack;
     }
 

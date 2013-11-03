@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
@@ -56,21 +57,22 @@ public class BasslineTone extends RackTone {
         return getComponent(DistortionComponent.class);
     }
 
-    public BasslineTone() {
+    BasslineTone() {
     }
 
-    public BasslineTone(Machine machine) {
-        super(machine, MachineType.Bassline);
+    public BasslineTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.Bassline, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
-        rackTone.addComponent(SynthComponent.class, new SynthComponent());
-        rackTone.addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
-        rackTone.addComponent(VolumeComponent.class, new VolumeComponent());
-        rackTone.addComponent(DistortionComponent.class, new DistortionComponent());
-        rackTone.addComponent(FilterComponent.class, new FilterComponent());
-        rackTone.addComponent(LFO1Component.class, new LFO1Component());
-        rackTone.addComponent(OSC1Component.class, new OSC1Component());
+    @Override
+    public void create() {
+        addComponent(MixerChannel.class, new MixerChannel());
+        addComponent(SynthComponent.class, new SynthComponent());
+        addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
+        addComponent(VolumeComponent.class, new VolumeComponent());
+        addComponent(DistortionComponent.class, new DistortionComponent());
+        addComponent(FilterComponent.class, new FilterComponent());
+        addComponent(LFO1Component.class, new LFO1Component());
+        addComponent(OSC1Component.class, new OSC1Component());
     }
-
 }

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.controller;
 
-public interface ICausticLogger {
+public interface ICaustkLogger {
 
     void setLogLevel(int level);
 

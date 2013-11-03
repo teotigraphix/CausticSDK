@@ -29,14 +29,14 @@ import com.teotigraphix.caustk.live.MachineType;
  */
 public class VocoderTone extends RackTone {
 
-    public VocoderTone() {
+    VocoderTone() {
     }
 
-    public VocoderTone(Machine machine) {
-        super(machine, MachineType.Vocoder);
+    public VocoderTone(Machine machine, String machineName, int machineIndex) {
+        super(machine, MachineType.Vocoder, machineName, machineIndex);
     }
 
-    public static void setup(RackTone rackTone) {
+    @Override
+    public void create() {
     }
-
 }
