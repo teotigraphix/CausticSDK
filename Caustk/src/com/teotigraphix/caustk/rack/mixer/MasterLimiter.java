@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterLimiter extends RackMasterComponent {
@@ -150,8 +151,8 @@ public class MasterLimiter extends RackMasterComponent {
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void update(IRackContext context) {
+        super.update(context);
         MasterMixerMessage.LIMITER_ATTACK.send(getRack(), attack);
         MasterMixerMessage.LIMITER_POST.send(getRack(), post);
         MasterMixerMessage.LIMITER_PRE.send(getRack(), pre);

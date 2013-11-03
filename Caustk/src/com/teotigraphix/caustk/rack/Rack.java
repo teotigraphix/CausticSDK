@@ -88,15 +88,6 @@ public class Rack implements IRack {
         controller.addComponent(ISystemSequencer.class, systemSequencer);
     }
 
-    //    //----------------------------------
-    //    // factory
-    //    //----------------------------------
-    //
-    //    @Override
-    //    public final ICaustkFactory getFactory() {
-    //        return application.getFactory();
-    //    }
-
     //----------------------------------
     // controller
     //----------------------------------
@@ -137,7 +128,7 @@ public class Rack implements IRack {
         // recursively create OR updates all scene components based on their previous 
         // saved state
         try {
-            newSet.rackChanged(this);
+            newSet.rackChanged(application.getFactory());
         } catch (CausticException e) {
             getController().getLogger().err("Rack", "Error assigning RackSet to Rack", e);
         }

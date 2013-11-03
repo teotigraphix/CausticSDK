@@ -138,12 +138,12 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
-    public void update() {
-        equalizer.update();
-        limiter.update();
-        delay.update();
-        reverb.update();
-        volume.update();
+    public void update(IRackContext context) {
+        equalizer.update(context);
+        limiter.update(context);
+        delay.update(context);
+        reverb.update(context);
+        volume.update(context);
     }
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {

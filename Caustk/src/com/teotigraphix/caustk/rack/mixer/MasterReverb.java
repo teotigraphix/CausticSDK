@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterReverb extends RackMasterComponent {
@@ -300,8 +301,8 @@ public class MasterReverb extends RackMasterComponent {
     }
 
     @Override
-    public void update() {
-        super.update();
+    public void update(IRackContext context) {
+        super.update(context);
         MasterMixerMessage.REVERB_DIFFUSE.send(getRack(), diffuse);
         MasterMixerMessage.REVERB_DITHER_ECHOS.send(getRack(), ditherEchoes);
         MasterMixerMessage.REVERB_ER_DECAY.send(getRack(), erDecay);

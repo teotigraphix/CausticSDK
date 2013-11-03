@@ -220,7 +220,8 @@ public class MachinePreset implements IRackSerializer {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
+
         // take the byte data, save it temporarily, load as preset
         File temp = new File(RuntimeUtils.getApplicationDirectory(), ".temp");
         temp.mkdirs();

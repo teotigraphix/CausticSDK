@@ -126,7 +126,7 @@ public class RackMasterComponent implements IRackSerializer {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
         bypassMessage.send(getRack(), bypass ? 1 : 0);
     }
 }

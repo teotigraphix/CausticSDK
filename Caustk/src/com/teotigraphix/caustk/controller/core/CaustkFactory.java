@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkFactory;
+import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.live.ComponentInfo;
 import com.teotigraphix.caustk.live.ComponentInfoFactory;
@@ -151,6 +152,11 @@ public class CaustkFactory implements ICaustkFactory {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    @Override
+    public IRackContext createRackContext() {
+        return new RackContext(application);
+    }
 
     @Override
     public IRack createRack() {

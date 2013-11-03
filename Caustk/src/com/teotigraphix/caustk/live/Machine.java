@@ -42,15 +42,6 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class Machine implements ICaustkComponent, IRackSerializer {
 
-    /**
-     * This reference allows fast calls to the native Rack, this instance will
-     * always be the same reference as rackSet.getRack();
-     * <p>
-     * This instance is set in the constructor with rackSet passed and is also
-     * set in the load(CaustkFactory) method.
-     */
-    //private transient IRack rack;
-
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -133,7 +124,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         return rackSet.getFactory();
     }
 
-    public final IRack getRack() {
+    IRack getRack() {
         return rackSet.getRack();
     }
 
@@ -402,18 +393,19 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
+
         // create the Tone
-        updateTone();
+        updateTone(context);
 
         // assign the patch
-        updatePatch();
+        updatePatch(context);
 
         // create the phrases
-        updatePhrases();
+        updatePhrases(context);
     }
 
-    private void updateTone() {
+    private void updateTone(IRackContext context) {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 MachineType.fromString(machineType.getType()));
         try {
@@ -423,17 +415,17 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         }
     }
 
-    private void updatePatch() {
-        patch.update();
+    private void updatePatch(IRackContext context) {
+        patch.update(context);
     }
 
-    private void updatePhrases() {
+    private void updatePhrases(IRackContext context) {
         int currentBank = getCurrentBank();
         int currentPattern = getCurrentPattern();
         for (Phrase caustkPhrase : phrases.values()) {
             PatternSequencerMessage.BANK.send(getRack(), index, caustkPhrase.getBankIndex());
             PatternSequencerMessage.PATTERN.send(getRack(), index, caustkPhrase.getPatternIndex());
-            caustkPhrase.update();
+            caustkPhrase.update(context);
         }
         PatternSequencerMessage.BANK.send(getRack(), index, currentBank);
         PatternSequencerMessage.PATTERN.send(getRack(), index, currentPattern);

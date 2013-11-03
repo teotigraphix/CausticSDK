@@ -161,9 +161,9 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     }
 
     public void replaceEffect(int slot, Effect effect) {
-        // 
-        effect.setPatch(this);
-        effect.update();
+        //        // 
+        //        effect.setPatch(this);
+        //        effect.update();
     }
 
     Effect removeEffect(int slot) {
@@ -209,15 +209,15 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
         //machinePreset.setRack(rack);
         //mixerPreset.setRack(rack);
 
-        machinePreset.update();
+        machinePreset.update(context);
 
         for (Effect caustkEffect : effects.values()) {
             //caustkEffect.setRack(rack);
-            caustkEffect.update();
+            caustkEffect.update(context);
         }
     }
 

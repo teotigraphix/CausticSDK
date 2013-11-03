@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.IRackContext;
 
 /**
  * @author Michael Schmalle
@@ -121,9 +122,8 @@ public class PhaserEffect extends RackEffect {
     }
 
     @Override
-    public void update() {
-        super.update();
-
+    public void update(IRackContext context) {
+        super.update(context);
         set(PhaserControl.Depth, depth);
         set(PhaserControl.Feedback, feedback);
         set(PhaserControl.Rate, rate);

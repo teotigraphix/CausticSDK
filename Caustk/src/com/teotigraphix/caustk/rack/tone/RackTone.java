@@ -23,11 +23,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
@@ -37,7 +40,9 @@ import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
  * 
  * @author Michael Schmalle
  */
-public abstract class RackTone implements IRestore {
+public abstract class RackTone implements IRackSerializer {
+
+    private transient IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -62,7 +67,7 @@ public abstract class RackTone implements IRestore {
      * Returns the core audio engine interface.
      */
     public final ICausticEngine getEngine() {
-        return machine.getRack();
+        return rack;
     }
 
     //--------------------------------------------------------------------------
@@ -188,13 +193,25 @@ public abstract class RackTone implements IRestore {
         this.machineType = machineType;
         this.machineName = machineName;
         this.machineIndex = index;
+        this.rack = machine.getRackSet().getRack();
     }
 
+    //--------------------------------------------------------------------------
+    // IRackSerializer API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
     public abstract void create();
 
-    //--------------------------------------------------------------------------
-    // IRestore API :: Methods
-    //--------------------------------------------------------------------------
+    @Override
+    public void load(IRackContext context) throws CausticException {
+        rack = context.getRack();
+    }
+
+    @Override
+    public void update(IRackContext context) {
+        rack = context.getRack();
+    }
 
     @Override
     public void restore() {

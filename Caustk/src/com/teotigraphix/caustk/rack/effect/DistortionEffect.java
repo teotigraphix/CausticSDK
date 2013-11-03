@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.IRackContext;
 
 /**
  * @author Michael Schmalle
@@ -144,9 +145,8 @@ public class DistortionEffect extends RackEffect {
     }
 
     @Override
-    public void update() {
-        super.update();
-
+    public void update(IRackContext context) {
+        super.update(context);
         set(DistortionControl.Amount, amount);
         set(DistortionControl.Post, postGain);
         set(DistortionControl.Pre, preGain);

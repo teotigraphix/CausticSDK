@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.IRackContext;
 
 /**
  * @author Michael Schmalle
@@ -171,9 +172,8 @@ public class CompressorEffect extends RackEffect {
     }
 
     @Override
-    public void update() {
-        super.update();
-
+    public void update(IRackContext context) {
+        super.update(context);
         set(CompressorControl.Attack, attack);
         set(CompressorControl.Ratio, ratio);
         set(CompressorControl.Release, release);

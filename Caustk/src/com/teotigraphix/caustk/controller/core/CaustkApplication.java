@@ -106,11 +106,8 @@ public final class CaustkApplication implements ICaustkApplication {
         this.configuration.setApplication(this);
 
         logger = getConfiguration().createLogger();
-
         controller = configuration.createController();
-
         factory = getConfiguration().createFactory(this);
-        rack = factory.createRack();
     }
 
     //--------------------------------------------------------------------------
@@ -123,7 +120,11 @@ public final class CaustkApplication implements ICaustkApplication {
         getLogger().log("Application", "1) ++++++++++++++++++++++++++++++++++++++++");
         getLogger().log("Application", "initialize()");
         getConfiguration().getSoundGenerator().initialize();
+        // no controller components are dependent on the rack
         controller.initialize();
+        // create the rack here since its sub components will want to register with the
+        // command manager and use other services the controller creates in initialize
+        rack = factory.createRack();
     }
 
     // 2

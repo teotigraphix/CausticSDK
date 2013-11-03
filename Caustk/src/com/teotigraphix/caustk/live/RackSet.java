@@ -41,6 +41,9 @@ import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 
+/**
+ * @author Michael Schmalle
+ */
 public class RackSet implements ICaustkComponent, IRackSerializer {
 
     private transient IRack rack;
@@ -77,9 +80,17 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     // rack
     //----------------------------------
 
+    /**
+     * Returns the instance of the {@link IRack} that created this instance or
+     * the session rack that exists when this RackSet was deserialized.
+     */
     public IRack getRack() {
         return rack;
     }
+
+    //----------------------------------
+    // factory
+    //----------------------------------
 
     public ICaustkFactory getFactory() {
         return factory;
@@ -189,7 +200,7 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         // and have the majic happen
         caustkMachine.setIndex(index);
         machines.put(index, caustkMachine);
-        caustkMachine.update();
+        caustkMachine.update(factory.createRackContext());
         masterSequencer.updateMachine(caustkMachine);
     }
 
@@ -247,18 +258,20 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         return result;
     }
 
-    public void rackChanged(IRack rack) throws CausticException {
+    public void rackChanged(ICaustkFactory factory) throws CausticException {
         // since the is a restoration of deserialized components, all sub
         // components are guaranteed to be created, setRack() recurses and sets
         // all components rack
-        this.rack = rack;
+        this.factory = factory;
+        this.rack = factory.getRack();
 
         if (masterMixer == null && masterSequencer == null) {
             create();
         } else if (!isInternal) {
             // if this scene is internal, the rack state is already in the correct state
             // no need to update the native rack with the scene's serialized properties
-            update();
+            IRackContext context = factory.createRackContext();
+            update(context);
         }
     }
 
@@ -271,19 +284,18 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void update() {
-        if (rack == null)
-            throw new IllegalStateException("Rack cannot be null");
+    public void update(IRackContext context) {
+        rack = context.getRack();
 
         RackMessage.BLANKRACK.send(rack);
 
-        masterMixer.update();
+        masterMixer.update(context);
 
         for (Machine machine : machines.values()) {
-            machine.update();
+            machine.update(context);
         }
 
-        masterSequencer.update();
+        masterSequencer.update(context);
     }
 
     /**
@@ -334,10 +346,12 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
 
     private void createComponents(IRackContext context) throws IOException, CausticException {
         masterMixer = context.getFactory().createMasterMixer(this);
+        masterMixer.create();
         for (int i = 0; i < 14; i++) {
             createMachine(i, context);
         }
         masterSequencer = context.getFactory().createMasterSequencer(this);
+        masterSequencer.create();
     }
 
     private void loadComponents(IRackContext context) throws IOException, CausticException {

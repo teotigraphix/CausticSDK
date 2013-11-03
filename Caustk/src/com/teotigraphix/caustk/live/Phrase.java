@@ -174,9 +174,8 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         if (getMachine() != null) {
             getMachine().getRackTone().getPatternSequencer()
                     .setLength(getBankIndex(), getPatternIndex(), length);
+            fireChange(PhraseChangeKind.Length);
         }
-
-        fireChange(PhraseChangeKind.Length);
 
         if (position > value)
             setPosition(value);
@@ -871,7 +870,7 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
         PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(), machine.getIndex(), length);
         for (Note note : triggerMap.getNotes()) {
             if (note.isSelected()) {

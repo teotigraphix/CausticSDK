@@ -19,10 +19,8 @@
 
 package com.teotigraphix.caustk.controller;
 
-import com.teotigraphix.caustk.controller.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
-import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
@@ -33,11 +31,6 @@ public interface IRackSerializer extends IRestore {
 
     /**
      * Loads the rack component from a <code>.caustic</code> file.
-     * <p>
-     * The class that implements this method if {@link IRackAware} will call
-     * {@link IRackAware#setRack(IRack)} on itself using the
-     * {@link CaustkFactory#getRack()} which is the current rack loading the
-     * file.
      * <p>
      * Calling this method will wipe out all state, rack references and sub
      * components creating new components and loading from a caustic file.
@@ -52,6 +45,13 @@ public interface IRackSerializer extends IRestore {
     void load(IRackContext context) throws CausticException;
 
     /**
+     * Updates the native rack with instance property state that exists on the
+     * rack component, the component will send setter commands to the native
+     * rack.
+     */
+    void update(IRackContext context);
+
+    /**
      * Restores the rack, each component implementing the method will use OSC
      * message queries to set instance properties.
      * <p>
@@ -61,12 +61,5 @@ public interface IRackSerializer extends IRestore {
      */
     @Override
     void restore();
-
-    /**
-     * Updates the native rack with instance property state that exists on the
-     * rack component, the component will send setter commands to the native
-     * rack.
-     */
-    void update();
 
 }

@@ -59,6 +59,7 @@ public class MasterSequencer implements IRackSerializer {
         this.rackSet = rackSet;
     }
 
+    @Override
     public void create() throws CausticException {
     }
 
@@ -100,7 +101,7 @@ public class MasterSequencer implements IRackSerializer {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
         for (Machine caustkMachine : rackSet.getMachines()) {
             updateMachine(caustkMachine);
         }

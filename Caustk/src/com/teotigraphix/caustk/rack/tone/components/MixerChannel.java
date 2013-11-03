@@ -303,7 +303,7 @@ public class MixerChannel extends RackToneComponent implements IRackSerializer {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
         MixerChannelMessage.EQ_BASS.send(getEngine(), getToneIndex(), getBass());
         MixerChannelMessage.EQ_MID.send(getEngine(), getToneIndex(), getMid());
         MixerChannelMessage.EQ_HIGH.send(getEngine(), getToneIndex(), getHigh());

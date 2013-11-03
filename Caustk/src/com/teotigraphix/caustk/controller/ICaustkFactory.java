@@ -33,6 +33,8 @@ public interface ICaustkFactory {
      */
     IRack getRack();
 
+    IRackContext createRackContext();
+
     IRack createRack();
 
     Library createLibrary(String name);

@@ -154,6 +154,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     /**
      * Creates the {@link IEffect} but assigns -1 to the slot and machine index.
      */
+    @Override
     public void create() {
         rackEffect = createEffect(-1, -1);
     }
@@ -177,11 +178,11 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     }
 
     @Override
-    public void update() {
+    public void update(IRackContext context) {
         EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getIndex(), index,
                 effectType.getValue());
         rackEffect.setEffect(this);
-        rackEffect.update();
+        rackEffect.update(context);
     }
 
     RackEffect createEffect(int slot, int toneIndex) {

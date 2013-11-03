@@ -138,11 +138,11 @@ public abstract class RackEffect implements IRackSerializer {
     }
 
     @Override
-    public void restore() {
+    public void update(IRackContext context) {
     }
 
     @Override
-    public void update() {
+    public void restore() {
     }
 
     //--------------------------------------------------------------------------
