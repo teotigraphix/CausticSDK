@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 
 /**
  * The tone impl for the native FMSynth machine.
@@ -32,7 +33,7 @@ public class FMSynthTone extends RackTone {
     }
 
     public FMSynthTone(Machine machine) {
-        super(machine, ToneType.FMSynth);
+        super(machine, MachineType.FMSynth);
     }
 
     public static void setup(RackTone rackTone) {

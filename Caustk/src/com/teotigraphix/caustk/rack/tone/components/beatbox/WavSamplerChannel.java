@@ -21,9 +21,9 @@ package com.teotigraphix.caustk.rack.tone.components.beatbox;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class WavSamplerChannel extends ToneComponent {
+public class WavSamplerChannel extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

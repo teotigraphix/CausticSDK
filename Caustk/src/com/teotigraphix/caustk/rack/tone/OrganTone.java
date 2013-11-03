@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
@@ -44,7 +45,7 @@ public class OrganTone extends RackTone {
     }
 
     public OrganTone(Machine machine) {
-        super(machine, ToneType.Organ);
+        super(machine, MachineType.Organ);
     }
 
     public static void setup(RackTone rackTone) {

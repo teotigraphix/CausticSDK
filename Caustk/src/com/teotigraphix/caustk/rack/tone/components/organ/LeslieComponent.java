@@ -3,9 +3,9 @@ package com.teotigraphix.caustk.rack.tone.components.organ;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OrganMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class LeslieComponent extends ToneComponent {
+public class LeslieComponent extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
@@ -59,7 +60,7 @@ public class BasslineTone extends RackTone {
     }
 
     public BasslineTone(Machine machine) {
-        super(machine, ToneType.Bassline);
+        super(machine, MachineType.Bassline);
     }
 
     public static void setup(RackTone rackTone) {

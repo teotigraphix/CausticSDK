@@ -21,9 +21,9 @@ package com.teotigraphix.caustk.rack.tone.components;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class FilterComponentBase extends ToneComponent {
+public class FilterComponentBase extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

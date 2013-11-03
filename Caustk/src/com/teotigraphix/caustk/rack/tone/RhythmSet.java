@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 
 /**
  * @author Michael Schmalle
@@ -39,7 +40,7 @@ public class RhythmSet extends RackTone {
     }
 
     public RhythmSet(Machine machine) {
-        super(machine, ToneType.Beatbox);
+        super(machine, MachineType.Beatbox);
     }
 
 }

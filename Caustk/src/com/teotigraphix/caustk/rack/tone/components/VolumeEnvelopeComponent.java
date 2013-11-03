@@ -3,9 +3,9 @@ package com.teotigraphix.caustk.rack.tone.components;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class VolumeEnvelopeComponent extends ToneComponent {
+public class VolumeEnvelopeComponent extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

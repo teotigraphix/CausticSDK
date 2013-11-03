@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.modular.AREnvelope;
@@ -246,7 +247,7 @@ public class ModularTone extends RackTone {
     }
 
     public ModularTone(Machine machine) {
-        super(machine, ToneType.Modular);
+        super(machine, MachineType.Modular);
 
         //modularPanel = new ModularPanel(controller);
         //modularPanel.setTone(this);

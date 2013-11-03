@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
@@ -64,7 +65,7 @@ public class SubSynthTone extends RackTone {
     }
 
     public SubSynthTone(Machine machine) {
-        super(machine, ToneType.SubSynth);
+        super(machine, MachineType.SubSynth);
     }
 
     public static void setup(RackTone rackTone) {

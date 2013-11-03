@@ -21,10 +21,10 @@ package com.teotigraphix.caustk.rack.tone.components.pcmsynth;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc2Component.Osc2WaveForm;
 
-public class LFO1Component extends ToneComponent {
+public class LFO1Component extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

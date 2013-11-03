@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.rack.tone.components.modular;
 
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class ModularBayComponent extends ToneComponent {
+public class ModularBayComponent extends RackToneComponent {
 
     public ModularBayComponent() {
     }

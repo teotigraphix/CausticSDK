@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.rack.tone.components.pcmsynth;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMSamplerComponent.PlayMode;
 
 /**
@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMSamplerComponent
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class PCMSamplerChannel extends ToneComponent {
+public class PCMSamplerChannel extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

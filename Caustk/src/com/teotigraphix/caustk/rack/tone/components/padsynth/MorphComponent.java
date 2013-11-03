@@ -3,9 +3,9 @@ package com.teotigraphix.caustk.rack.tone.components.padsynth;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class MorphComponent extends ToneComponent {
+public class MorphComponent extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

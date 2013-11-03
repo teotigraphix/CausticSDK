@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
- * The {@link ToneComponent} is a sub component held on a {@link RackTone}.
+ * The {@link RackToneComponent} is a sub component held on a {@link RackTone}.
  * <p>
  * Using the {@link RackTone#getComponent(Class)} will return the component that was
  * registered under the class type API passed, null if the component dosn't
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
  * 
  * @author Michael Schmalle
  */
-public abstract class ToneComponent implements IRestore {
+public abstract class RackToneComponent implements IRestore {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -66,7 +66,7 @@ public abstract class ToneComponent implements IRestore {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ToneComponent() {
+    public RackToneComponent() {
     }
 
     /**

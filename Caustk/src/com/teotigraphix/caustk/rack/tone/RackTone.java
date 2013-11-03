@@ -28,6 +28,7 @@ import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.live.MixerPreset;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
@@ -47,7 +48,7 @@ public abstract class RackTone implements IRestore {
     private Machine machine;
 
     @Tag(1)
-    private Map<Class<? extends ToneComponent>, ToneComponent> components = new HashMap<Class<? extends ToneComponent>, ToneComponent>();
+    private Map<Class<? extends RackToneComponent>, RackToneComponent> components = new HashMap<Class<? extends RackToneComponent>, RackToneComponent>();
 
     @Tag(2)
     private UUID id;
@@ -56,7 +57,7 @@ public abstract class RackTone implements IRestore {
     private String name = "";
 
     @Tag(4)
-    private ToneType toneType;
+    private MachineType machineType;
 
     @Tag(5)
     private int index;
@@ -80,8 +81,8 @@ public abstract class RackTone implements IRestore {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    public final ToneType getToneType() {
-        return toneType;
+    public final MachineType getMachineType() {
+        return machineType;
     }
 
     public MixerPreset getMixer() {
@@ -264,23 +265,23 @@ public abstract class RackTone implements IRestore {
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a {@link ToneComponent} to the tone's component map and sets the
+     * Adds a {@link RackToneComponent} to the tone's component map and sets the
      * component's tone reference.
      * 
      * @param clazz The component API class.
      * @param instance The component instance.
      */
-    void addComponent(Class<? extends ToneComponent> clazz, ToneComponent instance) {
+    void addComponent(Class<? extends RackToneComponent> clazz, RackToneComponent instance) {
         components.put(clazz, instance);
         instance.setTone(this);
     }
 
     /**
-     * Returns a {@link ToneComponent} by class type.
+     * Returns a {@link RackToneComponent} by class type.
      * 
      * @param clazz The component API class.
      */
-    public <T extends ToneComponent> T getComponent(Class<T> clazz) {
+    public <T extends RackToneComponent> T getComponent(Class<T> clazz) {
         return clazz.cast(components.get(clazz));
     }
 
@@ -291,9 +292,9 @@ public abstract class RackTone implements IRestore {
     RackTone() {
     }
 
-    public RackTone(Machine machine, ToneType toneType) {
+    public RackTone(Machine machine, MachineType machineType) {
         this.machine = machine;
-        this.toneType = toneType;
+        this.machineType = machineType;
     }
 
     //--------------------------------------------------------------------------
@@ -303,8 +304,8 @@ public abstract class RackTone implements IRestore {
     @Override
     public void restore() {
         setNameInternal(getName(true));
-        for (ToneComponent toneComponent : components.values()) {
-            toneComponent.restore();
+        for (RackToneComponent rackToneComponent : components.values()) {
+            rackToneComponent.restore();
         }
     }
 }

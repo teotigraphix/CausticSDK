@@ -21,9 +21,9 @@ package com.teotigraphix.caustk.rack.tone.components.bassline;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class LFO1Component extends ToneComponent {
+public class LFO1Component extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

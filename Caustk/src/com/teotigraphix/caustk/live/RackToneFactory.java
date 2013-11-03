@@ -35,10 +35,9 @@ import com.teotigraphix.caustk.rack.tone.ModularTone;
 import com.teotigraphix.caustk.rack.tone.OrganTone;
 import com.teotigraphix.caustk.rack.tone.PCMSynthTone;
 import com.teotigraphix.caustk.rack.tone.PadSynthTone;
-import com.teotigraphix.caustk.rack.tone.SubSynthTone;
 import com.teotigraphix.caustk.rack.tone.RackTone;
+import com.teotigraphix.caustk.rack.tone.SubSynthTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.rack.tone.ToneUtils;
 import com.teotigraphix.caustk.rack.tone.VocoderTone;
 
@@ -52,7 +51,7 @@ public class RackToneFactory extends CaustkSubFactoryBase {
     public RackToneFactory() {
     }
 
-    RackTone createRackTone(Machine machine, int index, String toneName, ToneType toneType)
+    RackTone createRackTone(Machine machine, int index, String toneName, MachineType toneType)
             throws CausticException {
         final IRack rack = getFactory().getRack();
 
@@ -63,7 +62,7 @@ public class RackToneFactory extends CaustkSubFactoryBase {
         //            throw new CausticException("{" + index + "} tone is already defined");
 
         //        if (!restoring)
-        RackMessage.CREATE.send(rack, toneType.getValue(), toneName, index);
+        RackMessage.CREATE.send(rack, toneType.getType(), toneName, index);
 
         RackTone rackTone = null;
         switch (toneType) {
@@ -133,7 +132,7 @@ public class RackToneFactory extends CaustkSubFactoryBase {
         try {
             Constructor<? extends RackTone> constructor = toneClass.getConstructor(IRack.class);
             tone = (T)constructor.newInstance(rack);
-            initializeTone(tone, name, tone.getToneType(), index);
+            initializeTone(tone, name, tone.getMachineType(), index);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (SecurityException e) {
@@ -150,13 +149,14 @@ public class RackToneFactory extends CaustkSubFactoryBase {
 
         ToneUtils.setup(toneClass.cast(tone));
 
-        RackMessage.CREATE.send(rack, tone.getToneType().getValue(), tone.getName(),
+        RackMessage.CREATE.send(rack, tone.getMachineType().getType(), tone.getName(),
                 tone.getIndex());
 
         return tone;
     }
 
-    private void initializeTone(RackTone rackTone, String toneName, ToneType toneType, int index) {
+    private void initializeTone(RackTone rackTone, String toneName, MachineType machineType,
+            int index) {
         rackTone.setId(UUID.randomUUID());
         rackTone.setIndex(index);
         ToneUtils.setName(rackTone, toneName);
@@ -171,8 +171,9 @@ public class RackToneFactory extends CaustkSubFactoryBase {
         return index;
     }
 
-    public RackTone createRackTone(Machine machine, ToneDescriptor descriptor) throws CausticException {
+    public RackTone createRackTone(Machine machine, ToneDescriptor descriptor)
+            throws CausticException {
         return createRackTone(machine, descriptor.getIndex(), descriptor.getName(),
-                descriptor.getToneType());
+                descriptor.getMachineType());
     }
 }

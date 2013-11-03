@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import com.google.gson.stream.JsonReader;
+import com.teotigraphix.caustk.live.MachineType;
 
 /**
  * Various static methods used with the various Tone framework.
@@ -43,7 +44,7 @@ public final class ToneUtils {
      * @throws IOException
      */
     public static Class<? extends RackTone> getToneClass(String data) throws IOException {
-        ToneType type = readToneType(data);
+        MachineType type = readToneType(data);
         switch (type) {
             case Bassline:
                 return BasslineTone.class;
@@ -75,14 +76,14 @@ public final class ToneUtils {
      * @param data Valid serialized Tone data.
      * @throws IOException
      */
-    public static ToneType readToneType(String data) throws IOException {
+    public static MachineType readToneType(String data) throws IOException {
         JsonReader reader = new JsonReader(new StringReader(data));
         String type = null;
         try {
             reader.beginObject();
             while (reader.hasNext()) {
                 String name = reader.nextName();
-                if (name.equals("toneType")) {
+                if (name.equals("machineType")) {
                     type = reader.nextString();
                 } else {
                     reader.skipValue();
@@ -93,13 +94,13 @@ public final class ToneUtils {
             reader.close();
         }
         if (type != null)
-            return ToneType.valueOf(type);
+            return MachineType.valueOf(type);
 
         return null;
     }
 
     public static void setup(RackTone rackTone) {
-        switch (rackTone.getToneType()) {
+        switch (rackTone.getMachineType()) {
             case Bassline:
                 BasslineTone.setup(rackTone);
                 break;

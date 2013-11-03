@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineType;
 
 /**
  * The tone impl for the native 8BitSynth machine.
@@ -32,7 +33,7 @@ public class EightBitSynth extends RackTone {
     }
 
     public EightBitSynth(Machine machine) {
-        super(machine, ToneType.EightBitSynth);
+        super(machine, MachineType.EightBitSynth);
     }
 
     public static void setup(RackTone rackTone) {

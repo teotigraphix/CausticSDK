@@ -21,9 +21,9 @@ package com.teotigraphix.caustk.rack.tone.components.subsynth;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class LFO2Component extends ToneComponent {
+public class LFO2Component extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

@@ -33,7 +33,6 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.rack.tone.ToneType;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
@@ -292,18 +291,19 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     }
 
     /**
-     * Creates the underlying {@link RackTone} instance for the machine using the
-     * {@link #getIndex()}, {@link #getMachineName()} and
+     * Creates the underlying {@link RackTone} instance for the machine using
+     * the {@link #getIndex()}, {@link #getMachineName()} and
      * {@link #getMachineType()}.
      * 
      * @throws CausticException Error creating Tone
      */
+    @Override
     public void create() throws CausticException {
         if (rackTone != null)
             throw new IllegalStateException("Tone exists in machine");
 
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
-                ToneType.fromString(machineType.getType()));
+                MachineType.fromString(machineType.getType()));
         try {
             rackTone = getRack().getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
@@ -333,7 +333,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
 
     private void updateTone() {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
-                ToneType.fromString(machineType.getType()));
+                MachineType.fromString(machineType.getType()));
         try {
             rackTone = getRack().getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
@@ -389,7 +389,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
             throw new IllegalStateException("Tone exists in ISoundSource at index:" + index);
 
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
-                ToneType.fromString(machineType.getType()));
+                MachineType.fromString(machineType.getType()));
         rackTone = factory.createTone(this, descriptor);
         if (rackTone == null)
             throw new CausticException("Failed to create " + descriptor.toString());

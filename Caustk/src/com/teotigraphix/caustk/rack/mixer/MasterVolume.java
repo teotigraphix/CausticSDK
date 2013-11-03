@@ -32,30 +32,30 @@ public class MasterVolume extends RackMasterComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private float volume = 1f;
+    private float out = 1f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // volume
+    // out
     //----------------------------------
 
-    public float getVolume() {
-        return volume;
+    public float getOut() {
+        return out;
     }
 
-    float getVolume(boolean restore) {
+    float getOut(boolean restore) {
         return MasterMixerMessage.VOLUME.query(getRack());
     }
 
-    public void setVolume(float value) {
-        if (volume == value)
+    public void setOut(float value) {
+        if (out == value)
             return;
         if (value < 0f || value > 2f)
             throw newRangeException("volume", "0..2", value);
-        volume = value;
+        out = value;
         MasterMixerMessage.VOLUME.send(getRack(), value);
         //        fireChange(MasterMixerChangeKind.Volume, volume);
     }
@@ -75,12 +75,12 @@ public class MasterVolume extends RackMasterComponent {
     @Override
     public void restore() {
         super.restore();
-        // XXX OSC BUG        setVolume(getVolume(true));
+        // XXX OSC BUG        setOut(getOut(true));
     }
 
     @Override
     public void update() {
         super.update();
-        MasterMixerMessage.VOLUME.send(getRack(), volume);
+        MasterMixerMessage.VOLUME.send(getRack(), out);
     }
 }

@@ -25,9 +25,9 @@ import java.util.TreeMap;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.rack.tone.RackTone;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
-public class PCMSamplerComponent extends ToneComponent {
+public class PCMSamplerComponent extends RackToneComponent {
 
     private static final int NUM_SAMPLER_CHANNELS = 64;
 

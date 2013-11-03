@@ -148,11 +148,11 @@ public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
     }
 
     public final float getVolume() {
-        return masterMixer.getVolume().getVolume();
+        return masterMixer.getVolume().getOut();
     }
 
     public final void setVolume(float value) {
-        masterMixer.getVolume().setVolume(value);
+        masterMixer.getVolume().setOut(value);
     }
 
     //--------------------------------------------------------------------------

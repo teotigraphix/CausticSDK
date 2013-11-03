@@ -260,7 +260,7 @@ public class MachinePreset implements IRackSerializer {
      */
     // XXX throw exception?
     public void restore(RackTone rackTone) {
-        if (!rackTone.getToneType().getValue().equals(getPatch().getMachineType().getType()))
+        if (rackTone.getMachineType() != getPatch().getMachineType())
             throw new IllegalStateException("Tone's type does not match the LivePhrase's type");
 
         // save the temp preset file to get its bytes

@@ -21,9 +21,11 @@ package com.teotigraphix.caustk.rack.tone;
 
 import java.util.UUID;
 
+import com.teotigraphix.caustk.live.MachineType;
+
 /**
- * Each application must define the {@link RackTone} instances that will get created
- * at startup.
+ * Each application must define the {@link RackTone} instances that will get
+ * created at startup.
  * 
  * @author Michael Schmalle
  */
@@ -40,16 +42,16 @@ public class ToneDescriptor {
         return name;
     }
 
-    private ToneType toneType;
+    private MachineType machineType;
 
-    public ToneDescriptor(int index, String name, ToneType toneType) {
+    public ToneDescriptor(int index, String name, MachineType toneType) {
         this.index = index;
         this.name = name;
-        this.toneType = toneType;
+        this.machineType = toneType;
     }
 
-    public ToneType getToneType() {
-        return toneType;
+    public MachineType getMachineType() {
+        return machineType;
     }
 
     public final UUID getPatchId() {
@@ -64,6 +66,6 @@ public class ToneDescriptor {
 
     @Override
     public String toString() {
-        return "[ToneDescriptor(" + index + "," + toneType.getValue() + "," + name + ")]";
+        return "[ToneDescriptor(" + index + "," + machineType.getType() + "," + name + ")]";
     }
 }

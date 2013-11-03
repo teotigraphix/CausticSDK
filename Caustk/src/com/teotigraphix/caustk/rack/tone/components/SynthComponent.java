@@ -31,10 +31,10 @@ import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
 import com.teotigraphix.caustk.rack.tone.ModularTone;
-import com.teotigraphix.caustk.rack.tone.ToneComponent;
+import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-public class SynthComponent extends ToneComponent {
+public class SynthComponent extends RackToneComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -124,7 +124,7 @@ public class SynthComponent extends ToneComponent {
      */
     public File savePreset(String name) throws IOException {
         SynthMessage.SAVE_PRESET.send(getEngine(), getToneIndex(), name);
-        MachineType machineType = MachineType.fromString(getTone().getToneType().getValue());
+        MachineType machineType = MachineType.fromString(getTone().getMachineType().getType());
         File file = RuntimeUtils.getCausticPresetsFile(machineType, name);
         if (!file.exists())
             throw new FileNotFoundException("Preset file was not saved:" + file);
