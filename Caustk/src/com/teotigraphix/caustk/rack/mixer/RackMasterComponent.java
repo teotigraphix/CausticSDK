@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.rack.mixer;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.rack.IRack;
@@ -109,6 +110,10 @@ public class RackMasterComponent implements IRackSerializer {
     //--------------------------------------------------------------------------
     // IRackSerializer API :: Methods
     //--------------------------------------------------------------------------
+
+    @Override
+    public void create() throws CausticException {
+    }
 
     @Override
     public void load(IRackContext context) {

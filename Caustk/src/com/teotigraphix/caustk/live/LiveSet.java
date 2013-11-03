@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.live.AudioTrack.AudioTrackInfo;
 
 /**
  * @author Michael Schmalle

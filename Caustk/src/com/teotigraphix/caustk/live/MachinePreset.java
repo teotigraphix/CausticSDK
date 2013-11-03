@@ -28,6 +28,7 @@ import org.apache.commons.io.FileUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.RackTone;
@@ -165,6 +166,10 @@ public class MachinePreset implements IRackSerializer {
     }
 
     @Override
+    public void create() throws CausticException {
+    }
+
+    @Override
     public void load(IRackContext context) {
         Machine machine = getPatch().getMachine();
         if (machine == null)
@@ -193,11 +198,11 @@ public class MachinePreset implements IRackSerializer {
     }
 
     /**
-     * Restores the {@link #getData()} bytes with the {@link RackTone}'s preset file
-     * as currently loaded in the rack.
+     * Restores the {@link #getData()} bytes with the {@link RackTone}'s preset
+     * file as currently loaded in the rack.
      * <p>
-     * The {@link #getPatch()}'s {@link Machine} and {@link RackTone} must be non
-     * <code>null</code> for the method to not throw an error.
+     * The {@link #getPatch()}'s {@link Machine} and {@link RackTone} must be
+     * non <code>null</code> for the method to not throw an error.
      * 
      * @throws IOException
      */
@@ -243,13 +248,14 @@ public class MachinePreset implements IRackSerializer {
     }
 
     /**
-     * Updates the {@link #getData()} bytes with the {@link RackTone}'s preset file
-     * as currently loaded in the rack.
+     * Updates the {@link #getData()} bytes with the {@link RackTone}'s preset
+     * file as currently loaded in the rack.
      * <p>
-     * The {@link RackTone#getToneType()} must match the {@link Patch#getToneType()}
-     * for the method to be successful.
+     * The {@link RackTone#getToneType()} must match the
+     * {@link Patch#getToneType()} for the method to be successful.
      * 
-     * @param rackTone The {@link RackTone} to use when updating the preset bytes.
+     * @param rackTone The {@link RackTone} to use when updating the preset
+     *            bytes.
      * @throws IOException
      */
     // XXX throw exception?

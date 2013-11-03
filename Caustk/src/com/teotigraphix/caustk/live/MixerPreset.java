@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.live;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -321,6 +322,10 @@ public class MixerPreset implements IRackSerializer {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    @Override
+    public void create() throws CausticException {
+    }
 
     @Override
     public void load(IRackContext context) {

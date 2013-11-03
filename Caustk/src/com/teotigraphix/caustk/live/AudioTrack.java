@@ -53,12 +53,15 @@ public class AudioTrack {
     private AudioTrackInfo info;
 
     @Tag(1)
-    private Machine machine;
+    private LiveSet liveSet;
 
     @Tag(2)
-    private AudioTrackMixer mixer;
+    private Machine machine;
 
     @Tag(3)
+    private AudioTrackMixer mixer;
+
+    @Tag(10)
     private boolean selected;
 
     //--------------------------------------------------------------------------
@@ -74,6 +77,14 @@ public class AudioTrack {
      */
     public AudioTrackInfo getInfo() {
         return info;
+    }
+
+    //----------------------------------
+    // liveSet
+    //----------------------------------
+
+    public LiveSet getLiveSet() {
+        return liveSet;
     }
 
     //----------------------------------
@@ -176,68 +187,5 @@ public class AudioTrack {
         mixer.dispose();
         machine.getRackSet().removeMachine(machine);
         machine = null;
-    }
-
-    /**
-     * Information object for the {@link AudioTrack}.
-     * 
-     * @author Michael Schmalle
-     */
-    public static class AudioTrackInfo {
-
-        private String name;
-
-        private String infoText;
-
-        private Object color;
-
-        //----------------------------------
-        // name
-        //----------------------------------
-
-        /**
-         * Returns the user defined, display name of the audio track.
-         */
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        //----------------------------------
-        // infoText
-        //----------------------------------
-
-        /**
-         * Returns the information text attached to the {@link AudioTrack}.
-         */
-        public String getInfoText() {
-            return infoText;
-        }
-
-        public void setInfoText(String infoText) {
-            this.infoText = infoText;
-        }
-
-        //----------------------------------
-        // color
-        //----------------------------------
-
-        /**
-         * Returns the Color of the {@link AudioTrack}.
-         */
-        public Object getColor() {
-            return color;
-        }
-
-        public void setColor(Object color) {
-            this.color = color;
-        }
-
-        public AudioTrackInfo(String name) {
-            this.name = name;
-        }
     }
 }

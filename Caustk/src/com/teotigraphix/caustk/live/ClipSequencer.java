@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.live;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.live.LiveSet.OnLiveSetListener;
 
 /**
@@ -26,6 +27,7 @@ import com.teotigraphix.caustk.live.LiveSet.OnLiveSetListener;
  */
 public abstract class ClipSequencer implements OnLiveSetListener {
 
+    @Tag(0)
     private LiveSet liveSet;
 
     public LiveSet getLiveSet() {

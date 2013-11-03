@@ -524,6 +524,10 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
+    public void create() throws CausticException {
+    }
+
+    @Override
     public void load(IRackContext context) throws CausticException {
         final IRack rack = context.getRack();
 

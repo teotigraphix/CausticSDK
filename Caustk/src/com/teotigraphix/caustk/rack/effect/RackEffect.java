@@ -129,6 +129,10 @@ public abstract class RackEffect implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Override
+    public void create() throws CausticException {
+    }
+
+    @Override
     public void load(IRackContext context) throws CausticException {
         restore();
     }

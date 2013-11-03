@@ -31,6 +31,7 @@ import java.util.Map;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IRackAware;
 import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
@@ -40,7 +41,7 @@ import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 
-public class RackSet implements ICaustkComponent, IRackAware {
+public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
 
     private transient IRack rack;
 
@@ -106,7 +107,7 @@ public class RackSet implements ICaustkComponent, IRackAware {
     }
 
     //----------------------------------
-    // causticFile
+    // isInternal
     //----------------------------------
 
     /**
@@ -125,6 +126,10 @@ public class RackSet implements ICaustkComponent, IRackAware {
     public boolean isInternal() {
         return isInternal;
     }
+
+    //----------------------------------
+    // MasterMixer
+    //----------------------------------
 
     public final MasterDelay getDelay() {
         return masterMixer.getDelay();
@@ -260,6 +265,7 @@ public class RackSet implements ICaustkComponent, IRackAware {
         masterSequencer.create();
     }
 
+    @Override
     public void update() {
         if (rack == null)
             throw new IllegalStateException("Rack cannot be null");
@@ -276,8 +282,8 @@ public class RackSet implements ICaustkComponent, IRackAware {
     }
 
     /**
-     * Loads the {@link RackSet} using the {@link #getCausticFile()} passed during
-     * scene construction.
+     * Loads the {@link RackSet} using the {@link #getCausticFile()} passed
+     * during scene construction.
      * <p>
      * Calling this method will issue a <code>BLANKRACK</code> command and
      * <code>LOAD_SONG</code>, all song state is reset to default before
@@ -291,6 +297,7 @@ public class RackSet implements ICaustkComponent, IRackAware {
      * @throws IOException
      * @throws CausticException
      */
+    @Override
     public void load(IRackContext context) throws CausticException {
         if (causticFile == null || !causticFile.exists())
             throw new IllegalStateException("Caustic song file null or not found on file system: "
@@ -313,6 +320,11 @@ public class RackSet implements ICaustkComponent, IRackAware {
         } catch (IOException e) {
             throw new CausticException(e);
         }
+    }
+
+    @Override
+    public void restore() {
+        rack.restore();
     }
 
     private void createComponents(IRackContext context) throws IOException, CausticException {

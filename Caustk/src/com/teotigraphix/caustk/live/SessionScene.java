@@ -37,11 +37,11 @@ public class SessionScene implements OnLiveSetListener {
 
     private String name;
 
+    private int index;
+
     private int bankIndex;
 
     private int patternIndex;
-
-    private AudioTrack track;
 
     public String getName() {
         return name;
@@ -56,7 +56,7 @@ public class SessionScene implements OnLiveSetListener {
     }
 
     public AudioTrack getTrack() {
-        return track;
+        return sessionSequencer.getLiveSet().getTrack(index);
     }
 
     private Map<Integer, SessionClip> map = new TreeMap<Integer, SessionClip>();

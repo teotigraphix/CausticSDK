@@ -29,6 +29,8 @@ import com.teotigraphix.caustk.rack.IRack;
  */
 public interface IRackSerializer extends IRestore {
 
+    void create() throws CausticException;
+
     /**
      * Loads the rack component from a <code>.caustic</code> file.
      * <p>
