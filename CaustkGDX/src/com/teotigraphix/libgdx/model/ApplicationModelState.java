@@ -122,9 +122,9 @@ public abstract class ApplicationModelState {
         // XXX don't know exactly where to put this but when a new Project
         // is created, when reiniting the state, the Rack needs to be wiped
         RackMessage.BLANKRACK.send(rack);
-        ComponentInfo info = rack.getFactory()
-                .createInfo(ComponentType.RackSet, "Untitled RackSet");
-        rackSet = rack.getFactory().createRackSet(info);
+        ComponentInfo info = getController().getFactory().createInfo(ComponentType.RackSet,
+                "Untitled RackSet");
+        rackSet = getController().getFactory().createRackSet(info);
         rackSet.setInternal();
         rack.setRackSet(rackSet);
     }

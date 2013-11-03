@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.controller.core.CaustkFactory;
@@ -128,6 +129,10 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         return rackSet;
     }
 
+    ICaustkFactory getFactory() {
+        return rackSet.getFactory();
+    }
+
     public final IRack getRack() {
         return rackSet.getRack();
     }
@@ -213,7 +218,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         int index = PatternUtils.getIndex(bankIndex, patternIndex);
         Phrase phrase = phrases.get(index);
         if (phrase == null) {
-            phrase = getRack().getFactory().createPhrase(this, bankIndex, patternIndex);
+            phrase = rackSet.getFactory().createPhrase(this, bankIndex, patternIndex);
             phrases.put(index, phrase);
         }
         return phrase;
@@ -382,12 +387,12 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 MachineType.fromString(machineType.getType()));
         try {
-            rackTone = getRack().getFactory().createTone(this, descriptor);
+            rackTone = rackSet.getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
             throw e;
         }
 
-        patch = getRack().getFactory().createPatch(this);
+        patch = rackSet.getFactory().createPatch(this);
         patch.create();
     }
 
@@ -412,7 +417,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         ToneDescriptor descriptor = new ToneDescriptor(index, machineName,
                 MachineType.fromString(machineType.getType()));
         try {
-            rackTone = getRack().getFactory().createTone(this, descriptor);
+            rackTone = rackSet.getFactory().createTone(this, descriptor);
         } catch (CausticException e) {
             e.printStackTrace();
         }

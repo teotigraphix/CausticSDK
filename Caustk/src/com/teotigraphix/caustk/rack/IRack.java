@@ -22,7 +22,6 @@ package com.teotigraphix.caustk.rack;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
@@ -44,7 +43,7 @@ public interface IRack extends ICausticEngine, IRestore {
 
     IDispatcher getGlobalDispatcher();
 
-    ICaustkFactory getFactory();
+    //    ICaustkFactory getFactory();
 
     //----------------------------------
     // scene
@@ -67,8 +66,8 @@ public interface IRack extends ICausticEngine, IRestore {
     //----------------------------------
 
     /**
-     * Clears all {@link RackTone}s from the sound source and resets the core audio
-     * rack.
+     * Clears all {@link RackTone}s from the sound source and resets the core
+     * audio rack.
      * 
      * @throws CausticException
      */

@@ -27,13 +27,12 @@ public class RackSetFactory extends CaustkSubFactoryBase {
     }
 
     public RackSet createRackSet(ComponentInfo info) {
-        RackSet rackSet = new RackSet(info);
+        RackSet rackSet = new RackSet(info, getFactory());
         return rackSet;
     }
 
     public RackSet createRackSet(ComponentInfo info, File absoluteCausticFile) {
-        RackSet rackSet = new RackSet(info, absoluteCausticFile);
-        rackSet.setRack(getFactory().getRack());
+        RackSet rackSet = new RackSet(info, getFactory(), absoluteCausticFile);
         return rackSet;
     }
 

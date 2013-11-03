@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
@@ -89,14 +88,14 @@ public class Rack implements IRack {
         controller.addComponent(ISystemSequencer.class, systemSequencer);
     }
 
-    //----------------------------------
-    // factory
-    //----------------------------------
-
-    @Override
-    public final ICaustkFactory getFactory() {
-        return application.getFactory();
-    }
+    //    //----------------------------------
+    //    // factory
+    //    //----------------------------------
+    //
+    //    @Override
+    //    public final ICaustkFactory getFactory() {
+    //        return application.getFactory();
+    //    }
 
     //----------------------------------
     // controller
@@ -129,7 +128,7 @@ public class Rack implements IRack {
 
     private void rackSetChanged(RackSet newSet, RackSet oldSet) {
         if (oldSet != null) {
-            removeRackSet(oldSet);
+            oldSet.dispose();
         }
         // when a rackSet is assigned, the Rack does not care or want to care
         // how the rackSet was loaded, unserialized etc., it will just call update()
@@ -142,10 +141,6 @@ public class Rack implements IRack {
         } catch (CausticException e) {
             getController().getLogger().err("Rack", "Error assigning RackSet to Rack", e);
         }
-    }
-
-    private void removeRackSet(RackSet rackSet) {
-        rackSet.setRack(null);
     }
 
     //----------------------------------

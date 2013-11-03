@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackAware;
+import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.IRackContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
@@ -41,9 +41,11 @@ import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 
-public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
+public class RackSet implements ICaustkComponent, IRackSerializer {
 
     private transient IRack rack;
+
+    private transient ICaustkFactory factory;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -75,14 +77,12 @@ public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
     // rack
     //----------------------------------
 
-    @Override
     public IRack getRack() {
         return rack;
     }
 
-    @Override
-    public void setRack(IRack value) {
-        rack = value;
+    public ICaustkFactory getFactory() {
+        return factory;
     }
 
     //----------------------------------
@@ -165,12 +165,16 @@ public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
     RackSet() {
     }
 
-    RackSet(ComponentInfo info) {
+    RackSet(ComponentInfo info, ICaustkFactory factory) {
         this.info = info;
+        this.factory = factory;
+        this.rack = factory.getRack();
     }
 
-    RackSet(ComponentInfo info, File absoluteCausticFile) {
+    RackSet(ComponentInfo info, ICaustkFactory factory, File absoluteCausticFile) {
         this.info = info;
+        this.factory = factory;
+        this.rack = factory.getRack();
         this.causticFile = absoluteCausticFile;
         this.info.setName(absoluteCausticFile.getName().replace(".caustic", ""));
     }
@@ -258,9 +262,10 @@ public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
         }
     }
 
+    @Override
     public void create() throws CausticException {
-        masterMixer = rack.getFactory().createMasterMixer(this);
-        masterSequencer = rack.getFactory().createMasterSequencer(this);
+        masterMixer = factory.createMasterMixer(this);
+        masterSequencer = factory.createMasterSequencer(this);
         masterMixer.create();
         masterSequencer.create();
     }
@@ -348,8 +353,7 @@ public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
 
     public Machine createMachine(int index, String machineName, MachineType machineType)
             throws CausticException {
-        Machine caustkMachine = getRack().getFactory().createMachine(this, index, machineType,
-                machineName);
+        Machine caustkMachine = factory.createMachine(this, index, machineType, machineName);
         machines.put(index, caustkMachine);
         caustkMachine.create();
         return caustkMachine;
@@ -372,6 +376,11 @@ public class RackSet implements ICaustkComponent, IRackAware, IRackSerializer {
             CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
         caustkMachine.load(context);
+    }
+
+    public void dispose() {
+        // TODO Auto-generated method stub
+
     }
 
 }
