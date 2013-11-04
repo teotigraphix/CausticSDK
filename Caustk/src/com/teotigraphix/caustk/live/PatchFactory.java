@@ -36,9 +36,8 @@ public class PatchFactory extends CaustkSubFactoryBase {
      * @param toneType The {@link MachineType} of the
      */
     public Patch createPatch(ComponentInfo info, MachineType machineType) {
-        Patch livePatch = new Patch(info, machineType);
-        livePatch.create(null);
-        return livePatch;
+        Patch causticPatch = new Patch(info, machineType);
+        return causticPatch;
     }
 
     /**
@@ -48,8 +47,8 @@ public class PatchFactory extends CaustkSubFactoryBase {
      */
     public Patch createPatch(Machine machine) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Patch);
-        Patch livePatch = new Patch(info, machine);
-        return livePatch;
+        Patch causticPatch = new Patch(info, machine);
+        return causticPatch;
     }
 
     /**

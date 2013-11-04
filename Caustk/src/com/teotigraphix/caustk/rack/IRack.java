@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.rack;
 import java.io.File;
 import java.io.IOException;
 
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
@@ -43,7 +44,7 @@ public interface IRack extends ICausticEngine, IRestore {
 
     IDispatcher getGlobalDispatcher();
 
-    //    ICaustkFactory getFactory();
+    ICaustkLogger getLogger();
 
     //----------------------------------
     // scene
@@ -114,4 +115,5 @@ public interface IRack extends ICausticEngine, IRestore {
      * @throws IOException
      */
     File saveSongAs(File file) throws IOException;
+
 }

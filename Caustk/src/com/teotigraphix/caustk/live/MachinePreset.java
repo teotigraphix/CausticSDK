@@ -167,32 +167,51 @@ public class MachinePreset implements IRackSerializer {
 
     @Override
     public void create(ICaustkApplicationContext context) throws CausticException {
+        // if creating this rack from the factory and it is not attached
+        // to a Machine, just return as there is no Machine to create preset bytes from
+        if (getPatch().getMachine() == null)
+            return;
+
+        populatePresetBytes();
+    }
+
+    @Override
+    public void update(ICaustkApplicationContext context) {
+        if (name == null && data == null) {
+            // this preset has not been saved, so there is no .preset file
+            // to load into the machine.
+            patch.getMachine().getRack().getLogger()
+                    .warn("MachinePreset", "No update() preset data for " + patch.getMachine());
+            return;
+        }
+
+        // take the byte data, save it temporarily, load as preset
+        File temp = new File(RuntimeUtils.getApplicationDirectory(), ".temp");
+        temp.mkdirs();
+
+        File presetFile = null;
+        String presetName = constructPresetName(true);
+
+        try {
+            presetFile = save(temp, presetName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (!presetFile.exists())
+            throw new IllegalStateException("Preset data was not updated "
+                    + "correctly, File not created.");
+
+        SynthMessage.LOAD_PRESET.send(getRack(), patch.getMachine().getMachineIndex(),
+                presetFile.getAbsolutePath());
+
+        // delete the temp preset file
+        FileUtils.deleteQuietly(presetFile);
     }
 
     @Override
     public void load(ICaustkApplicationContext context) {
-        Machine machine = getPatch().getMachine();
-        if (machine == null)
-            throw new IllegalStateException("CaustkMachine cannot be null calling load()");
-
-        // save the temp preset file to get its bytes
-        String presetName = constructPresetName(false);
-        SynthMessage.SAVE_PRESET.send(machine.getRack(), machine.getMachineIndex(), presetName);
-
-        // get the preset file from the caustic presets directory
-        File presetFile = toPresetFile(getPatch().getMachineType(), presetName);
-        if (!presetFile.exists())
-            throw new RuntimeException("Error saving preset file to: " + presetFile);
-
-        // read into the data byte array
-        try {
-            data = FileUtils.readFileToByteArray(presetFile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // delete the temp preset file
-        FileUtils.deleteQuietly(presetFile);
+        populatePresetBytes(); // XXX ????
     }
 
     /**
@@ -217,33 +236,6 @@ public class MachinePreset implements IRackSerializer {
                     "CaustkMachine Tone cannot be null when trying to update preset file");
 
         restore(rackTone);
-    }
-
-    @Override
-    public void update(ICaustkApplicationContext context) {
-
-        // take the byte data, save it temporarily, load as preset
-        File temp = new File(RuntimeUtils.getApplicationDirectory(), ".temp");
-        temp.mkdirs();
-
-        File presetFile = null;
-        String presetName = constructPresetName(true);
-
-        try {
-            presetFile = save(temp, presetName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (!presetFile.exists())
-            throw new IllegalStateException("Preset data was not updated "
-                    + "correctly, File not created.");
-
-        SynthMessage.LOAD_PRESET.send(getRack(), patch.getMachine().getMachineIndex(),
-                presetFile.getAbsolutePath());
-
-        // delete the temp preset file
-        FileUtils.deleteQuietly(presetFile);
     }
 
     /**
@@ -308,6 +300,31 @@ public class MachinePreset implements IRackSerializer {
         if (addExtension)
             result = result + "." + toPresetExtension(this);
         return result;
+    }
+
+    private void populatePresetBytes() {
+        Machine machine = getPatch().getMachine();
+        if (machine == null)
+            throw new IllegalStateException("CaustkMachine cannot be null calling load()");
+
+        // save the temp preset file to get its bytes
+        String presetName = constructPresetName(false);
+        SynthMessage.SAVE_PRESET.send(machine.getRack(), machine.getMachineIndex(), presetName);
+
+        // get the preset file from the caustic presets directory
+        File presetFile = toPresetFile(getPatch().getMachineType(), presetName);
+        if (!presetFile.exists())
+            throw new RuntimeException("Error saving preset file to: " + presetFile);
+
+        // read into the data byte array
+        try {
+            data = FileUtils.readFileToByteArray(presetFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // delete the temp preset file
+        FileUtils.deleteQuietly(presetFile);
     }
 
     private static File toPresetFile(MachineType machineType, String presetName) {

@@ -48,8 +48,6 @@ import com.teotigraphix.caustk.rack.effect.RackEffect;
  */
 public class Patch implements ICaustkComponent, IRackSerializer {
 
-    // private IRack rack;
-
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -72,20 +70,6 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // rack
-    //----------------------------------
-
-    //    @Override
-    //    public IRack getRack() {
-    //        return rack;
-    //    }
-    //
-    //    @Override
-    //    public void setRack(IRack value) {
-    //        rack = value;
-    //    }
 
     //----------------------------------
     // info
@@ -117,10 +101,6 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         return machine;
     }
 
-    //    void setMachine(CaustkMachine value) {
-    //        machine = value;
-    //    }
-
     //----------------------------------
     // machinePreset
     //----------------------------------
@@ -136,7 +116,8 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     /**
      * Adds and returns an effect without sending a message to the core.
      * <p>
-     * Using this method will call {@link Effect#create(ICaustkApplicationContext)} to create the
+     * Using this method will call
+     * {@link Effect#create(ICaustkApplicationContext)} to create the
      * {@link RackEffect} instance in the {@link Effect}.
      * 
      * @param factory The library factory.
@@ -205,17 +186,18 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     @Override
     public void create(ICaustkApplicationContext context) {
         machinePreset = new MachinePreset(null, this);
+        try {
+            machinePreset.create(context);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update(ICaustkApplicationContext context) {
-        //machinePreset.setRack(rack);
-        //mixerPreset.setRack(rack);
-
         machinePreset.update(context);
 
         for (Effect caustkEffect : effects.values()) {
-            //caustkEffect.setRack(rack);
             caustkEffect.update(context);
         }
     }

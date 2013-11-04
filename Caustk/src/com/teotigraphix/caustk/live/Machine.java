@@ -381,30 +381,25 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         }
 
         patch = factory.createPatch(this);
-        patch.create(null);
+        patch.create(context);
     }
 
     @Override
     public void update(ICaustkApplicationContext context) {
+        if (rackTone == null)
+            throw new IllegalStateException("RackTone cannot be null during update()");
 
-        // create the Tone
+        // set the rack and factory from this context
+        factory = context.getFactory();
+        rack = factory.getRack();
+
         updateTone(context);
-
-        // assign the patch
         updatePatch(context);
-
-        // create the phrases
         updatePhrases(context);
     }
 
     private void updateTone(ICaustkApplicationContext context) {
-        ToneDescriptor descriptor = new ToneDescriptor(machineIndex, machineName,
-                MachineType.fromString(machineType.getType()));
-        try {
-            rackTone = factory.createRackTone(this, descriptor);
-        } catch (CausticException e) {
-            e.printStackTrace();
-        }
+        rackTone.update(context);
     }
 
     private void updatePatch(ICaustkApplicationContext context) {

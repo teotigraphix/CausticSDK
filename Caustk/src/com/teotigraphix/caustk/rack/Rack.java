@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
@@ -62,6 +63,11 @@ public class Rack implements IRack {
     @Override
     public IDispatcher getGlobalDispatcher() {
         return controller;
+    }
+
+    @Override
+    public ICaustkLogger getLogger() {
+        return application.getLogger();
     }
 
     //----------------------------------
