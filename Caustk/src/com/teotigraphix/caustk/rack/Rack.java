@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.rack;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.apache.commons.io.FileUtils;
 
@@ -32,7 +31,6 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -177,28 +175,16 @@ public class Rack implements IRack {
     }
 
     @Override
-    public void clearAndReset() throws CausticException {
-        ArrayList<Machine> list = new ArrayList<Machine>(rackSet.getMachines());
-        for (Machine machine : list) {
-            rackSet.removeMachine(machine);
-        }
+    public void clearRack() throws CausticException {
         RackMessage.BLANKRACK.send(this);
     }
 
     @Override
-    public boolean isEmpty() {
-        return rackSet.getMachineCount() == 0;
-    }
+    public void loadSong(File causticFile) throws IOException {
+        if (!causticFile.exists())
+            throw new IOException(".caustic File not found: " + causticFile);
 
-    @Override
-    public void loadSongRaw(File causticFile) throws CausticException {
         RackMessage.LOAD_SONG.send(this, causticFile.getAbsolutePath());
-    }
-
-    @Override
-    public void loadSong(File causticFile) throws CausticException {
-        loadSongRaw(causticFile);
-        //        loadMachines();
     }
 
     @Override
@@ -217,11 +203,13 @@ public class Rack implements IRack {
 
     @Override
     public void restore() {
+        if (rackSet != null)
+            rackSet.restore();
         systemSequencer.restore();
     }
 
     //--------------------------------------------------------------------------
-    // SoundGenerator
+    // IRack API
     //--------------------------------------------------------------------------
 
     @Override

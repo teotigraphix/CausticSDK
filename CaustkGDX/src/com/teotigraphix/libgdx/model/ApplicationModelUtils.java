@@ -91,7 +91,7 @@ public final class ApplicationModelUtils {
 
         // only load the song into the core memory, we already have
         // the object graph mirrored in the Rack
-        controller.getRack().loadSongRaw(absoluteCausticFile);
+        controller.getRack().loadSong(absoluteCausticFile);
 
         // remove the temp file
         FileUtils.deleteQuietly(absoluteCausticFile);

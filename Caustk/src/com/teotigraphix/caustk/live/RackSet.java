@@ -282,6 +282,14 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         masterSequencer.create(null);
     }
 
+    public void clearMachines() throws CausticException {
+        ArrayList<Machine> list = new ArrayList<Machine>(getMachines());
+        for (Machine machine : list) {
+            removeMachine(machine);
+        }
+        rack.clearRack();
+    }
+
     @Override
     public void update(ICaustkApplicationContext context) {
         rack = context.getRack();
@@ -343,7 +351,8 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         rack.restore();
     }
 
-    private void createComponents(ICaustkApplicationContext context) throws IOException, CausticException {
+    private void createComponents(ICaustkApplicationContext context) throws IOException,
+            CausticException {
         masterMixer = context.getFactory().createMasterMixer(this);
         masterMixer.create(null);
         for (int i = 0; i < 14; i++) {
@@ -353,7 +362,8 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         masterSequencer.create(null);
     }
 
-    private void loadComponents(ICaustkApplicationContext context) throws IOException, CausticException {
+    private void loadComponents(ICaustkApplicationContext context) throws IOException,
+            CausticException {
         masterMixer.load(context);
         for (int i = 0; i < 14; i++) {
             Machine caustkMachine = getMachine(i);
@@ -385,8 +395,8 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         machines.put(index, caustkMachine);
     }
 
-    private void loadMachine(Machine caustkMachine, ICaustkApplicationContext context) throws IOException,
-            CausticException {
+    private void loadMachine(Machine caustkMachine, ICaustkApplicationContext context)
+            throws IOException, CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
         caustkMachine.load(context);
     }
