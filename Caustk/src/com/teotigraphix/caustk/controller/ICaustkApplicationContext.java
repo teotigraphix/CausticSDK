@@ -19,12 +19,13 @@
 
 package com.teotigraphix.caustk.controller;
 
+import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
-public interface IRackContext {
+public interface ICaustkApplicationContext {
 
     ICaustkFactory getFactory();
 

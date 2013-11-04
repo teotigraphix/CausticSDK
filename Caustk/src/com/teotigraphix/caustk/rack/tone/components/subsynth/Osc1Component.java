@@ -156,7 +156,7 @@ public class Osc1Component extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setBend(getBend(true));
         setModulation(getModulation(true));
         setModulationMode(getModulationMode(true));

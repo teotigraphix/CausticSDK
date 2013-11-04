@@ -29,8 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.ICaustkFactory;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -198,16 +197,16 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         // XXX This is going to be complex but just try adding to empty
         // if the index is right, should be able to call update()
         // and have the majic happen
-        caustkMachine.setIndex(index);
+        caustkMachine.setMachineIndex(index);
         machines.put(index, caustkMachine);
-        caustkMachine.update(factory.createRackContext());
+        caustkMachine.update(factory.createContext());
         masterSequencer.updateMachine(caustkMachine);
     }
 
     public boolean removeMachine(Machine caustkMachine) {
-        if (machines.remove(caustkMachine.getIndex()) == null)
+        if (machines.remove(caustkMachine.getMachineIndex()) == null)
             return false;
-        RackMessage.REMOVE.send(rack, caustkMachine.getIndex());
+        RackMessage.REMOVE.send(rack, caustkMachine.getMachineIndex());
         return true;
     }
 
@@ -266,25 +265,25 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         this.rack = factory.getRack();
 
         if (masterMixer == null && masterSequencer == null) {
-            create();
+            create(null);
         } else if (!isInternal) {
             // if this scene is internal, the rack state is already in the correct state
             // no need to update the native rack with the scene's serialized properties
-            IRackContext context = factory.createRackContext();
+            ICaustkApplicationContext context = factory.createContext();
             update(context);
         }
     }
 
     @Override
-    public void create() throws CausticException {
+    public void create(ICaustkApplicationContext context) throws CausticException {
         masterMixer = factory.createMasterMixer(this);
         masterSequencer = factory.createMasterSequencer(this);
-        masterMixer.create();
-        masterSequencer.create();
+        masterMixer.create(null);
+        masterSequencer.create(null);
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         rack = context.getRack();
 
         RackMessage.BLANKRACK.send(rack);
@@ -315,7 +314,7 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
      * @throws CausticException
      */
     @Override
-    public void load(IRackContext context) throws CausticException {
+    public void load(ICaustkApplicationContext context) throws CausticException {
         if (causticFile == null || !causticFile.exists())
             throw new IllegalStateException("Caustic song file null or not found on file system: "
                     + causticFile);
@@ -344,17 +343,17 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         rack.restore();
     }
 
-    private void createComponents(IRackContext context) throws IOException, CausticException {
+    private void createComponents(ICaustkApplicationContext context) throws IOException, CausticException {
         masterMixer = context.getFactory().createMasterMixer(this);
-        masterMixer.create();
+        masterMixer.create(null);
         for (int i = 0; i < 14; i++) {
             createMachine(i, context);
         }
         masterSequencer = context.getFactory().createMasterSequencer(this);
-        masterSequencer.create();
+        masterSequencer.create(null);
     }
 
-    private void loadComponents(IRackContext context) throws IOException, CausticException {
+    private void loadComponents(ICaustkApplicationContext context) throws IOException, CausticException {
         masterMixer.load(context);
         for (int i = 0; i < 14; i++) {
             Machine caustkMachine = getMachine(i);
@@ -369,11 +368,11 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
             throws CausticException {
         Machine caustkMachine = factory.createMachine(this, index, machineType, machineName);
         machines.put(index, caustkMachine);
-        caustkMachine.create();
+        caustkMachine.create(null);
         return caustkMachine;
     }
 
-    private void createMachine(int index, IRackContext context) throws IOException,
+    private void createMachine(int index, ICaustkApplicationContext context) throws IOException,
             CausticException {
         String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(rack, index);
         if (machineName == null)
@@ -386,7 +385,7 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         machines.put(index, caustkMachine);
     }
 
-    private void loadMachine(Machine caustkMachine, IRackContext context) throws IOException,
+    private void loadMachine(Machine caustkMachine, ICaustkApplicationContext context) throws IOException,
             CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
         caustkMachine.load(context);

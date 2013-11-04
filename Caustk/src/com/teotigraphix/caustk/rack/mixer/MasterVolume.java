@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 /**
@@ -80,7 +80,7 @@ public class MasterVolume extends RackMasterComponent {
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         super.update(context);
         MasterMixerMessage.VOLUME.send(getRack(), out);
     }

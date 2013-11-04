@@ -124,6 +124,13 @@ public class PanModule extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setInGain(getInGain(true));
+        setOutAGain(getOutAGain(true));
+        setOutBGain(getOutBGain(true));
+    }
+
     public enum PanModuleJack implements IModularJack {
 
         InInput(0),

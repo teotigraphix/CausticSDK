@@ -132,7 +132,15 @@ public class DistortionComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void updateComponents() {
+        BasslineMessage.DISTORTION_AMOUNT.send(getEngine(), getToneIndex(), amount);
+        BasslineMessage.DISTORTION_POSTGAIN.send(getEngine(), getToneIndex(), postGain);
+        BasslineMessage.DISTORTION_PREGAIN.send(getEngine(), getToneIndex(), preGain);
+        BasslineMessage.DISTORTION_PROGRAM.send(getEngine(), getToneIndex(), program.getValue());
+    }
+
+    @Override
+    protected void restoreComponents() {
         setAmount(getAmount(true));
         setPostGain(getPostGain(true));
         setPreGain(getPreGain(true));

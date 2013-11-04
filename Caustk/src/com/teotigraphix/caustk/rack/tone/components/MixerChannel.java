@@ -20,16 +20,13 @@
 package com.teotigraphix.caustk.rack.tone.components;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
-import com.teotigraphix.caustk.controller.IRackSerializer;
-import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
 import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
 /**
  * @author Michael Schmalle
  */
-public class MixerChannel extends RackToneComponent implements IRackSerializer {
+public class MixerChannel extends RackToneComponent {
 
     @Tag(3)
     private float bass = 0f;
@@ -281,15 +278,7 @@ public class MixerChannel extends RackToneComponent implements IRackSerializer {
     }
 
     @Override
-    public void create() throws CausticException {
-    }
-
-    @Override
-    public void load(IRackContext context) throws CausticException {
-    }
-
-    @Override
-    public void restore() {
+    protected void restoreComponents() {
         setBass(getBass(true));
         setMid(getMid(true));
         setHigh(getHigh(true));
@@ -303,7 +292,7 @@ public class MixerChannel extends RackToneComponent implements IRackSerializer {
     }
 
     @Override
-    public void update(IRackContext context) {
+    protected void updateComponents() {
         MixerChannelMessage.EQ_BASS.send(getEngine(), getToneIndex(), getBass());
         MixerChannelMessage.EQ_MID.send(getEngine(), getToneIndex(), getMid());
         MixerChannelMessage.EQ_HIGH.send(getEngine(), getToneIndex(), getHigh());

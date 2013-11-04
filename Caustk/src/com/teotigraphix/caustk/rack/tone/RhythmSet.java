@@ -22,7 +22,6 @@ package com.teotigraphix.caustk.rack.tone;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 
 /**
@@ -39,11 +38,11 @@ public class RhythmSet extends RackTone {
     RhythmSet() {
     }
 
-    public RhythmSet(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.Beatbox, machineName, machineIndex);
+    public RhythmSet(String machineName, int machineIndex) {
+        super(MachineType.Beatbox, machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
     }
 }

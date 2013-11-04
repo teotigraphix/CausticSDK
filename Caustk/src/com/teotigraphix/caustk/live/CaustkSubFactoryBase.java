@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.live;
 
-import com.teotigraphix.caustk.controller.ICaustkFactory;
-import com.teotigraphix.caustk.controller.core.CaustkFactory;
 
 /**
  * @author Michael Schmalle

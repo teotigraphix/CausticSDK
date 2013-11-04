@@ -37,7 +37,7 @@ public class PatchFactory extends CaustkSubFactoryBase {
      */
     public Patch createPatch(ComponentInfo info, MachineType machineType) {
         Patch livePatch = new Patch(info, machineType);
-        livePatch.create();
+        livePatch.create(null);
         return livePatch;
     }
 

@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller.core;
+package com.teotigraphix.caustk.live;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,34 +25,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.controller.ICaustkFactory;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.core.CaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.live.ComponentInfo;
-import com.teotigraphix.caustk.live.ComponentInfoFactory;
-import com.teotigraphix.caustk.live.ComponentType;
-import com.teotigraphix.caustk.live.Effect;
-import com.teotigraphix.caustk.live.EffectFactory;
-import com.teotigraphix.caustk.live.ICaustkComponent;
-import com.teotigraphix.caustk.live.Library;
-import com.teotigraphix.caustk.live.LibraryFactory;
-import com.teotigraphix.caustk.live.LiveSet;
-import com.teotigraphix.caustk.live.LiveSetFactory;
-import com.teotigraphix.caustk.live.Machine;
-import com.teotigraphix.caustk.live.MachineFactory;
-import com.teotigraphix.caustk.live.MachinePreset;
-import com.teotigraphix.caustk.live.MachineType;
-import com.teotigraphix.caustk.live.MasterMixer;
-import com.teotigraphix.caustk.live.MasterMixerFactory;
-import com.teotigraphix.caustk.live.MasterSequencer;
-import com.teotigraphix.caustk.live.MasterSequencerFactory;
-import com.teotigraphix.caustk.live.Patch;
-import com.teotigraphix.caustk.live.PatchFactory;
-import com.teotigraphix.caustk.live.Phrase;
-import com.teotigraphix.caustk.live.PhraseFactory;
-import com.teotigraphix.caustk.live.RackSet;
-import com.teotigraphix.caustk.live.RackSetFactory;
-import com.teotigraphix.caustk.live.RackToneFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
@@ -124,7 +99,10 @@ public class CaustkFactory implements ICaustkFactory {
 
     public CaustkFactory(ICaustkApplication application) {
         this.application = application;
+        createFactories();
+    }
 
+    private void createFactories() {
         infoFactory = new ComponentInfoFactory();
         infoFactory.setFactory(this);
         libraryFactory = new LibraryFactory();
@@ -154,8 +132,8 @@ public class CaustkFactory implements ICaustkFactory {
     //--------------------------------------------------------------------------
 
     @Override
-    public IRackContext createRackContext() {
-        return new RackContext(application);
+    public ICaustkApplicationContext createContext() {
+        return new CaustkApplicationContext(application);
     }
 
     @Override
@@ -204,14 +182,15 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public Machine createMachine(ComponentInfo info, MachineType machineType, String machineName) {
-        return machineFactory.createMachine(info, machineType, machineName);
+    public Machine createMachine(ComponentInfo info, int machineIndex, MachineType machineType,
+            String machineName) {
+        return machineFactory.createMachine(info, machineIndex, machineType, machineName);
     }
 
     @Override
-    public Machine createMachine(RackSet rackSet, int index, MachineType machineType,
+    public Machine createMachine(RackSet rackSet, int machineIndex, MachineType machineType,
             String machineName) {
-        return machineFactory.createMachine(rackSet, index, machineType, machineName);
+        return machineFactory.createMachine(rackSet, machineIndex, machineType, machineName);
     }
 
     //----------------------------------
@@ -383,7 +362,23 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     @Override
-    public RackTone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException {
+    public RackTone createRackTone(ToneDescriptor descriptor) throws CausticException {
+        return rackToneFactory.createRackTone(descriptor);
+    }
+
+    @Override
+    public RackTone createRackTone(Machine machine, ToneDescriptor descriptor)
+            throws CausticException {
         return rackToneFactory.createRackTone(machine, descriptor);
+    }
+
+    public static <T> T createInstance(File file, Class<T> clazz) throws FileNotFoundException {
+        T instance = KryoUtils.readFileObject(KryoUtils.getKryo(), file, clazz);
+        return instance;
+    }
+
+    public static boolean save(File file, Object instance) throws FileNotFoundException {
+        KryoUtils.writeFileObject(KryoUtils.getKryo(), file, instance);
+        return file.exists();
     }
 }

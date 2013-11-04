@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterDelay extends RackMasterComponent {
@@ -274,7 +274,7 @@ public class MasterDelay extends RackMasterComponent {
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         super.update(context);
         MasterMixerMessage.DELAY_DAMPING.send(getRack(), damping);
         MasterMixerMessage.DELAY_FEEDBACK.send(getRack(), feedback);

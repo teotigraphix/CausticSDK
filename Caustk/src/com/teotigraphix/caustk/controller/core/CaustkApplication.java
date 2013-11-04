@@ -19,14 +19,17 @@
 
 package com.teotigraphix.caustk.controller.core;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
-import com.teotigraphix.caustk.controller.ICaustkFactory;
 import com.teotigraphix.caustk.controller.ICaustkLogger;
+import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.ISoundGenerator;
 
 /**
  * @author Michael Schmalle
@@ -63,7 +66,7 @@ public final class CaustkApplication implements ICaustkApplication {
     // controller
     //----------------------------------
 
-    private final ICaustkController controller;
+    private ICaustkController controller;
 
     @Override
     public final ICaustkController getController() {
@@ -74,7 +77,7 @@ public final class CaustkApplication implements ICaustkApplication {
     // factory
     //----------------------------------
 
-    private final ICaustkFactory factory;
+    private ICaustkFactory factory;
 
     @Override
     public final ICaustkFactory getFactory() {
@@ -96,6 +99,10 @@ public final class CaustkApplication implements ICaustkApplication {
     // Constructor
     //--------------------------------------------------------------------------
 
+    public CaustkApplication(ISoundGenerator soundGenerator, File causticRoot, File applicationRoot) {
+        this(new DefaultConfiguration(soundGenerator, causticRoot, applicationRoot));
+    }
+
     /**
      * Constructor.
      * 
@@ -104,10 +111,9 @@ public final class CaustkApplication implements ICaustkApplication {
     public CaustkApplication(ICaustkConfiguration configuration) {
         this.configuration = configuration;
         this.configuration.setApplication(this);
-
-        logger = getConfiguration().createLogger();
-        controller = configuration.createController();
-        factory = getConfiguration().createFactory(this);
+        this.logger = getConfiguration().createLogger();
+        this.controller = configuration.createController();
+        this.factory = getConfiguration().createFactory(this);
     }
 
     //--------------------------------------------------------------------------
@@ -166,4 +172,26 @@ public final class CaustkApplication implements ICaustkApplication {
         getController().trigger(new OnCausticApplicationStateChange(kind));
     }
 
+    public static class DefaultConfiguration extends CaustkConfigurationBase {
+        public DefaultConfiguration(ISoundGenerator soundGenerator, File causticRoot,
+                File applicationRoot) {
+            setSoundGenerator(soundGenerator);
+            setCausticStorage(causticRoot);
+            setApplicationRoot(applicationRoot);
+        }
+
+        @Override
+        protected void initialize() {
+        }
+    }
+
+    public static ICaustkApplication startAndRun(ISoundGenerator soundGenerator,
+            File causticStorageRoot, File applicationStorageRoot) throws CausticException {
+        ICaustkApplication application = new CaustkApplication(soundGenerator, causticStorageRoot,
+                applicationStorageRoot);
+        application.initialize();
+        application.create();
+        application.run();
+        return application;
+    }
 }

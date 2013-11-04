@@ -206,8 +206,7 @@ public class PulseGenerator extends ModularComponentBase {
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    protected void restoreComponents() {
         setCents(getCents(true));
         setOctave(getOctave(true));
         setOutGain(getOutGain(true));

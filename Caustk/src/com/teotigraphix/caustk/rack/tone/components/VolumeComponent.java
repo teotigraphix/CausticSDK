@@ -48,7 +48,7 @@ public class VolumeComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setOut(getOut(true));
     }
 

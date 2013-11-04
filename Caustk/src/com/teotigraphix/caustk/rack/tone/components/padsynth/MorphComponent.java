@@ -163,7 +163,7 @@ public class MorphComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setAttack(getAttack(true));
         setBlend(getBlend(true));
         setDecay(getDecay(true));

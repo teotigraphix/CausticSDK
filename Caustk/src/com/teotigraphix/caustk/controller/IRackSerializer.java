@@ -21,13 +21,19 @@ package com.teotigraphix.caustk.controller;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.IRestore;
+import com.teotigraphix.caustk.live.ICaustkFactory;
+import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
 public interface IRackSerializer extends IRestore {
 
-    void create() throws CausticException;
+    /**
+     * @param context
+     * @throws CausticException
+     */
+    void create(ICaustkApplicationContext context) throws CausticException;
 
     /**
      * Loads the rack component from a <code>.caustic</code> file.
@@ -38,26 +44,35 @@ public interface IRackSerializer extends IRestore {
      * The quickest way to wipe state is loading a blank <code>.caustic</code>
      * file where all defaults are loaded by query from a restore() call after
      * the load.
+     * <p>
+     * Most classes will save their transient reference to the {@link IRack} and
+     * {@link ICaustkFactory} if needed in the super method.
      * 
      * @param context The current context.
      * @throws CausticException
      */
-    void load(IRackContext context) throws CausticException;
+    void load(ICaustkApplicationContext context) throws CausticException;
 
     /**
      * Updates the native rack with instance property state that exists on the
      * rack component, the component will send setter commands to the native
      * rack.
+     * <p>
+     * Most classes will save their transient reference to the {@link IRack} and
+     * {@link ICaustkFactory} if needed in the super method.
      */
-    void update(IRackContext context);
+    void update(ICaustkApplicationContext context);
 
     /**
      * Restores the rack, each component implementing the method will use OSC
      * message queries to set instance properties.
      * <p>
      * The restore() method differs from the load() in that the load() method
-     * will actually create sub components. Where restore() just updates state
+     * will actually create sub components, where restore() just updates state
      * on the existing components.
+     * <p>
+     * Most classes will save their transient reference to the {@link IRack} and
+     * {@link ICaustkFactory} if needed in the super method.
      */
     @Override
     void restore();

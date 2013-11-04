@@ -51,6 +51,10 @@ public class MiniLFO extends ModularComponentBase {
         return waveForm;
     }
 
+    WaveForm getWaveForm(boolean restore) {
+        return WaveForm.fromFloat(getValue("waveform"));
+    }
+
     public void setWaveForm(WaveForm value) {
         this.waveForm = value;
         setValue("waveform", value.getValue());
@@ -62,6 +66,10 @@ public class MiniLFO extends ModularComponentBase {
 
     public int getRate() {
         return rate;
+    }
+
+    int getRate(boolean restore) {
+        return (int)getValue("rate");
     }
 
     /**
@@ -79,6 +87,10 @@ public class MiniLFO extends ModularComponentBase {
 
     public int getNoteSync() {
         return noteSync;
+    }
+
+    int getNoteSync(boolean restore) {
+        return (int)getValue("note_sync");
     }
 
     public void setNoteSync(int value) {
@@ -123,6 +135,14 @@ public class MiniLFO extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setNoteSync(getNoteSync(true));
+        setOutGain(getOutGain(true));
+        setRate(getRate(true));
+        setWaveForm(getWaveForm(true));
+    }
+
     public enum WaveForm {
 
         Sine(0),
@@ -146,6 +166,15 @@ public class MiniLFO extends ModularComponentBase {
         WaveForm(int value) {
             this.value = value;
         }
+
+        public static WaveForm fromFloat(float value) {
+            for (WaveForm waveForm : values()) {
+                if (waveForm.getValue() == value)
+                    return waveForm;
+            }
+            return null;
+        }
+
     }
 
     public enum MiniLFOJack implements IModularJack {

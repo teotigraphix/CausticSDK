@@ -138,7 +138,7 @@ public class PCMSamplerComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         // the OSC for the sampler is kindof weird in that you have to
         // set the active index first and then issue commands. During the
         // restore, this index gets changed, we need to put it back where it was

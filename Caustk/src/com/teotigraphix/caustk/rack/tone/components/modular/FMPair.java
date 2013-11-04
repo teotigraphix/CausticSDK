@@ -232,6 +232,17 @@ public class FMPair extends ModularComponentBase {
         return 2;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setFeedback(getFeedback(true));
+        setFM(getFM(true));
+        setFMModulation(getFMModulation(true));
+        setOctave1(getOctave1(true));
+        setOctave2(getOctave2(true));
+        setOutGain(getOutGain(true));
+        setSemis2(getSemis2(true));
+    }
+
     public enum FMPairJack implements IModularJack {
 
         InNote(0),

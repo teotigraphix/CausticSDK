@@ -36,4 +36,11 @@ public class ThreeInputMixer extends MixerBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        super.restoreComponents();
+        setGain(MixerJack.In1Gain, getGain(MixerJack.In1Gain));
+        setGain(MixerJack.In2Gain, getGain(MixerJack.In2Gain));
+        setGain(MixerJack.In3Gain, getGain(MixerJack.In3Gain));
+    }
 }

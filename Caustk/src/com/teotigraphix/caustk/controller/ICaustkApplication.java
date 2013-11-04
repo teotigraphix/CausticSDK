@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.controller;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
+import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundGenerator;

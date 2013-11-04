@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 
 /**
@@ -32,11 +31,11 @@ public class EightBitSynthTone extends RackTone {
     EightBitSynthTone() {
     }
 
-    public EightBitSynthTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.EightBitSynth, machineName, machineIndex);
+    public EightBitSynthTone(String machineName, int machineIndex) {
+        super(MachineType.EightBitSynth, machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
     }
 }

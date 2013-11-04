@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 
 /**
@@ -32,11 +31,11 @@ public class FMSynthTone extends RackTone {
     FMSynthTone() {
     }
 
-    public FMSynthTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.FMSynth, machineName, machineIndex);
+    public FMSynthTone(String machineName, int machineIndex) {
+        super(MachineType.FMSynth, machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
     }
 }

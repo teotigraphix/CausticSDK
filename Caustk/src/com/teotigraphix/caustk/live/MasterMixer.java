@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.live;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
@@ -103,7 +103,7 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
-    public void create() throws CausticException {
+    public void create(ICaustkApplicationContext context) throws CausticException {
         equalizer = new MasterEqualizer();
         limiter = new MasterLimiter();
         delay = new MasterDelay();
@@ -118,7 +118,7 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
-    public void load(IRackContext context) throws CausticException {
+    public void load(ICaustkApplicationContext context) throws CausticException {
         equalizer.load(context);
         limiter.load(context);
         delay.load(context);
@@ -138,7 +138,7 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         equalizer.update(context);
         limiter.update(context);
         delay.update(context);

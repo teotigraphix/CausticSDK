@@ -189,7 +189,7 @@ public class VolumeComponent extends com.teotigraphix.caustk.rack.tone.component
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setAttack(getAttack(true));
         setDecay(getDecay(true));
         setGain1(getGain1(true));

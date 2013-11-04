@@ -29,7 +29,7 @@ public class EffectFactory extends CaustkSubFactoryBase {
     public Effect createEffect(ComponentInfo info, EffectType effectType) {
         Effect caustkEffect = new Effect(info, effectType);
         // create the internal IEffect instance with slot and toneIndex set to -1
-        caustkEffect.create();
+        caustkEffect.create(null);
         return caustkEffect;
     }
 

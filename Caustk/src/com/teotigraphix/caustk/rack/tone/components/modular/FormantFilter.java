@@ -263,6 +263,18 @@ public class FormantFilter extends ModularComponentBase {
         return 2;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setFormant1(getFormant1(true));
+        setFormant2(getFormant2(true));
+        setGain(getGain(true));
+        setGainModulation(getGainModulation(true));
+        setInGain(getInGain(true));
+        setMorph(getMorph(true));
+        setMorphModulation(getMorphModulation(true));
+        setOutGain(getOutGain(true));
+    }
+
     public enum FormantFilterJack implements IModularJack {
 
         InInput(0),

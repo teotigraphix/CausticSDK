@@ -166,7 +166,7 @@ public class SynthComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setPolyphony(getPolyphony(true));
     }
 }

@@ -124,6 +124,13 @@ public class SVFilter extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setCutoff(getCutoff(true));
+        setInGain(getInGain(true));
+        setResonance(getResonance(true));
+    }
+
     public enum SVFilterJack implements IModularJack {
 
         InInput(0),

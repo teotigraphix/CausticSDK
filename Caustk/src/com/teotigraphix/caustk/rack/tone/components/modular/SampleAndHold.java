@@ -97,6 +97,12 @@ public class SampleAndHold extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setOutGain(getOutGain(true));
+        setRate(getRate(true));
+    }
+
     public enum SampleAndHoldJack implements IModularJack {
 
         InInput(0),

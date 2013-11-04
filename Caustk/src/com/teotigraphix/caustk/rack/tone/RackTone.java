@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
@@ -80,6 +80,10 @@ public abstract class RackTone implements IRackSerializer {
 
     public Machine getMachine() {
         return machine;
+    }
+
+    public void setMachine(Machine value) {
+        this.machine = value;
     }
 
     //----------------------------------
@@ -188,12 +192,10 @@ public abstract class RackTone implements IRackSerializer {
     RackTone() {
     }
 
-    RackTone(Machine machine, MachineType machineType, String machineName, int index) {
-        this.machine = machine;
+    RackTone(MachineType machineType, String machineName, int machineIndex) {
         this.machineType = machineType;
         this.machineName = machineName;
-        this.machineIndex = index;
-        this.rack = machine.getRackSet().getRack();
+        this.machineIndex = machineIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -201,23 +203,48 @@ public abstract class RackTone implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Override
-    public abstract void create();
-
-    @Override
-    public void load(IRackContext context) throws CausticException {
+    public final void create(ICaustkApplicationContext context) {
         rack = context.getRack();
+        createComponents();
     }
 
     @Override
-    public void update(IRackContext context) {
+    public final void load(ICaustkApplicationContext context) throws CausticException {
         rack = context.getRack();
+        loadComponents();
     }
 
     @Override
-    public void restore() {
+    public final void update(ICaustkApplicationContext context) {
+        rack = context.getRack();
+        updateComponents(context);
+    }
+
+    @Override
+    public final void restore() {
         setMachineName(getMachineName(true), true);
         for (RackToneComponent component : components.values()) {
             component.restore();
+        }
+    }
+
+    /**
+     * Create/add sub components to the tone using
+     * {@link #addComponent(Class, RackToneComponent)}.
+     */
+    protected abstract void createComponents();
+
+    /**
+     * Calls {@link #restore()}, the {@link IRack} is guaranteed to be non null.
+     */
+    protected void loadComponents() {
+        restore();
+    }
+
+    protected void updateComponents(ICaustkApplicationContext context) {
+        RackMessage.MACHINE_NAME.send(getEngine(), machineIndex, machineName);
+        for (RackToneComponent component : components.values()) {
+            component.update(context);
         }
     }
 }

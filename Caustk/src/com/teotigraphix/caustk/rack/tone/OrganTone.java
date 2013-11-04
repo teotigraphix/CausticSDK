@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
@@ -45,12 +44,12 @@ public class OrganTone extends RackTone {
     OrganTone() {
     }
 
-    public OrganTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.Organ, machineName, machineIndex);
+    public OrganTone(String machineName, int machineIndex) {
+        super(MachineType.Organ, machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
         addComponent(MixerChannel.class, new MixerChannel());
         addComponent(SynthComponent.class, new SynthComponent());
         addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());

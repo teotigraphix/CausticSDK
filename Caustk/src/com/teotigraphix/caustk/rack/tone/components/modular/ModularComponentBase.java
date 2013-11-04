@@ -57,10 +57,6 @@ public abstract class ModularComponentBase extends RackToneComponent {
         this.bay = bay;
     }
 
-    @Override
-    public void restore() {
-    }
-
     protected float getValue(String control) {
         return ModularMessage.SET.query(getEngine(), getToneIndex(), getBay(), control);
     }

@@ -124,8 +124,14 @@ public class DecayEnvelope extends ModularComponentBase {
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    protected void updateComponents() {
+        setValue("decay", decay);
+        setValue("decay_slope", decaySlope.getValue());
+        setValue("out_gain", outGain);
+    }
+
+    @Override
+    protected void restoreComponents() {
         setDecay(getDecay(true));
         setDecaySlope(getDecaySlope(true));
         setOutGain(getOutGain(true));

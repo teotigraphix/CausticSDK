@@ -58,7 +58,7 @@ public class DADSREnvelope extends ModularComponentBase {
     private float outGain;
 
     @Tag(110)
-    private float invOutGain;
+    private float invoutGain;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -303,7 +303,7 @@ public class DADSREnvelope extends ModularComponentBase {
     //----------------------------------
 
     public float getInvOutGain() {
-        return invOutGain;
+        return invoutGain;
     }
 
     float getInvOutGain(boolean restore) {
@@ -314,9 +314,9 @@ public class DADSREnvelope extends ModularComponentBase {
      * @param value (0..1)
      */
     public void setInvOutGain(float value) {
-        if (value == invOutGain)
+        if (value == invoutGain)
             return;
-        invOutGain = value;
+        invoutGain = value;
         if (value < 0f || value > 1f)
             newRangeException("invout_gain", "0..1", value);
         setValue("invout_gain", value);
@@ -335,8 +335,22 @@ public class DADSREnvelope extends ModularComponentBase {
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    protected void updateComponents() {
+        setValue("attack", attack);
+        setValue("attack_slope", attackSlope.getValue());
+        setValue("decay", decay);
+        setValue("decay_slope", decaySlope.getValue());
+        setValue("delay", delay);
+        setValue("invout_gain", invoutGain);
+        setValue("legato", legato);
+        setValue("out_gain", outGain);
+        setValue("release", release);
+        setValue("release_slope", releaseSlope.getValue());
+        setValue("sustain", sustain);
+    }
+
+    @Override
+    protected void restoreComponents() {
         setAttack(getAttack(true));
         setAttackSlope(getAttackSlope(true));
         setDecay(getDecay(true));

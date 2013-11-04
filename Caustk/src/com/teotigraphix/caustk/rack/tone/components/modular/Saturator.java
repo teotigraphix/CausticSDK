@@ -124,6 +124,13 @@ public class Saturator extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setAmount(getAmount(true));
+        setInGain(getInGain(true));
+        setOutGain(getOutGain(true));
+    }
+
     public enum SaturatorJack implements IModularJack {
 
         InInput(0),

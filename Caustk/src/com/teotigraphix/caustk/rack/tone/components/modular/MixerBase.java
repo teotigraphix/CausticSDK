@@ -102,6 +102,11 @@ public abstract class MixerBase extends ModularComponentBase {
         super(bay);
     }
 
+    @Override
+    protected void restoreComponents() {
+        setOutGain(getOutGain(true));
+    }
+
     public enum MixerJack implements IModularJack {
 
         In1Gain(0),

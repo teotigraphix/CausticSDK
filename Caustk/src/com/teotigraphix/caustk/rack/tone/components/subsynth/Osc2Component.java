@@ -179,7 +179,7 @@ public class Osc2Component extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setCents(getCents(true));
         setCentsMode(getCentsMode(true));
         setOctave(getOctave(true));

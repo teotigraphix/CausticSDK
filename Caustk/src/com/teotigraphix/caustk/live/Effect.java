@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.live;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
@@ -155,7 +155,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
      * Creates the {@link IEffect} but assigns -1 to the slot and machine index.
      */
     @Override
-    public void create() {
+    public void create(ICaustkApplicationContext context) {
         rackEffect = createEffect(-1, -1);
     }
 
@@ -166,8 +166,8 @@ public class Effect implements IRackSerializer, ICaustkComponent {
      * @throws CausticException
      */
     @Override
-    public void load(IRackContext context) throws CausticException {
-        rackEffect = createEffect(index, patch.getMachine().getIndex());
+    public void load(ICaustkApplicationContext context) throws CausticException {
+        rackEffect = createEffect(index, patch.getMachine().getMachineIndex());
         rackEffect.setEffect(this);
         rackEffect.load(context);
     }
@@ -178,8 +178,8 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     }
 
     @Override
-    public void update(IRackContext context) {
-        EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getIndex(), index,
+    public void update(ICaustkApplicationContext context) {
+        EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getMachineIndex(), index,
                 effectType.getValue());
         rackEffect.setEffect(this);
         rackEffect.update(context);

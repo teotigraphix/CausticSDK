@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
@@ -60,12 +59,12 @@ public class PCMSynthTone extends RackTone {
     PCMSynthTone() {
     }
 
-    public PCMSynthTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.PCMSynth, machineName, machineIndex);
+    public PCMSynthTone(String machineName, int machineIndex) {
+        super(MachineType.PCMSynth, machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
         addComponent(MixerChannel.class, new MixerChannel());
         addComponent(SynthComponent.class, new SynthComponent());
         addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());

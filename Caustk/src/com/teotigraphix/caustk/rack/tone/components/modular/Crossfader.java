@@ -124,6 +124,20 @@ public class Crossfader extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void updateComponents() {
+        setValue("gain_a", gainA);
+        setValue("gain_b", gainB);
+        setValue("gain_out", gainOut);
+    }
+
+    @Override
+    protected void restoreComponents() {
+        setGainA(getGainA(true));
+        setGainB(getGainB(true));
+        setGainOut(getGainOut(true));
+    }
+
     public enum CrossfaderJack implements IModularJack {
 
         InA(0),

@@ -160,7 +160,7 @@ public class LeslieComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setDrive(getDrive(true));
         setLeslieDepth(getLeslieDepth(true));
         setLeslieRate(getLeslieRate(true));

@@ -287,8 +287,7 @@ public class Oscillator extends ModularComponentBase {
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    protected void restoreComponents() {
         setAM(getAM(true));
         setCents(getCents(true));
         setFM(getFM(true));

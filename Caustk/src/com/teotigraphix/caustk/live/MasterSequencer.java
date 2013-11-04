@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.live;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
@@ -60,11 +60,11 @@ public class MasterSequencer implements IRackSerializer {
     }
 
     @Override
-    public void create() throws CausticException {
+    public void create(ICaustkApplicationContext context) throws CausticException {
     }
 
     @Override
-    public void load(IRackContext context) {
+    public void load(ICaustkApplicationContext context) {
         restore();
     }
 
@@ -94,14 +94,14 @@ public class MasterSequencer implements IRackSerializer {
 
     public void updateMachine(Machine caustkMachine) {
         for (SequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
-            SequencerMessage.PATTERN_EVENT.send(rackSet.getRack(), caustkMachine.getIndex(),
+            SequencerMessage.PATTERN_EVENT.send(rackSet.getRack(), caustkMachine.getMachineIndex(),
                     caustkSequencerPattern.getStartBeat(), caustkSequencerPattern.getBankIndex(),
                     caustkSequencerPattern.getPatternIndex(), caustkSequencerPattern.getEndBeat());
         }
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         for (Machine caustkMachine : rackSet.getMachines()) {
             updateMachine(caustkMachine);
         }

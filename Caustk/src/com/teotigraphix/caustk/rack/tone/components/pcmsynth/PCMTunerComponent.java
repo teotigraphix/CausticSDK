@@ -109,7 +109,7 @@ public class PCMTunerComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setCents(getCents(true));
         setOctave(getOctave(true));
         setSemis(getSemis(true));

@@ -36,4 +36,14 @@ public class SixInputMixer extends MixerBase {
         return 2;
     }
 
+    @Override
+    protected void restoreComponents() {
+        super.restoreComponents();
+        setGain(MixerJack.In1Gain, getGain(MixerJack.In1Gain));
+        setGain(MixerJack.In2Gain, getGain(MixerJack.In2Gain));
+        setGain(MixerJack.In3Gain, getGain(MixerJack.In3Gain));
+        setGain(MixerJack.In4Gain, getGain(MixerJack.In4Gain));
+        setGain(MixerJack.In5Gain, getGain(MixerJack.In5Gain));
+        setGain(MixerJack.In6Gain, getGain(MixerJack.In6Gain));
+    }
 }

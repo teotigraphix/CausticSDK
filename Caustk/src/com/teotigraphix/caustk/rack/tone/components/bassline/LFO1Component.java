@@ -132,7 +132,15 @@ public class LFO1Component extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void updateComponents() {
+        BasslineMessage.LFO_DEPTH.send(getEngine(), getToneIndex(), depth);
+        BasslineMessage.LFO_RATE.send(getEngine(), getToneIndex(), rate);
+        BasslineMessage.LFO_PHASE.send(getEngine(), getToneIndex(), phase);
+        BasslineMessage.LFO_TARGET.send(getEngine(), getToneIndex(), target.getValue());
+    }
+
+    @Override
+    public void restoreComponents() {
         setDepth(getDepth(true));
         setRate(getRate(true));
         setPhase(getPhase(true));

@@ -80,7 +80,7 @@ public class TriggerMap {
 
     public void update(Note note) {
         PatternSequencerMessage.NOTE_DATA.send(phrase.getMachine().getRack(), phrase.getMachine()
-                .getIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note.getEnd(),
+                .getMachineIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note.getEnd(),
                 note.getFlags());
     }
 

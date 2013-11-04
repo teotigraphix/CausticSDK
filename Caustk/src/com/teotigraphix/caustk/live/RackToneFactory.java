@@ -47,63 +47,63 @@ public class RackToneFactory extends CaustkSubFactoryBase {
     public RackToneFactory() {
     }
 
-    public RackTone createRackTone(Machine machine, ToneDescriptor descriptor)
-            throws CausticException {
-        return createRackTone(machine, descriptor.getIndex(), descriptor.getName(),
+    public RackTone createRackTone(ToneDescriptor descriptor) throws CausticException {
+        return createRackTone(descriptor.getMachineIndex(), descriptor.getMachineName(),
                 descriptor.getMachineType());
     }
 
-    RackTone createRackTone(Machine machine, int index, String machineName, MachineType machineType)
+    public RackTone createRackTone(Machine machine, ToneDescriptor descriptor)
+            throws CausticException {
+        RackTone rackTone = createRackTone(descriptor.getMachineIndex(),
+                descriptor.getMachineName(), descriptor.getMachineType());
+        rackTone.setMachine(machine);
+        return rackTone;
+    }
+
+    RackTone createRackTone(int index, String machineName, MachineType machineType)
             throws CausticException {
         final IRack rack = getFactory().getRack();
 
         if (index > NUM_MACHINES - 1)
             throw new CausticException("Only 14 machines allowed in a rack");
 
-        //        if (tones.containsKey(index))
-        //            throw new CausticException("{" + index + "} tone is already defined");
-
-        //        if (!restoring)
-
         RackMessage.CREATE.send(rack, machineType.getType(), machineName, index);
 
         RackTone rackTone = null;
         switch (machineType) {
             case Bassline:
-                rackTone = new BasslineTone(machine, machineName, index);
+                rackTone = new BasslineTone(machineName, index);
                 break;
             case Beatbox:
-                rackTone = new BeatboxTone(machine, machineName, index);
+                rackTone = new BeatboxTone(machineName, index);
                 break;
             case PCMSynth:
-                rackTone = new PCMSynthTone(machine, machineName, index);
+                rackTone = new PCMSynthTone(machineName, index);
                 break;
             case SubSynth:
-                rackTone = new SubSynthTone(machine, machineName, index);
+                rackTone = new SubSynthTone(machineName, index);
                 break;
             case PadSynth:
-                rackTone = new PadSynthTone(machine, machineName, index);
+                rackTone = new PadSynthTone(machineName, index);
                 break;
             case Organ:
-                rackTone = new OrganTone(machine, machineName, index);
+                rackTone = new OrganTone(machineName, index);
                 break;
             case Vocoder:
-                rackTone = new VocoderTone(machine, machineName, index);
+                rackTone = new VocoderTone(machineName, index);
                 break;
             case EightBitSynth:
-                rackTone = new EightBitSynthTone(machine, machineName, index);
+                rackTone = new EightBitSynthTone(machineName, index);
                 break;
             case Modular:
-                rackTone = new ModularTone(machine, machineName, index);
+                rackTone = new ModularTone(machineName, index);
                 break;
             case FMSynth:
-                rackTone = new FMSynthTone(machine, machineName, index);
+                rackTone = new FMSynthTone(machineName, index);
                 break;
             default:
                 break;
         }
-
-        rackTone.create();
 
         return rackTone;
     }
@@ -116,4 +116,5 @@ public class RackToneFactory extends CaustkSubFactoryBase {
         }
         return index;
     }
+
 }

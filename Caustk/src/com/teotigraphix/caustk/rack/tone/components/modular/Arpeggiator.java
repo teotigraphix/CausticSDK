@@ -76,7 +76,7 @@ public class Arpeggiator extends ModularComponentBase {
     }
 
     Sequence getSequence(boolean restore) {
-        return Sequence.fromInt(getValue("active"));
+        return Sequence.fromInt(getValue("sequence"));
     }
 
     /**
@@ -147,6 +147,22 @@ public class Arpeggiator extends ModularComponentBase {
     @Override
     protected int getNumBays() {
         return 2;
+    }
+
+    @Override
+    protected void updateComponents() {
+        setValue("active", active);
+        setValue("octaves", octaves);
+        setValue("rate", rate);
+        setValue("sequence", sequence.getValue());
+    }
+
+    @Override
+    protected void restoreComponents() {
+        setActive(getActive(true));
+        setOctaves(getOctaves(true));
+        setRate(getRate(true));
+        setSequence(getSequence(true));
     }
 
     public enum Sequence {

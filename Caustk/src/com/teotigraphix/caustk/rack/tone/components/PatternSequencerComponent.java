@@ -332,7 +332,8 @@ public class PatternSequencerComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
+        // XXX
     }
 
     /**

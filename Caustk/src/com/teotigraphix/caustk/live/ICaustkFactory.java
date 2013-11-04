@@ -1,23 +1,12 @@
 
-package com.teotigraphix.caustk.controller;
+package com.teotigraphix.caustk.live;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.live.ComponentInfo;
-import com.teotigraphix.caustk.live.ComponentType;
-import com.teotigraphix.caustk.live.Effect;
-import com.teotigraphix.caustk.live.ICaustkComponent;
-import com.teotigraphix.caustk.live.Library;
-import com.teotigraphix.caustk.live.LiveSet;
-import com.teotigraphix.caustk.live.Machine;
-import com.teotigraphix.caustk.live.MachineType;
-import com.teotigraphix.caustk.live.MasterMixer;
-import com.teotigraphix.caustk.live.MasterSequencer;
-import com.teotigraphix.caustk.live.Patch;
-import com.teotigraphix.caustk.live.Phrase;
-import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 import com.teotigraphix.caustk.rack.tone.RackTone;
@@ -33,7 +22,7 @@ public interface ICaustkFactory {
      */
     IRack getRack();
 
-    IRackContext createRackContext();
+    ICaustkApplicationContext createContext();
 
     IRack createRack();
 
@@ -45,9 +34,11 @@ public interface ICaustkFactory {
 
     RackSet createRackSet(ComponentInfo info, File absoluteCausticFile);
 
-    Machine createMachine(ComponentInfo info, MachineType machineType, String machineName);
+    Machine createMachine(ComponentInfo info, int machineIndex, MachineType machineType,
+            String machineName);
 
-    Machine createMachine(RackSet rackSet, int index, MachineType machineType, String machineName);
+    Machine createMachine(RackSet rackSet, int machineIndex, MachineType machineType,
+            String machineName);
 
     Patch createPatch(ComponentInfo info, MachineType machineType);
 
@@ -78,6 +69,8 @@ public interface ICaustkFactory {
     ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
             throws FileNotFoundException;
 
-    RackTone createTone(Machine machine, ToneDescriptor descriptor) throws CausticException;
+    RackTone createRackTone(ToneDescriptor descriptor) throws CausticException;
+
+    RackTone createRackTone(Machine machine, ToneDescriptor descriptor) throws CausticException;
 
 }

@@ -115,7 +115,7 @@ public class VolumeEnvelopeComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setAttack(getAttack(true));
         setDecay(getDecay(true));
         setRelease(getRelease(true));

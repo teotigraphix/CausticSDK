@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
@@ -523,14 +523,14 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void create() throws CausticException {
+    public void create(ICaustkApplicationContext context) throws CausticException {
     }
 
     @Override
-    public void load(IRackContext context) throws CausticException {
+    public void load(ICaustkApplicationContext context) throws CausticException {
         final IRack rack = context.getRack();
 
-        final int machineIndex = machine.getIndex();
+        final int machineIndex = machine.getMachineIndex();
 
         // set the current bank and pattern of the machine to query
         // the string pattern data
@@ -870,8 +870,8 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void update(IRackContext context) {
-        PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(), machine.getIndex(), length);
+    public void update(ICaustkApplicationContext context) {
+        PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(), machine.getMachineIndex(), length);
         for (Note note : triggerMap.getNotes()) {
             if (note.isSelected()) {
                 triggerMap.update(note);

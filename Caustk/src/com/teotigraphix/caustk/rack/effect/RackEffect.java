@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
@@ -129,16 +129,16 @@ public abstract class RackEffect implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Override
-    public void create() throws CausticException {
+    public void create(ICaustkApplicationContext context) throws CausticException {
     }
 
     @Override
-    public void load(IRackContext context) throws CausticException {
+    public void load(ICaustkApplicationContext context) throws CausticException {
         restore();
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
     }
 
     @Override

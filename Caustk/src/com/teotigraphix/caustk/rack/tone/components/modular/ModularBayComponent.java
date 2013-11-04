@@ -27,7 +27,7 @@ public class ModularBayComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
     }
 
 }

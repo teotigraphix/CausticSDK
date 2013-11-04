@@ -26,7 +26,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
@@ -166,18 +166,18 @@ public class MachinePreset implements IRackSerializer {
     }
 
     @Override
-    public void create() throws CausticException {
+    public void create(ICaustkApplicationContext context) throws CausticException {
     }
 
     @Override
-    public void load(IRackContext context) {
+    public void load(ICaustkApplicationContext context) {
         Machine machine = getPatch().getMachine();
         if (machine == null)
             throw new IllegalStateException("CaustkMachine cannot be null calling load()");
 
         // save the temp preset file to get its bytes
         String presetName = constructPresetName(false);
-        SynthMessage.SAVE_PRESET.send(machine.getRack(), machine.getIndex(), presetName);
+        SynthMessage.SAVE_PRESET.send(machine.getRack(), machine.getMachineIndex(), presetName);
 
         // get the preset file from the caustic presets directory
         File presetFile = toPresetFile(getPatch().getMachineType(), presetName);
@@ -220,7 +220,7 @@ public class MachinePreset implements IRackSerializer {
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
 
         // take the byte data, save it temporarily, load as preset
         File temp = new File(RuntimeUtils.getApplicationDirectory(), ".temp");
@@ -239,7 +239,7 @@ public class MachinePreset implements IRackSerializer {
             throw new IllegalStateException("Preset data was not updated "
                     + "correctly, File not created.");
 
-        SynthMessage.LOAD_PRESET.send(getRack(), patch.getMachine().getIndex(),
+        SynthMessage.LOAD_PRESET.send(getRack(), patch.getMachine().getMachineIndex(),
                 presetFile.getAbsolutePath());
 
         // delete the temp preset file

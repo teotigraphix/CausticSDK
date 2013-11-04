@@ -151,6 +151,23 @@ public class CrossoverModule extends ModularComponentBase {
         return 0;
     }
 
+    @Override
+    protected void updateComponents() {
+        setValue("frequency", frequency);
+        setValue("high_gain", highGain);
+        setValue("in_gain", inGain);
+        setValue("low_gain", lowGain);
+    }
+
+    @Override
+    protected void restoreComponents() {
+        setFrequency(getFrequency(true));
+        setHighGain(getHighGain(true));
+        setInGain(getInGain(true));
+        setLowGain(getLowGain(true));
+
+    }
+
     public enum CrossoverModuleJack implements IModularJack {
 
         InInput(0),

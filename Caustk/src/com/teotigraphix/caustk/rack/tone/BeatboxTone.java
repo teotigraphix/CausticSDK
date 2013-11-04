@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
@@ -44,12 +43,12 @@ public class BeatboxTone extends RhythmTone {
     BeatboxTone() {
     }
 
-    public BeatboxTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, machineName, machineIndex);
+    public BeatboxTone(String machineName, int machineIndex) {
+        super(machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
         addComponent(MixerChannel.class, new MixerChannel());
         addComponent(SynthComponent.class, new SynthComponent());
         addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());

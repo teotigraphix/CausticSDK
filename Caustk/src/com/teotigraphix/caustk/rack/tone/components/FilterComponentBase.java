@@ -85,7 +85,7 @@ public class FilterComponentBase extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setCutoff(getCutoff(true));
         setResonance(getResonance(true));
     }

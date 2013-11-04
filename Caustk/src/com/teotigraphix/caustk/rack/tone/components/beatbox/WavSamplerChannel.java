@@ -237,7 +237,7 @@ public class WavSamplerChannel extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         name = sampler.getSampleName(index);
         if (name == null)
             return;

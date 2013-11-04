@@ -126,8 +126,7 @@ public class SubOscillator extends ModularComponentBase {
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    protected void restoreComponents() {
         setOctave(getOctave(true));
         setOutGain(getOutGain(true));
         setSemis(getSemis(true));

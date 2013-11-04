@@ -19,7 +19,9 @@
 
 package com.teotigraphix.caustk.rack.tone.components.modular;
 
-
+/**
+ * @author Michael Schmalle
+ */
 public class ModularPanel extends ModularComponentBase {
 
     public ModularPanel() {
@@ -29,6 +31,10 @@ public class ModularPanel extends ModularComponentBase {
     @Override
     protected int getNumBays() {
         return -1;
+    }
+
+    @Override
+    protected void restoreComponents() {
     }
 
     public enum ModularPanelJack implements IModularJack {
@@ -57,4 +63,5 @@ public class ModularPanel extends ModularComponentBase {
         }
 
     }
+
 }

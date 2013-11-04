@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 /**
@@ -179,7 +179,7 @@ public class MasterEqualizer extends RackMasterComponent {
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         super.update(context);
         MasterMixerMessage.EQ_BASS.send(getRack(), bass);
         MasterMixerMessage.EQ_BASSMID_FREQ.send(getRack(), bassMidFreq);

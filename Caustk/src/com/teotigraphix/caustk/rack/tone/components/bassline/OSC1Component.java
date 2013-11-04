@@ -132,7 +132,7 @@ public class OSC1Component extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setAccent(getAccent(true));
         setPulseWidth(getPulseWidth(true));
         setTune(getTune(true));

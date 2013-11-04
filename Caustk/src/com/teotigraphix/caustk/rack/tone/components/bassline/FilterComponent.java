@@ -85,8 +85,7 @@ public class FilterComponent extends FilterComponentBase {
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    protected void restoreComponents() {
         setDecay(getDecay(true));
         setEnvMod(getEnvMod(true));
     }

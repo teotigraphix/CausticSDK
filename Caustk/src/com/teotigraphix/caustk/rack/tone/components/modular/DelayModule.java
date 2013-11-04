@@ -124,6 +124,20 @@ public class DelayModule extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void updateComponents() {
+        setValue("in_gain", inGain);
+        setValue("out_gain", outGain);
+        setValue("rate", rate);
+    }
+
+    @Override
+    protected void restoreComponents() {
+        setInGain(getInGain(true));
+        setOutGain(getOutGain(true));
+        setRate(getRate(true));
+    }
+
     public enum DelayModuleJack implements IModularJack {
 
         InInput(0),

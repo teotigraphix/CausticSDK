@@ -24,8 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.ICaustkFactory;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
@@ -137,7 +136,7 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     /**
      * Adds and returns an effect without sending a message to the core.
      * <p>
-     * Using this method will call {@link Effect#create()} to create the
+     * Using this method will call {@link Effect#create(ICaustkApplicationContext)} to create the
      * {@link RackEffect} instance in the {@link Effect}.
      * 
      * @param factory The library factory.
@@ -148,7 +147,7 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         Effect effect = factory.createEffect(0, effectType, this);
         // since we are creating the effect from the outside, we create
         // the internal effect here
-        effect.create();
+        effect.create(null);
         effects.put(slot, effect);
         return effect;
     }
@@ -204,12 +203,12 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Override
-    public void create() {
+    public void create(ICaustkApplicationContext context) {
         machinePreset = new MachinePreset(null, this);
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         //machinePreset.setRack(rack);
         //mixerPreset.setRack(rack);
 
@@ -222,7 +221,7 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void load(IRackContext context) throws CausticException {
+    public void load(ICaustkApplicationContext context) throws CausticException {
         try {
             loadMachinePreset(context);
         } catch (IOException e) {
@@ -231,10 +230,10 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         loadEffects(context);
     }
 
-    void loadMachinePreset(IRackContext context) throws IOException {
+    void loadMachinePreset(ICaustkApplicationContext context) throws IOException {
         final IRack rack = context.getRack();
         // get the preset name if machine has a loaded preset
-        String presetName = SynthMessage.QUERY_PRESET.queryString(rack, machine.getIndex());
+        String presetName = SynthMessage.QUERY_PRESET.queryString(rack, machine.getMachineIndex());
         // create the preset file
         machinePreset = new MachinePreset(presetName, this);
 
@@ -243,11 +242,11 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         machinePreset.load(context);
     }
 
-    void loadEffects(IRackContext context) throws CausticException {
+    void loadEffects(ICaustkApplicationContext context) throws CausticException {
         final IRack rack = context.getRack();
 
         final Machine machine = getMachine();
-        final int machineIndex = machine.getIndex();
+        final int machineIndex = machine.getMachineIndex();
 
         EffectType effect0 = EffectType.fromInt((int)EffectRackMessage.TYPE.send(rack,
                 machineIndex, 0));

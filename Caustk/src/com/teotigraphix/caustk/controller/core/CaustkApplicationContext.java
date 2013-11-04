@@ -20,18 +20,18 @@
 package com.teotigraphix.caustk.controller.core;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.controller.ICaustkFactory;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
-public class RackContext implements IRackContext {
+public class CaustkApplicationContext implements ICaustkApplicationContext {
 
     private ICaustkApplication application;
 
-    public RackContext(ICaustkApplication application) {
+    public CaustkApplicationContext(ICaustkApplication application) {
         this.application = application;
     }
 

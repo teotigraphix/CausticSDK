@@ -80,7 +80,7 @@ public class HarmonicsComponent extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 24; j++) {
                 float harmonic = getHarmonic(i, j, true);
@@ -90,5 +90,4 @@ public class HarmonicsComponent extends RackToneComponent {
         getWidth(0, true);
         getWidth(1, true);
     }
-
 }

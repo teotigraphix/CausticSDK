@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 
 /**
@@ -40,8 +39,7 @@ public abstract class RhythmTone extends RackTone {
     RhythmTone() {
     }
 
-    public RhythmTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.Beatbox, machineName, machineIndex);
+    public RhythmTone(String machineName, int machineIndex) {
+        super(MachineType.Beatbox, machineName, machineIndex);
     }
-
 }

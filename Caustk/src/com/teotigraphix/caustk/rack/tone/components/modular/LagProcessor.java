@@ -97,6 +97,12 @@ public class LagProcessor extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setRateA(getRateA(true));
+        setRateB(getRateB(true));
+    }
+
     public enum LagProcessorJack implements IModularJack {
 
         InA(0),

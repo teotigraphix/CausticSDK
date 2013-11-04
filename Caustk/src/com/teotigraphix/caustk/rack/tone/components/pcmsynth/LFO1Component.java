@@ -130,7 +130,7 @@ public class LFO1Component extends RackToneComponent {
     }
 
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         setDepth(getDepth(true));
         setRate(getRate(true));
         setTarget(getTarget(true));

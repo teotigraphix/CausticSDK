@@ -124,6 +124,13 @@ public class NoiseGenerator extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setLFGain(getLFGain(true));
+        setPinkGain(getPinkGain(true));
+        setWhiteGain(getWhiteGain(true));
+    }
+
     public enum NoiseGeneratorJack implements IModularJack {
 
         InModulation(0),

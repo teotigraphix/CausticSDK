@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 
 /**
@@ -32,11 +31,11 @@ public class VocoderTone extends RackTone {
     VocoderTone() {
     }
 
-    public VocoderTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.Vocoder, machineName, machineIndex);
+    public VocoderTone(String machineName, int machineIndex) {
+        super(MachineType.Vocoder, machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
     }
 }

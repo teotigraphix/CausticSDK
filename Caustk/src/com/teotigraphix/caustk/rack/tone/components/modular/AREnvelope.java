@@ -198,8 +198,17 @@ public class AREnvelope extends ModularComponentBase {
     }
 
     @Override
-    public void restore() {
-        super.restore();
+    protected void updateComponents() {
+        setValue("attack", attack);
+        setValue("attack_slope", attackSlope.getValue());
+        setValue("legato", legato);
+        setValue("out_gain", outGain);
+        setValue("release", release);
+        setValue("release_slope", releaseSlope.getValue());
+    }
+
+    @Override
+    protected void restoreComponents() {
         setAttack(getAttack(true));
         setAttackSlope(getAttackSlope(true));
         setLagato(getLagato(true));

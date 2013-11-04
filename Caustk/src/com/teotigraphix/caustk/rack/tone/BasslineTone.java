@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
@@ -60,12 +59,12 @@ public class BasslineTone extends RackTone {
     BasslineTone() {
     }
 
-    public BasslineTone(Machine machine, String machineName, int machineIndex) {
-        super(machine, MachineType.Bassline, machineName, machineIndex);
+    public BasslineTone(String machineName, int machineIndex) {
+        super(MachineType.Bassline, machineName, machineIndex);
     }
 
     @Override
-    public void create() {
+    protected void createComponents() {
         addComponent(MixerChannel.class, new MixerChannel());
         addComponent(SynthComponent.class, new SynthComponent());
         addComponent(PatternSequencerComponent.class, new PatternSequencerComponent());
@@ -75,4 +74,5 @@ public class BasslineTone extends RackTone {
         addComponent(LFO1Component.class, new LFO1Component());
         addComponent(OSC1Component.class, new OSC1Component());
     }
+
 }

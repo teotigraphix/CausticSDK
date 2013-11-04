@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.rack.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IRackContext;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 
 /**
  * @author Michael Schmalle
@@ -147,7 +147,7 @@ public class FlangerEffect extends RackEffect {
     }
 
     @Override
-    public void update(IRackContext context) {
+    public void update(ICaustkApplicationContext context) {
         super.update(context);
         set(FlangerControl.Depth, depth);
         set(FlangerControl.Feedback, feedback);

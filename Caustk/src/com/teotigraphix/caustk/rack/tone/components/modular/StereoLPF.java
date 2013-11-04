@@ -181,6 +181,15 @@ public class StereoLPF extends ModularComponentBase {
         return 1;
     }
 
+    @Override
+    protected void restoreComponents() {
+        setCutoff(getCutoff(true));
+        setCutoffModulation(getCutoffModulation(true));
+        setResonance(getResonance(true));
+        setResonanceModulation(getResonanceModulation(true));
+        setSlope(getSlope(true));
+    }
+
     public enum StereoLPFJack implements IModularJack {
 
         InInputLeft(0),

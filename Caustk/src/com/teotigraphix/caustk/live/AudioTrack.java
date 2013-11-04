@@ -148,10 +148,10 @@ public class AudioTrack {
 
     /**
      * Returns the index of the audio track, this value is the
-     * {@link Machine#getIndex()}.
+     * {@link Machine#getMachineIndex()}.
      */
     public int getIndex() {
-        return machine.getIndex();
+        return machine.getMachineIndex();
     }
 
     //--------------------------------------------------------------------------
@@ -185,7 +185,7 @@ public class AudioTrack {
      */
     public void dispose() {
         mixer.dispose();
-        machine.getRackSet().removeMachine(machine);
+        //        machine.getRackSet().removeMachine(machine);
         machine = null;
     }
 }

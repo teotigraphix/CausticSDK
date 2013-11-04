@@ -76,11 +76,10 @@ public class WavSamplerComponent extends RackToneComponent {
         return getChannel(index);
     }
 
-    @SuppressWarnings("unused")
     @Override
-    public void restore() {
+    protected void restoreComponents() {
         for (WavSamplerChannel channel : map.values()) {
-            // XXX IMPLEMENT channel.restore();
+            channel.restore();
         }
     }
 
