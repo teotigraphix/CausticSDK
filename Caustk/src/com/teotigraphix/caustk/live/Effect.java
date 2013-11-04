@@ -185,6 +185,14 @@ public class Effect implements IRackSerializer, ICaustkComponent {
         rackEffect.update(context);
     }
 
+    @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
+    }
+
     RackEffect createEffect(int slot, int toneIndex) {
         return EffectFactory.create(effectType, slot, toneIndex);
     }

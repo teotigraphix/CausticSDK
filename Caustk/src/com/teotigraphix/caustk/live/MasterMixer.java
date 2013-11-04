@@ -317,4 +317,9 @@ public class MasterMixer implements IRackSerializer {
         }
     }
 
+    public void onSave() {
+        // TODO Auto-generated method stub
+
+    }
+
 }

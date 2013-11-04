@@ -264,10 +264,8 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         this.factory = factory;
         this.rack = factory.getRack();
 
-        if (masterMixer == null && masterSequencer == null) {
-            create(null);
-        } else if (!isInternal) {
-            // if this scene is internal, the rack state is already in the correct state
+        if (!isInternal) {
+            // if this set is internal, the rack state is already in the correct state
             // no need to update the native rack with the scene's serialized properties
             ICaustkApplicationContext context = factory.createContext();
             update(context);
@@ -278,8 +276,8 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     public void create(ICaustkApplicationContext context) throws CausticException {
         masterMixer = factory.createMasterMixer(this);
         masterSequencer = factory.createMasterSequencer(this);
-        masterMixer.create(null);
-        masterSequencer.create(null);
+        masterMixer.create(context);
+        masterSequencer.create(context);
     }
 
     public void clearMachines() throws CausticException {
@@ -351,6 +349,19 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         rack.restore();
     }
 
+    @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
+        masterMixer.onSave();
+        masterSequencer.onSave();
+        for (Machine machine : machines.values()) {
+            machine.onSave();
+        }
+    }
+
     private void createComponents(ICaustkApplicationContext context) throws IOException,
             CausticException {
         masterMixer = context.getFactory().createMasterMixer(this);
@@ -374,12 +385,12 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         masterSequencer.load(context);
     }
 
-    public Machine createMachine(int index, String machineName, MachineType machineType)
+    public Machine createMachine(int machineIndex, String machineName, MachineType machineType)
             throws CausticException {
-        Machine caustkMachine = factory.createMachine(this, index, machineType, machineName);
-        machines.put(index, caustkMachine);
-        caustkMachine.create(null);
-        return caustkMachine;
+        Machine machine = factory.createMachine(this, machineIndex, machineType, machineName);
+        machines.put(machineIndex, machine);
+        machine.create(factory.createContext());
+        return machine;
     }
 
     private void createMachine(int index, ICaustkApplicationContext context) throws IOException,

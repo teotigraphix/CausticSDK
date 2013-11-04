@@ -27,7 +27,6 @@ import java.util.Collection;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
@@ -107,6 +106,8 @@ public class Library implements ICaustkComponent {
 
     private static final String LIBRARIES = "Libraries";
 
+    private transient ICaustkFactory factory;
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -179,51 +180,6 @@ public class Library implements ICaustkComponent {
         return new File(getLibrariesDirectory(), getName());
     }
 
-    /**
-     * Returns the absolute location of the component in the library using the
-     * {@link #getDirectory()} and relative file path of the component.
-     * 
-     * @param component The component to resolve absolute location.
-     */
-    public final File resolveLocation(ICaustkComponent component) {
-        ComponentInfo info = component.getInfo();
-        String name = info.getType().name();
-
-        final StringBuilder sb = new StringBuilder();
-
-        // add the ComponentType sub directory
-        sb.append(name);
-        sb.append(File.separator);
-
-        // add the specific sub directory after component type
-        if (info.getType() == ComponentType.LiveSet) {
-            // RackSet uses root
-            // RackSet rackSet = (RackSet)component;
-        } else if (info.getType() == ComponentType.RackSet) {
-            // RackSet uses root
-            // RackSet rackSet = (RackSet)component;
-        } else if (info.getType() == ComponentType.Patch) {
-            // Patch uses MachineType
-            Patch patch = (Patch)component;
-            sb.append(patch.getMachineType().name());
-            sb.append(File.separator);
-        } else if (info.getType() == ComponentType.Phrase) {
-            // Phrase uses MachineType
-            Phrase phrase = (Phrase)component;
-            sb.append(phrase.getMachineType().name());
-            sb.append(File.separator);
-        } else if (info.getType() == ComponentType.Effect) {
-            // Effect uses EffectType
-            Effect effect = (Effect)component;
-            sb.append(effect.getEffectType().name());
-            sb.append(File.separator);
-        }
-
-        sb.append(info.getFile().getPath());
-
-        return new File(getDirectory(), sb.toString());
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -234,8 +190,17 @@ public class Library implements ICaustkComponent {
     Library() {
     }
 
-    Library(ComponentInfo info) {
+    Library(ComponentInfo info, ICaustkFactory factory) {
         this.info = info;
+        this.factory = factory;
+    }
+
+    @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
     }
 
     //--------------------------------------------------------------------------
@@ -329,13 +294,15 @@ public class Library implements ICaustkComponent {
         if (!contains(component))
             throw new FileNotFoundException("Library does not contian component; " + component);
 
-        File location = resolveLocation(component);
-        KryoUtils.writeFileObject(KryoUtils.getKryo(), location, component);
+        File location = factory.save(component, getDirectory());
         return location;
     }
 
-    public void save() throws IOException {
+    public File resolveLocation(ICaustkComponent component) {
+        return factory.resolveLocation(component, getDirectory());
+    }
 
+    public void save() throws IOException {
     }
 
     private Collection<? extends ICaustkComponent> getCollection(ICaustkComponent component) {

@@ -28,6 +28,8 @@ import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.live.ComponentInfo;
+import com.teotigraphix.caustk.live.ICaustkComponent;
 import com.teotigraphix.caustk.live.Machine;
 import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.IRack;
@@ -40,7 +42,7 @@ import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
  * 
  * @author Michael Schmalle
  */
-public abstract class RackTone implements IRackSerializer {
+public abstract class RackTone implements ICaustkComponent, IRackSerializer {
 
     private transient IRack rack;
 
@@ -49,30 +51,35 @@ public abstract class RackTone implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private Machine machine;
+    private ComponentInfo info;
 
     @Tag(1)
-    private int machineIndex;
+    private Machine machine;
 
     @Tag(2)
-    private MachineType machineType;
+    private int machineIndex;
 
     @Tag(3)
-    private String machineName;
+    private MachineType machineType;
 
     @Tag(4)
-    private Map<Class<? extends RackToneComponent>, RackToneComponent> components = new HashMap<Class<? extends RackToneComponent>, RackToneComponent>();
+    private String machineName;
 
-    /**
-     * Returns the core audio engine interface.
-     */
-    public final ICausticEngine getEngine() {
-        return rack;
-    }
+    @Tag(5)
+    private Map<Class<? extends RackToneComponent>, RackToneComponent> components = new HashMap<Class<? extends RackToneComponent>, RackToneComponent>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // info
+    //----------------------------------
+
+    @Override
+    public ComponentInfo getInfo() {
+        return info;
+    }
 
     //----------------------------------
     // machine
@@ -173,6 +180,13 @@ public abstract class RackTone implements IRackSerializer {
         return clazz.cast(components.get(clazz));
     }
 
+    /**
+     * Returns the core audio engine interface.
+     */
+    public final ICausticEngine getEngine() {
+        return rack;
+    }
+
     public MixerChannel getMixer() {
         return getComponent(MixerChannel.class);
     }
@@ -226,6 +240,14 @@ public abstract class RackTone implements IRackSerializer {
         for (RackToneComponent component : components.values()) {
             component.restore();
         }
+    }
+
+    @Override
+    public void onSave() {
+    }
+
+    @Override
+    public void onLoad() {
     }
 
     /**

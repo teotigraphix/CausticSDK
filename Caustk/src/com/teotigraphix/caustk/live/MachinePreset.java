@@ -335,4 +335,13 @@ public class MachinePreset implements IRackSerializer {
         return file.getPatch().getMachineType().getExtension();
     }
 
+    public void onLoad() {
+    }
+
+    public void onSave() {
+        // we are getting saved from the outside, so refresh the bytes preset data
+        // so the most current state snapshot of our Patch gets saved
+        populatePresetBytes();
+    }
+
 }

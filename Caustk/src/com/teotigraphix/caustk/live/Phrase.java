@@ -23,8 +23,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
@@ -549,6 +549,14 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         getInfo().addTag("" + tempo);
     }
 
+    @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
+    }
+
     /**
      * Clears all notes from all measures of the phrase.
      */
@@ -871,7 +879,8 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void update(ICaustkApplicationContext context) {
-        PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(), machine.getMachineIndex(), length);
+        PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(), machine.getMachineIndex(),
+                length);
         for (Note note : triggerMap.getNotes()) {
             if (note.isSelected()) {
                 triggerMap.update(note);

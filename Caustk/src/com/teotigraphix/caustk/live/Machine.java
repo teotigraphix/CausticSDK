@@ -519,6 +519,19 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
+        rackTone.onSave();
+        patch.onSave();
+        for (Phrase phrase : phrases.values()) {
+            phrase.onSave();
+        }
+    }
+
+    @Override
     public String toString() {
         return "[Machine(" + machineIndex + ", " + machineType.getType() + ", " + machineName
                 + ")]";

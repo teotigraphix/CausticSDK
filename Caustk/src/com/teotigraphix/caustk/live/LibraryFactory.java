@@ -29,7 +29,7 @@ public class LibraryFactory extends CaustkSubFactoryBase {
 
     public Library createLibrary(String name) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Library, name);
-        Library caustkLibrary = new Library(info);
+        Library caustkLibrary = new Library(info, getFactory());
         return caustkLibrary;
     }
 

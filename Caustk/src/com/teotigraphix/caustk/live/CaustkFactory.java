@@ -136,6 +136,30 @@ public class CaustkFactory implements ICaustkFactory {
         return new CaustkApplicationContext(application);
     }
 
+    //----------------------------------
+    // ComponentInfo
+    //----------------------------------
+
+    @Override
+    public ComponentInfo createInfo(ComponentType type) {
+        return infoFactory.createInfo(type);
+    }
+
+    @Override
+    public ComponentInfo createInfo(ComponentType type, String name) {
+        return infoFactory.createInfo(type, name);
+    }
+
+    @Override
+    public ComponentInfo createInfo(ComponentType type, String relativePath, String name) {
+        return infoFactory.createInfo(type, relativePath, name);
+    }
+
+    @Override
+    public ComponentInfo createInfo(ComponentType type, File relativePath, String name) {
+        return infoFactory.createInfo(type, relativePath, name);
+    }
+
     @Override
     public IRack createRack() {
         Rack rack = new Rack(application);
@@ -290,83 +314,16 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     //----------------------------------
-    // ComponentInfo
-    //----------------------------------
-
-    /**
-     * Creates a new {@link ComponentInfo} instance empty.
-     * <p>
-     * The id, type, creation and modified date are populated during
-     * construction.
-     * 
-     * @param type The {@link ComponentType} being created.
-     */
-    @Override
-    public ComponentInfo createInfo(ComponentType type) {
-        return infoFactory.createInfo(type);
-    }
-
-    @Override
-    public ComponentInfo createInfo(ComponentType type, String name) {
-        return infoFactory.createInfo(type, name);
-    }
-
-    /**
-     * Creates a new info instance constructing the {@link File} instance from
-     * the relativePath and name using the {@link ComponentType#getExtension()}
-     * of the type.
-     * 
-     * @param type The type of component.
-     * @param relativePath The relative path of the component.
-     * @param name The display name of the component, is used as the file name
-     *            also.
-     */
-    @Override
-    public ComponentInfo createInfo(ComponentType type, String relativePath, String name) {
-        return infoFactory.createInfo(type, relativePath, name);
-    }
-
-    /**
-     * Creates a new info instance constructing the {@link File} instance from
-     * the relativePath and name using the {@link ComponentType#getExtension()}
-     * of the type.
-     * 
-     * @param type The type of component.
-     * @param relativePath The relative path File of the component.
-     * @param name The display name of the component, is used as the file name
-     *            also.
-     */
-    @Override
-    public ComponentInfo createInfo(ComponentType type, File relativePath, String name) {
-        return infoFactory.createInfo(type, relativePath, name);
-    }
-
-    /**
-     * Creates an {@link ICaustkComponent} from the component File passed.
-     * 
-     * @param componentFile The serialized Caustk component.
-     * @param clazz The class type of the component to deserialize.
-     * @throws FileNotFoundException
-     */
-    // XXX Make generic returning T 
-    @Override
-    public ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
-            throws FileNotFoundException {
-        ICaustkComponent component = KryoUtils.readFileObject(KryoUtils.getKryo(), componentFile,
-                clazz);
-        return component;
-    }
-
-    //----------------------------------
     // Tones
     //----------------------------------
 
+    @SuppressWarnings("unchecked")
     @Override
-    public RackTone createRackTone(String machineName, MachineType machineType, int machineIndex)
-            throws CausticException {
+    public <T extends RackTone> T createRackTone(String machineName, MachineType machineType,
+            int machineIndex) throws CausticException {
         RackTone tone = rackToneFactory.createRackTone(machineName, machineType, machineIndex);
         tone.create(createContext());
-        return tone;
+        return (T)tone;
     }
 
     @Override
@@ -380,13 +337,65 @@ public class CaustkFactory implements ICaustkFactory {
         return rackToneFactory.createRackTone(machine, descriptor);
     }
 
-    public static <T> T createInstance(File file, Class<T> clazz) throws FileNotFoundException {
-        T instance = KryoUtils.readFileObject(KryoUtils.getKryo(), file, clazz);
-        return instance;
+    @Override
+    public final File resolveLocation(ICaustkComponent component, File rootDirectory) {
+        ComponentInfo info = component.getInfo();
+        String name = info.getType().name();
+
+        final StringBuilder sb = new StringBuilder();
+
+        // add the ComponentType sub directory
+        sb.append(name);
+        sb.append(File.separator);
+
+        // add the specific sub directory after component type
+        if (info.getType() == ComponentType.LiveSet) {
+            // RackSet uses root
+            // RackSet rackSet = (RackSet)component;
+        } else if (info.getType() == ComponentType.RackSet) {
+            // RackSet uses root
+            // RackSet rackSet = (RackSet)component;
+        } else if (info.getType() == ComponentType.Patch) {
+            // Patch uses MachineType
+            Patch patch = (Patch)component;
+            sb.append(patch.getMachineType().name());
+            sb.append(File.separator);
+        } else if (info.getType() == ComponentType.Phrase) {
+            // Phrase uses MachineType
+            Phrase phrase = (Phrase)component;
+            sb.append(phrase.getMachineType().name());
+            sb.append(File.separator);
+        } else if (info.getType() == ComponentType.Effect) {
+            // Effect uses EffectType
+            Effect effect = (Effect)component;
+            sb.append(effect.getEffectType().name());
+            sb.append(File.separator);
+        }
+
+        sb.append(info.getFile().getPath());
+
+        return new File(rootDirectory, sb.toString());
     }
 
-    public static boolean save(File file, Object instance) throws FileNotFoundException {
-        KryoUtils.writeFileObject(KryoUtils.getKryo(), file, instance);
-        return file.exists();
+    @Override
+    public <T extends ICaustkComponent> T load(File componentFile, Class<T> clazz)
+            throws FileNotFoundException {
+        T component = KryoUtils.readFileObject(KryoUtils.getKryo(), componentFile, clazz);
+        component.onLoad();
+        return component;
+    }
+
+    @Override
+    public File save(ICaustkComponent component, File rootDirectory) throws FileNotFoundException {
+        if (!rootDirectory.exists())
+            throw new FileNotFoundException("rootDirectory does not exist: " + rootDirectory);
+
+        // presave callback from components
+        // XXX should this be IFactorySaveListener ???
+        component.onSave();
+
+        File location = resolveLocation(component, rootDirectory);
+        KryoUtils.writeFileObject(KryoUtils.getKryo(), location, component);
+        return location;
     }
 }

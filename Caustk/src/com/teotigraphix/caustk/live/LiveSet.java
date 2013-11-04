@@ -80,6 +80,14 @@ public class LiveSet implements ICaustkComponent {
         this.info = info;
     }
 
+    @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
+    }
+
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------

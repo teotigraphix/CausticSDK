@@ -250,8 +250,15 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void restore() {
-        // TODO Auto-generated method stub
-
     }
 
+    @Override
+    public void onLoad() {
+        machinePreset.onLoad();
+    }
+
+    @Override
+    public void onSave() {
+        machinePreset.onSave();
+    }
 }
