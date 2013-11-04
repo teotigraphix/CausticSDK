@@ -24,9 +24,11 @@ import java.io.File;
 import android.os.Bundle;
 import android.os.Environment;
 
+import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkApplication;
+import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 
@@ -40,13 +42,24 @@ import com.teotigraphix.caustk.rack.Rack;
  */
 public abstract class CaustkApplicationActivity extends CaustkActivity {
 
-    private CaustkApplication application;
+    private ICaustkApplication application;
+
+    protected ICaustkApplication getCaustkApplication() {
+        return application;
+    }
 
     @Override
     protected abstract int getActivationKey();
 
     /**
-     * Reuturns the single {@link ICaustkController} instance for the audio
+     * Returns the factory used to create all Caustk components.
+     */
+    protected ICaustkFactory getFactory() {
+        return application.getFactory();
+    }
+
+    /**
+     * Returns the single {@link ICaustkController} instance for the audio
      * session.
      */
     protected ICaustkController getController() {
@@ -65,18 +78,15 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
 
         super.onCreate(savedInstanceState);
 
-        File directory = Environment.getExternalStorageDirectory();
+        File causticStorageRoot = Environment.getExternalStorageDirectory();
 
-        final ICaustkConfiguration configuration = createConfiguration();
-        configuration.setApplicationRoot(directory);
-        configuration.setCausticStorage(directory);
-        configuration.setSoundGenerator(getGenerator());
-
-        // create the application
-        application = new CaustkApplication(configuration);
-        application.initialize();
-        application.create();
-        application.run();
+        try {
+            // create the application and run it
+            application = CaustkApplication.startAndRun(getGenerator(), causticStorageRoot,
+                    new File(causticStorageRoot, "TestApp"));
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

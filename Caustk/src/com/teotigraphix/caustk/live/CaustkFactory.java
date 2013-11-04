@@ -362,6 +362,14 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     @Override
+    public RackTone createRackTone(String machineName, MachineType machineType, int machineIndex)
+            throws CausticException {
+        RackTone tone = rackToneFactory.createRackTone(machineName, machineType, machineIndex);
+        tone.create(createContext());
+        return tone;
+    }
+
+    @Override
     public RackTone createRackTone(ToneDescriptor descriptor) throws CausticException {
         return rackToneFactory.createRackTone(descriptor);
     }

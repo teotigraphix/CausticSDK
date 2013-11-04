@@ -20,11 +20,19 @@
 package com.example.hellocaustkstepsequencer.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.teotigraphix.caustk.controller.IRack;
+import android.annotation.SuppressLint;
+
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.tone.BasslineTone;
-import com.teotigraphix.caustk.tone.Tone;
+import com.teotigraphix.caustk.live.ICaustkFactory;
+import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.tone.BasslineTone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -32,41 +40,52 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public class SoundModel {
 
-    private IRack rack;
+    private ICaustkFactory factory;
 
-    private BasslineTone part1;
-
-    public BasslineTone getPart1() {
-        return part1;
+    public IRack getRack() {
+        return factory.getRack();
     }
 
-    private BasslineTone part2;
+    @SuppressLint("UseSparseArrays")
+    private Map<Integer, BasslineTone> tones = new HashMap<Integer, BasslineTone>();
 
-    public BasslineTone getPart2() {
-        return part2;
+    public Collection<BasslineTone> getTones() {
+        return tones.values();
     }
 
-    public SoundModel(IRack rack) {
-        this.rack = rack;
+    public BasslineTone getTone(int index) {
+        return tones.get(index);
+    }
+
+    public SoundModel(ICaustkFactory factory) {
+        this.factory = factory;
     }
 
     public void initialize() {
+
         try {
-            part1 = rack.getSoundSource().createTone("part1", BasslineTone.class);
-            part2 = rack.getSoundSource().createTone("part2", BasslineTone.class);
+            BasslineTone part1 = (BasslineTone)factory.createRackTone("part1",
+                    MachineType.Bassline, 0);
+            BasslineTone part2 = (BasslineTone)factory.createRackTone("part2",
+                    MachineType.Bassline, 1);
+
+            tones.put(0, part1);
+            tones.put(1, part2);
+
         } catch (CausticException e) {
             e.printStackTrace();
         }
 
-        rack.getSoundMixer().getChannel(0).setDelaySend(0.5f);
+        getTone(0).getMixer().setDelaySend(0.5f);
     }
 
     public void onAttach() {
     }
 
-    public void loadPreset(int index, String name) {
-        Tone tone = rack.getSoundSource().getTone(index);
-        File presetFile = RuntimeUtils.getCausticPresetsFile("bassline", name);
+    public void loadPreset(int index, String name) throws IOException {
+        RackTone tone = getTone(index);
+        File presetFile = RuntimeUtils.getCausticPresetsFile(MachineType.Bassline, name);
         tone.getSynth().loadPreset(presetFile.getAbsolutePath());
     }
+
 }

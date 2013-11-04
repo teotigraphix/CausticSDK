@@ -19,21 +19,20 @@
 
 package com.example.hellocaustkstepsequencer.model;
 
-import com.teotigraphix.caustk.controller.IRack;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
-import com.teotigraphix.caustk.tone.BasslineTone;
-import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.rack.tone.BasslineTone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
+import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 
 /**
  * @author Michael Schmalle
  */
 public class SequencerModel {
 
-    private IRack rack;
+    private SoundModel soundModel;
 
-    public SequencerModel(IRack rack) {
-        this.rack = rack;
+    public SequencerModel(SoundModel soundModel) {
+        this.soundModel = soundModel;
     }
 
     //--------------------------------------------------------------------------
@@ -56,15 +55,15 @@ public class SequencerModel {
     //--------------------------------------------------------------------------
 
     public void play() {
-        rack.getSystemSequencer().play(SequencerMode.PATTERN);
+        soundModel.getRack().getSystemSequencer().play(SequencerMode.Pattern);
     }
 
     public void stop() {
-        rack.getSystemSequencer().stop();
+        soundModel.getRack().getSystemSequencer().stop();
     }
 
     public void trigger(boolean selected, int pitch, int step, float gate, float velocity) {
-        for (Tone tone : rack.getSoundSource().getTones()) {
+        for (RackTone tone : soundModel.getTones()) {
             float start = Resolution.toBeat(step, Resolution.SIXTEENTH);
             if (selected) {
                 float end = start + gate;
@@ -77,7 +76,7 @@ public class SequencerModel {
     }
 
     public void setCutoff(float value) {
-        BasslineTone tone = (BasslineTone)rack.getSoundSource().getTone(0);
+        BasslineTone tone = soundModel.getTone(0);
         tone.getFilter().setCutoff(value);
     }
 

@@ -66,6 +66,8 @@ Back into running App
  * Subclasses must override the {@link #getActivationKey()} with the key
  * registered against the application's Android package name. Or use a demo key
  * that expires after a provided time length.
+ * 
+ * @author Michael Schmalle
  */
 public abstract class CaustkActivity extends Activity {
 

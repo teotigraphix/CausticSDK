@@ -19,6 +19,8 @@
 
 package com.example.hellocaustkstepsequencer.view;
 
+import java.io.IOException;
+
 import android.app.Activity;
 
 import com.example.hellocaustkstepsequencer.model.SoundModel;
@@ -43,7 +45,11 @@ public class ApplicationMediator {
     }
 
     public void onAttach() {
-        // load a preset we know exists from the defaults
-        soundModel.loadPreset(0, "CLASSIC GROWL");
+        try {
+            // load a preset we know exists from the defaults
+            soundModel.loadPreset(0, "CLASSIC GROWL");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -26,9 +26,9 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkApplicationActivity;
-import com.teotigraphix.caustk.sequencer.ISystemSequencer.SequencerMode;
-import com.teotigraphix.caustk.tone.Tone;
-import com.teotigraphix.caustk.tone.ToneType;
+import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.rack.tone.SubSynthTone;
 
 /**
  * An example showing how to use the {@link ICaustkController} without using
@@ -36,26 +36,27 @@ import com.teotigraphix.caustk.tone.ToneType;
  */
 public class MainActivity extends CaustkApplicationActivity {
 
-    private Tone subsynth;
+    private SubSynthTone subsynth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // we will now make the Caustic hearbeat with the CaustkController API
+        // we will now make the Caustic heart beat with the CaustkController API
         try {
             // creates a SubSynth at index 0 in the Caustic rack
-            subsynth = getRack().getSoundSource().createTone("mysubsynth", ToneType.SubSynth);
+            subsynth = (SubSynthTone)getFactory().createRackTone("mysubsynth",
+                    MachineType.SubSynth, 0);
 
             // add the notes to the pattern sequencer
             subsynth.getPatternSequencer().addNote(60, 0f, 0.5f, 0.65f, 0);
             subsynth.getPatternSequencer().addNote(60, 1f, 1.5f, 1f, 0);
 
             // set the tempo
-            getRack().getSystemSequencer().setTempo(70f);
+            getRack().getSystemSequencer().setBPM(70f);
 
             // play the pattern sequencer
-            getRack().getSystemSequencer().play(SequencerMode.PATTERN);
+            getRack().getSystemSequencer().play(SequencerMode.Pattern);
 
         } catch (CausticException e) {
             e.printStackTrace();
@@ -82,5 +83,4 @@ public class MainActivity extends CaustkApplicationActivity {
             setApplicationTitle("ControllerExample");
         }
     }
-
 }

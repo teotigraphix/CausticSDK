@@ -69,6 +69,9 @@ public interface ICaustkFactory {
     ICaustkComponent create(File componentFile, Class<? extends ICaustkComponent> clazz)
             throws FileNotFoundException;
 
+    RackTone createRackTone(String machineName, MachineType machineType, int machineIndex)
+            throws CausticException;
+
     RackTone createRackTone(ToneDescriptor descriptor) throws CausticException;
 
     RackTone createRackTone(Machine machine, ToneDescriptor descriptor) throws CausticException;

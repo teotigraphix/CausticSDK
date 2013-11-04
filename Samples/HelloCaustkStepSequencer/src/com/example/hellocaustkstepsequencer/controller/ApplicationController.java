@@ -29,14 +29,17 @@ import com.example.hellocaustkstepsequencer.view.ApplicationMediator;
 import com.example.hellocaustkstepsequencer.view.ControlsMediator;
 import com.example.hellocaustkstepsequencer.view.SequencerMediator;
 import com.example.hellocaustkstepsequencer.view.TransportControlMediator;
-import com.teotigraphix.caustk.controller.IRack;
+import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.live.ICaustkFactory;
 
 /**
  * @author Michael Schmalle
  */
 public class ApplicationController {
 
-    private IRack rack;
+    ICaustkApplication application;
+
+    private ICaustkFactory factory;
 
     private SoundModel soundModel;
 
@@ -54,20 +57,22 @@ public class ApplicationController {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ApplicationController(IRack rack) {
-        this.rack = rack;
+    public ApplicationController(ICaustkApplication application) {
+        this.application = application;
+        this.factory = application.getFactory();
     }
 
     public void startup(MainActivity activity) {
 
+        @SuppressWarnings("unused")
         SharedPreferences preferences = activity.getSharedPreferences("state",
                 Activity.MODE_PRIVATE);
         //mCurViewMode = preferences.getInt("view_mode", DAY_VIEW_MODE);
 
-        soundModel = new SoundModel(rack);
+        soundModel = new SoundModel(factory);
         soundModel.initialize();
 
-        sequencerModel = new SequencerModel(rack);
+        sequencerModel = new SequencerModel(soundModel);
 
         // create the ui view mediators
         applicationMediator = new ApplicationMediator(activity, soundModel);

@@ -52,7 +52,7 @@ public class MainActivity extends CaustkApplicationActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        controller = new ApplicationController(getRack());
+        controller = new ApplicationController(getCaustkApplication());
         controller.startup(this);
     }
 
