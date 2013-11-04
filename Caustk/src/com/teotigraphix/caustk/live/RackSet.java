@@ -346,7 +346,7 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void restore() {
-        rack.restore();
+        //rack.restore();
     }
 
     @Override
