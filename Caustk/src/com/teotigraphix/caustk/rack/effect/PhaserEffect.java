@@ -110,8 +110,8 @@ public class PhaserEffect extends RackEffect {
     PhaserEffect() {
     }
 
-    public PhaserEffect(int slot, int toneIndex) {
-        super(EffectType.Phaser, slot, toneIndex);
+    public PhaserEffect(int slot) {
+        super(EffectType.Phaser, slot);
     }
 
     @Override

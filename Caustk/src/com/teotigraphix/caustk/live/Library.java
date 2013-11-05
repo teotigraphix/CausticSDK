@@ -30,16 +30,6 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
- * CaustkLibrary
- * 
- * - *CaustkScene     (collection) 
- * - *CaustkEffect    (collection)
- * - *CaustkMachine   (/toneType/collection)
- * - *CaustkPatch     (/toneType/collection)
- * - *CaustkPhrase    (/toneType/collection)
- */
-
-/*
  *  /MyApp/Libraries/Trance1
  *    - Libraries used to copy into a project library
  *  Or..
@@ -48,27 +38,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  *    - The project library that is serialized at save and unserialized at startup
  *    - This directory won't have the exploded directories that a global library has
  *      since its all in memory??????
- *  
- *    - Effect/
- *      - *LiveEffect.ctkeffect
- *    
- *    - Machine/  [toneType dependent]
- *      - *LiveMachine.ctkmachine
- *    
- *    - Mixer/
- *      - *CaustkMixer.ctkmixer
- *    
- *    - Patch/    [toneType dependent]
- *      - *CaustkPatch.ctkpatch
- *        
- *    - Phrase/   [toneType dependent (PCMSynth, Beatbox, Vocoder)]
- *      - *CaustkPhrase.ctkphrase
- *    
- *    - Scene/
- *      - *CaustkScene.ctkscene
- *    
- *    - Sequencer/
- *      - CaustkSequencer.ctksequencer
+
  */
 
 /**
@@ -150,6 +120,11 @@ public class Library implements ICaustkComponent {
     @Override
     public ComponentInfo getInfo() {
         return info;
+    }
+
+    @Override
+    public String getDefaultName() {
+        return info.getName();
     }
 
     //----------------------------------
@@ -302,7 +277,14 @@ public class Library implements ICaustkComponent {
         return factory.resolveLocation(component, getDirectory());
     }
 
+    /**
+     * Save the library to disk using it's {@link #getDirectory()} location.
+     * 
+     * @throws IOException
+     */
     public void save() throws IOException {
+        if (!exists())
+            getDirectory().mkdirs();
     }
 
     private Collection<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
@@ -327,6 +309,40 @@ public class Library implements ICaustkComponent {
                 return phrases;
         }
         return null;
+    }
+
+    public boolean exists() {
+        return getDirectory().exists();
+    }
+
+    public void add(ICaustkComponent component) throws IOException {
+        switch (component.getInfo().getType()) {
+            case LiveSet:
+                add((LiveSet)component);
+                break;
+            case RackSet:
+                add((RackSet)component);
+                break;
+            case Effect:
+                add((Effect)component);
+                break;
+            case Library:
+                add(component);
+                break;
+            case Machine:
+                add((Machine)component);
+                break;
+            case MasterMixer:
+                break;
+            case MasterSequencer:
+                break;
+            case Patch:
+                add((Patch)component);
+                break;
+            case Phrase:
+                add((Phrase)component);
+                break;
+        }
     }
 
 }

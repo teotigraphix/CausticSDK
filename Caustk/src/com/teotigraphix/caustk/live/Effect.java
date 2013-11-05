@@ -41,16 +41,16 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     @Tag(0)
     private ComponentInfo info;
 
-    @Tag(10)
-    private int index = -1;
-
-    @Tag(11)
-    private EffectType effectType;
-
-    @Tag(12)
+    @Tag(1)
     private Patch patch;
 
-    @Tag(13)
+    @Tag(2)
+    private int slot = -1;
+
+    @Tag(3)
+    private EffectType effectType;
+
+    @Tag(4)
     private RackEffect rackEffect;
 
     //--------------------------------------------------------------------------
@@ -74,6 +74,16 @@ public class Effect implements IRackSerializer, ICaustkComponent {
         return info;
     }
 
+    @Override
+    public String getDefaultName() {
+        String name = "";
+        if (info.getFile() != null)
+            name = info.getPath();
+        else if (patch != null)
+            name = patch.getMachine().getMachineName();
+        return name;
+    }
+
     //----------------------------------
     // index
     //----------------------------------
@@ -83,11 +93,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
      * to a {@link LivePatch}.
      */
     public int getIndex() {
-        return index;
-    }
-
-    void setIndex(int value) {
-        index = value;
+        return slot;
     }
 
     //----------------------------------
@@ -134,17 +140,17 @@ public class Effect implements IRackSerializer, ICaustkComponent {
         this.effectType = effectType;
     }
 
-    Effect(ComponentInfo info, int index, EffectType effectType) {
+    Effect(ComponentInfo info, int slot, EffectType effectType) {
         this.info = info;
-        this.index = index;
+        this.slot = slot;
         this.effectType = effectType;
     }
 
-    Effect(ComponentInfo info, int index, EffectType effectType, Patch caustkPatch) {
+    Effect(ComponentInfo info, int slot, EffectType effectType, Patch patch) {
         this.info = info;
-        this.index = index;
+        this.slot = slot;
         this.effectType = effectType;
-        this.patch = caustkPatch;
+        this.patch = patch;
     }
 
     //--------------------------------------------------------------------------
@@ -167,7 +173,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
      */
     @Override
     public void load(ICaustkApplicationContext context) throws CausticException {
-        rackEffect = createEffect(index, patch.getMachine().getMachineIndex());
+        rackEffect = createEffect(slot, patch.getMachine().getMachineIndex());
         rackEffect.setEffect(this);
         rackEffect.load(context);
     }
@@ -179,7 +185,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
 
     @Override
     public void update(ICaustkApplicationContext context) {
-        EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getMachineIndex(), index,
+        EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getMachineIndex(), slot,
                 effectType.getValue());
         rackEffect.setEffect(this);
         rackEffect.update(context);
@@ -195,6 +201,11 @@ public class Effect implements IRackSerializer, ICaustkComponent {
 
     RackEffect createEffect(int slot, int toneIndex) {
         return EffectFactory.create(effectType, slot, toneIndex);
+    }
+
+    @Override
+    public String toString() {
+        return "[Effect(" + effectType.name() + ", '" + getDefaultName() + "')]";
     }
 
 }

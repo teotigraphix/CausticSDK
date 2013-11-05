@@ -67,6 +67,11 @@ public class SequencerPattern implements ICaustkComponent {
         return null;
     }
 
+    @Override
+    public String getDefaultName() {
+        return "TODO"; // machine[A01]
+    }
+
     SequencerPattern() {
     }
 

@@ -104,6 +104,16 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         return info;
     }
 
+    @Override
+    public String getDefaultName() {
+        String name = getInfo().getName();
+        if (name == null && causticFile != null)
+            name = causticFile.getName().replace(".caustic", "");
+        else
+            name = "TODO";
+        return name;
+    }
+
     //----------------------------------
     // causticFile
     //----------------------------------
@@ -218,14 +228,72 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         return machines.containsKey(index);
     }
 
+    /**
+     * Returns a collection of {@link Machine}s defined in the rack set.
+     */
     public Collection<Machine> getMachines() {
         return Collections.unmodifiableCollection(machines.values());
     }
 
+    /**
+     * Returns a collection of {@link RackTone}s defined in the rack set.
+     */
     public Collection<RackTone> getRackTones() {
         ArrayList<RackTone> result = new ArrayList<RackTone>();
         for (Machine machine : machines.values()) {
             result.add(machine.getRackTone());
+        }
+        return result;
+    }
+
+    /**
+     * Returns a collection of {@link Patch}s defined in the rack set using the
+     * {@link Machine} parent.
+     * <p>
+     * This is a utility method to easily extract a collection of Patches in no
+     * specific order.
+     */
+    public Collection<Patch> getPatches() {
+        ArrayList<Patch> result = new ArrayList<Patch>();
+        for (Machine machine : machines.values()) {
+            result.add(machine.getPatch());
+        }
+        return result;
+    }
+
+    /**
+     * Returns a collection of {@link Phrase}s defined in the rack set using the
+     * {@link Machine} parent.
+     * <p>
+     * This is a utility method to easily extract a collection of Phrases in no
+     * specific order.
+     */
+    public Collection<Phrase> getPhrases() {
+        ArrayList<Phrase> result = new ArrayList<Phrase>();
+        for (Machine machine : machines.values()) {
+            Collection<Phrase> collection = machine.getPhrases().values();
+            result.addAll(collection);
+        }
+        return result;
+    }
+
+    /**
+     * Returns a collection of {@link Effect}s defined in the rack set using the
+     * {@link Patch} parent.
+     * <p>
+     * This is a utility method to easily extract a collection of Phrases in no
+     * specific order.
+     */
+    public Collection<Effect> getEffects() {
+        ArrayList<Effect> result = new ArrayList<Effect>();
+        for (Machine machine : machines.values()) {
+            Patch patch = machine.getPatch();
+            Effect effect1 = patch.getEffect(0);
+            if (effect1 != null)
+                result.add(effect1);
+            Effect effect2 = patch.getEffect(1);
+            if (effect2 != null)
+                result.add(effect2);
         }
         return result;
     }

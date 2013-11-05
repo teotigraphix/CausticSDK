@@ -31,9 +31,9 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.live.ComponentInfo;
 import com.teotigraphix.caustk.live.ICaustkComponent;
 import com.teotigraphix.caustk.live.Machine;
+import com.teotigraphix.caustk.live.MachineMixer;
 import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
@@ -79,6 +79,11 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
     @Override
     public ComponentInfo getInfo() {
         return info;
+    }
+
+    @Override
+    public String getDefaultName() {
+        return machineName;
     }
 
     //----------------------------------
@@ -187,8 +192,8 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
         return rack;
     }
 
-    public MixerChannel getMixer() {
-        return getComponent(MixerChannel.class);
+    public MachineMixer getMixer() {
+        return getMachine().getMixer();
     }
 
     public SynthComponent getSynth() {

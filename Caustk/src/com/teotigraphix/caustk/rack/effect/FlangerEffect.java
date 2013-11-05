@@ -134,8 +134,8 @@ public class FlangerEffect extends RackEffect {
     FlangerEffect() {
     }
 
-    public FlangerEffect(int slot, int toneIndex) {
-        super(EffectType.Flanger, slot, toneIndex);
+    public FlangerEffect(int slot) {
+        super(EffectType.Flanger, slot);
     }
 
     @Override

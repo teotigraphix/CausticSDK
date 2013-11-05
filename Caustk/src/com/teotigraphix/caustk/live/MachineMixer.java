@@ -17,16 +17,27 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack.tone.components;
+package com.teotigraphix.caustk.live;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
-import com.teotigraphix.caustk.rack.tone.RackToneComponent;
+import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
  * @author Michael Schmalle
  */
-public class MixerChannel extends RackToneComponent {
+public class MachineMixer implements IRackSerializer {
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private Patch patch;
 
     @Tag(3)
     private float bass = 0f;
@@ -58,6 +69,29 @@ public class MixerChannel extends RackToneComponent {
     @Tag(12)
     private float volume = 1f;
 
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    public IRack getRack() {
+        return patch.getMachine().getRack();
+    }
+
+    private int getToneIndex() {
+        return patch.getMachine().getMachineIndex();
+    }
+
+    //----------------------------------
+    // patch
+    //----------------------------------
+
+    /**
+     * Returns the id of the {@link Patch} that created the preset.
+     */
+    public Patch getPatch() {
+        return patch;
+    }
+
     //----------------------------------
     // bass
     //----------------------------------
@@ -67,7 +101,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getBass(boolean restore) {
-        return MixerChannelMessage.EQ_BASS.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.EQ_BASS.query(getRack(), getToneIndex());
     }
 
     public final void setBass(float value) {
@@ -76,7 +110,7 @@ public class MixerChannel extends RackToneComponent {
         if (value < -1f || value > 1f)
             throw newRangeException("bass", "-1.0..1.0", value);
         bass = value;
-        MixerChannelMessage.EQ_BASS.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.EQ_BASS.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.Bass, bass);
     }
 
@@ -89,7 +123,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getMid(boolean restore) {
-        return MixerChannelMessage.EQ_MID.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.EQ_MID.query(getRack(), getToneIndex());
     }
 
     public void setMid(float value) {
@@ -98,7 +132,7 @@ public class MixerChannel extends RackToneComponent {
         if (value < -1f || value > 1f)
             throw newRangeException("mid", "-1.0..1.0", value);
         mid = value;
-        MixerChannelMessage.EQ_MID.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.EQ_MID.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.Mid, mid);
     }
 
@@ -111,7 +145,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getHigh(boolean restore) {
-        return MixerChannelMessage.EQ_HIGH.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.EQ_HIGH.query(getRack(), getToneIndex());
     }
 
     public final void setHigh(float value) {
@@ -120,7 +154,7 @@ public class MixerChannel extends RackToneComponent {
         if (value < -1f || value > 1f)
             throw newRangeException("high", "-1.0..1.0", value);
         high = value;
-        MixerChannelMessage.EQ_HIGH.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.EQ_HIGH.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.High, high);
     }
 
@@ -133,7 +167,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getDelaySend(boolean restore) {
-        return MixerChannelMessage.DELAY_SEND.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.DELAY_SEND.query(getRack(), getToneIndex());
     }
 
     public void setDelaySend(float value) {
@@ -142,7 +176,7 @@ public class MixerChannel extends RackToneComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("delay_send", "0.0..1.0", value);
         delaySend = value;
-        MixerChannelMessage.DELAY_SEND.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.DELAY_SEND.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.DelaySend, delaySend);
     }
 
@@ -155,7 +189,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getReverbSend(boolean restore) {
-        return MixerChannelMessage.REVERB_SEND.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.REVERB_SEND.query(getRack(), getToneIndex());
     }
 
     public void setReverbSend(float value) {
@@ -164,7 +198,7 @@ public class MixerChannel extends RackToneComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("reverb_send", "0.0..1.0", value);
         reverbSend = value;
-        MixerChannelMessage.REVERB_SEND.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.REVERB_SEND.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.ReverbSend, reverbSend);
     }
 
@@ -177,7 +211,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getPan(boolean restore) {
-        return MixerChannelMessage.PAN.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.PAN.query(getRack(), getToneIndex());
     }
 
     public void setPan(float value) {
@@ -186,7 +220,7 @@ public class MixerChannel extends RackToneComponent {
         if (value < -1f || value > 1f)
             throw newRangeException("pan", "-1.0..1.0", value);
         pan = value;
-        MixerChannelMessage.PAN.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.PAN.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.Pan, pan);
     }
 
@@ -199,7 +233,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getStereoWidth(boolean restore) {
-        return MixerChannelMessage.STEREO_WIDTH.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.STEREO_WIDTH.query(getRack(), getToneIndex());
     }
 
     public void setStereoWidth(float value) {
@@ -208,7 +242,7 @@ public class MixerChannel extends RackToneComponent {
         if (value < 0f || value > 1f)
             throw newRangeException("stereo_width", "0.0..1.0", value);
         stereoWidth = value;
-        MixerChannelMessage.STEREO_WIDTH.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.STEREO_WIDTH.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.StereoWidth, stereoWidth);
     }
 
@@ -221,14 +255,14 @@ public class MixerChannel extends RackToneComponent {
     }
 
     boolean isMute(boolean restore) {
-        return MixerChannelMessage.MUTE.query(getEngine(), getToneIndex()) != 0f;
+        return MixerChannelMessage.MUTE.query(getRack(), getToneIndex()) != 0f;
     }
 
     public void setMute(boolean muted) {
         if (mute == muted)
             return;
         mute = muted;
-        MixerChannelMessage.MUTE.send(getEngine(), getToneIndex(), muted ? 1 : 0);
+        MixerChannelMessage.MUTE.send(getRack(), getToneIndex(), muted ? 1 : 0);
         //        fireValueChange(MixerInput.Mute, muted ? 1 : 0);
     }
 
@@ -241,14 +275,14 @@ public class MixerChannel extends RackToneComponent {
     }
 
     boolean isSolo(boolean restore) {
-        return MixerChannelMessage.SOLO.query(getEngine(), getToneIndex()) != 0f;
+        return MixerChannelMessage.SOLO.query(getRack(), getToneIndex()) != 0f;
     }
 
     public void setSolo(boolean soloed) {
         if (solo == soloed)
             return;
         solo = soloed;
-        MixerChannelMessage.SOLO.send(getEngine(), getToneIndex(), solo ? 1 : 0);
+        MixerChannelMessage.SOLO.send(getRack(), getToneIndex(), solo ? 1 : 0);
         //        fireValueChange(MixerInput.Solo, solo ? 1 : 0);
     }
 
@@ -261,7 +295,7 @@ public class MixerChannel extends RackToneComponent {
     }
 
     float getVolume(boolean restore) {
-        return MixerChannelMessage.VOLUME.query(getEngine(), getToneIndex());
+        return MixerChannelMessage.VOLUME.query(getRack(), getToneIndex());
     }
 
     public void setVolume(float value) {
@@ -270,15 +304,50 @@ public class MixerChannel extends RackToneComponent {
         if (value < 0f || value > 2f)
             throw newRangeException("volume", "0.0..2.0", value);
         volume = value;
-        MixerChannelMessage.VOLUME.send(getEngine(), getToneIndex(), value);
+        MixerChannelMessage.VOLUME.send(getRack(), getToneIndex(), value);
         //        fireValueChange(MixerInput.Volume, volume);
     }
 
-    public MixerChannel() {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /*
+     * Serialization.
+     */
+    MachineMixer() {
+    }
+
+    MachineMixer(Patch patch) {
+        this.patch = patch;
     }
 
     @Override
-    protected void restoreComponents() {
+    public void create(ICaustkApplicationContext context) throws CausticException {
+    }
+
+    @Override
+    public void load(ICaustkApplicationContext context) throws CausticException {
+    }
+
+    @Override
+    public void update(ICaustkApplicationContext context) {
+        MixerChannelMessage.EQ_BASS.send(getRack(), getToneIndex(), getBass());
+        MixerChannelMessage.EQ_MID.send(getRack(), getToneIndex(), getMid());
+        MixerChannelMessage.EQ_HIGH.send(getRack(), getToneIndex(), getHigh());
+        MixerChannelMessage.REVERB_SEND.send(getRack(), getToneIndex(), getReverbSend());
+        MixerChannelMessage.DELAY_SEND.send(getRack(), getToneIndex(), getDelaySend());
+        MixerChannelMessage.STEREO_WIDTH.send(getRack(), getToneIndex(), getStereoWidth());
+
+        MixerChannelMessage.PAN.send(getRack(), getToneIndex(), getPan());
+        MixerChannelMessage.VOLUME.send(getRack(), getToneIndex(), getVolume());
+
+        MixerChannelMessage.MUTE.send(getRack(), getToneIndex(), mute ? 1 : 0);
+        MixerChannelMessage.SOLO.send(getRack(), getToneIndex(), solo ? 1 : 0);
+    }
+
+    @Override
+    public void restore() {
         setBass(getBass(true));
         setMid(getMid(true));
         setHigh(getHigh(true));
@@ -291,19 +360,21 @@ public class MixerChannel extends RackToneComponent {
         setVolume(getVolume(true));
     }
 
-    @Override
-    protected void updateComponents() {
-        MixerChannelMessage.EQ_BASS.send(getEngine(), getToneIndex(), getBass());
-        MixerChannelMessage.EQ_MID.send(getEngine(), getToneIndex(), getMid());
-        MixerChannelMessage.EQ_HIGH.send(getEngine(), getToneIndex(), getHigh());
-        MixerChannelMessage.REVERB_SEND.send(getEngine(), getToneIndex(), getReverbSend());
-        MixerChannelMessage.DELAY_SEND.send(getEngine(), getToneIndex(), getDelaySend());
-        MixerChannelMessage.STEREO_WIDTH.send(getEngine(), getToneIndex(), getStereoWidth());
+    /**
+     * Returns a new {@link IllegalArgumentException} for an error in OSC range.
+     * 
+     * @param control The OSC control involved.
+     * @param range The accepted range.
+     * @param value The value that is throwing the range exception.
+     * @return A new {@link IllegalArgumentException}.
+     */
+    protected final RuntimeException newRangeException(String control, String range, Object value) {
+        return ExceptionUtils.newRangeException(control, range, value);
+    }
 
-        MixerChannelMessage.PAN.send(getEngine(), getToneIndex(), getPan());
-        MixerChannelMessage.VOLUME.send(getEngine(), getToneIndex(), getVolume());
+    public void onLoad() {
+    }
 
-        MixerChannelMessage.MUTE.send(getEngine(), getToneIndex(), mute ? 1 : 0);
-        MixerChannelMessage.SOLO.send(getEngine(), getToneIndex(), solo ? 1 : 0);
+    public void onSave() {
     }
 }

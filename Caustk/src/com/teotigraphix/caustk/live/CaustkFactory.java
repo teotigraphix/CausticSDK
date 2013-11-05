@@ -372,7 +372,10 @@ public class CaustkFactory implements ICaustkFactory {
             sb.append(File.separator);
         }
 
-        sb.append(info.getFile().getPath());
+        if (info.getFile() != null)
+            sb.append(info.getFile().getPath());
+        else
+            sb.append(component.getDefaultName());
 
         return new File(rootDirectory, sb.toString());
     }

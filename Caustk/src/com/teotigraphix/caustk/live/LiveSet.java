@@ -58,6 +58,11 @@ public class LiveSet implements ICaustkComponent {
         return info;
     }
 
+    @Override
+    public String getDefaultName() {
+        return info.getName();
+    }
+
     //----------------------------------
     // track
     //----------------------------------

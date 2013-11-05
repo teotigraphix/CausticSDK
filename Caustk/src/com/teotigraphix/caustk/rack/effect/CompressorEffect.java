@@ -158,8 +158,8 @@ public class CompressorEffect extends RackEffect {
     CompressorEffect() {
     }
 
-    public CompressorEffect(int slot, int toneIndex) {
-        super(EffectType.Compressor, slot, toneIndex);
+    public CompressorEffect(int slot) {
+        super(EffectType.Compressor, slot);
     }
 
     @Override

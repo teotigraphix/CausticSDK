@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.live;
 
-import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
-
 /*
  * - pan
  * - volume
@@ -44,7 +42,7 @@ public class AudioTrackMixer {
         return track.getMachine();
     }
 
-    protected MixerChannel getMixer() {
+    protected MachineMixer getMixer() {
         return getMachine().getMixer();
     }
 

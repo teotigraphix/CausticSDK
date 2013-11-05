@@ -110,8 +110,8 @@ public class ChorusEffect extends RackEffect {
     ChorusEffect() {
     }
 
-    public ChorusEffect(int slot, int toneIndex) {
-        super(EffectType.Chorus, slot, toneIndex);
+    public ChorusEffect(int slot) {
+        super(EffectType.Chorus, slot);
     }
 
     @Override

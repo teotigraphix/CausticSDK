@@ -32,7 +32,6 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.rack.tone.components.MixerChannel;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
@@ -104,6 +103,11 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     @Override
     public ComponentInfo getInfo() {
         return info;
+    }
+
+    @Override
+    public String getDefaultName() {
+        return machineName;
     }
 
     //----------------------------------
@@ -279,8 +283,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     // mixer
     //----------------------------------
 
-    public final MixerChannel getMixer() {
-        return rackTone.getMixer();
+    public final MachineMixer getMixer() {
+        return patch.getMixer();
     }
 
     //----------------------------------
@@ -432,7 +436,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     // XXX Figure out if this matters in the Phase?
     @Override
     public void load(ICaustkApplicationContext context) throws CausticException {
-        //        setRackSet(context.getRackSet());
+        factory = context.getFactory();
+        rack = factory.getRack();
 
         //        if (populateTone) {
         //            loadTone(factory);
@@ -524,7 +529,9 @@ public class Machine implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void onSave() {
-        rackTone.onSave();
+        // XXX TEMP HACK
+        if (rackTone != null)
+            rackTone.onSave();
         patch.onSave();
         for (Phrase phrase : phrases.values()) {
             phrase.onSave();
@@ -533,8 +540,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
 
     @Override
     public String toString() {
-        return "[Machine(" + machineIndex + ", " + machineType.getType() + ", " + machineName
-                + ")]";
+        return "[Machine(" + machineIndex + ", " + machineType.getType() + ", '" + machineName
+                + "')]";
     }
 
     public enum MachineChangeKind {

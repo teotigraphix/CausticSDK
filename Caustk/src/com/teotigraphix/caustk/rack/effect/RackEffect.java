@@ -38,16 +38,13 @@ public abstract class RackEffect implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private EffectType type;
+    private Effect effect;
 
     @Tag(1)
-    private int toneIndex;
+    private EffectType effectType;
 
     @Tag(2)
     private int slot;
-
-    @Tag(3)
-    private Effect effect;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -65,8 +62,8 @@ public abstract class RackEffect implements IRackSerializer {
     // type
     //----------------------------------
 
-    public final EffectType getType() {
-        return type;
+    public final EffectType getEffectType() {
+        return effectType;
     }
 
     //----------------------------------
@@ -86,11 +83,7 @@ public abstract class RackEffect implements IRackSerializer {
     //----------------------------------
 
     public int getToneIndex() {
-        return toneIndex;
-    }
-
-    public void setToneIndex(int value) {
-        toneIndex = value;
+        return effect.getPatch().getMachine().getMachineIndex();
     }
 
     //--------------------------------------------------------------------------
@@ -118,10 +111,9 @@ public abstract class RackEffect implements IRackSerializer {
     /**
      * @see EffectFactory#create(EffectType, int, int)
      */
-    public RackEffect(EffectType type, int slot, int toneIndex) {
-        this.type = type;
+    public RackEffect(EffectType type, int slot) {
+        this.effectType = type;
         this.slot = slot;
-        this.toneIndex = toneIndex;
     }
 
     //--------------------------------------------------------------------------

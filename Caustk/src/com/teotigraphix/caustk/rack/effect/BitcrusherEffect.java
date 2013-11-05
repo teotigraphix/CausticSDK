@@ -134,8 +134,8 @@ public class BitcrusherEffect extends RackEffect {
     BitcrusherEffect() {
     }
 
-    public BitcrusherEffect(int slot, int toneIndex) {
-        super(EffectType.Bitcrusher, slot, toneIndex);
+    public BitcrusherEffect(int slot) {
+        super(EffectType.Bitcrusher, slot);
     }
 
     @Override

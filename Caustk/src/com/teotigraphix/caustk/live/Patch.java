@@ -56,15 +56,18 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     private ComponentInfo info;
 
     @Tag(1)
-    private MachineType machineType;
+    private MachineType type;
 
     @Tag(2)
     private Machine machine;
 
     @Tag(3)
-    private MachinePreset machinePreset;
+    private MachinePreset preset;
 
     @Tag(4)
+    private MachineMixer mixer;
+
+    @Tag(5)
     private Map<Integer, Effect> effects = new HashMap<Integer, Effect>(2);
 
     //--------------------------------------------------------------------------
@@ -80,6 +83,14 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         return info;
     }
 
+    @Override
+    public String getDefaultName() {
+        String name = type.getType() + ":TODO";
+        if (preset.getName() != null)
+            name = preset.getName();
+        return name;
+    }
+
     //----------------------------------
     // toneType
     //----------------------------------
@@ -90,7 +101,7 @@ public class Patch implements ICaustkComponent, IRackSerializer {
      * <strong>Assigned only at construction.</strong>
      */
     public MachineType getMachineType() {
-        return machineType;
+        return type;
     }
 
     //----------------------------------
@@ -105,12 +116,16 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     // machinePreset
     //----------------------------------
 
-    public MachinePreset getMachinePreset() {
-        return machinePreset;
+    public MachinePreset getPreset() {
+        return preset;
     }
 
-    void setMachinePreset(MachinePreset value) {
-        machinePreset = value;
+    //----------------------------------
+    // machineMixer
+    //----------------------------------
+
+    public MachineMixer getMixer() {
+        return mixer;
     }
 
     /**
@@ -146,13 +161,14 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         //        effect.update();
     }
 
-    Effect removeEffect(int slot) {
-        Effect effect = effects.remove(slot);
-        if (effect == null)
-            return null;
-        effect.setIndex(-1);
-        return effect;
-    }
+    //
+    //    Effect removeEffect(int slot) {
+    //        Effect effect = effects.remove(slot);
+    //        if (effect == null)
+    //            return null;
+    //        effect.setIndex(-1);
+    //        return effect;
+    //    }
 
     public Effect getEffect(int slot) {
         return effects.get(slot);
@@ -170,13 +186,13 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     Patch(ComponentInfo info, MachineType machineType) {
         this.info = info;
-        this.machineType = machineType;
+        this.type = machineType;
     }
 
     Patch(ComponentInfo info, Machine machine) {
         this.info = info;
         this.machine = machine;
-        this.machineType = machine.getMachineType();
+        this.type = machine.getMachineType();
     }
 
     //--------------------------------------------------------------------------
@@ -185,9 +201,11 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void create(ICaustkApplicationContext context) {
-        machinePreset = new MachinePreset(null, this);
+        preset = new MachinePreset(null, this);
+        mixer = new MachineMixer(this);
         try {
-            machinePreset.create(context);
+            preset.create(context);
+            mixer.create(context);
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -195,8 +213,8 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void update(ICaustkApplicationContext context) {
-        machinePreset.update(context);
-
+        preset.update(context);
+        mixer.update(context);
         for (Effect caustkEffect : effects.values()) {
             caustkEffect.update(context);
         }
@@ -206,6 +224,7 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     public void load(ICaustkApplicationContext context) throws CausticException {
         try {
             loadMachinePreset(context);
+            loadMachineMixer(context);
         } catch (IOException e) {
             throw new CausticException(e);
         }
@@ -217,11 +236,15 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         // get the preset name if machine has a loaded preset
         String presetName = SynthMessage.QUERY_PRESET.queryString(rack, machine.getMachineIndex());
         // create the preset file
-        machinePreset = new MachinePreset(presetName, this);
+        preset = new MachinePreset(presetName, this);
 
         // get the bytes of the machine's preset and put them into the preset file
         //machinePreset.restore();
-        machinePreset.load(context);
+        preset.load(context);
+    }
+
+    private void loadMachineMixer(ICaustkApplicationContext context) throws CausticException {
+        mixer.load(context);
     }
 
     void loadEffects(ICaustkApplicationContext context) throws CausticException {
@@ -254,11 +277,18 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void onLoad() {
-        machinePreset.onLoad();
+        preset.onLoad();
+        mixer.onLoad();
     }
 
     @Override
     public void onSave() {
-        machinePreset.onSave();
+        preset.onSave();
+        mixer.onSave();
+    }
+
+    @Override
+    public String toString() {
+        return "[Patch(" + type.getType() + ", '" + getDefaultName() + "')]";
     }
 }

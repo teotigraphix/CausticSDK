@@ -99,6 +99,12 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         return info;
     }
 
+    @Override
+    public String getDefaultName() {
+        return machine.getMachineName() + "_"
+                + PatternUtils.toString(getBankIndex(), getPatternIndex());
+    }
+
     //----------------------------------
     // index
     //----------------------------------

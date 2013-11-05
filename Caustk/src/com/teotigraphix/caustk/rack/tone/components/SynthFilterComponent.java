@@ -194,7 +194,7 @@ public class SynthFilterComponent extends FilterComponentBase {
     }
 
     /**
-     * The {@link IFilter#getType()} type enumeration.
+     * The {@link IFilter#getEffectType()} type enumeration.
      * 
      * @author Michael Schmalle
      * @copyright Teoti Graphix, LLC

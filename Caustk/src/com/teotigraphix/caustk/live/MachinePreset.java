@@ -125,9 +125,9 @@ public class MachinePreset implements IRackSerializer {
     MachinePreset() {
     }
 
-    MachinePreset(String name, Patch caustkPatch) {
+    MachinePreset(String name, Patch patch) {
         this.name = name;
-        this.patch = caustkPatch;
+        this.patch = patch;
     }
 
     //--------------------------------------------------------------------------

@@ -42,35 +42,35 @@ public final class EffectFactory {
         RackEffect effect = null;
         switch (type) {
             case Autowah:
-                effect = new AutowahEffect(slot, toneIndex);
+                effect = new AutowahEffect(slot);
                 break;
 
             case Bitcrusher:
-                effect = new BitcrusherEffect(slot, toneIndex);
+                effect = new BitcrusherEffect(slot);
                 break;
 
             case Chorus:
-                effect = new ChorusEffect(slot, toneIndex);
+                effect = new ChorusEffect(slot);
                 break;
 
             case Compressor:
-                effect = new CompressorEffect(slot, toneIndex);
+                effect = new CompressorEffect(slot);
                 break;
 
             case Distortion:
-                effect = new DistortionEffect(slot, toneIndex);
+                effect = new DistortionEffect(slot);
                 break;
 
             case Flanger:
-                effect = new FlangerEffect(slot, toneIndex);
+                effect = new FlangerEffect(slot);
                 break;
 
             case ParametricEQ:
-                effect = new ParametricEQEffect(slot, toneIndex);
+                effect = new ParametricEQEffect(slot);
                 break;
 
             case Phaser:
-                effect = new PhaserEffect(slot, toneIndex);
+                effect = new PhaserEffect(slot);
                 break;
         }
         return effect;

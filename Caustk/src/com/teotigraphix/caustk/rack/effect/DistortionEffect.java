@@ -132,8 +132,8 @@ public class DistortionEffect extends RackEffect {
     DistortionEffect() {
     }
 
-    public DistortionEffect(int slot, int toneIndex) {
-        super(EffectType.Distortion, slot, toneIndex);
+    public DistortionEffect(int slot) {
+        super(EffectType.Distortion, slot);
     }
 
     @Override

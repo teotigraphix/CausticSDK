@@ -110,8 +110,8 @@ public class ParametricEQEffect extends RackEffect {
     ParametricEQEffect() {
     }
 
-    public ParametricEQEffect(int slot, int toneIndex) {
-        super(EffectType.ParametricEQ, slot, toneIndex);
+    public ParametricEQEffect(int slot) {
+        super(EffectType.ParametricEQ, slot);
     }
 
     @Override

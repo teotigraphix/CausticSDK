@@ -129,11 +129,17 @@ public class ComponentInfo {
         return file;
     }
 
+    public void setFile(File value) {
+        file = value;
+    }
+
     /**
      * Returns the relative path within the {@link ComponentType}'s sub
      * directory.
      */
     public String getPath() {
+        if (file == null)
+            return "";
         return file.getPath();
     }
 

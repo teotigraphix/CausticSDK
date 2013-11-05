@@ -158,8 +158,8 @@ public class AutowahEffect extends RackEffect {
     AutowahEffect() {
     }
 
-    public AutowahEffect(int slot, int toneIndex) {
-        super(EffectType.Autowah, slot, toneIndex);
+    public AutowahEffect(int slot) {
+        super(EffectType.Autowah, slot);
     }
 
     @Override
