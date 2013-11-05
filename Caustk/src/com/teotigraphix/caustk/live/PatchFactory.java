@@ -47,8 +47,8 @@ public class PatchFactory extends CaustkSubFactoryBase {
      */
     public Patch createPatch(Machine machine) {
         ComponentInfo info = getFactory().createInfo(ComponentType.Patch);
-        Patch causticPatch = new Patch(info, machine);
-        return causticPatch;
+        Patch patch = new Patch(info, machine);
+        return patch;
     }
 
     /**

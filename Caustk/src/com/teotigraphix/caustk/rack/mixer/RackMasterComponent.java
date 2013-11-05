@@ -37,6 +37,8 @@ public class RackMasterComponent implements IRackSerializer {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    private transient IRack rack;
+
     protected transient CausticMessage bypassMessage;
 
     //--------------------------------------------------------------------------
@@ -53,6 +55,10 @@ public class RackMasterComponent implements IRackSerializer {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
+    //----------------------------------
+    // rackSet
+    //----------------------------------
+
     public RackSet getRackSet() {
         return rackSet;
     }
@@ -66,7 +72,7 @@ public class RackMasterComponent implements IRackSerializer {
     //----------------------------------
 
     protected final IRack getRack() {
-        return rackSet.getRack();
+        return rack;
     }
 
     //----------------------------------
@@ -95,6 +101,31 @@ public class RackMasterComponent implements IRackSerializer {
     public RackMasterComponent() {
     }
 
+    //--------------------------------------------------------------------------
+    // IRackSerializer API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void create(ICaustkApplicationContext context) throws CausticException {
+    }
+
+    @Override
+    public void load(ICaustkApplicationContext context) {
+        rack = context.getRack();
+        restore();
+    }
+
+    @Override
+    public void update(ICaustkApplicationContext context) {
+        rack = context.getRack();
+        bypassMessage.send(getRack(), bypass ? 1 : 0);
+    }
+
+    @Override
+    public void restore() {
+        setBypass(isBypass(true));
+    }
+
     /**
      * Returns a new {@link IllegalArgumentException} for an error in OSC range.
      * 
@@ -107,26 +138,4 @@ public class RackMasterComponent implements IRackSerializer {
         return ExceptionUtils.newRangeException(control, range, value);
     }
 
-    //--------------------------------------------------------------------------
-    // IRackSerializer API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void create(ICaustkApplicationContext context) throws CausticException {
-    }
-
-    @Override
-    public void load(ICaustkApplicationContext context) {
-        restore();
-    }
-
-    @Override
-    public void restore() {
-        setBypass(isBypass(true));
-    }
-
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        bypassMessage.send(getRack(), bypass ? 1 : 0);
-    }
 }

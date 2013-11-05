@@ -60,40 +60,20 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     private File causticFile;
 
     @Tag(2)
-    private boolean isInternal;
-
-    @Tag(3)
     private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
 
-    @Tag(4)
+    @Tag(3)
     private MasterMixer masterMixer;
 
-    @Tag(5)
+    @Tag(4)
     private MasterSequencer masterSequencer;
+
+    @Tag(5)
+    private boolean isInternal;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // rack
-    //----------------------------------
-
-    /**
-     * Returns the instance of the {@link IRack} that created this instance or
-     * the session rack that exists when this RackSet was deserialized.
-     */
-    public IRack getRack() {
-        return rack;
-    }
-
-    //----------------------------------
-    // factory
-    //----------------------------------
-
-    public ICaustkFactory getFactory() {
-        return factory;
-    }
 
     //----------------------------------
     // info
@@ -127,24 +107,14 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     }
 
     //----------------------------------
-    // isInternal
+    // machines
     //----------------------------------
 
     /**
-     * Sets the {@link RackSet} as an internal scene(not saved to disk), meaning
-     * it is treated as a application state scene loaded when the application is
-     * loaded with the application's state.
+     * Returns a collection of {@link Machine}s defined in the rack set.
      */
-    public final void setInternal() {
-        isInternal = true;
-    }
-
-    /**
-     * Returns whether the {@link RackSet} is an internal scene. (not saved to
-     * disk)
-     */
-    public boolean isInternal() {
-        return isInternal;
+    public Collection<Machine> getMachines() {
+        return Collections.unmodifiableCollection(machines.values());
     }
 
     //----------------------------------
@@ -173,6 +143,55 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
 
     public final void setVolume(float value) {
         masterMixer.getVolume().setOut(value);
+    }
+
+    //----------------------------------
+    // MasterSequencer
+    //----------------------------------
+
+    public MasterSequencer getMasterSequencer() {
+        return masterSequencer;
+    }
+
+    //----------------------------------
+    // isInternal
+    //----------------------------------
+
+    /**
+     * Sets the {@link RackSet} as an internal scene(not saved to disk), meaning
+     * it is treated as a application state scene loaded when the application is
+     * loaded with the application's state.
+     */
+    public final void setInternal() {
+        isInternal = true;
+    }
+
+    /**
+     * Returns whether the {@link RackSet} is an internal scene. (not saved to
+     * disk)
+     */
+    public boolean isInternal() {
+        return isInternal;
+    }
+
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    /**
+     * Returns the instance of the {@link IRack} that created this instance or
+     * the session rack that exists when this RackSet was deserialized.
+     */
+    public IRack _getRack() {
+        return rack;
+    }
+
+    //----------------------------------
+    // factory
+    //----------------------------------
+
+    public ICaustkFactory getFactory() {
+        return factory;
     }
 
     //--------------------------------------------------------------------------
@@ -226,13 +245,6 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
 
     public boolean hasMachine(int index) {
         return machines.containsKey(index);
-    }
-
-    /**
-     * Returns a collection of {@link Machine}s defined in the rack set.
-     */
-    public Collection<Machine> getMachines() {
-        return Collections.unmodifiableCollection(machines.values());
     }
 
     /**
@@ -402,9 +414,11 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         // load the song raw, don not create tones
         RackMessage.LOAD_SONG.send(rack, causticFile.getAbsolutePath());
 
+        create(context);
+
         try {
             // create the scene sub components
-            createComponents(context);
+            // createComponents(context);
             // load the current song rack state into the sub components
             loadComponents(context);
         } catch (IOException e) {
@@ -430,24 +444,13 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         }
     }
 
-    private void createComponents(ICaustkApplicationContext context) throws IOException,
-            CausticException {
-        masterMixer = context.getFactory().createMasterMixer(this);
-        masterMixer.create(null);
-        for (int i = 0; i < 14; i++) {
-            createMachine(i, context);
-        }
-        masterSequencer = context.getFactory().createMasterSequencer(this);
-        masterSequencer.create(null);
-    }
-
     private void loadComponents(ICaustkApplicationContext context) throws IOException,
             CausticException {
         masterMixer.load(context);
         for (int i = 0; i < 14; i++) {
-            Machine caustkMachine = getMachine(i);
-            if (caustkMachine != null) {
-                loadMachine(caustkMachine, context);
+            Machine machine = loadMachine(i, context);
+            if (machine != null) {
+                loadMachine(machine, context);
             }
         }
         masterSequencer.load(context);
@@ -461,28 +464,26 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         return machine;
     }
 
-    private void createMachine(int index, ICaustkApplicationContext context) throws IOException,
+    private Machine loadMachine(int index, ICaustkApplicationContext context) throws IOException,
             CausticException {
         String machineName = RackMessage.QUERY_MACHINE_NAME.queryString(rack, index);
         if (machineName == null)
-            return;
+            return null;
 
         MachineType machineType = MachineType.fromString(RackMessage.QUERY_MACHINE_TYPE
                 .queryString(rack, index));
-        Machine caustkMachine = context.getFactory().createMachine(this, index, machineType,
-                machineName);
-        machines.put(index, caustkMachine);
+        Machine machine = context.getFactory().createMachine(this, index, machineType, machineName);
+        // machine.create(context);
+        machines.put(index, machine);
+        return machine;
     }
 
-    private void loadMachine(Machine caustkMachine, ICaustkApplicationContext context)
+    private void loadMachine(Machine machine, ICaustkApplicationContext context)
             throws IOException, CausticException {
         // loads CaustkPatch (MachinePreset, MixerPreset, CaustkEffects), CaustkPhrases
-        caustkMachine.load(context);
+        machine.load(context);
     }
 
     public void dispose() {
-        // TODO Auto-generated method stub
-
     }
-
 }

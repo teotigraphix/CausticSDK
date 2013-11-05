@@ -177,6 +177,8 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void load(ICaustkApplicationContext context) throws CausticException {
+        create(context);
+
         try {
             loadMachinePreset(context);
             loadMachineMixer(context);

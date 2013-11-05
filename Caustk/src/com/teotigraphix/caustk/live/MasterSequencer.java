@@ -24,11 +24,14 @@ import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
 public class MasterSequencer implements IRackSerializer {
+
+    private transient IRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -37,13 +40,13 @@ public class MasterSequencer implements IRackSerializer {
     @Tag(0)
     private RackSet rackSet;
 
-    public RackSet getScene() {
+    //----------------------------------
+    // rackSet
+    //----------------------------------
+
+    public RackSet getRackSet() {
         return rackSet;
     }
-
-    //--------------------------------------------------------------------------
-    // IRackAware API :: Properties
-    //--------------------------------------------------------------------------
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -65,14 +68,23 @@ public class MasterSequencer implements IRackSerializer {
 
     @Override
     public void load(ICaustkApplicationContext context) {
+        rack = context.getRack();
         restore();
     }
 
     @Override
     public void restore() {
-        String patterns = rackSet.getRack().getSystemSequencer().getPatterns();
+        String patterns = rack.getSystemSequencer().getPatterns();
         if (patterns != null) {
             loadPatterns(patterns);
+        }
+    }
+
+    @Override
+    public void update(ICaustkApplicationContext context) {
+        rack = context.getRack();
+        for (Machine caustkMachine : rackSet.getMachines()) {
+            updateMachine(caustkMachine);
         }
     }
 
@@ -87,29 +99,22 @@ public class MasterSequencer implements IRackSerializer {
             int pattern = Integer.valueOf(parts[3]);
             int end = Integer.valueOf(parts[4]);
 
-            Machine caustkMachine = rackSet.getMachine(index);
-            caustkMachine.addPattern(bank, pattern, start, end);
+            Machine machine = rackSet.getMachine(index);
+            machine.addPattern(bank, pattern, start, end);
         }
     }
 
-    public void updateMachine(Machine caustkMachine) {
+    void updateMachine(Machine caustkMachine) {
         for (SequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
-            SequencerMessage.PATTERN_EVENT.send(rackSet.getRack(), caustkMachine.getMachineIndex(),
+            SequencerMessage.PATTERN_EVENT.send(rack, caustkMachine.getMachineIndex(),
                     caustkSequencerPattern.getStartBeat(), caustkSequencerPattern.getBankIndex(),
                     caustkSequencerPattern.getPatternIndex(), caustkSequencerPattern.getEndBeat());
         }
     }
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        for (Machine caustkMachine : rackSet.getMachines()) {
-            updateMachine(caustkMachine);
-        }
-    }
-
     public void onSave() {
-        // TODO Auto-generated method stub
-
     }
 
+    public void onLoad() {
+    }
 }

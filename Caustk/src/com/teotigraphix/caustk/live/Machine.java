@@ -440,6 +440,8 @@ public class Machine implements ICaustkComponent, IRackSerializer {
         factory = context.getFactory();
         rack = factory.getRack();
 
+        create(context);
+
         //        if (populateTone) {
         //            loadTone(factory);
         //        }
@@ -475,7 +477,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     /**
-     * Loads the machine's {@link Patch} from the mative machine's preset values
+     * Loads the machine's {@link Patch} from the native machine's preset values
      * and mixer channel.
      * 
      * @param factory The library factory.
@@ -483,7 +485,7 @@ public class Machine implements ICaustkComponent, IRackSerializer {
      * @throws CausticException
      */
     private void loadPatch(ICaustkApplicationContext context) throws IOException, CausticException {
-        patch = context.getFactory().createPatch(this);
+        // patch = context.getFactory().createPatch(this);
         patch.load(context);
     }
 
