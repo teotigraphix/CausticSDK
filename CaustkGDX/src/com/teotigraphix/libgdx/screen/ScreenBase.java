@@ -48,7 +48,7 @@ public class ScreenBase implements IScreen {
 
     protected IGame game;
 
-    protected final Stage stage;
+    protected Stage stage;
 
     private BitmapFont font;
 
@@ -77,7 +77,11 @@ public class ScreenBase implements IScreen {
 
     private Table table;
 
-    List<ScreenMediator> mediators = new ArrayList<ScreenMediator>();
+    private List<ScreenMediator> mediators = new ArrayList<ScreenMediator>();
+
+    public final List<ScreenMediator> getMediators() {
+        return mediators;
+    }
 
     protected void addMediator(ScreenMediator mediator) {
         mediators.add(mediator);
