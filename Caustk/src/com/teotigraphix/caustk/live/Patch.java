@@ -195,6 +195,11 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
+    public void disconnect() {
+        machine = null;
+    }
+
+    @Override
     public void onLoad() {
         machinePreset.onLoad();
         machineMixer.onLoad();

@@ -895,6 +895,11 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
             }
         }
     }
+
+    @Override
+    public void disconnect() {
+        machine = null;
+    }
 }
 
 /*

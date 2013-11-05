@@ -126,6 +126,10 @@ public class RackMasterComponent implements IRackSerializer {
         setBypass(isBypass(true));
     }
 
+    @Override
+    public void disconnect() {
+    }
+
     /**
      * Returns a new {@link IllegalArgumentException} for an error in OSC range.
      * 

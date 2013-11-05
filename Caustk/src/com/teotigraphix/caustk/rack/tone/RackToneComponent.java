@@ -93,6 +93,10 @@ public abstract class RackToneComponent implements IRackSerializer {
         restoreComponents();
     }
 
+    @Override
+    public void disconnect() {
+    }
+
     protected void createComponents() {
     }
 

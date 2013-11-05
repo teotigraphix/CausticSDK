@@ -137,6 +137,10 @@ public abstract class RackEffect implements IRackSerializer {
     public void restore() {
     }
 
+    @Override
+    public void disconnect() {
+    }
+
     //--------------------------------------------------------------------------
     // Protected :: Methods
     //--------------------------------------------------------------------------

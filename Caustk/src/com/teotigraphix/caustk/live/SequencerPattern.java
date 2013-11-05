@@ -103,4 +103,7 @@ public class SequencerPattern implements ICaustkComponent {
                 + PatternUtils.toString(bankIndex, patternIndex) + ":" + endBeat + ")]";
     }
 
+    @Override
+    public void disconnect() {
+    }
 }

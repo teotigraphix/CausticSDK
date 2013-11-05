@@ -432,6 +432,11 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
+    public void disconnect() {
+        rack = null;
+    }
+
+    @Override
     public void onLoad() {
     }
 

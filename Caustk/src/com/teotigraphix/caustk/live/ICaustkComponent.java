@@ -46,4 +46,5 @@ public interface ICaustkComponent {
      */
     void onSave();
 
+    void disconnect();
 }

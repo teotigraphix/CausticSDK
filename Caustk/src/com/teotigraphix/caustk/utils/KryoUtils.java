@@ -154,5 +154,10 @@ public class KryoUtils {
         public void write(Kryo kryo, Output output, File object) {
             output.writeString(object.toString());
         }
+
+        @Override
+        public File copy(Kryo kryo, File file) {
+            return new File(file.getAbsolutePath());
+        }
     }
 }

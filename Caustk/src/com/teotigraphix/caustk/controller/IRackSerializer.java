@@ -77,4 +77,5 @@ public interface IRackSerializer extends IRestore {
     @Override
     void restore();
 
+    void disconnect();
 }

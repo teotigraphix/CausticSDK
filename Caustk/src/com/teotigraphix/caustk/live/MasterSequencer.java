@@ -81,6 +81,10 @@ public class MasterSequencer implements IRackSerializer {
     }
 
     @Override
+    public void disconnect() {
+    }
+
+    @Override
     public void update(ICaustkApplicationContext context) {
         rack = context.getRack();
         for (Machine caustkMachine : rackSet.getMachines()) {

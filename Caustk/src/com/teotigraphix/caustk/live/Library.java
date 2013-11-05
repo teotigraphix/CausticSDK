@@ -27,6 +27,7 @@ import java.util.Collection;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
@@ -194,26 +195,29 @@ public class Library implements ICaustkComponent {
     }
 
     public boolean add(LiveSet liveSet) throws IOException {
-        if (liveSets.contains(liveSet))
-            return false;
-        liveSets.add(liveSet);
-        save(liveSet);
+        //        if (liveSets.contains(liveSet))
+        //            return false;
+        LiveSet copy = KryoUtils.copy(liveSet);
+        liveSets.add(copy);
+        componentAdded(copy);
         return true;
     }
 
     public boolean add(RackSet rackSet) throws IOException {
-        if (rackSets.contains(rackSet))
-            return false;
-        rackSets.add(rackSet);
-        save(rackSet);
+        //        if (rackSets.contains(rackSet))
+        //            return false;
+        RackSet copy = KryoUtils.copy(rackSet);
+        rackSets.add(copy);
+        componentAdded(copy);
         return true;
     }
 
     public boolean add(Machine machine) throws IOException {
-        if (machines.contains(machine))
-            return false;
-        machines.add(machine);
-        save(machine);
+        //        if (machines.contains(machine))
+        //            return false;
+        Machine copy = KryoUtils.copy(machine);
+        machines.add(copy);
+        componentAdded(copy);
         return true;
     }
 
@@ -226,27 +230,35 @@ public class Library implements ICaustkComponent {
      * @throws IOException
      */
     public boolean add(Effect effect) throws IOException {
-        if (effects.contains(effect))
-            return false;
-        effects.add(effect);
-        save(effect);
+        //        if (effects.contains(effect))
+        //            return false;
+        Effect copy = KryoUtils.copy(effect);
+        effects.add(copy);
+        componentAdded(copy);
         return true;
     }
 
     public boolean add(Patch patch) throws IOException {
-        if (patches.contains(patch))
-            return false;
-        patches.add(patch);
-        save(patch);
+        //        if (patches.contains(patch))
+        //            return false;
+        Patch copy = KryoUtils.copy(patch);
+        patches.add(copy);
+        componentAdded(copy);
         return true;
     }
 
     public boolean add(Phrase phrase) throws IOException {
-        if (phrases.contains(phrase))
-            return false;
-        phrases.add(phrase);
-        save(phrase);
+        //        if (phrases.contains(phrase))
+        //            return false;
+        Phrase copy = KryoUtils.copy(phrase);
+        phrases.add(copy);
+        componentAdded(copy);
         return true;
+    }
+
+    private void componentAdded(ICaustkComponent component) throws FileNotFoundException {
+        component.disconnect();
+        save(component);
     }
 
     public boolean remove(ICaustkComponent component) {
@@ -343,6 +355,10 @@ public class Library implements ICaustkComponent {
                 add((Phrase)component);
                 break;
         }
+    }
+
+    @Override
+    public void disconnect() {
     }
 
 }

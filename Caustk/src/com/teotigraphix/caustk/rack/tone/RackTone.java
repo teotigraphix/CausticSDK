@@ -248,6 +248,10 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
+    public void disconnect() {
+    }
+
+    @Override
     public void onSave() {
     }
 

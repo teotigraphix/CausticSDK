@@ -238,6 +238,10 @@ public class MachinePreset implements IRackSerializer {
         restore(rackTone);
     }
 
+    @Override
+    public void disconnect() {
+    }
+
     /**
      * Updates the {@link #getData()} bytes with the {@link RackTone}'s preset
      * file as currently loaded in the rack.

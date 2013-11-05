@@ -360,6 +360,10 @@ public class MachineMixer implements IRackSerializer {
         setVolume(getVolume(true));
     }
 
+    @Override
+    public void disconnect() {
+    }
+
     /**
      * Returns a new {@link IllegalArgumentException} for an error in OSC range.
      * 

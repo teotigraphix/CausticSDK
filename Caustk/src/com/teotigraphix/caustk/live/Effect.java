@@ -196,6 +196,11 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     }
 
     @Override
+    public void disconnect() {
+        patch = null;
+    }
+
+    @Override
     public void onLoad() {
     }
 

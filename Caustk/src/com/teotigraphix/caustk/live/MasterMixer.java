@@ -137,6 +137,10 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
+    public void disconnect() {
+    }
+
+    @Override
     public void update(ICaustkApplicationContext context) {
         equalizer.update(context);
         limiter.update(context);

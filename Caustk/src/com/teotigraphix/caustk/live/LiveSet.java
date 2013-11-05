@@ -131,6 +131,10 @@ public class LiveSet implements ICaustkComponent {
         return removed;
     }
 
+    @Override
+    public void disconnect() {
+    }
+
     //--------------------------------------------------------------------------
     // Private :: Methods
     //--------------------------------------------------------------------------

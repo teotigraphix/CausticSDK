@@ -458,6 +458,14 @@ public class Machine implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
+    public void disconnect() {
+        patterns.clear();
+        phrases.clear();
+        rack = null;
+        rackSet = null;
+    }
+
+    @Override
     public void onLoad() {
     }
 
