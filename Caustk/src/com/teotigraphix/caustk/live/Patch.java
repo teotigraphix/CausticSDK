@@ -31,17 +31,6 @@ import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.effect.RackEffect;
-
-/*
- * - LivePatch can be copied to another LiveMachine of the same toneType
- *   in the LiveScene
- *   
- * - LivePatch can be copied to a LiveLibrary in the 
- *   /CausticLive/libraries/MyLib/patches/[toneType] directory
- * 
- * - 
- */
 
 /**
  * @author Michael Schmalle
@@ -56,16 +45,16 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     private ComponentInfo info;
 
     @Tag(1)
-    private MachineType type;
-
-    @Tag(2)
     private Machine machine;
 
+    @Tag(2)
+    private MachineType machineType;
+
     @Tag(3)
-    private MachinePreset preset;
+    private MachinePreset machinePreset;
 
     @Tag(4)
-    private MachineMixer mixer;
+    private MachineMixer machineMixer;
 
     @Tag(5)
     private Map<Integer, Effect> effects = new HashMap<Integer, Effect>(2);
@@ -85,23 +74,10 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public String getDefaultName() {
-        String name = type.getType() + ":TODO";
-        if (preset.getName() != null)
-            name = preset.getName();
+        String name = machineType.getType() + ":TODO";
+        if (machinePreset.getName() != null)
+            name = machinePreset.getName();
         return name;
-    }
-
-    //----------------------------------
-    // toneType
-    //----------------------------------
-
-    /**
-     * Returns the type of {@link Machine} this patch can be assigned to.
-     * <p>
-     * <strong>Assigned only at construction.</strong>
-     */
-    public MachineType getMachineType() {
-        return type;
     }
 
     //----------------------------------
@@ -113,11 +89,24 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     }
 
     //----------------------------------
+    // machineType
+    //----------------------------------
+
+    /**
+     * Returns the type of {@link Machine} this patch can be assigned to.
+     * <p>
+     * <strong>Assigned only at construction.</strong>
+     */
+    public MachineType getMachineType() {
+        return machineType;
+    }
+
+    //----------------------------------
     // machinePreset
     //----------------------------------
 
     public MachinePreset getPreset() {
-        return preset;
+        return machinePreset;
     }
 
     //----------------------------------
@@ -125,50 +114,12 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     //----------------------------------
 
     public MachineMixer getMixer() {
-        return mixer;
+        return machineMixer;
     }
 
-    /**
-     * Adds and returns an effect without sending a message to the core.
-     * <p>
-     * Using this method will call
-     * {@link Effect#create(ICaustkApplicationContext)} to create the
-     * {@link RackEffect} instance in the {@link Effect}.
-     * 
-     * @param factory The library factory.
-     * @param slot The effect slot.
-     * @param effectType The {@link EffectType}.
-     */
-    public Effect createEffect(ICaustkFactory factory, int slot, EffectType effectType) {
-        Effect effect = factory.createEffect(0, effectType, this);
-        // since we are creating the effect from the outside, we create
-        // the internal effect here
-        effect.create(null);
-        effects.put(slot, effect);
-        return effect;
-    }
-
-    void putEffect(int slot, Effect effect) {
-        if (slot != effect.getIndex())
-            throw new IllegalStateException("Changing effect index is not implemented");
-        //effect.setIndex(slot);
-        effects.put(slot, effect);
-    }
-
-    public void replaceEffect(int slot, Effect effect) {
-        //        // 
-        //        effect.setPatch(this);
-        //        effect.update();
-    }
-
-    //
-    //    Effect removeEffect(int slot) {
-    //        Effect effect = effects.remove(slot);
-    //        if (effect == null)
-    //            return null;
-    //        effect.setIndex(-1);
-    //        return effect;
-    //    }
+    //----------------------------------
+    // effect
+    //----------------------------------
 
     public Effect getEffect(int slot) {
         return effects.get(slot);
@@ -186,26 +137,30 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     Patch(ComponentInfo info, MachineType machineType) {
         this.info = info;
-        this.type = machineType;
+        this.machineType = machineType;
     }
 
     Patch(ComponentInfo info, Machine machine) {
         this.info = info;
         this.machine = machine;
-        this.type = machine.getMachineType();
+        this.machineType = machine.getMachineType();
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    public void addEffect(Effect effect) {
+        addEffect(effect.getSlot(), effect);
+    }
+
     @Override
     public void create(ICaustkApplicationContext context) {
-        preset = new MachinePreset(null, this);
-        mixer = new MachineMixer(this);
+        machinePreset = new MachinePreset(null, this);
+        machineMixer = new MachineMixer(this);
         try {
-            preset.create(context);
-            mixer.create(context);
+            machinePreset.create(context);
+            machineMixer.create(context);
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -213,8 +168,8 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void update(ICaustkApplicationContext context) {
-        preset.update(context);
-        mixer.update(context);
+        machinePreset.update(context);
+        machineMixer.update(context);
         for (Effect caustkEffect : effects.values()) {
             caustkEffect.update(context);
         }
@@ -231,20 +186,42 @@ public class Patch implements ICaustkComponent, IRackSerializer {
         loadEffects(context);
     }
 
+    @Override
+    public void restore() {
+        machinePreset.restore();
+        machineMixer.restore();
+    }
+
+    @Override
+    public void onLoad() {
+        machinePreset.onLoad();
+        machineMixer.onLoad();
+    }
+
+    @Override
+    public void onSave() {
+        machinePreset.onSave();
+        machineMixer.onSave();
+    }
+
+    //--------------------------------------------------------------------------
+    // Private API :: Methods
+    //--------------------------------------------------------------------------
+
     void loadMachinePreset(ICaustkApplicationContext context) throws IOException {
         final IRack rack = context.getRack();
         // get the preset name if machine has a loaded preset
         String presetName = SynthMessage.QUERY_PRESET.queryString(rack, machine.getMachineIndex());
         // create the preset file
-        preset = new MachinePreset(presetName, this);
+        machinePreset = new MachinePreset(presetName, this);
 
         // get the bytes of the machine's preset and put them into the preset file
         //machinePreset.restore();
-        preset.load(context);
+        machinePreset.load(context);
     }
 
     private void loadMachineMixer(ICaustkApplicationContext context) throws CausticException {
-        mixer.load(context);
+        machineMixer.load(context);
     }
 
     void loadEffects(ICaustkApplicationContext context) throws CausticException {
@@ -260,35 +237,25 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
         if (effect0 != null) {
             Effect effect = context.getFactory().createEffect(0, effect0, this);
-            putEffect(0, effect);
+            addEffect(0, effect);
             effect.load(context);
         }
 
         if (effect1 != null) {
             Effect effect = context.getFactory().createEffect(1, effect1, this);
-            putEffect(1, effect);
+            addEffect(1, effect);
             effect.load(context);
         }
     }
 
-    @Override
-    public void restore() {
-    }
-
-    @Override
-    public void onLoad() {
-        preset.onLoad();
-        mixer.onLoad();
-    }
-
-    @Override
-    public void onSave() {
-        preset.onSave();
-        mixer.onSave();
+    void addEffect(int slot, Effect effect) {
+        if (slot != effect.getSlot())
+            throw new IllegalStateException("Changing effect index is not implemented");
+        effects.put(slot, effect);
     }
 
     @Override
     public String toString() {
-        return "[Patch(" + type.getType() + ", '" + getDefaultName() + "')]";
+        return "[Patch(" + machineType.getType() + ", '" + getDefaultName() + "')]";
     }
 }

@@ -109,7 +109,7 @@ public interface ICaustkFactory {
 
     Effect createEffect(int slot, EffectType effectType);
 
-    Effect createEffect(int slot, EffectType effectType, Patch caustkPatch);
+    Effect createEffect(int slot, EffectType effectType, Patch patch);
 
     MasterMixer createMasterMixer(RackSet caustkScene);
 

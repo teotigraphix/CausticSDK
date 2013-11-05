@@ -85,14 +85,32 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     }
 
     //----------------------------------
-    // index
+    // effect
     //----------------------------------
 
     /**
-     * The slot this effect is held in the {@link LivePatch}, -1 if not assigned
-     * to a {@link LivePatch}.
+     * Returns the parent {@link Patch}.
+     * <p>
+     * May be <code>null</code> if the effect is an unattached component in a
+     * {@link Library}.
      */
-    public int getIndex() {
+    public Patch getPatch() {
+        return patch;
+    }
+
+    void setPatch(Patch value) {
+        patch = value;
+    }
+
+    //----------------------------------
+    // slot
+    //----------------------------------
+
+    /**
+     * The slot this effect is held in the {@link Patch}, -1 if not assigned to
+     * a {@link Patch}.
+     */
+    public int getSlot() {
         return slot;
     }
 
@@ -100,6 +118,11 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     // effectType
     //----------------------------------
 
+    /**
+     * Returns the {@link EffectType} of this effect.
+     * <p>
+     * Set in the constructor only.
+     */
     public EffectType getEffectType() {
         return effectType;
     }
@@ -108,21 +131,11 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     // effect
     //----------------------------------
 
-    @SuppressWarnings("unchecked")
-    public <T extends RackEffect> T getEffect() {
-        return (T)rackEffect;
-    }
-
-    //----------------------------------
-    // effect
-    //----------------------------------
-
-    public Patch getPatch() {
-        return patch;
-    }
-
-    void setPatch(Patch value) {
-        patch = value;
+    /**
+     * Returns the native rack effect.
+     */
+    public RackEffect getEffect() {
+        return rackEffect;
     }
 
     //--------------------------------------------------------------------------
@@ -157,30 +170,16 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    /**
-     * Creates the {@link IEffect} but assigns -1 to the slot and machine index.
-     */
     @Override
     public void create(ICaustkApplicationContext context) {
         rackEffect = createEffect(-1, -1);
     }
 
-    /**
-     * Loads and restores the {@link IEffect} for the machine.
-     * 
-     * @param factory The library factory.
-     * @throws CausticException
-     */
     @Override
     public void load(ICaustkApplicationContext context) throws CausticException {
         rackEffect = createEffect(slot, patch.getMachine().getMachineIndex());
         rackEffect.setEffect(this);
         rackEffect.load(context);
-    }
-
-    @Override
-    public void restore() {
-        rackEffect.restore();
     }
 
     @Override
@@ -192,6 +191,11 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     }
 
     @Override
+    public void restore() {
+        rackEffect.restore();
+    }
+
+    @Override
     public void onLoad() {
     }
 
@@ -199,7 +203,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     public void onSave() {
     }
 
-    RackEffect createEffect(int slot, int toneIndex) {
+    private RackEffect createEffect(int slot, int toneIndex) {
         return EffectFactory.create(effectType, slot, toneIndex);
     }
 
