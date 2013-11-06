@@ -82,6 +82,8 @@ public class Library implements ICaustkComponent {
 
     private transient ICaustkFactory factory;
 
+    private transient Map<ComponentType, ArrayList<? extends ICaustkComponent>> components = new HashMap<ComponentType, ArrayList<? extends ICaustkComponent>>();
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -91,22 +93,6 @@ public class Library implements ICaustkComponent {
 
     @Tag(1)
     private Map<ComponentType, ComponentInfo> map = new HashMap<ComponentType, ComponentInfo>();
-
-    private Collection<LiveSet> liveSets = new ArrayList<LiveSet>();
-
-    private Collection<RackSet> rackSets = new ArrayList<RackSet>();
-
-    private Collection<Machine> machines = new ArrayList<Machine>();
-
-    private Collection<Patch> patches = new ArrayList<Patch>();
-
-    private Collection<Effect> effects = new ArrayList<Effect>();
-
-    private Collection<Phrase> phrases = new ArrayList<Phrase>();
-
-    private Collection<MasterMixer> mixers = new ArrayList<MasterMixer>();
-
-    private Collection<MasterSequencer> sequencers = new ArrayList<MasterSequencer>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -178,14 +164,6 @@ public class Library implements ICaustkComponent {
         this.factory = factory;
     }
 
-    @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onSave() {
-    }
-
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
@@ -195,77 +173,24 @@ public class Library implements ICaustkComponent {
      * component collection.
      * 
      * @param component The library component.
-     * @return
      */
     public boolean contains(ICaustkComponent component) {
-        return getCollection(component).contains(component);
+        Collection<? extends ICaustkComponent> collection = components.get(component.getInfo()
+                .getType());
+        if (collection == null)
+            return false;
+        return collection.contains(component);
     }
 
-    public boolean add(LiveSet liveSet) throws IOException {
-        //        if (liveSets.contains(liveSet))
-        //            return false;
-        LiveSet copy = factory.copy(liveSet);
-        liveSets.add(copy);
+    public void add(ICaustkComponent component) throws IOException {
+        ArrayList<ICaustkComponent> collection = getRawCollection(component);
+        if (collection == null) {
+            collection = new ArrayList<ICaustkComponent>();
+            components.put(component.getInfo().getType(), collection);
+        }
+        ICaustkComponent copy = factory.copy(component);
+        collection.add(copy);
         componentAdded(copy);
-        return true;
-    }
-
-    public boolean add(RackSet rackSet) throws IOException {
-        //        if (rackSets.contains(rackSet))
-        //            return false;
-        RackSet copy = factory.copy(rackSet);
-        rackSets.add(copy);
-        componentAdded(copy);
-        return true;
-    }
-
-    public boolean add(Machine machine) throws IOException {
-        //        if (machines.contains(machine))
-        //            return false;
-        Machine copy = factory.copy(machine);
-        machines.add(copy);
-        componentAdded(copy);
-        return true;
-    }
-
-    /**
-     * Adds a {@link Effect} to the library.
-     * <p>
-     * Will not add the instance if the library already contains the reference.
-     * 
-     * @param effect The {@link Effect} to add.
-     * @throws IOException
-     */
-    public boolean add(Effect effect) throws IOException {
-        //        if (effects.contains(effect))
-        //            return false;
-        Effect copy = factory.copy(effect);
-        effects.add(copy);
-        componentAdded(copy);
-        return true;
-    }
-
-    public boolean add(Patch patch) throws IOException {
-        //        if (patches.contains(patch))
-        //            return false;
-        Patch copy = factory.copy(patch);
-        patches.add(copy);
-        componentAdded(copy);
-        return true;
-    }
-
-    public boolean add(Phrase phrase) throws IOException {
-        //        if (phrases.contains(phrase))
-        //            return false;
-        Phrase copy = factory.copy(phrase);
-        phrases.add(copy);
-        componentAdded(copy);
-        return true;
-    }
-
-    private void componentAdded(ICaustkComponent component) throws FileNotFoundException {
-        component.disconnect();
-        save(component);
     }
 
     public boolean remove(ICaustkComponent component) {
@@ -307,66 +232,37 @@ public class Library implements ICaustkComponent {
         factory.save(this, getLibrariesDirectory());
     }
 
-    private Collection<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
-        switch (component.getInfo().getType()) {
-            case LiveSet:
-                return liveSets;
-            case RackSet:
-                return rackSets;
-            case Effect:
-                return effects;
-            case Library:
-                break;
-            case Machine:
-                return machines;
-            case MasterMixer:
-                break;
-            case MasterSequencer:
-                break;
-            case Patch:
-                return patches;
-            case Phrase:
-                return phrases;
-        }
-        return null;
+    private ArrayList<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
+        return components.get(component.getInfo().getType());
+    }
+
+    @SuppressWarnings("unchecked")
+    private ArrayList<ICaustkComponent> getRawCollection(ICaustkComponent component) {
+        return (ArrayList<ICaustkComponent>)components.get(component.getInfo().getType());
     }
 
     public boolean exists() {
         return getDirectory().exists();
     }
 
-    public void add(ICaustkComponent component) throws IOException {
-        switch (component.getInfo().getType()) {
-            case LiveSet:
-                add((LiveSet)component);
-                break;
-            case RackSet:
-                add((RackSet)component);
-                break;
-            case Effect:
-                add((Effect)component);
-                break;
-            case Library:
-                add(component);
-                break;
-            case Machine:
-                add((Machine)component);
-                break;
-            case MasterMixer:
-                break;
-            case MasterSequencer:
-                break;
-            case Patch:
-                add((Patch)component);
-                break;
-            case Phrase:
-                add((Phrase)component);
-                break;
-        }
+    @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
     }
 
     @Override
     public void disconnect() {
     }
 
+    private void componentAdded(ICaustkComponent component) throws FileNotFoundException {
+        component.disconnect();
+        save(component);
+    }
+
+    private void componentRemoved(ICaustkComponent component) {
+
+    }
 }
