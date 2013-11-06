@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IRack;
@@ -74,6 +76,8 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public class Library implements ICaustkComponent {
 
+    private static final String MANIFEST = "manifest";
+
     private static final String LIBRARIES = "Libraries";
 
     private transient ICaustkFactory factory;
@@ -86,27 +90,22 @@ public class Library implements ICaustkComponent {
     private ComponentInfo info;
 
     @Tag(1)
+    private Map<ComponentType, ComponentInfo> map = new HashMap<ComponentType, ComponentInfo>();
+
     private Collection<LiveSet> liveSets = new ArrayList<LiveSet>();
 
-    @Tag(2)
     private Collection<RackSet> rackSets = new ArrayList<RackSet>();
 
-    @Tag(20)
     private Collection<Machine> machines = new ArrayList<Machine>();
 
-    @Tag(21)
     private Collection<Patch> patches = new ArrayList<Patch>();
 
-    @Tag(22)
     private Collection<Effect> effects = new ArrayList<Effect>();
 
-    @Tag(23)
     private Collection<Phrase> phrases = new ArrayList<Phrase>();
 
-    @Tag(24)
     private Collection<MasterMixer> mixers = new ArrayList<MasterMixer>();
 
-    @Tag(25)
     private Collection<MasterSequencer> sequencers = new ArrayList<MasterSequencer>();
 
     //--------------------------------------------------------------------------
@@ -153,6 +152,15 @@ public class Library implements ICaustkComponent {
      */
     public final File getDirectory() {
         return new File(getLibrariesDirectory(), getName());
+    }
+
+    /**
+     * Returns the
+     * <code>/storageRoot/AppName/Libraries/[library_name]/manifest.clb</code>
+     * file.
+     */
+    public final File getManifestFile() {
+        return new File(getDirectory(), MANIFEST + "." + ComponentType.Library.getExtension());
     }
 
     //--------------------------------------------------------------------------
@@ -296,6 +304,7 @@ public class Library implements ICaustkComponent {
     public void save() throws IOException {
         if (!exists())
             getDirectory().mkdirs();
+        factory.save(this, getLibrariesDirectory());
     }
 
     private Collection<? extends ICaustkComponent> getCollection(ICaustkComponent component) {

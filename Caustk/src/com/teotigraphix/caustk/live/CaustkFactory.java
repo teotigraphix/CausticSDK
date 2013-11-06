@@ -349,8 +349,13 @@ public class CaustkFactory implements ICaustkFactory {
     @Override
     public final File resolveLocation(ICaustkComponent component, File rootDirectory) {
         ComponentInfo info = component.getInfo();
-        String name = info.getType().name();
 
+        if (info.getType() == ComponentType.Library) {
+            Library library = (Library)component;
+            return library.getManifestFile();
+        }
+
+        String name = info.getType().name();
         final StringBuilder sb = new StringBuilder();
 
         // add the ComponentType sub directory
