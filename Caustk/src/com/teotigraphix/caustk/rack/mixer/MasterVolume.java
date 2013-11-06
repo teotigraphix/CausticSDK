@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 /**
@@ -61,12 +62,16 @@ public class MasterVolume extends RackMasterComponent {
         //        fireChange(MasterMixerChangeKind.Volume, volume);
     }
 
+    @Override
+    CausticMessage getBypassMessage() {
+        return MasterMixerMessage.VOLUME_BYPASS;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public MasterVolume() {
-        bypassMessage = MasterMixerMessage.VOLUME_BYPASS;
     }
 
     //--------------------------------------------------------------------------

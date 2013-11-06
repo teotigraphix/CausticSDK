@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterReverb extends RackMasterComponent {
@@ -273,12 +274,16 @@ public class MasterReverb extends RackMasterComponent {
         MasterMixerMessage.REVERB_WET.send(getRack(), value);
     }
 
+    @Override
+    CausticMessage getBypassMessage() {
+        return MasterMixerMessage.REVERB_BYPASS;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public MasterReverb() {
-        bypassMessage = MasterMixerMessage.REVERB_BYPASS;
     }
 
     //--------------------------------------------------------------------------

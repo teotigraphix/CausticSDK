@@ -39,7 +39,9 @@ public class RackMasterComponent implements IRackSerializer {
 
     private transient IRack rack;
 
-    protected transient CausticMessage bypassMessage;
+    CausticMessage getBypassMessage() {
+        return null;
+    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -84,14 +86,14 @@ public class RackMasterComponent implements IRackSerializer {
     }
 
     boolean isBypass(boolean restore) {
-        return bypassMessage.query(getRack()) == 1 ? true : false;
+        return getBypassMessage().query(getRack()) == 1 ? true : false;
     }
 
     public void setBypass(boolean value) {
         if (bypass == value)
             return;
         bypass = value;
-        bypassMessage.send(getRack(), value ? 1 : 0);
+        getBypassMessage().send(getRack(), value ? 1 : 0);
     }
 
     //--------------------------------------------------------------------------
@@ -118,7 +120,7 @@ public class RackMasterComponent implements IRackSerializer {
     @Override
     public void update(ICaustkApplicationContext context) {
         rack = context.getRack();
-        bypassMessage.send(getRack(), bypass ? 1 : 0);
+        getBypassMessage().send(getRack(), bypass ? 1 : 0);
     }
 
     @Override

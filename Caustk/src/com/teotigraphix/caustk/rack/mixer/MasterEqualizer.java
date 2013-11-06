@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 /**
@@ -156,12 +157,16 @@ public class MasterEqualizer extends RackMasterComponent {
         MasterMixerMessage.EQ_HIGH.send(getRack(), value);
     }
 
+    @Override
+    CausticMessage getBypassMessage() {
+        return MasterMixerMessage.EQ_BYPASS;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public MasterEqualizer() {
-        bypassMessage = MasterMixerMessage.EQ_BYPASS;
     }
 
     //--------------------------------------------------------------------------

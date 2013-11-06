@@ -27,7 +27,6 @@ import java.util.Collection;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IRack;
-import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /*
@@ -197,7 +196,7 @@ public class Library implements ICaustkComponent {
     public boolean add(LiveSet liveSet) throws IOException {
         //        if (liveSets.contains(liveSet))
         //            return false;
-        LiveSet copy = KryoUtils.copy(liveSet);
+        LiveSet copy = factory.copy(liveSet);
         liveSets.add(copy);
         componentAdded(copy);
         return true;
@@ -206,7 +205,7 @@ public class Library implements ICaustkComponent {
     public boolean add(RackSet rackSet) throws IOException {
         //        if (rackSets.contains(rackSet))
         //            return false;
-        RackSet copy = KryoUtils.copy(rackSet);
+        RackSet copy = factory.copy(rackSet);
         rackSets.add(copy);
         componentAdded(copy);
         return true;
@@ -215,7 +214,7 @@ public class Library implements ICaustkComponent {
     public boolean add(Machine machine) throws IOException {
         //        if (machines.contains(machine))
         //            return false;
-        Machine copy = KryoUtils.copy(machine);
+        Machine copy = factory.copy(machine);
         machines.add(copy);
         componentAdded(copy);
         return true;
@@ -232,7 +231,7 @@ public class Library implements ICaustkComponent {
     public boolean add(Effect effect) throws IOException {
         //        if (effects.contains(effect))
         //            return false;
-        Effect copy = KryoUtils.copy(effect);
+        Effect copy = factory.copy(effect);
         effects.add(copy);
         componentAdded(copy);
         return true;
@@ -241,7 +240,7 @@ public class Library implements ICaustkComponent {
     public boolean add(Patch patch) throws IOException {
         //        if (patches.contains(patch))
         //            return false;
-        Patch copy = KryoUtils.copy(patch);
+        Patch copy = factory.copy(patch);
         patches.add(copy);
         componentAdded(copy);
         return true;
@@ -250,7 +249,7 @@ public class Library implements ICaustkComponent {
     public boolean add(Phrase phrase) throws IOException {
         //        if (phrases.contains(phrase))
         //            return false;
-        Phrase copy = KryoUtils.copy(phrase);
+        Phrase copy = factory.copy(phrase);
         phrases.add(copy);
         componentAdded(copy);
         return true;

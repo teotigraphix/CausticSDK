@@ -4,6 +4,7 @@ package com.teotigraphix.caustk.live;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
@@ -147,5 +148,9 @@ public interface ICaustkFactory {
      * @throws FileNotFoundException
      */
     File save(ICaustkComponent component, File rootDirectory) throws FileNotFoundException;
+
+    <T> T copy(T instance);
+
+    Kryo getKryo();
 
 }

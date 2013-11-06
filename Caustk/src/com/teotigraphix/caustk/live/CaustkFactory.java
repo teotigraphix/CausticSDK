@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.core.CaustkApplicationContext;
@@ -51,6 +52,13 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
     // Factories
     //----------------------------------
+
+    private Kryo kryo;
+
+    @Override
+    public Kryo getKryo() {
+        return kryo;
+    }
 
     private ComponentInfoFactory infoFactory;
 
@@ -99,6 +107,7 @@ public class CaustkFactory implements ICaustkFactory {
 
     public CaustkFactory(ICaustkApplication application) {
         this.application = application;
+        this.kryo = KryoUtils.createKryo(this);
         createFactories();
     }
 
@@ -381,9 +390,14 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
+    public <T> T copy(T instance) {
+        return kryo.copy(instance);
+    }
+
+    @Override
     public <T extends ICaustkComponent> T load(File componentFile, Class<T> clazz)
             throws FileNotFoundException {
-        T component = KryoUtils.readFileObject(KryoUtils.getKryo(), componentFile, clazz);
+        T component = KryoUtils.readFileObject(kryo, componentFile, clazz);
         component.onLoad();
         return component;
     }
@@ -395,10 +409,10 @@ public class CaustkFactory implements ICaustkFactory {
 
         // presave callback from components
         // XXX should this be IFactorySaveListener ???
-        component.onSave();
+        //        component.onSave();
 
         File location = resolveLocation(component, rootDirectory);
-        KryoUtils.writeFileObject(KryoUtils.getKryo(), location, component);
+        KryoUtils.writeFileObject(kryo, location, component);
         return location;
     }
 }

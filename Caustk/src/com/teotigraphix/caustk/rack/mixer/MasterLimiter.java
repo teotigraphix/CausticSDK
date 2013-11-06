@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterLimiter extends RackMasterComponent {
@@ -129,12 +130,16 @@ public class MasterLimiter extends RackMasterComponent {
         MasterMixerMessage.LIMITER_POST.send(getRack(), value);
     }
 
+    @Override
+    CausticMessage getBypassMessage() {
+        return MasterMixerMessage.LIMITER_BYPASS;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public MasterLimiter() {
-        bypassMessage = MasterMixerMessage.LIMITER_BYPASS;
     }
 
     //--------------------------------------------------------------------------

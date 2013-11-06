@@ -30,26 +30,22 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
+import com.teotigraphix.caustk.live.CaustkFactory;
 import com.teotigraphix.caustk.live.ICaustkComponent;
+import com.teotigraphix.caustk.live.ICaustkFactory;
+import com.teotigraphix.caustk.rack.Rack;
 
 /**
  * @author Michael Schmalle
  */
 public class KryoUtils {
 
-    private static Kryo kryo;
+    // XXX Hack will be fixed sooner than later
+    private static ICaustkFactory factory;
 
-    public static Kryo getKryo() {
-        if (kryo == null)
-            kryo = createKryo();
-        return kryo;
-    }
+    public static Kryo createKryo(ICaustkFactory factory) {
+        KryoUtils.factory = factory;
 
-    public static <T> T copy(T instance) {
-        return getKryo().copy(instance);
-    }
-
-    public static Kryo createKryo() {
         Kryo kryo = new Kryo();
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);
         //kryo.setRegistrationRequired(true);
@@ -58,6 +54,8 @@ public class KryoUtils {
         //        kryo.register(stateType);
         kryo.register(UUID.class, new UUIDSerializer());
         kryo.register(File.class, new FileSerializer());
+        kryo.register(CaustkFactory.class, new CaustkFactorySerializer());
+        kryo.register(Rack.class, new RackSerializer());
         //        kryo.register(Class.class);
         //        kryo.register(ISystemSequencer.SequencerMode.class);
         //
@@ -127,6 +125,38 @@ public class KryoUtils {
         output.close();
     }
 
+    public static class CaustkFactorySerializer extends Serializer<CaustkFactory> {
+        @Override
+        public CaustkFactory read(Kryo arg0, Input arg1, Class<CaustkFactory> arg2) {
+            return null;
+        }
+
+        @Override
+        public void write(Kryo arg0, Output arg1, CaustkFactory arg2) {
+        }
+
+        @Override
+        public CaustkFactory copy(Kryo arg0, CaustkFactory arg1) {
+            return (CaustkFactory)factory;
+        }
+    }
+
+    public static class RackSerializer extends Serializer<Rack> {
+        @Override
+        public Rack read(Kryo arg0, Input arg1, Class<Rack> arg2) {
+            return null;
+        }
+
+        @Override
+        public void write(Kryo arg0, Output arg1, Rack arg2) {
+        }
+
+        @Override
+        public Rack copy(Kryo arg0, Rack arg1) {
+            return (Rack)factory.getRack();
+        }
+    }
+
     public static class UUIDSerializer extends Serializer<UUID> {
         public UUIDSerializer() {
             setImmutable(true);
@@ -157,7 +187,8 @@ public class KryoUtils {
 
         @Override
         public File copy(Kryo kryo, File file) {
-            return new File(file.getAbsolutePath());
+            return new File(file.getPath());
         }
     }
+
 }

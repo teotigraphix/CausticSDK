@@ -28,7 +28,6 @@ import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.ICaustkApplicationProvider;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.utils.KryoUtils;
 import com.teotigraphix.libgdx.application.ApplicationRegistry;
 import com.teotigraphix.libgdx.application.IApplicationRegistry;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
@@ -278,7 +277,8 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
     @Override
     public void save() {
         try {
-            ApplicationModelUtils.saveApplicationState(this, KryoUtils.getKryo());
+            ApplicationModelUtils
+                    .saveApplicationState(this, getController().getFactory().getKryo());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -309,7 +309,8 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
         setState(state);
 
         try {
-            ApplicationModelUtils.saveApplicationState(this, KryoUtils.getKryo());
+            ApplicationModelUtils
+                    .saveApplicationState(this, getController().getFactory().getKryo());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -321,7 +322,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
         try {
             ApplicationModelState state = ApplicationModelUtils.loadApplicationState(this,
-                    KryoUtils.getKryo());
+                    getController().getFactory().getKryo());
 
             state.setController(getController());
             state.update();

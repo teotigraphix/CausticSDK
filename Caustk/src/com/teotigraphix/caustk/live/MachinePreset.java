@@ -343,6 +343,11 @@ public class MachinePreset implements IRackSerializer {
     }
 
     public void onSave() {
+        // XXX during an add to library, the machin is null
+        // so the preset bytes need to be refreshed before adding and before
+        // the patch's machine gets dereferenced
+        if (patch.getMachine() == null)
+            return;
         // we are getting saved from the outside, so refresh the bytes preset data
         // so the most current state snapshot of our Patch gets saved
         populatePresetBytes();

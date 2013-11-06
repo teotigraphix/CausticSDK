@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
 public class MasterDelay extends RackMasterComponent {
@@ -247,12 +248,16 @@ public class MasterDelay extends RackMasterComponent {
         MasterMixerMessage.DELAY_PAN.send(getRack(), step, value);
     }
 
+    @Override
+    CausticMessage getBypassMessage() {
+        return MasterMixerMessage.DELAY_BYPASS;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public MasterDelay() {
-        bypassMessage = MasterMixerMessage.DELAY_BYPASS;
     }
 
     //--------------------------------------------------------------------------
