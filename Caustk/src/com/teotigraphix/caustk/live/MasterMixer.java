@@ -118,13 +118,13 @@ public class MasterMixer implements IRackSerializer {
 
     @Override
     public void load(ICaustkApplicationContext context) throws CausticException {
+        create(context); // safe to call create() here since we are just creating instances
+
         equalizer.load(context);
         limiter.load(context);
         delay.load(context);
         reverb.load(context);
         volume.load(context);
-
-        restore();
     }
 
     @Override

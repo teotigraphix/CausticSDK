@@ -172,7 +172,7 @@ public class MachinePreset implements IRackSerializer {
         if (getPatch().getMachine() == null)
             return;
 
-        populatePresetBytes();
+        //populatePresetBytes();
     }
 
     @Override

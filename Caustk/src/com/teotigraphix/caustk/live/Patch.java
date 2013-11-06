@@ -75,9 +75,9 @@ public class Patch implements ICaustkComponent, IRackSerializer {
 
     @Override
     public String getDefaultName() {
-        String name = machineType.getType() + ":TODO";
+        String name = machineType.getType() + "_" + getMachine().getMachineName();
         if (machinePreset.getName() != null) {
-            name = machinePreset.getName();
+            name = machineType.getType() + "_" + machinePreset.getName();
             try {
                 // XXX temp until it's figured out in MachinePreset
                 UUID.fromString(name.replace(ComponentType.Patch.getExtension(), ""));

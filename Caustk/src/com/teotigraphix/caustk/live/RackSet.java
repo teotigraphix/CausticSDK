@@ -414,11 +414,13 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         // load the song raw, don not create tones
         RackMessage.LOAD_SONG.send(rack, causticFile.getAbsolutePath());
 
-        create(context);
+        //        create(context);
 
         try {
             // create the scene sub components
             // createComponents(context);
+            masterMixer = factory.createMasterMixer(this);
+            masterSequencer = factory.createMasterSequencer(this);
             // load the current song rack state into the sub components
             loadComponents(context);
         } catch (IOException e) {
