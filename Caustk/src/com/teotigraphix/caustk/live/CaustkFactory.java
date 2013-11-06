@@ -422,6 +422,8 @@ public class CaustkFactory implements ICaustkFactory {
     @Override
     public <T extends ICaustkComponent> T load(File componentFile, Class<T> clazz)
             throws FileNotFoundException {
+        if (!componentFile.exists())
+            throw new FileNotFoundException("Component file note found: " + componentFile);
         T component = KryoUtils.readFileObject(kryo, componentFile, clazz);
         if (component instanceof IRackSerializer)
             ((IRackSerializer)component).onLoad();

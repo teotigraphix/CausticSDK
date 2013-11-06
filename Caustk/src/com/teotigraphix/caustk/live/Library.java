@@ -27,6 +27,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.IRack;
@@ -93,6 +96,19 @@ public class Library implements ICaustkComponent {
     }
 
     private transient Map<ComponentType, List<? extends ICaustkComponent>> components = new HashMap<ComponentType, List<? extends ICaustkComponent>>();
+
+    private boolean invalidated = false;
+
+    public boolean isInvalidated() {
+        return invalidated;
+    }
+
+    public void validate() throws IOException {
+        if (invalidated) {
+            save();
+        }
+        invalidated = false;
+    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -196,6 +212,18 @@ public class Library implements ICaustkComponent {
         return collection.contains(component);
     }
 
+    /**
+     * Adds a component to the library.
+     * <p>
+     * Will save the associated component serialized to disk.
+     * <p>
+     * The component passed will be deep copied and references to parents
+     * unlinked using the {@link ICaustkComponent#disconnect()} method.
+     * 
+     * @param component The component to add and serialize to the library on
+     *            disk.
+     * @throws IOException
+     */
     public void add(ICaustkComponent component) throws IOException {
         ArrayList<ICaustkComponent> collection = getRawCollection(component);
         if (collection == null) {
@@ -207,12 +235,43 @@ public class Library implements ICaustkComponent {
         componentAdded(copy);
     }
 
-    public boolean remove(ICaustkComponent component) {
-        boolean changed = getCollection(component).remove(component);
-        if (!changed)
+    /**
+     * Remove a component from the library by {@link UUID}.
+     * <p>
+     * The {@link Library} holds copies(templates) of components and at no time
+     * is a component that is found in the app, contained in the library. When a
+     * component is added to the library it's copied into it.
+     * <p>
+     * Will delete the associated serialized file on disk corresponding to the
+     * component.
+     * 
+     * @param component The component whose {@link ComponentInfo#getId()} is
+     *            used to remove the "Same" component ref from the library.
+     * @return Whether the operation was successful
+     * @throws IOException
+     */
+    public boolean remove(ICaustkComponent component) throws IOException {
+        // have to remove by UUID
+        ICaustkComponent found = findById(component);
+        if (found == null)
             return false;
-        componentRemoved(component);
+
+        if (!getCollection(component).remove(found))
+            throw new IllegalStateException("Failed to remove component");
+
+        componentRemoved(found);
         return true;
+    }
+
+    private ICaustkComponent findById(ICaustkComponent component) {
+        List<? extends ICaustkComponent> collection = getCollection(component);
+        if (collection == null)
+            return null;
+        for (ICaustkComponent search : collection) {
+            if (search.getInfo().getId().equals(component.getInfo().getId()))
+                return search;
+        }
+        return null;
     }
 
     /**
@@ -226,13 +285,21 @@ public class Library implements ICaustkComponent {
      *         successful.
      * @throws FileNotFoundException
      */
-    public File save(ICaustkComponent component) throws FileNotFoundException {
+    File writeToDisk(ICaustkComponent component) throws FileNotFoundException {
         // component must exist in Library
         if (!contains(component))
             throw new FileNotFoundException("Library does not contian component; " + component);
 
         File location = factory.save(component, getDirectory());
         return location;
+    }
+
+    File deleteFromDisk(ICaustkComponent component) throws FileNotFoundException {
+        File file = resolveLocation(component);
+        FileUtils.deleteQuietly(file);
+        if (file.exists())
+            throw new IllegalStateException("File not deleted:" + file);
+        return file;
     }
 
     public File resolveLocation(ICaustkComponent component) {
@@ -268,6 +335,7 @@ public class Library implements ICaustkComponent {
     }
 
     private void componentAdded(ICaustkComponent component) throws FileNotFoundException {
+        invalidated = true;
         ComponentInfo info = component.getInfo();
         String path = factory.resolvePath(component);
         info.setPath(path);
@@ -280,11 +348,12 @@ public class Library implements ICaustkComponent {
         }
         list.add(info);
         component.disconnect();
-        save(component);
+        writeToDisk(component);
     }
 
-    private void componentRemoved(ICaustkComponent component) {
-
+    private void componentRemoved(ICaustkComponent component) throws FileNotFoundException {
+        invalidated = true;
+        deleteFromDisk(component);
     }
 
     /**
