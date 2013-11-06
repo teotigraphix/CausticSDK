@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.VolumeComponent;
 import com.teotigraphix.caustk.rack.tone.components.organ.LeslieComponent;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * The tone impl for the native Organ machine.

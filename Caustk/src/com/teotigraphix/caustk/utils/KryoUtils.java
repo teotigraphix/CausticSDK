@@ -30,10 +30,10 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
-import com.teotigraphix.caustk.live.CaustkFactory;
-import com.teotigraphix.caustk.live.ICaustkComponent;
-import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.workstation.CaustkFactory;
+import com.teotigraphix.caustk.workstation.ICaustkComponent;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 
 /**
  * @author Michael Schmalle

@@ -27,12 +27,12 @@ import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
 import com.teotigraphix.caustk.rack.tone.ModularTone;
 import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 public class SynthComponent extends RackToneComponent {
 

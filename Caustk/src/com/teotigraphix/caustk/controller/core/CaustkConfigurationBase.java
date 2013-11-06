@@ -27,14 +27,14 @@ import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.command.CommandManager;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
-import com.teotigraphix.caustk.live.CaustkFactory;
-import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.ProjectManager;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
 import com.teotigraphix.caustk.service.ISerializeService;
 import com.teotigraphix.caustk.service.serialize.SerializeService;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.workstation.CaustkFactory;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 
 /**
  * Used in unit tests of the toolkit framework. Need the

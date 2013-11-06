@@ -24,11 +24,11 @@ import java.io.File;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.controller.core.CaustkController;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.live.CaustkFactory;
-import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
 import com.teotigraphix.caustk.service.ISerializeService;
+import com.teotigraphix.caustk.workstation.CaustkFactory;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 
 /**
  * @author Michael Schmalle

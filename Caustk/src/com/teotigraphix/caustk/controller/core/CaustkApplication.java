@@ -27,9 +27,9 @@ import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISoundGenerator;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 
 /**
  * @author Michael Schmalle

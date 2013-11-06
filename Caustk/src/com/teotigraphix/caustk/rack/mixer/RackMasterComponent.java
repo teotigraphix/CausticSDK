@@ -24,9 +24,9 @@ import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
-import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * @author Michael Schmalle

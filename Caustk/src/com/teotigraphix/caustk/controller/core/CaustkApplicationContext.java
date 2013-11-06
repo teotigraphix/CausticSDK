@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.controller.core;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
-import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 
 /**
  * @author Michael Schmalle

@@ -27,12 +27,12 @@ import com.teotigraphix.caustk.controller.command.ICommandHistory;
 import com.teotigraphix.caustk.controller.command.ICommandManager;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
-import com.teotigraphix.caustk.live.ICaustkFactory;
-import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.project.IProjectManager;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.service.ISerializeService;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * The {@link ICaustkController} manages the high level components of the

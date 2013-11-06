@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.padsynth.HarmonicsComponent;
@@ -27,6 +26,7 @@ import com.teotigraphix.caustk.rack.tone.components.padsynth.LFO1Component;
 import com.teotigraphix.caustk.rack.tone.components.padsynth.LFO2Component;
 import com.teotigraphix.caustk.rack.tone.components.padsynth.MorphComponent;
 import com.teotigraphix.caustk.rack.tone.components.padsynth.VolumeComponent;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * The tone impl for the native PadSynth machine.

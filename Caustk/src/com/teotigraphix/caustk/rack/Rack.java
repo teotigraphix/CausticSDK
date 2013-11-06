@@ -31,8 +31,8 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * The {@link Rack} is a fully serializable state instance.

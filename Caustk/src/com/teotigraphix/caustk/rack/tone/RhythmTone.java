@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * @author Michael Schmalle

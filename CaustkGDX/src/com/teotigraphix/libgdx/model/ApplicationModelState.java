@@ -24,12 +24,12 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.live.ComponentInfo;
-import com.teotigraphix.caustk.live.ComponentType;
-import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.project.Project;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.workstation.ComponentInfo;
+import com.teotigraphix.caustk.workstation.ComponentType;
+import com.teotigraphix.caustk.workstation.RackSet;
 import com.teotigraphix.libgdx.application.CausticSongFile;
 
 /**

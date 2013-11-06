@@ -28,9 +28,9 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkConfiguration;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkApplication;
-import com.teotigraphix.caustk.live.ICaustkFactory;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 
 /**
  * The {@link CaustkApplicationActivity} adds the {@link ICaustkController}

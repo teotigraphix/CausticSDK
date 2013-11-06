@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.rack.tone;
 
 import com.teotigraphix.caustk.core.osc.ModularMessage;
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.modular.AREnvelope;
@@ -49,6 +48,7 @@ import com.teotigraphix.caustk.rack.tone.components.modular.StereoLPF;
 import com.teotigraphix.caustk.rack.tone.components.modular.SubOscillator;
 import com.teotigraphix.caustk.rack.tone.components.modular.ThreeInputMixer;
 import com.teotigraphix.caustk.rack.tone.components.modular.TwoInputMixer;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * The tone impl for the native Modular machine.

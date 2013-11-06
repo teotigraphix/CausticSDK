@@ -28,14 +28,14 @@ import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.live.ComponentInfo;
-import com.teotigraphix.caustk.live.ICaustkComponent;
-import com.teotigraphix.caustk.live.Machine;
-import com.teotigraphix.caustk.live.MachineMixer;
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
+import com.teotigraphix.caustk.workstation.ComponentInfo;
+import com.teotigraphix.caustk.workstation.ICaustkComponent;
+import com.teotigraphix.caustk.workstation.Machine;
+import com.teotigraphix.caustk.workstation.MachineMixer;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * The base class for all tone's that wrap a native Caustic machine.

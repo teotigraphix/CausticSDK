@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
@@ -28,6 +27,7 @@ import com.teotigraphix.caustk.rack.tone.components.subsynth.LFO1Component;
 import com.teotigraphix.caustk.rack.tone.components.subsynth.LFO2Component;
 import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc1Component;
 import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc2Component;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * The tone impl for the native SubSynth machine.

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.rack.tone;
 
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
@@ -27,6 +26,7 @@ import com.teotigraphix.caustk.rack.tone.components.VolumeEnvelopeComponent;
 import com.teotigraphix.caustk.rack.tone.components.pcmsynth.LFO1Component;
 import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMTunerComponent;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * The tone impl for the native PCMSynth machine.

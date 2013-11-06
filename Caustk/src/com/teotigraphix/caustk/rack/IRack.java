@@ -30,13 +30,13 @@ import com.teotigraphix.caustk.controller.core.CaustkApplication;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
-import com.teotigraphix.caustk.live.ICaustkFactory;
-import com.teotigraphix.caustk.live.Library;
-import com.teotigraphix.caustk.live.Machine;
-import com.teotigraphix.caustk.live.Phrase;
-import com.teotigraphix.caustk.live.Phrase.OnPhraseChange;
-import com.teotigraphix.caustk.live.RackSet;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
+import com.teotigraphix.caustk.workstation.Library;
+import com.teotigraphix.caustk.workstation.Machine;
+import com.teotigraphix.caustk.workstation.Phrase;
+import com.teotigraphix.caustk.workstation.RackSet;
+import com.teotigraphix.caustk.workstation.Phrase.OnPhraseChange;
 
 /**
  * The {@link IRack} API acts as the singleton instance that can load and save

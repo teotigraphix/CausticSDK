@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.rack.tone;
 
 import java.util.UUID;
 
-import com.teotigraphix.caustk.live.MachineType;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * Each application must define the {@link RackTone} instances that will get
