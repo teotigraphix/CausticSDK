@@ -123,7 +123,11 @@ public class Rack implements IRack {
 
     private void rackSetChanged(RackSet newSet, RackSet oldSet) {
         if (oldSet != null) {
-            oldSet.dispose();
+            try {
+                oldSet.dispose();
+            } catch (CausticException e) {
+                e.printStackTrace();
+            }
         }
         // when a rackSet is assigned, the Rack does not care or want to care
         // how the rackSet was loaded, unserialized etc., it will just call update()

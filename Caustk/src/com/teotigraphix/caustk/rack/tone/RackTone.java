@@ -236,6 +236,12 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
     @Override
     public final void update(ICaustkApplicationContext context) {
         rack = context.getRack();
+        // look and see if this Tone exists on the rack before updating tone components
+        String name = RackMessage.QUERY_MACHINE_NAME.queryString(rack, machineIndex);
+        if (name == null) {
+            // since we are updating and this tone dosn't exist, create it native
+            RackMessage.CREATE.send(rack, machineType.getType(), machineName, machineIndex);
+        }
         updateComponents(context);
     }
 
@@ -273,6 +279,7 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
     }
 
     protected void updateComponents(ICaustkApplicationContext context) {
+        // XXX this is wrong, what if the machine is not created yet?
         RackMessage.MACHINE_NAME.send(getEngine(), machineIndex, machineName);
         for (RackToneComponent component : components.values()) {
             component.update(context);

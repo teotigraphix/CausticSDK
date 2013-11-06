@@ -222,14 +222,14 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public void addMachine(int index, Machine caustkMachine) {
+    public void addMachine(int index, Machine machine) {
         // XXX This is going to be complex but just try adding to empty
         // if the index is right, should be able to call update()
         // and have the majic happen
-        caustkMachine.setMachineIndex(index);
-        machines.put(index, caustkMachine);
-        caustkMachine.update(factory.createContext());
-        masterSequencer.updateMachine(caustkMachine);
+        machine.setMachineIndex(index);
+        machines.put(index, machine);
+        machine.update(factory.createContext());
+        masterSequencer.updateMachine(machine);
     }
 
     public boolean removeMachine(Machine caustkMachine) {
@@ -489,6 +489,9 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         machine.load(context);
     }
 
-    public void dispose() {
+    public void dispose() throws CausticException {
+        rack.clearRack();
+        rack = null;
+        factory = null;
     }
 }

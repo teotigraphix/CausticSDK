@@ -298,7 +298,13 @@ public class MachinePreset implements IRackSerializer {
         // append the original prest name if it had one
         if (name != null && !name.equals("")) {
             name = name.replace(" ", "_");
-            result = name + "-" + result;
+            // so a default name that was uuid is not doubled
+            // this needs more thought
+            try {
+                UUID.fromString(name);
+            } catch (IllegalArgumentException e) {
+                result = name + "-" + result;
+            }
         }
         // add the correct extension for ToneType
         if (addExtension)
@@ -339,9 +345,11 @@ public class MachinePreset implements IRackSerializer {
         return file.getPatch().getMachineType().getExtension();
     }
 
+    @Override
     public void onLoad() {
     }
 
+    @Override
     public void onSave() {
         // XXX during an add to library, the machin is null
         // so the preset bytes need to be refreshed before adding and before

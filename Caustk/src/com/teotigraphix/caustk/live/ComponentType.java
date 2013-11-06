@@ -99,9 +99,9 @@ public enum ComponentType {
      */
     MasterSequencer("csq");
 
-    private String extension;
+    private final String extension;
 
-    public String getExtension() {
+    public final String getExtension() {
         return extension;
     }
 

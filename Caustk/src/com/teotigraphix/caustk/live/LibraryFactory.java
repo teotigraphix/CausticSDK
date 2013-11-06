@@ -38,6 +38,7 @@ public class LibraryFactory extends CaustkSubFactoryBase {
     public Library loadLibrary(String name) throws IOException {
         Library library = createLibrary(name);
         library = getFactory().load(library.getManifestFile(), Library.class);
+        library.setFactory(getFactory());
         return library;
     }
 

@@ -83,6 +83,15 @@ public class Library implements ICaustkComponent {
 
     private transient ICaustkFactory factory;
 
+    /**
+     * used with {@link ICaustkFactory#loadLibrary(String)}.
+     * 
+     * @param factory
+     */
+    void setFactory(ICaustkFactory factory) {
+        this.factory = factory;
+    }
+
     private transient Map<ComponentType, List<? extends ICaustkComponent>> components = new HashMap<ComponentType, List<? extends ICaustkComponent>>();
 
     //--------------------------------------------------------------------------
@@ -297,6 +306,27 @@ public class Library implements ICaustkComponent {
         if (path == null)
             throw new IllegalStateException("path must not be null");
         return new File(getDirectory(), path);
+    }
+
+    public List<ComponentInfo> findAll(ComponentType type) {
+        List<ComponentInfo> result = new ArrayList<ComponentInfo>();
+        List<ComponentInfo> list = map.get(type);
+        for (ComponentInfo info : list) {
+            if (!filter(info))
+                result.add(info);
+        }
+        return result;
+    }
+
+    public <T extends ICaustkComponent> T newInstance(ComponentInfo info, Class<T> clazz)
+            throws IOException {
+        File location = resolveLocation(info);
+        T component = factory.load(location, clazz);
+        return component;
+    }
+
+    private boolean filter(ComponentInfo info) {
+        return false;
     }
 
 }

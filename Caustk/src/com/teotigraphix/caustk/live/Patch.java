@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.live;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
@@ -75,8 +76,15 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     @Override
     public String getDefaultName() {
         String name = machineType.getType() + ":TODO";
-        if (machinePreset.getName() != null)
+        if (machinePreset.getName() != null) {
             name = machinePreset.getName();
+            try {
+                // XXX temp until it's figured out in MachinePreset
+                UUID.fromString(name.replace(ComponentType.Patch.getExtension(), ""));
+                name = getMachineType().getType() + "_" + getMachine().getMachineName();
+            } catch (IllegalArgumentException e) {
+            }
+        }
         return name;
     }
 
