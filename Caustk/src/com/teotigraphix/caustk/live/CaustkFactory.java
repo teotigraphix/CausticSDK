@@ -27,6 +27,7 @@ import java.util.UUID;
 import com.esotericsoftware.kryo.Kryo;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.controller.core.CaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IRack;
@@ -403,7 +404,8 @@ public class CaustkFactory implements ICaustkFactory {
     public <T extends ICaustkComponent> T load(File componentFile, Class<T> clazz)
             throws FileNotFoundException {
         T component = KryoUtils.readFileObject(kryo, componentFile, clazz);
-        component.onLoad();
+        if (component instanceof IRackSerializer)
+            ((IRackSerializer)component).onLoad();
         return component;
     }
 

@@ -129,6 +129,18 @@ public class RackMasterComponent implements IRackSerializer {
     }
 
     @Override
+    public void onSave() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onLoad() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     public void disconnect() {
     }
 

@@ -94,6 +94,14 @@ public abstract class RackToneComponent implements IRackSerializer {
     }
 
     @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
+    }
+
+    @Override
     public void disconnect() {
     }
 

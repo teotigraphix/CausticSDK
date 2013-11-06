@@ -246,14 +246,6 @@ public class Library implements ICaustkComponent {
     }
 
     @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onSave() {
-    }
-
-    @Override
     public void disconnect() {
     }
 

@@ -24,12 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 
 /**
  * @author Michael Schmalle
  */
-public class LiveSet implements ICaustkComponent {
+public class LiveSet implements ICaustkComponent, IRackSerializer {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -85,28 +87,9 @@ public class LiveSet implements ICaustkComponent {
         this.info = info;
     }
 
-    @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onSave() {
-    }
-
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
-
-    public void create() {
-        sessionSequencer = new SessionSequencer(this);
-        arrangementSequencer = new ArrangementSequencer(this);
-
-        listeners.add(sessionSequencer);
-        listeners.add(arrangementSequencer);
-
-        sessionSequencer.create();
-        arrangementSequencer.create();
-    }
 
     public AudioTrack addTrack(int index, MachineType machineType, String machineName,
             String displayName) throws CausticException {
@@ -161,4 +144,41 @@ public class LiveSet implements ICaustkComponent {
         void onTrackRemoved(AudioTrack track);
     }
 
+    @Override
+    public void create(ICaustkApplicationContext context) throws CausticException {
+        sessionSequencer = new SessionSequencer(this);
+        arrangementSequencer = new ArrangementSequencer(this);
+
+        listeners.add(sessionSequencer);
+        listeners.add(arrangementSequencer);
+
+        sessionSequencer.create();
+        arrangementSequencer.create();
+    }
+
+    @Override
+    public void load(ICaustkApplicationContext context) throws CausticException {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void update(ICaustkApplicationContext context) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void restore() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onLoad() {
+    }
+
+    @Override
+    public void onSave() {
+    }
 }

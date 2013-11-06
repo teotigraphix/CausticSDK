@@ -137,6 +137,18 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
+    public void onSave() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onLoad() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     public void disconnect() {
     }
 
@@ -318,11 +330,6 @@ public class MasterMixer implements IRackSerializer {
         public String toString() {
             return getValue();
         }
-    }
-
-    public void onSave() {
-        // TODO Auto-generated method stub
-
     }
 
 }

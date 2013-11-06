@@ -90,14 +90,6 @@ public class SequencerPattern implements ICaustkComponent {
     }
 
     @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onSave() {
-    }
-
-    @Override
     public String toString() {
         return "[CaustkSequencerPattern(" + machine.getMachineName() + ", " + startBeat + ":"
                 + PatternUtils.toString(bankIndex, patternIndex) + ":" + endBeat + ")]";

@@ -36,15 +36,5 @@ public interface ICaustkComponent {
      */
     String getDefaultName();
 
-    /**
-     * Post-load callback for components and sub components.
-     */
-    void onLoad();
-
-    /**
-     * Pre-save callback for components and their sub components.
-     */
-    void onSave();
-
     void disconnect();
 }

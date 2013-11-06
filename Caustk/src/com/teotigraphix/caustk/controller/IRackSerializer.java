@@ -77,5 +77,15 @@ public interface IRackSerializer extends IRestore {
     @Override
     void restore();
 
+    /**
+     * Post-load callback for components and sub components.
+     */
+    void onLoad();
+
+    /**
+     * Pre-save callback for components and their sub components.
+     */
+    void onSave();
+
     void disconnect();
 }
