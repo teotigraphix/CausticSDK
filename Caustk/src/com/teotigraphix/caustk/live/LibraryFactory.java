@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.live;
 
+import java.io.IOException;
+
 /**
  * @author Michael Schmalle
  */
@@ -31,6 +33,12 @@ public class LibraryFactory extends CaustkSubFactoryBase {
         ComponentInfo info = getFactory().createInfo(ComponentType.Library, name);
         Library caustkLibrary = new Library(info, getFactory());
         return caustkLibrary;
+    }
+
+    public Library loadLibrary(String name) throws IOException {
+        Library library = createLibrary(name);
+        library = getFactory().load(library.getManifestFile(), Library.class);
+        return library;
     }
 
 }

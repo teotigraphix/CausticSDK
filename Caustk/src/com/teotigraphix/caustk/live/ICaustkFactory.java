@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.live;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
@@ -17,6 +18,8 @@ import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
  * @author Michael Schmalle
  */
 public interface ICaustkFactory {
+
+    String resolvePath(ICaustkComponent component);
 
     /**
      * Returns the absolute location of the component in the library using the
@@ -85,6 +88,8 @@ public interface ICaustkFactory {
     IRack createRack();
 
     Library createLibrary(String name);
+
+    Library loadLibrary(String name) throws IOException;
 
     LiveSet createLiveSet(ComponentInfo info);
 

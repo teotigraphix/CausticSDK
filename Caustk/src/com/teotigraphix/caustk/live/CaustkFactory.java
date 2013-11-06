@@ -190,6 +190,11 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
+    public Library loadLibrary(String name) throws IOException {
+        return libraryFactory.loadLibrary(name);
+    }
+
+    @Override
     public LiveSet createLiveSet(ComponentInfo info) {
         return liveSetFactory.createLiveSet(info);
     }
@@ -348,12 +353,12 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public final File resolveLocation(ICaustkComponent component, File rootDirectory) {
+    public final String resolvePath(ICaustkComponent component) {
         ComponentInfo info = component.getInfo();
 
         if (info.getType() == ComponentType.Library) {
-            Library library = (Library)component;
-            return library.getManifestFile();
+            // Library library = (Library)component;
+            return null;// library.getManifestFile();
         }
 
         String name = info.getType().name();
@@ -370,6 +375,11 @@ public class CaustkFactory implements ICaustkFactory {
         } else if (info.getType() == ComponentType.RackSet) {
             // RackSet uses root
             // RackSet rackSet = (RackSet)component;
+        } else if (info.getType() == ComponentType.Machine) {
+            // Machine uses MachineType
+            Machine machine = (Machine)component;
+            sb.append(machine.getMachineType().name());
+            sb.append(File.separator);
         } else if (info.getType() == ComponentType.Patch) {
             // Patch uses MachineType
             Patch patch = (Patch)component;
@@ -392,7 +402,16 @@ public class CaustkFactory implements ICaustkFactory {
         else
             sb.append(component.getDefaultName());
 
-        return new File(rootDirectory, sb.toString());
+        return sb.toString();
+    }
+
+    @Override
+    public final File resolveLocation(ICaustkComponent component, File rootDirectory) {
+        if (component.getInfo().getType() == ComponentType.Library) {
+            Library library = (Library)component;
+            return library.getManifestFile();
+        }
+        return new File(rootDirectory, resolvePath(component));
     }
 
     @Override

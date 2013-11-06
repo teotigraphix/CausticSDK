@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
@@ -82,7 +83,7 @@ public class Library implements ICaustkComponent {
 
     private transient ICaustkFactory factory;
 
-    private transient Map<ComponentType, ArrayList<? extends ICaustkComponent>> components = new HashMap<ComponentType, ArrayList<? extends ICaustkComponent>>();
+    private transient Map<ComponentType, List<? extends ICaustkComponent>> components = new HashMap<ComponentType, List<? extends ICaustkComponent>>();
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -92,7 +93,11 @@ public class Library implements ICaustkComponent {
     private ComponentInfo info;
 
     @Tag(1)
-    private Map<ComponentType, ComponentInfo> map = new HashMap<ComponentType, ComponentInfo>();
+    private Map<ComponentType, List<ComponentInfo>> map = new HashMap<ComponentType, List<ComponentInfo>>();
+
+    Map<ComponentType, List<ComponentInfo>> getMap() {
+        return map;
+    }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -194,7 +199,11 @@ public class Library implements ICaustkComponent {
     }
 
     public boolean remove(ICaustkComponent component) {
-        return getCollection(component).remove(component);
+        boolean changed = getCollection(component).remove(component);
+        if (!changed)
+            return false;
+        componentRemoved(component);
+        return true;
     }
 
     /**
@@ -232,7 +241,7 @@ public class Library implements ICaustkComponent {
         factory.save(this, getLibrariesDirectory());
     }
 
-    private ArrayList<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
+    private List<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
         return components.get(component.getInfo().getType());
     }
 
@@ -250,6 +259,17 @@ public class Library implements ICaustkComponent {
     }
 
     private void componentAdded(ICaustkComponent component) throws FileNotFoundException {
+        ComponentInfo info = component.getInfo();
+        String path = factory.resolvePath(component);
+        info.setPath(path);
+
+        ComponentType type = info.getType();
+        List<ComponentInfo> list = map.get(type);
+        if (list == null) {
+            list = new ArrayList<ComponentInfo>();
+            map.put(type, list);
+        }
+        list.add(info);
         component.disconnect();
         save(component);
     }
@@ -257,4 +277,26 @@ public class Library implements ICaustkComponent {
     private void componentRemoved(ICaustkComponent component) {
 
     }
+
+    /**
+     * Saves and closes the Library, once the method is called, the Library
+     * cannot be reused.
+     * <p>
+     * The instance still maintains its manifest entries.
+     * 
+     * @throws IOException
+     */
+    public void close() throws IOException {
+        save();
+        factory = null;
+        components.clear();
+    }
+
+    public File resolveLocation(ComponentInfo info) {
+        String path = info.getPath();
+        if (path == null)
+            throw new IllegalStateException("path must not be null");
+        return new File(getDirectory(), path);
+    }
+
 }

@@ -50,6 +50,9 @@ public class ComponentInfo {
     @Tag(2)
     private File file;
 
+    @Tag(3)
+    private String path;
+
     @Tag(10)
     private String name;
 
@@ -137,10 +140,37 @@ public class ComponentInfo {
      * Returns the relative path within the {@link ComponentType}'s sub
      * directory.
      */
-    public String getPath() {
+    public String getRelativePath() {
         if (file == null)
             return "";
         return file.getPath();
+    }
+
+    //----------------------------------
+    //  path
+    //----------------------------------
+
+    /**
+     * Returns the full relative path from the Library's base;
+     * <code>/root/MyApp/Libraries/MyLib/[Effect/Distortion/SubDir/MyDistorion.cef]</code>
+     * <p>
+     * This property is set when the component is added to the
+     * {@link Library#add(ICaustkComponent)}.
+     */
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * Sets the base component path including file name and extension.
+     * <p>
+     * Used for mapping and finding components when a library is deserialized
+     * from a manifest.
+     * 
+     * @param value The path.
+     */
+    void setPath(String value) {
+        path = value;
     }
 
     //--------------------------------------------------------------------------

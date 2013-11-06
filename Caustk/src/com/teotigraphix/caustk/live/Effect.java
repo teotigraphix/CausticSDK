@@ -78,7 +78,7 @@ public class Effect implements IRackSerializer, ICaustkComponent {
     public String getDefaultName() {
         String name = "";
         if (info.getFile() != null)
-            name = info.getPath();
+            name = info.getRelativePath();
         else if (patch != null)
             name = patch.getMachine().getMachineName();
         return name;
