@@ -27,6 +27,7 @@ import java.util.Map;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
@@ -43,7 +44,17 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
 
     private Map<Integer, AudioTrack> tracks = new HashMap<Integer, AudioTrack>();
 
+    private AudioTrack masterTrack;
+
+    public AudioTrack getMasterTrack() {
+        return masterTrack;
+    }
+
     private SessionSequencer sessionSequencer;
+
+    public SessionSequencer getSessionSequencer() {
+        return sessionSequencer;
+    }
 
     private ArrangementSequencer arrangementSequencer;
 
@@ -83,27 +94,52 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     LiveSet() {
     }
 
-    LiveSet(ComponentInfo info) {
+    LiveSet(ComponentInfo info, RackSet rackSet) {
         this.info = info;
+        this.rackSet = rackSet;
+
+        masterTrack = new AudioTrack(new AudioTrackInfo("Master"), this);
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    //----------------------------------
+    // tracks
+    //----------------------------------
+
+    /**
+     * @param index
+     * @param machineType
+     * @param machineName
+     * @param displayName
+     * @see {@link OnLiveSetChange}
+     * @return
+     * @throws CausticException
+     */
     public AudioTrack addTrack(int index, MachineType machineType, String machineName,
             String displayName) throws CausticException {
         Machine machine = rackSet.createMachine(index, machineName, machineType);
 
         AudioTrackInfo info = new AudioTrackInfo(displayName);
-        AudioTrack track = new AudioTrack(info, machine);
+        AudioTrack track = new AudioTrack(info, this, machine);
 
         tracks.put(index, track);
         trackAdd(track, machine);
 
+        rackSet.getGlobalDispatcher().trigger(
+                new OnLiveSetChange(this, LiveSetChangeKind.TrackAdd, track));
+
         return track;
     }
 
+    /**
+     * @param index
+     * @see {@link OnLiveSetChange}
+     * @return
+     * @throws CausticException
+     */
     public AudioTrack removeTrack(int index) throws CausticException {
         return removeTrack(tracks.get(index));
     }
@@ -111,7 +147,19 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     public AudioTrack removeTrack(AudioTrack track) throws CausticException {
         AudioTrack removed = tracks.remove(track);
         trackRemove(track);
+
+        rackSet.getGlobalDispatcher().trigger(
+                new OnLiveSetChange(this, LiveSetChangeKind.TrackRemove, track));
+
         return removed;
+    }
+
+    //----------------------------------
+    // scenes
+    //----------------------------------
+
+    public void addScene(String name) {
+        SessionScene scene = sessionSequencer.addScene();
     }
 
     @Override
@@ -158,20 +206,14 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void load(ICaustkApplicationContext context) throws CausticException {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void update(ICaustkApplicationContext context) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void restore() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -180,5 +222,50 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
 
     @Override
     public void onSave() {
+    }
+
+    public enum LiveSetChangeKind {
+        TrackAdd,
+
+        TrackRemove
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @see IRack#getGlobalDispatcher()
+     */
+    public static class OnLiveSetChange {
+
+        private LiveSet liveSet;
+
+        private LiveSetChangeKind kind;
+
+        private AudioTrack track;
+
+        public LiveSet getLiveSet() {
+            return liveSet;
+        }
+
+        public LiveSetChangeKind getKind() {
+            return kind;
+        }
+
+        /**
+         * The added or removed track.
+         */
+        public AudioTrack getTrack() {
+            return track;
+        }
+
+        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind) {
+            this.liveSet = liveSet;
+            this.kind = kind;
+        }
+
+        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind, AudioTrack track) {
+            this.liveSet = liveSet;
+            this.kind = kind;
+            this.track = track;
+        }
     }
 }

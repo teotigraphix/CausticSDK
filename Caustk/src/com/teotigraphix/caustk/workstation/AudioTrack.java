@@ -151,6 +151,9 @@ public class AudioTrack {
      * {@link Machine#getMachineIndex()}.
      */
     public int getIndex() {
+        // XXX Master override
+        if (machine == null)
+            return -1;
         return machine.getMachineIndex();
     }
 
@@ -164,8 +167,15 @@ public class AudioTrack {
     AudioTrack() {
     }
 
-    public AudioTrack(AudioTrackInfo info, Machine machine) {
+    public AudioTrack(AudioTrackInfo info, LiveSet liveSet) {
         this.info = info;
+        this.liveSet = liveSet;
+        // XXX is master
+    }
+
+    public AudioTrack(AudioTrackInfo info, LiveSet liveSet, Machine machine) {
+        this.info = info;
+        this.liveSet = liveSet;
         this.machine = machine;
     }
 

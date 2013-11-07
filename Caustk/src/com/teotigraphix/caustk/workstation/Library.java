@@ -398,4 +398,14 @@ public class Library implements ICaustkComponent {
         return false;
     }
 
+    public ComponentInfo resolveComponentInfo(File file) {
+        for (List<ComponentInfo> list : map.values()) {
+            for (ComponentInfo info : list) {
+                File other = resolveLocation(info);
+                if (file.equals(other))
+                    return info;
+            }
+        }
+        return null;
+    }
 }

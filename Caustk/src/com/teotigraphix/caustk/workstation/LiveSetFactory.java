@@ -27,8 +27,8 @@ public class LiveSetFactory extends CaustkSubFactoryBase {
     public LiveSetFactory() {
     }
 
-    public LiveSet createLiveSet(ComponentInfo info) {
-        LiveSet liveSet = new LiveSet(info);
+    public LiveSet createLiveSet(ComponentInfo info, RackSet rackSet) {
+        LiveSet liveSet = new LiveSet(info, rackSet);
         return liveSet;
     }
 

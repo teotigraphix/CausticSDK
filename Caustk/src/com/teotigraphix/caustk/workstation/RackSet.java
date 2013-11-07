@@ -30,6 +30,7 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -46,6 +47,10 @@ import com.teotigraphix.caustk.rack.tone.RackTone;
 public class RackSet implements ICaustkComponent, IRackSerializer {
 
     private transient IRack rack;
+
+    public IDispatcher getGlobalDispatcher() {
+        return rack.getGlobalDispatcher();
+    }
 
     private transient ICaustkFactory factory;
 

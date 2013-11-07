@@ -296,4 +296,9 @@ public class ComponentInfo {
         return buffer.toString();
     }
 
+    @Override
+    public String toString() {
+        return "[ComponentInfo(" + type.name() + ", " + name + ", " + file + ")]";
+    }
+
 }

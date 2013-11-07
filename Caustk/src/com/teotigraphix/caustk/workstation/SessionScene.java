@@ -47,6 +47,10 @@ public class SessionScene implements OnLiveSetListener {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getBankIndex() {
         return bankIndex;
     }
@@ -68,7 +72,8 @@ public class SessionScene implements OnLiveSetListener {
     SessionScene() {
     }
 
-    SessionScene(SessionSequencer sessionSequencer) {
+    SessionScene(String name, SessionSequencer sessionSequencer) {
+        this.name = name;
         this.sessionSequencer = sessionSequencer;
     }
 

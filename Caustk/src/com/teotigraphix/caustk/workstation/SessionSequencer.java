@@ -19,9 +19,8 @@
 
 package com.teotigraphix.caustk.workstation;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Michael Schmalle
@@ -32,7 +31,11 @@ public class SessionSequencer extends ClipSequencer {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    Map<Integer, SessionScene> scenes = new HashMap<Integer, SessionScene>();
+    List<SessionScene> scenes = new ArrayList<SessionScene>();
+
+    public List<SessionScene> getScenes() {
+        return new ArrayList<SessionScene>(scenes);
+    }
 
     SessionSequencer() {
     }
@@ -45,9 +48,13 @@ public class SessionSequencer extends ClipSequencer {
     public void create() {
     }
 
+    public SessionScene addScene() {
+        return addScene(scenes.size());
+    }
+
     public SessionScene addScene(int index) {
-        SessionScene scene = new SessionScene(this);
-        scenes.put(index, scene);
+        SessionScene scene = new SessionScene("" + (index + 1), this);
+        scenes.add(index, scene);
         return scene;
     }
 
@@ -57,7 +64,7 @@ public class SessionSequencer extends ClipSequencer {
         // don't see this doing anything right now other than invalidating
         // graphics to redraw the pane
 
-        for (SessionScene scene : scenes.values()) {
+        for (SessionScene scene : scenes) {
             scene.onTrackAdded(track, machine);
         }
     }
@@ -66,7 +73,7 @@ public class SessionSequencer extends ClipSequencer {
     public void onTrackRemoved(AudioTrack track) {
         // Will remove all SessionClip instances 
 
-        for (SessionScene scene : scenes.values()) {
+        for (SessionScene scene : scenes) {
             scene.onTrackRemoved(track);
         }
     }

@@ -195,8 +195,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public LiveSet createLiveSet(ComponentInfo info) {
-        return liveSetFactory.createLiveSet(info);
+    public LiveSet createLiveSet(ComponentInfo info, RackSet rackSet) {
+        return liveSetFactory.createLiveSet(info, rackSet);
     }
 
     /**

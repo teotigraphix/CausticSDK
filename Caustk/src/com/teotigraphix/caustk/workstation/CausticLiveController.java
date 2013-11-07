@@ -63,9 +63,10 @@ public class CausticLiveController {
     }
 
     public LiveSet newLiveSet(String name) {
-        ComponentInfo info = controller.getFactory().createInfo(ComponentType.LiveSet, "Untitled");
-        LiveSet liveSet = controller.getFactory().createLiveSet(info);
-        return liveSet;
+        //        ComponentInfo info = controller.getFactory().createInfo(ComponentType.LiveSet, "Untitled");
+        //        LiveSet liveSet = controller.getFactory().createLiveSet(info);
+        //        return liveSet;
+        return null;
     }
 
     public LiveSet openLiveSet(File file) throws IOException {

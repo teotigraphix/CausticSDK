@@ -91,7 +91,7 @@ public interface ICaustkFactory {
 
     Library loadLibrary(String name) throws IOException;
 
-    LiveSet createLiveSet(ComponentInfo info);
+    LiveSet createLiveSet(ComponentInfo info, RackSet rackSet);
 
     RackSet createRackSet(ComponentInfo info);
 
