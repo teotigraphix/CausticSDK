@@ -36,6 +36,7 @@ import com.teotigraphix.caustk.core.CausticException;
  */
 public class CausticLiveController {
 
+    @SuppressWarnings("unused")
     private ICaustkController controller;
 
     private Library library;

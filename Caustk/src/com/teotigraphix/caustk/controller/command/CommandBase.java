@@ -32,7 +32,24 @@ public abstract class CommandBase implements ICommand {
         context = value;
     }
 
+    public boolean getBoolean(int index) {
+        return CommandUtils.getBoolean(context, index);
+    }
+
+    public int getInteger(int index) {
+        return CommandUtils.getInteger(context, index);
+    }
+
+    public float getFloat(int index) {
+        return CommandUtils.getFloat(context, index);
+    }
+
+    public String getString(int index) {
+        return CommandUtils.getString(context, index);
+    }
+
     public CommandBase() {
+
     }
 
     @Override
