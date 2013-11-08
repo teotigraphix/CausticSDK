@@ -20,10 +20,12 @@
 package com.teotigraphix.caustk.workstation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
@@ -40,23 +42,35 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
 
     private transient RackSet rackSet;
 
+    public void setRackSet(RackSet rackSet) {
+        this.rackSet = rackSet;
+    }
+
+    @Tag(0)
     private ComponentInfo info;
 
-    private Map<Integer, AudioTrack> tracks = new HashMap<Integer, AudioTrack>();
-
+    @Tag(1)
     private AudioTrack masterTrack;
+
+    @Tag(2)
+    private Map<Integer, AudioTrack> tracks = new HashMap<Integer, AudioTrack>();
 
     public AudioTrack getMasterTrack() {
         return masterTrack;
     }
 
+    @Tag(3)
     private SessionSequencer sessionSequencer;
 
     public SessionSequencer getSessionSequencer() {
         return sessionSequencer;
     }
 
+    @Tag(4)
     private ArrangementSequencer arrangementSequencer;
+
+    @Tag(10)
+    private int selectedTrackIndex = -1;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -82,6 +96,40 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
 
     public AudioTrack getTrack(int index) {
         return tracks.get(index);
+    }
+
+    public Collection<AudioTrack> getTracks() {
+        return tracks.values();
+    }
+
+    //----------------------------------
+    // selectedTrackIndex
+    //----------------------------------
+
+    public int getSelectedTrackIndex() {
+        return selectedTrackIndex;
+    }
+
+    /**
+     * @param value
+     * @see OnLiveSetChange
+     * @see LiveSetChangeKind#SelectedTrackIndex
+     */
+    public void setSelectedTrackIndex(int value) {
+        if (value == selectedTrackIndex)
+            return;
+        int oldValue = selectedTrackIndex;
+        selectedTrackIndex = value;
+
+        AudioTrack oldAudioTrack = getTrack(oldValue);
+        if (oldAudioTrack != null)
+            oldAudioTrack.setSelected(false);
+
+        getTrack(selectedTrackIndex).setSelected(true);
+
+        rackSet.getGlobalDispatcher().trigger(
+                new OnLiveSetChange(this, LiveSetChangeKind.SelectedTrackIndex, selectedTrackIndex,
+                        oldValue));
     }
 
     //--------------------------------------------------------------------------
@@ -131,6 +179,8 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
         rackSet.getGlobalDispatcher().trigger(
                 new OnLiveSetChange(this, LiveSetChangeKind.TrackAdd, track));
 
+        setSelectedTrackIndex(index);
+
         return track;
     }
 
@@ -158,6 +208,7 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     // scenes
     //----------------------------------
 
+    @SuppressWarnings("unused")
     public void addScene(String name) {
         SessionScene scene = sessionSequencer.addScene();
     }
@@ -227,7 +278,10 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     public enum LiveSetChangeKind {
         TrackAdd,
 
-        TrackRemove
+        TrackRemove,
+
+        SelectedTrackIndex,
+
     }
 
     /**
@@ -242,6 +296,10 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
 
         private AudioTrack track;
 
+        private int trackIndex;
+
+        private int oldTrackIndex;
+
         public LiveSet getLiveSet() {
             return liveSet;
         }
@@ -252,9 +310,26 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
 
         /**
          * The added or removed track.
+         * 
+         * @see LiveSetChangeKind#TrackAdd
+         * @see LiveSetChangeKind#TrackRemove
          */
         public AudioTrack getTrack() {
             return track;
+        }
+
+        /**
+         * @see LiveSetChangeKind#SelectedTrackIndex
+         */
+        public int getTrackIndex() {
+            return trackIndex;
+        }
+
+        /**
+         * @see LiveSetChangeKind#SelectedTrackIndex
+         */
+        public int getOldTrackIndex() {
+            return oldTrackIndex;
         }
 
         public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind) {
@@ -267,5 +342,14 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
             this.kind = kind;
             this.track = track;
         }
+
+        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind, int trackIndex,
+                int oldTrackIndex) {
+            this.liveSet = liveSet;
+            this.kind = kind;
+            this.trackIndex = trackIndex;
+            this.oldTrackIndex = oldTrackIndex;
+        }
     }
+
 }

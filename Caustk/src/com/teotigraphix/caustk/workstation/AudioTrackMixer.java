@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
 /*
  * - pan
  * - volume
@@ -32,6 +34,7 @@ package com.teotigraphix.caustk.workstation;
  */
 public class AudioTrackMixer {
 
+    @Tag(0)
     private AudioTrack track;
 
     public AudioTrack getTrack() {

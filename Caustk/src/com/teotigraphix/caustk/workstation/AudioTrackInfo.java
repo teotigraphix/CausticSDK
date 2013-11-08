@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
 /**
  * Information object for the {@link AudioTrack}.
  * 
@@ -26,10 +28,13 @@ package com.teotigraphix.caustk.workstation;
  */
 public class AudioTrackInfo {
 
+    @Tag(0)
     private String name;
 
+    @Tag(1)
     private String infoText;
 
+    @Tag(2)
     private Object color;
 
     //----------------------------------
@@ -75,6 +80,9 @@ public class AudioTrackInfo {
 
     public void setColor(Object color) {
         this.color = color;
+    }
+
+    AudioTrackInfo() {
     }
 
     public AudioTrackInfo(String name) {
