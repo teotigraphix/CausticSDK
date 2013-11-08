@@ -280,7 +280,7 @@ public class RackSet extends CaustkComponent {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public void addMachine(int index, Machine machine) {
+    public void addMachine(int index, Machine machine) throws CausticException {
         // XXX This is going to be complex but just try adding to empty
         // if the index is right, should be able to call update()
         // and have the majic happen
@@ -447,10 +447,7 @@ public class RackSet extends CaustkComponent {
             throws CausticException {
         Machine machine = factory.createMachine(this, machineIndex, machineType, machineName);
         machines.put(machineIndex, machine);
-        // when machineType is null, the Machine is a placeholder until the type is set
-        // in this case we do not create it yet
-        if (machineType != null)
-            machine.create(factory.createContext());
+        machine.create(factory.createContext());
         return machine;
     }
 

@@ -199,6 +199,22 @@ public class LiveSet extends CaustkComponent {
         return track;
     }
 
+    public void addPatchUnAssigned(AudioTrack audioTrack, Patch patch) {
+        Machine machine = audioTrack.getMachine();
+        if (machine.getMachineType() != null)
+            throw new IllegalStateException("MachineType not null");
+
+        // 
+        try {
+            machine.initializeMachine(patch);
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
+
+        rackSet.getGlobalDispatcher().trigger(
+                new OnLiveSetChange(this, LiveSetChangeKind.TrackAssign, audioTrack));
+    }
+
     /**
      * @param index
      * @see {@link OnLiveSetChange}
@@ -272,6 +288,11 @@ public class LiveSet extends CaustkComponent {
                 break;
 
             case Update:
+                // called from ApplicationState.update() deserializng
+                for (AudioTrack audioTrack : tracks.values()) {
+                    Machine machine = audioTrack.getMachine();
+                    machine.update(context);
+                }
                 break;
 
             case Restore:
@@ -292,6 +313,8 @@ public class LiveSet extends CaustkComponent {
 
     public enum LiveSetChangeKind {
         TrackAdd,
+
+        TrackAssign,
 
         TrackRemove,
 

@@ -73,13 +73,8 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
     }
 
     @Override
-    public final void update(ICaustkApplicationContext context) {
-        try {
-            componentPhaseChange(context, ComponentPhase.Update);
-        } catch (CausticException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public final void update(ICaustkApplicationContext context) throws CausticException {
+        componentPhaseChange(context, ComponentPhase.Update);
     }
 
     @Override
@@ -87,7 +82,6 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
         try {
             componentPhaseChange(null, ComponentPhase.Restore);
         } catch (CausticException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -97,7 +91,6 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
         try {
             componentPhaseChange(null, ComponentPhase.Disconnect);
         } catch (CausticException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

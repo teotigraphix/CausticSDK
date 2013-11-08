@@ -87,6 +87,10 @@ public class Patch extends CaustkComponent {
         return machine;
     }
 
+    void setMachine(Machine machine) {
+        this.machine = machine;
+    }
+
     //----------------------------------
     // machineType
     //----------------------------------

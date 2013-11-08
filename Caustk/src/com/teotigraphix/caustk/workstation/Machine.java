@@ -46,6 +46,8 @@ public class Machine extends CaustkComponent {
 
     private transient ICaustkFactory factory;
 
+    private transient Patch pendingPatch;
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -377,12 +379,18 @@ public class Machine extends CaustkComponent {
             throws CausticException {
         switch (phase) {
             case Create:
-                if (rackTone != null)
-                    throw new IllegalStateException("Tone exists in machine");
-
                 // set the rack and factory from this context
                 factory = context.getFactory();
                 rack = factory.getRack();
+
+                // when machineType is null, the Machine is a placeholder until the type is set
+                // in this case we do not create it yet, but we need the factory and
+                // rack refs set above so they exist if it is assigned this session
+                if (machineType == null)
+                    return;
+
+                if (rackTone != null)
+                    throw new IllegalStateException("Tone exists in machine");
 
                 ToneDescriptor descriptor = new ToneDescriptor(machineIndex, machineName,
                         MachineType.fromString(machineType.getType()));
@@ -392,9 +400,15 @@ public class Machine extends CaustkComponent {
                 } catch (CausticException e) {
                     throw e;
                 }
-
-                patch = factory.createPatch(this);
-                patch.create(context);
+                if (pendingPatch == null) {
+                    patch = factory.createPatch(this);
+                    patch.create(context);
+                } else {
+                    patch = pendingPatch;
+                    patch.setMachine(this);
+                    patch.update(context);
+                    pendingPatch = null;
+                }
                 break;
 
             case Load:
@@ -415,16 +429,20 @@ public class Machine extends CaustkComponent {
                 break;
 
             case Update:
-                if (rackTone == null)
+                if (rackTone == null && machineType != null)
                     throw new IllegalStateException("RackTone cannot be null during update()");
 
                 // set the rack and factory from this context
                 factory = context.getFactory();
                 rack = factory.getRack();
 
-                updateTone(context);
-                updatePatch(context);
-                updatePhrases(context);
+                // the case of the unassigned Machine(type) in an AudioTrack
+                if (machineType != null) {
+                    updateTone(context);
+                    updatePatch(context);
+                    updatePhrases(context);
+                }
+
                 break;
 
             case Restore:
@@ -499,15 +517,15 @@ public class Machine extends CaustkComponent {
         }
     }
 
-    private void updateTone(ICaustkApplicationContext context) {
+    private void updateTone(ICaustkApplicationContext context) throws CausticException {
         rackTone.update(context);
     }
 
-    private void updatePatch(ICaustkApplicationContext context) {
+    private void updatePatch(ICaustkApplicationContext context) throws CausticException {
         patch.update(context);
     }
 
-    private void updatePhrases(ICaustkApplicationContext context) {
+    private void updatePhrases(ICaustkApplicationContext context) throws CausticException {
         int currentBank = getCurrentBank();
         int currentPattern = getCurrentPattern();
         for (Phrase caustkPhrase : phrases.values()) {
@@ -532,6 +550,14 @@ public class Machine extends CaustkComponent {
         rackTone = factory.createRackTone(this, descriptor);
         if (rackTone == null)
             throw new CausticException("Failed to create " + descriptor.toString());
+    }
+
+    public void initializeMachine(Patch patch) throws CausticException {
+        machineType = patch.getMachineType();
+        pendingPatch = patch;
+        // pendingPatch will be used as the Machine's patch and will have it's
+        // update() called instead of create()
+        create(factory.createContext());
     }
 
     @Override
@@ -569,4 +595,5 @@ public class Machine extends CaustkComponent {
             this.kind = kind;
         }
     }
+
 }

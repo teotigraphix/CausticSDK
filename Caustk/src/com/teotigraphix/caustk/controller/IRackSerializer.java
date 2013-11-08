@@ -60,8 +60,10 @@ public interface IRackSerializer extends IRestore {
      * <p>
      * Most classes will save their transient reference to the {@link IRack} and
      * {@link ICaustkFactory} if needed in the super method.
+     * 
+     * @throws CausticException
      */
-    void update(ICaustkApplicationContext context);
+    void update(ICaustkApplicationContext context) throws CausticException;
 
     /**
      * Restores the rack, each component implementing the method will use OSC
