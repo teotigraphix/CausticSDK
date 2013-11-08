@@ -239,9 +239,16 @@ public class LiveSet extends CaustkComponent {
     // scenes
     //----------------------------------
 
-    @SuppressWarnings("unused")
-    public void addScene(String name) {
-        SessionScene scene = sessionSequencer.addScene();
+    public SessionScene addScene() {
+        int index = sessionSequencer.getScenes().size();
+        return addScene(index, "" + (index + 1));
+    }
+
+    public SessionScene addScene(int index, String name) {
+        SessionScene scene = sessionSequencer.addScene(index, name);
+        rackSet.getGlobalDispatcher().trigger(
+                new OnLiveSetChange(this, LiveSetChangeKind.SceneAdd, scene));
+        return scene;
     }
 
     //--------------------------------------------------------------------------
@@ -319,6 +326,10 @@ public class LiveSet extends CaustkComponent {
         TrackRemove,
 
         SelectedTrackIndex,
+
+        SceneAdd,
+
+        SceneRemove
     }
 
     /**
@@ -336,6 +347,8 @@ public class LiveSet extends CaustkComponent {
         private int trackIndex;
 
         private int oldTrackIndex;
+
+        private SessionScene scene;
 
         public LiveSet getLiveSet() {
             return liveSet;
@@ -369,6 +382,14 @@ public class LiveSet extends CaustkComponent {
             return oldTrackIndex;
         }
 
+        /**
+         * @see LiveSetChangeKind#SceneAdd
+         * @see LiveSetChangeKind#SceneRemove
+         */
+        public SessionScene getScene() {
+            return scene;
+        }
+
         public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind) {
             this.liveSet = liveSet;
             this.kind = kind;
@@ -386,6 +407,12 @@ public class LiveSet extends CaustkComponent {
             this.kind = kind;
             this.trackIndex = trackIndex;
             this.oldTrackIndex = oldTrackIndex;
+        }
+
+        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind, SessionScene scene) {
+            this.liveSet = liveSet;
+            this.kind = kind;
+            this.scene = scene;
         }
     }
 

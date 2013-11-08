@@ -22,6 +22,8 @@ package com.teotigraphix.caustk.workstation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
 /**
  * @author Michael Schmalle
  */
@@ -31,6 +33,7 @@ public class SessionSequencer extends ClipSequencer {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     List<SessionScene> scenes = new ArrayList<SessionScene>();
 
     public List<SessionScene> getScenes() {
@@ -48,12 +51,12 @@ public class SessionSequencer extends ClipSequencer {
     public void create() {
     }
 
-    public SessionScene addScene() {
-        return addScene(scenes.size());
+    public SessionScene addScene(String name) {
+        return addScene(scenes.size(), name);
     }
 
-    public SessionScene addScene(int index) {
-        SessionScene scene = new SessionScene("" + (index + 1), this);
+    public SessionScene addScene(int index, String name) {
+        SessionScene scene = new SessionScene(name, this);
         scenes.add(index, scene);
         return scene;
     }
