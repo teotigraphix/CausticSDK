@@ -167,25 +167,16 @@ public class AudioTrack {
     AudioTrack() {
     }
 
-    public AudioTrack(AudioTrackInfo info, LiveSet liveSet) {
-        this.info = info;
-        this.liveSet = liveSet;
-        // XXX is master
-    }
-
     public AudioTrack(AudioTrackInfo info, LiveSet liveSet, Machine machine) {
         this.info = info;
         this.liveSet = liveSet;
         this.machine = machine;
+        mixer = new AudioTrackMixer(this);
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
-
-    public void create() {
-        mixer = new AudioTrackMixer(this);
-    }
 
     /**
      * Disposes the {@link AudioTrack}, once this method has been called, the

@@ -161,7 +161,7 @@ public class LiveSet extends CaustkComponent {
         setInfo(info);
         this.rackSet = rackSet;
 
-        masterTrack = new AudioTrack(new AudioTrackInfo("Master"), this);
+        masterTrack = new MasterAudioTrack(new AudioTrackInfo("Master"), this);
     }
 
     //--------------------------------------------------------------------------
@@ -233,7 +233,6 @@ public class LiveSet extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     private void trackAdd(AudioTrack track, Machine machine) {
-        track.create();
         for (OnLiveSetListener l : listeners) {
             l.onTrackAdded(track, machine);
         }

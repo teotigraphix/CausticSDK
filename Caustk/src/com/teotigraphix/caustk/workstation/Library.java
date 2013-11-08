@@ -116,10 +116,7 @@ public class Library extends CaustkComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
-    private ComponentInfo info;
-
-    @Tag(1)
+    @Tag(100)
     private Map<ComponentType, List<ComponentInfo>> map = new HashMap<ComponentType, List<ComponentInfo>>();
 
     Map<ComponentType, List<ComponentInfo>> getMap() {
@@ -136,7 +133,7 @@ public class Library extends CaustkComponent {
 
     @Override
     public String getDefaultName() {
-        return info.getName();
+        return getInfo().getName();
     }
 
     //----------------------------------
@@ -149,7 +146,7 @@ public class Library extends CaustkComponent {
      * directory.
      */
     public final String getName() {
-        return info.getName();
+        return getInfo().getName();
     }
 
     /**
