@@ -59,24 +59,25 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
     /*
      * Serialization.
      */
-    CaustkComponent() {
+    public CaustkComponent() {
     }
 
     @Override
     public final void create(ICaustkApplicationContext context) throws CausticException {
-        createComponents(context);
+        componentPhaseChange(context, ComponentPhase.Create);
     }
 
     @Override
     public final void load(ICaustkApplicationContext context) throws CausticException {
-        loadComponents(context);
+        componentPhaseChange(context, ComponentPhase.Load);
     }
 
     @Override
     public final void update(ICaustkApplicationContext context) {
         try {
-            updateComponents(context);
+            componentPhaseChange(context, ComponentPhase.Update);
         } catch (CausticException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -84,16 +85,37 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
     @Override
     public final void restore() {
         try {
-            restoreComponents();
+            componentPhaseChange(null, ComponentPhase.Restore);
         } catch (CausticException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
     @Override
     public final void disconnect() {
-        disconnectComponents();
+        try {
+            componentPhaseChange(null, ComponentPhase.Disconnect);
+        } catch (CausticException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
+
+    public enum ComponentPhase {
+        Create,
+
+        Load,
+
+        Update,
+
+        Restore,
+
+        Disconnect
+    }
+
+    protected abstract void componentPhaseChange(ICaustkApplicationContext context,
+            ComponentPhase phase) throws CausticException;
 
     @Override
     public void onLoad() {
@@ -103,16 +125,4 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
     public void onSave() {
     }
 
-    protected abstract void restoreComponents() throws CausticException;
-
-    protected abstract void createComponents(ICaustkApplicationContext context)
-            throws CausticException;
-
-    protected abstract void loadComponents(ICaustkApplicationContext context)
-            throws CausticException;
-
-    protected abstract void updateComponents(ICaustkApplicationContext context)
-            throws CausticException;
-
-    protected abstract void disconnectComponents();
 }

@@ -27,14 +27,13 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
-import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IRack;
 
 /**
  * @author Michael Schmalle
  */
-public class LiveSet implements ICaustkComponent, IRackSerializer {
+public class LiveSet extends CaustkComponent {
 
     private transient RackSet rackSet;
 
@@ -42,22 +41,19 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
-    private ComponentInfo info;
-
-    @Tag(1)
+    @Tag(100)
     private AudioTrack masterTrack;
 
-    @Tag(2)
+    @Tag(101)
     private Map<Integer, AudioTrack> tracks = new HashMap<Integer, AudioTrack>();
 
-    @Tag(3)
+    @Tag(102)
     private SessionSequencer sessionSequencer;
 
-    @Tag(4)
+    @Tag(103)
     private ArrangementSequencer arrangementSequencer;
 
-    @Tag(10)
+    @Tag(104)
     private int selectedTrackIndex = -1;
 
     //--------------------------------------------------------------------------
@@ -65,17 +61,12 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // info
+    // defaultName
     //----------------------------------
 
     @Override
-    public final ComponentInfo getInfo() {
-        return info;
-    }
-
-    @Override
     public String getDefaultName() {
-        return info.getName();
+        return getInfo().getName();
     }
 
     //----------------------------------
@@ -167,7 +158,7 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     }
 
     LiveSet(ComponentInfo info, RackSet rackSet) {
-        this.info = info;
+        setInfo(info);
         this.rackSet = rackSet;
 
         masterTrack = new AudioTrack(new AudioTrackInfo("Master"), this);
@@ -237,10 +228,6 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
         SessionScene scene = sessionSequencer.addScene();
     }
 
-    @Override
-    public void disconnect() {
-    }
-
     //--------------------------------------------------------------------------
     // Private :: Methods
     //--------------------------------------------------------------------------
@@ -268,27 +255,32 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void create(ICaustkApplicationContext context) throws CausticException {
-        sessionSequencer = new SessionSequencer(this);
-        arrangementSequencer = new ArrangementSequencer(this);
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                sessionSequencer = new SessionSequencer(this);
+                arrangementSequencer = new ArrangementSequencer(this);
 
-        listeners.add(sessionSequencer);
-        listeners.add(arrangementSequencer);
+                listeners.add(sessionSequencer);
+                listeners.add(arrangementSequencer);
 
-        sessionSequencer.create();
-        arrangementSequencer.create();
-    }
+                sessionSequencer.create();
+                arrangementSequencer.create();
+                break;
 
-    @Override
-    public void load(ICaustkApplicationContext context) throws CausticException {
-    }
+            case Load:
+                break;
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-    }
+            case Update:
+                break;
 
-    @Override
-    public void restore() {
+            case Restore:
+                break;
+
+            case Disconnect:
+                break;
+        }
     }
 
     @Override
@@ -305,7 +297,6 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
         TrackRemove,
 
         SelectedTrackIndex,
-
     }
 
     /**

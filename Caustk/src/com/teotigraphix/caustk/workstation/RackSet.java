@@ -31,7 +31,6 @@ import java.util.Map;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
@@ -44,7 +43,7 @@ import com.teotigraphix.caustk.rack.tone.RackTone;
 /**
  * @author Michael Schmalle
  */
-public class RackSet implements ICaustkComponent, IRackSerializer {
+public class RackSet extends CaustkComponent {
 
     private transient IRack rack;
 
@@ -58,22 +57,19 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
-    private ComponentInfo info;
-
-    @Tag(1)
+    @Tag(100)
     private File causticFile;
 
-    @Tag(2)
+    @Tag(101)
     private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
 
-    @Tag(3)
+    @Tag(102)
     private MasterMixer masterMixer;
 
-    @Tag(4)
+    @Tag(103)
     private MasterSequencer masterSequencer;
 
-    @Tag(5)
+    @Tag(104)
     private boolean isInternal;
 
     //--------------------------------------------------------------------------
@@ -81,13 +77,8 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // info
+    // defaultName
     //----------------------------------
-
-    @Override
-    public final ComponentInfo getInfo() {
-        return info;
-    }
 
     @Override
     public String getDefaultName() {
@@ -210,17 +201,79 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
     }
 
     RackSet(ComponentInfo info, ICaustkFactory factory) {
-        this.info = info;
+        setInfo(info);
         this.factory = factory;
         this.rack = factory.getRack();
     }
 
     RackSet(ComponentInfo info, ICaustkFactory factory, File absoluteCausticFile) {
-        this.info = info;
+        setInfo(info);
         this.factory = factory;
         this.rack = factory.getRack();
         this.causticFile = absoluteCausticFile;
-        this.info.setName(absoluteCausticFile.getName().replace(".caustic", ""));
+        info.setName(absoluteCausticFile.getName().replace(".caustic", ""));
+    }
+
+    @Override
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                masterMixer = factory.createMasterMixer(this);
+                masterSequencer = factory.createMasterSequencer(this);
+                masterMixer.create(context);
+                masterSequencer.create(context);
+                break;
+
+            case Load:
+                if (causticFile == null || !causticFile.exists())
+                    throw new IllegalStateException(
+                            "Caustic song file null or not found on file system: " + causticFile);
+
+                if (rack == null)
+                    throw new IllegalStateException("Rack must not be null");
+
+                // reset the rack and sound source to empty
+                RackMessage.BLANKRACK.send(rack);
+
+                // load the song raw, don not create tones
+                RackMessage.LOAD_SONG.send(rack, causticFile.getAbsolutePath());
+
+                //        create(context);
+
+                try {
+                    // create the scene sub components
+                    // createComponents(context);
+                    masterMixer = factory.createMasterMixer(this);
+                    masterSequencer = factory.createMasterSequencer(this);
+                    // load the current song rack state into the sub components
+                    loadComponents(context);
+                } catch (IOException e) {
+                    throw new CausticException(e);
+                }
+                break;
+
+            case Update:
+                rack = context.getRack();
+
+                RackMessage.BLANKRACK.send(rack);
+
+                masterMixer.update(context);
+
+                for (Machine machine : machines.values()) {
+                    machine.update(context);
+                }
+
+                masterSequencer.update(context);
+                break;
+
+            case Restore:
+                break;
+
+            case Disconnect:
+                rack = null;
+                break;
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -357,90 +410,12 @@ public class RackSet implements ICaustkComponent, IRackSerializer {
         }
     }
 
-    @Override
-    public void create(ICaustkApplicationContext context) throws CausticException {
-        masterMixer = factory.createMasterMixer(this);
-        masterSequencer = factory.createMasterSequencer(this);
-        masterMixer.create(context);
-        masterSequencer.create(context);
-    }
-
     public void clearMachines() throws CausticException {
         ArrayList<Machine> list = new ArrayList<Machine>(getMachines());
         for (Machine machine : list) {
             removeMachine(machine);
         }
         rack.clearRack();
-    }
-
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        rack = context.getRack();
-
-        RackMessage.BLANKRACK.send(rack);
-
-        masterMixer.update(context);
-
-        for (Machine machine : machines.values()) {
-            machine.update(context);
-        }
-
-        masterSequencer.update(context);
-    }
-
-    /**
-     * Loads the {@link RackSet} using the {@link #getCausticFile()} passed
-     * during scene construction.
-     * <p>
-     * Calling this method will issue a <code>BLANKRACK</code> command and
-     * <code>LOAD_SONG</code>, all song state is reset to default before
-     * loading.
-     * <p>
-     * So; any client calling this needs to do it in an initialize phase or save
-     * the state of the rack into a temp <code>.caustic</code> file to reload
-     * after this method returns.
-     * 
-     * @param context
-     * @throws IOException
-     * @throws CausticException
-     */
-    @Override
-    public void load(ICaustkApplicationContext context) throws CausticException {
-        if (causticFile == null || !causticFile.exists())
-            throw new IllegalStateException("Caustic song file null or not found on file system: "
-                    + causticFile);
-
-        if (rack == null)
-            throw new IllegalStateException("Rack must not be null");
-
-        // reset the rack and sound source to empty
-        RackMessage.BLANKRACK.send(rack);
-
-        // load the song raw, don not create tones
-        RackMessage.LOAD_SONG.send(rack, causticFile.getAbsolutePath());
-
-        //        create(context);
-
-        try {
-            // create the scene sub components
-            // createComponents(context);
-            masterMixer = factory.createMasterMixer(this);
-            masterSequencer = factory.createMasterSequencer(this);
-            // load the current song rack state into the sub components
-            loadComponents(context);
-        } catch (IOException e) {
-            throw new CausticException(e);
-        }
-    }
-
-    @Override
-    public void restore() {
-        //rack.restore();
-    }
-
-    @Override
-    public void disconnect() {
-        rack = null;
     }
 
     @Override

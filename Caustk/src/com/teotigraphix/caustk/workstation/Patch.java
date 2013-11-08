@@ -26,7 +26,6 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
-import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
@@ -36,28 +35,25 @@ import com.teotigraphix.caustk.rack.effect.EffectType;
 /**
  * @author Michael Schmalle
  */
-public class Patch implements ICaustkComponent, IRackSerializer {
+public class Patch extends CaustkComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
-    private ComponentInfo info;
-
-    @Tag(1)
+    @Tag(100)
     private Machine machine;
 
-    @Tag(2)
+    @Tag(101)
     private MachineType machineType;
 
-    @Tag(3)
+    @Tag(102)
     private MachinePreset machinePreset;
 
-    @Tag(4)
+    @Tag(103)
     private MachineMixer machineMixer;
 
-    @Tag(5)
+    @Tag(104)
     private Map<Integer, Effect> effects = new HashMap<Integer, Effect>(2);
 
     //--------------------------------------------------------------------------
@@ -65,13 +61,8 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // info
+    // defaultName
     //----------------------------------
-
-    @Override
-    public ComponentInfo getInfo() {
-        return info;
-    }
 
     @Override
     public String getDefaultName() {
@@ -144,12 +135,12 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     }
 
     Patch(ComponentInfo info, MachineType machineType) {
-        this.info = info;
+        setInfo(info);
         this.machineType = machineType;
     }
 
     Patch(ComponentInfo info, Machine machine) {
-        this.info = info;
+        setInfo(info);
         this.machine = machine;
         this.machineType = machine.getMachineType();
     }
@@ -163,48 +154,49 @@ public class Patch implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void create(ICaustkApplicationContext context) {
-        machinePreset = new MachinePreset(null, this);
-        machineMixer = new MachineMixer(this);
-        try {
-            machinePreset.create(context);
-            machineMixer.create(context);
-        } catch (CausticException e) {
-            e.printStackTrace();
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                machinePreset = new MachinePreset(null, this);
+                machineMixer = new MachineMixer(this);
+                try {
+                    machinePreset.create(context);
+                    machineMixer.create(context);
+                } catch (CausticException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case Load:
+                create(context);
+
+                try {
+                    loadMachinePreset(context);
+                    loadMachineMixer(context);
+                } catch (IOException e) {
+                    throw new CausticException(e);
+                }
+                loadEffects(context);
+                break;
+
+            case Update:
+                machinePreset.update(context);
+                machineMixer.update(context);
+                for (Effect caustkEffect : effects.values()) {
+                    caustkEffect.update(context);
+                }
+                break;
+
+            case Restore:
+                machinePreset.restore();
+                machineMixer.restore();
+                break;
+
+            case Disconnect:
+                machine = null;
+                break;
         }
-    }
-
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        machinePreset.update(context);
-        machineMixer.update(context);
-        for (Effect caustkEffect : effects.values()) {
-            caustkEffect.update(context);
-        }
-    }
-
-    @Override
-    public void load(ICaustkApplicationContext context) throws CausticException {
-        create(context);
-
-        try {
-            loadMachinePreset(context);
-            loadMachineMixer(context);
-        } catch (IOException e) {
-            throw new CausticException(e);
-        }
-        loadEffects(context);
-    }
-
-    @Override
-    public void restore() {
-        machinePreset.restore();
-        machineMixer.restore();
-    }
-
-    @Override
-    public void disconnect() {
-        machine = null;
     }
 
     @Override

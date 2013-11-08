@@ -32,6 +32,8 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -78,7 +80,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * 
  * @author Michael Schmalle
  */
-public class Library implements ICaustkComponent {
+public class Library extends CaustkComponent {
 
     private static final String MANIFEST = "manifest";
 
@@ -129,13 +131,8 @@ public class Library implements ICaustkComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // info
+    // defaultName
     //----------------------------------
-
-    @Override
-    public ComponentInfo getInfo() {
-        return info;
-    }
 
     @Override
     public String getDefaultName() {
@@ -190,8 +187,29 @@ public class Library implements ICaustkComponent {
     }
 
     Library(ComponentInfo info, ICaustkFactory factory) {
-        this.info = info;
+        setInfo(info);
         this.factory = factory;
+    }
+
+    @Override
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                break;
+
+            case Load:
+                break;
+
+            case Update:
+                break;
+
+            case Restore:
+                break;
+
+            case Disconnect:
+                break;
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -328,10 +346,6 @@ public class Library implements ICaustkComponent {
 
     public boolean exists() {
         return getDirectory().exists();
-    }
-
-    @Override
-    public void disconnect() {
     }
 
     private void componentAdded(ICaustkComponent component) throws FileNotFoundException {

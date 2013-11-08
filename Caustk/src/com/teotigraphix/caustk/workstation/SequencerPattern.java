@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.workstation;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 // XXX TODO add to CaustkFactory
@@ -27,21 +29,21 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 /**
  * @author Michael Schmalle
  */
-public class SequencerPattern implements ICaustkComponent {
+public class SequencerPattern extends CaustkComponent {
 
-    @Tag(0)
+    @Tag(100)
     private Machine machine;
 
-    @Tag(1)
+    @Tag(101)
     private int bankIndex;
 
-    @Tag(2)
+    @Tag(102)
     private int patternIndex;
 
-    @Tag(3)
+    @Tag(103)
     private int startBeat;
 
-    @Tag(4)
+    @Tag(104)
     private int endBeat;
 
     public Machine getMachine() {
@@ -65,20 +67,43 @@ public class SequencerPattern implements ICaustkComponent {
     }
 
     @Override
-    public ComponentInfo getInfo() {
-        return null;
-    }
-
-    @Override
     public String getDefaultName() {
         return "TODO"; // machine[A01]
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /*
+     * Serialization.
+     */
     SequencerPattern() {
     }
 
     SequencerPattern(Machine machine) {
         this.machine = machine;
+    }
+
+    @Override
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                break;
+
+            case Load:
+                break;
+
+            case Update:
+                break;
+
+            case Restore:
+                break;
+
+            case Disconnect:
+                break;
+        }
     }
 
     public void setBankPattern(int bankIndex, int patternIndex) {
@@ -97,7 +122,4 @@ public class SequencerPattern implements ICaustkComponent {
                 + PatternUtils.toString(bankIndex, patternIndex) + ":" + endBeat + ")]";
     }
 
-    @Override
-    public void disconnect() {
-    }
 }

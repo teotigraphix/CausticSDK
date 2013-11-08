@@ -165,33 +165,34 @@ public class Effect extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    protected void createComponents(ICaustkApplicationContext context) {
-        rackEffect = createEffect(-1, -1);
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                rackEffect = createEffect(-1, -1);
+                break;
 
-    @Override
-    protected void loadComponents(ICaustkApplicationContext context) throws CausticException {
-        rackEffect = createEffect(slot, patch.getMachine().getMachineIndex());
-        rackEffect.setEffect(this);
-        rackEffect.load(context);
-    }
+            case Load:
+                rackEffect = createEffect(slot, patch.getMachine().getMachineIndex());
+                rackEffect.setEffect(this);
+                rackEffect.load(context);
+                break;
 
-    @Override
-    protected void updateComponents(ICaustkApplicationContext context) {
-        EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getMachineIndex(), slot,
-                effectType.getValue());
-        rackEffect.setEffect(this);
-        rackEffect.update(context);
-    }
+            case Update:
+                EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getMachineIndex(),
+                        slot, effectType.getValue());
+                rackEffect.setEffect(this);
+                rackEffect.update(context);
+                break;
 
-    @Override
-    protected void restoreComponents() {
-        rackEffect.restore();
-    }
+            case Restore:
+                rackEffect.restore();
+                break;
 
-    @Override
-    protected void disconnectComponents() {
-        patch = null;
+            case Disconnect:
+                patch = null;
+                break;
+        }
     }
 
     private RackEffect createEffect(int slot, int toneIndex) {

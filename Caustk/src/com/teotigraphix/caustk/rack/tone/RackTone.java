@@ -24,15 +24,13 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
-import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
-import com.teotigraphix.caustk.workstation.ComponentInfo;
-import com.teotigraphix.caustk.workstation.ICaustkComponent;
+import com.teotigraphix.caustk.workstation.CaustkComponent;
 import com.teotigraphix.caustk.workstation.Machine;
 import com.teotigraphix.caustk.workstation.MachineMixer;
 import com.teotigraphix.caustk.workstation.MachineType;
@@ -42,7 +40,7 @@ import com.teotigraphix.caustk.workstation.MachineType;
  * 
  * @author Michael Schmalle
  */
-public abstract class RackTone implements ICaustkComponent, IRackSerializer {
+public abstract class RackTone extends CaustkComponent {
 
     private transient IRack rack;
 
@@ -50,22 +48,19 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
-    private ComponentInfo info;
-
-    @Tag(1)
+    @Tag(100)
     private Machine machine;
 
-    @Tag(2)
+    @Tag(101)
     private int machineIndex;
 
-    @Tag(3)
+    @Tag(102)
     private MachineType machineType;
 
-    @Tag(4)
+    @Tag(103)
     private String machineName;
 
-    @Tag(5)
+    @Tag(104)
     private Map<Class<? extends RackToneComponent>, RackToneComponent> components = new HashMap<Class<? extends RackToneComponent>, RackToneComponent>();
 
     //--------------------------------------------------------------------------
@@ -73,13 +68,8 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // info
+    // defaultName
     //----------------------------------
-
-    @Override
-    public ComponentInfo getInfo() {
-        return info;
-    }
 
     @Override
     public String getDefaultName() {
@@ -222,39 +212,40 @@ public abstract class RackTone implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     @Override
-    public final void create(ICaustkApplicationContext context) {
-        rack = context.getRack();
-        createComponents();
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                rack = context.getRack();
+                createComponents();
+                break;
 
-    @Override
-    public final void load(ICaustkApplicationContext context) throws CausticException {
-        rack = context.getRack();
-        loadComponents();
-    }
+            case Load:
+                rack = context.getRack();
+                loadComponents();
+                break;
 
-    @Override
-    public final void update(ICaustkApplicationContext context) {
-        rack = context.getRack();
-        // look and see if this Tone exists on the rack before updating tone components
-        String name = RackMessage.QUERY_MACHINE_NAME.queryString(rack, machineIndex);
-        if (name == null) {
-            // since we are updating and this tone dosn't exist, create it native
-            RackMessage.CREATE.send(rack, machineType.getType(), machineName, machineIndex);
+            case Update:
+                rack = context.getRack();
+                // look and see if this Tone exists on the rack before updating tone components
+                String name = RackMessage.QUERY_MACHINE_NAME.queryString(rack, machineIndex);
+                if (name == null) {
+                    // since we are updating and this tone dosn't exist, create it native
+                    RackMessage.CREATE.send(rack, machineType.getType(), machineName, machineIndex);
+                }
+                updateComponents(context);
+                break;
+
+            case Restore:
+                setMachineName(getMachineName(true), true);
+                for (RackToneComponent component : components.values()) {
+                    component.restore();
+                }
+                break;
+
+            case Disconnect:
+                break;
         }
-        updateComponents(context);
-    }
-
-    @Override
-    public final void restore() {
-        setMachineName(getMachineName(true), true);
-        for (RackToneComponent component : components.values()) {
-            component.restore();
-        }
-    }
-
-    @Override
-    public void disconnect() {
     }
 
     @Override

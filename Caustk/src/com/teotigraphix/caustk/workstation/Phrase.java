@@ -25,7 +25,6 @@ import java.util.Map;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IDispatcher;
-import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
@@ -33,7 +32,10 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
-public class Phrase implements ICaustkComponent, IRackSerializer {
+/**
+ * @author Michael Schmalle
+ */
+public class Phrase extends CaustkComponent {
 
     final IDispatcher getDispatcher() {
         return machine.getRack().getDispatcher();
@@ -43,47 +45,40 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
-    private ComponentInfo info;
-
-    @Tag(3)
+    @Tag(100)
     private int index;
 
-    @Tag(4)
+    @Tag(101)
     private Machine machine;
 
-    @Tag(5)
+    @Tag(102)
     private MachineType machineType;
 
-    //--------------------------------------------------------------------------
-    // From Phrase
-    //--------------------------------------------------------------------------
-
-    @Tag(10)
+    @Tag(103)
     private TriggerMap triggerMap;
 
-    @Tag(11)
+    @Tag(104)
     private String noteData;
 
-    @Tag(13)
+    @Tag(105)
     private int length = 1;
 
-    @Tag(14)
+    @Tag(106)
     private int position = 1;
 
-    @Tag(15)
+    @Tag(107)
     private Object data;
 
-    @Tag(16)
+    @Tag(108)
     private int playMeasure = 0;
 
-    @Tag(17)
+    @Tag(109)
     private int editMeasure = 0;
 
-    @Tag(18)
+    @Tag(110)
     private int currentMeasure = 0;
 
-    @Tag(19)
+    @Tag(111)
     private Scale scale = Scale.SIXTEENTH;
 
     //--------------------------------------------------------------------------
@@ -91,13 +86,8 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // info
+    // defaultName
     //----------------------------------
-
-    @Override
-    public final ComponentInfo getInfo() {
-        return info;
-    }
 
     @Override
     public String getDefaultName() {
@@ -514,14 +504,14 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     }
 
     Phrase(ComponentInfo info, int index, MachineType machineType) {
-        this.info = info;
+        setInfo(info);
         this.index = index;
         this.machineType = machineType;
         this.triggerMap = new TriggerMap(this);
     }
 
     Phrase(ComponentInfo info, int index, Machine machine) {
-        this.info = info;
+        setInfo(info);
         this.index = index;
         this.machine = machine;
         this.machineType = machine.getMachineType();
@@ -529,30 +519,53 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
     }
 
     @Override
-    public void create(ICaustkApplicationContext context) throws CausticException {
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                break;
 
-    @Override
-    public void load(ICaustkApplicationContext context) throws CausticException {
-        final IRack rack = context.getRack();
+            case Load:
+                final IRack rack = context.getRack();
 
-        final int machineIndex = machine.getMachineIndex();
+                final int machineIndex = machine.getMachineIndex();
 
-        // set the current bank and pattern of the machine to query
-        // the string pattern data
-        // XXX when pattern_sequencer takes bank, pattern FIX THIS
-        PatternSequencerMessage.BANK.send(rack, machineIndex, getBankIndex());
-        PatternSequencerMessage.PATTERN.send(rack, machineIndex, getPatternIndex());
+                // set the current bank and pattern of the machine to query
+                // the string pattern data
+                // XXX when pattern_sequencer takes bank, pattern FIX THIS
+                PatternSequencerMessage.BANK.send(rack, machineIndex, getBankIndex());
+                PatternSequencerMessage.PATTERN.send(rack, machineIndex, getPatternIndex());
 
-        // load one phrase per pattern; load ALL patterns
-        // as caustic machine patterns
-        length = (int)PatternSequencerMessage.NUM_MEASURES.query(rack, machineIndex);
-        noteData = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(rack, machineIndex);
+                // load one phrase per pattern; load ALL patterns
+                // as caustic machine patterns
+                length = (int)PatternSequencerMessage.NUM_MEASURES.query(rack, machineIndex);
+                noteData = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(rack, machineIndex);
 
-        setNoteData(noteData);
+                setNoteData(noteData);
 
-        float tempo = OutputPanelMessage.BPM.query(rack);
-        getInfo().addTag("" + tempo);
+                float tempo = OutputPanelMessage.BPM.query(rack);
+                getInfo().addTag("" + tempo);
+                break;
+
+            case Update:
+                PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(),
+                        machine.getMachineIndex(), length);
+                for (Note note : triggerMap.getNotes()) {
+                    if (note.isSelected()) {
+                        triggerMap.update(note);
+                    } else {
+                        System.err.println("Didn't add note: " + note.toString());
+                    }
+                }
+                break;
+
+            case Restore:
+                break;
+
+            case Disconnect:
+                machine = null;
+                break;
+        }
     }
 
     @Override
@@ -877,29 +890,6 @@ public class Phrase implements ICaustkComponent, IRackSerializer {
         }
     }
 
-    @Override
-    public void restore() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(), machine.getMachineIndex(),
-                length);
-        for (Note note : triggerMap.getNotes()) {
-            if (note.isSelected()) {
-                triggerMap.update(note);
-            } else {
-                System.err.println("Didn't add note: " + note.toString());
-            }
-        }
-    }
-
-    @Override
-    public void disconnect() {
-        machine = null;
-    }
 }
 
 /*
