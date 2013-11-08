@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 
 public class EffectFactory extends CaustkSubFactoryBase {
@@ -29,7 +30,13 @@ public class EffectFactory extends CaustkSubFactoryBase {
     public Effect createEffect(ComponentInfo info, EffectType effectType) {
         Effect caustkEffect = new Effect(info, effectType);
         // create the internal IEffect instance with slot and toneIndex set to -1
-        caustkEffect.create(null);
+        // XXX Should Effect.create() be called here?
+        try {
+            caustkEffect.create(null);
+        } catch (CausticException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         return caustkEffect;
     }
 

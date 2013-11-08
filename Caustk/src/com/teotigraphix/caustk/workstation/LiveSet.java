@@ -36,15 +36,11 @@ import com.teotigraphix.caustk.rack.IRack;
  */
 public class LiveSet implements ICaustkComponent, IRackSerializer {
 
+    private transient RackSet rackSet;
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
-
-    private transient RackSet rackSet;
-
-    public void setRackSet(RackSet rackSet) {
-        this.rackSet = rackSet;
-    }
 
     @Tag(0)
     private ComponentInfo info;
@@ -55,16 +51,8 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     @Tag(2)
     private Map<Integer, AudioTrack> tracks = new HashMap<Integer, AudioTrack>();
 
-    public AudioTrack getMasterTrack() {
-        return masterTrack;
-    }
-
     @Tag(3)
     private SessionSequencer sessionSequencer;
-
-    public SessionSequencer getSessionSequencer() {
-        return sessionSequencer;
-    }
 
     @Tag(4)
     private ArrangementSequencer arrangementSequencer;
@@ -94,12 +82,36 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
     // track
     //----------------------------------
 
+    public AudioTrack getMasterTrack() {
+        return masterTrack;
+    }
+
+    //----------------------------------
+    // track
+    //----------------------------------
+
     public AudioTrack getTrack(int index) {
         return tracks.get(index);
     }
 
     public Collection<AudioTrack> getTracks() {
         return tracks.values();
+    }
+
+    //----------------------------------
+    // sessionSequencer
+    //----------------------------------
+
+    public SessionSequencer getSessionSequencer() {
+        return sessionSequencer;
+    }
+
+    //----------------------------------
+    // arrangementSequencer
+    //----------------------------------
+
+    public ArrangementSequencer getArrangementSequencer() {
+        return arrangementSequencer;
     }
 
     //----------------------------------
@@ -130,6 +142,18 @@ public class LiveSet implements ICaustkComponent, IRackSerializer {
         rackSet.getGlobalDispatcher().trigger(
                 new OnLiveSetChange(this, LiveSetChangeKind.SelectedTrackIndex, selectedTrackIndex,
                         oldValue));
+    }
+
+    //----------------------------------
+    // rackSet
+    //----------------------------------
+
+    RackSet getRackSet() {
+        return rackSet;
+    }
+
+    public void setRackSet(RackSet value) {
+        rackSet = value;
     }
 
     //--------------------------------------------------------------------------
