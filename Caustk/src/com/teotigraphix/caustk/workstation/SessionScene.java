@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.workstation;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.workstation.LiveSet.OnLiveSetListener;
 
 /**
@@ -29,19 +30,45 @@ import com.teotigraphix.caustk.workstation.LiveSet.OnLiveSetListener;
  */
 public class SessionScene implements OnLiveSetListener {
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
     private SessionSequencer sessionSequencer;
+
+    @Tag(1)
+    private Map<Integer, SessionClip> clips = new TreeMap<Integer, SessionClip>();
+
+    @Tag(2)
+    private int index;
+
+    @Tag(3)
+    private String name;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // sessionSequencer
+    //----------------------------------
 
     public SessionSequencer getSessionSequencer() {
         return sessionSequencer;
     }
 
-    private String name;
+    //----------------------------------
+    // index
+    //----------------------------------
 
-    private int index;
+    public int getIndex() {
+        return index;
+    }
 
-    private int bankIndex;
-
-    private int patternIndex;
+    //----------------------------------
+    // name
+    //----------------------------------
 
     public String getName() {
         return name;
@@ -51,28 +78,34 @@ public class SessionScene implements OnLiveSetListener {
         this.name = name;
     }
 
-    public int getBankIndex() {
-        return bankIndex;
-    }
-
-    public int getPatternIndex() {
-        return patternIndex;
-    }
+    //----------------------------------
+    // track
+    //----------------------------------
 
     public AudioTrack getTrack() {
         return sessionSequencer.getLiveSet().getTrack(index);
     }
 
-    private Map<Integer, SessionClip> map = new TreeMap<Integer, SessionClip>();
+    //----------------------------------
+    // clip
+    //----------------------------------
 
     public SessionClip getClip(int index) {
-        return map.get(index);
+        return clips.get(index);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /*
+     * Serialization.
+     */
     SessionScene() {
     }
 
-    SessionScene(String name, SessionSequencer sessionSequencer) {
+    SessionScene(int index, String name, SessionSequencer sessionSequencer) {
+        this.index = index;
         this.name = name;
         this.sessionSequencer = sessionSequencer;
     }
@@ -85,11 +118,15 @@ public class SessionScene implements OnLiveSetListener {
      */
 
     public void play() {
-
+        for (SessionClip sessionClip : clips.values()) {
+            sessionClip.play();
+        }
     }
 
     public void stop() {
-
+        for (SessionClip sessionClip : clips.values()) {
+            sessionClip.stop();
+        }
     }
 
     public void togglePlay() {
@@ -107,4 +144,5 @@ public class SessionScene implements OnLiveSetListener {
         // TODO Auto-generated method stub
 
     }
+
 }

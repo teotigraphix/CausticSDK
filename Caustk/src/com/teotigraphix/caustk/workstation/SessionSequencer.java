@@ -56,7 +56,7 @@ public class SessionSequencer extends ClipSequencer {
     }
 
     public SessionScene addScene(int index, String name) {
-        SessionScene scene = new SessionScene(name, this);
+        SessionScene scene = new SessionScene(index, name, this);
         scenes.add(index, scene);
         return scene;
     }
