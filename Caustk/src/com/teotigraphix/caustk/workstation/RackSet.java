@@ -447,7 +447,10 @@ public class RackSet extends CaustkComponent {
             throws CausticException {
         Machine machine = factory.createMachine(this, machineIndex, machineType, machineName);
         machines.put(machineIndex, machine);
-        machine.create(factory.createContext());
+        // when machineType is null, the Machine is a placeholder until the type is set
+        // in this case we do not create it yet
+        if (machineType != null)
+            machine.create(factory.createContext());
         return machine;
     }
 

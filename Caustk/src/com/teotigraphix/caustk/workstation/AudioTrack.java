@@ -157,6 +157,13 @@ public class AudioTrack {
         return machine.getMachineIndex();
     }
 
+    /**
+     * Returns whether the {@link AudioTrack} is the master track mixer.
+     */
+    public boolean isMaster() {
+        return false;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -189,4 +196,5 @@ public class AudioTrack {
         //        machine.getRackSet().removeMachine(machine);
         machine = null;
     }
+
 }

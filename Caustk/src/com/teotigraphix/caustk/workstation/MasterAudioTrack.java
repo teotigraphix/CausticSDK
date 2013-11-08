@@ -48,6 +48,11 @@ public class MasterAudioTrack extends AudioTrack {
         return false;
     }
 
+    @Override
+    public final boolean isMaster() {
+        return true;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

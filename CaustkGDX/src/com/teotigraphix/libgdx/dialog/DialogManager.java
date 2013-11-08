@@ -20,14 +20,18 @@
 package com.teotigraphix.libgdx.dialog;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.AlertDialog;
+import com.badlogic.gdx.scenes.scene2d.ui.ContextMenu;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ListDialog;
 import com.badlogic.gdx.scenes.scene2d.ui.PopUp;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.libgdx.scene2d.IScreenProvider;
@@ -45,6 +49,15 @@ public class DialogManager implements IDialogManager {
     public void center(Dialog dialog) {
         dialog.setX(Gdx.graphics.getWidth() / 4);
         dialog.setY(Gdx.graphics.getHeight() / 3);
+    }
+
+    @Override
+    public ListDialog createListDialog(String title, Object[] items, float width, float height) {
+        final ListDialog dialog = new ListDialog(title, screenProvider.getScreen().getSkin());
+        dialog.setSize(width, height);
+        dialog.setItems(items);
+        dialog.setMovable(false);
+        return dialog;
     }
 
     @Override
@@ -91,4 +104,29 @@ public class DialogManager implements IDialogManager {
         return dialog;
     }
 
+    @Override
+    public ContextMenu createContextMenu(Object[] items) {
+        ContextMenu menu = new ContextMenu(screenProvider.getScreen().getSkin(), "default");
+        menu.setItems(items);
+        return menu;
+    }
+
+    @Override
+    public void show(final Dialog dialog, Vector2 point) {
+        dialog.show(screenProvider.getScreen().getStage());
+        dialog.setWidth(150f);
+        dialog.setPosition(point.x, point.y - dialog.getHeight());
+        dialog.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                dialog.hide();
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void show(Dialog dialog) {
+        dialog.show(screenProvider.getScreen().getStage());
+    }
 }
