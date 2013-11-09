@@ -20,25 +20,25 @@
 package com.teotigraphix.caustk.workstation;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.workstation.LiveSet.OnLiveSetListener;
+import com.teotigraphix.caustk.workstation.TrackSet.OnTrackSetListener;
 
 /**
  * @author Michael Schmalle
  */
-public abstract class ClipSequencer implements OnLiveSetListener {
+public abstract class ClipSequencer implements OnTrackSetListener {
 
     @Tag(0)
-    private LiveSet liveSet;
+    private TrackSet trackSet;
 
-    public LiveSet getLiveSet() {
-        return liveSet;
+    public TrackSet getTrackSet() {
+        return trackSet;
     }
 
     ClipSequencer() {
     }
 
-    ClipSequencer(LiveSet liveSet) {
-        this.liveSet = liveSet;
+    ClipSequencer(TrackSet trackSet) {
+        this.trackSet = trackSet;
     }
 
     public abstract void create();

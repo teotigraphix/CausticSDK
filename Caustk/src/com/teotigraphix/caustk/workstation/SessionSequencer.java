@@ -43,8 +43,8 @@ public class SessionSequencer extends ClipSequencer {
     SessionSequencer() {
     }
 
-    public SessionSequencer(LiveSet liveSet) {
-        super(liveSet);
+    public SessionSequencer(TrackSet trackSet) {
+        super(trackSet);
     }
 
     @Override

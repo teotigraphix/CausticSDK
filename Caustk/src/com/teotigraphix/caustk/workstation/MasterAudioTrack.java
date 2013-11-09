@@ -63,7 +63,7 @@ public class MasterAudioTrack extends AudioTrack {
     MasterAudioTrack() {
     }
 
-    public MasterAudioTrack(AudioTrackInfo info, LiveSet liveSet) {
-        super(info, liveSet, null);
+    public MasterAudioTrack(AudioTrackInfo info, TrackSet trackSet) {
+        super(info, trackSet, null);
     }
 }

@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.workstation.LiveSet.OnLiveSetListener;
+import com.teotigraphix.caustk.workstation.TrackSet.OnTrackSetListener;
 
 /**
  * @author Michael Schmalle
  */
-public class SessionScene implements OnLiveSetListener {
+public class SessionScene implements OnTrackSetListener {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -83,7 +83,7 @@ public class SessionScene implements OnLiveSetListener {
     //----------------------------------
 
     public AudioTrack getTrack() {
-        return sessionSequencer.getLiveSet().getTrack(index);
+        return sessionSequencer.getTrackSet().getTrack(index);
     }
 
     //----------------------------------

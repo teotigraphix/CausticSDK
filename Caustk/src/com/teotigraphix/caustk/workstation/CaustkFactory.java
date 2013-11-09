@@ -65,7 +65,7 @@ public class CaustkFactory implements ICaustkFactory {
 
     private LibraryFactory libraryFactory;
 
-    private LiveSetFactory liveSetFactory;
+    private TrackSetFactory trackSetFactory;
 
     private RackSetFactory rackSetFactory;
 
@@ -117,8 +117,8 @@ public class CaustkFactory implements ICaustkFactory {
         infoFactory.setFactory(this);
         libraryFactory = new LibraryFactory();
         libraryFactory.setFactory(this);
-        liveSetFactory = new LiveSetFactory();
-        liveSetFactory.setFactory(this);
+        trackSetFactory = new TrackSetFactory();
+        trackSetFactory.setFactory(this);
         rackSetFactory = new RackSetFactory();
         rackSetFactory.setFactory(this);
         machineFactory = new MachineFactory();
@@ -195,8 +195,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public LiveSet createLiveSet(ComponentInfo info, RackSet rackSet) {
-        return liveSetFactory.createLiveSet(info, rackSet);
+    public TrackSet createTrackSet(ComponentInfo info, RackSet rackSet) {
+        return trackSetFactory.createTrackSet(info, rackSet);
     }
 
     /**

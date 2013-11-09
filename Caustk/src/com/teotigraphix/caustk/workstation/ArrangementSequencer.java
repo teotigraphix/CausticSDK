@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.workstation;
 
-
 /**
  * @author Michael Schmalle
  */
@@ -28,8 +27,8 @@ public class ArrangementSequencer extends ClipSequencer {
     ArrangementSequencer() {
     }
 
-    public ArrangementSequencer(LiveSet liveSet) {
-        super(liveSet);
+    public ArrangementSequencer(TrackSet trackSet) {
+        super(trackSet);
     }
 
     @Override

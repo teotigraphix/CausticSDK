@@ -53,7 +53,7 @@ public class AudioTrack {
     private AudioTrackInfo info;
 
     @Tag(1)
-    private LiveSet liveSet;
+    private TrackSet trackSet;
 
     @Tag(2)
     private Machine machine;
@@ -80,11 +80,11 @@ public class AudioTrack {
     }
 
     //----------------------------------
-    // liveSet
+    // trackSet
     //----------------------------------
 
-    public LiveSet getLiveSet() {
-        return liveSet;
+    public TrackSet getTrackSet() {
+        return trackSet;
     }
 
     //----------------------------------
@@ -174,9 +174,9 @@ public class AudioTrack {
     AudioTrack() {
     }
 
-    public AudioTrack(AudioTrackInfo info, LiveSet liveSet, Machine machine) {
+    public AudioTrack(AudioTrackInfo info, TrackSet trackSet, Machine machine) {
         this.info = info;
-        this.liveSet = liveSet;
+        this.trackSet = trackSet;
         this.machine = machine;
         mixer = new AudioTrackMixer(this);
     }

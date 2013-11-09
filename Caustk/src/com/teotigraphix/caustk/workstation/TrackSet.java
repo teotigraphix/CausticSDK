@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.rack.IRack;
 /**
  * @author Michael Schmalle
  */
-public class LiveSet extends CaustkComponent {
+public class TrackSet extends CaustkComponent {
 
     private transient RackSet rackSet;
 
@@ -131,8 +131,8 @@ public class LiveSet extends CaustkComponent {
         getTrack(selectedTrackIndex).setSelected(true);
 
         rackSet.getGlobalDispatcher().trigger(
-                new OnLiveSetChange(this, LiveSetChangeKind.SelectedTrackIndex, selectedTrackIndex,
-                        oldValue));
+                new OnTrackSetChange(this, TrackSetChangeKind.SelectedTrackIndex,
+                        selectedTrackIndex, oldValue));
     }
 
     //----------------------------------
@@ -154,10 +154,10 @@ public class LiveSet extends CaustkComponent {
     /*
      * Serialization.
      */
-    LiveSet() {
+    TrackSet() {
     }
 
-    LiveSet(ComponentInfo info, RackSet rackSet) {
+    TrackSet(ComponentInfo info, RackSet rackSet) {
         setInfo(info);
         this.rackSet = rackSet;
 
@@ -192,7 +192,7 @@ public class LiveSet extends CaustkComponent {
         trackAdd(track, machine);
 
         rackSet.getGlobalDispatcher().trigger(
-                new OnLiveSetChange(this, LiveSetChangeKind.TrackAdd, track));
+                new OnTrackSetChange(this, TrackSetChangeKind.TrackAdd, track));
 
         setSelectedTrackIndex(index);
 
@@ -212,7 +212,7 @@ public class LiveSet extends CaustkComponent {
         }
 
         rackSet.getGlobalDispatcher().trigger(
-                new OnLiveSetChange(this, LiveSetChangeKind.TrackAssign, audioTrack));
+                new OnTrackSetChange(this, TrackSetChangeKind.TrackAssign, audioTrack));
     }
 
     /**
@@ -230,7 +230,7 @@ public class LiveSet extends CaustkComponent {
         trackRemove(track);
 
         rackSet.getGlobalDispatcher().trigger(
-                new OnLiveSetChange(this, LiveSetChangeKind.TrackRemove, track));
+                new OnTrackSetChange(this, TrackSetChangeKind.TrackRemove, track));
 
         return removed;
     }
@@ -247,7 +247,7 @@ public class LiveSet extends CaustkComponent {
     public SessionScene addScene(int index, String name) {
         SessionScene scene = sessionSequencer.addScene(index, name);
         rackSet.getGlobalDispatcher().trigger(
-                new OnLiveSetChange(this, LiveSetChangeKind.SceneAdd, scene));
+                new OnTrackSetChange(this, TrackSetChangeKind.SceneAdd, scene));
         return scene;
     }
 
@@ -256,25 +256,19 @@ public class LiveSet extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     private void trackAdd(AudioTrack track, Machine machine) {
-        for (OnLiveSetListener l : listeners) {
+        for (OnTrackSetListener l : listeners) {
             l.onTrackAdded(track, machine);
         }
     }
 
     private void trackRemove(AudioTrack track) {
         track.dispose();
-        for (OnLiveSetListener l : listeners) {
+        for (OnTrackSetListener l : listeners) {
             l.onTrackRemoved(track);
         }
     }
 
-    private List<OnLiveSetListener> listeners = new ArrayList<OnLiveSetListener>();
-
-    public interface OnLiveSetListener {
-        void onTrackAdded(AudioTrack track, Machine machine);
-
-        void onTrackRemoved(AudioTrack track);
-    }
+    private List<OnTrackSetListener> listeners = new ArrayList<OnTrackSetListener>();
 
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
@@ -321,7 +315,7 @@ public class LiveSet extends CaustkComponent {
     public void onSave() {
     }
 
-    public enum LiveSetChangeKind {
+    public enum TrackSetChangeKind {
         TrackAdd,
 
         TrackAssign,
@@ -339,11 +333,11 @@ public class LiveSet extends CaustkComponent {
      * @author Michael Schmalle
      * @see IRack#getGlobalDispatcher()
      */
-    public static class OnLiveSetChange {
+    public static class OnTrackSetChange {
 
-        private LiveSet liveSet;
+        private TrackSet trackSet;
 
-        private LiveSetChangeKind kind;
+        private TrackSetChangeKind kind;
 
         private AudioTrack track;
 
@@ -353,70 +347,76 @@ public class LiveSet extends CaustkComponent {
 
         private SessionScene scene;
 
-        public LiveSet getLiveSet() {
-            return liveSet;
+        public TrackSet getTrackSet() {
+            return trackSet;
         }
 
-        public LiveSetChangeKind getKind() {
+        public TrackSetChangeKind getKind() {
             return kind;
         }
 
         /**
          * The added or removed track.
          * 
-         * @see LiveSetChangeKind#TrackAdd
-         * @see LiveSetChangeKind#TrackRemove
+         * @see TrackSetChangeKind#TrackAdd
+         * @see TrackSetChangeKind#TrackRemove
          */
         public AudioTrack getTrack() {
             return track;
         }
 
         /**
-         * @see LiveSetChangeKind#SelectedTrackIndex
+         * @see TrackSetChangeKind#SelectedTrackIndex
          */
         public int getTrackIndex() {
             return trackIndex;
         }
 
         /**
-         * @see LiveSetChangeKind#SelectedTrackIndex
+         * @see TrackSetChangeKind#SelectedTrackIndex
          */
         public int getOldTrackIndex() {
             return oldTrackIndex;
         }
 
         /**
-         * @see LiveSetChangeKind#SceneAdd
-         * @see LiveSetChangeKind#SceneRemove
+         * @see TrackSetChangeKind#SceneAdd
+         * @see TrackSetChangeKind#SceneRemove
          */
         public SessionScene getScene() {
             return scene;
         }
 
-        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind) {
-            this.liveSet = liveSet;
+        public OnTrackSetChange(TrackSet trackSet, TrackSetChangeKind kind) {
+            this.trackSet = trackSet;
             this.kind = kind;
         }
 
-        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind, AudioTrack track) {
-            this.liveSet = liveSet;
+        public OnTrackSetChange(TrackSet trackSet, TrackSetChangeKind kind, AudioTrack track) {
+            this.trackSet = trackSet;
             this.kind = kind;
             this.track = track;
         }
 
-        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind, int trackIndex,
+        public OnTrackSetChange(TrackSet trackSet, TrackSetChangeKind kind, int trackIndex,
                 int oldTrackIndex) {
-            this.liveSet = liveSet;
+            this.trackSet = trackSet;
             this.kind = kind;
             this.trackIndex = trackIndex;
             this.oldTrackIndex = oldTrackIndex;
         }
 
-        public OnLiveSetChange(LiveSet liveSet, LiveSetChangeKind kind, SessionScene scene) {
-            this.liveSet = liveSet;
+        public OnTrackSetChange(TrackSet trackSet, TrackSetChangeKind kind, SessionScene scene) {
+            this.trackSet = trackSet;
             this.kind = kind;
             this.scene = scene;
         }
+    }
+
+    public interface OnTrackSetListener {
+        void onTrackAdded(AudioTrack track, Machine machine);
+
+        void onTrackRemoved(AudioTrack track);
     }
 
 }
