@@ -19,10 +19,6 @@
 
 package com.teotigraphix.caustk.workstation;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
@@ -46,9 +42,6 @@ public class Pattern extends CaustkComponent {
     @Tag(101)
     private int index;
 
-    @Tag(102)
-    Map<Integer, Part> parts = new HashMap<Integer, Part>();
-
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -69,16 +62,8 @@ public class Pattern extends CaustkComponent {
     /**
      * The index of the pattern within the owning {@link PatternSet} (0..63).
      */
-    public int getIndex() {
+    public final int getIndex() {
         return index;
-    }
-
-    //---------------------------------- 
-    // parts
-    //----------------------------------
-
-    public Collection<Part> getParts() {
-        return parts.values();
     }
 
     //----------------------------------
@@ -89,7 +74,7 @@ public class Pattern extends CaustkComponent {
      * Returns the native pattern_sequencer bank index calculated from the
      * {@link #getIndex()}.
      */
-    public int getBankIndex() {
+    public final int getBankIndex() {
         return PatternUtils.getBank(index);
     }
 
@@ -101,7 +86,7 @@ public class Pattern extends CaustkComponent {
      * Returns the native pattern_sequencer pattern index calculated from the
      * {@link #getIndex()}.
      */
-    public int getPatternIndex() {
+    public final int getPatternIndex() {
         return PatternUtils.getPattern(index);
     }
 
@@ -109,8 +94,40 @@ public class Pattern extends CaustkComponent {
     // song
     //----------------------------------
 
-    public Song getSong() {
+    public final Song getSong() {
         return song;
+    }
+
+    //----------------------------------
+    // part
+    //----------------------------------
+
+    /**
+     * Returns the {@link Part} at the specified index.
+     * 
+     * @param partIndex The part index (0..13).
+     */
+    public final Part getPart(int partIndex) {
+        return patternSet.getPart(partIndex);
+    }
+
+    //----------------------------------
+    // phrase
+    //----------------------------------
+
+    /**
+     * Returns the {@link Phrase} of the machine at the {@link Pattern}'s bank
+     * and pattern index.
+     * <p>
+     * Uses the {@link Part#getMachine()} to retrieve the {@link Machine}'s
+     * {@link Phrase}.
+     */
+    public final Phrase getPhrase(int partIndex) {
+        Part part = getPart(partIndex);
+        if (part == null)
+            throw new IllegalStateException("Part is null at index: " + partIndex);
+        Machine machine = part.getMachine();
+        return machine.getPhrase(getBankIndex(), getPatternIndex());
     }
 
     //--------------------------------------------------------------------------
@@ -147,4 +164,5 @@ public class Pattern extends CaustkComponent {
                 break;
         }
     }
+
 }

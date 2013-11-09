@@ -165,7 +165,7 @@ public interface ICaustkFactory {
 
     Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index);
 
-    Part createPart(ComponentInfo info, Pattern pattern, Machine machine);
+    Part createPart(ComponentInfo info, PatternSet patternSet, Machine machine);
 
     SongSet createSongSet(ComponentInfo info, UUID patternSetId);
 

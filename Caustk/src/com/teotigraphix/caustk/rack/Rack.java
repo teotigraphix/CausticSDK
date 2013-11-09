@@ -59,7 +59,7 @@ public class Rack implements IRack {
     }
 
     @Override
-    public IDispatcher getGlobalDispatcher() {
+    public IDispatcher getComponentDispatcher() {
         return controller;
     }
 
@@ -96,7 +96,8 @@ public class Rack implements IRack {
     // controller
     //----------------------------------
 
-    ICaustkController getController() {
+    @Override
+    public ICaustkController getController() {
         return application.getController();
     }
 
@@ -139,6 +140,8 @@ public class Rack implements IRack {
             newSet.rackChanged(application.getFactory());
         } catch (CausticException e) {
             getController().getLogger().err("Rack", "Error assigning RackSet to Rack", e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

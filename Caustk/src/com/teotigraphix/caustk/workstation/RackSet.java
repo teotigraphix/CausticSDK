@@ -28,8 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -39,19 +42,38 @@ import com.teotigraphix.caustk.rack.mixer.MasterEqualizer;
 import com.teotigraphix.caustk.rack.mixer.MasterLimiter;
 import com.teotigraphix.caustk.rack.mixer.MasterReverb;
 import com.teotigraphix.caustk.rack.tone.RackTone;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * @author Michael Schmalle
  */
 public class RackSet extends CaustkComponent {
 
+    private transient ICaustkFactory factory;
+
     private transient IRack rack;
 
-    public IDispatcher getGlobalDispatcher() {
-        return rack.getGlobalDispatcher();
+    private transient boolean deleteCausticFile = true;
+
+    /**
+     * Returns the {@link ICaustkController#getDispatcher()}.
+     * <P>
+     * All events from {@link ICaustkComponent}s are dispatched through this
+     * dispatcher.
+     */
+    public IDispatcher getComponentDispatcher() {
+        return rack.getComponentDispatcher();
     }
 
-    private transient ICaustkFactory factory;
+    /**
+     * Returns the {@link IRack#getDispatcher()}.
+     * <p>
+     * Only events <strong>within</strong> the {@link IRack} listen to these
+     * events.
+     */
+    public IDispatcher getDispatcher() {
+        return rack.getDispatcher();
+    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -61,18 +83,21 @@ public class RackSet extends CaustkComponent {
     private File causticFile;
 
     @Tag(101)
-    private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
+    private byte[] data;
 
     @Tag(102)
-    private MasterMixer masterMixer;
+    private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
 
     @Tag(103)
-    private MasterSequencer masterSequencer;
+    private MasterMixer masterMixer;
 
     @Tag(104)
-    private boolean isInternal;
+    private MasterSequencer masterSequencer;
 
     @Tag(105)
+    private boolean isInternal;
+
+    @Tag(106)
     private boolean isInitialized;
 
     //--------------------------------------------------------------------------
@@ -103,6 +128,17 @@ public class RackSet extends CaustkComponent {
      */
     public File getCausticFile() {
         return causticFile;
+    }
+
+    //----------------------------------
+    // machines
+    //----------------------------------
+
+    /**
+     * Returns the bytes saved when saving a <code>.caustic</code> file state.
+     */
+    public byte[] getData() {
+        return data;
     }
 
     //----------------------------------
@@ -426,7 +462,7 @@ public class RackSet extends CaustkComponent {
         return result;
     }
 
-    public void rackChanged(ICaustkFactory factory) throws CausticException {
+    public void rackChanged(ICaustkFactory factory) throws CausticException, IOException {
         // since the is a restoration of deserialized components, all sub
         // components are guaranteed to be created, setRack() recurses and sets
         // all components rack
@@ -448,6 +484,10 @@ public class RackSet extends CaustkComponent {
         } else if (isInternal) {
             // hook Rack back up to machines and RackTones
             componentPhaseChange(context, ComponentPhase.Connect);
+            // an internal RackSet saves it's .caustic binary data
+            // and will reload it here so the native audio system is initialized
+            ICaustkController controller = rack.getController();
+            loadSongBytesIntoRack(controller, data);
         }
     }
 
@@ -469,6 +509,19 @@ public class RackSet extends CaustkComponent {
         masterSequencer.onSave();
         for (Machine machine : machines.values()) {
             machine.onSave();
+        }
+        if (isInternal) {
+            ICaustkController controller = rack.getController();
+            final File file = getTempCausticFile(controller);
+            // save the .caustic file as a byte array
+            try {
+                File savedFile = rack.saveSongAs(file);
+                data = FileUtils.readFileToByteArray(savedFile);
+                if (deleteCausticFile)
+                    FileUtils.deleteQuietly(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -517,4 +570,30 @@ public class RackSet extends CaustkComponent {
         rack = null;
         factory = null;
     }
+
+    //--------------------------------------------------------------------------
+    // Loading song data
+    //--------------------------------------------------------------------------
+
+    static void loadSongBytesIntoRack(ICaustkController controller, byte[] data)
+            throws IOException, CausticException {
+
+        // save a temp .caustic file to load the binary data into the native core
+        File absoluteCausticFile = getTempCausticFile(controller);
+        FileUtils.writeByteArrayToFile(absoluteCausticFile, data);
+
+        // only load the song into the core memory, we already have
+        // the object graph mirrored in the Rack
+        controller.getRack().loadSong(absoluteCausticFile);
+
+        // remove the temp file
+        FileUtils.deleteQuietly(absoluteCausticFile);
+    }
+
+    static File getTempCausticFile(ICaustkController controller) {
+        String projectName = "TempAudio.caustic";
+        File tempFile = new File(RuntimeUtils.getApplicationDirectory(".temp"), projectName);
+        return tempFile;
+    }
+
 }

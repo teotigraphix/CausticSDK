@@ -130,7 +130,7 @@ public class TrackSet extends CaustkComponent {
 
         getTrack(selectedTrackIndex).setSelected(true);
 
-        rackSet.getGlobalDispatcher().trigger(
+        rackSet.getComponentDispatcher().trigger(
                 new OnTrackSetChange(this, TrackSetChangeKind.SelectedTrackIndex,
                         selectedTrackIndex, oldValue));
     }
@@ -191,7 +191,7 @@ public class TrackSet extends CaustkComponent {
         tracks.put(index, track);
         trackAdd(track, machine);
 
-        rackSet.getGlobalDispatcher().trigger(
+        rackSet.getComponentDispatcher().trigger(
                 new OnTrackSetChange(this, TrackSetChangeKind.TrackAdd, track));
 
         setSelectedTrackIndex(index);
@@ -211,7 +211,7 @@ public class TrackSet extends CaustkComponent {
             e.printStackTrace();
         }
 
-        rackSet.getGlobalDispatcher().trigger(
+        rackSet.getComponentDispatcher().trigger(
                 new OnTrackSetChange(this, TrackSetChangeKind.TrackAssign, audioTrack));
     }
 
@@ -229,7 +229,7 @@ public class TrackSet extends CaustkComponent {
         AudioTrack removed = tracks.remove(track);
         trackRemove(track);
 
-        rackSet.getGlobalDispatcher().trigger(
+        rackSet.getComponentDispatcher().trigger(
                 new OnTrackSetChange(this, TrackSetChangeKind.TrackRemove, track));
 
         return removed;
@@ -246,7 +246,7 @@ public class TrackSet extends CaustkComponent {
 
     public SessionScene addScene(int index, String name) {
         SessionScene scene = sessionSequencer.addScene(index, name);
-        rackSet.getGlobalDispatcher().trigger(
+        rackSet.getComponentDispatcher().trigger(
                 new OnTrackSetChange(this, TrackSetChangeKind.SceneAdd, scene));
         return scene;
     }
@@ -331,7 +331,7 @@ public class TrackSet extends CaustkComponent {
 
     /**
      * @author Michael Schmalle
-     * @see IRack#getGlobalDispatcher()
+     * @see IRack#getComponentDispatcher()
      */
     public static class OnTrackSetChange {
 

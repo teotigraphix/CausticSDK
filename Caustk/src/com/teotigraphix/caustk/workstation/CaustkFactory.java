@@ -326,8 +326,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public Part createPart(ComponentInfo info, Pattern pattern, Machine machine) {
-        return patternSetFactory.createPart(info, pattern, machine);
+    public Part createPart(ComponentInfo info, PatternSet patternSet, Machine machine) {
+        return patternSetFactory.createPart(info, patternSet, machine);
     }
 
     //----------------------------------
@@ -404,7 +404,7 @@ public class CaustkFactory implements ICaustkFactory {
         sb.append(File.separator);
 
         // add the specific sub directory after component type
-        if (info.getType() == ComponentType.LiveSet) {
+        if (info.getType() == ComponentType.TrackSet) {
             // RackSet uses root
             // RackSet rackSet = (RackSet)component;
         } else if (info.getType() == ComponentType.RackSet) {
@@ -470,9 +470,7 @@ public class CaustkFactory implements ICaustkFactory {
         if (!rootDirectory.exists())
             throw new FileNotFoundException("rootDirectory does not exist: " + rootDirectory);
 
-        // presave callback from components
-        // XXX should this be IFactorySaveListener ???
-        //        component.onSave();
+        component.onSave();
 
         File location = resolveLocation(component, rootDirectory);
         KryoUtils.writeFileObject(kryo, location, component);

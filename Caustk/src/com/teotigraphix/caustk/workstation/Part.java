@@ -33,7 +33,7 @@ public class Part extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private Pattern pattern;
+    private PatternSet patternSet;
 
     @Tag(101)
     private Machine machine;
@@ -52,14 +52,14 @@ public class Part extends CaustkComponent {
     }
 
     //----------------------------------
-    // pattern
+    // patternSet
     //----------------------------------
 
     /**
-     * Returns the owning {@link Pattern}.
+     * Returns the owning {@link PatternSet}.
      */
-    public Pattern getPattern() {
-        return pattern;
+    public PatternSet getPatternSet() {
+        return patternSet;
     }
 
     //----------------------------------
@@ -85,18 +85,6 @@ public class Part extends CaustkComponent {
         return machine.getPatch();
     }
 
-    //----------------------------------
-    // phrase
-    //----------------------------------
-
-    /**
-     * Returns the {@link Phrase} of the machine at the {@link Pattern}'s bank
-     * and pattern index.
-     */
-    public Phrase getPhrase() {
-        return machine.getPhrase(pattern.getBankIndex(), pattern.getPatternIndex());
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -107,9 +95,9 @@ public class Part extends CaustkComponent {
     Part() {
     }
 
-    Part(ComponentInfo info, Pattern pattern, Machine machine) {
+    Part(ComponentInfo info, PatternSet patternSet, Machine machine) {
         setInfo(info);
-        this.pattern = pattern;
+        this.patternSet = patternSet;
         this.machine = machine;
     }
 

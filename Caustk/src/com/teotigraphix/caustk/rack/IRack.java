@@ -35,8 +35,8 @@ import com.teotigraphix.caustk.workstation.ICaustkFactory;
 import com.teotigraphix.caustk.workstation.Library;
 import com.teotigraphix.caustk.workstation.Machine;
 import com.teotigraphix.caustk.workstation.Phrase;
-import com.teotigraphix.caustk.workstation.RackSet;
 import com.teotigraphix.caustk.workstation.Phrase.OnPhraseChange;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * The {@link IRack} API acts as the singleton instance that can load and save
@@ -86,7 +86,9 @@ public interface IRack extends ICausticEngine, IRestore {
     /**
      * The global dispatcher, this is the {@link ICaustkController}.
      */
-    IDispatcher getGlobalDispatcher();
+    IDispatcher getComponentDispatcher();
+
+    ICaustkController getController();
 
     /**
      * The {@link ICaustkApplication#getLogger()}.
@@ -209,4 +211,5 @@ public interface IRack extends ICausticEngine, IRestore {
      * @throws IOException
      */
     File saveSongAs(File file) throws IOException;
+
 }

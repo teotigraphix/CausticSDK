@@ -66,6 +66,10 @@ public final class PatternUtils {
         return toString(phrase.getBankIndex(), phrase.getPatternIndex());
     }
 
+    public static String toString(int index) {
+        return toString(getBank(index), getPattern(index));
+    }
+
     public static int getPattern(int index) {
         return index % 16;
     }

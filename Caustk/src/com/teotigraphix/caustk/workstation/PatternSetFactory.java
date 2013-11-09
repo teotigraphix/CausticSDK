@@ -34,8 +34,8 @@ public class PatternSetFactory extends CaustkSubFactoryBase {
         return pattern;
     }
 
-    public Part createPart(ComponentInfo info, Pattern pattern, Machine machine) {
-        Part part = new Part(info, pattern, machine);
+    public Part createPart(ComponentInfo info, PatternSet patternSet, Machine machine) {
+        Part part = new Part(info, patternSet, machine);
         return part;
     }
 }

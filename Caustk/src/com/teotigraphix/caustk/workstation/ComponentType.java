@@ -40,11 +40,11 @@ public enum ComponentType {
     Library("clb"),
 
     /**
-     * A {@link LiveSet} holds TODO components.
+     * A {@link TrackSet} holds TODO components.
      * <p>
-     * Extension: <strong>.cls</strong>
+     * Extension: <strong>.cts</strong>
      */
-    LiveSet("cls"),
+    TrackSet("cls"),
 
     /**
      * A {@link RackSet} holds {@link Machine} components.
@@ -62,15 +62,15 @@ public enum ComponentType {
     Machine("cmc"),
 
     /**
-     * A {@link CaustkPatch} holds one {@link MachinePreset}, one
-     * {@link MixerPreset} and up to two {@link Effect} components.
+     * A {@link Patch} holds one {@link MachinePreset}, one
+     * {@link MasterMixerPreset} and up to two {@link Effect} components.
      * <p>
      * Extension: <strong>.cpt</strong>
      */
     Patch("cpt"),
 
     /**
-     * A {@link CaustkEffect} hold up to 2 live or serialized {@link RackEffect}
+     * A {@link Effect} hold up to 2 live or serialized {@link RackEffect}
      * components.
      * <p>
      * Extension: <strong>.cef</strong>
@@ -78,11 +78,46 @@ public enum ComponentType {
     Effect("cef"),
 
     /**
-     * A {@link CaustkPhrase} holds a
+     * A {@link Phrase} holds a
      * <p>
      * Extension: <strong>.cph</strong>
      */
     Phrase("cph"),
+
+    /**
+     * A {@link PatternSet} holds a
+     * <p>
+     * Extension: <strong>.cps</strong>
+     */
+    PatternSet("cps"),
+
+    /**
+     * A {@link Pattern} holds a
+     * <p>
+     * Extension: <strong>.cpn</strong>
+     */
+    Pattern("cpn"),
+
+    /**
+     * A {@link Part} holds a
+     * <p>
+     * Extension: <strong>.cpr</strong>
+     */
+    Part("cpr"),
+
+    /**
+     * A {@link SongSet} holds a
+     * <p>
+     * Extension: <strong>.css</strong>
+     */
+    SongSet("css"),
+
+    /**
+     * A {@link Song} holds a
+     * <p>
+     * Extension: <strong>.csg</strong>
+     */
+    Song("csg"),
 
     /**
      * A {@link CastkMasterMixer} holds a live or serialized {@link MasterMixer}

@@ -68,12 +68,17 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * <p>
  * A library holds;
  * <ul>
- * <li>{@link LiveSet}</li>
+ * <li>{@link TrackSet}</li>
  * <li>{@link RackSet}</li>
  * <li>{@link Machine}</li>
  * <li>{@link Patch}</li>
  * <li>{@link Effect}</li>
  * <li>{@link Phrase}</li>
+ * <li>{@link PatternSet}</li>
+ * <li>{@link Pattern}</li>
+ * <li>{@link Part}</li>
+ * <li>{@link SongSet}</li>
+ * <li>{@link Song}</li>
  * <li>{@link MasterMixer}</li>
  * <li>{@link MasterSequencer}</li>
  * </ul>

@@ -125,4 +125,8 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
     public void onSave() {
     }
 
+    @Override
+    public String toString() {
+        return getDefaultName();
+    }
 }

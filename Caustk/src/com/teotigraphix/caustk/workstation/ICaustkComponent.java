@@ -37,4 +37,8 @@ public interface ICaustkComponent {
     String getDefaultName();
 
     void disconnect();
+
+    void onLoad();
+
+    void onSave();
 }

@@ -39,7 +39,7 @@ public class RackComponent implements IRackComponent {
     }
 
     protected final IDispatcher getGlobalDispatcher() {
-        return rack.getGlobalDispatcher();
+        return rack.getComponentDispatcher();
     }
 
     protected final ICaustkController getController() {
