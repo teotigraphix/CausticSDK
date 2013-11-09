@@ -33,7 +33,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
-import com.teotigraphix.caustk.rack.effect.RackEffect;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 import com.teotigraphix.caustk.utils.KryoUtils;
@@ -82,6 +81,10 @@ public class CaustkFactory implements ICaustkFactory {
     private MasterSequencerFactory masterSequencerFactory;
 
     private RackToneFactory rackToneFactory;
+
+    private PatternSetFactory patternSetFactory;
+
+    private SongSetFactory songSetFactory;
 
     //----------------------------------
     // application
@@ -135,6 +138,10 @@ public class CaustkFactory implements ICaustkFactory {
         masterSequencerFactory.setFactory(this);
         rackToneFactory = new RackToneFactory();
         rackToneFactory.setFactory(this);
+        patternSetFactory = new PatternSetFactory();
+        patternSetFactory.setFactory(this);
+        songSetFactory = new SongSetFactory();
+        songSetFactory.setFactory(this);
     }
 
     //--------------------------------------------------------------------------
@@ -256,23 +263,6 @@ public class CaustkFactory implements ICaustkFactory {
         return patchFactory.createPatch(machine);
     }
 
-    /**
-     * Activates the patch, creating the {@link MachinePreset} and
-     * <p>
-     * - Creates and assigns the bytes for the {@link MachinePreset}.
-     * <p>
-     * - Creates and assigns the {@link Patch} which will then create 0-2
-     * {@link Effect}s. When the {@link Effect} is created, only the
-     * {@link EffectType} is saved and slot index. The {@link RackEffect}
-     * instance is not restored at this point.
-     * 
-     * @param livePatch
-     * @throws IOException
-     */
-    public void _activatePatch(Patch caustkPatch) throws IOException {
-        //        patchFactory.activatePatch(caustkPatch);
-    }
-
     @Override
     public Phrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
             int patternIndex) {
@@ -282,6 +272,38 @@ public class CaustkFactory implements ICaustkFactory {
     @Override
     public Phrase createPhrase(Machine caustkMachine, int bankIndex, int patternIndex) {
         return phraseFactory.createPhrase(caustkMachine, bankIndex, patternIndex);
+    }
+
+    //----------------------------------
+    // PatternSet
+    //----------------------------------
+
+    public PatternSet createPatternSet(ComponentInfo info, RackSet rackSet) {
+        return patternSetFactory.createPatternSet(info, rackSet);
+    }
+
+    public Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index) {
+        return patternSetFactory.createPattern(info, patternSet, index);
+    }
+
+    public Part createPart(ComponentInfo info, Pattern pattern, Machine machine) {
+        return patternSetFactory.createPart(info, pattern, machine);
+    }
+
+    //----------------------------------
+    // SongSet
+    //----------------------------------
+
+    public SongSet createSongSet(ComponentInfo info, UUID patternSetId) {
+        return songSetFactory.createSongSet(info, patternSetId);
+    }
+
+    public SongSet createSongSet(ComponentInfo info, PatternSet patternSet) {
+        return songSetFactory.createSongSet(info, patternSet);
+    }
+
+    public Song createSong(ComponentInfo info, SongSet songSet) {
+        return songSetFactory.createSong(info, songSet);
     }
 
     //----------------------------------
