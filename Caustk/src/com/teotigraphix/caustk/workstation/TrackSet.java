@@ -307,14 +307,6 @@ public class TrackSet extends CaustkComponent {
         }
     }
 
-    @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onSave() {
-    }
-
     public enum TrackSetChangeKind {
         TrackAdd,
 

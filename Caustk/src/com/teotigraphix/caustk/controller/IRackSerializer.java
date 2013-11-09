@@ -82,12 +82,12 @@ public interface IRackSerializer extends IRestore {
     /**
      * Post-load callback for components and sub components.
      */
-    void onLoad();
+    void onLoad(ICaustkApplicationContext context);
 
     /**
      * Pre-save callback for components and their sub components.
      */
-    void onSave();
+    void onSave(ICaustkApplicationContext context);
 
     void disconnect();
 }

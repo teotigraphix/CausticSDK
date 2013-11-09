@@ -461,7 +461,7 @@ public class CaustkFactory implements ICaustkFactory {
             throw new FileNotFoundException("Component file note found: " + componentFile);
         T component = KryoUtils.readFileObject(kryo, componentFile, clazz);
         if (component instanceof IRackSerializer)
-            ((IRackSerializer)component).onLoad();
+            ((IRackSerializer)component).onLoad(createContext());
         return component;
     }
 
@@ -469,9 +469,8 @@ public class CaustkFactory implements ICaustkFactory {
     public File save(ICaustkComponent component, File rootDirectory) throws FileNotFoundException {
         if (!rootDirectory.exists())
             throw new FileNotFoundException("rootDirectory does not exist: " + rootDirectory);
-
-        component.onSave();
-
+        if (component instanceof IRackSerializer)
+            ((IRackSerializer)component).onSave(createContext());
         File location = resolveLocation(component, rootDirectory);
         KryoUtils.writeFileObject(kryo, location, component);
         return location;

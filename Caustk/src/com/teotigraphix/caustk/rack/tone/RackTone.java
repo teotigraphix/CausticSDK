@@ -262,14 +262,6 @@ public abstract class RackTone extends CaustkComponent {
         }
     }
 
-    @Override
-    public void onSave() {
-    }
-
-    @Override
-    public void onLoad() {
-    }
-
     /**
      * Create/add sub components to the tone using
      * {@link #addComponent(Class, RackToneComponent)}.

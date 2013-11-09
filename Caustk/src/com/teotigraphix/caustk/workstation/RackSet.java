@@ -500,15 +500,11 @@ public class RackSet extends CaustkComponent {
     }
 
     @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onSave() {
-        masterMixer.onSave();
-        masterSequencer.onSave();
+    public void onSave(ICaustkApplicationContext context) {
+        masterMixer.onSave(context);
+        masterSequencer.onSave(context);
         for (Machine machine : machines.values()) {
-            machine.onSave();
+            machine.onSave(context);
         }
         if (isInternal) {
             ICaustkController controller = rack.getController();

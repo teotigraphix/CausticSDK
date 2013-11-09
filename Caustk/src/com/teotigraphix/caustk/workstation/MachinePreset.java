@@ -346,11 +346,11 @@ public class MachinePreset implements IRackSerializer {
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad(ICaustkApplicationContext context) {
     }
 
     @Override
-    public void onSave() {
+    public void onSave(ICaustkApplicationContext context) {
         // XXX during an add to library, the machin is null
         // so the preset bytes need to be refreshed before adding and before
         // the patch's machine gets dereferenced

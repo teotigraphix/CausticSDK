@@ -118,11 +118,11 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
             ComponentPhase phase) throws CausticException;
 
     @Override
-    public void onLoad() {
+    public void onLoad(ICaustkApplicationContext context) {
     }
 
     @Override
-    public void onSave() {
+    public void onSave(ICaustkApplicationContext context) {
     }
 
     @Override

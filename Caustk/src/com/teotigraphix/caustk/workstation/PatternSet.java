@@ -236,15 +236,15 @@ public class PatternSet extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void onLoad() {
-        super.onLoad();
+    public void onLoad(ICaustkApplicationContext context) {
+        super.onLoad(context);
     }
 
     @Override
-    public void onSave() {
-        super.onSave();
+    public void onSave(ICaustkApplicationContext context) {
+        super.onSave(context);
 
-        rackSet.onSave();
+        rackSet.onSave(context);
     }
 
     @Override

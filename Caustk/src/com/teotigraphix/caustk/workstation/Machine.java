@@ -464,18 +464,19 @@ public class Machine extends CaustkComponent {
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad(ICaustkApplicationContext context) {
     }
 
     @Override
-    public void onSave() {
-        // XXX TEMP HACK
+    public void onSave(ICaustkApplicationContext context) {
+        rack = context.getRack();
         if (rackTone != null)
-            rackTone.onSave();
-        patch.onSave();
+            rackTone.onSave(context);
+        patch.onSave(context);
         for (Phrase phrase : phrases.values()) {
-            phrase.onSave();
+            phrase.onSave(context);
         }
+        rack = null;
     }
 
     //--------------------------------------------------------------------------

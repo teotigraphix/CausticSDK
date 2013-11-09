@@ -207,15 +207,15 @@ public class Patch extends CaustkComponent {
     }
 
     @Override
-    public void onLoad() {
-        machinePreset.onLoad();
-        machineMixer.onLoad();
+    public void onLoad(ICaustkApplicationContext context) {
+        machinePreset.onLoad(context);
+        machineMixer.onLoad(context);
     }
 
     @Override
-    public void onSave() {
-        machinePreset.onSave();
-        machineMixer.onSave();
+    public void onSave(ICaustkApplicationContext context) {
+        machinePreset.onSave(context);
+        machineMixer.onSave(context);
     }
 
     //--------------------------------------------------------------------------

@@ -376,9 +376,15 @@ public class MachineMixer implements IRackSerializer {
         return ExceptionUtils.newRangeException(control, range, value);
     }
 
-    public void onLoad() {
+    @Override
+    public void onLoad(ICaustkApplicationContext context) {
+        // TODO Auto-generated method stub
+
     }
 
-    public void onSave() {
+    @Override
+    public void onSave(ICaustkApplicationContext context) {
+        // TODO Auto-generated method stub
+
     }
 }

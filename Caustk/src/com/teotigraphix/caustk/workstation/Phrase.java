@@ -571,14 +571,6 @@ public class Phrase extends CaustkComponent {
         }
     }
 
-    @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onSave() {
-    }
-
     /**
      * Clears all notes from all measures of the phrase.
      */

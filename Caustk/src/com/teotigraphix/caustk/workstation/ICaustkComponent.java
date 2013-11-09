@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.workstation;
 
+
 /**
  * A component found in a {@link Library}.
  * 
@@ -37,8 +38,4 @@ public interface ICaustkComponent {
     String getDefaultName();
 
     void disconnect();
-
-    void onLoad();
-
-    void onSave();
 }
