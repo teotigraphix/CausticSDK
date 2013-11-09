@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
@@ -142,25 +143,28 @@ public class MasterLimiter extends RackMasterComponent {
     public MasterLimiter() {
     }
 
-    //--------------------------------------------------------------------------
-    // IRackSerializer API :: Methods
-    //--------------------------------------------------------------------------
-
     @Override
-    public void restore() {
-        super.restore();
-        setAttack(getAttack(true));
-        setPost(getPost(true));
-        setPre(getPre(true));
-        setRelease(getRelease(true));
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        super.componentPhaseChange(context, phase);
+        switch (phase) {
+            case Update:
+                MasterMixerMessage.LIMITER_ATTACK.send(getRack(), attack);
+                MasterMixerMessage.LIMITER_POST.send(getRack(), post);
+                MasterMixerMessage.LIMITER_PRE.send(getRack(), pre);
+                MasterMixerMessage.LIMITER_RELEASE.send(getRack(), release);
+                break;
+
+            case Restore:
+                setAttack(getAttack(true));
+                setPost(getPost(true));
+                setPre(getPre(true));
+                setRelease(getRelease(true));
+                break;
+
+            default:
+                break;
+        }
     }
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        super.update(context);
-        MasterMixerMessage.LIMITER_ATTACK.send(getRack(), attack);
-        MasterMixerMessage.LIMITER_POST.send(getRack(), post);
-        MasterMixerMessage.LIMITER_PRE.send(getRack(), pre);
-        MasterMixerMessage.LIMITER_RELEASE.send(getRack(), release);
-    }
 }

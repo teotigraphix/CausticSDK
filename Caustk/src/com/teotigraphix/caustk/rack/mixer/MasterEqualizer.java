@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
@@ -169,27 +170,29 @@ public class MasterEqualizer extends RackMasterComponent {
     public MasterEqualizer() {
     }
 
-    //--------------------------------------------------------------------------
-    // IRackSerializer API :: Methods
-    //--------------------------------------------------------------------------
-
     @Override
-    public void restore() {
-        super.restore();
-        setBass(getBass(true));
-        setBassMidFreq(getBassMidFreq(true));
-        setHigh(getHigh(true));
-        setMid(getMid(true));
-        setMidHighFreq(getMidHighFreq(true));
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        super.componentPhaseChange(context, phase);
+        switch (phase) {
+            case Update:
+                MasterMixerMessage.EQ_BASS.send(getRack(), bass);
+                MasterMixerMessage.EQ_BASSMID_FREQ.send(getRack(), bassMidFreq);
+                MasterMixerMessage.EQ_HIGH.send(getRack(), high);
+                MasterMixerMessage.EQ_MID.send(getRack(), mid);
+                MasterMixerMessage.EQ_MIDHIGH_FREQ.send(getRack(), midHighFreq);
+                break;
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        super.update(context);
-        MasterMixerMessage.EQ_BASS.send(getRack(), bass);
-        MasterMixerMessage.EQ_BASSMID_FREQ.send(getRack(), bassMidFreq);
-        MasterMixerMessage.EQ_HIGH.send(getRack(), high);
-        MasterMixerMessage.EQ_MID.send(getRack(), mid);
-        MasterMixerMessage.EQ_MIDHIGH_FREQ.send(getRack(), midHighFreq);
+            case Restore:
+                setBass(getBass(true));
+                setBassMidFreq(getBassMidFreq(true));
+                setHigh(getHigh(true));
+                setMid(getMid(true));
+                setMidHighFreq(getMidHighFreq(true));
+                break;
+
+            default:
+                break;
+        }
     }
 }

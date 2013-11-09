@@ -29,6 +29,7 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.workstation.ComponentInfo;
 import com.teotigraphix.caustk.workstation.ComponentType;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 import com.teotigraphix.caustk.workstation.RackSet;
 import com.teotigraphix.libgdx.application.CausticSongFile;
 
@@ -118,13 +119,13 @@ public abstract class ApplicationModelState {
      * instance.
      */
     public void create() {
-        IRack rack = getController().getRack();
+        final ICaustkFactory factory = getController().getFactory();
+        final IRack rack = factory.getRack();
         // XXX don't know exactly where to put this but when a new Project
         // is created, when reiniting the state, the Rack needs to be wiped
         RackMessage.BLANKRACK.send(rack);
-        ComponentInfo info = getController().getFactory().createInfo(ComponentType.RackSet,
-                "Untitled RackSet");
-        rackSet = getController().getFactory().createRackSet(info);
+        ComponentInfo info = factory.createInfo(ComponentType.RackSet, "Untitled RackSet");
+        rackSet = factory.createRackSet(info);
         rackSet.setInternal();
         rack.setRackSet(rackSet);
     }

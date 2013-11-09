@@ -305,6 +305,9 @@ public class LiveSet extends CaustkComponent {
             case Restore:
                 break;
 
+            case Connect:
+                break;
+
             case Disconnect:
                 break;
         }

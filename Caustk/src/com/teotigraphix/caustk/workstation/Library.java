@@ -204,6 +204,9 @@ public class Library extends CaustkComponent {
             case Restore:
                 break;
 
+            case Connect:
+                break;
+
             case Disconnect:
                 break;
         }

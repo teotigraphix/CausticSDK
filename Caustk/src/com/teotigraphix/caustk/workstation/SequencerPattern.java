@@ -101,6 +101,9 @@ public class SequencerPattern extends CaustkComponent {
             case Restore:
                 break;
 
+            case Connect:
+                break;
+
             case Disconnect:
                 break;
         }

@@ -562,6 +562,9 @@ public class Phrase extends CaustkComponent {
             case Restore:
                 break;
 
+            case Connect:
+                break;
+
             case Disconnect:
                 machine = null;
                 break;

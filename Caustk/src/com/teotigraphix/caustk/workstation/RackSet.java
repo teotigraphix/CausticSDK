@@ -72,6 +72,9 @@ public class RackSet extends CaustkComponent {
     @Tag(104)
     private boolean isInternal;
 
+    @Tag(105)
+    private boolean isInitialized;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -171,6 +174,19 @@ public class RackSet extends CaustkComponent {
     }
 
     //----------------------------------
+    // isInitialized
+    //----------------------------------
+
+    /**
+     * Returns whether this rack set has had it's
+     * {@link #create(ICaustkApplicationContext)} or
+     * {@link #load(ICaustkApplicationContext)}method called.
+     */
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    //----------------------------------
     // rack
     //----------------------------------
 
@@ -223,6 +239,9 @@ public class RackSet extends CaustkComponent {
                 masterSequencer = factory.createMasterSequencer(this);
                 masterMixer.create(context);
                 masterSequencer.create(context);
+
+                isInitialized = true;
+
                 break;
 
             case Load:
@@ -251,6 +270,9 @@ public class RackSet extends CaustkComponent {
                 } catch (IOException e) {
                     throw new CausticException(e);
                 }
+
+                isInitialized = true;
+
                 break;
 
             case Update:
@@ -268,6 +290,15 @@ public class RackSet extends CaustkComponent {
                 break;
 
             case Restore:
+                break;
+
+            case Connect:
+                rack = context.getRack();
+                masterMixer.phaseChange(context, ComponentPhase.Connect);
+                masterSequencer.phaseChange(context, ComponentPhase.Connect);
+                for (Machine machine : machines.values()) {
+                    machine.phaseChange(context, ComponentPhase.Connect);
+                }
                 break;
 
             case Disconnect:
@@ -402,11 +433,21 @@ public class RackSet extends CaustkComponent {
         this.factory = factory;
         this.rack = factory.getRack();
 
+        final ICaustkApplicationContext context = factory.createContext();
+
         if (!isInternal) {
+
+            if (!isInitialized)
+                throw new IllegalStateException("RackSet has not been created");
+
             // if this set is internal, the rack state is already in the correct state
             // no need to update the native rack with the scene's serialized properties
-            ICaustkApplicationContext context = factory.createContext();
             update(context);
+        } else if (!isInitialized) {
+            create(context);
+        } else if (isInternal) {
+            // hook Rack back up to machines and RackTones
+            componentPhaseChange(context, ComponentPhase.Connect);
         }
     }
 

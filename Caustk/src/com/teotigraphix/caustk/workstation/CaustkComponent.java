@@ -104,7 +104,14 @@ public abstract class CaustkComponent implements ICaustkComponent, IRackSerializ
 
         Restore,
 
+        Connect,
+
         Disconnect
+    }
+
+    public void phaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        componentPhaseChange(context, phase);
     }
 
     protected abstract void componentPhaseChange(ICaustkApplicationContext context,

@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
@@ -286,37 +287,39 @@ public class MasterReverb extends RackMasterComponent {
     public MasterReverb() {
     }
 
-    //--------------------------------------------------------------------------
-    // IRackSerializer API :: Methods
-    //--------------------------------------------------------------------------
-
     @Override
-    public void restore() {
-        super.restore();
-        setDiffuse(getDiffuse(true));
-        setDitherEchoes(getDitherEchoes(true));
-        setERDecay(getERDecay(true));
-        setERGain(getERGain(true));
-        setHFDamping(getHFDamping(true));
-        setPreDelay(getPreDelay(true));
-        setRoomSize(getRoomSize(true));
-        setStereoDelay(getStereoDelay(true));
-        setStereoSpread(getStereoSpread(true));
-        setWet(getWet(true));
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        super.componentPhaseChange(context, phase);
+        switch (phase) {
+            case Update:
+                MasterMixerMessage.REVERB_DIFFUSE.send(getRack(), diffuse);
+                MasterMixerMessage.REVERB_DITHER_ECHOS.send(getRack(), ditherEchoes);
+                MasterMixerMessage.REVERB_ER_DECAY.send(getRack(), erDecay);
+                MasterMixerMessage.REVERB_ER_GAIN.send(getRack(), erGain);
+                MasterMixerMessage.REVERB_HF_DAMPING.send(getRack(), hfDamping);
+                MasterMixerMessage.REVERB_PRE_DELAY.send(getRack(), preDelay);
+                MasterMixerMessage.REVERB_ROOM_SIZE.send(getRack(), roomSize);
+                MasterMixerMessage.REVERB_STEREO_DELAY.send(getRack(), stereoDelay);
+                MasterMixerMessage.REVERB_STEREO_SPREAD.send(getRack(), stereoSpread);
+                MasterMixerMessage.REVERB_WET.send(getRack(), wet);
+                break;
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        super.update(context);
-        MasterMixerMessage.REVERB_DIFFUSE.send(getRack(), diffuse);
-        MasterMixerMessage.REVERB_DITHER_ECHOS.send(getRack(), ditherEchoes);
-        MasterMixerMessage.REVERB_ER_DECAY.send(getRack(), erDecay);
-        MasterMixerMessage.REVERB_ER_GAIN.send(getRack(), erGain);
-        MasterMixerMessage.REVERB_HF_DAMPING.send(getRack(), hfDamping);
-        MasterMixerMessage.REVERB_PRE_DELAY.send(getRack(), preDelay);
-        MasterMixerMessage.REVERB_ROOM_SIZE.send(getRack(), roomSize);
-        MasterMixerMessage.REVERB_STEREO_DELAY.send(getRack(), stereoDelay);
-        MasterMixerMessage.REVERB_STEREO_SPREAD.send(getRack(), stereoSpread);
-        MasterMixerMessage.REVERB_WET.send(getRack(), wet);
+            case Restore:
+                setDiffuse(getDiffuse(true));
+                setDitherEchoes(getDitherEchoes(true));
+                setERDecay(getERDecay(true));
+                setERGain(getERGain(true));
+                setHFDamping(getHFDamping(true));
+                setPreDelay(getPreDelay(true));
+                setRoomSize(getRoomSize(true));
+                setStereoDelay(getStereoDelay(true));
+                setStereoSpread(getStereoSpread(true));
+                setWet(getWet(true));
+                break;
+
+            default:
+                break;
+        }
     }
 }

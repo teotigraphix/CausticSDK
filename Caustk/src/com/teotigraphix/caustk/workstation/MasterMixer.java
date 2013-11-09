@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.workstation;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
-import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.controller.command.CommandContext;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
@@ -36,7 +35,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
 /**
  * @author Michael Schmalle
  */
-public class MasterMixer implements IRackSerializer {
+public class MasterMixer extends CaustkComponent {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -48,22 +47,22 @@ public class MasterMixer implements IRackSerializer {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
+    @Tag(100)
     private RackSet rackSet;
 
-    @Tag(1)
+    @Tag(101)
     private MasterDelay delay;
 
-    @Tag(2)
+    @Tag(102)
     private MasterReverb reverb;
 
-    @Tag(3)
+    @Tag(103)
     private MasterEqualizer equalizer;
 
-    @Tag(4)
+    @Tag(104)
     private MasterLimiter limiter;
 
-    @Tag(5)
+    @Tag(105)
     private MasterVolume volume;
 
     public RackSet getRackSet() {
@@ -102,63 +101,67 @@ public class MasterMixer implements IRackSerializer {
     }
 
     @Override
-    public void create(ICaustkApplicationContext context) throws CausticException {
-        equalizer = new MasterEqualizer();
-        limiter = new MasterLimiter();
-        delay = new MasterDelay();
-        reverb = new MasterReverb();
-        volume = new MasterVolume();
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                // XXX Fix this mess
+                equalizer = new MasterEqualizer();
+                limiter = new MasterLimiter();
+                delay = new MasterDelay();
+                reverb = new MasterReverb();
+                volume = new MasterVolume();
 
-        equalizer.setRackSet(rackSet);
-        limiter.setRackSet(rackSet);
-        delay.setRackSet(rackSet);
-        reverb.setRackSet(rackSet);
-        volume.setRackSet(rackSet);
-    }
+                equalizer.setRackSet(rackSet);
+                limiter.setRackSet(rackSet);
+                delay.setRackSet(rackSet);
+                reverb.setRackSet(rackSet);
+                volume.setRackSet(rackSet);
 
-    @Override
-    public void load(ICaustkApplicationContext context) throws CausticException {
-        create(context); // safe to call create() here since we are just creating instances
+                equalizer.create(context);
+                limiter.create(context);
+                delay.create(context);
+                reverb.create(context);
+                volume.create(context);
+                break;
 
-        equalizer.load(context);
-        limiter.load(context);
-        delay.load(context);
-        reverb.load(context);
-        volume.load(context);
-    }
+            case Load:
+                create(context); // safe to call create() here since we are just creating instances
 
-    @Override
-    public void restore() {
-        equalizer.restore();
-        limiter.restore();
-        delay.restore();
-        reverb.restore();
-        volume.restore();
-    }
+                equalizer.load(context);
+                limiter.load(context);
+                delay.load(context);
+                reverb.load(context);
+                volume.load(context);
+                break;
 
-    @Override
-    public void onSave() {
-        // TODO Auto-generated method stub
+            case Update:
+                equalizer.update(context);
+                limiter.update(context);
+                delay.update(context);
+                reverb.update(context);
+                volume.update(context);
+                break;
 
-    }
+            case Restore:
+                equalizer.restore();
+                limiter.restore();
+                delay.restore();
+                reverb.restore();
+                volume.restore();
+                break;
 
-    @Override
-    public void onLoad() {
-        // TODO Auto-generated method stub
+            case Connect:
+                equalizer.phaseChange(context, ComponentPhase.Connect);
+                limiter.phaseChange(context, ComponentPhase.Connect);
+                delay.phaseChange(context, ComponentPhase.Connect);
+                reverb.phaseChange(context, ComponentPhase.Connect);
+                volume.phaseChange(context, ComponentPhase.Connect);
+                break;
 
-    }
-
-    @Override
-    public void disconnect() {
-    }
-
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        equalizer.update(context);
-        limiter.update(context);
-        delay.update(context);
-        reverb.update(context);
-        volume.update(context);
+            case Disconnect:
+                break;
+        }
     }
 
     protected final RuntimeException newRangeException(String control, String range, Object value) {
@@ -330,6 +333,12 @@ public class MasterMixer implements IRackSerializer {
         public String toString() {
             return getValue();
         }
+    }
+
+    @Override
+    public String getDefaultName() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

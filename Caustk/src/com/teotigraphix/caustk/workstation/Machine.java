@@ -448,6 +448,12 @@ public class Machine extends CaustkComponent {
             case Restore:
                 break;
 
+            case Connect:
+                factory = context.getFactory();
+                rack = context.getRack();
+                rackTone.setRack(rack);
+                break;
+
             case Disconnect:
                 patterns.clear();
                 phrases.clear();

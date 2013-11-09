@@ -44,6 +44,16 @@ public abstract class RackTone extends CaustkComponent {
 
     private transient IRack rack;
 
+    /**
+     * Only public to allow the {@link Machine} to connect this tone back up to
+     * a {@link IRack}.
+     * 
+     * @param value The current session rack.
+     */
+    public void setRack(IRack value) {
+        rack = value;
+    }
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -243,6 +253,10 @@ public abstract class RackTone extends CaustkComponent {
                 }
                 break;
 
+            case Connect:
+                rack = context.getRack();
+                break;
+
             case Disconnect:
                 break;
         }
@@ -276,4 +290,5 @@ public abstract class RackTone extends CaustkComponent {
             component.update(context);
         }
     }
+
 }

@@ -21,17 +21,17 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
-import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
+import com.teotigraphix.caustk.workstation.CaustkComponent;
 import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * @author Michael Schmalle
  */
-public class RackMasterComponent implements IRackSerializer {
+public class RackMasterComponent extends CaustkComponent {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -47,15 +47,24 @@ public class RackMasterComponent implements IRackSerializer {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(0)
+    @Tag(50)
     private RackSet rackSet;
 
-    @Tag(1)
+    @Tag(51)
     private boolean bypass = false;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // defaultName
+    //----------------------------------
+
+    @Override
+    public String getDefaultName() {
+        return null;
+    }
 
     //----------------------------------
     // rackSet
@@ -103,45 +112,35 @@ public class RackMasterComponent implements IRackSerializer {
     public RackMasterComponent() {
     }
 
-    //--------------------------------------------------------------------------
-    // IRackSerializer API :: Methods
-    //--------------------------------------------------------------------------
-
     @Override
-    public void create(ICaustkApplicationContext context) throws CausticException {
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        switch (phase) {
+            case Create:
+                rack = context.getRack();
+                break;
 
-    @Override
-    public void load(ICaustkApplicationContext context) {
-        rack = context.getRack();
-        restore();
-    }
+            case Load:
+                rack = context.getRack();
+                restore();
+                break;
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        rack = context.getRack();
-        getBypassMessage().send(getRack(), bypass ? 1 : 0);
-    }
+            case Update:
+                rack = context.getRack();
+                getBypassMessage().send(getRack(), bypass ? 1 : 0);
+                break;
 
-    @Override
-    public void restore() {
-        setBypass(isBypass(true));
-    }
+            case Restore:
+                setBypass(isBypass(true));
+                break;
 
-    @Override
-    public void onSave() {
-        // TODO Auto-generated method stub
+            case Connect:
+                rack = context.getRack();
+                break;
 
-    }
-
-    @Override
-    public void onLoad() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void disconnect() {
+            case Disconnect:
+                break;
+        }
     }
 
     /**
@@ -155,5 +154,4 @@ public class RackMasterComponent implements IRackSerializer {
     protected final RuntimeException newRangeException(String control, String range, Object value) {
         return ExceptionUtils.newRangeException(control, range, value);
     }
-
 }

@@ -189,6 +189,9 @@ public class Effect extends CaustkComponent {
                 rackEffect.restore();
                 break;
 
+            case Connect:
+                break;
+
             case Disconnect:
                 patch = null;
                 break;

@@ -197,6 +197,9 @@ public class Patch extends CaustkComponent {
                 machineMixer.restore();
                 break;
 
+            case Connect:
+                break;
+
             case Disconnect:
                 machine = null;
                 break;

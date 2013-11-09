@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
@@ -260,34 +261,36 @@ public class MasterDelay extends RackMasterComponent {
     public MasterDelay() {
     }
 
-    //--------------------------------------------------------------------------
-    // IRackSerializer API :: Methods
-    //--------------------------------------------------------------------------
-
     @Override
-    public void restore() {
-        super.restore();
-        setDamping(getDamping(true));
-        setFeedback(getFeedback(true));
-        setFeedbackFirst(getFeedbackFirst(true));
-        setLoop(getLoop(true));
-        //setPan(getPan(true));
-        setSteps(getSteps(true));
-        setSync(getSync(true));
-        setTime(getTime(true));
-        setWet(getWet(true));
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        super.componentPhaseChange(context, phase);
+        switch (phase) {
+            case Update:
+                MasterMixerMessage.DELAY_DAMPING.send(getRack(), damping);
+                MasterMixerMessage.DELAY_FEEDBACK.send(getRack(), feedback);
+                MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(getRack(), feedbackFirst);
+                MasterMixerMessage.DELAY_LOOP.send(getRack(), loop);
+                MasterMixerMessage.DELAY_STEPS.send(getRack(), steps);
+                MasterMixerMessage.DELAY_SYNC.send(getRack(), sync);
+                MasterMixerMessage.DELAY_TIME.send(getRack(), time);
+                MasterMixerMessage.DELAY_WET.send(getRack(), wet);
+                break;
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        super.update(context);
-        MasterMixerMessage.DELAY_DAMPING.send(getRack(), damping);
-        MasterMixerMessage.DELAY_FEEDBACK.send(getRack(), feedback);
-        MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(getRack(), feedbackFirst);
-        MasterMixerMessage.DELAY_LOOP.send(getRack(), loop);
-        MasterMixerMessage.DELAY_STEPS.send(getRack(), steps);
-        MasterMixerMessage.DELAY_SYNC.send(getRack(), sync);
-        MasterMixerMessage.DELAY_TIME.send(getRack(), time);
-        MasterMixerMessage.DELAY_WET.send(getRack(), wet);
+            case Restore:
+                setDamping(getDamping(true));
+                setFeedback(getFeedback(true));
+                setFeedbackFirst(getFeedbackFirst(true));
+                setLoop(getLoop(true));
+                //setPan(getPan(true));
+                setSteps(getSteps(true));
+                setSync(getSync(true));
+                setTime(getTime(true));
+                setWet(getWet(true));
+                break;
+
+            default:
+                break;
+        }
     }
 }

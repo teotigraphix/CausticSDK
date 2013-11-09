@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.rack.mixer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 
@@ -79,14 +80,20 @@ public class MasterVolume extends RackMasterComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public void restore() {
-        super.restore();
-        // XXX OSC BUG        setOut(getOut(true));
-    }
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        super.componentPhaseChange(context, phase);
+        switch (phase) {
+            case Update:
+                MasterMixerMessage.VOLUME.send(getRack(), out);
+                break;
 
-    @Override
-    public void update(ICaustkApplicationContext context) {
-        super.update(context);
-        MasterMixerMessage.VOLUME.send(getRack(), out);
+            case Restore:
+                // XXX OSC BUG        setOut(getOut(true));
+                break;
+
+            default:
+                break;
+        }
     }
 }
