@@ -4,6 +4,7 @@ package com.teotigraphix.caustk.workstation;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.UUID;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
@@ -13,6 +14,8 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+
+// TODO organize methods
 
 /**
  * @author Michael Schmalle
@@ -157,5 +160,17 @@ public interface ICaustkFactory {
     <T> T copy(T instance);
 
     Kryo getKryo();
+
+    PatternSet createPatternSet(ComponentInfo info, RackSet rackSet);
+
+    Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index);
+
+    Part createPart(ComponentInfo info, Pattern pattern, Machine machine);
+
+    SongSet createSongSet(ComponentInfo info, UUID patternSetId);
+
+    SongSet createSongSet(ComponentInfo info, PatternSet patternSet);
+
+    Song createSong(ComponentInfo info, SongSet songSet);
 
 }

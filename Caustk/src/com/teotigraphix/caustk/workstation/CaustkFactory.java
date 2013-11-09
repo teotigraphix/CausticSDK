@@ -70,12 +70,6 @@ public class CaustkFactory implements ICaustkFactory {
 
     private MachineFactory machineFactory;
 
-    private PatchFactory patchFactory;
-
-    private EffectFactory effectFactory;
-
-    private PhraseFactory phraseFactory;
-
     private MasterMixerFactory masterMixerFactory;
 
     private MasterSequencerFactory masterSequencerFactory;
@@ -118,28 +112,29 @@ public class CaustkFactory implements ICaustkFactory {
     private void createFactories() {
         infoFactory = new ComponentInfoFactory();
         infoFactory.setFactory(this);
+
         libraryFactory = new LibraryFactory();
         libraryFactory.setFactory(this);
+
         trackSetFactory = new TrackSetFactory();
         trackSetFactory.setFactory(this);
+
         rackSetFactory = new RackSetFactory();
         rackSetFactory.setFactory(this);
+        rackToneFactory = new RackToneFactory();
+        rackToneFactory.setFactory(this);
+
         machineFactory = new MachineFactory();
         machineFactory.setFactory(this);
-        patchFactory = new PatchFactory();
-        patchFactory.setFactory(this);
-        effectFactory = new EffectFactory();
-        effectFactory.setFactory(this);
-        phraseFactory = new PhraseFactory();
-        phraseFactory.setFactory(this);
+
         masterMixerFactory = new MasterMixerFactory();
         masterMixerFactory.setFactory(this);
         masterSequencerFactory = new MasterSequencerFactory();
         masterSequencerFactory.setFactory(this);
-        rackToneFactory = new RackToneFactory();
-        rackToneFactory.setFactory(this);
+
         patternSetFactory = new PatternSetFactory();
         patternSetFactory.setFactory(this);
+
         songSetFactory = new SongSetFactory();
         songSetFactory.setFactory(this);
     }
@@ -151,6 +146,12 @@ public class CaustkFactory implements ICaustkFactory {
     @Override
     public ICaustkApplicationContext createContext() {
         return new CaustkApplicationContext(application);
+    }
+
+    @Override
+    public IRack createRack() {
+        Rack rack = new Rack(application);
+        return rack;
     }
 
     //----------------------------------
@@ -177,11 +178,9 @@ public class CaustkFactory implements ICaustkFactory {
         return infoFactory.createInfo(type, relativePath, name);
     }
 
-    @Override
-    public IRack createRack() {
-        Rack rack = new Rack(application);
-        return rack;
-    }
+    //----------------------------------
+    // Library
+    //----------------------------------
 
     /**
      * Creates an empty {@link Library} with a name.
@@ -201,10 +200,18 @@ public class CaustkFactory implements ICaustkFactory {
         return libraryFactory.loadLibrary(name);
     }
 
+    //----------------------------------
+    // TrackSet
+    //----------------------------------
+
     @Override
     public TrackSet createTrackSet(ComponentInfo info, RackSet rackSet) {
         return trackSetFactory.createTrackSet(info, rackSet);
     }
+
+    //----------------------------------
+    // RackSet
+    //----------------------------------
 
     /**
      * Creates an empty {@link RackSet} with name.
@@ -227,6 +234,10 @@ public class CaustkFactory implements ICaustkFactory {
         return rackSetFactory.createRackSet(info, absoluteCausticFile);
     }
 
+    //----------------------------------
+    // Machine
+    //----------------------------------
+
     @Override
     public Machine createMachine(ComponentInfo info, int machineIndex, MachineType machineType,
             String machineName) {
@@ -239,10 +250,6 @@ public class CaustkFactory implements ICaustkFactory {
         return machineFactory.createMachine(rackSet, machineIndex, machineType, machineName);
     }
 
-    //----------------------------------
-    // CaustkPatch
-    //----------------------------------
-
     /**
      * Creates a {@link Patch} with {@link UUID} and {@link MachineType}.
      * 
@@ -250,7 +257,7 @@ public class CaustkFactory implements ICaustkFactory {
      */
     @Override
     public Patch createPatch(ComponentInfo info, MachineType machineType) {
-        return patchFactory.createPatch(info, machineType);
+        return machineFactory.createPatch(info, machineType);
     }
 
     /**
@@ -260,55 +267,19 @@ public class CaustkFactory implements ICaustkFactory {
      */
     @Override
     public Patch createPatch(Machine machine) {
-        return patchFactory.createPatch(machine);
+        return machineFactory.createPatch(machine);
     }
 
     @Override
     public Phrase createPhrase(ComponentInfo info, MachineType machineType, int bankIndex,
             int patternIndex) {
-        return phraseFactory.createPhrase(info, machineType, bankIndex, patternIndex);
+        return machineFactory.createPhrase(info, machineType, bankIndex, patternIndex);
     }
 
     @Override
     public Phrase createPhrase(Machine caustkMachine, int bankIndex, int patternIndex) {
-        return phraseFactory.createPhrase(caustkMachine, bankIndex, patternIndex);
+        return machineFactory.createPhrase(caustkMachine, bankIndex, patternIndex);
     }
-
-    //----------------------------------
-    // PatternSet
-    //----------------------------------
-
-    public PatternSet createPatternSet(ComponentInfo info, RackSet rackSet) {
-        return patternSetFactory.createPatternSet(info, rackSet);
-    }
-
-    public Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index) {
-        return patternSetFactory.createPattern(info, patternSet, index);
-    }
-
-    public Part createPart(ComponentInfo info, Pattern pattern, Machine machine) {
-        return patternSetFactory.createPart(info, pattern, machine);
-    }
-
-    //----------------------------------
-    // SongSet
-    //----------------------------------
-
-    public SongSet createSongSet(ComponentInfo info, UUID patternSetId) {
-        return songSetFactory.createSongSet(info, patternSetId);
-    }
-
-    public SongSet createSongSet(ComponentInfo info, PatternSet patternSet) {
-        return songSetFactory.createSongSet(info, patternSet);
-    }
-
-    public Song createSong(ComponentInfo info, SongSet songSet) {
-        return songSetFactory.createSong(info, songSet);
-    }
-
-    //----------------------------------
-    // Effect
-    //----------------------------------
 
     /**
      * Creates an non attached {@link Effect} with the internal {@link IEffect}
@@ -321,12 +292,12 @@ public class CaustkFactory implements ICaustkFactory {
      */
     @Override
     public Effect createEffect(ComponentInfo info, EffectType effectType) {
-        return effectFactory.createEffect(info, effectType);
+        return machineFactory.createEffect(info, effectType);
     }
 
     @Override
     public Effect createEffect(int slot, EffectType effectType) {
-        return effectFactory.createEffect(slot, effectType);
+        return machineFactory.createEffect(slot, effectType);
     }
 
     /**
@@ -337,8 +308,50 @@ public class CaustkFactory implements ICaustkFactory {
      */
     @Override
     public Effect createEffect(int slot, EffectType effectType, Patch caustkPatch) {
-        return effectFactory.createEffect(slot, effectType, caustkPatch);
+        return machineFactory.createEffect(slot, effectType, caustkPatch);
     }
+
+    //----------------------------------
+    // PatternSet
+    //----------------------------------
+
+    @Override
+    public PatternSet createPatternSet(ComponentInfo info, RackSet rackSet) {
+        return patternSetFactory.createPatternSet(info, rackSet);
+    }
+
+    @Override
+    public Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index) {
+        return patternSetFactory.createPattern(info, patternSet, index);
+    }
+
+    @Override
+    public Part createPart(ComponentInfo info, Pattern pattern, Machine machine) {
+        return patternSetFactory.createPart(info, pattern, machine);
+    }
+
+    //----------------------------------
+    // SongSet
+    //----------------------------------
+
+    @Override
+    public SongSet createSongSet(ComponentInfo info, UUID patternSetId) {
+        return songSetFactory.createSongSet(info, patternSetId);
+    }
+
+    @Override
+    public SongSet createSongSet(ComponentInfo info, PatternSet patternSet) {
+        return songSetFactory.createSongSet(info, patternSet);
+    }
+
+    @Override
+    public Song createSong(ComponentInfo info, SongSet songSet) {
+        return songSetFactory.createSong(info, songSet);
+    }
+
+    //----------------------------------
+    // Mixer
+    //----------------------------------
 
     @Override
     public MasterMixer createMasterMixer(RackSet caustkScene) {
