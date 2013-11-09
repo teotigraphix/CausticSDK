@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 public class PartUtils {
 
@@ -9,7 +9,7 @@ public class PartUtils {
         part.getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
     }
 
-    public static Tone getTone(Part part) {
+    public static RackTone getTone(Part part) {
         return part.getTone();
     }
 

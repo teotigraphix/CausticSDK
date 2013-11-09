@@ -23,7 +23,7 @@ import java.io.File;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.ShuffleMode;
 import com.teotigraphix.caustk.rack.tone.components.beatbox.WavSamplerChannel;
@@ -47,7 +47,7 @@ public class RhythmPart extends Part {
         return true;
     }
 
-    public RhythmPart(GrooveMachine machine, Tone tone) {
+    public RhythmPart(GrooveMachine machine, RackTone tone) {
         super(machine, tone);
     }
 

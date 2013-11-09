@@ -25,15 +25,15 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.part.sound.BasslinePatch;
-import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
+import com.teotigraphix.caustk.gs.machine.part.sound.MachinePatch;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.machine.Library;
-import com.teotigraphix.caustk.machine.Phrase;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
+import com.teotigraphix.caustk.workstation.Library;
+import com.teotigraphix.caustk.workstation.Phrase;
 
 /**
  * Represents an abstract memory bank, USER, PRESET etc.
@@ -53,9 +53,9 @@ public abstract class Memory {
     // currentLibrary
     //----------------------------------
 
-    public Library getCurrentLibrary() {
-        return machine.getController().getLibraryManager().getSelectedLibrary();
-    }
+    //    public Library getCurrentLibrary() {
+    //        return machine.getController().getLibraryManager().getSelectedLibrary();
+    //    }
 
     private Map<Category, MemorySlot> slots = new HashMap<Category, MemorySlot>();
 
@@ -234,16 +234,17 @@ public abstract class Memory {
     }
 
     /**
-     * Copies a {@link Patch} from memory into a new {@link Patch} instance.
+     * Copies a {@link MachinePatch} from memory into a new {@link MachinePatch}
+     * instance.
      * 
      * @param part
      * @param index The index of the patch to copy form memory.
-     * @return A new instance of the {@link Patch}.
+     * @return A new instance of the {@link MachinePatch}.
      */
-    public Patch copyPatch(Part part, int index) {
-        Patch patch = getPatch(part);
-        patch.configure();
-        return patch;
+    public MachinePatch copyPatch(Part part, int index) {
+        MachinePatch machinePatch = getPatch(part);
+        machinePatch.configure();
+        return machinePatch;
     }
 
     /**
@@ -268,16 +269,17 @@ public abstract class Memory {
     }
 
     /**
-     * Creates and returns a {@link Patch} based on the {@link Part} passed.
+     * Creates and returns a {@link MachinePatch} based on the {@link Part}
+     * passed.
      * <p>
      * An example is a {@link Part#getTone()} being an instance of
      * {@link BasslineTone}, the method would return a {@link BasslinePatch}.
      * 
-     * @param part The {@link Part} needing a {@link Patch}.
+     * @param part The {@link Part} needing a {@link MachinePatch}.
      */
-    Patch getPatch(Part part) {
-        Patch patch = null;
-        LibraryPatch item = null;
+    MachinePatch getPatch(Part part) {
+        MachinePatch machinePatch = null;
+        //        LibraryPatch item = null;
         //        PatternMemoryItem libraryPattern = part.getPattern().getPatternMemoryItem();
         //        if (libraryPattern != null) {
         //            UUID patchId = part.getPattern().getPatternMemoryItem().getToneSet().getDescriptors()
@@ -286,14 +288,14 @@ public abstract class Memory {
         //        } else {
         //            item = new LibraryPatch();
         //        }
-        Tone tone = PartUtils.getTone(part);
+        RackTone tone = PartUtils.getTone(part);
 
         if (tone instanceof BasslineTone)
-            patch = new BasslinePatch(part, item);
+            machinePatch = new BasslinePatch(part);
         else
-            patch = new Patch(part, item);
+            machinePatch = new MachinePatch(part);
 
-        return patch;
+        return machinePatch;
     }
 
     public enum Type {

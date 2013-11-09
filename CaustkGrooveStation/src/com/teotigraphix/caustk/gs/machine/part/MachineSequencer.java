@@ -32,8 +32,8 @@ import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.PhraseUtils;
-import com.teotigraphix.caustk.machine.Phrase;
 import com.teotigraphix.caustk.utils.PatternUtils;
+import com.teotigraphix.caustk.workstation.Phrase;
 
 /*
  * - KeyboardToggleButton
@@ -193,15 +193,16 @@ public class MachineSequencer extends MachineComponentPart {
 
         for (Part part : machineSound.getParts()) {
 
+            @SuppressWarnings("unused")
             PhraseMemoryItem phraseMemoryItem = pattern.getMemoryItem().getPhrase(part.getIndex());
 
             part.getPatch().commit();
-
-            if (!pattern.isInMemory()) {
-                part.getPhrase().getTrack()
-                        .setCurrentBankPattern(pattern.getBankIndex(), pattern.getPatternIndex());
-                part.getPhrase().setNoteData(phraseMemoryItem.getInitNoteData());
-            }
+            //
+            //            if (!pattern.isInMemory()) {
+            //                part.getPhrase().getTrack()
+            //                        .setCurrentBankPattern(pattern.getBankIndex(), pattern.getPatternIndex());
+            //                part.getPhrase().setNoteData(phraseMemoryItem.getInitNoteData());
+            //            }
         }
 
         commitPropertySettings(pattern);

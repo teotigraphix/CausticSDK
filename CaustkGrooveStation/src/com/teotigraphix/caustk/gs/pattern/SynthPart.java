@@ -20,11 +20,11 @@
 package com.teotigraphix.caustk.gs.pattern;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 public class SynthPart extends Part {
 
-    public SynthPart(GrooveMachine machine, Tone tone) {
+    public SynthPart(GrooveMachine machine, RackTone tone) {
         super(machine, tone);
     }
 

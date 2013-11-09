@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBeatChange;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.rack.tone.ToneType;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * Holds all {@link GrooveMachine}s in an application, tha main controller for
@@ -115,18 +115,18 @@ public class GrooveStation {
 
         private GrooveMachine machine;
 
-        private MachineType machineType;
+        private GrooveMachineType grooveMachineType;
 
-        public MachineType getMachineType() {
-            return machineType;
+        public GrooveMachineType getMachineType() {
+            return grooveMachineType;
         }
 
-        public GrooveMachineDescriptor(MachineType machineType) {
-            this.machineType = machineType;
+        public GrooveMachineDescriptor(GrooveMachineType grooveMachineType) {
+            this.grooveMachineType = grooveMachineType;
         }
 
-        public GrooveMachineDescriptor(MachineType machineType, GrooveMachine machine) {
-            this.machineType = machineType;
+        public GrooveMachineDescriptor(GrooveMachineType grooveMachineType, GrooveMachine machine) {
+            this.grooveMachineType = grooveMachineType;
             this.machine = machine;
         }
 
@@ -136,7 +136,7 @@ public class GrooveStation {
             if (machine != null)
                 return machine;
 
-            switch (machineType) {
+            switch (grooveMachineType) {
                 case Bassline:
                     return new BasslineMachine();
                 case Drum:
@@ -147,41 +147,40 @@ public class GrooveStation {
             return null;
         }
 
-        public void addPart(int index, String name, ToneType toneType) {
-            GrooveMachinePart part = new GrooveMachinePart(index, name, toneType);
+        public void addPart(int index, String name, MachineType machineType) {
+            GrooveMachinePart part = new GrooveMachinePart(index, name, machineType);
             parts.add(part);
         }
     }
 
     public static class GrooveMachinePart {
 
-        private int index;
+        private int machineIndex;
 
-        public final int getIndex() {
-            return index;
+        public final int getMachineIndex() {
+            return machineIndex;
         }
 
-        private String name;
+        private String machineName;
 
-        public final String getName() {
-            return name;
+        public final String getMachineName() {
+            return machineName;
         }
 
-        private ToneType toneType;
+        private MachineType machineType;
 
-        public final ToneType getToneType() {
-            return toneType;
+        public final MachineType getMachineType() {
+            return machineType;
         }
 
-        public GrooveMachinePart(int index, String name, ToneType toneType) {
-            this.index = index;
-            this.name = name;
-            this.toneType = toneType;
+        public GrooveMachinePart(int machineIndex, String machineName, MachineType machineType) {
+            this.machineIndex = machineIndex;
+            this.machineName = machineName;
+            this.machineType = machineType;
         }
 
         public ToneDescriptor createDescriptor() {
-            return new ToneDescriptor(index, name, toneType);
+            return new ToneDescriptor(machineIndex, machineName, machineType);
         }
     }
-
 }

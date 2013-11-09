@@ -23,7 +23,7 @@ import java.io.File;
 
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
 
 /**
@@ -35,10 +35,10 @@ import com.teotigraphix.caustk.rack.tone.components.SynthComponent;
  * Most application will call methods on the Patch to adjust the Tone's sounds,
  * this can allow for undoable commands.
  */
-public class Patch {
+public class MachinePatch {
 
     @SuppressWarnings("unchecked")
-    protected <T extends Tone> T getTone() {
+    protected <T extends RackTone> T getTone() {
         return (T)PartUtils.getTone(getPart());
     }
 
@@ -46,15 +46,15 @@ public class Patch {
     // Public Property API
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // patchItem
-    //----------------------------------
-
-    private LibraryPatch patchItem;
-
-    public LibraryPatch getPatchItem() {
-        return patchItem;
-    }
+    //    //----------------------------------
+    //    // patchItem
+    //    //----------------------------------
+    //
+    //    private LibraryPatch patchItem;
+    //
+    //    public LibraryPatch getPatchItem() {
+    //        return patchItem;
+    //    }
 
     //----------------------------------
     // part
@@ -70,9 +70,8 @@ public class Patch {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Patch(Part part, LibraryPatch patchItem) {
+    public MachinePatch(Part part) {
         this.part = part;
-        this.patchItem = patchItem;
         part.setPatch(this);
     }
 
@@ -80,14 +79,14 @@ public class Patch {
     }
 
     public void commit() {
-        try {
-            // XXX may tomany access points, this needs to change
-            File presetFile = getPart().getMachine().getRack().getLibrary()
-                    .getPresetFile(patchItem.getPresetFile());
-            loadPreset(presetFile);
-        } catch (Exception e) {
-            // default library patch proxy, no preset
-        }
+        //        try {
+        //            // XXX may tomany access points, this needs to change
+        //            File presetFile = getPart().getMachine().getRack().getLibrary()
+        //                    .getPresetFile(patchItem.getPresetFile());
+        //            loadPreset(presetFile);
+        //        } catch (Exception e) {
+        //            // default library patch proxy, no preset
+        //        }
 
     }
 
@@ -96,11 +95,11 @@ public class Patch {
     //--------------------------------------------------------------------------
 
     public void loadPreset(File presetFile) {
-        getTone().getSynth().loadPreset(presetFile.getAbsolutePath());
+        //        getTone().getSynth().loadPreset(presetFile.getAbsolutePath());
     }
 
     public void savePreset(String name) {
-        getTone().getSynth().savePreset(name);
+        //        getTone().getSynth().savePreset(name);
     }
 
     public void noteOn(int pitch, float velocity) {

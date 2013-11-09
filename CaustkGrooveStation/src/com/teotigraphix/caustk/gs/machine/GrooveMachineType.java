@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.gs.machine;
 
-public enum MachineType {
+public enum GrooveMachineType {
     Bassline,
 
     Synth,

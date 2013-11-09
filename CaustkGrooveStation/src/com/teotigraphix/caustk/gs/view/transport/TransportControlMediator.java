@@ -72,7 +72,7 @@ public class TransportControlMediator extends MachineMediatorBase {
                     try {
                         //getController().execute(ISystemSequencer.COMMAND_PLAY,
                         //        SequencerMode.PATTERN.getValue());
-                        getController().getRack().getSystemSequencer().play(SequencerMode.PATTERN);
+                        getController().getRack().getSystemSequencer().play(SequencerMode.Pattern);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

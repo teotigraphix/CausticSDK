@@ -19,7 +19,8 @@
 
 package com.teotigraphix.caustk.gs.pattern;
 
-import com.teotigraphix.caustk.machine.Phrase;
+import com.teotigraphix.caustk.workstation.Note;
+import com.teotigraphix.caustk.workstation.Phrase;
 
 public class PhraseUtils {
 

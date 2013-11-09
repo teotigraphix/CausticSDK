@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.gs.machine;
 
 import org.androidtransfuse.event.EventObserver;
 
-import com.teotigraphix.caustk.controller.ICausticLogger;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
@@ -52,7 +52,7 @@ public abstract class GrooveMachine implements IDispatcher {
         return controller.getRack();
     }
 
-    public final ICausticLogger getLogger() {
+    public final ICaustkLogger getLogger() {
         return controller.getLogger();
     }
 

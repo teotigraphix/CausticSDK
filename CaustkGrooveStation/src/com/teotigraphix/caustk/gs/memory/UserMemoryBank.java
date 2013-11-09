@@ -9,10 +9,9 @@ import android.annotation.SuppressLint;
 
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
-import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
-import com.teotigraphix.caustk.machine.Phrase;
+import com.teotigraphix.caustk.workstation.Phrase;
 
 @SuppressLint("UseSparseArrays")
 public class UserMemoryBank extends MemoryBank {
@@ -64,22 +63,23 @@ public class UserMemoryBank extends MemoryBank {
 
     @Override
     public Phrase getPhrase(Part part) {
-        int index = part.getIndex();
-
-        PatternMemoryItem item = part.getPattern().getMemoryItem();
-        PhraseMemoryItem phraseMemoryItem = item.getPhrase(index);
-        if (phraseMemoryItem == null) {
-            phraseMemoryItem = (PhraseMemoryItem)getMachine().getSound().createInitData(part,
-                    Category.PHRASE);
-            item.setPhrase(index, phraseMemoryItem);
-        }
-        // the TrackSequencer holds all existing and lazy loaded pattern phrases
-        Track track = getMachine().getController().getRack().getTrackSequencer()
-                .getTrack(part.getIndex());
-        Phrase phrase = track.getPhrase(part.getPattern().getBankIndex(), part.getPattern()
-                .getPatternIndex());
-
-        return phrase;
+        //        int index = part.getIndex();
+        //
+        //        PatternMemoryItem item = part.getPattern().getMemoryItem();
+        //        PhraseMemoryItem phraseMemoryItem = item.getPhrase(index);
+        //        if (phraseMemoryItem == null) {
+        //            phraseMemoryItem = (PhraseMemoryItem)getMachine().getSound().createInitData(part,
+        //                    Category.PHRASE);
+        //            item.setPhrase(index, phraseMemoryItem);
+        //        }
+        //        // the TrackSequencer holds all existing and lazy loaded pattern phrases
+        //        Track track = getMachine().getController().getRack().getTrackSequencer()
+        //                .getTrack(part.getIndex());
+        //        Phrase phrase = track.getPhrase(part.getPattern().getBankIndex(), part.getPattern()
+        //                .getPatternIndex());
+        //
+        //        return phrase;
+        return null;
     }
 
     private Map<Integer, Pattern> inMemoryPatterns = new HashMap<Integer, Pattern>();

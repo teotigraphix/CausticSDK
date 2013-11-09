@@ -26,8 +26,7 @@ import java.util.List;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachineDescriptor;
-import com.teotigraphix.caustk.gs.machine.GrooveStation.GrooveMachinePart;
-import com.teotigraphix.caustk.gs.machine.part.sound.Patch;
+import com.teotigraphix.caustk.gs.machine.part.sound.MachinePatch;
 import com.teotigraphix.caustk.gs.memory.Memory.Category;
 import com.teotigraphix.caustk.gs.memory.MemorySlotItem;
 import com.teotigraphix.caustk.gs.memory.item.PatternMemoryItem;
@@ -35,9 +34,7 @@ import com.teotigraphix.caustk.gs.memory.item.PhraseMemoryItem;
 import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.gs.pattern.RhythmPart;
-import com.teotigraphix.caustk.gs.pattern.SynthPart;
-import com.teotigraphix.caustk.rack.tone.BeatboxTone;
-import com.teotigraphix.caustk.rack.tone.Tone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 /*
  * This class will implement and wrap the Tone API for each machine.
@@ -116,7 +113,7 @@ public class MachineSound extends MachineComponentPart {
         trigger(new OnMachineSoundListener(MachineSoundChangeKind.PartSelectState, this));
     }
 
-    public final Patch getSelectedPatch() {
+    public final MachinePatch getSelectedPatch() {
         return getSelectedPart().getPatch();
     }
 
@@ -292,21 +289,22 @@ public class MachineSound extends MachineComponentPart {
     }
 
     public void setupParts(GrooveMachineDescriptor descriptor) throws CausticException {
-        for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
-            Tone tone = getMachine().getRack().createTone(partDescriptor.createDescriptor());
-            Part part = createPart(tone);
-            addPart(part);
-        }
+        //        for (GrooveMachinePart partDescriptor : descriptor.getParts()) {
+        //            RackTone tone = getMachine().getRack().createTone(partDescriptor.createDescriptor());
+        //            Part part = createPart(tone);
+        //            addPart(part);
+        //        }
     }
 
-    protected Part createPart(Tone tone) {
-        Part part = null;
-        if (tone instanceof BeatboxTone) {
-            part = new RhythmPart(getMachine(), tone);
-        } else {
-            part = new SynthPart(getMachine(), tone);
-        }
-        return part;
+    protected Part createPart(RackTone tone) {
+        //        Part part = null;
+        //        if (tone instanceof BeatboxTone) {
+        //            part = new RhythmPart(getMachine(), tone);
+        //        } else {
+        //            part = new SynthPart(getMachine(), tone);
+        //        }
+        //        return part;
+        return null;
     }
 
     void addPart(Part part) {

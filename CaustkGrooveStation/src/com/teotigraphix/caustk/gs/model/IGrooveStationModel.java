@@ -7,7 +7,7 @@ import com.teotigraphix.caustk.rack.tone.BeatboxTone;
 import com.teotigraphix.caustk.rack.tone.PCMSynthTone;
 import com.teotigraphix.libgdx.model.ICaustkModel;
 
-public interface IGrooveStationModel extends ICaustkModel, IControllerComponent {
+public interface IGrooveStationModel extends ICaustkModel {
 
     IGrooveStationConfiguration getConfiguration();
 
