@@ -71,6 +71,10 @@ public class MasterDelay extends RackMasterComponent {
         return (int)MasterMixerMessage.DELAY_STEPS.query(getRack());
     }
 
+    /**
+     * @param value (1,2,3,4,5)
+     * @see MasterMixerMessage#DELAY_STEPS
+     */
     public void setSteps(int value) {
         if (steps == value)
             return;
@@ -92,6 +96,10 @@ public class MasterDelay extends RackMasterComponent {
         return (int)MasterMixerMessage.DELAY_LOOP.query(getRack());
     }
 
+    /**
+     * @param value (0,1).
+     * @see MasterMixerMessage#DELAY_LOOP
+     */
     public void setLoop(int value) {
         if (loop == value)
             return;
@@ -113,6 +121,10 @@ public class MasterDelay extends RackMasterComponent {
         return (int)MasterMixerMessage.DELAY_TIME.query(getRack());
     }
 
+    /**
+     * @param value (1..12).
+     * @see MasterMixerMessage#DELAY_TIME
+     */
     public void setTime(int value) {
         if (time == value)
             return;
@@ -134,6 +146,10 @@ public class MasterDelay extends RackMasterComponent {
         return (int)MasterMixerMessage.DELAY_SYNC.query(getRack());
     }
 
+    /**
+     * @param value (0,1).
+     * @see MasterMixerMessage#DELAY_SYNC
+     */
     public void setSync(int value) {
         if (sync == value)
             return;
@@ -155,6 +171,10 @@ public class MasterDelay extends RackMasterComponent {
         return MasterMixerMessage.DELAY_FEEDBACK.query(getRack());
     }
 
+    /**
+     * @param value (0..1).
+     * @see MasterMixerMessage#DELAY_FEEDBACK
+     */
     public void setFeedback(float value) {
         if (feedback == value)
             return;
@@ -176,6 +196,10 @@ public class MasterDelay extends RackMasterComponent {
         return (int)MasterMixerMessage.DELAY_FEEDBACK_FIRST.query(getRack());
     }
 
+    /**
+     * @param value (0,1).
+     * @see MasterMixerMessage#DELAY_FEEDBACK_FIRST
+     */
     public void setFeedbackFirst(int value) {
         if (feedbackFirst == value)
             return;
@@ -197,6 +221,10 @@ public class MasterDelay extends RackMasterComponent {
         return MasterMixerMessage.DELAY_DAMPING.query(getRack());
     }
 
+    /**
+     * @param value (0..1).
+     * @see MasterMixerMessage#DELAY_DAMPING
+     */
     public void setDamping(float value) {
         if (damping == value)
             return;
@@ -218,6 +246,10 @@ public class MasterDelay extends RackMasterComponent {
         return MasterMixerMessage.DELAY_WET.query(getRack());
     }
 
+    /**
+     * @param value (0..1).
+     * @see MasterMixerMessage#DELAY_WET
+     */
     public void setWet(float value) {
         if (wet == value)
             return;
@@ -240,6 +272,11 @@ public class MasterDelay extends RackMasterComponent {
         return (int)MasterMixerMessage.DELAY_PAN.send(getRack(), 0);
     }
 
+    /**
+     * @param step (0,1,2,3,4).
+     * @param value (-1..1)
+     * @see MasterMixerMessage#DELAY_PAN
+     */
     public void setPan(int step, float value) {
         //if (pan == value)
         //return;

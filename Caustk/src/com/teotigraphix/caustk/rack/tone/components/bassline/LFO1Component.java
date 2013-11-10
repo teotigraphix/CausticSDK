@@ -57,6 +57,10 @@ public class LFO1Component extends RackToneComponent {
         return (int)BasslineMessage.LFO_RATE.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (1..12)
+     * @see BasslineMessage#LFO_RATE
+     */
     public void setRate(int value) {
         if (value == rate)
             return;
@@ -78,6 +82,10 @@ public class LFO1Component extends RackToneComponent {
         return BasslineMessage.LFO_DEPTH.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0.0..1.0)
+     * @see BasslineMessage#LFO_DEPTH
+     */
     public void setDepth(float value) {
         if (value == depth)
             return;
@@ -99,6 +107,10 @@ public class LFO1Component extends RackToneComponent {
         return BasslineMessage.LFO_PHASE.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0.0..1.0)
+     * @see BasslineMessage#LFO_PHASE
+     */
     public void setPhase(float value) {
         if (value == phase)
             return;
@@ -120,6 +132,10 @@ public class LFO1Component extends RackToneComponent {
         return LFOTarget.toType(BasslineMessage.LFO_TARGET.query(getEngine(), getToneIndex()));
     }
 
+    /**
+     * @param value (0..3) OFF(0), PWM(1), VCF(2), VCA(3)
+     * @see BasslineMessage#LFO_TARGET
+     */
     public void setTarget(LFOTarget value) {
         if (value == target)
             return;

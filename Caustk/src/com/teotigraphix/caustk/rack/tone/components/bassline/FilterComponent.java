@@ -51,6 +51,10 @@ public class FilterComponent extends FilterComponentBase {
         return FilterMessage.FILTER_DECAY.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0.0..1.0)
+     * @see FilterMessage#FILTER_DECAY
+     */
     public void setDecay(float value) {
         if (value == decay)
             return;
@@ -72,6 +76,10 @@ public class FilterComponent extends FilterComponentBase {
         return FilterMessage.FILTER_ENVMOD.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0.0..1.0)
+     * @see FilterMessage#FILTER_ENVMOD
+     */
     public void setEnvMod(float value) {
         if (value == envMod)
             return;

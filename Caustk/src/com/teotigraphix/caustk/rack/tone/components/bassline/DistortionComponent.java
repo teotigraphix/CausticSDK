@@ -23,6 +23,9 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.rack.tone.RackToneComponent;
 
+/**
+ * @author Michael Schmalle
+ */
 public class DistortionComponent extends RackToneComponent {
 
     //--------------------------------------------------------------------------
@@ -57,6 +60,10 @@ public class DistortionComponent extends RackToneComponent {
         return BasslineMessage.DISTORTION_AMOUNT.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (1.0..20.0).
+     * @see BasslineMessage#DISTORTION_AMOUNT
+     */
     public void setAmount(float value) {
         if (value == amount)
             return;
@@ -78,6 +85,10 @@ public class DistortionComponent extends RackToneComponent {
         return BasslineMessage.DISTORTION_POSTGAIN.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0.0..1.0).
+     * @see BasslineMessage#DISTORTION_POSTGAIN
+     */
     public void setPostGain(float value) {
         if (value == postGain)
             return;
@@ -99,6 +110,10 @@ public class DistortionComponent extends RackToneComponent {
         return BasslineMessage.DISTORTION_PREGAIN.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0.0..5.0).
+     * @see BasslineMessage#DISTORTION_PREGAIN
+     */
     public void setPreGain(float value) {
         if (value == preGain)
             return;
@@ -121,6 +136,10 @@ public class DistortionComponent extends RackToneComponent {
                 .toType(BasslineMessage.DISTORTION_PROGRAM.query(getEngine(), getToneIndex()));
     }
 
+    /**
+     * @param value (0..4) OFF(0),OVERDRIVE(1),SATURATE(2),FOLDBACK(3),FUZZ(4).
+     * @see BasslineMessage#DISTORTION_PROGRAM
+     */
     public void setProgram(Program value) {
         if (value == program)
             return;

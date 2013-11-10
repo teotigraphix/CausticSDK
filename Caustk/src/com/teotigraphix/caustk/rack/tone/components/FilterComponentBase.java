@@ -51,6 +51,10 @@ public class FilterComponentBase extends RackToneComponent {
         return FilterMessage.FILTER_CUTOFF.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0..1.0)
+     * @see FilterMessage#FILTER_CUTOFF
+     */
     public void setCutoff(float value) {
         if (value == cutoff)
             return;
@@ -72,6 +76,10 @@ public class FilterComponentBase extends RackToneComponent {
         return FilterMessage.FILTER_RESONANCE.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0..1.0)
+     * @see FilterMessage#FILTER_RESONANCE
+     */
     public void setResonance(float value) {
         if (value == resonance)
             return;

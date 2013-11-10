@@ -91,7 +91,8 @@ public class BasslineMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..4).</li>
+     * <li><strong>value</strong>: (0..4)
+     * OFF(0),OVERDRIVE(1),SATURATE(2),FOLDBACK(3),FUZZ(4).</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
@@ -254,7 +255,7 @@ public class BasslineMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..3)
+     * <li><strong>value</strong>: (0..3) OFF(0), PWM(1), VCF(2), VCA(3)
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>

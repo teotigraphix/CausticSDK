@@ -31,6 +31,7 @@ import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
+import com.teotigraphix.caustk.workstation.Note.NoteFlag;
 
 /**
  * @author Michael Schmalle
@@ -335,8 +336,14 @@ public class Phrase extends CaustkComponent {
     //----------------------------------
 
     /**
-     * Returns the current measure of the playhead during a pattern or song
-     * play.
+     * Returns the current measure of the play head based on the current length
+     * of this phrase.
+     * <p>
+     * This measure value is considered "local", meaning it will never be
+     * greater than 8.
+     * <p>
+     * In Pattern mode, this value is the same as the
+     * {@link #getCurrentMeasure()} value.
      */
     public int getPlayMeasure() {
         return playMeasure;
@@ -390,9 +397,6 @@ public class Phrase extends CaustkComponent {
      * <p>
      * Note: The current bar is divisible by 4, the current measure is the sum
      * of all steps played currently in a song.
-     * </p>
-     * 
-     * @return
      */
     public int getCurrentMeasure() {
         return currentMeasure;
@@ -473,7 +477,10 @@ public class Phrase extends CaustkComponent {
     }
 
     /**
-     * Increments the internal pointer of the measure position.
+     * Increments the internal pointer of the measure position (1-8).
+     * <p>
+     * If the position is greater the {@link #getLength()}, the position is
+     * clamped to the length.
      */
     public void incrementPosition() {
         int len = getLength();
@@ -484,7 +491,9 @@ public class Phrase extends CaustkComponent {
     }
 
     /**
-     * Decrement the internal pointer of the measure position.
+     * Decrement the internal pointer of the measure position (1-8).
+     * <p>
+     * If the position is less than 1 the position is clamped to 1.
      */
     public void decrementPosition() {
         int value = position - 1;
@@ -516,6 +525,14 @@ public class Phrase extends CaustkComponent {
         this.machine = machine;
         this.machineType = machine.getMachineType();
         this.triggerMap = new TriggerMap(this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    public void transpose(int octave) {
+        // TODO Auto-generated method stub
     }
 
     @Override
@@ -781,6 +798,9 @@ public class Phrase extends CaustkComponent {
 
     /**
      * @see TriggerMap#triggerUpdateFlags(int, int)
+     * @see NoteFlag#None
+     * @see NoteFlag#Slide
+     * @see NoteFlag#Accent
      */
     public void triggerUpdateFlags(int step, int flags) {
         triggerMap.triggerUpdateFlags(step, flags);

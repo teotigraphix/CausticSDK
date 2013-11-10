@@ -74,6 +74,10 @@ public class Part extends CaustkComponent {
         return machine;
     }
 
+    public int getMachineIndex() {
+        return machine.getMachineIndex();
+    }
+
     //----------------------------------
     // patch
     //----------------------------------
@@ -100,6 +104,10 @@ public class Part extends CaustkComponent {
         this.patternSet = patternSet;
         this.machine = machine;
     }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)

@@ -75,6 +75,21 @@ public class MasterSequencer extends CaustkComponent {
         this.rackSet = rackSet;
     }
 
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Calculates the tempo based on a Timer calculation between calls to this
+     * method.
+     * <p>
+     * If the calculated tempo is valid, the system sequencer bpm will be
+     * updated.
+     */
+    public void tempoTap() {
+        // TODO Impl tempoTap()
+    }
+
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
             throws CausticException {

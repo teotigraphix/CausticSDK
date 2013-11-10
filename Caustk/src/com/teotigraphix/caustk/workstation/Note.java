@@ -25,6 +25,8 @@ import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Re
 
 /**
  * A single note held within a {@link TriggerMap}.
+ * 
+ * @see NoteFlag
  */
 public class Note {
 
@@ -118,6 +120,10 @@ public class Note {
 
     /**
      * The flags bitmasked, (0 none), (1 silde), (2 accent).
+     * 
+     * @see NoteFlag#None
+     * @see NoteFlag#Slide
+     * @see NoteFlag#Accent
      */
     public int getFlags() {
         return flags;
@@ -185,6 +191,7 @@ public class Note {
      * 
      * @param data The serialized note data for one note.
      * @see PatternSequencerMessage#QUERY_NOTE_DATA
+     * @see NoteFlag
      */
     public Note(String data) {
         String[] split = data.split(" ");
@@ -203,6 +210,7 @@ public class Note {
      * @param end The end beat.
      * @param velocity The velocity (0..1).
      * @param flags The bitmasked flags.
+     * @see NoteFlag
      */
     public Note(int pitch, float start, float end, float velocity, int flags) {
         update(pitch, start, end, velocity, flags);
@@ -220,6 +228,7 @@ public class Note {
      * @param end The end beat.
      * @param velocity The velocity (0..1).
      * @param flags The bitmasked flags.
+     * @see NoteFlag
      */
     public void update(int pitch, float start, float end, float velocity, int flags) {
         this.pitch = pitch;
@@ -250,5 +259,24 @@ public class Note {
     @Override
     public String toString() {
         return "[" + start + "]Pitch:" + pitch + " Gate:" + getGate();
+    }
+
+    public enum NoteFlag {
+
+        None(0),
+
+        Slide(1),
+
+        Accent(2);
+
+        private final int value;
+
+        public final int getValue() {
+            return value;
+        }
+
+        NoteFlag(int value) {
+            this.value = value;
+        }
     }
 }

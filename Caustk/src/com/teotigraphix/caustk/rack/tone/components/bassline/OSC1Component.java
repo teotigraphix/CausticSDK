@@ -58,6 +58,10 @@ public class OSC1Component extends RackToneComponent {
 
     }
 
+    /**
+     * @param value (0.0..1.0)
+     * @see BasslineMessage#ACCENT
+     */
     public void setAccent(float value) {
         if (value == accent)
             return;
@@ -79,6 +83,10 @@ public class OSC1Component extends RackToneComponent {
         return BasslineMessage.PULSE_WIDTH.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (0.05..0.5)
+     * @see BasslineMessage#PULSE_WIDTH
+     */
     public void setPulseWidth(float value) {
         if (value == pulseWidth)
             return;
@@ -100,6 +108,10 @@ public class OSC1Component extends RackToneComponent {
         return (int)BasslineMessage.TUNE.query(getEngine(), getToneIndex());
     }
 
+    /**
+     * @param value (-12..12)
+     * @see BasslineMessage#TUNE
+     */
     public void setTune(int value) {
         if (value == tune)
             return;
@@ -121,6 +133,10 @@ public class OSC1Component extends RackToneComponent {
         return Waveform.toType(BasslineMessage.WAVEFORM.query(getEngine(), getToneIndex()));
     }
 
+    /**
+     * @param value (0,1) SAW(0), SQUARE(1)
+     * @see BasslineMessage#WAVEFORM
+     */
     public void setWaveForm(Waveform value) {
         if (value == waveForm)
             return;
@@ -191,5 +207,4 @@ public class OSC1Component extends RackToneComponent {
             return toType(type.intValue());
         }
     }
-
 }

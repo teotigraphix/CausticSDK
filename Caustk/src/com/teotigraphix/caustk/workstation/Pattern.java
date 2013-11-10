@@ -45,6 +45,9 @@ public class Pattern extends CaustkComponent {
     @Tag(102)
     private int selectedPartIndex;
 
+    @Tag(103)
+    private int octave;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -90,6 +93,19 @@ public class Pattern extends CaustkComponent {
         selectedPartIndex = value;
         trigger(new OnPatternChange(this, PatternChangeKind.SelectedPartIndex, selectedPartIndex,
                 oldIndex));
+    }
+
+    //----------------------------------
+    // octave
+    //----------------------------------
+
+    /**
+     * Returns the transpose octave for all {@link Part}s
+     * 
+     * @see #transpose(int)
+     */
+    public int getOctave() {
+        return octave;
     }
 
     //----------------------------------
@@ -191,6 +207,28 @@ public class Pattern extends CaustkComponent {
         this.index = index;
     }
 
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Transposes all {@link Part}'s {@link Machine}s
+     * 
+     * @param octave
+     * @see OnPatternChange
+     * @see PatternChangeKind#Octave
+     */
+    public void transpose(int octave) {
+        if (octave == this.octave)
+            return;
+        this.octave = octave;
+        for (Part part : patternSet.getParts()) {
+            Phrase phrase = getPhrase(part.getMachineIndex());
+            phrase.transpose(octave);
+        }
+        trigger(new OnPatternChange(this, PatternChangeKind.Octave));
+    }
+
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
             throws CausticException {
@@ -221,6 +259,8 @@ public class Pattern extends CaustkComponent {
     public enum PatternChangeKind {
 
         SelectedPartIndex,
+
+        Octave
     }
 
     /**

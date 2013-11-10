@@ -59,6 +59,9 @@ public class FlangerEffect extends RackEffect {
         return get(FlangerControl.Depth);
     }
 
+    /**
+     * @param value 0.1..0.95
+     */
     public void setDepth(float value) {
         if (value == depth)
             return;
@@ -80,6 +83,9 @@ public class FlangerEffect extends RackEffect {
         return get(FlangerControl.Feedback);
     }
 
+    /**
+     * @param value 0.25..0.8
+     */
     public void setFeedback(float value) {
         if (value == feedback)
             return;
@@ -101,6 +107,9 @@ public class FlangerEffect extends RackEffect {
         return get(FlangerControl.Rate);
     }
 
+    /**
+     * @param value 0.04..2.0
+     */
     public void setRate(float value) {
         if (value == rate)
             return;
@@ -122,6 +131,9 @@ public class FlangerEffect extends RackEffect {
         return get(FlangerControl.Wet);
     }
 
+    /**
+     * @param value 0..1
+     */
     public void setWet(float value) {
         if (value == wet)
             return;
