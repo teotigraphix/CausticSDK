@@ -27,7 +27,7 @@ public class TransportControlMediator extends MachineMediatorBase {
                 new EventObserver<OnSystemSequencerTransportChange>() {
                     @Override
                     public void trigger(OnSystemSequencerTransportChange object) {
-                        view.selectPlayPause(getController().getRack().getSystemSequencer()
+                        view.selectPlayPause(getController().getRackSet().getSequencer()
                                 .isPlaying());
                     }
                 });
@@ -56,7 +56,7 @@ public class TransportControlMediator extends MachineMediatorBase {
             public void onStopClick() {
                 try {
                     //getController().execute(ISystemSequencer.COMMAND_STOP);
-                    getController().getRack().getSystemSequencer().stop();
+                    getController().getRackSet().getSequencer().stop();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -72,14 +72,14 @@ public class TransportControlMediator extends MachineMediatorBase {
                     try {
                         //getController().execute(ISystemSequencer.COMMAND_PLAY,
                         //        SequencerMode.PATTERN.getValue());
-                        getController().getRack().getSystemSequencer().play(SequencerMode.Pattern);
+                        getController().getRackSet().getSequencer().play(SequencerMode.Pattern);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
                         //getController().execute(ISystemSequencer.COMMAND_STOP);
-                        getController().getRack().getSystemSequencer().stop();
+                        getController().getRackSet().getSequencer().stop();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -27,11 +27,16 @@ import com.teotigraphix.caustk.gs.machine.GrooveMachine;
 import com.teotigraphix.caustk.gs.memory.MemoryBank;
 import com.teotigraphix.caustk.gs.memory.TemporaryMemory;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * Abstract base class for all machine parts.
  */
 public abstract class MachineComponentPart implements IDispatcher {
+
+    protected final RackSet getRackSet() {
+        return machine.getRackSet();
+    }
 
     protected final IRack getRack() {
         return machine.getRack();

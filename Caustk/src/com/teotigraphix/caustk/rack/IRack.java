@@ -122,16 +122,6 @@ public interface IRack extends ICausticEngine, IRestore {
      */
     void setRackSet(RackSet value);
 
-    //----------------------------------
-    // systemSequencer
-    //----------------------------------
-
-    /**
-     * The rack's {@link ISystemSequencer} that holds all the OSC messages for
-     * the native song sequencer.
-     */
-    ISystemSequencer getSystemSequencer();
-
     /**
      * Returns the native core's current song measure.
      * <p>

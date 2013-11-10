@@ -24,6 +24,8 @@ import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.rack.sequencer.SystemSequencer;
 
 /**
  * @author Michael Schmalle
@@ -38,6 +40,9 @@ public class MasterSequencer extends CaustkComponent {
 
     @Tag(100)
     private RackSet rackSet;
+
+    @Tag(101)
+    private SystemSequencer systemSequencer;
 
     //----------------------------------
     // defaultName
@@ -75,31 +80,39 @@ public class MasterSequencer extends CaustkComponent {
             throws CausticException {
         switch (phase) {
             case Create:
+                systemSequencer = new SystemSequencer();
+                systemSequencer.create(context);
                 break;
 
             case Load:
                 rack = context.getRack();
+                systemSequencer = new SystemSequencer();
+                systemSequencer.phaseChange(context, ComponentPhase.Load);
                 restore();
                 break;
 
             case Update:
                 rack = context.getRack();
+                systemSequencer.phaseChange(context, ComponentPhase.Update);
                 for (Machine caustkMachine : rackSet.getMachines()) {
                     updateMachine(caustkMachine);
                 }
                 break;
 
             case Restore:
-                String patterns = rack.getSystemSequencer().getPatterns();
+                systemSequencer.phaseChange(context, ComponentPhase.Restore);
+                String patterns = systemSequencer.getPatterns();
                 if (patterns != null) {
                     loadPatterns(patterns);
                 }
                 break;
 
             case Connect:
+                systemSequencer.phaseChange(context, ComponentPhase.Connect);
                 break;
 
             case Disconnect:
+                systemSequencer.phaseChange(context, ComponentPhase.Disconnect);
                 break;
         }
     }
@@ -120,12 +133,40 @@ public class MasterSequencer extends CaustkComponent {
         }
     }
 
+    boolean updatePosition(int measure, float beat) {
+        return systemSequencer.updatePosition(measure, beat);
+    }
+
     void updateMachine(Machine caustkMachine) {
         for (SequencerPattern caustkSequencerPattern : caustkMachine.getPatterns().values()) {
             SequencerMessage.PATTERN_EVENT.send(rack, caustkMachine.getMachineIndex(),
                     caustkSequencerPattern.getStartBeat(), caustkSequencerPattern.getBankIndex(),
                     caustkSequencerPattern.getPatternIndex(), caustkSequencerPattern.getEndBeat());
         }
+    }
+
+    //--------------------------------------------------------------------------
+    // Proxy API
+    //--------------------------------------------------------------------------
+
+    public boolean isPlaying() {
+        return systemSequencer.isPlaying();
+    }
+
+    public void play() {
+        systemSequencer.play();
+    }
+
+    public void play(SequencerMode mode) {
+        systemSequencer.play(mode);
+    }
+
+    public void stop() {
+        systemSequencer.stop();
+    }
+
+    public int getCurrentSixteenthStep() {
+        return systemSequencer.getCurrentSixteenthStep();
     }
 
 }

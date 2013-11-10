@@ -104,7 +104,7 @@ public abstract class StepSequencerMediator extends MachineMediatorBase {
                     @Override
                     public void trigger(OnSystemSequencerStepChange object) {
                         GrooveMachine machine = grooveStationModel.getMachine(getMachineIndex());
-                        final int sixteenthStep = getController().getRack().getSystemSequencer()
+                        final int sixteenthStep = getController().getRackSet().getSequencer()
                                 .getCurrentSixteenthStep();
                         int position = machine.getSequencer().getSelectedPhrase().getPosition();
 

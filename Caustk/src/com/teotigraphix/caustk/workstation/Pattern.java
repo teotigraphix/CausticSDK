@@ -42,6 +42,9 @@ public class Pattern extends CaustkComponent {
     @Tag(101)
     private int index;
 
+    @Tag(102)
+    private int selectedPartIndex;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -64,6 +67,29 @@ public class Pattern extends CaustkComponent {
      */
     public final int getIndex() {
         return index;
+    }
+
+    //---------------------------------- 
+    // selectedPartIndex
+    //----------------------------------
+
+    public int getSelectedPartIndex() {
+        return selectedPartIndex;
+    }
+
+    /**
+     * @param value
+     * @see OnPatternChange
+     * @see PatternChangeKind#SelectedPartIndex
+     */
+    public void setSelectedPartIndex(int value) {
+        if (value == selectedPartIndex)
+            return;
+        selectedPartIndex = value;
+        int oldIndex = selectedPartIndex;
+        selectedPartIndex = value;
+        trigger(new OnPatternChange(this, PatternChangeKind.SelectedPartIndex, selectedPartIndex,
+                oldIndex));
     }
 
     //----------------------------------
@@ -103,6 +129,14 @@ public class Pattern extends CaustkComponent {
     //----------------------------------
 
     /**
+     * Returns the pattern's selected {@link Part} using the
+     * {@link #getSelectedPartIndex()}.
+     */
+    public Part getSelectedPart() {
+        return getPart(selectedPartIndex);
+    }
+
+    /**
      * Returns the {@link Part} at the specified index.
      * 
      * @param partIndex The part index (0..13).
@@ -114,6 +148,17 @@ public class Pattern extends CaustkComponent {
     //----------------------------------
     // phrase
     //----------------------------------
+
+    /**
+     * Returns the pattern's selected {@link Part}'s {@link Phrase} using the
+     * {@link #getSelectedPartIndex()}.
+     * <p>
+     * When the {@link PatternChangeKind#SelectedPartIndex} is fired, this will
+     * reflect the new {@link Phrase} of the selected {@link Part}.
+     */
+    public Phrase getSelectedPhrase() {
+        return getPhrase(selectedPartIndex);
+    }
 
     /**
      * Returns the {@link Phrase} of the machine at the {@link Pattern}'s bank
@@ -162,6 +207,83 @@ public class Pattern extends CaustkComponent {
                 break;
             case Update:
                 break;
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Event API
+    //--------------------------------------------------------------------------
+
+    private void trigger(Object event) {
+        patternSet.getRackSet().getComponentDispatcher().trigger(event);
+    }
+
+    public enum PatternChangeKind {
+
+        SelectedPartIndex,
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @see RackSet#getComponentDispatcher()
+     */
+    public static class OnPatternChange {
+
+        private Pattern pattern;
+
+        private PatternChangeKind kind;
+
+        private int index;
+
+        private int oldIndex;
+
+        private Part part;
+
+        public Pattern getPattern() {
+            return pattern;
+        }
+
+        public PatternChangeKind getKind() {
+            return kind;
+        }
+
+        /**
+         * @see PatternChangeKind#SelectedPartIndex
+         */
+        public int getIndex() {
+            return index;
+        }
+
+        /**
+         * @see PatternChangeKind#SelectedPartIndex
+         */
+        public int getOldIndex() {
+            return oldIndex;
+        }
+
+        /**
+         * @see PatternChangeKind#PartAdd
+         */
+        public Part getPart() {
+            return part;
+        }
+
+        public OnPatternChange(Pattern pattern, PatternChangeKind kind) {
+            this.pattern = pattern;
+            this.kind = kind;
+        }
+
+        public OnPatternChange(Pattern pattern, PatternChangeKind kind, int index, int oldIndex) {
+            this.pattern = pattern;
+            this.kind = kind;
+            this.index = index;
+            this.oldIndex = oldIndex;
+        }
+
+        public OnPatternChange(Pattern pattern, PatternChangeKind kind, Part part) {
+            this.pattern = pattern;
+            this.kind = kind;
+            this.part = part;
         }
     }
 

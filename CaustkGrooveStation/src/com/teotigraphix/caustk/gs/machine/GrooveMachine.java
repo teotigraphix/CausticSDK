@@ -43,10 +43,15 @@ import com.teotigraphix.caustk.gs.pattern.Part;
 import com.teotigraphix.caustk.gs.pattern.PartUtils;
 import com.teotigraphix.caustk.gs.pattern.Pattern;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 public abstract class GrooveMachine implements IDispatcher {
 
     private transient IDispatcher dispatcher;
+
+    public final RackSet getRackSet() {
+        return controller.getRackSet();
+    }
 
     public final IRack getRack() {
         return controller.getRack();

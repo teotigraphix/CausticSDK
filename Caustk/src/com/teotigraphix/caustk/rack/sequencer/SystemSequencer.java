@@ -17,15 +17,28 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack;
+package com.teotigraphix.caustk.rack.sequencer;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.command.CommandBase;
 import com.teotigraphix.caustk.controller.command.CommandUtils;
 import com.teotigraphix.caustk.controller.command.UndoCommand;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.ISystemSequencer;
+import com.teotigraphix.caustk.rack.ISystemSequencer.ExportType;
+import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBPMChange;
+import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBeatChange;
+import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerStepChange;
+import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerTransportChange;
+import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.rack.ISystemSequencer.ShuffleMode;
+import com.teotigraphix.caustk.rack.ISystemSequencer.SongEndMode;
 import com.teotigraphix.caustk.rack.tone.RackTone;
+import com.teotigraphix.caustk.workstation.CaustkComponent;
 
 /**
  * The {@link SystemSequencer} manages the native pattern and song sequencer OSC
@@ -37,29 +50,51 @@ import com.teotigraphix.caustk.rack.tone.RackTone;
  * 
  * @author Michael Schmalle
  */
-public class SystemSequencer extends RackComponent implements ISystemSequencer {
+public class SystemSequencer extends CaustkComponent {
+
+    private transient IRack rack;
+
+    private IRack getRack() {
+        return rack;
+    }
 
     //--------------------------------------------------------------------------
-    // Priovate :: Variables
+    // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private boolean isPlaying = false;
 
+    @Tag(101)
     private SequencerMode sequencerMode = SequencerMode.Pattern;
 
+    @Tag(102)
     private float bpm = 120f;
 
+    @Tag(103)
     private int currentMeasure = -1;
 
+    @Tag(104)
     private int currentBeat = -1;
 
+    @Tag(105)
     private float currentFloatBeat = -1f;
 
+    @Tag(106)
     private int currentSixteenthStep;
 
     //--------------------------------------------------------------------------
-    // Property API
+    // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // defaultName
+    //----------------------------------
+
+    @Override
+    public String getDefaultName() {
+        return null;
+    }
 
     //----------------------------------
     // isPlaying
@@ -76,7 +111,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         }
     }
 
-    @Override
     public boolean isPlaying() {
         return isPlaying;
     }
@@ -85,12 +119,10 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     // sequencerMode
     //----------------------------------
 
-    @Override
     public final SequencerMode getSequencerMode() {
         return sequencerMode;
     }
 
-    @Override
     public void setSequencerMode(SequencerMode value) {
         sequencerMode = value;
         OutputPanelMessage.MODE.send(getRack(), sequencerMode.getValue());
@@ -100,7 +132,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     // tempo
     //----------------------------------
 
-    @Override
     public void setBPM(float value) {
         if (value == bpm)
             return;
@@ -109,32 +140,29 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         getRack().getDispatcher().trigger(new OnSystemSequencerBPMChange(value));
     }
 
-    @Override
     public float getBPM() {
         return bpm;
     }
 
-    @Override
-    public void setRack(IRack value) {
-        super.setRack(value);
-
-        getController().put(COMMAND_PLAY, SystemSequencerPlayCommand.class);
-        getController().put(COMMAND_STOP, SystemSequencerStopCommand.class);
-        getController().put(COMMAND_U_TEMPO, SystemSequencerTempoCommand.class);
-    }
+    //    public void setRack(IRack value) {
+    //        super.setRack(value);
+    //
+    //        getController().put(COMMAND_PLAY, SystemSequencerPlayCommand.class);
+    //        getController().put(COMMAND_STOP, SystemSequencerStopCommand.class);
+    //        getController().put(COMMAND_U_TEMPO, SystemSequencerTempoCommand.class);
+    //    }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    SystemSequencer() {
+    public SystemSequencer() {
     }
 
     //----------------------------------
     // currentMeasure
     //----------------------------------
 
-    @Override
     public int getCurrentMeasure() {
         return currentMeasure;
     }
@@ -147,18 +175,15 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     // currentBeat
     //----------------------------------
 
-    @Override
     public int getStep() {
         int step = (currentBeat % 4) * 4;
         return step;
     }
 
-    @Override
     public int getCurrentSixteenthStep() {
         return currentSixteenthStep;
     }
 
-    @Override
     public boolean updatePosition(int measure, float beat) {
         if (!isPlaying())
             return false;
@@ -183,7 +208,6 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         return changed;
     }
 
-    @Override
     public int getCurrentBeat() {
         return currentBeat;
     }
@@ -200,32 +224,49 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         return true;
     }
 
+    @Override
+    protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
+            throws CausticException {
+        if (context != null)
+            rack = context.getRack();
+
+        switch (phase) {
+            case Create:
+                break;
+            case Load:
+                break;
+            case Restore:
+                sequencerMode = SequencerMode
+                        .fromInt((int)OutputPanelMessage.MODE.query(getRack()));
+                bpm = OutputPanelMessage.BPM.query(getRack());
+                break;
+            case Update:
+                break;
+            case Connect:
+                break;
+            case Disconnect:
+                rack = null;
+                break;
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    @Override
     public void play() {
         play(SequencerMode.Pattern);
     }
 
-    @Override
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
         setIsPlaying(true);
         getRack().getDispatcher().trigger(new OnSystemSequencerTransportChange());
     }
 
-    @Override
     public void stop() {
         setIsPlaying(false);
         getRack().getDispatcher().trigger(new OnSystemSequencerTransportChange());
-    }
-
-    @Override
-    public void restore() {
-        sequencerMode = SequencerMode.fromInt((int)OutputPanelMessage.MODE.query(getRack()));
-        bpm = OutputPanelMessage.BPM.query(getRack());
     }
 
     //--------------------------------------------------------------------------
@@ -233,6 +274,7 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     //--------------------------------------------------------------------------
 
     public static class SystemSequencerPlayCommand extends CommandBase {
+
         @Override
         public void execute() {
             int smode = CommandUtils.getInteger(getContext(), 0);
@@ -242,6 +284,7 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     }
 
     public static class SystemSequencerStopCommand extends CommandBase {
+
         @Override
         public void execute() {
             getContext().getComponent(ISystemSequencer.class).stop();
@@ -268,48 +311,41 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
     //--------------------------------------------------------------------------
     // Song
 
-    @Override
     public void setSongEndMode(SongEndMode mode) {
         SequencerMessage.SONG_END_MODE.send(getRack(), mode.getValue());
     }
 
-    @Override
     public SongEndMode getSongEndMode() {
         return SongEndMode.fromInt((int)SequencerMessage.SONG_END_MODE.send(getRack()));
     }
 
-    @Override
     public String getPatterns() {
         return SequencerMessage.QUERY_PATTERN_EVENT.queryString(getRack());
     }
 
-    @Override
     public void addPattern(RackTone rackTone, int bank, int pattern, int start, int end)
             throws CausticException {
-        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getMachineIndex(), start, bank, pattern, end);
+        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getMachineIndex(), start, bank,
+                pattern, end);
     }
 
-    @Override
     public void removePattern(RackTone rackTone, int start, int end) throws CausticException {
-        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getMachineIndex(), start, -1, -1, end);
+        SequencerMessage.PATTERN_EVENT.send(getRack(), rackTone.getMachineIndex(), start, -1, -1,
+                end);
     }
 
-    @Override
     public void setLoopPoints(int startBar, int endBar) {
         SequencerMessage.LOOP_POINTS.send(getRack(), startBar, endBar);
     }
 
-    @Override
     public void playPosition(int beat) {
         SequencerMessage.PLAY_POSITION.send(getRack(), beat);
     }
 
-    @Override
     public void playPositionAt(int bar, int step) {
         playPositionAt(bar, step);
     }
 
-    @Override
     public void exportSong(String exportPath, ExportType type, int quality) {
         String ftype = "";
         String fquality = "";
@@ -320,47 +356,38 @@ public class SystemSequencer extends RackComponent implements ISystemSequencer {
         SequencerMessage.EXPORT_SONG.send(getRack(), exportPath, ftype, fquality);
     }
 
-    @Override
     public void exportSong(String exportPath, ExportType type) {
         exportSong(exportPath, type, 70);
     }
 
-    @Override
     public float exportSongProgress() {
         return SequencerMessage.EXPORT_PROGRESS.query(getRack());
     }
 
-    @Override
     public void clearPatterns() {
         SequencerMessage.CLEAR_PATTERNS.send(getRack());
     }
 
-    @Override
     public void clearAutomation() {
         SequencerMessage.CLEAR_AUTOMATION.send(getRack());
     }
 
-    @Override
     public void clearAutomation(RackTone rackTone) {
         SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getRack(), rackTone.getMachineIndex());
     }
 
-    @Override
     public ShuffleMode getShuffleMode() {
         return ShuffleMode.fromInt((int)OutputPanelMessage.SHUFFLE_MODE.query(getRack()));
     }
 
-    @Override
     public void setShuffleMode(ShuffleMode value) {
         OutputPanelMessage.SHUFFLE_MODE.send(getRack(), value.getValue());
     }
 
-    @Override
     public float getShuffleAmount() {
         return OutputPanelMessage.SHUFFLE_AMOUNT.query(getRack());
     }
 
-    @Override
     public void setShuffleAmount(float value) {
         OutputPanelMessage.SHUFFLE_AMOUNT.send(getRack(), value);
     }

@@ -184,7 +184,7 @@ public class RackSet extends CaustkComponent {
     // MasterSequencer
     //----------------------------------
 
-    public MasterSequencer getMasterSequencer() {
+    public MasterSequencer getSequencer() {
         return masterSequencer;
     }
 
@@ -346,6 +346,11 @@ public class RackSet extends CaustkComponent {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    public boolean updatePosition(int measure, float beat) {
+        final boolean changed = masterSequencer.updatePosition(measure, beat);
+        return changed;
+    }
 
     public void addMachine(int index, Machine machine) throws CausticException {
         // XXX This is going to be complex but just try adding to empty

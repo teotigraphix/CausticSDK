@@ -132,7 +132,7 @@ public class MachineSequencer extends MachineComponentPart {
         // getDispatcher().trigger(new OnPatternSequencerPatternChangePending());
 
         // if the sequencer is not playing, advance automatically.
-        if (!getRack().getSystemSequencer().isPlaying()) {
+        if (!getRackSet().getSequencer().isPlaying()) {
             playNextPattern();
         }
     }

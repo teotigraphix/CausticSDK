@@ -86,10 +86,6 @@ public class Rack implements IRack {
         soundGenerator = application.getConfiguration().getSoundGenerator();
 
         controller.addComponent(IRack.class, this);
-
-        systemSequencer = new SystemSequencer();
-        systemSequencer.setRack(this);
-        controller.addComponent(ISystemSequencer.class, systemSequencer);
     }
 
     //----------------------------------
@@ -145,17 +141,6 @@ public class Rack implements IRack {
         }
     }
 
-    //----------------------------------
-    // systemSequencer
-    //----------------------------------
-
-    private SystemSequencer systemSequencer;
-
-    @Override
-    public final ISystemSequencer getSystemSequencer() {
-        return systemSequencer;
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -172,9 +157,8 @@ public class Rack implements IRack {
     public void frameChanged(float delta) {
         final int measure = (int)getCurrentSongMeasure();
         final float beat = getCurrentBeat();
-        final boolean changed = systemSequencer.updatePosition(measure, beat);
+        final boolean changed = rackSet.updatePosition(measure, beat);
         if (changed) {
-            systemSequencer.beatChange(measure, beat);
             //for (IRackComponent component : components.values()) {
             //    component.beatChange(measure, beat);
             //}
@@ -212,7 +196,6 @@ public class Rack implements IRack {
     public void restore() {
         if (rackSet != null)
             rackSet.restore();
-        systemSequencer.restore();
     }
 
     //--------------------------------------------------------------------------
@@ -274,7 +257,6 @@ public class Rack implements IRack {
         application = null;
         controller = null;
         soundGenerator = null;
-        systemSequencer = null;
     }
 
     //--------------------------------------------------------------------------
