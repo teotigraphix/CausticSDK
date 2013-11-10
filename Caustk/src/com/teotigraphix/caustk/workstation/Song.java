@@ -40,7 +40,13 @@ public class Song extends CaustkComponent {
     private SongSet songSet;
 
     @Tag(101)
+    private int index;
+
+    @Tag(102)
     private Map<Integer, UUID> patternIds = new HashMap<Integer, UUID>();
+
+    @Tag(103)
+    private float tempo = 120f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -64,6 +70,14 @@ public class Song extends CaustkComponent {
     }
 
     //----------------------------------
+    // index
+    //----------------------------------
+
+    public int getIndex() {
+        return index;
+    }
+
+    //----------------------------------
     // patternIds
     //----------------------------------
 
@@ -78,6 +92,29 @@ public class Song extends CaustkComponent {
      */
     public Map<Integer, UUID> getPatternIds() {
         return patternIds;
+    }
+
+    //----------------------------------
+    // tempo
+    //----------------------------------
+
+    public float getTempo() {
+        return tempo;
+    }
+
+    /**
+     * Sets the pattern tempo, TODO
+     * 
+     * @param value (60..250)
+     * @see OnSongChange
+     * @see SongChangeKind#Tempo
+     */
+    public void setTempo(float value) {
+        if (value == tempo)
+            return;
+        tempo = value;
+        // patternSet.getRackSet().getSequencer().setBPM(tempo);
+        trigger(new OnSongChange(this, SongChangeKind.Tempo));
     }
 
     //--------------------------------------------------------------------------
@@ -111,6 +148,39 @@ public class Song extends CaustkComponent {
                 break;
             case Update:
                 break;
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Event API
+    //--------------------------------------------------------------------------
+
+    private void trigger(Object event) {
+        songSet.getPatternSet().getRackSet().getComponentDispatcher().trigger(event);
+    }
+
+    public enum SongChangeKind {
+
+        Tempo
+    }
+
+    public static class OnSongChange {
+
+        private Song song;
+
+        private SongChangeKind kind;
+
+        public Song getSong() {
+            return song;
+        }
+
+        public SongChangeKind getKind() {
+            return kind;
+        }
+
+        public OnSongChange(Song song, SongChangeKind kind) {
+            this.song = song;
+            this.kind = kind;
         }
     }
 }

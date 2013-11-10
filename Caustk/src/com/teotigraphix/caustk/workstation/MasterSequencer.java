@@ -164,6 +164,18 @@ public class MasterSequencer extends CaustkComponent {
     // Proxy API
     //--------------------------------------------------------------------------
 
+    //----------------------------------
+    // bpm
+    //----------------------------------
+
+    public void setBPM(float value) {
+        systemSequencer.setBPM(value);
+    }
+
+    public float getBPM() {
+        return systemSequencer.getBPM();
+    }
+
     public boolean isPlaying() {
         return systemSequencer.isPlaying();
     }

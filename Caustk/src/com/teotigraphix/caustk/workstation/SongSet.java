@@ -19,11 +19,14 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
  * @author Michael Schmalle
@@ -38,6 +41,12 @@ public class SongSet extends CaustkComponent {
 
     @Tag(100)
     private UUID patternSetId;
+
+    @Tag(101)
+    private Map<Integer, Song> songs = new TreeMap<Integer, Song>();
+
+    @Tag(102)
+    private int selectedIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -65,6 +74,31 @@ public class SongSet extends CaustkComponent {
     }
 
     //----------------------------------
+    // selectedIndex
+    //----------------------------------
+
+    public Song getSelectedSong() {
+        return getSong(selectedIndex);
+    }
+
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    /**
+     * @param value
+     * @see OnSongSetChange
+     * @see SongSetChangeKind#SelectedIndex
+     */
+    public void setSelectedIndex(int value) {
+        if (value == selectedIndex)
+            return;
+        int oldIndex = selectedIndex;
+        selectedIndex = value;
+        trigger(new OnSongSetChange(this, SongSetChangeKind.SelectedIndex, selectedIndex, oldIndex));
+    }
+
+    //----------------------------------
     // patternSet
     //----------------------------------
 
@@ -75,6 +109,45 @@ public class SongSet extends CaustkComponent {
      */
     public PatternSet getPatternSet() {
         return patternSet;
+    }
+
+    /**
+     * Returns the {@link Song} at the linear index (0..62).
+     * 
+     * @param index The linear index.
+     */
+    public Song getSong(int index) {
+        return songs.get(index);
+    }
+
+    /**
+     * Increments and returns the next song (0..63), when 64 is reached, the
+     * index wraps around to 0.
+     * 
+     * @return The new selected {@link Song}.
+     * @see #setSelectedIndex(int)
+     */
+    public Song incrementIndex() {
+        int index = selectedIndex + 1;
+        if (index > 63)
+            index = 0;
+        setSelectedIndex(index);
+        return getSelectedSong();
+    }
+
+    /**
+     * Decrements and returns the next song (0..63), when 0 is reached, the
+     * index wraps around to 63.
+     * 
+     * @return The new selected {@link Song}.
+     * @see #setSelectedIndex(int)
+     */
+    public Song decrementIndex() {
+        int index = selectedIndex - 1;
+        if (index < 0)
+            index = 63;
+        setSelectedIndex(index);
+        return getSelectedSong();
     }
 
     //--------------------------------------------------------------------------
@@ -105,6 +178,13 @@ public class SongSet extends CaustkComponent {
             case Connect:
                 break;
             case Create:
+                for (int i = 0; i < 64; i++) {
+                    final ICaustkFactory factory = context.getFactory();
+                    String name = PatternUtils.toString(i);
+                    ComponentInfo info = factory.createInfo(ComponentType.Song, name);
+                    Song song = factory.createSong(info, this);
+                    addSong(song);
+                }
                 break;
             case Disconnect:
                 break;
@@ -114,6 +194,83 @@ public class SongSet extends CaustkComponent {
                 break;
             case Update:
                 break;
+        }
+    }
+
+    void addSong(Song song) {
+        songs.put(song.getIndex(), song);
+        songAdd(song);
+    }
+
+    private void songAdd(Song song) {
+        // TODO Auto-generated method stub
+
+    }
+
+    //--------------------------------------------------------------------------
+    // Event API
+    //--------------------------------------------------------------------------
+
+    private void trigger(Object event) {
+        patternSet.getRackSet().getComponentDispatcher().trigger(event);
+    }
+
+    public enum SongSetChangeKind {
+        SongAdd,
+
+        SongRemove,
+
+        SongReplace,
+
+        SelectedIndex,
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @see RackSet#getComponentDispatcher()
+     */
+    public static class OnSongSetChange {
+
+        private SongSet songSet;
+
+        private SongSetChangeKind kind;
+
+        private int index;
+
+        private int oldIndex;
+
+        public SongSet getSongSet() {
+            return songSet;
+        }
+
+        public SongSetChangeKind getKind() {
+            return kind;
+        }
+
+        /**
+         * @see SongSetChangeKind#SelectedIndex
+         */
+        public int getIndex() {
+            return index;
+        }
+
+        /**
+         * @see SongSetChangeKind#SelectedIndex
+         */
+        public int getOldIndex() {
+            return oldIndex;
+        }
+
+        public OnSongSetChange(SongSet songSet, SongSetChangeKind kind) {
+            this.songSet = songSet;
+            this.kind = kind;
+        }
+
+        public OnSongSetChange(SongSet songSet, SongSetChangeKind kind, int index, int oldIndex) {
+            this.songSet = songSet;
+            this.kind = kind;
+            this.index = index;
+            this.oldIndex = oldIndex;
         }
     }
 }

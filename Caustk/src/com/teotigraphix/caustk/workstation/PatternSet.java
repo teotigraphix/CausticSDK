@@ -48,7 +48,7 @@ public class PatternSet extends CaustkComponent {
     private Map<Integer, Pattern> patterns = new TreeMap<Integer, Pattern>();
 
     @Tag(103)
-    private int selectedPatternIndex = 0;
+    private int selectedIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -80,30 +80,30 @@ public class PatternSet extends CaustkComponent {
     }
 
     //----------------------------------
-    // selectedPatternIndex
+    // selectedIndex
     //----------------------------------
 
     public Pattern getSelectedPattern() {
-        return getPattern(selectedPatternIndex);
+        return getPattern(selectedIndex);
     }
 
-    public int getSelectedPatternIndex() {
-        return selectedPatternIndex;
+    public int getSelectedIndex() {
+        return selectedIndex;
     }
 
     /**
      * @param value
      * @see OnPatternSetChange
-     * @see PatternSetChangeKind#SelectedPatternIndex
+     * @see PatternSetChangeKind#SelectedIndex
      */
-    public void setSelectedPatternIndex(int value) {
-        if (value == selectedPatternIndex)
+    public void setSelectedIndex(int value) {
+        if (value == selectedIndex)
             return;
-        int oldIndex = selectedPatternIndex;
-        selectedPatternIndex = value;
+        int oldIndex = selectedIndex;
+        selectedIndex = value;
         rackSet.getComponentDispatcher().trigger(
-                new OnPatternSetChange(this, PatternSetChangeKind.SelectedPatternIndex,
-                        selectedPatternIndex, oldIndex));
+                new OnPatternSetChange(this, PatternSetChangeKind.SelectedIndex, selectedIndex,
+                        oldIndex));
     }
 
     //----------------------------------
@@ -208,12 +208,13 @@ public class PatternSet extends CaustkComponent {
      * index wraps around to 0.
      * 
      * @return The new selected {@link Pattern}.
+     * @see #setSelectedIndex(int)
      */
-    public Pattern incrementPatternIndex() {
-        int index = selectedPatternIndex + 1;
+    public Pattern incrementIndex() {
+        int index = selectedIndex + 1;
         if (index > 63)
             index = 0;
-        setSelectedPatternIndex(index);
+        setSelectedIndex(index);
         return getSelectedPattern();
     }
 
@@ -222,12 +223,13 @@ public class PatternSet extends CaustkComponent {
      * index wraps around to 63.
      * 
      * @return The new selected {@link Pattern}.
+     * @see #setSelectedIndex(int)
      */
-    public Pattern decrementPatternIndex() {
-        int index = selectedPatternIndex - 1;
+    public Pattern decrementIndex() {
+        int index = selectedIndex - 1;
         if (index < 0)
             index = 63;
-        setSelectedPatternIndex(index);
+        setSelectedIndex(index);
         return getSelectedPattern();
     }
 
@@ -316,7 +318,7 @@ public class PatternSet extends CaustkComponent {
 
         PartReplace,
 
-        SelectedPatternIndex,
+        SelectedIndex,
     }
 
     /**
@@ -344,14 +346,14 @@ public class PatternSet extends CaustkComponent {
         }
 
         /**
-         * @see PatternSetChangeKind#SelectedPatternIndex
+         * @see PatternSetChangeKind#SelectedIndex
          */
         public int getIndex() {
             return index;
         }
 
         /**
-         * @see PatternSetChangeKind#SelectedPatternIndex
+         * @see PatternSetChangeKind#SelectedIndex
          */
         public int getOldIndex() {
             return oldIndex;
@@ -383,5 +385,4 @@ public class PatternSet extends CaustkComponent {
             this.part = part;
         }
     }
-
 }

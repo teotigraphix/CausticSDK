@@ -477,6 +477,21 @@ public class Phrase extends CaustkComponent {
     }
 
     /**
+     * Returns the local current 16th step; possible values (0..15)
+     */
+    public int getLocalCurrentStep() {
+        return machine.getRackSet().getSequencer().getCurrentSixteenthStep();
+    }
+
+    /**
+     * Returns the global current 16th step; possible values (0..127)
+     */
+    public int getCurrentStep() {
+        //return 0;
+        throw new UnsupportedOperationException("getCurrentStep() not implemented yet");
+    }
+
+    /**
      * Increments the internal pointer of the measure position (1-8).
      * <p>
      * If the position is greater the {@link #getLength()}, the position is

@@ -129,7 +129,7 @@ public class SystemSequencer extends CaustkComponent {
     }
 
     //----------------------------------
-    // tempo
+    // bpm
     //----------------------------------
 
     public void setBPM(float value) {

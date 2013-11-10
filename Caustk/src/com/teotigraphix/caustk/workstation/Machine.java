@@ -111,7 +111,7 @@ public class Machine extends CaustkComponent {
     // rackSet
     //----------------------------------
 
-    public final RackSet _getRackSet() {
+    public final RackSet getRackSet() {
         return rackSet;
     }
 

@@ -48,6 +48,12 @@ public class Pattern extends CaustkComponent {
     @Tag(103)
     private int octave;
 
+    @Tag(104)
+    private float tempo = 120f;
+
+    @Tag(105)
+    private int length;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -106,6 +112,56 @@ public class Pattern extends CaustkComponent {
      */
     public int getOctave() {
         return octave;
+    }
+
+    //----------------------------------
+    // tempo
+    //----------------------------------
+
+    public float getTempo() {
+        return tempo;
+    }
+
+    /**
+     * Sets the pattern tempo, will also set the native output panel bpm.
+     * 
+     * @param value (60..250)
+     * @see OnPatternChange
+     * @see PatternChangeKind#Tempo
+     */
+    public void setTempo(float value) {
+        if (value == tempo)
+            return;
+        tempo = value;
+        patternSet.getRackSet().getSequencer().setBPM(tempo);
+        trigger(new OnPatternChange(this, PatternChangeKind.Tempo));
+    }
+
+    //----------------------------------
+    // length
+    //----------------------------------
+
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * Sets the pattern length, updates all {@link Part}s
+     * {@link Phrase#getLength()}.
+     * 
+     * @param value (1, 2, 4, 8)
+     * @see OnPatternChange
+     * @see PatternChangeKind#Length
+     */
+    public void setLength(int value) {
+        if (value == length)
+            return;
+        length = value;
+        for (Part part : patternSet.getParts()) {
+            Phrase phrase = getPhrase(part.getMachineIndex());
+            phrase.setLength(length);
+        }
+        trigger(new OnPatternChange(this, PatternChangeKind.Length));
     }
 
     //----------------------------------
@@ -244,6 +300,7 @@ public class Pattern extends CaustkComponent {
             case Restore:
                 break;
             case Update:
+                patternSet.getRackSet().getSequencer().setBPM(tempo);
                 break;
         }
     }
@@ -260,7 +317,11 @@ public class Pattern extends CaustkComponent {
 
         SelectedPartIndex,
 
-        Octave
+        Octave,
+
+        Tempo,
+
+        Length
     }
 
     /**
