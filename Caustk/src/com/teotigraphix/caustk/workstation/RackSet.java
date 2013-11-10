@@ -89,15 +89,18 @@ public class RackSet extends CaustkComponent {
     private Map<Integer, Machine> machines = new HashMap<Integer, Machine>(14);
 
     @Tag(103)
-    private MasterMixer masterMixer;
+    private MasterSystem masterSystem;
 
     @Tag(104)
-    private MasterSequencer masterSequencer;
+    private MasterMixer masterMixer;
 
     @Tag(105)
-    private boolean isInternal;
+    private MasterSequencer masterSequencer;
 
     @Tag(106)
+    private boolean isInternal;
+
+    @Tag(107)
     private boolean isInitialized;
 
     //--------------------------------------------------------------------------
@@ -172,12 +175,20 @@ public class RackSet extends CaustkComponent {
         return masterMixer.getLimiter();
     }
 
-    public final float getVolume() {
+    public final float getOut() {
         return masterMixer.getVolume().getOut();
     }
 
-    public final void setVolume(float value) {
+    public final void setOut(float value) {
         masterMixer.getVolume().setOut(value);
+    }
+
+    //----------------------------------
+    // MasterSystem
+    //----------------------------------
+
+    public MasterSystem getSystem() {
+        return masterSystem;
     }
 
     //----------------------------------
@@ -271,8 +282,10 @@ public class RackSet extends CaustkComponent {
             throws CausticException {
         switch (phase) {
             case Create:
+                masterSystem = factory.createMasterSystem(this);
                 masterMixer = factory.createMasterMixer(this);
                 masterSequencer = factory.createMasterSequencer(this);
+                masterSystem.create(context);
                 masterMixer.create(context);
                 masterSequencer.create(context);
 
@@ -299,6 +312,7 @@ public class RackSet extends CaustkComponent {
                 try {
                     // create the scene sub components
                     // createComponents(context);
+                    masterSystem = factory.createMasterSystem(this);
                     masterMixer = factory.createMasterMixer(this);
                     masterSequencer = factory.createMasterSequencer(this);
                     // load the current song rack state into the sub components
@@ -316,6 +330,7 @@ public class RackSet extends CaustkComponent {
 
                 RackMessage.BLANKRACK.send(rack);
 
+                masterSystem.update(context);
                 masterMixer.update(context);
 
                 for (Machine machine : machines.values()) {
@@ -330,6 +345,7 @@ public class RackSet extends CaustkComponent {
 
             case Connect:
                 rack = context.getRack();
+                masterSystem.phaseChange(context, ComponentPhase.Connect);
                 masterMixer.phaseChange(context, ComponentPhase.Connect);
                 masterSequencer.phaseChange(context, ComponentPhase.Connect);
                 for (Machine machine : machines.values()) {
@@ -506,6 +522,7 @@ public class RackSet extends CaustkComponent {
 
     @Override
     public void onSave(ICaustkApplicationContext context) {
+        masterSystem.onSave(context);
         masterMixer.onSave(context);
         masterSequencer.onSave(context);
         for (Machine machine : machines.values()) {

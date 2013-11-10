@@ -120,9 +120,11 @@ public interface ICaustkFactory {
 
     Effect createEffect(int slot, EffectType effectType, Patch patch);
 
-    MasterMixer createMasterMixer(RackSet caustkScene);
+    MasterSystem createMasterSystem(RackSet rackSet);
 
-    MasterSequencer createMasterSequencer(RackSet caustkScene);
+    MasterMixer createMasterMixer(RackSet rackSet);
+
+    MasterSequencer createMasterSequencer(RackSet rackSet);
 
     <T extends RackTone> T createRackTone(String machineName, MachineType machineType,
             int machineIndex) throws CausticException;

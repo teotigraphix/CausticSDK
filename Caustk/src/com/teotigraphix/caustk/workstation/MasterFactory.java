@@ -19,13 +19,26 @@
 
 package com.teotigraphix.caustk.workstation;
 
-public class MasterSequencerFactory extends CaustkSubFactoryBase {
+/**
+ * @author Michael Schmalle
+ */
+public class MasterFactory extends CaustkSubFactoryBase {
 
-    public MasterSequencerFactory() {
+    public MasterFactory() {
+    }
+
+    public MasterSystem createMasterSystem(RackSet rackSet) {
+        MasterSystem masterSystem = new MasterSystem(rackSet);
+        return masterSystem;
+    }
+
+    public MasterMixer createMasterMixer(RackSet rackSet) {
+        MasterMixer masterMixer = new MasterMixer(rackSet);
+        return masterMixer;
     }
 
     public MasterSequencer createMasterSequencer(RackSet rackSet) {
-        MasterSequencer caustkMasterSequencer = new MasterSequencer(rackSet);
-        return caustkMasterSequencer;
+        MasterSequencer masterSequencer = new MasterSequencer(rackSet);
+        return masterSequencer;
     }
 }

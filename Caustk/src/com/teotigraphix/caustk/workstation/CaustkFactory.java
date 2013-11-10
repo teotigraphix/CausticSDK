@@ -70,9 +70,7 @@ public class CaustkFactory implements ICaustkFactory {
 
     private MachineFactory machineFactory;
 
-    private MasterMixerFactory masterMixerFactory;
-
-    private MasterSequencerFactory masterSequencerFactory;
+    private MasterFactory masterFactory;
 
     private RackToneFactory rackToneFactory;
 
@@ -127,10 +125,8 @@ public class CaustkFactory implements ICaustkFactory {
         machineFactory = new MachineFactory();
         machineFactory.setFactory(this);
 
-        masterMixerFactory = new MasterMixerFactory();
-        masterMixerFactory.setFactory(this);
-        masterSequencerFactory = new MasterSequencerFactory();
-        masterSequencerFactory.setFactory(this);
+        masterFactory = new MasterFactory();
+        masterFactory.setFactory(this);
 
         patternSetFactory = new PatternSetFactory();
         patternSetFactory.setFactory(this);
@@ -350,17 +346,22 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     //----------------------------------
-    // Mixer
+    // Master
     //----------------------------------
 
     @Override
+    public MasterSystem createMasterSystem(RackSet rackSet) {
+        return masterFactory.createMasterSystem(rackSet);
+    }
+
+    @Override
     public MasterMixer createMasterMixer(RackSet caustkScene) {
-        return masterMixerFactory.createMasterMixer(caustkScene);
+        return masterFactory.createMasterMixer(caustkScene);
     }
 
     @Override
     public MasterSequencer createMasterSequencer(RackSet caustkScene) {
-        return masterSequencerFactory.createMasterSequencer(caustkScene);
+        return masterFactory.createMasterSequencer(caustkScene);
     }
 
     //----------------------------------
