@@ -29,6 +29,14 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class Pattern extends CaustkComponent {
 
+    // !!! Do not access part.getPhrase() through this class
+    // if API from Phrase is needed in Pattern, create the proxy API in Part
+    // then call through Part API to Phrase
+    // Only outside clients of Pattern may use the part.getPhrase() API
+    // See #setLength() for an example of this, where Pattern wants clients to
+    // call through itself and then it sets Part API, after which dispatching
+    // a change event
+
     private transient Song song;
 
     //--------------------------------------------------------------------------
@@ -158,8 +166,7 @@ public class Pattern extends CaustkComponent {
             return;
         length = value;
         for (Part part : patternSet.getParts()) {
-            Phrase phrase = getPhrase(part.getMachineIndex());
-            phrase.setLength(length);
+            part.setLength(length);
         }
         trigger(new OnPatternChange(this, PatternChangeKind.Length));
     }
@@ -217,36 +224,6 @@ public class Pattern extends CaustkComponent {
         return patternSet.getPart(partIndex);
     }
 
-    //----------------------------------
-    // phrase
-    //----------------------------------
-
-    /**
-     * Returns the pattern's selected {@link Part}'s {@link Phrase} using the
-     * {@link #getSelectedPartIndex()}.
-     * <p>
-     * When the {@link PatternChangeKind#SelectedPartIndex} is fired, this will
-     * reflect the new {@link Phrase} of the selected {@link Part}.
-     */
-    public Phrase getSelectedPhrase() {
-        return getPhrase(selectedPartIndex);
-    }
-
-    /**
-     * Returns the {@link Phrase} of the machine at the {@link Pattern}'s bank
-     * and pattern index.
-     * <p>
-     * Uses the {@link Part#getMachine()} to retrieve the {@link Machine}'s
-     * {@link Phrase}.
-     */
-    public final Phrase getPhrase(int partIndex) {
-        Part part = getPart(partIndex);
-        if (part == null)
-            throw new IllegalStateException("Part is null at index: " + partIndex);
-        Machine machine = part.getMachine();
-        return machine.getPhrase(getBankIndex(), getPatternIndex());
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -279,8 +256,7 @@ public class Pattern extends CaustkComponent {
             return;
         this.octave = octave;
         for (Part part : patternSet.getParts()) {
-            Phrase phrase = getPhrase(part.getMachineIndex());
-            phrase.transpose(octave);
+            part.transpose(octave);
         }
         trigger(new OnPatternChange(this, PatternChangeKind.Octave));
     }

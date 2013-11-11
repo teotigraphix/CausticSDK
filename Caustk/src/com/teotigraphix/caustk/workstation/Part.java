@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.workstation;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
  * @author Michael Schmalle
@@ -89,6 +90,57 @@ public class Part extends CaustkComponent {
         return machine.getPatch();
     }
 
+    //----------------------------------
+    // phrase
+    //----------------------------------
+
+    /**
+     * Returns the current {@link Pattern}'s part {@link Phrase} using the
+     * selected index of the {@link PatternSet}.
+     * <p>
+     * If this part's index is 1 and the pattern set's selected index is 3, then
+     * the {@link Phrase} for native machine 1 at A04 will be returned.
+     */
+    public final Phrase getPhrase() {
+        return getPhrase(PatternUtils.getBank(patternSet.getSelectedIndex()),
+                PatternUtils.getBank(patternSet.getSelectedIndex()));
+    }
+
+    /**
+     * Returns a {@link Phrase} for this part's {@link Machine} at the bank and
+     * pattern index.
+     * 
+     * @param bankIndex The bank index (0..3).
+     * @param patternIndex The pattern index (0..15).
+     */
+    public final Phrase getPhrase(int bankIndex, int patternIndex) {
+        return machine.getPhrase(bankIndex, patternIndex);
+    }
+
+    //----------------------------------
+    // phrase
+    //----------------------------------
+
+    public boolean istMute() {
+        return machine.isMute();
+    }
+
+    public void setMute(boolean muted) {
+        machine.setMute(muted);
+    }
+
+    //----------------------------------
+    // phrase
+    //----------------------------------
+
+    public int getLength() {
+        return getPhrase().getLength();
+    }
+
+    public void setLength(int value) {
+        getPhrase().setLength(value);
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -108,6 +160,10 @@ public class Part extends CaustkComponent {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    public void transpose(int octave) {
+        getPhrase().transpose(octave);
+    }
 
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)

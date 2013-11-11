@@ -89,7 +89,7 @@ public class Machine extends CaustkComponent {
     private boolean enabled = false;
 
     @Tag(112)
-    private boolean muted = false;
+    private boolean mute = false;
 
     @Tag(113)
     private boolean selected = false;
@@ -292,19 +292,19 @@ public class Machine extends CaustkComponent {
     }
 
     //----------------------------------
-    // muted
+    // mute
     //----------------------------------
 
-    public boolean isMuted() {
-        return muted;
+    public boolean isMute() {
+        return mute;
     }
 
-    public void setMuted(boolean value) {
-        if (value == muted)
+    public void setMute(boolean value) {
+        if (value == mute)
             return;
-        muted = value;
+        mute = value;
         // firePropertyChange(TonePropertyKind.MUTE, mMuted);
-        getMixer().setMute(muted);
+        getMixer().setMute(mute);
     }
 
     //----------------------------------
