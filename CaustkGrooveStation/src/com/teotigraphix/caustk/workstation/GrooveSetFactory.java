@@ -17,18 +17,18 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.machine.part;
+package com.teotigraphix.caustk.workstation;
 
-import com.teotigraphix.caustk.gs.machine.GrooveMachine;
+/**
+ * @author Michael Schmalle
+ */
+public class GrooveSetFactory extends CaustkSubFactoryBase {
 
-public class MachineControls extends MachineComponentPart {
-
-    //--------------------------------------------------------------------------
-    // Constructor
-    //--------------------------------------------------------------------------
-
-    public MachineControls(GrooveMachine grooveMachine) {
-        super(grooveMachine);
+    public GrooveSetFactory() {
     }
 
+    public GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet) {
+        GrooveSet grooveSet = new GrooveSet(info, rackSet);
+        return grooveSet;
+    }
 }

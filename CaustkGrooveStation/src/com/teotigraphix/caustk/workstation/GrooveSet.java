@@ -19,16 +19,21 @@
 
 package com.teotigraphix.caustk.workstation;
 
-import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
 
 /**
+ * Holds all {@link GrooveMachine}s in an application, the main controller for
+ * all machines.
+ * 
  * @author Michael Schmalle
  */
-public class MasterSystem extends CaustkComponent {
+public class GrooveSet extends CaustkComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -38,13 +43,10 @@ public class MasterSystem extends CaustkComponent {
     private RackSet rackSet;
 
     @Tag(101)
-    private boolean record;
+    private Map<Integer, GrooveMachine> machines = new TreeMap<Integer, GrooveMachine>();
 
     @Tag(102)
-    private ShiftMode shiftMode = ShiftMode.Off;
-
-    @Tag(103)
-    private KeyboardMode keyboardMode = KeyboardMode.Off;
+    private int selectedMachineIndex;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -56,67 +58,49 @@ public class MasterSystem extends CaustkComponent {
 
     @Override
     public String getDefaultName() {
-        return "System";
+        return null;
     }
 
     //----------------------------------
-    // record
+    // rackSet
     //----------------------------------
 
-    public boolean isRecord() {
-        return record;
-    }
-
-    /**
-     * @param value
-     * @see OnMasterSystemChange
-     * @see MasterSystemChangeKind#Record
-     */
-    public void setRecord(boolean value) {
-        if (value == record)
-            return;
-        record = value;
-        trigger(new OnMasterSystemChange(this, MasterSystemChangeKind.Record));
+    public RackSet getRackSet() {
+        return rackSet;
     }
 
     //----------------------------------
-    // shiftMode
+    // machines
     //----------------------------------
 
-    public ShiftMode getShiftMode() {
-        return shiftMode;
-    }
-
-    /**
-     * @param value
-     * @see OnMasterSystemChange
-     * @see MasterSystemChangeKind#ShiftMode
-     */
-    public void setShiftMode(ShiftMode value) {
-        if (value == shiftMode)
-            return;
-        shiftMode = value;
-        trigger(new OnMasterSystemChange(this, MasterSystemChangeKind.ShiftMode));
+    public Collection<GrooveMachine> getMachines() {
+        return machines.values();
     }
 
     //----------------------------------
-    // keyboardMode
+    // selectedMachineIndex
     //----------------------------------
 
-    public KeyboardMode getKeyboardMode() {
-        return keyboardMode;
+    public GrooveMachine getSelectedMachine() {
+        return getMachine(selectedMachineIndex);
+    }
+
+    public int getSelectedMachineIndex() {
+        return selectedMachineIndex;
     }
 
     /**
      * @param value
-     * @see OnMasterSystemChange
-     * @see MasterSystemChangeKind#KeyboardMode
+     * @see OnGrooveStationChange
+     * @see GrooveStationChangeKind#SelectedMachineIndex
      */
-    public void setKeyboardMode(KeyboardMode value) {
-        if (value == keyboardMode)
+    public void setSelectedMachineIndex(int value) {
+        if (value == selectedMachineIndex)
             return;
-        keyboardMode = value;
-        trigger(new OnMasterSystemChange(this, MasterSystemChangeKind.KeyboardMode));
+        int oldIndex = selectedMachineIndex;
+        selectedMachineIndex = value;
+        trigger(new OnGrooveStationChange(this, GrooveStationChangeKind.SelectedMachineIndex,
+                selectedMachineIndex, oldIndex));
     }
 
     //--------------------------------------------------------------------------
@@ -126,10 +110,11 @@ public class MasterSystem extends CaustkComponent {
     /*
      * Serialization.
      */
-    MasterSystem() {
+    GrooveSet() {
     }
 
-    MasterSystem(RackSet rackSet) {
+    GrooveSet(ComponentInfo info, RackSet rackSet) {
+        setInfo(info);
         this.rackSet = rackSet;
     }
 
@@ -137,19 +122,14 @@ public class MasterSystem extends CaustkComponent {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    /**
-     * Writes the system state.
-     * 
-     * @throws CausticException
-     * @throws IOException
-     */
-    public void write() throws CausticException, IOException {
-        // TODO for now this should just call application.save()
-        // for real, this is a two step proccess, where it asks;
-        // do you really want to save, then press write again
-        // XXX how to implement two step commands?
-        // XXX This needs to fire a two step confirmation command for write
-        rackSet._getRack().getController().getApplication().save();
+    public GrooveMachine getMachine(int machineIndex) {
+        if (machineIndex > machines.size() - 1)
+            return null;
+        return machines.get(selectedMachineIndex);
+    }
+
+    public void addMachine(GrooveMachine machine) {
+        // TODO
     }
 
     @Override
@@ -158,20 +138,15 @@ public class MasterSystem extends CaustkComponent {
         switch (phase) {
             case Create:
                 break;
-
             case Load:
                 break;
-
             case Update:
                 break;
-
             case Restore:
                 break;
-
-            case Connect:
-                break;
-
             case Disconnect:
+                break;
+            case Connect:
                 break;
         }
     }
@@ -180,53 +155,57 @@ public class MasterSystem extends CaustkComponent {
     // Event API
     //--------------------------------------------------------------------------
 
-    protected final void trigger(Object event) {
+    private void trigger(Object event) {
         rackSet.getComponentDispatcher().trigger(event);
     }
 
-    public enum ShiftMode {
-        Off,
-
-        Shift
+    public enum GrooveStationChangeKind {
+        SelectedMachineIndex
     }
 
-    public enum KeyboardMode {
-        Off,
+    public static class OnGrooveStationChange {
 
-        Step,
+        private GrooveSet grooveSet;
 
-        Key,
+        private GrooveStationChangeKind kind;
 
-        Shift
-    }
+        private int index;
 
-    public enum MasterSystemChangeKind {
-        Record,
+        private int oldIndex;
 
-        ShiftMode,
-
-        KeyboardMode
-    }
-
-    public static class OnMasterSystemChange {
-
-        private MasterSystem masterSystem;
-
-        private MasterSystemChangeKind kind;
-
-        public MasterSystem getSystem() {
-            return masterSystem;
+        public GrooveSet getGrooveStation() {
+            return grooveSet;
         }
 
-        public MasterSystemChangeKind getKind() {
+        public GrooveStationChangeKind getKind() {
             return kind;
         }
 
-        public OnMasterSystemChange(MasterSystem masterSystem, MasterSystemChangeKind kind) {
-            this.masterSystem = masterSystem;
+        /**
+         * @see GrooveStationChangeKind#SelectedMachineIndex
+         */
+        public int getIndex() {
+            return index;
+        }
+
+        /**
+         * @see GrooveStationChangeKind#SelectedMachineIndex
+         */
+        public int getOldIndex() {
+            return oldIndex;
+        }
+
+        public OnGrooveStationChange(GrooveSet grooveSet, GrooveStationChangeKind kind) {
+            this.grooveSet = grooveSet;
             this.kind = kind;
         }
 
+        public OnGrooveStationChange(GrooveSet grooveSet, GrooveStationChangeKind kind,
+                int index, int oldIndex) {
+            this.grooveSet = grooveSet;
+            this.kind = kind;
+            this.index = index;
+            this.oldIndex = oldIndex;
+        }
     }
-
 }

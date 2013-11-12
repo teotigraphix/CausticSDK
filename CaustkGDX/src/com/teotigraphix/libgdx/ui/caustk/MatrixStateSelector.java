@@ -124,13 +124,13 @@ public class MatrixStateSelector extends ControlTable {
         //skin.add("eras-12-b", new BitmapFont(Gdx.files.internal("skin/Eras-12-B.fnt"), false));
 
         ButtonStyle decButtonStyle = new ButtonStyle();
-        decButtonStyle.up = skin.getDrawable("pad_up");
-        decButtonStyle.down = skin.getDrawable("pad_down");
+        decButtonStyle.up = skin.getDrawable("button_up");
+        decButtonStyle.down = skin.getDrawable("button_selected");
         skin.add(DEC_BUTTON_STYLE_NAME, decButtonStyle);
 
         ButtonStyle incButtonStyle = new ButtonStyle();
-        incButtonStyle.up = skin.getDrawable("pad_up");
-        incButtonStyle.down = skin.getDrawable("pad_down");
+        incButtonStyle.up = skin.getDrawable("button_up");
+        incButtonStyle.down = skin.getDrawable("button_selected");
         skin.add(INC_BUTTON_STYLE_NAME, incButtonStyle);
 
         LabelStyle labelStyle = new LabelStyle();
@@ -140,9 +140,9 @@ public class MatrixStateSelector extends ControlTable {
         // 
         // SelectButton [default]
         SelectButtonStyle selectButtonStyle = new SelectButtonStyle();
-        selectButtonStyle.up = skin.getDrawable("pad_up");
-        selectButtonStyle.down = skin.getDrawable("pad_down");
-        selectButtonStyle.checked = skin.getDrawable("pad_down");
+        selectButtonStyle.up = skin.getDrawable("button_up");
+        selectButtonStyle.down = skin.getDrawable("button_selected");
+        selectButtonStyle.checked = skin.getDrawable("button_selected");
         selectButtonStyle.font = skin.getFont("eras-12-b");
         selectButtonStyle.fontColor = skin.getColor("white");
         skin.add("default", selectButtonStyle);
@@ -217,7 +217,7 @@ public class MatrixStateSelector extends ControlTable {
                 decrement();
             }
         });
-        table.add(decButton).size(55f, 35f).top().expand().fill();
+        table.add(decButton).size(40f, 27f).top().expand().fill();
 
         table.row();
 
@@ -230,7 +230,7 @@ public class MatrixStateSelector extends ControlTable {
             }
         });
 
-        table.add(incButton).size(55f, 35f).bottom();
+        table.add(incButton).size(40f, 27f).bottom();
 
         add(table).fillY().expandY().padRight(10f);
 

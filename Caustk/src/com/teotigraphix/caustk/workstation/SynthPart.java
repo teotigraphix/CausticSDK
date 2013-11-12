@@ -17,12 +17,13 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.pattern;
+package com.teotigraphix.caustk.workstation;
 
-public class PatternSong {
+/**
+ * @author Michael Schmalle
+ */
+public class SynthPart extends Part {
 
-    public PatternSong() {
-        // TODO Auto-generated constructor stub
+    public SynthPart() {
     }
-
 }

@@ -162,6 +162,9 @@ public abstract class ApplicationModelState {
      * application.
      */
     public void save() {
+        // Internal state needs to be saved when not saved by Library
+        if (rackSet != null && rackSet.isInternal())
+            rackSet.save();
     }
 
     public void registerObservers() {

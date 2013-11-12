@@ -107,7 +107,7 @@ public class CaustkFactory implements ICaustkFactory {
         createFactories();
     }
 
-    private void createFactories() {
+    protected void createFactories() {
         infoFactory = new ComponentInfoFactory();
         infoFactory.setFactory(this);
 

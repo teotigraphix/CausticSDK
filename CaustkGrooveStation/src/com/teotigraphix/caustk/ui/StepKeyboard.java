@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.libgdx.ui.caustk;
+package com.teotigraphix.caustk.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -26,8 +26,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
-import com.teotigraphix.caustk.gs.machine.part.MachineSequencer.StepKeyboardMode;
+import com.teotigraphix.caustk.workstation.MasterSystem.KeyboardMode;
 import com.teotigraphix.libgdx.ui.ControlTable;
+import com.teotigraphix.libgdx.ui.caustk.StepButton;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.OnStepButtonListener;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.StepButtonItem;
 
@@ -55,9 +56,9 @@ public class StepKeyboard extends ControlTable {
     // mode
     //----------------------------------
 
-    private StepKeyboardMode mode;
+    private KeyboardMode mode;
 
-    public void setMode(StepKeyboardMode value) {
+    public void setMode(KeyboardMode value) {
         mode = value;
         invalidate();
     }
@@ -102,15 +103,15 @@ public class StepKeyboard extends ControlTable {
     public void layout() {
         super.layout();
 
-        if (mode == StepKeyboardMode.Key) {
+        if (mode == KeyboardMode.Key) {
             shiftGroup.setVisible(false);
             stepGroup.setVisible(false);
             keyGroup.setVisible(true);
-        } else if (mode == StepKeyboardMode.Step) {
+        } else if (mode == KeyboardMode.Step) {
             shiftGroup.setVisible(false);
             stepGroup.setVisible(true);
             keyGroup.setVisible(false);
-        } else if (mode == StepKeyboardMode.Shift) {
+        } else if (mode == KeyboardMode.Shift) {
             shiftGroup.setVisible(true);
             stepGroup.setVisible(false);
             keyGroup.setVisible(false);
@@ -174,7 +175,7 @@ public class StepKeyboard extends ControlTable {
                 }
 
             });
-            table.add(stepButton).space(5f).fillY().expandY();
+            table.add(stepButton).space(5f).fill().expand();
         }
         return table;
     }
@@ -282,9 +283,9 @@ public class StepKeyboard extends ControlTable {
     }
 
     protected final StepButton getStepButton(int index) {
-        if (mode == StepKeyboardMode.Key)
+        if (mode == KeyboardMode.Key)
             return (StepButton)keyGroup.getChildren().get(index);
-        else if (mode == StepKeyboardMode.Step)
+        else if (mode == KeyboardMode.Step)
             return (StepButton)stepGroup.getChildren().get(index);
         return null;
     }
@@ -306,7 +307,7 @@ public class StepKeyboard extends ControlTable {
     public interface OnStepKeyboardListener {
         void onStepChange(int index, boolean selected);
 
-        void onModeStateChange(StepKeyboardMode mode);
+        void onModeStateChange(KeyboardMode mode);
 
         void onKeyDown(int index);
 

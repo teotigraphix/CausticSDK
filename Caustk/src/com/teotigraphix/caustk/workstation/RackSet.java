@@ -614,4 +614,8 @@ public class RackSet extends CaustkComponent {
         return tempFile;
     }
 
+    public void save() {
+        onSave(factory.createContext());
+    }
+
 }

@@ -118,6 +118,15 @@ public class Part extends CaustkComponent {
     }
 
     //----------------------------------
+    // isRhythm
+    //----------------------------------
+
+    public boolean isRhythm() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    //----------------------------------
     // phrase
     //----------------------------------
 
@@ -139,6 +148,54 @@ public class Part extends CaustkComponent {
 
     public void setLength(int value) {
         getPhrase().setLength(value);
+    }
+
+    //----------------------------------
+    // octave
+    //----------------------------------
+
+    final int[] octaves = new int[] {
+            -4, -3, -2, -1, 0, 2, 3, 4
+    };
+
+    private int octaveIndex = 4;
+
+    public int getOctaveIndex() {
+        return octaveIndex;
+    }
+
+    public void setOctaveIndex(int value) {
+        octaveIndex = value;
+        if (octaveIndex > 7)
+            octaveIndex = 7;
+        else if (octaveIndex < 0)
+            octaveIndex = 0;
+        setOctave(octaves[octaveIndex]);
+        //        getLogger().log("MachineSound", "O:" + octave);
+    }
+
+    public void incrementOctave() {
+        octaveIndex++;
+        if (octaveIndex > 7)
+            octaveIndex = 7;
+        setOctave(octaves[octaveIndex]);
+    }
+
+    public void deccrementOctave() {
+        octaveIndex--;
+        if (octaveIndex < 0)
+            octaveIndex = 0;
+        setOctave(octaves[octaveIndex]);
+    }
+
+    private int octave = -1;
+
+    public int getOctave() {
+        return octave;
+    }
+
+    public void setOctave(int value) {
+        octave = value;
     }
 
     //--------------------------------------------------------------------------
@@ -165,6 +222,27 @@ public class Part extends CaustkComponent {
         getPhrase().transpose(octave);
     }
 
+    /**
+     * Sounds a note from the machine's sound engine.
+     * 
+     * @param pitch The relative pitch without the octave.
+     * @param velocity The velocity of the note.
+     */
+    public void noteOn(int pitch, float velocity) {
+        int root = 60 + (octaves[octaveIndex] * 12);
+        machine.getRackTone().getSynth().noteOn(root + pitch, velocity);
+    }
+
+    /**
+     * Stops a note from the machine's sound engine.
+     * 
+     * @param pitch The relative pitch without the octave.
+     */
+    public void noteOff(int pitch) {
+        int root = 60 + (octaves[octaveIndex] * 12);
+        machine.getRackTone().getSynth().noteOff(root + pitch);
+    }
+
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
             throws CausticException {
@@ -183,4 +261,5 @@ public class Part extends CaustkComponent {
                 break;
         }
     }
+
 }

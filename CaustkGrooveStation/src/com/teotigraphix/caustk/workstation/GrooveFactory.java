@@ -17,11 +17,34 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.model;
+package com.teotigraphix.caustk.workstation;
 
-public abstract class MachineModelBase implements IMachineModel {
+import com.teotigraphix.caustk.controller.ICaustkApplication;
 
-    public MachineModelBase() {
+/**
+ * @author Michael Schmalle
+ */
+public class GrooveFactory extends CaustkFactory {
+
+    GrooveSetFactory grooveSetFactory;
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public GrooveFactory(ICaustkApplication application) {
+        super(application);
     }
 
+    @Override
+    protected void createFactories() {
+        super.createFactories();
+
+        grooveSetFactory = new GrooveSetFactory();
+        grooveSetFactory.setFactory(this);
+    }
+
+    public GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet) {
+        return grooveSetFactory.createGrooveSet(info, rackSet);
+    }
 }

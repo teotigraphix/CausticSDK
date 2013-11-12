@@ -17,83 +17,105 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.machine;
+package com.teotigraphix.caustk.workstation;
 
 import java.io.File;
+import java.io.IOException;
 
-import com.teotigraphix.caustk.gs.machine.part.bassline.DrumMachineSound;
-import com.teotigraphix.caustk.gs.pattern.PartUtils;
-import com.teotigraphix.caustk.gs.pattern.RhythmPart.ChannelProperty;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.ShuffleMode;
 import com.teotigraphix.caustk.rack.tone.components.beatbox.WavSamplerChannel;
 
-/*
- * Part1 - Beatbox 
- * Part2 - Beatbox
- * 
- * The DrumMachine has 2 banks of 8 channels. Each bank can be loaded with
- * a .beatbox preset.
- * 
- */
-public class DrumMachine extends GrooveMachine {
+public class RhythmPart extends Part {
 
     private int root = 48;
 
-    //--------------------------------------------------------------------------
-    // Constructor
-    //--------------------------------------------------------------------------
+    private int selectedChannel;
 
-    public DrumMachine() {
+    public int getSelectedChannel() {
+        return selectedChannel;
     }
 
-    //--------------------------------------------------------------------------
-    // Overridden :: Methods
-    //--------------------------------------------------------------------------
+    public void setSelectedChannel(int value) {
+        selectedChannel = value;
+    }
 
     @Override
-    protected void createComponentParts() {
-        setSound(new DrumMachineSound(this));
+    public boolean isRhythm() {
+        return true;
+    }
+
+    public RhythmPart() {
+        // TODO Auto-generated constructor stub
     }
 
     //--------------------------------------------------------------------------
     // Public Method API
     //--------------------------------------------------------------------------
 
-    public void triggerOn(int bank, int channel, int step, float velocity) {
+    public void triggerOn(int channel, int step, float velocity) {
         // need to use add/remove note since the beat box is polyphonic
         // can use "triggers" because we are working with pseudo channels in the sequencer
-        float beat = Resolution.toBeat(step, getSound().getParts().get(bank).getPhrase()
-                .getResolution());
-        getSound().getParts().get(bank).getPhrase()
-                .addNote(root + channel, beat, beat + 0.25f, 1f, 0);
+        float beat = Resolution.toBeat(step, getPhrase().getResolution());
+        float gate = 0.25f;
+        int pitch = toPitch(channel);
+        if (getPhrase().hasNote(pitch, beat)) {
+            getPhrase().getNote(pitch, beat).setSelected(true);
+            int flags = 0;
+            //getPhrase().triggerOn(step);
+            RackTone rackTone = getMachine().getRackTone();
+            rackTone.getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
+        } else {
+            getPhrase().addNote(pitch, beat, gate, 1f, 0).setSelected(true);
+        }
     }
 
-    public void triggerOff(int bank, int channel, int step) {
+    public void triggerOff(int channel, int step) {
         // same as triggerOn()
-        float beat = Resolution.toBeat(step, getSound().getParts().get(bank).getPhrase()
-                .getResolution());
-        getSound().getParts().get(bank).getPhrase().removeNote(root + channel, beat);
+        float beat = Resolution.toBeat(step, getPhrase().getResolution());
+        int pitch = toPitch(channel);
+        if (getPhrase().hasNote(pitch, beat)) {
+            getPhrase().getNote(pitch, beat).setSelected(false);
+            //getPhrase().triggerOff(step);
+            RackTone rackTone = getMachine().getRackTone();
+            rackTone.getPatternSequencer().removeNote(pitch,
+                    Resolution.toBeat(step, getPhrase().getResolution()));
+        } else {
+
+        }
+    }
+
+    public int toPitch(int channel) {
+        return root + channel;
     }
 
     public void setSwing(int bank, float value) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSound().getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)getMachine().getRackTone();
         tone.getPatternSequencer().setShuffleMode(ShuffleMode.SIXTEENTH);
         tone.getPatternSequencer().setShuffleAmount(value);
     }
 
-    public void loadPreset(int bank, File presetFile) {
-        getSound().getParts().get(bank).getPatch().loadPreset(presetFile);
+    public void loadPreset(int bank, File presetFile) throws IOException {
+        RackTone rackTone = getMachine().getRackTone();
+        rackTone.getSynth().loadPreset(presetFile);
+        // XXX should this be allowed? getPatch().loadPreset(presetFile);
     }
 
     public void loadChannel(int bank, int channel, File sampleFile) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSound().getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)getMachine().getRackTone();
         tone.getSampler().loadChannel(channel, sampleFile.getAbsolutePath());
     }
 
+    public void preview(int channel) {
+        BeatboxTone tone = (BeatboxTone)getMachine().getRackTone();
+        //tone.getSynth().notePreview(toPitch(channel), true);
+        tone.getSynth().noteOn(toPitch(channel), 1f);
+    }
+
     public float getChannelProperty(int bank, int channel, ChannelProperty property) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSound().getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)getMachine().getRackTone();
         WavSamplerChannel samplerChannel = tone.getSampler().getChannel(channel);
 
         if (samplerChannel == null)
@@ -127,7 +149,7 @@ public class DrumMachine extends GrooveMachine {
     }
 
     public void setChannelProperty(int bank, int channel, ChannelProperty property, float value) {
-        BeatboxTone tone = (BeatboxTone)PartUtils.getTone(getSound().getParts().get(bank));
+        BeatboxTone tone = (BeatboxTone)getMachine().getRackTone();
         WavSamplerChannel samplerChannel = tone.getSampler().getChannel(channel);
 
         if (samplerChannel == null)
@@ -138,7 +160,7 @@ public class DrumMachine extends GrooveMachine {
                 samplerChannel.setDecay(value);
                 break;
             case Mute:
-                samplerChannel.setMute(value == 0f ? true : false);
+                samplerChannel.setMute(value == 1f ? true : false);
                 break;
             case Pan:
                 samplerChannel.setPan(value);
@@ -147,7 +169,7 @@ public class DrumMachine extends GrooveMachine {
                 samplerChannel.setPunch(value);
                 break;
             case Solo:
-                samplerChannel.setSolo(value == 0f ? true : false);
+                samplerChannel.setSolo(value == 1f ? true : false);
                 break;
             case Tune:
                 samplerChannel.setTune(value);
@@ -158,8 +180,20 @@ public class DrumMachine extends GrooveMachine {
         }
     }
 
-    //--------------------------------------------------------------------------
-    // Private :: Methods 
-    //--------------------------------------------------------------------------
+    public enum ChannelProperty {
+        Tune,
+
+        Punch,
+
+        Decay,
+
+        Pan,
+
+        Volume,
+
+        Mute,
+
+        Solo;
+    }
 
 }

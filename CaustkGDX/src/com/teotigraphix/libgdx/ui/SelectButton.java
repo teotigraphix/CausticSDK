@@ -162,9 +162,9 @@ public class SelectButton extends ControlTable {
 
         public Drawable progressOverlay;
 
-        public float width = 50f;
+        public float width = 45f;
 
-        public float height = 30;
+        public float height = 27f;
 
         public SelectButtonStyle() {
         }

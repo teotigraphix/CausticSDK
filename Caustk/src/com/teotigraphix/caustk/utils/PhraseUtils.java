@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gs.pattern;
+package com.teotigraphix.caustk.utils;
 
 import com.teotigraphix.caustk.workstation.Note;
 import com.teotigraphix.caustk.workstation.Phrase;
