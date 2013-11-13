@@ -74,7 +74,7 @@ public class CaustkFactory implements ICaustkFactory {
 
     private RackToneFactory rackToneFactory;
 
-    private PatternSetFactory patternSetFactory;
+    private PatternBankFactory patternBankFactory;
 
     private SongSetFactory songSetFactory;
 
@@ -128,8 +128,8 @@ public class CaustkFactory implements ICaustkFactory {
         masterFactory = new MasterFactory();
         masterFactory.setFactory(this);
 
-        patternSetFactory = new PatternSetFactory();
-        patternSetFactory.setFactory(this);
+        patternBankFactory = new PatternBankFactory();
+        patternBankFactory.setFactory(this);
 
         songSetFactory = new SongSetFactory();
         songSetFactory.setFactory(this);
@@ -308,22 +308,22 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     //----------------------------------
-    // PatternSet
+    // PatternBank
     //----------------------------------
 
     @Override
-    public PatternSet createPatternSet(ComponentInfo info, RackSet rackSet) {
-        return patternSetFactory.createPatternSet(info, rackSet);
+    public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet) {
+        return patternBankFactory.createPatternBank(info, rackSet);
     }
 
     @Override
-    public Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index) {
-        return patternSetFactory.createPattern(info, patternSet, index);
+    public Pattern createPattern(ComponentInfo info, PatternBank patternBank, int index) {
+        return patternBankFactory.createPattern(info, patternBank, index);
     }
 
     @Override
-    public Part createPart(ComponentInfo info, PatternSet patternSet, Machine machine) {
-        return patternSetFactory.createPart(info, patternSet, machine);
+    public Part createPart(ComponentInfo info, PatternBank patternBank, Machine machine) {
+        return patternBankFactory.createPart(info, patternBank, machine);
     }
 
     //----------------------------------
@@ -331,18 +331,18 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     @Override
-    public SongSet createSongSet(ComponentInfo info, UUID patternSetId) {
-        return songSetFactory.createSongSet(info, patternSetId);
+    public SongBank createSongBank(ComponentInfo info, UUID patternBankId) {
+        return songSetFactory.createSongBank(info, patternBankId);
     }
 
     @Override
-    public SongSet createSongSet(ComponentInfo info, PatternSet patternSet) {
-        return songSetFactory.createSongSet(info, patternSet);
+    public SongBank createSongBank(ComponentInfo info, PatternBank patternBank) {
+        return songSetFactory.createSongBank(info, patternBank);
     }
 
     @Override
-    public Song createSong(ComponentInfo info, SongSet songSet) {
-        return songSetFactory.createSong(info, songSet);
+    public Song createSong(ComponentInfo info, SongBank songBank) {
+        return songSetFactory.createSong(info, songBank);
     }
 
     //----------------------------------

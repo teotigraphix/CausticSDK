@@ -85,11 +85,11 @@ public enum ComponentType {
     Phrase("cph"),
 
     /**
-     * A {@link PatternSet} holds a
+     * A {@link PatternBank} holds a
      * <p>
-     * Extension: <strong>.cps</strong>
+     * Extension: <strong>.cpb</strong>
      */
-    PatternSet("cps"),
+    PatternBank("cpb"),
 
     /**
      * A {@link Pattern} holds a
@@ -108,9 +108,9 @@ public enum ComponentType {
     /**
      * A {@link SongSet} holds a
      * <p>
-     * Extension: <strong>.css</strong>
+     * Extension: <strong>.csb</strong>
      */
-    SongSet("css"),
+    SongBank("csb"),
 
     /**
      * A {@link Song} holds a
@@ -120,7 +120,7 @@ public enum ComponentType {
     Song("csg"),
 
     /**
-     * A {@link CastkMasterMixer} holds a live or serialized {@link MasterMixer}
+     * A {@link MasterMixer} holds a live or serialized {@link MasterMixer}
      * which in turn contains a {@link MasterDelay}, {@link MasterReverb},
      * {@link MasterEqualizer} and {@link MasterLimiter} component.
      * <p>

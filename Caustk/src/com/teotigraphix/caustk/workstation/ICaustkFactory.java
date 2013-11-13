@@ -163,16 +163,16 @@ public interface ICaustkFactory {
 
     Kryo getKryo();
 
-    PatternSet createPatternSet(ComponentInfo info, RackSet rackSet);
+    PatternBank createPatternBank(ComponentInfo info, RackSet rackSet);
 
-    Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index);
+    Pattern createPattern(ComponentInfo info, PatternBank patternBank, int index);
 
-    Part createPart(ComponentInfo info, PatternSet patternSet, Machine machine);
+    Part createPart(ComponentInfo info, PatternBank patternBank, Machine machine);
 
-    SongSet createSongSet(ComponentInfo info, UUID patternSetId);
+    SongBank createSongBank(ComponentInfo info, UUID patternBankId);
 
-    SongSet createSongSet(ComponentInfo info, PatternSet patternSet);
+    SongBank createSongBank(ComponentInfo info, PatternBank patternBank);
 
-    Song createSong(ComponentInfo info, SongSet songSet);
+    Song createSong(ComponentInfo info, SongBank songBank);
 
 }

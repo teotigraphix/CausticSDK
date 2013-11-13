@@ -31,16 +31,16 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 /**
  * @author Michael Schmalle
  */
-public class SongSet extends CaustkComponent {
+public class SongBank extends CaustkComponent {
 
-    private transient PatternSet patternSet;
+    private transient PatternBank patternBank;
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private UUID patternSetId;
+    private UUID patternBankId;
 
     @Tag(101)
     private Map<Integer, Song> songs = new TreeMap<Integer, Song>();
@@ -66,11 +66,11 @@ public class SongSet extends CaustkComponent {
     //----------------------------------
 
     /**
-     * Returns the {@link PatternSet} id that holds the {@link Pattern}s this
+     * Returns the {@link PatternBank} id that holds the {@link Pattern}s this
      * song references.
      */
-    public UUID getPatternSetId() {
-        return patternSetId;
+    public UUID getPatternBankId() {
+        return patternBankId;
     }
 
     //----------------------------------
@@ -87,15 +87,15 @@ public class SongSet extends CaustkComponent {
 
     /**
      * @param value
-     * @see OnSongSetChange
-     * @see SongSetChangeKind#SelectedIndex
+     * @see OnSongBankChange
+     * @see SongBankChangeKind#SelectedIndex
      */
     public void setSelectedIndex(int value) {
         if (value == selectedIndex)
             return;
         int oldIndex = selectedIndex;
         selectedIndex = value;
-        trigger(new OnSongSetChange(this, SongSetChangeKind.SelectedIndex, selectedIndex, oldIndex));
+        trigger(new OnSongBankChange(this, SongBankChangeKind.SelectedIndex, selectedIndex, oldIndex));
     }
 
     //----------------------------------
@@ -103,16 +103,17 @@ public class SongSet extends CaustkComponent {
     //----------------------------------
 
     /**
-     * Returns the active {@link PatternSet} instance for this song set.
+     * Returns the active {@link PatternBank} instance for this song set.
      * <p>
-     * The {@link PatternSet}'s id is the same as the {@link #getPatternSetId()}.
+     * The {@link PatternBank}'s id is the same as the
+     * {@link #getPatternBankId()}.
      */
-    public PatternSet getPatternSet() {
-        return patternSet;
+    public PatternBank getPatternBank() {
+        return patternBank;
     }
 
     /**
-     * Returns the {@link Song} at the linear index (0..62).
+     * Returns the {@link Song} at the linear index (0..63).
      * 
      * @param index The linear index.
      */
@@ -157,18 +158,18 @@ public class SongSet extends CaustkComponent {
     /*
      * Serialization.
      */
-    SongSet() {
+    SongBank() {
     }
 
-    SongSet(ComponentInfo info, UUID patternSetId) {
+    SongBank(ComponentInfo info, UUID patternSetId) {
         setInfo(info);
-        this.patternSetId = patternSetId;
+        this.patternBankId = patternSetId;
     }
 
-    SongSet(ComponentInfo info, PatternSet patternSet) {
+    SongBank(ComponentInfo info, PatternBank patternBank) {
         setInfo(info);
-        this.patternSet = patternSet;
-        this.patternSetId = patternSet.getInfo().getId();
+        this.patternBank = patternBank;
+        this.patternBankId = patternBank.getInfo().getId();
     }
 
     @Override
@@ -212,10 +213,10 @@ public class SongSet extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     private void trigger(Object event) {
-        patternSet.getRackSet().getComponentDispatcher().trigger(event);
+        patternBank.getRackSet().getComponentDispatcher().trigger(event);
     }
 
-    public enum SongSetChangeKind {
+    public enum SongBankChangeKind {
         SongAdd,
 
         SongRemove,
@@ -229,45 +230,45 @@ public class SongSet extends CaustkComponent {
      * @author Michael Schmalle
      * @see RackSet#getComponentDispatcher()
      */
-    public static class OnSongSetChange {
+    public static class OnSongBankChange {
 
-        private SongSet songSet;
+        private SongBank songBank;
 
-        private SongSetChangeKind kind;
+        private SongBankChangeKind kind;
 
         private int index;
 
         private int oldIndex;
 
-        public SongSet getSongSet() {
-            return songSet;
+        public SongBank getSongBank() {
+            return songBank;
         }
 
-        public SongSetChangeKind getKind() {
+        public SongBankChangeKind getKind() {
             return kind;
         }
 
         /**
-         * @see SongSetChangeKind#SelectedIndex
+         * @see SongBankChangeKind#SelectedIndex
          */
         public int getIndex() {
             return index;
         }
 
         /**
-         * @see SongSetChangeKind#SelectedIndex
+         * @see SongBankChangeKind#SelectedIndex
          */
         public int getOldIndex() {
             return oldIndex;
         }
 
-        public OnSongSetChange(SongSet songSet, SongSetChangeKind kind) {
-            this.songSet = songSet;
+        public OnSongBankChange(SongBank songBank, SongBankChangeKind kind) {
+            this.songBank = songBank;
             this.kind = kind;
         }
 
-        public OnSongSetChange(SongSet songSet, SongSetChangeKind kind, int index, int oldIndex) {
-            this.songSet = songSet;
+        public OnSongBankChange(SongBank songBank, SongBankChangeKind kind, int index, int oldIndex) {
+            this.songBank = songBank;
             this.kind = kind;
             this.index = index;
             this.oldIndex = oldIndex;

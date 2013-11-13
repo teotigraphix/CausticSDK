@@ -34,7 +34,7 @@ public class Part extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private PatternSet patternSet;
+    private PatternBank patternBank;
 
     @Tag(101)
     private Machine machine;
@@ -57,10 +57,10 @@ public class Part extends CaustkComponent {
     //----------------------------------
 
     /**
-     * Returns the owning {@link PatternSet}.
+     * Returns the owning {@link PatternBank}.
      */
-    public PatternSet getPatternSet() {
-        return patternSet;
+    public PatternBank getPatternBank() {
+        return patternBank;
     }
 
     //----------------------------------
@@ -68,7 +68,7 @@ public class Part extends CaustkComponent {
     //----------------------------------
 
     /**
-     * Returns the owning {@link Machine} in the {@link PatternSet}'s
+     * Returns the owning {@link Machine} in the {@link PatternBank}'s
      * {@link RackSet}.
      */
     public Machine getMachine() {
@@ -96,14 +96,14 @@ public class Part extends CaustkComponent {
 
     /**
      * Returns the current {@link Pattern}'s part {@link Phrase} using the
-     * selected index of the {@link PatternSet}.
+     * selected index of the {@link PatternBank}.
      * <p>
      * If this part's index is 1 and the pattern set's selected index is 3, then
      * the {@link Phrase} for native machine 1 at A04 will be returned.
      */
     public final Phrase getPhrase() {
-        return getPhrase(PatternUtils.getBank(patternSet.getSelectedIndex()),
-                PatternUtils.getBank(patternSet.getSelectedIndex()));
+        return getPhrase(PatternUtils.getBank(patternBank.getSelectedIndex()),
+                PatternUtils.getBank(patternBank.getSelectedIndex()));
     }
 
     /**
@@ -208,9 +208,9 @@ public class Part extends CaustkComponent {
     Part() {
     }
 
-    Part(ComponentInfo info, PatternSet patternSet, Machine machine) {
+    Part(ComponentInfo info, PatternBank patternBank, Machine machine) {
         setInfo(info);
-        this.patternSet = patternSet;
+        this.patternBank = patternBank;
         this.machine = machine;
     }
 

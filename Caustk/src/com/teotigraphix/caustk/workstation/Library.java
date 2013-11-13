@@ -74,10 +74,10 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * <li>{@link Patch}</li>
  * <li>{@link Effect}</li>
  * <li>{@link Phrase}</li>
- * <li>{@link PatternSet}</li>
+ * <li>{@link PatternBank}</li>
  * <li>{@link Pattern}</li>
  * <li>{@link Part}</li>
- * <li>{@link SongSet}</li>
+ * <li>{@link SongBank}</li>
  * <li>{@link Song}</li>
  * <li>{@link MasterMixer}</li>
  * <li>{@link MasterSequencer}</li>

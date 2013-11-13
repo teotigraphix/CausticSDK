@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.util.UUID;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
@@ -28,7 +30,9 @@ import com.teotigraphix.caustk.core.CausticException;
  */
 public class GrooveMachine extends CaustkComponent {
 
-    private Pattern pattern;
+    private transient Pattern pattern;
+
+    private transient PatternBank patternBank;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -36,6 +40,9 @@ public class GrooveMachine extends CaustkComponent {
 
     @Tag(100)
     private GrooveSet grooveSet;
+
+    @Tag(101)
+    private UUID patternSetId;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -51,16 +58,44 @@ public class GrooveMachine extends CaustkComponent {
     }
 
     //----------------------------------
-    // grooveStation
+    // grooveSet
     //----------------------------------
 
-    public GrooveSet getGrooveStation() {
+    public GrooveSet getGrooveSet() {
         return grooveSet;
     }
+
+    //----------------------------------
+    // patternSetId
+    //----------------------------------
+
+    public UUID getPatternSetId() {
+        return patternSetId;
+    }
+
+    //----------------------------------
+    // patternSet
+    //----------------------------------
+
+    public PatternBank getPatternSet() {
+        return patternBank;
+    }
+
+    public void setPatternSet(PatternBank value) {
+        patternBank = value;
+    }
+
+    //----------------------------------
+    // selectedPart
+    //----------------------------------
 
     public Part getSelectedPart() {
         return pattern.getSelectedPart();
     }
+
+    //----------------------------------
+    // selectedPhrase
+    //----------------------------------
 
     public Phrase getSelectedPhrase() {
         return getSelectedPart().getPhrase();

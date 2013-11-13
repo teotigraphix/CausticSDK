@@ -37,7 +37,7 @@ public class Song extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private SongSet songSet;
+    private SongBank songBank;
 
     @Tag(101)
     private int index;
@@ -62,11 +62,11 @@ public class Song extends CaustkComponent {
     }
 
     //----------------------------------
-    // songSet
+    // songBank
     //----------------------------------
 
-    public SongSet getSongSet() {
-        return songSet;
+    public SongBank getSongBank() {
+        return songBank;
     }
 
     //----------------------------------
@@ -84,9 +84,9 @@ public class Song extends CaustkComponent {
     /**
      * Returns a map of {@link Pattern} {@link UUID}s that can be used to load
      * the serialized {@link Pattern} instances against the
-     * {@link SongSet#getPatternSetId()}.
+     * {@link SongBank#getPatternBankId()}.
      * <p>
-     * Using the song set's pattern set id, to load the {@link PatternSet} and
+     * Using the song set's pattern set id, to load the {@link PatternBank} and
      * then this map to gain access to the serialized {@link Pattern}, the
      * correct data can be loaded.
      */
@@ -127,9 +127,9 @@ public class Song extends CaustkComponent {
     Song() {
     }
 
-    Song(ComponentInfo info, SongSet songSet) {
+    Song(ComponentInfo info, SongBank songBank) {
         setInfo(info);
-        this.songSet = songSet;
+        this.songBank = songBank;
     }
 
     @Override
@@ -156,7 +156,7 @@ public class Song extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     private void trigger(Object event) {
-        songSet.getPatternSet().getRackSet().getComponentDispatcher().trigger(event);
+        songBank.getPatternBank().getRackSet().getComponentDispatcher().trigger(event);
     }
 
     public enum SongChangeKind {

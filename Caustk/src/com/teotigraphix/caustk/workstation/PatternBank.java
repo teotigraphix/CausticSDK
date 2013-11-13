@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 /**
  * @author Michael Schmalle
  */
-public class PatternSet extends CaustkComponent {
+public class PatternBank extends CaustkComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -93,8 +93,8 @@ public class PatternSet extends CaustkComponent {
 
     /**
      * @param value
-     * @see OnPatternSetChange
-     * @see PatternSetChangeKind#SelectedIndex
+     * @see OnPatternBankChange
+     * @see PatternBankChangeKind#SelectedIndex
      */
     public void setSelectedIndex(int value) {
         if (value == selectedIndex)
@@ -102,7 +102,7 @@ public class PatternSet extends CaustkComponent {
         int oldIndex = selectedIndex;
         selectedIndex = value;
         rackSet.getComponentDispatcher().trigger(
-                new OnPatternSetChange(this, PatternSetChangeKind.SelectedIndex, selectedIndex,
+                new OnPatternBankChange(this, PatternBankChangeKind.SelectedIndex, selectedIndex,
                         oldIndex));
     }
 
@@ -121,10 +121,10 @@ public class PatternSet extends CaustkComponent {
     /*
      * Serialization.
      */
-    PatternSet() {
+    PatternBank() {
     }
 
-    PatternSet(ComponentInfo info, RackSet rackSet) {
+    PatternBank(ComponentInfo info, RackSet rackSet) {
         setInfo(info);
         this.rackSet = rackSet;
     }
@@ -145,7 +145,7 @@ public class PatternSet extends CaustkComponent {
     /**
      * Creates a new {@link Machine} and wraps it in a {@link Part} instance.
      * <p>
-     * The {@link Part} is added to the {@link PatternSet}.
+     * The {@link Part} is added to the {@link PatternBank}.
      * <p>
      * Calling this method will implicitly call
      * {@link Machine#create(ICaustkApplicationContext)} through the RackSet's
@@ -154,7 +154,7 @@ public class PatternSet extends CaustkComponent {
      * @param machineIndex The machine index.
      * @param machineType The {@link MachineType}.
      * @param machineName The native machine name.
-     * @return A new {@link Part} instance added tot he {@link PatternSet}.
+     * @return A new {@link Part} instance added tot he {@link PatternBank}.
      * @throws CausticException
      */
     public Part createPart(int machineIndex, MachineType machineType, String machineName)
@@ -169,7 +169,7 @@ public class PatternSet extends CaustkComponent {
         parts.put(machineIndex, part);
         partAdd(part);
         rackSet.getComponentDispatcher().trigger(
-                new OnPatternSetChange(this, PatternSetChangeKind.PartAdd, part));
+                new OnPatternBankChange(this, PatternBankChangeKind.PartAdd, part));
         return part;
     }
 
@@ -305,7 +305,7 @@ public class PatternSet extends CaustkComponent {
     // Event API
     //--------------------------------------------------------------------------
 
-    public enum PatternSetChangeKind {
+    public enum PatternBankChangeKind {
         PatternAdd,
 
         PatternRemove,
@@ -325,11 +325,11 @@ public class PatternSet extends CaustkComponent {
      * @author Michael Schmalle
      * @see RackSet#getComponentDispatcher()
      */
-    public static class OnPatternSetChange {
+    public static class OnPatternBankChange {
 
-        private PatternSet patternSet;
+        private PatternBank patternBank;
 
-        private PatternSetChangeKind kind;
+        private PatternBankChangeKind kind;
 
         private int index;
 
@@ -337,50 +337,50 @@ public class PatternSet extends CaustkComponent {
 
         private Part part;
 
-        public PatternSet getPatternSet() {
-            return patternSet;
+        public PatternBank getPatternBank() {
+            return patternBank;
         }
 
-        public PatternSetChangeKind getKind() {
+        public PatternBankChangeKind getKind() {
             return kind;
         }
 
         /**
-         * @see PatternSetChangeKind#SelectedIndex
+         * @see PatternBankChangeKind#SelectedIndex
          */
         public int getIndex() {
             return index;
         }
 
         /**
-         * @see PatternSetChangeKind#SelectedIndex
+         * @see PatternBankChangeKind#SelectedIndex
          */
         public int getOldIndex() {
             return oldIndex;
         }
 
         /**
-         * @see PatternSetChangeKind#PartAdd
+         * @see PatternBankChangeKind#PartAdd
          */
         public Part getPart() {
             return part;
         }
 
-        public OnPatternSetChange(PatternSet patternSet, PatternSetChangeKind kind) {
-            this.patternSet = patternSet;
+        public OnPatternBankChange(PatternBank patternBank, PatternBankChangeKind kind) {
+            this.patternBank = patternBank;
             this.kind = kind;
         }
 
-        public OnPatternSetChange(PatternSet patternSet, PatternSetChangeKind kind, int index,
+        public OnPatternBankChange(PatternBank patternBank, PatternBankChangeKind kind, int index,
                 int oldIndex) {
-            this.patternSet = patternSet;
+            this.patternBank = patternBank;
             this.kind = kind;
             this.index = index;
             this.oldIndex = oldIndex;
         }
 
-        public OnPatternSetChange(PatternSet patternSet, PatternSetChangeKind kind, Part part) {
-            this.patternSet = patternSet;
+        public OnPatternBankChange(PatternBank patternBank, PatternBankChangeKind kind, Part part) {
+            this.patternBank = patternBank;
             this.kind = kind;
             this.part = part;
         }

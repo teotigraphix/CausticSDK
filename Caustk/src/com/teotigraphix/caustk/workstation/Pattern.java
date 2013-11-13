@@ -44,7 +44,7 @@ public class Pattern extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private PatternSet patternSet;
+    private PatternBank patternBank;
 
     // the index the PatternSet assigns
     @Tag(101)
@@ -80,7 +80,7 @@ public class Pattern extends CaustkComponent {
     //----------------------------------
 
     /**
-     * The index of the pattern within the owning {@link PatternSet} (0..63).
+     * The index of the pattern within the owning {@link PatternBank} (0..63).
      */
     public final int getIndex() {
         return index;
@@ -141,7 +141,7 @@ public class Pattern extends CaustkComponent {
         if (value == tempo)
             return;
         tempo = value;
-        patternSet.getRackSet().getSequencer().setBPM(tempo);
+        patternBank.getRackSet().getSequencer().setBPM(tempo);
         trigger(new OnPatternChange(this, PatternChangeKind.Tempo));
     }
 
@@ -165,7 +165,7 @@ public class Pattern extends CaustkComponent {
         if (value == length)
             return;
         length = value;
-        for (Part part : patternSet.getParts()) {
+        for (Part part : patternBank.getParts()) {
             part.setLength(length);
         }
         trigger(new OnPatternChange(this, PatternChangeKind.Length));
@@ -221,7 +221,7 @@ public class Pattern extends CaustkComponent {
      * @param partIndex The part index (0..13).
      */
     public final Part getPart(int partIndex) {
-        return patternSet.getPart(partIndex);
+        return patternBank.getPart(partIndex);
     }
 
     //--------------------------------------------------------------------------
@@ -234,9 +234,9 @@ public class Pattern extends CaustkComponent {
     Pattern() {
     }
 
-    Pattern(ComponentInfo info, PatternSet patternSet, int index) {
+    Pattern(ComponentInfo info, PatternBank patternBank, int index) {
         setInfo(info);
-        this.patternSet = patternSet;
+        this.patternBank = patternBank;
         this.index = index;
     }
 
@@ -255,7 +255,7 @@ public class Pattern extends CaustkComponent {
         if (octave == this.octave)
             return;
         this.octave = octave;
-        for (Part part : patternSet.getParts()) {
+        for (Part part : patternBank.getParts()) {
             part.transpose(octave);
         }
         trigger(new OnPatternChange(this, PatternChangeKind.Octave));
@@ -276,7 +276,7 @@ public class Pattern extends CaustkComponent {
             case Restore:
                 break;
             case Update:
-                patternSet.getRackSet().getSequencer().setBPM(tempo);
+                patternBank.getRackSet().getSequencer().setBPM(tempo);
                 break;
         }
     }
@@ -286,7 +286,7 @@ public class Pattern extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     private void trigger(Object event) {
-        patternSet.getRackSet().getComponentDispatcher().trigger(event);
+        patternBank.getRackSet().getComponentDispatcher().trigger(event);
     }
 
     public enum PatternChangeKind {
@@ -363,5 +363,4 @@ public class Pattern extends CaustkComponent {
             this.part = part;
         }
     }
-
 }

@@ -19,25 +19,28 @@
 
 package com.teotigraphix.caustk.workstation;
 
-import java.util.UUID;
+/**
+ * Application specific enums will implemented this when creating
+ * {@link PatternBank}s, to allow for a distinction when loading sets between
+ * various applications.
+ * <p>
+ * Some sets might work in different applications since their part types match,
+ * others will not since there will be a completely different {@link Part} setup
+ * for the {@link Pattern}.
+ * 
+ * @author Michael Schmalle
+ */
+public interface IPatternType {
 
-public class SongSetFactory extends CaustkSubFactoryBase {
+    /**
+     * Returns the unique {@link Pattern} type as a String.
+     */
+    String getType();
 
-    public SongSetFactory() {
-    }
-
-    public SongBank createSongBank(ComponentInfo info, UUID patternBankId) {
-        SongBank songBank = new SongBank(info, patternBankId);
-        return songBank;
-    }
-
-    public SongBank createSongBank(ComponentInfo info, PatternBank patternBank) {
-        SongBank songBank = new SongBank(info, patternBank);
-        return songBank;
-    }
-
-    public Song createSong(ComponentInfo info, SongBank songBank) {
-        Song song = new Song(info, songBank);
-        return song;
-    }
+    /**
+     * Determines whether the passed type is compatible with this type.
+     * 
+     * @param type The {@link Pattern} type.
+     */
+    boolean hasType(IPatternType type);
 }

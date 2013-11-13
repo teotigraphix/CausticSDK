@@ -19,23 +19,23 @@
 
 package com.teotigraphix.caustk.workstation;
 
-public class PatternSetFactory extends CaustkSubFactoryBase {
+public class PatternBankFactory extends CaustkSubFactoryBase {
 
-    public PatternSetFactory() {
+    public PatternBankFactory() {
     }
 
-    public PatternSet createPatternSet(ComponentInfo info, RackSet rackSet) {
-        PatternSet patternSet = new PatternSet(info, rackSet);
-        return patternSet;
+    public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet) {
+        PatternBank patternBank = new PatternBank(info, rackSet);
+        return patternBank;
     }
 
-    public Pattern createPattern(ComponentInfo info, PatternSet patternSet, int index) {
-        Pattern pattern = new Pattern(info, patternSet, index);
+    public Pattern createPattern(ComponentInfo info, PatternBank patternBank, int index) {
+        Pattern pattern = new Pattern(info, patternBank, index);
         return pattern;
     }
 
-    public Part createPart(ComponentInfo info, PatternSet patternSet, Machine machine) {
-        Part part = new Part(info, patternSet, machine);
+    public Part createPart(ComponentInfo info, PatternBank patternBank, Machine machine) {
+        Part part = new Part(info, patternBank, machine);
         return part;
     }
 }
