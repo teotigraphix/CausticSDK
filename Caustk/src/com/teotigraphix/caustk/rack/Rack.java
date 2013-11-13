@@ -112,7 +112,7 @@ public class Rack implements IRack {
     public void setRackSet(RackSet value) {
         if (value == rackSet)
             return;
-
+        getLogger().log("Rack", "Setting new RackSet");
         RackSet oldSet = rackSet;
         rackSet = value;
         rackSetChanged(rackSet, oldSet);
@@ -122,6 +122,7 @@ public class Rack implements IRack {
         if (oldSet != null) {
             try {
                 oldSet.dispose();
+                getLogger().log("RackSet", "Disposed old RackSet");
             } catch (CausticException e) {
                 e.printStackTrace();
             }

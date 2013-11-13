@@ -209,22 +209,16 @@ public class CaustkFactory implements ICaustkFactory {
     // RackSet
     //----------------------------------
 
-    /**
-     * Creates an empty {@link RackSet} with name.
-     * 
-     * @param name The name of the scene.
-     */
+    @Override
+    public RackSet createRackSet() {
+        return rackSetFactory.createRackSet();
+    }
+
     @Override
     public RackSet createRackSet(ComponentInfo info) {
         return rackSetFactory.createRackSet(info);
     }
 
-    /**
-     * Creates a {@link RackSet} from a <code>.caustic</code> song file import.
-     * 
-     * @param absoluteCausticFile The absolute location of the
-     *            <code>.caustic</code> song file.
-     */
     @Override
     public RackSet createRackSet(ComponentInfo info, File absoluteCausticFile) {
         return rackSetFactory.createRackSet(info, absoluteCausticFile);

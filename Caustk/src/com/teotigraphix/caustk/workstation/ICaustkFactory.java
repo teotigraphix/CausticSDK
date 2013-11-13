@@ -96,8 +96,21 @@ public interface ICaustkFactory {
 
     TrackSet createTrackSet(ComponentInfo info, RackSet rackSet);
 
+    RackSet createRackSet();
+
+    /**
+     * Creates an empty {@link RackSet} with name.
+     * 
+     * @param name The name of the scene.
+     */
     RackSet createRackSet(ComponentInfo info);
 
+    /**
+     * Creates a {@link RackSet} from a <code>.caustic</code> song file import.
+     * 
+     * @param absoluteCausticFile The absolute location of the
+     *            <code>.caustic</code> song file.
+     */
     RackSet createRackSet(ComponentInfo info, File absoluteCausticFile);
 
     Machine createMachine(ComponentInfo info, int machineIndex, MachineType machineType,

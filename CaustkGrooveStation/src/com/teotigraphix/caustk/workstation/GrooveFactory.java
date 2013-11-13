@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.controller.ICaustkApplication;
 /**
  * @author Michael Schmalle
  */
-public class GrooveFactory extends CaustkFactory {
+public class GrooveFactory extends CaustkFactory implements IGrooveFactory {
 
     GrooveSetFactory grooveSetFactory;
 

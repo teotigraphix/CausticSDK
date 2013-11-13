@@ -493,22 +493,35 @@ public class RackSet extends CaustkComponent {
         final ICaustkApplicationContext context = factory.createContext();
 
         if (!isInternal) {
-
             if (!isInitialized)
                 throw new IllegalStateException("RackSet has not been created");
 
             // if this set is internal, the rack state is already in the correct state
             // no need to update the native rack with the scene's serialized properties
+            rack.getLogger().log("RackSet", "update() RackSet");
             update(context);
-        } else if (!isInitialized) {
+        } else if (!isInternal && !isInitialized) {
+            rack.getLogger().log("RackSet", "create() external RackSet");
             create(context);
         } else if (isInternal) {
-            // hook Rack back up to machines and RackTones
-            componentPhaseChange(context, ComponentPhase.Connect);
-            // an internal RackSet saves it's .caustic binary data
-            // and will reload it here so the native audio system is initialized
-            ICaustkController controller = rack.getController();
-            loadSongBytesIntoRack(controller, data);
+            if (!isInitialized) {
+                // We will call BLANKRACK here because the rack set is already
+                // assigned to the Rack and to be through, clear all native rack state
+                // NOTE: in the Create phase we don't call BLANKRACK since we don't
+                // actually know if we are attached to the Rack
+                RackMessage.BLANKRACK.send(rack);
+                rack.getLogger().log("RackSet", "create() internal RackSet");
+                create(context);
+            } else {
+                // hook Rack back up to machines and RackTones
+                rack.getLogger().log("RackSet", "Connect internal RackSet");
+                componentPhaseChange(context, ComponentPhase.Connect);
+                // an internal RackSet saves it's .caustic binary data
+                // and will reload it here so the native audio system is initialized
+                ICaustkController controller = rack.getController();
+                rack.getLogger().log("RackSet", "Load previously serialized song bytes");
+                loadSongBytesIntoRack(controller, data);
+            }
         }
     }
 

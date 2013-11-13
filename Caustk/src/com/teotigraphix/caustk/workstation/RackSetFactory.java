@@ -26,6 +26,12 @@ public class RackSetFactory extends CaustkSubFactoryBase {
     public RackSetFactory() {
     }
 
+    public RackSet createRackSet() {
+        ComponentInfo info = getFactory().createInfo(ComponentType.RackSet);
+        RackSet rackSet = new RackSet(info, getFactory());
+        return rackSet;
+    }
+
     public RackSet createRackSet(ComponentInfo info) {
         RackSet rackSet = new RackSet(info, getFactory());
         return rackSet;
