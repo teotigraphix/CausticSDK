@@ -304,6 +304,10 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
     // PatternBank
     //----------------------------------
+    @Override
+    public PatternBank createPatternBank(RackSet rackSet) {
+        return patternBankFactory.createPatternBank(rackSet);
+    }
 
     @Override
     public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet) {

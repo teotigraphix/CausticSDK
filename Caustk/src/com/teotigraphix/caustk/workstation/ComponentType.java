@@ -132,7 +132,21 @@ public enum ComponentType {
      * <p>
      * Extension: <strong>.csq</strong>
      */
-    MasterSequencer("csq");
+    MasterSequencer("csq"),
+
+    // Groove Framework
+
+    /**
+     * <p>
+     * Extension: <strong>.cgs</strong>
+     */
+    GrooveSet("cgs"),
+
+    /**
+     * <p>
+     * Extension: <strong>.cgm</strong>
+     */
+    GrooveMachine("cgm");
 
     private final String extension;
 

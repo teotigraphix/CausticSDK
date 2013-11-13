@@ -20,12 +20,15 @@
 package com.teotigraphix.caustk.workstation;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
+import com.teotigraphix.caustk.workstation.GrooveMachineDescriptor.PartDescriptor;
 
 /**
  * Holds all {@link GrooveMachine}s in an application, the main controller for
@@ -128,8 +131,17 @@ public class GrooveSet extends CaustkComponent {
         return machines.get(selectedMachineIndex);
     }
 
-    public void addMachine(GrooveMachine machine) {
-        // TODO
+    public void addMachine(GrooveMachineDescriptor descriptor) {
+        // create the Parts from the descriptor
+        List<PartDescriptor> parts = descriptor.getParts();
+        for (PartDescriptor partDescriptor : parts) {
+            createPart(partDescriptor);
+        }
+    }
+
+    private void createPart(PartDescriptor partDescriptor) {
+        ToneDescriptor toneDescriptor = partDescriptor.createDescriptor();
+
     }
 
     @Override
@@ -200,12 +212,13 @@ public class GrooveSet extends CaustkComponent {
             this.kind = kind;
         }
 
-        public OnGrooveStationChange(GrooveSet grooveSet, GrooveStationChangeKind kind,
-                int index, int oldIndex) {
+        public OnGrooveStationChange(GrooveSet grooveSet, GrooveStationChangeKind kind, int index,
+                int oldIndex) {
             this.grooveSet = grooveSet;
             this.kind = kind;
             this.index = index;
             this.oldIndex = oldIndex;
         }
     }
+
 }

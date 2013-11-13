@@ -24,6 +24,12 @@ public class PatternBankFactory extends CaustkSubFactoryBase {
     public PatternBankFactory() {
     }
 
+    public PatternBank createPatternBank(RackSet rackSet) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.PatternBank);
+        PatternBank patternBank = new PatternBank(info, rackSet);
+        return patternBank;
+    }
+
     public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet) {
         PatternBank patternBank = new PatternBank(info, rackSet);
         return patternBank;

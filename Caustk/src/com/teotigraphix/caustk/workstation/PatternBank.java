@@ -161,6 +161,10 @@ public class PatternBank extends CaustkComponent {
             throws CausticException {
         ICaustkFactory factory = rackSet.getFactory();
         ICaustkApplicationContext context = factory.createContext();
+        rackSet.getLogger().log(
+                "PatternBank",
+                "Create Part; [" + machineIndex + ", " + machineType.getType() + ", " + machineName
+                        + "]");
         // this adds the machine to the rackSet, calls create()
         Machine machine = rackSet.createMachine(machineIndex, machineName, machineType);
         ComponentInfo info = factory.createInfo(ComponentType.Part, machineName);

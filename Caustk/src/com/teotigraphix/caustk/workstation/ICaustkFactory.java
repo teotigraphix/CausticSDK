@@ -176,6 +176,8 @@ public interface ICaustkFactory {
 
     Kryo getKryo();
 
+    PatternBank createPatternBank(RackSet rackSet);
+
     PatternBank createPatternBank(ComponentInfo info, RackSet rackSet);
 
     Pattern createPattern(ComponentInfo info, PatternBank patternBank, int index);

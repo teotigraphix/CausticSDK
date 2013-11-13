@@ -30,24 +30,21 @@ import com.teotigraphix.caustk.workstation.MachineType;
  * @author Michael Schmalle
  */
 public class ToneDescriptor {
-    private final int machineIndex;
+
+    private int machineIndex;
+
+    private String machineName;
+
+    private MachineType machineType;
+
+    private UUID patchId;
 
     public int getMachineIndex() {
         return machineIndex;
     }
 
-    private final String machineName;
-
     public String getMachineName() {
         return machineName;
-    }
-
-    private MachineType machineType;
-
-    public ToneDescriptor(int machineIndex, String machineName, MachineType machineType) {
-        this.machineIndex = machineIndex;
-        this.machineName = machineName;
-        this.machineType = machineType;
     }
 
     public MachineType getMachineType() {
@@ -62,7 +59,11 @@ public class ToneDescriptor {
         patchId = value;
     }
 
-    private UUID patchId;
+    public ToneDescriptor(int machineIndex, String machineName, MachineType machineType) {
+        this.machineIndex = machineIndex;
+        this.machineName = machineName;
+        this.machineType = machineType;
+    }
 
     @Override
     public String toString() {

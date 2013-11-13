@@ -31,4 +31,10 @@ public class GrooveSetFactory extends CaustkSubFactoryBase {
         GrooveSet grooveSet = new GrooveSet(info, rackSet);
         return grooveSet;
     }
+
+    public GrooveMachine createGrooveMachine(GrooveMachineDescriptor descriptor) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.GrooveMachine);
+        GrooveMachine machine = new BasslineMachine(info);
+        return machine;
+    }
 }

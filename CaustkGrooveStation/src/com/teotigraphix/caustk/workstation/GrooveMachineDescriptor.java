@@ -17,8 +17,19 @@ public class GrooveMachineDescriptor {
     public GrooveMachineDescriptor() {
     }
 
-    public void addPart(int index, String name, MachineType machineType) {
-        PartDescriptor part = new PartDescriptor(index, name, machineType);
+    public void addPart(int index, String partName, MachineType machineType) {
+        PartDescriptor part = new PartDescriptor(index, partName, machineType);
+        parts.add(part);
+    }
+
+    /**
+     * Adds a part description without index location requirement.
+     * 
+     * @param partName
+     * @param machineType
+     */
+    public void addPart(String partName, MachineType machineType) {
+        PartDescriptor part = new PartDescriptor(partName, machineType);
         parts.add(part);
     }
 
@@ -40,6 +51,12 @@ public class GrooveMachineDescriptor {
 
         public final MachineType getMachineType() {
             return machineType;
+        }
+
+        public PartDescriptor(String machineName, MachineType machineType) {
+            this.machineIndex = -1;
+            this.machineName = machineName;
+            this.machineType = machineType;
         }
 
         public PartDescriptor(int machineIndex, String machineName, MachineType machineType) {

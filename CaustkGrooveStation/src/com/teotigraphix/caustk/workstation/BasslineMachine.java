@@ -19,38 +19,16 @@
 
 package com.teotigraphix.caustk.workstation;
 
-import com.teotigraphix.caustk.controller.ICaustkApplication;
-
 /**
  * @author Michael Schmalle
  */
-public class GrooveFactory extends CaustkFactory implements IGrooveFactory {
+public class BasslineMachine extends GrooveMachine {
 
-    GrooveSetFactory grooveSetFactory;
-
-    //--------------------------------------------------------------------------
-    // Constructor
-    //--------------------------------------------------------------------------
-
-    public GrooveFactory(ICaustkApplication application) {
-        super(application);
+    public BasslineMachine() {
     }
 
-    @Override
-    protected void createFactories() {
-        super.createFactories();
-
-        grooveSetFactory = new GrooveSetFactory();
-        grooveSetFactory.setFactory(this);
+    public BasslineMachine(ComponentInfo info) {
+        super(info);
     }
 
-    @Override
-    public GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet) {
-        return grooveSetFactory.createGrooveSet(info, rackSet);
-    }
-
-    @Override
-    public GrooveMachine createGrooveMachine(GrooveMachineDescriptor descriptor) {
-        return grooveSetFactory.createGrooveMachine(descriptor);
-    }
 }

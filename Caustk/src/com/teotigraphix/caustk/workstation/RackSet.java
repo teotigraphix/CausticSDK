@@ -33,6 +33,7 @@ import org.apache.commons.io.FileUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.ICaustkController;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -73,6 +74,10 @@ public class RackSet extends CaustkComponent {
      */
     public IDispatcher getDispatcher() {
         return rack.getDispatcher();
+    }
+
+    public ICaustkLogger getLogger() {
+        return rack.getLogger();
     }
 
     //--------------------------------------------------------------------------
