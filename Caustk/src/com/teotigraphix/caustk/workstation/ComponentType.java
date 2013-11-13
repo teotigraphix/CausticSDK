@@ -146,7 +146,7 @@ public enum ComponentType {
      * <p>
      * Extension: <strong>.cgm</strong>
      */
-    GrooveMachine("cgm");
+    GrooveBox("cgb");
 
     private final String extension;
 

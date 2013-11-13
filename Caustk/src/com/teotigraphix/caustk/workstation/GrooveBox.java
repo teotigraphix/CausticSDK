@@ -28,6 +28,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.tone.RackTone;
+import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
  * @author Michael Schmalle
@@ -163,8 +164,9 @@ public class GrooveBox extends CaustkComponent {
     public GrooveBox() {
     }
 
-    public GrooveBox(ComponentInfo info) {
+    public GrooveBox(ComponentInfo info, GrooveSet grooveSet) {
         setInfo(info);
+        this.grooveSet = grooveSet;
     }
 
     /**
@@ -187,7 +189,7 @@ public class GrooveBox extends CaustkComponent {
         ICaustkFactory factory = getRackSet().getFactory();
         ICaustkApplicationContext context = factory.createContext();
         getRackSet().getLogger().log(
-                "PatternBank",
+                "GrooveBox",
                 "Create Part; [" + machineIndex + ", " + machineType.getType() + ", " + machineName
                         + "]");
         // this adds the machine to the rackSet, calls create()
@@ -212,6 +214,18 @@ public class GrooveBox extends CaustkComponent {
             throws CausticException {
         switch (phase) {
             case Create:
+                //machine.create(rackSet.getFactory().createContext());
+                // when the part is created it will be named '01_dm2_p1', '02_dm2_p1'
+                // 01_dm2_p1 [machineIndex]_[machineType]_[partName]
+                // where machineIndex is the index within the GrooveSet
+                for (PartDescriptor partDescriptor : getDescriptor().getParts()) {
+                    int index = grooveSet.getRackSet().getMachineCount();
+                    String type = partDescriptor.getPatternTypeId();
+                    String name = partDescriptor.getMachineName();
+                    String machineName = machineIndex + "_" + type + "_" + name;
+
+                    createPart(index, partDescriptor.getMachineType(), machineName);
+                }
                 break;
             case Load:
                 break;

@@ -194,6 +194,8 @@ public interface ICaustkFactory {
 
     GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet);
 
-    GrooveBox createGrooveMachine(GrooveBoxType machineType);
+    GrooveBox createGrooveBox(ComponentInfo info, GrooveSet grooveSet, GrooveBoxType machineType);
+
+    GrooveBox createGrooveBox(GrooveSet grooveSet, GrooveBoxType machineType);
 
 }

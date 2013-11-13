@@ -40,18 +40,23 @@ public class GrooveSetFactory extends CaustkSubFactoryBase {
         return grooveSet;
     }
 
-    public GrooveBox createGrooveMachine(GrooveBoxType machineType) {
-        ComponentInfo info = getFactory().createInfo(ComponentType.GrooveMachine);
+    public GrooveBox createGrooveBox(ComponentInfo info, GrooveSet grooveSet,
+            GrooveBoxType machineType) {
         GrooveBox machine = null;
         switch (machineType) {
             case BasslineMachine2:
-                machine = new Bassline2Machine(info);
+                machine = new Bassline2Machine(info, grooveSet);
                 break;
             case DrumMachine2:
                 break;
-
         }
 
         return machine;
     }
+
+    public GrooveBox createGrooveBox(GrooveSet grooveSet, GrooveBoxType machineType) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.GrooveBox);
+        return createGrooveBox(info, grooveSet, machineType);
+    }
+
 }

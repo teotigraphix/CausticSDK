@@ -321,8 +321,14 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public GrooveBox createGrooveMachine(GrooveBoxType machineType) {
-        return grooveSetFactory.createGrooveMachine(machineType);
+    public GrooveBox createGrooveBox(ComponentInfo info, GrooveSet grooveSet,
+            GrooveBoxType machineType) {
+        return grooveSetFactory.createGrooveBox(info, grooveSet, machineType);
+    }
+
+    @Override
+    public GrooveBox createGrooveBox(GrooveSet grooveSet, GrooveBoxType machineType) {
+        return grooveSetFactory.createGrooveBox(grooveSet, machineType);
     }
 
     //----------------------------------

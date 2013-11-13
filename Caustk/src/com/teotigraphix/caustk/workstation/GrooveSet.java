@@ -25,11 +25,9 @@ import java.util.Collection;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
- * Holds all {@link GrooveBox}s in an application, the main controller for all
- * machines.
+ * Holds all {@link GrooveBox}s in a {@link GrooveStation} session.
  * 
  * @author Michael Schmalle
  */
@@ -132,14 +130,7 @@ public class GrooveSet extends CaustkComponent {
         int index = grooveBoxes.size();
         grooveBoxes.add(machine);
         machine.setMachineIndex(index);
-        //machine.create(rackSet.getFactory().createContext());
-        // when the part is created it will be named '01_dm2_p1', '02_dm2_p1'
-        // 01_dm2_p1 [machineIndex]_[machineType]_[partName]
-        // where machineIndex is the index within the GrooveSet
-        for (@SuppressWarnings("unused")
-        PartDescriptor partDescriptor : machine.getDescriptor().getParts()) {
-
-        }
+        machine.create(rackSet.getFactory().createContext());
     }
 
     @Override

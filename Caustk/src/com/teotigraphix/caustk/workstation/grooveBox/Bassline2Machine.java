@@ -23,6 +23,7 @@ import com.teotigraphix.caustk.workstation.ComponentInfo;
 import com.teotigraphix.caustk.workstation.GrooveBox;
 import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor;
 import com.teotigraphix.caustk.workstation.GrooveBoxType;
+import com.teotigraphix.caustk.workstation.GrooveSet;
 import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
@@ -33,13 +34,13 @@ public class Bassline2Machine extends GrooveBox {
     public Bassline2Machine() {
     }
 
-    public Bassline2Machine(ComponentInfo info) {
-        super(info);
+    public Bassline2Machine(ComponentInfo info, GrooveSet grooveSet) {
+        super(info, grooveSet);
 
         GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(GrooveBoxType.BasslineMachine2);
         // when the part is created it will be named 'bl1_part1'
-        descriptor.addPart("part1", MachineType.Bassline);
-        descriptor.addPart("part2", MachineType.Bassline);
+        descriptor.addPart("p1", MachineType.Bassline);
+        descriptor.addPart("p2", MachineType.Bassline);
 
         setDescriptor(descriptor);
     }
