@@ -17,24 +17,31 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.workstation;
+package com.teotigraphix.caustk.workstation.grooveBox;
+
+import com.teotigraphix.caustk.workstation.ComponentInfo;
+import com.teotigraphix.caustk.workstation.GrooveBox;
+import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor;
+import com.teotigraphix.caustk.workstation.GrooveBoxType;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * @author Michael Schmalle
  */
-public class GrooveSetFactory extends CaustkSubFactoryBase {
+public class Bassline2Machine extends GrooveBox {
 
-    public GrooveSetFactory() {
+    public Bassline2Machine() {
     }
 
-    public GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet) {
-        GrooveSet grooveSet = new GrooveSet(info, rackSet);
-        return grooveSet;
+    public Bassline2Machine(ComponentInfo info) {
+        super(info);
+
+        GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(GrooveBoxType.BasslineMachine2);
+        // when the part is created it will be named 'bl1_part1'
+        descriptor.addPart("part1", MachineType.Bassline);
+        descriptor.addPart("part2", MachineType.Bassline);
+
+        setDescriptor(descriptor);
     }
 
-    public GrooveMachine createGrooveMachine(GrooveMachineDescriptor descriptor) {
-        ComponentInfo info = getFactory().createInfo(ComponentType.GrooveMachine);
-        GrooveMachine machine = new BasslineMachine(info);
-        return machine;
-    }
 }

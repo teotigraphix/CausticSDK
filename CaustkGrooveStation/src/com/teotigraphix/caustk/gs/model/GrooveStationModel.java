@@ -2,7 +2,7 @@
 package com.teotigraphix.caustk.gs.model;
 
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.workstation.GrooveMachine;
+import com.teotigraphix.caustk.workstation.GrooveBox;
 import com.teotigraphix.libgdx.model.CaustkModelBase;
 
 @Singleton
@@ -12,7 +12,7 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
     }
 
     @Override
-    public GrooveMachine getSelectedMachine() {
+    public GrooveBox getSelectedMachine() {
         // TODO Auto-generated method stub
         return null;
     }

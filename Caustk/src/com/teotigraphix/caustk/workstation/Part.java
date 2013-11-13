@@ -34,7 +34,7 @@ public class Part extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private PatternBank patternBank;
+    private GrooveBox grooveBox;
 
     @Tag(101)
     private Machine machine;
@@ -53,14 +53,22 @@ public class Part extends CaustkComponent {
     }
 
     //----------------------------------
-    // patternSet
+    // grooveBox
+    //----------------------------------
+
+    public GrooveBox getGrooveBox() {
+        return grooveBox;
+    }
+
+    //----------------------------------
+    // patternBank
     //----------------------------------
 
     /**
      * Returns the owning {@link PatternBank}.
      */
     public PatternBank getPatternBank() {
-        return patternBank;
+        return grooveBox.getPatternBank();
     }
 
     //----------------------------------
@@ -102,8 +110,8 @@ public class Part extends CaustkComponent {
      * the {@link Phrase} for native machine 1 at A04 will be returned.
      */
     public final Phrase getPhrase() {
-        return getPhrase(PatternUtils.getBank(patternBank.getSelectedIndex()),
-                PatternUtils.getBank(patternBank.getSelectedIndex()));
+        return getPhrase(PatternUtils.getBank(getPatternBank().getSelectedIndex()),
+                PatternUtils.getBank(getPatternBank().getSelectedIndex()));
     }
 
     /**
@@ -208,9 +216,9 @@ public class Part extends CaustkComponent {
     Part() {
     }
 
-    Part(ComponentInfo info, PatternBank patternBank, Machine machine) {
+    Part(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
         setInfo(info);
-        this.patternBank = patternBank;
+        this.grooveBox = grooveBox;
         this.machine = machine;
     }
 

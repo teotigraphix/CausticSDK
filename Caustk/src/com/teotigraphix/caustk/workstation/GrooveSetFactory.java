@@ -19,38 +19,39 @@
 
 package com.teotigraphix.caustk.workstation;
 
-import com.teotigraphix.caustk.controller.ICaustkApplication;
+import com.teotigraphix.caustk.workstation.grooveBox.Bassline2Machine;
 
 /**
  * @author Michael Schmalle
  */
-public class GrooveFactory extends CaustkFactory implements IGrooveFactory {
+public class GrooveSetFactory extends CaustkSubFactoryBase {
 
-    GrooveSetFactory grooveSetFactory;
-
-    //--------------------------------------------------------------------------
-    // Constructor
-    //--------------------------------------------------------------------------
-
-    public GrooveFactory(ICaustkApplication application) {
-        super(application);
+    public GrooveSetFactory() {
     }
 
-    @Override
-    protected void createFactories() {
-        super.createFactories();
-
-        grooveSetFactory = new GrooveSetFactory();
-        grooveSetFactory.setFactory(this);
+    public GrooveSet createGrooveSet(RackSet rackSet) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.GrooveSet);
+        GrooveSet grooveSet = new GrooveSet(info, rackSet);
+        return grooveSet;
     }
 
-    @Override
     public GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet) {
-        return grooveSetFactory.createGrooveSet(info, rackSet);
+        GrooveSet grooveSet = new GrooveSet(info, rackSet);
+        return grooveSet;
     }
 
-    @Override
-    public GrooveMachine createGrooveMachine(GrooveMachineDescriptor descriptor) {
-        return grooveSetFactory.createGrooveMachine(descriptor);
+    public GrooveBox createGrooveMachine(GrooveBoxType machineType) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.GrooveMachine);
+        GrooveBox machine = null;
+        switch (machineType) {
+            case BasslineMachine2:
+                machine = new Bassline2Machine(info);
+                break;
+            case DrumMachine2:
+                break;
+
+        }
+
+        return machine;
     }
 }

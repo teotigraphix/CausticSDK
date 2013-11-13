@@ -22,13 +22,25 @@ package com.teotigraphix.caustk.workstation;
 /**
  * @author Michael Schmalle
  */
-public class BasslineMachine extends GrooveMachine {
+public enum GrooveBoxType {
 
-    public BasslineMachine() {
+    /**
+     * A groove machine with the bassline parts.
+     */
+    BasslineMachine2("bm2"),
+
+    /**
+     * A groove machine with 2 beatbox parts.
+     */
+    DrumMachine2("dm2");
+
+    private final String type;
+
+    public String getType() {
+        return type;
     }
 
-    public BasslineMachine(ComponentInfo info) {
-        super(info);
+    GrooveBoxType(String type) {
+        this.type = type;
     }
-
 }

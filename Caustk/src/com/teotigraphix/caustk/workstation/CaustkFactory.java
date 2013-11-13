@@ -74,6 +74,8 @@ public class CaustkFactory implements ICaustkFactory {
 
     private RackToneFactory rackToneFactory;
 
+    private GrooveSetFactory grooveSetFactory;
+
     private PatternBankFactory patternBankFactory;
 
     private SongSetFactory songSetFactory;
@@ -127,6 +129,9 @@ public class CaustkFactory implements ICaustkFactory {
 
         masterFactory = new MasterFactory();
         masterFactory.setFactory(this);
+
+        grooveSetFactory = new GrooveSetFactory();
+        grooveSetFactory.setFactory(this);
 
         patternBankFactory = new PatternBankFactory();
         patternBankFactory.setFactory(this);
@@ -302,16 +307,36 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     //----------------------------------
-    // PatternBank
+    // GrooveBox
     //----------------------------------
+
     @Override
-    public PatternBank createPatternBank(RackSet rackSet) {
-        return patternBankFactory.createPatternBank(rackSet);
+    public GrooveSet createGrooveSet(RackSet rackSet) {
+        return grooveSetFactory.createGrooveSet(rackSet);
     }
 
     @Override
-    public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet) {
-        return patternBankFactory.createPatternBank(info, rackSet);
+    public GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet) {
+        return grooveSetFactory.createGrooveSet(info, rackSet);
+    }
+
+    @Override
+    public GrooveBox createGrooveMachine(GrooveBoxType machineType) {
+        return grooveSetFactory.createGrooveMachine(machineType);
+    }
+
+    //----------------------------------
+    // PatternBank
+    //----------------------------------
+
+    @Override
+    public PatternBank createPatternBank(RackSet rackSet, String patternTypeId) {
+        return patternBankFactory.createPatternBank(rackSet, patternTypeId);
+    }
+
+    @Override
+    public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet, String patternTypeId) {
+        return patternBankFactory.createPatternBank(info, rackSet, patternTypeId);
     }
 
     @Override
@@ -320,8 +345,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public Part createPart(ComponentInfo info, PatternBank patternBank, Machine machine) {
-        return patternBankFactory.createPart(info, patternBank, machine);
+    public Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
+        return patternBankFactory.createPart(info, grooveBox, machine);
     }
 
     //----------------------------------

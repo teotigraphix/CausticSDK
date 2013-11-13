@@ -19,20 +19,17 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
-import com.teotigraphix.caustk.workstation.GrooveMachineDescriptor.PartDescriptor;
+import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
- * Holds all {@link GrooveMachine}s in an application, the main controller for
- * all machines.
+ * Holds all {@link GrooveBox}s in an application, the main controller for all
+ * machines.
  * 
  * @author Michael Schmalle
  */
@@ -46,7 +43,7 @@ public class GrooveSet extends CaustkComponent {
     private RackSet rackSet;
 
     @Tag(101)
-    private Map<Integer, GrooveMachine> machines = new TreeMap<Integer, GrooveMachine>();
+    private ArrayList<GrooveBox> grooveBoxes = new ArrayList<GrooveBox>();
 
     @Tag(102)
     private int selectedMachineIndex;
@@ -76,15 +73,15 @@ public class GrooveSet extends CaustkComponent {
     // machines
     //----------------------------------
 
-    public Collection<GrooveMachine> getMachines() {
-        return machines.values();
+    public Collection<GrooveBox> getMachines() {
+        return grooveBoxes;
     }
 
     //----------------------------------
     // selectedMachineIndex
     //----------------------------------
 
-    public GrooveMachine getSelectedMachine() {
+    public GrooveBox getSelectedMachine() {
         return getMachine(selectedMachineIndex);
     }
 
@@ -125,23 +122,24 @@ public class GrooveSet extends CaustkComponent {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public GrooveMachine getMachine(int machineIndex) {
-        if (machineIndex > machines.size() - 1)
+    public GrooveBox getMachine(int machineIndex) {
+        if (machineIndex > grooveBoxes.size() - 1)
             return null;
-        return machines.get(selectedMachineIndex);
+        return grooveBoxes.get(selectedMachineIndex);
     }
 
-    public void addMachine(GrooveMachineDescriptor descriptor) {
-        // create the Parts from the descriptor
-        List<PartDescriptor> parts = descriptor.getParts();
-        for (PartDescriptor partDescriptor : parts) {
-            createPart(partDescriptor);
+    public void addMachine(GrooveBox machine) throws CausticException {
+        int index = grooveBoxes.size();
+        grooveBoxes.add(machine);
+        machine.setMachineIndex(index);
+        //machine.create(rackSet.getFactory().createContext());
+        // when the part is created it will be named '01_dm2_p1', '02_dm2_p1'
+        // 01_dm2_p1 [machineIndex]_[machineType]_[partName]
+        // where machineIndex is the index within the GrooveSet
+        for (@SuppressWarnings("unused")
+        PartDescriptor partDescriptor : machine.getDescriptor().getParts()) {
+
         }
-    }
-
-    private void createPart(PartDescriptor partDescriptor) {
-        ToneDescriptor toneDescriptor = partDescriptor.createDescriptor();
-
     }
 
     @Override

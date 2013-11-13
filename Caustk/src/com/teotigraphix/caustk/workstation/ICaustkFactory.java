@@ -176,18 +176,24 @@ public interface ICaustkFactory {
 
     Kryo getKryo();
 
-    PatternBank createPatternBank(RackSet rackSet);
+    PatternBank createPatternBank(RackSet rackSet, String patternTypeId);
 
-    PatternBank createPatternBank(ComponentInfo info, RackSet rackSet);
+    PatternBank createPatternBank(ComponentInfo info, RackSet rackSet, String patternTypeId);
 
     Pattern createPattern(ComponentInfo info, PatternBank patternBank, int index);
 
-    Part createPart(ComponentInfo info, PatternBank patternBank, Machine machine);
+    Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine);
 
     SongBank createSongBank(ComponentInfo info, UUID patternBankId);
 
     SongBank createSongBank(ComponentInfo info, PatternBank patternBank);
 
     Song createSong(ComponentInfo info, SongBank songBank);
+
+    GrooveSet createGrooveSet(RackSet rackSet);
+
+    GrooveSet createGrooveSet(ComponentInfo info, RackSet rackSet);
+
+    GrooveBox createGrooveMachine(GrooveBoxType machineType);
 
 }

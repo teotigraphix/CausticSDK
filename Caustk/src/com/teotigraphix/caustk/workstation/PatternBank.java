@@ -26,7 +26,6 @@ import java.util.TreeMap;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
 /**
@@ -34,20 +33,22 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class PatternBank extends CaustkComponent {
 
+    private transient RackSet rackSet;
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(100)
-    private RackSet rackSet;
-
     @Tag(101)
-    Map<Integer, Part> parts = new TreeMap<Integer, Part>();
+    private String patternTypeId;
 
     @Tag(102)
-    private Map<Integer, Pattern> patterns = new TreeMap<Integer, Pattern>();
+    private GrooveBox grooveBox;
 
     @Tag(103)
+    private Map<Integer, Pattern> patterns = new TreeMap<Integer, Pattern>();
+
+    @Tag(104)
     private int selectedIndex = 0;
 
     //--------------------------------------------------------------------------
@@ -63,12 +64,57 @@ public class PatternBank extends CaustkComponent {
         return getInfo().getName();
     }
 
+    //----------------------------------
+    // rackSet
+    //----------------------------------
+
+    /**
+     * The {@link RackSet} is a transient instance held on the
+     * {@link PatternBank}. Each type of "pattern" will have it's own pattern
+     * bank.
+     * <p>
+     * Suppose you have a machine that holds 2 parts, 2 bassline tones. That
+     * machine will hold its own pattern bank, and the bank will operate on the
+     * current {@link RackSet}.
+     */
+    public RackSet getRackSet() {
+        return rackSet;
+    }
+
+    //----------------------------------
+    // patternTypeId
+    //----------------------------------
+
+    /**
+     * Returns the type of {@link Pattern} this bank holds.
+     * <p>
+     * A {@link Pattern} can only hold one type of {@link Part} structure, this
+     * type is used when loading {@link PatternBank}s into top level machines,
+     * if the pattern type does not match the top level machine's pattern type,
+     * the {@link PatternBank} is incompatible and will not be able to be used
+     * to load patterns into the top level machine.
+     * <p>
+     * The pattern type is a 4 character unique identifier used when the naming
+     * the {@link Part}s initially created for the {@link Pattern}.
+     */
+    public String getPatternTypeId() {
+        return patternTypeId;
+    }
+
+    //---------------------------------- 
+    // grooveBox
+    //----------------------------------
+
+    public GrooveBox getGrooveBox() {
+        return grooveBox;
+    }
+
     //---------------------------------- 
     // parts
     //----------------------------------
 
     public Collection<Part> getParts() {
-        return parts.values();
+        return grooveBox.getParts();
     }
 
     //----------------------------------
@@ -106,14 +152,6 @@ public class PatternBank extends CaustkComponent {
                         oldIndex));
     }
 
-    //----------------------------------
-    // rackSet
-    //----------------------------------
-
-    public RackSet getRackSet() {
-        return rackSet;
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -124,9 +162,10 @@ public class PatternBank extends CaustkComponent {
     PatternBank() {
     }
 
-    PatternBank(ComponentInfo info, RackSet rackSet) {
+    PatternBank(ComponentInfo info, RackSet rackSet, String patternTypeId) {
         setInfo(info);
         this.rackSet = rackSet;
+        this.patternTypeId = patternTypeId;
     }
 
     //--------------------------------------------------------------------------
@@ -139,42 +178,7 @@ public class PatternBank extends CaustkComponent {
      * @param index The part index (0..13).
      */
     public Part getPart(int index) {
-        return parts.get(index);
-    }
-
-    /**
-     * Creates a new {@link Machine} and wraps it in a {@link Part} instance.
-     * <p>
-     * The {@link Part} is added to the {@link PatternBank}.
-     * <p>
-     * Calling this method will implicitly call
-     * {@link Machine#create(ICaustkApplicationContext)} through the RackSet's
-     * create() and create the {@link RackTone} in the native rack.
-     * 
-     * @param machineIndex The machine index.
-     * @param machineType The {@link MachineType}.
-     * @param machineName The native machine name.
-     * @return A new {@link Part} instance added tot he {@link PatternBank}.
-     * @throws CausticException
-     */
-    public Part createPart(int machineIndex, MachineType machineType, String machineName)
-            throws CausticException {
-        ICaustkFactory factory = rackSet.getFactory();
-        ICaustkApplicationContext context = factory.createContext();
-        rackSet.getLogger().log(
-                "PatternBank",
-                "Create Part; [" + machineIndex + ", " + machineType.getType() + ", " + machineName
-                        + "]");
-        // this adds the machine to the rackSet, calls create()
-        Machine machine = rackSet.createMachine(machineIndex, machineName, machineType);
-        ComponentInfo info = factory.createInfo(ComponentType.Part, machineName);
-        Part part = factory.createPart(info, this, machine);
-        part.create(context);
-        parts.put(machineIndex, part);
-        partAdd(part);
-        rackSet.getComponentDispatcher().trigger(
-                new OnPatternBankChange(this, PatternBankChangeKind.PartAdd, part));
-        return part;
+        return grooveBox.getPart(index);
     }
 
     /**
@@ -276,9 +280,9 @@ public class PatternBank extends CaustkComponent {
             case Update:
                 // send BLANKRACK message
                 context.getRack().setRackSet(rackSet);
-                for (Part part : parts.values()) {
-                    part.update(context);
-                }
+                //                for (Part part : parts.values()) {
+                //                    part.update(context);
+                //                }
                 for (Pattern pattern : patterns.values()) {
                     pattern.update(context);
                 }
@@ -300,11 +304,6 @@ public class PatternBank extends CaustkComponent {
 
     }
 
-    private void partAdd(Part part) {
-        // TODO Auto-generated method stub
-
-    }
-
     //--------------------------------------------------------------------------
     // Event API
     //--------------------------------------------------------------------------
@@ -315,12 +314,6 @@ public class PatternBank extends CaustkComponent {
         PatternRemove,
 
         PatternReplace,
-
-        PartAdd,
-
-        PartRemove,
-
-        PartReplace,
 
         SelectedIndex,
     }
@@ -338,8 +331,6 @@ public class PatternBank extends CaustkComponent {
         private int index;
 
         private int oldIndex;
-
-        private Part part;
 
         public PatternBank getPatternBank() {
             return patternBank;
@@ -363,13 +354,6 @@ public class PatternBank extends CaustkComponent {
             return oldIndex;
         }
 
-        /**
-         * @see PatternBankChangeKind#PartAdd
-         */
-        public Part getPart() {
-            return part;
-        }
-
         public OnPatternBankChange(PatternBank patternBank, PatternBankChangeKind kind) {
             this.patternBank = patternBank;
             this.kind = kind;
@@ -381,12 +365,6 @@ public class PatternBank extends CaustkComponent {
             this.kind = kind;
             this.index = index;
             this.oldIndex = oldIndex;
-        }
-
-        public OnPatternBankChange(PatternBank patternBank, PatternBankChangeKind kind, Part part) {
-            this.patternBank = patternBank;
-            this.kind = kind;
-            this.part = part;
         }
     }
 }
