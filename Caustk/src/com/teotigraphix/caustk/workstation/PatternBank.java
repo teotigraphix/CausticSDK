@@ -33,7 +33,12 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class PatternBank extends CaustkComponent {
 
-    private transient RackSet rackSet;
+    private transient GrooveBox grooveBox;
+
+    // XXX temp
+    RackSet getRackSet() {
+        return grooveBox.getRackSet();
+    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -43,12 +48,9 @@ public class PatternBank extends CaustkComponent {
     private String patternTypeId;
 
     @Tag(102)
-    private GrooveBox grooveBox;
-
-    @Tag(103)
     private Map<Integer, Pattern> patterns = new TreeMap<Integer, Pattern>();
 
-    @Tag(104)
+    @Tag(103)
     private int selectedIndex = 0;
 
     //--------------------------------------------------------------------------
@@ -62,23 +64,6 @@ public class PatternBank extends CaustkComponent {
     @Override
     public String getDefaultName() {
         return getInfo().getName();
-    }
-
-    //----------------------------------
-    // rackSet
-    //----------------------------------
-
-    /**
-     * The {@link RackSet} is a transient instance held on the
-     * {@link PatternBank}. Each type of "pattern" will have it's own pattern
-     * bank.
-     * <p>
-     * Suppose you have a machine that holds 2 parts, 2 bassline tones. That
-     * machine will hold its own pattern bank, and the bank will operate on the
-     * current {@link RackSet}.
-     */
-    public RackSet getRackSet() {
-        return rackSet;
     }
 
     //----------------------------------
@@ -107,6 +92,10 @@ public class PatternBank extends CaustkComponent {
 
     public GrooveBox getGrooveBox() {
         return grooveBox;
+    }
+
+    void setGrooveBox(GrooveBox value) {
+        grooveBox = value;
     }
 
     //---------------------------------- 
@@ -147,9 +136,12 @@ public class PatternBank extends CaustkComponent {
             return;
         int oldIndex = selectedIndex;
         selectedIndex = value;
-        rackSet.getComponentDispatcher().trigger(
-                new OnPatternBankChange(this, PatternBankChangeKind.SelectedIndex, selectedIndex,
-                        oldIndex));
+        grooveBox
+                .getRackSet()
+                .getComponentDispatcher()
+                .trigger(
+                        new OnPatternBankChange(this, PatternBankChangeKind.SelectedIndex,
+                                selectedIndex, oldIndex));
     }
 
     //--------------------------------------------------------------------------
@@ -253,8 +245,6 @@ public class PatternBank extends CaustkComponent {
     @Override
     public void onSave(ICaustkApplicationContext context) {
         super.onSave(context);
-
-        rackSet.onSave(context);
     }
 
     @Override
@@ -279,7 +269,7 @@ public class PatternBank extends CaustkComponent {
                 break;
             case Update:
                 // send BLANKRACK message
-                context.getRack().setRackSet(rackSet);
+                //                context.getRack().setRackSet(rackSet);
                 //                for (Part part : parts.values()) {
                 //                    part.update(context);
                 //                }

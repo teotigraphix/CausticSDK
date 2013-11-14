@@ -162,5 +162,4 @@ public interface ICaustkApplication {
             this.kind = kind;
         }
     }
-
 }

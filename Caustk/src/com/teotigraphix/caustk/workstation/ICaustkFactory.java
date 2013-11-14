@@ -40,6 +40,13 @@ public interface ICaustkFactory {
     IRack getRack();
 
     /**
+     * Returns the working application library for the factory session.
+     */
+    Library getLibrary();
+
+    void setLibrary(Library value);
+
+    /**
      * Creates an application context that can be passed during component
      * creation.
      */

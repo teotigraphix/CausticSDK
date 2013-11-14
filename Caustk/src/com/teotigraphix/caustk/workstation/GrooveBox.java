@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -113,12 +115,12 @@ public class GrooveBox extends CaustkComponent {
     // grooveMachineType
     //----------------------------------
 
-    public GrooveBoxType grooveMachineType() {
+    public GrooveBoxType getGrooveMachineType() {
         return descriptor.getGrooveMachineType();
     }
 
     public String getPatternTypeId() {
-        return grooveMachineType().getPatternType();
+        return getGrooveMachineType().getPatternType();
     }
 
     //----------------------------------
@@ -206,6 +208,24 @@ public class GrooveBox extends CaustkComponent {
         getRackSet().getComponentDispatcher().trigger(
                 new OnGrooveBoxChange(this, GrooveBoxChangeKind.PartAdd, part));
         return part;
+    }
+
+    @Override
+    public void onLoad(ICaustkApplicationContext context) {
+        super.onLoad(context);
+
+        Library library = context.getFactory().getLibrary();
+        ComponentInfo info = library.get(patternBankId);
+        File location = library.resolveLocation(info);
+        try {
+            patternBank = context.getFactory().load(location, PatternBank.class);
+            patternBank.setGrooveBox(this);
+            patternBank.load(context);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     private void partAdd(Part part) {

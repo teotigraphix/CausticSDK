@@ -158,6 +158,9 @@ public class GrooveSet extends CaustkComponent {
     public void onLoad(ICaustkApplicationContext context) {
         super.onLoad(context);
         rackSet.onLoad(context);
+        for (GrooveBox grooveBox : grooveBoxes) {
+            grooveBox.onLoad(context);
+        }
     }
 
     @Override

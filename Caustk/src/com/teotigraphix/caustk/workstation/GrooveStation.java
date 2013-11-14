@@ -111,12 +111,13 @@ public class GrooveStation {
             library = factory.load(library.getManifestFile(), Library.class);
             library.load(factory.createContext());
         }
+        factory.setLibrary(library);
     }
 
     public GrooveSet createGrooveSet(String name) throws CausticException {
         // Create the  RackSet
         RackSet rackSet = factory.createRackSet();
-        //rackSet.setInternal();
+        rackSet.setInternal();
 
         // Create empty GrooveSet that will hold GrooveMachines
         ComponentInfo info = factory.createInfo(ComponentType.GrooveSet, name);
@@ -135,9 +136,11 @@ public class GrooveStation {
         grooveSet.addGrooveBox(grooveBox);
 
         // Create the PatternBank for the grooveBox
-        PatternBank patternBank = factory.createPatternBank(grooveBox);
+        ComponentInfo info = factory.createInfo(ComponentType.PatternBank, "MyProject/Untitled");
+        PatternBank patternBank = factory.createPatternBank(info, grooveBox);
         grooveBox.setPatternBank(patternBank);
         patternBank.create(grooveSet.getRackSet().getFactory().createContext());
+        add(patternBank);
 
         return grooveBox;
     }

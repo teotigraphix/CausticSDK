@@ -517,7 +517,7 @@ public class RackSet extends CaustkComponent {
                 RackMessage.BLANKRACK.send(rack);
                 rack.getLogger().log("RackSet", "create() internal RackSet");
                 create(context);
-            } else {
+            } else if (data != null) {
                 // hook Rack back up to machines and RackTones
                 rack.getLogger().log("RackSet", "Connect internal RackSet");
                 componentPhaseChange(context, ComponentPhase.Connect);
@@ -526,6 +526,11 @@ public class RackSet extends CaustkComponent {
                 ICaustkController controller = rack.getController();
                 rack.getLogger().log("RackSet", "Load previously serialized song bytes");
                 loadSongBytesIntoRack(controller, data);
+            } else {
+                // An instance of RackSet in the GrooveSet won't have it's data
+                // filled, the onSave() method is called against the copy of this
+                // instance
+                rack.getLogger().log("RackSet", "RackSet change, no data bytes to load");
             }
         }
     }
@@ -547,11 +552,11 @@ public class RackSet extends CaustkComponent {
             machine.onSave(context);
         }
         if (isInternal) {
-            ICaustkController controller = rack.getController();
+            ICaustkController controller = context.getRack().getController();
             final File file = getTempCausticFile(controller);
             // save the .caustic file as a byte array
             try {
-                File savedFile = rack.saveSongAs(file);
+                File savedFile = context.getRack().saveSongAs(file);
                 data = FileUtils.readFileToByteArray(savedFile);
                 if (deleteCausticFile)
                     FileUtils.deleteQuietly(file);

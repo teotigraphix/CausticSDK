@@ -101,6 +101,21 @@ public class CaustkFactory implements ICaustkFactory {
         return application.getRack();
     }
 
+    //----------------------------------
+    // rack
+    //----------------------------------
+
+    private Library library;
+
+    @Override
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(Library value) {
+        library = value;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -461,6 +476,11 @@ public class CaustkFactory implements ICaustkFactory {
             // Effect uses EffectType
             Effect effect = (Effect)component;
             sb.append(effect.getEffectType().name());
+            sb.append(File.separator);
+        } else if (info.getType() == ComponentType.PatternBank) {
+            //
+            PatternBank patternBank = (PatternBank)component;
+            sb.append(patternBank.getGrooveBox().getGrooveMachineType().name());
             sb.append(File.separator);
         }
 
