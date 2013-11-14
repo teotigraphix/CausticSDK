@@ -70,9 +70,10 @@ public class GrooveBox extends CaustkComponent {
     @Tag(102)
     private GrooveBoxDescriptor descriptor;
 
+    @Tag(103)
     private int machineIndex = -1;
 
-    @Tag(103)
+    @Tag(104)
     private UUID patternBankId;
 
     //--------------------------------------------------------------------------
@@ -319,4 +320,8 @@ public class GrooveBox extends CaustkComponent {
         }
     }
 
+    @Override
+    public String toString() {
+        return "[GrooveBox(" + descriptor.getPatternTypeId() + ")]";
+    }
 }

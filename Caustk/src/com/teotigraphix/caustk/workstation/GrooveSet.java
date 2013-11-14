@@ -136,6 +136,8 @@ public class GrooveSet extends CaustkComponent {
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
             throws CausticException {
+        // pass ALL phase changes to RackSet
+        rackSet.componentPhaseChange(context, phase);
         switch (phase) {
             case Create:
                 break;
@@ -222,4 +224,8 @@ public class GrooveSet extends CaustkComponent {
         }
     }
 
+    @Override
+    public String toString() {
+        return "[GrooveSet(" + rackSet + ")]";
+    }
 }

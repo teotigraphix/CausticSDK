@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,8 +101,6 @@ public class Library extends CaustkComponent {
         this.factory = factory;
     }
 
-    private transient Map<ComponentType, List<? extends ICaustkComponent>> components = new HashMap<ComponentType, List<? extends ICaustkComponent>>();
-
     private boolean invalidated = false;
 
     public boolean isInvalidated() {
@@ -122,9 +119,9 @@ public class Library extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private Map<ComponentType, List<ComponentInfo>> map = new HashMap<ComponentType, List<ComponentInfo>>();
+    private Map<ComponentType, Map<UUID, ComponentInfo>> map = new HashMap<ComponentType, Map<UUID, ComponentInfo>>();
 
-    Map<ComponentType, List<ComponentInfo>> getMap() {
+    Map<ComponentType, Map<UUID, ComponentInfo>> getMap() {
         return map;
     }
 
@@ -201,6 +198,7 @@ public class Library extends CaustkComponent {
                 break;
 
             case Load:
+                factory = context.getFactory();
                 break;
 
             case Update:
@@ -222,17 +220,38 @@ public class Library extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     /**
-     * Returns whether the library contains the component by reference in the
-     * component collection.
+     * Whether this library exists on disk.
+     */
+    public boolean exists() {
+        return getDirectory().exists();
+    }
+
+    /**
+     * Returns whether the library contains the component by {@link UUID} in the
+     * component type map.
      * 
      * @param component The library component.
      */
-    public boolean contains(ICaustkComponent component) {
-        Collection<? extends ICaustkComponent> collection = components.get(component.getInfo()
-                .getType());
-        if (collection == null)
+    public final boolean contains(ICaustkComponent component) {
+        Map<UUID, ComponentInfo> infos = getTypeMap(component.getInfo());
+        if (infos == null)
             return false;
-        return collection.contains(component);
+        return infos.containsKey(component.getInfo().getId());
+    }
+
+    /**
+     * Returns a {@link ComponentInfo} if found in the library's map.
+     * 
+     * @param id The {@link UUID} to search for.
+     */
+    public ComponentInfo get(UUID id) {
+        for (Map<UUID, ComponentInfo> list : map.values()) {
+            for (ComponentInfo info : list.values()) {
+                if (info.getId().equals(id))
+                    return info;
+            }
+        }
+        return null;
     }
 
     /**
@@ -247,15 +266,26 @@ public class Library extends CaustkComponent {
      *            disk.
      * @throws IOException
      */
-    public void add(ICaustkComponent component) throws IOException {
-        ArrayList<ICaustkComponent> collection = getRawCollection(component);
-        if (collection == null) {
-            collection = new ArrayList<ICaustkComponent>();
-            components.put(component.getInfo().getType(), collection);
-        }
+    public final boolean add(ICaustkComponent component) throws IOException {
+        if (contains(component))
+            return false;
         ICaustkComponent copy = factory.copy(component);
-        collection.add(copy);
         componentAdded(copy);
+        return true;
+    }
+
+    /**
+     * Refreshes the component's state on disk in the library's directory.
+     * 
+     * @param component The component to refresh.
+     * @throws FileNotFoundException
+     */
+    public void refresh(ICaustkComponent component) throws FileNotFoundException {
+        if (!contains(component))
+            throw new IllegalStateException("component not is Library: " + component);
+
+        ICaustkComponent copy = factory.copy(component);
+        componentRefresh(copy);
     }
 
     /**
@@ -273,26 +303,115 @@ public class Library extends CaustkComponent {
      * @return Whether the operation was successful
      * @throws IOException
      */
-    public boolean remove(ICaustkComponent component) throws IOException {
-        // have to remove by UUID
-        ICaustkComponent found = findById(component);
-        if (found == null)
+    public final boolean remove(ICaustkComponent component) throws IOException {
+        if (!contains(component))
             return false;
 
-        if (!getCollection(component).remove(found))
+        Map<UUID, ComponentInfo> typeMap = getTypeMap(component.getInfo());
+
+        ComponentInfo removed = typeMap.remove(component.getInfo().getId());
+        if (removed == null)
             throw new IllegalStateException("Failed to remove component");
 
-        componentRemoved(found);
+        componentRemoved(removed);
         return true;
     }
 
-    private ICaustkComponent findById(ICaustkComponent component) {
-        List<? extends ICaustkComponent> collection = getCollection(component);
-        if (collection == null)
-            return null;
-        for (ICaustkComponent search : collection) {
-            if (search.getInfo().getId().equals(component.getInfo().getId()))
-                return search;
+    public File resolveLocation(ICaustkComponent component) {
+        return factory.resolveLocation(component, getDirectory());
+    }
+
+    /**
+     * Save the library to disk using it's {@link #getDirectory()} location.
+     * 
+     * @throws IOException
+     */
+    public void save() throws IOException {
+        if (!exists())
+            getDirectory().mkdirs();
+        factory.save(this, getLibrariesDirectory());
+    }
+
+    /**
+     * Saves and closes the Library, once the method is called, the Library
+     * cannot be reused.
+     * <p>
+     * The instance still maintains its manifest entries.
+     * 
+     * @throws IOException
+     */
+    public void close() throws IOException {
+        save();
+        factory = null;
+    }
+
+    public File resolveLocation(ComponentInfo info) {
+        String path = info.getPath();
+        if (path == null)
+            throw new IllegalStateException("path must not be null");
+        return new File(getDirectory(), path);
+    }
+
+    public List<ComponentInfo> findAll(ComponentType type) {
+        List<ComponentInfo> result = new ArrayList<ComponentInfo>();
+        Map<UUID, ComponentInfo> list = map.get(type);
+        for (ComponentInfo info : list.values()) {
+            if (!filter(info))
+                result.add(info);
+        }
+        return result;
+    }
+
+    public <T extends ICaustkComponent> T newInstance(ComponentInfo info, Class<T> clazz)
+            throws IOException {
+        File location = resolveLocation(info);
+        T component = factory.load(location, clazz);
+        return component;
+    }
+
+    private boolean filter(ComponentInfo info) {
+        return false;
+    }
+
+    private void componentAdded(ICaustkComponent component) throws FileNotFoundException {
+        invalidated = true;
+        ComponentInfo info = component.getInfo();
+        UUID uuid = info.getId();
+        ComponentType type = info.getType();
+
+        String path = factory.resolvePath(component);
+        info.setPath(path);
+
+        Map<UUID, ComponentInfo> list = map.get(type);
+        if (list == null) {
+            list = new HashMap<UUID, ComponentInfo>();
+            map.put(type, list);
+        }
+        list.put(uuid, info);
+        componentRefresh(component);
+    }
+
+    private void componentRefresh(ICaustkComponent componentCopy) throws FileNotFoundException {
+        componentCopy.disconnect();
+        writeToDisk(componentCopy);
+    }
+
+    private void componentRemoved(ComponentInfo component) throws FileNotFoundException {
+        invalidated = true;
+        deleteFromDisk(component);
+    }
+
+    protected final Map<UUID, ComponentInfo> getTypeMap(ComponentInfo info) {
+        return map.get(info.getType());
+    }
+
+    public ComponentInfo resolveComponentInfo(File file) {
+        for (Map<UUID, ComponentInfo> list : map.values()) {
+            for (ComponentInfo info : list.values()) {
+                File other = resolveLocation(info);
+                if (file.equals(other))
+                    return info;
+            }
         }
         return null;
     }
@@ -317,114 +436,12 @@ public class Library extends CaustkComponent {
         return location;
     }
 
-    File deleteFromDisk(ICaustkComponent component) throws FileNotFoundException {
-        File file = resolveLocation(component);
+    File deleteFromDisk(ComponentInfo info) throws FileNotFoundException {
+        File file = resolveLocation(info);
         FileUtils.deleteQuietly(file);
         if (file.exists())
             throw new IllegalStateException("File not deleted:" + file);
         return file;
     }
 
-    public File resolveLocation(ICaustkComponent component) {
-        return factory.resolveLocation(component, getDirectory());
-    }
-
-    /**
-     * Save the library to disk using it's {@link #getDirectory()} location.
-     * 
-     * @throws IOException
-     */
-    public void save() throws IOException {
-        if (!exists())
-            getDirectory().mkdirs();
-        factory.save(this, getLibrariesDirectory());
-    }
-
-    private List<? extends ICaustkComponent> getCollection(ICaustkComponent component) {
-        return components.get(component.getInfo().getType());
-    }
-
-    @SuppressWarnings("unchecked")
-    private ArrayList<ICaustkComponent> getRawCollection(ICaustkComponent component) {
-        return (ArrayList<ICaustkComponent>)components.get(component.getInfo().getType());
-    }
-
-    public boolean exists() {
-        return getDirectory().exists();
-    }
-
-    private void componentAdded(ICaustkComponent component) throws FileNotFoundException {
-        invalidated = true;
-        ComponentInfo info = component.getInfo();
-        String path = factory.resolvePath(component);
-        info.setPath(path);
-
-        ComponentType type = info.getType();
-        List<ComponentInfo> list = map.get(type);
-        if (list == null) {
-            list = new ArrayList<ComponentInfo>();
-            map.put(type, list);
-        }
-        list.add(info);
-        component.disconnect();
-        writeToDisk(component);
-    }
-
-    private void componentRemoved(ICaustkComponent component) throws FileNotFoundException {
-        invalidated = true;
-        deleteFromDisk(component);
-    }
-
-    /**
-     * Saves and closes the Library, once the method is called, the Library
-     * cannot be reused.
-     * <p>
-     * The instance still maintains its manifest entries.
-     * 
-     * @throws IOException
-     */
-    public void close() throws IOException {
-        save();
-        factory = null;
-        components.clear();
-    }
-
-    public File resolveLocation(ComponentInfo info) {
-        String path = info.getPath();
-        if (path == null)
-            throw new IllegalStateException("path must not be null");
-        return new File(getDirectory(), path);
-    }
-
-    public List<ComponentInfo> findAll(ComponentType type) {
-        List<ComponentInfo> result = new ArrayList<ComponentInfo>();
-        List<ComponentInfo> list = map.get(type);
-        for (ComponentInfo info : list) {
-            if (!filter(info))
-                result.add(info);
-        }
-        return result;
-    }
-
-    public <T extends ICaustkComponent> T newInstance(ComponentInfo info, Class<T> clazz)
-            throws IOException {
-        File location = resolveLocation(info);
-        T component = factory.load(location, clazz);
-        return component;
-    }
-
-    private boolean filter(ComponentInfo info) {
-        return false;
-    }
-
-    public ComponentInfo resolveComponentInfo(File file) {
-        for (List<ComponentInfo> list : map.values()) {
-            for (ComponentInfo info : list) {
-                File other = resolveLocation(info);
-                if (file.equals(other))
-                    return info;
-            }
-        }
-        return null;
-    }
 }

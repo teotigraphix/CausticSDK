@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
@@ -467,7 +469,7 @@ public class CaustkFactory implements ICaustkFactory {
         else
             sb.append(component.getDefaultName());
 
-        return sb.toString();
+        return FilenameUtils.normalize(sb.toString(), true);
     }
 
     @Override
