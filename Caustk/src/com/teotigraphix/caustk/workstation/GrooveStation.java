@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.project.Project;
 
 /**
  * The toplevel model when using {@link GrooveSet}, {@link GrooveBox},
@@ -91,6 +92,8 @@ public class GrooveStation {
     /**
      * Starts the groove station by either creating a new {@link GrooveSet} or
      * loading the last {@link GrooveSet} from the {@link Library}.
+     * <p>
+     * Needs to be called after the {@link Project} is created or loaded.
      * 
      * @throws CausticException
      * @throws FileNotFoundException
@@ -105,7 +108,7 @@ public class GrooveStation {
             File location = library.resolveLocation(info);
             grooveSet = factory.load(location, GrooveSet.class);
         } else {
-            grooveSet = createGrooveSet("Untitled");
+            grooveSet = createGrooveSet("UntitledGrooveSet");
         }
 
         if (grooveSet == null)
@@ -126,7 +129,8 @@ public class GrooveStation {
      * @return A new {@link GrooveBox} instance with new {@link PatternBank}.
      * @throws CausticException
      */
-    public GrooveBox createGrooveBox(GrooveBoxType grooveBoxType) throws CausticException {
+    public GrooveBox createGrooveBox(GrooveBoxType grooveBoxType, String patternBankName)
+            throws CausticException {
         if (grooveSet == null)
             throw new IllegalStateException("grooveSet is null");
 
@@ -135,14 +139,27 @@ public class GrooveStation {
         grooveSet.addGrooveBox(grooveBox);
 
         // Create the PatternBank for the grooveBox
-        ComponentInfo info = factory.createInfo(ComponentType.PatternBank, "User-"
-                + grooveBox.getInfo().getId().toString());
-        PatternBank patternBank = factory.createPatternBank(info, grooveBox);
-        grooveBox.setPatternBank(patternBank);
-        patternBank.create(grooveSet.getRackSet().getFactory().createContext());
+        String name = patternBankName + "-" + grooveBox.getInfo().getId().toString();
+        PatternBank patternBank = createPatternBank(name, grooveBox);
         add(patternBank);
 
         return grooveBox;
+    }
+
+    private PatternBank createPatternBank(String name, GrooveBox grooveBox) throws CausticException {
+        ComponentInfo info = factory.createInfo(ComponentType.PatternBank, name);
+        PatternBank patternBank = factory.createPatternBank(info, grooveBox);
+        grooveBox.setPatternBank(patternBank);
+        patternBank.create(grooveSet.getRackSet().getFactory().createContext());
+        return patternBank;
+    }
+
+    @SuppressWarnings("unused")
+    private SongBank createSongBank(String name, PatternBank patternBank) throws CausticException {
+        ComponentInfo info = factory.createInfo(ComponentType.SongBank, name);
+        SongBank songBank = factory.createSongBank(info, patternBank);
+        songBank.create(factory.createContext());
+        return songBank;
     }
 
     public void save() throws FileNotFoundException {
