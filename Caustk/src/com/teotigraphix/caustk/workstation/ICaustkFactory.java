@@ -97,6 +97,8 @@ public interface ICaustkFactory {
 
     IRack createRack();
 
+    Library createLibrary(File reletiveDirectory);
+
     Library createLibrary(String name);
 
     Library loadLibrary(String name) throws IOException;

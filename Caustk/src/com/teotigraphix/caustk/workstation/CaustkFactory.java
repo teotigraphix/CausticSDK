@@ -112,6 +112,7 @@ public class CaustkFactory implements ICaustkFactory {
         return library;
     }
 
+    @Override
     public void setLibrary(Library value) {
         library = value;
     }
@@ -199,6 +200,10 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
     // Library
     //----------------------------------
+
+    public Library createLibrary(File reletiveDirectory) {
+        return libraryFactory.createLibrary(reletiveDirectory);
+    }
 
     /**
      * Creates an empty {@link Library} with a name.

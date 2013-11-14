@@ -121,6 +121,16 @@ public class Library extends CaustkComponent {
     @Tag(100)
     private Map<ComponentType, Map<UUID, ComponentInfo>> map = new HashMap<ComponentType, Map<UUID, ComponentInfo>>();
 
+    /**
+     * Returns the <code>/[library_path_from_app_root]/[library_name]</code>
+     * directory.
+     * <p>
+     * Use {@link File#getPath()} for the relative path, resolved with
+     * {@link RuntimeUtils#getApplicationDirectory(String)}.
+     */
+    @Tag(101)
+    private File directory;
+
     Map<ComponentType, Map<UUID, ComponentInfo>> getMap() {
         return map;
     }
@@ -155,6 +165,8 @@ public class Library extends CaustkComponent {
      * Returns the <code>/storageRoot/AppName/Libraries</code> directory.
      */
     final File getLibrariesDirectory() {
+        if (directory != null)
+            return getDirectory().getParentFile();
         return RuntimeUtils.getApplicationDirectory(LIBRARIES);
     }
 
@@ -163,6 +175,8 @@ public class Library extends CaustkComponent {
      * directory.
      */
     public final File getDirectory() {
+        if (directory != null)
+            return RuntimeUtils.getApplicationDirectory(directory.getPath());
         return new File(getLibrariesDirectory(), getName());
     }
 
@@ -188,6 +202,12 @@ public class Library extends CaustkComponent {
     Library(ComponentInfo info, ICaustkFactory factory) {
         setInfo(info);
         this.factory = factory;
+    }
+
+    Library(ComponentInfo info, ICaustkFactory factory, File directory) {
+        setInfo(info);
+        this.factory = factory;
+        this.directory = directory;
     }
 
     @Override

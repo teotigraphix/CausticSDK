@@ -22,8 +22,6 @@ package com.teotigraphix.caustk.workstation;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import com.teotigraphix.caustk.controller.ICaustkApplication;
@@ -42,15 +40,27 @@ import com.teotigraphix.caustk.core.CausticException;
  */
 public class GrooveStation {
 
+    private static final String LAST_GROOVE_SET_ID = "lastGrooveSetId";
+
+    //--------------------------------------------------------------------------
+    // Variables
+    //--------------------------------------------------------------------------
+
     private ICaustkFactory factory;
 
     private GrooveSet grooveSet;
 
     private Library library;
 
-    private List<ICaustkComponent> saveList = new ArrayList<ICaustkComponent>();
-
     private ICaustkApplication application;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // grooveSet
+    //----------------------------------
 
     public GrooveSet getGrooveSet() {
         return grooveSet;
@@ -59,21 +69,36 @@ public class GrooveStation {
     public void setGrooveSet(GrooveSet value) {
         grooveSet = value;
         application.getController().getProjectManager().getSessionPreferences()
-                .put("lastGrooveSetId", grooveSet.getInfo().getId().toString());
+                .put(LAST_GROOVE_SET_ID, grooveSet.getInfo().getId().toString());
         factory.getRack().setRackSet(grooveSet.getRackSet());
     }
 
-    public GrooveStation(ICaustkApplication application, String libraryPath) throws IOException,
-            CausticException {
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public GrooveStation(ICaustkApplication application) throws IOException, CausticException {
         this.application = application;
         this.factory = application.getFactory();
 
-        createOrLoadLibrary(libraryPath);
+        createOrLoadLibrary();
     }
 
-    public GrooveSet createOrLoadGrooveSet() throws CausticException, FileNotFoundException {
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Starts the groove station by either creating a new {@link GrooveSet} or
+     * loading the last {@link GrooveSet} from the {@link Library}.
+     * 
+     * @throws CausticException
+     * @throws FileNotFoundException
+     */
+    public void start() throws CausticException, FileNotFoundException {
         String grooveSetId = application.getController().getProjectManager()
-                .getSessionPreferences().getString("lastGrooveSetId");
+                .getSessionPreferences().getString(LAST_GROOVE_SET_ID);
+
         GrooveSet grooveSet = null;
         if (grooveSetId != null) {
             ComponentInfo info = library.get(UUID.fromString(grooveSetId));
@@ -82,39 +107,62 @@ public class GrooveStation {
         } else {
             grooveSet = createGrooveSet("Untitled");
         }
-        return grooveSet;
+
+        if (grooveSet == null)
+            throw new IllegalStateException("GrooveSet was not created or loaded");
+
+        setGrooveSet(grooveSet);
     }
 
+    /**
+     * Creates a {@link GrooveBox} machine and adds it to the {@link GrooveSet}.
+     * <p>
+     * When added to the {@link GrooveSet}, the create() method will be called
+     * on the {@link GrooveBox} and a new {@link PatternBank} will be assigned,
+     * create() is also called on the {@link PatternBank}.
+     * 
+     * @param grooveBoxType The type of {@link GrooveBox} to create using the
+     *            {@link GrooveBoxType}.
+     * @return A new {@link GrooveBox} instance with new {@link PatternBank}.
+     * @throws CausticException
+     */
+    public GrooveBox createGrooveBox(GrooveBoxType grooveBoxType) throws CausticException {
+        if (grooveSet == null)
+            throw new IllegalStateException("grooveSet is null");
+
+        // Create the GrooveBox
+        GrooveBox grooveBox = factory.createGrooveBox(grooveSet, grooveBoxType);
+        grooveSet.addGrooveBox(grooveBox);
+
+        // Create the PatternBank for the grooveBox
+        ComponentInfo info = factory.createInfo(ComponentType.PatternBank, "User-"
+                + grooveBox.getInfo().getId().toString());
+        PatternBank patternBank = factory.createPatternBank(info, grooveBox);
+        grooveBox.setPatternBank(patternBank);
+        patternBank.create(grooveSet.getRackSet().getFactory().createContext());
+        add(patternBank);
+
+        return grooveBox;
+    }
+
+    public void save() throws FileNotFoundException {
+        library.refresh(grooveSet);
+        factory.save(library, library.getLibrariesDirectory());
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
+
     protected void add(ICaustkComponent component) {
-        saveList.add(component);
         try {
             library.add(component);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public <T extends ICaustkComponent> T load(File componentFile, Class<T> clazz)
-            throws FileNotFoundException {
-        T component = factory.load(componentFile, clazz);
-        return component;
-    }
-
-    private void createOrLoadLibrary(String libraryPath) throws IOException, CausticException {
-        library = factory.createLibrary(libraryPath);
-        if (!library.exists()) {
-            // library.save();
-            library.getDirectory().mkdirs();
-            factory.save(library, library.getLibrariesDirectory());
-        } else {
-            library = factory.load(library.getManifestFile(), Library.class);
-            library.load(factory.createContext());
-        }
-        factory.setLibrary(library);
-    }
-
-    public GrooveSet createGrooveSet(String name) throws CausticException {
+    protected GrooveSet createGrooveSet(String name) throws CausticException {
         // Create the  RackSet
         RackSet rackSet = factory.createRackSet();
         rackSet.setInternal();
@@ -127,28 +175,18 @@ public class GrooveStation {
         return grooveSet;
     }
 
-    public GrooveBox createGrooveBox(GrooveBoxType grooveBoxType) throws CausticException {
-        if (grooveSet == null)
-            throw new IllegalStateException("grooveSet is null");
+    private void createOrLoadLibrary() throws IOException, CausticException {
+        String projectName = application.getController().getProjectManager().getProject().getName();
 
-        // Create the GrooveBox
-        GrooveBox grooveBox = factory.createGrooveBox(grooveSet, grooveBoxType);
-        grooveSet.addGrooveBox(grooveBox);
-
-        // Create the PatternBank for the grooveBox
-        ComponentInfo info = factory.createInfo(ComponentType.PatternBank, "MyProject/Untitled");
-        PatternBank patternBank = factory.createPatternBank(info, grooveBox);
-        grooveBox.setPatternBank(patternBank);
-        patternBank.create(grooveSet.getRackSet().getFactory().createContext());
-        add(patternBank);
-
-        return grooveBox;
-    }
-
-    public void save() throws FileNotFoundException {
-        for (ICaustkComponent component : saveList) {
-            library.refresh(component);
+        library = factory.createLibrary(new File("Projects/" + projectName + "/Library"));
+        if (!library.exists()) {
+            // library.save();
+            library.getDirectory().mkdirs();
+            factory.save(library, library.getLibrariesDirectory());
+        } else {
+            library = factory.load(library.getManifestFile(), Library.class);
+            library.load(factory.createContext());
         }
-        factory.save(library, library.getLibrariesDirectory());
+        factory.setLibrary(library);
     }
 }

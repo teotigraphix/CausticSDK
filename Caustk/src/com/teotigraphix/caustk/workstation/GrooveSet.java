@@ -166,7 +166,12 @@ public class GrooveSet extends CaustkComponent {
     @Override
     public void onSave(ICaustkApplicationContext context) {
         super.onSave(context);
+        // saves the Machine instances
         rackSet.onSave(context);
+        for (GrooveBox grooveBox : grooveBoxes) {
+            // GrooveBox only saves itself and PatternBank
+            grooveBox.onSave(context);
+        }
     }
 
     //--------------------------------------------------------------------------

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -27,6 +28,13 @@ import java.io.IOException;
 public class LibraryFactory extends CaustkSubFactoryBase {
 
     public LibraryFactory() {
+    }
+
+    public Library createLibrary(File reletiveDirectory) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.Library,
+                reletiveDirectory.getName());
+        Library caustkLibrary = new Library(info, getFactory(), reletiveDirectory);
+        return caustkLibrary;
     }
 
     public Library createLibrary(String name) {

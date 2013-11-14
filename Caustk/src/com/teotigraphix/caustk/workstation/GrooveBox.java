@@ -228,6 +228,18 @@ public class GrooveBox extends CaustkComponent {
         }
     }
 
+    @Override
+    public void onSave(ICaustkApplicationContext context) {
+        super.onSave(context);
+
+        Library library = context.getFactory().getLibrary();
+        try {
+            library.refresh(patternBank);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void partAdd(Part part) {
         // TODO Auto-generated method stub
 
