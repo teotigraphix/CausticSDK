@@ -80,7 +80,7 @@ public class GrooveSet extends CaustkComponent {
     //----------------------------------
 
     public GrooveBox getSelectedMachine() {
-        return getMachine(selectedMachineIndex);
+        return getGrooveBox(selectedMachineIndex);
     }
 
     public int getSelectedMachineIndex() {
@@ -120,7 +120,7 @@ public class GrooveSet extends CaustkComponent {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public GrooveBox getMachine(int machineIndex) {
+    public GrooveBox getGrooveBox(int machineIndex) {
         if (machineIndex > grooveBoxes.size() - 1)
             return null;
         return grooveBoxes.get(selectedMachineIndex);

@@ -63,15 +63,19 @@ public class GrooveStation {
     // grooveSet
     //----------------------------------
 
-    public GrooveSet getGrooveSet() {
+    GrooveSet getGrooveSet() {
         return grooveSet;
     }
 
-    public void setGrooveSet(GrooveSet value) {
+    void setGrooveSet(GrooveSet value) {
         grooveSet = value;
         application.getController().getProjectManager().getSessionPreferences()
                 .put(LAST_GROOVE_SET_ID, grooveSet.getInfo().getId().toString());
         factory.getRack().setRackSet(grooveSet.getRackSet());
+    }
+
+    public GrooveBox getGrooveBox(int index) {
+        return grooveSet.getGrooveBox(index);
     }
 
     //--------------------------------------------------------------------------
