@@ -48,19 +48,19 @@ public class Pattern extends CaustkComponent {
 
     // the index the PatternSet assigns
     @Tag(101)
-    private int index;
+    private int index = -1;
 
     @Tag(102)
-    private int selectedPartIndex;
+    private int selectedPartIndex = 0;
 
     @Tag(103)
-    private int octave;
+    private int octave = 0;
 
     @Tag(104)
     private float tempo = 120f;
 
     @Tag(105)
-    private int length;
+    private int length = 1;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties

@@ -176,9 +176,9 @@ public interface ICaustkFactory {
 
     Kryo getKryo();
 
-    PatternBank createPatternBank(RackSet rackSet, String patternTypeId);
+    PatternBank createPatternBank(GrooveBox grooveBox);
 
-    PatternBank createPatternBank(ComponentInfo info, RackSet rackSet, String patternTypeId);
+    PatternBank createPatternBank(ComponentInfo info, GrooveBox grooveBox);
 
     Pattern createPattern(ComponentInfo info, PatternBank patternBank, int index);
 

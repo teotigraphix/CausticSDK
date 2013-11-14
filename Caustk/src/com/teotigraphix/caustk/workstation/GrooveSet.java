@@ -126,7 +126,7 @@ public class GrooveSet extends CaustkComponent {
         return grooveBoxes.get(selectedMachineIndex);
     }
 
-    public void addMachine(GrooveBox machine) throws CausticException {
+    public void addGrooveBox(GrooveBox machine) throws CausticException {
         int index = grooveBoxes.size();
         grooveBoxes.add(machine);
         machine.setMachineIndex(index);
@@ -150,6 +150,18 @@ public class GrooveSet extends CaustkComponent {
             case Connect:
                 break;
         }
+    }
+
+    @Override
+    public void onLoad(ICaustkApplicationContext context) {
+        super.onLoad(context);
+        rackSet.onLoad(context);
+    }
+
+    @Override
+    public void onSave(ICaustkApplicationContext context) {
+        super.onSave(context);
+        rackSet.onSave(context);
     }
 
     //--------------------------------------------------------------------------

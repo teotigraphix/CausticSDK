@@ -336,13 +336,13 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     @Override
-    public PatternBank createPatternBank(RackSet rackSet, String patternTypeId) {
-        return patternBankFactory.createPatternBank(rackSet, patternTypeId);
+    public PatternBank createPatternBank(GrooveBox grooveBox) {
+        return patternBankFactory.createPatternBank(grooveBox);
     }
 
     @Override
-    public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet, String patternTypeId) {
-        return patternBankFactory.createPatternBank(info, rackSet, patternTypeId);
+    public PatternBank createPatternBank(ComponentInfo info, GrooveBox grooveBox) {
+        return patternBankFactory.createPatternBank(info, grooveBox);
     }
 
     @Override

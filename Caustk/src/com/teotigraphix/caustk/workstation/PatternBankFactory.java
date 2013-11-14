@@ -24,14 +24,14 @@ public class PatternBankFactory extends CaustkSubFactoryBase {
     public PatternBankFactory() {
     }
 
-    public PatternBank createPatternBank(RackSet rackSet, String patternTypeId) {
+    public PatternBank createPatternBank(GrooveBox grooveBox) {
         ComponentInfo info = getFactory().createInfo(ComponentType.PatternBank);
-        PatternBank patternBank = new PatternBank(info, rackSet, patternTypeId);
+        PatternBank patternBank = new PatternBank(info, grooveBox);
         return patternBank;
     }
 
-    public PatternBank createPatternBank(ComponentInfo info, RackSet rackSet, String patternTypeId) {
-        PatternBank patternBank = new PatternBank(info, rackSet, patternTypeId);
+    public PatternBank createPatternBank(ComponentInfo info, GrooveBox grooveBox) {
+        PatternBank patternBank = new PatternBank(info, grooveBox);
         return patternBank;
     }
 

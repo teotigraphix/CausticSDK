@@ -162,10 +162,10 @@ public class PatternBank extends CaustkComponent {
     PatternBank() {
     }
 
-    PatternBank(ComponentInfo info, RackSet rackSet, String patternTypeId) {
+    PatternBank(ComponentInfo info, GrooveBox grooveBox) {
         setInfo(info);
-        this.rackSet = rackSet;
-        this.patternTypeId = patternTypeId;
+        this.grooveBox = grooveBox;
+        this.patternTypeId = grooveBox.getPatternTypeId();
     }
 
     //--------------------------------------------------------------------------

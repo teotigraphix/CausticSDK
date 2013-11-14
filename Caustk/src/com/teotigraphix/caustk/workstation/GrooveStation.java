@@ -51,13 +51,14 @@ public class GrooveStation {
         this.factory = factory;
     }
 
-    public GrooveSet createGrooveSet() {
+    public GrooveSet createGrooveSet(String name) {
         // Create the internal RackSet
         RackSet rackSet = factory.createRackSet();
         rackSet.setInternal();
 
         // Create empty GrooveSet that will hold GrooveMachines
-        GrooveSet grooveSet = factory.createGrooveSet(rackSet);
+        ComponentInfo info = factory.createInfo(ComponentType.GrooveSet, name);
+        GrooveSet grooveSet = factory.createGrooveSet(info, rackSet);
         return grooveSet;
     }
 
@@ -65,8 +66,15 @@ public class GrooveStation {
         if (grooveSet == null)
             throw new IllegalStateException("grooveSet is null");
 
-        GrooveBox machine = factory.createGrooveBox(grooveSet, grooveBoxType);
-        grooveSet.addMachine(machine);
-        return machine;
+        // Create the GrooveBox
+        GrooveBox grooveBox = factory.createGrooveBox(grooveSet, grooveBoxType);
+        grooveSet.addGrooveBox(grooveBox);
+
+        // Create the PatternBank for the grooveBox
+        PatternBank patternBank = factory.createPatternBank(grooveBox);
+        grooveBox.setPatternBank(patternBank);
+        patternBank.create(grooveSet.getRackSet().getFactory().createContext());
+
+        return grooveBox;
     }
 }

@@ -4,19 +4,23 @@ package com.teotigraphix.caustk.workstation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.tone.ToneDescriptor;
 
 public class GrooveBoxDescriptor {
 
+    @Tag(0)
     private GrooveBoxType grooveBoxType;
 
+    @Tag(1)
     private String patternTypeId;
+
+    @Tag(2)
+    private List<PartDescriptor> parts = new ArrayList<PartDescriptor>();
 
     public GrooveBoxType getGrooveMachineType() {
         return grooveBoxType;
     }
-
-    private List<PartDescriptor> parts = new ArrayList<PartDescriptor>();
 
     public String getPatternTypeId() {
         return patternTypeId;
@@ -24,6 +28,9 @@ public class GrooveBoxDescriptor {
 
     public List<PartDescriptor> getParts() {
         return parts;
+    }
+
+    GrooveBoxDescriptor() {
     }
 
     public GrooveBoxDescriptor(GrooveBoxType grooveBoxType) {
@@ -50,12 +57,16 @@ public class GrooveBoxDescriptor {
 
     public static class PartDescriptor {
 
+        @Tag(50)
         private String patternTypeId;
 
+        @Tag(51)
         private int machineIndex;
 
+        @Tag(052)
         private String machineName;
 
+        @Tag(53)
         private MachineType machineType;
 
         public String getPatternTypeId() {
@@ -72,6 +83,9 @@ public class GrooveBoxDescriptor {
 
         public final MachineType getMachineType() {
             return machineType;
+        }
+
+        PartDescriptor() {
         }
 
         public PartDescriptor(String patternTypeId, String machineName, MachineType machineType) {

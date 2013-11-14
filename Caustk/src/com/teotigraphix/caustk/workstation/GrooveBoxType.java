@@ -27,12 +27,12 @@ public enum GrooveBoxType {
     /**
      * A groove machine with the bassline parts.
      */
-    BasslineMachine2("bm2"),
+    BasslineMachine2("bm2", "bassline_machine2"),
 
     /**
      * A groove machine with 2 beatbox parts.
      */
-    DrumMachine2("dm2");
+    DrumMachine2("dm2", "drum_machine2");
 
     private final String type;
 
@@ -40,7 +40,14 @@ public enum GrooveBoxType {
         return type;
     }
 
-    GrooveBoxType(String type) {
+    private final String patternType;
+
+    public String getPatternType() {
+        return patternType;
+    }
+
+    GrooveBoxType(String type, String patternType) {
         this.type = type;
+        this.patternType = patternType;
     }
 }

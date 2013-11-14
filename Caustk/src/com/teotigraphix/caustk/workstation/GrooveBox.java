@@ -35,8 +35,6 @@ import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
  */
 public class GrooveBox extends CaustkComponent {
 
-    private transient Pattern pattern;
-
     private transient PatternBank patternBank;
 
     RackSet getRackSet() {
@@ -75,7 +73,7 @@ public class GrooveBox extends CaustkComponent {
     private int machineIndex = -1;
 
     @Tag(103)
-    private UUID patternSetId;
+    private UUID patternBankId;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -118,39 +116,44 @@ public class GrooveBox extends CaustkComponent {
         return descriptor.getGrooveMachineType();
     }
 
-    //----------------------------------
-    // patternSetId
-    //----------------------------------
-
-    public UUID getPatternSetId() {
-        return patternSetId;
+    public String getPatternTypeId() {
+        return grooveMachineType().getPatternType();
     }
 
     //----------------------------------
-    // patternSet
+    // patternBankId
+    //----------------------------------
+
+    public UUID getPatternBankId() {
+        return patternBankId;
+    }
+
+    //----------------------------------
+    // patternBank
     //----------------------------------
 
     public PatternBank getPatternBank() {
         return patternBank;
     }
 
-    public void setPatternSet(PatternBank value) {
+    public void setPatternBank(PatternBank value) {
         patternBank = value;
+        patternBankId = patternBank.getInfo().getId();
     }
 
     //----------------------------------
-    // selectedPart
+    // selected items
     //----------------------------------
 
-    public Part getSelectedPart() {
-        return pattern.getSelectedPart();
+    public final Pattern getSelectedPattern() {
+        return patternBank.getSelectedPattern();
     }
 
-    //----------------------------------
-    // selectedPhrase
-    //----------------------------------
+    public final Part getSelectedPart() {
+        return getSelectedPattern().getSelectedPart();
+    }
 
-    public Phrase getSelectedPhrase() {
+    public final Phrase getSelectedPhrase() {
         return getSelectedPart().getPhrase();
     }
 
@@ -228,6 +231,10 @@ public class GrooveBox extends CaustkComponent {
                 }
                 break;
             case Load:
+                // XXX Reload PatternBank from patternBankId
+                // Is this from library ?
+                // ok there needs to be a decision about how the library is referenced
+                // there needs to be a way to resolve to location of the PatternBank here
                 break;
             case Update:
                 break;
@@ -311,4 +318,5 @@ public class GrooveBox extends CaustkComponent {
             this.part = part;
         }
     }
+
 }
