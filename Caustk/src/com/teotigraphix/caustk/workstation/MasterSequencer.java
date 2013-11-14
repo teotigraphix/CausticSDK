@@ -24,6 +24,7 @@ import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerTransportChange;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.rack.sequencer.SystemSequencer;
 
@@ -180,6 +181,11 @@ public class MasterSequencer extends CaustkComponent {
         return systemSequencer.isPlaying();
     }
 
+    /**
+     * Plays the {@link SystemSequencer}.
+     * 
+     * @see OnSystemSequencerTransportChange
+     */
     public void play() {
         systemSequencer.play();
     }
@@ -188,6 +194,11 @@ public class MasterSequencer extends CaustkComponent {
         systemSequencer.play(mode);
     }
 
+    /**
+     * Stops the {@link SystemSequencer}.
+     * 
+     * @see OnSystemSequencerTransportChange
+     */
     public void stop() {
         systemSequencer.stop();
     }

@@ -30,6 +30,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.tone.RackTone;
+import com.teotigraphix.caustk.utils.PhraseUtils;
 import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
@@ -77,6 +78,9 @@ public class GrooveBox extends CaustkComponent {
 
     @Tag(104)
     private UUID patternBankId;
+
+    @Tag(105)
+    private KeyboardMode keyboardMode = KeyboardMode.Off;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -142,6 +146,26 @@ public class GrooveBox extends CaustkComponent {
     public void setPatternBank(PatternBank value) {
         patternBank = value;
         patternBankId = patternBank.getInfo().getId();
+    }
+
+    //----------------------------------
+    // keyboardMode
+    //----------------------------------
+
+    public KeyboardMode getKeyboardMode() {
+        return keyboardMode;
+    }
+
+    /**
+     * @param value
+     * @see OnGrooveBoxChange
+     * @see GrooveBoxChangeKind#KeyboardMode
+     */
+    public void setKeyboardMode(KeyboardMode value) {
+        if (value == keyboardMode)
+            return;
+        keyboardMode = value;
+        trigger(new OnGrooveBoxChange(this, GrooveBoxChangeKind.KeyboardMode));
     }
 
     //----------------------------------
@@ -280,9 +304,23 @@ public class GrooveBox extends CaustkComponent {
         }
     }
 
+    public enum KeyboardMode {
+        Off,
+
+        Step,
+
+        Key,
+
+        Shift
+    }
+
     //--------------------------------------------------------------------------
     // Event API
     //--------------------------------------------------------------------------
+
+    protected final void trigger(Object event) {
+        getGrooveSet().getRackSet().getComponentDispatcher().trigger(event);
+    }
 
     public enum GrooveBoxChangeKind {
 
@@ -293,6 +331,8 @@ public class GrooveBox extends CaustkComponent {
         PartReplace,
 
         SelectedIndex,
+
+        KeyboardMode,
     }
 
     /**
@@ -355,5 +395,79 @@ public class GrooveBox extends CaustkComponent {
     @Override
     public String toString() {
         return "[GrooveBox(" + descriptor.getPatternTypeId() + ")]";
+    }
+
+    public void noteOff(int pitch) {
+        getSelectedPart().noteOff(pitch);
+    }
+
+    public void noteOn(int pitch, float velocity) {
+        getSelectedPart().noteOn(pitch, velocity);
+    }
+
+    //--------------------------------------------------------------------------
+
+    private int currentMeasure;
+
+    public int getCurrentMeasure() {
+        return currentMeasure;
+    }
+
+    public void setCurrentMeasure(int currentMeasure) {
+        this.currentMeasure = currentMeasure;
+    }
+
+    private float currentBeat;
+
+    /**
+     * Returns the current beat based on the sequencer mode.
+     * <p>
+     * In Pattern, will be 0-31, Song will be the current beat in the song
+     * sequencer.
+     */
+    public float getCurrentBeat() {
+        return currentBeat;
+    }
+
+    public void setCurrentBeat(float currentBeat) {
+        this.currentBeat = currentBeat;
+    }
+
+    /**
+     * Returns 0-3.
+     */
+    public float getMeasureBeat() {
+        return PhraseUtils.toMeasureBeat(currentBeat);
+    }
+
+    /**
+     * Returns 0-31(8 bars), 0-15(4 bars), 0-7(2 bars), 0-3(1 bar) based on the
+     * length.
+     */
+    public float getLocalBeat() {
+        return PhraseUtils.toLocalBeat(currentBeat, getPatternBank().getSelectedPattern()
+                .getLength());
+    }
+
+    /**
+     * Returns the local measure calculated from the {@link #getLocalBeat()}.
+     */
+    public int getLocalMeasure() {
+        return PhraseUtils.toLocalMeasure(currentBeat, getPatternBank().getSelectedPattern()
+                .getLength());
+    }
+
+    public void beatChange(int measure, float beat) {
+        // CausticCore > IGame > ISystemSequencer > GrooveStation > GrooveMachine
+        setCurrentMeasure(measure);
+        setCurrentBeat(beat);
+
+        //float localBeat = PhraseUtils.toLocalBeat(beat, getPattern().getLength());
+        //int localMeasure = PhraseUtils.toLocalMeasure(beat, getPattern().getLength());
+
+        //        //System.out.println("LocalBeat:" + localBeat + " LocalMeasure:" + localMeasure);
+        //        for (OnMachineSequencerListener listener : onMachineSequencerListener) {
+        //            listener.onBeatChange(this);
+        //        }
     }
 }

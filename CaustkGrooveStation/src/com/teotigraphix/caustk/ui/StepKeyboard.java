@@ -26,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
-import com.teotigraphix.caustk.workstation.MasterSystem.KeyboardMode;
+import com.teotigraphix.caustk.workstation.GrooveBox.KeyboardMode;
 import com.teotigraphix.libgdx.ui.ControlTable;
 import com.teotigraphix.libgdx.ui.caustk.StepButton;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.OnStepButtonListener;
@@ -142,7 +142,7 @@ public class StepKeyboard extends ControlTable {
                 }
 
             });
-            table.add(stepButton).space(5f).fillY().expandY();
+            table.add(stepButton).space(5f).fill().expand();
         }
 
         return table;
@@ -200,7 +200,7 @@ public class StepKeyboard extends ControlTable {
                 }
 
             });
-            table.add(stepButton).space(5f).fillY().expandY();
+            table.add(stepButton).space(5f).fill().expand();
         }
 
         return table;

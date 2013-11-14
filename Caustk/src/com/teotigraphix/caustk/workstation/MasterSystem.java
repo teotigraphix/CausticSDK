@@ -43,9 +43,6 @@ public class MasterSystem extends CaustkComponent {
     @Tag(102)
     private ShiftMode shiftMode = ShiftMode.Off;
 
-    @Tag(103)
-    private KeyboardMode keyboardMode = KeyboardMode.Off;
-
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -97,26 +94,6 @@ public class MasterSystem extends CaustkComponent {
             return;
         shiftMode = value;
         trigger(new OnMasterSystemChange(this, MasterSystemChangeKind.ShiftMode));
-    }
-
-    //----------------------------------
-    // keyboardMode
-    //----------------------------------
-
-    public KeyboardMode getKeyboardMode() {
-        return keyboardMode;
-    }
-
-    /**
-     * @param value
-     * @see OnMasterSystemChange
-     * @see MasterSystemChangeKind#KeyboardMode
-     */
-    public void setKeyboardMode(KeyboardMode value) {
-        if (value == keyboardMode)
-            return;
-        keyboardMode = value;
-        trigger(new OnMasterSystemChange(this, MasterSystemChangeKind.KeyboardMode));
     }
 
     //--------------------------------------------------------------------------
@@ -190,22 +167,10 @@ public class MasterSystem extends CaustkComponent {
         Shift
     }
 
-    public enum KeyboardMode {
-        Off,
-
-        Step,
-
-        Key,
-
-        Shift
-    }
-
     public enum MasterSystemChangeKind {
         Record,
 
         ShiftMode,
-
-        KeyboardMode
     }
 
     public static class OnMasterSystemChange {
