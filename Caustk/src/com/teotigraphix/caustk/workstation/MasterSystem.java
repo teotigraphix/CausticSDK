@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.workstation;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
@@ -42,6 +44,12 @@ public class MasterSystem extends CaustkComponent {
 
     @Tag(102)
     private ShiftMode shiftMode = ShiftMode.Off;
+
+    @Tag(103)
+    private int selectedStateIndex = 0;
+
+    @Tag(104)
+    private Map<Integer, Integer> stateItemSelector = new HashMap<Integer, Integer>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -94,6 +102,56 @@ public class MasterSystem extends CaustkComponent {
             return;
         shiftMode = value;
         trigger(new OnMasterSystemChange(this, MasterSystemChangeKind.ShiftMode));
+    }
+
+    //----------------------------------
+    // selectedStateIndex
+    //----------------------------------
+
+    /**
+     * Returns the current state index.
+     */
+    public int getSelectedStateIndex() {
+        return selectedStateIndex;
+    }
+
+    /**
+     * Sets the current state index.
+     * 
+     * @param value An int state.
+     */
+    public void setSelectedStateIndex(int value) {
+        selectedStateIndex = value;
+    }
+
+    /**
+     * Sets the state item index of a particular state index.
+     * 
+     * @param stateIndex The state index.
+     * @param stateItemIndex The state item index.
+     */
+    public void setSelectedStateIndex(int stateIndex, int stateItemIndex) {
+        selectedStateIndex = stateIndex;
+        stateItemSelector.put(stateIndex, stateItemIndex);
+    }
+
+    /**
+     * Returns the selected state item index for the
+     * {@link #getSelectedStateIndex()}.
+     */
+    public int getSelectedStateItemIndex() {
+        return getStateItemIndex(selectedStateIndex);
+    }
+
+    /**
+     * Returns the state item index for the state index.
+     * 
+     * @param stateIndex The state index.
+     */
+    public int getStateItemIndex(int stateIndex) {
+        if (!stateItemSelector.containsKey(stateIndex))
+            return 0;
+        return stateItemSelector.get(stateIndex);
     }
 
     //--------------------------------------------------------------------------
@@ -243,4 +301,5 @@ public class MasterSystem extends CaustkComponent {
             this.kind = kind;
         }
     }
+
 }

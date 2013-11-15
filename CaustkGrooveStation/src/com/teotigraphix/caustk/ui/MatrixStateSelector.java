@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.libgdx.ui.caustk;
+package com.teotigraphix.caustk.ui;
 
 import java.util.Iterator;
 
@@ -34,6 +34,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
+import com.teotigraphix.caustk.gs.model.system.SystemState;
+import com.teotigraphix.caustk.gs.model.system.SystemStateItem;
 import com.teotigraphix.libgdx.ui.ControlTable;
 import com.teotigraphix.libgdx.ui.Led;
 import com.teotigraphix.libgdx.ui.SelectButton;
@@ -46,7 +48,7 @@ public class MatrixStateSelector extends ControlTable {
 
     private static final String DEC_BUTTON_STYLE_NAME = "matrix-state-selector-dec-button";
 
-    private MatrixState[] states;
+    private SystemState[] states;
 
     private Button decButton;
 
@@ -62,11 +64,11 @@ public class MatrixStateSelector extends ControlTable {
     // Property :: API
     //--------------------------------------------------------------------------
 
-    public MatrixState getState() {
+    public SystemState getState() {
         return states[selectedColumn];
     }
 
-    public MatrixStateItem getStateItem() {
+    public SystemStateItem getStateItem() {
         return states[selectedColumn].getItem(getSelectedRow());
     }
 
@@ -81,10 +83,15 @@ public class MatrixStateSelector extends ControlTable {
     }
 
     public void setSelectedColumn(int value) {
+        setSelectedColumn(value, false);
+    }
+
+    public void setSelectedColumn(int value, boolean noEvent) {
         if (value == selectedColumn)
             return;
         selectedColumn = value;
-        fireChange();
+        if (!noEvent)
+            fireChange();
         invalidate();
     }
 
@@ -97,11 +104,16 @@ public class MatrixStateSelector extends ControlTable {
     }
 
     public void setSelectedRow(int value) {
+        setSelectedRow(value, false);
+    }
+
+    public void setSelectedRow(int value, boolean noEvent) {
         int old = getSelectedRow();
         if (value == old)
             return;
         ledIndcies.put(selectedColumn, value);
-        fireChange();
+        if (!noEvent)
+            fireChange();
         invalidate();
     }
 
@@ -109,7 +121,7 @@ public class MatrixStateSelector extends ControlTable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MatrixStateSelector(MatrixState[] states, Skin skin) {
+    public MatrixStateSelector(SystemState[] states, Skin skin) {
         super(skin);
         this.states = states;
         create(skin);
@@ -238,14 +250,14 @@ public class MatrixStateSelector extends ControlTable {
     }
 
     private void createMatrix() {
-        for (MatrixState state : states) {
+        for (SystemState state : states) {
             Table table = new Table();
             table.align(Align.top);
 
-            Array<MatrixStateItem> items = state.items;
-            Iterator<MatrixStateItem> i = items.iterator();
+            Array<SystemStateItem> items = state.getItems();
+            Iterator<SystemStateItem> i = items.iterator();
             while (i.hasNext()) {
-                MatrixStateItem item = i.next();
+                SystemStateItem item = i.next();
                 Label label = new Label(item.getName(), getSkin(), "matrix-state-selector-label");
                 table.add(label).left().top().width(75f);
                 table.row().top();
@@ -259,7 +271,7 @@ public class MatrixStateSelector extends ControlTable {
     }
 
     private void createStateButtons() {
-        for (MatrixState state : states) {
+        for (SystemState state : states) {
             SelectButton selectButton = new SelectButton(state.getName(), "default", getSkin());
             selectButton.setIsToggle(true);
             selectButton.setIsGroup(true);
@@ -306,12 +318,12 @@ public class MatrixStateSelector extends ControlTable {
     }
 
     public interface OnMatrixStateSelectorListener {
-        void onChange(MatrixState state, MatrixStateItem item);
+        void onChange(SystemState state, SystemStateItem item);
     }
 
     private void fireChange() {
-        MatrixState state = states[selectedColumn];
-        MatrixStateItem item = state.getItem(getSelectedRow());
+        SystemState state = states[selectedColumn];
+        SystemStateItem item = state.getItem(getSelectedRow());
         onMatrixStateSelectorListener.onChange(state, item);
     }
 
@@ -323,69 +335,4 @@ public class MatrixStateSelector extends ControlTable {
     // Model
     //--------------------------------------------------------------------------
 
-    public static class MatrixState {
-
-        private Array<MatrixStateItem> items = new Array<MatrixStateItem>();
-
-        private String name;
-
-        private int index;
-
-        public int getIndex() {
-            return index;
-        }
-
-        public int getItemCount() {
-            return items.size;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public MatrixState(int index, String name) {
-            this.index = index;
-            this.name = name;
-        }
-
-        public MatrixStateItem getItem(int index) {
-            return items.get(index);
-        }
-
-        public void addItem(String name) {
-            int index = items.size;
-            MatrixStateItem item = new MatrixStateItem(index, name);
-            items.add(item);
-        }
-
-        @Override
-        public String toString() {
-            return "[MatrixState|" + name + "]";
-        }
-    }
-
-    public static class MatrixStateItem {
-
-        private String name;
-
-        private int index;
-
-        public int getIndex() {
-            return index;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public MatrixStateItem(int index, String name) {
-            this.index = index;
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return "[MatrixStateItem|" + name + "]";
-        }
-    }
 }

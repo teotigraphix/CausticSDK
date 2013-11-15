@@ -39,6 +39,10 @@ public class TransportGroup extends ControlTable {
         createPlayPauseButton();
         createTapButton();
         createTransposeButton();
+
+        recordButton.setDisabled(true);
+        tapButton.setDisabled(true);
+        transposeButton.setDisabled(true);
     }
 
     // XXX Figure out if you are going to use graphic width/height
