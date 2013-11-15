@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.ui;
 
 import java.util.Iterator;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -34,8 +35,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
-import com.teotigraphix.caustk.gs.model.system.SystemState;
-import com.teotigraphix.caustk.gs.model.system.SystemStateItem;
+import com.teotigraphix.caustk.workstation.system.SystemState;
+import com.teotigraphix.caustk.workstation.system.SystemStateItem;
 import com.teotigraphix.libgdx.ui.ControlTable;
 import com.teotigraphix.libgdx.ui.Led;
 import com.teotigraphix.libgdx.ui.SelectButton;
@@ -254,7 +255,7 @@ public class MatrixStateSelector extends ControlTable {
             Table table = new Table();
             table.align(Align.top);
 
-            Array<SystemStateItem> items = state.getItems();
+            List<SystemStateItem> items = state.getItems();
             Iterator<SystemStateItem> i = items.iterator();
             while (i.hasNext()) {
                 SystemStateItem item = i.next();

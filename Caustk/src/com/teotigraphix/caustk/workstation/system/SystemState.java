@@ -1,13 +1,16 @@
 
-package com.teotigraphix.caustk.gs.model.system;
+package com.teotigraphix.caustk.workstation.system;
 
-import com.badlogic.gdx.utils.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.teotigraphix.caustk.controller.command.ICommand;
 
 public class SystemState {
 
-    private Array<SystemStateItem> items = new Array<SystemStateItem>();
+    private List<SystemStateItem> items = new ArrayList<SystemStateItem>();
 
-    public Array<SystemStateItem> getItems() {
+    public List<SystemStateItem> getItems() {
         return items;
     }
 
@@ -20,7 +23,7 @@ public class SystemState {
     }
 
     public int getItemCount() {
-        return items.size;
+        return items.size();
     }
 
     public String getName() {
@@ -36,9 +39,9 @@ public class SystemState {
         return items.get(index);
     }
 
-    public void addItem(String name) {
-        int index = items.size;
-        SystemStateItem item = new SystemStateItem(index, name);
+    public void addItem(String name, String message, Class<? extends ICommand> command) {
+        int index = items.size();
+        SystemStateItem item = new SystemStateItem(index, name, message, command);
         items.add(item);
     }
 

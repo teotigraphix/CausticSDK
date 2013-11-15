@@ -187,26 +187,6 @@ public class MasterSystem extends CaustkComponent {
         rackSet._getRack().getController().getApplication().save();
     }
 
-    /**
-     * Global abstract value increment, depends solely on current state.
-     * 
-     * @see OnMasterSystemValueChange
-     * @see MasterSystemValueChangeKind#Increment
-     */
-    public void incrementValue() {
-        trigger(new OnMasterSystemValueChange(this, MasterSystemValueChangeKind.Increment));
-    }
-
-    /**
-     * Global abstract value decrement, depends solely on current state.
-     * 
-     * @see OnMasterSystemValueChange
-     * @see MasterSystemValueChangeKind#Decrement
-     */
-    public void decrementValue() {
-        trigger(new OnMasterSystemValueChange(this, MasterSystemValueChangeKind.Decrement));
-    }
-
     @Override
     protected void componentPhaseChange(ICaustkApplicationContext context, ComponentPhase phase)
             throws CausticException {
@@ -255,13 +235,6 @@ public class MasterSystem extends CaustkComponent {
         Decrement
     }
 
-    public enum MasterSystemValueChangeKind {
-
-        Increment,
-
-        Decrement
-    }
-
     public static class OnMasterSystemChange {
 
         private MasterSystem masterSystem;
@@ -277,26 +250,6 @@ public class MasterSystem extends CaustkComponent {
         }
 
         public OnMasterSystemChange(MasterSystem masterSystem, MasterSystemChangeKind kind) {
-            this.masterSystem = masterSystem;
-            this.kind = kind;
-        }
-    }
-
-    public static class OnMasterSystemValueChange {
-
-        private MasterSystem masterSystem;
-
-        private MasterSystemValueChangeKind kind;
-
-        public MasterSystem getSystem() {
-            return masterSystem;
-        }
-
-        public MasterSystemValueChangeKind getKind() {
-            return kind;
-        }
-
-        public OnMasterSystemValueChange(MasterSystem masterSystem, MasterSystemValueChangeKind kind) {
             this.masterSystem = masterSystem;
             this.kind = kind;
         }

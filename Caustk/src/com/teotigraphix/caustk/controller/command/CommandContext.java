@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.controller.command;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 public class CommandContext {
 
@@ -29,6 +30,10 @@ public class CommandContext {
 
     public final IRack getRack() {
         return controller.getRack();
+    }
+
+    public final RackSet getRackSet() {
+        return controller.getRack().getRackSet();
     }
 
     public final <T> T getComponent(Class<T> clazz) {
