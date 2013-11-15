@@ -304,7 +304,8 @@ public class Phrase extends CaustkComponent {
      * Sets the current position of the phrase.
      * 
      * @param value The new phrase position.
-     * @see OnPhrasePositionChange
+     * @see OnPhraseChange
+     * @see PhraseChangeKind#Position
      */
     public void setPosition(int value) {
         if (position == value)

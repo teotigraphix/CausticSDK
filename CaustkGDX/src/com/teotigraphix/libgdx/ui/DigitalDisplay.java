@@ -83,6 +83,7 @@ public class DigitalDisplay extends ControlTable {
         setBackground(style.background);
 
         pad(null);
+        padLeft(10f);
 
         int numChars = 4;
 

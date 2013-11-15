@@ -19,10 +19,12 @@
 
 package com.teotigraphix.caustk.ui;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
@@ -33,6 +35,9 @@ import com.teotigraphix.libgdx.ui.caustk.StepButton.OnStepButtonListener;
 import com.teotigraphix.libgdx.ui.caustk.StepButton.StepButtonItem;
 
 public class StepKeyboard extends ControlTable {
+
+    @SuppressWarnings("unused")
+    private boolean triggerEnabled;
 
     private StepButton lastStepButton;
 
@@ -160,6 +165,13 @@ public class StepKeyboard extends ControlTable {
         Table table = new Table();
         for (int i = 0; i < 16; i++) {
             StepButton stepButton = createButton(i, true);
+            stepButton.addCaptureListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    //if (!triggerEnabled)
+                    //    event.cancel();
+                }
+            });
             stepButton.setOnStepButtonListener(new OnStepButtonListener() {
                 @Override
                 public void onChange(int index, boolean selected) {
@@ -326,5 +338,9 @@ public class StepKeyboard extends ControlTable {
                 return true;
         }
         return false;
+    }
+
+    public void setTriggerEnabled(boolean enabled) {
+        triggerEnabled = enabled;
     }
 }

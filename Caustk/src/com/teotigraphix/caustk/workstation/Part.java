@@ -111,7 +111,7 @@ public class Part extends CaustkComponent {
      */
     public final Phrase getPhrase() {
         return getPhrase(PatternUtils.getBank(getPatternBank().getSelectedIndex()),
-                PatternUtils.getBank(getPatternBank().getSelectedIndex()));
+                PatternUtils.getPattern(getPatternBank().getSelectedIndex()));
     }
 
     /**
