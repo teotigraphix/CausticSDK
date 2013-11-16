@@ -19,7 +19,9 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
@@ -81,6 +83,9 @@ public class Phrase extends CaustkComponent {
 
     @Tag(111)
     private Scale scale = Scale.SIXTEENTH;
+
+    @Tag(112)
+    List<Trigger> selections = new ArrayList<Trigger>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -280,6 +285,65 @@ public class Phrase extends CaustkComponent {
             return;
         scale = value;
         fireChange(PhraseChangeKind.Scale);
+    }
+
+    //----------------------------------
+    // selections
+    //----------------------------------
+
+    /**
+     * Clears all selected triggers.
+     * 
+     * @see OnPhraseChange
+     * @see PhraseChangeKind#Selection
+     */
+    public void clearSelections() {
+        selections.clear();
+        fireChange(PhraseChangeKind.Selection);
+    }
+
+    /**
+     * Returns a list of selected triggers within the phrase.
+     */
+    public List<Trigger> getSelections() {
+        return selections;
+    }
+
+    /**
+     * Returns the selected trigger at index 0.
+     * <p>
+     * Useful if the application only deal in monophonic mode, then the actual
+     * list does not have to be accessed.
+     */
+    public Trigger getSelected() {
+        if (selections.size() == 0)
+            return null;
+        return selections.get(0);
+    }
+
+    /**
+     * Sets the list of selected triggers.
+     * 
+     * @param value The selected triggers of this phrase.
+     * @see OnPhraseChange
+     * @see PhraseChangeKind#Selection
+     */
+    public void setSelections(List<Trigger> value) {
+        selections = value;
+        fireChange(PhraseChangeKind.Selection);
+    }
+
+    /**
+     * Sets the single selected trigger of this phrase.
+     * 
+     * @param value The selected trigger.
+     * @see OnPhraseChange
+     * @see PhraseChangeKind#Selection
+     */
+    public void setSelected(Trigger value) {
+        selections.clear();
+        selections.add(value);
+        fireChange(PhraseChangeKind.Selection);
     }
 
     //----------------------------------
@@ -887,7 +951,9 @@ public class Phrase extends CaustkComponent {
 
         Scale,
 
-        Position;
+        Position,
+
+        Selection;
     }
 
     /**
@@ -920,16 +986,4 @@ public class Phrase extends CaustkComponent {
             this.note = note;
         }
     }
-
 }
-
-/*
-
-    phrase.setMetadataInfo(new MetadataInfo());
-    phrase.setId(UUID.randomUUID());
-
-    phrase.setResolution(calculateResolution(noteData));
-    TagUtils.addDefaultTags(phrase);
-    library.addPhrase(phrase);
-
-*/
