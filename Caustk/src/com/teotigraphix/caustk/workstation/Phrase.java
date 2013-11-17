@@ -875,9 +875,8 @@ public class Phrase extends CaustkComponent {
     /**
      * @see TriggerMap#triggerUpdate(int, int, float, float, int)
      */
-    public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags,
-            int pitchKey) {
-        triggerMap.triggerUpdate(step, pitch, gate, velocity, flags, pitchKey);
+    public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags) {
+        triggerMap.triggerUpdate(step, pitch, gate, velocity, flags);
     }
 
     /**

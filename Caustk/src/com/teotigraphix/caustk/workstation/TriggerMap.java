@@ -452,13 +452,12 @@ public class TriggerMap {
      * @param velocity The trigger velocity.
      * @param flags The trigger flags.
      */
-    public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags,
-            int pitchKey) {
+    public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags) {
         Trigger trigger = getTrigger(step);
         if (trigger == null)
             return;
         final float beat = Resolution.toBeat(step, phrase.getResolution());
-        Note note = trigger.getNote(pitchKey);
+        Note note = trigger.getNote(pitch);
         if (note == null)
             return;
         note.update(pitch, beat, beat + gate, velocity, flags);
@@ -477,8 +476,15 @@ public class TriggerMap {
     public void triggerUpdatePitch(int step, int pitch, int oldPitch) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, pitch, note.getGate(), note.getVelocity(), note.getFlags(),
-                    oldPitch);
+            if (note.getPitch() == oldPitch) {
+                final float beat = Resolution.toBeat(step, phrase.getResolution());
+                PatternSequencerMessage.NOTE_DATA_REMOVE.send(phrase.getMachine().getRack(), phrase
+                        .getMachine().getMachineIndex(), note.getStart(), oldPitch);
+                note.update(pitch, beat, beat + note.getGate(), note.getVelocity(), note.getFlags());
+                if (trigger.isSelected())
+                    update(note);
+                fireTriggerChange(CaustkTriggerChangeKind.Update, trigger);
+            }
         }
     }
 
@@ -491,8 +497,7 @@ public class TriggerMap {
     public void triggerUpdateGate(int step, float gate) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, note.getPitch(), gate, note.getVelocity(), note.getFlags(),
-                    note.getPitch());
+            triggerUpdate(step, note.getPitch(), gate, note.getVelocity(), note.getFlags());
         }
     }
 
@@ -505,8 +510,7 @@ public class TriggerMap {
     public void triggerUpdateVelocity(int step, float velocity) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, note.getPitch(), note.getGate(), velocity, note.getFlags(),
-                    note.getPitch());
+            triggerUpdate(step, note.getPitch(), note.getGate(), velocity, note.getFlags());
         }
     }
 
@@ -519,8 +523,7 @@ public class TriggerMap {
     public void triggerUpdateFlags(int step, int flags) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, note.getPitch(), note.getGate(), note.getVelocity(), flags,
-                    note.getPitch());
+            triggerUpdate(step, note.getPitch(), note.getGate(), note.getVelocity(), flags);
         }
     }
 
