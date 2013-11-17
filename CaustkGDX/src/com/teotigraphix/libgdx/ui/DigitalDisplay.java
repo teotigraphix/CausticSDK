@@ -63,7 +63,7 @@ public class DigitalDisplay extends ControlTable {
     private void create(Skin skin) {
         DigitalDisplayStyle digitalDisplayStyle = new DigitalDisplayStyle();
         digitalDisplayStyle.background = skin.getDrawable("digital_display_background");
-        digitalDisplayStyle.font = skin.getFont("digital-dream");
+        digitalDisplayStyle.font = skin.getFont("default-font"); // digital-dream
         digitalDisplayStyle.fontColor = skin.getColor("red");
         skin.add("default", digitalDisplayStyle);
     }

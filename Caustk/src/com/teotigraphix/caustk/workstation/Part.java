@@ -230,6 +230,11 @@ public class Part extends CaustkComponent {
         getPhrase().transpose(octave);
     }
 
+    public int toPitch(int pitch) {
+        int root = 60 + (octaves[octaveIndex] * 12);
+        return root + pitch;
+    }
+
     /**
      * Sounds a note from the machine's sound engine.
      * 

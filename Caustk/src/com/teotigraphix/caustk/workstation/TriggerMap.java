@@ -34,8 +34,8 @@ import com.teotigraphix.caustk.workstation.Phrase.PhraseChangeKind;
 import com.teotigraphix.caustk.workstation.Phrase.Scale;
 
 /**
- * A {@link TriggerMap} holds all {@link Trigger} instances for a
- * {@link Phrase} with the key being the trigger's start beat.
+ * A {@link TriggerMap} holds all {@link Trigger} instances for a {@link Phrase}
+ * with the key being the trigger's start beat.
  */
 public class TriggerMap {
 
@@ -80,8 +80,8 @@ public class TriggerMap {
 
     public void update(Note note) {
         PatternSequencerMessage.NOTE_DATA.send(phrase.getMachine().getRack(), phrase.getMachine()
-                .getMachineIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note.getEnd(),
-                note.getFlags());
+                .getMachineIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note
+                .getEnd(), note.getFlags());
     }
 
     //--------------------------------------------------------------------------
@@ -220,8 +220,8 @@ public class TriggerMap {
     /**
      * Adds an existing {@link Note} instance to the trigger.
      * <p>
-     * This does not dispatch an Add event nor does it call the {@link RackTone}'s
-     * native pattern sequencer, just adds the note to the trigger model.
+     * This does not dispatch an Add event nor does it call the {@link RackTone}
+     * 's native pattern sequencer, just adds the note to the trigger model.
      * 
      * @param note The {@link Note} to add.
      */
@@ -452,15 +452,19 @@ public class TriggerMap {
      * @param velocity The trigger velocity.
      * @param flags The trigger flags.
      */
-    public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags) {
+    public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags,
+            int pitchKey) {
         Trigger trigger = getTrigger(step);
         if (trigger == null)
             return;
         final float beat = Resolution.toBeat(step, phrase.getResolution());
-        Note note = trigger.getNote(pitch);
+        Note note = trigger.getNote(pitchKey);
         if (note == null)
             return;
         note.update(pitch, beat, beat + gate, velocity, flags);
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(phrase.getMachine().getRack(), phrase
+                .getMachine().getMachineIndex(), note.getStart(), note.getPitch());
+        update(note);
         fireTriggerChange(CaustkTriggerChangeKind.Update, trigger);
     }
 
@@ -470,10 +474,11 @@ public class TriggerMap {
      * @param step The trigger step.
      * @param pitch The new trigger pitch.
      */
-    public void triggerUpdatePitch(int step, int pitch) {
+    public void triggerUpdatePitch(int step, int pitch, int oldPitch) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, pitch, note.getGate(), note.getVelocity(), note.getFlags());
+            triggerUpdate(step, pitch, note.getGate(), note.getVelocity(), note.getFlags(),
+                    oldPitch);
         }
     }
 
@@ -486,7 +491,8 @@ public class TriggerMap {
     public void triggerUpdateGate(int step, float gate) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, note.getPitch(), gate, note.getVelocity(), note.getFlags());
+            triggerUpdate(step, note.getPitch(), gate, note.getVelocity(), note.getFlags(),
+                    note.getPitch());
         }
     }
 
@@ -499,7 +505,8 @@ public class TriggerMap {
     public void triggerUpdateVelocity(int step, float velocity) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, note.getPitch(), note.getGate(), velocity, note.getFlags());
+            triggerUpdate(step, note.getPitch(), note.getGate(), velocity, note.getFlags(),
+                    note.getPitch());
         }
     }
 
@@ -512,7 +519,8 @@ public class TriggerMap {
     public void triggerUpdateFlags(int step, int flags) {
         Trigger trigger = getTrigger(step);
         for (Note note : trigger.getNotes()) {
-            triggerUpdate(step, note.getPitch(), note.getGate(), note.getVelocity(), flags);
+            triggerUpdate(step, note.getPitch(), note.getGate(), note.getVelocity(), flags,
+                    note.getPitch());
         }
     }
 
@@ -576,8 +584,7 @@ public class TriggerMap {
             return trigger;
         }
 
-        public OnCaustkTriggerChange(CaustkTriggerChangeKind kind, Phrase phrase,
-                Trigger trigger) {
+        public OnCaustkTriggerChange(CaustkTriggerChangeKind kind, Phrase phrase, Trigger trigger) {
             this.kind = kind;
             this.phrase = phrase;
             this.trigger = trigger;
