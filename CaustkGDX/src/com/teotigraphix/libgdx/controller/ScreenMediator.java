@@ -30,6 +30,7 @@ public class ScreenMediator extends CaustkMediator {
     private List<ScreenMediatorChild> subMediators = new ArrayList<ScreenMediatorChild>();
 
     protected void addMediator(ScreenMediatorChild child) {
+        child.setParent(this);
         subMediators.add(child);
     }
 

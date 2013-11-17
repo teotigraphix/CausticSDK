@@ -19,10 +19,22 @@
 
 package com.teotigraphix.libgdx.controller;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
+import com.esotericsoftware.tablelayout.Cell;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 public class ScreenMediatorChild extends CaustkMediator {
+
+    private ScreenMediator parent;
+
+    public ScreenMediator getParent() {
+        return parent;
+    }
+
+    public void setParent(ScreenMediator parent) {
+        this.parent = parent;
+    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -36,6 +48,9 @@ public class ScreenMediatorChild extends CaustkMediator {
     //--------------------------------------------------------------------------
 
     public void onCreate(IScreen screen, WidgetGroup parent) {
+    }
+
+    public void onCreate(IScreen screen, Cell<Actor> parent) {
     }
 
     public void onAttach(IScreen screen) {

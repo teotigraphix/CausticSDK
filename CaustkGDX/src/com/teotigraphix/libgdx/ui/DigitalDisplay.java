@@ -29,7 +29,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 
+/**
+ * @author Michael Schmalle
+ */
 public class DigitalDisplay extends ControlTable {
+
+    private Array<Label> labels = new Array<Label>();
+
+    private Label statusLabel;
 
     //--------------------------------------------------------------------------
     // Property :: API
@@ -50,6 +57,21 @@ public class DigitalDisplay extends ControlTable {
         invalidate();
     }
 
+    //----------------------------------
+    // status
+    //----------------------------------
+
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+        invalidate();
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -63,7 +85,7 @@ public class DigitalDisplay extends ControlTable {
     private void create(Skin skin) {
         DigitalDisplayStyle digitalDisplayStyle = new DigitalDisplayStyle();
         digitalDisplayStyle.background = skin.getDrawable("digital_display_background");
-        digitalDisplayStyle.font = skin.getFont("default-font"); // digital-dream
+        digitalDisplayStyle.font = skin.getFont("digital-dream"); // digital-dream
         digitalDisplayStyle.fontColor = skin.getColor("red");
         skin.add("default", digitalDisplayStyle);
     }
@@ -72,11 +94,9 @@ public class DigitalDisplay extends ControlTable {
     // Overridden :: Methods
     //--------------------------------------------------------------------------
 
-    private Array<Label> labels = new Array<Label>();
-
     @Override
     protected void createChildren() {
-        align(Align.left);
+        align(Align.left | Align.top);
 
         DigitalDisplayStyle style = getStyle();
 
@@ -90,8 +110,13 @@ public class DigitalDisplay extends ControlTable {
         for (int i = 0; i < numChars; i++) {
             Label label = new Label("", new LabelStyle(style.font, style.fontColor));
             labels.add(label);
-            add(label);
+            add(label).top();
         }
+        add().expand();
+        row();
+
+        statusLabel = new Label("", getSkin());
+        add(statusLabel).right().colspan(labels.size + 1).padRight(10f).padBottom(10f);
     }
 
     @Override
@@ -109,6 +134,8 @@ public class DigitalDisplay extends ControlTable {
                 index++;
             }
         }
+
+        statusLabel.setText(status);
     }
 
     public void blinkOn() {
