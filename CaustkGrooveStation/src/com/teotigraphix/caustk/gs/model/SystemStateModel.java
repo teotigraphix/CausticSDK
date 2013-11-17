@@ -41,6 +41,10 @@ public class SystemStateModel extends CaustkModelBase implements ISystemStateMod
         if (!currentStateItem.hasCommand())
             return;
 
+        update();
+    }
+
+    public void update() {
         // send an update message so displays can be update with Command value
         try {
             getController().execute(currentStateItem.getMessage(), "update");

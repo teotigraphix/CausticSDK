@@ -22,4 +22,6 @@ public interface ISystemStateModel extends ICaustkModel {
     void incrementValue();
 
     void decrementValue();
+
+    void update();
 }
