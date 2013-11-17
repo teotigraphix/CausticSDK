@@ -26,9 +26,9 @@ import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.controller.core.CaustkConfigurationBase;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkApplicationActivity;
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.rack.tone.SubSynthTone;
+import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * An example showing how to use the {@link ICaustkController} without using
@@ -44,6 +44,7 @@ public class MainActivity extends CaustkApplicationActivity {
 
         // we will now make the Caustic heart beat with the CaustkController API
         try {
+
             // creates a SubSynth at index 0 in the Caustic rack
             subsynth = (SubSynthTone)getFactory().createRackTone("mysubsynth",
                     MachineType.SubSynth, 0);
@@ -51,12 +52,12 @@ public class MainActivity extends CaustkApplicationActivity {
             // add the notes to the pattern sequencer
             subsynth.getPatternSequencer().addNote(60, 0f, 0.5f, 0.65f, 0);
             subsynth.getPatternSequencer().addNote(60, 1f, 1.5f, 1f, 0);
-
-            // set the tempo
-            getRack().getSystemSequencer().setBPM(70f);
-
-            // play the pattern sequencer
-            getRack().getSystemSequencer().play(SequencerMode.Pattern);
+            //
+            //            // set the tempo
+            getRackSet().getSequencer().setBPM(70f);
+            //
+            //            // play the pattern sequencer
+            getRackSet().getSequencer().play(SequencerMode.Pattern);
 
         } catch (CausticException e) {
             e.printStackTrace();

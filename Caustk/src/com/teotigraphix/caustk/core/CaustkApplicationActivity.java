@@ -31,6 +31,7 @@ import com.teotigraphix.caustk.controller.core.CaustkApplication;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.workstation.ICaustkFactory;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * The {@link CaustkApplicationActivity} adds the {@link ICaustkController}
@@ -73,6 +74,10 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
         return application.getRack();
     }
 
+    protected RackSet getRackSet() {
+        return application.getRack().getRackSet();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -84,6 +89,9 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
             // create the application and run it
             application = CaustkApplication.startAndRun(getGenerator(), causticStorageRoot,
                     new File(causticStorageRoot, "TestApp"));
+            RackSet rackSet = getFactory().createRackSet();
+            rackSet.create(getFactory().createContext());
+            application.getRack().setRackSet(rackSet);
         } catch (CausticException e) {
             e.printStackTrace();
         }

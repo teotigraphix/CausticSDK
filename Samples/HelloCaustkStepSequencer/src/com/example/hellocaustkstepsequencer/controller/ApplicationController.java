@@ -30,7 +30,7 @@ import com.example.hellocaustkstepsequencer.view.ControlsMediator;
 import com.example.hellocaustkstepsequencer.view.SequencerMediator;
 import com.example.hellocaustkstepsequencer.view.TransportControlMediator;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
-import com.teotigraphix.caustk.live.ICaustkFactory;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
 
 /**
  * @author Michael Schmalle

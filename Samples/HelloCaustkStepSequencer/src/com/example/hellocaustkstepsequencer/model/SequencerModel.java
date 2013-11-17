@@ -55,11 +55,11 @@ public class SequencerModel {
     //--------------------------------------------------------------------------
 
     public void play() {
-        soundModel.getRack().getSystemSequencer().play(SequencerMode.Pattern);
+        soundModel.getRackSet().getSequencer().play(SequencerMode.Pattern);
     }
 
     public void stop() {
-        soundModel.getRack().getSystemSequencer().stop();
+        soundModel.getRackSet().getSequencer().stop();
     }
 
     public void trigger(boolean selected, int pitch, int step, float gate, float velocity) {

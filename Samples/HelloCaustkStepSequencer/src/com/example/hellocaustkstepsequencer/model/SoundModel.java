@@ -27,13 +27,16 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 
+import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.live.ICaustkFactory;
-import com.teotigraphix.caustk.live.MachineType;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.BasslineTone;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.workstation.ICaustkFactory;
+import com.teotigraphix.caustk.workstation.Machine;
+import com.teotigraphix.caustk.workstation.MachineType;
+import com.teotigraphix.caustk.workstation.RackSet;
 
 /**
  * @author Michael Schmalle
@@ -44,6 +47,10 @@ public class SoundModel {
 
     public IRack getRack() {
         return factory.getRack();
+    }
+
+    public RackSet getRackSet() {
+        return factory.getRack().getRackSet();
     }
 
     @SuppressLint("UseSparseArrays")
@@ -64,13 +71,16 @@ public class SoundModel {
     public void initialize() {
 
         try {
-            BasslineTone part1 = (BasslineTone)factory.createRackTone("part1",
-                    MachineType.Bassline, 0);
-            BasslineTone part2 = (BasslineTone)factory.createRackTone("part2",
-                    MachineType.Bassline, 1);
+            ICaustkApplicationContext context = factory.createContext();
 
-            tones.put(0, part1);
-            tones.put(1, part2);
+            Machine part1 = getRackSet().createMachine(0, "part1", MachineType.Bassline);
+            Machine part2 = getRackSet().createMachine(1, "part2", MachineType.Bassline);
+
+            part1.create(context);
+            part2.create(context);
+
+            tones.put(0, (BasslineTone)part1.getRackTone());
+            tones.put(1, (BasslineTone)part2.getRackTone());
 
         } catch (CausticException e) {
             e.printStackTrace();
