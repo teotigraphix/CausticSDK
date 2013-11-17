@@ -19,12 +19,10 @@
 
 package com.teotigraphix.caustk.ui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
@@ -39,7 +37,9 @@ public class StepKeyboard extends ControlTable {
     @SuppressWarnings("unused")
     private boolean triggerEnabled;
 
-    private StepButton lastStepButton;
+    private StepButton lastSelectedStepButton;
+
+    private StepButton lastCurrentStepButton;
 
     private Stack stack;
 
@@ -133,8 +133,8 @@ public class StepKeyboard extends ControlTable {
                 stepButton.setButtonGroup(buttonGroup);
             stepButton.setOnStepButtonListener(new OnStepButtonListener() {
                 @Override
-                public void onChange(int index, boolean selected) {
-                    //selectionChange(index, selected);
+                public boolean onChange(int index, boolean selected) {
+                    return selectionChange(index, selected);
                 }
 
                 @Override
@@ -142,8 +142,9 @@ public class StepKeyboard extends ControlTable {
                 }
 
                 @Override
-                public void onTouchDown(int index) {
+                public boolean onTouchDown(int index) {
                     onStepKeyboardListener.onFunctionDown(index);
+                    return false;
                 }
 
             });
@@ -165,17 +166,10 @@ public class StepKeyboard extends ControlTable {
         Table table = new Table();
         for (int i = 0; i < 16; i++) {
             StepButton stepButton = createButton(i, true);
-            stepButton.addCaptureListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    //if (!triggerEnabled)
-                    //    event.cancel();
-                }
-            });
             stepButton.setOnStepButtonListener(new OnStepButtonListener() {
                 @Override
-                public void onChange(int index, boolean selected) {
-                    selectionChange(index, selected);
+                public boolean onChange(int index, boolean selected) {
+                    return selectionChange(index, selected);
                 }
 
                 @Override
@@ -183,7 +177,8 @@ public class StepKeyboard extends ControlTable {
                 }
 
                 @Override
-                public void onTouchDown(int index) {
+                public boolean onTouchDown(int index) {
+                    return onStepKeyboardListener.onStepDown(index);
                 }
 
             });
@@ -198,7 +193,8 @@ public class StepKeyboard extends ControlTable {
             StepButton stepButton = createButton(i, false);
             stepButton.setOnStepButtonListener(new OnStepButtonListener() {
                 @Override
-                public void onChange(int index, boolean selected) {
+                public boolean onChange(int index, boolean selected) {
+                    return false;
                 }
 
                 @Override
@@ -207,8 +203,9 @@ public class StepKeyboard extends ControlTable {
                 }
 
                 @Override
-                public void onTouchDown(int index) {
+                public boolean onTouchDown(int index) {
                     onStepKeyboardListener.onKeyDown(index);
+                    return false;
                 }
 
             });
@@ -261,37 +258,42 @@ public class StepKeyboard extends ControlTable {
     // Protected :: Methods
     //--------------------------------------------------------------------------
 
-    protected void selectionChange(int index, boolean selected) {
-        //                     System.out.println("index:" + index + " selected:" + selected);
-        StepButton button = getStepButton(index);
-        if (lastStepButton != null)
-            lastStepButton.selectActive(false);
+    public void setSelectedStep(int localIndex) {
+        if (lastSelectedStepButton != null)
+            lastSelectedStepButton.selectActive(false);
+        if (localIndex == -1)
+            return;
+        StepButton button = getStepButton(localIndex);
         button.selectActive(true);
-        lastStepButton = button;
-
-        // callback to listeners that a stepButton changed
-        onStepKeyboardListener.onStepChange(index, selected);
+        lastSelectedStepButton = button;
     }
-
-    private StepButton lastCurrent;
 
     /**
      * Sets the index that uses the currentOverlay of the {@link StepButton}.
+     * <p>
+     * This is the current step indicator as the pattern is playing.
      * 
-     * @param index 0-15
+     * @param localIndex 0-15
      */
-    public void setCurrentIndex(int index) {
-        if (index == -1) {
-            if (lastCurrent != null)
-                lastCurrent.selectCurrent(false);
-            lastCurrent = null;
+    public void setCurrentStepIndex(int localIndex) {
+        if (localIndex == -1) {
+            if (lastCurrentStepButton != null)
+                lastCurrentStepButton.selectCurrent(false);
+            lastCurrentStepButton = null;
         } else {
-            StepButton button = getStepButton(index);
-            if (lastCurrent != null)
-                lastCurrent.selectCurrent(false);
+            StepButton button = getStepButton(localIndex);
+            if (lastCurrentStepButton != null)
+                lastCurrentStepButton.selectCurrent(false);
             button.selectCurrent(true);
-            lastCurrent = button;
+            lastCurrentStepButton = button;
         }
+    }
+
+    protected boolean selectionChange(int index, boolean selected) {
+        //                     System.out.println("index:" + index + " selected:" + selected);
+        //setCurrentStepIndex(index);
+        // callback to listeners that a stepButton changed
+        return onStepKeyboardListener.onStepChange(index, selected);
     }
 
     protected final StepButton getStepButton(int index) {
@@ -317,7 +319,9 @@ public class StepKeyboard extends ControlTable {
     }
 
     public interface OnStepKeyboardListener {
-        void onStepChange(int index, boolean selected);
+        boolean onStepChange(int index, boolean selected);
+
+        boolean onStepDown(int index);
 
         void onModeStateChange(KeyboardMode mode);
 

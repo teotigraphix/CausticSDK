@@ -26,7 +26,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 
-public class ButtonActiveOverlayGroup extends WidgetGroup {
+/**
+ * @author Michael Schmalle
+ */
+public class ButtonStateOverlayGroup extends WidgetGroup {
+
+    //--------------------------------------------------------------------------
+    // Variables
+    //--------------------------------------------------------------------------
 
     private Skin skin;
 
@@ -36,7 +43,11 @@ public class ButtonActiveOverlayGroup extends WidgetGroup {
 
     float activeDuration = 0.2f;
 
-    public ButtonActiveOverlayGroup(Skin skin) {
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public ButtonStateOverlayGroup(Skin skin) {
         this.skin = skin;
         setTouchable(Touchable.disabled);
         createChildren();
@@ -91,13 +102,13 @@ public class ButtonActiveOverlayGroup extends WidgetGroup {
         super.layout();
 
         if (activeOverlay.isVisible()) {
-            activeOverlay.setPosition(-5f, -5f);
-            activeOverlay.setSize(getWidth() + 10f, getHeight() + 10f);
+            activeOverlay.setPosition(-1f, -1f);
+            activeOverlay.setSize(getWidth() + 2f, getHeight() + 2f);
         }
 
         if (currentOverlay.isVisible()) {
-            currentOverlay.setPosition(-5f, -5f);
-            currentOverlay.setSize(getWidth() + 10f, getHeight() + 10f);
+            currentOverlay.setPosition(-1f, -1f);
+            currentOverlay.setSize(getWidth() + 2f, getHeight() + 2f);
         }
     }
 

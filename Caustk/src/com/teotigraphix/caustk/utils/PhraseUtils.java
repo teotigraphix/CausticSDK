@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.utils;
 
+import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.workstation.Note;
 import com.teotigraphix.caustk.workstation.Phrase;
 
@@ -82,6 +83,12 @@ public class PhraseUtils {
 
     public static Note createNote(String data) {
         return null;
+    }
+
+    public static float getGlobalBeatFromLocalStep(int index, Phrase phrase) {
+        int globalBeat = ((phrase.getPosition() - 1) * 16) + index;
+        float beat = Resolution.toBeat(globalBeat, phrase.getResolution());
+        return beat;
     }
 
 }

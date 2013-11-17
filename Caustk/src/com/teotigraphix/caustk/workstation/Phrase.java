@@ -85,7 +85,7 @@ public class Phrase extends CaustkComponent {
     private Scale scale = Scale.SIXTEENTH;
 
     @Tag(112)
-    List<Trigger> selections = new ArrayList<Trigger>();
+    List<Trigger> editSelections = new ArrayList<Trigger>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -288,62 +288,86 @@ public class Phrase extends CaustkComponent {
     }
 
     //----------------------------------
-    // selections
+    // editSelections
     //----------------------------------
 
     /**
-     * Clears all selected triggers.
+     * Clears all selected edit triggers.
      * 
      * @see OnPhraseChange
-     * @see PhraseChangeKind#Selection
+     * @see PhraseChangeKind#EditSelection
      */
     public void clearSelections() {
-        selections.clear();
-        fireChange(PhraseChangeKind.Selection);
+        editSelections.clear();
+        fireChange(PhraseChangeKind.EditSelection);
     }
 
     /**
-     * Returns a list of selected triggers within the phrase.
+     * Returns a list of selected edit triggers within the phrase.
      */
-    public List<Trigger> getSelections() {
-        return selections;
+    public List<Trigger> getEditSelections() {
+        return editSelections;
     }
 
     /**
-     * Returns the selected trigger at index 0.
+     * Returns the selected edit trigger at index 0.
      * <p>
      * Useful if the application only deal in monophonic mode, then the actual
      * list does not have to be accessed.
      */
-    public Trigger getSelected() {
-        if (selections.size() == 0)
+    public Trigger getEditSelection() {
+        if (editSelections.size() == 0)
             return null;
-        return selections.get(0);
+        return editSelections.get(0);
     }
 
     /**
-     * Sets the list of selected triggers.
+     * Sets the list of selected edit triggers.
      * 
      * @param value The selected triggers of this phrase.
      * @see OnPhraseChange
-     * @see PhraseChangeKind#Selection
+     * @see PhraseChangeKind#EditSelection
      */
-    public void setSelections(List<Trigger> value) {
-        selections = value;
-        fireChange(PhraseChangeKind.Selection);
+    public void setEditSelections(List<Trigger> value) {
+        editSelections = value;
+        fireChange(PhraseChangeKind.EditSelection);
     }
 
     /**
-     * Sets the single selected trigger of this phrase.
+     * Sets the single selected edit trigger of this phrase.
      * 
      * @param value The selected trigger.
      * @see OnPhraseChange
-     * @see PhraseChangeKind#Selection
+     * @see PhraseChangeKind#EditSelection
      */
-    public void setSelected(Trigger value) {
-        selections.clear();
-        selections.add(value);
-        fireChange(PhraseChangeKind.Selection);
+    public void setEditSelected(Trigger value) {
+        editSelections.clear();
+        editSelections.add(value);
+        fireChange(PhraseChangeKind.EditSelection);
+    }
+
+    /**
+     * Sets the selected eidt trigger or triggers of the beat.
+     * <p>
+     * Since {@link Trigger} instances are lazily created, if there is no
+     * trigger found at the start beat, this setter will create a default
+     * trigger with one {@link Note} and the {@link Trigger} will be set as the
+     * edit selection.
+     * 
+     * @param value The selected float beat.
+     */
+    public void setSelectedBeat(float beat) {
+        Trigger trigger = getTrigger(beat);
+        if (trigger == null) {
+            addNote(createDefaultNote(beat, 0.25f));
+            trigger = getTrigger(beat);
+        }
+        setEditSelected(trigger);
+    }
+
+    private Note createDefaultNote(float start, float gate) {
+        Note note = new Note(60, start, start + gate, 1f, 0);
+        return note;
     }
 
     //----------------------------------
@@ -953,7 +977,7 @@ public class Phrase extends CaustkComponent {
 
         Position,
 
-        Selection;
+        EditSelection;
     }
 
     /**

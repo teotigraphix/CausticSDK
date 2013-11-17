@@ -30,23 +30,32 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.teotigraphix.libgdx.ui.ControlTable;
 
+/**
+ * @author Michael Schmalle
+ */
 public class StepButton extends ControlTable {
 
-    private StepButtonItem item;
-
-    private TextButton button;
-
-    private boolean noEvent = false;
-
-    private OnStepButtonListener onStepButtonListener;
+    //--------------------------------------------------------------------------
+    // Variables
+    //--------------------------------------------------------------------------
 
     private Stack stack;
 
-    private ButtonActiveOverlayGroup overlay;
+    private TextButton button;
+
+    private ButtonStateOverlayGroup overlay;
 
     private ButtonGroup buttonGroup;
 
-    private boolean noCallBack;
+    private StepButtonItem item;
+
+    private boolean noEvent = false;
+
+    private boolean noCallBack = false;
+
+    //----------------------------------
+    // buttonGroup
+    //----------------------------------
 
     public ButtonGroup getButtonGroup() {
         return buttonGroup;
@@ -56,9 +65,21 @@ public class StepButton extends ControlTable {
         buttonGroup = value;
     }
 
+    public void selectActive(boolean selected) {
+        overlay.active(selected);
+    }
+
+    public void selectCurrent(boolean selected) {
+        overlay.current(selected);
+    }
+
     public int getIndex() {
         return item.getIndex();
     }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public StepButton(StepButtonItem item, Skin skin) {
         super(skin);
@@ -72,21 +93,27 @@ public class StepButton extends ControlTable {
         button = new TextButton(item.getText(), getSkin(), item.getStyleName());
         if (buttonGroup != null)
             buttonGroup.add(button);
+
         button.getLabel().setAlignment(Align.top);
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (noEvent || !item.isToggle())
                     event.cancel();
-                if (!noCallBack)
-                    onStepButtonListener.onChange(getIndex(), button.isChecked());
+                if (!noCallBack) {
+                    boolean canceled = onStepButtonListener.onChange(getIndex(), button.isChecked());
+                    if (canceled)
+                        event.cancel();
+                }
 
             }
         });
         button.addListener(new ActorGestureListener() {
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onStepButtonListener.onTouchDown(getIndex());
+                boolean canceled = onStepButtonListener.onTouchDown(getIndex());
+                if (canceled)
+                    event.cancel();
             }
 
             @Override
@@ -97,7 +124,7 @@ public class StepButton extends ControlTable {
         stack.add(button);
         add(stack).fill().expand().minWidth(10f);
 
-        overlay = new ButtonActiveOverlayGroup(getSkin());
+        overlay = new ButtonStateOverlayGroup(getSkin());
         stack.add(overlay);
     }
 
@@ -117,18 +144,6 @@ public class StepButton extends ControlTable {
         noEvent = true;
         button.toggle();
         noEvent = false;
-    }
-
-    public void setOnStepButtonListener(OnStepButtonListener l) {
-        onStepButtonListener = l;
-    }
-
-    public interface OnStepButtonListener {
-        void onChange(int index, boolean selected);
-
-        void onTouchUp(int index);
-
-        void onTouchDown(int index);
     }
 
     public static class StepButtonItem {
@@ -166,12 +181,22 @@ public class StepButton extends ControlTable {
 
     }
 
-    public void selectActive(boolean selected) {
-        overlay.active(selected);
+    //--------------------------------------------------------------------------
+    // Event API
+    //--------------------------------------------------------------------------
+
+    private OnStepButtonListener onStepButtonListener;
+
+    public void setOnStepButtonListener(OnStepButtonListener l) {
+        onStepButtonListener = l;
     }
 
-    public void selectCurrent(boolean selected) {
-        overlay.current(selected);
+    public interface OnStepButtonListener {
+        boolean onChange(int index, boolean selected);
+
+        void onTouchUp(int index);
+
+        boolean onTouchDown(int index);
     }
 
 }
