@@ -30,6 +30,7 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.workstation.CaustkFactory;
 import com.teotigraphix.caustk.workstation.ICaustkComponent;
@@ -56,6 +57,7 @@ public class KryoUtils {
         kryo.register(File.class, new FileSerializer());
         kryo.register(CaustkFactory.class, new CaustkFactorySerializer());
         kryo.register(Rack.class, new RackSerializer());
+        kryo.register(Dispatcher.class, new DispatcherSerializer());
         //        kryo.register(Class.class);
         //        kryo.register(ISystemSequencer.SequencerMode.class);
         //
@@ -191,4 +193,20 @@ public class KryoUtils {
         }
     }
 
+    public static class DispatcherSerializer extends Serializer<Dispatcher> {
+
+        @Override
+        public Dispatcher read(Kryo arg0, Input arg1, Class<Dispatcher> arg2) {
+            return null;
+        }
+
+        @Override
+        public void write(Kryo arg0, Output arg1, Dispatcher arg2) {
+        }
+
+        @Override
+        public Dispatcher copy(Kryo kryo, Dispatcher dispatcher) {
+            return dispatcher; // XXX Hsck
+        }
+    }
 }

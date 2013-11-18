@@ -28,6 +28,8 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.utils.PhraseUtils;
@@ -39,6 +41,12 @@ import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 public class GrooveBox extends CaustkComponent {
 
     private transient PatternBank patternBank;
+
+    private transient IDispatcher dispatcher;
+
+    public IDispatcher getDispatcher() {
+        return dispatcher;
+    }
 
     RackSet getRackSet() {
         return grooveSet.getRackSet();
@@ -192,11 +200,13 @@ public class GrooveBox extends CaustkComponent {
      * Serialization.
      */
     public GrooveBox() {
+        dispatcher = new Dispatcher();
     }
 
     public GrooveBox(ComponentInfo info, GrooveSet grooveSet) {
         setInfo(info);
         this.grooveSet = grooveSet;
+        dispatcher = new Dispatcher();
     }
 
     /**
@@ -319,7 +329,7 @@ public class GrooveBox extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     protected final void trigger(Object event) {
-        getGrooveSet().getRackSet().getComponentDispatcher().trigger(event);
+        dispatcher.trigger(event);
     }
 
     public enum GrooveBoxChangeKind {
@@ -337,7 +347,7 @@ public class GrooveBox extends CaustkComponent {
 
     /**
      * @author Michael Schmalle
-     * @see RackSet#getComponentDispatcher()
+     * @see GrooveBox#getDispatcher()
      */
     public static class OnGrooveBoxChange {
 

@@ -286,7 +286,7 @@ public class Pattern extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     private void trigger(Object event) {
-        patternBank.getRackSet().getComponentDispatcher().trigger(event);
+        patternBank.getDispatcher().trigger(event);
     }
 
     public enum PatternChangeKind {
@@ -302,7 +302,7 @@ public class Pattern extends CaustkComponent {
 
     /**
      * @author Michael Schmalle
-     * @see RackSet#getComponentDispatcher()
+     * @see GrooveBox#getDispatcher()
      */
     public static class OnPatternChange {
 

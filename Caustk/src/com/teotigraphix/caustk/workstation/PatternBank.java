@@ -25,6 +25,7 @@ import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.utils.PatternUtils;
 
@@ -34,6 +35,10 @@ import com.teotigraphix.caustk.utils.PatternUtils;
 public class PatternBank extends CaustkComponent {
 
     private transient GrooveBox grooveBox;
+
+    public IDispatcher getDispatcher() {
+        return grooveBox.getDispatcher();
+    }
 
     // XXX temp
     RackSet getRackSet() {
@@ -136,12 +141,9 @@ public class PatternBank extends CaustkComponent {
             return;
         int oldIndex = selectedIndex;
         selectedIndex = value;
-        grooveBox
-                .getRackSet()
-                .getComponentDispatcher()
-                .trigger(
-                        new OnPatternBankChange(this, PatternBankChangeKind.SelectedIndex,
-                                selectedIndex, oldIndex));
+        getDispatcher().trigger(
+                new OnPatternBankChange(this, PatternBankChangeKind.SelectedIndex, selectedIndex,
+                        oldIndex));
     }
 
     //--------------------------------------------------------------------------
@@ -310,7 +312,7 @@ public class PatternBank extends CaustkComponent {
 
     /**
      * @author Michael Schmalle
-     * @see RackSet#getComponentDispatcher()
+     * @see GrooveBox#getDispatcher()
      */
     public static class OnPatternBankChange {
 

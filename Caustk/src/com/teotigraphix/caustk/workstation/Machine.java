@@ -27,6 +27,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.ICaustkLogger;
 import com.teotigraphix.caustk.controller.IDispatcher;
+import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
@@ -351,6 +352,7 @@ public class Machine extends CaustkComponent {
      * Serialization.
      */
     Machine() {
+        dispatcher = new Dispatcher();
     }
 
     Machine(ComponentInfo info, int machineIndex, MachineType machineType, String machineName) {
@@ -358,6 +360,7 @@ public class Machine extends CaustkComponent {
         this.machineIndex = machineIndex;
         this.machineType = machineType;
         this.machineName = machineName;
+        dispatcher = new Dispatcher();
     }
 
     Machine(ComponentInfo info, RackSet rackSet, int index, MachineType machineType,
@@ -367,6 +370,7 @@ public class Machine extends CaustkComponent {
         this.machineIndex = index;
         this.machineType = machineType;
         this.machineName = machineName;
+        dispatcher = new Dispatcher();
     }
 
     //--------------------------------------------------------------------------
@@ -616,5 +620,4 @@ public class Machine extends CaustkComponent {
             this.kind = kind;
         }
     }
-
 }
