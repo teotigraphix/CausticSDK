@@ -19,10 +19,14 @@
 
 package com.teotigraphix.caustk.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroup;
 import com.teotigraphix.caustk.gs.controller.IFunctionController.FunctionGroupItem;
@@ -92,13 +96,15 @@ public class StepKeyboard extends ControlTable {
 
         add(stack).fill().expand();
 
-        //row();
+        row();
 
-        //        Table functionGroup = new Table(getSkin());
-        //        for (FunctionGroup group : functionGroups) {
-        //            createGroup(group, functionGroup);
-        //        }
-        //        add(functionGroup).expandX().fillX();
+        Table functionGroup = new Table(getSkin());
+        functionGroup.padLeft(5f);
+        functionGroup.padRight(5f);
+        for (FunctionGroup group : functionGroups) {
+            createGroup(group, functionGroup);
+        }
+        add(functionGroup).expandX().fillX();
     }
 
     @Override
@@ -224,7 +230,6 @@ public class StepKeyboard extends ControlTable {
         return stepButton;
     }
 
-    @SuppressWarnings("unused")
     private void createGroup(FunctionGroup functionGroup, Table parent) {
         //parent.debug();
         parent.padTop(0f);
@@ -233,21 +238,21 @@ public class StepKeyboard extends ControlTable {
         Table topGroup = new Table(getSkin());
 
         topGroup.setBackground(getSkin().getDrawable("keyboard/black_background"));
-        topGroup.add(functionGroup.getName()).expandX().padTop(-2f);
+        topGroup.add(functionGroup.getName()).expandX().padTop(-2f).uniformX();
 
-        fullGroup.add(topGroup).expandX().fillX().height(10f);
-        //        fullGroup.row();
-        //
-        //        Table elements = new Table(getSkin());
-        //        elements.debug();
-        //        for (FunctionGroupItem item : functionGroup.getFunctions()) {
-        //            Label label = new Label(item.getName(), getSkin());
-        //            label.setAlignment(Align.center);
-        //            elements.add(label).expandX().center().uniformX();
-        //        }
-        //
-        //        fullGroup.add(elements).fillX().expandX();
-        parent.add(fullGroup).expandX().fillX().top().space(10f).uniformX();
+        fullGroup.add(topGroup).expandX().fillX().height(10f).uniformX();
+        fullGroup.row();
+
+        Table elements = new Table(getSkin());
+        for (FunctionGroupItem item : functionGroup.getFunctions()) {
+            Label label = new Label(item.getName(), new LabelStyle(getSkin()
+                    .getFont("default-font"), Color.WHITE));
+            label.setAlignment(Align.center);
+            elements.add(label).expandX().fillX().center().uniformX().minSize(10f);
+        }
+
+        fullGroup.add(elements).fillX().expandX().uniformX();
+        parent.add(fullGroup).expandX().fillX().top().space(5f).uniformX();
 
     }
 
