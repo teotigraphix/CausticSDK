@@ -23,8 +23,8 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
-import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 import com.teotigraphix.caustk.workstation.Effect;
 
@@ -91,11 +91,11 @@ public abstract class RackEffect implements IRackSerializer {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // rack
+    // engine
     //----------------------------------
 
-    public IRack getRack() {
-        return effect.getRack();
+    public ICausticEngine getEngine() {
+        return effect.getEngine();
     }
 
     //--------------------------------------------------------------------------
@@ -163,7 +163,7 @@ public abstract class RackEffect implements IRackSerializer {
      */
     protected final float get(IEffectControl control) {
         if (effect != null) {
-            return EffectRackMessage.GET.query(effect.getRack(), getToneIndex(), getSlot(),
+            return EffectRackMessage.GET.query(getEngine(), getToneIndex(), getSlot(),
                     control.getControl());
         }
         return Float.NaN;
@@ -181,7 +181,7 @@ public abstract class RackEffect implements IRackSerializer {
      */
     protected final void set(IEffectControl control, float value) {
         if (effect != null) {
-            EffectRackMessage.SET.send(effect.getRack(), getToneIndex(), getSlot(),
+            EffectRackMessage.SET.send(getEngine(), getToneIndex(), getSlot(),
                     control.getControl(), value);
         }
     }
@@ -198,7 +198,7 @@ public abstract class RackEffect implements IRackSerializer {
      */
     protected final void set(IEffectControl control, int value) {
         if (effect != null) {
-            EffectRackMessage.SET.send(effect.getRack(), getToneIndex(), getSlot(),
+            EffectRackMessage.SET.send(getEngine(), getToneIndex(), getSlot(),
                     control.getControl(), value);
         }
     }

@@ -79,7 +79,7 @@ public class TriggerMap {
     }
 
     public void update(Note note) {
-        PatternSequencerMessage.NOTE_DATA.send(phrase.getMachine().getRack(), phrase.getMachine()
+        PatternSequencerMessage.NOTE_DATA.send(phrase.getMachine().getEngine(), phrase.getMachine()
                 .getMachineIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note
                 .getEnd(), note.getFlags());
     }
@@ -406,7 +406,6 @@ public class TriggerMap {
         }
         trigger.setSelected(true);
         getTone().getPatternSequencer().addNote(pitch, beat, beat + gate, velocity, flags);
-        fireTriggerChange(CaustkTriggerChangeKind.Select, trigger);
     }
 
     /**
@@ -439,7 +438,6 @@ public class TriggerMap {
                     Resolution.toBeat(step, phrase.getResolution()));
         }
         trigger.setSelected(false);
-        fireTriggerChange(CaustkTriggerChangeKind.Deselect, trigger);
     }
 
     /**
@@ -461,10 +459,9 @@ public class TriggerMap {
         if (note == null)
             return;
         note.update(pitch, beat, beat + gate, velocity, flags);
-        PatternSequencerMessage.NOTE_DATA_REMOVE.send(phrase.getMachine().getRack(), phrase
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(phrase.getMachine().getEngine(), phrase
                 .getMachine().getMachineIndex(), note.getStart(), note.getPitch());
         update(note);
-        fireTriggerChange(CaustkTriggerChangeKind.Update, trigger);
     }
 
     /**
@@ -478,12 +475,11 @@ public class TriggerMap {
         for (Note note : trigger.getNotes()) {
             if (note.getPitch() == oldPitch) {
                 final float beat = Resolution.toBeat(step, phrase.getResolution());
-                PatternSequencerMessage.NOTE_DATA_REMOVE.send(phrase.getMachine().getRack(), phrase
-                        .getMachine().getMachineIndex(), note.getStart(), oldPitch);
+                PatternSequencerMessage.NOTE_DATA_REMOVE.send(phrase.getMachine().getEngine(),
+                        phrase.getMachine().getMachineIndex(), note.getStart(), oldPitch);
                 note.update(pitch, beat, beat + note.getGate(), note.getVelocity(), note.getFlags());
                 if (trigger.isSelected())
                     update(note);
-                fireTriggerChange(CaustkTriggerChangeKind.Update, trigger);
             }
         }
     }
@@ -532,11 +528,7 @@ public class TriggerMap {
     //--------------------------------------------------------------------------
 
     protected void firePhraseChange(PhraseChangeKind kind, Note note) {
-        phrase.getDispatcher().trigger(new OnPhraseChange(kind, phrase, note));
-    }
-
-    protected void fireTriggerChange(CaustkTriggerChangeKind kind, Trigger trigger) {
-        phrase.getDispatcher().trigger(new OnCaustkTriggerChange(kind, phrase, trigger));
+        phrase.getMachine().getDispatcher().trigger(new OnPhraseChange(kind, phrase, note));
     }
 
     private int endStepInView(int fromStep) {
@@ -558,40 +550,4 @@ public class TriggerMap {
     public void setSelectedBankPattern(int bank, int pattern) {
         getTone().getPatternSequencer().setSelectedBankPattern(bank, pattern);
     }
-
-    public enum CaustkTriggerChangeKind {
-        Select,
-
-        Deselect,
-
-        Update;
-    }
-
-    public static class OnCaustkTriggerChange {
-
-        private final CaustkTriggerChangeKind kind;
-
-        public CaustkTriggerChangeKind getKind() {
-            return kind;
-        }
-
-        private final Phrase phrase;
-
-        public Phrase getPhrase() {
-            return phrase;
-        }
-
-        private final Trigger trigger;
-
-        public Trigger getTrigger() {
-            return trigger;
-        }
-
-        public OnCaustkTriggerChange(CaustkTriggerChangeKind kind, Phrase phrase, Trigger trigger) {
-            this.kind = kind;
-            this.phrase = phrase;
-            this.trigger = trigger;
-        }
-    }
-
 }

@@ -26,7 +26,6 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
-import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
@@ -39,10 +38,6 @@ import com.teotigraphix.caustk.workstation.Note.NoteFlag;
  * @author Michael Schmalle
  */
 public class Phrase extends CaustkComponent {
-
-    final IDispatcher getDispatcher() {
-        return machine.getRack().getDispatcher();
-    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -669,7 +664,7 @@ public class Phrase extends CaustkComponent {
                 break;
 
             case Update:
-                PatternSequencerMessage.NUM_MEASURES.send(machine.getRack(),
+                PatternSequencerMessage.NUM_MEASURES.send(machine.getEngine(),
                         machine.getMachineIndex(), length);
                 for (Note note : triggerMap.getNotes()) {
                     if (note.isSelected()) {
@@ -915,11 +910,11 @@ public class Phrase extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     protected void fireChange(PhraseChangeKind kind) {
-        getDispatcher().trigger(new OnPhraseChange(kind, this, null));
+        fireChange(kind, null);
     }
 
     protected void fireChange(PhraseChangeKind kind, Note phraseNote) {
-        getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
+        machine.getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
     }
 
     public static float toLocalBeat(float beat, int length) {

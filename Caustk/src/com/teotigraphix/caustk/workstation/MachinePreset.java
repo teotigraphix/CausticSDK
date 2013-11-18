@@ -29,8 +29,8 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IRackSerializer;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
-import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -65,8 +65,8 @@ public class MachinePreset implements IRackSerializer {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    public IRack getRack() {
-        return patch.getMachine().getRack();
+    public final ICausticEngine getEngine() {
+        return patch.getMachine().getEngine();
     }
 
     //----------------------------------
@@ -180,7 +180,7 @@ public class MachinePreset implements IRackSerializer {
         if (name == null && data == null) {
             // this preset has not been saved, so there is no .preset file
             // to load into the machine.
-            patch.getMachine().getRack().getLogger()
+            patch.getMachine().getLogger()
                     .warn("MachinePreset", "No update() preset data for " + patch.getMachine());
             return;
         }
@@ -202,7 +202,7 @@ public class MachinePreset implements IRackSerializer {
             throw new IllegalStateException("Preset data was not updated "
                     + "correctly, File not created.");
 
-        SynthMessage.LOAD_PRESET.send(getRack(), patch.getMachine().getMachineIndex(),
+        SynthMessage.LOAD_PRESET.send(getEngine(), patch.getMachine().getMachineIndex(),
                 presetFile.getAbsolutePath());
 
         // delete the temp preset file
@@ -319,7 +319,7 @@ public class MachinePreset implements IRackSerializer {
 
         // save the temp preset file to get its bytes
         String presetName = constructPresetName(false);
-        SynthMessage.SAVE_PRESET.send(machine.getRack(), machine.getMachineIndex(), presetName);
+        SynthMessage.SAVE_PRESET.send(getEngine(), machine.getMachineIndex(), presetName);
 
         // get the preset file from the caustic presets directory
         File presetFile = toPresetFile(getPatch().getMachineType(), presetName);

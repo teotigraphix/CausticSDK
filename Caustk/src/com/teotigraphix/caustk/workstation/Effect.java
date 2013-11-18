@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.workstation;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.EffectRackMessage;
-import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.effect.EffectFactory;
 import com.teotigraphix.caustk.rack.effect.EffectType;
 import com.teotigraphix.caustk.rack.effect.RackEffect;
@@ -54,14 +54,14 @@ public class Effect extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // rack
+    // engine
     //----------------------------------
 
     /**
-     * Returns the {@link Patch#getMachine()}'s {@link IRack}.
+     * Returns the {@link Patch#getMachine()}'s {@link ICausticEngine}.
      */
-    public IRack getRack() {
-        return patch.getMachine().getRack();
+    public final ICausticEngine getEngine() {
+        return patch.getMachine().getEngine();
     }
 
     //----------------------------------
@@ -179,8 +179,8 @@ public class Effect extends CaustkComponent {
                 break;
 
             case Update:
-                EffectRackMessage.CREATE.send(getRack(), getPatch().getMachine().getMachineIndex(),
-                        slot, effectType.getValue());
+                EffectRackMessage.CREATE.send(getEngine(), getPatch().getMachine()
+                        .getMachineIndex(), slot, effectType.getValue());
                 rackEffect.setEffect(this);
                 rackEffect.update(context);
                 break;

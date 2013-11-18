@@ -25,7 +25,10 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
+import com.teotigraphix.caustk.controller.ICaustkLogger;
+import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.rack.IRack;
@@ -38,15 +41,25 @@ import com.teotigraphix.caustk.utils.PatternUtils;
  */
 public class Machine extends CaustkComponent {
 
+    private transient ICaustkFactory factory;
+
     private transient IRack rack;
 
-    IRack getRack() {
+    private transient IDispatcher dispatcher;
+
+    private transient Patch pendingPatch;
+
+    public IDispatcher getDispatcher() {
+        return dispatcher;
+    }
+
+    ICausticEngine getEngine() {
         return rack;
     }
 
-    private transient ICaustkFactory factory;
-
-    private transient Patch pendingPatch;
+    ICaustkLogger getLogger() {
+        return rack.getLogger();
+    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -145,7 +158,7 @@ public class Machine extends CaustkComponent {
 
     public void setMachineName(String value) {
         machineName = value;
-        RackMessage.MACHINE_NAME.send(getRack(), machineIndex, machineName);
+        RackMessage.MACHINE_NAME.send(getEngine(), machineIndex, machineName);
     }
 
     //----------------------------------
@@ -235,7 +248,7 @@ public class Machine extends CaustkComponent {
             return;
         currentBank = value;
         getRackTone().getPatternSequencer().setSelectedBank(currentBank);
-        getRack().getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Bank));
+        getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Bank));
     }
 
     //----------------------------------
@@ -256,7 +269,7 @@ public class Machine extends CaustkComponent {
         currentPattern = value;
         bankEditor.put(currentBank, currentPattern);
         getRackTone().getPatternSequencer().setSelectedPattern(currentPattern);
-        getRack().getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Pattern));
+        getDispatcher().trigger(new OnMachineChange(this, MachineChangeKind.Pattern));
     }
 
     public int getEditPattern() {
@@ -536,13 +549,14 @@ public class Machine extends CaustkComponent {
         int currentBank = getCurrentBank();
         int currentPattern = getCurrentPattern();
         for (Phrase caustkPhrase : phrases.values()) {
-            PatternSequencerMessage.BANK.send(getRack(), machineIndex, caustkPhrase.getBankIndex());
-            PatternSequencerMessage.PATTERN.send(getRack(), machineIndex,
+            PatternSequencerMessage.BANK.send(getEngine(), machineIndex,
+                    caustkPhrase.getBankIndex());
+            PatternSequencerMessage.PATTERN.send(getEngine(), machineIndex,
                     caustkPhrase.getPatternIndex());
             caustkPhrase.update(context);
         }
-        PatternSequencerMessage.BANK.send(getRack(), machineIndex, currentBank);
-        PatternSequencerMessage.PATTERN.send(getRack(), machineIndex, currentPattern);
+        PatternSequencerMessage.BANK.send(getEngine(), machineIndex, currentBank);
+        PatternSequencerMessage.PATTERN.send(getEngine(), machineIndex, currentPattern);
     }
 
     @SuppressWarnings("unused")
@@ -581,7 +595,7 @@ public class Machine extends CaustkComponent {
 
     /**
      * @author Michael Schmalle
-     * @see IRack#getDispatcher()
+     * @see Machine#getDispatcher()
      */
     public static class OnMachineChange {
 

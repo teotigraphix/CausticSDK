@@ -34,9 +34,6 @@ import com.teotigraphix.libgdx.ui.caustk.StepButton.StepButtonItem;
 
 public class StepKeyboard extends ControlTable {
 
-    @SuppressWarnings("unused")
-    private boolean triggerEnabled;
-
     private StepButton lastSelectedStepButton;
 
     private StepButton lastCurrentStepButton;
@@ -342,9 +339,5 @@ public class StepKeyboard extends ControlTable {
                 return true;
         }
         return false;
-    }
-
-    public void setTriggerEnabled(boolean enabled) {
-        triggerEnabled = enabled;
     }
 }
