@@ -33,6 +33,7 @@ public class ValueManager extends CaustkMediator implements IValueManager {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 messageManager.setStatus("");
+                getController().trigger(new OnValueManagerOriginalValue(true));
             }
 
             @Override
@@ -46,8 +47,26 @@ public class ValueManager extends CaustkMediator implements IValueManager {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 messageManager.setStatus(valueAware.getValue() + "");
+                float current = valueAware.getValue();
+                if (current == valueAware.getOriginalValue()) {
+                    getController().trigger(new OnValueManagerOriginalValue(false));
+                } else {
+                    getController().trigger(new OnValueManagerOriginalValue(true));
+                }
             }
         });
     }
 
+    public static class OnValueManagerOriginalValue {
+
+        private boolean reset;
+
+        public boolean isReset() {
+            return reset;
+        }
+
+        public OnValueManagerOriginalValue(boolean reset) {
+            this.reset = reset;
+        }
+    }
 }

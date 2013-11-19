@@ -72,6 +72,7 @@ public class Knob extends ControlTable {
         return value;
     }
 
+    @Override
     public boolean setValue(float value) {
         float oldValue = this.value;
         if (value == oldValue)
@@ -238,18 +239,18 @@ public class Knob extends ControlTable {
         float result = 0f;
         //System.out.println("X:" + x + " Y:" + y);
 
-        float absX = Math.abs(x);
-        float absY = Math.abs(y);
+        //        float absX = Math.abs(x);
+        //        float absY = Math.abs(y);
 
-        float delta = 0f;
+        float delta = x;//0f;
 
-        if (absX > absY) {
-            delta = x;
-        } else {
-            delta = y;
-        }
+        //        if (absX > absY) {
+        //            delta = x;
+        //        } else {
+        //            delta = y;
+        //        }
 
-        currentAngle = (delta * 2) - originalAngle;
+        currentAngle = (delta * 4) - originalAngle;
 
         //        // 280 degrees to min/mx minAng:40
         float spanAngle = 280; // 360 - (minimumAngle * 2);
