@@ -99,7 +99,7 @@ public class SelectLedGroup extends ControlTable {
                 setSelectedIndex(index);
             }
         });
-        add(selectButton).top().padRight(10f);
+        add(selectButton).top().padRight(5f);
 
         column = new Table();
         add(column);
@@ -108,7 +108,7 @@ public class SelectLedGroup extends ControlTable {
             LedItem item = items[i];
             Led led = new Led(item, LedPlacement.LEFT, getSkin());
             led.setStyleName(ledStyleName);
-            column.add(led).left().padBottom(5f);
+            column.add(led).left().padBottom(0f);
             column.row();
         }
     }

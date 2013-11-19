@@ -75,7 +75,7 @@ public class TitleGroup extends ControlTable {
     private void createTop() {
         Label actor = new Label(text, getSkin(), labelStyleName);
         labelCell = super.add(actor);
-        labelCell.center().expandX();
+        labelCell.center().expandX().padBottom(10f);
         row();
 
         contentTable = new Table(getSkin());
