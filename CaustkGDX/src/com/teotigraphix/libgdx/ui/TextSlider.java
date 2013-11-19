@@ -108,12 +108,15 @@ public class TextSlider extends ControlTable {
     /**
      * Returns the value of the {@link Slider} composite.
      */
+    @Override
     public float getValue() {
         return slider.getValue();
     }
 
-    public void setValue(float value) {
+    @Override
+    public boolean setValue(float value) {
         slider.setValue(value);
+        return true;
     }
 
     public void setRange(float minimum, float maximum) {

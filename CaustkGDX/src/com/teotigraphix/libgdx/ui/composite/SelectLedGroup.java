@@ -24,6 +24,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.teotigraphix.libgdx.ui.ControlTable;
 import com.teotigraphix.libgdx.ui.Led;
@@ -43,8 +45,19 @@ public class SelectLedGroup extends ControlTable {
 
     private String ledStyleName;
 
+    @Override
+    public float getValue() {
+        return selectedIndex;
+    }
+
     public int getSelectedIndex() {
         return selectedIndex;
+    }
+
+    @Override
+    public boolean setValue(float value) {
+        setSelectedIndex((int)value);
+        return true;
     }
 
     public void setSelectedIndex(int value) {
@@ -54,6 +67,10 @@ public class SelectLedGroup extends ControlTable {
         if (onSelectLedGroupListener != null && !noCallback) {
             onSelectLedGroupListener.onChange(selectedIndex, items[selectedIndex]);
         }
+        ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
+        @SuppressWarnings("unused")
+        boolean cancelled = fire(changeEvent);
+        Pools.free(changeEvent);
         invalidate();
     }
 

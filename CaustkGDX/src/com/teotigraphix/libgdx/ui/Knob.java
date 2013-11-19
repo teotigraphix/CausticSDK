@@ -30,6 +30,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
 
+/**
+ * @author Michael Schmalle
+ */
 public class Knob extends ControlTable {
 
     private Image background;
@@ -64,6 +67,7 @@ public class Knob extends ControlTable {
 
     private float value = 0f;
 
+    @Override
     public float getValue() {
         return value;
     }
@@ -139,26 +143,6 @@ public class Knob extends ControlTable {
         maxValue = max;
         this.stepSize = stepSize;
         //setTouchable(Touchable.enabled);
-    }
-
-    @Override
-    protected void createChildren() {
-        KnobStyle style = getStyle();
-        background = new Image(style.background);
-
-        knob = new Image(style.knob);
-        knob.setTouchable(Touchable.disabled);
-
-        Stack stack = new Stack();
-        stack.add(background);
-        stack.add(knob);
-
-        add(stack).size(background.getPrefWidth(), background.getPrefHeight());
-    }
-
-    @Override
-    protected void initialize() {
-        styleClass = KnobStyle.class;
 
         addListener(new InputListener() {
 
@@ -203,6 +187,27 @@ public class Knob extends ControlTable {
                 currentAngle = getAngleFromValue(getValue());
             }
         });
+    }
+
+    @Override
+    protected void createChildren() {
+        KnobStyle style = getStyle();
+        background = new Image(style.background);
+
+        knob = new Image(style.knob);
+        knob.setTouchable(Touchable.disabled);
+
+        Stack stack = new Stack();
+        stack.add(background);
+        stack.add(knob);
+
+        add(stack).size(background.getPrefWidth(), background.getPrefHeight());
+    }
+
+    @Override
+    protected void initialize() {
+        styleClass = KnobStyle.class;
+
     }
 
     @Override

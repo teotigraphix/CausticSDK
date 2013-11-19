@@ -22,10 +22,12 @@ package com.teotigraphix.libgdx.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.teotigraphix.libgdx.controller.IValueAware;
 
-public abstract class ControlTable extends Table implements ISkinAware {
+public abstract class ControlTable extends Table implements ISkinAware, IValueAware {
 
     private boolean initialized = false;
 
@@ -39,12 +41,49 @@ public abstract class ControlTable extends Table implements ISkinAware {
     // properties
     //----------------------------------
 
-    Map<String, Object> properties;
+    private Map<String, Object> properties;
 
     public final Map<String, Object> getProperties() {
         if (properties == null)
             properties = new HashMap<String, Object>();
         return properties;
+    }
+
+    //----------------------------------
+    // originalValue
+    //----------------------------------
+
+    @Override
+    public Actor getActor() {
+        return this;
+    }
+
+    @Override
+    public float getValue() {
+        return Float.MIN_VALUE;
+    }
+
+    public boolean setValue(float value) {
+        return false;
+    }
+
+    private float originalValue = Float.MIN_VALUE;
+
+    @Override
+    public float getOriginalValue() {
+        return originalValue;
+    }
+
+    @Override
+    public void setOriginalValue(float value) {
+        originalValue = value;
+    }
+
+    @Override
+    public void resetValue() {
+        if (originalValue == Float.MIN_VALUE)
+            return;
+        setValue(originalValue);
     }
 
     //----------------------------------
