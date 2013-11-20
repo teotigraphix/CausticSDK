@@ -24,9 +24,12 @@ import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.ISystemSequencer.ExportType;
 import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerTransportChange;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
+import com.teotigraphix.caustk.rack.ISystemSequencer.ShuffleMode;
 import com.teotigraphix.caustk.rack.sequencer.SystemSequencer;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 
 /**
  * @author Michael Schmalle
@@ -207,4 +210,56 @@ public class MasterSequencer extends CaustkComponent {
         return systemSequencer.getCurrentSixteenthStep();
     }
 
+    public void exportSong(String exportPath, ExportType type) {
+        systemSequencer.exportSong(exportPath, type);
+    }
+
+    public void setLoopPoints(int startBar, int endBar) {
+        systemSequencer.setLoopPoints(startBar, endBar);
+    }
+
+    public String getPatterns() {
+        return systemSequencer.getPatterns();
+    }
+
+    public void addPattern(RackTone rackTone, int bank, int pattern, int start, int end)
+            throws CausticException {
+        systemSequencer.addPattern(rackTone, bank, pattern, start, end);
+    }
+
+    public void removePattern(RackTone rackTone, int start, int end) throws CausticException {
+        systemSequencer.removePattern(rackTone, start, end);
+    }
+
+    public void playPosition(int beat) {
+        systemSequencer.playPosition(beat);
+    }
+
+    public void clearPatterns() {
+        systemSequencer.clearPatterns();
+    }
+
+    public void clearAutomation() {
+        systemSequencer.clearAutomation();
+    }
+
+    public void clearAutomation(RackTone rackTone) {
+        systemSequencer.clearAutomation(rackTone);
+    }
+
+    public ShuffleMode getShuffleMode() {
+        return systemSequencer.getShuffleMode();
+    }
+
+    public void setShuffleMode(ShuffleMode value) {
+        systemSequencer.setShuffleMode(value);
+    }
+
+    public float getShuffleAmount() {
+        return systemSequencer.getShuffleAmount();
+    }
+
+    public void setShuffleAmount(float value) {
+        systemSequencer.setShuffleAmount(value);
+    }
 }
