@@ -32,7 +32,6 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.tone.RackTone;
-import com.teotigraphix.caustk.utils.PhraseUtils;
 import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
@@ -415,69 +414,12 @@ public class GrooveBox extends CaustkComponent {
         getSelectedPart().noteOn(pitch, velocity);
     }
 
-    //--------------------------------------------------------------------------
-
-    private int currentMeasure;
-
-    public int getCurrentMeasure() {
-        return currentMeasure;
-    }
-
-    public void setCurrentMeasure(int currentMeasure) {
-        this.currentMeasure = currentMeasure;
-    }
-
-    private float currentBeat;
-
-    /**
-     * Returns the current beat based on the sequencer mode.
-     * <p>
-     * In Pattern, will be 0-31, Song will be the current beat in the song
-     * sequencer.
-     */
-    public float getCurrentBeat() {
-        return currentBeat;
-    }
-
-    public void setCurrentBeat(float currentBeat) {
-        this.currentBeat = currentBeat;
-    }
-
-    /**
-     * Returns 0-3.
-     */
-    public float getMeasureBeat() {
-        return PhraseUtils.toMeasureBeat(currentBeat);
-    }
-
-    /**
-     * Returns 0-31(8 bars), 0-15(4 bars), 0-7(2 bars), 0-3(1 bar) based on the
-     * length.
-     */
-    public float getLocalBeat() {
-        return PhraseUtils.toLocalBeat(currentBeat, getPatternBank().getSelectedPattern()
-                .getLength());
-    }
-
-    /**
-     * Returns the local measure calculated from the {@link #getLocalBeat()}.
-     */
-    public int getLocalMeasure() {
-        return PhraseUtils.toLocalMeasure(currentBeat, getPatternBank().getSelectedPattern()
-                .getLength());
-    }
-
     public void beatChange(int measure, float beat) {
-        // CausticCore > IGame > ISystemSequencer > GrooveStation > GrooveMachine
-        setCurrentMeasure(measure);
-        setCurrentBeat(beat);
+        // CausticCore > IGame > Rack > GrooveStation > GrooveMachine
+        getSelectedPhrase().beatChange(measure, beat);
+    }
 
-        //float localBeat = PhraseUtils.toLocalBeat(beat, getPattern().getLength());
-        //int localMeasure = PhraseUtils.toLocalMeasure(beat, getPattern().getLength());
-
-        //        //System.out.println("LocalBeat:" + localBeat + " LocalMeasure:" + localMeasure);
-        //        for (OnMachineSequencerListener listener : onMachineSequencerListener) {
-        //            listener.onBeatChange(this);
-        //        }
+    public void frameChange(float delta, int measure, float beat) {
+        getSelectedPhrase().frameChange(delta, measure, beat);
     }
 }

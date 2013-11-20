@@ -114,7 +114,8 @@ public interface ISystemSequencer extends IRackComponent {
      * @param end The end measure of insert.
      * @throws CausticException Invalid values
      */
-    void addPattern(RackTone rackTone, int bank, int pattern, int start, int end) throws CausticException;
+    void addPattern(RackTone rackTone, int bank, int pattern, int start, int end)
+            throws CausticException;
 
     /**
      * Removes {@link RackTone} bank pattern from the song sequencer.
@@ -293,37 +294,6 @@ public interface ISystemSequencer extends IRackComponent {
 
         public OnSystemSequencerBPMChange(float bpm) {
             this.bpm = bpm;
-        }
-    }
-
-    /**
-     * Dispatcher: {@link IRack#getDispatcher()}
-     */
-    public static class OnSystemSequencerStepChange {
-        public OnSystemSequencerStepChange() {
-        }
-    }
-
-    /**
-     * Dispatcher: {@link IRack#getDispatcher()}
-     */
-    public static class OnSystemSequencerBeatChange {
-
-        private final int measure;
-
-        private final float beat;
-
-        public final int getMeasure() {
-            return measure;
-        }
-
-        public final float getBeat() {
-            return beat;
-        }
-
-        public OnSystemSequencerBeatChange(int measure, float beat) {
-            this.measure = measure;
-            this.beat = beat;
         }
     }
 

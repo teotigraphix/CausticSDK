@@ -32,6 +32,7 @@ import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
+import com.teotigraphix.caustk.utils.PhraseUtils;
 import com.teotigraphix.caustk.workstation.Note.NoteFlag;
 
 /**
@@ -498,13 +499,19 @@ public class Phrase extends CaustkComponent {
 
     private float floatBeat = -1;
 
+    private int currentSixteenthStep;
+
+    public int getCurrentSixteenthStep() {
+        return currentSixteenthStep;
+    }
+
     private int localBeat;
 
     /**
      * Return the ISong current beat.
      */
-    public int getCurrentBeat() {
-        return currentBeat;
+    public float getCurrentBeat() {
+        return floatBeat;
     }
 
     void setCurrentBeat(float value) {
@@ -512,8 +519,44 @@ public class Phrase extends CaustkComponent {
             return;
 
         floatBeat = value;
+        fireChange(PhraseChangeKind.Beat);
+    }
 
-        //        getDispatcher().trigger(new OnPhraseChange(PhraseChangeKind.Beat, this, null));
+    public boolean isLastBeat() {
+        int beats = length * 4;
+        return localBeat % beats == beats - 1;
+    }
+
+    public void frameChange(float delta, int measure, float beat) {
+
+        floatBeat = beat;
+
+        int round = (int)Math.floor(beat);
+        if (round != currentBeat) {
+
+            localBeat = (int)toLocalBeat(beat, getLength());
+
+            setCurrentBeat(beat);
+            setCurrentMeasure(measure);
+
+            float fullMeasure = beat / 4;
+            float playMeasure = fullMeasure % getLength();
+
+            setPlayMeasure((int)playMeasure);
+
+            currentBeat = round;
+        }
+
+        // sixteenth step calculation
+        int step = (int)Math.floor((beat % 4) * 4);
+        if (step != currentSixteenthStep) {
+            currentSixteenthStep = step;
+            fireChange(PhraseChangeKind.Step);
+        }
+    }
+
+    public void beatChange(int measure, float beat) {
+
     }
 
     /**
@@ -522,28 +565,26 @@ public class Phrase extends CaustkComponent {
      * Example; measure 4, beat 14 would be beat 2 in the measure (0 index - 3rd
      * beat in measure).
      * </p>
+     * 
+     * @return 0-3
      */
-    public int getMeasureBeat() {
-        return currentBeat % 4;
+    public float getMeasureBeat() {
+        return PhraseUtils.toMeasureBeat(floatBeat);
     }
 
-    public int getLocalBeat() {
-        return localBeat;
+    //    /**
+    //     * Returns 0-31(8 bars), 0-15(4 bars), 0-7(2 bars), 0-3(1 bar) based on the
+    //     * length.
+    //     */
+    public float getLocalBeat() {
+        return PhraseUtils.toLocalBeat(floatBeat, getLength());
     }
 
-    public boolean isLastBeat() {
-        int beats = length * 4;
-        return localBeat % beats == beats - 1;
-    }
-
-    public void onBeatChange(float beat) {
-        localBeat = (int)toLocalBeat(beat, getLength());
-
-        float fullMeasure = beat / 4;
-        float measure = fullMeasure % getLength();
-        setCurrentBeat(beat);
-
-        setPlayMeasure((int)measure);
+    /**
+     * Returns the local measure calculated from the {@link #getLocalBeat()}.
+     */
+    public int getLocalMeasure() {
+        return PhraseUtils.toLocalMeasure(floatBeat, getLength());
     }
 
     //----------------------------------
@@ -934,6 +975,8 @@ public class Phrase extends CaustkComponent {
          */
         Beat,
 
+        Step,
+
         /**
          * @see TrackPhrase#setLength(int)
          */
@@ -1005,4 +1048,5 @@ public class Phrase extends CaustkComponent {
             this.note = note;
         }
     }
+
 }

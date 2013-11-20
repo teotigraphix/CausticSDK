@@ -31,8 +31,6 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.ISystemSequencer;
 import com.teotigraphix.caustk.rack.ISystemSequencer.ExportType;
 import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBPMChange;
-import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerBeatChange;
-import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerStepChange;
 import com.teotigraphix.caustk.rack.ISystemSequencer.OnSystemSequencerTransportChange;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
 import com.teotigraphix.caustk.rack.ISystemSequencer.ShuffleMode;
@@ -198,13 +196,6 @@ public class SystemSequencer extends CaustkComponent {
             changed = setCurrentBeat(round);
         }
 
-        // sixteenth step calculation
-        int step = (int)Math.floor((currentFloatBeat % 4) * 4);
-        if (step != currentSixteenthStep) {
-            currentSixteenthStep = step;
-            getRack().getDispatcher().trigger(new OnSystemSequencerStepChange());
-        }
-
         return changed;
     }
 
@@ -217,10 +208,6 @@ public class SystemSequencer extends CaustkComponent {
             return false;
 
         currentBeat = value;
-
-        getRack().getDispatcher().trigger(
-                new OnSystemSequencerBeatChange(currentMeasure, currentBeat));
-
         return true;
     }
 

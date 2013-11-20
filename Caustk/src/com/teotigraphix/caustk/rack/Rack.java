@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.rack;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -154,15 +156,41 @@ public class Rack implements IRack {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    private final List<OnRackListener> listeners = new ArrayList<OnRackListener>();
+
+    @Override
+    public void addListener(OnRackListener l) {
+        listeners.add(l);
+    }
+
+    @Override
+    public void removeListener(OnRackListener l) {
+        listeners.remove(l);
+    }
+
+    /**
+     * Listener API for the {@link Rack}.
+     * 
+     * @author Michael Schmalle
+     */
+    public interface OnRackListener {
+        void beatChange(int measure, float beat);
+
+        void frameChange(float delta, int measure, float beat);
+    }
+
     @Override
     public void frameChanged(float delta) {
         final int measure = (int)getCurrentSongMeasure();
         final float beat = getCurrentBeat();
+        for (OnRackListener listener : listeners) {
+            listener.frameChange(delta, measure, beat);
+        }
         final boolean changed = rackSet.updatePosition(measure, beat);
         if (changed) {
-            //for (IRackComponent component : components.values()) {
-            //    component.beatChange(measure, beat);
-            //}
+            for (OnRackListener listener : listeners) {
+                listener.beatChange(measure, beat);
+            }
         }
     }
 
