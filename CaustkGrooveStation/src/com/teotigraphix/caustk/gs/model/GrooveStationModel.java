@@ -1,7 +1,10 @@
 
 package com.teotigraphix.caustk.gs.model;
 
+import java.io.FileNotFoundException;
+
 import com.google.inject.Singleton;
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.workstation.GrooveBox;
 import com.teotigraphix.caustk.workstation.GrooveStation;
 import com.teotigraphix.libgdx.model.CaustkModelBase;
@@ -34,4 +37,12 @@ public class GrooveStationModel extends CaustkModelBase implements IGrooveStatio
         return grooveStation.getGrooveBox(selectedIndex);
     }
 
+    @Override
+    public void write() throws CausticException {
+        try {
+            grooveStation.write();
+        } catch (FileNotFoundException e) {
+            throw new CausticException(e);
+        }
+    }
 }

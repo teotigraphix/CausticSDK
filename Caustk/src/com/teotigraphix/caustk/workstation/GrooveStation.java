@@ -196,9 +196,13 @@ public class GrooveStation {
         return songBank;
     }
 
-    public void save() throws FileNotFoundException {
+    public void write() throws CausticException, FileNotFoundException {
         library.refresh(grooveSet);
         factory.save(library, library.getLibrariesDirectory());
+    }
+
+    public void save() throws FileNotFoundException {
+        // XXX Save system state when application is saved.
     }
 
     //--------------------------------------------------------------------------

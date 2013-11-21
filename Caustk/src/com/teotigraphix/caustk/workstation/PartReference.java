@@ -44,11 +44,11 @@ public class PartReference {
     PartReference() {
     }
 
-    PartReference(ICaustkApplicationContext context, Part part) {
-        update(context, part);
+    PartReference(ICaustkApplicationContext context, Part part, int index) {
+        update(context, part, index);
     }
 
-    public void update(ICaustkApplicationContext context, Part part) {
+    public void update(ICaustkApplicationContext context, Part part, int index) {
         // copy the patch
         Patch sourcePatch = part.getPatch();
         Machine machine = sourcePatch.getMachine();
@@ -61,6 +61,7 @@ public class PartReference {
         machine = sourcePhrase.getMachine();
         sourcePhrase.setMachine(null);
         phrase = context.getFactory().getKryo().copy(sourcePhrase);
+        phrase.setIndex(index);
         sourcePhrase.setMachine(machine);
     }
 

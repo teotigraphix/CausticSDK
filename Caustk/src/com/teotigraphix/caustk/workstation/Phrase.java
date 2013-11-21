@@ -108,6 +108,10 @@ public class Phrase extends CaustkComponent {
         return index;
     }
 
+    void setIndex(int value) {
+        index = value;
+    }
+
     /**
      * Returns the assigned bank for this phrase in the native pattern
      * sequencer.

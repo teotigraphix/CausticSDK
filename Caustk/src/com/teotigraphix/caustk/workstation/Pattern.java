@@ -138,7 +138,7 @@ public class Pattern extends CaustkComponent {
      */
     void addPartReference(ICaustkApplicationContext context, Part part) {
         Integer partIndex = part.getMachineIndex();
-        PartReference partReference = new PartReference(context, part);
+        PartReference partReference = new PartReference(context, part, index);
         parts.put(partIndex, partReference);
     }
 

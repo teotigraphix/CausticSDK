@@ -281,11 +281,8 @@ public class PatternBank extends CaustkComponent {
         Pattern saveToPattern = patterns.get(temporaryPattern.getIndex());
         // the partReference's Patch and Phrase reference the Part's 
         for (Part part : grooveBox.getParts()) {
-            saveToPattern.getPartReference(part).update(context, part);
+            saveToPattern.getPartReference(part).update(context, part, saveToPattern.getIndex());
         }
-
-        Pattern pattern = patterns.get(temporaryPattern.getIndex());
-
     }
 
     @Override
@@ -357,7 +354,8 @@ public class PatternBank extends CaustkComponent {
             // Give back the original Patch and Phrase
             for (Part part : grooveBox.getParts()) {
                 Machine machine = part.getMachine();
-                PartReference partReference = temporaryPattern.getPartReference(part);
+                PartReference partReference = patterns.get(lastTempPattern.getIndex())
+                        .getPartReference(part);
                 machine.replacePatch(partReference.getPatch());
                 machine.replacePhrase(partReference.getPhrase());
             }

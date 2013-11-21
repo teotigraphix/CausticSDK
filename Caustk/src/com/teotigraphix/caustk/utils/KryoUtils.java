@@ -48,6 +48,7 @@ public class KryoUtils {
         KryoUtils.factory = factory;
 
         Kryo kryo = new Kryo();
+        //Log.TRACE();
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);
         //kryo.setRegistrationRequired(true);
 
