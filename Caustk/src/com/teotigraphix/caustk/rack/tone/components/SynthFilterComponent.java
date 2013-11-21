@@ -180,6 +180,7 @@ public class SynthFilterComponent extends FilterComponentBase {
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setAttack(getAttack(true));
         setDecay(getDecay(true));
         setRelease(getRelease(true));

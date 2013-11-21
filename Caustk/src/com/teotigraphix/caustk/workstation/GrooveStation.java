@@ -171,6 +171,12 @@ public class GrooveStation {
         grooveBox.setPatternBank(patternBank);
         patternBank.create(grooveSet.getRackSet().getFactory().createContext());
 
+        // create the default Patch for the PatternSet parts
+        for (Part part : grooveBox.getParts()) {
+            Patch patch = part.getPatch();
+            patch.getPreset().load(factory.createContext());
+        }
+
         for (Pattern pattern : patternBank.getPatterns()) {
             for (Part part : grooveBox.getParts()) {
                 pattern.addPartReference(factory.createContext(), part);

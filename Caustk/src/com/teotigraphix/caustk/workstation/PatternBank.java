@@ -328,23 +328,41 @@ public class PatternBank extends CaustkComponent {
     }
 
     private void commitPendingPattern(ICaustkFactory factory) {
+        Pattern lastTempPattern = temporaryPattern;
+
         int pending = pendingPattern;
-        // we have to copy the WHOLE pattern into tmp so when things
-        // update it's phrases, patch etc, we still have the original
+
+        // Get the Pattern that has the previously saved data
         Pattern sourcePattern = patterns.get(pending);
         // temporarily disconnect the Pattern
         sourcePattern.setPatternBank(null);
-        temporaryPattern = factory.getKryo().copy(sourcePattern);
-        sourcePattern.setPatternBank(this);
 
+        // Copy the source Pattern into the temporary Pattern
+        temporaryPattern = factory.getKryo().copy(sourcePattern);
+
+        // set references
+        sourcePattern.setPatternBank(this);
         temporaryPattern.setPatternBank(this);
 
+        // Pattern bank/pattern
         int bankIndex = temporaryPattern.getBankIndex();
         int patternIndex = temporaryPattern.getPatternIndex();
 
+        if (lastTempPattern != null) {
+            // Give back the original Patch and Phrase
+            for (Part part : grooveBox.getParts()) {
+                Machine machine = part.getMachine();
+                PartReference partReference = temporaryPattern.getPartReference(part);
+                machine.replacePatch(partReference.getPatch());
+                machine.replacePhrase(partReference.getPhrase());
+            }
+        }
+
+        // For each Part in the GrooveBox use the part reference to update 
+        // the Part's Machine Patch, Phrase
         for (Part part : grooveBox.getParts()) {
-            PartReference partReference = temporaryPattern.getPartReference(part);
             Machine machine = part.getMachine();
+            PartReference partReference = temporaryPattern.getPartReference(part);
 
             machine.setCurrentBankPattern(bankIndex, patternIndex);
 

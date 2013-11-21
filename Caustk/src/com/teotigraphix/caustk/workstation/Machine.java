@@ -181,17 +181,21 @@ public class Machine extends CaustkComponent {
     void setPatch(Patch replacementPatch) {
         Patch oldPatch = patch;
         if (oldPatch != null) {
-            oldPatch.setMachine(null);
+            oldPatch.disconnect();
         }
         patch = replacementPatch;
         patch.setMachine(this);
         try {
+            // we have preset data, update and load the .preset file
             patch.update(factory.createContext());
             // we have to restore since the patch just loaded it's .preset file
             rackTone.restore();
         } catch (CausticException e) {
             e.printStackTrace();
         }
+    }
+
+    void replacePatch(Patch patch2) {
     }
 
     //----------------------------------
@@ -226,6 +230,11 @@ public class Machine extends CaustkComponent {
         } catch (CausticException e) {
             e.printStackTrace();
         }
+    }
+
+    void replacePhrase(Phrase phrase) {
+        phrase.setMachine(this);
+        phrases.put(phrase.getIndex(), phrase);
     }
 
     /**

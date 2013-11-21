@@ -523,7 +523,7 @@ public class Phrase extends CaustkComponent {
             return;
 
         floatBeat = value;
-        fireChange(PhraseChangeKind.Beat);
+        //fireChange(PhraseChangeKind.Beat);
     }
 
     public boolean isLastBeat() {
@@ -539,6 +539,7 @@ public class Phrase extends CaustkComponent {
         if (round != currentBeat) {
 
             localBeat = (int)toLocalBeat(beat, getLength());
+            currentBeat = round;
 
             setCurrentBeat(beat);
             setCurrentMeasure(measure);
@@ -548,7 +549,7 @@ public class Phrase extends CaustkComponent {
 
             setPlayMeasure((int)playMeasure);
 
-            currentBeat = round;
+            fireChange(PhraseChangeKind.Beat);
         }
 
         // sixteenth step calculation
