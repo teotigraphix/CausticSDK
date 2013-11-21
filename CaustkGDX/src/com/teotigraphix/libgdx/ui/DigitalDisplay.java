@@ -116,7 +116,7 @@ public class DigitalDisplay extends ControlTable {
         row();
 
         statusLabel = new Label("", getSkin());
-        add(statusLabel).right().colspan(labels.size + 1).padRight(10f).padBottom(10f);
+        add(statusLabel).right().colspan(labels.size + 1).padRight(10f).padBottom(10f).height(25f);
     }
 
     @Override

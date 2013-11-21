@@ -239,7 +239,10 @@ public class PatternBank extends CaustkComponent {
      * @see #setPendingPattern(int)
      */
     public void incrementIndex() {
-        int index = pendingPattern + 1;
+        int target = selectedIndex;
+        if (pendingPattern != -1)
+            target = pendingPattern;
+        int index = target + 1;
         if (index > 63)
             index = 0;
         setPendingPattern(index);
@@ -252,7 +255,10 @@ public class PatternBank extends CaustkComponent {
      * @see #setPendingPattern(int)
      */
     public void decrementIndex() {
-        int index = pendingPattern - 1;
+        int target = selectedIndex;
+        if (pendingPattern != -1)
+            target = pendingPattern;
+        int index = target - 1;
         if (index < 0)
             index = 63;
         setPendingPattern(index);
