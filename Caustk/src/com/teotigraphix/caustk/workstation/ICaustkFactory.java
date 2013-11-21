@@ -181,7 +181,7 @@ public interface ICaustkFactory {
      */
     File save(ICaustkComponent component, File rootDirectory) throws FileNotFoundException;
 
-    <T> T copy(T instance);
+    //    <T> T copy(T instance);
 
     Kryo getKryo();
 

@@ -289,8 +289,9 @@ public class Library extends CaustkComponent {
     public final boolean add(ICaustkComponent component) throws IOException {
         if (contains(component))
             return false;
-        ICaustkComponent copy = factory.copy(component);
-        componentAdded(copy);
+        //        ICaustkComponent copy = factory.copy(component);
+        //        componentAdded(copy);
+        componentAdded(component);
         return true;
     }
 
@@ -304,8 +305,9 @@ public class Library extends CaustkComponent {
         if (!contains(component))
             throw new IllegalStateException("component not is Library: " + component);
 
-        ICaustkComponent copy = factory.copy(component);
-        componentRefresh(copy);
+        //        ICaustkComponent copy = factory.copy(component);
+        //        componentRefresh(copy);
+        componentRefresh(component);
     }
 
     /**
@@ -412,7 +414,7 @@ public class Library extends CaustkComponent {
     }
 
     private void componentRefresh(ICaustkComponent componentCopy) throws FileNotFoundException {
-        componentCopy.disconnect();
+        // componentCopy.disconnect();
         writeToDisk(componentCopy);
     }
 

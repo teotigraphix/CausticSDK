@@ -334,7 +334,7 @@ public class PatternBank extends CaustkComponent {
         Pattern sourcePattern = patterns.get(pending);
         // temporarily disconnect the Pattern
         sourcePattern.setPatternBank(null);
-        temporaryPattern = factory.copy(sourcePattern);
+        temporaryPattern = factory.getKryo().copy(sourcePattern);
         sourcePattern.setPatternBank(this);
 
         temporaryPattern.setPatternBank(this);

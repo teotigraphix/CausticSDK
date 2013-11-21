@@ -187,6 +187,8 @@ public class Machine extends CaustkComponent {
         patch.setMachine(this);
         try {
             patch.update(factory.createContext());
+            // we have to restore since the patch just loaded it's .preset file
+            rackTone.restore();
         } catch (CausticException e) {
             e.printStackTrace();
         }
@@ -526,14 +528,14 @@ public class Machine extends CaustkComponent {
 
     @Override
     public void onSave(ICaustkApplicationContext context) {
-        rack = context.getRack();
+        //rack = context.getRack();
         if (rackTone != null)
             rackTone.onSave(context);
         patch.onSave(context);
         for (Phrase phrase : phrases.values()) {
             phrase.onSave(context);
         }
-        rack = null;
+        //rack = null;
     }
 
     //--------------------------------------------------------------------------

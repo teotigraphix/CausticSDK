@@ -53,14 +53,14 @@ public class PartReference {
         Patch sourcePatch = part.getPatch();
         Machine machine = sourcePatch.getMachine();
         sourcePatch.setMachine(null);
-        patch = context.getFactory().copy(sourcePatch);
+        patch = context.getFactory().getKryo().copy(sourcePatch);
         sourcePatch.setMachine(machine);
 
         // copy the phrase
         Phrase sourcePhrase = part.getPhrase();
         machine = sourcePhrase.getMachine();
         sourcePhrase.setMachine(null);
-        phrase = context.getFactory().copy(sourcePhrase);
+        phrase = context.getFactory().getKryo().copy(sourcePhrase);
         sourcePhrase.setMachine(machine);
     }
 

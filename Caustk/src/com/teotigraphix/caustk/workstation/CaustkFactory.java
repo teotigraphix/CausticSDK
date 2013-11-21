@@ -201,6 +201,7 @@ public class CaustkFactory implements ICaustkFactory {
     // Library
     //----------------------------------
 
+    @Override
     public Library createLibrary(File reletiveDirectory) {
         return libraryFactory.createLibrary(reletiveDirectory);
     }
@@ -506,10 +507,10 @@ public class CaustkFactory implements ICaustkFactory {
         return new File(rootDirectory, resolvePath(component));
     }
 
-    @Override
-    public <T> T copy(T instance) {
-        return kryo.copy(instance);
-    }
+    //    @Override
+    //    public <T> T copy(T instance) {
+    //        return kryo.copy(instance);
+    //    }
 
     @Override
     public <T extends ICaustkComponent> T load(File componentFile, Class<T> clazz)

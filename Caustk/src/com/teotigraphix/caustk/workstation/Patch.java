@@ -195,6 +195,9 @@ public class Patch extends CaustkComponent {
             case Restore:
                 machinePreset.restore();
                 machineMixer.restore();
+                for (Effect caustkEffect : effects.values()) {
+                    caustkEffect.restore();
+                }
                 break;
 
             case Connect:

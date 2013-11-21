@@ -711,13 +711,20 @@ public class Phrase extends CaustkComponent {
             case Update:
                 PatternSequencerMessage.NUM_MEASURES.send(machine.getEngine(),
                         machine.getMachineIndex(), length);
-                for (Note note : triggerMap.getNotes()) {
-                    if (note.isSelected()) {
-                        triggerMap.update(note);
+                for (Trigger trigger : triggerMap.getTriggers()) {
+                    if (trigger.isSelected()) {
+                        for (Note note : trigger.getNotes()) {
+                            //                            if (note.isSelected()) {
+                            triggerMap.update(note);
+                            //                            } else {
+                            //                                System.err.println("Didn't add note: " + note.toString());
+                            //                            }
+                        }
                     } else {
-                        System.err.println("Didn't add note: " + note.toString());
+                        //System.err.println("Didn't add note: " + note.toString());
                     }
                 }
+
                 break;
 
             case Restore:
