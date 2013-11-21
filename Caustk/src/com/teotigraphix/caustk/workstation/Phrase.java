@@ -577,12 +577,12 @@ public class Phrase extends CaustkComponent {
         return PhraseUtils.toMeasureBeat(floatBeat);
     }
 
-    //    /**
-    //     * Returns 0-31(8 bars), 0-15(4 bars), 0-7(2 bars), 0-3(1 bar) based on the
-    //     * length.
-    //     */
+    /**
+     * Returns 0-31(8 bars), 0-15(4 bars), 0-7(2 bars), 0-3(1 bar) based on the
+     * length.
+     */
     public float getLocalBeat() {
-        return PhraseUtils.toLocalBeat(floatBeat, getLength());
+        return PhraseUtils.toLocalBeat(currentBeat, getLength());
     }
 
     /**

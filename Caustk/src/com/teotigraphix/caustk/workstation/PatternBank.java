@@ -243,7 +243,6 @@ public class PatternBank extends CaustkComponent {
         if (index > 63)
             index = 0;
         setPendingPattern(index);
-        setNextPattern(index);
     }
 
     /**
@@ -257,7 +256,6 @@ public class PatternBank extends CaustkComponent {
         if (index < 0)
             index = 63;
         setPendingPattern(index);
-        setNextPattern(index);
     }
 
     //--------------------------------------------------------------------------
@@ -325,6 +323,7 @@ public class PatternBank extends CaustkComponent {
     public void setNextPattern(int index) {
         pendingPattern = index;
         commitPendingPattern(grooveBox.getRackSet().getFactory());
+        pendingPattern = -1;
     }
 
     private void commitPendingPattern(ICaustkFactory factory) {

@@ -415,8 +415,17 @@ public class GrooveBox extends CaustkComponent {
     }
 
     public void beatChange(int measure, float beat) {
+        Phrase phrase = getSelectedPhrase();
+        System.out.println(phrase.getLocalBeat() + ":" + phrase.getLocalMeasure());
+        float localBeat = phrase.getLocalBeat();
+        //if (localBeat == 0 && patternBank.getPendingPattern() != -1) {
+
+        if (localBeat == 0 && patternBank.getPendingPattern() != -1) {
+            patternBank.setNextPattern(patternBank.getPendingPattern());
+        }
+
         // CausticCore > IGame > Rack > GrooveStation > GrooveMachine
-        getSelectedPhrase().beatChange(measure, beat);
+        phrase.beatChange(measure, beat);
     }
 
     public void frameChange(float delta, int measure, float beat) {

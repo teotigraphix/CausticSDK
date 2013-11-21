@@ -44,6 +44,7 @@ public class SystemStateModel extends CaustkModelBase implements ISystemStateMod
         update();
     }
 
+    @Override
     public void update() {
         // send an update message so displays can be update with Command value
         try {
@@ -124,6 +125,8 @@ public class SystemStateModel extends CaustkModelBase implements ISystemStateMod
 
         private Object value;
 
+        private boolean indeterminate;
+
         public ISystemStateModel getModel() {
             return systemStateModel;
         }
@@ -136,6 +139,10 @@ public class SystemStateModel extends CaustkModelBase implements ISystemStateMod
             return value;
         }
 
+        public boolean isIndeterminate() {
+            return indeterminate;
+        }
+
         public OnSystemStateModelValueChange(ISystemStateModel systemStateModel,
                 SystemStateModelValueChangeKind kind) {
             this.systemStateModel = systemStateModel;
@@ -145,6 +152,13 @@ public class SystemStateModel extends CaustkModelBase implements ISystemStateMod
         public OnSystemStateModelValueChange(SystemStateModelValueChangeKind kind, Object value) {
             this.kind = kind;
             this.value = value;
+        }
+
+        public OnSystemStateModelValueChange(SystemStateModelValueChangeKind kind, Object value,
+                boolean indeterminate) {
+            this.kind = kind;
+            this.value = value;
+            this.indeterminate = indeterminate;
         }
     }
 }

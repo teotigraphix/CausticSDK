@@ -152,6 +152,8 @@ public class DigitalDisplay extends ControlTable {
     public void blinkOff() {
         for (Label label : labels) {
             label.clearActions();
+            label.getColor().a = 1f;
+            label.invalidate();
         }
     }
 
