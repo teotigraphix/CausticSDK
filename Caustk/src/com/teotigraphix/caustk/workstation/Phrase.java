@@ -132,6 +132,10 @@ public class Phrase extends CaustkComponent {
         return machine;
     }
 
+    void setMachine(Machine value) {
+        machine = value;
+    }
+
     //----------------------------------
     // machineType
     //----------------------------------

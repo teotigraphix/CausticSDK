@@ -45,6 +45,37 @@ public class PatternBank extends CaustkComponent {
         return grooveBox.getRackSet();
     }
 
+    private transient int pendingPattern = -1;
+
+    /**
+     * The pending pattern index.
+     */
+    public int getPendingPattern() {
+        return pendingPattern;
+    }
+
+    /**
+     * Sets the pending pattern index, queues the next pattern to be played from
+     * the bank.
+     * 
+     * @param value The next pattern index (0..63).
+     * @see OnPatternBankChange
+     * @see PatternBankChangeKind#PendingIndex
+     */
+    public void setPendingPattern(int value) {
+        if (value == pendingPattern)
+            return;
+        pendingPattern = value;
+        getDispatcher().trigger(
+                new OnPatternBankChange(this, PatternBankChangeKind.PendingIndex, pendingPattern));
+    }
+
+    private transient Pattern temporaryPattern;
+
+    public Pattern getTemporaryPattern() {
+        return temporaryPattern;
+    }
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -123,10 +154,6 @@ public class PatternBank extends CaustkComponent {
     // selectedIndex
     //----------------------------------
 
-    public Pattern getSelectedPattern() {
-        return getPattern(selectedIndex);
-    }
-
     public int getSelectedIndex() {
         return selectedIndex;
     }
@@ -139,11 +166,11 @@ public class PatternBank extends CaustkComponent {
     public void setSelectedIndex(int value) {
         if (value == selectedIndex)
             return;
-        int oldIndex = selectedIndex;
+        //        int oldIndex = selectedIndex;
         selectedIndex = value;
-        getDispatcher().trigger(
-                new OnPatternBankChange(this, PatternBankChangeKind.SelectedIndex, selectedIndex,
-                        oldIndex));
+        //        getDispatcher().trigger(
+        //                new OnPatternBankChange(this, PatternBankChangeKind.SelectedIndex, selectedIndex,
+        //                        oldIndex));
     }
 
     //--------------------------------------------------------------------------
@@ -180,9 +207,9 @@ public class PatternBank extends CaustkComponent {
      * 
      * @param index The linear index.
      */
-    public Pattern getPattern(int index) {
-        return patterns.get(index);
-    }
+    //    public Pattern getPattern(int index) {
+    //        return patterns.get(index);
+    //    }
 
     /**
      * Returns the {@link Pattern} at the specific bank and pattern index.
@@ -190,9 +217,9 @@ public class PatternBank extends CaustkComponent {
      * @param bankIndex The bank index (0..3).
      * @param patternIndex The pattern index (0..15).
      */
-    public Pattern getPattern(int bankIndex, int patternIndex) {
-        return patterns.get(PatternUtils.getIndex(bankIndex, patternIndex));
-    }
+    //    public Pattern getPattern(int bankIndex, int patternIndex) {
+    //        return patterns.get(PatternUtils.getIndex(bankIndex, patternIndex));
+    //    }
 
     /**
      * Returns the {@link Pattern} as the specific named position, e.g.
@@ -200,39 +227,37 @@ public class PatternBank extends CaustkComponent {
      * 
      * @param patternName The named pattern position.
      */
-    public Pattern getPattern(String patternName) {
-        return patterns.get(PatternUtils.getIndex(PatternUtils.toBank(patternName),
-                PatternUtils.toPattern(patternName)));
-    }
+    //    public Pattern getPattern(String patternName) {
+    //        return patterns.get(PatternUtils.getIndex(PatternUtils.toBank(patternName),
+    //                PatternUtils.toPattern(patternName)));
+    //    }
 
     /**
      * Increments and returns the next pattern (0..63), when 64 is reached, the
      * index wraps around to 0.
      * 
-     * @return The new selected {@link Pattern}.
-     * @see #setSelectedIndex(int)
+     * @see #setPendingPattern(int)
      */
-    public Pattern incrementIndex() {
-        int index = selectedIndex + 1;
+    public void incrementIndex() {
+        int index = pendingPattern + 1;
         if (index > 63)
             index = 0;
-        setSelectedIndex(index);
-        return getSelectedPattern();
+        setPendingPattern(index);
+        setNextPattern(index);
     }
 
     /**
      * Decrements and returns the next pattern (0..63), when 0 is reached, the
      * index wraps around to 63.
      * 
-     * @return The new selected {@link Pattern}.
-     * @see #setSelectedIndex(int)
+     * @see #setPendingPattern(int)
      */
-    public Pattern decrementIndex() {
-        int index = selectedIndex - 1;
+    public void decrementIndex() {
+        int index = pendingPattern - 1;
         if (index < 0)
             index = 63;
-        setSelectedIndex(index);
-        return getSelectedPattern();
+        setPendingPattern(index);
+        setNextPattern(index);
     }
 
     //--------------------------------------------------------------------------
@@ -247,6 +272,13 @@ public class PatternBank extends CaustkComponent {
     @Override
     public void onSave(ICaustkApplicationContext context) {
         super.onSave(context);
+
+        // Update the saveToPattern with the temporaryPattern's Patch and Phrase
+        Pattern saveToPattern = patterns.get(temporaryPattern.getIndex());
+        // the partReference's Patch and Phrase reference the Part's 
+        for (Part part : grooveBox.getParts()) {
+            saveToPattern.getPartReference(part).update(context, part);
+        }
     }
 
     @Override
@@ -268,6 +300,7 @@ public class PatternBank extends CaustkComponent {
                 break;
 
             case Load:
+
                 break;
             case Update:
                 // send BLANKRACK message
@@ -286,6 +319,35 @@ public class PatternBank extends CaustkComponent {
         }
     }
 
+    public void setNextPattern(int index) {
+        pendingPattern = index;
+        commitPendingPattern(grooveBox.getRackSet().getFactory());
+    }
+
+    private void commitPendingPattern(ICaustkFactory factory) {
+        int pending = pendingPattern;
+        // we have to copy the WHOLE pattern into tmp so when things
+        // update it's phrases, patch etc, we still have the original
+        Pattern sourcePattern = patterns.get(pending);
+        // temporarily disconnect the Pattern
+        sourcePattern.setPatternBank(null);
+        temporaryPattern = factory.copy(sourcePattern);
+        sourcePattern.setPatternBank(this);
+
+        temporaryPattern.setPatternBank(this);
+
+        for (Part part : grooveBox.getParts()) {
+            PartReference partReference = temporaryPattern.getPartReference(part);
+            part.getMachine().setPatch(partReference.getPatch());
+            part.getMachine().setPhrase(partReference.getPhrase());
+        }
+
+        setSelectedIndex(pendingPattern);
+
+        getDispatcher().trigger(
+                new OnPatternBankChange(this, PatternBankChangeKind.PatternChange, selectedIndex));
+    }
+
     void addPattern(Pattern pattern) {
         patterns.put(pattern.getIndex(), pattern);
         patternAdd(pattern);
@@ -301,13 +363,24 @@ public class PatternBank extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     public enum PatternBankChangeKind {
+
         PatternAdd,
 
         PatternRemove,
 
         PatternReplace,
 
-        SelectedIndex,
+        /**
+         * Dispatched when the pending pattern has been committed to the
+         * {@link PatternBank#getTemporaryPattern()}.
+         */
+        PatternChange,
+
+        /**
+         * Dispatched when the pending pattern is changed but has not been
+         * committed.
+         */
+        PendingIndex,
     }
 
     /**
@@ -351,6 +424,13 @@ public class PatternBank extends CaustkComponent {
             this.kind = kind;
         }
 
+        public OnPatternBankChange(PatternBank patternBank, PatternBankChangeKind kind,
+                int pendingPattern) {
+            this.patternBank = patternBank;
+            this.kind = kind;
+            this.index = pendingPattern;
+        }
+
         public OnPatternBankChange(PatternBank patternBank, PatternBankChangeKind kind, int index,
                 int oldIndex) {
             this.patternBank = patternBank;
@@ -359,4 +439,5 @@ public class PatternBank extends CaustkComponent {
             this.oldIndex = oldIndex;
         }
     }
+
 }

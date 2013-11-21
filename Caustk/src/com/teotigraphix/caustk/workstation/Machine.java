@@ -178,12 +178,41 @@ public class Machine extends CaustkComponent {
         return patch;
     }
 
+    void setPatch(Patch value) {
+        Patch oldPatch = patch;
+        if (oldPatch != null) {
+            oldPatch.setMachine(null);
+        }
+        patch = value;
+        patch.setMachine(this);
+        try {
+            patch.update(factory.createContext());
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
+    }
+
     //----------------------------------
     // phrases
     //----------------------------------
 
     public Map<Integer, Phrase> getPhrases() {
         return phrases;
+    }
+
+    void setPhrase(Phrase phrase) {
+        int index = phrase.getIndex();
+        Phrase oldPhrase = phrases.get(index);
+        if (oldPhrase != null) {
+            oldPhrase.setMachine(null);
+        }
+        phrase.setMachine(this);
+        phrases.put(index, phrase);
+        try {
+            phrase.update(factory.createContext());
+        } catch (CausticException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -620,4 +649,5 @@ public class Machine extends CaustkComponent {
             this.kind = kind;
         }
     }
+
 }

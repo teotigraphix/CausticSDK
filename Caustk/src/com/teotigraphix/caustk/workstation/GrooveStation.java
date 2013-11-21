@@ -102,8 +102,6 @@ public class GrooveStation {
                 }
             }
         });
-
-        createOrLoadLibrary();
     }
 
     //--------------------------------------------------------------------------
@@ -172,6 +170,15 @@ public class GrooveStation {
         PatternBank patternBank = factory.createPatternBank(info, grooveBox);
         grooveBox.setPatternBank(patternBank);
         patternBank.create(grooveSet.getRackSet().getFactory().createContext());
+
+        for (Pattern pattern : patternBank.getPatterns()) {
+            for (Part part : grooveBox.getParts()) {
+                pattern.addPartReference(factory.createContext(), part);
+            }
+        }
+
+        patternBank.setNextPattern(0);
+
         return patternBank;
     }
 
@@ -213,7 +220,13 @@ public class GrooveStation {
         return grooveSet;
     }
 
-    private void createOrLoadLibrary() throws IOException, CausticException {
+    /**
+     * Creates or loads the groove station's {@link Library} instance.
+     * 
+     * @throws IOException
+     * @throws CausticException
+     */
+    public void setup() throws IOException, CausticException {
         String projectName = application.getController().getProjectManager().getProject().getName();
 
         library = factory.createLibrary(new File("Projects/" + projectName + "/Library"));

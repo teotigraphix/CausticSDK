@@ -179,12 +179,12 @@ public class GrooveBox extends CaustkComponent {
     // selected items
     //----------------------------------
 
-    public final Pattern getSelectedPattern() {
-        return patternBank.getSelectedPattern();
+    public final Pattern getTemporaryPattern() {
+        return patternBank.getTemporaryPattern();
     }
 
     public final Part getSelectedPart() {
-        return getSelectedPattern().getSelectedPart();
+        return getTemporaryPattern().getSelectedPart();
     }
 
     public final Phrase getSelectedPhrase() {

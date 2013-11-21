@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.core.CausticException;
@@ -54,12 +57,15 @@ public class Pattern extends CaustkComponent {
     private int selectedPartIndex = 0;
 
     @Tag(103)
+    private Map<Integer, PartReference> parts = new HashMap<Integer, PartReference>();
+
+    @Tag(110)
     private int octave = 0;
 
-    @Tag(104)
+    @Tag(111)
     private float tempo = 120f;
 
-    @Tag(105)
+    @Tag(112)
     private int length = 1;
 
     //--------------------------------------------------------------------------
@@ -73,6 +79,14 @@ public class Pattern extends CaustkComponent {
     @Override
     public String getDefaultName() {
         return PatternUtils.toString(getBankIndex(), getPatternIndex());
+    }
+
+    PatternBank getPatternBank() {
+        return patternBank;
+    }
+
+    void setPatternBank(PatternBank value) {
+        patternBank = value;
     }
 
     //---------------------------------- 
@@ -107,6 +121,25 @@ public class Pattern extends CaustkComponent {
         selectedPartIndex = value;
         trigger(new OnPatternChange(this, PatternChangeKind.SelectedPartIndex, selectedPartIndex,
                 oldIndex));
+    }
+
+    Map<Integer, PartReference> getPartReferences() {
+        return parts;
+    }
+
+    public PartReference getPartReference(Part part) {
+        return parts.get(part.getMachineIndex());
+    }
+
+    /**
+     * Adds a {@link Part} as a {@link PartReference} on this pattern.
+     * 
+     * @param part The {@link Part} to proxy.
+     */
+    void addPartReference(ICaustkApplicationContext context, Part part) {
+        Integer partIndex = part.getMachineIndex();
+        PartReference partReference = new PartReference(context, part);
+        parts.put(partIndex, partReference);
     }
 
     //----------------------------------
@@ -363,4 +396,5 @@ public class Pattern extends CaustkComponent {
             this.part = part;
         }
     }
+
 }
