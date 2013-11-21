@@ -464,4 +464,8 @@ public class Library extends CaustkComponent {
         return file;
     }
 
+    public void save(ICaustkComponent component) throws FileNotFoundException {
+        writeToDisk(component);
+    }
+
 }

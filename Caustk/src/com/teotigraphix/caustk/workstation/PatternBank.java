@@ -279,6 +279,9 @@ public class PatternBank extends CaustkComponent {
         for (Part part : grooveBox.getParts()) {
             saveToPattern.getPartReference(part).update(context, part);
         }
+
+        Pattern pattern = patterns.get(temporaryPattern.getIndex());
+
     }
 
     @Override
@@ -336,10 +339,17 @@ public class PatternBank extends CaustkComponent {
 
         temporaryPattern.setPatternBank(this);
 
+        int bankIndex = temporaryPattern.getBankIndex();
+        int patternIndex = temporaryPattern.getPatternIndex();
+
         for (Part part : grooveBox.getParts()) {
             PartReference partReference = temporaryPattern.getPartReference(part);
-            part.getMachine().setPatch(partReference.getPatch());
-            part.getMachine().setPhrase(partReference.getPhrase());
+            Machine machine = part.getMachine();
+
+            machine.setCurrentBankPattern(bankIndex, patternIndex);
+
+            machine.setPatch(partReference.getPatch());
+            machine.setPhrase(partReference.getPhrase());
         }
 
         setSelectedIndex(pendingPattern);

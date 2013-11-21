@@ -178,12 +178,12 @@ public class Machine extends CaustkComponent {
         return patch;
     }
 
-    void setPatch(Patch value) {
+    void setPatch(Patch replacementPatch) {
         Patch oldPatch = patch;
         if (oldPatch != null) {
             oldPatch.setMachine(null);
         }
-        patch = value;
+        patch = replacementPatch;
         patch.setMachine(this);
         try {
             patch.update(factory.createContext());
@@ -200,16 +200,27 @@ public class Machine extends CaustkComponent {
         return phrases;
     }
 
-    void setPhrase(Phrase phrase) {
-        int index = phrase.getIndex();
+    /**
+     * The client has already set the bank/pattern before calling this.
+     * 
+     * @param replacementPhrase
+     */
+    void setPhrase(Phrase replacementPhrase) {
+        int index = replacementPhrase.getIndex();
         Phrase oldPhrase = phrases.get(index);
         if (oldPhrase != null) {
-            oldPhrase.setMachine(null);
+            oldPhrase.disconnect();
         }
-        phrase.setMachine(this);
-        phrases.put(index, phrase);
+        replacementPhrase.setMachine(this);
+        phrases.put(index, replacementPhrase);
+
+        // When a Phrase is replaced;
+        // - remove all notes
+        PatternSequencerMessage.CLEAR_PATTERN.send(getEngine(), getMachineIndex(),
+                replacementPhrase.getPatternIndex());
+
         try {
-            phrase.update(factory.createContext());
+            replacementPhrase.update(factory.createContext());
         } catch (CausticException e) {
             e.printStackTrace();
         }
