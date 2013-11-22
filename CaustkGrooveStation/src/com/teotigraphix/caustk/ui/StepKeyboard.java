@@ -78,6 +78,10 @@ public class StepKeyboard extends ControlTable {
         this.functionGroups = groups;
     }
 
+    public StepKeyboard(Skin skin) {
+        super(skin);
+    }
+
     //--------------------------------------------------------------------------
     // Overridden :: Methods
     //--------------------------------------------------------------------------
@@ -96,15 +100,17 @@ public class StepKeyboard extends ControlTable {
 
         add(stack).fill().expand();
 
-        row();
+        if (functionGroups != null) {
+            row();
 
-        Table functionGroup = new Table(getSkin());
-        functionGroup.padLeft(5f);
-        functionGroup.padRight(5f);
-        for (FunctionGroup group : functionGroups) {
-            createGroup(group, functionGroup);
+            Table functionGroup = new Table(getSkin());
+            functionGroup.padLeft(5f);
+            functionGroup.padRight(5f);
+            for (FunctionGroup group : functionGroups) {
+                createGroup(group, functionGroup);
+            }
+            add(functionGroup).expandX().fillX();
         }
-        add(functionGroup).expandX().fillX();
     }
 
     @Override
@@ -129,29 +135,32 @@ public class StepKeyboard extends ControlTable {
     private Table createShiftGroup() {
         ButtonGroup buttonGroup = new ButtonGroup();
         Table table = new Table();
-        for (int i = 0; i < 16; i++) {
-            FunctionGroupItem item = getItem(i);
-            StepButton stepButton = createButton(i, !item.isAutoExecute());
-            if (!item.isAutoExecute())
-                stepButton.setButtonGroup(buttonGroup);
-            stepButton.setOnStepButtonListener(new OnStepButtonListener() {
-                @Override
-                public boolean onChange(int index, boolean selected) {
-                    return selectionChange(index, selected);
-                }
 
-                @Override
-                public void onTouchUp(int index) {
-                }
+        if (functionGroups != null) {
+            for (int i = 0; i < 16; i++) {
+                FunctionGroupItem item = getItem(i);
+                StepButton stepButton = createButton(i, !item.isAutoExecute());
+                if (!item.isAutoExecute())
+                    stepButton.setButtonGroup(buttonGroup);
+                stepButton.setOnStepButtonListener(new OnStepButtonListener() {
+                    @Override
+                    public boolean onChange(int index, boolean selected) {
+                        return selectionChange(index, selected);
+                    }
 
-                @Override
-                public boolean onTouchDown(int index) {
-                    onStepKeyboardListener.onFunctionDown(index);
-                    return false;
-                }
+                    @Override
+                    public void onTouchUp(int index) {
+                    }
 
-            });
-            table.add(stepButton).space(5f).fill().expand();
+                    @Override
+                    public boolean onTouchDown(int index) {
+                        onStepKeyboardListener.onFunctionDown(index);
+                        return false;
+                    }
+
+                });
+                table.add(stepButton).space(5f).fill().expand();
+            }
         }
 
         return table;
