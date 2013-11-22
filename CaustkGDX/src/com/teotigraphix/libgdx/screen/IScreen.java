@@ -22,19 +22,19 @@ package com.teotigraphix.libgdx.screen;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.teotigraphix.libgdx.application.IGame;
+import com.teotigraphix.libgdx.application.IGdxApplication;
 
 public interface IScreen extends Screen {
 
     boolean isInitialized();
 
-    void initialize(IGame gdxGame);
+    void initialize(IGdxApplication gdxGame);
 
     Skin getSkin();
 
     Stage getStage();
 
-    IGame getGame();
+    IGdxApplication getGame();
 
     void create();
 

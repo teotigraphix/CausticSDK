@@ -27,10 +27,10 @@ import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.screen.IScreen;
 
 /**
- * The {@link IGame} API is the toplevel container for all user interface and
- * Caustic Core logic.
+ * The {@link IGdxApplication} API is the toplevel container for all user
+ * interface and Caustic Core logic.
  */
-public interface IGame extends ApplicationListener {
+public interface IGdxApplication extends ApplicationListener {
 
     /**
      * Returns the Application name passed during the game's construction.
@@ -43,23 +43,24 @@ public interface IGame extends ApplicationListener {
     void setScreen(int id);
 
     /**
-     * Sets the current {@link IScreen} of the {@link IGame}, each screen has a
-     * {@link Stage} filled with actors of the screen.
+     * Sets the current {@link IScreen} of the {@link IGdxApplication}, each
+     * screen has a {@link Stage} filled with actors of the screen.
      * 
      * @param screen The {@link IScreen} to set current.
      */
     void setScreen(IScreen screen);
 
     /**
-     * Returns the current {@link IScreen} of the {@link IGame}.
+     * Returns the current {@link IScreen} of the {@link IGdxApplication}.
      */
     IScreen getScreen();
 
     /**
      * The platform specifc sound generator impl.
      * <p>
-     * Subclasses of the {@link IGame} will accept the {@link ISoundGenerator}
-     * impl through their constructor and save the reference.
+     * Subclasses of the {@link IGdxApplication} will accept the
+     * {@link ISoundGenerator} impl through their constructor and save the
+     * reference.
      * <p>
      * <strong>Desktop</strong>
      * 

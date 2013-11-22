@@ -80,7 +80,7 @@ public class StartupExecutor {
      * - inject executor and game
      * - assign sound generator, caustic root, application root to configuration
      */
-    public void create(IGame game) throws CausticException, IOException {
+    public void create(IGdxApplication gdxApplication) throws CausticException, IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
         // File causticDirectory = new File(root.getAbsolutePath());
         File caustic = new File(root, "caustic");
@@ -92,7 +92,7 @@ public class StartupExecutor {
             root = newRoot;
         }
 
-        File applicationDirectory = new File(root, game.getAppName());
+        File applicationDirectory = new File(root, gdxApplication.getAppName());
 
         @SuppressWarnings("unchecked")
         final Class<StartupExecutor> clazz = (Class<StartupExecutor>)getClass();
@@ -115,13 +115,13 @@ public class StartupExecutor {
 
         // Injects all fields annotated with @Inject into this IGame instance.
         injector.injectMembers(instance);
-        injector.injectMembers(game); // just need the injector
+        injector.injectMembers(gdxApplication); // just need the injector
 
         caustkApplication = application.get();
         controller = caustkApplication.getController();
         controller.addComponent(IInjectorService.class, injectorService);
 
-        caustkApplication.getConfiguration().setSoundGenerator(game.getSoundGenerator());
+        caustkApplication.getConfiguration().setSoundGenerator(gdxApplication.getSoundGenerator());
         caustkApplication.getConfiguration().setCausticStorage(root);
         caustkApplication.getConfiguration().setApplicationRoot(applicationDirectory);
 

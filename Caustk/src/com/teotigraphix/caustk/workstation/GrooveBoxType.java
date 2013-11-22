@@ -32,7 +32,9 @@ public enum GrooveBoxType {
     /**
      * A groove machine with 2 beatbox parts.
      */
-    DrumMachine2("dm2", "drum_machine2");
+    DrumMachine2("dm2", "drum_machine2"),
+
+    MS1Machine("ms1", "ms1_machine");
 
     private final String type;
 

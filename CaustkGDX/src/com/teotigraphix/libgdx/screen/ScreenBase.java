@@ -31,7 +31,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.libgdx.application.IGame;
+import com.teotigraphix.libgdx.application.IGdxApplication;
 import com.teotigraphix.libgdx.controller.ScreenMediator;
 
 public class ScreenBase implements IScreen {
@@ -46,7 +46,7 @@ public class ScreenBase implements IScreen {
 
     protected Color backgroundColor = new Color();
 
-    protected IGame game;
+    protected IGdxApplication gdxApplication;
 
     protected Stage stage;
 
@@ -64,8 +64,8 @@ public class ScreenBase implements IScreen {
     }
 
     @Override
-    public IGame getGame() {
-        return game;
+    public IGdxApplication getGame() {
+        return gdxApplication;
     }
 
     @Override
@@ -266,8 +266,8 @@ public class ScreenBase implements IScreen {
     }
 
     @Override
-    public void initialize(IGame game) {
+    public void initialize(IGdxApplication gdxApplication) {
         initialized = true;
-        this.game = game;
+        this.gdxApplication = gdxApplication;
     }
 }

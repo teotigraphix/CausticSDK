@@ -47,7 +47,7 @@ import com.teotigraphix.libgdx.screen.IScreen;
  * Screens are not disposed automatically. You must handle whether you want to
  * keep screens around or dispose of them when another screen is set.
  */
-public abstract class GDXGame implements IGame {
+public abstract class GdxApplication implements IGdxApplication {
 
     @Inject
     Injector injector;
@@ -129,7 +129,7 @@ public abstract class GDXGame implements IGame {
     // appName
     //--------------------------------------------------------------------------
 
-    public GDXGame(String appName, ISoundGenerator soundGenerator, Module module) {
+    public GdxApplication(String appName, ISoundGenerator soundGenerator, Module module) {
         this.appName = appName;
         this.soundGenerator = soundGenerator;
         this.module = module;
