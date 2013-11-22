@@ -24,7 +24,6 @@ import org.androidtransfuse.event.EventObserver;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.controller.ICaustkApplication.OnCausticApplicationStateChange;
 import com.teotigraphix.libgdx.controller.CaustkMediator;
-import com.teotigraphix.libgdx.model.ApplicationModelState;
 import com.teotigraphix.libgdx.model.IApplicationModel;
 import com.teotigraphix.libgdx.model.IApplicationModel.OnApplicationModelPhaseChange;
 
@@ -32,8 +31,6 @@ import com.teotigraphix.libgdx.model.IApplicationModel.OnApplicationModelPhaseCh
  * A bas application mediator for application state, first run and load logic.
  * 
  * @author Michael Schmalle
- * @see #firstRun(ApplicationModelState)
- * @see #onLoad()
  */
 public abstract class ApplicationMediatorBase extends CaustkMediator implements
         IApplicationMediator {

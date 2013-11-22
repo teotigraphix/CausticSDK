@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.workstation;
 
 import com.teotigraphix.caustk.workstation.grooveBox.Bassline2Machine;
+import com.teotigraphix.caustk.workstation.grooveBox.MS1GrooveBox;
 
 /**
  * @author Michael Schmalle
@@ -48,6 +49,9 @@ public class GrooveSetFactory extends CaustkSubFactoryBase {
                 machine = new Bassline2Machine(info, grooveSet);
                 break;
             case DrumMachine2:
+                break;
+            case MS1Machine:
+                machine = new MS1GrooveBox(info, grooveSet);
                 break;
         }
 

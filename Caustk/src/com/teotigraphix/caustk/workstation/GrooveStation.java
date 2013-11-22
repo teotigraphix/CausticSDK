@@ -203,6 +203,8 @@ public class GrooveStation {
 
     public void save() throws FileNotFoundException {
         // XXX Save system state when application is saved.
+        library.refresh(grooveSet);
+        factory.save(library, library.getLibrariesDirectory());
     }
 
     //--------------------------------------------------------------------------
