@@ -41,7 +41,10 @@ public class PatternBankFactory extends CaustkSubFactoryBase {
     }
 
     public Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
-        Part part = new Part(info, grooveBox, machine);
+        Part part = new SynthPart(info, grooveBox, machine);
+        if (machine.getMachineType() == MachineType.Beatbox) {
+            part = new RhythmPart(info, grooveBox, machine);
+        }
         return part;
     }
 }

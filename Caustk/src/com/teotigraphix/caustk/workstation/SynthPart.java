@@ -24,6 +24,18 @@ package com.teotigraphix.caustk.workstation;
  */
 public class SynthPart extends Part {
 
-    public SynthPart() {
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /*
+     * Serialization.
+     */
+    SynthPart() {
     }
+
+    SynthPart(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
+        super(info, grooveBox, machine);
+    }
+
 }

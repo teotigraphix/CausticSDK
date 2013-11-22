@@ -89,6 +89,9 @@ public class GrooveBox extends CaustkComponent {
     @Tag(105)
     private KeyboardMode keyboardMode = KeyboardMode.Off;
 
+    @Tag(106)
+    private PartSelectState partSelectState = PartSelectState.Select;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -176,6 +179,21 @@ public class GrooveBox extends CaustkComponent {
     }
 
     //----------------------------------
+    // partSelectState
+    //----------------------------------
+
+    public PartSelectState getPartSelectState() {
+        return partSelectState;
+    }
+
+    public void setPartSelectState(PartSelectState value) {
+        if (value == partSelectState)
+            return;
+        partSelectState = value;
+        trigger(new OnGrooveBoxChange(this, GrooveBoxChangeKind.PartSelectState));
+    }
+
+    //----------------------------------
     // selected items
     //----------------------------------
 
@@ -189,6 +207,18 @@ public class GrooveBox extends CaustkComponent {
 
     public final Phrase getSelectedPhrase() {
         return getSelectedPart().getPhrase();
+    }
+
+    public void setSelectedPart(int index) {
+        getTemporaryPattern().setSelectedPartIndex(index);
+    }
+
+    public void selectRhythmPart(int partIndex, int channelIndex) {
+        setSelectedPart(partIndex);
+
+        RhythmPart selectedPart = (RhythmPart)getSelectedPart();
+        selectedPart.setSelectedChannel(channelIndex);
+        trigger(new OnGrooveBoxChange(this, GrooveBoxChangeKind.RhythmChannel));
     }
 
     //--------------------------------------------------------------------------
@@ -342,6 +372,10 @@ public class GrooveBox extends CaustkComponent {
         SelectedIndex,
 
         KeyboardMode,
+
+        PartSelectState,
+
+        RhythmChannel
     }
 
     /**
@@ -431,4 +465,13 @@ public class GrooveBox extends CaustkComponent {
     public void frameChange(float delta, int measure, float beat) {
         getSelectedPhrase().frameChange(delta, measure, beat);
     }
+
+    public enum PartSelectState {
+        Mute,
+
+        Select,
+
+        Solo
+    }
+
 }

@@ -130,7 +130,6 @@ public class Part extends CaustkComponent {
     //----------------------------------
 
     public boolean isRhythm() {
-        // TODO Auto-generated method stub
         return false;
     }
 

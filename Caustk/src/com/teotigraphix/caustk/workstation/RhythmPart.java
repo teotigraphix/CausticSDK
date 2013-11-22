@@ -22,17 +22,34 @@ package com.teotigraphix.caustk.workstation;
 import java.io.File;
 import java.io.IOException;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.rack.tone.BeatboxTone;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.ShuffleMode;
 import com.teotigraphix.caustk.rack.tone.components.beatbox.WavSamplerChannel;
 
+/**
+ * @author Michael Schmalle
+ */
 public class RhythmPart extends Part {
 
-    private int root = 48;
+    private transient int root = 48;
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(200)
     private int selectedChannel;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // selectedChannel
+    //----------------------------------
 
     public int getSelectedChannel() {
         return selectedChannel;
@@ -47,8 +64,18 @@ public class RhythmPart extends Part {
         return true;
     }
 
-    public RhythmPart() {
-        // TODO Auto-generated constructor stub
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /*
+     * Serialization.
+     */
+    RhythmPart() {
+    }
+
+    RhythmPart(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
+        super(info, grooveBox, machine);
     }
 
     //--------------------------------------------------------------------------
@@ -87,6 +114,7 @@ public class RhythmPart extends Part {
         }
     }
 
+    @Override
     public int toPitch(int channel) {
         return root + channel;
     }
