@@ -54,7 +54,7 @@ public class RackSet extends CaustkComponent {
 
     private transient IRack rack;
 
-    private transient boolean deleteCausticFile = true;
+    private transient boolean deleteCausticFile = false;
 
     /**
      * Returns the {@link ICaustkController#getDispatcher()}.

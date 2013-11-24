@@ -69,15 +69,13 @@ public class StepKeyboard extends ControlTable {
         invalidate();
     }
 
+    public void setFunctionGroups(Array<FunctionGroup> value) {
+        functionGroups = value;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
-
-    public StepKeyboard(Array<FunctionGroup> groups, Skin skin) {
-        super(skin);
-        this.functionGroups = groups;
-    }
-
     public StepKeyboard(Skin skin) {
         super(skin);
     }
@@ -100,7 +98,7 @@ public class StepKeyboard extends ControlTable {
 
         add(stack).fill().expand();
 
-        if (functionGroups != null) {
+        if (hasFunctions()) {
             row();
 
             Table functionGroup = new Table(getSkin());
@@ -132,11 +130,15 @@ public class StepKeyboard extends ControlTable {
         }
     }
 
+    private final boolean hasFunctions() {
+        return functionGroups != null && functionGroups.size > 0;
+    }
+
     private Table createShiftGroup() {
         ButtonGroup buttonGroup = new ButtonGroup();
         Table table = new Table();
 
-        if (functionGroups != null) {
+        if (hasFunctions()) {
             for (int i = 0; i < 16; i++) {
                 FunctionGroupItem item = getItem(i);
                 StepButton stepButton = createButton(i, !item.isAutoExecute());
