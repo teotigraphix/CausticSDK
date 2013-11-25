@@ -74,8 +74,8 @@ public class RhythmPart extends Part {
     RhythmPart() {
     }
 
-    RhythmPart(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
-        super(info, grooveBox, machine);
+    RhythmPart(ComponentInfo info, GrooveBox grooveBox, Machine machine, int index) {
+        super(info, grooveBox, machine, index);
     }
 
     //--------------------------------------------------------------------------

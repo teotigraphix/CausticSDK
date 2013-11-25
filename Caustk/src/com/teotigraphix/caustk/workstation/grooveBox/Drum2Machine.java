@@ -17,8 +17,8 @@ public class Drum2Machine extends GrooveBox {
         super(info, grooveSet);
 
         GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(GrooveBoxType.DrumMachine2);
-        descriptor.addPart("p1", MachineType.Beatbox);
-        descriptor.addPart("p2", MachineType.Beatbox);
+        descriptor.addPart("p1", MachineType.Beatbox, null);
+        descriptor.addPart("p2", MachineType.Beatbox, null);
 
         setDescriptor(descriptor);
     }

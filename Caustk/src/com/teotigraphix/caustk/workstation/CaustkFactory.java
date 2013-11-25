@@ -359,8 +359,8 @@ public class CaustkFactory implements ICaustkFactory {
     //----------------------------------
 
     @Override
-    public PatternBank createPatternBank(GrooveBox grooveBox) {
-        return patternBankFactory.createPatternBank(grooveBox);
+    public PatternBank createPatternBank(String name, GrooveBox grooveBox) {
+        return patternBankFactory.createPatternBank(name, grooveBox);
     }
 
     @Override
@@ -374,8 +374,8 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
-        return patternBankFactory.createPart(info, grooveBox, machine);
+    public Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine, int index) {
+        return patternBankFactory.createPart(info, grooveBox, machine, index);
     }
 
     //----------------------------------

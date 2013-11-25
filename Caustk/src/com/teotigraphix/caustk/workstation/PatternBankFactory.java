@@ -19,13 +19,16 @@
 
 package com.teotigraphix.caustk.workstation;
 
+/**
+ * @author Michael Schmalle
+ */
 public class PatternBankFactory extends CaustkSubFactoryBase {
 
     public PatternBankFactory() {
     }
 
-    public PatternBank createPatternBank(GrooveBox grooveBox) {
-        ComponentInfo info = getFactory().createInfo(ComponentType.PatternBank);
+    public PatternBank createPatternBank(String name, GrooveBox grooveBox) {
+        ComponentInfo info = getFactory().createInfo(ComponentType.PatternBank, name);
         PatternBank patternBank = new PatternBank(info, grooveBox);
         return patternBank;
     }
@@ -40,10 +43,10 @@ public class PatternBankFactory extends CaustkSubFactoryBase {
         return pattern;
     }
 
-    public Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
-        Part part = new SynthPart(info, grooveBox, machine);
+    public Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine, int index) {
+        Part part = new SynthPart(info, grooveBox, machine, index);
         if (machine.getMachineType() == MachineType.Beatbox) {
-            part = new RhythmPart(info, grooveBox, machine);
+            part = new RhythmPart(info, grooveBox, machine, index);
         }
         return part;
     }

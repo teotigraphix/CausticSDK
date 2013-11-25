@@ -241,35 +241,40 @@ public class GrooveBox extends CaustkComponent {
     /**
      * Creates a new {@link Machine} and wraps it in a {@link Part} instance.
      * <p>
-     * The {@link Part} is added to the {@link PatternBank}.
+     * The {@link Part} is added to the {@link GrooveBox}.
      * <p>
      * Calling this method will implicitly call
      * {@link Machine#create(ICaustkApplicationContext)} through the RackSet's
      * create() and create the {@link RackTone} in the native rack.
      * 
-     * @param machineIndex The machine index.
-     * @param machineType The {@link MachineType}.
-     * @param machineName The native machine name.
-     * @return A new {@link Part} instance added tot he {@link PatternBank}.
+     * @param context
+     * @param partDescriptor
+     * @return A new {@link Part} instance added to the {@link GrooveBox}.
      * @throws CausticException
      */
-    public Part createPart(int machineIndex, MachineType machineType, String machineName)
+    private Part createPart(ICaustkApplicationContext context, PartDescriptor partDescriptor)
             throws CausticException {
         ICaustkFactory factory = getRackSet().getFactory();
-        ICaustkApplicationContext context = factory.createContext();
-        getRackSet().getLogger().log(
-                "GrooveBox",
-                "Create Part; [" + machineIndex + ", " + machineType.getType() + ", " + machineName
-                        + "]");
-        // this adds the machine to the rackSet, calls create()
+
+        int index = partDescriptor.getIndex();
+        int machineIndex = partDescriptor.getMachineIndex();
+        if (machineIndex == -1)
+            machineIndex = grooveSet.getRackSet().getMachineCount();
+
+        String type = partDescriptor.getPatternTypeId();
+        MachineType machineType = partDescriptor.getMachineType();
+        String partName = partDescriptor.getMachineName();
+        String machineName = machineIndex + "_" + type + "_" + partName;
+
         Machine machine = getRackSet().createMachine(machineIndex, machineName, machineType);
+
         ComponentInfo info = factory.createInfo(ComponentType.Part, machineName);
-        Part part = factory.createPart(info, this, machine);
+        Part part = factory.createPart(info, this, machine, index);
         part.create(context);
-        parts.put(machineIndex, part);
-        partAdd(part);
-        getRackSet().getComponentDispatcher().trigger(
-                new OnGrooveBoxChange(this, GrooveBoxChangeKind.PartAdd, part));
+
+        getRackSet().getLogger().log("GrooveBox",
+                "Create Part; [" + partDescriptor.toString() + "]");
+
         return part;
     }
 
@@ -304,8 +309,9 @@ public class GrooveBox extends CaustkComponent {
     }
 
     private void partAdd(Part part) {
-        // TODO Auto-generated method stub
-
+        parts.put(part.getIndex(), part);
+        getRackSet().getComponentDispatcher().trigger(
+                new OnGrooveBoxChange(this, GrooveBoxChangeKind.PartAdd, part));
     }
 
     @Override
@@ -313,17 +319,12 @@ public class GrooveBox extends CaustkComponent {
             throws CausticException {
         switch (phase) {
             case Create:
-                //machine.create(rackSet.getFactory().createContext());
                 // when the part is created it will be named '01_dm2_p1', '02_dm2_p1'
                 // 01_dm2_p1 [machineIndex]_[machineType]_[partName]
                 // where machineIndex is the index within the GrooveSet
                 for (PartDescriptor partDescriptor : getDescriptor().getParts()) {
-                    int index = grooveSet.getRackSet().getMachineCount();
-                    String type = partDescriptor.getPatternTypeId();
-                    String name = partDescriptor.getMachineName();
-                    String machineName = machineIndex + "_" + type + "_" + name;
-
-                    createPart(index, partDescriptor.getMachineType(), machineName);
+                    Part part = createPart(context, partDescriptor);
+                    partAdd(part);
                 }
                 break;
             case Load:

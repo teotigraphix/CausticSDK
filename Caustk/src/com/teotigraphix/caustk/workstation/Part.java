@@ -39,6 +39,9 @@ public class Part extends CaustkComponent {
     @Tag(101)
     private Machine machine;
 
+    @Tag(102)
+    private int index;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -61,17 +64,6 @@ public class Part extends CaustkComponent {
     }
 
     //----------------------------------
-    // patternBank
-    //----------------------------------
-
-    /**
-     * Returns the owning {@link PatternBank}.
-     */
-    public PatternBank getPatternBank() {
-        return grooveBox.getPatternBank();
-    }
-
-    //----------------------------------
     // machine
     //----------------------------------
 
@@ -85,6 +77,32 @@ public class Part extends CaustkComponent {
 
     public int getMachineIndex() {
         return machine.getMachineIndex();
+    }
+
+    //----------------------------------
+    // index
+    //----------------------------------
+
+    /**
+     * Returns the part's local index within it's {@link GrooveBox} owner.
+     * <p>
+     * This value is not the same as the {@link #getMachineIndex()} which will
+     * point to the index of the part within the native machine's pattern
+     * sequencer.
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    //----------------------------------
+    // patternBank
+    //----------------------------------
+
+    /**
+     * Returns the owning {@link PatternBank}.
+     */
+    public PatternBank getPatternBank() {
+        return grooveBox.getPatternBank();
     }
 
     //----------------------------------
@@ -215,10 +233,11 @@ public class Part extends CaustkComponent {
     Part() {
     }
 
-    Part(ComponentInfo info, GrooveBox grooveBox, Machine machine) {
+    Part(ComponentInfo info, GrooveBox grooveBox, Machine machine, int index) {
         setInfo(info);
         this.grooveBox = grooveBox;
         this.machine = machine;
+        this.index = index;
     }
 
     //--------------------------------------------------------------------------

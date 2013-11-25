@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.workstation;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,12 +28,16 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.utils.PatternUtils;
+import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
  * @author Michael Schmalle
  */
 public class PatternBank extends CaustkComponent {
+
+    private transient Map<Integer, PartDescriptor> partDescriptors = new HashMap<Integer, PartDescriptor>();
+
+    private Map<Integer, Pattern> patterns = new TreeMap<Integer, Pattern>();
 
     private transient GrooveBox grooveBox;
 
@@ -84,7 +89,7 @@ public class PatternBank extends CaustkComponent {
     private String patternTypeId;
 
     @Tag(102)
-    private Map<Integer, Pattern> patterns = new TreeMap<Integer, Pattern>();
+    private Map<Integer, PatternReference> patternReferences = new TreeMap<Integer, PatternReference>();
 
     @Tag(103)
     private int selectedIndex = 0;
@@ -276,13 +281,13 @@ public class PatternBank extends CaustkComponent {
     @Override
     public void onSave(ICaustkApplicationContext context) {
         super.onSave(context);
-
-        // Update the saveToPattern with the temporaryPattern's Patch and Phrase
-        Pattern saveToPattern = patterns.get(temporaryPattern.getIndex());
-        // the partReference's Patch and Phrase reference the Part's 
-        for (Part part : grooveBox.getParts()) {
-            saveToPattern.getPartReference(part).update(context, part, saveToPattern.getIndex());
-        }
+        // XXX
+        //        // Update the saveToPattern with the temporaryPattern's Patch and Phrase
+        //        Pattern saveToPattern = patterns.get(temporaryPattern.getIndex());
+        //        // the partReference's Patch and Phrase reference the Part's 
+        //        for (Part part : grooveBox.getParts()) {
+        //            saveToPattern.getPartReference(part).update(context, part, saveToPattern.getIndex());
+        //        }
     }
 
     @Override
@@ -292,15 +297,22 @@ public class PatternBank extends CaustkComponent {
             case Connect:
                 break;
             case Create:
+                @SuppressWarnings("unused")
                 final ICaustkFactory factory = context.getFactory();
-                // create all 64 Pattern instances for the initial set
+
+                // we copy the parts from the groove baxk to pattern bank
+                for (PartDescriptor descriptor : grooveBox.getDescriptor().getParts()) {
+                    PartDescriptor newDescriptor = new PartDescriptor(descriptor);
+                    partDescriptors.put(descriptor.getIndex(), newDescriptor);
+                }
+
+                // create all 64 PatternReference instances for the initial set
                 // no Parts are defined until createPart is called
                 for (int i = 0; i < 64; i++) {
-                    String name = PatternUtils.toString(i);
-                    ComponentInfo info = factory.createInfo(ComponentType.Pattern, name);
-                    Pattern pattern = factory.createPattern(info, this, i);
-                    addPattern(pattern);
+                    PatternReference patternReference = new PatternReference(i, this);
+                    patternReferences.put(i, patternReference);
                 }
+
                 break;
 
             case Load:

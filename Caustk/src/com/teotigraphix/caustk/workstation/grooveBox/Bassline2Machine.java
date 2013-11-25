@@ -19,6 +19,13 @@
 
 package com.teotigraphix.caustk.workstation.grooveBox;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.workstation.ComponentInfo;
 import com.teotigraphix.caustk.workstation.GrooveBox;
 import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor;
@@ -34,13 +41,25 @@ public class Bassline2Machine extends GrooveBox {
     public Bassline2Machine() {
     }
 
-    public Bassline2Machine(ComponentInfo info, GrooveSet grooveSet) {
+    public Bassline2Machine(ComponentInfo info, GrooveSet grooveSet) throws FileNotFoundException {
         super(info, grooveSet);
 
         GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(GrooveBoxType.BasslineMachine2);
         // when the part is created it will be named 'bl1_part1'
-        descriptor.addPart("p1", MachineType.Bassline);
-        descriptor.addPart("p2", MachineType.Bassline);
+
+        File file = RuntimeUtils.getCausticPresetsFile(MachineType.Bassline, "DRIVE IT");
+        if (!file.exists())
+            throw new FileNotFoundException();
+
+        byte[] data = null;
+        try {
+            data = FileUtils.readFileToByteArray(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        descriptor.addPart("p1", MachineType.Bassline, data);
+        descriptor.addPart("p2", MachineType.Bassline, data);
 
         setDescriptor(descriptor);
     }

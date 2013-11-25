@@ -40,15 +40,15 @@ public class MS1GrooveBox extends GrooveBox {
         GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(GrooveBoxType.MS1Machine);
 
         // when the part is created it will be named 'ms1_p1'
-        descriptor.addPart("p1", MachineType.Beatbox);
-        descriptor.addPart("p2", MachineType.Beatbox);
+        descriptor.addPart("p1", MachineType.Beatbox, null);
+        descriptor.addPart("p2", MachineType.Beatbox, null);
 
-        descriptor.addPart("p3", MachineType.Bassline);
-        descriptor.addPart("p4", MachineType.SubSynth);
-        descriptor.addPart("p5", MachineType.Modular);
-        descriptor.addPart("p6", MachineType.SubSynth); // FMSynth
-        descriptor.addPart("p7", MachineType.PadSynth);
-        descriptor.addPart("p8", MachineType.PCMSynth);
+        descriptor.addPart("p3", MachineType.Bassline, null);
+        descriptor.addPart("p4", MachineType.SubSynth, null);
+        descriptor.addPart("p5", MachineType.Modular, null);
+        descriptor.addPart("p6", MachineType.SubSynth, null); // FMSynth
+        descriptor.addPart("p7", MachineType.PadSynth, null);
+        descriptor.addPart("p8", MachineType.PCMSynth, null);
 
         setDescriptor(descriptor);
     }

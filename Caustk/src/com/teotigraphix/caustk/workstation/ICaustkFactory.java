@@ -185,13 +185,19 @@ public interface ICaustkFactory {
 
     Kryo getKryo();
 
-    PatternBank createPatternBank(GrooveBox grooveBox);
+    /**
+     * Creates a new {@link PatternBank} with a name.
+     * 
+     * @param name The name of the pattern bank.
+     * @param grooveBox The owning groove box.
+     */
+    PatternBank createPatternBank(String name, GrooveBox grooveBox);
 
     PatternBank createPatternBank(ComponentInfo info, GrooveBox grooveBox);
 
     Pattern createPattern(ComponentInfo info, PatternBank patternBank, int index);
 
-    Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine);
+    Part createPart(ComponentInfo info, GrooveBox grooveBox, Machine machine, int index);
 
     SongBank createSongBank(ComponentInfo info, UUID patternBankId);
 

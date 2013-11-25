@@ -19,10 +19,53 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.util.UUID;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.utils.PatternUtils;
+
 /**
  * @author Michael Schmalle
  */
-public class SynthPart extends Part {
+public class PatternReference {
+
+    private PatternBank patternBank;
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(0)
+    private int index;
+
+    @Tag(1)
+    private UUID patternBankId;
+
+    private UUID patternId;
+
+    public int getIndex() {
+        return index;
+    }
+
+    public UUID getPatternBankId() {
+        return patternBankId;
+    }
+
+    public UUID getPatternId() {
+        return patternId;
+    }
+
+    public boolean hasPattern() {
+        return patternId != null;
+    }
+
+    public PatternBank getPatternBank() {
+        return patternBank;
+    }
+
+    public String getName() {
+        return PatternUtils.toString(index);
+    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -31,11 +74,13 @@ public class SynthPart extends Part {
     /*
      * Serialization.
      */
-    SynthPart() {
+    PatternReference() {
     }
 
-    SynthPart(ComponentInfo info, GrooveBox grooveBox, Machine machine, int index) {
-        super(info, grooveBox, machine, index);
+    public PatternReference(int index, PatternBank patternBank) {
+        this.index = index;
+        this.patternBank = patternBank;
+        this.patternBankId = patternBank.getInfo().getId();
     }
 
 }
