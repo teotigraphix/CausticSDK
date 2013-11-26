@@ -199,6 +199,17 @@ public class SystemSequencer extends CaustkComponent {
         return changed;
     }
 
+    // XXX how would we check 32nd, or is that to fast.. ?
+    public boolean updateStep(int measure, float beat) {
+        // sixteenth step calculation
+        int step = (int)Math.floor((beat % 4) * 4);
+        if (step != currentSixteenthStep) {
+            currentSixteenthStep = step;
+            return true;
+        }
+        return false;
+    }
+
     public int getCurrentBeat() {
         return currentBeat;
     }

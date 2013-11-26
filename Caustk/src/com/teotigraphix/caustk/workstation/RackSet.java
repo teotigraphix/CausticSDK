@@ -373,6 +373,11 @@ public class RackSet extends CaustkComponent {
         return changed;
     }
 
+    public boolean updateStep(int measure, float beat) {
+        final boolean changed = masterSequencer.updateStep(measure, beat);
+        return changed;
+    }
+
     public void addMachine(int index, Machine machine) throws CausticException {
         // XXX This is going to be complex but just try adding to empty
         // if the index is right, should be able to call update()

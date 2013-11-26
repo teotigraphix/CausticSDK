@@ -34,7 +34,7 @@ public interface IScreen extends Screen {
 
     Stage getStage();
 
-    IGdxApplication getGame();
+    IGdxApplication getApplication();
 
     void create();
 

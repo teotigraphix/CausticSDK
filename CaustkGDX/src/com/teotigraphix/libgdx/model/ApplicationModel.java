@@ -157,7 +157,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
         if (initialized)
             return;
         initialized = value;
-        getController().trigger(new OnApplicationModelInitialize(this));
+        trigger(new OnApplicationModelPhaseChange(ApplicationModelPhase.Initialize));
     }
 
     //----------------------------------
@@ -187,7 +187,7 @@ public class ApplicationModel extends CaustkModelBase implements IApplicationMod
 
     @Override
     public void pushScreen(int screenId) {
-        screenProvider.getScreen().getGame().setScreen(screenId);
+        screenProvider.getScreen().getApplication().setScreen(screenId);
     }
 
     @Override

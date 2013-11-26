@@ -64,7 +64,7 @@ public class ScreenBase implements IScreen {
     }
 
     @Override
-    public IGdxApplication getGame() {
+    public IGdxApplication getApplication() {
         return gdxApplication;
     }
 

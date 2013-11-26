@@ -101,6 +101,12 @@ public class GrooveStation {
                     grooveBox.frameChange(delta, measure, beat);
                 }
             }
+
+            @Override
+            public void stepChange(int sixteenthStep) {
+                // TODO Auto-generated method stub
+
+            }
         });
     }
 

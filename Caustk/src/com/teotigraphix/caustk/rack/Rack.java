@@ -174,9 +174,12 @@ public class Rack implements IRack {
      * @author Michael Schmalle
      */
     public interface OnRackListener {
-        void beatChange(int measure, float beat);
 
         void frameChange(float delta, int measure, float beat);
+
+        void beatChange(int measure, float beat);
+
+        void stepChange(int sixteenthStep);
     }
 
     @Override
@@ -186,10 +189,18 @@ public class Rack implements IRack {
         for (OnRackListener listener : listeners) {
             listener.frameChange(delta, measure, beat);
         }
-        final boolean changed = rackSet.updatePosition(measure, beat);
+
+        boolean changed = rackSet.updatePosition(measure, beat);
         if (changed) {
             for (OnRackListener listener : listeners) {
                 listener.beatChange(measure, beat);
+            }
+        }
+
+        changed = rackSet.updateStep(measure, beat);
+        if (changed) {
+            for (OnRackListener listener : listeners) {
+                listener.stepChange(rackSet.getSequencer().getCurrentSixteenthStep());
             }
         }
     }

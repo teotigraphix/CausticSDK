@@ -170,7 +170,7 @@ public class Phrase extends CaustkComponent {
 
     /**
      * @param value 1, 2, 4, 8
-     * @see OnTrackPhraseLengthChange
+     * @see OnPhraseChange
      */
     public void setLength(int value) {
         if (value == length)
@@ -1036,7 +1036,7 @@ public class Phrase extends CaustkComponent {
 
     /**
      * @author Michael Schmalle
-     * @see IRack#getDispatcher()
+     * @see Machine#getDispatcher()
      */
     public static class OnPhraseChange {
 

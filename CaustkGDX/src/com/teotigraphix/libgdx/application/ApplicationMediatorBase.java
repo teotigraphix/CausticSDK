@@ -56,6 +56,10 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
                             case ReloadProject:
                                 onReloadProject();
                                 break;
+
+                            case Initialize:
+                                onInitialize();
+                                break;
                         }
                     }
                 });
@@ -83,6 +87,9 @@ public abstract class ApplicationMediatorBase extends CaustkMediator implements
     }
 
     protected void onReloadProject() {
+    }
+
+    protected void onInitialize() {
     }
 
 }

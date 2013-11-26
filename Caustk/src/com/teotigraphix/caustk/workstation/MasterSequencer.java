@@ -152,8 +152,12 @@ public class MasterSequencer extends CaustkComponent {
         }
     }
 
-    boolean updatePosition(int measure, float beat) {
+    final boolean updatePosition(int measure, float beat) {
         return systemSequencer.updatePosition(measure, beat);
+    }
+
+    final boolean updateStep(int measure, float beat) {
+        return systemSequencer.updateStep(measure, beat);
     }
 
     void updateMachine(Machine caustkMachine) {

@@ -24,6 +24,7 @@ import java.io.IOException;
 import com.teotigraphix.caustk.controller.ICaustkController;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
+import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.libgdx.dialog.IDialogManager;
 import com.teotigraphix.libgdx.screen.IScreen;
 
@@ -59,8 +60,17 @@ public interface IApplicationModel extends ICaustkModel {
     // initialized
     //----------------------------------
 
+    /**
+     * Whether the application model has initialized or reloaded the initial
+     * {@link Project} state.
+     */
     boolean isInitialized();
 
+    /**
+     * @param value
+     * @see OnApplicationModelPhaseChange
+     * @see ApplicationModelPhase#Initialize
+     */
     void setInitialized(boolean value);
 
     //----------------------------------
@@ -122,9 +132,19 @@ public interface IApplicationModel extends ICaustkModel {
     //--------------------------------------------------------------------------
 
     public enum ApplicationModelPhase {
+
         InitializeProject,
 
-        ReloadProject;
+        ReloadProject,
+
+        /**
+         * Dispatched after the initialize or reload project is fired.
+         * <p>
+         * This phase allows application mediators to hook into the
+         * {@link IRack} and other application singletons regardless of project
+         * state.
+         */
+        Initialize;
     }
 
     public static class OnApplicationModelPhaseChange {
@@ -177,20 +197,4 @@ public interface IApplicationModel extends ICaustkModel {
             this.dirty = dirty;
         }
     }
-
-    /**
-     * Dispatched from {@link ICaustkController}
-     */
-    public static class OnApplicationModelInitialize {
-        private IApplicationModel model;
-
-        public final IApplicationModel getModel() {
-            return model;
-        }
-
-        public OnApplicationModelInitialize(IApplicationModel model) {
-            this.model = model;
-        }
-    }
-
 }
