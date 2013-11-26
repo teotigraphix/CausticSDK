@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.workstation;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
@@ -40,6 +41,8 @@ public class Pattern extends CaustkComponent {
     // call through itself and then it sets Part API, after which dispatching
     // a change event
 
+    private transient PatternBank patternBank;
+
     private transient Song song;
 
     //--------------------------------------------------------------------------
@@ -47,7 +50,7 @@ public class Pattern extends CaustkComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private PatternBank patternBank;
+    private UUID patternBankId;
 
     // the index the PatternSet assigns
     @Tag(101)
@@ -57,7 +60,7 @@ public class Pattern extends CaustkComponent {
     private int selectedPartIndex = 0;
 
     @Tag(103)
-    private Map<Integer, PartReference> parts = new HashMap<Integer, PartReference>();
+    private Map<Integer, PartReference> partReferences = new HashMap<Integer, PartReference>();
 
     @Tag(110)
     private int octave = 0;
@@ -123,23 +126,24 @@ public class Pattern extends CaustkComponent {
                 oldIndex));
     }
 
-    Map<Integer, PartReference> getPartReferences() {
-        return parts;
-    }
-
+    //    Map<Integer, PartReference> getPartReferences() {
+    //        return parts;
+    //    }
+    //
     public PartReference getPartReference(Part part) {
-        return parts.get(part.getMachineIndex());
+        return partReferences.get(part.getIndex());
     }
 
-    /**
-     * Adds a {@link Part} as a {@link PartReference} on this pattern.
-     * 
-     * @param part The {@link Part} to proxy.
-     */
-    void addPartReference(ICaustkApplicationContext context, Part part) {
-        Integer partIndex = part.getMachineIndex();
-        PartReference partReference = new PartReference(context, part, index);
-        parts.put(partIndex, partReference);
+    //
+    //    /**
+    //     * Adds a {@link Part} as a {@link PartReference} on this pattern.
+    //     * 
+    //     * @param part The {@link Part} to proxy.
+    //     */
+    void addPartReference(Part part) {
+        int partIndex = part.getIndex();
+        PartReference partReference = new PartReference(part, index);
+        partReferences.put(partIndex, partReference);
     }
 
     //----------------------------------
@@ -270,6 +274,7 @@ public class Pattern extends CaustkComponent {
     Pattern(ComponentInfo info, PatternBank patternBank, int index) {
         setInfo(info);
         this.patternBank = patternBank;
+        this.patternBankId = patternBank.getInfo().getId();
         this.index = index;
     }
 

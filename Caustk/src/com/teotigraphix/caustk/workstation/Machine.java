@@ -233,6 +233,11 @@ public class Machine extends CaustkComponent {
     }
 
     void replacePhrase(Phrase phrase) {
+        Phrase oldPhrase = phrases.get(phrase.getIndex());
+        if (oldPhrase != null) {
+            // this was the temporary pattern's Phrase
+            oldPhrase.setMachine(null);
+        }
         phrase.setMachine(this);
         phrases.put(phrase.getIndex(), phrase);
     }

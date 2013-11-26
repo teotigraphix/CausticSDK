@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.workstation;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -357,7 +358,12 @@ public class PatternBank extends CaustkComponent {
         PatternReference patternReference = patternReferences.get(pendingPattern);
         final int index = patternReference.getIndex();
         Pattern pattern = null;
+
         if (!patternReference.hasPattern()) {
+            // - No Notes
+            // - Default .preset
+            loadState = LoadState.Create;
+
             String name = index + "";
             String path = new File(getInfo().getPath()).getParentFile().getPath();
             ComponentInfo info = factory.createInfo(ComponentType.Pattern, path, name);
@@ -370,17 +376,37 @@ public class PatternBank extends CaustkComponent {
             patternAdd(pattern);
         } else {
             ComponentInfo info = patternReference.getInfo();
-            try {
-                pattern = factory.getLibrary().newInstance(info, Pattern.class);
-            } catch (IOException e) {
-                e.printStackTrace();
+            pattern = patterns.get(index);
+            if (pattern == null) {
+
+                loadState = LoadState.Load;
+                // - Notes loaded from serialized Pattern
+                // - Preset files saved in PatternBank/User/.temp/
+                // - Load preset files
+                try {
+                    pattern = factory.getLibrary().newInstance(info, Pattern.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+
+                loadState = LoadState.Reload;
+                // - Notes already loaded in memory
+                // - Load preset files from PatternBank/User/.temp/
             }
+
         }
         return pattern;
     }
 
-    public void write() throws CausticException {
+    private transient LoadState loadState;
 
+    enum LoadState {
+        Create, Load, Reload
+    }
+
+    public void write() throws CausticException, FileNotFoundException {
+        //getRackSet().getFactory().getLibrary().save(temporaryPattern);
     }
 
     private void _commitPendingPattern(Pattern sourcePattern) {
@@ -408,7 +434,9 @@ public class PatternBank extends CaustkComponent {
                 Machine machine = part.getMachine();
                 PartReference partReference = patterns.get(lastTempPattern.getIndex())
                         .getPartReference(part);
-                machine.replacePatch(partReference.getPatch());
+                // XXX N/A
+                // machine.replacePatch(partReference.getPatch());
+                // Replaces the machine's Phrase with this new Phrase
                 machine.replacePhrase(partReference.getPhrase());
             }
         }
@@ -417,13 +445,33 @@ public class PatternBank extends CaustkComponent {
         // the Part's Machine Patch, Phrase
         for (Part part : grooveBox.getParts()) {
             Machine machine = part.getMachine();
-            PartReference partReference = temporaryPattern.getPartReference(part);
 
             machine.setCurrentBankPattern(bankIndex, patternIndex);
 
-            //            machine.setPatch(partReference.getPatch());
-            //            machine.setPhrase(partReference.getPhrase());
+            replacePhrase(part, loadState);
+            replacePatch(part, loadState);
+
+            switch (loadState) {
+
+                case Create:
+                    // - No Notes
+                    // - Default .preset
+                    break;
+
+                case Load:
+                    // - Notes loaded from serialized Pattern
+                    // - Preset files saved in PatternBank/User/.temp/
+                    // - Load preset files
+                    break;
+
+                case Reload:
+                    // - Notes already loaded in memory
+                    // - Load preset files from PatternBank/User/.temp/
+                    break;
+            }
         }
+
+        loadState = null;
 
         setSelectedIndex(pendingPattern);
 
@@ -431,8 +479,98 @@ public class PatternBank extends CaustkComponent {
                 new OnPatternBankChange(this, PatternBankChangeKind.PatternChange, selectedIndex));
     }
 
+    private void replacePatch(Part part, LoadState state) {
+        final ICaustkFactory factory = grooveBox.getRackSet().getFactory();
+        final Machine machine = part.getMachine();
+        final PartReference partReference = temporaryPattern.getPartReference(part);
+
+        switch (state) {
+
+            case Create:
+                // - No Notes
+                // - Default .preset
+                break;
+
+            case Load:
+                // - Notes loaded from serialized Pattern
+                // - Preset files saved in PatternBank/User/.temp/
+                // - Load preset files
+                Patch replacementPatch = partReference.getPatch();
+                Patch oldPatch = machine.getPatch();
+                if (oldPatch != null) {
+                    oldPatch.disconnect();
+                }
+                replacementPatch.setMachine(machine);
+                try {
+                    // we have preset data, update and load the .preset file
+                    replacementPatch.update(factory.createContext());
+                    // we have to restore since the patch just loaded it's .preset file
+                    machine.getRackTone().restore();
+                } catch (CausticException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case Reload:
+                // - Notes already loaded in memory
+                // - Load preset files from PatternBank/User/.temp/
+                break;
+        }
+    }
+
+    private void replacePhrase(Part part, LoadState state) {
+        final ICaustkFactory factory = grooveBox.getRackSet().getFactory();
+        final Machine machine = part.getMachine();
+
+        switch (state) {
+
+            case Create:
+                // - No Notes
+                // - Default .preset
+                break;
+
+            case Load:
+                // - Notes loaded from serialized Pattern
+                // - Preset files saved in PatternBank/User/.temp/
+                // - Load preset files
+
+                Phrase oldPhrase = machine.getPhrase();
+                if (oldPhrase != null) {
+                    oldPhrase.disconnect();
+                }
+
+                Phrase replacementPhrase = part.getPhrase();
+                replacementPhrase.setMachine(machine);
+                machine.replacePhrase(replacementPhrase);
+
+                // When a Phrase is replaced;
+                // - remove all notes
+                //            PatternSequencerMessage.CLEAR_PATTERN.send(getRackSet().getFactory().getRack(),
+                //                    getMachineIndex(), replacementPhrase.getPatternIndex());
+
+                try {
+                    replacementPhrase.update(factory.createContext());
+                } catch (CausticException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case Reload:
+                // - Notes already loaded in memory
+                // - Load preset files from PatternBank/User/.temp/
+                break;
+        }
+
+    }
+
     private void patternAdd(Pattern pattern) {
         patterns.put(pattern.getIndex(), pattern);
+        // add PartReferences to the Pattern, this will never change
+        for (Part part : grooveBox.getParts()) {
+            // a part reference holds the Patch and Phrase that is saved
+            // with the cpn File in the pattern library directory
+            pattern.addPartReference(part);
+        }
     }
 
     //--------------------------------------------------------------------------

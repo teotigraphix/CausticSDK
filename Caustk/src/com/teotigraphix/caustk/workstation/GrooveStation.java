@@ -177,11 +177,11 @@ public class GrooveStation {
             patch.getPreset().load(factory.createContext());
         }
 
-        for (Pattern pattern : patternBank.getPatterns()) {
-            for (Part part : grooveBox.getParts()) {
-                pattern.addPartReference(factory.createContext(), part);
-            }
-        }
+        //        for (Pattern pattern : patternBank.getPatterns()) {
+        //            for (Part part : grooveBox.getParts()) {
+        //                pattern.addPartReference(factory.createContext(), part);
+        //            }
+        //        }
 
         patternBank.setNextPattern(0);
 
