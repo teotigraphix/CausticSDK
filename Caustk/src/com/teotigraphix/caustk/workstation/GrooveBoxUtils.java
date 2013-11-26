@@ -22,34 +22,10 @@ package com.teotigraphix.caustk.workstation;
 /**
  * @author Michael Schmalle
  */
-public enum GrooveBoxType {
+public final class GrooveBoxUtils {
 
-    /**
-     * A groove machine with the bassline parts.
-     */
-    Bassline2("bm2", "bassline_machine2"),
-
-    /**
-     * A groove machine with 2 beatbox parts.
-     */
-    Drum2("dm2", "drum_machine2"),
-
-    MixSynth1("ms1", "ms1_machine");
-
-    private final String type;
-
-    public String getType() {
-        return type;
-    }
-
-    private final String patternType;
-
-    public String getPatternType() {
-        return patternType;
-    }
-
-    GrooveBoxType(String type, String patternType) {
-        this.type = type;
-        this.patternType = patternType;
+    public static GrooveBoxDescriptor createDescriptor(GrooveBoxType grooveBoxType) {
+        GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(grooveBoxType);
+        return descriptor;
     }
 }

@@ -30,14 +30,11 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
 import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
  * @author Michael Schmalle
  */
 public class PatternBank extends CaustkComponent {
-
-    private transient Map<Integer, PartDescriptor> partDescriptors = new HashMap<Integer, PartDescriptor>();
 
     private Map<Integer, Pattern> patterns = new TreeMap<Integer, Pattern>();
 
@@ -94,6 +91,9 @@ public class PatternBank extends CaustkComponent {
     private Map<Integer, PatternReference> patternReferences = new TreeMap<Integer, PatternReference>();
 
     @Tag(103)
+    private Map<Integer, PartDescriptor> partDescriptors = new HashMap<Integer, PartDescriptor>();
+
+    @Tag(104)
     private int selectedIndex = 0;
 
     //--------------------------------------------------------------------------

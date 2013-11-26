@@ -19,36 +19,48 @@
 
 package com.teotigraphix.caustk.workstation.grooveBox;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.workstation.ComponentInfo;
 import com.teotigraphix.caustk.workstation.GrooveBox;
 import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor;
 import com.teotigraphix.caustk.workstation.GrooveBoxType;
+import com.teotigraphix.caustk.workstation.GrooveBoxUtils;
 import com.teotigraphix.caustk.workstation.GrooveSet;
 import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * @author Michael Schmalle
  */
-public class MS1GrooveBox extends GrooveBox {
+public class Bassline2 extends GrooveBox {
 
-    public MS1GrooveBox() {
+    public Bassline2() {
     }
 
-    public MS1GrooveBox(ComponentInfo info, GrooveSet grooveSet) {
+    public Bassline2(ComponentInfo info, GrooveSet grooveSet) throws FileNotFoundException {
         super(info, grooveSet);
 
-        GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(GrooveBoxType.MS1Machine);
+        GrooveBoxDescriptor descriptor = GrooveBoxUtils.createDescriptor(GrooveBoxType.Bassline2);
+        // when the part is created it will be named 'bl1_part1'
 
-        // when the part is created it will be named 'ms1_p1'
-        descriptor.addPart("p1", MachineType.Beatbox, null);
-        descriptor.addPart("p2", MachineType.Beatbox, null);
+        File file = RuntimeUtils.getCausticPresetsFile(MachineType.Bassline, "DRIVE IT");
+        if (!file.exists())
+            throw new FileNotFoundException();
 
-        descriptor.addPart("p3", MachineType.Bassline, null);
-        descriptor.addPart("p4", MachineType.SubSynth, null);
-        descriptor.addPart("p5", MachineType.Modular, null);
-        descriptor.addPart("p6", MachineType.SubSynth, null); // FMSynth
-        descriptor.addPart("p7", MachineType.PadSynth, null);
-        descriptor.addPart("p8", MachineType.PCMSynth, null);
+        byte[] data = null;
+        try {
+            data = FileUtils.readFileToByteArray(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        descriptor.addPart("p1", MachineType.Bassline, data);
+        descriptor.addPart("p2", MachineType.Bassline, data);
 
         setDescriptor(descriptor);
     }

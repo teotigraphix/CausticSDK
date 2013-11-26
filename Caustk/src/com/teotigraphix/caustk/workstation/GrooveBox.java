@@ -32,7 +32,6 @@ import com.teotigraphix.caustk.controller.IDispatcher;
 import com.teotigraphix.caustk.controller.core.Dispatcher;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.rack.tone.RackTone;
-import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor.PartDescriptor;
 
 /**
  * @author Michael Schmalle

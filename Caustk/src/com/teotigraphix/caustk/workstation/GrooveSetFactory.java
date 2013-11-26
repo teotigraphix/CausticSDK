@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.workstation;
 
 import java.io.FileNotFoundException;
 
-import com.teotigraphix.caustk.workstation.grooveBox.Bassline2Machine;
-import com.teotigraphix.caustk.workstation.grooveBox.MS1GrooveBox;
+import com.teotigraphix.caustk.workstation.grooveBox.Bassline2;
+import com.teotigraphix.caustk.workstation.grooveBox.MixSynth1;
 
 /**
  * @author Michael Schmalle
@@ -47,17 +47,17 @@ public class GrooveSetFactory extends CaustkSubFactoryBase {
             GrooveBoxType machineType) {
         GrooveBox machine = null;
         switch (machineType) {
-            case BasslineMachine2:
+            case Bassline2:
                 try {
-                    machine = new Bassline2Machine(info, grooveSet);
+                    machine = new Bassline2(info, grooveSet);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
                 break;
-            case DrumMachine2:
+            case Drum2:
                 break;
-            case MS1Machine:
-                machine = new MS1GrooveBox(info, grooveSet);
+            case MixSynth1:
+                machine = new MixSynth1(info, grooveSet);
                 break;
         }
 

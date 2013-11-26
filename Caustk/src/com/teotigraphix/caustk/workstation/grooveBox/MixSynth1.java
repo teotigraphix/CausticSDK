@@ -19,47 +19,37 @@
 
 package com.teotigraphix.caustk.workstation.grooveBox;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-
-import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.workstation.ComponentInfo;
 import com.teotigraphix.caustk.workstation.GrooveBox;
 import com.teotigraphix.caustk.workstation.GrooveBoxDescriptor;
 import com.teotigraphix.caustk.workstation.GrooveBoxType;
+import com.teotigraphix.caustk.workstation.GrooveBoxUtils;
 import com.teotigraphix.caustk.workstation.GrooveSet;
 import com.teotigraphix.caustk.workstation.MachineType;
 
 /**
  * @author Michael Schmalle
  */
-public class Bassline2Machine extends GrooveBox {
+public class MixSynth1 extends GrooveBox {
 
-    public Bassline2Machine() {
+    public MixSynth1() {
     }
 
-    public Bassline2Machine(ComponentInfo info, GrooveSet grooveSet) throws FileNotFoundException {
+    public MixSynth1(ComponentInfo info, GrooveSet grooveSet) {
         super(info, grooveSet);
 
-        GrooveBoxDescriptor descriptor = new GrooveBoxDescriptor(GrooveBoxType.BasslineMachine2);
-        // when the part is created it will be named 'bl1_part1'
+        GrooveBoxDescriptor descriptor = GrooveBoxUtils.createDescriptor(GrooveBoxType.MixSynth1);
 
-        File file = RuntimeUtils.getCausticPresetsFile(MachineType.Bassline, "DRIVE IT");
-        if (!file.exists())
-            throw new FileNotFoundException();
+        // when the part is created it will be named 'ms1_p1'
+        descriptor.addPart("p1", MachineType.Beatbox, null);
+        descriptor.addPart("p2", MachineType.Beatbox, null);
 
-        byte[] data = null;
-        try {
-            data = FileUtils.readFileToByteArray(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        descriptor.addPart("p1", MachineType.Bassline, data);
-        descriptor.addPart("p2", MachineType.Bassline, data);
+        descriptor.addPart("p3", MachineType.Bassline, null);
+        descriptor.addPart("p4", MachineType.SubSynth, null);
+        descriptor.addPart("p5", MachineType.Modular, null);
+        descriptor.addPart("p6", MachineType.SubSynth, null); // FMSynth
+        descriptor.addPart("p7", MachineType.PadSynth, null);
+        descriptor.addPart("p8", MachineType.PCMSynth, null);
 
         setDescriptor(descriptor);
     }
