@@ -23,6 +23,8 @@ import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * @author Michael Schmalle
  */
@@ -43,6 +45,7 @@ public class ComponentInfoFactory extends CaustkSubFactoryBase {
     }
 
     public ComponentInfo createInfo(ComponentType type, String relativePath, String name) {
+        relativePath = FilenameUtils.normalize(relativePath);
         return createInfo(type, new File(relativePath), name);
     }
 

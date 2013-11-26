@@ -36,12 +36,21 @@ public class PatternReference {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private int index;
+    private ComponentInfo info;
 
     @Tag(1)
+    private int index;
+
+    @Tag(2)
     private UUID patternBankId;
 
-    private UUID patternId;
+    public ComponentInfo getInfo() {
+        return info;
+    }
+
+    void setInfo(ComponentInfo value) {
+        this.info = value;
+    }
 
     public int getIndex() {
         return index;
@@ -51,12 +60,8 @@ public class PatternReference {
         return patternBankId;
     }
 
-    public UUID getPatternId() {
-        return patternId;
-    }
-
     public boolean hasPattern() {
-        return patternId != null;
+        return info != null;
     }
 
     public PatternBank getPatternBank() {

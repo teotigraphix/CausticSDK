@@ -28,7 +28,7 @@ public class PatternBankFactory extends CaustkSubFactoryBase {
     }
 
     public PatternBank createPatternBank(String name, GrooveBox grooveBox) {
-        ComponentInfo info = getFactory().createInfo(ComponentType.PatternBank, name);
+        ComponentInfo info = getFactory().createInfo(ComponentType.PatternBank, name, "manifest");
         PatternBank patternBank = new PatternBank(info, grooveBox);
         return patternBank;
     }

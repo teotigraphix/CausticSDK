@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.workstation;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -104,7 +106,7 @@ public class PatternBank extends CaustkComponent {
 
     @Override
     public String getDefaultName() {
-        return getInfo().getName();
+        return getInfo().getFile().getParentFile().getName();
     }
 
     //----------------------------------
@@ -337,17 +339,55 @@ public class PatternBank extends CaustkComponent {
 
     public void setNextPattern(int index) {
         pendingPattern = index;
-        commitPendingPattern(grooveBox.getRackSet().getFactory());
+
+        Pattern pattern = nextPattern();
+
+        // queue pattern
+        _commitPendingPattern(pattern);
+
         pendingPattern = -1;
     }
 
-    private void commitPendingPattern(ICaustkFactory factory) {
+    public void playPattern() {
+        setNextPattern(pendingPattern);
+    }
+
+    private Pattern nextPattern() {
+        final ICaustkFactory factory = grooveBox.getRackSet().getFactory();
+        PatternReference patternReference = patternReferences.get(pendingPattern);
+        final int index = patternReference.getIndex();
+        Pattern pattern = null;
+        if (!patternReference.hasPattern()) {
+            String name = index + "";
+            String path = new File(getInfo().getPath()).getParentFile().getPath();
+            ComponentInfo info = factory.createInfo(ComponentType.Pattern, path, name);
+            pattern = factory.createPattern(info, this, patternReference.getIndex());
+            // XXX in memory until a write happens that pushes the actual Pattern
+            // into the current PatternLibrary's Library as a cpn file on disk inside
+            // the banks sub folder /PatternBank/[GrooveMachineType]/[PatternBankName]/0.cpn
+            // PatternBank\BasslineMachine2\User1\0.cpn
+            patternReference.setInfo(info);
+            patternAdd(pattern);
+        } else {
+            ComponentInfo info = patternReference.getInfo();
+            try {
+                pattern = factory.getLibrary().newInstance(info, Pattern.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return pattern;
+    }
+
+    public void write() throws CausticException {
+
+    }
+
+    private void _commitPendingPattern(Pattern sourcePattern) {
+        final ICaustkFactory factory = grooveBox.getRackSet().getFactory();
+
         Pattern lastTempPattern = temporaryPattern;
 
-        int pending = pendingPattern;
-
-        // Get the Pattern that has the previously saved data
-        Pattern sourcePattern = patterns.get(pending);
         // temporarily disconnect the Pattern
         sourcePattern.setPatternBank(null);
 
@@ -381,8 +421,8 @@ public class PatternBank extends CaustkComponent {
 
             machine.setCurrentBankPattern(bankIndex, patternIndex);
 
-            machine.setPatch(partReference.getPatch());
-            machine.setPhrase(partReference.getPhrase());
+            //            machine.setPatch(partReference.getPatch());
+            //            machine.setPhrase(partReference.getPhrase());
         }
 
         setSelectedIndex(pendingPattern);
@@ -391,14 +431,8 @@ public class PatternBank extends CaustkComponent {
                 new OnPatternBankChange(this, PatternBankChangeKind.PatternChange, selectedIndex));
     }
 
-    void addPattern(Pattern pattern) {
-        patterns.put(pattern.getIndex(), pattern);
-        patternAdd(pattern);
-    }
-
     private void patternAdd(Pattern pattern) {
-        // TODO Auto-generated method stub
-
+        patterns.put(pattern.getIndex(), pattern);
     }
 
     //--------------------------------------------------------------------------
