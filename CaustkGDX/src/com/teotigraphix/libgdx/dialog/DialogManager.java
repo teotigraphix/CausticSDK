@@ -74,10 +74,11 @@ public class DialogManager implements IDialogManager {
     public void createToast(String message, float duration) {
         final IScreen screen = screenProvider.getScreen();
         final PopUp popUp = createPopUp(screen, "", null);
+        popUp.clearChildren();
         popUp.add(new Label(message, screen.getSkin()));
-
+        popUp.pad(5f);
         popUp.show(screen.getStage());
-        popUp.pad(0f);
+
         popUp.addAction(Actions.delay(duration, new Action() {
             @Override
             public boolean act(float delta) {
