@@ -38,11 +38,11 @@ public class ScreenBase implements IScreen {
     public static final String LOG = ScreenBase.class.getSimpleName();
 
     // the fixed viewport dimensions (ratio: 1.6)
-    public static final int GAME_VIEWPORT_WIDTH = 800, GAME_VIEWPORT_HEIGHT = 240;
-
-    public static final int MENU_VIEWPORT_WIDTH = 1200, MENU_VIEWPORT_HEIGHT = 480;
-
     private static final boolean DEV_MODE = false;
+
+    public static int WIDTH = 800;
+
+    public static int HEIGHT = 480;
 
     protected Color backgroundColor = new Color();
 
@@ -170,10 +170,6 @@ public class ScreenBase implements IScreen {
             mediator.onShow(this);
         }
     }
-
-    public final static int WIDTH = 800;
-
-    public final static int HEIGHT = 480;
 
     @Override
     public void resize(int width, int height) {

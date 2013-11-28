@@ -49,6 +49,8 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
         return application;
     }
 
+    protected abstract String getApplicationName();
+
     @Override
     protected abstract int getActivationKey();
 
@@ -88,7 +90,7 @@ public abstract class CaustkApplicationActivity extends CaustkActivity {
         try {
             // create the application and run it
             application = CaustkApplication.startAndRun(getGenerator(), causticStorageRoot,
-                    new File(causticStorageRoot, "TestApp"));
+                    new File(causticStorageRoot, getApplicationName()));
             RackSet rackSet = getFactory().createRackSet();
             rackSet.create(getFactory().createContext());
             application.getRack().setRackSet(rackSet);
