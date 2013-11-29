@@ -6,10 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,7 +27,6 @@ import com.teotigraphix.caustic.meta.model.FileModel;
 import com.teotigraphix.caustic.meta.model.FileModel.OnFileModelChangeListener;
 import com.teotigraphix.caustk.core.CausticFile;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
-import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -44,6 +39,8 @@ public class MainActivityMediator {
     FileModel fileModel;
 
     private TextView causticFileText;
+
+    private Button browseButton;
 
     private EditText artistText;
 
@@ -60,6 +57,8 @@ public class MainActivityMediator {
     private Button removeButton;
 
     private ToggleButton playPauseButton;
+
+    private List<EditText> formItems = new ArrayList<EditText>();
 
     public MainActivityMediator(MainActivity activity, FileModel fileModel) {
         this.activity = activity;
@@ -80,10 +79,6 @@ public class MainActivityMediator {
             }
         });
     }
-
-    private List<EditText> formItems = new ArrayList<EditText>();
-
-    private Button browseButton;
 
     public void onCreate() {
         causticFileText = (TextView)activity.findViewById(R.id.causticFileText);
@@ -162,7 +157,7 @@ public class MainActivityMediator {
             @Override
             public void onClick(View v) {
                 if (isValid()) {
-                    saveCausticFile();
+                    addCausticMetadata();
                 }
             }
         });
@@ -172,19 +167,11 @@ public class MainActivityMediator {
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                new AlertDialog.Builder(activity).setTitle("Confirm Remove Caustic metadata")
-                        .setIcon(R.drawable.ic_launcher)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                DialogUtils.createAlertDialog(activity, "Confirm Remove Caustic metadata",
+                        R.drawable.ic_launcher, new Runnable() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void run() {
                                 doRemoveMetadata();
-                            }
-
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int arg1) {
-                                dialog.dismiss();
                             }
                         }).show();
             }
@@ -203,18 +190,6 @@ public class MainActivityMediator {
                 Toast.LENGTH_SHORT).show();
 
         fileModel.reset();
-    }
-
-    public File saveSong(String name) {
-        RackMessage.SAVE_SONG.send(activity.getGenerator(), name);
-        return RuntimeUtils.getCausticSongFile(name);
-    }
-
-    public File saveSongAs(File file) throws IOException {
-        File song = saveSong(file.getName().replace(".caustic", ""));
-        FileUtils.copyFileToDirectory(song, file.getParentFile());
-        song.delete();
-        return file;
     }
 
     protected boolean isValid() {
@@ -239,24 +214,17 @@ public class MainActivityMediator {
         return valid;
     }
 
-    protected void saveCausticFile() {
+    protected void addCausticMetadata() {
         if (!isValid())
             return;
 
-        new AlertDialog.Builder(activity).setTitle("Confirm Add Caustic metadata")
-                .setIcon(R.drawable.ic_launcher)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        DialogUtils.createAlertDialog(activity, "Confirm Add Caustic metadata",
+                R.drawable.ic_launcher, new Runnable() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void run() {
                         doSaveCausticFile();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        dialog.dismiss();
-                    }
                 }).show();
-
     }
 
     protected void doSaveCausticFile() {
@@ -280,14 +248,14 @@ public class MainActivityMediator {
 
         try {
             causticFile.write();
+
+            removeButton.setEnabled(true);
+
+            Toast.makeText(activity, "Metadata added to " + causticFile.getFile().getName(),
+                    Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        removeButton.setEnabled(true);
-
-        Toast.makeText(activity, "Metadata added to " + causticFile.getFile().getName(),
-                Toast.LENGTH_SHORT).show();
     }
 
     private boolean checkText(EditText editText) {
@@ -350,4 +318,5 @@ public class MainActivityMediator {
         linkText.setText("");
         linkURLText.setText("");
     }
+
 }

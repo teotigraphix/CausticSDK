@@ -32,7 +32,7 @@ public class MainActivity extends CaustkActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fileModel = new FileModel();
+        fileModel = new FileModel(this);
 
         setContentView(R.layout.main);
 
@@ -55,7 +55,6 @@ public class MainActivity extends CaustkActivity {
                 }
             }
             if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
             }
         }
     }
