@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.teotigraphix.caustic.meta.AndroidExplorer;
+import com.teotigraphix.caustic.meta.FileExplorer;
 import com.teotigraphix.caustic.meta.MainActivity;
 import com.teotigraphix.caustic.meta.R;
 import com.teotigraphix.caustic.meta.model.FileModel;
@@ -81,6 +81,8 @@ public class MainActivityMediator {
 
     private List<EditText> formItems = new ArrayList<EditText>();
 
+    private Button browseButton;
+
     public void onCreate() {
         causticFileText = (TextView)activity.findViewById(R.id.causticFileText);
         artistText = (EditText)activity.findViewById(R.id.artistText);
@@ -131,12 +133,13 @@ public class MainActivityMediator {
         // formItems.add(linkText);
         // formItems.add(linkURLText);
 
-        Button browseButton = (Button)activity.findViewById(R.id.browseButton);
+        browseButton = (Button)activity.findViewById(R.id.browseButton);
         browseButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(activity, AndroidExplorer.class);
-                i.putExtra(AndroidExplorer.EXTRA_ROOT, RuntimeUtils.getCausticSongsDirectory());
+                Intent i = new Intent(activity, FileExplorer.class);
+                i.putExtra(FileExplorer.EXTRA_ROOT, new File("/"));
+                i.putExtra(FileExplorer.EXTRA_SONGS_DIR, RuntimeUtils.getCausticSongsDirectory());
                 activity.startActivityForResult(i, 1);
             }
         });
@@ -167,11 +170,11 @@ public class MainActivityMediator {
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    saveSongAs(fileModel.getCausticFile().getFile());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                //                try {
+                //                    saveSongAs(fileModel.getCausticFile().getFile());
+                //                } catch (IOException e) {
+                //                    e.printStackTrace();
+                //                }
 
                 Toast.makeText(activity,
                         "Metadata removed from " + fileModel.getCausticFile().getFile().getName(),

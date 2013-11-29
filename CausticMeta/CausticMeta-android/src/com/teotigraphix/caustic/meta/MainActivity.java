@@ -47,7 +47,7 @@ public class MainActivity extends CaustkActivity {
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                File file = (File)data.getSerializableExtra(AndroidExplorer.EXTRA_FILE);
+                File file = (File)data.getSerializableExtra(FileExplorer.EXTRA_FILE);
                 try {
                     fileModel.setFile(file);
                 } catch (FileNotFoundException e) {
