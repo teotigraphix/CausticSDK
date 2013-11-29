@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -170,19 +172,37 @@ public class MainActivityMediator {
         removeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //                try {
-                //                    saveSongAs(fileModel.getCausticFile().getFile());
-                //                } catch (IOException e) {
-                //                    e.printStackTrace();
-                //                }
 
-                Toast.makeText(activity,
-                        "Metadata removed from " + fileModel.getCausticFile().getFile().getName(),
-                        Toast.LENGTH_SHORT).show();
+                new AlertDialog.Builder(activity).setTitle("Confirm Remove Caustic metadata")
+                        .setIcon(R.drawable.ic_launcher)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                doRemoveMetadata();
+                            }
 
-                fileModel.reset();
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int arg1) {
+                                dialog.dismiss();
+                            }
+                        }).show();
             }
         });
+    }
+
+    private void doRemoveMetadata() {
+        //                try {
+        //                    saveSongAs(fileModel.getCausticFile().getFile());
+        //                } catch (IOException e) {
+        //                    e.printStackTrace();
+        //                }
+
+        Toast.makeText(activity,
+                "Metadata removed from " + fileModel.getCausticFile().getFile().getName(),
+                Toast.LENGTH_SHORT).show();
+
+        fileModel.reset();
     }
 
     public File saveSong(String name) {
@@ -223,6 +243,23 @@ public class MainActivityMediator {
         if (!isValid())
             return;
 
+        new AlertDialog.Builder(activity).setTitle("Confirm Add Caustic metadata")
+                .setIcon(R.drawable.ic_launcher)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        doSaveCausticFile();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        dialog.dismiss();
+                    }
+                }).show();
+
+    }
+
+    protected void doSaveCausticFile() {
         CausticFile causticFile = fileModel.getCausticFile();
 
         causticFile.setArtist(artistText.getText().toString());
