@@ -71,6 +71,11 @@ public class MainActivityMediator {
                 loadCausticSongFile();
                 refreshView();
             }
+
+            @Override
+            public void onReset() {
+                resetView();
+            }
         });
     }
 
@@ -168,13 +173,11 @@ public class MainActivityMediator {
                     e.printStackTrace();
                 }
 
-                refreshView();
+                Toast.makeText(activity,
+                        "Metadata removed from " + fileModel.getCausticFile().getFile().getName(),
+                        Toast.LENGTH_SHORT).show();
 
-                //                try {
-                //                    getController().getRackSet().clearMachines();
-                //                } catch (CausticException e) {
-                //                    e.printStackTrace();
-                //                }
+                fileModel.reset();
             }
         });
     }
@@ -199,6 +202,7 @@ public class MainActivityMediator {
             if (!checkText(editText)) {
                 formItem = editText;
                 formItemName = (String)formItem.getTag();
+                valid = false;
                 break;
             }
         }
@@ -228,7 +232,9 @@ public class MainActivityMediator {
         // replacing data, need to resave file until I figure out
         // how to chop bytes
 
-        saveSong(causticFile.getFile().getName().replace(".caustic", ""));
+        //        String name = causticFile.getFile().getName().replace(".caustic", "");
+        //        name = name + "_Meta";
+        //        saveSong(name);
 
         //}
 
@@ -237,6 +243,11 @@ public class MainActivityMediator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        removeButton.setEnabled(true);
+
+        Toast.makeText(activity, "Metadata added to " + causticFile.getFile().getName(),
+                Toast.LENGTH_SHORT).show();
     }
 
     private boolean checkText(EditText editText) {
@@ -247,9 +258,9 @@ public class MainActivityMediator {
     }
 
     private void loadCausticSongFile() {
-        CausticFile causticFile = fileModel.getCausticFile();
-        RackMessage.LOAD_SONG
-                .send(activity.getGenerator(), causticFile.getFile().getAbsolutePath());
+        //        CausticFile causticFile = fileModel.getCausticFile();
+        //        RackMessage.LOAD_SONG
+        //                .send(activity.getGenerator(), causticFile.getFile().getAbsolutePath());
     }
 
     /**
@@ -284,5 +295,19 @@ public class MainActivityMediator {
         if (causticFile.hasMetadata()) {
             removeButton.setEnabled(true);
         }
+    }
+
+    protected void resetView() {
+        removeButton.setEnabled(false);
+        addButton.setEnabled(false);
+        //playPauseButton.setEnabled(false);
+        //playPauseButton.setChecked(false);
+
+        causticFileText.setText("");
+        artistText.setText("");
+        titleText.setText("");
+        descriptionText.setText("");
+        linkText.setText("");
+        linkURLText.setText("");
     }
 }

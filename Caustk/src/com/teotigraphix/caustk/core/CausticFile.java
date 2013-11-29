@@ -205,11 +205,14 @@ public class CausticFile {
             String s = new String(bytes, Charset.forName("UTF-8"));
 
             String[] split = s.split("\\|");
+            final int slen = split.length;
             artist = split[0];
             title = split[1];
             description = split[2];
-            linkText = split[3];
-            linkUrl = split[4];
+            if (slen > 3)
+                linkText = split[3];
+            if (slen > 4)
+                linkUrl = split[4];
 
         } catch (IOException e) {
             e.printStackTrace();

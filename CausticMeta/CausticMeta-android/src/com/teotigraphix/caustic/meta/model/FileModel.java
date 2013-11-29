@@ -30,6 +30,13 @@ public class FileModel {
 
     public static interface OnFileModelChangeListener {
         void onFileChange(CausticFile causticFile);
+
+        void onReset();
+    }
+
+    public void reset() {
+        causticFile = null;
+        listener.onReset();
     }
 
 }
