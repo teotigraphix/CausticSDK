@@ -5,47 +5,105 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/causticFileText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:editable="false"
             android:text="Caustic File" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/browseButton"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="..." />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
+        android:id="@+id/artistText"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
         android:hint="Artist"
-        android:ems="10" />
-    
-        <EditText
+        android:maxLines="1"
+        android:tag="Artist" />
+
+    <EditText
         android:id="@+id/titleText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
         android:hint="Title"
-        android:ems="10" />
-        
-        <EditText
-            android:id="@+id/infoText"
+        android:tag="Title" />
+
+    <EditText
+        android:id="@+id/descriptionText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:ems="10"
+        android:gravity="center_vertical|top"
+        android:hint="Additional info (max. 8 lines, max 128 characters per line)"
+        android:inputType="textMultiLine"
+        android:maxLines="8"
+        android:lines="8"
+        android:tag="Description" />
+
+    <EditText
+        android:id="@+id/linkText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Link text"
+        android:maxLines="1"
+        android:tag="Link Text" />
+
+    <EditText
+        android:id="@+id/linkURLText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Link URL"
+        android:maxLines="1"
+        android:tag="Link URL" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ToggleButton
+            android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="hhhhh"
-            android:ems="10"
-            android:gravity="center_vertical|top"
-            android:hint="Title"
-            android:inputType="textMultiLine"
-            android:lines="8"
-            android:maxLines="8" />
+            android:text="Play"
+            android:textOff="Play"
+            android:textOn="Stop" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/removeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove Description" />
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Description" />
+    </LinearLayout>
 
 </LinearLayout>

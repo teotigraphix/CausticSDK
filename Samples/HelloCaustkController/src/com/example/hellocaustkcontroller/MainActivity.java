@@ -67,6 +67,11 @@ public class MainActivity extends CaustkApplicationActivity {
     }
 
     @Override
+    protected String getApplicationName() {
+        return "CaustkController";
+    }
+
+    @Override
     protected int getActivationKey() {
         // Expires 12-01-2013
         return 0x0C12EE33;
@@ -84,4 +89,5 @@ public class MainActivity extends CaustkApplicationActivity {
             setApplicationTitle("ControllerExample");
         }
     }
+
 }

@@ -129,8 +129,16 @@ public class CausticCore {
     }
 
     public void Resume() {
-        m_AudioLoop.m_bProcess = true;
-        m_AudioLoop.setPriority(Thread.MAX_PRIORITY);
+        // if the Activity calls another activity, Stop() will be calls
+        // the while() loop is terminated in the thread, so if that happens
+        // it must be restarted.
+        if (m_AudioLoop.m_bRun) {
+            m_AudioLoop.m_bProcess = true;
+            m_AudioLoop.setPriority(Thread.MAX_PRIORITY);
+        } else {
+            Restart();
+            m_AudioLoop.m_bProcess = true;
+        }
     }
 
     public void Restart() {

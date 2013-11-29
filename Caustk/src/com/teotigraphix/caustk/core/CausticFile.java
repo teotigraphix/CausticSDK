@@ -27,15 +27,45 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 
+/**
+ * Wraps a .caustic {@link File} and can read or write metadata to the .caustic
+ * file.
+ * 
+ * @author Michael Schmalle
+ */
 public class CausticFile {
 
+    private static final String DESC_TAG = "DESC";
+
     private File file;
+
+    private String artist;
+
+    private String title;
+
+    private String description;
+
+    private String linkText;
+
+    private String linkUrl;
+
+    private boolean hasDescription = false;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // file
+    //----------------------------------
 
     public File getFile() {
         return file;
     }
 
-    private String artist;
+    //----------------------------------
+    // artist
+    //----------------------------------
 
     public String getArtist() {
         return artist;
@@ -45,7 +75,9 @@ public class CausticFile {
         this.artist = artist;
     }
 
-    private String title;
+    //----------------------------------
+    // title
+    //----------------------------------
 
     public String getTitle() {
         return title;
@@ -55,7 +87,9 @@ public class CausticFile {
         this.title = title;
     }
 
-    private String description;
+    //----------------------------------
+    // description
+    //----------------------------------
 
     public String getDescription() {
         return description;
@@ -65,7 +99,9 @@ public class CausticFile {
         this.description = description;
     }
 
-    private String linkText;
+    //----------------------------------
+    // linkText
+    //----------------------------------
 
     public String getLinkText() {
         return linkText;
@@ -75,7 +111,9 @@ public class CausticFile {
         this.linkText = linkText;
     }
 
-    private String linkUrl;
+    //----------------------------------
+    // linkUrl
+    //----------------------------------
 
     public String getLinkUrl() {
         return linkUrl;
@@ -85,15 +123,61 @@ public class CausticFile {
         this.linkUrl = linkUrl;
     }
 
-    public CausticFile(File file) {
-        this.file = file;
-
-        try {
-            readFile(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    /**
+     * Returns whether the native <code>.caustic</code> file exists and is not
+     * <code>null</code>.
+     */
+    public boolean isLoaded() {
+        return file != null && file.exists();
     }
+
+    /**
+     * Returns whether the native file exists and that the metadata is loaded.
+     * <p>
+     * The {@link #read()} method must be called before this returns true.
+     */
+    public boolean hasMetadata() {
+        return isLoaded() && hasDescription;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public CausticFile(File file) throws FileNotFoundException {
+        this.file = file;
+        readFile(file);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Reads a .caustic file and extracts the metadata descriptor information.
+     * 
+     * @throws FileNotFoundException
+     */
+    public void read() throws FileNotFoundException {
+        if (file == null)
+            throw new IllegalStateException("file must not be null");
+
+        readFile(file);
+    }
+
+    /**
+     * Writes a .caustic file and attaches the metadata descriptor information
+     * to it.
+     * 
+     * @throws IOException
+     */
+    public void write() throws IOException {
+        writeFile();
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
 
     private void readFile(File file) throws FileNotFoundException {
         RandomAccessFile accessFile = new RandomAccessFile(file, "r");
@@ -102,11 +186,13 @@ public class CausticFile {
             long len = accessFile.length();
             accessFile.seek(len - 8);
 
-            byte[] DESC = new byte[4];
-            accessFile.read(DESC, 0, 4);
-            String desc = new String(DESC);
-            if (!desc.equals("DESC"))
+            byte[] desc = new byte[4];
+            accessFile.read(desc, 0, 4);
+            String descTag = new String(desc);
+            if (!descTag.equals(DESC_TAG))
                 return;
+
+            hasDescription = true;
 
             int size = accessFile.read();
 
@@ -135,47 +221,41 @@ public class CausticFile {
                 e.printStackTrace();
             }
         }
-
     }
 
-    public void save() throws IOException {
-        StringBuilder desc = new StringBuilder();
-        desc.append(artist);
-        desc.append("|");
-        desc.append(title);
-        desc.append("|");
-        desc.append(description);
-        desc.append("|");
-        desc.append(linkText);
-        desc.append("|");
-        desc.append(linkUrl);
-        desc.append("|");
+    private void writeFile() throws IOException {
+        final StringBuilder metadata = new StringBuilder();
+        metadata.append(artist);
+        metadata.append("|");
+        metadata.append(title);
+        metadata.append("|");
+        metadata.append(description);
+        metadata.append("|");
+        metadata.append(linkText);
+        metadata.append("|");
+        metadata.append(linkUrl);
+        metadata.append("|");
 
-        String info = desc.toString();
+        System.out.println(ByteOrder.nativeOrder());
 
-        StringBuilder sb = new StringBuilder();
-        //sb.append("DESC");
-        //sb.append(info.getBytes().length);
-        sb.append(info);
-        //sb.append("DESC");
-
-        RandomAccessFile raf = new RandomAccessFile(file, "rw");
+        final RandomAccessFile raf = new RandomAccessFile(file, "rw");
         long len = raf.length();
         raf.seek(len);
-        byte[] d = new byte[] {
+        byte[] DESC = new byte[] {
                 68, 69, 83, 67
         };
-        raf.write(d);
-        int infoLen = desc.toString().getBytes().length;
-        byte[] intToByteArray = intToByteArray(infoLen);
-        raf.write(intToByteArray);
-        raf.write(desc.toString().getBytes());
-        raf.write(d);
-        raf.write(intToByteArray);
+        int infoLen = metadata.toString().getBytes().length;
+        byte[] metadataLength = intToByteArray(infoLen);
+
+        raf.write(DESC);
+        raf.write(metadataLength);
+        raf.writeBytes(metadata.toString());
+        raf.write(DESC);
+        raf.write(metadataLength);
         raf.close();
     }
 
-    public static final byte[] intToByteArray(int value) {
+    static final byte[] intToByteArray(int value) {
         return ByteBuffer.allocate(Integer.SIZE / 8).order(ByteOrder.LITTLE_ENDIAN).putInt(value)
                 .array();
     }
