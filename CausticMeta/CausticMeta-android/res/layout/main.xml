@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:padding="15dp">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -15,7 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:editable="false"
-            android:text="Caustic File" />
+            android:ems="10"
+            android:maxLength="128"
+            android:text="Browse to .caustic file" />
 
         <Button
             android:id="@+id/browseButton"
@@ -30,7 +33,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Artist"
+        android:maxLength="128"
         android:maxLines="1"
+        android:singleLine="true"
         android:tag="Artist" />
 
     <EditText
@@ -39,19 +44,20 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Title"
+        android:maxLength="128"
+        android:singleLine="true"
         android:tag="Title" />
 
-    <EditText
+    <com.teotigraphix.caustic.meta.view.LimitedEditText
         android:id="@+id/descriptionText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-
         android:ems="10"
         android:gravity="center_vertical|top"
         android:hint="Additional info (max. 8 lines, max 128 characters per line)"
         android:inputType="textMultiLine"
-        android:maxLines="8"
         android:lines="8"
+        android:maxLines="8"
         android:tag="Description" />
 
     <EditText
@@ -60,7 +66,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Link text"
+        android:maxLength="128"
         android:maxLines="1"
+        android:singleLine="true"
         android:tag="Link Text" />
 
     <EditText
@@ -69,12 +77,16 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Link URL"
+        android:maxLength="128"
         android:maxLines="1"
+        android:singleLine="true"
         android:tag="Link URL" />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -86,7 +98,8 @@
             android:layout_height="wrap_content"
             android:text="Play"
             android:textOff="Play"
-            android:textOn="Stop" />
+            android:textOn="Stop"
+            android:visibility="invisible" />
 
         <View
             android:layout_width="0dp"
@@ -97,13 +110,13 @@
             android:id="@+id/removeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remove Description" />
+            android:text="Remove Meta" />
 
         <Button
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Description" />
+            android:text="Add Meta" />
     </LinearLayout>
 
 </LinearLayout>

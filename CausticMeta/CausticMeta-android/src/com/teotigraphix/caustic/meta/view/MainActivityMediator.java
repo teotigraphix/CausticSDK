@@ -9,6 +9,8 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,13 +81,38 @@ public class MainActivityMediator {
         artistText = (EditText)activity.findViewById(R.id.artistText);
         titleText = (EditText)activity.findViewById(R.id.titleText);
         descriptionText = (EditText)activity.findViewById(R.id.descriptionText);
+        descriptionText.setMaxLines(8);
+        descriptionText.addTextChangedListener(new TextWatcher() {
+            private String text;
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                text = arg0.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                int lineCount = descriptionText.getLineCount();
+                if (lineCount > 8) {
+                    descriptionText.setText(text);
+                }
+            }
+        });
+
         descriptionText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // if enter is pressed start calculating
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (((EditText)v).getLineCount() >= 8)
+                    int editTextLineCount = ((EditText)v).getLineCount();
+                    if (editTextLineCount >= 8)
                         return true;
                 }
+
                 return false;
             }
         });
@@ -96,8 +123,8 @@ public class MainActivityMediator {
         formItems.add(artistText);
         formItems.add(titleText);
         formItems.add(descriptionText);
-        formItems.add(linkText);
-        formItems.add(linkURLText);
+        // formItems.add(linkText);
+        // formItems.add(linkURLText);
 
         Button browseButton = (Button)activity.findViewById(R.id.browseButton);
         browseButton.setOnClickListener(new OnClickListener() {
