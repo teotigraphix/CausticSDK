@@ -120,7 +120,7 @@ public abstract class ControlTable extends Table implements ISkinAware, IValueAw
         styleName = value;
     }
 
-    Class<? extends Object> styleClass;
+    protected Class<? extends Object> styleClass;
 
     @SuppressWarnings("unchecked")
     public <T> T getStyle() {
