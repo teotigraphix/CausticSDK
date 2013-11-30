@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustic.meta.model;
 
@@ -12,13 +30,22 @@ import com.teotigraphix.caustk.core.CaustkActivity;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
+/**
+ * @author Michael Schmalle
+ */
 public class FileModel {
 
-    CausticFile causticFile;
-
-    private OnFileModelChangeListener listener;
-
     private CaustkActivity activity;
+
+    private CausticFile causticFile;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // causticFile
+    //----------------------------------
 
     public CausticFile getCausticFile() {
         return causticFile;
@@ -29,19 +56,17 @@ public class FileModel {
         listener.onFileChange(causticFile);
     }
 
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
     public FileModel(CaustkActivity activity) {
         this.activity = activity;
     }
 
-    public void setOnFileModelChangeListener(OnFileModelChangeListener l) {
-        listener = l;
-    }
-
-    public static interface OnFileModelChangeListener {
-        void onFileChange(CausticFile causticFile);
-
-        void onReset();
-    }
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
     public void reset() {
         causticFile = null;
@@ -58,5 +83,22 @@ public class FileModel {
         FileUtils.copyFileToDirectory(song, file.getParentFile());
         song.delete();
         return file;
+    }
+
+    //--------------------------------------------------------------------------
+    // Event API
+    //--------------------------------------------------------------------------
+
+    private OnFileModelChangeListener listener;
+
+    public void setOnFileModelChangeListener(OnFileModelChangeListener l) {
+        listener = l;
+    }
+
+    public static interface OnFileModelChangeListener {
+
+        void onFileChange(CausticFile causticFile);
+
+        void onReset();
     }
 }

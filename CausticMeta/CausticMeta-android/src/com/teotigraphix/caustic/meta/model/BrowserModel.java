@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustic.meta.model;
 
@@ -20,15 +38,33 @@ public class BrowserModel {
 
     private List<String> paths = null;
 
+    private File rootDirectory;
+
+    private File location;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // items
+    //----------------------------------
+
     public List<String> getItems() {
         return items;
     }
+
+    //----------------------------------
+    // paths
+    //----------------------------------
 
     public List<String> getPaths() {
         return paths;
     }
 
-    private File rootDirectory;
+    //----------------------------------
+    // rootDirectory
+    //----------------------------------
 
     public File getRootDirectory() {
         return rootDirectory;
@@ -38,9 +74,9 @@ public class BrowserModel {
         this.rootDirectory = rootDirectory;
     }
 
-    private File location;
-
-    private OnBrowserModelListener listener;
+    //----------------------------------
+    // location
+    //----------------------------------
 
     public File getLocation() {
         return location;
@@ -50,6 +86,14 @@ public class BrowserModel {
         this.location = location;
         updateModel();
         listener.onLocationChange(location);
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public BrowserModel(Activity activity) {
+        this.activity = activity;
     }
 
     private void updateModel() {
@@ -94,9 +138,11 @@ public class BrowserModel {
         }
     }
 
-    public BrowserModel(Activity activity) {
-        this.activity = activity;
-    }
+    //--------------------------------------------------------------------------
+    // Event API
+    //--------------------------------------------------------------------------
+
+    private OnBrowserModelListener listener;
 
     public void setOnBrowserModelListener(OnBrowserModelListener l) {
         listener = l;
