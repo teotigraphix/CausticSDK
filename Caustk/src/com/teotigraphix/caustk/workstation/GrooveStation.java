@@ -27,7 +27,7 @@ import java.util.UUID;
 import com.teotigraphix.caustk.controller.ICaustkApplication;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.project.Project;
-import com.teotigraphix.caustk.rack.Rack.OnRackListener;
+import com.teotigraphix.caustk.rack.Rack.OnRackBeatListener;
 
 /**
  * The toplevel model when using {@link GrooveSet}, {@link GrooveBox},
@@ -87,7 +87,7 @@ public class GrooveStation {
         this.application = application;
         this.factory = application.getFactory();
 
-        factory.getRack().addListener(new OnRackListener() {
+        factory.getRack().addBeatListener(new OnRackBeatListener() {
             @Override
             public void beatChange(int measure, float beat) {
                 for (GrooveBox grooveBox : grooveSet.getMachines()) {

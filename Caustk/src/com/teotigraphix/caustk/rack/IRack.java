@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.IRestore;
 import com.teotigraphix.caustk.rack.ISystemSequencer.SequencerMode;
-import com.teotigraphix.caustk.rack.Rack.OnRackListener;
+import com.teotigraphix.caustk.rack.Rack.OnRackBeatListener;
 import com.teotigraphix.caustk.workstation.ICaustkFactory;
 import com.teotigraphix.caustk.workstation.Library;
 import com.teotigraphix.caustk.workstation.Machine;
@@ -204,17 +204,17 @@ public interface IRack extends ICausticEngine, IRestore {
     File saveSongAs(File file) throws IOException;
 
     /**
-     * Adds a {@link OnRackListener}.
+     * Adds a {@link OnRackBeatListener}.
      * 
      * @param l The listener to add.
      */
-    void addListener(OnRackListener l);
+    void addBeatListener(OnRackBeatListener l);
 
     /**
-     * Removes an {@link OnRackListener}.
+     * Removes an {@link OnRackBeatListener}.
      * 
      * @param l The listener to remove.
      */
-    void removeListener(OnRackListener l);
+    void removeBeatListener(OnRackBeatListener l);
 
 }

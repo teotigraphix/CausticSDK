@@ -156,16 +156,16 @@ public class Rack implements IRack {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    private final List<OnRackListener> listeners = new ArrayList<OnRackListener>();
+    private final List<OnRackBeatListener> beatListeners = new ArrayList<OnRackBeatListener>();
 
     @Override
-    public void addListener(OnRackListener l) {
-        listeners.add(l);
+    public void addBeatListener(OnRackBeatListener l) {
+        beatListeners.add(l);
     }
 
     @Override
-    public void removeListener(OnRackListener l) {
-        listeners.remove(l);
+    public void removeBeatListener(OnRackBeatListener l) {
+        beatListeners.remove(l);
     }
 
     /**
@@ -173,7 +173,7 @@ public class Rack implements IRack {
      * 
      * @author Michael Schmalle
      */
-    public interface OnRackListener {
+    public interface OnRackBeatListener {
 
         void frameChange(float delta, int measure, float beat);
 
@@ -186,20 +186,20 @@ public class Rack implements IRack {
     public void frameChanged(float delta) {
         final int measure = (int)getCurrentSongMeasure();
         final float beat = getCurrentBeat();
-        for (OnRackListener listener : listeners) {
+        for (OnRackBeatListener listener : beatListeners) {
             listener.frameChange(delta, measure, beat);
         }
 
         boolean changed = rackSet.updatePosition(measure, beat);
         if (changed) {
-            for (OnRackListener listener : listeners) {
+            for (OnRackBeatListener listener : beatListeners) {
                 listener.beatChange(measure, beat);
             }
         }
 
         changed = rackSet.updateStep(measure, beat);
         if (changed) {
-            for (OnRackListener listener : listeners) {
+            for (OnRackBeatListener listener : beatListeners) {
                 listener.stepChange(rackSet.getSequencer().getCurrentSixteenthStep());
             }
         }
