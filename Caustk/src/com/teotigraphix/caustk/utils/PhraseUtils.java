@@ -19,9 +19,11 @@
 
 package com.teotigraphix.caustk.utils;
 
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.workstation.Note;
 import com.teotigraphix.caustk.workstation.Phrase;
+import com.teotigraphix.caustk.workstation.Trigger;
 
 public class PhraseUtils {
 
@@ -89,6 +91,19 @@ public class PhraseUtils {
         int globalBeat = ((phrase.getPosition() - 1) * 16) + index;
         float beat = Resolution.toBeat(globalBeat, phrase.getResolution());
         return beat;
+    }
+
+    public static Trigger createInitTrigger(Phrase phrase, int step) {
+        float beat = Resolution.toBeat(step, phrase.getResolution());
+        Trigger trigger = new Trigger(beat);
+        trigger.addNote(beat, 60, 0.25f, 1f, 0);
+        return trigger;
+    }
+
+    public static void update(Phrase phrase, Note note) {
+        PatternSequencerMessage.NOTE_DATA.send(phrase.getMachine().getRackTone().getEngine(),
+                phrase.getMachine().getMachineIndex(), note.getStart(), note.getPitch(),
+                note.getVelocity(), note.getEnd(), note.getFlags());
     }
 
 }

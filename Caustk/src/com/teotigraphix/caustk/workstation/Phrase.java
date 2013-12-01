@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.controller.ICaustkApplicationContext;
@@ -30,15 +31,20 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.IRack;
+import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
 import com.teotigraphix.caustk.utils.PhraseUtils;
-import com.teotigraphix.caustk.workstation.Note.NoteFlag;
+import com.teotigraphix.caustk.workstation.Phrase.PhraseChangeKind;
 
 /**
  * @author Michael Schmalle
  */
 public class Phrase extends CaustkComponent {
+
+    private static final int BEATS_IN_MEASURE = 4;
+
+    private transient int indciesInView = 16;
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -54,33 +60,34 @@ public class Phrase extends CaustkComponent {
     private MachineType machineType;
 
     @Tag(103)
-    private TriggerMap triggerMap;
-
-    @Tag(104)
     private String noteData;
 
-    @Tag(105)
+    @Tag(104)
     private int length = 1;
 
-    @Tag(106)
+    @Tag(105)
     private int position = 1;
 
-    @Tag(107)
+    @Tag(106)
     private Object data;
 
+    // <beat, Trigger<List<Note>>
     @Tag(108)
+    private Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
+
+    @Tag(120)
     private int playMeasure = 0;
 
-    @Tag(109)
+    @Tag(121)
     private int editMeasure = 0;
 
-    @Tag(110)
+    @Tag(122)
     private int currentMeasure = 0;
 
-    @Tag(111)
+    @Tag(123)
     private Scale scale = Scale.SIXTEENTH;
 
-    @Tag(112)
+    @Tag(124)
     List<Trigger> editSelections = new ArrayList<Trigger>();
 
     //--------------------------------------------------------------------------
@@ -665,7 +672,6 @@ public class Phrase extends CaustkComponent {
         setInfo(info);
         this.index = index;
         this.machineType = machineType;
-        this.triggerMap = new TriggerMap(this);
     }
 
     Phrase(ComponentInfo info, int index, Machine machine) {
@@ -673,7 +679,6 @@ public class Phrase extends CaustkComponent {
         this.index = index;
         this.machine = machine;
         this.machineType = machine.getMachineType();
-        this.triggerMap = new TriggerMap(this);
     }
 
     //--------------------------------------------------------------------------
@@ -716,11 +721,11 @@ public class Phrase extends CaustkComponent {
             case Update:
                 PatternSequencerMessage.NUM_MEASURES.send(machine.getEngine(),
                         machine.getMachineIndex(), length);
-                for (Trigger trigger : triggerMap.getTriggers()) {
+                for (Trigger trigger : getTriggers()) {
                     if (trigger.isSelected()) {
                         for (Note note : trigger.getNotes()) {
                             //                            if (note.isSelected()) {
-                            triggerMap.update(note);
+                            PhraseUtils.update(this, note);
                             //                            } else {
                             //                                System.err.println("Didn't add note: " + note.toString());
                             //                            }
@@ -777,189 +782,432 @@ public class Phrase extends CaustkComponent {
     // TriggerMap Method :: API
     //--------------------------------------------------------------------------
 
+    //----------------------------------
+    // Note
+    //----------------------------------
+
     /**
-     * @see TriggerMap#hasNote(int, float)
+     * Returns whether a {@link Note} exists for the beat trigger at the
+     * specified pitch.
+     * 
+     * @param pitch The MIDI pitch.
+     * @param beat The trigger start beat.
      */
     public boolean hasNote(int pitch, float beat) {
-        return triggerMap.hasNote(pitch, beat);
+        final Trigger trigger = getTrigger(beat);
+        if (trigger == null)
+            return false;
+        return trigger.hasNote(pitch);
     }
 
     /**
-     * @see TriggerMap#getNotes()
+     * Returns one whole collection of notes for all triggers defined.
+     * <p>
+     * The {@link Note}s are in no specific order.
      */
     public Collection<Note> getNotes() {
-        return triggerMap.getNotes();
+        final Collection<Note> result = new ArrayList<Note>();
+        for (Trigger trigger : getTriggers()) {
+            for (Note note : trigger.getNotes()) {
+                result.add(note);
+            }
+        }
+        return result;
     }
 
     /**
-     * @see TriggerMap#getNote(int, float)
+     * Returns the note at the trigger beat, <code>null</code> if the trigger or
+     * note does not exist.
+     * 
+     * @param pitch The MIDI pitch.
+     * @param beat The trigger start beat.
      */
-    public Note getNote(int pitch, float start) {
-        return triggerMap.getNote(pitch, start);
+    public Note getNote(int pitch, float beat) {
+        final Trigger trigger = getTrigger(beat);
+        if (trigger == null)
+            return null;
+        return trigger.getNote(pitch);
     }
 
     /**
-     * @see TriggerMap#getNotes(int)
+     * Returns a collection of {@link Note}s for the measure span of 4 beats.
+     * <p>
+     * The measure does not need to be within the current phrase length if they
+     * were added prior to changing the phrase length.
+     * 
+     * @param measure The measure to retrieve notes for.
      */
     public Collection<Note> getNotes(int measure) {
-        return triggerMap.getNotes(measure);
+        final Collection<Note> result = new ArrayList<Note>();
+        for (Trigger trigger : getTriggers()) {
+            for (Note note : trigger.getNotes()) {
+                int beat = (int)Math.floor(note.getStart());
+                int startBeat = (measure * BEATS_IN_MEASURE);
+                if (beat >= startBeat && beat < startBeat + BEATS_IN_MEASURE) {
+                    result.add(note);
+                }
+            }
+        }
+        return result;
     }
 
     /**
-     * @see TriggerMap#addNote(int, float, float, float, int)
+     * Adds a {@link Note} to the {@link Trigger} at the specified beat.
+     * <p>
+     * Will create a {@link Trigger} based on the {@link Phrase#getResolution()}
+     * if it doesn't exist.
+     * <p>
+     * The {@link Trigger} is automatically selected when inserted into the map.
+     * 
+     * @param pitch The MIDI pitch value.
+     * @param beat The start beat.
+     * @param gate The gate length.
+     * @param velocity The note velocity.
+     * @param flags The accent, slide flags.
+     * @see OnPhraseChange
+     * @see PhraseChangeKind.NoteAdd
      */
     public Note addNote(int pitch, float beat, float gate, float velocity, int flags) {
-        return triggerMap.addNote(pitch, beat, gate, velocity, flags);
+        Trigger trigger = getTrigger(beat);
+        if (trigger == null) {
+            trigger = new Trigger(beat);
+            trigger.setSelected(true);
+            map.put(beat, trigger);
+        }
+
+        Note note = trigger.addNote(beat, pitch, gate, velocity, flags);
+        // addNote(pitch, beat, beat + gate, velocity, flags);
+        PatternSequencerMessage.NOTE_DATA.send(getMachine().getRackTone().getEngine(), getMachine()
+                .getMachineIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note
+                .getEnd(), note.getFlags());
+        fireChange(PhraseChangeKind.NoteAdd, note);
+
+        return note;
     }
 
     /**
-     * @see TriggerMap#addNote(int, int, float, float, int)
+     * Adds a {@link Note} to the {@link Trigger} at the specified step.
+     * <p>
+     * Will create a {@link Trigger} based on the {@link Phrase#getResolution()}
+     * if it doesn't exist.
+     * 
+     * @param pitch The MIDI pitch value.
+     * @param step The trigger step based on the {@link Phrase#getResolution()}.
+     * @param gate The gate length.
+     * @param velocity The note velocity.
+     * @param flags The accent, slide flags.
+     * @see TriggerMap#addNote(int, float, float, float, int)
      */
     public Note addNote(int pitch, int step, float gate, float velocity, int flags) {
-        return triggerMap.addNote(pitch, step, gate, velocity, flags);
+        float beat = Resolution.toBeat(step, getResolution());
+        return addNote(pitch, beat, gate, velocity, flags);
     }
 
     /**
-     * @see TriggerMap#addNote(Note)
+     * Adds an existing {@link Note} instance to the trigger.
+     * <p>
+     * This does not dispatch an Add event nor does it call the {@link RackTone}
+     * 's native pattern sequencer, just adds the note to the trigger model.
+     * 
+     * @param note The {@link Note} to add.
      */
     public void addNote(Note note) {
-        triggerMap.addNote(note);
+        Trigger trigger = getTrigger(note.getStart());
+        if (trigger == null) {
+            trigger = new Trigger(note.getStart());
+            map.put(note.getStart(), trigger);
+        }
+        trigger.addNote(note);
     }
 
     /**
-     * @see TriggerMap#addNotes(Collection)
+     * Adds the collection of notes to the model, will not dispatch Add or add
+     * to the {@link RackTone}'s pattern sequencer.
+     * 
+     * @param notes The collection of notes.
      */
     public void addNotes(Collection<Note> notes) {
-        triggerMap.addNotes(notes);
+        for (Note note : notes) {
+            addNote(note);
+        }
     }
 
     /**
-     * @see TriggerMap#removeNote(int, float)
+     * Removes a {@link Note} at the specified beat and pitch.
+     * 
+     * @param pitch The MIDI pitch value.
+     * @param beat The start beat.
+     * @see OnPhraseChange
+     * @see PhraseChangeKind#NoteRemove
+     * @return <code>null</code> if the beat and pitch does not exist.
      */
     public Note removeNote(int pitch, float beat) {
-        return triggerMap.removeNote(pitch, beat);
+        Trigger trigger = getTrigger(beat);
+        if (trigger == null)
+            return null;
+        Note note = trigger.getNote(pitch);
+        if (note != null) {
+            //removeNote(pitch, beat);
+            PatternSequencerMessage.NOTE_DATA_REMOVE.send(getMachine().getRackTone().getEngine(),
+                    getMachine().getMachineIndex(), note.getStart(), note.getPitch());
+            // with remove note, we actually take the note out of the collection
+            trigger.removeNote(note);
+            fireChange(PhraseChangeKind.NoteRemove, note);
+        }
+        return note;
     }
 
     /**
-     * @see TriggerMap#removeNote(int, int)
+     * Removes a {@link Note} at the specified step and pitch based on the
+     * {@link Phrase#getResolution()}.
+     * 
+     * @param pitch The MIDI pitch value.
+     * @param step The start step.
+     * @return <code>null</code> if the beat and pitch does not exist.
+     * @see #removeNote(float, int)
      */
     public Note removeNote(int pitch, int step) {
-        return triggerMap.removeNote(pitch, step);
+        float beat = Resolution.toBeat(step, getResolution());
+        return removeNote(pitch, beat);
     }
 
     /**
-     * @see TriggerMap#removeNote(Note)
+     * Removes a {@link Note} using the passed note's start and pitch.
+     * <p>
+     * Does not check for equal identy on the Note instance.
+     * 
+     * @param note The {@link Note} to remove.
+     * @return <code>null</code> if the beat and pitch does not exist.
      */
-    public void removeNote(Note note) {
-        triggerMap.removeNote(note);
+    public Note removeNote(Note note) {
+        return removeNote(note.getPitch(), note.getStart());
     }
 
+    //----------------------------------
+    // Trigger
+    //----------------------------------
+
     /**
-     * @see TriggerMap#containsTrigger(float)
+     * Returns whether the map contains a {@link Trigger} at the specified beat.
+     * 
+     * @param beat The start beat of the trigger.
      */
     public final boolean containsTrigger(float beat) {
-        return triggerMap.containsTrigger(beat);
+        return map.containsKey(beat);
     }
 
     /**
-     * @see TriggerMap#containsTrigger(int)
+     * Returns whether the map contains a {@link Trigger} at the specified step.
+     * 
+     * @param step The start step of the trigger.
      */
     public final boolean containsTrigger(int step) {
-        return triggerMap.containsTrigger(step);
+        float beat = Resolution.toBeat(step, getResolution());
+        return containsTrigger(beat);
     }
 
     /**
-     * @see TriggerMap#getTrigger(float)
+     * Returns the {@link Trigger} at the specified beat or <code>null</code> if
+     * the {@link Trigger} has not been created.
+     * 
+     * @param beat The start beat of the trigger.
      */
     public final Trigger getTrigger(float beat) {
-        return triggerMap.getTrigger(beat);
+        return map.get(beat);
     }
 
     /**
-     * @see TriggerMap#getTrigger(int)
+     * Returns the {@link Trigger} at the specified step or <code>null</code> if
+     * the {@link Trigger} has not been created.
+     * 
+     * @param step The step of the trigger based on the
+     *            {@link Phrase#getResolution()}.
      */
     public final Trigger getTrigger(int step) {
-        return triggerMap.getTrigger(step);
+        return getTrigger(Resolution.toBeat(step, getResolution()));
     }
 
     /**
-     * @see TriggerMap#getTriggers()
+     * Returns all the triggers in the phrase, no view calculations(position).
+     * <p>
+     * A copy of the collection is returned.
      */
     public Collection<Trigger> getTriggers() {
-        return triggerMap.getTriggers();
+        return new ArrayList<Trigger>(map.values());
     }
 
     /**
-     * @see TriggerMap#getViewTriggers()
+     * Returns a collection of triggers found within the current view using the
+     * position and number of indicies, default 16 steps.
      */
     public Collection<Trigger> getViewTriggers() {
-        return triggerMap.getViewTriggers();
+        final ArrayList<Trigger> result = new ArrayList<Trigger>();
+        // find the start (position - 1) * resolution
+        int fromStep = (getPosition() - 1) * indciesInView;
+        // find the end fromIndex + scale
+        int toStep = endStepInView(fromStep);
+        for (Trigger trigger : map.values()) {
+            int step = trigger.getStep(getResolution());
+            if (step >= fromStep && step < toStep)
+                result.add(trigger);
+        }
+        return result;
     }
 
     /**
-     * @see TriggerMap#getViewTriggerMap()
+     * Returns a sorted map of all view triggers with key as the step based on
+     * {@link Phrase#getResolution()} and value of {@link Trigger}.
      */
     public Map<Integer, Trigger> getViewTriggerMap() {
-        return triggerMap.getViewTriggerMap();
+        final Map<Integer, Trigger> result = new TreeMap<Integer, Trigger>();
+        for (Trigger trigger : getViewTriggers()) {
+            final int step = trigger.getStep(getResolution());
+            result.put(step, trigger);
+        }
+        return result;
     }
 
     /**
-     * @see TriggerMap#triggerOn(int, int, float, float, int)
+     * Triggers a note at the specified step and will not calculate the view
+     * step.
+     * <p>
+     * This method assumes the step passed is NOT relative or the view step.
+     * 
+     * @param step The trigger step.
+     * @param pitch The trigger pitch.
+     * @param gate The trigger gate.
+     * @param velocity The trigger velocity.
+     * @param flags The trigger flags.
      */
     public void triggerOn(int step, int pitch, float gate, float velocity, int flags) {
-        triggerMap.triggerOn(step, pitch, gate, velocity, flags);
+        final float beat = Resolution.toBeat(step, getResolution());
+        Trigger trigger = getTrigger(step);
+        if (trigger == null) {
+            trigger = new Trigger(beat);
+            map.put(beat, trigger);
+        }
+        Note note = trigger.getNote(pitch);
+        if (note == null) {
+            note = trigger.addNote(beat, pitch, gate, velocity, flags);
+        } else {
+            note.update(pitch, beat, beat + gate, velocity, flags);
+        }
+        trigger.setSelected(true);
+        addNote(pitch, beat, beat + gate, velocity, flags);
     }
 
     /**
-     * @see TriggerMap#triggerOn(int)
+     * Triggers the step notes on, not changing an trigger/note properties.
+     * 
+     * @param step The trigger step.
      */
     public void triggerOn(int step) {
-        triggerMap.triggerOn(step);
+        Trigger trigger = getTrigger(step);
+        if (trigger == null) {
+            trigger = PhraseUtils.createInitTrigger(this, step);
+            trigger.setSelected(true);
+            map.put(Resolution.toBeat(step, getResolution()), trigger);
+        }
+        for (Note note : trigger.getNotes()) {
+            triggerOn(step, note.getPitch(), note.getGate(), note.getVelocity(), note.getFlags());
+        }
     }
 
     /**
-     * @see TriggerMap#triggerOff(int)
+     * Triggers a note off at the specified step, this is an absolute step
+     * within the known trigger map's length of measures.
+     * 
+     * @param step The absolute step to unselect.
      */
     public void triggerOff(int step) {
-        triggerMap.triggerOff(step);
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            removeNote(note.getPitch(), Resolution.toBeat(step, getResolution()));
+        }
+        trigger.setSelected(false);
     }
 
     /**
-     * @see TriggerMap#triggerUpdate(int, int, float, float, int)
+     * Updates an existing trigger by pitch, if the {@link Trigger} does not
+     * exist with the pitch, no event is dispatched.
+     * 
+     * @param step The trigger step.
+     * @param pitch The trigger pitch.
+     * @param gate The trigger gate.
+     * @param velocity The trigger velocity.
+     * @param flags The trigger flags.
      */
     public void triggerUpdate(int step, int pitch, float gate, float velocity, int flags) {
-        triggerMap.triggerUpdate(step, pitch, gate, velocity, flags);
+        Trigger trigger = getTrigger(step);
+        if (trigger == null)
+            return;
+        final float beat = Resolution.toBeat(step, getResolution());
+        Note note = trigger.getNote(pitch);
+        if (note == null)
+            return;
+        note.update(pitch, beat, beat + gate, velocity, flags);
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getMachine().getEngine(), getMachine()
+                .getMachineIndex(), note.getStart(), note.getPitch());
+        PhraseUtils.update(this, note);
     }
 
     /**
-     * @see TriggerMap#triggerUpdatePitch(int, int)
+     * Updates all trigger notes with the new pitch.
+     * 
+     * @param step The trigger step.
+     * @param pitch The new trigger pitch.
      */
     public void triggerUpdatePitch(int step, int pitch, int oldPitch) {
-        triggerMap.triggerUpdatePitch(step, pitch, oldPitch);
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            if (note.getPitch() == oldPitch) {
+                final float beat = Resolution.toBeat(step, getResolution());
+                PatternSequencerMessage.NOTE_DATA_REMOVE.send(getMachine().getEngine(),
+                        getMachine().getMachineIndex(), note.getStart(), oldPitch);
+                note.update(pitch, beat, beat + note.getGate(), note.getVelocity(), note.getFlags());
+                if (trigger.isSelected())
+                    PhraseUtils.update(this, note);
+            }
+        }
     }
 
     /**
-     * @see TriggerMap#triggerUpdateGate(int, float)
+     * Updates all trigger notes with the new gate.
+     * 
+     * @param step The trigger gate.
+     * @param pitch The new trigger pitch.
      */
     public void triggerUpdateGate(int step, float gate) {
-        triggerMap.triggerUpdateGate(step, gate);
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerUpdate(step, note.getPitch(), gate, note.getVelocity(), note.getFlags());
+        }
     }
 
     /**
-     * @see TriggerMap#triggerUpdateVelocity(int, float)
+     * Updates all trigger notes with the new velocity.
+     * 
+     * @param step The trigger step.
+     * @param velocity The new trigger velocity.
      */
     public void triggerUpdateVelocity(int step, float velocity) {
-        triggerMap.triggerUpdateVelocity(step, velocity);
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerUpdate(step, note.getPitch(), note.getGate(), velocity, note.getFlags());
+        }
     }
 
     /**
-     * @see TriggerMap#triggerUpdateFlags(int, int)
-     * @see NoteFlag#None
-     * @see NoteFlag#Slide
-     * @see NoteFlag#Accent
+     * Updates all trigger notes with the new flags.
+     * 
+     * @param step The trigger step.
+     * @param flags The new trigger flags.
      */
     public void triggerUpdateFlags(int step, int flags) {
-        triggerMap.triggerUpdateFlags(step, flags);
+        Trigger trigger = getTrigger(step);
+        for (Note note : trigger.getNotes()) {
+            triggerUpdate(step, note.getPitch(), note.getGate(), note.getVelocity(), flags);
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -970,13 +1218,21 @@ public class Phrase extends CaustkComponent {
         fireChange(kind, null);
     }
 
-    protected void fireChange(PhraseChangeKind kind, Note phraseNote) {
-        machine.getDispatcher().trigger(new OnPhraseChange(kind, this, phraseNote));
+    protected void fireChange(PhraseChangeKind kind, Note note) {
+        machine.getDispatcher().trigger(new OnPhraseChange(kind, this, note));
     }
 
     public static float toLocalBeat(float beat, int length) {
         float r = (beat % (length * 4));
         return r;
+    }
+
+    private int endStepInView(int fromStep) {
+        if (scale == Scale.SIXTEENTH)
+            return fromStep + indciesInView;
+        if (scale == Scale.THIRTYSECOND)
+            return fromStep + indciesInView;
+        return -1;
     }
 
     @Override
