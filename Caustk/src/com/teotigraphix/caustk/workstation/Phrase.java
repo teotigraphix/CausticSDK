@@ -34,7 +34,7 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
-import com.teotigraphix.caustk.utils.PhraseUtils;
+import com.teotigraphix.caustk.workstation.Phrase.PhraseChangeKind;
 
 /**
  * @author Michael Schmalle
@@ -254,7 +254,7 @@ public class Phrase extends CaustkComponent {
             float velocity = Float.valueOf(split[2]);
             float end = Float.valueOf(split[3]);
             int flags = Float.valueOf(split[4]).intValue();
-            addNote(pitch, start, end - start, velocity, flags);
+            addNote(pitch, start, end, velocity, flags);
         }
 
         fireChange(PhraseChangeKind.NoteData);
@@ -859,22 +859,22 @@ public class Phrase extends CaustkComponent {
      * The {@link Trigger} is automatically selected when inserted into the map.
      * 
      * @param pitch The MIDI pitch value.
-     * @param beat The start beat.
-     * @param gate The gate length.
+     * @param start The start beat.
+     * @param end The end beat.
      * @param velocity The note velocity.
      * @param flags The accent, slide flags.
      * @see OnPhraseChange
      * @see PhraseChangeKind.NoteAdd
      */
-    public Note addNote(int pitch, float beat, float gate, float velocity, int flags) {
-        Trigger trigger = getTrigger(beat);
+    public Note addNote(int pitch, float start, float end, float velocity, int flags) {
+        Trigger trigger = getTrigger(start);
         if (trigger == null) {
-            trigger = new Trigger(beat);
+            trigger = new Trigger(start);
             trigger.setSelected(true);
-            map.put(beat, trigger);
+            map.put(start, trigger);
         }
 
-        Note note = trigger.addNote(beat, pitch, gate, velocity, flags);
+        Note note = trigger.addNote(pitch, start, end, velocity, flags);
         // addNote(pitch, beat, beat + gate, velocity, flags);
         PatternSequencerMessage.NOTE_DATA.send(getMachine().getRackTone().getEngine(), getMachine()
                 .getMachineIndex(), note.getStart(), note.getPitch(), note.getVelocity(), note
@@ -898,8 +898,9 @@ public class Phrase extends CaustkComponent {
      * @see TriggerMap#addNote(int, float, float, float, int)
      */
     public Note addNote(int pitch, int step, float gate, float velocity, int flags) {
-        float beat = Resolution.toBeat(step, getResolution());
-        return addNote(pitch, beat, gate, velocity, flags);
+        float start = Resolution.toBeat(step, getResolution());
+        float end = start + gate;
+        return addNote(pitch, start, end, velocity, flags);
     }
 
     /**
@@ -1079,20 +1080,21 @@ public class Phrase extends CaustkComponent {
      * @param flags The trigger flags.
      */
     public void triggerOn(int step, int pitch, float gate, float velocity, int flags) {
-        final float beat = Resolution.toBeat(step, getResolution());
+        final float start = Resolution.toBeat(step, getResolution());
         Trigger trigger = getTrigger(step);
         if (trigger == null) {
-            trigger = new Trigger(beat);
-            map.put(beat, trigger);
+            trigger = new Trigger(start);
+            map.put(start, trigger);
         }
+        float end = start + gate;
         Note note = trigger.getNote(pitch);
         if (note == null) {
-            note = trigger.addNote(beat, pitch, gate, velocity, flags);
+            note = trigger.addNote(pitch, start, end, velocity, flags);
         } else {
-            note.update(pitch, beat, beat + gate, velocity, flags);
+            note.update(pitch, start, end, velocity, flags);
         }
         trigger.setSelected(true);
-        addNote(pitch, beat, beat + gate, velocity, flags);
+        addNote(pitch, start, end, velocity, flags);
     }
 
     /**

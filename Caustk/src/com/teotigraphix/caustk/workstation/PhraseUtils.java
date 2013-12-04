@@ -17,13 +17,10 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.utils;
+package com.teotigraphix.caustk.workstation;
 
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
-import com.teotigraphix.caustk.workstation.Note;
-import com.teotigraphix.caustk.workstation.Phrase;
-import com.teotigraphix.caustk.workstation.Trigger;
 
 public class PhraseUtils {
 
@@ -96,7 +93,7 @@ public class PhraseUtils {
     public static Trigger createInitTrigger(Phrase phrase, int step) {
         float beat = Resolution.toBeat(step, phrase.getResolution());
         Trigger trigger = new Trigger(beat);
-        trigger.addNote(beat, 60, 0.25f, 1f, 0);
+        trigger.addNote(60, beat, beat + 0.25f, 1f, 0);
         return trigger;
     }
 

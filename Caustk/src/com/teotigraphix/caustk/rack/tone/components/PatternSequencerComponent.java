@@ -143,31 +143,32 @@ public class PatternSequencerComponent extends RackToneComponent {
      * @param bank
      * @param pattern
      */
+    @SuppressWarnings("unused")
     public Collection<Note> getNotes(int bank, int pattern) {
         int oldBank = getSelectedBank();
         int oldPattern = getSelectedPattern();
         sendBankPatternOSC(bank, pattern);
 
         List<Note> result = new ArrayList<Note>();
-        String data = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getEngine(),
-                getToneIndex());
-
-        if (data != null && !data.equals("")) {
-            String[] notes = data.split("\\|");
-            for (String noteData : notes) {
-                String[] split = noteData.split(" ");
-
-                float start = Float.valueOf(split[0]);
-                int pitch = Float.valueOf(split[1]).intValue();
-                float velocity = Float.valueOf(split[2]);
-                float end = Float.valueOf(split[3]);
-                int flags = Float.valueOf(split[4]).intValue();
-                Note note = new Note(pitch, start, end, velocity, flags);
-                result.add(note);
-            }
-        }
-
-        sendBankPatternOSC(oldBank, oldPattern);
+        //        String data = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getEngine(),
+        //                getToneIndex());
+        //
+        //        if (data != null && !data.equals("")) {
+        //            String[] notes = data.split("\\|");
+        //            for (String noteData : notes) {
+        //                String[] split = noteData.split(" ");
+        //
+        //                float start = Float.valueOf(split[0]);
+        //                int pitch = Float.valueOf(split[1]).intValue();
+        //                float velocity = Float.valueOf(split[2]);
+        //                float end = Float.valueOf(split[3]);
+        //                int flags = Float.valueOf(split[4]).intValue();
+        //                Note note = new Note(pitch, start, end, velocity, flags);
+        //                result.add(note);
+        //            }
+        //        }
+        //
+        //        sendBankPatternOSC(oldBank, oldPattern);
 
         return result;
     }

@@ -31,6 +31,8 @@ import com.teotigraphix.caustk.utils.MathUtils;
  */
 public class Note {
 
+    private static final String SPACE = " ";
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -215,8 +217,8 @@ public class Note {
      * @see PatternSequencerMessage#QUERY_NOTE_DATA
      * @see NoteFlag
      */
-    public Note(String data) {
-        String[] split = data.split(" ");
+    Note(String data) {
+        String[] split = data.split(SPACE);
         this.start = Float.valueOf(split[0]);
         this.pitch = Float.valueOf(split[1]).intValue();
         this.velocity = Float.valueOf(split[2]);
@@ -234,7 +236,7 @@ public class Note {
      * @param flags The bitmasked flags.
      * @see NoteFlag
      */
-    public Note(int pitch, float start, float end, float velocity, int flags) {
+    Note(int pitch, float start, float end, float velocity, int flags) {
         update(pitch, start, end, velocity, flags);
     }
 
@@ -264,23 +266,23 @@ public class Note {
      * Serializes the note data into the Caustic Core note string.
      */
     public String getNoteData() {
-        // [start] [note] [velocity] [end] [flags]
+        // [start] [pitch] [velocity] [end] [flags]
         final StringBuilder sb = new StringBuilder();
         sb.append(start);
-        sb.append(" ");
+        sb.append(SPACE);
         sb.append(pitch);
-        sb.append(" ");
+        sb.append(SPACE);
         sb.append(velocity);
-        sb.append(" ");
+        sb.append(SPACE);
         sb.append(end);
-        sb.append(" ");
+        sb.append(SPACE);
         sb.append(flags);
         return sb.toString();
     }
 
     @Override
     public String toString() {
-        return "[" + start + "]Pitch:" + pitch + " Gate:" + getGate();
+        return "[Note(" + start + ", " + pitch + ", " + velocity + ", " + end + ", " + flags + ")]";
     }
 
     /**
