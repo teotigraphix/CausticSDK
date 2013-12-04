@@ -35,7 +35,6 @@ import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
 import com.teotigraphix.caustk.utils.PhraseUtils;
-import com.teotigraphix.caustk.workstation.Phrase.PhraseChangeKind;
 
 /**
  * @author Michael Schmalle

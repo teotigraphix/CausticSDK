@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.workstation;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
+import com.teotigraphix.caustk.utils.MathUtils;
 
 /**
  * A single note held within a {@link TriggerMap}.
@@ -100,7 +101,7 @@ public class Note {
      * The gate time of the note, the length of time between the start and end.
      */
     public float getGate() {
-        return end - start;
+        return MathUtils.rounded(end - start, 0.00001f);
     }
 
     //----------------------------------
@@ -127,6 +128,24 @@ public class Note {
      */
     public int getFlags() {
         return flags;
+    }
+
+    /**
+     * Returns whether the note is a slide note.
+     * 
+     * @see NoteFlag#Slide
+     */
+    public boolean isSlide() {
+        return (flags & NoteFlag.Slide.getValue()) != 0;
+    }
+
+    /**
+     * Returns whether the note is an accent note.
+     * 
+     * @see NoteFlag#Accent
+     */
+    public boolean isAccent() {
+        return (flags & NoteFlag.Accent.getValue()) != 0;
     }
 
     //----------------------------------
@@ -183,7 +202,10 @@ public class Note {
     // Constructors
     //--------------------------------------------------------------------------
 
-    public Note() {
+    /**
+     * Serialization
+     */
+    Note() {
     }
 
     /**
@@ -261,16 +283,33 @@ public class Note {
         return "[" + start + "]Pitch:" + pitch + " Gate:" + getGate();
     }
 
+    /**
+     * A note flag, accent or slide.
+     * 
+     * @author Michael Schmalle
+     */
     public enum NoteFlag {
 
+        /**
+         * No flags applied to the note.
+         */
         None(0),
 
+        /**
+         * Whether the note slides to the next.
+         */
         Slide(1),
 
+        /**
+         * Whether the note is accented.
+         */
         Accent(2);
 
         private final int value;
 
+        /**
+         * Returns the integer value.
+         */
         public final int getValue() {
             return value;
         }
