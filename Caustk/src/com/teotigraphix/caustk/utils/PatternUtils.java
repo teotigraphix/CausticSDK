@@ -54,8 +54,8 @@ public final class PatternUtils {
         return -1;
     }
 
-    public static final String toBank(int bank) {
-        return chars[bank];
+    public static final String toBank(int index) {
+        return chars[index];
     }
 
     public static final String toString(int bank, int index) {

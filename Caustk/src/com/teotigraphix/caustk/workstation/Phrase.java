@@ -34,7 +34,6 @@ import com.teotigraphix.caustk.rack.IRack;
 import com.teotigraphix.caustk.rack.tone.RackTone;
 import com.teotigraphix.caustk.rack.tone.components.PatternSequencerComponent.Resolution;
 import com.teotigraphix.caustk.utils.PatternUtils;
-import com.teotigraphix.caustk.workstation.Phrase.PhraseChangeKind;
 
 /**
  * @author Michael Schmalle
@@ -73,6 +72,12 @@ public class Phrase extends CaustkComponent {
     // <beat, Trigger<List<Note>>
     @Tag(108)
     private Map<Float, Trigger> map = new TreeMap<Float, Trigger>();
+
+    @Tag(109)
+    private int bankIndex;
+
+    @Tag(110)
+    private int patternIndex;
 
     @Tag(120)
     private int playMeasure = 0;
@@ -116,6 +121,8 @@ public class Phrase extends CaustkComponent {
 
     void setIndex(int value) {
         index = value;
+        bankIndex = PatternUtils.getBank(index);
+        patternIndex = PatternUtils.getPattern(index);
     }
 
     /**
@@ -123,7 +130,7 @@ public class Phrase extends CaustkComponent {
      * sequencer.
      */
     public final int getBankIndex() {
-        return PatternUtils.getBank(index);
+        return bankIndex;
     }
 
     /**
@@ -131,7 +138,7 @@ public class Phrase extends CaustkComponent {
      * sequencer.
      */
     public final int getPatternIndex() {
-        return PatternUtils.getPattern(index);
+        return patternIndex;
     }
 
     //----------------------------------
@@ -183,8 +190,8 @@ public class Phrase extends CaustkComponent {
             return;
         length = value;
 
-        if (getMachine() != null) {
-            getMachine().getRackTone().getPatternSequencer()
+        if (machine != null) {
+            machine.getRackTone().getPatternSequencer()
                     .setLength(getBankIndex(), getPatternIndex(), length);
             fireChange(PhraseChangeKind.Length);
         }
@@ -669,13 +676,13 @@ public class Phrase extends CaustkComponent {
 
     Phrase(ComponentInfo info, int index, MachineType machineType) {
         setInfo(info);
-        this.index = index;
+        setIndex(index);
         this.machineType = machineType;
     }
 
     Phrase(ComponentInfo info, int index, Machine machine) {
         setInfo(info);
-        this.index = index;
+        setIndex(index);
         this.machine = machine;
         this.machineType = machine.getMachineType();
     }
@@ -864,7 +871,7 @@ public class Phrase extends CaustkComponent {
      * @param velocity The note velocity.
      * @param flags The accent, slide flags.
      * @see OnPhraseChange
-     * @see PhraseChangeKind.NoteAdd
+     * @see PhraseChangeKind#NoteAdd
      */
     public Note addNote(int pitch, float start, float end, float velocity, int flags) {
         Trigger trigger = getTrigger(start);
