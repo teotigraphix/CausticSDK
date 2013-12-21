@@ -19,14 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.rack.tone.components.FilterComponentBase;
-import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent;
-import com.teotigraphix.caustk.rack.tone.components.SynthFilterComponent.FilterType;
-import com.teotigraphix.caustk.rack.tone.components.bassline.FilterComponent;
-import com.teotigraphix.caustk.rack.tone.components.bassline.OSC1Component.Waveform;
-import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc1Component;
-import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc2Component;
-import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc2Component.Osc2WaveForm;
 
 public class SubSynthMessage extends CausticMessage {
 

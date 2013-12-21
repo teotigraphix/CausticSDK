@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.rack.effect.EffectType;
 
 /**
  * The {@link EffectRackMessage} holds all OSC messages associated with the

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.rack.tone.OrganTone;
 
 /**
  * The {@link OrganMessage} holds all OSC messages associated with the

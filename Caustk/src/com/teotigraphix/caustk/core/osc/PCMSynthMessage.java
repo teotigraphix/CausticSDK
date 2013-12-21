@@ -19,11 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.rack.tone.components.VolumeEnvelopeComponent;
-import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMSamplerChannel;
-import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMSamplerComponent.PlayMode;
-import com.teotigraphix.caustk.rack.tone.components.pcmsynth.PCMTunerComponent;
-import com.teotigraphix.caustk.rack.tone.components.subsynth.Osc2Component.Osc2WaveForm;
 
 public class PCMSynthMessage extends CausticMessage {
 

@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.utils;
 
-import com.teotigraphix.caustk.workstation.Phrase;
-
 /**
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
@@ -62,9 +60,9 @@ public final class PatternUtils {
         return toBank(bank) + toPattern(index);
     }
 
-    public static String toString(Phrase phrase) {
-        return toString(phrase.getBankIndex(), phrase.getPatternIndex());
-    }
+    //    public static String toString(Phrase phrase) {
+    //        return toString(phrase.getBankIndex(), phrase.getPatternIndex());
+    //    }
 
     public static String toString(int index) {
         return toString(getBank(index), getPattern(index));

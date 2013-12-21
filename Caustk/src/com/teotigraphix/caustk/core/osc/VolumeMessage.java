@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.rack.tone.components.VolumeEnvelopeComponent;
 
 public class VolumeMessage extends CausticMessage {
 
