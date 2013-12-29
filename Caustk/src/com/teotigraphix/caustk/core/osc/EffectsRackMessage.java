@@ -21,14 +21,14 @@ package com.teotigraphix.caustk.core.osc;
 
 
 /**
- * The {@link EffectRackMessage} holds all OSC messages associated with the
+ * The {@link EffectsRackMessage} holds all OSC messages associated with the
  * {@link IEffectsRack} API.
  * 
  * @author Michael Schmalle
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public class EffectRackMessage extends CausticMessage {
+public class EffectsRackMessage extends CausticMessage {
 
     /**
      * Message:
@@ -56,7 +56,7 @@ public class EffectRackMessage extends CausticMessage {
      * 
      * @see SoundMixerChannel#addEffect(EffectType, int)
      */
-    public static final EffectRackMessage CREATE = new EffectRackMessage(
+    public static final EffectsRackMessage CREATE = new EffectsRackMessage(
             "/caustic/effects_rack/create ${0} ${1} ${2}");
 
     /**
@@ -76,7 +76,7 @@ public class EffectRackMessage extends CausticMessage {
      * 
      * @see SoundMixerChannel#removeEffect(int)
      */
-    public static final EffectRackMessage REMOVE = new EffectRackMessage(
+    public static final EffectsRackMessage REMOVE = new EffectsRackMessage(
             "/caustic/effects_rack/remove ${0} ${1}");
 
     /**
@@ -100,7 +100,7 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      */
-    public static final EffectRackMessage SET = new EffectRackMessage(
+    public static final EffectsRackMessage SET = new EffectsRackMessage(
             "/caustic/effects_rack/${0}/${1}/${2} ${3}");
 
     /**
@@ -123,7 +123,7 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      */
-    public static final EffectRackMessage GET = new EffectRackMessage(
+    public static final EffectsRackMessage GET = new EffectsRackMessage(
             "/caustic/effects_rack/${0}/${1}/${2}");
 
     /**
@@ -142,10 +142,10 @@ public class EffectRackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      */
-    public static final EffectRackMessage TYPE = new EffectRackMessage(
+    public static final EffectsRackMessage TYPE = new EffectsRackMessage(
             "/caustic/effects_rack/type ${0} ${1}");
 
-    EffectRackMessage(String message) {
+    EffectsRackMessage(String message) {
         super(message);
     }
 }
