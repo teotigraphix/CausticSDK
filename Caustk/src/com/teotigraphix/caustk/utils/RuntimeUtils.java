@@ -43,6 +43,8 @@ import com.teotigraphix.caustk.core.MachineType;
  */
 public class RuntimeUtils {
 
+    private static final String TEMP = ".temp";
+
     private static final String FORWARD_SLASH = "/";
 
     private static final String DOT = ".";
@@ -80,6 +82,13 @@ public class RuntimeUtils {
         if (APP_ROOT == null)
             throw new RuntimeException("APP_ROOT is null, set in RuntimeUtils");
         File directory = new File(APP_ROOT);
+        return directory;
+    }
+
+    public static final File getApplicationTempDirectory() {
+        final File directory = getApplicationDirectory(TEMP);
+        if (!directory.exists())
+            directory.mkdirs();
         return directory;
     }
 

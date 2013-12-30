@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-
 /**
  * The {@link SynthMessage} holds all OSC messages associated with the
  * {@link ISynth}, {@link ISynth#getSynth()} API.
@@ -150,7 +149,8 @@ public class SynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>String</code>The name of the preset
-     * loaded in the machine if any.
+     * loaded in the machine if any, <code>null</code> if the machine did not
+     * load a preset.
      * 
      * @see SynthComponent#getPresetName()
      */
