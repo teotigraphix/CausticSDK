@@ -154,4 +154,12 @@ public enum MachineType {
         }
         return null;
     }
+
+    public static MachineType fromExtension(String extension) {
+        for (MachineType machineType : values()) {
+            if (machineType.getExtension().equals(extension))
+                return machineType;
+        }
+        return null;
+    }
 }
