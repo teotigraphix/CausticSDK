@@ -68,7 +68,8 @@ public class FileModel {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public void reset() {
+    public void reset() throws IOException {
+        causticFile.trim();
         causticFile = null;
         listener.onReset();
     }

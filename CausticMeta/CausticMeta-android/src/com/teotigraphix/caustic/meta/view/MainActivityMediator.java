@@ -48,6 +48,17 @@ import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
+ * - Browse for .caustic file
+ *   - Load .caustic file
+ *   - 
+ * - Enter Artist, Title, Information, Link Text, Link URL
+ * - Add metadata
+ * - Remove metadata
+ * - Clear fields
+ * - Save values on exit in preferences
+ */
+
+/**
  * @author Michael Schmalle
  */
 public class MainActivityMediator {
@@ -217,17 +228,13 @@ public class MainActivityMediator {
     //--------------------------------------------------------------------------
 
     private void doRemoveMetadata() {
-        //        try {
-        //            fileModel.saveSongAs(fileModel.getCausticFile().getFile());
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
-
-        Toast.makeText(activity,
-                "Metadata removed from " + fileModel.getCausticFile().getFile().getName(),
-                Toast.LENGTH_SHORT).show();
-
-        fileModel.reset();
+        try {
+            String name = fileModel.getCausticFile().getFile().getName();
+            fileModel.reset();
+            Toast.makeText(activity, "Metadata removed from " + name, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean isValid() {

@@ -159,9 +159,6 @@ public class CausticFile {
      * @throws FileNotFoundException
      */
     public void read() throws FileNotFoundException {
-        if (file == null)
-            throw new IllegalStateException("file must not be null");
-
         readFile(file);
     }
 
@@ -175,6 +172,20 @@ public class CausticFile {
         writeFile();
     }
 
+    public void trim() throws IOException {
+        RandomAccessFile accessFile = new RandomAccessFile(file, "rw");
+        long size = getCausticDataLength(accessFile);
+        accessFile.getChannel().truncate(size);
+        accessFile.close();
+    }
+
+    private static long getCausticDataLength(RandomAccessFile file) throws IOException {
+        long fileLength = file.length();
+        file.seek(fileLength - 4);
+        int v = file.readInt();
+        return fileLength - v - 16;
+    }
+
     //--------------------------------------------------------------------------
     // Private :: Methods
     //--------------------------------------------------------------------------
@@ -183,24 +194,28 @@ public class CausticFile {
         RandomAccessFile accessFile = new RandomAccessFile(file, "r");
 
         try {
-            long len = accessFile.length();
-            accessFile.seek(len - 8);
+            // 4 bytes for DESC + 4 bytes for meta length
+            final int footerLength = 8;
+            // File size
+            long fileLength = accessFile.length();
 
+            accessFile.seek(fileLength - footerLength);
+
+            // Check fo the DESC tag
             byte[] desc = new byte[4];
             accessFile.read(desc, 0, 4);
-            String descTag = new String(desc);
-            if (!descTag.equals(DESC_TAG))
+
+            hasDescription = new String(desc).equals(DESC_TAG);
+            if (!hasDescription)
                 return;
 
-            hasDescription = true;
-
-            int size = accessFile.read();
+            int metadataLength = accessFile.readInt();
 
             accessFile.seek(0);
-            accessFile.seek(len - size - 8);
+            accessFile.seek(fileLength - metadataLength - footerLength);
 
-            byte[] bytes = new byte[size];
-            accessFile.read(bytes, 0, size);
+            byte[] bytes = new byte[metadataLength];
+            accessFile.read(bytes, 0, metadataLength);
 
             String s = new String(bytes, Charset.forName("UTF-8"));
 
@@ -248,13 +263,15 @@ public class CausticFile {
                 68, 69, 83, 67
         };
         int infoLen = metadata.toString().getBytes().length;
-        byte[] metadataLength = intToByteArray(infoLen);
+        // byte[] metadataLength = intToByteArray(infoLen);
 
         raf.write(DESC);
-        raf.write(metadataLength);
+        //raf.write(metadataLength);
+        raf.writeInt(infoLen);
         raf.writeBytes(metadata.toString());
         raf.write(DESC);
-        raf.write(metadataLength);
+        //raf.write(metadataLength);
+        raf.writeInt(infoLen);
         raf.close();
     }
 
