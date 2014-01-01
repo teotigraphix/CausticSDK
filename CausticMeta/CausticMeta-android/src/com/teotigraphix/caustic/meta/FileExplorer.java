@@ -90,7 +90,7 @@ public class FileExplorer extends ListActivity {
             else {
                 new AlertDialog.Builder(this)
                         .setTitle("[" + location.getName() + "] folder can't be read")
-                        .setIcon(R.drawable.ic_launcher)
+                        .setIcon(R.drawable.icon)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -99,13 +99,13 @@ public class FileExplorer extends ListActivity {
 
                 DialogUtils.createAlertDialog(this,
                         "[" + location.getName() + "] folder can't be read",
-                        R.drawable.ic_launcher, null).show();
+                        R.drawable.icon, null).show();
 
             }
         } else {
 
             DialogUtils.createAlertDialog(this, "Load [" + location.getName() + "]",
-                    R.drawable.ic_launcher, new Runnable() {
+                    R.drawable.icon, new Runnable() {
                         @Override
                         public void run() {
                             if (location.getName().endsWith(CAUSTIC)) {

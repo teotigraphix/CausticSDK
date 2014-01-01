@@ -80,8 +80,10 @@ public class FileModel {
 
     public File saveSongAs(File file) throws IOException {
         File song = saveSong(file.getName().replace(".caustic", ""));
-        FileUtils.copyFileToDirectory(song, file.getParentFile());
-        song.delete();
+        if (!song.equals(file)) {
+            FileUtils.copyFileToDirectory(song, file.getParentFile());
+            song.delete();
+        }
         return file;
     }
 

@@ -202,7 +202,7 @@ public class MainActivityMediator {
             @Override
             public void onClick(View v) {
                 DialogUtils.createAlertDialog(activity, "Confirm Remove Caustic metadata",
-                        R.drawable.ic_launcher, new Runnable() {
+                        R.drawable.icon, new Runnable() {
                             @Override
                             public void run() {
                                 doRemoveMetadata();
@@ -217,11 +217,11 @@ public class MainActivityMediator {
     //--------------------------------------------------------------------------
 
     private void doRemoveMetadata() {
-        //                try {
-        //                    saveSongAs(fileModel.getCausticFile().getFile());
-        //                } catch (IOException e) {
-        //                    e.printStackTrace();
-        //                }
+        //        try {
+        //            fileModel.saveSongAs(fileModel.getCausticFile().getFile());
+        //        } catch (IOException e) {
+        //            e.printStackTrace();
+        //        }
 
         Toast.makeText(activity,
                 "Metadata removed from " + fileModel.getCausticFile().getFile().getName(),
@@ -256,8 +256,8 @@ public class MainActivityMediator {
         if (!isValid())
             return;
 
-        DialogUtils.createAlertDialog(activity, "Confirm Add Caustic metadata",
-                R.drawable.ic_launcher, new Runnable() {
+        DialogUtils.createAlertDialog(activity, "Confirm Add Caustic metadata", R.drawable.icon,
+                new Runnable() {
                     @Override
                     public void run() {
                         doSaveCausticFile();
@@ -285,6 +285,8 @@ public class MainActivityMediator {
         //}
 
         try {
+            // XXX            fileModel.saveSongAs(fileModel.getCausticFile().getFile());
+
             causticFile.write();
 
             removeButton.setEnabled(true);
