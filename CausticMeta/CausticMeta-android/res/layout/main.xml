@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:padding="15dp">
+    android:orientation="vertical"
+    android:padding="15dp" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -12,27 +12,24 @@
 
         <TextView
             android:id="@+id/causticFileText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:editable="false"
-            android:ems="10"
             android:maxLength="128"
-            android:text="Browse to .caustic file" />
+            android:text="@string/browse_to_caustic_file" />
 
         <Button
             android:id="@+id/browseButton"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="..." />
+            android:text="@string/ellipsis" />
     </LinearLayout>
 
     <EditText
         android:id="@+id/artistText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Artist"
+        android:hint="@string/artist"
         android:maxLength="128"
         android:maxLines="1"
         android:singleLine="true"
@@ -42,8 +39,7 @@
         android:id="@+id/titleText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Title"
+        android:hint="@string/title"
         android:maxLength="128"
         android:singleLine="true"
         android:tag="Title" />
@@ -52,9 +48,8 @@
         android:id="@+id/descriptionText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:gravity="center_vertical|top"
-        android:hint="Additional info (max. 8 lines, max 128 characters per line)"
+        android:hint="@string/additional_info"
         android:inputType="textMultiLine"
         android:lines="8"
         android:maxLines="8"
@@ -64,8 +59,7 @@
         android:id="@+id/linkText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Link text"
+        android:hint="@string/link_text"
         android:maxLength="128"
         android:maxLines="1"
         android:singleLine="true"
@@ -75,8 +69,8 @@
         android:id="@+id/linkURLText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Link URL"
+        android:hint="@string/link_url"
+        android:inputType="textUri"
         android:maxLength="128"
         android:maxLines="1"
         android:singleLine="true"
@@ -96,7 +90,7 @@
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Play"
+            android:text="@string/play"
             android:textOff="Play"
             android:textOn="Stop"
             android:visibility="invisible" />
@@ -110,13 +104,13 @@
             android:id="@+id/removeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remove Meta" />
+            android:text="@string/remove_meta" />
 
         <Button
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Meta" />
+            android:text="@string/add_meta" />
     </LinearLayout>
 
 </LinearLayout>
