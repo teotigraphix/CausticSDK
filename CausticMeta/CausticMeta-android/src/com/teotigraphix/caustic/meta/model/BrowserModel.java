@@ -24,15 +24,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.app.Activity;
-
 /**
  * @author Michael Schmalle
  */
 public class BrowserModel {
-
-    @SuppressWarnings("unused")
-    private Activity activity;
 
     private List<String> items = null;
 
@@ -92,8 +87,7 @@ public class BrowserModel {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public BrowserModel(Activity activity) {
-        this.activity = activity;
+    public BrowserModel() {
     }
 
     private void updateModel() {

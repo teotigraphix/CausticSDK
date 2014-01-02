@@ -61,7 +61,7 @@ public class FileExplorer extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        browserModel = new BrowserModel(this);
+        browserModel = new BrowserModel();
         browserModel.setOnBrowserModelListener(new OnBrowserModelListener() {
             @Override
             public void onLocationChange(File location) {
@@ -98,8 +98,8 @@ public class FileExplorer extends ListActivity {
                         }).show();
 
                 DialogUtils.createAlertDialog(this,
-                        "[" + location.getName() + "] folder can't be read",
-                        R.drawable.icon, null).show();
+                        "[" + location.getName() + "] folder can't be read", R.drawable.icon, null)
+                        .show();
 
             }
         } else {
