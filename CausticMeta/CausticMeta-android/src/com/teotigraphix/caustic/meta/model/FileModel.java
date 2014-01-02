@@ -26,7 +26,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticFile;
-import com.teotigraphix.caustk.core.CaustkActivity;
+import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -35,9 +35,13 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public class FileModel {
 
-    private CaustkActivity activity;
-
     private CausticFile causticFile;
+
+    private ISoundGenerator soundGenerator;
+
+    public final ISoundGenerator getSoundGenerator() {
+        return soundGenerator;
+    }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -53,15 +57,16 @@ public class FileModel {
 
     public void setFile(File value) throws FileNotFoundException {
         causticFile = new CausticFile(value);
-        listener.onFileChange(causticFile);
+        if (listener != null)
+            listener.onFileChange(causticFile);
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public FileModel(CaustkActivity activity) {
-        this.activity = activity;
+    public FileModel(ISoundGenerator soundGenerator) {
+        this.soundGenerator = soundGenerator;
     }
 
     //--------------------------------------------------------------------------
@@ -71,11 +76,12 @@ public class FileModel {
     public void reset() throws IOException {
         causticFile.trim();
         causticFile = null;
-        listener.onReset();
+        if (listener != null)
+            listener.onReset();
     }
 
     public File saveSong(String name) {
-        RackMessage.SAVE_SONG.send(activity.getGenerator(), name);
+        RackMessage.SAVE_SONG.send(getSoundGenerator(), name);
         return RuntimeUtils.getCausticSongFile(name);
     }
 

@@ -50,7 +50,7 @@ public class MainActivity extends CaustkActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fileModel = new FileModel(this);
+        fileModel = new FileModel(getGenerator());
 
         setContentView(R.layout.main);
 

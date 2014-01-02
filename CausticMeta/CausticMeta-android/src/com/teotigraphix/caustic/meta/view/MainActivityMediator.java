@@ -115,12 +115,14 @@ public class MainActivityMediator {
             @Override
             public void onFileChange(CausticFile causticFile) {
                 loadCausticSongFile();
+                setEnabled(true);
                 refreshView();
             }
 
             @Override
             public void onReset() {
                 resetView();
+                setEnabled(false);
             }
         });
     }
@@ -221,6 +223,17 @@ public class MainActivityMediator {
                         }).show();
             }
         });
+
+        // start off with the form disabled
+        setEnabled(false);
+    }
+
+    private void setEnabled(boolean enabled) {
+        artistText.setEnabled(enabled);
+        titleText.setEnabled(enabled);
+        descriptionText.setEnabled(enabled);
+        linkText.setEnabled(enabled);
+        linkURLText.setEnabled(enabled);
     }
 
     //--------------------------------------------------------------------------
@@ -281,19 +294,7 @@ public class MainActivityMediator {
         causticFile.setLinkText(linkText.getText().toString());
         causticFile.setLinkUrl(linkURLText.getText().toString());
 
-        //if (causticFile.hasMetadata()) {
-        // replacing data, need to resave file until I figure out
-        // how to chop bytes
-
-        //        String name = causticFile.getFile().getName().replace(".caustic", "");
-        //        name = name + "_Meta";
-        //        saveSong(name);
-
-        //}
-
         try {
-            // XXX            fileModel.saveSongAs(fileModel.getCausticFile().getFile());
-
             causticFile.write();
 
             removeButton.setEnabled(true);
@@ -358,12 +359,15 @@ public class MainActivityMediator {
         //playPauseButton.setEnabled(false);
         //playPauseButton.setChecked(false);
 
-        causticFileText.setText("");
+        causticFileText.setText("Browse to .caustic file");
+
         artistText.setText("");
         titleText.setText("");
         descriptionText.setText("");
         linkText.setText("");
         linkURLText.setText("");
+
+        setEnabled(false);
     }
 
 }

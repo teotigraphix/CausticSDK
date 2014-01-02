@@ -169,26 +169,42 @@ public class CausticFile {
      * @throws IOException
      */
     public void write() throws IOException {
+        if (hasDescription) {
+            // if this contains a description, trim() before saving
+            internalTrim();
+        }
         writeFile();
     }
 
     public void trim() throws IOException {
+        internalTrim();
+        hasDescription = false;
+    }
+
+    private void internalTrim() throws IOException {
         RandomAccessFile accessFile = new RandomAccessFile(file, "rw");
         long size = getCausticDataLength(accessFile);
-        accessFile.getChannel().truncate(size);
+        long length = accessFile.length();
+        long newSize = length - size;
+        accessFile.getChannel().truncate(newSize);
         accessFile.close();
     }
 
     private static long getCausticDataLength(RandomAccessFile file) throws IOException {
         long fileLength = file.length();
         file.seek(fileLength - 4);
-        int v = file.readInt();
-        return fileLength - v - 16;
+        int contentLength = reverse(file.readInt());
+        return 8 + contentLength + 8;
     }
 
     //--------------------------------------------------------------------------
     // Private :: Methods
     //--------------------------------------------------------------------------
+
+    public static int reverse(int x) {
+        return ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN).putInt(x)
+                .order(ByteOrder.LITTLE_ENDIAN).getInt(0);
+    }
 
     private void readFile(File file) throws FileNotFoundException {
         RandomAccessFile accessFile = new RandomAccessFile(file, "r");
@@ -209,7 +225,7 @@ public class CausticFile {
             if (!hasDescription)
                 return;
 
-            int metadataLength = accessFile.readInt();
+            int metadataLength = reverse(accessFile.readInt());
 
             accessFile.seek(0);
             accessFile.seek(fileLength - metadataLength - footerLength);
@@ -254,25 +270,31 @@ public class CausticFile {
         metadata.append(linkUrl);
         metadata.append("|");
 
-        System.out.println(ByteOrder.nativeOrder());
-
         final RandomAccessFile raf = new RandomAccessFile(file, "rw");
         long len = raf.length();
         raf.seek(len);
         byte[] DESC = new byte[] {
                 68, 69, 83, 67
         };
-        int infoLen = metadata.toString().getBytes().length;
-        // byte[] metadataLength = intToByteArray(infoLen);
 
-        raf.write(DESC);
-        //raf.write(metadataLength);
-        raf.writeInt(infoLen);
-        raf.writeBytes(metadata.toString());
-        raf.write(DESC);
-        //raf.write(metadataLength);
-        raf.writeInt(infoLen);
+        byte[] bytes = metadata.toString().getBytes();
+        int contentLength = bytes.length;
+        int length = 8 + contentLength + 8;
+
+        ByteBuffer buffer = ByteBuffer.allocate(length);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        buffer.put(DESC);// 4
+        buffer.putInt(contentLength);
+        buffer.put(bytes);
+        buffer.put(DESC);
+        buffer.putInt(contentLength);
+
+        byte[] array = buffer.array();
+
+        raf.write(array);
         raf.close();
+
+        hasDescription = true;
     }
 
     static final byte[] intToByteArray(int value) {
