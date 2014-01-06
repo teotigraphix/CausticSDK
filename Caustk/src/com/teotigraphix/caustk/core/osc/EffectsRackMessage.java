@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-
 /**
  * The {@link EffectsRackMessage} holds all OSC messages associated with the
  * {@link IEffectsRack} API.
