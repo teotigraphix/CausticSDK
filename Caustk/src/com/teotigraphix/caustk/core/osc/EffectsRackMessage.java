@@ -147,4 +147,50 @@ public class EffectsRackMessage extends CausticMessage {
     EffectsRackMessage(String message) {
         super(message);
     }
+
+    //--------------------------------------------------------------------------
+    // Controls
+    //--------------------------------------------------------------------------
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static interface IEffectControl {
+        String getControl();
+    }
+
+    public enum LimiterControl implements IEffectControl {
+
+        /**
+         * Values <code>0..0.05</code>; default <code>0.01</code>
+         */
+        Attack("attack"),
+
+        /**
+         * Values <code>0..2</code>; default <code>0.5</code>
+         */
+        PostGain("post_gain"),
+
+        /**
+         * Values <code>0..4</code>; default <code>2</code>
+         */
+        PreGain("pre_gain"),
+
+        /**
+         * Values <code>0.01..0.5</code>; default <code>0.5</code>
+         */
+        Release("release");
+
+        private String control;
+
+        @Override
+        public String getControl() {
+            return control;
+        }
+
+        private LimiterControl(String control) {
+            this.control = control;
+        }
+    }
 }
