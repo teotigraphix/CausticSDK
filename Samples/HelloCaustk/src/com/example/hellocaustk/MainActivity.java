@@ -49,7 +49,7 @@ public class MainActivity extends CaustkActivity {
 
     @Override
     protected int getActivationKey() {
-        // Expires 12-01-2013
-        return 0x0C12EE33;
+        // Expires 03-01-2014
+        return 0x2312F701;
     }
 }

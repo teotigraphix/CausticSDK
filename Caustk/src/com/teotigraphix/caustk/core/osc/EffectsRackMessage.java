@@ -193,4 +193,43 @@ public class EffectsRackMessage extends CausticMessage {
             this.control = control;
         }
     }
+
+    public enum CabinetSimulatorControl implements IEffectControl {
+
+        /**
+         * Values <code>0.25..1</code>; default <code>1.0</code>
+         */
+        Damping("damping"),
+
+        /**
+         * Values <code>0..1</code>; default <code>0</code>
+         */
+        Height("height"),
+
+        /**
+         * Values <code>0..1</code>; default <code>0.5</code>
+         */
+        Tone("tone"),
+
+        /**
+         * Values <code>0..1</code>; default <code>0.5</code>
+         */
+        Wet("wet"),
+
+        /**
+         * Values <code>0..1</code>; default <code>0</code>
+         */
+        Width("width");
+
+        private String control;
+
+        @Override
+        public String getControl() {
+            return control;
+        }
+
+        private CabinetSimulatorControl(String control) {
+            this.control = control;
+        }
+    }
 }
