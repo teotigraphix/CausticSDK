@@ -152,7 +152,7 @@ public class MixerChannelMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index in the rack.</li>
-     * <li><strong>value</strong>: (0.0..1.0) The new value.</li>
+     * <li><strong>value</strong>: (-1.0..1.0) The new value.</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
