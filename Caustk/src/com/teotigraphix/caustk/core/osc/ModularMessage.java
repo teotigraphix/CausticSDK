@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.core.osc;
 
 public class ModularMessage extends CausticMessage {
+
     /**
      * Message: <code>/caustic/[machine_index]/create [bay] [type]</code>
      * <p>
@@ -81,4 +82,66 @@ public class ModularMessage extends CausticMessage {
         super(message);
     }
 
+    public enum ModularComponentType {
+
+        Empty(0),
+
+        TwoToOneMixerModulator(1),
+
+        ThreeToOneMixer(2),
+
+        SixToOneMixer(3),
+
+        Oscillator(4),
+
+        SubOscillator(5),
+
+        PulseGenerator(6),
+
+        DADSREnvelope(7),
+
+        AREnvelope(8),
+
+        DecayEnvelope(9),
+
+        SVFilter(10),
+
+        StereoLPF(11),
+
+        FormantFilter(12),
+
+        MiniLFO(13),
+
+        NoiseGenerator(14),
+
+        PanModule(15),
+
+        CrossFade(16),
+
+        LagProcessor(17),
+
+        Delay(18),
+
+        SampleAndHold(19),
+
+        CrossOver(20),
+
+        // stand-alone effects ommited
+
+        Saturator(24),
+
+        FMPair(25),
+
+        Arpeggiator(26);
+
+        private int value;
+
+        public int getValue() {
+            return value;
+        }
+
+        ModularComponentType(int value) {
+            this.value = value;
+        }
+    }
 }

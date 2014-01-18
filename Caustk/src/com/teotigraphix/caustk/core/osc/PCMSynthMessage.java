@@ -40,9 +40,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getOut()
-     * @see VolumeEnvelopeComponent#setOut(float)
      */
     public static final PCMSynthMessage VOLUME_OUT = new PCMSynthMessage(
             "/caustic/${0}/volume_out ${1}");
@@ -59,9 +56,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getAttack()
-     * @see VolumeEnvelopeComponent#setAttack(float)
      */
     public static final PCMSynthMessage VOLUME_ATTACK = new PCMSynthMessage(
             "/caustic/${0}/volume_attack ${1}");
@@ -78,9 +72,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getDecay()
-     * @see VolumeEnvelopeComponent#setDecay(float)
      */
     public static final PCMSynthMessage VOLUME_DECAY = new PCMSynthMessage(
             "/caustic/${0}/volume_decay ${1}");
@@ -97,9 +88,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getSustain()
-     * @see VolumeEnvelopeComponent#setSustain(float)
      */
     public static final PCMSynthMessage VOLUME_SUSTAIN = new PCMSynthMessage(
             "/caustic/${0}/volume_sustain ${1}");
@@ -116,9 +104,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getRelease()
-     * @see VolumeEnvelopeComponent#setRelease(float)
      */
     public static final PCMSynthMessage VOLUME_RELEASE = new PCMSynthMessage(
             "/caustic/${0}/volume_release ${1}");
@@ -139,9 +124,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see LFO1Component#getDepth()
-     * @see LFO1Component#setDepth(float)
      */
     public static final PCMSynthMessage LFO_DEPTH = new PCMSynthMessage(
             "/caustic/${0}/lfo_depth ${1}");
@@ -158,9 +140,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see LFO1Component#getRate()
-     * @see LFO1Component#setRate(int)
      */
     public static final PCMSynthMessage LFO_RATE = new PCMSynthMessage(
             "/caustic/${0}/lfo_rate ${1}");
@@ -177,9 +156,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see LFO1Component#getTarget()
-     * @see LFO1Component#setTarget(LFOTarget)
      */
     public static final PCMSynthMessage LFO_TARGET = new PCMSynthMessage(
             "/caustic/${0}/lfo_target ${1}");
@@ -196,9 +172,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see LFO1Component#getWaveform()
-     * @see LFO1Component#setWaveForm(Osc2WaveForm)
      */
     public static final PCMSynthMessage LFO_WAVEFORM = new PCMSynthMessage(
             "/caustic/${0}/lfo_waveform ${1}");
@@ -220,9 +193,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMTunerComponent#getOctave()
-     * @see PCMTunerComponent#setOctave(int)
      */
     public static final PCMSynthMessage PITCH_OCTAVE = new PCMSynthMessage(
             "/caustic/${0}/pitch_octave ${1}");
@@ -239,9 +209,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMTunerComponent#getSemis()
-     * @see PCMTunerComponent#setSemis(int)
      */
     public static final PCMSynthMessage PITCH_SEMIS = new PCMSynthMessage(
             "/caustic/${0}/pitch_semis ${1}");
@@ -258,9 +225,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMTunerComponent#getCents()
-     * @see PCMTunerComponent#setCents(int)
      */
     public static final PCMSynthMessage PITCH_CENTS = new PCMSynthMessage(
             "/caustic/${0}/pitch_cents ${1}");
@@ -281,9 +245,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMSamplerComponent#getActiveIndex()
-     * @see PCMSamplerComponent#setActiveIndex(int)
      */
     public static final PCMSynthMessage SAMPLE_INDEX = new PCMSynthMessage(
             "/caustic/${0}/sample_index ${1}");
@@ -300,8 +261,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see PCMSamplerComponent#loadChannel(int, String)
      */
     public static final PCMSynthMessage SAMPLE_LOAD = new PCMSynthMessage(
             "/caustic/${0}/sample_load ${1}");
@@ -318,12 +277,26 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see PCMSamplerChannel#getLevel()
-     * @see PCMSamplerChannel#setLevel(float)
      */
     public static final PCMSynthMessage SAMPLE_LEVEL = new PCMSynthMessage(
             "/caustic/${0}/sample_level ${1}");
+
+    // XXX Impl SAMPLE_PAN
+    /**
+     * Message: <code>/caustic/[machine_index]/sample_pan [value]</code>
+     * <p>
+     * <strong>Default</strong>: <code>0.5</code>
+     * <p>
+     * <strong>Parameters</strong>:
+     * <ul>
+     * <li><strong>machine_index</strong>: The machine index.</li>
+     * <li><strong>value</strong>: (0.0..1.0)</li>
+     * </ul>
+     * <p>
+     * <strong>Returns</strong>: <code>float</code>
+     */
+    public static final PCMSynthMessage SAMPLE_PAN = new PCMSynthMessage(
+            "/caustic/${0}/sample_pan ${1}");
 
     /**
      * Message: <code>/caustic/[machine_index]/sample_tune [value]</code>
@@ -337,9 +310,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see PCMSamplerChannel#getTune()
-     * @see PCMSamplerChannel#setTune(int)
      */
     public static final PCMSynthMessage SAMPLE_TUNE = new PCMSynthMessage(
             "/caustic/${0}/sample_tune ${1}");
@@ -356,9 +326,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMSamplerChannel#getRootKey()
-     * @see PCMSamplerChannel#setRootKey(int)
      */
     public static final PCMSynthMessage SAMPLE_ROOTKEY = new PCMSynthMessage(
             "/caustic/${0}/sample_rootkey ${1}");
@@ -375,9 +342,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMSamplerChannel#getLowKey()
-     * @see PCMSamplerChannel#setLowKey(int)
      */
     public static final PCMSynthMessage SAMPLE_LOWKEY = new PCMSynthMessage(
             "/caustic/${0}/sample_lowkey ${1}");
@@ -394,9 +358,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMSamplerChannel#getHighKey()
-     * @see PCMSamplerChannel#setHighKey(int)
      */
     public static final PCMSynthMessage SAMPLE_HIGHKEY = new PCMSynthMessage(
             "/caustic/${0}/sample_highkey ${1}");
@@ -413,10 +374,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see PCMSamplerComponent.PlayMode
-     * @see PCMSamplerChannel#getMode()
-     * @see PCMSamplerChannel#setMode(PlayMode)
      */
     public static final PCMSynthMessage SAMPLE_MODE = new PCMSynthMessage(
             "/caustic/${0}/sample_mode ${1}");
@@ -433,9 +390,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see PCMSamplerChannel#getStart()
-     * @see PCMSamplerChannel#setStart(int)
      */
     public static final PCMSynthMessage SAMPLE_START = new PCMSynthMessage(
             "/caustic/${0}/sample_start ${1}");
@@ -452,9 +406,6 @@ public class PCMSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see PCMSamplerChannel#getEnd()
-     * @see PCMSamplerChannel#setEnd(int)
      */
     public static final PCMSynthMessage SAMPLE_END = new PCMSynthMessage(
             "/caustic/${0}/sample_end ${1}");
@@ -472,8 +423,6 @@ public class PCMSynthMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>String</code> The name of the sample
      * located at the active index number, <code>""</code> if a sample has not
      * been assigned.
-     * 
-     * @see PCMSamplerComponent#getSampleName(int)
      */
     public static final PCMSynthMessage QUERY_SAMPLE_NAME = new PCMSynthMessage(
             "/caustic/${0}/sample_name");
@@ -490,14 +439,178 @@ public class PCMSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>String</code> A space deliminated list of
      * index numbers that currently hold samples within the sampler.
-     * 
-     * @see PCMSamplerComponent#getSampleIndicies()
      */
     public static final PCMSynthMessage QUERY_SAMPLE_INDICIES = new PCMSynthMessage(
             "/caustic/${0}/sample_indices");
 
     PCMSynthMessage(String message) {
         super(message);
+    }
+
+    public enum LFO1Waveform {
+
+        Sine(0),
+
+        Triangle(1),
+
+        Saw(2),
+
+        Square(3);
+
+        private final int value;
+
+        LFO1Waveform(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns the int value of the waveform.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        /**
+         * Returns a {@link LFO1Waveform} based off the passed integer type.
+         * 
+         * @param type The int type.
+         */
+        public static LFO1Waveform toType(Integer type) {
+            for (LFO1Waveform result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+
+        /**
+         * @see LFO1Waveform#toType(Integer)
+         */
+        public static LFO1Waveform toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
+
+    public enum LFO1Target {
+
+        /**
+         * No LFO.
+         */
+        None(0),
+
+        /**
+         * Pitch oscillation.
+         */
+        Pitch(1),
+
+        /**
+         * Cutoff frequency oscillation.
+         */
+        Cutoff(2),
+
+        /**
+         * Volume amplitude oscillation.
+         */
+        Voume(3);
+
+        private final int value;
+
+        LFO1Target(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns int the value of the FLO.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        /**
+         * Returns a {@link LFO1Target} based off the passed integer type.
+         * 
+         * @param type The int type.
+         */
+        public static LFO1Target toType(Integer type) {
+            for (LFO1Target result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+
+        /**
+         * @see LFO1Target#toType(Integer)
+         */
+        public static LFO1Target toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
+
+    public enum PlayMode {
+
+        /**
+         * Plays the full sample each time a note is played.
+         */
+        PLAY_ONCE(0),
+
+        /**
+         * Plays the sample as long as the note is held.
+         */
+        NOTE_ON_OFF(1),
+
+        /**
+         * Plays the sample starting at the Loop Start Point(13) until it
+         * reaches the Loop End Point (14), at which point it loops around to
+         * the Start Loop Point again, and does this until the note is released.
+         */
+        LOOP_FWD(2),
+
+        /**
+         * Plays the sample starting at the Loop Start Point(13) until it
+         * reaches the Loop End Point (14), at which point it start playing in
+         * reverse until it reaches the Start Loop Point again, and does this
+         * until the note is released.
+         */
+        LOOP_FWD_BACK(3),
+
+        /**
+         * Same looping behavior as "Loop Forward" except playback always starts
+         * at the beginning of the sample when the note is first played.
+         */
+        INTRO_LOOP_FWD(4),
+
+        /**
+         * Same looping behavior as "Loop Forward-Back" except playback always
+         * starts at the beginning of the sample when the note is first played.
+         */
+        INTRO_LOOP_FWD_BACK(5);
+
+        private final int mValue;
+
+        /**
+         * Returns the int value of the play mode.
+         */
+        public int getValue() {
+            return mValue;
+        }
+
+        PlayMode(int value) {
+            mValue = value;
+        }
+
+        /**
+         * Returns the PlayMode based on the int value passed.
+         * 
+         * @param type The play mode integer value.
+         */
+        public static PlayMode toType(Integer type) {
+            for (PlayMode result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
     }
 
 }

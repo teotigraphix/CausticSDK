@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-
 /**
  * The {@link PadSynthMessage} holds all OSC messages associated with the
  * {@link PadSynthTone} API.
@@ -157,7 +156,7 @@ public class PadSynthMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..1)</li>
+     * <li><strong>value</strong>: (-0.5..0.5)</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
@@ -232,7 +231,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/morph [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -247,7 +246,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/morph_env [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -263,7 +262,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/morph_attack [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -279,7 +278,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/morph_decay [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -295,7 +294,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/morph_sustain [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -311,7 +310,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/morph_release [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -327,7 +326,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/gain1 [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -342,7 +341,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/gain2 [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -357,7 +356,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/volume_attack [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -373,7 +372,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/volume_decay [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -389,7 +388,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/volume_sustain [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>1.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -405,7 +404,7 @@ public class PadSynthMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/volume_release [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>TODO</code>
+     * <strong>Default</strong>: <code>0.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -418,24 +417,36 @@ public class PadSynthMessage extends CausticMessage {
     public static final PadSynthMessage VOLUME_RELEASE = new PadSynthMessage(
             "/caustic/${0}/volume_release ${1}");
 
-    /**
-     * Message: <code>/caustic/[machine_index]/volume_out [value]</code>
-     * <p>
-     * <strong>Default</strong>: <code>TODO</code>
-     * <p>
-     * <strong>Parameters</strong>:
-     * <ul>
-     * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..2)</li>
-     * </ul>
-     * <p>
-     * <strong>Returns</strong>: <code>float</code>
-     */
-    public static final PadSynthMessage VOLUME_OUT = new PadSynthMessage(
-            "/caustic/${0}/volume_out ${1}");
-
     PadSynthMessage(String message) {
         super(message);
+    }
+
+    public enum LFO1Target {
+        Off(0),
+
+        Morph(1),
+
+        Pitch(2),
+
+        Volume(3);
+
+        private int value;
+
+        public int getValue() {
+            return value;
+        }
+
+        LFO1Target(int value) {
+            this.value = value;
+        }
+
+        public static LFO1Target fromInt(float value) {
+            for (LFO1Target lFO1Target : values()) {
+                if (lFO1Target.getValue() == value)
+                    return lFO1Target;
+            }
+            return null;
+        }
     }
 
 }

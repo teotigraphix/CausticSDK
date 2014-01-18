@@ -50,7 +50,7 @@ public interface ICausticEngine extends IActivityCycle {
      * 
      * @param message The String OSC message.
      * @return A String message or <code>null</code> if the message returned and
-     *         empty String <code>""</code>.
+     *         <strong>never</strong> an <em>empty</em> String <code>""</code>.
      * @since 1.0
      */
     String queryMessage(String message);

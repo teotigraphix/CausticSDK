@@ -20,6 +20,13 @@
 package com.teotigraphix.caustk.core.osc;
 
 
+/**
+ * The native OSC messages for the <strong>SubSynth</strong>.
+ * 
+ * @author Michael Schmalle
+ * @since 1.0
+ * @see SubSynthMachine
+ */
 public class SubSynthMessage extends CausticMessage {
 
     //--------------------------------------------------------------------------
@@ -38,9 +45,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see FilterComponentBase#getCutoff()
-     * @see FilterComponentBase#setCutoff(float)
      */
     public static final SubSynthMessage FILTER_CUTOFF = new SubSynthMessage(
             "/caustic/${0}/filter_cutoff ${1}");
@@ -57,9 +61,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see FilterComponentBase#getResonance()
-     * @see FilterComponentBase#setResonance(float)
      */
     public static final SubSynthMessage FILTER_RESONANCE = new SubSynthMessage(
             "/caustic/${0}/filter_resonance ${1}");
@@ -81,9 +82,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see SynthFilterComponent#getType()
-     * @see SynthFilterComponent#setType(FilterType)
      */
     public static final SubSynthMessage FILTER_TYPE = new SubSynthMessage(
             "/caustic/${0}/filter_type ${1}");
@@ -100,9 +98,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see SynthFilterComponent#getAttack()
-     * @see SynthFilterComponent#setAttack(float)
      */
     public static final SubSynthMessage FILTER_ATTACK = new SubSynthMessage(
             "/caustic/${0}/filter_attack ${1}");
@@ -119,9 +114,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see SynthFilterComponent#getDecay()
-     * @see SynthFilterComponent#setDecay(float)
      */
     public static final SubSynthMessage FILTER_DECAY = new SubSynthMessage(
             "/caustic/${0}/filter_decay ${1}");
@@ -138,9 +130,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see SynthFilterComponent#getSustain()
-     * @see SynthFilterComponent#setSustain(float)
      */
     public static final SubSynthMessage FILTER_SUSTAIN = new SubSynthMessage(
             "/caustic/${0}/filter_sustain ${1}");
@@ -157,9 +146,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see SynthFilterComponent#getDecay()
-     * @see SynthFilterComponent#setDecay(float)
      */
     public static final SubSynthMessage FILTER_RELEASE = new SubSynthMessage(
             "/caustic/${0}/filter_release ${1}");
@@ -176,9 +162,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see SynthFilterComponent#getTrack()
-     * @see SynthFilterComponent#setTrack(float)
      */
     public static final SubSynthMessage FILTER_KBTRACK = new SubSynthMessage(
             "/caustic/${0}/filter_kbtrack ${1}");
@@ -195,9 +178,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see FilterComponent#getEnvMod()
-     * @see FilterComponent#setEnvMod()
      */
     public static final SubSynthMessage FILTER_ENVMOD = new SubSynthMessage(
             "/caustic/${0}/filter_envmod ${1}");
@@ -218,9 +198,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see LFO1Component#getDepth()
-     * @see LFO1Component#setDepth(float)
      */
     public static final SubSynthMessage LFO1_DEPTH = new SubSynthMessage(
             "/caustic/${0}/lfo1_depth ${1}");
@@ -237,9 +214,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see LFO1Component#getDepth()
-     * @see LFO1Component#setDepth(float)
      */
     public static final SubSynthMessage LFO2_DEPTH = new SubSynthMessage(
             "/caustic/${0}/lfo2_depth ${1}");
@@ -256,9 +230,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see LFO1Component#getRate()
-     * @see LFO1Component#setRate(int)
      */
     public static final SubSynthMessage LFO1_RATE = new SubSynthMessage(
             "/caustic/${0}/lfo1_rate ${1}");
@@ -275,9 +246,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see LFO1Component#getRate()
-     * @see LFO1Component#setRate(int)
      */
     public static final SubSynthMessage LFO2_RATE = new SubSynthMessage(
             "/caustic/${0}/lfo2_rate ${1}");
@@ -297,9 +265,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see LFO1Component#getTarget()
-     * @see LFO1Component#setTarget(LFOTarget)
      */
     public static final SubSynthMessage LFO1_TARGET = new SubSynthMessage(
             "/caustic/${0}/lfo1_target ${1}");
@@ -319,9 +284,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see LFO2Component#getTarget()
-     * @see LFO2Component#setTarget(LFOTarget)
      */
     public static final SubSynthMessage LFO2_TARGET = new SubSynthMessage(
             "/caustic/${0}/lfo2_target ${1}");
@@ -341,9 +303,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see LFO2Component#getWaveform()
-     * @see LFO2Component#setWaveForm(Osc2WaveForm)
      */
     public static final SubSynthMessage LFO1_WAVEFORM = new SubSynthMessage(
             "/caustic/${0}/lfo1_waveform ${1}");
@@ -367,9 +326,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * </p>
-     * 
-     * @see Osc1Component#getBend()
-     * @see Osc1Component#setBend(float)
      */
     public static final SubSynthMessage OSC_BEND = new SubSynthMessage(
             "/caustic/${0}/osc_bend ${1}");
@@ -388,10 +344,6 @@ public class SubSynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * </p>
-     * 
-     * @see Osc1Component#getModulation()
-     * @see Osc1Component#setModulation(float)
      */
     public static final SubSynthMessage OSC1_MODULATION = new SubSynthMessage(
             "/caustic/${0}/osc_modulation ${1}");
@@ -431,9 +383,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * </p>
-     * 
-     * @see Osc1Component#getMix()
-     * @see Osc1Component#setMix(float)
      */
     public static final SubSynthMessage OSC_MIX = new SubSynthMessage("/caustic/${0}/osc_mix ${1}");
 
@@ -453,9 +402,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see Osc1Component#getWaveform()
-     * @see Osc1Component#setWaveform(Waveform)
      */
     public static final SubSynthMessage OSC1_WAVEFORM = new SubSynthMessage(
             "/caustic/${0}/osc1_waveform ${1}");
@@ -475,9 +421,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see Osc2Component#getCents()
-     * @see Osc2Component#setCents(int)
      */
     public static final SubSynthMessage OSC2_CENTS = new SubSynthMessage(
             "/caustic/${0}/osc2_cents ${1}");
@@ -516,9 +459,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see Osc2Component#getOctave()
-     * @see Osc2Component#setOctave(int)
      */
     public static final SubSynthMessage OSC2_OCTAVE = new SubSynthMessage(
             "/caustic/${0}/osc2_octave ${1}");
@@ -538,9 +478,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>float</code>
      * </p>
-     * 
-     * @see Osc2Component#getPhase()
-     * @see Osc2Component#setPhase(float)
      */
     public static final SubSynthMessage OSC2_PHASE = new SubSynthMessage(
             "/caustic/${0}/osc2_phase ${1}");
@@ -560,9 +497,6 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see Osc2Component#getSemis()
-     * @see Osc2Component#setSemis(int)
      */
     public static final SubSynthMessage OSC2_SEMIS = new SubSynthMessage(
             "/caustic/${0}/osc2_semis ${1}");
@@ -583,14 +517,340 @@ public class SubSynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>int</code>
      * </p>
-     * 
-     * @see Osc2Component#getWaveform()
-     * @see Osc2Component#setWaveform(Osc2WaveForm)
      */
     public static final SubSynthMessage OSC2_WAVEFORM = new SubSynthMessage(
             "/caustic/${0}/osc2_waveform ${1}");
 
     SubSynthMessage(String message) {
         super(message);
+    }
+
+    public enum LFO1Target {
+
+        None(0),
+
+        Osc1(1),
+
+        Osc2(2),
+
+        Osc1Plus2(3),
+
+        Phase(4),
+
+        Cutoff(5),
+
+        Volume(6),
+
+        Octave(7),
+
+        Semis(8),
+
+        Osc1Mod(9);
+
+        private final int value;
+
+        LFO1Target(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns the int value of the lfo.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        /**
+         * Returns a {@link LFO1Target} based off the passed integer type.
+         * 
+         * @param type The int type.
+         */
+        public static LFO1Target toType(Integer type) {
+            for (LFO1Target result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+
+        /**
+         * @see LFO1Target#toType(Integer)
+         */
+        public static LFO1Target toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
+
+    public enum LFO1Waveform {
+
+        Sine(0),
+
+        Triangle(1),
+
+        Saw(2),
+
+        Square(3);
+
+        private final int value;
+
+        LFO1Waveform(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns the int value of the waveform.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        /**
+         * Returns a {@link LFO1Waveform} based off the passed integer type.
+         * 
+         * @param type The int type.
+         */
+        public static LFO1Waveform toType(Integer type) {
+            for (LFO1Waveform result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+
+        /**
+         * @see LFO1Waveform#toType(Integer)
+         */
+        public static LFO1Waveform toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
+
+    public enum LFO2Target {
+
+        None(0),
+
+        Osc1(1),
+
+        Osc2(2),
+
+        Osc1Plus2(3),
+
+        Phase(4),
+
+        Cutoff(5),
+
+        Volume(6),
+
+        Octave(7),
+
+        Semis(8),
+
+        Osc1Mod(9);
+
+        private final int value;
+
+        LFO2Target(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns the int value of the lof.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        /**
+         * Returns a {@link LFO2Target} based off the passed integer type.
+         * 
+         * @param type The int type.
+         */
+        public static LFO2Target toType(Integer type) {
+            for (LFO2Target result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+
+        /**
+         * @see LFO2Target#toType(Integer)
+         */
+        public static LFO2Target toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
+
+    public enum ModulationMode {
+        Fm(0),
+
+        Pm(1),
+
+        Am(2);
+
+        private final int value;
+
+        /**
+         * Returns the integer value of the {@link Osc1Waveform}.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        ModulationMode(int value) {
+            this.value = value;
+        }
+
+        public static ModulationMode toType(Integer type) {
+            for (ModulationMode result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+    }
+
+    /**
+     * The {@link ISubSynthOsc1} waveforms.
+     * 
+     * @author Michael Schmalle
+     * @copyright Teoti Graphix, LLC
+     * @since 1.0
+     */
+    public enum Osc1Waveform {
+
+        Sine(0),
+
+        Triangle(1),
+
+        Saw(2),
+
+        SawHQ(3),
+
+        Square(4),
+
+        SquareHQ(5),
+
+        Noise(6),
+
+        Custom1(7),
+
+        Custom2(8);
+
+        private final int value;
+
+        /**
+         * Returns the integer value of the {@link Osc1Waveform}.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        Osc1Waveform(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns a {@link Osc1Waveform} based off the passed integer type.
+         * 
+         * @param type The int type.
+         */
+        public static Osc1Waveform toType(Integer type) {
+            for (Osc1Waveform result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+
+        /**
+         * @see #toType(Integer)
+         */
+        public static Osc1Waveform toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
+
+    public enum Osc2WaveForm {
+
+        None(0),
+
+        Sine(1),
+
+        Triangle(2),
+
+        Saw(3),
+
+        SawHQ(4),
+
+        Square(5),
+
+        SquareHQ(6),
+
+        Noise(7),
+
+        Custom1(8),
+
+        Custom2(9);
+
+        private final int value;
+
+        /**
+         * Returns in integer value for the {@link Osc2WaveForm}.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        Osc2WaveForm(int value) {
+            this.value = value;
+        }
+
+        /**
+         * Returns a Osc2WaveForm based off the passed integer type.
+         * 
+         * @param type The int type.
+         */
+        public static Osc2WaveForm toType(Integer type) {
+            for (Osc2WaveForm result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
+
+        /**
+         * @see #toType(Integer)
+         */
+        public static Osc2WaveForm toType(Float type) {
+            return toType(type.intValue());
+        }
+    }
+
+    public enum CentsMode {
+        CENTS(0),
+
+        UNISON(1);
+
+        private final int value;
+
+        /**
+         * Returns in integer value for the {@link CentsMode}.
+         */
+        public int getValue() {
+            return value;
+        }
+
+        CentsMode(int value) {
+            this.value = value;
+        }
+
+        public static CentsMode toType(Integer type) {
+            for (CentsMode result : values()) {
+                if (result.getValue() == type)
+                    return result;
+            }
+            return null;
+        }
     }
 }

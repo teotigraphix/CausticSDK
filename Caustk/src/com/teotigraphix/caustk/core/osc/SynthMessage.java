@@ -21,10 +21,9 @@ package com.teotigraphix.caustk.core.osc;
 
 /**
  * The {@link SynthMessage} holds all OSC messages associated with the
- * {@link ISynth}, {@link ISynth#getSynth()} API.
+ * {@link SynthComponent}, {@link MachineNode#getSynth()} API.
  * 
  * @author Michael Schmalle
- * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
 public class SynthMessage extends CausticMessage {
@@ -44,9 +43,6 @@ public class SynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>int</code>
-     * 
-     * @see SynthComponent#setPolyphony(int)
-     * @see SynthComponent#getPolyphony()
      */
     public static final SynthMessage POLYPHONY = new SynthMessage("/caustic/${0}/polyphony ${1}");
 
@@ -66,9 +62,6 @@ public class SynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see SynthComponent#noteOn(int)
-     * @see SynthComponent#noteOff(int)
      */
     public static final SynthMessage NOTE = new SynthMessage("/caustic/${0}/note/${1} ${2} ${3}");
 
@@ -76,8 +69,8 @@ public class SynthMessage extends CausticMessage {
      * Message:
      * <code>/caustic/[machine_index]/note/preview [pitch] [oneshot]</code>
      * <p>
-     * Previews a sample in the {@link IBeatbox} and {@link IPCMSynth} not
-     * available in other sysnths.
+     * Previews a sample in the BeatBoxMachine and PCMSynthMachine not available
+     * in other synths.
      * <p>
      * <strong>Default</strong>: <code>N/A</code>
      * <p>
@@ -89,8 +82,6 @@ public class SynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see SynthComponent#notePreview(int, boolean)
      */
     public static final SynthMessage NOTE_PREVIEW = new SynthMessage(
             "/caustic/${0}/note/preview ${1} ${2}");
@@ -110,8 +101,6 @@ public class SynthMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see SynthComponent#loadPreset(String)
      */
     public static final SynthMessage LOAD_PRESET = new SynthMessage(
             "/caustic/${0}/load_preset ${1}");
@@ -132,8 +121,6 @@ public class SynthMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * </p>
-     * 
-     * @see SynthComponent#savePreset(String)
      */
     public static final SynthMessage SAVE_PRESET = new SynthMessage(
             "/caustic/${0}/save_preset ${1}");
@@ -151,8 +138,6 @@ public class SynthMessage extends CausticMessage {
      * <strong>Returns</strong>: <code>String</code>The name of the preset
      * loaded in the machine if any, <code>null</code> if the machine did not
      * load a preset.
-     * 
-     * @see SynthComponent#getPresetName()
      */
     public static final SynthMessage QUERY_PRESET = new SynthMessage("/caustic/${0}/preset");
 

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-
 /**
  * The {@link SequencerMessage} holds all OSC messages associated with the
  * {@link ISequencer} API.
@@ -122,43 +121,64 @@ public class SequencerMessage extends CausticMessage {
     public static final SequencerMessage PLAY_POSITION = new SequencerMessage(
             "/caustic/sequencer/play_position ${0}");
 
-    /**
-     * Message:
-     * <code>/caustic/sequencer/export_song [path] [type] [quality]</code>
-     * <p>
-     * Exports a song file to an external media file.
-     * <p>
-     * <strong>Default</strong>: <code>N/A</code>
-     * <p>
-     * <strong>Parameters</strong>:
-     * <ul>
-     * <li><strong>path</strong>: The location of export.</li>
-     * <li><strong>type</strong>: The export type (WAV, OGG, MID).</li>
-     * <li><strong>quality</strong>: The quality of export (0-100) OGG only.</li>
-     * </ul>
-     * <p>
-     * <strong>Returns</strong>: <code>N/A</code>
-     */
-    public static final SequencerMessage EXPORT_SONG = new SequencerMessage(
-            "/caustic/sequencer/export_song ${0} ${1} ${2}");
+    //    /**
+    //     * Message:
+    //     * <code>/caustic/sequencer/export_song [path] [type] [quality]</code>
+    //     * <p>
+    //     * Exports a song file to an external media file.
+    //     * <p>
+    //     * <strong>Default</strong>: <code>N/A</code>
+    //     * <p>
+    //     * <strong>Parameters</strong>:
+    //     * <ul>
+    //     * <li><strong>path</strong>: The location of export.</li>
+    //     * <li><strong>type</strong>: The export type (WAV, OGG, MID).</li>
+    //     * <li><strong>quality</strong>: The quality of export (0-100) OGG only.</li>
+    //     * </ul>
+    //     * <p>
+    //     * <strong>Returns</strong>: <code>N/A</code>
+    //     */
+    //    public static final SequencerMessage EXPORT_SONG = new SequencerMessage(
+    //            "/caustic/sequencer/export_song ${0} ${1} ${2}");
+
+    //    /**
+    //     * Message: <code>/caustic/sequencer/export_song [path] [type]</code>
+    //     * <p>
+    //     * Exports a song file to an external media file.
+    //     * <p>
+    //     * <strong>Default</strong>: <code>N/A</code>
+    //     * <p>
+    //     * <strong>Parameters</strong>:
+    //     * <ul>
+    //     * <li><strong>path</strong>: The location of export.</li>
+    //     * <li><strong>type</strong>: The export type (WAV, OGG, MID).</li>
+    //     * </ul>
+    //     * <p>
+    //     * <strong>Returns</strong>: <code>N/A</code>
+    //     */
+    //    public static final SequencerMessage EXPORT_SONG_DEFAULT = new SequencerMessage(
+    //            "/caustic/sequencer/export_song ${0} ${1}");
 
     /**
-     * Message: <code>/caustic/sequencer/export_song [path] [type]</code>
-     * <p>
-     * Exports a song file to an external media file.
+     * Message:
+     * <code>/caustic/export [loop_mode] [format] [quality] [path]</code>
      * <p>
      * <strong>Default</strong>: <code>N/A</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
-     * <li><strong>path</strong>: The location of export.</li>
-     * <li><strong>type</strong>: The export type (WAV, OGG, MID).</li>
+     * <li><strong>loop_mode</strong>: (loop, song)</li>
+     * <li><strong>format</strong>: The export format (WAV, OGG, MID).</li>
+     * <li><strong>quality</strong>: The quality of export (0-100) OGG only.</li>
+     * <li><strong>path</strong>: The full path to the exported file.</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
+     * 
+     * @since 1.0
      */
-    public static final SequencerMessage EXPORT_SONG_DEFAULT = new SequencerMessage(
-            "/caustic/sequencer/export_song ${0} ${1}");
+    public static final RackMessage EXPORT = new RackMessage(
+            "/caustic/sequencer/export ${0} ${1} ${2} ${3}");
 
     /**
      * Message: <code>/caustic/sequencer/export_progress</code>

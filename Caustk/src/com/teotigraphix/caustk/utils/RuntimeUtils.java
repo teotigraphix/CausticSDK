@@ -38,7 +38,6 @@ import com.teotigraphix.caustk.core.MachineType;
 
 /**
  * @author Michael Schmalle
- * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
 public class RuntimeUtils {
@@ -221,8 +220,16 @@ public class RuntimeUtils {
     /**
      * Returns the <code>/sdcard/caustic/presets</code> directory.
      */
-    public static File getCausticPresetsDirectory() {
+    public static File getPresetsDirectory() {
         return new File(getExternalStorageDirectory(), CAUSTIC_PRESETS);
+    }
+
+    /**
+     * Returns the <code>/sdcard/caustic/presets/[subDirectory]</code>
+     * directory.
+     */
+    public static File getPresetsDirectory(String subDirectory) {
+        return new File(getPresetsDirectory(), subDirectory);
     }
 
     /**
@@ -250,7 +257,7 @@ public class RuntimeUtils {
         if (presetType.equals("modular"))
             presetType = "modularsynth";
         sb.append(presetType);
-        return new File(getCausticPresetsDirectory(), sb.toString());
+        return new File(getPresetsDirectory(), sb.toString());
     }
 
     /**
@@ -266,48 +273,48 @@ public class RuntimeUtils {
      *            path without extension. e.g <code>MyPreset</code>,
      *            <code>sub/dir/MyPreset</code>.
      */
-    public static File getCausticPresetsFile(MachineType machineType, String nameOrRelativePath) {
+    public static File getPresetsFile(MachineType machineType, String nameOrRelativePath) {
         final StringBuilder sb = new StringBuilder();
         sb.append(machineType.getType());
         sb.append(FORWARD_SLASH);
         sb.append(nameOrRelativePath);
         sb.append(DOT);
         sb.append(machineType.getExtension());
-        return new File(getCausticPresetsDirectory(), sb.toString());
+        return new File(getPresetsDirectory(), sb.toString());
     }
 
     /**
      * Returns the <code>/sdcard/caustic/samples</code> directory.
      */
-    public static File getCausticSamplesDirectory() {
+    public static File getSamplesDirectory() {
         return new File(getExternalStorageDirectory(), CAUSTIC_SAMPLES);
     }
 
-    public static File getCausticSamplesFile(final String sampleType, final String sampleName) {
+    public static File getSamplesFile(final String sampleType, final String sampleName) {
         final StringBuilder sb = new StringBuilder();
         sb.append(sampleType);
         sb.append(FORWARD_SLASH);
         sb.append(sampleName);
         sb.append(".wav");
-        return new File(getCausticSamplesDirectory(), sb.toString());
+        return new File(getSamplesDirectory(), sb.toString());
     }
 
     /**
      * Returns the <code>/sdcard/caustic/songs</code> directory.
      */
-    public static File getCausticSongsDirectory() {
+    public static File getSongsDirectory() {
         return new File(getExternalStorageDirectory(), CAUSTIC_SONGS);
     }
 
     /**
      * Returns a <code>.caustic</code> song located in the
-     * {@link #getCausticSongsDirectory()}.
+     * {@link #getSongsDirectory()}.
      * 
      * @param songName The song name without the <code>.caustic</code>
      *            extension.
      */
-    public static File getCausticSongFile(String songName) {
-        return new File(getCausticSongsDirectory(), songName + CAUSTIC_EXTENSION);
+    public static File getSongFile(String songName) {
+        return new File(getSongsDirectory(), songName + CAUSTIC_EXTENSION);
     }
 
     public static final void copyDirectory(File src, File dest) throws IOException {

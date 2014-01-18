@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-
 /**
  * The {@link OrganMessage} holds all OSC messages associated with the
  * {@link OrganTone} API.
@@ -116,7 +115,7 @@ public class OrganMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0.0..1.0)</li>
+     * <li><strong>value</strong>: (0.0..0.4)</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>

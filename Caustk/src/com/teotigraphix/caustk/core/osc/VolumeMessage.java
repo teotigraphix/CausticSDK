@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-
 public class VolumeMessage extends CausticMessage {
 
     //--------------------------------------------------------------------------
@@ -35,14 +34,11 @@ public class VolumeMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..2); (0..8 {@link IPCMSynth}) The volume
-     * out value.</li>
+     * <li><strong>value</strong>: (0..2); (0..8 PCMSynthMachine); (0..1
+     * FMSynthMachine) The volume out value.</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getOut()
-     * @see VolumeEnvelopeComponent#setOut(float)
      */
     public static final VolumeMessage VOLUME_OUT = new VolumeMessage(
             "/caustic/${0}/volume_out ${1}");
@@ -59,9 +55,6 @@ public class VolumeMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getAttack()
-     * @see VolumeEnvelopeComponent#setAttack(float)
      */
     public static final VolumeMessage VOLUME_ATTACK = new VolumeMessage(
             "/caustic/${0}/volume_attack ${1}");
@@ -78,9 +71,6 @@ public class VolumeMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getDecay()
-     * @see VolumeEnvelopeComponent#setDecay(float)
      */
     public static final VolumeMessage VOLUME_DECAY = new VolumeMessage(
             "/caustic/${0}/volume_decay ${1}");
@@ -97,9 +87,6 @@ public class VolumeMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getSustain()
-     * @see VolumeEnvelopeComponent#setSustain(float)
      */
     public static final VolumeMessage VOLUME_SUSTAIN = new VolumeMessage(
             "/caustic/${0}/volume_sustain ${1}");
@@ -116,9 +103,6 @@ public class VolumeMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
-     * 
-     * @see VolumeEnvelopeComponent#getRelease()
-     * @see VolumeEnvelopeComponent#setRelease(float)
      */
     public static final VolumeMessage VOLUME_RELEASE = new VolumeMessage(
             "/caustic/${0}/volume_release ${1}");

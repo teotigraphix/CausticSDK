@@ -114,7 +114,7 @@ public class RackMessage extends CausticMessage {
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
      * 
-     * @see RuntimeUtils#getCausticSongsDirectory()
+     * @see RuntimeUtils#getSongsDirectory()
      * @since 1.0
      */
     public static final RackMessage SAVE_SONG = new RackMessage("/caustic/save_song ${0}");

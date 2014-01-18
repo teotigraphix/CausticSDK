@@ -136,7 +136,8 @@ public class CausticMessage {
      * 
      * @param engine The core engine.
      * @param args The arguments to be replaced with in the message.
-     * @return A String value of the query.
+     * @return A String value of the query or <code>null</code>, will never
+     *         return an empty string.
      * @see ICausticEngine#queryMessage(String)
      */
     public final String queryString(ICausticEngine engine, Object... args) {

@@ -21,10 +21,9 @@ package com.teotigraphix.caustk.core.osc;
 
 /**
  * The {@link MixerChannelMessage} holds all OSC messages associated with the
- * {@link SoundMixerChannel} API foreach machine.
+ * {@link MixerChannelNode} API for each machine.
  * 
  * @author Michael Schmalle
- * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
 public class MixerChannelMessage extends CausticMessage {
@@ -195,11 +194,7 @@ public class MixerChannelMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/mixer/[machine_index]/eq_volume [value]</code>
      * <p>
-     * <strong>Note:</strong> To target the master channel
-     * <code>machine_index</code> will need to contain the String
-     * <code>"master"</code>.
-     * <p>
-     * <strong>Default</strong>: <code>0.0</code>
+     * <strong>Default</strong>: <code>1.0</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
@@ -216,5 +211,4 @@ public class MixerChannelMessage extends CausticMessage {
     public MixerChannelMessage(String message) {
         super(message);
     }
-
 }

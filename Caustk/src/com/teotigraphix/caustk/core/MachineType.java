@@ -62,7 +62,7 @@ public enum MachineType {
     /**
      * The beatbox machine.
      */
-    Beatbox("beatbox", "beatbox"),
+    BeatBox("beatbox", "beatbox"),
 
     /**
      * The bassline machine.
@@ -136,10 +136,10 @@ public enum MachineType {
      * Returns a preset in the native caustic app presets directory.
      * 
      * @param nameOrRelativePath The preset name or relative path.
-     * @see RuntimeUtils#getCausticPresetsFile(MachineType, String)
+     * @see RuntimeUtils#getPresetsFile(MachineType, String)
      */
     public File getNativePresetFile(String nameOrRelativePath) {
-        return RuntimeUtils.getCausticPresetsFile(this, nameOrRelativePath);
+        return RuntimeUtils.getPresetsFile(this, nameOrRelativePath);
     }
 
     /**
