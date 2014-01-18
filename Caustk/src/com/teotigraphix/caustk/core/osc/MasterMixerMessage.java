@@ -195,6 +195,9 @@ public class MasterMixerMessage extends CausticMessage {
     public static final MasterMixerMessage DELAY_PAN = new MasterMixerMessage(
             "/caustic/master/delay/pan ${0} ${1}");
 
+    public static final MasterMixerMessage QUERY_DELAY_PAN = new MasterMixerMessage(
+            "/caustic/master/delay/pan ${0}");
+
     //--------------------------------------------------------------------------
     // Master Reverb
     //--------------------------------------------------------------------------
