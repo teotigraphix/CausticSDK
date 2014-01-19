@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.rack.RackProvider;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
- * The base node for all caustk state types.
+ * The base node for all caustk node types.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -36,6 +36,35 @@ public abstract class NodeBase {
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
+
+    private NodeInfo info = null;
+
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // info
+    //----------------------------------
+
+    /**
+     * Returns the node's information metadata.
+     * <p>
+     * Can be <code>null</code>, the node will not serialize this field if
+     * <code>null</code>.
+     */
+    public NodeInfo getInfo() {
+        return info;
+    }
+
+    /**
+     * Sets the node's information metadata.
+     * 
+     * @param info The {@link NodeInfo} that describes this node.
+     */
+    public void setInfo(NodeInfo info) {
+        this.info = info;
+    }
 
     //--------------------------------------------------------------------------
     // Protected :: Properties
