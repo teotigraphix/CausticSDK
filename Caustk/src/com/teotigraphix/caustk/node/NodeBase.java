@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class NodeBase {
+public abstract class NodeBase implements ICaustkNode {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -47,12 +47,7 @@ public abstract class NodeBase {
     // info
     //----------------------------------
 
-    /**
-     * Returns the node's information metadata.
-     * <p>
-     * Can be <code>null</code>, the node will not serialize this field if
-     * <code>null</code>.
-     */
+    @Override
     public NodeInfo getInfo() {
         return info;
     }
@@ -99,37 +94,33 @@ public abstract class NodeBase {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates all node components.
-     * 
      * @see #createComponents()
      */
+    @Override
     public final void create() {
         createComponents();
     }
 
     /**
-     * Destroys all node components.
-     * 
      * @see #destroyComponents()
      */
+    @Override
     public void destroy() {
         destroyComponents();
     }
 
     /**
-     * Updates all node components.
-     * 
      * @see #updateComponents()
      */
+    @Override
     public final void update() {
         updateComponents();
     }
 
     /**
-     * Resotres all node components.
-     * 
      * @see #restoreComponents()
      */
+    @Override
     public final void restore() {
         restoreComponents();
     }
