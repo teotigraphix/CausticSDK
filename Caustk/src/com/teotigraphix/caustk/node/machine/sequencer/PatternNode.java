@@ -43,8 +43,6 @@ public class PatternNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private Integer machineIndex;
-
     private String name;
 
     private int numMeasures = 1;
@@ -71,7 +69,7 @@ public class PatternNode extends NodeBase {
      * sequencer.
      */
     public int getMachineIndex() {
-        return machineIndex;
+        return index;
     }
 
     //----------------------------------
@@ -89,7 +87,7 @@ public class PatternNode extends NodeBase {
     /**
      * Returns the index of the pattern based on its bank and pattern (0..63).
      */
-    public final int getIndex() {
+    public final int getLinearIndex() {
         return PatternUtils.getIndex(getBankIndex(), getPatternIndex());
     }
 
@@ -121,7 +119,7 @@ public class PatternNode extends NodeBase {
     }
 
     int getNumMeasures(boolean restore) {
-        return (int)PatternSequencerMessage.NUM_MEASURES.query(getRack(), machineIndex);
+        return (int)PatternSequencerMessage.NUM_MEASURES.query(getRack(), index);
     }
 
     /**
@@ -139,7 +137,7 @@ public class PatternNode extends NodeBase {
             throw newRangeException("num_measures", "1,2,4,8", numMeasures);
         this.numMeasures = numMeasures;
         // XXX impl new PatternSq
-        PatternSequencerMessage.NUM_MEASURES.send(getRack(), machineIndex, numMeasures);
+        PatternSequencerMessage.NUM_MEASURES.send(getRack(), index, numMeasures);
     }
 
     //----------------------------------
@@ -321,7 +319,7 @@ public class PatternNode extends NodeBase {
      */
     public PatternNode(String name, int machineIndex) {
         this(name);
-        this.machineIndex = machineIndex;
+        this.index = machineIndex;
     }
 
     /**
@@ -333,7 +331,7 @@ public class PatternNode extends NodeBase {
      */
     public PatternNode(int bankIndex, int patternIndex, int machineIndex) {
         this.name = PatternUtils.toString(bankIndex, patternIndex);
-        this.machineIndex = machineIndex;
+        this.index = machineIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -487,8 +485,7 @@ public class PatternNode extends NodeBase {
     @Override
     protected void restoreComponents() {
         // create NoteNodes for each note
-        String result = PatternSequencerMessage.QUERY_NOTE_DATA
-                .queryString(getRack(), machineIndex);
+        String result = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getRack(), index);
         if (result == null)
             return;
 
@@ -502,15 +499,15 @@ public class PatternNode extends NodeBase {
     protected void updateComponents() {
         // when this call happens, the parent PatternNode has already
         // set the correct bank/pattern
-        PatternSequencerMessage.NUM_MEASURES.send(getRack(), machineIndex, numMeasures);
+        PatternSequencerMessage.NUM_MEASURES.send(getRack(), index, numMeasures);
         // we already have the NoteNodes, just need to update the machine's pattern_sequencer
         for (NoteNode noteNode : notes) {
-            PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, noteNode.getStart(),
+            PatternSequencerMessage.NOTE_DATA.send(getRack(), index, noteNode.getStart(),
                     noteNode.getPitch(), noteNode.getVelocity(), noteNode.getEnd(),
                     noteNode.getFlags());
         }
-        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), machineIndex, shuffleMode.getValue());
-        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), machineIndex, shuffleAmount);
+        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), index, shuffleMode.getValue());
+        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), index, shuffleAmount);
     }
 
     @Override

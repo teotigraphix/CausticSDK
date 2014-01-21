@@ -37,11 +37,31 @@ public abstract class NodeBase implements ICaustkNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    protected Integer index = null;
+
     private NodeInfo info = null;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // index
+    //----------------------------------
+
+    /**
+     * R
+     */
+    public final Integer getIndex() {
+        return index;
+    }
+
+    /**
+     * @param index
+     */
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
 
     //----------------------------------
     // info

@@ -316,13 +316,25 @@ public class Library extends NodeBase {
             CausticException {
         File archiveFile = resolveAbsoluteArchive(info);
         if (!archiveFile.exists())
-            throw new CausticException("Node file note found: " + archiveFile);
+            throw new CausticException("Node file not found: " + archiveFile);
 
         File outputDirectory = uncompressToTempDirectory(archiveFile);
+
         File manifest = new File(outputDirectory, "manifest.json");
         String json = FileUtils.readFileToString(manifest);
 
         T definition = getFactory().deserialize(json, clazz);
+        if (definition instanceof MachineNode) {
+            String presetName = info.getName();
+            File presetDirectory = new File(outputDirectory, "presets");
+            MachineNode machineNode = (MachineNode)definition;
+            File presetFile = new File(presetDirectory, presetName + "."
+                    + machineNode.getType().getExtension());
+            if (!presetFile.exists())
+                throw new CausticException("Preset file not found: " + presetFile);
+            // pass the bytes into the preset for future #restorePreset()
+            machineNode.getPreset().fill(presetFile);
+        }
 
         try {
             Thread.sleep(200);

@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.node.machine.patch;
 
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.modular.ModularBayComponent;
 
 /**
  * The {@link MachineComponent} is the base class for all {@link MachineNode}
@@ -36,32 +35,15 @@ public abstract class MachineComponent extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private int machineIndex;
-
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // machineIndex
-    //----------------------------------
-
     /**
-     * Returns the machine's index that represents the machine's native slot
-     * assignment in the rack (0..13).
+     * Returns the machine index this component decorates (0..13).
      */
     public final int getMachineIndex() {
-        return machineIndex;
-    }
-
-    /**
-     * TODO get rid of this and implement the constructors correctly IE
-     * {@link ModularBayComponent}.
-     * 
-     * @param machineIndex
-     */
-    public void updateMachineIndex(int machineIndex) {
-        this.machineIndex = machineIndex;
+        return index;
     }
 
     //--------------------------------------------------------------------------
@@ -75,7 +57,7 @@ public abstract class MachineComponent extends NodeBase {
     }
 
     public MachineComponent(int machineIndex) {
-        this.machineIndex = machineIndex;
+        setIndex(machineIndex);
     }
 
     public MachineComponent(MachineNode machineNode) {

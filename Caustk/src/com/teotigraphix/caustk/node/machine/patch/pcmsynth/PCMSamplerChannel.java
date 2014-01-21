@@ -36,7 +36,7 @@ public class PCMSamplerChannel extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private int index;
+    private int channelIndex;
 
     private String name;
 
@@ -70,8 +70,8 @@ public class PCMSamplerChannel extends MachineComponent {
      * Returns the index of the channel within it's parent
      * {@link PCMSamplerComponent}.
      */
-    public final int getIndex() {
-        return index;
+    public final int getChannelIndex() {
+        return channelIndex;
     }
 
     //----------------------------------
@@ -366,11 +366,11 @@ public class PCMSamplerChannel extends MachineComponent {
      * Creates a sampler channel.
      * 
      * @param machineIndex The {@link PCMSynthMachine}'s machine index.
-     * @param index The sample channel index (0..63).
+     * @param channelIndex The sample channel index (0..63).
      */
-    public PCMSamplerChannel(int machineIndex, int index) {
+    public PCMSamplerChannel(int machineIndex, int channelIndex) {
         super(machineIndex);
-        this.index = index;
+        this.channelIndex = channelIndex;
     }
 
     //--------------------------------------------------------------------------

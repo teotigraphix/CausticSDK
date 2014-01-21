@@ -36,7 +36,7 @@ public class WavSamplerChannel extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private int index;
+    private int samplerChannel;
 
     private String name;
 
@@ -71,14 +71,14 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     //----------------------------------
-    // index
+    // samplerChannel
     //----------------------------------
 
     /**
-     * The sample index.
+     * The sample channel.
      */
-    public final int getIndex() {
-        return index;
+    public final int getSamplerChannel() {
+        return samplerChannel;
     }
 
     //----------------------------------
@@ -94,7 +94,7 @@ public class WavSamplerChannel extends MachineComponent {
 
     public String queryName() {
         return BeatboxMessage.QUERY_CHANNEL_SAMPLE_NAME.queryString(getRack(), getMachineIndex(),
-                index);
+                samplerChannel);
     }
 
     /**
@@ -138,7 +138,7 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     public boolean queryMute() {
-        return BeatboxMessage.CHANNEL_MUTE.query(getRack(), getMachineIndex(), index) == 0f ? false
+        return BeatboxMessage.CHANNEL_MUTE.query(getRack(), getMachineIndex(), samplerChannel) == 0f ? false
                 : true;
     }
 
@@ -150,7 +150,8 @@ public class WavSamplerChannel extends MachineComponent {
         if (mute == this.mute)
             return;
         this.mute = mute;
-        BeatboxMessage.CHANNEL_MUTE.send(getRack(), getMachineIndex(), index, mute ? 1 : 0);
+        BeatboxMessage.CHANNEL_MUTE
+                .send(getRack(), getMachineIndex(), samplerChannel, mute ? 1 : 0);
     }
 
     //----------------------------------
@@ -163,11 +164,13 @@ public class WavSamplerChannel extends MachineComponent {
      * @see BeatboxMessage#CHANNEL_MUTE_GROUPS
      */
     public int getMuteGroups() {
-        return (int)BeatboxMessage.CHANNEL_MUTE_GROUPS.query(getRack(), getMachineIndex(), index);
+        return (int)BeatboxMessage.CHANNEL_MUTE_GROUPS.query(getRack(), getMachineIndex(),
+                samplerChannel);
     }
 
     public int queryMuteGroups() {
-        return (int)BeatboxMessage.CHANNEL_MUTE_GROUPS.query(getRack(), getMachineIndex(), index);
+        return (int)BeatboxMessage.CHANNEL_MUTE_GROUPS.query(getRack(), getMachineIndex(),
+                samplerChannel);
     }
 
     /**
@@ -178,7 +181,8 @@ public class WavSamplerChannel extends MachineComponent {
         if (muteGroups == this.muteGroups)
             return;
         this.muteGroups = muteGroups;
-        BeatboxMessage.CHANNEL_MUTE_GROUPS.send(getRack(), getMachineIndex(), index, muteGroups);
+        BeatboxMessage.CHANNEL_MUTE_GROUPS.send(getRack(), getMachineIndex(), samplerChannel,
+                muteGroups);
     }
 
     //----------------------------------
@@ -193,7 +197,7 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     public boolean querySolo() {
-        return BeatboxMessage.CHANNEL_SOLO.query(getRack(), getMachineIndex(), index) == 0f ? false
+        return BeatboxMessage.CHANNEL_SOLO.query(getRack(), getMachineIndex(), samplerChannel) == 0f ? false
                 : true;
     }
 
@@ -205,7 +209,8 @@ public class WavSamplerChannel extends MachineComponent {
         if (solo == this.solo)
             return;
         this.solo = solo;
-        BeatboxMessage.CHANNEL_SOLO.send(getRack(), getMachineIndex(), index, solo ? 1 : 0);
+        BeatboxMessage.CHANNEL_SOLO
+                .send(getRack(), getMachineIndex(), samplerChannel, solo ? 1 : 0);
     }
 
     //----------------------------------
@@ -220,7 +225,7 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     public float queryTune() {
-        return BeatboxMessage.CHANNEL_TUNE.query(getRack(), getMachineIndex(), index);
+        return BeatboxMessage.CHANNEL_TUNE.query(getRack(), getMachineIndex(), samplerChannel);
     }
 
     /**
@@ -233,7 +238,7 @@ public class WavSamplerChannel extends MachineComponent {
         if (tune < -6f || tune > 6f)
             throw newRangeException(BeatboxMessage.CHANNEL_TUNE, "-6.0..6.0", tune);
         this.tune = tune;
-        BeatboxMessage.CHANNEL_TUNE.send(getRack(), getMachineIndex(), index, tune);
+        BeatboxMessage.CHANNEL_TUNE.send(getRack(), getMachineIndex(), samplerChannel, tune);
     }
 
     //----------------------------------
@@ -248,7 +253,7 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     public float queryPunch() {
-        return BeatboxMessage.CHANNEL_PUNCH.query(getRack(), getMachineIndex(), index);
+        return BeatboxMessage.CHANNEL_PUNCH.query(getRack(), getMachineIndex(), samplerChannel);
     }
 
     /**
@@ -261,7 +266,7 @@ public class WavSamplerChannel extends MachineComponent {
         if (punch < 0f || punch > 1f)
             throw newRangeException(BeatboxMessage.CHANNEL_PUNCH, "0.0..1.0", punch);
         this.punch = punch;
-        BeatboxMessage.CHANNEL_PUNCH.send(getRack(), getMachineIndex(), index, punch);
+        BeatboxMessage.CHANNEL_PUNCH.send(getRack(), getMachineIndex(), samplerChannel, punch);
     }
 
     //----------------------------------
@@ -276,7 +281,7 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     public float queryDecay() {
-        return BeatboxMessage.CHANNEL_DECAY.query(getRack(), getMachineIndex(), index);
+        return BeatboxMessage.CHANNEL_DECAY.query(getRack(), getMachineIndex(), samplerChannel);
     }
 
     /**
@@ -289,7 +294,7 @@ public class WavSamplerChannel extends MachineComponent {
         if (decay < 0f || decay > 1f)
             throw newRangeException(BeatboxMessage.CHANNEL_DECAY, "0.0..1.0", decay);
         this.decay = decay;
-        BeatboxMessage.CHANNEL_DECAY.send(getRack(), getMachineIndex(), index, decay);
+        BeatboxMessage.CHANNEL_DECAY.send(getRack(), getMachineIndex(), samplerChannel, decay);
     }
 
     //----------------------------------
@@ -304,7 +309,7 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     public float queryPan() {
-        return BeatboxMessage.CHANNEL_PAN.query(getRack(), getMachineIndex(), index);
+        return BeatboxMessage.CHANNEL_PAN.query(getRack(), getMachineIndex(), samplerChannel);
     }
 
     /**
@@ -317,7 +322,7 @@ public class WavSamplerChannel extends MachineComponent {
         this.pan = pan;
         if (pan < -1f || pan > 1f)
             throw newRangeException(BeatboxMessage.CHANNEL_PAN, "-1.0..1.0", pan);
-        BeatboxMessage.CHANNEL_PAN.send(getRack(), getMachineIndex(), index, pan);
+        BeatboxMessage.CHANNEL_PAN.send(getRack(), getMachineIndex(), samplerChannel, pan);
     }
 
     //----------------------------------
@@ -332,7 +337,7 @@ public class WavSamplerChannel extends MachineComponent {
     }
 
     public float queryVolume() {
-        return BeatboxMessage.CHANNEL_VOLUME.query(getRack(), getMachineIndex(), index);
+        return BeatboxMessage.CHANNEL_VOLUME.query(getRack(), getMachineIndex(), samplerChannel);
     }
 
     /**
@@ -345,7 +350,7 @@ public class WavSamplerChannel extends MachineComponent {
         if (volume < 0f || volume > 2f)
             throw newRangeException(BeatboxMessage.CHANNEL_VOLUME, "0.0..2.0", volume);
         this.volume = volume;
-        BeatboxMessage.CHANNEL_VOLUME.send(getRack(), getMachineIndex(), index, volume);
+        BeatboxMessage.CHANNEL_VOLUME.send(getRack(), getMachineIndex(), samplerChannel, volume);
     }
 
     //--------------------------------------------------------------------------
@@ -358,9 +363,9 @@ public class WavSamplerChannel extends MachineComponent {
     public WavSamplerChannel() {
     }
 
-    public WavSamplerChannel(MachineNode machineNode, int index) {
+    public WavSamplerChannel(MachineNode machineNode, int samplerChannel) {
         super(machineNode);
-        this.index = index;
+        this.samplerChannel = samplerChannel;
     }
 
     //--------------------------------------------------------------------------
@@ -377,14 +382,17 @@ public class WavSamplerChannel extends MachineComponent {
 
     @Override
     protected void updateComponents() {
-        BeatboxMessage.CHANNEL_MUTE.send(getRack(), getMachineIndex(), index, mute ? 1 : 0);
-        BeatboxMessage.CHANNEL_MUTE_GROUPS.send(getRack(), getMachineIndex(), index, muteGroups);
-        BeatboxMessage.CHANNEL_SOLO.send(getRack(), getMachineIndex(), index, solo ? 1 : 0);
-        BeatboxMessage.CHANNEL_TUNE.send(getRack(), getMachineIndex(), index, tune);
-        BeatboxMessage.CHANNEL_PUNCH.send(getRack(), getMachineIndex(), index, punch);
-        BeatboxMessage.CHANNEL_DECAY.send(getRack(), getMachineIndex(), index, decay);
-        BeatboxMessage.CHANNEL_PAN.send(getRack(), getMachineIndex(), index, pan);
-        BeatboxMessage.CHANNEL_VOLUME.send(getRack(), getMachineIndex(), index, volume);
+        BeatboxMessage.CHANNEL_MUTE
+                .send(getRack(), getMachineIndex(), samplerChannel, mute ? 1 : 0);
+        BeatboxMessage.CHANNEL_MUTE_GROUPS.send(getRack(), getMachineIndex(), samplerChannel,
+                muteGroups);
+        BeatboxMessage.CHANNEL_SOLO
+                .send(getRack(), getMachineIndex(), samplerChannel, solo ? 1 : 0);
+        BeatboxMessage.CHANNEL_TUNE.send(getRack(), getMachineIndex(), samplerChannel, tune);
+        BeatboxMessage.CHANNEL_PUNCH.send(getRack(), getMachineIndex(), samplerChannel, punch);
+        BeatboxMessage.CHANNEL_DECAY.send(getRack(), getMachineIndex(), samplerChannel, decay);
+        BeatboxMessage.CHANNEL_PAN.send(getRack(), getMachineIndex(), samplerChannel, pan);
+        BeatboxMessage.CHANNEL_VOLUME.send(getRack(), getMachineIndex(), samplerChannel, volume);
     }
 
     @Override

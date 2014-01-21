@@ -43,8 +43,6 @@ public class EffectsChannelNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private int machineIndex;
-
     private HashMap<Integer, EffectNode> slots = new HashMap<Integer, EffectNode>();
 
     //--------------------------------------------------------------------------
@@ -85,7 +83,7 @@ public class EffectsChannelNode extends NodeBase {
     }
 
     public EffectsChannelNode(int machineIndex) {
-        this.machineIndex = machineIndex;
+        this.index = machineIndex;
     }
 
     public EffectsChannelNode(MachineNode machineNode) {
@@ -111,7 +109,7 @@ public class EffectsChannelNode extends NodeBase {
         if (containsEffect(slot))
             throw new CausticException("Effect channel contains effect at slot: " + slot);
 
-        EffectNode effect = getFactory().createEffect(machineIndex, slot, effectType);
+        EffectNode effect = getFactory().createEffect(index, slot, effectType);
         EffectsRackMessage.CREATE.send(getRack(), effect.getMachineIndex(), effect.getSlot(),
                 effect.getType().getValue());
         set(effect);
@@ -147,7 +145,7 @@ public class EffectsChannelNode extends NodeBase {
     protected void restoreComponents() {
         for (int i = 0; i < NUM_SLOTS; i++) {
             EffectType type = EffectType.fromInt((int)EffectsRackMessage.TYPE.send(getRack(),
-                    machineIndex, i));
+                    index, i));
             if (type != null) {
                 EffectNode effect;
                 try {

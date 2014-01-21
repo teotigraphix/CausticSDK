@@ -61,95 +61,95 @@ public class ModularBayComponent extends MachineComponent {
         switch (type) {
             case TwoToOneMixerModulator:
                 component = new TwoInputMixer(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case ThreeToOneMixer:
                 component = new ThreeInputMixer(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case SixToOneMixer:
                 component = new SixInputMixer(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case Oscillator:
                 component = new Oscillator(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case SubOscillator:
                 component = new SubOscillator(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case PulseGenerator:
                 component = new PulseGenerator(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case DADSREnvelope:
                 component = new DADSREnvelope(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case AREnvelope:
                 component = new AREnvelope(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case DecayEnvelope:
                 component = new DecayEnvelope(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case SVFilter:
                 component = new SVFilter(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case StereoLPF:
                 component = new StereoLPF(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case FormantFilter:
                 component = new FormantFilter(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case MiniLFO:
                 component = new MiniLFO(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case NoiseGenerator:
                 component = new NoiseGenerator(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case PanModule:
                 component = new PanModule(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case CrossFade:
                 component = new Crossfader(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case LagProcessor:
                 component = new LagProcessor(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case Delay:
                 component = new DelayModule(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case SampleAndHold:
                 component = new SampleAndHold(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case CrossOver:
                 component = new CrossoverModule(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case Saturator:
                 component = new Saturator(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case FMPair:
                 component = new FMPair(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
             case Arpeggiator:
                 component = new Arpeggiator(bay);
-                component.updateMachineIndex(machineIndex);
+                component.setIndex(machineIndex);
                 break;
 
             default:

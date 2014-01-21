@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.node.NodeBase;
@@ -56,8 +57,6 @@ public abstract class MachineNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private Integer index;
-
     private MachineType type;
 
     private String name;
@@ -79,21 +78,6 @@ public abstract class MachineNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // index
-    //----------------------------------
-
-    /**
-     * The machine's index within the native rack (0..13).
-     */
-    public Integer getIndex() {
-        return index;
-    }
-
-    void setIndex(Integer index) {
-        this.index = index;
-    }
 
     //----------------------------------
     // type
@@ -122,9 +106,13 @@ public abstract class MachineNode extends NodeBase {
         return name;
     }
 
-    //    private void setName(String name) {
-    //        this.name = name;
-    //    }
+    public void setName(String name) {
+        if (name.equals(this.name))
+            return;
+        // XXX Check machine name length 10 char limit
+        this.name = name;
+        RackMessage.MACHINE_NAME.send(getRack(), index, name);
+    }
 
     //----------------------------------
     // preset
@@ -237,6 +225,19 @@ public abstract class MachineNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    public void create(int index) throws CausticException {
+        if (isNative)
+            throw new IllegalStateException("machine already exists native");
+        this.index = index;
+        volume.setIndex(index);
+        preset.setIndex(index);
+        synth.setIndex(index);
+        mixer.setIndex(index);
+        effects.setIndex(index);
+        sequencer.setIndex(index);
+        create();
+    }
 
     /**
      * Refreshes all composites that patch data relies on.
