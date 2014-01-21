@@ -17,44 +17,28 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack;
+package com.teotigraphix.caustk.node;
 
 /**
+ * The {@link NodeFactoryBase}, base factory class for sub factories in the
+ * {@link CaustkFactory}.
+ * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class RackProvider {
+public class NodeFactoryBase {
 
-    private static Rack rack;
+    private CaustkFactory factory;
 
-    static void setRack(Rack rack) {
-        RackProvider.rack = rack;
-    }
-
-    /**
-     * Returns the single instance of the {@link Rack}.
-     */
-    public static Rack getRack() {
-        return rack;
+    protected CaustkFactory getFactory() {
+        return factory;
     }
 
     //--------------------------------------------------------------------------
-    // Constructors
+    //  Constructor
     //--------------------------------------------------------------------------
 
-    public RackProvider() {
-    }
-
-    //--------------------------------------------------------------------------
-    // Public API :: Methods
-    //--------------------------------------------------------------------------
-
-    /**
-     * Factory method, creates a {@link Rack} with {@link CaustkRuntime}.
-     * 
-     * @param runtime The platform runtime.
-     */
-    public static Rack createRack(CaustkRuntime runtime) {
-        return new Rack(runtime);
+    public NodeFactoryBase(CaustkFactory factory) {
+        this.factory = factory;
     }
 }

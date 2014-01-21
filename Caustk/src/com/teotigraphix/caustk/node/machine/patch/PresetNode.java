@@ -224,6 +224,14 @@ public class PresetNode extends NodeBase {
     }
 
     /**
+     * Fills the {@link #getRestoredData()} with the current preset data of the
+     * native machine located at {@link #getMachineIndex()}.
+     */
+    public void fill() {
+        fillRestoredData();
+    }
+
+    /**
      * Exports the preset using the {@link #getPresetFile()} calculation, which
      * involves {@link #getPath()}.
      * 
@@ -336,8 +344,7 @@ public class PresetNode extends NodeBase {
         path = null;
 
         // store the original bytes
-        String tempName = "$___" + UUID.randomUUID().toString(); // will be deleted
-        restoredData = PresetUtils.readPresetBytes(getRack(), machineIndex, type, tempName);
+        fillRestoredData();
     }
 
     @Override
@@ -351,5 +358,15 @@ public class PresetNode extends NodeBase {
         } catch (IllegalStateException e) {
             // TODO: handle exception
         }
+    }
+
+    private void fillRestoredData() {
+        MachineType type = RackUtils.toMachineType(getRack(), machineIndex);
+        if (type == null)
+            throw new IllegalStateException(
+                    "Can only restore bytes during existing native rack session");
+        // store the original bytes
+        String tempName = "$___" + UUID.randomUUID().toString(); // will be deleted
+        restoredData = PresetUtils.readPresetBytes(getRack(), machineIndex, type, tempName);
     }
 }

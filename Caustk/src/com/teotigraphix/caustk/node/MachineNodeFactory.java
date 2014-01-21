@@ -33,14 +33,20 @@ import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 
 /**
- * The {@link NodeFactory} creates caustk {@link NodeBase} instances.
+ * Factory to create {@link MachineNode}s.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class NodeFactory {
+public class MachineNodeFactory extends NodeFactoryBase {
 
-    public MachineNode createMachine(int index, MachineType type, String name) {
+    public MachineNodeFactory(CaustkFactory factory) {
+        super(factory);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends MachineNode> T createMachine(NodeInfo info, int index, MachineType type,
+            String name) {
         MachineNode machineNode = null;
         switch (type) {
             case SubSynth:
@@ -74,6 +80,7 @@ public class NodeFactory {
                 machineNode = new VocoderMachine(index, name);
                 break;
         }
-        return machineNode;
+        machineNode.setInfo(info);
+        return (T)machineNode;
     }
 }

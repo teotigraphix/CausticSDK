@@ -34,6 +34,8 @@ import com.teotigraphix.caustk.node.master.MasterNode;
  */
 public enum NodeType {
 
+    Library("library"),
+
     /**
      * A serialized {@link RackNode} with full state save.
      * <p>
@@ -44,32 +46,43 @@ public enum NodeType {
      * <li>/Archive/presets/Machine_[i..n].preset</li>
      * </ul>
      */
-    Rack,
+    Rack("rack"),
 
     /**
      * A serialized {@link MasterNode}.
      */
-    Master,
+    Master("master"),
 
     /**
      * A serialized {@link PresetNode} with the {@link EffectsChannelNode} and
      * it's {@link EffectNode}s.
      */
-    Patch,
+    Patch("patch"),
+
+    Effect("effect"),
 
     /**
      * A serialized {@link PatternNode}.
      */
-    Pattern,
+    Pattern("pattern"),
 
     /**
      * A serialized PatternSetNode.
      */
-    PatternSet,
+    PatternSet("patternset"),
 
     /**
      * A serialized {@link MachineNode}.
      */
-    Machine;
+    Machine("machine");
 
+    private final String extension;
+
+    public final String getExtension() {
+        return extension;
+    }
+
+    NodeType(String extension) {
+        this.extension = extension;
+    }
 }

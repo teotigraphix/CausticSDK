@@ -46,8 +46,6 @@ public class NodeInfo {
 
     private File file;
 
-    private String path;
-
     private String name;
 
     private String author;
@@ -123,7 +121,7 @@ public class NodeInfo {
      * Returns the relative path from the owning {@link Library}.
      * <p>
      * The path could be something like;
-     * <code>Machine/SubSynth/Trance/FM Synth Setup.cmc</code>
+     * <code>Machine/SubSynth/Trance/FM Synth Setup.machine</code>
      * <p>
      * <strong>Do not</strong> use getAbsolutePath() on this File, use
      * {@link Library#resolveLocation(ICaustkDefinition)} instead to resolve the
@@ -133,45 +131,30 @@ public class NodeInfo {
         return file;
     }
 
-    public void setFile(File value) {
-        file = value;
-    }
-
     /**
-     * Returns the relative path within the {@link DefinitionType}'s sub
-     * directory.
+     * Sets the relative file location of this node.
+     * 
+     * @param file The non absolute file.
+     * @throws IllegalStateException File must not be absolute
      */
-    public String getRelativePath() {
-        if (file == null)
-            return "";
-        return file.getPath();
+    public void setFile(File file) {
+        if (file.isAbsolute())
+            throw new IllegalStateException("File must not be absolute");
+        this.file = file;
     }
-
-    //----------------------------------
-    //  path
-    //----------------------------------
 
     /**
      * Returns the full relative path from the Library's base;
-     * <code>/root/MyApp/Libraries/MyLib/[Effect/Distortion/SubDir/MyDistorion.cef]</code>
+     * <code>/root/MyApp/Libraries/MyLib/[Effect/Distortion/SubDir/MyDistorion.effect]</code>
      * <p>
-     * This property is set when the component is added to the
-     * {@link Library#add(ICaustkDefinition)}.
+     * This property is non <code>null</code> when the component is added to the
+     * {@link Library#add(ICaustkNode)}, or {@link #setFile(File)} is explicitly
+     * called with a relative path value.
      */
-    public String getPath() {
-        return path;
-    }
-
-    /**
-     * Sets the base component path including file name and extension.
-     * <p>
-     * Used for mapping and finding components when a library is deserialized
-     * from a manifest.
-     * 
-     * @param path The path.
-     */
-    void setPath(String path) {
-        this.path = path;
+    public String getRelativePath() {
+        if (file == null)
+            return null;
+        return file.getPath();
     }
 
     //--------------------------------------------------------------------------
@@ -391,7 +374,80 @@ public class NodeInfo {
     }
 
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((author == null) ? 0 : author.hashCode());
+        result = prime * result + ((created == null) ? 0 : created.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((file == null) ? 0 : file.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((modified == null) ? 0 : modified.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + (selected ? 1231 : 1237);
+        result = prime * result + ((tags == null) ? 0 : tags.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        NodeInfo other = (NodeInfo)obj;
+        if (author == null) {
+            if (other.author != null)
+                return false;
+        } else if (!author.equals(other.author))
+            return false;
+        if (created == null) {
+            if (other.created != null)
+                return false;
+        } else if (created.compareTo(other.created) == 0)
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (file == null) {
+            if (other.file != null)
+                return false;
+        } else if (!file.equals(other.file))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (modified == null) {
+            if (other.modified != null)
+                return false;
+        } else if (modified.compareTo(other.modified) == 0)
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (selected != other.selected)
+            return false;
+        if (tags == null) {
+            if (other.tags != null)
+                return false;
+        } else if (!tags.equals(other.tags))
+            return false;
+        if (type != other.type)
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
-        return "[NoteInfo(" + type.name() + ", " + name + ", " + file + ")]";
+        return "[NodeInfo(" + type.name() + ", " + name + ", " + file + ")]";
     }
 }

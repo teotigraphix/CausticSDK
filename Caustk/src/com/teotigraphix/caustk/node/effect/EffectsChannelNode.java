@@ -39,14 +39,6 @@ public class EffectsChannelNode extends NodeBase {
 
     private static final int NUM_SLOTS = 2;
 
-    private transient EffectNodeFactory effectFactory;
-
-    protected EffectNodeFactory getFactory() {
-        if (effectFactory == null)
-            effectFactory = new EffectNodeFactory();
-        return effectFactory;
-    }
-
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -119,7 +111,7 @@ public class EffectsChannelNode extends NodeBase {
         if (containsEffect(slot))
             throw new CausticException("Effect channel contains effect at slot: " + slot);
 
-        EffectNode effect = getFactory().create(machineIndex, slot, effectType);
+        EffectNode effect = getFactory().createEffect(machineIndex, slot, effectType);
         EffectsRackMessage.CREATE.send(getRack(), effect.getMachineIndex(), effect.getSlot(),
                 effect.getType().getValue());
         set(effect);

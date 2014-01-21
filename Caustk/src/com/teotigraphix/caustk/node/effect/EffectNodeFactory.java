@@ -19,16 +19,31 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.teotigraphix.caustk.node.CaustkFactory;
+import com.teotigraphix.caustk.node.NodeFactoryBase;
+import com.teotigraphix.caustk.node.NodeInfo;
+import com.teotigraphix.caustk.node.NodeType;
+
 /**
  * The {@link EffectNodeFactory} for creating {@link EffectNode}s.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class EffectNodeFactory {
+public class EffectNodeFactory extends NodeFactoryBase {
+
+    public EffectNodeFactory(CaustkFactory factory) {
+        super(factory);
+    }
+
+    public <T extends EffectNode> T createEffect(int machineIndex, int slot, EffectType effectType) {
+        NodeInfo info = getFactory().createInfo(NodeType.Effect);
+        return createEffect(info, machineIndex, slot, effectType);
+    }
 
     @SuppressWarnings("unchecked")
-    public <T extends EffectNode> T create(int machineIndex, int slot, EffectType effectType) {
+    public <T extends EffectNode> T createEffect(NodeInfo info, int machineIndex, int slot,
+            EffectType effectType) {
         EffectNode effect = null;
         switch (effectType) {
             case Autowah:
@@ -80,6 +95,7 @@ public class EffectNodeFactory {
                 effect = new VinylSimulatorEffect(slot, machineIndex);
                 break;
         }
+        effect.setInfo(info);
         return (T)effect;
     }
 }

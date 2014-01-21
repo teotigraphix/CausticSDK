@@ -44,6 +44,12 @@ public class Rack implements ISoundGenerator {
 
     private transient ISoundGenerator soundGenerator;
 
+    private transient CaustkRuntime runtime;
+
+    public final CaustkRuntime getRuntime() {
+        return runtime;
+    }
+
     final ISoundGenerator getSoundGenerator() {
         return soundGenerator;
     }
@@ -58,8 +64,9 @@ public class Rack implements ISoundGenerator {
         this.soundGenerator = soundGenerator;
     }
 
-    Rack(ISoundGenerator soundGenerator) {
-        setSoundGenerator(soundGenerator);
+    Rack(CaustkRuntime runtime) {
+        this.runtime = runtime;
+        setSoundGenerator(runtime.getSoundGenerator());
         caustkLogger = new CaustkLogger();
     }
 

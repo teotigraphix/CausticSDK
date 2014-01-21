@@ -19,7 +19,17 @@
 
 package com.teotigraphix.caustk.rack;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.caustk.node.CaustkFactory;
+import com.teotigraphix.caustk.node.ICaustkNode;
+import com.teotigraphix.caustk.node.Library;
 
 /**
  * The {@link CaustkRuntime} encapsulates the {@link ISoundGenerator} and
@@ -36,6 +46,14 @@ public class CaustkRuntime {
 
     private Rack rack;
 
+    private CaustkFactory factory;
+
+    private Library library;
+
+    ISoundGenerator getSoundGenerator() {
+        return soundGenerator;
+    }
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -45,6 +63,25 @@ public class CaustkRuntime {
      */
     public final Rack getRack() {
         return rack;
+    }
+
+    /**
+     * Returns the session {@link CaustkFactory} for created {@link ICaustkNode}
+     * s.
+     */
+    public final CaustkFactory getFactory() {
+        return factory;
+    }
+
+    /**
+     * The current library loaded for an application.
+     */
+    public final Library getLibrary() {
+        return library;
+    }
+
+    private void setLibrary(Library library) {
+        this.library = library;
     }
 
     //--------------------------------------------------------------------------
@@ -61,8 +98,36 @@ public class CaustkRuntime {
         initialize();
     }
 
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    public Library loadLibrary(File file) throws CausticException, IOException {
+        if (file.exists())
+            throw new FileNotFoundException("Library does not exist: " + file);
+
+        String json = FileUtils.readFileToString(file);
+        library = getFactory().deserialize(json, Library.class);
+
+        return library;
+    }
+
+    public Library createLibrary(String relativePath) throws CausticException {
+        Library library = getFactory().createLibrary(relativePath);
+        //        if (library.exists())
+        //            throw new CausticException("Library exists: " + library.getDirectory());
+        setLibrary(library);
+        library.create();
+        return library;
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
+
     private void initialize() {
-        rack = RackProvider.createRack(soundGenerator);
+        factory = new CaustkFactory(this);
+        rack = RackProvider.createRack(this);
         RackProvider.setRack(rack);
     }
 }

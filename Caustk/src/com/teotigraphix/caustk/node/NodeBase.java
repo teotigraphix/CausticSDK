@@ -73,6 +73,13 @@ public abstract class NodeBase implements ICaustkNode {
     }
 
     /**
+     * Returns the session {@link CaustkFactory}.
+     */
+    protected final CaustkFactory getFactory() {
+        return RackProvider.getRack().getRuntime().getFactory();
+    }
+
+    /**
      * Returns the session {@link ICaustkLogger}.
      */
     protected final ICaustkLogger getLogger() {

@@ -43,14 +43,6 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public class RackNode extends NodeBase {
 
-    private transient NodeFactory nodeFactory;
-
-    public NodeFactory getNodeFactory() {
-        if (nodeFactory == null)
-            nodeFactory = new NodeFactory();
-        return nodeFactory;
-    }
-
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -256,7 +248,8 @@ public class RackNode extends NodeBase {
      * @see MachineNode#isNative()
      */
     MachineNode addMachine(int index, MachineType type, String name) {
-        MachineNode machineNode = getNodeFactory().createMachine(index, type, name);
+        MachineNode machineNode = getRack().getRuntime().getFactory()
+                .createMachine(index, type, name);
         addMachine(machineNode);
         return machineNode;
     }
