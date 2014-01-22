@@ -27,9 +27,9 @@ import com.teotigraphix.caustk.core.internal.DesktopSoundGenerator;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class AmbientMalletsLanucher {
+public class AmbientMalletsLauncher {
     public static void main(String[] args) {
-        System.out.println("AmbientMalletsLanucher: " + "main()");
+        System.out.println("AmbientMalletsLauncher: " + "main()");
 
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "AmbientMallets";
@@ -38,11 +38,11 @@ public class AmbientMalletsLanucher {
         cfg.height = 400;
         cfg.resizable = true;
 
-        System.out.println("AmbientMalletsLanucher: "
+        System.out.println("AmbientMalletsLauncher: "
                 + "create AmbientMallets(DesktopSoundGenerator)");
         AmbientMallets listener = new AmbientMallets(new DesktopSoundGenerator());
 
-        System.out.println("AmbientMalletsLanucher: "
+        System.out.println("AmbientMalletsLauncher: "
                 + "lauch LwjglApplication(AmbientMallets, LwjglApplicationConfiguration)");
         new LwjglApplication(listener, cfg);
     }
