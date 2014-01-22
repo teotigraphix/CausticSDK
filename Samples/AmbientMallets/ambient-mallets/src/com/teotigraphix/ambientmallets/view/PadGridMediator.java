@@ -32,6 +32,8 @@ public class PadGridMediator extends ScreenMediator {
     @Override
     public void onAttach() {
         super.onAttach();
+
+        // SoundModel soundModel = getScreen().getApplication().get(SoundModel.class);
     }
 
     @Override

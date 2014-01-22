@@ -20,12 +20,12 @@
 package com.teotigraphix.gdx.app;
 
 /**
- * The {@link CaustkMediator} is the base class for all view mediators.
+ * The {@link GdxMediator} is the base class for all view mediators.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class CaustkMediator {
+public abstract class GdxMediator implements IGdxMediator {
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -34,17 +34,13 @@ public abstract class CaustkMediator {
     /**
      * Creates a new mediator.
      */
-    public CaustkMediator() {
+    public GdxMediator() {
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    /**
-     * Called when the mediator is attached to the application.
-     * <p>
-     * Add global/application event listeners.
-     */
+    @Override
     public abstract void onAttach();
 }

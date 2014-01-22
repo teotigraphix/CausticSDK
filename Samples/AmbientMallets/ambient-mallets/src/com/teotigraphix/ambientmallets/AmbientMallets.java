@@ -19,6 +19,8 @@
 
 package com.teotigraphix.ambientmallets;
 
+import com.teotigraphix.ambientmallets.model.ProjectModel;
+import com.teotigraphix.ambientmallets.model.SoundModel;
 import com.teotigraphix.ambientmallets.screen.MainScreen;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.gdx.GdxApplication;
@@ -34,12 +36,24 @@ public class AmbientMallets extends GdxApplication {
     public AmbientMallets(ISoundGenerator soundGenerator) {
         super("Ambient Mallets", soundGenerator);
         System.out.println("AmbientMallets: " + "construct()");
+    }
+
+    @Override
+    protected void onRegisterModels() {
+        System.out.println("AmbientMallets: " + "onRegisterModels()");
+        getModelRegistry().put(SoundModel.class, new SoundModel());
+        getModelRegistry().put(ProjectModel.class, new ProjectModel());
+    }
+
+    @Override
+    protected void onRegisterScreens() {
+        System.out.println("AmbientMallets: " + "onRegisterScreens()");
         getScreenManager().addScreen(MAIN_SCREEN, MainScreen.class);
     }
 
     @Override
-    public void create() {
-        super.create();
+    protected void onCreate() {
+        System.out.println("AmbientMallets: " + "onCreate()");
         getScreenManager().setScreen(MAIN_SCREEN);
     }
 

@@ -26,6 +26,8 @@ import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.rack.CaustkRuntime;
+import com.teotigraphix.gdx.app.IGdxModel;
+import com.teotigraphix.gdx.app.ModelRegistry;
 import com.teotigraphix.gdx.app.ScreenManager;
 import com.teotigraphix.gdx.app.StartupExecutor;
 
@@ -54,6 +56,8 @@ public abstract class GdxApplication implements IGdxApplication {
 
     private String applicationName;
 
+    private ModelRegistry modelRegistry;
+
     private EventBus eventBus;
 
     //--------------------------------------------------------------------------
@@ -80,9 +84,18 @@ public abstract class GdxApplication implements IGdxApplication {
         return eventBus;
     }
 
+    @Override
+    public <T extends IGdxModel> T get(Class<T> clazz) {
+        return modelRegistry.get(clazz);
+    }
+
     //--------------------------------------------------------------------------
     // Protected :: Properties
     //--------------------------------------------------------------------------
+
+    protected ModelRegistry getModelRegistry() {
+        return modelRegistry;
+    }
 
     protected ScreenManager getScreenManager() {
         return screenManager;
@@ -101,6 +114,7 @@ public abstract class GdxApplication implements IGdxApplication {
      */
     public GdxApplication(String applicationName, ISoundGenerator soundGenerator) {
         this.applicationName = applicationName;
+        modelRegistry = new ModelRegistry(this);
         eventBus = new EventBus("application");
         startupExecutor = new StartupExecutor(soundGenerator);
         screenManager = new ScreenManager(this);
@@ -111,7 +125,7 @@ public abstract class GdxApplication implements IGdxApplication {
     //--------------------------------------------------------------------------
 
     @Override
-    public void create() {
+    public final void create() {
         Gdx.app.log("GdxApplication", "create()");
         try {
             runtime = startupExecutor.create(this);
@@ -126,6 +140,10 @@ public abstract class GdxApplication implements IGdxApplication {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        onRegisterScreens();
+        onRegisterModels();
+        modelRegistry.attach();
+        onCreate();
     }
 
     @Override
@@ -166,4 +184,29 @@ public abstract class GdxApplication implements IGdxApplication {
         screenManager.dispose();
         runtime.getRack().onDestroy();
     }
+
+    //--------------------------------------------------------------------------
+    // Protected :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Register application {@link IGdxModel}s.
+     * 
+     * @see ModelRegistry#put(Class, IGdxModel)
+     */
+    protected abstract void onRegisterModels();
+
+    /**
+     * Add {@link IGdxScreen}s to the application.
+     * 
+     * @see ScreenManager#addScreen(int, Class)
+     */
+    protected abstract void onRegisterScreens();
+
+    /**
+     * Set the initial {@link GdxScreen} that starts the application, and
+     * perform any other various setup tasks before the main user interface is
+     * shown.
+     */
+    protected abstract void onCreate();
 }

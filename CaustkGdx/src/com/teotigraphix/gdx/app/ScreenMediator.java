@@ -38,7 +38,7 @@ import com.teotigraphix.gdx.IGdxScreen;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ScreenMediator extends CaustkMediator {
+public class ScreenMediator extends GdxMediator {
 
     protected List<ScreenMediatorChild> children = new ArrayList<ScreenMediatorChild>();
 

@@ -38,7 +38,7 @@ import com.teotigraphix.gdx.IGdxScreen;
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class ScreenMediatorChild extends CaustkMediator {
+public abstract class ScreenMediatorChild extends GdxMediator {
 
     //--------------------------------------------------------------------------
     // Private :: Variables

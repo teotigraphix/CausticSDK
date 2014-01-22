@@ -21,6 +21,7 @@ package com.teotigraphix.gdx;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.gdx.app.IGdxModel;
 
 /**
  * The {@link IGdxApplication} API is the top level container for all user
@@ -51,4 +52,12 @@ public interface IGdxApplication extends ApplicationListener {
      * Returns the application level event bus.
      */
     EventBus getEventBus();
+
+    /**
+     * Returns the model registered against the clazz API, <code>null</code> if
+     * not found.
+     * 
+     * @param clazz The model's class API key.
+     */
+    <T extends IGdxModel> T get(Class<T> clazz);
 }
