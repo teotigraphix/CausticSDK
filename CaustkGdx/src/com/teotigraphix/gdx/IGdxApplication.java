@@ -20,6 +20,7 @@
 package com.teotigraphix.gdx;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.google.common.eventbus.EventBus;
 
 /**
  * The {@link IGdxApplication} API is the top level container for all user
@@ -45,4 +46,9 @@ public interface IGdxApplication extends ApplicationListener {
      * The height of the application.
      */
     float getHeight();
+
+    /**
+     * Returns the application level event bus.
+     */
+    EventBus getEventBus();
 }

@@ -40,7 +40,7 @@ import com.teotigraphix.gdx.IGdxScreen;
  */
 public class ScreenMediator extends CaustkMediator {
 
-    protected List<ScreenMediatorChild> subMediators = new ArrayList<ScreenMediatorChild>();
+    protected List<ScreenMediatorChild> children = new ArrayList<ScreenMediatorChild>();
 
     private IGdxScreen screen;
 
@@ -118,7 +118,7 @@ public class ScreenMediator extends CaustkMediator {
      */
     @Override
     public void onAttach() {
-        for (ScreenMediatorChild child : subMediators) {
+        for (ScreenMediatorChild child : children) {
             child.onAttach();
         }
     }
@@ -140,7 +140,7 @@ public class ScreenMediator extends CaustkMediator {
      * Called during {@link IGdxScreen#show()}.
      */
     public void onShow() {
-        for (ScreenMediatorChild child : subMediators) {
+        for (ScreenMediatorChild child : children) {
             child.onShow();
         }
     }
@@ -149,7 +149,7 @@ public class ScreenMediator extends CaustkMediator {
      * Called during {@link IGdxScreen#hide()}.
      */
     public void onHide() {
-        for (ScreenMediatorChild child : subMediators) {
+        for (ScreenMediatorChild child : children) {
             child.onHide();
         }
     }
@@ -158,7 +158,7 @@ public class ScreenMediator extends CaustkMediator {
      * Called during {@link IGdxScreen#resume()}.
      */
     public void onResume() {
-        for (ScreenMediatorChild child : subMediators) {
+        for (ScreenMediatorChild child : children) {
             child.onResume();
         }
     }
@@ -167,7 +167,7 @@ public class ScreenMediator extends CaustkMediator {
      * Called during {@link IGdxScreen#pause()}.
      */
     public void onPause() {
-        for (ScreenMediatorChild child : subMediators) {
+        for (ScreenMediatorChild child : children) {
             child.onPause();
         }
     }
@@ -178,7 +178,7 @@ public class ScreenMediator extends CaustkMediator {
      * Called before {@link #onDispose()}.
      */
     public void onDetach() {
-        for (ScreenMediatorChild child : subMediators) {
+        for (ScreenMediatorChild child : children) {
             child.onDetach();
         }
     }
@@ -189,7 +189,7 @@ public class ScreenMediator extends CaustkMediator {
      * Called after {@link #onDetach()}.
      */
     public void onDispose() {
-        for (ScreenMediatorChild child : subMediators) {
+        for (ScreenMediatorChild child : children) {
             child.onDispose();
         }
         screen = null;
@@ -214,7 +214,7 @@ public class ScreenMediator extends CaustkMediator {
      */
     protected void addChild(ScreenMediatorChild child) {
         child.setParent(this);
-        subMediators.add(child);
+        children.add(child);
     }
 
     /**
@@ -225,7 +225,7 @@ public class ScreenMediator extends CaustkMediator {
      *            mediator's ui components.
      */
     protected void createChildren(Table parent) {
-        for (ScreenMediatorChild mediator : subMediators) {
+        for (ScreenMediatorChild mediator : children) {
             mediator.onCreate(parent);
         }
     }

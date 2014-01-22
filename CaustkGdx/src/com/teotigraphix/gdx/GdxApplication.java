@@ -22,6 +22,7 @@ package com.teotigraphix.gdx;
 import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
+import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.rack.CaustkRuntime;
@@ -53,6 +54,8 @@ public abstract class GdxApplication implements IGdxApplication {
 
     private String applicationName;
 
+    private EventBus eventBus;
+
     //--------------------------------------------------------------------------
     // IGdxApplication API :: Properties
     //--------------------------------------------------------------------------
@@ -70,6 +73,11 @@ public abstract class GdxApplication implements IGdxApplication {
     @Override
     public String getApplicationName() {
         return applicationName;
+    }
+
+    @Override
+    public final EventBus getEventBus() {
+        return eventBus;
     }
 
     //--------------------------------------------------------------------------
@@ -93,6 +101,7 @@ public abstract class GdxApplication implements IGdxApplication {
      */
     public GdxApplication(String applicationName, ISoundGenerator soundGenerator) {
         this.applicationName = applicationName;
+        eventBus = new EventBus("application");
         startupExecutor = new StartupExecutor(soundGenerator);
         screenManager = new ScreenManager(this);
     }
