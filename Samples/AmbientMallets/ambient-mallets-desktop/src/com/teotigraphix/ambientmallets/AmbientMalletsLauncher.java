@@ -36,7 +36,7 @@ public class AmbientMalletsLauncher {
         cfg.useGL20 = false;
         cfg.width = 800;
         cfg.height = 400;
-        cfg.resizable = true;
+        cfg.resizable = false;
 
         System.out.println("AmbientMalletsLauncher: "
                 + "create AmbientMallets(DesktopSoundGenerator)");

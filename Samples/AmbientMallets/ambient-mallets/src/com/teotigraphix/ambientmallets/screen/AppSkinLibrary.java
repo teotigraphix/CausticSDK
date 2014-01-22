@@ -17,30 +17,18 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.ambientmallets;
+package com.teotigraphix.ambientmallets.screen;
 
-import com.teotigraphix.ambientmallets.screen.MainScreen;
-import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.gdx.GdxApplication;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.teotigraphix.gdx.skin.SkinLibrary;
 
-/**
- * @author Michael Schmalle
- * @since 1.0
- */
-public class AmbientMallets extends GdxApplication {
+public class AppSkinLibrary extends SkinLibrary {
 
-    public static final int MAIN_SCREEN = 0;
-
-    public AmbientMallets(ISoundGenerator soundGenerator) {
-        super("Ambient Mallets", soundGenerator);
-        System.out.println("AmbientMallets: " + "construct()");
-        getScreenManager().addScreen(MAIN_SCREEN, MainScreen.class);
+    public AppSkinLibrary() {
     }
 
     @Override
-    public void create() {
-        super.create();
-        getScreenManager().setScreen(MAIN_SCREEN);
+    public void initialize(Skin skin) {
+        super.initialize(skin);
     }
-
 }
