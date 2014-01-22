@@ -88,7 +88,7 @@ public class LoadSongActivity extends CaustkActivity {
 
     private String[] songFiles;
 
-    private File songDirectory = RuntimeUtils.getCausticSongsDirectory();
+    private File songDirectory = RuntimeUtils.getSongsDirectory();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

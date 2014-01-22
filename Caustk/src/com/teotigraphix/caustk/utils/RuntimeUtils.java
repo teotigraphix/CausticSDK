@@ -37,6 +37,8 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.core.MachineType;
 
 /**
+ * Runtime file utility methods.
+ * 
  * @author Michael Schmalle
  * @since 1.0
  */

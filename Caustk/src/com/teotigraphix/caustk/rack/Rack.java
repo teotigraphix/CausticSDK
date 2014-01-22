@@ -167,6 +167,17 @@ public class Rack implements ISoundGenerator {
         rackNode.restore();
     }
 
+    /**
+     * Called when a frame changes in the application, update measure and beat
+     * positions.
+     * 
+     * @param deltaTime The amount of time that has changed since the last
+     *            frame.
+     */
+    public void frameChanged(float deltaTime) {
+        // TODO Auto-generated method stub
+    }
+
     //--------------------------------------------------------------------------
     // ISoundGenerator API
     //--------------------------------------------------------------------------
