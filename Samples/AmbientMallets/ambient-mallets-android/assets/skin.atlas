@@ -1,0 +1,13 @@
+
+skin.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dialog_background
+  rotate: false
+  xy: 2, 2
+  size: 15, 15
+  split: 2, 2, 2, 3
+  orig: 15, 15
+  offset: 0, 0
+  index: -1

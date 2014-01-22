@@ -106,7 +106,7 @@ public class GdxScreen implements IGdxScreen {
      */
     public GdxScreen() {
         stage = new Stage();
-        atlas = new TextureAtlas(Gdx.files.internal("game.atlas"));
+        atlas = new TextureAtlas(Gdx.files.internal("skin.atlas"));
         skin = new Skin(atlas);
     }
 
