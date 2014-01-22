@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,31 +17,34 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.ambientmallets.screen;
+package com.teotigraphix.gdx.app;
 
-import com.teotigraphix.ambientmallets.view.PadGridMediator;
-import com.teotigraphix.gdx.GdxScreen;
-import com.teotigraphix.gdx.IGdxApplication;
-
-public class MainScreen extends GdxScreen {
+/**
+ * The {@link CaustkMediator} is the base class for all view mediators.
+ * 
+ * @author Michael Schmalle
+ * @since 1.0
+ */
+public abstract class CaustkMediator {
 
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
-    public MainScreen() {
-        super();
-        setSkinLibrary(new AppSkinLibrary());
+    /**
+     * Creates a new mediator.
+     */
+    public CaustkMediator() {
     }
 
     //--------------------------------------------------------------------------
-    // Overridden Public :: Methods
+    // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    @Override
-    public void initialize(IGdxApplication gdxApplication) {
-        super.initialize(gdxApplication);
-
-        addMediator(new PadGridMediator());
-    }
+    /**
+     * Called when the mediator is attached to the application.
+     * <p>
+     * Add global/application event listeners.
+     */
+    public abstract void onAttach();
 }

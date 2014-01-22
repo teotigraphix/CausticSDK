@@ -34,7 +34,7 @@ import com.teotigraphix.gdx.app.StartupExecutor;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class GdxApplication implements IGdxApplication {
+public abstract class GdxApplication implements IGdxApplication {
 
     // TODO Temp metrics
     static float WIDTH = 800f;

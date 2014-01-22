@@ -17,31 +17,36 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.ambientmallets.screen;
+package com.teotigraphix.ambientmallets.view;
 
-import com.teotigraphix.ambientmallets.view.PadGridMediator;
-import com.teotigraphix.gdx.GdxScreen;
-import com.teotigraphix.gdx.IGdxApplication;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.teotigraphix.gdx.app.ScreenMediator;
 
-public class MainScreen extends GdxScreen {
+public class PadGridMediator extends ScreenMediator {
 
-    //--------------------------------------------------------------------------
-    // Constructors
-    //--------------------------------------------------------------------------
-
-    public MainScreen() {
-        super();
-        setSkinLibrary(new AppSkinLibrary());
+    public PadGridMediator() {
     }
 
-    //--------------------------------------------------------------------------
-    // Overridden Public :: Methods
-    //--------------------------------------------------------------------------
+    @Override
+    public void onAttach() {
+        super.onAttach();
+    }
 
     @Override
-    public void initialize(IGdxApplication gdxApplication) {
-        super.initialize(gdxApplication);
+    public void onCreate() {
+        super.onCreate();
 
-        addMediator(new PadGridMediator());
+        Button button = new Button(getSkin());
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Clicked");
+            }
+        });
+        button.setSize(100f, 200f);
+        button.setPosition(200f, 200f);
+        getStage().addActor(button);
     }
 }
