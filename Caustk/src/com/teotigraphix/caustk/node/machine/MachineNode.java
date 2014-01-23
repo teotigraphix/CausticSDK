@@ -21,7 +21,9 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannelNode;
@@ -106,12 +108,21 @@ public abstract class MachineNode extends NodeBase {
         return name;
     }
 
+    /**
+     * Sets the machines name and updates the native rack.
+     * 
+     * @param name The new 10 character name.
+     * @see RackMessage#MACHINE_NAME
+     * @see MachineNodeNameEvent
+     * @see RackControl#MachineName
+     */
     public void setName(String name) {
         if (name.equals(this.name))
             return;
         // XXX Check machine name length 10 char limit
         this.name = name;
         RackMessage.MACHINE_NAME.send(getRack(), index, name);
+        post(new MachineNodeNameEvent(this, RackControl.MachineName, name));
     }
 
     //----------------------------------
@@ -330,5 +341,35 @@ public abstract class MachineNode extends NodeBase {
         synth = new SynthComponent(this);
         sequencer = new PatternSequencerNode(this);
         track = new TrackNode(this);
+    }
+
+    /**
+     * Base event for the {@link MachineNodeEvent}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static class MachineNodeEvent extends NodeEvent {
+        public MachineNodeEvent(NodeBase target, IOSCControl control) {
+            super(target, control);
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see MachineNode#setName(String)
+     */
+    public static class MachineNodeNameEvent extends MachineNodeEvent {
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public MachineNodeNameEvent(NodeBase target, RackControl control, String name) {
+            super(target, control);
+            this.name = name;
+        }
     }
 }

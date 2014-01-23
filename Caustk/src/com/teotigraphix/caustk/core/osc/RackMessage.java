@@ -208,4 +208,18 @@ public class RackMessage extends CausticMessage {
     RackMessage(String message) {
         super(message);
     }
+
+    public enum RackControl implements IOSCControl {
+        BlankRack,
+
+        Create,
+
+        LoadSong,
+
+        MachineName,
+
+        Remove,
+
+        SaveSong
+    }
 }
