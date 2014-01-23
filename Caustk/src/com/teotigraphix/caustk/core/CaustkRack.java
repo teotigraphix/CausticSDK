@@ -63,11 +63,25 @@ public class CaustkRack implements ISoundGenerator {
     // rackNode
     //----------------------------------
 
+    /**
+     * Returns the current {@link RackNode} native rack state.
+     * <p>
+     * When listening to the rack's eventBus, there is no need to worry about
+     * memory leaks with events because the {@link NodeBase} is not a dispatcher
+     * or listener. All views would register the subscribers to the rack's
+     * eventBus, which is constant throughout the whole application life cycle.
+     */
     public final RackNode getRackNode() {
         return rackNode;
     }
 
     private void setRackNode(RackNode rackNode) {
+        if (rackNode == this.rackNode)
+            return;
+        RackNode oldNode = this.rackNode;
+        if (oldNode != null) {
+            oldNode.destroy();
+        }
         this.rackNode = rackNode;
         RackMessage.BLANKRACK.send(this);
     }

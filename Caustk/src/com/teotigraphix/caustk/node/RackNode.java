@@ -289,6 +289,8 @@ public class RackNode extends NodeBase {
 
     @Override
     protected void destroyComponents() {
+        // called from CaustkRack.setRackNode() when this node becomes
+        // the old node and no longer represents the native rack state
         master.destroy();
         for (MachineNode machineNode : machines.values()) {
             machineNode.destroy();
