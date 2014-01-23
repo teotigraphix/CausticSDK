@@ -156,7 +156,7 @@ public class RackNode extends NodeBase {
     /**
      * Serialization
      */
-    public RackNode() {
+    RackNode() {
         master = new MasterNode();
         machines = new HashMap<Integer, MachineNode>();
     }
@@ -167,7 +167,7 @@ public class RackNode extends NodeBase {
      * @param path The path can be relative or absolute and must include the
      *            <code>.caustic</code> extension.
      */
-    public RackNode(String path) {
+    RackNode(String path) {
         this();
         this.path = path;
     }
@@ -178,7 +178,7 @@ public class RackNode extends NodeBase {
      * @param file The file can be relative or absolute and must include the
      *            <code>.caustic</code> extension in it's name.
      */
-    public RackNode(File file) {
+    RackNode(File file) {
         this(file.getAbsolutePath());
     }
 

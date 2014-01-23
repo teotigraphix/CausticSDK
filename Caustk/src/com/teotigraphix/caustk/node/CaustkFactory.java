@@ -169,6 +169,29 @@ public class CaustkFactory {
         return rackNode;
     }
 
+    /**
+     * Creates and returns a {@link RackNode} that wraps a <code>.caustic</code>
+     * file.
+     * 
+     * @param relativeOrAbsolutePath The relative or absolute
+     *            <code>.caustic</code> file location.
+     */
+    public RackNode createRack(String relativeOrAbsolutePath) {
+        RackNode rackNode = new RackNode(relativeOrAbsolutePath);
+        return rackNode;
+    }
+
+    /**
+     * Creates and returns a {@link RackNode} that wraps a <code>.caustic</code>
+     * file.
+     * 
+     * @param file The <code>.caustic</code> file location.
+     */
+    public RackNode createRack(File file) {
+        RackNode rackNode = new RackNode(file);
+        return rackNode;
+    }
+
     //----------------------------------
     // EffectNode
     //----------------------------------

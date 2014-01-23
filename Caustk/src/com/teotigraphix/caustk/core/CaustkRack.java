@@ -35,7 +35,10 @@ import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 /**
  * The {@link CaustkRack} holds the current {@link RackNode} session state.
  * <p>
- * All events disaptched through a {@link NodeBase} uses the rack's eventBus.
+ * All events dispatched through a {@link NodeBase} uses the rack's eventBus.
+ * <p>
+ * The rack is really just a Facade over the audio engine callbacks and
+ * {@link RackNode} public API for ease of access.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -46,39 +49,39 @@ public class CaustkRack implements ISoundGenerator {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private ISoundGenerator soundGenerator;
+    private final CaustkRuntime runtime;
 
-    private CaustkRuntime runtime;
+    private final ISoundGenerator soundGenerator;
+
+    private RackNode rackNode;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // runtime
-    //----------------------------------
-
-    // XXX not sure if I want this to be exposed
-    /**
-     * Returns the {@link CaustkRuntime} in which this rack exists.
-     */
-    public final CaustkRuntime _getRuntime() {
-        return runtime;
-    }
-
-    CaustkRack(CaustkRuntime runtime) {
-        this.runtime = runtime;
-        soundGenerator = runtime.getSoundGenerator();
-    }
-
-    //----------------------------------
     // rackNode
     //----------------------------------
 
-    private RackNode rackNode;
+    public final RackNode getRackNode() {
+        return rackNode;
+    }
 
     private void setRackNode(RackNode rackNode) {
         this.rackNode = rackNode;
+        RackMessage.BLANKRACK.send(this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public RackNode Facade API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // RackNode
+    //----------------------------------
+
+    public String getName() {
+        return rackNode.getName();
     }
 
     public String getPath() {
@@ -89,9 +92,9 @@ public class CaustkRack implements ISoundGenerator {
         return rackNode.getAbsoluteFile();
     }
 
-    public String getName() {
-        return rackNode.getName();
-    }
+    //----------------------------------
+    // MasterNode
+    //----------------------------------
 
     public MasterDelayNode getDelay() {
         return rackNode.getMaster().getDelay();
@@ -113,6 +116,10 @@ public class CaustkRack implements ISoundGenerator {
         return rackNode.getMaster().getVolume();
     }
 
+    //----------------------------------
+    // MachineNode
+    //----------------------------------
+
     /**
      * Returns an unmodifiable collection of {@link MachineNode}s.
      */
@@ -125,13 +132,70 @@ public class CaustkRack implements ISoundGenerator {
     }
 
     //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    CaustkRack(CaustkRuntime runtime) {
+        this.runtime = runtime;
+        this.soundGenerator = runtime.getSoundGenerator();
+    }
+
+    //--------------------------------------------------------------------------
     // Public Method API
     //--------------------------------------------------------------------------
 
     /**
+     * Creates a new {@link RackNode} and returns it.
+     * <p>
+     * This is the only {@link RackNode} creation method that does NOT assign
+     * the node the this rack(which will call {@link RackMessage#BLANKRACK}).
+     * <p>
+     * This method allows for {@link RackNode}s to be created and initialized
+     * before assigning that state to the native rack(this rack).
+     */
+    public RackNode create() {
+        RackNode rackNode = runtime.getFactory().createRack();
+        return rackNode;
+    }
+
+    /**
+     * Creates a new {@link RackNode} and returns it.
+     * 
+     * @param relativeOrAbsolutePath The relative or absolute location of the
+     *            <code>.caustic</code> file. The file is for saving, not
+     *            loading with this method. See {@link #create(File)} to restore
+     *            a {@link RackNode} from an existing <code>.caustic</code>
+     *            file.
+     */
+    public RackNode create(String relativeOrAbsolutePath) {
+        RackNode rackNode = runtime.getFactory().createRack(relativeOrAbsolutePath);
+        restore(rackNode);
+        return rackNode;
+    }
+
+    /**
+     * Creates a new {@link RackNode} that wraps an existing
+     * <code>.caustic</code> file and returns it.
+     * <p>
+     * After the {@link RackNode} is created, the native rack is cleared with
+     * {@link RackMessage#BLANKRACK} and the {@link RackNode#restore()} method
+     * is called which restores the internal state of the {@link RackNode} with
+     * the state that was loaded into the native rack by the rack node's
+     * <code>.caustic</code> file.
+     * 
+     * @param file The <code>.caustic</code> file that will be used to restore
+     *            the {@link RackNode}'s state.
+     */
+    public RackNode create(File file) {
+        RackNode rackNode = runtime.getFactory().createRack(file);
+        restore(rackNode);
+        return rackNode;
+    }
+
+    /**
      * Takes the state of the {@link RackNode} and applies it to the
-     * {@link CaustkRack} by creating machines and updating all native rack state
-     * based on the node graph.
+     * {@link CaustkRack} by creating machines and updating all native rack
+     * state based on the node graph.
      * <p>
      * The {@link CaustkRack} is reset, native rack cleared and all machines are
      * created through OSC and updated through OSC in the node graph.
@@ -139,20 +203,18 @@ public class CaustkRack implements ISoundGenerator {
      * @param rackNode The new rack node state.
      */
     public void create(RackNode rackNode) {
-        // first clear all state from the native rack
-        reset();
-
-        // will take the existing state of the node and update the native rack
-        // must create machines with CREATE here
+        // the native rack is created based on the state of the node graph
+        // machines/patterns/effects in the node graph get created through OSC
         setRackNode(rackNode);
         rackNode.create();
     }
 
-    protected void reset() {
-        RackMessage.BLANKRACK.send(this);
-        // reset all composites
-    }
-
+    /**
+     * Restores a {@link RackNode} state, machines, effects etc.
+     * 
+     * @param rackNode The {@link RackNode} to restore, this method will fail if
+     *            the machines are already native.
+     */
     public void restore(RackNode rackNode) {
         // will save the state of the native rack into the node
         // this basically takes a snap shot of the native rack
@@ -243,7 +305,6 @@ public class CaustkRack implements ISoundGenerator {
     // ICausticEngine API
     //--------------------------------------------------------------------------
 
-    // we proxy the actual OSC impl so we can stop, or reroute
     @Override
     public final float sendMessage(String message) {
         return soundGenerator.sendMessage(message);
