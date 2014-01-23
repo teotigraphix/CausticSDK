@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.node.effect.EffectType;
 
 /**
  * The {@link EffectsRackMessage} holds all OSC messages associated with the
@@ -53,8 +52,6 @@ public class EffectsRackMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see SoundMixerChannel#addEffect(EffectType, int)
      */
     public static final EffectsRackMessage CREATE = new EffectsRackMessage(
             "/caustic/effects_rack/create ${0} ${1} ${2}");
@@ -73,8 +70,6 @@ public class EffectsRackMessage extends CausticMessage {
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>N/A</code>
-     * 
-     * @see SoundMixerChannel#removeEffect(int)
      */
     public static final EffectsRackMessage REMOVE = new EffectsRackMessage(
             "/caustic/effects_rack/remove ${0} ${1}");
@@ -903,34 +898,34 @@ public class EffectsRackMessage extends CausticMessage {
         /**
          * Tube amp simulation.
          */
-        OVERDRIVE(0),
+        Overdrive(0),
 
         /**
          * Soft-knee limiter.
          */
-        SATURATE(1),
+        Saturate(1),
 
         /**
          * Hard-knee limiter.
          */
-        FOLDBACK(2),
+        Foldback(2),
 
         /**
          * folds the signal onto itself.
          */
-        FUZZ(3);
+        Fuzz(3);
 
-        private int mValue;
+        private int value;
 
         DistortionProgram(int value) {
-            mValue = value;
+            this.value = value;
         }
 
         /**
          * Returns the int value for the {@link DistortionProgram}.
          */
         public int getValue() {
-            return mValue;
+            return value;
         }
 
         /**
@@ -939,9 +934,9 @@ public class EffectsRackMessage extends CausticMessage {
          * @param value The int program value.
          */
         public static DistortionProgram fromInt(Integer value) {
-            for (DistortionProgram p : values()) {
-                if (p.getValue() == value)
-                    return p;
+            for (DistortionProgram program : values()) {
+                if (program.getValue() == value)
+                    return program;
             }
             return null;
         }
@@ -986,5 +981,22 @@ public class EffectsRackMessage extends CausticMessage {
             }
             return null;
         }
+    }
+
+    /**
+     * Controls for the {@link EffectsRackMessage}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public enum EffectsRackControl implements IOSCControl {
+
+        Create,
+
+        Get,
+
+        Remove,
+
+        Set
     }
 }

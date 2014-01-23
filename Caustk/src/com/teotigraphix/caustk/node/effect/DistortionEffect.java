@@ -34,7 +34,7 @@ public class DistortionEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private DistortionProgram program = DistortionProgram.OVERDRIVE;
+    private DistortionProgram program = DistortionProgram.Overdrive;
 
     private float preGain = 4.05f;
 

@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.node.machine.patch;
 
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
-import com.teotigraphix.caustk.core.osc.MixerChannelMessage.IMixerChannelControl;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -470,7 +469,7 @@ public class MixerChannelNode extends NodeBase {
         return true;
     }
 
-    protected void post(IMixerChannelControl control, float value) {
+    protected void post(MixerChannelControl control, float value) {
         post(new MixerChannelNodeChangeEvent(this, control, value));
     }
 
@@ -481,7 +480,7 @@ public class MixerChannelNode extends NodeBase {
      * @since 1.0
      */
     public static class MixerChannelNodeEvent extends NodeEvent {
-        public MixerChannelNodeEvent(NodeBase target, IMixerChannelControl message) {
+        public MixerChannelNodeEvent(NodeBase target, MixerChannelControl message) {
             super(target, message);
         }
     }
@@ -498,8 +497,7 @@ public class MixerChannelNode extends NodeBase {
             return value;
         }
 
-        public MixerChannelNodeChangeEvent(NodeBase target, IMixerChannelControl control,
-                float value) {
+        public MixerChannelNodeChangeEvent(NodeBase target, MixerChannelControl control, float value) {
             super(target, control);
             this.value = value;
         }

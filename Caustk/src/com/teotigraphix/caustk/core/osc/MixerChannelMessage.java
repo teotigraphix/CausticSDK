@@ -214,16 +214,13 @@ public class MixerChannelMessage extends CausticMessage {
         super(message);
     }
 
-    public static interface IMixerChannelControl extends IOSCControl {
-    }
-
     /**
      * Controls for the {@link MixerChannelMessage}.
      * 
      * @author Michael Schmalle
      * @since 1.0
      */
-    public enum MixerChannelControl implements IMixerChannelControl {
+    public enum MixerChannelControl implements IOSCControl {
 
         DelaySend,
 

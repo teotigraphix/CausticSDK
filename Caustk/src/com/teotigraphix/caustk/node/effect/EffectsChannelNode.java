@@ -23,6 +23,8 @@ import java.util.HashMap;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectsRackControl;
+import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -48,6 +50,14 @@ public class EffectsChannelNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    /**
+     * Returns the machines index this channel is connected to.
+     */
+    @Override
+    public Integer getIndex() {
+        return index;
+    }
 
     //----------------------------------
     // slots
@@ -102,6 +112,7 @@ public class EffectsChannelNode extends NodeBase {
      * @param effectType The {@link EffectType}.
      * @return The new {@link EffectNode}.
      * @throws CausticException Effect channel contains effect at slot
+     * @see EffectsChannelNodeCreateEvent
      */
     @SuppressWarnings("unchecked")
     public <T extends EffectNode> T createEffect(int slot, EffectType effectType)
@@ -109,12 +120,14 @@ public class EffectsChannelNode extends NodeBase {
         if (containsEffect(slot))
             throw new CausticException("Effect channel contains effect at slot: " + slot);
 
-        EffectNode effect = getFactory().createEffect(index, slot, effectType);
-        EffectsRackMessage.CREATE.send(getRack(), effect.getIndex(), effect.getSlot(), effect
-                .getType().getValue());
-        set(effect);
+        EffectNode effectNode = getFactory().createEffect(index, slot, effectType);
+        EffectsRackMessage.CREATE.send(getRack(), effectNode.getIndex(), effectNode.getSlot(),
+                effectNode.getType().getValue());
 
-        return (T)effect;
+        set(effectNode);
+        post(new EffectsChannelNodeCreateEvent(this, EffectsRackControl.Create, effectNode));
+
+        return (T)effectNode;
     }
 
     //--------------------------------------------------------------------------
@@ -164,5 +177,36 @@ public class EffectsChannelNode extends NodeBase {
 
     private void set(EffectNode effectNode) {
         slots.put(effectNode.getSlot(), effectNode);
+    }
+
+    /**
+     * Base event for the {@link EffectsChannelNode}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static class EffectsChannelNodeEvent extends NodeEvent {
+        public EffectsChannelNodeEvent(NodeBase target, IOSCControl control) {
+            super(target, control);
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see EffectsChannelNode#createEffect(int, EffectType)
+     */
+    public static class EffectsChannelNodeCreateEvent extends NodeEvent {
+        private EffectNode effectNode;
+
+        public EffectNode getEffectNode() {
+            return effectNode;
+        }
+
+        public EffectsChannelNodeCreateEvent(NodeBase target, IOSCControl control,
+                EffectNode effectNode) {
+            super(target, control);
+            this.effectNode = effectNode;
+        }
     }
 }
