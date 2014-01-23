@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.node.machine.FMSynthMachine;
+
 /**
  * The native OSC messages for the <strong>FMSynth</strong>.
  * 
@@ -371,7 +373,7 @@ public class FMSynthMessage extends CausticMessage {
         /**
          * 1+2+3
          */
-        OneTwoThree(4),
+        OneTwoThree(3),
 
         /**
          * (3->1)+(3->2)
