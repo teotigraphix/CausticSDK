@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.core;
 import java.io.File;
 import java.util.Collection;
 
+import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
@@ -35,7 +36,8 @@ import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 /**
  * The {@link CaustkRack} holds the current {@link RackNode} session state.
  * <p>
- * All events dispatched through a {@link NodeBase} uses the rack's eventBus.
+ * All events dispatched through a {@link NodeBase} uses the rack's
+ * {@link #getEventBus()}.
  * <p>
  * The rack is really just a Facade over the audio engine callbacks and
  * {@link RackNode} public API for ease of access.
@@ -53,11 +55,37 @@ public class CaustkRack implements ISoundGenerator {
 
     private final ISoundGenerator soundGenerator;
 
+    private final EventBus eventBus;
+
     private RackNode rackNode;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // eventBus
+    //----------------------------------
+
+    /**
+     * Returns the single event bus for the {@link CaustkRack}, this event bus
+     * will be constant throughout the whole application life cycle.
+     * <p>
+     * All {@link NodeBase} events are dispatched through this event bus.
+     * {@link NodeBase} instances are never subscribers, only dispatchers.
+     * <p>
+     * A {@link NodeBase} event is prefixed with the node class name and post
+     * fixed with 'Event'. So a {@link RackNode} event would be
+     * <code>RackNodeEvent</code>. Any custom event based off the
+     * <code>RackNodeEvent</code> will look like
+     * <code>RackNodeChangeEvent</code> or <code>RackNodeMachineAddEvent</code>.
+     * 
+     * @see EventBus#register(Object)
+     * @see EventBus#unregister(Object)
+     */
+    public EventBus getEventBus() {
+        return eventBus;
+    }
 
     //----------------------------------
     // rackNode
@@ -152,6 +180,7 @@ public class CaustkRack implements ISoundGenerator {
     CaustkRack(CaustkRuntime runtime) {
         this.runtime = runtime;
         this.soundGenerator = runtime.getSoundGenerator();
+        eventBus = new EventBus("rack");
     }
 
     //--------------------------------------------------------------------------
@@ -313,6 +342,7 @@ public class CaustkRack implements ISoundGenerator {
 
     @Override
     public void dispose() {
+        // XXX impl CaustkRack.dispose()
     }
 
     //--------------------------------------------------------------------------
@@ -328,5 +358,4 @@ public class CaustkRack implements ISoundGenerator {
     public final String queryMessage(String message) {
         return soundGenerator.queryMessage(message);
     }
-
 }
