@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.node.effect.EffectType;
+
 /**
  * The {@link EffectsRackMessage} holds all OSC messages associated with the
  * {@link IEffectsRack} API.
@@ -155,7 +157,7 @@ public class EffectsRackMessage extends CausticMessage {
      * @author Michael Schmalle
      * @since 1.0
      */
-    public static interface IEffectControl {
+    public static interface IEffectControl extends IOSCControl {
         String getControl();
     }
 

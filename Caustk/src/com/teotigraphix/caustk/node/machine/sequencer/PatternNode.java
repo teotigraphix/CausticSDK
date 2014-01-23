@@ -24,8 +24,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode.NoteFlag;
 
@@ -141,7 +141,7 @@ public class PatternNode extends NodeBase {
         this.numMeasures = numMeasures;
         // XXX impl new PatternSq
         PatternSequencerMessage.NUM_MEASURES.send(getRack(), index, numMeasures);
-        post(new PatternNodNumMeasuresEvent(this, PatternSequencerMessage.NUM_MEASURES, numMeasures));
+        post(new PatternNodNumMeasuresEvent(this, PatternSequencerControl.NumMeausures, numMeasures));
     }
 
     //----------------------------------
@@ -256,8 +256,7 @@ public class PatternNode extends NodeBase {
             return;
         this.shuffleMode = shuffleMode;
         PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), index, shuffleMode.getValue());
-        post(new PatternNodeShuffleModeEvent(this, PatternSequencerMessage.SHUFFLE_MODE,
-                shuffleMode));
+        post(new PatternNodeShuffleModeEvent(this, PatternSequencerControl.ShuffleMode, shuffleMode));
     }
 
     //----------------------------------
@@ -287,7 +286,7 @@ public class PatternNode extends NodeBase {
         if (shuffleAmount < 0f || shuffleAmount > 1f)
             throw newRangeException("shuffle_amount", "0..1", shuffleAmount);
         PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), index, shuffleAmount);
-        post(new PatternNodeShuffleAmountEvent(this, PatternSequencerMessage.SHUFFLE_AMOUNT,
+        post(new PatternNodeShuffleAmountEvent(this, PatternSequencerControl.ShuffleAmount,
                 shuffleAmount));
     }
 
@@ -370,7 +369,7 @@ public class PatternNode extends NodeBase {
                 endBeat, flags);
         note = new NoteNode(pitch, startBeat, endBeat, velocity, flags);
         addNote(note);
-        post(new PatternNodeNoteCreateEvent(this, PatternSequencerMessage.NOTE_DATA, note));
+        post(new PatternNodeNoteCreateEvent(this, PatternSequencerControl.NoteDataAdd, note));
         return note;
     }
 
@@ -485,8 +484,7 @@ public class PatternNode extends NodeBase {
         PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), index, noteNode.getStart(),
                 noteNode.getPitch());
         removeNote(noteNode);
-        post(new PatternNodeNoteDestroyEvent(this, PatternSequencerMessage.NOTE_DATA_REMOVE,
-                noteNode));
+        post(new PatternNodeNoteDestroyEvent(this, PatternSequencerControl.NoteDataRemove, noteNode));
         return noteNode;
     }
 
@@ -620,8 +618,8 @@ public class PatternNode extends NodeBase {
      * @since 1.0
      */
     public static class PatternNodeEvent extends NodeEvent {
-        public PatternNodeEvent(NodeBase target, CausticMessage message) {
-            super(target, message);
+        public PatternNodeEvent(NodeBase target, PatternSequencerControl control) {
+            super(target, control);
         }
     }
 
@@ -637,8 +635,9 @@ public class PatternNode extends NodeBase {
             return value;
         }
 
-        public PatternNodNumMeasuresEvent(NodeBase target, CausticMessage message, int value) {
-            super(target, message);
+        public PatternNodNumMeasuresEvent(NodeBase target, PatternSequencerControl control,
+                int value) {
+            super(target, control);
             this.value = value;
         }
     }
@@ -655,8 +654,9 @@ public class PatternNode extends NodeBase {
             return value;
         }
 
-        public PatternNodeShuffleAmountEvent(NodeBase target, CausticMessage message, float value) {
-            super(target, message);
+        public PatternNodeShuffleAmountEvent(NodeBase target, PatternSequencerControl control,
+                float value) {
+            super(target, control);
             this.value = value;
         }
     }
@@ -673,8 +673,9 @@ public class PatternNode extends NodeBase {
             return mode;
         }
 
-        public PatternNodeShuffleModeEvent(NodeBase target, CausticMessage message, ShuffleMode mode) {
-            super(target, message);
+        public PatternNodeShuffleModeEvent(NodeBase target, PatternSequencerControl control,
+                ShuffleMode mode) {
+            super(target, control);
             this.mode = mode;
         }
     }
@@ -691,8 +692,9 @@ public class PatternNode extends NodeBase {
             return note;
         }
 
-        public PatternNodeNoteCreateEvent(NodeBase target, CausticMessage message, NoteNode note) {
-            super(target, message);
+        public PatternNodeNoteCreateEvent(NodeBase target, PatternSequencerControl control,
+                NoteNode note) {
+            super(target, control);
             this.note = note;
         }
     }
@@ -728,10 +730,10 @@ public class PatternNode extends NodeBase {
             return note;
         }
 
-        public PatternNodeNoteDestroyEvent(NodeBase target, CausticMessage message, NoteNode note) {
-            super(target, message);
+        public PatternNodeNoteDestroyEvent(NodeBase target, PatternSequencerControl control,
+                NoteNode note) {
+            super(target, control);
             this.note = note;
         }
     }
-
 }

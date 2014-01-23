@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.node.machine.patch;
 
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
+import com.teotigraphix.caustk.core.osc.MixerChannelMessage.IMixerChannelControl;
+import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -29,14 +31,13 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * 
  * @author Michael Schmalle
  * @since 1.0
+ * @see MixerChannelNodeChangeEvent
  */
 public class MixerChannelNode extends NodeBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
-
-    private Integer machineIndex;
 
     private float bass = 0f;
 
@@ -63,15 +64,15 @@ public class MixerChannelNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // machineIndex
+    // index
     //----------------------------------
 
-    private int getMachineIndex() {
-        return machineIndex;
-    }
-
-    void setMachineIndex(int machineIndex) {
-        this.machineIndex = machineIndex;
+    /**
+     * The mixer channel's machine index.
+     */
+    @Override
+    public Integer getIndex() {
+        return index;
     }
 
     //----------------------------------
@@ -86,7 +87,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryBass() {
-        return MixerChannelMessage.EQ_BASS.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.EQ_BASS.query(getRack(), index);
     }
 
     /**
@@ -99,7 +100,8 @@ public class MixerChannelNode extends NodeBase {
         if (bass < -1f || bass > 1f)
             throw newRangeException(MixerChannelMessage.EQ_BASS, "-1.0..1.0", bass);
         this.bass = bass;
-        MixerChannelMessage.EQ_BASS.send(getRack(), getMachineIndex(), bass);
+        MixerChannelMessage.EQ_BASS.send(getRack(), index, bass);
+        post(MixerChannelControl.Bass, bass);
     }
 
     //----------------------------------
@@ -114,7 +116,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryMid() {
-        return MixerChannelMessage.EQ_MID.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.EQ_MID.query(getRack(), index);
     }
 
     /**
@@ -127,7 +129,8 @@ public class MixerChannelNode extends NodeBase {
         if (mid < -1f || mid > 1f)
             throw newRangeException(MixerChannelMessage.EQ_MID, "-1.0..1.0", mid);
         this.mid = mid;
-        MixerChannelMessage.EQ_MID.send(getRack(), getMachineIndex(), mid);
+        MixerChannelMessage.EQ_MID.send(getRack(), index, mid);
+        post(MixerChannelControl.Mid, mid);
     }
 
     //----------------------------------
@@ -142,7 +145,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryHigh() {
-        return MixerChannelMessage.EQ_HIGH.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.EQ_HIGH.query(getRack(), index);
     }
 
     /**
@@ -155,7 +158,8 @@ public class MixerChannelNode extends NodeBase {
         if (high < -1f || high > 1f)
             throw newRangeException(MixerChannelMessage.EQ_HIGH, "-1.0..1.0", high);
         this.high = high;
-        MixerChannelMessage.EQ_HIGH.send(getRack(), getMachineIndex(), high);
+        MixerChannelMessage.EQ_HIGH.send(getRack(), index, high);
+        post(MixerChannelControl.High, high);
     }
 
     //----------------------------------
@@ -170,7 +174,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryDelaySend() {
-        return MixerChannelMessage.DELAY_SEND.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.DELAY_SEND.query(getRack(), index);
     }
 
     /**
@@ -183,7 +187,8 @@ public class MixerChannelNode extends NodeBase {
         if (delaySend < 0f || delaySend > 1f)
             throw newRangeException(MixerChannelMessage.DELAY_SEND, "0.0..1.0", delaySend);
         this.delaySend = delaySend;
-        MixerChannelMessage.DELAY_SEND.send(getRack(), getMachineIndex(), delaySend);
+        MixerChannelMessage.DELAY_SEND.send(getRack(), index, delaySend);
+        post(MixerChannelControl.DelaySend, delaySend);
     }
 
     //----------------------------------
@@ -198,7 +203,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryReverbSend() {
-        return MixerChannelMessage.REVERB_SEND.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.REVERB_SEND.query(getRack(), index);
     }
 
     /**
@@ -211,7 +216,8 @@ public class MixerChannelNode extends NodeBase {
         if (reverbSend < 0f || reverbSend > 1f)
             throw newRangeException(MixerChannelMessage.REVERB_SEND, "0.0..1.0", reverbSend);
         this.reverbSend = reverbSend;
-        MixerChannelMessage.REVERB_SEND.send(getRack(), getMachineIndex(), reverbSend);
+        MixerChannelMessage.REVERB_SEND.send(getRack(), index, reverbSend);
+        post(MixerChannelControl.ReverbSend, reverbSend);
     }
 
     //----------------------------------
@@ -226,7 +232,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryPan() {
-        return MixerChannelMessage.PAN.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.PAN.query(getRack(), index);
     }
 
     /**
@@ -239,7 +245,8 @@ public class MixerChannelNode extends NodeBase {
         if (pan < -1f || pan > 1f)
             throw newRangeException(MixerChannelMessage.PAN, "-1.0..1.0", pan);
         this.pan = pan;
-        MixerChannelMessage.PAN.send(getRack(), getMachineIndex(), pan);
+        MixerChannelMessage.PAN.send(getRack(), index, pan);
+        post(MixerChannelControl.Pan, pan);
     }
 
     //----------------------------------
@@ -254,7 +261,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryStereoWidth() {
-        return MixerChannelMessage.STEREO_WIDTH.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.STEREO_WIDTH.query(getRack(), index);
     }
 
     /**
@@ -267,7 +274,8 @@ public class MixerChannelNode extends NodeBase {
         if (stereoWidth < -1f || stereoWidth > 1f)
             throw newRangeException(MixerChannelMessage.STEREO_WIDTH, "-1.0..1.0", stereoWidth);
         this.stereoWidth = stereoWidth;
-        MixerChannelMessage.STEREO_WIDTH.send(getRack(), getMachineIndex(), stereoWidth);
+        MixerChannelMessage.STEREO_WIDTH.send(getRack(), index, stereoWidth);
+        post(MixerChannelControl.StereoWidth, stereoWidth);
     }
 
     //----------------------------------
@@ -282,7 +290,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public boolean queryMute() {
-        return MixerChannelMessage.MUTE.query(getRack(), getMachineIndex()) != 0f;
+        return MixerChannelMessage.MUTE.query(getRack(), index) != 0f;
     }
 
     /**
@@ -293,7 +301,8 @@ public class MixerChannelNode extends NodeBase {
         if (mute == this.mute)
             return;
         this.mute = mute;
-        MixerChannelMessage.MUTE.send(getRack(), getMachineIndex(), mute ? 1 : 0);
+        MixerChannelMessage.MUTE.send(getRack(), index, mute ? 1 : 0);
+        post(MixerChannelControl.Mute, mute ? 1 : 0);
     }
 
     //----------------------------------
@@ -308,7 +317,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public boolean querySolo() {
-        return MixerChannelMessage.SOLO.query(getRack(), getMachineIndex()) != 0f;
+        return MixerChannelMessage.SOLO.query(getRack(), index) != 0f;
     }
 
     /**
@@ -319,7 +328,8 @@ public class MixerChannelNode extends NodeBase {
         if (solo == this.solo)
             return;
         this.solo = solo;
-        MixerChannelMessage.SOLO.send(getRack(), getMachineIndex(), solo ? 1 : 0);
+        MixerChannelMessage.SOLO.send(getRack(), index, solo ? 1 : 0);
+        post(MixerChannelControl.Solo, solo ? 1 : 0);
     }
 
     //----------------------------------
@@ -334,7 +344,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public float queryVolume() {
-        return MixerChannelMessage.VOLUME.query(getRack(), getMachineIndex());
+        return MixerChannelMessage.VOLUME.query(getRack(), index);
     }
 
     /**
@@ -347,7 +357,8 @@ public class MixerChannelNode extends NodeBase {
         if (volume < 0f || volume > 2f)
             throw newRangeException("volume", "0.0..2.0", volume);
         this.volume = volume;
-        MixerChannelMessage.VOLUME.send(getRack(), getMachineIndex(), volume);
+        MixerChannelMessage.VOLUME.send(getRack(), index, volume);
+        post(MixerChannelControl.Volume, volume);
     }
 
     //--------------------------------------------------------------------------
@@ -361,7 +372,7 @@ public class MixerChannelNode extends NodeBase {
     }
 
     public MixerChannelNode(int machineIndex) {
-        this.machineIndex = machineIndex;
+        this.index = machineIndex;
     }
 
     public MixerChannelNode(MachineNode machineNode) {
@@ -382,18 +393,18 @@ public class MixerChannelNode extends NodeBase {
 
     @Override
     protected void updateComponents() {
-        MixerChannelMessage.EQ_BASS.send(getRack(), getMachineIndex(), getBass());
-        MixerChannelMessage.EQ_MID.send(getRack(), getMachineIndex(), getMid());
-        MixerChannelMessage.EQ_HIGH.send(getRack(), getMachineIndex(), getHigh());
-        MixerChannelMessage.REVERB_SEND.send(getRack(), getMachineIndex(), getReverbSend());
-        MixerChannelMessage.DELAY_SEND.send(getRack(), getMachineIndex(), getDelaySend());
-        MixerChannelMessage.STEREO_WIDTH.send(getRack(), getMachineIndex(), getStereoWidth());
+        MixerChannelMessage.EQ_BASS.send(getRack(), index, getBass());
+        MixerChannelMessage.EQ_MID.send(getRack(), index, getMid());
+        MixerChannelMessage.EQ_HIGH.send(getRack(), index, getHigh());
+        MixerChannelMessage.REVERB_SEND.send(getRack(), index, getReverbSend());
+        MixerChannelMessage.DELAY_SEND.send(getRack(), index, getDelaySend());
+        MixerChannelMessage.STEREO_WIDTH.send(getRack(), index, getStereoWidth());
 
-        MixerChannelMessage.PAN.send(getRack(), getMachineIndex(), getPan());
-        MixerChannelMessage.VOLUME.send(getRack(), getMachineIndex(), getVolume());
+        MixerChannelMessage.PAN.send(getRack(), index, getPan());
+        MixerChannelMessage.VOLUME.send(getRack(), index, getVolume());
 
-        MixerChannelMessage.MUTE.send(getRack(), getMachineIndex(), mute ? 1 : 0);
-        MixerChannelMessage.SOLO.send(getRack(), getMachineIndex(), solo ? 1 : 0);
+        MixerChannelMessage.MUTE.send(getRack(), index, mute ? 1 : 0);
+        MixerChannelMessage.SOLO.send(getRack(), index, solo ? 1 : 0);
     }
 
     @Override
@@ -457,5 +468,40 @@ public class MixerChannelNode extends NodeBase {
         if (Float.floatToIntBits(volume) != Float.floatToIntBits(other.volume))
             return false;
         return true;
+    }
+
+    protected void post(IMixerChannelControl control, float value) {
+        post(new MixerChannelNodeChangeEvent(this, control, value));
+    }
+
+    /**
+     * Base event for the {@link MixerChannelNode}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static class MixerChannelNodeEvent extends NodeEvent {
+        public MixerChannelNodeEvent(NodeBase target, IMixerChannelControl message) {
+            super(target, message);
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see MixerChannelNode
+     */
+    public static class MixerChannelNodeChangeEvent extends NodeEvent {
+        private float value;
+
+        public float getValue() {
+            return value;
+        }
+
+        public MixerChannelNodeChangeEvent(NodeBase target, IMixerChannelControl control,
+                float value) {
+            super(target, control);
+            this.value = value;
+        }
     }
 }

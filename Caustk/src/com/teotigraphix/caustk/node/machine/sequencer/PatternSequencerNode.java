@@ -23,8 +23,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
-import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -92,8 +92,8 @@ public class PatternSequencerNode extends NodeBase {
         currentPatternIndex = patternIndex;
         PatternSequencerMessage.BANK.send(getRack(), machineIndex, currentBankIndex);
         PatternSequencerMessage.PATTERN.send(getRack(), machineIndex, currentPatternIndex);
-        post(new PatternSequencerNodeBankEvent(this, PatternSequencerMessage.BANK, currentBankIndex));
-        post(new PatternSequencerNodePatternEvent(this, PatternSequencerMessage.PATTERN,
+        post(new PatternSequencerNodeBankEvent(this, PatternSequencerControl.Bank, currentBankIndex));
+        post(new PatternSequencerNodePatternEvent(this, PatternSequencerControl.Pattern,
                 currentPatternIndex));
     }
 
@@ -246,7 +246,7 @@ public class PatternSequencerNode extends NodeBase {
         // XXX remove all automation from the pattern sequencer
         pattern.clear();
 
-        post(new PatternSequencerNodeClearEvent(this, PatternSequencerMessage.CLEAR_PATTERN));
+        post(new PatternSequencerNodeClearEvent(this, PatternSequencerControl.ClearPattern));
 
         return pattern;
     }
@@ -328,8 +328,8 @@ public class PatternSequencerNode extends NodeBase {
      * @since 1.0
      */
     public static class PatternSequencerNodeEvent extends NodeEvent {
-        public PatternSequencerNodeEvent(NodeBase target, CausticMessage message) {
-            super(target, message);
+        public PatternSequencerNodeEvent(NodeBase target, PatternSequencerControl control) {
+            super(target, control);
         }
     }
 
@@ -345,8 +345,9 @@ public class PatternSequencerNode extends NodeBase {
             return bank;
         }
 
-        public PatternSequencerNodeBankEvent(NodeBase target, CausticMessage message, int bank) {
-            super(target, message);
+        public PatternSequencerNodeBankEvent(NodeBase target, PatternSequencerControl control,
+                int bank) {
+            super(target, control);
             this.bank = bank;
         }
     }
@@ -363,8 +364,9 @@ public class PatternSequencerNode extends NodeBase {
             return pattern;
         }
 
-        public PatternSequencerNodePatternEvent(NodeBase target, CausticMessage message, int pattern) {
-            super(target, message);
+        public PatternSequencerNodePatternEvent(NodeBase target, PatternSequencerControl control,
+                int pattern) {
+            super(target, control);
             this.pattern = pattern;
         }
     }
@@ -375,8 +377,8 @@ public class PatternSequencerNode extends NodeBase {
      * @see PatternSequencerNode#clearPattern(int, int)
      */
     public static class PatternSequencerNodeClearEvent extends NodeEvent {
-        public PatternSequencerNodeClearEvent(NodeBase target, CausticMessage message) {
-            super(target, message);
+        public PatternSequencerNodeClearEvent(NodeBase target, PatternSequencerControl control) {
+            super(target, control);
         }
     }
 }

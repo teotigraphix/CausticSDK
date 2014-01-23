@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.node.machine.patch.MixerChannelNode;
+
 /**
  * The {@link MixerChannelMessage} holds all OSC messages associated with the
  * {@link MixerChannelNode} API for each machine.
@@ -210,5 +212,40 @@ public class MixerChannelMessage extends CausticMessage {
 
     public MixerChannelMessage(String message) {
         super(message);
+    }
+
+    public static interface IMixerChannelControl extends IOSCControl {
+    }
+
+    /**
+     * Controls for the {@link MixerChannelMessage}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public enum MixerChannelControl implements IMixerChannelControl {
+
+        DelaySend,
+
+        Bass,
+
+        High,
+
+        Mid,
+
+        Mute,
+
+        Pan,
+
+        ReverbSend,
+
+        Solo,
+
+        StereoWidth,
+
+        Volume;
+
+        private MixerChannelControl() {
+        }
     }
 }

@@ -270,4 +270,31 @@ public class PatternSequencerMessage extends CausticMessage {
     PatternSequencerMessage(String message) {
         super(message);
     }
+
+    /**
+     * Controls for the {@link PatternSequencerMessage}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public enum PatternSequencerControl implements IOSCControl {
+
+        Bank,
+
+        ClearBank,
+
+        ClearPattern,
+
+        NoteDataAdd,
+
+        NoteDataRemove,
+
+        NumMeausures,
+
+        Pattern,
+
+        ShuffleAmount,
+
+        ShuffleMode
+    }
 }

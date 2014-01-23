@@ -21,10 +21,10 @@ package com.teotigraphix.caustk.node.effect;
 
 import android.media.effect.Effect;
 
-import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
+import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
@@ -184,7 +184,7 @@ public class EffectNode extends NodeBase {
      */
     protected final void set(IEffectControl control, float value) {
         EffectsRackMessage.SET.send(getRack(), index, getSlot(), control.getControl(), value);
-        post(new EffectNodeChangeEvent(this, EffectsRackMessage.SET, control, value));
+        post(new EffectNodeChangeEvent(this, control, value));
     }
 
     /**
@@ -225,29 +225,21 @@ public class EffectNode extends NodeBase {
             super(target);
         }
 
-        public EffectNodeEvent(NodeBase target, CausticMessage message) {
-            super(target, message);
+        public EffectNodeEvent(NodeBase target, IOSCControl control) {
+            super(target, control);
         }
     }
 
     public static class EffectNodeChangeEvent extends EffectNodeEvent {
 
-        private IEffectControl control;
-
         private float value;
-
-        public IEffectControl getControl() {
-            return control;
-        }
 
         public float getValue() {
             return value;
         }
 
-        public EffectNodeChangeEvent(NodeBase target, CausticMessage message,
-                IEffectControl control, float value) {
-            super(target, message);
-            this.control = control;
+        public EffectNodeChangeEvent(NodeBase target, IEffectControl control, float value) {
+            super(target, control);
             this.value = value;
         }
     }

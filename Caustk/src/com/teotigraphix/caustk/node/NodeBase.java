@@ -23,6 +23,7 @@ import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
+import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
@@ -224,7 +225,7 @@ public abstract class NodeBase implements ICaustkNode {
 
         private NodeBase target;
 
-        private CausticMessage message;
+        private IOSCControl control;
 
         /**
          * Returns the {@link NodeBase} target that posted the event.
@@ -234,11 +235,11 @@ public abstract class NodeBase implements ICaustkNode {
         }
 
         /**
-         * The {@link CausticMessage} OSC message that was sent to the native
-         * audio core.
+         * The {@link IOSCControl} OSC control that was sent to the native audio
+         * core.
          */
-        public CausticMessage getMessage() {
-            return message;
+        public IOSCControl getControl() {
+            return control;
         }
 
         /**
@@ -250,9 +251,9 @@ public abstract class NodeBase implements ICaustkNode {
             this.target = target;
         }
 
-        public NodeEvent(NodeBase target, CausticMessage message) {
+        public NodeEvent(NodeBase target, IOSCControl control) {
             this.target = target;
-            this.message = message;
+            this.control = control;
         }
     }
 }
