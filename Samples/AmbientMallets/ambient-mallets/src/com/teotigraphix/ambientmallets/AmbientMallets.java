@@ -19,6 +19,7 @@
 
 package com.teotigraphix.ambientmallets;
 
+import com.teotigraphix.ambientmallets.model.ApplicationModel;
 import com.teotigraphix.ambientmallets.model.ProjectModel;
 import com.teotigraphix.ambientmallets.model.SoundModel;
 import com.teotigraphix.ambientmallets.screen.MainScreen;
@@ -41,6 +42,7 @@ public class AmbientMallets extends GdxApplication {
     @Override
     protected void onRegisterModels() {
         System.out.println("AmbientMallets: " + "onRegisterModels()");
+        getModelRegistry().put(ApplicationModel.class, new ApplicationModel());
         getModelRegistry().put(SoundModel.class, new SoundModel());
         getModelRegistry().put(ProjectModel.class, new ProjectModel());
     }

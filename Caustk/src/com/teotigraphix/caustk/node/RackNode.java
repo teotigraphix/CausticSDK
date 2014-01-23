@@ -281,6 +281,7 @@ public class RackNode extends NodeBase {
      */
     @Override
     protected void createComponents() {
+        master.create();
         // the MachineNodes must already exist in the state
         for (MachineNode machineNode : machines.values()) {
             machineNode.create();

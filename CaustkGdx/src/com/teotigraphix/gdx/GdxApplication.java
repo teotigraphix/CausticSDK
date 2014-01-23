@@ -26,6 +26,7 @@ import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.rack.CaustkRuntime;
+import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.gdx.app.IGdxModel;
 import com.teotigraphix.gdx.app.ModelRegistry;
 import com.teotigraphix.gdx.app.ScreenManager;
@@ -65,6 +66,11 @@ public abstract class GdxApplication implements IGdxApplication {
     //--------------------------------------------------------------------------
 
     @Override
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    @Override
     public float getWidth() {
         return WIDTH;
     }
@@ -75,8 +81,8 @@ public abstract class GdxApplication implements IGdxApplication {
     }
 
     @Override
-    public String getApplicationName() {
-        return applicationName;
+    public Rack getRack() {
+        return runtime.getRack();
     }
 
     @Override

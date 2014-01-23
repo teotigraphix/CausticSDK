@@ -158,6 +158,18 @@ public class CaustkFactory {
     }
 
     //----------------------------------
+    // RackNode
+    //----------------------------------
+
+    /**
+     * Creates and returns a new initialized {@link RackNode}.
+     */
+    public RackNode createRack() {
+        RackNode rackNode = new RackNode();
+        return rackNode;
+    }
+
+    //----------------------------------
     // EffectNode
     //----------------------------------
 
@@ -390,4 +402,5 @@ public class CaustkFactory {
             return result;
         }
     }
+
 }

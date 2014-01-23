@@ -52,6 +52,10 @@ public abstract class GdxModel implements IGdxModel {
         return application;
     }
 
+    protected final <T extends IGdxModel> T get(Class<T> clazz) {
+        return application.get(clazz);
+    }
+
     void setApplication(IGdxApplication application) {
         this.application = application;
     }
