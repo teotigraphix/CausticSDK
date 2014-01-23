@@ -244,7 +244,7 @@ public class NoteNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     /**
-     * Updates thew note using new note values.
+     * Updates the note using new note values.
      * 
      * @param pitch The MIDI pitch.
      * @param start The start beat.
@@ -253,7 +253,7 @@ public class NoteNode extends NodeBase {
      * @param flags The bitmasked flags.
      * @see NoteFlag
      */
-    public void set(int pitch, float start, float end, float velocity, int flags) {
+    void set(int pitch, float start, float end, float velocity, int flags) {
         this.pitch = pitch;
         this.start = start;
         this.end = end;

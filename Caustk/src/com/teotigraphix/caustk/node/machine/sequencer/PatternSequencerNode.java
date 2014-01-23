@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
+import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -83,12 +84,17 @@ public class PatternSequencerNode extends NodeBase {
      * 
      * @param bankIndex The bank index (0..3).
      * @param patternIndex The pattern index (0..15).
+     * @see PatternSequencerNodeBankEvent
+     * @see PatternSequencerNodePatternEvent
      */
     public void setBankPatternIndex(int bankIndex, int patternIndex) {
         currentBankIndex = bankIndex;
         currentPatternIndex = patternIndex;
         PatternSequencerMessage.BANK.send(getRack(), machineIndex, currentBankIndex);
         PatternSequencerMessage.PATTERN.send(getRack(), machineIndex, currentPatternIndex);
+        post(new PatternSequencerNodeBankEvent(this, PatternSequencerMessage.BANK, currentBankIndex));
+        post(new PatternSequencerNodePatternEvent(this, PatternSequencerMessage.PATTERN,
+                currentPatternIndex));
     }
 
     /**
@@ -225,6 +231,7 @@ public class PatternSequencerNode extends NodeBase {
      * 
      * @param bankIndex The bank index (0..3).
      * @param patternIndex The pattern index (0..15).
+     * @see PatternSequencerNodeClearEvent
      */
     public final PatternNode clearPattern(int bankIndex, int patternIndex) {
         final int index = PatternUtils.getIndex(bankIndex, patternIndex);
@@ -238,6 +245,8 @@ public class PatternSequencerNode extends NodeBase {
         // XXX remove all not data from the pattern sequencer
         // XXX remove all automation from the pattern sequencer
         pattern.clear();
+
+        post(new PatternSequencerNodeClearEvent(this, PatternSequencerMessage.CLEAR_PATTERN));
 
         return pattern;
     }
@@ -310,5 +319,64 @@ public class PatternSequencerNode extends NodeBase {
         ThirtySecond,
 
         SixtyForth;
+    }
+
+    /**
+     * Base event for the {@link PatternSequencerNode}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static class PatternSequencerNodeEvent extends NodeEvent {
+        public PatternSequencerNodeEvent(NodeBase target, CausticMessage message) {
+            super(target, message);
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see PatternSequencerNode#setBankPatternIndex(int, int)
+     */
+    public static class PatternSequencerNodeBankEvent extends NodeEvent {
+        private int bank;
+
+        public int getBank() {
+            return bank;
+        }
+
+        public PatternSequencerNodeBankEvent(NodeBase target, CausticMessage message, int bank) {
+            super(target, message);
+            this.bank = bank;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see PatternSequencerNode#setBankPatternIndex(int, int)
+     */
+    public static class PatternSequencerNodePatternEvent extends NodeEvent {
+        private int pattern;
+
+        public int getPattern() {
+            return pattern;
+        }
+
+        public PatternSequencerNodePatternEvent(NodeBase target, CausticMessage message, int pattern) {
+            super(target, message);
+            this.pattern = pattern;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see PatternSequencerNode#clearPattern(int, int)
+     */
+    public static class PatternSequencerNodeClearEvent extends NodeEvent {
+        public PatternSequencerNodeClearEvent(NodeBase target, CausticMessage message) {
+            super(target, message);
+        }
     }
 }

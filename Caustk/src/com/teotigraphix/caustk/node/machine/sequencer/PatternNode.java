@@ -375,6 +375,28 @@ public class PatternNode extends NodeBase {
     }
 
     /**
+     * Updates the note using new note values.
+     * 
+     * @param noteNode The {@link NoteNode} to update.
+     * @param pitch The MIDI pitch.
+     * @param startBeat The start beat.
+     * @param endBeat The end beat.
+     * @param velocity The velocity (0..1).
+     * @param flags The bitmasked flags.
+     * @see NoteFlag
+     * @see PatternNodeNoteUpdateEvent
+     */
+    public void updateNode(NoteNode noteNode, int pitch, float startBeat, float endBeat,
+            float velocity, int flags) {
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), index, noteNode.getStart(),
+                noteNode.getPitch());
+        noteNode.set(pitch, startBeat, endBeat, velocity, flags);
+        PatternSequencerMessage.NOTE_DATA.send(getRack(), index, startBeat, pitch, velocity,
+                endBeat, flags);
+        post(new PatternNodeNoteUpdateEvent(this, noteNode));
+    }
+
+    /**
      * Destroys a {@link NoteNode} based on the start beat and pitch.
      * 
      * @param startBeat The start beat.
@@ -678,6 +700,25 @@ public class PatternNode extends NodeBase {
     /**
      * @author Michael Schmalle
      * @since 1.0
+     * @see PatternSequencerNode#updateNode(NoteNode, int, float, float, float,
+     *      int)
+     */
+    public static class PatternNodeNoteUpdateEvent extends NodeEvent {
+        private NoteNode noteNode;
+
+        public NoteNode getNoteNode() {
+            return noteNode;
+        }
+
+        public PatternNodeNoteUpdateEvent(NodeBase target, NoteNode noteNode) {
+            super(target);
+            this.noteNode = noteNode;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
      * @see PatternNode#destroyNote(float, int)
      */
     public static class PatternNodeNoteDestroyEvent extends PatternNodeEvent {
@@ -692,4 +733,5 @@ public class PatternNode extends NodeBase {
             this.note = note;
         }
     }
+
 }
