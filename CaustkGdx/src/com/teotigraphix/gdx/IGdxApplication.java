@@ -21,7 +21,7 @@ package com.teotigraphix.gdx;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.caustk.rack.Rack;
+import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.gdx.app.IGdxModel;
 
 /**
@@ -49,7 +49,10 @@ public interface IGdxApplication extends ApplicationListener {
      */
     float getHeight();
 
-    Rack getRack();
+    /**
+     * Returns the application rack.
+     */
+    CaustkRack getRack();
 
     /**
      * Returns the application level event bus.

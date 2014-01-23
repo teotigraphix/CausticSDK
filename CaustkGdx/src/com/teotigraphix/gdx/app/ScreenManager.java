@@ -21,7 +21,6 @@ package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
-import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.gdx.IGdxApplication;
 import com.teotigraphix.gdx.IGdxScreen;
 

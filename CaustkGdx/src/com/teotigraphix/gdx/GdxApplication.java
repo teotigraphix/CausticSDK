@@ -24,9 +24,9 @@ import java.io.IOException;
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkRack;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.caustk.rack.CaustkRuntime;
-import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.gdx.app.IGdxModel;
 import com.teotigraphix.gdx.app.ModelRegistry;
 import com.teotigraphix.gdx.app.ScreenManager;
@@ -81,7 +81,7 @@ public abstract class GdxApplication implements IGdxApplication {
     }
 
     @Override
-    public Rack getRack() {
+    public CaustkRack getRack() {
         return runtime.getRack();
     }
 

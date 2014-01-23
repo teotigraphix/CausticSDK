@@ -24,11 +24,10 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.node.CaustkFactory;
 import com.teotigraphix.caustk.node.Library;
-import com.teotigraphix.caustk.rack.CaustkRuntime;
-import com.teotigraphix.caustk.rack.Rack;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.gdx.IGdxApplication;
 
@@ -59,7 +58,7 @@ public class StartupExecutor {
      * @param soundGenerator The platform specific {@link ISoundGenerator}.
      */
     public StartupExecutor(ISoundGenerator soundGenerator) {
-        runtime = new CaustkRuntime(soundGenerator);
+        runtime = CaustkRuntime.createInstance(soundGenerator);
     }
 
     //--------------------------------------------------------------------------
