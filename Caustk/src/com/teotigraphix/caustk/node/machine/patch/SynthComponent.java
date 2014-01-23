@@ -20,11 +20,11 @@
 package com.teotigraphix.caustk.node.machine.patch;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
-import com.teotigraphix.caustk.rack.RackUtils;
 
 /**
  * The synth component, note on/off and polyphony.
@@ -65,7 +65,7 @@ public class SynthComponent extends MachineComponent {
      * @see SynthMessage#POLYPHONY
      */
     public void setPolyphony(int polyphony) {
-        MachineType machineType = RackUtils.toMachineType(getRack(), getMachineIndex());
+        MachineType machineType = OSCUtils.toMachineType(getRack(), getMachineIndex());
         if (machineType == MachineType.Bassline || machineType == MachineType.Modular
                 || machineType == MachineType.EightBitSynth) {
             polyphony = 1;

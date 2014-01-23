@@ -17,9 +17,8 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core.internal;
+package com.teotigraphix.caustk.core;
 
-import com.teotigraphix.caustk.core.ICaustkLogger;
 
 /**
  * Default implementation of the {@link ICausticLogger}.

@@ -17,18 +17,28 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core.internal;
+package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.ICausticEngine;
+import com.teotigraphix.caustk.core.CaustkRack;
+import com.teotigraphix.caustk.core.MachineType;
 
-public class Constants {
+/**
+ * Various OSC message utilities.
+ * 
+ * @author Michael Schmalle
+ * @since 1.0
+ */
+public final class OSCUtils {
 
-    /**
-     * This has to be set at Application startup before ANYTHING happens
-     * Android; Environment.getExternalStorageDirectory();
-     * <p>
-     * Set in the SoundGenerator {@link ICausticEngine} implementation for the
-     * platform.
-     */
-    public static String STORAGE_ROOT = "C:\\Users\\Media\\Documents";
+    public static String toMachineName(CaustkRack rack, int machineIndex) {
+        String name = RackMessage.QUERY_MACHINE_NAME.queryString(rack, machineIndex);
+        if (name != null && name.equals(""))
+            name = null;
+        return name;
+    }
+
+    public static MachineType toMachineType(CaustkRack rack, int machineIndex) {
+        String type = RackMessage.QUERY_MACHINE_TYPE.queryString(rack, machineIndex);
+        return MachineType.fromString(type);
+    }
 }

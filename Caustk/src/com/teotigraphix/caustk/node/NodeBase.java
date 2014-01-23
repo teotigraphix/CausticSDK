@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.node;
 
+import com.teotigraphix.caustk.core.CaustkRack;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
-import com.teotigraphix.caustk.rack.Rack;
-import com.teotigraphix.caustk.rack.RackProvider;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
@@ -86,24 +86,24 @@ public abstract class NodeBase implements ICaustkNode {
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the {@link RackProvider}'s {@link Rack} instance.
+     * Returns the session {@link CaustkRack}.
      */
-    protected final Rack getRack() {
-        return RackProvider.getRack();
+    protected final CaustkRack getRack() {
+        return CaustkRuntime.getInstance().getRack();
     }
 
     /**
      * Returns the session {@link CaustkFactory}.
      */
     protected final CaustkFactory getFactory() {
-        return RackProvider.getRack().getRuntime().getFactory();
+        return CaustkRuntime.getInstance().getFactory();
     }
 
     /**
      * Returns the session {@link ICaustkLogger}.
      */
     protected final ICaustkLogger getLogger() {
-        return RackProvider.getRack().getLogger();
+        return CaustkRuntime.getInstance().getLogger();
     }
 
     //--------------------------------------------------------------------------

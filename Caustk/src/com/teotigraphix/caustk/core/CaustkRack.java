@@ -17,15 +17,13 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack;
+package com.teotigraphix.caustk.core;
 
 import java.io.File;
 import java.util.Collection;
 
-import com.teotigraphix.caustk.core.ICaustkLogger;
-import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.caustk.core.internal.CaustkLogger;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
@@ -35,39 +33,42 @@ import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 
 /**
+ * The {@link CaustkRack} holds the current {@link RackNode} session state.
+ * <p>
+ * All events disaptched through a {@link NodeBase} uses the rack's eventBus.
+ * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class Rack implements ISoundGenerator {
+public class CaustkRack implements ISoundGenerator {
 
-    private transient CaustkLogger caustkLogger;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
 
-    private transient ISoundGenerator soundGenerator;
+    private ISoundGenerator soundGenerator;
 
-    private transient CaustkRuntime runtime;
+    private CaustkRuntime runtime;
 
-    public final CaustkRuntime getRuntime() {
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // runtime
+    //----------------------------------
+
+    // XXX not sure if I want this to be exposed
+    /**
+     * Returns the {@link CaustkRuntime} in which this rack exists.
+     */
+    public final CaustkRuntime _getRuntime() {
         return runtime;
     }
 
-    final ISoundGenerator getSoundGenerator() {
-        return soundGenerator;
-    }
-
-    /**
-     * Set the soundGenerator after a {@link Rack} is deserialized from the
-     * client.
-     * 
-     * @param soundGenerator The current {@link ISoundGenerator}.
-     */
-    void setSoundGenerator(ISoundGenerator soundGenerator) {
-        this.soundGenerator = soundGenerator;
-    }
-
-    Rack(CaustkRuntime runtime) {
+    CaustkRack(CaustkRuntime runtime) {
         this.runtime = runtime;
-        setSoundGenerator(runtime.getSoundGenerator());
-        caustkLogger = new CaustkLogger();
+        soundGenerator = runtime.getSoundGenerator();
     }
 
     //----------------------------------
@@ -79,14 +80,6 @@ public class Rack implements ISoundGenerator {
     private void setRackNode(RackNode rackNode) {
         this.rackNode = rackNode;
     }
-
-    public ICaustkLogger getLogger() {
-        return caustkLogger;
-    }
-
-    //--------------------------------------------------------------------------
-    // Public Property API
-    //--------------------------------------------------------------------------
 
     public String getPath() {
         return rackNode.getPath();
@@ -137,10 +130,10 @@ public class Rack implements ISoundGenerator {
 
     /**
      * Takes the state of the {@link RackNode} and applies it to the
-     * {@link Rack} by creating machines and updating all native rack state
+     * {@link CaustkRack} by creating machines and updating all native rack state
      * based on the node graph.
      * <p>
-     * The {@link Rack} is reset, native rack cleared and all machines are
+     * The {@link CaustkRack} is reset, native rack cleared and all machines are
      * created through OSC and updated through OSC in the node graph.
      * 
      * @param rackNode The new rack node state.

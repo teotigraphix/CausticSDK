@@ -30,6 +30,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
 import com.teotigraphix.caustk.node.effect.BitcrusherEffect;
@@ -63,7 +64,6 @@ import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
-import com.teotigraphix.caustk.rack.CaustkRuntime;
 
 /**
  * A factory that creates {@link ICaustkNode}s for the {@link CaustkRuntime}.

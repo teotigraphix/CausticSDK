@@ -20,9 +20,9 @@
 package com.teotigraphix.caustk.node.machine.patch;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.rack.RackUtils;
 
 /**
  * The volume out component for machines.
@@ -66,7 +66,7 @@ public class VolumeComponent extends MachineComponent {
         if (out == this.out)
             return;
 
-        MachineType machineType = RackUtils.toMachineType(getRack(), getMachineIndex());
+        MachineType machineType = OSCUtils.toMachineType(getRack(), getMachineIndex());
         if (machineType == MachineType.BeatBox || machineType == MachineType.PCMSynth) {
             if (out < 0f || out > 4f)
                 throw newRangeException("beatbox out", "0..4", out);

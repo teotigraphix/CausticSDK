@@ -28,10 +28,10 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.rack.RackUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -173,7 +173,7 @@ public class PresetNode extends NodeBase {
         if (path != null)
             return MachineType.fromExtension(FilenameUtils.getExtension(path));
         if (index != null)
-            return RackUtils.toMachineType(getRack(), index);
+            return OSCUtils.toMachineType(getRack(), index);
         return null;
     }
 
@@ -268,7 +268,7 @@ public class PresetNode extends NodeBase {
      * @throws IllegalStateException Cannot export preset
      */
     public File exportPreset(File destDirectory, String fileName) throws IOException {
-        MachineType machineType = RackUtils.toMachineType(getRack(), index);
+        MachineType machineType = OSCUtils.toMachineType(getRack(), index);
         if (machineType == null)
             throw new IllegalStateException("Cannot export preset");
 
@@ -312,7 +312,7 @@ public class PresetNode extends NodeBase {
             // save the byte[]s to the temp preset file
             FileUtils.writeByteArrayToFile(presetFile, restoredData);
         } catch (IOException e) {
-            getRack().getLogger().err("PresetDefinition", "Could not save preset data");
+            getLogger().err("PresetDefinition", "Could not save preset data");
             throw new CausticException("Preset data was not updated "
                     + "correctly, File not created.");
         }
@@ -322,7 +322,7 @@ public class PresetNode extends NodeBase {
         // delete the temp preset file
         FileUtils.deleteQuietly(presetFile);
         if (presetFile.exists()) {
-            getRack().getLogger().log("PresetDefinition", "Temp preset file was not deleted");
+            getLogger().log("PresetDefinition", "Temp preset file was not deleted");
         }
     }
 
@@ -346,7 +346,7 @@ public class PresetNode extends NodeBase {
 
     @Override
     protected void restoreComponents() {
-        MachineType type = RackUtils.toMachineType(getRack(), index);
+        MachineType type = OSCUtils.toMachineType(getRack(), index);
         if (type == MachineType.Vocoder)
             return; // Vocoder does not save presets
 
@@ -377,7 +377,7 @@ public class PresetNode extends NodeBase {
     }
 
     private void fillRestoredData() {
-        MachineType type = RackUtils.toMachineType(getRack(), index);
+        MachineType type = OSCUtils.toMachineType(getRack(), index);
         if (type == null)
             throw new IllegalStateException(
                     "Can only restore bytes during existing native rack session");

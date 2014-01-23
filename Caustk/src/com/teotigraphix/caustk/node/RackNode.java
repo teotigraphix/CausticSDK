@@ -29,10 +29,10 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.master.MasterNode;
-import com.teotigraphix.caustk.rack.RackUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -248,8 +248,7 @@ public class RackNode extends NodeBase {
      * @see MachineNode#isNative()
      */
     MachineNode addMachine(int index, MachineType type, String name) {
-        MachineNode machineNode = getRack().getRuntime().getFactory()
-                .createMachine(index, type, name);
+        MachineNode machineNode = getFactory().createMachine(index, type, name);
         addMachine(machineNode);
         return machineNode;
     }
@@ -318,10 +317,10 @@ public class RackNode extends NodeBase {
         master.restore();
         // machines already created, must use addMachine() through the query
         for (int i = 0; i < 14; i++) {
-            String name = RackUtils.toMachineName(getRack(), i);
+            String name = OSCUtils.toMachineName(getRack(), i);
             if (name == null || name.equals(""))
                 continue;
-            MachineType type = RackUtils.toMachineType(getRack(), i);
+            MachineType type = OSCUtils.toMachineType(getRack(), i);
             addMachine(i, type, name);
         }
         // push native values into MachineNodes

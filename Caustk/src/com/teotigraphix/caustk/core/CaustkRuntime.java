@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.rack;
+package com.teotigraphix.caustk.core;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,26 +25,28 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.node.CaustkFactory;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.node.Library;
 
 /**
  * The {@link CaustkRuntime} encapsulates the {@link ISoundGenerator} and
- * {@link Rack} creation and initialization.
+ * {@link CaustkRack} creation and initialization.
  * <p>
- * Holds the single {@link Rack} instance for an application session.
+ * Holds the single {@link CaustkRack} instance for an application session.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
 public class CaustkRuntime {
 
+    private static CaustkRuntime instance;
+
     private ISoundGenerator soundGenerator;
 
-    private Rack rack;
+    private CaustkLogger logger;
+
+    private CaustkRack caustkRack;
 
     private CaustkFactory factory;
 
@@ -59,10 +61,17 @@ public class CaustkRuntime {
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the session {@link Rack} instance.
+     * Returns the session {@link CaustkLogger} instance.
      */
-    public final Rack getRack() {
-        return rack;
+    public final CaustkLogger getLogger() {
+        return logger;
+    }
+
+    /**
+     * Returns the session {@link CaustkRack} instance.
+     */
+    public final CaustkRack getRack() {
+        return caustkRack;
     }
 
     /**
@@ -89,11 +98,11 @@ public class CaustkRuntime {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new runtime with {@link Rack}.
+     * Creates a new runtime with {@link CaustkRack}.
      * 
      * @param soundGenerator The platform sound engine.
      */
-    public CaustkRuntime(ISoundGenerator soundGenerator) {
+    private CaustkRuntime(ISoundGenerator soundGenerator) {
         this.soundGenerator = soundGenerator;
         initialize();
     }
@@ -126,8 +135,41 @@ public class CaustkRuntime {
     //--------------------------------------------------------------------------
 
     private void initialize() {
+        logger = new CaustkLogger();
         factory = new CaustkFactory(this);
-        rack = RackProvider.createRack(this);
-        RackProvider.setRack(rack);
+        caustkRack = new CaustkRack(this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public Static :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Creates the single instance of the runtime, the method must only be
+     * called at application startup.
+     * 
+     * @param soundGenerator The platform sound generator.
+     * @return The single instance of the CaustkRuntime
+     */
+    public static CaustkRuntime createInstance(ISoundGenerator soundGenerator) {
+        if (instance != null)
+            return instance;
+        //        if (instance != null)
+        //            throw new IllegalStateException(
+        //                    "CaustkRuntime.createInstance() must be called only once");
+        instance = new CaustkRuntime(soundGenerator);
+        return instance;
+    }
+
+    /**
+     * Returns the single instance of the {@link CaustkRuntime}.
+     * <p>
+     * {@link #createInstance(ISoundGenerator)} must be called before access to
+     * this method.
+     */
+    public static CaustkRuntime getInstance() {
+        if (instance == null)
+            throw new IllegalStateException("CaustkRuntime.createInstance() must be called");
+        return instance;
     }
 }

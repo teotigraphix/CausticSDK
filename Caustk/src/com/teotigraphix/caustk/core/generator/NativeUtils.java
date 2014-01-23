@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core.internal;
+package com.teotigraphix.caustk.core.generator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
