@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import android.media.effect.Effect;
 
+import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
@@ -32,14 +33,13 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
  * 
  * @author Michael Schmalle
  * @since 1.0
+ * @see EffectNodeChangeEvent
  */
 public class EffectNode extends NodeBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
-
-    private Integer machineIndex;
 
     private Integer slot;
 
@@ -52,14 +52,15 @@ public class EffectNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // machineIndex
+    // index
     //----------------------------------
 
     /**
-     * Returns the owner machine's/effect channel rack index.
+     * Returns the owner machine's rack index.
      */
-    public Integer getMachineIndex() {
-        return machineIndex;
+    @Override
+    public Integer getIndex() {
+        return index;
     }
 
     //----------------------------------
@@ -130,7 +131,7 @@ public class EffectNode extends NodeBase {
 
     public EffectNode(int slot, int machineIndex) {
         this.slot = slot;
-        this.machineIndex = machineIndex;
+        this.index = machineIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -168,8 +169,7 @@ public class EffectNode extends NodeBase {
      * @param control The control to query.
      */
     protected final float get(IEffectControl control) {
-        return EffectsRackMessage.GET.query(getRack(), getMachineIndex(), getSlot(),
-                control.getControl());
+        return EffectsRackMessage.GET.query(getRack(), index, getSlot(), control.getControl());
     }
 
     /**
@@ -183,8 +183,8 @@ public class EffectNode extends NodeBase {
      * @param value The new float value for the control.
      */
     protected final void set(IEffectControl control, float value) {
-        EffectsRackMessage.SET.send(getRack(), getMachineIndex(), getSlot(), control.getControl(),
-                value);
+        EffectsRackMessage.SET.send(getRack(), index, getSlot(), control.getControl(), value);
+        post(new EffectNodeChangeEvent(this, EffectsRackMessage.SET, control, value));
     }
 
     /**
@@ -198,8 +198,7 @@ public class EffectNode extends NodeBase {
      * @param value The new int value for the control.
      */
     protected final void set(IEffectControl control, int value) {
-        EffectsRackMessage.SET.send(getRack(), getMachineIndex(), getSlot(), control.getControl(),
-                value);
+        set(control, (float)value);
     }
 
     /**
@@ -213,5 +212,43 @@ public class EffectNode extends NodeBase {
     protected final RuntimeException newRangeException(IEffectControl control, String range,
             Object value) {
         return ExceptionUtils.newRangeException(control.getControl(), range, value);
+    }
+
+    /**
+     * Events dispatched from the {@link EffectNode}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static abstract class EffectNodeEvent extends NodeEvent {
+        public EffectNodeEvent(NodeBase target) {
+            super(target);
+        }
+
+        public EffectNodeEvent(NodeBase target, CausticMessage message) {
+            super(target, message);
+        }
+    }
+
+    public static class EffectNodeChangeEvent extends EffectNodeEvent {
+
+        private IEffectControl control;
+
+        private float value;
+
+        public IEffectControl getControl() {
+            return control;
+        }
+
+        public float getValue() {
+            return value;
+        }
+
+        public EffectNodeChangeEvent(NodeBase target, CausticMessage message,
+                IEffectControl control, float value) {
+            super(target, message);
+            this.control = control;
+            this.value = value;
+        }
     }
 }

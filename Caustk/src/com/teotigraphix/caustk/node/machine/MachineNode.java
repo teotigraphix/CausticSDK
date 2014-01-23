@@ -269,8 +269,8 @@ public abstract class MachineNode extends NodeBase {
     @Override
     protected void destroyComponents() {
         if (!isNative)
-            throw new IllegalStateException("Machine is not native");
-        RackMessage.REMOVE.send(getRack(), index);
+            //            throw new IllegalStateException("Machine is not native");
+            RackMessage.REMOVE.send(getRack(), index);
         isNative = false;
         volume.destroy();
         preset.destroy();

@@ -110,8 +110,8 @@ public class EffectsChannelNode extends NodeBase {
             throw new CausticException("Effect channel contains effect at slot: " + slot);
 
         EffectNode effect = getFactory().createEffect(index, slot, effectType);
-        EffectsRackMessage.CREATE.send(getRack(), effect.getMachineIndex(), effect.getSlot(),
-                effect.getType().getValue());
+        EffectsRackMessage.CREATE.send(getRack(), effect.getIndex(), effect.getSlot(), effect
+                .getType().getValue());
         set(effect);
 
         return (T)effect;
@@ -134,7 +134,7 @@ public class EffectsChannelNode extends NodeBase {
         for (int i = 0; i < NUM_SLOTS; i++) {
             if (containsEffect(i)) {
                 EffectNode effectNode = getEfffect(i);
-                EffectsRackMessage.CREATE.send(getRack(), effectNode.getMachineIndex(),
+                EffectsRackMessage.CREATE.send(getRack(), effectNode.getIndex(),
                         effectNode.getSlot(), effectNode.getType().getValue());
                 effectNode.update();
             }

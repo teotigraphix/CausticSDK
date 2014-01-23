@@ -50,9 +50,11 @@ public abstract class NodeBase implements ICaustkNode {
     //----------------------------------
 
     /**
-     * R
+     * Returns the index within the context of the node.
+     * <p>
+     * Some index values will point to machine index.
      */
-    public final Integer getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
@@ -177,6 +179,16 @@ public abstract class NodeBase implements ICaustkNode {
     protected abstract void restoreComponents();
 
     /**
+     * Posts a {@link NodeEvent} event to all subscribers of the
+     * {@link CaustkRack#getEventBus()}.
+     * 
+     * @param event The {@link NodeEvent}.
+     */
+    protected void post(NodeEvent event) {
+        getRack().getEventBus().post(event);
+    }
+
+    /**
      * Returns a new {@link IllegalArgumentException} for an error in OSC range.
      * 
      * @param control The OSC control involved.
@@ -198,5 +210,49 @@ public abstract class NodeBase implements ICaustkNode {
      */
     protected RuntimeException newRangeException(CausticMessage message, String range, float value) {
         return ExceptionUtils.newRangeException(message.toString(), range, value);
+    }
+
+    /**
+     * Base class for all {@link NodeBase} events posted through the
+     * {@link CaustkRack#getEventBus()}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see CaustkRack#getEventBus()
+     */
+    public static abstract class NodeEvent {
+
+        private NodeBase target;
+
+        private CausticMessage message;
+
+        /**
+         * Returns the {@link NodeBase} target that posted the event.
+         */
+        public final NodeBase getTarget() {
+            return target;
+        }
+
+        /**
+         * The {@link CausticMessage} OSC message that was sent to the native
+         * audio core.
+         */
+        public CausticMessage getMessage() {
+            return message;
+        }
+
+        /**
+         * Creates a {@link NodeEvent}.
+         * 
+         * @param target The {@link NodeBase} target that posted the event.
+         */
+        public NodeEvent(NodeBase target) {
+            this.target = target;
+        }
+
+        public NodeEvent(NodeBase target, CausticMessage message) {
+            this.target = target;
+            this.message = message;
+        }
     }
 }
