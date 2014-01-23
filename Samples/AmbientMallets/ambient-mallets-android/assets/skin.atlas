@@ -5,7 +5,7 @@ filter: Linear,Linear
 repeat: none
 button_checked
   rotate: false
-  xy: 2, 2
+  xy: 2, 14
   size: 15, 15
   split: 2, 2, 2, 3
   orig: 15, 15
@@ -13,7 +13,7 @@ button_checked
   index: -1
 button_down
   rotate: false
-  xy: 19, 2
+  xy: 19, 14
   size: 15, 15
   split: 2, 2, 2, 3
   orig: 15, 15
@@ -21,7 +21,7 @@ button_down
   index: -1
 button_up
   rotate: false
-  xy: 36, 2
+  xy: 36, 14
   size: 15, 15
   split: 2, 2, 2, 3
   orig: 15, 15
@@ -29,9 +29,23 @@ button_up
   index: -1
 dialog_background
   rotate: false
-  xy: 53, 2
+  xy: 53, 14
   size: 15, 15
   split: 2, 2, 2, 3
   orig: 15, 15
+  offset: 0, 0
+  index: -1
+led_off
+  rotate: false
+  xy: 2, 2
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+led_on
+  rotate: false
+  xy: 70, 19
+  size: 10, 10
+  orig: 10, 10
   offset: 0, 0
   index: -1
