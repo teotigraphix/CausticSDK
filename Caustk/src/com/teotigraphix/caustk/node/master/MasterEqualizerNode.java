@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.master;
 
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 
 /**
  * The master equalizer insert node.
@@ -74,6 +75,7 @@ public class MasterEqualizerNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.EQ_BASS, "0..2", bass);
         this.bass = bass;
         MasterMixerMessage.EQ_BASS.send(getRack(), bass);
+        post(MasterMixerControl.EqBass, bass);
     }
 
     //----------------------------------
@@ -102,6 +104,7 @@ public class MasterEqualizerNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.EQ_BASSMID_FREQ, "0..1", bassMidFreq);
         this.bassMidFreq = bassMidFreq;
         MasterMixerMessage.EQ_BASSMID_FREQ.send(getRack(), bassMidFreq);
+        post(MasterMixerControl.EqBassMidFreq, bassMidFreq);
     }
 
     //----------------------------------
@@ -130,6 +133,7 @@ public class MasterEqualizerNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.EQ_MID, "0..2", mid);
         this.mid = mid;
         MasterMixerMessage.EQ_MID.send(getRack(), mid);
+        post(MasterMixerControl.EqMid, mid);
     }
 
     //----------------------------------
@@ -158,6 +162,7 @@ public class MasterEqualizerNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.EQ_MIDHIGH_FREQ, "0..1", midHighFreq);
         this.midHighFreq = midHighFreq;
         MasterMixerMessage.EQ_MIDHIGH_FREQ.send(getRack(), midHighFreq);
+        post(MasterMixerControl.EqMidHighFreq, midHighFreq);
     }
 
     //----------------------------------
@@ -186,6 +191,7 @@ public class MasterEqualizerNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.EQ_HIGH, "0..2", high);
         this.high = high;
         MasterMixerMessage.EQ_HIGH.send(getRack(), high);
+        post(MasterMixerControl.EqHigh, high);
     }
 
     @Override

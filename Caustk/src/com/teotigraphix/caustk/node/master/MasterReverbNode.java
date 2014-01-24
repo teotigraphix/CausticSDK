@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.master;
 
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 
 /**
  * The master reverb insert node.
@@ -84,6 +85,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_PRE_DELAY, "0..0.1", preDelay);
         this.preDelay = preDelay;
         MasterMixerMessage.REVERB_PRE_DELAY.send(getRack(), preDelay);
+        post(MasterMixerControl.ReverbPreDelay, preDelay);
     }
 
     //----------------------------------
@@ -112,6 +114,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_ROOM_SIZE, "0..1", roomSize);
         this.roomSize = roomSize;
         MasterMixerMessage.REVERB_ROOM_SIZE.send(getRack(), roomSize);
+        post(MasterMixerControl.ReverbRoomSize, roomSize);
     }
 
     //----------------------------------
@@ -140,6 +143,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_HF_DAMPING, "0..0.8", hfDamping);
         this.hfDamping = hfDamping;
         MasterMixerMessage.REVERB_HF_DAMPING.send(getRack(), hfDamping);
+        post(MasterMixerControl.ReverbHfDamping, hfDamping);
     }
 
     //----------------------------------
@@ -168,6 +172,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_DIFFUSE, "0..0.7", diffuse);
         this.diffuse = diffuse;
         MasterMixerMessage.REVERB_DIFFUSE.send(getRack(), diffuse);
+        post(MasterMixerControl.ReverbDiffuse, diffuse);
     }
 
     //----------------------------------
@@ -196,6 +201,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_DITHER_ECHOS, "0,1", ditherEchoes);
         this.ditherEchoes = ditherEchoes;
         MasterMixerMessage.REVERB_DITHER_ECHOS.send(getRack(), ditherEchoes);
+        post(MasterMixerControl.ReverbDitherEchos, ditherEchoes);
     }
 
     //----------------------------------
@@ -224,6 +230,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_ER_GAIN, "0..1", erGain);
         this.erGain = erGain;
         MasterMixerMessage.REVERB_ER_GAIN.send(getRack(), erGain);
+        post(MasterMixerControl.ReverbErGain, erGain);
     }
 
     //----------------------------------
@@ -252,6 +259,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException("er_decay", "0..1", erDecay);
         this.erDecay = erDecay;
         MasterMixerMessage.REVERB_ER_DECAY.send(getRack(), erDecay);
+        post(MasterMixerControl.ReverbErDecay, erDecay);
     }
 
     //----------------------------------
@@ -280,6 +288,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException("stereo_delay", "0..1", stereoDelay);
         this.stereoDelay = stereoDelay;
         MasterMixerMessage.REVERB_STEREO_DELAY.send(getRack(), stereoDelay);
+        post(MasterMixerControl.ReverbStereoDelay, stereoDelay);
     }
 
     //----------------------------------
@@ -308,6 +317,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_STEREO_SPREAD, "0..1", stereoSpread);
         this.stereoSpread = stereoSpread;
         MasterMixerMessage.REVERB_STEREO_SPREAD.send(getRack(), stereoSpread);
+        post(MasterMixerControl.ReverbStereoSpread, stereoSpread);
     }
 
     //----------------------------------
@@ -336,6 +346,7 @@ public class MasterReverbNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.REVERB_WET, "0..0.5", wet);
         this.wet = wet;
         MasterMixerMessage.REVERB_WET.send(getRack(), wet);
+        post(MasterMixerControl.ReverbWet, wet);
     }
 
     @Override

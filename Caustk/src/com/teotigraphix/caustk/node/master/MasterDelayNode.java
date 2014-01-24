@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 
 /**
  * The master delay insert node.
@@ -85,6 +86,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_STEPS, "1,2,3,4,5", steps);
         this.steps = steps;
         MasterMixerMessage.DELAY_STEPS.send(getRack(), steps);
+        post(MasterMixerControl.DelaySteps, steps);
     }
 
     //----------------------------------
@@ -113,6 +115,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_LOOP, "0,1", loop);
         this.loop = loop;
         MasterMixerMessage.DELAY_LOOP.send(getRack(), loop);
+        post(MasterMixerControl.DelayLoop, loop);
     }
 
     //----------------------------------
@@ -141,6 +144,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_TIME, "1..12", time);
         this.time = time;
         MasterMixerMessage.DELAY_TIME.send(getRack(), time);
+        post(MasterMixerControl.DelayTime, time);
     }
 
     //----------------------------------
@@ -169,6 +173,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_SYNC, "0,1", sync);
         this.sync = sync;
         MasterMixerMessage.DELAY_SYNC.send(getRack(), sync);
+        post(MasterMixerControl.DelaySync, sync);
     }
 
     //----------------------------------
@@ -197,6 +202,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_FEEDBACK, "0..1", feedback);
         this.feedback = feedback;
         MasterMixerMessage.DELAY_FEEDBACK.send(getRack(), feedback);
+        post(MasterMixerControl.DelayFeedback, feedback);
     }
 
     //----------------------------------
@@ -225,6 +231,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_FEEDBACK_FIRST, "0,1", feedbackFirst);
         this.feedbackFirst = feedbackFirst;
         MasterMixerMessage.DELAY_FEEDBACK_FIRST.send(getRack(), feedbackFirst);
+        post(MasterMixerControl.DelayFeedbackFirst, feedbackFirst);
     }
 
     //----------------------------------
@@ -253,6 +260,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_DAMPING, "0..1", damping);
         this.damping = damping;
         MasterMixerMessage.DELAY_DAMPING.send(getRack(), damping);
+        post(MasterMixerControl.DelayDamping, damping);
     }
 
     //----------------------------------
@@ -281,6 +289,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_WET, "0..1", wet);
         this.wet = wet;
         MasterMixerMessage.DELAY_WET.send(getRack(), wet);
+        post(MasterMixerControl.DelayWet, wet);
     }
 
     //----------------------------------
@@ -312,6 +321,7 @@ public class MasterDelayNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.DELAY_PAN, "-1..1", pan);
         panSteps.put(step, pan);
         MasterMixerMessage.DELAY_PAN.send(getRack(), step, pan);
+        post(MasterMixerControl.DelayPan, pan);
     }
 
     @Override

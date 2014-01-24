@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.master;
 
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 
 /**
  * The master volume insert node.
@@ -66,6 +67,7 @@ public class MasterVolumeNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.VOLUME, "0..2", out);
         this.out = out;
         MasterMixerMessage.VOLUME.send(getRack(), out);
+        post(MasterMixerControl.Volume, out);
     }
 
     @Override

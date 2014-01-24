@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.master;
 
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 
 /**
  * The master limiter insert node.
@@ -72,6 +73,7 @@ public class MasterLimiterNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.LIMITER_PRE, "0..8", pre);
         this.pre = pre;
         MasterMixerMessage.LIMITER_PRE.send(getRack(), pre);
+        post(MasterMixerControl.LimiterPre, pre);
     }
 
     //----------------------------------
@@ -100,6 +102,7 @@ public class MasterLimiterNode extends MasterChildNode {
             throw newRangeException("attack", "0..0.1", attack);
         this.attack = attack;
         MasterMixerMessage.LIMITER_ATTACK.send(getRack(), attack);
+        post(MasterMixerControl.LimiterAttack, attack);
     }
 
     //----------------------------------
@@ -128,6 +131,7 @@ public class MasterLimiterNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.LIMITER_RELEASE, "0..0.5", release);
         this.release = release;
         MasterMixerMessage.LIMITER_RELEASE.send(getRack(), release);
+        post(MasterMixerControl.LimiterRelease, release);
     }
 
     //----------------------------------
@@ -156,6 +160,7 @@ public class MasterLimiterNode extends MasterChildNode {
             throw newRangeException(MasterMixerMessage.LIMITER_POST, "0..2", post);
         this.post = post;
         MasterMixerMessage.LIMITER_POST.send(getRack(), post);
+        post(MasterMixerControl.LimiterPost, post);
     }
 
     @Override

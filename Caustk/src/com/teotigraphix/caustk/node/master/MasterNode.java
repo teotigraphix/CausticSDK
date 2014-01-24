@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.effect.EffectsChannelNode;
 
@@ -164,5 +165,36 @@ public class MasterNode extends NodeBase {
         limiter.restore();
         volume.restore();
         effects.restore();
+    }
+
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
+    /**
+     * Base event for the {@link MasterNode} and {@link MasterChildNode}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static class MasterNodeEvent extends NodeEvent {
+
+        public MasterNodeEvent(NodeBase target, MasterMixerControl control) {
+            super(target, control);
+        }
+    }
+
+    public static class MasterNodeChangeEvent extends NodeEvent {
+
+        private float value;
+
+        public float getValue() {
+            return value;
+        }
+
+        public MasterNodeChangeEvent(NodeBase target, MasterMixerControl control, float value) {
+            super(target, control);
+            this.value = value;
+        }
     }
 }

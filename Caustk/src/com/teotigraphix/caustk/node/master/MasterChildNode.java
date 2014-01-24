@@ -20,7 +20,10 @@
 package com.teotigraphix.caustk.node.master;
 
 import com.teotigraphix.caustk.core.osc.CausticMessage;
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
+import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.master.MasterNode.MasterNodeChangeEvent;
 
 /**
  * The base node for all master node types.
@@ -60,7 +63,16 @@ public class MasterChildNode extends NodeBase {
         if (bypass == value)
             return;
         bypass = value;
-        getBypassMessage().send(getRack(), value ? 1 : 0);
+        CausticMessage message = getBypassMessage();
+        message.send(getRack(), value ? 1 : 0);
+        MasterMixerControl control = null;
+        if (message == MasterMixerMessage.DELAY_BYPASS)
+            control = MasterMixerControl.DelayBypass;
+        else if (message == MasterMixerMessage.REVERB_BYPASS)
+            control = MasterMixerControl.ReverbBypass;
+        else if (message == MasterMixerMessage.LIMITER_BYPASS)
+            control = MasterMixerControl.LimiterBypass;
+        post(control, value ? 1 : 0);
     }
 
     //--------------------------------------------------------------------------
@@ -93,5 +105,9 @@ public class MasterChildNode extends NodeBase {
     @Override
     protected void restoreComponents() {
         setBypass(isBypass(true));
+    }
+
+    protected void post(MasterMixerControl control, float value) {
+        post(new MasterNodeChangeEvent(this, control, value));
     }
 }

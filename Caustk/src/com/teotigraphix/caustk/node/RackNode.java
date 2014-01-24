@@ -29,7 +29,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
-import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
@@ -354,7 +353,7 @@ public class RackNode extends NodeBase {
             return machineNode;
         }
 
-        public RackNodeEvent(NodeBase target, IOSCControl control, MachineNode machineNode) {
+        public RackNodeEvent(NodeBase target, RackControl control, MachineNode machineNode) {
             super(target, control);
             this.machineNode = machineNode;
         }
@@ -366,7 +365,7 @@ public class RackNode extends NodeBase {
      * @see RackNode#createMachine(int, MachineType, String)
      */
     public static class RackNodeCreateEvent extends RackNodeEvent {
-        public RackNodeCreateEvent(NodeBase target, IOSCControl control, MachineNode machineNode) {
+        public RackNodeCreateEvent(NodeBase target, RackControl control, MachineNode machineNode) {
             super(target, control, machineNode);
         }
     }
@@ -377,7 +376,7 @@ public class RackNode extends NodeBase {
      * @see RackNode#destroyMachine(int)
      */
     public static class RackNodDestroyEvent extends RackNodeEvent {
-        public RackNodDestroyEvent(NodeBase target, IOSCControl control, MachineNode machineNode) {
+        public RackNodDestroyEvent(NodeBase target, RackControl control, MachineNode machineNode) {
             super(target, control, machineNode);
         }
     }

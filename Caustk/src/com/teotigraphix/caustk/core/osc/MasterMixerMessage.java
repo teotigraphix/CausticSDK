@@ -572,4 +572,74 @@ public class MasterMixerMessage extends CausticMessage {
         super(message);
     }
 
+    public enum MasterMixerControl implements IOSCControl {
+
+        DelayBypass,
+
+        DelayDamping,
+
+        DelayFeedback,
+
+        DelayFeedbackFirst,
+
+        DelayLoop,
+
+        DelayPan,
+
+        DelaySteps,
+
+        DelaySync,
+
+        DelayTime,
+
+        DelayWet,
+
+        EqBass,
+
+        EqBassMidFreq,
+
+        EqBypass,
+
+        EqHigh,
+
+        EqMid,
+
+        EqMidHighFreq,
+
+        LimiterAttack,
+
+        LimiterBypass,
+
+        LimiterPost,
+
+        LimiterPre,
+
+        LimiterRelease,
+
+        ReverbBypass,
+
+        ReverbDiffuse,
+
+        ReverbDitherEchos,
+
+        ReverbErDecay,
+
+        ReverbErGain,
+
+        ReverbHfDamping,
+
+        ReverbPreDelay,
+
+        ReverbRoomSize,
+
+        ReverbStereoDelay,
+
+        ReverbStereoSpread,
+
+        ReverbWet,
+
+        Volume,
+
+        VolumeBypass;
+    }
 }
