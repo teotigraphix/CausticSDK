@@ -179,6 +179,10 @@ public class EffectsChannelNode extends NodeBase {
         slots.put(effectNode.getSlot(), effectNode);
     }
 
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
     /**
      * Base event for the {@link EffectsChannelNode}.
      * 

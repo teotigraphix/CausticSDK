@@ -321,6 +321,10 @@ public class PatternSequencerNode extends NodeBase {
         SixtyForth;
     }
 
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
     /**
      * Base event for the {@link PatternSequencerNode}.
      * 

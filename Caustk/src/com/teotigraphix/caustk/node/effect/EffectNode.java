@@ -214,6 +214,10 @@ public class EffectNode extends NodeBase {
         return ExceptionUtils.newRangeException(control.getControl(), range, value);
     }
 
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
     /**
      * Events dispatched from the {@link EffectNode}.
      * 
@@ -230,6 +234,11 @@ public class EffectNode extends NodeBase {
         }
     }
 
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see EffectNode#set(IEffectControl, float)
+     */
     public static class EffectNodeChangeEvent extends EffectNodeEvent {
 
         private float value;

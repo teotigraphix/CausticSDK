@@ -469,6 +469,10 @@ public class MixerChannelNode extends NodeBase {
         return true;
     }
 
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
     protected void post(MixerChannelControl control, float value) {
         post(new MixerChannelNodeChangeEvent(this, control, value));
     }

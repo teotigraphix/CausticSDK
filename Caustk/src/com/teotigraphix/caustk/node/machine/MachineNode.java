@@ -343,6 +343,10 @@ public abstract class MachineNode extends NodeBase {
         track = new TrackNode(this);
     }
 
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
     /**
      * Base event for the {@link MachineNodeEvent}.
      * 

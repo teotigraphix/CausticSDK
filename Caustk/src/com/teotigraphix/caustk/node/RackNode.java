@@ -29,8 +29,10 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
@@ -196,6 +198,7 @@ public class RackNode extends NodeBase {
      *         {@link MachineNode#create()}.
      * @see MachineNode#isNative()
      * @throws CausticException machine exists in rack for index
+     * @see RackNodeCreateEvent
      */
     @SuppressWarnings("unchecked")
     public <T extends MachineNode> T createMachine(int index, MachineType type, String name)
@@ -204,6 +207,7 @@ public class RackNode extends NodeBase {
             throw new CausticException("machine exists in rack for index: " + index);
         MachineNode machineNode = addMachine(index, type, name);
         createMachine(machineNode);
+        post(new RackNodeCreateEvent(this, RackControl.Create, machineNode));
         return (T)machineNode;
     }
 
@@ -228,11 +232,13 @@ public class RackNode extends NodeBase {
      * @param index The machine index.
      * @return A {@link MachineNode} that has been destroyed with
      *         {@link MachineNode#destroy()}.
+     * @see RackNodDestroyEvent
      */
     @SuppressWarnings("unchecked")
     public <T extends MachineNode> T destroyMachine(int index) {
         MachineNode machineNode = removeMachine(index);
         machineNode.destroy();
+        post(new RackNodDestroyEvent(this, RackControl.Remove, machineNode));
         return (T)machineNode;
     }
 
@@ -328,6 +334,51 @@ public class RackNode extends NodeBase {
         // push native values into MachineNodes
         for (MachineNode machineNode : machines.values()) {
             machineNode.restore();
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
+    /**
+     * Base event for the {@link RackNode}.
+     * 
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    public static class RackNodeEvent extends NodeEvent {
+        private MachineNode machineNode;
+
+        public MachineNode getMachineNode() {
+            return machineNode;
+        }
+
+        public RackNodeEvent(NodeBase target, IOSCControl control, MachineNode machineNode) {
+            super(target, control);
+            this.machineNode = machineNode;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see RackNode#createMachine(int, MachineType, String)
+     */
+    public static class RackNodeCreateEvent extends RackNodeEvent {
+        public RackNodeCreateEvent(NodeBase target, IOSCControl control, MachineNode machineNode) {
+            super(target, control, machineNode);
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see RackNode#destroyMachine(int)
+     */
+    public static class RackNodDestroyEvent extends RackNodeEvent {
+        public RackNodDestroyEvent(NodeBase target, IOSCControl control, MachineNode machineNode) {
+            super(target, control, machineNode);
         }
     }
 }
