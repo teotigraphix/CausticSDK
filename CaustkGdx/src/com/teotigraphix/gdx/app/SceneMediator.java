@@ -25,12 +25,12 @@ import java.util.List;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.gdx.GdxScreen;
-import com.teotigraphix.gdx.IGdxScreen;
+import com.teotigraphix.gdx.GdxScene;
+import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link ScreenMediator} is a view mediator that draws and handles UI
- * events from custom components.
+ * The {@link SceneMediator} is a view mediator that draws and handles UI events
+ * from custom components.
  * <p>
  * The mediator is also capable of handling child mediators that mediate
  * specific parts of a complicated view.
@@ -38,36 +38,36 @@ import com.teotigraphix.gdx.IGdxScreen;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ScreenMediator extends GdxMediator {
+public class SceneMediator extends GdxMediator {
 
-    protected List<ScreenMediatorChild> children = new ArrayList<ScreenMediatorChild>();
+    protected List<SceneMediatorChild> children = new ArrayList<SceneMediatorChild>();
 
-    private IGdxScreen screen;
+    private IGdxScene scene;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // screen
+    // scene
     //----------------------------------
 
     /**
-     * Returns the mediator's owning {@link IGdxScreen}.
+     * Returns the mediator's owning {@link IGdxScene}.
      */
-    public IGdxScreen getScreen() {
-        return screen;
+    public IGdxScene getScene() {
+        return scene;
     }
 
     /**
-     * Sets the {@link IGdxScreen} owning screen.
+     * Sets the {@link IGdxScene} owning scene.
      * 
      * @param screen The mediator's owner.
-     * @see #onScreenChange(IGdxScreen)
+     * @see #onSceneChange(IGdxScene)
      */
-    public void setScreen(IGdxScreen screen) {
-        this.screen = screen;
-        onScreenChange(screen);
+    public void setScene(IGdxScene scene) {
+        this.scene = scene;
+        onSceneChange(scene);
     }
 
     //--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ public class ScreenMediator extends GdxMediator {
      * Returns the screen's {@link Skin}.
      */
     protected Skin getSkin() {
-        return screen.getSkin();
+        return scene.getSkin();
     }
 
     //----------------------------------
@@ -93,7 +93,7 @@ public class ScreenMediator extends GdxMediator {
      * Returns the screen's {@link Stage}.
      */
     protected Stage getStage() {
-        return screen.getStage();
+        return scene.getStage();
     }
 
     //--------------------------------------------------------------------------
@@ -101,9 +101,9 @@ public class ScreenMediator extends GdxMediator {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a {@link ScreenMediator}.
+     * Creates a {@link SceneMediator}.
      */
-    public ScreenMediator() {
+    public SceneMediator() {
     }
 
     //--------------------------------------------------------------------------
@@ -111,20 +111,20 @@ public class ScreenMediator extends GdxMediator {
     //--------------------------------------------------------------------------
 
     /**
-     * Called once during {@link GdxScreen#create()}, before {@link #onCreate()}
+     * Called once during {@link GdxScene#create()}, before {@link #onCreate()}
      * .
      * <p>
      * Add all global/model event listeners.
      */
     @Override
     public void onAttach() {
-        for (ScreenMediatorChild child : children) {
+        for (SceneMediatorChild child : children) {
             child.onAttach();
         }
     }
 
     /**
-     * Called once during {@link GdxScreen#create()}, after {@link #onAttach()}.
+     * Called once during {@link GdxScene#create()}, after {@link #onAttach()}.
      * <p>
      * Create all user interface components that are attached to the
      * {@link #getStage()}.
@@ -137,62 +137,62 @@ public class ScreenMediator extends GdxMediator {
     }
 
     /**
-     * Called during {@link IGdxScreen#show()}.
+     * Called during {@link IGdxScene#show()}.
      */
     public void onShow() {
-        for (ScreenMediatorChild child : children) {
+        for (SceneMediatorChild child : children) {
             child.onShow();
         }
     }
 
     /**
-     * Called during {@link IGdxScreen#hide()}.
+     * Called during {@link IGdxScene#hide()}.
      */
     public void onHide() {
-        for (ScreenMediatorChild child : children) {
+        for (SceneMediatorChild child : children) {
             child.onHide();
         }
     }
 
     /**
-     * Called during {@link IGdxScreen#resume()}.
+     * Called during {@link IGdxScene#resume()}.
      */
     public void onResume() {
-        for (ScreenMediatorChild child : children) {
+        for (SceneMediatorChild child : children) {
             child.onResume();
         }
     }
 
     /**
-     * Called during {@link IGdxScreen#pause()}.
+     * Called during {@link IGdxScene#pause()}.
      */
     public void onPause() {
-        for (ScreenMediatorChild child : children) {
+        for (SceneMediatorChild child : children) {
             child.onPause();
         }
     }
 
     /**
-     * Called during {@link IGdxScreen#dispose()}.
+     * Called during {@link IGdxScene#dispose()}.
      * <p>
      * Called before {@link #onDispose()}.
      */
     public void onDetach() {
-        for (ScreenMediatorChild child : children) {
+        for (SceneMediatorChild child : children) {
             child.onDetach();
         }
     }
 
     /**
-     * Called during {@link IGdxScreen#dispose()}.
+     * Called during {@link IGdxScene#dispose()}.
      * <p>
      * Called after {@link #onDetach()}.
      */
     public void onDispose() {
-        for (ScreenMediatorChild child : children) {
+        for (SceneMediatorChild child : children) {
             child.onDispose();
         }
-        screen = null;
+        scene = null;
     }
 
     //--------------------------------------------------------------------------
@@ -200,32 +200,32 @@ public class ScreenMediator extends GdxMediator {
     //--------------------------------------------------------------------------
 
     /**
-     * Called when {@link #setScreen(IGdxScreen)}'s value has changed.
+     * Called when {@link #setScene(IGdxScene)}'s value has changed.
      * 
-     * @param screen The new {@link IGdxScreen}.
+     * @param screen The new {@link IGdxScene}.
      */
-    protected void onScreenChange(IGdxScreen screen) {
+    protected void onSceneChange(IGdxScene screen) {
     }
 
     /**
      * Adds a child mediator and sets its parent to this mediator.
      * 
-     * @param child The {@link ScreenMediatorChild}.
+     * @param child The {@link SceneMediatorChild}.
      */
-    protected void addChild(ScreenMediatorChild child) {
+    protected void addChild(SceneMediatorChild child) {
         child.setParent(this);
         children.add(child);
     }
 
     /**
-     * Call in a subclass that uses {@link ScreenMediatorChild} composites, to
+     * Call in a subclass that uses {@link SceneMediatorChild} composites, to
      * pass them their {@link Table} parent during creation.
      * 
      * @param parent The parent {@link Table} instance that will hold the child
      *            mediator's ui components.
      */
     protected void createChildren(Table parent) {
-        for (ScreenMediatorChild mediator : children) {
+        for (SceneMediatorChild mediator : children) {
             mediator.onCreate(parent);
         }
     }

@@ -29,23 +29,23 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.gdx.app.ScreenMediator;
+import com.teotigraphix.gdx.app.SceneMediator;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
- * The {@link GdxScreen} is the base implementation of the {@link IGdxScreen}
+ * The {@link GdxScene} is the base implementation of the {@link IGdxScene}
  * API.
  * <p>
- * An {@link IGdxScreen} holds {@link ScreenMediator}s that assemble a view with
+ * An {@link IGdxScene} holds {@link SceneMediator}s that assemble a view with
  * user interface components. The mediator is responsible for creating user
  * interface components and mediating the component's events.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxScreen implements IGdxScreen {
+public abstract class GdxScene implements IGdxScene {
 
-    public static final String LOG = GdxScreen.class.getSimpleName();
+    public static final String LOG = GdxScene.class.getSimpleName();
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -65,7 +65,7 @@ public abstract class GdxScreen implements IGdxScreen {
 
     private Color backgroundColor = new Color();
 
-    private List<ScreenMediator> mediators = new ArrayList<ScreenMediator>();
+    private List<SceneMediator> mediators = new ArrayList<SceneMediator>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -145,9 +145,9 @@ public abstract class GdxScreen implements IGdxScreen {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link GdxScreen}.
+     * Creates a new {@link GdxScene}.
      */
-    public GdxScreen() {
+    public GdxScene() {
         stage = new Stage();
         atlas = new TextureAtlas(Gdx.files.internal("skin.atlas"));
         skin = new Skin(atlas);
@@ -169,12 +169,12 @@ public abstract class GdxScreen implements IGdxScreen {
         Gdx.app.log(LOG, "Creating screen: " + getName());
 
         // all mediators attach their application events
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onAttach();
         }
 
         // all mediators create their user interface components
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onCreate();
         }
     }
@@ -207,7 +207,7 @@ public abstract class GdxScreen implements IGdxScreen {
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
 
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onShow();
         }
     }
@@ -216,7 +216,7 @@ public abstract class GdxScreen implements IGdxScreen {
     public void hide() {
         Gdx.app.log(LOG, "Hiding screen: " + getName());
 
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onHide();
         }
     }
@@ -225,7 +225,7 @@ public abstract class GdxScreen implements IGdxScreen {
     public void pause() {
         Gdx.app.log(LOG, "Pausing screen: " + getName());
 
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onPause();
         }
     }
@@ -234,7 +234,7 @@ public abstract class GdxScreen implements IGdxScreen {
     public void resume() {
         Gdx.app.log(LOG, "Resuming screen: " + getName());
 
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onResume();
         }
     }
@@ -244,12 +244,12 @@ public abstract class GdxScreen implements IGdxScreen {
         Gdx.app.log(LOG, "Disposing screen: " + getName());
 
         // detach all mediators
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onDetach();
         }
 
         // dispose all mediators
-        for (ScreenMediator mediator : mediators) {
+        for (SceneMediator mediator : mediators) {
             mediator.onDispose();
         }
 
@@ -270,13 +270,13 @@ public abstract class GdxScreen implements IGdxScreen {
      * <p>
      * Call during {@link #initialize(IGdxApplication)} override.
      * <p>
-     * The meidator's {@link ScreenMediator#setScreen(IGdxScreen)} will be
+     * The meidator's {@link SceneMediator#setScene(IGdxScene)} will be
      * called during the add logic.
      * 
-     * @param mediator The {@link ScreenMediator}.
+     * @param mediator The {@link SceneMediator}.
      */
-    protected final void addMediator(ScreenMediator mediator) {
-        mediator.setScreen(this);
+    protected final void addMediator(SceneMediator mediator) {
+        mediator.setScene(this);
         mediators.add(mediator);
     }
 }

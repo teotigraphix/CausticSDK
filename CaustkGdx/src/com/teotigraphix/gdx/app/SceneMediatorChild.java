@@ -22,31 +22,31 @@ package com.teotigraphix.gdx.app;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.teotigraphix.gdx.IGdxScreen;
+import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link ScreenMediatorChild} class creates user interface components
+ * The {@link SceneMediatorChild} class creates user interface components
  * within a parent {@link Table}.
  * <p>
- * The parent {@link Table} is managed by a {@link ScreenMediator} who is the
+ * The parent {@link Table} is managed by a {@link SceneMediator} who is the
  * owner of this child mediator.
  * <p>
- * The parent {@link ScreenMediator} is responsible for creating and positioning
+ * The parent {@link SceneMediator} is responsible for creating and positioning
  * the {@link Table} instance within the bounds of the {@link #getParent()}'s
  * {@link Stage}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class ScreenMediatorChild extends GdxMediator {
+public abstract class SceneMediatorChild extends GdxMediator {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private ScreenMediator parent;
+    private SceneMediator parent;
 
-    private IGdxScreen screen;
+    private IGdxScene scene;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -57,15 +57,15 @@ public abstract class ScreenMediatorChild extends GdxMediator {
     //----------------------------------
 
     /**
-     * Returns the parent {@link ScreenMediator} of this child mediator.
+     * Returns the parent {@link SceneMediator} of this child mediator.
      */
-    public ScreenMediator getParent() {
+    public SceneMediator getParent() {
         return parent;
     }
 
-    void setParent(ScreenMediator parent) {
+    void setParent(SceneMediator parent) {
         this.parent = parent;
-        screen = parent.getScreen();
+        scene = parent.getScene();
         onParentChanged(parent);
     }
 
@@ -74,10 +74,10 @@ public abstract class ScreenMediatorChild extends GdxMediator {
     //----------------------------------
 
     /**
-     * Returns the owning {@link IGdxScreen}.
+     * Returns the owning {@link IGdxScene}.
      */
-    protected IGdxScreen getScreen() {
-        return screen;
+    protected IGdxScene getScene() {
+        return scene;
     }
 
     //--------------------------------------------------------------------------
@@ -85,16 +85,16 @@ public abstract class ScreenMediatorChild extends GdxMediator {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a {@link ScreenMediatorChild}.
+     * Creates a {@link SceneMediatorChild}.
      */
-    public ScreenMediatorChild() {
+    public SceneMediatorChild() {
     }
 
     //--------------------------------------------------------------------------
     // LifeCycle
     //--------------------------------------------------------------------------
 
-    protected void onParentChanged(ScreenMediator parent) {
+    protected void onParentChanged(SceneMediator parent) {
     }
 
     @Override
@@ -105,9 +105,9 @@ public abstract class ScreenMediatorChild extends GdxMediator {
      * Create the child mediator's user interface component's within the
      * {@link Table} passed.
      * <p>
-     * The parent {@link ScreenMediator} creates and positions the {@link Table}.
+     * The parent {@link SceneMediator} creates and positions the {@link Table}.
      * 
-     * @param parent The parent {@link ScreenMediator}.
+     * @param parent The parent {@link SceneMediator}.
      */
     public abstract void onCreate(WidgetGroup parent);
 

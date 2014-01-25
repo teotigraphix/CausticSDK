@@ -19,10 +19,10 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.teotigraphix.gdx.GdxScreen;
+import com.teotigraphix.gdx.GdxScene;
 
 /**
- * The {@link IGdxMediator} is registered with a {@link GdxScreen} to mediate
+ * The {@link IGdxMediator} is registered with a {@link GdxScene} to mediate
  * its views.
  * 
  * @author Michael Schmalle

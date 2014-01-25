@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.gdx.app.IGdxModel;
 import com.teotigraphix.gdx.app.ModelRegistry;
-import com.teotigraphix.gdx.app.ScreenManager;
+import com.teotigraphix.gdx.app.SceneManager;
 import com.teotigraphix.gdx.app.StartupExecutor;
 
 /**
@@ -53,7 +53,7 @@ public abstract class GdxApplication implements IGdxApplication {
 
     private StartupExecutor startupExecutor;
 
-    private ScreenManager screenManager;
+    private SceneManager sceneManager;
 
     private String applicationName;
 
@@ -103,8 +103,8 @@ public abstract class GdxApplication implements IGdxApplication {
         return modelRegistry;
     }
 
-    protected ScreenManager getScreenManager() {
-        return screenManager;
+    protected SceneManager getSceneManager() {
+        return sceneManager;
     }
 
     //--------------------------------------------------------------------------
@@ -123,7 +123,7 @@ public abstract class GdxApplication implements IGdxApplication {
         modelRegistry = new ModelRegistry(this);
         eventBus = new EventBus("application");
         startupExecutor = new StartupExecutor(soundGenerator);
-        screenManager = new ScreenManager(this);
+        sceneManager = new SceneManager(this);
     }
 
     //--------------------------------------------------------------------------
@@ -137,8 +137,7 @@ public abstract class GdxApplication implements IGdxApplication {
             runtime = startupExecutor.create(this);
             runtime.getRack().initialize();
             runtime.getRack().onStart();
-            runtime.getRack().onResume();
-            screenManager.create();
+            sceneManager.create();
         } catch (CausticException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -146,7 +145,7 @@ public abstract class GdxApplication implements IGdxApplication {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        onRegisterScreens();
+        onRegisterScenes();
         onRegisterModels();
         modelRegistry.attach();
         onCreate();
@@ -155,39 +154,39 @@ public abstract class GdxApplication implements IGdxApplication {
     @Override
     public void render() {
         //Gdx.app.log("GdxApplication", "render()");
-        screenManager.preRender();
+        sceneManager.preRender();
 
         // getController().frameChanged(Gdx.graphics.getDeltaTime());
         runtime.getRack().frameChanged(Gdx.graphics.getDeltaTime());
 
-        screenManager.postRender();
+        sceneManager.postRender();
     }
 
     @Override
     public void resize(int width, int height) {
         Gdx.app.log("GdxApplication", "resize(" + width + ", " + height + ")");
-        if (screenManager != null)
-            screenManager.resize(width, height);
+        if (sceneManager != null)
+            sceneManager.resize(width, height);
     }
 
     @Override
     public void pause() {
         runtime.getRack().onPause();
         Gdx.app.log("GdxApplication", "pause()");
-        screenManager.pause();
+        sceneManager.pause();
     }
 
     @Override
     public void resume() {
         runtime.getRack().onResume();
         Gdx.app.log("GdxApplication", "resume()");
-        screenManager.resume();
+        sceneManager.resume();
     }
 
     @Override
     public void dispose() {
         Gdx.app.log("GdxApplication", "dispose()");
-        screenManager.dispose();
+        sceneManager.dispose();
         runtime.getRack().onDestroy();
     }
 
@@ -203,16 +202,15 @@ public abstract class GdxApplication implements IGdxApplication {
     protected abstract void onRegisterModels();
 
     /**
-     * Add {@link IGdxScreen}s to the application.
+     * Add {@link IGdxScene}s to the application.
      * 
-     * @see ScreenManager#addScreen(int, Class)
+     * @see SceneManager#addScene(int, Class)
      */
-    protected abstract void onRegisterScreens();
+    protected abstract void onRegisterScenes();
 
     /**
-     * Set the initial {@link GdxScreen} that starts the application, and
-     * perform any other various setup tasks before the main user interface is
-     * shown.
+     * Set the initial {@link GdxScene} that starts the application, and perform
+     * any other various setup tasks before the main user interface is shown.
      */
     protected abstract void onCreate();
 }

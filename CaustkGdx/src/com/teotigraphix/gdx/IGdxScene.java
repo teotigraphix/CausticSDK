@@ -19,19 +19,19 @@
 
 package com.teotigraphix.gdx;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.teotigraphix.gdx.app.ScreenManager;
+import com.teotigraphix.gdx.app.SceneManager;
 
 /**
- * The {@link IGdxScreen} API allows an application to display states as UI
+ * The {@link IGdxScene} API allows an application to display states as UI
  * screens.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxScreen extends Screen {
+public interface IGdxScene {
 
     /**
      * Returns the owning {@link IGdxApplication}.
@@ -41,7 +41,7 @@ public interface IGdxScreen extends Screen {
     /**
      * Returns the screen's {@link Stage}.
      * <p>
-     * There is a one to one relationship with a {@link GdxScreen} and
+     * There is a one to one relationship with a {@link GdxScene} and
      * {@link Stage}, the screen owns the stage.
      */
     Stage getStage();
@@ -70,12 +70,12 @@ public interface IGdxScreen extends Screen {
      * </ul>
      * 
      * @see #initialize(IGdxApplication)
-     * @see ScreenManager#setScreen(IGdxScreen)
+     * @see SceneManager#setScene(IGdxScene)
      */
     boolean isInitialized();
 
     /**
-     * Initializes the {@link IGdxScreen}.
+     * Initializes the {@link IGdxScene}.
      * 
      * @param gdxApplication The owning {@link IGdxApplication}.
      */
@@ -85,4 +85,43 @@ public interface IGdxScreen extends Screen {
      * Creates the screen and it's contents.
      */
     void create();
+
+    /**
+     * Called when the screen should render itself.
+     * 
+     * @param delta The time in seconds since the last render.
+     */
+    void render(float delta);
+
+    /**
+     * @see ApplicationListener#resize(int, int)
+     */
+    void resize(int width, int height);
+
+    /**
+     * Called when this screen becomes the current screen for a
+     * {@link SceneManager}.
+     */
+    void show();
+
+    /**
+     * Called when this screen is no longer the current screen for a
+     * {@link SceneManager}.
+     */
+    void hide();
+
+    /**
+     * @see ApplicationListener#pause()
+     */
+    void pause();
+
+    /**
+     * @see ApplicationListener#resume()
+     */
+    void resume();
+
+    /**
+     * Called when this screen should release all resources.
+     */
+    void dispose();
 }

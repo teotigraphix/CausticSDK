@@ -22,89 +22,90 @@ package com.teotigraphix.gdx.app;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.teotigraphix.gdx.IGdxApplication;
-import com.teotigraphix.gdx.IGdxScreen;
+import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link ScreenManager} manages {@link IGdxScreen}s in an
+ * The {@link SceneManager} manages {@link IGdxScene}s in an
  * {@link IGdxApplication}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ScreenManager {
+public class SceneManager {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private IGdxScreen screen;
+    private IGdxScene scene;
 
-    private IGdxScreen pendingScreen;
+    private IGdxScene pendingScene;
 
-    private ArrayMap<Integer, IGdxScreen> screens = new ArrayMap<Integer, IGdxScreen>();
+    private ArrayMap<Integer, IGdxScene> scenes = new ArrayMap<Integer, IGdxScene>();
 
-    private ArrayMap<Integer, Class<? extends IGdxScreen>> screenTypes = new ArrayMap<Integer, Class<? extends IGdxScreen>>();
+    private ArrayMap<Integer, Class<? extends IGdxScene>> sceneTypes = new ArrayMap<Integer, Class<? extends IGdxScene>>();
 
-    private IGdxApplication gdxApplication;
+    private IGdxApplication application;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // screen
+    // scene
     //----------------------------------
 
     /**
-     * Sets the active {@link IGdxScreen} int id.
+     * Sets the active {@link IGdxScene} int id.
      * 
-     * @param id The next active screen id, must have already been registered
-     *            with the screen manager.
+     * @param id The next active scene id, must have already been registered
+     *            with the scene manager.
      */
     public void setScreen(int id) {
-        IGdxScreen screen = screens.get(id);
-        pendingScreen = screen;
-        if (screen == null) {
-            Class<? extends IGdxScreen> type = screenTypes.get(id);
+        IGdxScene scene = scenes.get(id);
+        pendingScene = scene;
+        if (scene == null) {
+            Class<? extends IGdxScene> type = sceneTypes.get(id);
             try {
-                pendingScreen = type.newInstance();
+                pendingScene = type.newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            screens.put(id, pendingScreen);
+            scenes.put(id, pendingScene);
         }
     }
 
     /**
-     * Returns the currently active {@link IGdxScreen} instance.
+     * Returns the currently active {@link IGdxScene} instance.
      */
-    public IGdxScreen getScreen() {
-        return screen;
+    public IGdxScene getScene() {
+        return scene;
     }
 
     /**
-     * Sets the current screen. {@link IScreen#hide()} is called on any old
-     * screen, and {@link IScreen#show()} is called on the new screen, if any.
+     * Sets the current scene. {@link IGdxScene#hide()} is called on any old
+     * scene, and {@link IGdxScene#show()} is called on the new scene, if any.
      * 
-     * @param value may be {@code null}
+     * @param scene may be {@code null}
      */
-    public void setScreen(IGdxScreen value) {
-        if (screen != null)
-            screen.hide();
+    public void setScene(IGdxScene scene) {
+        IGdxScene oldScene = this.scene;
+        if (oldScene != null)
+            oldScene.hide();
 
-        screen = value;
+        this.scene = scene;
 
-        if (screen != null) {
-            // XXX screenProvider.setScreen(screen);
-            if (!screen.isInitialized()) {
-                // XXX injector.injectMembers(screen);
-                screen.initialize(gdxApplication);
-                screen.create();
+        if (scene != null) {
+            // XXX sceneProvider.setScene(scene);
+            if (!scene.isInitialized()) {
+                // XXX injector.injectMembers(scene);
+                scene.initialize(application);
+                scene.create();
             }
-            screen.show();
-            screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            scene.show();
+            scene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }
 
@@ -113,12 +114,12 @@ public class ScreenManager {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link ScreenManager} for the {@link IGdxApplication}.
+     * Creates a new {@link SceneManager} for the {@link IGdxApplication}.
      * 
-     * @param gdxApplication The owning application.
+     * @param application The owning application.
      */
-    public ScreenManager(IGdxApplication gdxApplication) {
-        this.gdxApplication = gdxApplication;
+    public SceneManager(IGdxApplication application) {
+        this.application = application;
     }
 
     //--------------------------------------------------------------------------
@@ -126,25 +127,24 @@ public class ScreenManager {
     //--------------------------------------------------------------------------
 
     /**
-     * Adds an {@link IGdxScreen} id and type to the available types in the
-     * screen manager.
+     * Adds an {@link IGdxScene} id and type to the available types in the scene
+     * manager.
      * 
-     * @param id the int id of the {@link IGdxScreen} class type, must be
-     *            unique.
+     * @param id the int id of the {@link IGdxScene} class type, must be unique.
      * @param type The class type.
      */
-    public void addScreen(int id, Class<? extends IGdxScreen> type) {
-        screenTypes.put(id, type);
+    public void addScene(int id, Class<? extends IGdxScene> type) {
+        sceneTypes.put(id, type);
     }
 
     /**
-     * Removes a {@link IGdxScreen} id and type.
+     * Removes a {@link IGdxScene} id and type.
      * 
-     * @param id the int id of the {@link IGdxScreen} class type.
+     * @param id the int id of the {@link IGdxScene} class type.
      */
-    public boolean removeScreen(int id) {
+    public boolean removeScene(int id) {
         // XXX removeIndex() check
-        screenTypes.removeIndex(id);
+        sceneTypes.removeIndex(id);
         return true;
     }
 
@@ -159,9 +159,9 @@ public class ScreenManager {
      * {@link Rack#frameChanged(float)}.
      */
     public void preRender() {
-        if (pendingScreen != null) {
-            setScreen(pendingScreen);
-            pendingScreen = null;
+        if (pendingScene != null) {
+            setScene(pendingScene);
+            pendingScene = null;
         }
     }
 
@@ -170,46 +170,46 @@ public class ScreenManager {
      * {@link Rack#frameChanged(float)}.
      */
     public void postRender() {
-        if (screen != null)
-            screen.render(Gdx.graphics.getDeltaTime());
+        if (scene != null)
+            scene.render(Gdx.graphics.getDeltaTime());
     }
 
     /**
-     * {@link IGdxApplication#resize(int, int)}, resizes the
-     * {@link #getScreen()}.
+     * {@link IGdxApplication#resize(int, int)}, resizes the {@link #getScene()}
+     * .
      * 
      * @param width Application width.
      * @param height Application height.
      */
     public void resize(int width, int height) {
-        if (screen != null)
-            screen.resize(width, height);
+        if (scene != null)
+            scene.resize(width, height);
     }
 
     /**
-     * {@link IGdxApplication#pause()}, pauses the {@link #getScreen()}.
+     * {@link IGdxApplication#pause()}, pauses the {@link #getScene()}.
      */
     public void pause() {
-        if (screen != null)
-            screen.pause();
+        if (scene != null)
+            scene.pause();
     }
 
     /**
-     * {@link IGdxApplication#resume()}, resumes the {@link #getScreen()}.
+     * {@link IGdxApplication#resume()}, resumes the {@link #getScene()}.
      */
     public void resume() {
-        if (screen != null)
-            screen.resume();
+        if (scene != null)
+            scene.resume();
     }
 
     /**
      * {@link IGdxApplication#dispose()}, disposes all instantiated
-     * {@link IGdxScreen}s that this screen manager contains.
+     * {@link IGdxScene}s that this scene manager contains.
      */
     public void dispose() {
-        for (Object screen : screens.values) {
-            if (screen != null)
-                ((IGdxScreen)screen).dispose();
+        for (Object scene : scenes.values) {
+            if (scene != null)
+                ((IGdxScene)scene).dispose();
         }
     }
 }
