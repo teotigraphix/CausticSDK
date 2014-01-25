@@ -23,6 +23,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.teotigraphix.gdx.app.SceneManager;
+import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
  * The {@link IGdxScene} API allows an application to display states as UI
@@ -76,6 +77,9 @@ public interface IGdxScene {
 
     /**
      * Initializes the {@link IGdxScene}.
+     * <p>
+     * Applications must subclass {@link SkinLibrary} with their {@link Skin}
+     * part additions.
      * 
      * @param gdxApplication The owning {@link IGdxApplication}.
      */

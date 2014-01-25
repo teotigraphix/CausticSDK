@@ -22,14 +22,13 @@ package com.teotigraphix.gdx.app;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link GdxBehaviorChild} class creates user interface components
- * within a parent {@link Table}.
+ * The {@link GdxBehaviorChild} class creates user interface components within a
+ * parent {@link Table}.
  * <p>
- * The parent {@link Table} is managed by a {@link GdxBehavior} who is the
- * owner of this child mediator.
+ * The parent {@link Table} is managed by a {@link GdxBehavior} who is the owner
+ * of this child mediator.
  * <p>
  * The parent {@link GdxBehavior} is responsible for creating and positioning
  * the {@link Table} instance within the bounds of the {@link #getParent()}'s
@@ -46,8 +45,6 @@ public abstract class GdxBehaviorChild extends GdxComponent {
 
     private GdxBehavior parent;
 
-    private IGdxScene scene;
-
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -57,7 +54,7 @@ public abstract class GdxBehaviorChild extends GdxComponent {
     //----------------------------------
 
     /**
-     * Returns the parent {@link GdxBehavior} of this child mediator.
+     * Returns the parent {@link GdxBehavior} of this child behavior.
      */
     public GdxBehavior getParent() {
         return parent;
@@ -65,19 +62,8 @@ public abstract class GdxBehaviorChild extends GdxComponent {
 
     void setParent(GdxBehavior parent) {
         this.parent = parent;
-        scene = parent.getScene();
+        setScene(parent.getScene());
         onParentChanged(parent);
-    }
-
-    //----------------------------------
-    // screen
-    //----------------------------------
-
-    /**
-     * Returns the owning {@link IGdxScene}.
-     */
-    protected IGdxScene getScene() {
-        return scene;
     }
 
     //--------------------------------------------------------------------------
@@ -102,7 +88,7 @@ public abstract class GdxBehaviorChild extends GdxComponent {
     }
 
     /**
-     * Create the child mediator's user interface component's within the
+     * Create the child behavior's user interface component's within the
      * {@link Table} passed.
      * <p>
      * The parent {@link GdxBehavior} creates and positions the {@link Table}.

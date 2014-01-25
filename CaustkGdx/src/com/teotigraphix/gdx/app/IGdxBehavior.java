@@ -20,27 +20,27 @@
 package com.teotigraphix.gdx.app;
 
 import com.teotigraphix.gdx.GdxScene;
-import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link IGdxComponent} is registered with a {@link GdxScene} to mediate
- * its views.
+ * The {@link IGdxBehavior} is registered with a {@link GdxScene} to mediate its
+ * views and recieves messages from the scene.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxComponent {
+public interface IGdxBehavior extends IGdxComponent {
 
-    /**
-     * Returns the {@link IGdxScene} this component is attached to.
-     */
-    IGdxScene getScene();
+    void onCreate();
 
-    /**
-     * Called when the component is attached to the application.
-     * <p>
-     * Add global/application event listeners.
-     */
-    void onAttach();
+    void onShow();
 
+    void onHide();
+
+    void onResume();
+
+    void onPause();
+
+    void onDetach();
+
+    void onDispose();
 }

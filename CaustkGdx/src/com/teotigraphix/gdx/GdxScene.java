@@ -30,6 +30,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.gdx.app.GdxBehavior;
+import com.teotigraphix.gdx.app.GdxComponent;
+import com.teotigraphix.gdx.app.IGdxBehavior;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
@@ -64,7 +66,7 @@ public abstract class GdxScene implements IGdxScene {
 
     private Color backgroundColor = new Color();
 
-    private List<GdxBehavior> behaviors = new ArrayList<GdxBehavior>();
+    private List<IGdxBehavior> components = new ArrayList<IGdxBehavior>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -168,12 +170,12 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.app.log(LOG, "Creating screen: " + getName());
 
         // all behaviors attach their application events
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onAttach();
         }
 
         // all behaviors create their user interface components
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onCreate();
         }
     }
@@ -206,7 +208,7 @@ public abstract class GdxScene implements IGdxScene {
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
 
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onShow();
         }
     }
@@ -215,7 +217,7 @@ public abstract class GdxScene implements IGdxScene {
     public void hide() {
         Gdx.app.log(LOG, "Hiding screen: " + getName());
 
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onHide();
         }
     }
@@ -224,7 +226,7 @@ public abstract class GdxScene implements IGdxScene {
     public void pause() {
         Gdx.app.log(LOG, "Pausing screen: " + getName());
 
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onPause();
         }
     }
@@ -233,7 +235,7 @@ public abstract class GdxScene implements IGdxScene {
     public void resume() {
         Gdx.app.log(LOG, "Resuming screen: " + getName());
 
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onResume();
         }
     }
@@ -243,16 +245,16 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.app.log(LOG, "Disposing screen: " + getName());
 
         // detach all mediators
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onDetach();
         }
 
         // dispose all mediators
-        for (GdxBehavior behavior : behaviors) {
+        for (IGdxBehavior behavior : components) {
             behavior.onDispose();
         }
 
-        behaviors.clear();
+        components.clear();
 
         if (skin != null)
             skin.dispose();
@@ -269,13 +271,14 @@ public abstract class GdxScene implements IGdxScene {
      * <p>
      * Call during {@link #initialize(IGdxApplication)} override.
      * <p>
-     * The behavior's {@link GdxBehavior#setScene(IGdxScene)} will be called
+     * The behavior's {@link GdxComponent#setScene(IGdxScene)} will be called
      * during the add logic.
      * 
-     * @param behavior The {@link GdxBehavior}.
+     * @param component The {@link IGdxBehavior}.
      */
-    protected final void addMediator(GdxBehavior behavior) {
-        behavior.setScene(this);
-        behaviors.add(behavior);
+    protected final void addComponent(IGdxBehavior component) {
+        ((GdxComponent)component).setScene(this);
+        //components.add(component);
+        components.add(component);
     }
 }

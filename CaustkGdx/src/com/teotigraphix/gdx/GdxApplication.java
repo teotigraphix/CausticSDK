@@ -196,6 +196,8 @@ public abstract class GdxApplication implements IGdxApplication {
 
     /**
      * Register application {@link IGdxModel}s.
+     * <p>
+     * First of the register methods to be called.
      * 
      * @see ModelRegistry#put(Class, IGdxModel)
      */
@@ -204,6 +206,7 @@ public abstract class GdxApplication implements IGdxApplication {
     /**
      * Add {@link IGdxScene}s to the application.
      * 
+     * @see #onRegisterModels()
      * @see SceneManager#addScene(int, Class)
      */
     protected abstract void onRegisterScenes();
@@ -211,6 +214,8 @@ public abstract class GdxApplication implements IGdxApplication {
     /**
      * Set the initial {@link GdxScene} that starts the application, and perform
      * any other various setup tasks before the main user interface is shown.
+     * 
+     * @see #onRegisterScenes()
      */
     protected abstract void onCreate();
 }

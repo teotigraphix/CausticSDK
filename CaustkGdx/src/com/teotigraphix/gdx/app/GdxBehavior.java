@@ -22,12 +22,8 @@ package com.teotigraphix.gdx.app;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.google.common.eventbus.EventBus;
 import com.teotigraphix.gdx.GdxScene;
-import com.teotigraphix.gdx.IGdxApplication;
 import com.teotigraphix.gdx.IGdxScene;
 
 /**
@@ -40,76 +36,13 @@ import com.teotigraphix.gdx.IGdxScene;
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxBehavior extends GdxComponent {
+public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
 
     protected List<GdxBehaviorChild> children = new ArrayList<GdxBehaviorChild>();
-
-    private IGdxScene scene;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // scene
-    //----------------------------------
-
-    /**
-     * Returns the mediator's owning {@link IGdxScene}.
-     */
-    public IGdxScene getScene() {
-        return scene;
-    }
-
-    /**
-     * Sets the {@link IGdxScene} owning scene.
-     * 
-     * @param screen The mediator's owner.
-     * @see #onSceneChange(IGdxScene)
-     */
-    public void setScene(IGdxScene scene) {
-        this.scene = scene;
-        onSceneChange(scene);
-    }
-
-    //--------------------------------------------------------------------------
-    // Protected :: Properties
-    //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // skin
-    //----------------------------------
-
-    /**
-     * Returns the screen's {@link Skin}.
-     */
-    protected Skin getSkin() {
-        return scene.getSkin();
-    }
-
-    //----------------------------------
-    // stage
-    //----------------------------------
-
-    /**
-     * Returns the screen's {@link Stage}.
-     */
-    protected Stage getStage() {
-        return scene.getStage();
-    }
-
-    //----------------------------------
-    // eventBus
-    //----------------------------------
-
-    /**
-     * Returns the {@link IGdxApplication}'s {@link EventBus}.
-     * <p>
-     * Behaviors can listen to application events using this eventBus.
-     */
-    protected EventBus getEventBus() {
-        return scene.getApplication().getEventBus();
-    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -148,12 +81,14 @@ public abstract class GdxBehavior extends GdxComponent {
      * method in sub classes if this behavior is using child tables with
      * behaviors.
      */
+    @Override
     public void onCreate() {
     }
 
     /**
      * Called during {@link IGdxScene#show()}.
      */
+    @Override
     public void onShow() {
         for (GdxBehaviorChild child : children) {
             child.onShow();
@@ -163,6 +98,7 @@ public abstract class GdxBehavior extends GdxComponent {
     /**
      * Called during {@link IGdxScene#hide()}.
      */
+    @Override
     public void onHide() {
         for (GdxBehaviorChild child : children) {
             child.onHide();
@@ -172,6 +108,7 @@ public abstract class GdxBehavior extends GdxComponent {
     /**
      * Called during {@link IGdxScene#resume()}.
      */
+    @Override
     public void onResume() {
         for (GdxBehaviorChild child : children) {
             child.onResume();
@@ -181,6 +118,7 @@ public abstract class GdxBehavior extends GdxComponent {
     /**
      * Called during {@link IGdxScene#pause()}.
      */
+    @Override
     public void onPause() {
         for (GdxBehaviorChild child : children) {
             child.onPause();
@@ -192,6 +130,7 @@ public abstract class GdxBehavior extends GdxComponent {
      * <p>
      * Called before {@link #onDispose()}.
      */
+    @Override
     public void onDetach() {
         for (GdxBehaviorChild child : children) {
             child.onDetach();
@@ -203,24 +142,17 @@ public abstract class GdxBehavior extends GdxComponent {
      * <p>
      * Called after {@link #onDetach()}.
      */
+    @Override
     public void onDispose() {
         for (GdxBehaviorChild child : children) {
             child.onDispose();
         }
-        scene = null;
+        setScene(null);
     }
 
     //--------------------------------------------------------------------------
     // Protected :: Methods
     //--------------------------------------------------------------------------
-
-    /**
-     * Called when {@link #setScene(IGdxScene)}'s value has changed.
-     * 
-     * @param screen The new {@link IGdxScene}.
-     */
-    protected void onSceneChange(IGdxScene screen) {
-    }
 
     /**
      * Adds a child behavior and sets its parent to this behavior.
