@@ -38,11 +38,37 @@ import com.teotigraphix.gdx.IGdxScene;
  */
 public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
 
-    protected List<GdxBehaviorChild> children = new ArrayList<GdxBehaviorChild>();
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private GdxBehavior parent;
+
+    private List<IGdxBehavior> children = new ArrayList<IGdxBehavior>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // parent
+    //----------------------------------
+
+    /**
+     * Returns the parent {@link GdxBehavior} of this child behavior.
+     * <p>
+     * If the parent is <code>null</code>, this behavior is rooted to the
+     * {@link IGdxScene}.
+     */
+    public GdxBehavior getParent() {
+        return parent;
+    }
+
+    void setParent(GdxBehavior parent) {
+        this.parent = parent;
+        setScene(parent.getScene());
+        onParentChanged(parent);
+    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -58,16 +84,18 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
     // LifeCycle
     //--------------------------------------------------------------------------
 
+    protected void onParentChanged(GdxBehavior parent) {
+    }
+
     /**
-     * Called once during {@link GdxScene#create()}, before {@link #onCreate()}
-     * .
+     * Called once during {@link GdxScene#create()}, before {@link #onStart()} .
      * <p>
      * Add all global/model event listeners.
      */
     @Override
-    public void onAttach() {
-        for (GdxBehaviorChild child : children) {
-            child.onAttach();
+    public void onAwake() {
+        for (IGdxBehavior child : children) {
+            child.onAwake();
         }
     }
 
@@ -82,7 +110,7 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      * behaviors.
      */
     @Override
-    public void onCreate() {
+    public void onStart() {
     }
 
     /**
@@ -90,7 +118,7 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      */
     @Override
     public void onShow() {
-        for (GdxBehaviorChild child : children) {
+        for (IGdxBehavior child : children) {
             child.onShow();
         }
     }
@@ -100,7 +128,7 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      */
     @Override
     public void onHide() {
-        for (GdxBehaviorChild child : children) {
+        for (IGdxBehavior child : children) {
             child.onHide();
         }
     }
@@ -109,31 +137,19 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      * Called during {@link IGdxScene#resume()}.
      */
     @Override
-    public void onResume() {
-        for (GdxBehaviorChild child : children) {
-            child.onResume();
+    public void onEnable() {
+        for (IGdxBehavior child : children) {
+            child.onEnable();
         }
     }
 
     /**
-     * Called during {@link IGdxScene#pause()}.
+     * Called during {@link IGdxScene#pause()}, or {@link IGdxScene#dispose()}.
      */
     @Override
-    public void onPause() {
-        for (GdxBehaviorChild child : children) {
-            child.onPause();
-        }
-    }
-
-    /**
-     * Called during {@link IGdxScene#dispose()}.
-     * <p>
-     * Called before {@link #onDispose()}.
-     */
-    @Override
-    public void onDetach() {
-        for (GdxBehaviorChild child : children) {
-            child.onDetach();
+    public void onDisable() {
+        for (IGdxBehavior child : children) {
+            child.onDisable();
         }
     }
 
@@ -143,9 +159,9 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      * Called after {@link #onDetach()}.
      */
     @Override
-    public void onDispose() {
-        for (GdxBehaviorChild child : children) {
-            child.onDispose();
+    public void onDestroy() {
+        for (IGdxBehavior child : children) {
+            child.onDestroy();
         }
         setScene(null);
     }
@@ -159,21 +175,22 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      * 
      * @param child The {@link GdxBehaviorChild}.
      */
-    protected void addChild(GdxBehaviorChild child) {
-        child.setParent(this);
+    protected void addComponent(IGdxBehavior child) {
+        ((GdxBehavior)child).setParent(this);
         children.add(child);
     }
 
-    /**
-     * Call in a subclass that uses {@link GdxBehaviorChild} composites, to pass
-     * them their {@link Table} parent during creation.
-     * 
-     * @param parent The parent {@link Table} instance that will hold the child
-     *            behavior's ui components.
-     */
-    protected void createChildren(Table parent) {
-        for (GdxBehaviorChild behavior : children) {
-            behavior.onCreate(parent);
-        }
-    }
+    //    /**
+    //     * Call in a subclass that uses {@link GdxBehaviorChild} composites, to pass
+    //     * them their {@link Table} parent during creation.
+    //     * 
+    //     * @param parent The parent {@link Table} instance that will hold the child
+    //     *            behavior's ui components.
+    //     */
+    //    protected void createChildren(Table parent) {
+    //        for (IGdxBehavior behavior : children) {
+    //            // XXX Fix, shouldn't have cast
+    //            ((GdxBehavior)behavior).onCreate(parent);
+    //        }
+    //    }
 }

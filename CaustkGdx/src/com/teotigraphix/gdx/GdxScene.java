@@ -169,14 +169,9 @@ public abstract class GdxScene implements IGdxScene {
     public void create() {
         Gdx.app.log(LOG, "Creating screen: " + getName());
 
-        // all behaviors attach their application events
-        for (IGdxBehavior behavior : components) {
-            behavior.onAttach();
-        }
-
         // all behaviors create their user interface components
         for (IGdxBehavior behavior : components) {
-            behavior.onCreate();
+            behavior.onStart();
         }
     }
 
@@ -186,6 +181,10 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.gl.glClearColor(backgroundColor.r, backgroundColor.b, backgroundColor.g,
                 backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        for (IGdxBehavior behavior : components) {
+            behavior.onUpdate();
+        }
 
         stage.act(delta);
 
@@ -227,7 +226,7 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.app.log(LOG, "Pausing screen: " + getName());
 
         for (IGdxBehavior behavior : components) {
-            behavior.onPause();
+            behavior.onDisable();
         }
     }
 
@@ -236,7 +235,7 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.app.log(LOG, "Resuming screen: " + getName());
 
         for (IGdxBehavior behavior : components) {
-            behavior.onResume();
+            behavior.onEnable();
         }
     }
 
@@ -244,14 +243,14 @@ public abstract class GdxScene implements IGdxScene {
     public void dispose() {
         Gdx.app.log(LOG, "Disposing screen: " + getName());
 
-        // detach all mediators
+        // disable all behaviors
         for (IGdxBehavior behavior : components) {
-            behavior.onDetach();
+            behavior.onDisable();
         }
 
-        // dispose all mediators
+        // dispose all behaviors
         for (IGdxBehavior behavior : components) {
-            behavior.onDispose();
+            behavior.onDestroy();
         }
 
         components.clear();
@@ -275,10 +274,12 @@ public abstract class GdxScene implements IGdxScene {
      * during the add logic.
      * 
      * @param component The {@link IGdxBehavior}.
+     * @see IGdxBehavior#onAwake()
      */
     protected final void addComponent(IGdxBehavior component) {
         ((GdxComponent)component).setScene(this);
-        //components.add(component);
         components.add(component);
+        // all behaviors attach their application events
+        component.onAwake();
     }
 }

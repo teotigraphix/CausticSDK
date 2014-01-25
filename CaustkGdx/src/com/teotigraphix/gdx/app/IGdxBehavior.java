@@ -20,27 +20,63 @@
 package com.teotigraphix.gdx.app;
 
 import com.teotigraphix.gdx.GdxScene;
+import com.teotigraphix.gdx.IGdxScene;
 
 /**
  * The {@link IGdxBehavior} is registered with a {@link GdxScene} to mediate its
- * views and recieves messages from the scene.
+ * views and receives messages from the scene.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
 public interface IGdxBehavior extends IGdxComponent {
 
-    void onCreate();
+    /**
+     * Start is called on the frame when a behavior is enabled just before any
+     * of the Update methods is called the first time.
+     */
+    void onStart();
 
+    /**
+     * Update is called every frame, if the behavior is enabled.
+     */
+    void onUpdate();
+
+    /**
+     * Reset behavior to default values.
+     */
+    void onReset();
+
+    /**
+     * The behavior is shown.
+     * 
+     * @see IGdxScene#show()
+     */
     void onShow();
 
+    /**
+     * The behavior is hidden.
+     * 
+     * @see IGdxScene#hide()
+     */
     void onHide();
 
-    void onResume();
+    /**
+     * The behavior is enabled.
+     * 
+     * @see IGdxScene#resume()
+     */
+    void onEnable();
 
-    void onPause();
+    /**
+     * The behavior is enabled.
+     * 
+     * @see IGdxScene#dispose()
+     */
+    void onDisable();
 
-    void onDetach();
-
-    void onDispose();
+    /**
+     * Destroy is called when the behavior instance will be destroyed.
+     */
+    void onDestroy();
 }

@@ -116,7 +116,7 @@ public abstract class GdxComponent implements IGdxComponent {
     //--------------------------------------------------------------------------
 
     @Override
-    public abstract void onAttach();
+    public abstract void onAwake();
 
     //--------------------------------------------------------------------------
     // Protected :: Methods

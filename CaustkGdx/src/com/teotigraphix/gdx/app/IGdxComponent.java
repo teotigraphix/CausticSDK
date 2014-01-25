@@ -37,10 +37,12 @@ public interface IGdxComponent {
     IGdxScene getScene();
 
     /**
-     * Called when the component is attached to the application.
+     * Awake is called when the behavior is being loaded.
+     * <p>
+     * The {@link IGdxComponent#getScene()} is guaranteed to be non
+     * <code>null</code>.
      * <p>
      * Add global/application event listeners.
      */
-    void onAttach();
-
+    void onAwake();
 }
