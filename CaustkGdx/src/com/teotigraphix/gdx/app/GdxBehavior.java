@@ -25,22 +25,24 @@ import java.util.List;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.google.common.eventbus.EventBus;
 import com.teotigraphix.gdx.GdxScene;
+import com.teotigraphix.gdx.IGdxApplication;
 import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link SceneMediator} is a view mediator that draws and handles UI events
+ * The {@link GdxBehavior} is a view behavior that draws and handles UI events
  * from custom components.
  * <p>
- * The mediator is also capable of handling child mediators that mediate
+ * The behavior is also capable of handling child behaviors that mediate
  * specific parts of a complicated view.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class SceneMediator extends GdxMediator {
+public abstract class GdxBehavior extends GdxComponent {
 
-    protected List<SceneMediatorChild> children = new ArrayList<SceneMediatorChild>();
+    protected List<GdxBehaviorChild> children = new ArrayList<GdxBehaviorChild>();
 
     private IGdxScene scene;
 
@@ -96,14 +98,27 @@ public class SceneMediator extends GdxMediator {
         return scene.getStage();
     }
 
+    //----------------------------------
+    // eventBus
+    //----------------------------------
+
+    /**
+     * Returns the {@link IGdxApplication}'s {@link EventBus}.
+     * <p>
+     * Behaviors can listen to application events using this eventBus.
+     */
+    protected EventBus getEventBus() {
+        return scene.getApplication().getEventBus();
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a {@link SceneMediator}.
+     * Creates a {@link GdxBehavior}.
      */
-    public SceneMediator() {
+    public GdxBehavior() {
     }
 
     //--------------------------------------------------------------------------
@@ -118,7 +133,7 @@ public class SceneMediator extends GdxMediator {
      */
     @Override
     public void onAttach() {
-        for (SceneMediatorChild child : children) {
+        for (GdxBehaviorChild child : children) {
             child.onAttach();
         }
     }
@@ -130,8 +145,8 @@ public class SceneMediator extends GdxMediator {
      * {@link #getStage()}.
      * <p>
      * Call {@link #createChildren(Table)} from the {@link #onCreate(IScreen)}
-     * method in sub classes if this mediator is using child tables with
-     * mediators.
+     * method in sub classes if this behavior is using child tables with
+     * behaviors.
      */
     public void onCreate() {
     }
@@ -140,7 +155,7 @@ public class SceneMediator extends GdxMediator {
      * Called during {@link IGdxScene#show()}.
      */
     public void onShow() {
-        for (SceneMediatorChild child : children) {
+        for (GdxBehaviorChild child : children) {
             child.onShow();
         }
     }
@@ -149,7 +164,7 @@ public class SceneMediator extends GdxMediator {
      * Called during {@link IGdxScene#hide()}.
      */
     public void onHide() {
-        for (SceneMediatorChild child : children) {
+        for (GdxBehaviorChild child : children) {
             child.onHide();
         }
     }
@@ -158,7 +173,7 @@ public class SceneMediator extends GdxMediator {
      * Called during {@link IGdxScene#resume()}.
      */
     public void onResume() {
-        for (SceneMediatorChild child : children) {
+        for (GdxBehaviorChild child : children) {
             child.onResume();
         }
     }
@@ -167,7 +182,7 @@ public class SceneMediator extends GdxMediator {
      * Called during {@link IGdxScene#pause()}.
      */
     public void onPause() {
-        for (SceneMediatorChild child : children) {
+        for (GdxBehaviorChild child : children) {
             child.onPause();
         }
     }
@@ -178,7 +193,7 @@ public class SceneMediator extends GdxMediator {
      * Called before {@link #onDispose()}.
      */
     public void onDetach() {
-        for (SceneMediatorChild child : children) {
+        for (GdxBehaviorChild child : children) {
             child.onDetach();
         }
     }
@@ -189,7 +204,7 @@ public class SceneMediator extends GdxMediator {
      * Called after {@link #onDetach()}.
      */
     public void onDispose() {
-        for (SceneMediatorChild child : children) {
+        for (GdxBehaviorChild child : children) {
             child.onDispose();
         }
         scene = null;
@@ -208,25 +223,25 @@ public class SceneMediator extends GdxMediator {
     }
 
     /**
-     * Adds a child mediator and sets its parent to this mediator.
+     * Adds a child behavior and sets its parent to this behavior.
      * 
-     * @param child The {@link SceneMediatorChild}.
+     * @param child The {@link GdxBehaviorChild}.
      */
-    protected void addChild(SceneMediatorChild child) {
+    protected void addChild(GdxBehaviorChild child) {
         child.setParent(this);
         children.add(child);
     }
 
     /**
-     * Call in a subclass that uses {@link SceneMediatorChild} composites, to
-     * pass them their {@link Table} parent during creation.
+     * Call in a subclass that uses {@link GdxBehaviorChild} composites, to pass
+     * them their {@link Table} parent during creation.
      * 
      * @param parent The parent {@link Table} instance that will hold the child
-     *            mediator's ui components.
+     *            behavior's ui components.
      */
     protected void createChildren(Table parent) {
-        for (SceneMediatorChild mediator : children) {
-            mediator.onCreate(parent);
+        for (GdxBehaviorChild behavior : children) {
+            behavior.onCreate(parent);
         }
     }
 }

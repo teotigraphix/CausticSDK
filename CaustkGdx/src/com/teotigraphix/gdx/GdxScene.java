@@ -29,15 +29,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.gdx.app.SceneMediator;
+import com.teotigraphix.gdx.app.GdxBehavior;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
- * The {@link GdxScene} is the base implementation of the {@link IGdxScene}
- * API.
+ * The {@link GdxScene} is the base implementation of the {@link IGdxScene} API.
  * <p>
- * An {@link IGdxScene} holds {@link SceneMediator}s that assemble a view with
- * user interface components. The mediator is responsible for creating user
+ * An {@link IGdxScene} holds {@link GdxBehavior}s that assemble a view with
+ * user interface components. The behavior is responsible for creating user
  * interface components and mediating the component's events.
  * 
  * @author Michael Schmalle
@@ -51,7 +50,7 @@ public abstract class GdxScene implements IGdxScene {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private IGdxApplication gdxApplication;
+    private IGdxApplication application;
 
     private Stage stage;
 
@@ -65,19 +64,19 @@ public abstract class GdxScene implements IGdxScene {
 
     private Color backgroundColor = new Color();
 
-    private List<SceneMediator> mediators = new ArrayList<SceneMediator>();
+    private List<GdxBehavior> behaviors = new ArrayList<GdxBehavior>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // gdxApplication
+    // application
     //----------------------------------
 
     @Override
     public IGdxApplication getApplication() {
-        return gdxApplication;
+        return application;
     }
 
     //----------------------------------
@@ -158,8 +157,8 @@ public abstract class GdxScene implements IGdxScene {
     //--------------------------------------------------------------------------
 
     @Override
-    public void initialize(IGdxApplication gdxApplication) {
-        this.gdxApplication = gdxApplication;
+    public void initialize(IGdxApplication application) {
+        this.application = application;
         initialized = true;
         skinLibrary.initialize(skin);
     }
@@ -168,14 +167,14 @@ public abstract class GdxScene implements IGdxScene {
     public void create() {
         Gdx.app.log(LOG, "Creating screen: " + getName());
 
-        // all mediators attach their application events
-        for (SceneMediator mediator : mediators) {
-            mediator.onAttach();
+        // all behaviors attach their application events
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onAttach();
         }
 
-        // all mediators create their user interface components
-        for (SceneMediator mediator : mediators) {
-            mediator.onCreate();
+        // all behaviors create their user interface components
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onCreate();
         }
     }
 
@@ -197,7 +196,7 @@ public abstract class GdxScene implements IGdxScene {
     @Override
     public void resize(int width, int height) {
         Gdx.app.log(LOG, "Resizing screen: " + getName() + " to: " + width + " x " + height);
-        stage.setViewport(gdxApplication.getWidth(), gdxApplication.getHeight(), true);
+        stage.setViewport(application.getWidth(), application.getHeight(), true);
         stage.getCamera().translate(-stage.getGutterWidth(), -stage.getGutterHeight(), 0);
     }
 
@@ -207,8 +206,8 @@ public abstract class GdxScene implements IGdxScene {
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
 
-        for (SceneMediator mediator : mediators) {
-            mediator.onShow();
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onShow();
         }
     }
 
@@ -216,8 +215,8 @@ public abstract class GdxScene implements IGdxScene {
     public void hide() {
         Gdx.app.log(LOG, "Hiding screen: " + getName());
 
-        for (SceneMediator mediator : mediators) {
-            mediator.onHide();
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onHide();
         }
     }
 
@@ -225,8 +224,8 @@ public abstract class GdxScene implements IGdxScene {
     public void pause() {
         Gdx.app.log(LOG, "Pausing screen: " + getName());
 
-        for (SceneMediator mediator : mediators) {
-            mediator.onPause();
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onPause();
         }
     }
 
@@ -234,8 +233,8 @@ public abstract class GdxScene implements IGdxScene {
     public void resume() {
         Gdx.app.log(LOG, "Resuming screen: " + getName());
 
-        for (SceneMediator mediator : mediators) {
-            mediator.onResume();
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onResume();
         }
     }
 
@@ -244,16 +243,16 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.app.log(LOG, "Disposing screen: " + getName());
 
         // detach all mediators
-        for (SceneMediator mediator : mediators) {
-            mediator.onDetach();
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onDetach();
         }
 
         // dispose all mediators
-        for (SceneMediator mediator : mediators) {
-            mediator.onDispose();
+        for (GdxBehavior behavior : behaviors) {
+            behavior.onDispose();
         }
 
-        mediators.clear();
+        behaviors.clear();
 
         if (skin != null)
             skin.dispose();
@@ -266,17 +265,17 @@ public abstract class GdxScene implements IGdxScene {
     //--------------------------------------------------------------------------
 
     /**
-     * Adds a mediator to the screen.
+     * Adds a behavior to the screen.
      * <p>
      * Call during {@link #initialize(IGdxApplication)} override.
      * <p>
-     * The meidator's {@link SceneMediator#setScene(IGdxScene)} will be
-     * called during the add logic.
+     * The behavior's {@link GdxBehavior#setScene(IGdxScene)} will be called
+     * during the add logic.
      * 
-     * @param mediator The {@link SceneMediator}.
+     * @param behavior The {@link GdxBehavior}.
      */
-    protected final void addMediator(SceneMediator mediator) {
-        mediator.setScene(this);
-        mediators.add(mediator);
+    protected final void addMediator(GdxBehavior behavior) {
+        behavior.setScene(this);
+        behaviors.add(behavior);
     }
 }

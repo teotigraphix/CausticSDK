@@ -22,13 +22,13 @@ package com.teotigraphix.gdx.app;
 import com.teotigraphix.gdx.GdxScene;
 
 /**
- * The {@link IGdxMediator} is registered with a {@link GdxScene} to mediate
+ * The {@link IGdxComponent} is registered with a {@link GdxScene} to mediate
  * its views.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxMediator {
+public interface IGdxComponent {
 
     /**
      * Called when the mediator is attached to the application.

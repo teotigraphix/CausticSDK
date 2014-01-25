@@ -20,12 +20,12 @@
 package com.teotigraphix.gdx.app;
 
 /**
- * The {@link GdxMediator} is the base class for all view mediators.
+ * The {@link GdxComponent} is the base class for all view behaviors.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxMediator implements IGdxMediator {
+public abstract class GdxComponent implements IGdxComponent {
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -34,7 +34,7 @@ public abstract class GdxMediator implements IGdxMediator {
     /**
      * Creates a new mediator.
      */
-    public GdxMediator() {
+    public GdxComponent() {
     }
 
     //--------------------------------------------------------------------------

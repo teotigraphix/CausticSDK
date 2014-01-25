@@ -25,26 +25,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link SceneMediatorChild} class creates user interface components
+ * The {@link GdxBehaviorChild} class creates user interface components
  * within a parent {@link Table}.
  * <p>
- * The parent {@link Table} is managed by a {@link SceneMediator} who is the
+ * The parent {@link Table} is managed by a {@link GdxBehavior} who is the
  * owner of this child mediator.
  * <p>
- * The parent {@link SceneMediator} is responsible for creating and positioning
+ * The parent {@link GdxBehavior} is responsible for creating and positioning
  * the {@link Table} instance within the bounds of the {@link #getParent()}'s
  * {@link Stage}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class SceneMediatorChild extends GdxMediator {
+public abstract class GdxBehaviorChild extends GdxComponent {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private SceneMediator parent;
+    private GdxBehavior parent;
 
     private IGdxScene scene;
 
@@ -57,13 +57,13 @@ public abstract class SceneMediatorChild extends GdxMediator {
     //----------------------------------
 
     /**
-     * Returns the parent {@link SceneMediator} of this child mediator.
+     * Returns the parent {@link GdxBehavior} of this child mediator.
      */
-    public SceneMediator getParent() {
+    public GdxBehavior getParent() {
         return parent;
     }
 
-    void setParent(SceneMediator parent) {
+    void setParent(GdxBehavior parent) {
         this.parent = parent;
         scene = parent.getScene();
         onParentChanged(parent);
@@ -85,16 +85,16 @@ public abstract class SceneMediatorChild extends GdxMediator {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a {@link SceneMediatorChild}.
+     * Creates a {@link GdxBehaviorChild}.
      */
-    public SceneMediatorChild() {
+    public GdxBehaviorChild() {
     }
 
     //--------------------------------------------------------------------------
     // LifeCycle
     //--------------------------------------------------------------------------
 
-    protected void onParentChanged(SceneMediator parent) {
+    protected void onParentChanged(GdxBehavior parent) {
     }
 
     @Override
@@ -105,9 +105,9 @@ public abstract class SceneMediatorChild extends GdxMediator {
      * Create the child mediator's user interface component's within the
      * {@link Table} passed.
      * <p>
-     * The parent {@link SceneMediator} creates and positions the {@link Table}.
+     * The parent {@link GdxBehavior} creates and positions the {@link Table}.
      * 
-     * @param parent The parent {@link SceneMediator}.
+     * @param parent The parent {@link GdxBehavior}.
      */
     public abstract void onCreate(WidgetGroup parent);
 
