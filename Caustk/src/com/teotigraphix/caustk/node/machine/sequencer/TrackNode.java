@@ -59,6 +59,14 @@ public class TrackNode extends NodeBase {
         return index;
     }
 
+    @Override
+    public void setIndex(Integer index) {
+        super.setIndex(index);
+        for (TrackEntryNode trackEntryNode : entries.values()) {
+            trackEntryNode.setIndex(index);
+        }
+    }
+
     //----------------------------------
     // entries
     //----------------------------------
@@ -67,8 +75,56 @@ public class TrackNode extends NodeBase {
      * Returns the number of {@link TrackEntryNode} that exist this
      * {@link TrackNode}.
      */
-    public int getNumEntries() {
+    public int size() {
         return entries.size();
+    }
+
+    /**
+     * Returns whether the measure is a start measure of an entry in this track.
+     * 
+     * @param measure The measure to test for start.
+     */
+    public boolean isStartValid(int measure) {
+        return !entries.containsKey(measure);
+    }
+
+    /**
+     * Returns whether this measure is contained within an entry in this track.
+     * <p>
+     * A measure is considered contained if it cannot without error be added to
+     * this track without overwriting another entry.
+     * <p>
+     * The last measure in an entry is considered the entry's endMeasure - 1.
+     * The entry's endMeasure can be the start of a new track entry span.
+     * 
+     * @param measure The measure to test for containment.
+     */
+    public boolean isContained(int measure) {
+        for (TrackEntryNode trackEntryNode : entries.values()) {
+            if (trackEntryNode.isContained(measure))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether a start to end measure span is empty in this track.
+     * 
+     * @param startMeasure The start measure to test.
+     * @param endMeasure The end measure to test.
+     * @return
+     */
+    public boolean isSpanValid(int startMeasure, int endMeasure) {
+        if (!isStartValid(startMeasure))
+            return false;
+        // check whether the start is contained in a entry span
+        if (isContained(startMeasure))
+            return false;
+        for (int i = startMeasure; i < endMeasure; i++) {
+            if (!isStartValid(i))
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -94,11 +150,15 @@ public class TrackNode extends NodeBase {
      * @param endMeasure The end measure of the entry.
      * @return The added {@link TrackEntryNode}.
      * @throws CausticException Track entry exists at measure
+     * @throws CausticException Track entry span invalid, measures exist
      */
-    public TrackEntryNode addPattern(PatternNode patternNode, int startMeasure, int endMeasure)
+    public TrackEntryNode addEntry(PatternNode patternNode, int startMeasure, int endMeasure)
             throws CausticException {
-        if (entries.containsKey(startMeasure))
+        if (!isStartValid(startMeasure))
             throw new CausticException("Track entry exists at measure: " + startMeasure);
+        if (!isSpanValid(startMeasure, endMeasure))
+            throw new CausticException("Track entry span invalid, measures exist: " + startMeasure
+                    + ", " + endMeasure);
 
         TrackEntryNode trackEntryNode = new TrackEntryNode(patternNode.getIndex(),
                 patternNode.getName(), startMeasure, endMeasure);
@@ -158,6 +218,26 @@ public class TrackNode extends NodeBase {
     }
 
     //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * @param trackEntryNode
+     * @param startMeasure
+     * @param endMeasure
+     * @throws CausticException Entry does not exist for measure
+     */
+    public void setPositon(TrackEntryNode trackEntryNode, int startMeasure, int endMeasure)
+            throws CausticException {
+        TrackEntryNode entry = getEntry(startMeasure);
+        if (entry == null)
+            throw new CausticException("Entry does not exist for measure: " + startMeasure);
+
+        // XXX implement range and previous, next measure shrink/move
+        entry.setPosition(startMeasure, endMeasure);
+    }
+
+    //--------------------------------------------------------------------------
     // Overridden Protected :: Methods
     //--------------------------------------------------------------------------
 
@@ -189,5 +269,15 @@ public class TrackNode extends NodeBase {
                     bankIndex, patternIndex), startMeasure, endMeasure);
             entries.put(startMeasure, trackEntryNode);
         }
+    }
+
+    @SuppressWarnings("unused")
+    private int getLastStartMeasure() {
+        int startMeasure = 0;
+        for (TrackEntryNode trackEntryNode : entries.values()) {
+            if (trackEntryNode.getStartMeasure() > startMeasure)
+                startMeasure = trackEntryNode.getStartMeasure();
+        }
+        return startMeasure;
     }
 }

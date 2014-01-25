@@ -19,10 +19,14 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.node.NodeBase;
 
 /**
  * A {@link TrackEntryNode} is an entry in a {@link TrackNode}.
+ * <p>
+ * The track entry is a read-only API, if start and end measures are adjusted,
+ * the operation is handled in the {@link TrackNode}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -33,7 +37,7 @@ public class TrackEntryNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private String patternName;
+    private String pattern;
 
     private int startMeasure;
 
@@ -51,22 +55,22 @@ public class TrackEntryNode extends NodeBase {
      * Returns the String representation of the pattern, <strong>A1</strong> for
      * example.
      */
-    public String getPatternName() {
-        return patternName;
+    public String getPattern() {
+        return pattern;
     }
 
     /**
-     * Returns the bank index (0..3) based on the {@link #getPatternName()}.
+     * Returns the bank index (0..3) based on the {@link #getPattern()}.
      */
     public int getBankIndex() {
-        return PatternUtils.toBank(patternName);
+        return PatternUtils.toBank(pattern);
     }
 
     /**
-     * Returns the pattern index (0..15) based on the {@link #getPatternName()}.
+     * Returns the pattern index (0..15) based on the {@link #getPattern()}.
      */
     public int getPatternIndex() {
-        return PatternUtils.toPattern(patternName);
+        return PatternUtils.toPattern(pattern);
     }
 
     //----------------------------------
@@ -94,7 +98,7 @@ public class TrackEntryNode extends NodeBase {
     /**
      * Returns the number of measures this entry spans, start to end.
      */
-    public int getNumMeasureSpan() {
+    public int getMeasureSpan() {
         return endMeasure - startMeasure;
     }
 
@@ -112,7 +116,17 @@ public class TrackEntryNode extends NodeBase {
     public float getNumLoops() {
         int numMeasures = PatternUtils.getNumMeasures(getRack(), index, getBankIndex(),
                 getPatternIndex());
-        return PatternUtils.getNumLoops(numMeasures, getNumMeasureSpan());
+        return PatternUtils.getNumLoops(numMeasures, getMeasureSpan());
+    }
+
+    /**
+     * Returns <code>true</code> if the measure could be a start measure in this
+     * entry's loop span.
+     * 
+     * @param measure The contained measure.
+     */
+    public boolean isContained(int measure) {
+        return measure >= startMeasure && measure < endMeasure;
     }
 
     //--------------------------------------------------------------------------
@@ -127,7 +141,28 @@ public class TrackEntryNode extends NodeBase {
 
     public TrackEntryNode(int machineIndex, String patternName, int startMeasure, int endMeasure) {
         this.index = machineIndex;
-        this.patternName = patternName;
+        this.pattern = patternName;
+        this.startMeasure = startMeasure;
+        this.endMeasure = endMeasure;
+    }
+
+    //--------------------------------------------------------------------------
+    // Internal :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Sets the new start and end measure positions.
+     * 
+     * @param startMeasure The new start measure.
+     * @param endMeasure The new end measure.
+     * @throws CausticError start and end mesaures are the same
+     * @throws CausticError end measure is less than start measure
+     */
+    void setPosition(int startMeasure, int endMeasure) {
+        if (endMeasure == startMeasure)
+            throw new CausticError("start and end mesaures are the same");
+        if (endMeasure < startMeasure)
+            throw new CausticError("end measure is less than start measure");
         this.startMeasure = startMeasure;
         this.endMeasure = endMeasure;
     }
