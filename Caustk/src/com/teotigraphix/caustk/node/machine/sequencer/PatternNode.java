@@ -139,8 +139,8 @@ public class PatternNode extends NodeBase {
         if (numMeasures < 1 || numMeasures > 8)
             throw newRangeException(PatternSequencerMessage.NUM_MEASURES, "1,2,4,8", numMeasures);
         this.numMeasures = numMeasures;
-        // XXX impl new PatternSq
-        PatternSequencerMessage.NUM_MEASURES.send(getRack(), index, numMeasures);
+        PatternUtils.setNumMeasures(getRack(), index, getBankIndex(), getPatternIndex(),
+                numMeasures);
         post(new PatternNodNumMeasuresEvent(this, PatternSequencerControl.NumMeausures, numMeasures));
     }
 

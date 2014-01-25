@@ -69,6 +69,9 @@ public class SequencerMessage extends CausticMessage {
     public static final SequencerMessage PATTERN_EVENT = new SequencerMessage(
             "/caustic/sequencer/pattern_event ${0} ${1} ${2} ${3} ${4}");
 
+    public static final SequencerMessage PATTERN_EVENT_REMOVE = new SequencerMessage(
+            "/caustic/sequencer/pattern_event ${0} ${1} -1 -1 ${2}");
+
     /**
      * Query: <code>/caustic/sequencer/pattern_event</code>
      * <p>

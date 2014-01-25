@@ -247,6 +247,7 @@ public abstract class MachineNode extends NodeBase {
         mixer.setIndex(index);
         effects.setIndex(index);
         sequencer.setIndex(index);
+        track.setIndex(index);
         create();
     }
 
@@ -275,6 +276,7 @@ public abstract class MachineNode extends NodeBase {
         mixer.create();
         effects.create();
         sequencer.create();
+        track.create();
     }
 
     @Override
@@ -289,6 +291,7 @@ public abstract class MachineNode extends NodeBase {
         mixer.destroy();
         effects.destroy();
         sequencer.destroy();
+        track.destroy();
     }
 
     @Override
@@ -300,6 +303,7 @@ public abstract class MachineNode extends NodeBase {
         effects.restore();
         restorePresetProperties();
         sequencer.restore();
+        track.restore();
     }
 
     @Override
@@ -313,6 +317,7 @@ public abstract class MachineNode extends NodeBase {
         mixer.update();
         effects.update();
         sequencer.update();
+        track.update();
     }
 
     //--------------------------------------------------------------------------

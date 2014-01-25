@@ -19,6 +19,13 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.teotigraphix.caustk.core.CaustkRack;
+import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
+import com.teotigraphix.caustk.core.osc.SequencerMessage;
+
 /**
  * @author Michael Schmalle
  * @since 1.0
@@ -81,4 +88,52 @@ public final class PatternUtils {
         return (bankIndex * 16) + patternIndex;
     }
 
+    public static float getNumLoops(int numPatternMeasures, int numMeasuresSpanned) {
+        int measureSpan = numMeasuresSpanned;
+        float remainderMeasures = measureSpan % numPatternMeasures;
+        int numLoops = ((int)(measureSpan - remainderMeasures) / numPatternMeasures);
+        float fraction = remainderMeasures / numPatternMeasures;
+        return numLoops + fraction;
+    }
+
+    public static int getNumMeasures(CaustkRack rack, int machineIndex, int bank, int pattern) {
+        int originalBank = (int)PatternSequencerMessage.BANK.query(rack, machineIndex);
+        int originalPattern = (int)PatternSequencerMessage.PATTERN.query(rack, machineIndex);
+        PatternSequencerMessage.BANK.send(rack, machineIndex, bank);
+        PatternSequencerMessage.PATTERN.send(rack, machineIndex, pattern);
+        int numMeasures = (int)PatternSequencerMessage.NUM_MEASURES.query(rack, machineIndex);
+        PatternSequencerMessage.BANK.send(rack, machineIndex, originalBank);
+        PatternSequencerMessage.PATTERN.send(rack, machineIndex, originalPattern);
+        return numMeasures;
+    }
+
+    public static void setNumMeasures(CaustkRack rack, int machineIndex, int bank, int pattern,
+            int numMeasures) {
+        int originalBank = (int)PatternSequencerMessage.BANK.query(rack, machineIndex);
+        int originalPattern = (int)PatternSequencerMessage.PATTERN.query(rack, machineIndex);
+        PatternSequencerMessage.BANK.send(rack, machineIndex, bank);
+        PatternSequencerMessage.PATTERN.send(rack, machineIndex, pattern);
+        PatternSequencerMessage.NUM_MEASURES.send(rack, machineIndex, numMeasures);
+        PatternSequencerMessage.BANK.send(rack, machineIndex, originalBank);
+        PatternSequencerMessage.PATTERN.send(rack, machineIndex, originalPattern);
+    }
+
+    public static List<String> getPatterns(CaustkRack rack, int machineIndex) {
+        List<String> result = new ArrayList<String>();
+        // [machin_index] [start_measure] [bank] [pattern] [end_measure]
+        String patterns = SequencerMessage.QUERY_PATTERN_EVENT.queryString(rack);
+        if (patterns != null) {
+            for (String pattern : patterns.split("\\|")) {
+                // XXX What the heck are the ||||| in the return value
+                if (!pattern.equals("")) {
+                    String[] split = pattern.split(" ");
+                    int index = Integer.valueOf(split[0]);
+                    if (index == machineIndex) {
+                        result.add(pattern);
+                    }
+                }
+            }
+        }
+        return result;
+    }
 }
