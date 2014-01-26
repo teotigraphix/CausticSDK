@@ -71,6 +71,7 @@ public class SequencerNode extends NodeBase {
             return;
         this.isPlaying = isPlaying;
         OutputPanelMessage.PLAY.send(getRack(), isPlaying ? 1 : 0);
+        resetPostion();
     }
 
     //----------------------------------
@@ -342,6 +343,171 @@ public class SequencerNode extends NodeBase {
      */
     public void clearAutomation(int machineIndex) {
         SequencerMessage.CLEAR_MACHINE_AUTOMATION.send(getRack(), machineIndex);
+    }
+
+    //--------------------------------------------------------------------------
+    // Frame :: Methods
+    //--------------------------------------------------------------------------
+
+    private transient boolean beatChanged = false;
+
+    private transient boolean sixteenthChanged = false;
+
+    private transient boolean thirtysecondChanged = false;
+
+    private transient int currentMeasure = -1;
+
+    private transient int currentBeat = -1;
+
+    private transient float currentFloatBeat = -1f;
+
+    private transient int currentSixteenthStep;
+
+    private transient int currentThritySecondStep;
+
+    //----------------------------------
+    // currentMeasure
+    //----------------------------------
+
+    public int getCurrentMeasure() {
+        return currentMeasure;
+    }
+
+    public int getMeasureBeat() {
+        return currentBeat % 4;
+    }
+
+    //----------------------------------
+    // currentBeat
+    //----------------------------------
+
+    public int getCurrentBeat() {
+        return currentBeat;
+    }
+
+    private boolean setCurrentBeat(int value) {
+        if (value == currentBeat)
+            return false;
+
+        currentBeat = value;
+        return true;
+    }
+
+    public int getStep() {
+        int step = (currentBeat % 4) * 4;
+        return step;
+    }
+
+    public int getCurrentSixteenthStep() {
+        return currentSixteenthStep;
+    }
+
+    public int getCurrentThritySecondStep() {
+        return currentThritySecondStep;
+    }
+
+    /**
+     * True during the frame when a full beat has changed (0..31) in pattern
+     * mode.
+     * 
+     * @see SystemSequencer#getCurrentBeat()
+     */
+    public boolean isBeatChanged() {
+        return beatChanged;
+    }
+
+    /**
+     * True during the frame when a sixteenth step has changed.
+     * 
+     * @see SystemSequencer#getCurrentSixteenthStep()
+     */
+    public boolean isSixteenthChanged() {
+        return sixteenthChanged;
+    }
+
+    /**
+     * True during the frame when a thirty second step has changed.
+     * 
+     * @see SystemSequencer#getCurrentThritySecondStep()
+     */
+    public boolean isThirtysecondChanged() {
+        return thirtysecondChanged;
+    }
+
+    /**
+     * Called during a game loop frame change, updates position of the sequencer
+     * using native beat & measure values.
+     * 
+     * @param delta The millsecond delta from the last frame change.
+     */
+    public void frameChanged(float delta) {
+        beatChanged = false;
+        sixteenthChanged = false;
+        thirtysecondChanged = false;
+
+        final int measure = (int)getRack().getCurrentSongMeasure();
+        final float beat = getRack().getCurrentBeat();
+
+        // XXX Not sure if I want to introduce these events again
+        // maybe its just better to pool the boolean 'is' changed
+        // methods inside the applications ... uh yeah it all needs to be
+        // event based because the only loop is the frame change with LibGDX
+
+        beatChanged = updatePosition(measure, beat);
+        if (beatChanged) {
+        }
+
+        sixteenthChanged = updateStep(measure, beat);
+        if (sixteenthChanged) {
+        }
+
+        thirtysecondChanged = updateThritySecondStep(measure, beat);
+        if (thirtysecondChanged) {
+        }
+    }
+
+    private boolean updatePosition(int measure, float beat) {
+        if (!isPlaying())
+            return false;
+
+        boolean changed = false;
+
+        currentMeasure = measure;
+        currentFloatBeat = beat;
+
+        int round = (int)Math.floor(currentFloatBeat);
+        if (round != currentBeat) {
+            changed = setCurrentBeat(round);
+        }
+
+        return changed;
+    }
+
+    private boolean updateStep(int measure, float beat) {
+        int step = (int)Math.floor((beat % 4) * 4);
+        if (step != currentSixteenthStep) {
+            currentSixteenthStep = step;
+            return true;
+        }
+        return false;
+    }
+
+    private boolean updateThritySecondStep(int measure, float beat) {
+        int step = (int)Math.floor((beat % 4) * 8);
+        if (step != currentThritySecondStep) {
+            currentThritySecondStep = step;
+            return true;
+        }
+        return false;
+    }
+
+    private void resetPostion() {
+        if (!isPlaying) {
+            currentBeat = -1;
+            currentFloatBeat = -1f;
+            currentMeasure = -1;
+            currentSixteenthStep = -1;
+        }
     }
 
     //--------------------------------------------------------------------------

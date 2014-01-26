@@ -273,7 +273,7 @@ public class CaustkRack implements ISoundGenerator {
      *            frame.
      */
     public void frameChanged(float deltaTime) {
-        // TODO Auto-generated method stub
+        getRackNode().getSequencer().frameChanged(deltaTime);
     }
 
     //--------------------------------------------------------------------------
