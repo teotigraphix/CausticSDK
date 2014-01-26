@@ -24,7 +24,6 @@ package com.teotigraphix.caustk.core.osc;
  * {@link ISequencer} API.
  * 
  * @author Michael Schmalle
- * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
 public class SequencerMessage extends CausticMessage {

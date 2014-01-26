@@ -611,6 +611,82 @@ public class PatternNode extends NodeBase {
         }
     }
 
+    /**
+     * @author Michael Schmalle
+     * @copyright Teoti Graphix, LLC
+     * @since 1.0
+     */
+    public enum Resolution {
+
+        /**
+         * A whole note.
+         */
+        Whole(1f), // 1
+
+        /**
+         * A half note.
+         */
+        Half(0.5f), // 2
+
+        /**
+         * A quarter note.
+         */
+        Quater(0.25f), // 4
+
+        /**
+         * An eighth note.
+         */
+        Eigth(0.125f), // 8
+
+        /**
+         * A sixteenth note.
+         */
+        Sixteenth(0.0625f), // 16
+
+        /**
+         * A thirty second note.
+         */
+        ThritySecond(0.03125f), // 32
+
+        /**
+         * A sixty fourth note.
+         */
+        SixtyFourth(0.015625f); // 1 / 0.015625f = 64
+
+        Resolution(float value) {
+            mValue = value;
+        }
+
+        private float mValue;
+
+        /**
+         * Returns the amount of steps in a measure for the given phrase
+         * resolution.
+         * 
+         * @param resolution The note resolution.
+         * @return The number of steps in a measure for the given phrase
+         *         resolution.
+         */
+        public final static int toSteps(Resolution resolution) {
+            return (int)(1 / resolution.getValue());
+        }
+
+        public float getValue() {
+            return mValue;
+        }
+
+        private static int beatsInMeasure = 4;
+
+        public static int toStep(float beat, Resolution resolution) {
+            // (beat(5) / 0.0625) / 4
+            return (int)(beat / resolution.getValue()) / beatsInMeasure;
+        }
+
+        public static float toBeat(int step, Resolution resolution) {
+            return (step * resolution.getValue()) * beatsInMeasure;
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Events
     //--------------------------------------------------------------------------

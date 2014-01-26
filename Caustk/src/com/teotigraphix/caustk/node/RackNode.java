@@ -20,11 +20,13 @@
 package com.teotigraphix.caustk.node;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
@@ -34,6 +36,7 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.master.MasterNode;
+import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -53,6 +56,8 @@ public class RackNode extends NodeBase {
     private MasterNode master;
 
     private Map<Integer, MachineNode> machines = new HashMap<Integer, MachineNode>();
+
+    private SequencerNode sequencer;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -150,6 +155,17 @@ public class RackNode extends NodeBase {
         return (T)machines.get(machineIndex);
     }
 
+    //----------------------------------
+    // sequencer
+    //----------------------------------
+
+    /**
+     * The rack's main pattern/song sequencer with output transport panel.
+     */
+    public SequencerNode getSequencer() {
+        return sequencer;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -160,6 +176,7 @@ public class RackNode extends NodeBase {
     RackNode() {
         master = new MasterNode();
         machines = new HashMap<Integer, MachineNode>();
+        sequencer = new SequencerNode();
     }
 
     /**
@@ -276,6 +293,25 @@ public class RackNode extends NodeBase {
         return machineNode;
     }
 
+    public void loadSong(File causticFile) throws IOException {
+        if (!causticFile.exists())
+            throw new IOException(".caustic File not found: " + causticFile);
+
+        RackMessage.LOAD_SONG.send(getRack(), causticFile.getAbsolutePath());
+    }
+
+    public File saveSong(String name) {
+        RackMessage.SAVE_SONG.send(getRack(), name);
+        return RuntimeUtils.getSongFile(name);
+    }
+
+    public File saveSongAs(File file) throws IOException {
+        File song = saveSong(file.getName().replace(".caustic", ""));
+        FileUtils.copyFileToDirectory(song, file.getParentFile());
+        song.delete();
+        return file;
+    }
+
     //--------------------------------------------------------------------------
     // Overridden Protected :: Methods
     //--------------------------------------------------------------------------
@@ -286,6 +322,8 @@ public class RackNode extends NodeBase {
     @Override
     protected void createComponents() {
         master.create();
+        sequencer.create();
+
         // the MachineNodes must already exist in the state
         for (MachineNode machineNode : machines.values()) {
             machineNode.create();
@@ -297,6 +335,8 @@ public class RackNode extends NodeBase {
         // called from CaustkRack.setRackNode() when this node becomes
         // the old node and no longer represents the native rack state
         master.destroy();
+        sequencer.destroy();
+
         for (MachineNode machineNode : machines.values()) {
             machineNode.destroy();
         }
@@ -305,6 +345,8 @@ public class RackNode extends NodeBase {
     @Override
     protected void updateComponents() {
         master.update();
+        sequencer.update();
+
         for (MachineNode machineNode : machines.values()) {
             // calls RackMessage.CREATE
             machineNode.update();
@@ -322,6 +364,8 @@ public class RackNode extends NodeBase {
         }
 
         master.restore();
+        sequencer.restore();
+
         // machines already created, must use addMachine() through the query
         for (int i = 0; i < 14; i++) {
             String name = OSCUtils.toMachineName(getRack(), i);
