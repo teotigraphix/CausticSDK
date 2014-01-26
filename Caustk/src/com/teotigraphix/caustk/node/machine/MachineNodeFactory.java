@@ -17,20 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node;
+package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
-import com.teotigraphix.caustk.node.machine.BasslineMachine;
-import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
-import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
-import com.teotigraphix.caustk.node.machine.FMSynthMachine;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.ModularMachine;
-import com.teotigraphix.caustk.node.machine.OrganMachine;
-import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
-import com.teotigraphix.caustk.node.machine.PadSynthMachine;
-import com.teotigraphix.caustk.node.machine.SubSynthMachine;
-import com.teotigraphix.caustk.node.machine.VocoderMachine;
+import com.teotigraphix.caustk.node.CaustkFactory;
+import com.teotigraphix.caustk.node.NodeFactoryBase;
+import com.teotigraphix.caustk.node.NodeInfo;
 
 /**
  * Factory to create {@link MachineNode}s.

@@ -57,6 +57,7 @@ import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.FMSynthMachine;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.MachineNodeFactory;
 import com.teotigraphix.caustk.node.machine.ModularMachine;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
