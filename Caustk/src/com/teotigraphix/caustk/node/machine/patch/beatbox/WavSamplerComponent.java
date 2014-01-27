@@ -24,8 +24,8 @@ import java.util.TreeMap;
 
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link BeatBoxMachine} sampler component.

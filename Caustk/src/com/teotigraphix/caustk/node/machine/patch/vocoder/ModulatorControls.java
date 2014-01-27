@@ -24,9 +24,9 @@ import java.util.TreeMap;
 
 import com.teotigraphix.caustk.core.osc.VocoderMessage;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link VocoderMachine#getControls()} component.

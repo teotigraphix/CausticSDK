@@ -20,8 +20,8 @@
 package com.teotigraphix.caustk.node.machine.patch.beatbox;
 
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link WavSamplerComponent} channel.

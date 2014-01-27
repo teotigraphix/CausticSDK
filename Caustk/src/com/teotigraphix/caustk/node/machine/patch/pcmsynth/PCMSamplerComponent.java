@@ -24,9 +24,9 @@ import java.util.TreeMap;
 
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link PCMSynthMachine#getSampler()} component.

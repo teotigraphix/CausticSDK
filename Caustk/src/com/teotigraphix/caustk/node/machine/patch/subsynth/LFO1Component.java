@@ -22,9 +22,9 @@ package com.teotigraphix.caustk.node.machine.patch.subsynth;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO1Waveform;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link SubSynthMachine#getLFO1()} component.

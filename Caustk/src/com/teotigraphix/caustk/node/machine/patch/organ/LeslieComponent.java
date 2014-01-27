@@ -20,9 +20,9 @@
 package com.teotigraphix.caustk.node.machine.patch.organ;
 
 import com.teotigraphix.caustk.core.osc.OrganMessage;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link OrganMachine} leslie component.

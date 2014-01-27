@@ -22,9 +22,9 @@ package com.teotigraphix.caustk.node.machine.patch.vocoder;
 import java.io.File;
 
 import com.teotigraphix.caustk.core.osc.VocoderMessage;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link VocoderMachine#getModulator()} component.

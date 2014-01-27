@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The modular synth bay component.

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,34 +17,33 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node.machine.patch;
+package com.teotigraphix.caustk.node.machine.sequencer;
+
+import java.util.TreeMap;
 
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
- * The {@link MachineComponent} is the base class for all {@link MachineNode}
- * composite components.
- * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class MachineComponent extends NodeBase {
+public class ClipsNode extends NodeBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    // key:0..63, does not relate to the bank/pattern assignment
+    private TreeMap<Integer, ClipEntryNode> entries = new TreeMap<Integer, ClipEntryNode>();
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
-    /**
-     * Returns the machine index this component decorates (0..13).
-     */
-    public final int getMachineIndex() {
-        return index;
-    }
+    //----------------------------------
+    // type
+    //----------------------------------
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -53,14 +52,30 @@ public abstract class MachineComponent extends NodeBase {
     /**
      * Serialization
      */
-    public MachineComponent() {
+    public ClipsNode() {
     }
 
-    public MachineComponent(int machineIndex) {
-        setIndex(machineIndex);
+    public ClipsNode(MachineNode machineNode) {
+        // TODO Auto-generated constructor stub
     }
 
-    public MachineComponent(MachineNode machineNode) {
-        this(machineNode.getIndex());
+    //--------------------------------------------------------------------------
+    // Overridden Protected :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    protected void createComponents() {
+    }
+
+    @Override
+    protected void destroyComponents() {
+    }
+
+    @Override
+    protected void updateComponents() {
+    }
+
+    @Override
+    protected void restoreComponents() {
     }
 }

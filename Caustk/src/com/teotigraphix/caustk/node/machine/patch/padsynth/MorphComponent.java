@@ -20,9 +20,9 @@
 package com.teotigraphix.caustk.node.machine.patch.padsynth;
 
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link PadSynthMachine} morph component.

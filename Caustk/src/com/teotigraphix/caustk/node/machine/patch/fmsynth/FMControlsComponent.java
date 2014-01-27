@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.node.machine.patch.fmsynth;
 
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMAlgorithm;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The fm controls component.

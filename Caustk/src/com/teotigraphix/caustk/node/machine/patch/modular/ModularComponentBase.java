@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.teotigraphix.caustk.core.osc.ModularMessage;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 
 public abstract class ModularComponentBase extends MachineComponent {
 

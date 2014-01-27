@@ -23,9 +23,9 @@ import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The {@link PCMSynthMachine#getLFO1()} component.

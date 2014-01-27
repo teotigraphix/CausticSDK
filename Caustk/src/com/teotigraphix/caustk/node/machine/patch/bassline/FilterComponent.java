@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.node.machine.patch.bassline;
 
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The bassline filter component.

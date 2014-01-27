@@ -27,11 +27,11 @@ import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannelNode;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannelNode;
 import com.teotigraphix.caustk.node.machine.patch.PresetNode;
 import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.ClipsNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackNode;
 
@@ -77,6 +77,8 @@ public abstract class MachineNode extends NodeBase {
 
     private TrackNode track;
 
+    private ClipsNode clips;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -88,13 +90,9 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's {@link MachineType}.
      */
-    public MachineType getType() {
+    public final MachineType getType() {
         return type;
     }
-
-    //    private void setType(MachineType type) {
-    //        this.type = type;
-    //    }
 
     //----------------------------------
     // name
@@ -200,10 +198,21 @@ public abstract class MachineNode extends NodeBase {
     //----------------------------------
 
     /**
-     * The machine's track that relates to the main track sequencer.
+     * The machine's track sequencer.
      */
     public TrackNode getTrack() {
         return track;
+    }
+
+    //----------------------------------
+    // clips
+    //----------------------------------
+
+    /**
+     * The machine's clips sequencer.
+     */
+    public ClipsNode getClips() {
+        return clips;
     }
 
     //--------------------------------------------------------------------------
@@ -248,6 +257,7 @@ public abstract class MachineNode extends NodeBase {
         effects.setIndex(index);
         sequencer.setIndex(index);
         track.setIndex(index);
+        clips.setIndex(index);
         create();
     }
 
@@ -277,6 +287,7 @@ public abstract class MachineNode extends NodeBase {
         effects.create();
         sequencer.create();
         track.create();
+        clips.create();
     }
 
     @Override
@@ -292,6 +303,7 @@ public abstract class MachineNode extends NodeBase {
         effects.destroy();
         sequencer.destroy();
         track.destroy();
+        clips.destroy();
     }
 
     @Override
@@ -304,6 +316,7 @@ public abstract class MachineNode extends NodeBase {
         restorePresetProperties();
         sequencer.restore();
         track.restore();
+        clips.restore();
     }
 
     @Override
@@ -318,6 +331,7 @@ public abstract class MachineNode extends NodeBase {
         effects.update();
         sequencer.update();
         track.update();
+        clips.update();
     }
 
     //--------------------------------------------------------------------------
@@ -346,6 +360,7 @@ public abstract class MachineNode extends NodeBase {
         synth = new SynthComponent(this);
         sequencer = new PatternSequencerNode(this);
         track = new TrackNode(this);
+        clips = new ClipsNode(this);
     }
 
     //--------------------------------------------------------------------------

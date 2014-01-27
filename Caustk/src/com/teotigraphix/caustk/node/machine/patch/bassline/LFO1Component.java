@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.node.machine.patch.bassline;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.core.osc.BasslineMessage.LFOTarget;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.MachineComponent;
 
 /**
  * The bassline lfo component.
