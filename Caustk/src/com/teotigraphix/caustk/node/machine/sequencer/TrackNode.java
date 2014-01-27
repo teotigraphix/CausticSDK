@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,6 +118,13 @@ public class TrackNode extends MachineComponent {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Returns an unmodifiable Map of {@link TrackEntryNode}s.
+     */
+    public Map<Integer, TrackEntryNode> getEntries() {
+        return Collections.unmodifiableMap(entries);
     }
 
     /**

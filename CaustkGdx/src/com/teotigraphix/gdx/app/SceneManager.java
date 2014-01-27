@@ -61,7 +61,7 @@ public class SceneManager {
      * @param id The next active scene id, must have already been registered
      *            with the scene manager.
      */
-    public void setScreen(int id) {
+    public void setScene(int id) {
         IGdxScene scene = scenes.get(id);
         pendingScene = scene;
         if (scene == null) {

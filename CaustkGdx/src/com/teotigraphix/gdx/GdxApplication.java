@@ -26,6 +26,7 @@ import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.gdx.app.IGdxModel;
 import com.teotigraphix.gdx.app.ModelRegistry;
@@ -83,6 +84,10 @@ public abstract class GdxApplication implements IGdxApplication {
     @Override
     public CaustkRack getRack() {
         return runtime.getRack();
+    }
+
+    public ICaustkLogger getLogger() {
+        return runtime.getLogger();
     }
 
     @Override
