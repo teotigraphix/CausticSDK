@@ -27,6 +27,7 @@ import java.util.List;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode.NoteFlag;
 
 /**
@@ -38,7 +39,7 @@ import com.teotigraphix.caustk.node.machine.sequencer.NoteNode.NoteFlag;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PatternNode extends NodeBase {
+public class PatternNode extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -57,22 +58,6 @@ public class PatternNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // machineIndex
-    //----------------------------------
-
-    /**
-     * Returns the machine's index for which this pattern is located
-     * within(0..13).
-     * <p>
-     * Could be null of the pattern is a value object with no parent pattern
-     * sequencer.
-     */
-    @Override
-    public Integer getIndex() {
-        return index;
-    }
 
     //----------------------------------
     // name
@@ -121,7 +106,7 @@ public class PatternNode extends NodeBase {
     }
 
     int getNumMeasures(boolean restore) {
-        return (int)PatternSequencerMessage.NUM_MEASURES.query(getRack(), index);
+        return (int)PatternSequencerMessage.NUM_MEASURES.query(getRack(), machineIndex);
     }
 
     /**
@@ -139,7 +124,7 @@ public class PatternNode extends NodeBase {
         if (numMeasures < 1 || numMeasures > 8)
             throw newRangeException(PatternSequencerMessage.NUM_MEASURES, "1,2,4,8", numMeasures);
         this.numMeasures = numMeasures;
-        PatternUtils.setNumMeasures(getRack(), index, getBankIndex(), getPatternIndex(),
+        PatternUtils.setNumMeasures(getRack(), machineIndex, getBankIndex(), getPatternIndex(),
                 numMeasures);
         post(new PatternNodNumMeasuresEvent(this, PatternSequencerControl.NumMeausures, numMeasures));
     }
@@ -242,8 +227,8 @@ public class PatternNode extends NodeBase {
     }
 
     public ShuffleMode getShuffleMode(boolean restore) {
-        return ShuffleMode.fromInt((int)PatternSequencerMessage.SHUFFLE_MODE
-                .query(getRack(), index));
+        return ShuffleMode.fromInt((int)PatternSequencerMessage.SHUFFLE_MODE.query(getRack(),
+                machineIndex));
     }
 
     /**
@@ -255,7 +240,7 @@ public class PatternNode extends NodeBase {
         if (shuffleMode == this.shuffleMode)
             return;
         this.shuffleMode = shuffleMode;
-        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), index, shuffleMode.getValue());
+        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), machineIndex, shuffleMode.getValue());
         post(new PatternNodeShuffleModeEvent(this, PatternSequencerControl.ShuffleMode, shuffleMode));
     }
 
@@ -271,7 +256,7 @@ public class PatternNode extends NodeBase {
     }
 
     public float getShuffleAmount(boolean restore) {
-        return PatternSequencerMessage.SHUFFLE_AMOUNT.query(getRack(), index);
+        return PatternSequencerMessage.SHUFFLE_AMOUNT.query(getRack(), machineIndex);
     }
 
     /**
@@ -285,7 +270,7 @@ public class PatternNode extends NodeBase {
         this.shuffleAmount = shuffleAmount;
         if (shuffleAmount < 0f || shuffleAmount > 1f)
             throw newRangeException("shuffle_amount", "0..1", shuffleAmount);
-        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), index, shuffleAmount);
+        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), machineIndex, shuffleAmount);
         post(new PatternNodeShuffleAmountEvent(this, PatternSequencerControl.ShuffleAmount,
                 shuffleAmount));
     }
@@ -327,7 +312,7 @@ public class PatternNode extends NodeBase {
      */
     public PatternNode(String name, int machineIndex) {
         this(name);
-        this.index = machineIndex;
+        this.machineIndex = machineIndex;
     }
 
     /**
@@ -339,7 +324,7 @@ public class PatternNode extends NodeBase {
      */
     public PatternNode(int bankIndex, int patternIndex, int machineIndex) {
         this.name = PatternUtils.toString(bankIndex, patternIndex);
-        this.index = machineIndex;
+        this.machineIndex = machineIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -365,7 +350,7 @@ public class PatternNode extends NodeBase {
                     + pitch);
 
         // Message: /caustic/[machine_index]/pattern_sequencer/note_data [start] [pitch] [velocity] [end] [flags] 
-        PatternSequencerMessage.NOTE_DATA.send(getRack(), index, startBeat, pitch, velocity,
+        PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, startBeat, pitch, velocity,
                 endBeat, flags);
         note = new NoteNode(pitch, startBeat, endBeat, velocity, flags);
         addNote(note);
@@ -387,10 +372,10 @@ public class PatternNode extends NodeBase {
      */
     public void updateNode(NoteNode noteNode, int pitch, float startBeat, float endBeat,
             float velocity, int flags) {
-        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), index, noteNode.getStart(),
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), machineIndex, noteNode.getStart(),
                 noteNode.getPitch());
         noteNode.set(pitch, startBeat, endBeat, velocity, flags);
-        PatternSequencerMessage.NOTE_DATA.send(getRack(), index, startBeat, pitch, velocity,
+        PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, startBeat, pitch, velocity,
                 endBeat, flags);
         post(new PatternNodeNoteUpdateEvent(this, noteNode));
     }
@@ -481,7 +466,7 @@ public class PatternNode extends NodeBase {
 
     private NoteNode destroyNote(NoteNode noteNode) {
         // Message: /caustic/[machine_index]/pattern_sequencer/note_data [start] [pitch] 
-        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), index, noteNode.getStart(),
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), machineIndex, noteNode.getStart(),
                 noteNode.getPitch());
         removeNote(noteNode);
         post(new PatternNodeNoteDestroyEvent(this, PatternSequencerControl.NoteDataRemove, noteNode));
@@ -519,7 +504,8 @@ public class PatternNode extends NodeBase {
     @Override
     protected void restoreComponents() {
         // create NoteNodes for each note
-        String result = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getRack(), index);
+        String result = PatternSequencerMessage.QUERY_NOTE_DATA
+                .queryString(getRack(), machineIndex);
         if (result == null)
             return;
 
@@ -533,15 +519,15 @@ public class PatternNode extends NodeBase {
     protected void updateComponents() {
         // when this call happens, the parent PatternNode has already
         // set the correct bank/pattern
-        PatternSequencerMessage.NUM_MEASURES.send(getRack(), index, numMeasures);
+        PatternSequencerMessage.NUM_MEASURES.send(getRack(), machineIndex, numMeasures);
         // we already have the NoteNodes, just need to update the machine's pattern_sequencer
         for (NoteNode noteNode : notes) {
-            PatternSequencerMessage.NOTE_DATA.send(getRack(), index, noteNode.getStart(),
+            PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, noteNode.getStart(),
                     noteNode.getPitch(), noteNode.getVelocity(), noteNode.getEnd(),
                     noteNode.getFlags());
         }
-        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), index, shuffleMode.getValue());
-        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), index, shuffleAmount);
+        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), machineIndex, shuffleMode.getValue());
+        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), machineIndex, shuffleAmount);
     }
 
     @Override

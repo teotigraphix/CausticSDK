@@ -25,7 +25,7 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -35,7 +35,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class TrackNode extends NodeBase {
+public class TrackNode extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -48,22 +48,14 @@ public class TrackNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // index
+    // machineIndex
     //----------------------------------
 
-    /**
-     * Returns the machine index.
-     */
     @Override
-    public Integer getIndex() {
-        return index;
-    }
-
-    @Override
-    public void setIndex(Integer index) {
-        super.setIndex(index);
+    public void setMachineIndex(int machineIndex) {
+        super.setMachineIndex(machineIndex);
         for (TrackEntryNode trackEntryNode : entries.values()) {
-            trackEntryNode.setIndex(index);
+            trackEntryNode.setMachineIndex(machineIndex);
         }
     }
 
@@ -160,11 +152,11 @@ public class TrackNode extends NodeBase {
             throw new CausticException("Track entry span invalid, measures exist: " + startMeasure
                     + ", " + endMeasure);
 
-        TrackEntryNode trackEntryNode = new TrackEntryNode(patternNode.getIndex(),
+        TrackEntryNode trackEntryNode = new TrackEntryNode(patternNode.getMachineIndex(),
                 patternNode.getName(), startMeasure, endMeasure);
         entries.put(startMeasure, trackEntryNode);
 
-        SequencerMessage.PATTERN_EVENT.send(getRack(), trackEntryNode.getIndex(),
+        SequencerMessage.PATTERN_EVENT.send(getRack(), trackEntryNode.getMachineIndex(),
                 trackEntryNode.getStartMeasure(), trackEntryNode.getBankIndex(),
                 trackEntryNode.getPatternIndex(), trackEntryNode.getEndMeasure());
 
@@ -194,7 +186,7 @@ public class TrackNode extends NodeBase {
         TrackEntryNode trackEntryNode = entries.remove(startMeasure);
         if (trackEntryNode == null)
             return null;
-        SequencerMessage.PATTERN_EVENT_REMOVE.send(getRack(), trackEntryNode.getIndex(),
+        SequencerMessage.PATTERN_EVENT_REMOVE.send(getRack(), trackEntryNode.getMachineIndex(),
                 trackEntryNode.getStartMeasure(), trackEntryNode.getEndMeasure());
         return trackEntryNode;
     }
@@ -210,7 +202,7 @@ public class TrackNode extends NodeBase {
     }
 
     public TrackNode(int machineIndex) {
-        this.index = machineIndex;
+        this.machineIndex = machineIndex;
     }
 
     public TrackNode(MachineNode machineNode) {
@@ -257,7 +249,7 @@ public class TrackNode extends NodeBase {
     protected void restoreComponents() {
         // create TrackEntryNodes for nodes retured.
 
-        List<String> patterns = PatternUtils.getPatterns(getRack(), index);
+        List<String> patterns = PatternUtils.getPatterns(getRack(), machineIndex);
         for (String pattern : patterns) {
             String[] split = pattern.split(" ");
             int startMeasure = Integer.valueOf(split[1]);
@@ -265,7 +257,7 @@ public class TrackNode extends NodeBase {
             int patternIndex = Integer.valueOf(split[3]);
             int endMeasure = Integer.valueOf(split[4]);
 
-            TrackEntryNode trackEntryNode = new TrackEntryNode(index, PatternUtils.toString(
+            TrackEntryNode trackEntryNode = new TrackEntryNode(machineIndex, PatternUtils.toString(
                     bankIndex, patternIndex), startMeasure, endMeasure);
             entries.put(startMeasure, trackEntryNode);
         }

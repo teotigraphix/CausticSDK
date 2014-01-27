@@ -26,6 +26,7 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectsRackControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -35,7 +36,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see MachineNode#getEffects()
  */
-public class EffectsChannelNode extends NodeBase {
+public class EffectsChannelNode extends MachineComponent {
 
     // If machineIndex is -1, this is the master effect channel
 
@@ -50,14 +51,6 @@ public class EffectsChannelNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    /**
-     * Returns the machines index this channel is connected to.
-     */
-    @Override
-    public Integer getIndex() {
-        return index;
-    }
 
     //----------------------------------
     // slots
@@ -93,7 +86,7 @@ public class EffectsChannelNode extends NodeBase {
     }
 
     public EffectsChannelNode(int machineIndex) {
-        this.index = machineIndex;
+        this.machineIndex = machineIndex;
     }
 
     public EffectsChannelNode(MachineNode machineNode) {
@@ -120,9 +113,9 @@ public class EffectsChannelNode extends NodeBase {
         if (containsEffect(slot))
             throw new CausticException("Effect channel contains effect at slot: " + slot);
 
-        EffectNode effectNode = getFactory().createEffect(index, slot, effectType);
-        EffectsRackMessage.CREATE.send(getRack(), effectNode.getIndex(), effectNode.getSlot(),
-                effectNode.getType().getValue());
+        EffectNode effectNode = getFactory().createEffect(machineIndex, slot, effectType);
+        EffectsRackMessage.CREATE.send(getRack(), effectNode.getMachineIndex(),
+                effectNode.getSlot(), effectNode.getType().getValue());
 
         set(effectNode);
         post(new EffectsChannelNodeCreateEvent(this, EffectsRackControl.Create, effectNode));
@@ -147,7 +140,7 @@ public class EffectsChannelNode extends NodeBase {
         for (int i = 0; i < NUM_SLOTS; i++) {
             if (containsEffect(i)) {
                 EffectNode effectNode = getEfffect(i);
-                EffectsRackMessage.CREATE.send(getRack(), effectNode.getIndex(),
+                EffectsRackMessage.CREATE.send(getRack(), effectNode.getMachineIndex(),
                         effectNode.getSlot(), effectNode.getType().getValue());
                 effectNode.update();
             }
@@ -158,7 +151,7 @@ public class EffectsChannelNode extends NodeBase {
     protected void restoreComponents() {
         for (int i = 0; i < NUM_SLOTS; i++) {
             EffectType type = EffectType.fromInt((int)EffectsRackMessage.TYPE.send(getRack(),
-                    index, i));
+                    machineIndex, i));
             if (type != null) {
                 EffectNode effect;
                 try {

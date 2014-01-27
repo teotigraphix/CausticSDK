@@ -26,6 +26,7 @@ import java.util.HashMap;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -35,13 +36,11 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PatternSequencerNode extends NodeBase {
+public class PatternSequencerNode extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
-
-    private Integer machineIndex;
 
     private Integer currentBankIndex;
 

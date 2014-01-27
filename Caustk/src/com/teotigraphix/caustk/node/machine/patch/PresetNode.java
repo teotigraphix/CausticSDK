@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
-import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -40,7 +40,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PresetNode extends NodeBase {
+public class PresetNode extends MachineComponent {
 
     private transient byte[] restoredData;
 
@@ -67,17 +67,6 @@ public class PresetNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // index
-    //----------------------------------
-
-    /**
-     * Returns the preset's index within it's parent {@link MachineNode}.
-     */
-    public Integer getMachineIndex() {
-        return index;
-    }
-
-    //----------------------------------
     // name
     //----------------------------------
 
@@ -99,7 +88,7 @@ public class PresetNode extends NodeBase {
      * @see SynthMessage#QUERY_PRESET
      */
     public String queryPreset() {
-        return SynthMessage.QUERY_PRESET.queryString(getRack(), index);
+        return SynthMessage.QUERY_PRESET.queryString(getRack(), machineIndex);
     }
 
     //----------------------------------
@@ -172,9 +161,9 @@ public class PresetNode extends NodeBase {
     public final MachineType getType() {
         if (path != null)
             return MachineType.fromExtension(FilenameUtils.getExtension(path));
-        if (index != null)
-            return OSCUtils.toMachineType(getRack(), index);
-        return null;
+        //        if (machineIndex != null)
+        return OSCUtils.toMachineType(getRack(), machineIndex);
+        //        return null;
     }
 
     //--------------------------------------------------------------------------
@@ -188,7 +177,7 @@ public class PresetNode extends NodeBase {
     }
 
     public PresetNode(int machineIndex) {
-        this.index = machineIndex;
+        this.machineIndex = machineIndex;
     }
 
     public PresetNode(MachineNode machineNode) {
@@ -218,7 +207,7 @@ public class PresetNode extends NodeBase {
         if (!presetFile.exists())
             throw new IOException("Preset file does not exist:" + presetFile);
         setPath(presetFile.getAbsolutePath());
-        SynthMessage.LOAD_PRESET.send(getRack(), index, path);
+        SynthMessage.LOAD_PRESET.send(getRack(), machineIndex, path);
     }
 
     /**
@@ -249,7 +238,7 @@ public class PresetNode extends NodeBase {
      * @throws IllegalStateException index of parent machine not set
      */
     public File export() throws IOException {
-        if (index == -1)
+        if (machineIndex == -1)
             throw new IllegalStateException("index of parent machine not set");
         File presetFile = getPresetFile();
         return exportPreset(presetFile.getParentFile(), getName());
@@ -268,7 +257,7 @@ public class PresetNode extends NodeBase {
      * @throws IllegalStateException Cannot export preset
      */
     public File exportPreset(File destDirectory, String fileName) throws IOException {
-        MachineType machineType = OSCUtils.toMachineType(getRack(), index);
+        MachineType machineType = OSCUtils.toMachineType(getRack(), machineIndex);
         if (machineType == null)
             throw new IllegalStateException("Cannot export preset");
 
@@ -277,7 +266,7 @@ public class PresetNode extends NodeBase {
             throw new IOException("Preset source file already exists with name: '" + fileName + "'");
 
         File destFile = new File(destDirectory, fileName + "." + machineType.getExtension());
-        SynthMessage.SAVE_PRESET.send(getRack(), index, fileName);
+        SynthMessage.SAVE_PRESET.send(getRack(), machineIndex, fileName);
 
         // now copy if the locations differ and delete source in /presets dir
         if (!srcFile.equals(destFile)) {
@@ -317,7 +306,7 @@ public class PresetNode extends NodeBase {
                     + "correctly, File not created.");
         }
 
-        SynthMessage.LOAD_PRESET.send(getRack(), index, presetFile.getAbsolutePath());
+        SynthMessage.LOAD_PRESET.send(getRack(), machineIndex, presetFile.getAbsolutePath());
 
         // delete the temp preset file
         FileUtils.deleteQuietly(presetFile);
@@ -346,7 +335,7 @@ public class PresetNode extends NodeBase {
 
     @Override
     protected void restoreComponents() {
-        MachineType type = OSCUtils.toMachineType(getRack(), index);
+        MachineType type = OSCUtils.toMachineType(getRack(), machineIndex);
         if (type == MachineType.Vocoder)
             return; // Vocoder does not save presets
 
@@ -356,7 +345,7 @@ public class PresetNode extends NodeBase {
         // be saved to the .rack archive, we have the original bytes to save
         // otherwise at the time, the client might just ignore these bytes and
         // use the refreshed bytes of the current machine's preset 
-        name = SynthMessage.QUERY_PRESET.queryString(getRack(), index);
+        name = SynthMessage.QUERY_PRESET.queryString(getRack(), machineIndex);
         path = null;
 
         // store the original bytes
@@ -377,12 +366,12 @@ public class PresetNode extends NodeBase {
     }
 
     private void fillRestoredData() {
-        MachineType type = OSCUtils.toMachineType(getRack(), index);
+        MachineType type = OSCUtils.toMachineType(getRack(), machineIndex);
         if (type == null)
             throw new IllegalStateException(
                     "Can only restore bytes during existing native rack session");
         // store the original bytes
         String tempName = "$___" + UUID.randomUUID().toString(); // will be deleted
-        restoredData = PresetUtils.readPresetBytes(getRack(), index, type, tempName);
+        restoredData = PresetUtils.readPresetBytes(getRack(), machineIndex, type, tempName);
     }
 }

@@ -37,6 +37,8 @@ public class TrackEntryNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    private int machineIndex = -1;
+
     private String pattern;
 
     private int startMeasure;
@@ -46,6 +48,18 @@ public class TrackEntryNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // machineIndex
+    //----------------------------------
+
+    public int getMachineIndex() {
+        return machineIndex;
+    }
+
+    public void setMachineIndex(int machineIndex) {
+        this.machineIndex = machineIndex;
+    }
 
     //----------------------------------
     // pattern
@@ -114,7 +128,7 @@ public class TrackEntryNode extends NodeBase {
      * @return
      */
     public float getNumLoops() {
-        int numMeasures = PatternUtils.getNumMeasures(getRack(), index, getBankIndex(),
+        int numMeasures = PatternUtils.getNumMeasures(getRack(), machineIndex, getBankIndex(),
                 getPatternIndex());
         return PatternUtils.getNumLoops(numMeasures, getMeasureSpan());
     }
@@ -140,7 +154,7 @@ public class TrackEntryNode extends NodeBase {
     }
 
     public TrackEntryNode(int machineIndex, String patternName, int startMeasure, int endMeasure) {
-        this.index = machineIndex;
+        this.machineIndex = machineIndex;
         this.pattern = patternName;
         this.startMeasure = startMeasure;
         this.endMeasure = endMeasure;

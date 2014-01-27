@@ -34,6 +34,8 @@ public abstract class MachineComponent extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    protected int machineIndex = -1;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -42,7 +44,16 @@ public abstract class MachineComponent extends NodeBase {
      * Returns the machine index this component decorates (0..13).
      */
     public final int getMachineIndex() {
-        return index;
+        return machineIndex;
+    }
+
+    /**
+     * Sets the owning machine index.
+     * 
+     * @param machineIndex The owner's machine index(0..13).
+     */
+    public void setMachineIndex(int machineIndex) {
+        this.machineIndex = machineIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -56,7 +67,7 @@ public abstract class MachineComponent extends NodeBase {
     }
 
     public MachineComponent(int machineIndex) {
-        setIndex(machineIndex);
+        this.machineIndex = machineIndex;
     }
 
     public MachineComponent(MachineNode machineNode) {

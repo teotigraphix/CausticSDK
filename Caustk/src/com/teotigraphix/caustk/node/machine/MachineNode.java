@@ -59,6 +59,8 @@ public abstract class MachineNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    private int index = -1;
+
     private MachineType type;
 
     private String name;
@@ -82,6 +84,26 @@ public abstract class MachineNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // index
+    //----------------------------------
+
+    /**
+     * Returns the machine index.
+     */
+    public Integer getIndex() {
+        return index;
+    }
+
+    //    /**
+    //     * Sets the machine index.
+    //     * 
+    //     * @param index The machine index (0..13).
+    //     */
+    //    public void setIndex(Integer index) {
+    //        this.index = index;
+    //    }
 
     //----------------------------------
     // type
@@ -250,14 +272,14 @@ public abstract class MachineNode extends NodeBase {
         if (isNative)
             throw new IllegalStateException("machine already exists native");
         this.index = index;
-        volume.setIndex(index);
-        preset.setIndex(index);
-        synth.setIndex(index);
-        mixer.setIndex(index);
-        effects.setIndex(index);
-        sequencer.setIndex(index);
-        track.setIndex(index);
-        clips.setIndex(index);
+        volume.setMachineIndex(index);
+        preset.setMachineIndex(index);
+        synth.setMachineIndex(index);
+        mixer.setMachineIndex(index);
+        effects.setMachineIndex(index);
+        sequencer.setMachineIndex(index);
+        track.setMachineIndex(index);
+        clips.setMachineIndex(index);
         create();
     }
 

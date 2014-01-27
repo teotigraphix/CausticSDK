@@ -26,6 +26,7 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
@@ -35,7 +36,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
  * @since 1.0
  * @see EffectNodeChangeEvent
  */
-public class EffectNode extends NodeBase {
+public class EffectNode extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -50,18 +51,6 @@ public class EffectNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // index
-    //----------------------------------
-
-    /**
-     * Returns the owner machine's rack index.
-     */
-    @Override
-    public Integer getIndex() {
-        return index;
-    }
 
     //----------------------------------
     // slot
@@ -131,7 +120,7 @@ public class EffectNode extends NodeBase {
 
     public EffectNode(int slot, int machineIndex) {
         this.slot = slot;
-        this.index = machineIndex;
+        this.machineIndex = machineIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -169,7 +158,8 @@ public class EffectNode extends NodeBase {
      * @param control The control to query.
      */
     protected final float get(IEffectControl control) {
-        return EffectsRackMessage.GET.query(getRack(), index, getSlot(), control.getControl());
+        return EffectsRackMessage.GET.query(getRack(), machineIndex, getSlot(),
+                control.getControl());
     }
 
     /**
@@ -183,7 +173,8 @@ public class EffectNode extends NodeBase {
      * @param value The new float value for the control.
      */
     protected final void set(IEffectControl control, float value) {
-        EffectsRackMessage.SET.send(getRack(), index, getSlot(), control.getControl(), value);
+        EffectsRackMessage.SET
+                .send(getRack(), machineIndex, getSlot(), control.getControl(), value);
         post(new EffectNodeChangeEvent(this, control, value));
     }
 

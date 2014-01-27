@@ -21,14 +21,14 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 
 import java.util.TreeMap;
 
-import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ClipsNode extends NodeBase {
+public class ClipsNode extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

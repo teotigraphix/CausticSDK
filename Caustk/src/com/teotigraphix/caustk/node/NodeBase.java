@@ -38,8 +38,6 @@ public abstract class NodeBase implements ICaustkNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    protected Integer index = null;
-
     private NodeInfo info = null;
 
     private String label = null;
@@ -51,26 +49,6 @@ public abstract class NodeBase implements ICaustkNode {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // index
-    //----------------------------------
-
-    /**
-     * Returns the index within the context of the node.
-     * <p>
-     * Some index values will point to machine index.
-     */
-    public Integer getIndex() {
-        return index;
-    }
-
-    /**
-     * @param index
-     */
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
 
     //----------------------------------
     // info
