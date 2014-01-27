@@ -86,6 +86,7 @@ public abstract class GdxApplication implements IGdxApplication {
         return runtime.getRack();
     }
 
+    @Override
     public ICaustkLogger getLogger() {
         return runtime.getLogger();
     }

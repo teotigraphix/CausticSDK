@@ -20,9 +20,9 @@
 package com.teotigraphix.caustk.node.machine.sequencer;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
@@ -42,7 +42,7 @@ public class TrackNode extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private Map<Integer, TrackEntryNode> entries = new HashMap<Integer, TrackEntryNode>();
+    private TreeMap<Integer, TrackEntryNode> entries = new TreeMap<Integer, TrackEntryNode>();
 
     //--------------------------------------------------------------------------
     // Public Property API
