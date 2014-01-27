@@ -65,6 +65,8 @@ public abstract class MachineNode extends NodeBase {
 
     private String name;
 
+    private Integer channelIndex;
+
     private VolumeComponent volume;
 
     private PresetNode preset;
@@ -143,6 +145,29 @@ public abstract class MachineNode extends NodeBase {
         this.name = name;
         RackMessage.MACHINE_NAME.send(getRack(), index, name);
         post(new MachineNodeNameEvent(this, RackControl.MachineName, name));
+    }
+
+    //----------------------------------
+    // channelIndex
+    //----------------------------------
+
+    /**
+     * The channel index within the arranger.
+     */
+    public Integer getChannelIndex() {
+        return channelIndex;
+    }
+
+    /**
+     * Sets the layout channel index within the arranger.
+     * 
+     * @param channelIndex The layout channel index.
+     * @see MachineNodeChannelIndexEvent
+     */
+    public void setChannelIndex(Integer channelIndex) {
+        if (channelIndex == this.channelIndex)
+            return;
+        this.channelIndex = channelIndex;
     }
 
     //----------------------------------
@@ -396,6 +421,10 @@ public abstract class MachineNode extends NodeBase {
      * @since 1.0
      */
     public static class MachineNodeEvent extends NodeEvent {
+        public MachineNodeEvent(NodeBase target) {
+            super(target);
+        }
+
         public MachineNodeEvent(NodeBase target, IOSCControl control) {
             super(target, control);
         }
@@ -416,6 +445,24 @@ public abstract class MachineNode extends NodeBase {
         public MachineNodeNameEvent(NodeBase target, RackControl control, String name) {
             super(target, control);
             this.name = name;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see MachineNode#setChannelIndex(Integer)
+     */
+    public static class MachineNodeChannelIndexEvent extends MachineNodeEvent {
+        private int channelIndex;
+
+        public int getChannelIndex() {
+            return channelIndex;
+        }
+
+        public MachineNodeChannelIndexEvent(NodeBase target, int channelIndex) {
+            super(target);
+            this.channelIndex = channelIndex;
         }
     }
 }
