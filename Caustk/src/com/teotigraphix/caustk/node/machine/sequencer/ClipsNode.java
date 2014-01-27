@@ -42,8 +42,40 @@ public class ClipsNode extends MachineComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // type
+    // machineIndex
     //----------------------------------
+
+    @Override
+    public void setMachineIndex(int machineIndex) {
+        super.setMachineIndex(machineIndex);
+        for (ClipEntryNode clipEntryNode : entries.values()) {
+            clipEntryNode.setMachineIndex(machineIndex);
+        }
+    }
+
+    //----------------------------------
+    // entries
+    //----------------------------------
+
+    /**
+     * Returns the number of {@link ClipEntryNode} that exist this
+     * {@link ClipsNode}.
+     */
+    public int size() {
+        return entries.size();
+    }
+
+    public ClipEntryNode getEntry(int index) {
+        return entries.get(index);
+    }
+
+    public ClipEntryNode addEntry() {
+        return null;
+    }
+
+    public ClipEntryNode removeEntry() {
+        return null;
+    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -55,8 +87,12 @@ public class ClipsNode extends MachineComponent {
     public ClipsNode() {
     }
 
+    public ClipsNode(int machineIndex) {
+        this.machineIndex = machineIndex;
+    }
+
     public ClipsNode(MachineNode machineNode) {
-        // TODO Auto-generated constructor stub
+        this(machineNode.getIndex());
     }
 
     //--------------------------------------------------------------------------

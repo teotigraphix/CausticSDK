@@ -31,13 +31,31 @@ public class ClipEntryNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    private int machineIndex = -1;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // type
+    // machineIndex
     //----------------------------------
+
+    /**
+     * The owning {@link ClipsNode}'s machine index.
+     */
+    public int getMachineIndex() {
+        return machineIndex;
+    }
+
+    /**
+     * Sets the machine index.
+     * 
+     * @param machineIndex The machine index (0..13).
+     */
+    public void setMachineIndex(int machineIndex) {
+        this.machineIndex = machineIndex;
+    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -47,6 +65,10 @@ public class ClipEntryNode extends NodeBase {
      * Serialization
      */
     public ClipEntryNode() {
+    }
+
+    public ClipEntryNode(int machineIndex) {
+        this.machineIndex = machineIndex;
     }
 
     //--------------------------------------------------------------------------

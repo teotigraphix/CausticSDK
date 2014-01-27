@@ -53,10 +53,18 @@ public class TrackEntryNode extends NodeBase {
     // machineIndex
     //----------------------------------
 
+    /**
+     * The owning {@link TrackNode}'s machine index.
+     */
     public int getMachineIndex() {
         return machineIndex;
     }
 
+    /**
+     * Sets the machine index.
+     * 
+     * @param machineIndex The machine index (0..13).
+     */
     public void setMachineIndex(int machineIndex) {
         this.machineIndex = machineIndex;
     }
