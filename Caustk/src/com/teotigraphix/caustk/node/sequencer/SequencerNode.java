@@ -415,6 +415,10 @@ public class SequencerNode extends NodeBase {
         return currentBeat;
     }
 
+    public float getCurrentFloatBeat() {
+        return currentFloatBeat;
+    }
+
     private boolean setCurrentBeat(int value) {
         if (value == currentBeat)
             return false;
