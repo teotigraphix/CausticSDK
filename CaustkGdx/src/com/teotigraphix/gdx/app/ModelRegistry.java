@@ -19,7 +19,9 @@
 
 package com.teotigraphix.gdx.app;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.teotigraphix.gdx.IGdxApplication;
@@ -36,6 +38,8 @@ public class ModelRegistry {
     private final IGdxApplication application;
 
     private final Map<Class<? extends IGdxModel>, IGdxModel> map = new HashMap<Class<? extends IGdxModel>, IGdxModel>();
+
+    private final List<IGdxModel> listeners = new ArrayList<IGdxModel>();
 
     private boolean attached = false;
 
@@ -81,6 +85,7 @@ public class ModelRegistry {
         if (map.containsKey(clazz))
             throw new IllegalStateException("Class type exists in registry: " + clazz);
         map.put(clazz, model);
+        listeners.add(model);
         ((GdxModel)model).setApplication(application);
         if (attached)
             model.onAttach();
@@ -95,6 +100,7 @@ public class ModelRegistry {
     public IGdxModel remove(Class<? extends IGdxModel> clazz) {
         IGdxModel removed = map.remove(clazz);
         if (removed != null) {
+            listeners.remove(removed);
             ((GdxModel)removed).setApplication(null);
             removed.onDetach();
         }
@@ -106,7 +112,7 @@ public class ModelRegistry {
      * added.
      */
     public void attach() {
-        for (IGdxModel model : map.values()) {
+        for (IGdxModel model : listeners) {
             model.onAttach();
         }
         attached = true;
@@ -116,7 +122,7 @@ public class ModelRegistry {
      * Detaches the {@link ModelRegistry} from the application.
      */
     public void detach() {
-        for (IGdxModel model : map.values()) {
+        for (IGdxModel model : listeners) {
             model.onDetach();
         }
         attached = false;
