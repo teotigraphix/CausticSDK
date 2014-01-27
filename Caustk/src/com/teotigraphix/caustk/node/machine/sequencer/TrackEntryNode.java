@@ -125,6 +125,13 @@ public class TrackEntryNode extends NodeBase {
     }
 
     /**
+     * Returns the next measure from start plus measure span.
+     */
+    public int getNextMeasure() {
+        return startMeasure + getMeasureSpan();
+    }
+
+    /**
      * Returns the number of loops this entry spans, can be fractional.
      * <p>
      * The calculation is based off the number of measures in the assigned

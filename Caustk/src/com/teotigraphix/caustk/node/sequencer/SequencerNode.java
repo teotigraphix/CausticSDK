@@ -19,10 +19,14 @@
 
 package com.teotigraphix.caustk.node.sequencer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackNode;
 
 /**
@@ -229,6 +233,32 @@ public class SequencerNode extends NodeBase {
      */
     public TrackNode getTrack(int machineIndex) {
         return getRack().getMachine(machineIndex).getTrack();
+    }
+
+    List<TrackNode> getTracks() {
+        ArrayList<TrackNode> result = new ArrayList<TrackNode>();
+        for (int i = 0; i < 14; i++) {
+            MachineNode machine = getRack().getMachine(i);
+            if (machine != null) {
+                result.add(machine.getTrack());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the full measure count taking into account all existing track
+     * measure counts.
+     * <p>
+     * This method returns the greatest track measure count.
+     */
+    public int getMeasureCount() {
+        int appendMeasure = 0;
+        for (TrackNode trackNode : getTracks()) {
+            if (trackNode.getAppendMeasure() > appendMeasure)
+                appendMeasure = trackNode.getAppendMeasure();
+        }
+        return appendMeasure;
     }
 
     //--------------------------------------------------------------------------
@@ -538,6 +568,16 @@ public class SequencerNode extends NodeBase {
         setShuffleAmount(queryShuffleAmount());
         setShuffleMode(queryShuffleMode());
         setSongEndMode(querySongEndMode());
+
+        // update the channel index to default appearance order
+        int index = 0;
+        for (int i = 0; i < 14; i++) {
+            MachineNode machine = getRack().getMachine(i);
+            if (machine != null) {
+                machine.setChannelIndex(index);
+                index++;
+            }
+        }
     }
 
     /**

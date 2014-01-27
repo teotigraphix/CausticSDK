@@ -237,6 +237,38 @@ public class TrackNode extends MachineComponent {
         entry.setPosition(startMeasure, endMeasure);
     }
 
+    /**
+     * Returns the append measure plus it's entries measure span.
+     * <p>
+     * The append measure is the last measure found in the track. The value
+     * returned is the start measure plus the {@link TrackEntryNode}'s measure
+     * span. This value will give the correct placement to append a new entry.
+     */
+    public int getAppendMeasure() {
+        int appendMeasure = 0;
+        TrackEntryNode entry = getLastEntry();
+        if (entry != null) {
+            appendMeasure = entry.getNextMeasure();
+        }
+        return appendMeasure;
+    }
+
+    /**
+     * Returns the last entry in the track, can be <code>null</code> if no
+     * entries exist.
+     */
+    public TrackEntryNode getLastEntry() {
+        int startMeasure = 0;
+        TrackEntryNode result = getEntry(startMeasure);
+        for (TrackEntryNode trackEntryNode : entries.values()) {
+            if (trackEntryNode.getStartMeasure() > startMeasure) {
+                startMeasure = trackEntryNode.getStartMeasure();
+                result = trackEntryNode;
+            }
+        }
+        return result;
+    }
+
     //--------------------------------------------------------------------------
     // Overridden Protected :: Methods
     //--------------------------------------------------------------------------
@@ -269,15 +301,5 @@ public class TrackNode extends MachineComponent {
                     bankIndex, patternIndex), startMeasure, endMeasure);
             entries.put(startMeasure, trackEntryNode);
         }
-    }
-
-    @SuppressWarnings("unused")
-    private int getLastStartMeasure() {
-        int startMeasure = 0;
-        for (TrackEntryNode trackEntryNode : entries.values()) {
-            if (trackEntryNode.getStartMeasure() > startMeasure)
-                startMeasure = trackEntryNode.getStartMeasure();
-        }
-        return startMeasure;
     }
 }

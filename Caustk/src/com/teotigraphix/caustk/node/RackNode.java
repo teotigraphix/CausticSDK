@@ -322,12 +322,13 @@ public class RackNode extends NodeBase {
     @Override
     protected void createComponents() {
         master.create();
-        sequencer.create();
 
         // the MachineNodes must already exist in the state
         for (MachineNode machineNode : machines.values()) {
             machineNode.create();
         }
+
+        sequencer.create();
     }
 
     @Override
@@ -335,22 +336,24 @@ public class RackNode extends NodeBase {
         // called from CaustkRack.setRackNode() when this node becomes
         // the old node and no longer represents the native rack state
         master.destroy();
-        sequencer.destroy();
 
         for (MachineNode machineNode : machines.values()) {
             machineNode.destroy();
         }
+
+        sequencer.destroy();
     }
 
     @Override
     protected void updateComponents() {
         master.update();
-        sequencer.update();
 
         for (MachineNode machineNode : machines.values()) {
             // calls RackMessage.CREATE
             machineNode.update();
         }
+
+        sequencer.update();
     }
 
     @Override
@@ -364,7 +367,6 @@ public class RackNode extends NodeBase {
         }
 
         master.restore();
-        sequencer.restore();
 
         // machines already created, must use addMachine() through the query
         for (int i = 0; i < 14; i++) {
@@ -378,6 +380,8 @@ public class RackNode extends NodeBase {
         for (MachineNode machineNode : machines.values()) {
             machineNode.restore();
         }
+
+        sequencer.restore();
     }
 
     //--------------------------------------------------------------------------
