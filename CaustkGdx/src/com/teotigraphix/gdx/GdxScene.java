@@ -90,6 +90,10 @@ public abstract class GdxScene implements IGdxScene {
         return stage;
     }
 
+    protected void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     //----------------------------------
     // skin
     //----------------------------------
@@ -149,7 +153,7 @@ public abstract class GdxScene implements IGdxScene {
      * Creates a new {@link GdxScene}.
      */
     public GdxScene() {
-        stage = new Stage();
+        setStage(new Stage());
         atlas = new TextureAtlas(Gdx.files.internal("skin.atlas"));
         skin = new Skin(atlas);
     }
