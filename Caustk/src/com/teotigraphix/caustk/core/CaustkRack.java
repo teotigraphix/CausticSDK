@@ -22,7 +22,6 @@ package com.teotigraphix.caustk.core;
 import java.io.File;
 import java.util.Collection;
 
-import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
@@ -39,13 +38,13 @@ import com.teotigraphix.caustk.node.master.MasterVolumeNode;
  * All events dispatched through a {@link NodeBase} uses the rack's
  * {@link #getEventBus()}.
  * <p>
- * The rack is really just a Facade over the audio engine callbacks and
- * {@link RackNode} public API for ease of access.
+ * The rack is really just a Facade over the {@link RackNode} public API for
+ * ease of access.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class CaustkRack implements ISoundGenerator {
+public class CaustkRack extends CaustkEngine {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -53,39 +52,11 @@ public class CaustkRack implements ISoundGenerator {
 
     private final CaustkRuntime runtime;
 
-    private final ISoundGenerator soundGenerator;
-
-    private final EventBus eventBus;
-
     private RackNode rackNode;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // eventBus
-    //----------------------------------
-
-    /**
-     * Returns the single event bus for the {@link CaustkRack}, this event bus
-     * will be constant throughout the whole application life cycle.
-     * <p>
-     * All {@link NodeBase} events are dispatched through this event bus.
-     * {@link NodeBase} instances are never subscribers, only dispatchers.
-     * <p>
-     * A {@link NodeBase} event is prefixed with the node class name and post
-     * fixed with 'Event'. So a {@link RackNode} event would be
-     * <code>RackNodeEvent</code>. Any custom event based off the
-     * <code>RackNodeEvent</code> will look like
-     * <code>RackNodeChangeEvent</code> or <code>RackNodeMachineAddEvent</code>.
-     * 
-     * @see EventBus#register(Object)
-     * @see EventBus#unregister(Object)
-     */
-    public EventBus getEventBus() {
-        return eventBus;
-    }
 
     //----------------------------------
     // rackNode
@@ -162,9 +133,6 @@ public class CaustkRack implements ISoundGenerator {
     // MachineNode
     //----------------------------------
 
-    /**
-     * Returns an unmodifiable collection of {@link MachineNode}s.
-     */
     public Collection<? extends MachineNode> getMachines() {
         return rackNode.getMachines();
     }
@@ -178,9 +146,8 @@ public class CaustkRack implements ISoundGenerator {
     //--------------------------------------------------------------------------
 
     CaustkRack(CaustkRuntime runtime) {
+        super(runtime.getSoundGenerator());
         this.runtime = runtime;
-        this.soundGenerator = runtime.getSoundGenerator();
-        eventBus = new EventBus("rack");
     }
 
     //--------------------------------------------------------------------------
@@ -274,88 +241,5 @@ public class CaustkRack implements ISoundGenerator {
      */
     public void frameChanged(float deltaTime) {
         getRackNode().getSequencer().frameChanged(deltaTime);
-    }
-
-    //--------------------------------------------------------------------------
-    // ISoundGenerator API
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void initialize() {
-        soundGenerator.initialize();
-    }
-
-    @Override
-    public void close() {
-        soundGenerator.close();
-    }
-
-    @Override
-    public int getVerison() {
-        return soundGenerator.getVerison();
-    }
-
-    @Override
-    public final float getCurrentSongMeasure() {
-        return soundGenerator.getCurrentSongMeasure();
-    }
-
-    @Override
-    public final float getCurrentBeat() {
-        return soundGenerator.getCurrentBeat();
-    }
-
-    //----------------------------------
-    // IActivityCycle API
-    //----------------------------------
-
-    @Override
-    public void onStart() {
-        soundGenerator.onStart();
-        soundGenerator.onResume();
-    }
-
-    @Override
-    public void onResume() {
-        soundGenerator.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        soundGenerator.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        soundGenerator.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        soundGenerator.onDestroy();
-    }
-
-    @Override
-    public void onRestart() {
-        soundGenerator.onRestart();
-    }
-
-    @Override
-    public void dispose() {
-        // XXX impl CaustkRack.dispose()
-    }
-
-    //--------------------------------------------------------------------------
-    // ICausticEngine API
-    //--------------------------------------------------------------------------
-
-    @Override
-    public final float sendMessage(String message) {
-        return soundGenerator.sendMessage(message);
-    }
-
-    @Override
-    public final String queryMessage(String message) {
-        return soundGenerator.queryMessage(message);
     }
 }

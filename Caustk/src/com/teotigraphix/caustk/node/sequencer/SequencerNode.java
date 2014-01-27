@@ -46,9 +46,9 @@ public class SequencerNode extends NodeBase {
 
     private float bpm = 120f;
 
-    private ShuffleMode shuffleMode;
+    private ShuffleMode shuffleMode = ShuffleMode.Sixteenth;
 
-    private float shuffleAmount;
+    private float shuffleAmount = 0f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
