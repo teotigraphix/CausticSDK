@@ -42,6 +42,12 @@ public abstract class NodeBase implements ICaustkNode {
 
     private NodeInfo info = null;
 
+    private String label = null;
+
+    private Object icon = null;
+
+    private Object color = null;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -82,6 +88,85 @@ public abstract class NodeBase implements ICaustkNode {
      */
     public void setInfo(NodeInfo info) {
         this.info = info;
+    }
+
+    //----------------------------------
+    // label
+    //----------------------------------
+
+    /**
+     * The node's display label, this human readable name would be different
+     * than a machine readable name.
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Sets the human readable display label.
+     * 
+     * @param label The display label.
+     * @see NodeLabelEvent
+     */
+    public void setLabel(String label) {
+        if (this.label.equals(label))
+            return;
+        this.label = label;
+        post(new NodeLabelEvent(this, label));
+    }
+
+    //----------------------------------
+    // icon
+    //----------------------------------
+
+    /**
+     * The node's iconic visual display.
+     */
+    public Object getIcon() {
+        return icon;
+    }
+
+    /**
+     * Sets the node's iconic visual display.
+     * <p>
+     * Usually a skin part name or relative url to an image file, could also be
+     * a tag identifier in an icon library.
+     * 
+     * @param icon The new icon.
+     * @see NodeIconEvent
+     */
+    public void setIcon(Object icon) {
+        if (icon == this.icon)
+            return;
+        this.icon = icon;
+        post(new NodeIconEvent(this, icon));
+    }
+
+    //----------------------------------
+    // color
+    //----------------------------------
+
+    /**
+     * The node's RGB color assignment.
+     * 
+     * @return A Color object based on the application framework's
+     *         implementation.
+     */
+    public Object getColor() {
+        return color;
+    }
+
+    /**
+     * Sets the color of the node.
+     * 
+     * @param color The color.
+     * @see NodeColorEvent
+     */
+    public void setColor(Object color) {
+        if (color == this.color)
+            return;
+        this.color = color;
+        post(new NodeColorEvent(this, color));
     }
 
     //--------------------------------------------------------------------------
@@ -254,6 +339,63 @@ public abstract class NodeBase implements ICaustkNode {
         public NodeEvent(NodeBase target, IOSCControl control) {
             this.target = target;
             this.control = control;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see NodeBase#setLabel(String)
+     */
+    public static class NodeLabelEvent extends NodeEvent {
+
+        private String label;
+
+        public String getLabel() {
+            return label;
+        }
+
+        public NodeLabelEvent(NodeBase target, String label) {
+            super(target);
+            this.label = label;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see NodeBase#setIcon(Object)
+     */
+    public static class NodeIconEvent extends NodeEvent {
+
+        private Object icon;
+
+        public Object getIcon() {
+            return icon;
+        }
+
+        public NodeIconEvent(NodeBase target, Object icon) {
+            super(target);
+            this.icon = icon;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see NodeBase#setColor(Object)
+     */
+    public static class NodeColorEvent extends NodeEvent {
+
+        private Object color;
+
+        public Object getColor() {
+            return color;
+        }
+
+        public NodeColorEvent(NodeBase target, Object color) {
+            super(target);
+            this.color = color;
         }
     }
 }
