@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.sun.jna.Native;
+import com.teotigraphix.caustk.core.CaustkEngine;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class CausticCoreDesktop {
@@ -50,13 +51,17 @@ public class CausticCoreDesktop {
     }
 
     public float SendOSCMessage(String message) {
-        System.out.println(message);
+        if (CaustkEngine.DEBUG_MESSAGES) {
+            System.out.println("Message: " + message);
+        }
         return caustic.CausticCore_OSCMessage(message, null);
     }
 
     public String QueryOSC(String message) {
         m_byResponseString = new byte[4096];
-
+        if (CaustkEngine.DEBUG_QUERIES) {
+            System.out.println("Query: " + message);
+        }
         int nStrLen = (int)caustic.CausticCore_OSCMessage(message, m_byResponseString);
         return new String(m_byResponseString, 0, nStrLen);
     }

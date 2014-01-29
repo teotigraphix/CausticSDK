@@ -34,6 +34,10 @@ import com.teotigraphix.caustk.node.RackNode;
  */
 public class CaustkEngine implements ISoundGenerator {
 
+    public static boolean DEBUG_QUERIES = false;
+
+    public static boolean DEBUG_MESSAGES = false;
+
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------

@@ -89,7 +89,12 @@ public abstract class CaustkActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        generator = new AndroidSoundGenerator(this, getActivationKey());
+        try {
+            generator = new AndroidSoundGenerator(this, getActivationKey());
+        } catch (CausticException e) {
+            // TODO Handle AndroidSoundGenerator exception for link
+            e.printStackTrace();
+        }
     }
 
     @Override

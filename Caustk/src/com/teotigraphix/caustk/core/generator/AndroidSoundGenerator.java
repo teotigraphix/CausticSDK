@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import android.content.Context;
 
+import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 
@@ -60,13 +61,12 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     //
     //--------------------------------------------------------------------------
 
-    public AndroidSoundGenerator(Context context, int key) {
+    public AndroidSoundGenerator(Context context, int key) throws CausticException {
         causticCore = new Caustic();
         try {
             causticCore.initialize(context, key);
         } catch (UnsatisfiedLinkError e) {
-            causticCore.setDebug(true);
-            // Debug tests, or can't find the .so on the device
+            throw new CausticException("UnsatisfiedLinkError for " + context.getPackageName());
         }
     }
 

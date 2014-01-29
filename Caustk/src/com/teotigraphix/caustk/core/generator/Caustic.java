@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.core.generator;
 import android.util.Log;
 
 import com.singlecellsoftware.causticcore.CausticCore;
+import com.teotigraphix.caustk.core.CaustkEngine;
 
 /**
  * @author Michael Schmalle
@@ -32,37 +33,23 @@ public class Caustic extends CausticCore {
 
     private static final String TAG = "Caustic";
 
-    private boolean mDebug;
-
-    public boolean getDebug() {
-        return mDebug;
-    }
-
-    public void setDebug(boolean value) {
-        mDebug = value;
-    }
-
     public Caustic() {
         super();
     }
 
     @Override
-    public float SendOSCMessage(String msg) {
-        if (!mDebug) {
-            Log.d(TAG, msg);
-            return super.SendOSCMessage(msg);
-        } else {
-            System.out.println(msg);
+    public float SendOSCMessage(String message) {
+        if (!CaustkEngine.DEBUG_MESSAGES) {
+            Log.d(TAG, "Message: " + message);
         }
-        return Float.NaN;
+        return super.SendOSCMessage(message);
     }
 
     @Override
-    public String QueryOSC(String msg) {
-        if (!mDebug) {
-            return super.QueryOSC(msg);
-        } else {
-            return "";
+    public String QueryOSC(String message) {
+        if (!CaustkEngine.DEBUG_QUERIES) {
+            Log.d(TAG, "Query: " + message);
         }
+        return super.QueryOSC(message);
     }
 }
