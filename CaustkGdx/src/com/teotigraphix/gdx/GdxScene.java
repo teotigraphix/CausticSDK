@@ -171,13 +171,15 @@ public abstract class GdxScene implements IGdxScene {
 
     @Override
     public void create() {
-        Gdx.app.log(LOG, "Creating screen: " + getName());
-
+        Gdx.app.log(LOG, "Creating scene: " + getName());
+        createUI();
         // all behaviors create their user interface components
         for (IGdxBehavior behavior : components) {
             behavior.onStart();
         }
     }
+
+    protected abstract void createUI();
 
     @Override
     public void render(float delta) {
@@ -200,14 +202,14 @@ public abstract class GdxScene implements IGdxScene {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log(LOG, "Resizing screen: " + getName() + " to: " + width + " x " + height);
+        Gdx.app.log(LOG, "Resizing scene: " + getName() + " to: " + width + " x " + height);
         stage.setViewport(application.getWidth(), application.getHeight(), true);
         stage.getCamera().translate(-stage.getGutterWidth(), -stage.getGutterHeight(), 0);
     }
 
     @Override
     public void show() {
-        Gdx.app.log(LOG, "Showing screen: " + getName());
+        Gdx.app.log(LOG, "Showing scene: " + getName());
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
 
@@ -218,7 +220,7 @@ public abstract class GdxScene implements IGdxScene {
 
     @Override
     public void hide() {
-        Gdx.app.log(LOG, "Hiding screen: " + getName());
+        Gdx.app.log(LOG, "Hiding scene: " + getName());
 
         for (IGdxBehavior behavior : components) {
             behavior.onHide();
@@ -227,7 +229,7 @@ public abstract class GdxScene implements IGdxScene {
 
     @Override
     public void pause() {
-        Gdx.app.log(LOG, "Pausing screen: " + getName());
+        Gdx.app.log(LOG, "Pausing scene: " + getName());
 
         for (IGdxBehavior behavior : components) {
             behavior.onDisable();
@@ -236,7 +238,7 @@ public abstract class GdxScene implements IGdxScene {
 
     @Override
     public void resume() {
-        Gdx.app.log(LOG, "Resuming screen: " + getName());
+        Gdx.app.log(LOG, "Resuming scene: " + getName());
 
         for (IGdxBehavior behavior : components) {
             behavior.onEnable();
@@ -245,7 +247,7 @@ public abstract class GdxScene implements IGdxScene {
 
     @Override
     public void dispose() {
-        Gdx.app.log(LOG, "Disposing screen: " + getName());
+        Gdx.app.log(LOG, "Disposing scene: " + getName());
 
         // disable all behaviors
         for (IGdxBehavior behavior : components) {
