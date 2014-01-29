@@ -162,8 +162,9 @@ public abstract class GdxApplication implements IGdxApplication {
         //Gdx.app.log("GdxApplication", "render()");
         sceneManager.preRender();
 
-        // getController().frameChanged(Gdx.graphics.getDeltaTime());
-        runtime.getRack().frameChanged(Gdx.graphics.getDeltaTime());
+        if (runtime.getRack().isLoaded()) {
+            runtime.getRack().frameChanged(Gdx.graphics.getDeltaTime());
+        }
 
         sceneManager.postRender();
     }
@@ -224,4 +225,7 @@ public abstract class GdxApplication implements IGdxApplication {
      * @see #onRegisterScenes()
      */
     protected abstract void onCreate();
+
+    public void onSceneChange(IGdxScene scene) {
+    }
 }

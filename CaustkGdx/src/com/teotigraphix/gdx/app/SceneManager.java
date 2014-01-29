@@ -21,6 +21,7 @@ package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
+import com.teotigraphix.gdx.GdxApplication;
 import com.teotigraphix.gdx.IGdxApplication;
 import com.teotigraphix.gdx.IGdxScene;
 
@@ -98,9 +99,8 @@ public class SceneManager {
         this.scene = scene;
 
         if (scene != null) {
-            // XXX sceneProvider.setScene(scene);
             if (!scene.isInitialized()) {
-                // XXX injector.injectMembers(scene);
+                ((GdxApplication)application).onSceneChange(scene);
                 scene.initialize(application);
                 scene.create();
             }

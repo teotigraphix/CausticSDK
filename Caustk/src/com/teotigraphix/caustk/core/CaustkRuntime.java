@@ -46,7 +46,7 @@ public class CaustkRuntime {
 
     private CaustkLogger logger;
 
-    private CaustkRack caustkRack;
+    private CaustkRack rack;
 
     private CaustkFactory factory;
 
@@ -71,7 +71,7 @@ public class CaustkRuntime {
      * Returns the session {@link CaustkRack} instance.
      */
     public final CaustkRack getRack() {
-        return caustkRack;
+        return rack;
     }
 
     /**
@@ -137,7 +137,7 @@ public class CaustkRuntime {
     private void initialize() {
         logger = new CaustkLogger();
         factory = new CaustkFactory(this);
-        caustkRack = new CaustkRack(this);
+        rack = new CaustkRack(this);
     }
 
     //--------------------------------------------------------------------------

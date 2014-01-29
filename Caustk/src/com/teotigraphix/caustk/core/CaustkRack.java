@@ -58,6 +58,13 @@ public class CaustkRack extends CaustkEngine {
     // Public Property API
     //--------------------------------------------------------------------------
 
+    /**
+     * Returns whether the rack has a valid {@link RackNode} backing state.
+     */
+    public final boolean isLoaded() {
+        return rackNode != null;
+    }
+
     //----------------------------------
     // rackNode
     //----------------------------------
