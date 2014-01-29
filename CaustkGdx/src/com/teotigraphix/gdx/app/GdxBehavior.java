@@ -111,6 +111,23 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      */
     @Override
     public void onStart() {
+        for (IGdxBehavior child : children) {
+            child.onStart();
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        for (IGdxBehavior child : children) {
+            child.onUpdate();
+        }
+    }
+
+    @Override
+    public void onReset() {
+        for (IGdxBehavior child : children) {
+            child.onReset();
+        }
     }
 
     /**
