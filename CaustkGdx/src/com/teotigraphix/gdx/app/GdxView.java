@@ -50,7 +50,7 @@ public abstract class GdxView extends Table implements IGdxView {
     /**
      * The view's skin.
      */
-    public Skin getSkin() {
+    public final Skin getSkin() {
         return skin;
     }
 

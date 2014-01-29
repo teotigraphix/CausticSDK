@@ -44,7 +44,7 @@ import com.teotigraphix.caustk.node.master.MasterVolumeNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class CaustkRack extends CaustkEngine {
+public class CaustkRack extends CaustkEngine implements IRackEventBus {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -155,6 +155,20 @@ public class CaustkRack extends CaustkEngine {
     CaustkRack(CaustkRuntime runtime) {
         super(runtime.getSoundGenerator());
         this.runtime = runtime;
+    }
+
+    //--------------------------------------------------------------------------
+    // IRackEventBus API
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void register(Object subscriber) {
+        getEventBus().register(subscriber);
+    }
+
+    @Override
+    public void unregister(Object subscriber) {
+        getEventBus().register(subscriber);
     }
 
     //--------------------------------------------------------------------------
