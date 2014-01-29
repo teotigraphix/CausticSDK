@@ -20,6 +20,7 @@
 package com.teotigraphix.gdx.app;
 
 import com.teotigraphix.gdx.GdxScene;
+import com.teotigraphix.gdx.IGdxApplication;
 import com.teotigraphix.gdx.IGdxScene;
 
 /**
@@ -30,6 +31,11 @@ import com.teotigraphix.gdx.IGdxScene;
  * @since 1.0
  */
 public interface IGdxComponent {
+
+    /**
+     * Returns the component's {@link IGdxApplication} application.
+     */
+    IGdxApplication getApplication();
 
     /**
      * Returns the {@link IGdxScene} this component is attached to.
@@ -45,4 +51,5 @@ public interface IGdxComponent {
      * Add global/application event listeners.
      */
     void onAwake();
+
 }

@@ -33,6 +33,8 @@ import com.teotigraphix.gdx.IGdxScene;
  */
 public abstract class GdxComponent implements IGdxComponent {
 
+    private IGdxApplication application;
+
     private IGdxScene scene;
 
     //--------------------------------------------------------------------------
@@ -40,12 +42,27 @@ public abstract class GdxComponent implements IGdxComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
+    // application
+    //----------------------------------
+
+    @Override
+    public IGdxApplication getApplication() {
+        return application;
+    }
+
+    /**
+     * Sets the {@link IGdxApplication} owning application.
+     * 
+     * @param application The mediator's owning application.
+     */
+    public void setApplication(IGdxApplication application) {
+        this.application = application;
+    }
+
+    //----------------------------------
     // scene
     //----------------------------------
 
-    /**
-     * Returns the mediator's owning {@link IGdxScene}.
-     */
     @Override
     public IGdxScene getScene() {
         return scene;
@@ -54,7 +71,7 @@ public abstract class GdxComponent implements IGdxComponent {
     /**
      * Sets the {@link IGdxScene} owning scene.
      * 
-     * @param screen The mediator's owner.
+     * @param scene The mediator's owner.
      * @see #onSceneChange(IGdxScene)
      */
     public void setScene(IGdxScene scene) {

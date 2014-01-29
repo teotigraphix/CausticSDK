@@ -274,13 +274,15 @@ public abstract class GdxScene implements IGdxScene {
      * <p>
      * Call during {@link #initialize(IGdxApplication)} override.
      * <p>
-     * The behavior's {@link GdxComponent#setScene(IGdxScene)} will be called
-     * during the add logic.
+     * The behavior's {@link GdxComponent#setApplication(IGdxApplication)} and
+     * {@link GdxComponent#setScene(IGdxScene)} will be called during the add
+     * logic.
      * 
      * @param component The {@link IGdxBehavior}.
      * @see IGdxBehavior#onAwake()
      */
     protected final void addComponent(IGdxBehavior component) {
+        ((GdxComponent)component).setApplication(getApplication());
         ((GdxComponent)component).setScene(this);
         components.add(component);
         // all behaviors attach their application events
