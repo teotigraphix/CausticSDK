@@ -68,9 +68,12 @@ public class VolumeComponent extends MachineComponent {
             return;
 
         MachineType machineType = OSCUtils.toMachineType(getRack(), getMachineIndex());
-        if (machineType == MachineType.BeatBox || machineType == MachineType.PCMSynth) {
+        if (machineType == MachineType.BeatBox) {
             if (out < 0f || out > 4f)
                 throw newRangeException("beatbox out", "0..4", out);
+        } else if (machineType == MachineType.PCMSynth) {
+            if (out < 0f || out > 8f)
+                throw newRangeException("pcmsynth out", "0..8", out);
         } else if (machineType == MachineType.FMSynth) {
             if (out < 0f || out > 1f)
                 throw newRangeException("fmsynth out", "0..1", out);

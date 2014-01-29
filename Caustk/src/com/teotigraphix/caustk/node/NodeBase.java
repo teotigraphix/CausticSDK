@@ -46,6 +46,8 @@ public abstract class NodeBase implements ICaustkNode {
 
     private Object color = null;
 
+    private boolean selected = false;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -145,6 +147,29 @@ public abstract class NodeBase implements ICaustkNode {
             return;
         this.color = color;
         post(new NodeColorEvent(this, color));
+    }
+
+    //----------------------------------
+    // color
+    //----------------------------------
+
+    /**
+     * Whether this node is selected.
+     */
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * Sets the selected state of this node.
+     * 
+     * @param selected The selected state.
+     */
+    public void setSelected(boolean selected) {
+        if (selected == this.selected)
+            return;
+        this.selected = selected;
+        post(new NodeSelectedEvent(this, selected));
     }
 
     //--------------------------------------------------------------------------
@@ -374,6 +399,25 @@ public abstract class NodeBase implements ICaustkNode {
         public NodeColorEvent(NodeBase target, Object color) {
             super(target);
             this.color = color;
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see NodeBase#setSelected(boolean)
+     */
+    public static class NodeSelectedEvent extends NodeEvent {
+
+        private boolean selected;
+
+        public boolean isSelected() {
+            return selected;
+        }
+
+        public NodeSelectedEvent(NodeBase target, boolean selected) {
+            super(target);
+            this.selected = selected;
         }
     }
 }
