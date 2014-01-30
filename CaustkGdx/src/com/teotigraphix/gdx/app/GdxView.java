@@ -69,6 +69,15 @@ public abstract class GdxView extends Table implements IGdxView {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    /**
+     * Posts and event through the public API.
+     * 
+     * @param event The event object.
+     */
+    public void post(Object event) {
+        eventBus.post(event);
+    }
+
     @Override
     public void register(Object subscriber) {
         eventBus.register(subscriber);
