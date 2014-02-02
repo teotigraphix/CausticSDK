@@ -24,7 +24,7 @@ import com.teotigraphix.gdx.IGdxApplication;
 
 /**
  * The {@link GdxModel} is the base class for all application models held within
- * the {@link ModelRegistry}.
+ * the {@link ApplicationComponentRegistery}.
  * 
  * @author Michael Schmalle
  * @since 1.0

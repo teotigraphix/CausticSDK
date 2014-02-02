@@ -27,19 +27,19 @@ import java.util.Map;
 import com.teotigraphix.gdx.IGdxApplication;
 
 /**
- * The {@link ModelRegistry} manages a map of {@link IGdxModel}s for the
- * application.
+ * The {@link ApplicationComponentRegistery} manages a map of
+ * {@link IGdxApplicationComponent}s for the application.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ModelRegistry {
+public class ApplicationComponentRegistery {
 
     private final IGdxApplication application;
 
-    private final Map<Class<? extends IGdxModel>, IGdxModel> map = new HashMap<Class<? extends IGdxModel>, IGdxModel>();
+    private final Map<Class<? extends IGdxApplicationComponent>, IGdxApplicationComponent> map = new HashMap<Class<? extends IGdxApplicationComponent>, IGdxApplicationComponent>();
 
-    private final List<IGdxModel> listeners = new ArrayList<IGdxModel>();
+    private final List<IGdxApplicationComponent> listeners = new ArrayList<IGdxApplicationComponent>();
 
     private boolean attached = false;
 
@@ -50,7 +50,7 @@ public class ModelRegistry {
     /**
      * Creates a new model registry.
      */
-    public ModelRegistry(IGdxApplication application) {
+    public ApplicationComponentRegistery(IGdxApplication application) {
         this.application = application;
     }
 
@@ -59,17 +59,17 @@ public class ModelRegistry {
      * 
      * @param clazz The model's class API key.
      */
-    public boolean containsKey(Class<? extends IGdxModel> clazz) {
+    public boolean containsKey(Class<? extends IGdxApplicationComponent> clazz) {
         return map.containsKey(clazz);
     }
 
     /**
-     * Returns the model registered against the clazz API, <code>null</code> if
-     * not found.
+     * Returns the component registered against the clazz API, <code>null</code>
+     * if not found.
      * 
-     * @param clazz The model's class API key.
+     * @param clazz The component's class API key.
      */
-    public <T extends IGdxModel> T get(Class<T> clazz) {
+    public <T extends IGdxApplicationComponent> T get(Class<T> clazz) {
         return clazz.cast(map.get(clazz));
     }
 
@@ -77,53 +77,54 @@ public class ModelRegistry {
      * Register a model instance against a clazz API key.
      * 
      * @param clazz The model's class API key.
-     * @param model The {@link IGdxModel} instance.
+     * @param component The {@link IGdxApplicationComponent} instance.
      * @throws IllegalStateException Class type exists in registry
-     * @see IGdxModel#onAttach()
+     * @see IGdxApplicationComponent#onAttach()
      */
-    public void put(Class<? extends IGdxModel> clazz, IGdxModel model) {
+    public void put(Class<? extends IGdxApplicationComponent> clazz,
+            IGdxApplicationComponent component) {
         if (map.containsKey(clazz))
             throw new IllegalStateException("Class type exists in registry: " + clazz);
-        map.put(clazz, model);
-        listeners.add(model);
-        ((GdxModel)model).setApplication(application);
+        map.put(clazz, component);
+        listeners.add(component);
+        //        ((GdxModel)model).setApplication(application);
         if (attached)
-            model.onAttach();
+            component.onAttach();
     }
 
     /**
      * Removes a model instance using the clazz API key.
      * 
      * @param clazz The model's class API key.
-     * @see IGdxModel#onDetach()
+     * @see IGdxApplicationComponent#onDetach()
      */
-    public IGdxModel remove(Class<? extends IGdxModel> clazz) {
-        IGdxModel removed = map.remove(clazz);
+    public IGdxApplicationComponent remove(Class<? extends IGdxApplicationComponent> clazz) {
+        IGdxApplicationComponent removed = map.remove(clazz);
         if (removed != null) {
             listeners.remove(removed);
-            ((GdxModel)removed).setApplication(null);
+            //            ((GdxModel)removed).setApplication(null);
             removed.onDetach();
         }
         return removed;
     }
 
     /**
-     * Attach the {@link ModelRegistry} after the initial models have been
-     * added.
+     * Attach the {@link ApplicationComponentRegistery} after the initial models
+     * have been added.
      */
     public void attach() {
-        for (IGdxModel model : listeners) {
-            model.onAttach();
+        for (IGdxApplicationComponent component : listeners) {
+            component.onAttach();
         }
         attached = true;
     }
 
     /**
-     * Detaches the {@link ModelRegistry} from the application.
+     * Detaches the {@link ApplicationComponentRegistery} from the application.
      */
     public void detach() {
-        for (IGdxModel model : listeners) {
-            model.onDetach();
+        for (IGdxApplicationComponent component : listeners) {
+            component.onDetach();
         }
         attached = false;
     }

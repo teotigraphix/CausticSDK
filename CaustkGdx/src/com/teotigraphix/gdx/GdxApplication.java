@@ -28,8 +28,9 @@ import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.gdx.app.ApplicationComponentRegistery;
+import com.teotigraphix.gdx.app.IGdxApplicationComponent;
 import com.teotigraphix.gdx.app.IGdxModel;
-import com.teotigraphix.gdx.app.ModelRegistry;
 import com.teotigraphix.gdx.app.SceneManager;
 import com.teotigraphix.gdx.app.StartupExecutor;
 
@@ -58,7 +59,7 @@ public abstract class GdxApplication implements IGdxApplication {
 
     private String applicationName;
 
-    private ModelRegistry modelRegistry;
+    private ApplicationComponentRegistery registry;
 
     private EventBus eventBus;
 
@@ -98,15 +99,21 @@ public abstract class GdxApplication implements IGdxApplication {
 
     @Override
     public <T extends IGdxModel> T get(Class<T> clazz) {
-        return modelRegistry.get(clazz);
+        return registry.get(clazz);
+    }
+
+    @Override
+    public void registerComponent(Class<? extends IGdxApplicationComponent> clazz,
+            IGdxApplicationComponent component) {
+        registry.put(clazz, component);
     }
 
     //--------------------------------------------------------------------------
     // Protected :: Properties
     //--------------------------------------------------------------------------
 
-    protected ModelRegistry getModelRegistry() {
-        return modelRegistry;
+    protected ApplicationComponentRegistery getRegistry() {
+        return registry;
     }
 
     protected SceneManager getSceneManager() {
@@ -126,7 +133,7 @@ public abstract class GdxApplication implements IGdxApplication {
      */
     public GdxApplication(String applicationName, ISoundGenerator soundGenerator) {
         this.applicationName = applicationName;
-        modelRegistry = new ModelRegistry(this);
+        registry = new ApplicationComponentRegistery(this);
         eventBus = new EventBus("application");
         startupExecutor = new StartupExecutor(soundGenerator);
         sceneManager = new SceneManager(this);
@@ -153,7 +160,7 @@ public abstract class GdxApplication implements IGdxApplication {
         }
         onRegisterScenes();
         onRegisterModels();
-        modelRegistry.attach();
+        registry.attach();
         onCreate();
     }
 
@@ -206,7 +213,7 @@ public abstract class GdxApplication implements IGdxApplication {
      * <p>
      * First of the register methods to be called.
      * 
-     * @see ModelRegistry#put(Class, IGdxModel)
+     * @see ApplicationComponentRegistery#put(Class, IGdxModel)
      */
     protected abstract void onRegisterModels();
 

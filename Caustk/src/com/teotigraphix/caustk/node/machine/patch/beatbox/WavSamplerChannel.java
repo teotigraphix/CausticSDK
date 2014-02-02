@@ -40,8 +40,6 @@ public class WavSamplerChannel extends MachineComponent {
 
     private String name;
 
-    private boolean selected;
-
     private boolean mute;
 
     private boolean solo;
@@ -104,26 +102,6 @@ public class WavSamplerChannel extends MachineComponent {
      */
     public void setName(String value) {
         name = value;
-    }
-
-    //----------------------------------
-    // selected
-    //----------------------------------
-
-    /**
-     * Whether this channel is the selected channel in a beatbox.
-     */
-    public boolean isSelected() {
-        return selected;
-    }
-
-    /**
-     * Sets this channel as the selected beatbox channel.
-     * 
-     * @param value Whether selected.
-     */
-    public void setSelected(boolean value) {
-        selected = value;
     }
 
     //----------------------------------

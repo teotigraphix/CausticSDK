@@ -23,6 +23,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.ICaustkLogger;
+import com.teotigraphix.gdx.app.IGdxApplicationComponent;
 import com.teotigraphix.gdx.app.IGdxModel;
 
 /**
@@ -39,6 +40,11 @@ public interface IGdxApplication extends ApplicationListener {
      * applications.
      */
     String getApplicationName();
+
+    /**
+     * The OSC machine name of this application.
+     */
+    String getApplicationId();
 
     /**
      * The width of the application.
@@ -72,5 +78,8 @@ public interface IGdxApplication extends ApplicationListener {
      * @param clazz The model's class API key.
      */
     <T extends IGdxModel> T get(Class<T> clazz);
+
+    void registerComponent(Class<? extends IGdxApplicationComponent> clazz,
+            IGdxApplicationComponent component);
 
 }

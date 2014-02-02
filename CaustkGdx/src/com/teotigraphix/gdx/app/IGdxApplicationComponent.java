@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,24 +19,34 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.google.common.eventbus.EventBus;
 import com.teotigraphix.gdx.IGdxApplication;
 
 /**
- * The {@link IGdxModel} is registered with the
- * {@link ApplicationComponentRegistery} for application state.
- * <p>
- * Models will dispatch events through their local {@link EventBus} or global
- * {@link IGdxApplication#getEventBus()}.
+ * A component that can be registered with the application.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxModel extends IGdxApplicationComponent {
+public interface IGdxApplicationComponent {
 
     /**
-     * The model's local {@link EventBus}.
+     * Returns the {@link IGdxApplication} instance.
      */
-    EventBus getEventBus();
+    IGdxApplication getApplication();
 
+    /**
+     * Called when attached to the {@link ApplicationComponentRegistery}.
+     * <p>
+     * The {@link #getApplication()} instance is guaranteed to be non
+     * <code>null</code>.
+     */
+    void onAttach();
+
+    /**
+     * Called when detached from the {@link ApplicationComponentRegistery}.
+     * <p>
+     * The {@link #getApplication()} instance is set to <code>null</code> after
+     * this method returns.
+     */
+    void onDetach();
 }

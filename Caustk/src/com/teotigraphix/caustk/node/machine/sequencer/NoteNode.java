@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode.Resolution;
 import com.teotigraphix.caustk.utils.MathUtils;
 
 // XXX mutators should only be called from PatternNode
@@ -51,8 +52,6 @@ public class NoteNode extends NodeBase {
 
     @SuppressWarnings("unused")
     private String noteData;
-
-    private boolean selected;
 
     private Object data; // has to contain primitive value objects
 
@@ -146,18 +145,6 @@ public class NoteNode extends NodeBase {
      */
     public boolean isAccent() {
         return (flags & NoteFlag.Accent.getValue()) != 0;
-    }
-
-    //----------------------------------
-    // selected
-    //----------------------------------
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean value) {
-        selected = value;
     }
 
     //----------------------------------
@@ -314,7 +301,7 @@ public class NoteNode extends NodeBase {
         result = prime * result + Float.floatToIntBits(end);
         result = prime * result + flags;
         result = prime * result + pitch;
-        result = prime * result + (selected ? 1231 : 1237);
+        result = prime * result + (isSelected() ? 1231 : 1237);
         result = prime * result + Float.floatToIntBits(start);
         result = prime * result + Float.floatToIntBits(velocity);
         return result;
@@ -335,7 +322,7 @@ public class NoteNode extends NodeBase {
             return false;
         if (pitch != other.pitch)
             return false;
-        if (selected != other.selected)
+        if (isSelected() != other.isSelected())
             return false;
         if (Float.floatToIntBits(start) != Float.floatToIntBits(other.start))
             return false;
