@@ -87,7 +87,8 @@ public class ApplicationComponentRegistery {
             throw new IllegalStateException("Class type exists in registry: " + clazz);
         map.put(clazz, component);
         listeners.add(component);
-        //        ((GdxModel)model).setApplication(application);
+        if (component instanceof GdxModel)
+            ((GdxModel)component).setApplication(application);
         if (attached)
             component.onAttach();
     }
@@ -102,7 +103,8 @@ public class ApplicationComponentRegistery {
         IGdxApplicationComponent removed = map.remove(clazz);
         if (removed != null) {
             listeners.remove(removed);
-            //            ((GdxModel)removed).setApplication(null);
+            if (removed instanceof GdxModel)
+                ((GdxModel)removed).setApplication(null);
             removed.onDetach();
         }
         return removed;
