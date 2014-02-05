@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.app;
+package com.teotigraphix.gdx.app.internal;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.node.CaustkFactory;
 import com.teotigraphix.caustk.node.Library;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-import com.teotigraphix.gdx.IGdxApplication;
+import com.teotigraphix.gdx.app.IApplication;
 
 /**
  * The {@link StartupExecutor} manages and creates the {@link CaustkRuntime}
@@ -76,7 +76,7 @@ public class StartupExecutor {
      * @see {@link RuntimeUtils#STORAGE_ROOT}
      * @see {@link RuntimeUtils#APP_ROOT}
      */
-    public CaustkRuntime create(IGdxApplication gdxApplication) throws CausticException,
+    public CaustkRuntime create(IApplication gdxApplication) throws CausticException,
             IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
         File caustic = new File(root, "caustic");

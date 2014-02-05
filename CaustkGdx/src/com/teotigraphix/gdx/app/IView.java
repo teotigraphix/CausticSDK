@@ -19,37 +19,41 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.teotigraphix.gdx.GdxScene;
-import com.teotigraphix.gdx.IGdxApplication;
-import com.teotigraphix.gdx.IGdxScene;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.google.common.eventbus.EventBus;
 
 /**
- * The {@link IGdxComponent} is registered with a {@link GdxScene} to mediate
- * its views.
+ * The {@link IView} API wraps a view widget.
+ * <p>
+ * The view is the composite component that holds {@link Actor}s an
+ * {@link ISceneBehavior} mediates.
+ * <p>
+ * The view will use it's {@link EventBus} API to post messages to all
+ * subscribers which in this case would be the owning {@link ISceneBehavior}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxComponent {
+public interface IView {
 
     /**
-     * Returns the component's {@link IGdxApplication} application.
+     * Register an Event with the view.
+     * 
+     * @param event The event subscriber.
      */
-    IGdxApplication getApplication();
+    void register(Object subscriber);
 
     /**
-     * Returns the {@link IGdxScene} this component is attached to.
+     * Unregister an Event with the view.
+     * 
+     * @param event The event subscriber.
      */
-    IGdxScene getScene();
+    void unregister(Object subscriber);
 
     /**
-     * Awake is called when the behavior is being loaded.
-     * <p>
-     * The {@link IGdxComponent#getScene()} is guaranteed to be non
-     * <code>null</code>.
-     * <p>
-     * Add global/application event listeners.
+     * Reigsters the view's {@link Skin}.
      */
-    void onAwake();
+    void registerSkin(Skin skin);
 
 }

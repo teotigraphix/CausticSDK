@@ -19,77 +19,85 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.gdx.IGdxApplication;
 
 /**
- * The {@link GdxModel} is the base class for all application models held within
- * the {@link ApplicationComponentRegistery}.
+ * The default implementation of the {@link IView}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxModel implements IGdxModel {
+public abstract class View extends Table implements IView {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private EventBus eventBus;
+    private EventBus eventBus = new EventBus();
 
-    private IGdxApplication application;
+    private Skin skin;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // application
-    //----------------------------------
-
-    @Override
-    public IGdxApplication getApplication() {
-        return application;
-    }
-
-    protected final <T extends IGdxModel> T get(Class<T> clazz) {
-        return application.get(clazz);
-    }
-
-    void setApplication(IGdxApplication application) {
-        this.application = application;
-    }
-
-    //----------------------------------
-    // eventBus
+    // skin
     //----------------------------------
 
     /**
-     * The model's local {@link EventBus}.
+     * The view's skin.
      */
-    @Override
-    public final EventBus getEventBus() {
-        return eventBus;
+    public final Skin getSkin() {
+        return skin;
     }
 
     //--------------------------------------------------------------------------
-    // Constructors
+    // Constructor
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new mediator.
+     * Creates a new view.
      */
-    public GdxModel() {
-        eventBus = new EventBus();
+    public View() {
+        super();
     }
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    @Override
-    public abstract void onAttach();
+    /**
+     * Posts and event through the public API.
+     * 
+     * @param event The event object.
+     */
+    public void post(Object event) {
+        eventBus.post(event);
+    }
 
     @Override
-    public abstract void onDetach();
+    public void register(Object subscriber) {
+        eventBus.register(subscriber);
+    }
+
+    @Override
+    public void unregister(Object subscriber) {
+        eventBus.unregister(subscriber);
+    }
+
+    @Override
+    public void registerSkin(Skin skin) {
+        this.skin = skin;
+        setSkin(skin);
+        onCreate();
+    }
+
+    /**
+     * Called after the {@link Skin} has been registered and composite
+     * components are ready to be created.
+     */
+    protected abstract void onCreate();
 }

@@ -19,7 +19,8 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.teotigraphix.gdx.IGdxApplication;
+import com.teotigraphix.gdx.app.internal.ApplicationComponentRegistery;
+
 
 /**
  * A component that can be registered with the application.
@@ -27,12 +28,12 @@ import com.teotigraphix.gdx.IGdxApplication;
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxApplicationComponent {
+public interface IApplicationComponent {
 
     /**
-     * Returns the {@link IGdxApplication} instance.
+     * Returns the {@link IApplication} instance.
      */
-    IGdxApplication getApplication();
+    IApplication getApplication();
 
     /**
      * Called when attached to the {@link ApplicationComponentRegistery}.
@@ -40,7 +41,7 @@ public interface IGdxApplicationComponent {
      * The {@link #getApplication()} instance is guaranteed to be non
      * <code>null</code>.
      */
-    void onAttach();
+    void onAwake();
 
     /**
      * Called when detached from the {@link ApplicationComponentRegistery}.
@@ -48,5 +49,5 @@ public interface IGdxApplicationComponent {
      * The {@link #getApplication()} instance is set to <code>null</code> after
      * this method returns.
      */
-    void onDetach();
+    void onDestroy();
 }

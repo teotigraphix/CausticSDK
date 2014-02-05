@@ -17,17 +17,17 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.app;
+package com.teotigraphix.gdx.app.internal;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
-import com.teotigraphix.gdx.GdxApplication;
-import com.teotigraphix.gdx.IGdxApplication;
-import com.teotigraphix.gdx.IGdxScene;
+import com.teotigraphix.gdx.app.Application;
+import com.teotigraphix.gdx.app.IApplication;
+import com.teotigraphix.gdx.app.IScene;
 
 /**
- * The {@link SceneManager} manages {@link IGdxScene}s in an
- * {@link IGdxApplication}.
+ * The {@link SceneManager} manages {@link IScene}s in an
+ * {@link IApplication}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -38,15 +38,15 @@ public class SceneManager {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private IGdxScene scene;
+    private IScene scene;
 
-    private IGdxScene pendingScene;
+    private IScene pendingScene;
 
-    private ArrayMap<Integer, IGdxScene> scenes = new ArrayMap<Integer, IGdxScene>();
+    private ArrayMap<Integer, IScene> scenes = new ArrayMap<Integer, IScene>();
 
-    private ArrayMap<Integer, Class<? extends IGdxScene>> sceneTypes = new ArrayMap<Integer, Class<? extends IGdxScene>>();
+    private ArrayMap<Integer, Class<? extends IScene>> sceneTypes = new ArrayMap<Integer, Class<? extends IScene>>();
 
-    private IGdxApplication application;
+    private IApplication application;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -57,16 +57,16 @@ public class SceneManager {
     //----------------------------------
 
     /**
-     * Sets the active {@link IGdxScene} int id.
+     * Sets the active {@link IScene} int id.
      * 
      * @param id The next active scene id, must have already been registered
      *            with the scene manager.
      */
     public void setScene(int id) {
-        IGdxScene scene = scenes.get(id);
+        IScene scene = scenes.get(id);
         pendingScene = scene;
         if (scene == null) {
-            Class<? extends IGdxScene> type = sceneTypes.get(id);
+            Class<? extends IScene> type = sceneTypes.get(id);
             try {
                 pendingScene = type.newInstance();
             } catch (InstantiationException e) {
@@ -79,20 +79,20 @@ public class SceneManager {
     }
 
     /**
-     * Returns the currently active {@link IGdxScene} instance.
+     * Returns the currently active {@link IScene} instance.
      */
-    public IGdxScene getScene() {
+    public IScene getScene() {
         return scene;
     }
 
     /**
-     * Sets the current scene. {@link IGdxScene#hide()} is called on any old
-     * scene, and {@link IGdxScene#show()} is called on the new scene, if any.
+     * Sets the current scene. {@link IScene#hide()} is called on any old
+     * scene, and {@link IScene#show()} is called on the new scene, if any.
      * 
      * @param scene may be {@code null}
      */
-    public void setScene(IGdxScene scene) {
-        IGdxScene oldScene = this.scene;
+    public void setScene(IScene scene) {
+        IScene oldScene = this.scene;
         if (oldScene != null)
             oldScene.hide();
 
@@ -100,7 +100,7 @@ public class SceneManager {
 
         if (scene != null) {
             if (!scene.isInitialized()) {
-                ((GdxApplication)application).onSceneChange(scene);
+                ((Application)application).onSceneChange(scene);
                 scene.initialize(application);
                 scene.create();
             }
@@ -114,11 +114,11 @@ public class SceneManager {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link SceneManager} for the {@link IGdxApplication}.
+     * Creates a new {@link SceneManager} for the {@link IApplication}.
      * 
      * @param application The owning application.
      */
-    public SceneManager(IGdxApplication application) {
+    public SceneManager(IApplication application) {
         this.application = application;
     }
 
@@ -127,20 +127,20 @@ public class SceneManager {
     //--------------------------------------------------------------------------
 
     /**
-     * Adds an {@link IGdxScene} id and type to the available types in the scene
+     * Adds an {@link IScene} id and type to the available types in the scene
      * manager.
      * 
-     * @param id the int id of the {@link IGdxScene} class type, must be unique.
+     * @param id the int id of the {@link IScene} class type, must be unique.
      * @param type The class type.
      */
-    public void addScene(int id, Class<? extends IGdxScene> type) {
+    public void addScene(int id, Class<? extends IScene> type) {
         sceneTypes.put(id, type);
     }
 
     /**
-     * Removes a {@link IGdxScene} id and type.
+     * Removes a {@link IScene} id and type.
      * 
-     * @param id the int id of the {@link IGdxScene} class type.
+     * @param id the int id of the {@link IScene} class type.
      */
     public boolean removeScene(int id) {
         // XXX removeIndex() check
@@ -149,13 +149,13 @@ public class SceneManager {
     }
 
     /**
-     * {@link IGdxApplication#create()}.
+     * {@link IApplication#create()}.
      */
     public void create() {
     }
 
     /**
-     * {@link IGdxApplication#render()}, called <strong>before</strong>
+     * {@link IApplication#render()}, called <strong>before</strong>
      * {@link Rack#frameChanged(float)}.
      */
     public void preRender() {
@@ -166,7 +166,7 @@ public class SceneManager {
     }
 
     /**
-     * {@link IGdxApplication#render()}, called <strong>after</strong>
+     * {@link IApplication#render()}, called <strong>after</strong>
      * {@link Rack#frameChanged(float)}.
      */
     public void postRender() {
@@ -175,7 +175,7 @@ public class SceneManager {
     }
 
     /**
-     * {@link IGdxApplication#resize(int, int)}, resizes the {@link #getScene()}
+     * {@link IApplication#resize(int, int)}, resizes the {@link #getScene()}
      * .
      * 
      * @param width Application width.
@@ -187,7 +187,7 @@ public class SceneManager {
     }
 
     /**
-     * {@link IGdxApplication#pause()}, pauses the {@link #getScene()}.
+     * {@link IApplication#pause()}, pauses the {@link #getScene()}.
      */
     public void pause() {
         if (scene != null)
@@ -195,7 +195,7 @@ public class SceneManager {
     }
 
     /**
-     * {@link IGdxApplication#resume()}, resumes the {@link #getScene()}.
+     * {@link IApplication#resume()}, resumes the {@link #getScene()}.
      */
     public void resume() {
         if (scene != null)
@@ -203,13 +203,13 @@ public class SceneManager {
     }
 
     /**
-     * {@link IGdxApplication#dispose()}, disposes all instantiated
-     * {@link IGdxScene}s that this scene manager contains.
+     * {@link IApplication#dispose()}, disposes all instantiated
+     * {@link IScene}s that this scene manager contains.
      */
     public void dispose() {
         for (Object scene : scenes.values) {
             if (scene != null)
-                ((IGdxScene)scene).dispose();
+                ((IScene)scene).dispose();
         }
     }
 }

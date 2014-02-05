@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx;
+package com.teotigraphix.gdx.app;
 
 import java.io.IOException;
 
@@ -28,19 +28,17 @@ import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.gdx.app.ApplicationComponentRegistery;
-import com.teotigraphix.gdx.app.IGdxApplicationComponent;
-import com.teotigraphix.gdx.app.IGdxModel;
-import com.teotigraphix.gdx.app.SceneManager;
-import com.teotigraphix.gdx.app.StartupExecutor;
+import com.teotigraphix.gdx.app.internal.ApplicationComponentRegistery;
+import com.teotigraphix.gdx.app.internal.SceneManager;
+import com.teotigraphix.gdx.app.internal.StartupExecutor;
 
 /**
- * The base implementation of the {@link IGdxApplication} API.
+ * The base implementation of the {@link IApplication} API.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxApplication implements IGdxApplication {
+public abstract class Application implements IApplication {
 
     // TODO Temp metrics
     static float WIDTH = 800f;
@@ -98,13 +96,13 @@ public abstract class GdxApplication implements IGdxApplication {
     }
 
     @Override
-    public <T extends IGdxModel> T get(Class<T> clazz) {
+    public <T extends IModel> T get(Class<T> clazz) {
         return registry.get(clazz);
     }
 
     @Override
-    public void registerComponent(Class<? extends IGdxApplicationComponent> clazz,
-            IGdxApplicationComponent component) {
+    public void registerComponent(Class<? extends IApplicationComponent> clazz,
+            IApplicationComponent component) {
         registry.put(clazz, component);
     }
 
@@ -125,13 +123,13 @@ public abstract class GdxApplication implements IGdxApplication {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link GdxApplication} specific to the platform
+     * Creates a new {@link Application} specific to the platform
      * {@link ISoundGenerator}.
      * 
      * @param applicationName The name of the application.
      * @param soundGenerator The platform specific {@link ISoundGenerator}.
      */
-    public GdxApplication(String applicationName, ISoundGenerator soundGenerator) {
+    public Application(String applicationName, ISoundGenerator soundGenerator) {
         this.applicationName = applicationName;
         registry = new ApplicationComponentRegistery(this);
         eventBus = new EventBus("application");
@@ -160,7 +158,7 @@ public abstract class GdxApplication implements IGdxApplication {
         }
         onRegisterScenes();
         onRegisterModels();
-        registry.attach();
+        registry.awake();
         onCreate();
     }
 
@@ -209,16 +207,16 @@ public abstract class GdxApplication implements IGdxApplication {
     //--------------------------------------------------------------------------
 
     /**
-     * Register application {@link IGdxModel}s.
+     * Register application {@link IModel}s.
      * <p>
      * First of the register methods to be called.
      * 
-     * @see ApplicationComponentRegistery#put(Class, IGdxModel)
+     * @see ApplicationComponentRegistery#put(Class, IModel)
      */
     protected abstract void onRegisterModels();
 
     /**
-     * Add {@link IGdxScene}s to the application.
+     * Add {@link IScene}s to the application.
      * 
      * @see #onRegisterModels()
      * @see SceneManager#addScene(int, Class)
@@ -226,13 +224,13 @@ public abstract class GdxApplication implements IGdxApplication {
     protected abstract void onRegisterScenes();
 
     /**
-     * Set the initial {@link GdxScene} that starts the application, and perform
+     * Set the initial {@link Scene} that starts the application, and perform
      * any other various setup tasks before the main user interface is shown.
      * 
      * @see #onRegisterScenes()
      */
     protected abstract void onCreate();
 
-    public void onSceneChange(IGdxScene scene) {
+    public void onSceneChange(IScene scene) {
     }
 }

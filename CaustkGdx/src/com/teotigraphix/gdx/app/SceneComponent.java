@@ -22,20 +22,18 @@ package com.teotigraphix.gdx.app;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.gdx.IGdxApplication;
-import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link GdxComponent} is the base class for all view behaviors.
+ * The {@link SceneComponent} is the base class for all view behaviors.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxComponent implements IGdxComponent {
+public abstract class SceneComponent implements ISceneComponent {
 
-    private IGdxApplication application;
+    private IApplication application;
 
-    private IGdxScene scene;
+    private IScene scene;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -46,16 +44,16 @@ public abstract class GdxComponent implements IGdxComponent {
     //----------------------------------
 
     @Override
-    public IGdxApplication getApplication() {
+    public IApplication getApplication() {
         return application;
     }
 
     /**
-     * Sets the {@link IGdxApplication} owning application.
+     * Sets the {@link IApplication} owning application.
      * 
      * @param application The mediator's owning application.
      */
-    public void setApplication(IGdxApplication application) {
+    public void setApplication(IApplication application) {
         this.application = application;
     }
 
@@ -64,17 +62,17 @@ public abstract class GdxComponent implements IGdxComponent {
     //----------------------------------
 
     @Override
-    public IGdxScene getScene() {
+    public IScene getScene() {
         return scene;
     }
 
     /**
-     * Sets the {@link IGdxScene} owning scene.
+     * Sets the {@link IScene} owning scene.
      * 
      * @param scene The mediator's owner.
-     * @see #onSceneChange(IGdxScene)
+     * @see #onSceneChange(IScene)
      */
-    public void setScene(IGdxScene scene) {
+    public void setScene(IScene scene) {
         this.scene = scene;
         onSceneChange(scene);
     }
@@ -110,7 +108,7 @@ public abstract class GdxComponent implements IGdxComponent {
     //----------------------------------
 
     /**
-     * Returns the {@link IGdxApplication}'s {@link EventBus}.
+     * Returns the {@link IApplication}'s {@link EventBus}.
      * <p>
      * Behaviors can listen to application events using this eventBus.
      */
@@ -125,7 +123,7 @@ public abstract class GdxComponent implements IGdxComponent {
     /**
      * Creates a new mediator.
      */
-    public GdxComponent() {
+    public SceneComponent() {
     }
 
     //--------------------------------------------------------------------------
@@ -140,10 +138,10 @@ public abstract class GdxComponent implements IGdxComponent {
     //--------------------------------------------------------------------------
 
     /**
-     * Called when {@link #setScene(IGdxScene)}'s value has changed.
+     * Called when {@link #setScene(IScene)}'s value has changed.
      * 
-     * @param screen The new {@link IGdxScene}.
+     * @param screen The new {@link IScene}.
      */
-    protected void onSceneChange(IGdxScene screen) {
+    protected void onSceneChange(IScene screen) {
     }
 }

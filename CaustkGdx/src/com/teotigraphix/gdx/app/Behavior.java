@@ -23,11 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.gdx.GdxScene;
-import com.teotigraphix.gdx.IGdxScene;
 
 /**
- * The {@link GdxBehavior} is a view behavior that draws and handles UI events
+ * The {@link Behavior} is a view behavior that draws and handles UI events
  * from custom components.
  * <p>
  * The behavior is also capable of handling child behaviors that mediate
@@ -36,15 +34,15 @@ import com.teotigraphix.gdx.IGdxScene;
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
+public abstract class Behavior extends SceneComponent implements ISceneBehavior {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private GdxBehavior parent;
+    private Behavior parent;
 
-    private List<IGdxBehavior> children = new ArrayList<IGdxBehavior>();
+    private List<ISceneBehavior> children = new ArrayList<ISceneBehavior>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -55,16 +53,16 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
     //----------------------------------
 
     /**
-     * Returns the parent {@link GdxBehavior} of this child behavior.
+     * Returns the parent {@link Behavior} of this child behavior.
      * <p>
      * If the parent is <code>null</code>, this behavior is rooted to the
-     * {@link IGdxScene}.
+     * {@link IScene}.
      */
-    public GdxBehavior getParent() {
+    public Behavior getParent() {
         return parent;
     }
 
-    void setParent(GdxBehavior parent) {
+    void setParent(Behavior parent) {
         this.parent = parent;
         setScene(parent.getScene());
         onParentChanged(parent);
@@ -75,32 +73,32 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a {@link GdxBehavior}.
+     * Creates a {@link Behavior}.
      */
-    public GdxBehavior() {
+    public Behavior() {
     }
 
     //--------------------------------------------------------------------------
     // LifeCycle
     //--------------------------------------------------------------------------
 
-    protected void onParentChanged(GdxBehavior parent) {
+    protected void onParentChanged(Behavior parent) {
     }
 
     /**
-     * Called once during {@link GdxScene#create()}, before {@link #onStart()} .
+     * Called once during {@link Scene#create()}, before {@link #onStart()} .
      * <p>
      * Add all global/model event listeners.
      */
     @Override
     public void onAwake() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onAwake();
         }
     }
 
     /**
-     * Called once during {@link GdxScene#create()}, after {@link #onAttach()}.
+     * Called once during {@link Scene#create()}, after {@link #onAwake()}.
      * <p>
      * Create all user interface components that are attached to the
      * {@link #getStage()}.
@@ -111,73 +109,73 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      */
     @Override
     public void onStart() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onStart();
         }
     }
 
     @Override
     public void onUpdate() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onUpdate();
         }
     }
 
     @Override
     public void onReset() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onReset();
         }
     }
 
     /**
-     * Called during {@link IGdxScene#show()}.
+     * Called during {@link IScene#show()}.
      */
     @Override
     public void onShow() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onShow();
         }
     }
 
     /**
-     * Called during {@link IGdxScene#hide()}.
+     * Called during {@link IScene#hide()}.
      */
     @Override
     public void onHide() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onHide();
         }
     }
 
     /**
-     * Called during {@link IGdxScene#resume()}.
+     * Called during {@link IScene#resume()}.
      */
     @Override
     public void onEnable() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onEnable();
         }
     }
 
     /**
-     * Called during {@link IGdxScene#pause()}, or {@link IGdxScene#dispose()}.
+     * Called during {@link IScene#pause()}, or {@link IScene#dispose()}.
      */
     @Override
     public void onDisable() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onDisable();
         }
     }
 
     /**
-     * Called during {@link IGdxScene#dispose()}.
+     * Called during {@link IScene#dispose()}.
      * <p>
-     * Called after {@link #onDetach()}.
+     * Called after {@link #onDestroy()}.
      */
     @Override
     public void onDestroy() {
-        for (IGdxBehavior child : children) {
+        for (ISceneBehavior child : children) {
             child.onDestroy();
         }
         setScene(null);
@@ -192,8 +190,8 @@ public abstract class GdxBehavior extends GdxComponent implements IGdxBehavior {
      * 
      * @param child The {@link GdxBehaviorChild}.
      */
-    protected void addComponent(IGdxBehavior child) {
-        ((GdxBehavior)child).setParent(this);
+    protected void addComponent(ISceneBehavior child) {
+        ((Behavior)child).setParent(this);
         children.add(child);
     }
 

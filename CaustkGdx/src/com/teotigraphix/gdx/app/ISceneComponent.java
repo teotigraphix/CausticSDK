@@ -19,24 +19,38 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.google.common.eventbus.EventBus;
-import com.teotigraphix.gdx.IGdxApplication;
 
 /**
- * The {@link IGdxModel} is registered with the
- * {@link ApplicationComponentRegistery} for application state.
- * <p>
- * Models will dispatch events through their local {@link EventBus} or global
- * {@link IGdxApplication#getEventBus()}.
+ * The {@link ISceneComponent} is registered with a {@link Scene} to mediate
+ * its views.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxModel extends IGdxApplicationComponent {
+public interface ISceneComponent {
 
     /**
-     * The model's local {@link EventBus}.
+     * Returns the component's {@link IApplication} application.
      */
-    EventBus getEventBus();
+    IApplication getApplication();
 
+    /**
+     * Returns the {@link IScene} this component is attached to.
+     */
+    IScene getScene();
+
+    /**
+     * Awake is called when the behavior is being loaded.
+     * <p>
+     * The {@link ISceneComponent#getScene()} is guaranteed to be non
+     * <code>null</code>.
+     * <p>
+     * Add global/application event listeners.
+     */
+    void onAwake();
+
+    /**
+     * Destroy is called when the component instance will be destroyed.
+     */
+    void onDestroy();
 }

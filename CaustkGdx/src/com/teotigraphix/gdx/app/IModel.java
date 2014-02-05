@@ -19,41 +19,24 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.gdx.app.internal.ApplicationComponentRegistery;
 
 /**
- * The {@link IGdxView} API wraps a view widget.
+ * The {@link IModel} is registered with the
+ * {@link ApplicationComponentRegistery} for application state.
  * <p>
- * The view is the composite component that holds {@link Actor}s an
- * {@link IGdxBehavior} mediates.
- * <p>
- * The view will use it's {@link EventBus} API to post messages to all
- * subscribers which in this case would be the owning {@link IGdxBehavior}.
+ * Models will dispatch events through their local {@link EventBus} or global
+ * {@link IApplication#getEventBus()}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxView {
+public interface IModel extends IApplicationComponent {
 
     /**
-     * Register an Event with the view.
-     * 
-     * @param event The event subscriber.
+     * The model's local {@link EventBus}.
      */
-    void register(Object subscriber);
-
-    /**
-     * Unregister an Event with the view.
-     * 
-     * @param event The event subscriber.
-     */
-    void unregister(Object subscriber);
-
-    /**
-     * Reigsters the view's {@link Skin}.
-     */
-    void registerSkin(Skin skin);
+    EventBus getEventBus();
 
 }

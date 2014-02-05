@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx;
+package com.teotigraphix.gdx.app;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,30 +29,27 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.gdx.app.GdxBehavior;
-import com.teotigraphix.gdx.app.GdxComponent;
-import com.teotigraphix.gdx.app.IGdxBehavior;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
- * The {@link GdxScene} is the base implementation of the {@link IGdxScene} API.
+ * The {@link Scene} is the base implementation of the {@link IScene} API.
  * <p>
- * An {@link IGdxScene} holds {@link GdxBehavior}s that assemble a view with
+ * An {@link IScene} holds {@link Behavior}s that assemble a view with
  * user interface components. The behavior is responsible for creating user
  * interface components and mediating the component's events.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class GdxScene implements IGdxScene {
+public abstract class Scene implements IScene {
 
-    public static final String LOG = GdxScene.class.getSimpleName();
+    public static final String LOG = Scene.class.getSimpleName();
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private IGdxApplication application;
+    private IApplication application;
 
     private Stage stage;
 
@@ -66,7 +63,7 @@ public abstract class GdxScene implements IGdxScene {
 
     private Color backgroundColor = new Color();
 
-    private List<IGdxBehavior> components = new ArrayList<IGdxBehavior>();
+    private List<ISceneBehavior> behaviors = new ArrayList<ISceneBehavior>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -77,7 +74,7 @@ public abstract class GdxScene implements IGdxScene {
     //----------------------------------
 
     @Override
-    public IGdxApplication getApplication() {
+    public IApplication getApplication() {
         return application;
     }
 
@@ -150,9 +147,9 @@ public abstract class GdxScene implements IGdxScene {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link GdxScene}.
+     * Creates a new {@link Scene}.
      */
-    public GdxScene() {
+    public Scene() {
         setStage(new Stage());
         atlas = new TextureAtlas(Gdx.files.internal("skin.atlas"));
         skin = new Skin(atlas);
@@ -163,7 +160,7 @@ public abstract class GdxScene implements IGdxScene {
     //--------------------------------------------------------------------------
 
     @Override
-    public void initialize(IGdxApplication application) {
+    public void initialize(IApplication application) {
         this.application = application;
         initialized = true;
         skinLibrary.initialize(skin);
@@ -174,7 +171,7 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.app.log(LOG, "Creating scene: " + getName());
         createUI();
         // all behaviors create their user interface components
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onStart();
         }
     }
@@ -188,7 +185,7 @@ public abstract class GdxScene implements IGdxScene {
                 backgroundColor.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onUpdate();
         }
 
@@ -213,7 +210,7 @@ public abstract class GdxScene implements IGdxScene {
         // set the stage as the input processor
         Gdx.input.setInputProcessor(stage);
 
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onShow();
         }
     }
@@ -222,7 +219,7 @@ public abstract class GdxScene implements IGdxScene {
     public void hide() {
         Gdx.app.log(LOG, "Hiding scene: " + getName());
 
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onHide();
         }
     }
@@ -231,7 +228,7 @@ public abstract class GdxScene implements IGdxScene {
     public void pause() {
         Gdx.app.log(LOG, "Pausing scene: " + getName());
 
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onDisable();
         }
     }
@@ -240,7 +237,7 @@ public abstract class GdxScene implements IGdxScene {
     public void resume() {
         Gdx.app.log(LOG, "Resuming scene: " + getName());
 
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onEnable();
         }
     }
@@ -250,16 +247,16 @@ public abstract class GdxScene implements IGdxScene {
         Gdx.app.log(LOG, "Disposing scene: " + getName());
 
         // disable all behaviors
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onDisable();
         }
 
         // dispose all behaviors
-        for (IGdxBehavior behavior : components) {
+        for (ISceneBehavior behavior : behaviors) {
             behavior.onDestroy();
         }
 
-        components.clear();
+        behaviors.clear();
 
         if (skin != null)
             skin.dispose();
@@ -274,19 +271,19 @@ public abstract class GdxScene implements IGdxScene {
     /**
      * Adds a behavior to the screen.
      * <p>
-     * Call during {@link #initialize(IGdxApplication)} override.
+     * Call during {@link #initialize(IApplication)} override.
      * <p>
-     * The behavior's {@link GdxComponent#setApplication(IGdxApplication)} and
-     * {@link GdxComponent#setScene(IGdxScene)} will be called during the add
+     * The behavior's {@link SceneComponent#setApplication(IApplication)} and
+     * {@link SceneComponent#setScene(IScene)} will be called during the add
      * logic.
      * 
-     * @param component The {@link IGdxBehavior}.
-     * @see IGdxBehavior#onAwake()
+     * @param component The {@link ISceneBehavior}.
+     * @see ISceneBehavior#onAwake()
      */
-    protected final void addComponent(IGdxBehavior component) {
-        ((GdxComponent)component).setApplication(getApplication());
-        ((GdxComponent)component).setScene(this);
-        components.add(component);
+    protected final void addComponent(ISceneBehavior component) {
+        ((SceneComponent)component).setApplication(getApplication());
+        ((SceneComponent)component).setScene(this);
+        behaviors.add(component);
         // all behaviors attach their application events
         component.onAwake();
     }

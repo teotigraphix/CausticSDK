@@ -17,23 +17,21 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx;
+package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.ICaustkLogger;
-import com.teotigraphix.gdx.app.IGdxApplicationComponent;
-import com.teotigraphix.gdx.app.IGdxModel;
 
 /**
- * The {@link IGdxApplication} API is the top level container for all user
+ * The {@link IApplication} API is the top level container for all user
  * interface and Caustic Core logic.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxApplication extends ApplicationListener {
+public interface IApplication extends ApplicationListener {
 
     /**
      * The application name, will show up in the title bar in desktop
@@ -77,9 +75,9 @@ public interface IGdxApplication extends ApplicationListener {
      * 
      * @param clazz The model's class API key.
      */
-    <T extends IGdxModel> T get(Class<T> clazz);
+    <T extends IModel> T get(Class<T> clazz);
 
-    void registerComponent(Class<? extends IGdxApplicationComponent> clazz,
-            IGdxApplicationComponent component);
+    void registerComponent(Class<? extends IApplicationComponent> clazz,
+            IApplicationComponent component);
 
 }

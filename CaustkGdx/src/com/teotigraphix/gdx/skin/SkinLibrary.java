@@ -21,7 +21,7 @@ package com.teotigraphix.gdx.skin;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.teotigraphix.gdx.IGdxScene;
+import com.teotigraphix.gdx.app.IScene;
 
 /**
  * The {@link SkinLibrary} creates the default skin through code instead of a
@@ -54,7 +54,7 @@ public abstract class SkinLibrary {
      * here.
      * 
      * @param skin The {@link Skin} to add styles to.
-     * @see IGdxScene#initialize(com.teotigraphix.gdx.IGdxApplication)
+     * @see IScene#initialize(com.teotigraphix.gdx.IGdxApplication)
      */
     public void initialize(Skin skin) {
         initializeButtonStyle(skin);

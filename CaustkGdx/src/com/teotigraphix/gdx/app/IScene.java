@@ -17,32 +17,32 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx;
+package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.teotigraphix.gdx.app.SceneManager;
+import com.teotigraphix.gdx.app.internal.SceneManager;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
- * The {@link IGdxScene} API allows an application to display states as UI
+ * The {@link IScene} API allows an application to display states as UI
  * screens.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IGdxScene {
+public interface IScene {
 
     /**
-     * Returns the owning {@link IGdxApplication}.
+     * Returns the owning {@link IApplication}.
      */
-    IGdxApplication getApplication();
+    IApplication getApplication();
 
     /**
      * Returns the screen's {@link Stage}.
      * <p>
-     * There is a one to one relationship with a {@link GdxScene} and
+     * There is a one to one relationship with a {@link Scene} and
      * {@link Stage}, the screen owns the stage.
      */
     Stage getStage();
@@ -61,7 +61,7 @@ public interface IGdxScene {
      * <code>setScreen()</code>. This template creation process is as follows
      * (only when uninitialized);
      * <ul>
-     * <li>{@link #initialize(IGdxApplication)}</li>
+     * <li>{@link #initialize(IApplication)}</li>
      * <li>{@link #create()}</li>
      * </ul>
      * After initialized;
@@ -70,20 +70,20 @@ public interface IGdxScene {
      * <li>{@link #resize(int, int)}</li>
      * </ul>
      * 
-     * @see #initialize(IGdxApplication)
-     * @see SceneManager#setScene(IGdxScene)
+     * @see #initialize(IApplication)
+     * @see SceneManager#setScene(IScene)
      */
     boolean isInitialized();
 
     /**
-     * Initializes the {@link IGdxScene}.
+     * Initializes the {@link IScene}.
      * <p>
      * Applications must subclass {@link SkinLibrary} with their {@link Skin}
      * part additions.
      * 
-     * @param gdxApplication The owning {@link IGdxApplication}.
+     * @param gdxApplication The owning {@link IApplication}.
      */
-    void initialize(IGdxApplication gdxApplication);
+    void initialize(IApplication gdxApplication);
 
     /**
      * Creates the screen and it's contents.
