@@ -25,8 +25,8 @@ import java.util.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 /**
- * The {@link Behavior} is a view behavior that draws and handles UI events
- * from custom components.
+ * The {@link Behavior} is a view behavior that draws and handles UI events from
+ * custom components.
  * <p>
  * The behavior is also capable of handling child behaviors that mediate
  * specific parts of a complicated view.
@@ -188,11 +188,12 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     /**
      * Adds a child behavior and sets its parent to this behavior.
      * 
-     * @param child The {@link GdxBehaviorChild}.
+     * @param child The {@link ISceneBehavior}.
      */
     protected void addComponent(ISceneBehavior child) {
         ((Behavior)child).setParent(this);
         children.add(child);
+        child.onAwake();
     }
 
     //    /**
