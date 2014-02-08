@@ -20,11 +20,9 @@
 package com.teotigraphix.gdx.app;
 
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.gdx.app.internal.ApplicationComponentRegistery;
 
 /**
- * The {@link Model} is the base class for all application models held within
- * the {@link ApplicationComponentRegistery}.
+ * The {@link Model} is the base class for all application/sub models.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -50,10 +48,6 @@ public abstract class Model implements IModel {
     @Override
     public IApplication getApplication() {
         return application;
-    }
-
-    protected final <T extends IModel> T get(Class<T> clazz) {
-        return application.get(clazz);
     }
 
     public void setApplication(IApplication application) {
@@ -82,14 +76,4 @@ public abstract class Model implements IModel {
     public Model() {
         eventBus = new EventBus();
     }
-
-    //--------------------------------------------------------------------------
-    // Public API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public abstract void onAwake();
-
-    @Override
-    public abstract void onDestroy();
 }

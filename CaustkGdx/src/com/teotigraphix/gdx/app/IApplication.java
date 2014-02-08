@@ -68,16 +68,4 @@ public interface IApplication extends ApplicationListener {
      * Returns the application level event bus.
      */
     EventBus getEventBus();
-
-    /**
-     * Returns the model registered against the clazz API, <code>null</code> if
-     * not found.
-     * 
-     * @param clazz The model's class API key.
-     */
-    <T extends IModel> T get(Class<T> clazz);
-
-    void registerComponent(Class<? extends IApplicationComponent> clazz,
-            IApplicationComponent component);
-
 }

@@ -19,9 +19,6 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.teotigraphix.gdx.app.internal.ApplicationComponentRegistery;
-
-
 /**
  * A component that can be registered with the application.
  * 
@@ -35,19 +32,19 @@ public interface IApplicationComponent {
      */
     IApplication getApplication();
 
-    /**
-     * Called when attached to the {@link ApplicationComponentRegistery}.
-     * <p>
-     * The {@link #getApplication()} instance is guaranteed to be non
-     * <code>null</code>.
-     */
-    void onAwake();
-
-    /**
-     * Called when detached from the {@link ApplicationComponentRegistery}.
-     * <p>
-     * The {@link #getApplication()} instance is set to <code>null</code> after
-     * this method returns.
-     */
-    void onDestroy();
+    //    /**
+    //     * Called when attached to the {@link ApplicationComponentRegistery}.
+    //     * <p>
+    //     * The {@link #getApplication()} instance is guaranteed to be non
+    //     * <code>null</code>.
+    //     */
+    //    void onAwake();
+    //
+    //    /**
+    //     * Called when detached from the {@link ApplicationComponentRegistery}.
+    //     * <p>
+    //     * The {@link #getApplication()} instance is set to <code>null</code> after
+    //     * this method returns.
+    //     */
+    //    void onDestroy();
 }

@@ -20,11 +20,9 @@
 package com.teotigraphix.gdx.app;
 
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.gdx.app.internal.ApplicationComponentRegistery;
 
 /**
- * The {@link IModel} is registered with the
- * {@link ApplicationComponentRegistery} for application state.
+ * The {@link IModel} is a high level data structure that posts events.
  * <p>
  * Models will dispatch events through their local {@link EventBus} or global
  * {@link IApplication#getEventBus()}.

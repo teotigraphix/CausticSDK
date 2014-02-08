@@ -1,7 +1,6 @@
 
 package com.teotigraphix.gdx.app;
 
-
 public abstract class Controller implements IApplicationComponent {
 
     private IApplication application;
@@ -17,11 +16,5 @@ public abstract class Controller implements IApplicationComponent {
 
     public Controller() {
     }
-
-    @Override
-    public abstract void onAwake();
-
-    @Override
-    public abstract void onDestroy();
 
 }

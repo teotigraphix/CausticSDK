@@ -28,7 +28,6 @@ import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.gdx.app.internal.ApplicationComponentRegistery;
 import com.teotigraphix.gdx.app.internal.SceneManager;
 import com.teotigraphix.gdx.app.internal.StartupExecutor;
 
@@ -56,8 +55,6 @@ public abstract class Application implements IApplication {
     private SceneManager sceneManager;
 
     private String applicationName;
-
-    private ApplicationComponentRegistery registry;
 
     private EventBus eventBus;
 
@@ -95,24 +92,9 @@ public abstract class Application implements IApplication {
         return eventBus;
     }
 
-    @Override
-    public <T extends IModel> T get(Class<T> clazz) {
-        return registry.get(clazz);
-    }
-
-    @Override
-    public void registerComponent(Class<? extends IApplicationComponent> clazz,
-            IApplicationComponent component) {
-        registry.put(clazz, component);
-    }
-
     //--------------------------------------------------------------------------
     // Protected :: Properties
     //--------------------------------------------------------------------------
-
-    protected ApplicationComponentRegistery getRegistry() {
-        return registry;
-    }
 
     protected SceneManager getSceneManager() {
         return sceneManager;
@@ -131,7 +113,6 @@ public abstract class Application implements IApplication {
      */
     public Application(String applicationName, ISoundGenerator soundGenerator) {
         this.applicationName = applicationName;
-        registry = new ApplicationComponentRegistery(this);
         eventBus = new EventBus("application");
         startupExecutor = new StartupExecutor(soundGenerator);
         sceneManager = new SceneManager(this);
@@ -158,7 +139,6 @@ public abstract class Application implements IApplication {
         }
         onRegisterScenes();
         onRegisterModels();
-        registry.awake();
         onCreate();
     }
 
