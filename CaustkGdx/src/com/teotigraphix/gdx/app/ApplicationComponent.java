@@ -1,33 +1,13 @@
-////////////////////////////////////////////////////////////////////////////////
-// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0 
-// 
-// Unless required by applicable law or agreed to in writing, software 
-// distributed under the License is distributed on an "AS IS" BASIS, 
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and 
-// limitations under the License
-// 
-// Author: Michael Schmalle, Principal Architect
-// mschmalle at teotigraphix dot com
-////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.gdx.app;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
 
 /**
- * The {@link Model} is the base class for all application/sub models.
- * 
- * @author Michael Schmalle
- * @since 1.0
+ * Injectable model's for application model, manager, state etc.
  */
-public abstract class Model implements IModel {
+public abstract class ApplicationComponent implements IApplicationComponent {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -50,6 +30,7 @@ public abstract class Model implements IModel {
         return application;
     }
 
+    @Inject
     public void setApplication(IApplication application) {
         this.application = application;
     }
@@ -71,9 +52,19 @@ public abstract class Model implements IModel {
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new mediator.
+     * Creates a new component.
      */
-    public Model() {
+    public ApplicationComponent() {
         eventBus = new EventBus();
+    }
+
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
+    public static class OnAwakeEvent {
+    }
+
+    public static class OnDestoryEvent {
     }
 }

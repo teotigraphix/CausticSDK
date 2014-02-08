@@ -19,8 +19,14 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.google.common.eventbus.EventBus;
+
 /**
- * A component that can be registered with the application.
+ * The {@link IApplicationComponent} is a high level data structure that posts
+ * events.
+ * <p>
+ * Components will dispatch events through their local {@link EventBus} or
+ * global {@link IApplication#getEventBus()}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -28,23 +34,12 @@ package com.teotigraphix.gdx.app;
 public interface IApplicationComponent {
 
     /**
+     * The model's local {@link EventBus}.
+     */
+    EventBus getEventBus();
+
+    /**
      * Returns the {@link IApplication} instance.
      */
     IApplication getApplication();
-
-    //    /**
-    //     * Called when attached to the {@link ApplicationComponentRegistery}.
-    //     * <p>
-    //     * The {@link #getApplication()} instance is guaranteed to be non
-    //     * <code>null</code>.
-    //     */
-    //    void onAwake();
-    //
-    //    /**
-    //     * Called when detached from the {@link ApplicationComponentRegistery}.
-    //     * <p>
-    //     * The {@link #getApplication()} instance is set to <code>null</code> after
-    //     * this method returns.
-    //     */
-    //    void onDestroy();
 }
