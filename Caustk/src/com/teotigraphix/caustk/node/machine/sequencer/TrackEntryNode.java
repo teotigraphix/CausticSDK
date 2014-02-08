@@ -215,4 +215,11 @@ public class TrackEntryNode extends NodeBase {
     @Override
     protected void restoreComponents() {
     }
+
+    @Override
+    public String toString() {
+        return "TrackEntryNode [machineIndex=" + machineIndex + ", pattern=" + pattern
+                + ", startMeasure=" + startMeasure + ", endMeasure=" + endMeasure + "]";
+    }
+
 }

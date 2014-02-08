@@ -162,13 +162,28 @@ public class TrackNode extends MachineComponent {
 
         TrackEntryNode trackEntryNode = new TrackEntryNode(patternNode.getMachineIndex(),
                 patternNode.getName(), startMeasure, endMeasure);
-        entries.put(startMeasure, trackEntryNode);
 
-        SequencerMessage.PATTERN_EVENT.send(getRack(), trackEntryNode.getMachineIndex(),
-                trackEntryNode.getStartMeasure(), trackEntryNode.getBankIndex(),
-                trackEntryNode.getPatternIndex(), trackEntryNode.getEndMeasure());
+        addEntry(trackEntryNode);
 
         return trackEntryNode;
+    }
+
+    /**
+     * Adds an existing {@link TrackEntryNode} to the {@link TrackNode}. This
+     * may happen during an undo operation, where the track entry existed in
+     * this track prior.
+     * 
+     * @param trackEntry The track entry to add.
+     */
+    public void addEntry(TrackEntryNode trackEntry) {
+        if (!isStartValid(trackEntry.getStartMeasure()))
+            throw new IllegalStateException("TrackEntryNode already exists");
+
+        entries.put(trackEntry.getStartMeasure(), trackEntry);
+
+        SequencerMessage.PATTERN_EVENT.send(getRack(), trackEntry.getMachineIndex(),
+                trackEntry.getStartMeasure(), trackEntry.getBankIndex(),
+                trackEntry.getPatternIndex(), trackEntry.getEndMeasure());
     }
 
     /**
@@ -302,4 +317,5 @@ public class TrackNode extends MachineComponent {
             entries.put(startMeasure, trackEntryNode);
         }
     }
+
 }
