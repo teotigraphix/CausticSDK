@@ -34,9 +34,9 @@ import com.teotigraphix.gdx.skin.SkinLibrary;
 /**
  * The {@link Scene} is the base implementation of the {@link IScene} API.
  * <p>
- * An {@link IScene} holds {@link Behavior}s that assemble a view with
- * user interface components. The behavior is responsible for creating user
- * interface components and mediating the component's events.
+ * An {@link IScene} holds {@link Behavior}s that assemble a view with user
+ * interface components. The behavior is responsible for creating user interface
+ * components and mediating the component's events.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -168,12 +168,13 @@ public abstract class Scene implements IScene {
 
     @Override
     public void create() {
-        Gdx.app.log(LOG, "Creating scene: " + getName());
+        Gdx.app.log(LOG, ">>>Creating scene: " + getName());
         createUI();
         // all behaviors create their user interface components
         for (ISceneBehavior behavior : behaviors) {
             behavior.onStart();
         }
+        Gdx.app.log(LOG, "<<<Behaviors started");
     }
 
     protected abstract void createUI();

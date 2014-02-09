@@ -57,14 +57,4 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     public ApplicationComponent() {
         eventBus = new EventBus();
     }
-
-    //--------------------------------------------------------------------------
-    // Events
-    //--------------------------------------------------------------------------
-
-    public static class OnAwakeEvent {
-    }
-
-    public static class OnDestoryEvent {
-    }
 }

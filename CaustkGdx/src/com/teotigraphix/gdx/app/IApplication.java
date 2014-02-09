@@ -68,4 +68,14 @@ public interface IApplication extends ApplicationListener {
      * Returns the application level event bus.
      */
     EventBus getEventBus();
+
+    //--------------------------------------------------------------------------
+    // Events
+    //--------------------------------------------------------------------------
+
+    //    public static class OnApplicationAwakeEvent {
+    //    }
+
+    public static class OnApplicationDestoryEvent {
+    }
 }
