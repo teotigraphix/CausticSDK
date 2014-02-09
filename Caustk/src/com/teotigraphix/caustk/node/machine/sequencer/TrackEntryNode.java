@@ -180,6 +180,18 @@ public class TrackEntryNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     /**
+     * Moves the clip to the new start measure, keeping the same length.
+     * <p>
+     * It's up to the client to adjust the native song sequencer value.
+     * 
+     * @param startMeasure The new start measure.
+     */
+    public void move(int startMeasure) {
+        int length = getMeasureSpan();
+        setPosition(startMeasure, startMeasure + length);
+    }
+
+    /**
      * Sets the new start and end measure positions.
      * 
      * @param startMeasure The new start measure.

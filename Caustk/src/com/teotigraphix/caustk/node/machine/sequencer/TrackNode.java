@@ -214,6 +214,16 @@ public class TrackNode extends MachineComponent {
         return trackEntryNode;
     }
 
+    public void moveEntry(TrackEntryNode trackEntry, int newStartMeausre) {
+        // remove first
+        removeEntry(trackEntry);
+
+        trackEntry.move(newStartMeausre);
+
+        // re-add at new position
+        addEntry(trackEntry);
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
