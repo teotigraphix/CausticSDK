@@ -286,8 +286,8 @@ public class MixerChannelNode extends MachineComponent {
      * @see MixerChannelMessage#MUTE
      */
     public void setMute(boolean mute) {
-        if (mute == this.mute)
-            return;
+        //        if (mute == this.mute)
+        //            return;
         this.mute = mute;
         MixerChannelMessage.MUTE.send(getRack(), machineIndex, mute ? 1 : 0);
         post(MixerChannelControl.Mute, mute ? 1 : 0);
@@ -313,11 +313,22 @@ public class MixerChannelNode extends MachineComponent {
      * @see MixerChannelMessage#SOLO
      */
     public void setSolo(boolean solo) {
-        if (solo == this.solo)
-            return;
+        setSolo(solo, true);
+    }
+
+    public void setSolo(boolean solo, boolean send) {
+        //        if (solo == this.solo)
+        //            return;
         this.solo = solo;
-        MixerChannelMessage.SOLO.send(getRack(), machineIndex, solo ? 1 : 0);
-        post(MixerChannelControl.Solo, solo ? 1 : 0);
+
+        if (send) {
+            MixerChannelMessage.SOLO.send(getRack(), machineIndex, solo ? 1 : 0);
+            post(MixerChannelControl.Solo, solo ? 1 : 0);
+
+            if (solo) {
+                post(new OnRackSoloRefresh(this));
+            }
+        }
     }
 
     //----------------------------------
@@ -493,6 +504,20 @@ public class MixerChannelNode extends MachineComponent {
         public MixerChannelNodeChangeEvent(NodeBase target, MixerChannelControl control, float value) {
             super(target, control);
             this.value = value;
+        }
+    }
+
+    public static class OnRackSoloRefresh extends NodeEvent {
+
+        /**
+         * The soloed mixer channel soloed.
+         */
+        public MixerChannelNode getMixerChannel() {
+            return (MixerChannelNode)super.getTarget();
+        }
+
+        public OnRackSoloRefresh(MixerChannelNode mixerChannel) {
+            super(mixerChannel);
         }
     }
 }
