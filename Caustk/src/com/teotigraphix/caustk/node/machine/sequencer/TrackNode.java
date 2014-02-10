@@ -73,6 +73,41 @@ public class TrackNode extends MachineComponent {
     }
 
     /**
+     * Returns <code>true</code> if the {@link TrackEntryNode} can be moved to
+     * the new start and end measure.
+     * <p>
+     * Note; If the new start and end measures are the same as the entry's start
+     * and end, the check will return <code>false</code> as no move is required.
+     * 
+     * @param trackEntry The {@link TrackEntryNode} to test for move.
+     * @param startMeasure The new start measure.
+     * @param endMeasure The old start measure.
+     */
+    public boolean canMove(TrackEntryNode trackEntry, int startMeasure, int endMeasure) {
+        // no move, same positions
+        if (trackEntry.getStartMeasure() == startMeasure
+                && trackEntry.getEndMeasure() == endMeasure)
+            return false;
+
+        // startMeasure valid, endMeasure 'inside' trackEntry; move left
+        if (!isContained(startMeasure) && trackEntry.isContained(endMeasure)) {
+            return true;
+        }
+
+        // end valid OR the end is a start of another entry, start inside self; move right
+        if ((!isContained(endMeasure) || containsStart(endMeasure))
+                && trackEntry.isContained(startMeasure)) {
+            return true;
+        }
+
+        return isSpanValid(startMeasure, endMeasure);
+    }
+
+    public boolean containsStart(int measure) {
+        return entries.containsKey(measure);
+    }
+
+    /**
      * Returns whether the measure is a start measure of an entry in this track.
      * 
      * @param measure The measure to test for start.

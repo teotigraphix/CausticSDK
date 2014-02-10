@@ -149,10 +149,13 @@ public class TrackEntryNode extends NodeBase {
     }
 
     /**
-     * Returns <code>true</code> if the measure could be a start measure in this
-     * entry's loop span.
+     * Returns <code>true</code> when the measure conflicts with this entry's
+     * start measure or located within the start measure + measure span.
+     * <p>
+     * If the measure equals the end measure, this check will return
+     * <code>false</code>, the measure is not contained within this entry.
      * 
-     * @param measure The contained measure.
+     * @param measure The measure to test for containment within.
      */
     public boolean isContained(int measure) {
         return measure >= startMeasure && measure < endMeasure;
