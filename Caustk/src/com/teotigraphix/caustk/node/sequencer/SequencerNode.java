@@ -76,6 +76,7 @@ public class SequencerNode extends NodeBase {
         this.isPlaying = isPlaying;
         OutputPanelMessage.PLAY.send(getRack(), isPlaying ? 1 : 0);
         resetPostion();
+        post(new SequencerNodeTransportChangeEvent(this));
     }
 
     //----------------------------------
@@ -277,6 +278,8 @@ public class SequencerNode extends NodeBase {
 
     /**
      * Plays the pattern sequencer using {@link SequencerMode#Pattern}.
+     * 
+     * @see SequencerNodeTransportChangeEvent
      */
     public void playLooped() {
         play(SequencerMode.Pattern);
@@ -284,6 +287,8 @@ public class SequencerNode extends NodeBase {
 
     /**
      * Plays the song sequencer using {@link SequencerMode#Song}.
+     * 
+     * @see SequencerNodeTransportChangeEvent
      */
     public void play() {
         play(SequencerMode.Song);
@@ -294,6 +299,7 @@ public class SequencerNode extends NodeBase {
      * parameter.
      * 
      * @param mode The {@link SequencerMode}, Pattern or Song.
+     * @see SequencerNodeTransportChangeEvent
      */
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
@@ -302,6 +308,8 @@ public class SequencerNode extends NodeBase {
 
     /**
      * Stops the current sequencer from playing.
+     * 
+     * @see SequencerNodeTransportChangeEvent
      */
     public void stop() {
         setIsPlaying(false);
@@ -754,6 +762,12 @@ public class SequencerNode extends NodeBase {
                     return mode;
             }
             return null;
+        }
+    }
+
+    public static class SequencerNodeTransportChangeEvent extends NodeEvent {
+        public SequencerNodeTransportChangeEvent(NodeBase target) {
+            super(target);
         }
     }
 }

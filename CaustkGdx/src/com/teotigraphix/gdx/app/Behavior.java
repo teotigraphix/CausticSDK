@@ -65,6 +65,7 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     void setParent(Behavior parent) {
         this.parent = parent;
         setScene(parent.getScene());
+        setApplication(parent.getApplication());
         onParentChanged(parent);
     }
 

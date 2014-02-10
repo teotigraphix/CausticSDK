@@ -99,8 +99,8 @@ public class ToggleButton extends TextButton {
      */
     public void check(boolean checked) {
         // event is not posted when widget is disabled
-        setDisabled(false);
-        setChecked(checked);
         setDisabled(true);
+        setChecked(checked);
+        setDisabled(false);
     }
 }
