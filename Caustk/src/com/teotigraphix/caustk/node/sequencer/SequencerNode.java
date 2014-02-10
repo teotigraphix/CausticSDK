@@ -76,7 +76,7 @@ public class SequencerNode extends NodeBase {
         this.isPlaying = isPlaying;
         OutputPanelMessage.PLAY.send(getRack(), isPlaying ? 1 : 0);
         resetPostion();
-        post(new SequencerNodeTransportChangeEvent(this));
+        post(new SequencerNodeTransportChangeEvent(this, isPlaying));
     }
 
     //----------------------------------
@@ -156,12 +156,14 @@ public class SequencerNode extends NodeBase {
      * 
      * @param bpm The beats per minute (60.0..250).
      * @see OutputPanelMessage#BPM
+     * @see SequencerNodeBPMChangeEvent
      */
     public final void setBPM(float bpm) {
         if (bpm == this.bpm)
             return;
         this.bpm = bpm;
         OutputPanelMessage.BPM.send(getRack(), bpm);
+        post(new SequencerNodeBPMChangeEvent(this, bpm));
     }
 
     //----------------------------------
@@ -766,8 +768,28 @@ public class SequencerNode extends NodeBase {
     }
 
     public static class SequencerNodeTransportChangeEvent extends NodeEvent {
-        public SequencerNodeTransportChangeEvent(NodeBase target) {
+        private boolean isPlaying;
+
+        public boolean isPlaying() {
+            return isPlaying;
+        }
+
+        public SequencerNodeTransportChangeEvent(NodeBase target, boolean isPlaying) {
             super(target);
+            this.isPlaying = isPlaying;
+        }
+    }
+
+    public static class SequencerNodeBPMChangeEvent extends NodeEvent {
+        private float bpm;
+
+        public float getBPM() {
+            return bpm;
+        }
+
+        public SequencerNodeBPMChangeEvent(NodeBase target, float bpm) {
+            super(target);
+            this.bpm = bpm;
         }
     }
 }

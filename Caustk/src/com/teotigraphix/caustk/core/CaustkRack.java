@@ -31,6 +31,7 @@ import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
+import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 
 /**
  * The {@link CaustkRack} holds the current {@link RackNode} session state.
@@ -146,6 +147,14 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
 
     public MachineNode getMachine(int machineIndex) {
         return rackNode.getMachine(machineIndex);
+    }
+
+    //----------------------------------
+    // SequencerNode
+    //----------------------------------
+
+    public SequencerNode getSequencer() {
+        return rackNode.getSequencer();
     }
 
     //--------------------------------------------------------------------------
