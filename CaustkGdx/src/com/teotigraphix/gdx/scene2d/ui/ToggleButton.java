@@ -19,9 +19,12 @@
 
 package com.teotigraphix.gdx.scene2d.ui;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Scaling;
 
 /**
  * The {@link ToggleButton} simply bypasses the
@@ -39,7 +42,12 @@ public class ToggleButton extends TextButton {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    boolean isToggle = true;
+    private boolean isToggle = true;
+
+    @SuppressWarnings("unused")
+    private Drawable imageDrawable;
+
+    private Image image;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -63,6 +71,18 @@ public class ToggleButton extends TextButton {
      */
     public void setToggle(boolean value) {
         isToggle = value;
+    }
+
+    //----------------------------------
+    // imageDrawable
+    //----------------------------------
+
+    public void setImageDrawable(Drawable imageDrawable) {
+        this.imageDrawable = imageDrawable;
+        image = new Image(imageDrawable);
+        image.setScaling(Scaling.none);
+        addActor(image);
+        invalidate();
     }
 
     @Override
@@ -103,4 +123,12 @@ public class ToggleButton extends TextButton {
         setChecked(checked);
         setDisabled(false);
     }
+
+    @Override
+    public void layout() {
+        super.layout();
+        if (image != null)
+            image.setBounds(0f, 0f, getWidth(), getHeight());
+    }
+
 }
