@@ -103,6 +103,10 @@ public class TrackNode extends MachineComponent {
         return isSpanValid(startMeasure, endMeasure);
     }
 
+    public boolean canDrop(int startMeasure, int endMeasure) {
+        return isSpanValid(startMeasure, endMeasure);
+    }
+
     public boolean containsStart(int measure) {
         return entries.containsKey(measure);
     }
@@ -128,8 +132,8 @@ public class TrackNode extends MachineComponent {
      * @param measure The measure to test for containment.
      */
     public boolean isContained(int measure) {
-        for (TrackEntryNode trackEntryNode : entries.values()) {
-            if (trackEntryNode.isContained(measure))
+        for (TrackEntryNode entry : entries.values()) {
+            if (entry.isContained(measure))
                 return true;
         }
         return false;

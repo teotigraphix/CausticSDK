@@ -447,7 +447,7 @@ public class PatternNode extends MachineComponent {
 
     @Override
     public String toString() {
-        return "[PatternNode(" + name + ")]";
+        return "[PatternNode(" + name + ", " + numMeasures + ")]";
     }
 
     //--------------------------------------------------------------------------

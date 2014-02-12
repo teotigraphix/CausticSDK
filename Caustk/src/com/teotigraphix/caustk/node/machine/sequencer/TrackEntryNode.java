@@ -196,13 +196,17 @@ public class TrackEntryNode extends NodeBase {
 
     /**
      * Sets the new start and end measure positions.
+     * <p>
+     * Note: Do not use in normal move operations, this is used with dnd
+     * operations where the entry does not represent a real track entry in the
+     * {@link TrackNode}.
      * 
      * @param startMeasure The new start measure.
      * @param endMeasure The new end measure.
-     * @throws CausticError start and end mesaures are the same
+     * @throws CausticError start and end measures are the same
      * @throws CausticError end measure is less than start measure
      */
-    void setPosition(int startMeasure, int endMeasure) {
+    public void setPosition(int startMeasure, int endMeasure) {
         if (endMeasure == startMeasure)
             throw new CausticError("start and end mesaures are the same");
         if (endMeasure < startMeasure)
