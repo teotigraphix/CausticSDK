@@ -90,7 +90,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         if (renderers.size == 0)
             return;
 
-        renderers.get(selectedIndex).setIsSelected(false);
+        if (selectedIndex != -1)
+            renderers.get(selectedIndex).setIsSelected(false);
         selectedIndex = value;
         if (value != -1)
             renderers.get(selectedIndex).setIsSelected(true);

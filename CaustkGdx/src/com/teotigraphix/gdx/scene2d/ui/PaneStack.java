@@ -114,9 +114,9 @@ public class PaneStack extends ControlTable {
         if (buttonBarAlign == Align.top) {
             //add(buttonBar).expandX().height(30f).align(Align.left);
             //add(extrasBar);
-            add(toolBar).expandX().fillX();
+            add(toolBar).expandX().fillX().padTop(4f).padLeft(4f).padRight(4f);
             row();
-            add(stack).fill().expand();
+            add(stack).fill().expand().pad(4f);
         } else {
             add(stack).fill().expand();
             row();
