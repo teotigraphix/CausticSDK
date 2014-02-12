@@ -30,33 +30,58 @@ public class ScrollList extends ScrollPane {
 
     private Array<?> items;
 
+    private AdvancedList<LabelRow> list;
+
+    //----------------------------------
+    // items
+    //----------------------------------
+
     public Array<?> getItems() {
         return items;
     }
 
-    public void setItems(Array<?> scenes) {
-        items = scenes;
+    public void setItems(Array<?> items) {
+        this.items = items;
         if (list == null) {
-            list = new AdvancedList<LabelRow>(scenes.toArray(), LabelRow.class, skin);
+            list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class, skin);
             list.createChildren(skin);
             setWidget(list);
         } else {
-            list.setItems(scenes.toArray());
+            list.setItems(items.toArray());
         }
     }
 
-    private AdvancedList<LabelRow> list;
-
-    public static class LabelRow extends ListRowRenderer {
-
-        public LabelRow(Skin skin, String styleName) {
-            super(skin, styleName);
-        }
-
-        public LabelRow(Skin skin) {
-            super(skin);
-        }
+    public Object getItem(int index) {
+        return items.get(index);
     }
+
+    //----------------------------------
+    // selectedIndex
+    //----------------------------------
+
+    public int getSelectedIndex() {
+        return list.getSelectedIndex();
+    }
+
+    public void setSelectedIndex(int value) {
+        list.setSelectedIndex(value);
+    }
+
+    //----------------------------------
+    // selectedItem
+    //----------------------------------
+
+    public Object getSelectedItem() {
+        return getItem(getSelectedIndex());
+    }
+
+    public void setSelectable(boolean selectable) {
+        list.setSelectable(selectable);
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public ScrollList(Skin skin) {
         super(null, skin);
@@ -77,30 +102,34 @@ public class ScrollList extends ScrollPane {
         initialize();
     }
 
-    private void initialize() {
-        if (items != null) {
-            list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class, skin);
-            setWidget(list);
-        }
-    }
-
-    public int getSelectedIndex() {
-        return list.getSelectedIndex();
-    }
-
-    public void setSelectedIndex(int value) {
-        list.setSelectedIndex(value);
-    }
-
-    public Object getItem(int index) {
-        return items.get(index);
-    }
-
-    public Object getSelectedItem() {
-        return getItem(getSelectedIndex());
-    }
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
     public void refresh() {
         list.refresh();
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
+
+    private void initialize() {
+        setFadeScrollBars(false);
+        setFlickScroll(false);
+        list = new AdvancedList<LabelRow>(new Object[] {}, LabelRow.class, skin);
+        list.createChildren(skin);
+        setWidget(list);
+    }
+
+    public static class LabelRow extends ListRowRenderer {
+
+        public LabelRow(Skin skin, String styleName) {
+            super(skin, styleName);
+        }
+
+        public LabelRow(Skin skin) {
+            super(skin);
+        }
     }
 }

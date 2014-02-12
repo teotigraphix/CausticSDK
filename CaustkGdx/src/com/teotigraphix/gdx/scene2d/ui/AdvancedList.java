@@ -11,8 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pools;
 import com.teotigraphix.gdx.scene2d.ui.ScrollList.LabelRow;
 
 // http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=11108&p=50062&hilit=list#p50062
@@ -30,6 +32,16 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     private Class<T> type;
 
     private Skin skin;
+
+    private boolean mouseDownChange = true;
+
+    public boolean isMouseDownChange() {
+        return mouseDownChange;
+    }
+
+    public void setMouseDownChange(boolean mouseDownChange) {
+        this.mouseDownChange = mouseDownChange;
+    }
 
     //private OnAdvancedListListener listener;
 
@@ -123,11 +135,25 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         return renderers;
     }
 
-    public void addRenderItem(final T item) {
+    public void addRenderItem(T item) {
         item.addListener(new ClickListener() {
+            @SuppressWarnings("unchecked")
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                setSelectedIndex(renderers.indexOf(item, false));
+                T listenerActor = (T)event.getListenerActor(); // renderer item
+                if (selectable && !mouseDownChange) {
+                    fireChange(renderers.indexOf(listenerActor, false));
+                }
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                T listenerActor = (T)event.getListenerActor(); // renderer item
+                if (selectable && mouseDownChange) {
+                    fireChange(renderers.indexOf(listenerActor, false));
+                }
+                return false;
             }
         });
 
@@ -203,9 +229,21 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     public void setItems(Object[] items) {
         this.items = items;
         renderers.clear();
+        selectedIndex = 0;
         clearChildren();
         createChildren(skin);
         invalidateHierarchy();
     }
 
+    private void fireChange(int newSelectedIndex) {
+        int oldIndex = selectedIndex;
+        if (oldIndex != newSelectedIndex) {
+            ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
+            setSelectedIndex(newSelectedIndex);
+            if (fire(changeEvent)) {
+                setSelectedIndex(oldIndex);
+            }
+            Pools.free(changeEvent);
+        }
+    }
 }
