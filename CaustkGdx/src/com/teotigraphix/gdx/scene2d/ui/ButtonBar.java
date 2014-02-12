@@ -110,7 +110,7 @@ public class ButtonBar extends ControlTable {
                 }
                 row();
             } else {
-                Cell cell = add(button).uniform().fill().expand().align(Align.left).minHeight(35f);
+                Cell cell = add(button).uniform().fill().expand().align(Align.left).space(4f);
                 if (maxButtonSize != null)
                     cell.maxWidth(maxButtonSize);
             }
