@@ -107,6 +107,41 @@ public class TrackNode extends MachineComponent {
         return isSpanValid(startMeasure, endMeasure);
     }
 
+    public boolean canTrimRight(TrackEntryNode trackEntry, int newStartMeasure) {
+        if (newStartMeasure == trackEntry.getStartMeasure())
+            return false;
+
+        for (TrackEntryNode entry : entries.values()) {
+            if (entry != trackEntry && entry.isContained(newStartMeasure))
+                return false;
+        }
+
+        // reverse check
+        //int startMeasure = trackEntry.getStartMeasure();
+        //for (int i = startMeasure - 1; i >= 0; i--) {
+        //            for (TrackEntryNode entry : entries.values()) {
+        //                if (entry != trackEntry && entry.isContained(i))
+        //                    return false;
+        //            }
+
+        return true;
+    }
+
+    public boolean canTrimLeft(TrackEntryNode trackEntry, int newEndMeasure) {
+        boolean testLeft = false;
+        for (TrackEntryNode entry : entries.values()) {
+            if (testLeft) {
+                int startMeasure = entry.getStartMeasure();
+                if (newEndMeasure <= startMeasure)
+                    return true;
+            }
+            if (trackEntry == entry) {
+                testLeft = true;
+            }
+        }
+        return false;
+    }
+
     public boolean containsStart(int measure) {
         return entries.containsKey(measure);
     }
