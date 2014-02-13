@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.teotigraphix.gdx.scene2d.ControlTable;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.OnButtonBarListener;
 
 /**
@@ -19,7 +18,9 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.OnButtonBarListener;
  * 
  * @author Michael Schmalle
  */
-public class PaneStack extends ControlTable {
+public class PaneStack extends Table {
+
+    private Skin skin;
 
     private Stack stack;
 
@@ -33,9 +34,13 @@ public class PaneStack extends ControlTable {
         return extrasBar;
     }
 
+    private Skin getSkin() {
+        return skin;
+    }
+
     private String buttonStyleName = "default";
 
-    Array<Pane> pendingPanes = new Array<Pane>();
+    Array<Actor> pendingPanes = new Array<Actor>();
 
     private int buttonBarAlign;
 
@@ -87,6 +92,7 @@ public class PaneStack extends ControlTable {
      */
     public PaneStack(Skin skin, int buttonBarAlign) {
         super(skin);
+        this.skin = skin;
         this.buttonBarAlign = buttonBarAlign;
         initialize();
     }
@@ -138,9 +144,9 @@ public class PaneStack extends ControlTable {
     public void layout() {
         if (pendingPanes.size > 0) {
             Array<String> labels = new Array<String>();
-            for (Pane pane : pendingPanes) {
+            for (Actor pane : pendingPanes) {
                 stack.addActor(pane);
-                labels.add(pane.getLabel());
+                labels.add(pane.getName());
             }
             pendingPanes.clear();
             String[] items = new String[labels.size];
@@ -157,7 +163,7 @@ public class PaneStack extends ControlTable {
         updateSelectedIndex();
     }
 
-    public void addPane(Pane actor) {
+    public void addPane(Actor actor) {
         pendingPanes.add(actor);
     }
 
