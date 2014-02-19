@@ -107,39 +107,61 @@ public class TrackNode extends MachineComponent {
         return isSpanValid(startMeasure, endMeasure);
     }
 
-    public boolean canTrimRight(TrackEntryNode trackEntry, int newStartMeasure) {
-        if (newStartMeasure == trackEntry.getStartMeasure())
+    public boolean canTrimFromRight(TrackEntryNode trackEntry, int newEndMeasure) {
+        if (newEndMeasure == trackEntry.getEndMeasure())
             return false;
 
-        for (TrackEntryNode entry : entries.values()) {
-            if (entry != trackEntry && entry.isContained(newStartMeasure))
-                return false;
+        boolean inside = false;
+        int endMeasure = trackEntry.getEndMeasure();
+        // Test from the dragging end measure to the new end measure
+        for (int i = endMeasure; i <= newEndMeasure; i++) {
+            // if the pointer is inside OR pointer contains start measure
+            if (inside || containsStart(i)) {
+                // if inside a span; invalid
+                if (inside)
+                    return false;
+                inside = true;
+                if (newEndMeasure <= i)
+                    break;
+            }
         }
-
-        // reverse check
-        //int startMeasure = trackEntry.getStartMeasure();
-        //for (int i = startMeasure - 1; i >= 0; i--) {
-        //            for (TrackEntryNode entry : entries.values()) {
-        //                if (entry != trackEntry && entry.isContained(i))
-        //                    return false;
-        //            }
 
         return true;
     }
 
-    public boolean canTrimLeft(TrackEntryNode trackEntry, int newEndMeasure) {
-        boolean testLeft = false;
-        for (TrackEntryNode entry : entries.values()) {
-            if (testLeft) {
-                int startMeasure = entry.getStartMeasure();
-                if (newEndMeasure <= startMeasure)
-                    return true;
-            }
-            if (trackEntry == entry) {
-                testLeft = true;
+    public boolean canTrimFromLeft(TrackEntryNode trackEntry, int newStartMeasure) {
+        if (newStartMeasure == trackEntry.getStartMeasure())
+            return false;
+
+        //        boolean testLeft = false;
+        //        for (TrackEntryNode entry : entries.values()) {
+        //            if (testLeft) {
+        //                int startMeasure = entry.getStartMeasure();
+        //                if (newStartMeasure <= startMeasure)
+        //                    return true;
+        //            }
+        //            if (trackEntry == entry) {
+        //                testLeft = true;
+        //            }
+        //        }
+
+        boolean inside = false;
+        int startMeasure = trackEntry.getStartMeasure();
+        // Test from the dragging start measure to the new start measure
+        // start at start - 1 to exclude the current stry's start
+        for (int i = startMeasure - 1; i >= newStartMeasure; i--) {
+            // if the pointer is inside OR pointer contains start measure
+            if (inside || containsStart(i)) {
+                // if inside a span; invalid
+                if (inside)
+                    return false;
+                inside = true;
+                if (newStartMeasure >= i)
+                    break;
             }
         }
-        return false;
+
+        return true;
     }
 
     public boolean containsStart(int measure) {
@@ -147,7 +169,8 @@ public class TrackNode extends MachineComponent {
     }
 
     /**
-     * Returns whether the measure is a start measure of an entry in this track.
+     * Returns whether the measure is not a start measure of an entry in this
+     * track.
      * 
      * @param measure The measure to test for start.
      */
