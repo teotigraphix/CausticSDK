@@ -284,9 +284,15 @@ public class TrackNode extends MachineComponent {
     public void moveEntry(TrackEntryNode trackEntry, int newStartMeausre) {
         // remove first
         removeEntry(trackEntry);
-
         trackEntry.move(newStartMeausre);
+        // re-add at new position
+        addEntry(trackEntry);
+    }
 
+    public void trimEntry(TrackEntryNode trackEntry, int startMeasure, int endMeasure) {
+        // remove first
+        removeEntry(trackEntry);
+        trackEntry.setPosition(startMeasure, endMeasure);
         // re-add at new position
         addEntry(trackEntry);
     }
