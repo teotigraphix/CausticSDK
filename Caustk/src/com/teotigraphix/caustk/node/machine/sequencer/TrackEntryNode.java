@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine.sequencer;
 
 import com.teotigraphix.caustk.core.CausticError;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.node.NodeBase;
 
 /**
@@ -159,6 +160,11 @@ public class TrackEntryNode extends NodeBase {
      */
     public boolean isContained(int measure) {
         return measure >= startMeasure && measure < endMeasure;
+    }
+
+    @Override
+    public Object getColor() {
+        return CaustkRuntime.getInstance().getRack().getMachine(machineIndex).getColor();
     }
 
     //--------------------------------------------------------------------------
