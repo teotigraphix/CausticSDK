@@ -42,7 +42,7 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
 
     private Behavior parent;
 
-    private List<ISceneBehavior> children = new ArrayList<ISceneBehavior>();
+    private final List<ISceneBehavior> children = new ArrayList<ISceneBehavior>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -64,9 +64,15 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
 
     void setParent(Behavior parent) {
         this.parent = parent;
-        setScene(parent.getScene());
         setApplication(parent.getApplication());
+        setScene(parent.getScene());
         onParentChanged(parent);
+    }
+
+    @Override
+    public void setScene(IScene scene) {
+        super.setScene(scene);
+        attachChildren();
     }
 
     //--------------------------------------------------------------------------
@@ -82,6 +88,8 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     //--------------------------------------------------------------------------
     // LifeCycle
     //--------------------------------------------------------------------------
+
+    protected abstract void attachChildren();
 
     protected void onParentChanged(Behavior parent) {
     }
@@ -188,13 +196,13 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
 
     /**
      * Adds a child behavior and sets its parent to this behavior.
+     * <p>
      * 
      * @param child The {@link ISceneBehavior}.
      */
     protected void addComponent(ISceneBehavior child) {
         ((Behavior)child).setParent(this);
         children.add(child);
-        child.onAwake();
     }
 
     //    /**
