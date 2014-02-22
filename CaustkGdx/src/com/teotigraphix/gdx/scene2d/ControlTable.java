@@ -25,6 +25,7 @@ import java.util.Map;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.teotigraphix.gdx.controller.IHelpManagerAware;
 import com.teotigraphix.gdx.scene2d.utils.StyleUtils;
 
 /**
@@ -33,7 +34,10 @@ import com.teotigraphix.gdx.scene2d.utils.StyleUtils;
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class ControlTable extends Table {//, IValueAware {
+public abstract class ControlTable extends Table implements IHelpManagerAware {//, IValueAware {
+
+    @Override
+    public abstract String getHelpText();
 
     //--------------------------------------------------------------------------
     // Public Property :: API

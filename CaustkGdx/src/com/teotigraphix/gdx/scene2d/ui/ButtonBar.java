@@ -34,6 +34,11 @@ import com.teotigraphix.gdx.scene2d.ControlTable;
 
 public class ButtonBar extends ControlTable {
 
+    @Override
+    public String getHelpText() {
+        return "Foo";
+    }
+
     public static class ButtonBarItem {
 
         private String label;

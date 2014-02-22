@@ -42,6 +42,11 @@ import com.teotigraphix.gdx.scene2d.ControlTable;
  */
 public class TextSlider extends ControlTable {
 
+    @Override
+    public String getHelpText() {
+        return "Value: " + getValue();
+    }
+
     private String text;
 
     private float minimum;

@@ -41,6 +41,11 @@ import com.teotigraphix.gdx.scene2d.ControlTable;
  */
 public class Knob extends ControlTable {
 
+    @Override
+    public String getHelpText() {
+        return "Value: " + value;
+    }
+
     private Image background;
 
     private Image knob;
