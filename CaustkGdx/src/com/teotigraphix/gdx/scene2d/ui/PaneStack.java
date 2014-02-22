@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.OnButtonBarListener;
 
 /**
@@ -100,7 +101,9 @@ public class PaneStack extends Table {
     private void initialize() {
         toolBar = new Table(getSkin());
 
-        buttonBar = new ButtonBar(getSkin(), new String[] {}, false, buttonStyleName);
+        Array<ButtonBarItem> items = new Array<ButtonBar.ButtonBarItem>();
+
+        buttonBar = new ButtonBar(getSkin(), items, false, buttonStyleName);
         buttonBar.setMaxButtonSize(maxButtonSize);
         buttonBar.setOnButtonBarListener(new OnButtonBarListener() {
             @Override
@@ -143,19 +146,13 @@ public class PaneStack extends Table {
     @Override
     public void layout() {
         if (pendingPanes.size > 0) {
-            Array<String> labels = new Array<String>();
+            Array<ButtonBarItem> labels = new Array<ButtonBarItem>();
             for (Actor pane : pendingPanes) {
                 stack.addActor(pane);
-                labels.add(pane.getName());
+                labels.add(new ButtonBarItem(pane.getName(), "", "TODO PaneStack help text"));
             }
             pendingPanes.clear();
-            String[] items = new String[labels.size];
-            int i = 0;
-            for (String label : labels) {
-                items[i] = label;
-                i++;
-            }
-            buttonBar.setItems(items);
+            buttonBar.setItems(labels);
         }
 
         super.layout();

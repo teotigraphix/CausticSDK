@@ -26,27 +26,62 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.esotericsoftware.tablelayout.Cell;
+import com.teotigraphix.gdx.controller.IHelpManager;
 import com.teotigraphix.gdx.scene2d.ControlTable;
 
 public class ButtonBar extends ControlTable {
 
+    public static class ButtonBarItem {
+
+        private String label;
+
+        private String icon;
+
+        private String helpText;
+
+        public String getLabel() {
+            return label;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public String getHelpText() {
+            return helpText;
+        }
+
+        public ButtonBarItem(String label, String icon, String helpText) {
+            this.label = label;
+            this.icon = icon;
+            this.helpText = helpText;
+        }
+    }
+
     private ButtonGroup group;
+
+    private IHelpManager helpManager;
+
+    public void setHelpManager(IHelpManager helpManager) {
+        this.helpManager = helpManager;
+    }
 
     //----------------------------------
     // items
     //----------------------------------
 
-    private String[] items;
+    private Array<ButtonBarItem> items;
 
     private boolean itemsChanged;
 
-    public String[] getItems() {
+    public Array<ButtonBarItem> getItems() {
         return items;
     }
 
-    public void setItems(String[] value) {
+    public void setItems(Array<ButtonBarItem> value) {
         items = value;
         itemsChanged = true;
         invalidateHierarchy();
@@ -74,7 +109,8 @@ public class ButtonBar extends ControlTable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ButtonBar(Skin skin, String[] items, boolean isVertical, String buttonStyleName) {
+    public ButtonBar(Skin skin, Array<ButtonBarItem> items, boolean isVertical,
+            String buttonStyleName) {
         super(skin);
         setItems(items);
         this.isVertical = isVertical;
@@ -93,13 +129,18 @@ public class ButtonBar extends ControlTable {
 
     @SuppressWarnings("rawtypes")
     private void refreshButtons() {
+        if (helpManager != null) {
+            for (Actor actor : getChildren()) {
+                helpManager.unregister(actor);
+            }
+        }
         clearChildren();
 
         group = new ButtonGroup();
 
         final TextButtonStyle style = getSkin().get(buttonStyleName, TextButtonStyle.class);
 
-        for (int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.size; i++) {
             final TextButton button = createButton(i, style);
             if (isVertical) {
                 Cell cell = add(button).uniform().align(Align.top);
@@ -128,7 +169,11 @@ public class ButtonBar extends ControlTable {
     }
 
     protected TextButton createButton(int index, TextButtonStyle style) {
-        final TextButton button = new TextButton(items[index], style);
+        final TextButton button = new TextButton(items.get(index).getLabel(), style);
+        button.setUserObject(items.get(index));
+        if (helpManager != null) {
+            helpManager.register(button, items.get(index).getHelpText());
+        }
         group.add(button);
         button.addListener(new ChangeListener() {
             @Override
@@ -205,4 +250,5 @@ public class ButtonBar extends ControlTable {
     public interface OnButtonBarListener {
         void onChange(int index);
     }
+
 }
