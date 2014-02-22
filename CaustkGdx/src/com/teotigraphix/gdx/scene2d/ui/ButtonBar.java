@@ -26,7 +26,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.esotericsoftware.tablelayout.Cell;
 import com.teotigraphix.gdx.controller.IHelpManager;
@@ -188,13 +190,40 @@ public class ButtonBar extends ControlTable {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (button.isChecked()) {
-                    if (listener != null) {
-                        listener.onChange(group.getButtons().indexOf(button, true));
-                    }
+                    ButtonBarChangeEvent e = Pools.obtain(ButtonBarChangeEvent.class);
+                    e.setSelectedIndex(group.getButtons().indexOf(button, true));
+                    fire(e);
+                    Pools.free(e);
                 }
             }
         });
         return button;
+    }
+
+    //--------------------------------------------------------------------------
+    // Event
+    //--------------------------------------------------------------------------
+
+    public static class ButtonBarChangeEvent extends ChangeEvent {
+
+        private int selectedIndex;
+
+        public int getSelectedIndex() {
+            return selectedIndex;
+        }
+
+        void setSelectedIndex(int selectedIndex) {
+            this.selectedIndex = selectedIndex;
+        }
+
+        public ButtonBarChangeEvent() {
+        }
+
+        @Override
+        public void reset() {
+            super.reset();
+            selectedIndex = -1;
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -244,20 +273,6 @@ public class ButtonBar extends ControlTable {
                 button.setDisabled(true);
             }
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // Event
-    //--------------------------------------------------------------------------
-
-    private OnButtonBarListener listener;
-
-    public void setOnButtonBarListener(OnButtonBarListener l) {
-        listener = l;
-    }
-
-    public interface OnButtonBarListener {
-        void onChange(int index);
     }
 
 }

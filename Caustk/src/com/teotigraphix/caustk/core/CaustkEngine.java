@@ -156,13 +156,23 @@ public class CaustkEngine implements ISoundGenerator {
     // ICausticEngine API
     //--------------------------------------------------------------------------
 
+    private final StringBuilder oscMessages = new StringBuilder();
+
+    public String getRawOSCMessages() {
+        return oscMessages.toString();
+    }
+
     @Override
     public final float sendMessage(String message) {
+        oscMessages.append("[Message] " + message);
+        oscMessages.append("\n");
         return soundGenerator.sendMessage(message);
     }
 
     @Override
     public final String queryMessage(String message) {
+        oscMessages.append("[  Query] " + message);
+        oscMessages.append("\n");
         return soundGenerator.queryMessage(message);
     }
 }

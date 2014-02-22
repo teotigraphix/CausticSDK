@@ -2,14 +2,16 @@
 package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarChangeEvent;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBar.OnButtonBarListener;
 
 /**
  * The {@link PaneStack} holds a stack of panes and uses a selectedIndex to show
@@ -110,10 +112,16 @@ public class PaneStack extends Table {
         buttonBar = new ButtonBar(getSkin(), items, false, style.buttonStyle);
         buttonBar.setMaxButtonSize(maxButtonSize);
         buttonBar.setGap(2f);
-        buttonBar.setOnButtonBarListener(new OnButtonBarListener() {
+        buttonBar.addListener(new EventListener() {
             @Override
-            public void onChange(int index) {
-                setSelectedIndex(index);
+            public boolean handle(Event event) {
+                if (event instanceof ButtonBarChangeEvent) {
+                    ButtonBarChangeEvent e = (ButtonBarChangeEvent)event;
+                    int index = e.getSelectedIndex();
+                    setSelectedIndex(index);
+                    return true;
+                }
+                return false;
             }
         });
 

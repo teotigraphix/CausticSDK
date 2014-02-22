@@ -92,6 +92,10 @@ public abstract class View extends Table implements IView {
     public void registerSkin(Skin skin) {
         this.skin = skin;
         setSkin(skin);
+        createControls();
+    }
+
+    protected void createControls() {
         onCreate();
     }
 
