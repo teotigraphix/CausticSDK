@@ -33,6 +33,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
     private Skin skin;
 
+    private String rendererStyleName;
+
     private boolean mouseDownChange = true;
 
     public boolean isMouseDownChange() {
@@ -50,13 +52,14 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public AdvancedList() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    public AdvancedList(Object[] items, Class<T> type, Skin skin) {
+    public AdvancedList(Object[] items, Class<T> type, Skin skin, String rendererStyleName) {
         this.items = items;
         this.type = type;
         this.skin = skin;
+        this.rendererStyleName = rendererStyleName;
 
         setWidth(getPrefWidth());
         setHeight(getPrefHeight());
@@ -114,8 +117,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         for (Object item : items) {
             String text = item.toString();
             try {
-                Constructor<T> constructor = type.getConstructor(Skin.class);
-                LabelRow instance = (LabelRow)constructor.newInstance(skin);
+                Constructor<T> constructor = type.getConstructor(Skin.class, String.class);
+                LabelRow instance = (LabelRow)constructor.newInstance(skin, rendererStyleName);
                 instance.createChildren();
                 instance.setText(text);
                 addRenderItem((T)instance);

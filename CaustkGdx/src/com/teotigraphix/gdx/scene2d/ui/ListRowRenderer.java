@@ -1,10 +1,13 @@
 
 package com.teotigraphix.gdx.scene2d.ui;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
@@ -25,6 +28,7 @@ public abstract class ListRowRenderer extends Table {
 
     private String text = "";
 
+    @SuppressWarnings("unused")
     private Skin skin;
 
     public String getText() {
@@ -34,10 +38,6 @@ public abstract class ListRowRenderer extends Table {
     public void setText(String value) {
         text = value;
         invalidate();
-    }
-
-    public ListRowRenderer(Skin skin) {
-        this(skin, "default");
     }
 
     public ListRowRenderer(Skin skin, String styleName) {
@@ -67,7 +67,8 @@ public abstract class ListRowRenderer extends Table {
     }
 
     public void createChildren() {
-        label = new Label(text, skin);
+        LabelStyle labelStyle = new LabelStyle(style.font, style.fontColor);
+        label = new Label(text, labelStyle);
         add(label).left();
     }
 
@@ -115,8 +116,11 @@ public abstract class ListRowRenderer extends Table {
 
         public Drawable selection;
 
-        public ListRowRendererStyle() {
+        public BitmapFont font;
 
+        public Color fontColor;
+
+        public ListRowRendererStyle() {
         }
     }
 }

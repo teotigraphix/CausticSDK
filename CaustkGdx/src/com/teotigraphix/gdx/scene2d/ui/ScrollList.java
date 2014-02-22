@@ -28,6 +28,8 @@ public class ScrollList extends ScrollPane {
 
     private Skin skin;
 
+    private String rendererStyleName;
+
     private Array<?> items;
 
     private AdvancedList<LabelRow> list;
@@ -43,7 +45,8 @@ public class ScrollList extends ScrollPane {
     public void setItems(Array<?> items) {
         this.items = items;
         if (list == null) {
-            list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class, skin);
+            list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class, skin,
+                    rendererStyleName);
             list.createChildren(skin);
             setWidget(list);
         } else {
@@ -83,22 +86,25 @@ public class ScrollList extends ScrollPane {
     // Constructors
     //--------------------------------------------------------------------------
 
-    public ScrollList(Skin skin) {
+    public ScrollList(Skin skin, String rendererStyleName) {
         super(null, skin);
         this.skin = skin;
+        this.rendererStyleName = rendererStyleName;
         initialize();
     }
 
-    public ScrollList(Skin skin, Array<?> items) {
+    public ScrollList(Skin skin, Array<?> items, String rendererStyleName) {
         super(null, skin);
         this.skin = skin;
         this.items = items;
+        this.rendererStyleName = rendererStyleName;
         initialize();
     }
 
-    public ScrollList(Actor widget, Skin skin, String styleName) {
+    public ScrollList(Actor widget, Skin skin, String styleName, String rendererStyleName) {
         super(widget, skin, styleName);
         this.skin = skin;
+        this.rendererStyleName = rendererStyleName;
         initialize();
     }
 
@@ -117,7 +123,7 @@ public class ScrollList extends ScrollPane {
     private void initialize() {
         setFadeScrollBars(false);
         setFlickScroll(false);
-        list = new AdvancedList<LabelRow>(new Object[] {}, LabelRow.class, skin);
+        list = new AdvancedList<LabelRow>(new Object[] {}, LabelRow.class, skin, rendererStyleName);
         list.createChildren(skin);
         setWidget(list);
     }
@@ -126,10 +132,6 @@ public class ScrollList extends ScrollPane {
 
         public LabelRow(Skin skin, String styleName) {
             super(skin, styleName);
-        }
-
-        public LabelRow(Skin skin) {
-            super(skin);
         }
     }
 }
