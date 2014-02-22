@@ -69,6 +69,15 @@ public interface IApplication extends ApplicationListener {
      */
     EventBus getEventBus();
 
+    /**
+     * Sets the current scene.
+     * <p>
+     * Will be created and shown on the next frame render.
+     * 
+     * @param sceneId The scene id.
+     */
+    void setScene(int sceneId);
+
     //--------------------------------------------------------------------------
     // Events
     //--------------------------------------------------------------------------
@@ -78,4 +87,5 @@ public interface IApplication extends ApplicationListener {
 
     public static class OnApplicationDestoryEvent {
     }
+
 }

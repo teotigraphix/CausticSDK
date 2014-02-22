@@ -59,14 +59,14 @@ public class SceneManager {
     /**
      * Sets the active {@link IScene} int id.
      * 
-     * @param id The next active scene id, must have already been registered
+     * @param sceneId The next active scene id, must have already been registered
      *            with the scene manager.
      */
-    public void setScene(int id) {
-        IScene scene = scenes.get(id);
+    public void setScene(int sceneId) {
+        IScene scene = scenes.get(sceneId);
         pendingScene = scene;
         if (scene == null) {
-            Class<? extends IScene> type = sceneTypes.get(id);
+            Class<? extends IScene> type = sceneTypes.get(sceneId);
             try {
                 pendingScene = type.newInstance();
             } catch (InstantiationException e) {
@@ -74,7 +74,7 @@ public class SceneManager {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            scenes.put(id, pendingScene);
+            scenes.put(sceneId, pendingScene);
         }
     }
 
