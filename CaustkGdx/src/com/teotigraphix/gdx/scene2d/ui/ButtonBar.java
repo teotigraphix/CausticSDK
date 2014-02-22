@@ -70,8 +70,14 @@ public class ButtonBar extends ControlTable {
 
     private IHelpManager helpManager;
 
+    private float gap = 0f;
+
     public void setHelpManager(IHelpManager helpManager) {
         this.helpManager = helpManager;
+    }
+
+    public void setGap(float gap) {
+        this.gap = gap;
     }
 
     //----------------------------------
@@ -108,18 +114,18 @@ public class ButtonBar extends ControlTable {
 
     private boolean isVertical;
 
-    private String buttonStyleName = "default";
+    private TextButtonStyle buttonStyle;
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
     public ButtonBar(Skin skin, Array<ButtonBarItem> items, boolean isVertical,
-            String buttonStyleName) {
+            TextButtonStyle buttonStyle) {
         super(skin);
         setItems(items);
         this.isVertical = isVertical;
-        this.buttonStyleName = buttonStyleName;
+        this.buttonStyle = buttonStyle;
     }
 
     @Override
@@ -143,10 +149,8 @@ public class ButtonBar extends ControlTable {
 
         group = new ButtonGroup();
 
-        final TextButtonStyle style = getSkin().get(buttonStyleName, TextButtonStyle.class);
-
         for (int i = 0; i < items.size; i++) {
-            final TextButton button = createButton(i, style);
+            final TextButton button = createButton(i, buttonStyle);
             if (isVertical) {
                 Cell cell = add(button).uniform().align(Align.top);
                 if (maxButtonSize != null) {
@@ -156,9 +160,9 @@ public class ButtonBar extends ControlTable {
                 }
                 row();
             } else {
-                Cell cell = add(button).uniform().fill().expand().align(Align.left).space(4f);
+                Cell cell = add(button).space(gap);//.uniform().fill().expand().align(Align.left).space(4f);
                 if (maxButtonSize != null)
-                    cell.maxWidth(maxButtonSize);
+                    cell.maxWidth(maxButtonSize).prefWidth(maxButtonSize);
             }
         }
     }

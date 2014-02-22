@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
@@ -39,8 +40,6 @@ public class PaneStack extends Table {
         return skin;
     }
 
-    private String buttonStyleName = "default";
-
     Array<Actor> pendingPanes = new Array<Actor>();
 
     private int buttonBarAlign;
@@ -70,6 +69,8 @@ public class PaneStack extends Table {
 
     private OnPaneStackListener listener;
 
+    private PaneStackStyle style;
+
     public int getSelectedIndex() {
         return selectedIndex;
     }
@@ -91,20 +92,24 @@ public class PaneStack extends Table {
      * @param skin
      * @param buttonBarAlign An {@link Align} value, top or bottom.
      */
-    public PaneStack(Skin skin, int buttonBarAlign) {
+    public PaneStack(Skin skin, String styleName, int buttonBarAlign, float maxButtonSize) {
         super(skin);
+        style = skin.get(styleName, PaneStackStyle.class);
         this.skin = skin;
         this.buttonBarAlign = buttonBarAlign;
+        this.maxButtonSize = maxButtonSize;
         initialize();
     }
 
     private void initialize() {
         toolBar = new Table(getSkin());
+        toolBar.left();
 
         Array<ButtonBarItem> items = new Array<ButtonBar.ButtonBarItem>();
 
-        buttonBar = new ButtonBar(getSkin(), items, false, buttonStyleName);
+        buttonBar = new ButtonBar(getSkin(), items, false, style.buttonStyle);
         buttonBar.setMaxButtonSize(maxButtonSize);
+        buttonBar.setGap(2f);
         buttonBar.setOnButtonBarListener(new OnButtonBarListener() {
             @Override
             public void onChange(int index) {
@@ -115,7 +120,7 @@ public class PaneStack extends Table {
         if (extrasBar == null)
             extrasBar = new Table(getSkin());
 
-        toolBar.add(buttonBar).fill().expand();
+        toolBar.add(buttonBar);
         toolBar.add(extrasBar).fillY();
 
         stack = new Stack();
@@ -123,7 +128,7 @@ public class PaneStack extends Table {
         if (buttonBarAlign == Align.top) {
             //add(buttonBar).expandX().height(30f).align(Align.left);
             //add(extrasBar);
-            add(toolBar).expandX().fillX().padTop(4f).padLeft(4f).padRight(4f);
+            add(toolBar).fillX().padTop(4f).padLeft(4f).padRight(4f).left();
             row();
             add(stack).fill().expand().pad(4f);
         } else {
@@ -170,5 +175,16 @@ public class PaneStack extends Table {
 
     public interface OnPaneStackListener {
         void onChange(int index);
+    }
+
+    public static class PaneStackStyle {
+
+        public TextButtonStyle buttonStyle;
+
+        public float maxTabWidth = Float.NaN;
+
+        public PaneStackStyle() {
+        }
+
     }
 }
