@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
+import com.teotigraphix.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
 import com.teotigraphix.gdx.scene2d.ui.ScrollList.LabelRow;
 
 // http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=11108&p=50062&hilit=list#p50062
@@ -29,13 +30,17 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
     private Object[] items;
 
+    public Object[] getItems() {
+        return items;
+    }
+
     private Class<T> type;
 
     private Skin skin;
 
-    private String rendererStyleName;
-
     private boolean mouseDownChange = true;
+
+    private ListRowRendererStyle rendererStyle;
 
     public boolean isMouseDownChange() {
         return mouseDownChange;
@@ -55,14 +60,14 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         this(null, null, null, null);
     }
 
-    public AdvancedList(Object[] items, Class<T> type, Skin skin, String rendererStyleName) {
+    public AdvancedList(Object[] items, Class<T> type, Skin skin, ListRowRendererStyle rendererStyle) {
         this.items = items;
         this.type = type;
         this.skin = skin;
-        this.rendererStyleName = rendererStyleName;
+        this.rendererStyle = rendererStyle;
 
-        setWidth(getPrefWidth());
-        setHeight(getPrefHeight());
+        //setWidth(getPrefWidth());
+        //setHeight(getPrefHeight());
 
         align(Align.top);
         defaults().expandX().fillX();
@@ -117,10 +122,12 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         for (Object item : items) {
             String text = item.toString();
             try {
-                Constructor<T> constructor = type.getConstructor(Skin.class, String.class);
-                LabelRow instance = (LabelRow)constructor.newInstance(skin, rendererStyleName);
-                instance.createChildren();
+                Constructor<T> constructor = type.getConstructor(Skin.class);
+                ListRowRenderer instance = constructor.newInstance(skin);
+                instance.setStyle(rendererStyle);
                 instance.setText(text);
+                instance.setUserObject(item);
+                instance.createChildren();
                 addRenderItem((T)instance);
             } catch (InstantiationException e) {
                 e.printStackTrace();
@@ -134,6 +141,10 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
                 e.printStackTrace();
             }
         }
+    }
+
+    public float getItemHeight() {
+        return renderers.get(0).getHeight();
     }
 
     public Array<T> _getItems() {
@@ -163,7 +174,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         });
 
         renderers.add(item);
-        add(item).height(30f);
+        add(item);//.height(item.getHeight());
         row();
     }
 
@@ -251,4 +262,5 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
             Pools.free(changeEvent);
         }
     }
+
 }

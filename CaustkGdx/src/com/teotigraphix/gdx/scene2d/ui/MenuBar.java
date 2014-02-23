@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -16,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;
 
 public class MenuBar extends ButtonBar {
 
@@ -43,7 +43,7 @@ public class MenuBar extends ButtonBar {
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             Actor hit = getStage().hit(x, y, true);
-            if (hit == dialog) {
+            if (hit == menu) {
                 execute();
             } else {
                 hide();
@@ -52,11 +52,9 @@ public class MenuBar extends ButtonBar {
         }
     };
 
-    private Dialog dialog;
+    private Dialog menu;
 
     private List list;
-
-    private Object[] currentMenuItems;
 
     protected void show(TextButton listenerActor) {
         MenuItem menuItem = (MenuItem)listenerActor.getUserObject();
@@ -70,63 +68,41 @@ public class MenuBar extends ButtonBar {
             }
         });
 
-        currentMenuItems = new Object[menuItem.getChildren().size];
-        int i = 0;
-        for (MenuItem childMenuItem : menuItem.getChildren()) {
-            currentMenuItems[i] = childMenuItem;
-            i++;
-        }
+        // currentMenuItems = new Object[menuItem.getChildren().size];
+        //        int i = 0;
+        //        for (MenuItem childMenuItem : menuItem.getChildren()) {
+        //            currentMenuItems[i] = childMenuItem;
+        //            i++;
+        //        }
 
         Vector2 localCoords = new Vector2(listenerActor.getX(), listenerActor.getY());
         localCoords = listenerActor.getParent().localToStageCoordinates(localCoords);
 
         Dialog.fadeDuration = 0f;
-        dialog = new Dialog("", menuBarStyle.windowStyle);
-        dialog.setModal(false);
+        menu = new Menu(menuItem.getChildren(), menuBarStyle, getSkin());
 
-        list = new List(currentMenuItems, menuBarStyle.listStyle);
-        list.addCaptureListener(new InputListener() {
-            @Override
-            public boolean mouseMoved(InputEvent event, float x, float y) {
-                touchMove(y);
-                return super.mouseMoved(event, x, y);
-            }
+        //        list = new List(currentMenuItems, menuBarStyle.listStyle);
+        //        list.addCaptureListener(new InputListener() {
+        //            @Override
+        //            public boolean mouseMoved(InputEvent event, float x, float y) {
+        //                touchMove(y);
+        //                return super.mouseMoved(event, x, y);
+        //            }
+        //
+        //            @Override
+        //            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+        //                MenuItem menuItem = (MenuItem)currentMenuItems[list.getSelectedIndex()];
+        //                itemClick(menuItem);
+        //                return super.touchDown(event, x, y, pointer, button);
+        //            }
+        //        });
+        //        list.setSelectedIndex(-1);
 
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                MenuItem menuItem = (MenuItem)currentMenuItems[list.getSelectedIndex()];
-                itemClick(menuItem);
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-        list.setSelectedIndex(-1);
-
-        dialog.getContentTable().add(list).expand().fill();
-        dialog.getButtonTable().remove();
-        dialog.show(getStage());
-        dialog.setWidth(215f);
-        dialog.setPosition(localCoords.x, localCoords.y - dialog.getHeight());
-    }
-
-    protected void itemClick(MenuItem menuItem) {
-        System.out.println("ItemClick : " + menuItem);
-    }
-
-    void touchMove(float y) {
-        int oldIndex = list.getSelectedIndex();
-        int selectedIndex = (int)((list.getHeight() - y) / list.getItemHeight());
-        selectedIndex = Math.max(0, selectedIndex);
-        selectedIndex = Math.min(list.getItems().length - 1, selectedIndex);
-        if (oldIndex != selectedIndex) {
-            list.setSelectedIndex(selectedIndex);
-            list.invalidate();
-            list.validate();
-        }
-        //        if (oldIndex != selectedIndex) {
-        //            ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
-        //            if (fire(changeEvent)) selectedIndex = oldIndex;
-        //            Pools.free(changeEvent);
-        //        }
+        //menu.getContentTable().add(list).expand().fill();
+        //menu.getButtonTable().remove();
+        menu.show(getStage());
+        // menu.setWidth(215f);
+        menu.setPosition(localCoords.x, localCoords.y - menu.getHeight());
     }
 
     protected void execute() {
@@ -140,7 +116,7 @@ public class MenuBar extends ButtonBar {
         isOpen = false;
         getGroup().uncheckAll();
         setSelectedIndex(-1);
-        dialog.remove();
+        menu.remove();
     }
 
     @Override
@@ -193,6 +169,10 @@ public class MenuBar extends ButtonBar {
 
         private String command;
 
+        private String keyBinding;
+
+        private boolean isSeparator = false;
+
         public Array<MenuItem> getChildren() {
             return children;
         }
@@ -213,27 +193,48 @@ public class MenuBar extends ButtonBar {
             this.command = command;
         }
 
+        public String getKeyBinding() {
+            return keyBinding;
+        }
+
         public boolean isRoot() {
             return parent == null;
         }
 
-        public MenuItem(String label, String icon, String helpText) {
+        public boolean isSeparator() {
+            return isSeparator;
+        }
+
+        public MenuItem(String label, String icon, String keyBinding, String helpText) {
             super(label, icon, helpText);
+            this.keyBinding = keyBinding;
             children = new Array<MenuBar.MenuItem>();
         }
 
-        public MenuItem addItem(String label, String icon, String helpText, String command) {
-            MenuItem menuBarItem = new MenuItem(label, icon, helpText);
+        public MenuItem() {
+            super("", "", "");
+            isSeparator = true;
+        }
+
+        public MenuItem addItem(String label, String icon, String keyBinding, String helpText,
+                String command) {
+            MenuItem menuBarItem = new MenuItem(label, icon, keyBinding, helpText);
             children.add(menuBarItem);
             menuBarItem.setParent(this);
             menuBarItem.setCommand(command);
             return menuBarItem;
         }
 
+        public void addSeparator() {
+            MenuItem menuBarItem = new MenuItem();
+            children.add(menuBarItem);
+        }
+
         @Override
         public String toString() {
             return getLabel();
         }
+
     }
 
     public static class MenuBarStyle {
@@ -242,7 +243,7 @@ public class MenuBar extends ButtonBar {
 
         public TextButtonStyle buttonStyle;
 
-        public ListStyle listStyle;
+        public MenuRowRendererStyle rowRendererStyle;
 
         public WindowStyle windowStyle;
 

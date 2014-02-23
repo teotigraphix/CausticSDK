@@ -28,8 +28,15 @@ public abstract class ListRowRenderer extends Table {
 
     private String text = "";
 
-    @SuppressWarnings("unused")
     private Skin skin;
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public ListRowRendererStyle getStyle() {
+        return style;
+    }
 
     public String getText() {
         return text;
@@ -40,12 +47,17 @@ public abstract class ListRowRenderer extends Table {
         invalidate();
     }
 
-    public ListRowRenderer(Skin skin, String styleName) {
+    public ListRowRenderer(Skin skin) {
+        super(skin);
+        this.skin = skin;
+    }
+
+    public ListRowRenderer(Skin skin, ListRowRendererStyle style) {
         super(skin);
         this.skin = skin;
         align(Align.left);
         setTouchable(Touchable.enabled);
-        setStyle(skin.get(styleName, ListRowRendererStyle.class));
+        setStyle(style);
         addListener(new ActorGestureListener() {
             @Override
             public void tap(InputEvent event, float x, float y, int count, int button) {
@@ -82,7 +94,8 @@ public abstract class ListRowRenderer extends Table {
     public void setStyle(ListRowRendererStyle style) {
         this.style = style;
 
-        setBackground(style.background);
+        if (style != null)
+            setBackground(style.background);
     }
 
     public void setIsSelected(boolean isSelected) {
@@ -101,9 +114,9 @@ public abstract class ListRowRenderer extends Table {
             return;
 
         if (isSelected)
-            setBackground(style.selection);
+            setBackground(style.selection, false);
         else
-            setBackground(style.background);
+            setBackground(style.background, false);
     }
 
     public boolean isSelected() {
@@ -119,6 +132,8 @@ public abstract class ListRowRenderer extends Table {
         public BitmapFont font;
 
         public Color fontColor;
+
+        public Color fontSelectedColor;
 
         public ListRowRendererStyle() {
         }

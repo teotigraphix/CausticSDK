@@ -23,12 +23,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
 
 public class ScrollList extends ScrollPane {
 
     private Skin skin;
-
-    private String rendererStyleName;
 
     private Array<?> items;
 
@@ -46,7 +45,7 @@ public class ScrollList extends ScrollPane {
         this.items = items;
         if (list == null) {
             list = new AdvancedList<LabelRow>(items.toArray(), LabelRow.class, skin,
-                    rendererStyleName);
+                    skin.get(ListRowRendererStyle.class));
             list.createChildren(skin);
             setWidget(list);
         } else {
@@ -86,25 +85,22 @@ public class ScrollList extends ScrollPane {
     // Constructors
     //--------------------------------------------------------------------------
 
-    public ScrollList(Skin skin, String rendererStyleName) {
+    public ScrollList(Skin skin) {
         super(null, skin);
         this.skin = skin;
-        this.rendererStyleName = rendererStyleName;
         initialize();
     }
 
-    public ScrollList(Skin skin, Array<?> items, String rendererStyleName) {
+    public ScrollList(Skin skin, Array<?> items) {
         super(null, skin);
         this.skin = skin;
         this.items = items;
-        this.rendererStyleName = rendererStyleName;
         initialize();
     }
 
-    public ScrollList(Actor widget, Skin skin, String styleName, String rendererStyleName) {
+    public ScrollList(Actor widget, Skin skin, String styleName) {
         super(widget, skin, styleName);
         this.skin = skin;
-        this.rendererStyleName = rendererStyleName;
         initialize();
     }
 
@@ -123,15 +119,16 @@ public class ScrollList extends ScrollPane {
     private void initialize() {
         setFadeScrollBars(false);
         setFlickScroll(false);
-        list = new AdvancedList<LabelRow>(new Object[] {}, LabelRow.class, skin, rendererStyleName);
+        list = new AdvancedList<LabelRow>(new Object[] {}, LabelRow.class, skin,
+                skin.get(ListRowRendererStyle.class));
         list.createChildren(skin);
         setWidget(list);
     }
 
     public static class LabelRow extends ListRowRenderer {
 
-        public LabelRow(Skin skin, String styleName) {
-            super(skin, styleName);
+        public LabelRow(Skin skin, ListRowRendererStyle style) {
+            super(skin, style);
         }
     }
 }
