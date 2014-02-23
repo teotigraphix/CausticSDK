@@ -103,7 +103,26 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         selectedIndex = value;
         if (value != -1)
             renderers.get(selectedIndex).setIsSelected(true);
+
+        AdvancedListChangeEvent changeEvent = Pools.obtain(AdvancedListChangeEvent.class);
+        changeEvent.setSelectedIndex(selectedIndex);
+        if (fire(changeEvent)) {
+        }
+        Pools.free(changeEvent);
+
         invalidate();
+    }
+
+    public static class AdvancedListChangeEvent extends Event {
+        private int selectedIndex;
+
+        public int getSelectedIndex() {
+            return selectedIndex;
+        }
+
+        public void setSelectedIndex(int selectedIndex) {
+            this.selectedIndex = selectedIndex;
+        }
     }
 
     /**
@@ -174,7 +193,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         });
 
         renderers.add(item);
-        add(item);//.height(item.getHeight());
+        add(item);
         row();
     }
 
@@ -226,8 +245,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     public static class AdvancedListDoubleTapEvent extends AdvancedListEvent {
     }
 
-    public static class AdvancedListChangeEvent extends AdvancedListEvent {
-    }
+    //    public static class AdvancedListChangeEvent extends AdvancedListEvent {
+    //    }
 
     /**
      * Refreshes the item renderers.
