@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pools;
 import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListChangeEvent;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuBarStyle;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuItem;
@@ -27,8 +28,11 @@ public class Menu extends Dialog {
 
     private AdvancedList<MenuRowRenderer> list;
 
-    public Menu(Array<MenuItem> menuItems, MenuBarStyle menuBarStyle, Skin skin) {
+    private MenuBar menuBar;
+
+    public Menu(MenuBar menuBar, Array<MenuItem> menuItems, MenuBarStyle menuBarStyle, Skin skin) {
         super("", menuBarStyle.windowStyle);
+        this.menuBar = menuBar;
         this.menuItems = menuItems;
         this.menuBarStyle = menuBarStyle;
         this.skin = skin;
@@ -73,12 +77,10 @@ public class Menu extends Dialog {
                 list.setSelectedIndex(-1);
             }
 
-            @SuppressWarnings("unchecked")
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 AdvancedList<?> listenerActor = (AdvancedList<?>)event.getListenerActor();
-                Array<MenuItem> items = (Array<MenuItem>)listenerActor.getUserObject();
-                MenuItem menuItem = items.get(listenerActor.getSelectedIndex());
+                MenuItem menuItem = menuItems.get(listenerActor.getSelectedIndex());
                 itemClick(menuItem);
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -117,6 +119,29 @@ public class Menu extends Dialog {
 
     protected void itemClick(MenuItem menuItem) {
         System.out.println("ItemClick : " + menuItem);
+        MenuItemClickEvent event = Pools.obtain(MenuItemClickEvent.class);
+        event.setMenuItem(menuItem);
+        menuBar.fire(event);
+        Pools.free(event);
+    }
+
+    public static class MenuItemClickEvent extends Event {
+
+        private MenuItem menuItem;
+
+        public MenuItem getMenuItem() {
+            return menuItem;
+        }
+
+        public void setMenuItem(MenuItem menuItem) {
+            this.menuItem = menuItem;
+        }
+
+        @Override
+        public void reset() {
+            super.reset();
+            menuItem = null;
+        }
     }
 
     void touchMove(AdvancedList<?> list, float y) {

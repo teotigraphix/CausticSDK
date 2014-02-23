@@ -127,8 +127,8 @@ public class ScrollList extends ScrollPane {
 
     public static class LabelRow extends ListRowRenderer {
 
-        public LabelRow(Skin skin, ListRowRendererStyle style) {
-            super(skin, style);
+        public LabelRow(Skin skin) {
+            super(skin);
         }
     }
 }

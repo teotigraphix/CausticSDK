@@ -19,6 +19,10 @@ import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;
 
 public class MenuBar extends ButtonBar {
 
+    private Dialog menu;
+
+    private List list;
+
     private boolean isOpen;
 
     private boolean justOpened;
@@ -52,10 +56,6 @@ public class MenuBar extends ButtonBar {
         }
     };
 
-    private Dialog menu;
-
-    private List list;
-
     protected void show(TextButton listenerActor) {
         MenuItem menuItem = (MenuItem)listenerActor.getUserObject();
 
@@ -68,40 +68,12 @@ public class MenuBar extends ButtonBar {
             }
         });
 
-        // currentMenuItems = new Object[menuItem.getChildren().size];
-        //        int i = 0;
-        //        for (MenuItem childMenuItem : menuItem.getChildren()) {
-        //            currentMenuItems[i] = childMenuItem;
-        //            i++;
-        //        }
-
         Vector2 localCoords = new Vector2(listenerActor.getX(), listenerActor.getY());
         localCoords = listenerActor.getParent().localToStageCoordinates(localCoords);
 
         Dialog.fadeDuration = 0f;
-        menu = new Menu(menuItem.getChildren(), menuBarStyle, getSkin());
-
-        //        list = new List(currentMenuItems, menuBarStyle.listStyle);
-        //        list.addCaptureListener(new InputListener() {
-        //            @Override
-        //            public boolean mouseMoved(InputEvent event, float x, float y) {
-        //                touchMove(y);
-        //                return super.mouseMoved(event, x, y);
-        //            }
-        //
-        //            @Override
-        //            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        //                MenuItem menuItem = (MenuItem)currentMenuItems[list.getSelectedIndex()];
-        //                itemClick(menuItem);
-        //                return super.touchDown(event, x, y, pointer, button);
-        //            }
-        //        });
-        //        list.setSelectedIndex(-1);
-
-        //menu.getContentTable().add(list).expand().fill();
-        //menu.getButtonTable().remove();
+        menu = new Menu(this, menuItem.getChildren(), menuBarStyle, getSkin());
         menu.show(getStage());
-        // menu.setWidth(215f);
         menu.setPosition(localCoords.x, localCoords.y - menu.getHeight());
     }
 
