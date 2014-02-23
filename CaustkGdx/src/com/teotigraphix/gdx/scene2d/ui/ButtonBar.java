@@ -36,6 +36,8 @@ import com.teotigraphix.gdx.scene2d.ControlTable;
 
 public class ButtonBar extends ControlTable {
 
+    private int selectedIndex;
+
     @Override
     public String getHelpText() {
         return "Foo";
@@ -68,11 +70,28 @@ public class ButtonBar extends ControlTable {
         }
     }
 
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public void setSelectedIndex(int selectedIndex) {
+        //if (this.selectedIndex == selectedIndex)
+        //    return;
+        this.selectedIndex = selectedIndex;
+        invalidate();
+    }
+
     private ButtonGroup group;
+
+    public ButtonGroup getGroup() {
+        return group;
+    }
 
     private IHelpManager helpManager;
 
     private float gap = 0f;
+
+    private float padding = 2f;
 
     public void setHelpManager(IHelpManager helpManager) {
         this.helpManager = helpManager;
@@ -80,6 +99,10 @@ public class ButtonBar extends ControlTable {
 
     public void setGap(float gap) {
         this.gap = gap;
+    }
+
+    public void setPadding(float padding) {
+        this.padding = padding;
     }
 
     //----------------------------------
@@ -153,6 +176,8 @@ public class ButtonBar extends ControlTable {
 
         for (int i = 0; i < items.size; i++) {
             final TextButton button = createButton(i, buttonStyle);
+            button.padLeft(padding).padRight(padding);
+            configureButton(button);
             if (isVertical) {
                 Cell cell = add(button).uniform().align(Align.top);
                 if (maxButtonSize != null) {
@@ -169,6 +194,9 @@ public class ButtonBar extends ControlTable {
         }
     }
 
+    protected void configureButton(TextButton button) {
+    }
+
     @Override
     public void layout() {
         super.layout();
@@ -176,6 +204,13 @@ public class ButtonBar extends ControlTable {
         if (itemsChanged) {
             refreshButtons();
             itemsChanged = false;
+        }
+
+        if (selectedIndex != -1) {
+            TextButton button = (TextButton)group.getButtons().get(selectedIndex);
+            button.setChecked(true);
+        } else {
+            group.uncheckAll();
         }
     }
 
@@ -190,14 +225,23 @@ public class ButtonBar extends ControlTable {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (button.isChecked()) {
+                    int oldIndex = selectedIndex;
+                    setSelectedIndex(group.getButtons().indexOf(button, true));
                     ButtonBarChangeEvent e = Pools.obtain(ButtonBarChangeEvent.class);
-                    e.setSelectedIndex(group.getButtons().indexOf(button, true));
-                    fire(e);
+                    e.setSelectedIndex(selectedIndex);
+                    if (fire(e)) {
+                        selectedIndex = oldIndex;
+                    } else {
+                        onChange(selectedIndex, oldIndex);
+                    }
                     Pools.free(e);
                 }
             }
         });
         return button;
+    }
+
+    protected void onChange(int selectedIndex, int oldIndex) {
     }
 
     //--------------------------------------------------------------------------
