@@ -26,8 +26,7 @@ import com.teotigraphix.gdx.app.internal.SceneManager;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
- * The {@link IScene} API allows an application to display states as UI
- * screens.
+ * The {@link IScene} API allows an application to display states as UI screens.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -42,8 +41,8 @@ public interface IScene {
     /**
      * Returns the screen's {@link Stage}.
      * <p>
-     * There is a one to one relationship with a {@link Scene} and
-     * {@link Stage}, the screen owns the stage.
+     * There is a one to one relationship with a {@link Scene} and {@link Stage}
+     * , the screen owns the stage.
      */
     Stage getStage();
 
@@ -128,4 +127,9 @@ public interface IScene {
      * Called when this screen should release all resources.
      */
     void dispose();
+
+    /**
+     * Called when the scene must reset it's ui to a base state.
+     */
+    void reset();
 }

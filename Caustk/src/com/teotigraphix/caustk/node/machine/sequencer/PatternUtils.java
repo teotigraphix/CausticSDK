@@ -88,8 +88,10 @@ public final class PatternUtils {
         return (bankIndex * 16) + patternIndex;
     }
 
+    // XXX Don not use this in app code~!
     public static float getNumLoops(int numPatternMeasures, int numMeasuresSpanned) {
         int measureSpan = numMeasuresSpanned;
+        //System.out.println("!" + numPatternMeasures + ", " + numMeasuresSpanned);
         float remainderMeasures = measureSpan % numPatternMeasures;
         int numLoops = ((int)(measureSpan - remainderMeasures) / numPatternMeasures);
         float fraction = remainderMeasures / numPatternMeasures;

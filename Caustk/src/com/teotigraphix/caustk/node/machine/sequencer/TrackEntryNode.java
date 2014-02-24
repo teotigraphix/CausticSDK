@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.node.machine.sequencer;
 
 import com.teotigraphix.caustk.core.CausticError;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.node.NodeBase;
 
 /**
@@ -41,6 +40,8 @@ public class TrackEntryNode extends NodeBase {
     private int machineIndex = -1;
 
     private String pattern;
+
+    private int numMeasures;
 
     private int startMeasure;
 
@@ -97,6 +98,18 @@ public class TrackEntryNode extends NodeBase {
     }
 
     //----------------------------------
+    // numMeasures
+    //----------------------------------
+
+    public int getNumMeasures() {
+        return numMeasures;
+    }
+
+    public void setNumMeasures(int numMeasures) {
+        this.numMeasures = numMeasures;
+    }
+
+    //----------------------------------
     // startMeasure
     //----------------------------------
 
@@ -144,8 +157,6 @@ public class TrackEntryNode extends NodeBase {
      * @return
      */
     public float getNumLoops() {
-        int numMeasures = PatternUtils.getNumMeasures(getRack(), machineIndex, getBankIndex(),
-                getPatternIndex());
         return PatternUtils.getNumLoops(numMeasures, getMeasureSpan());
     }
 
@@ -162,11 +173,6 @@ public class TrackEntryNode extends NodeBase {
         return measure >= startMeasure && measure < endMeasure;
     }
 
-    @Override
-    public Object getColor() {
-        return CaustkRuntime.getInstance().getRack().getMachine(machineIndex).getColor();
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -177,9 +183,11 @@ public class TrackEntryNode extends NodeBase {
     public TrackEntryNode() {
     }
 
-    public TrackEntryNode(int machineIndex, String patternName, int startMeasure, int endMeasure) {
+    public TrackEntryNode(int machineIndex, String patternName, int numMeasures, int startMeasure,
+            int endMeasure) {
         this.machineIndex = machineIndex;
         this.pattern = patternName;
+        this.numMeasures = numMeasures;
         this.startMeasure = startMeasure;
         this.endMeasure = endMeasure;
     }

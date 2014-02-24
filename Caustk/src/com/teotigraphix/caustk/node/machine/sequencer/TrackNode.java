@@ -228,7 +228,7 @@ public class TrackNode extends MachineComponent {
                     + ", " + endMeasure);
 
         TrackEntryNode trackEntryNode = new TrackEntryNode(patternNode.getMachineIndex(),
-                patternNode.getName(), startMeasure, endMeasure);
+                patternNode.getName(), patternNode.getNumMeasures(), startMeasure, endMeasure);
 
         addEntry(trackEntryNode);
 
@@ -395,8 +395,10 @@ public class TrackNode extends MachineComponent {
             int patternIndex = Integer.valueOf(split[3]);
             int endMeasure = Integer.valueOf(split[4]);
 
+            int numMeasures = PatternUtils.getNumMeasures(getRack(), machineIndex, bankIndex,
+                    patternIndex);
             TrackEntryNode trackEntryNode = new TrackEntryNode(machineIndex, PatternUtils.toString(
-                    bankIndex, patternIndex), startMeasure, endMeasure);
+                    bankIndex, patternIndex), numMeasures, startMeasure, endMeasure);
             entries.put(startMeasure, trackEntryNode);
         }
     }

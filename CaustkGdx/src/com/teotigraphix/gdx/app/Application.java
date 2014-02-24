@@ -92,6 +92,16 @@ public abstract class Application implements IApplication {
         return eventBus;
     }
 
+    @Override
+    public IScene getScene() {
+        return getSceneManager().getScene();
+    }
+
+    @Override
+    public boolean isCurrentScene(int sceneId) {
+        return getSceneManager().isCurrentScene(sceneId);
+    }
+
     //--------------------------------------------------------------------------
     // Protected :: Properties
     //--------------------------------------------------------------------------

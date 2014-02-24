@@ -217,6 +217,13 @@ public abstract class Scene implements IScene {
     }
 
     @Override
+    public void reset() {
+        for (ISceneBehavior behavior : behaviors) {
+            behavior.onReset();
+        }
+    }
+
+    @Override
     public void hide() {
         Gdx.app.log(LOG, "Hiding scene: " + getName());
 

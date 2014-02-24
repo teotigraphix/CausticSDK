@@ -69,6 +69,8 @@ public interface IApplication extends ApplicationListener {
      */
     EventBus getEventBus();
 
+    IScene getScene();
+
     /**
      * Sets the current scene.
      * <p>
@@ -77,6 +79,8 @@ public interface IApplication extends ApplicationListener {
      * @param sceneId The scene id.
      */
     void setScene(int sceneId);
+
+    boolean isCurrentScene(int sceneId);
 
     //--------------------------------------------------------------------------
     // Events

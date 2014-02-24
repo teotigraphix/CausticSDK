@@ -26,8 +26,7 @@ import com.teotigraphix.gdx.app.IApplication;
 import com.teotigraphix.gdx.app.IScene;
 
 /**
- * The {@link SceneManager} manages {@link IScene}s in an
- * {@link IApplication}.
+ * The {@link SceneManager} manages {@link IScene}s in an {@link IApplication}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -48,6 +47,8 @@ public class SceneManager {
 
     private IApplication application;
 
+    private int currentSceneId = -1;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -59,14 +60,15 @@ public class SceneManager {
     /**
      * Sets the active {@link IScene} int id.
      * 
-     * @param sceneId The next active scene id, must have already been registered
-     *            with the scene manager.
+     * @param sceneId The next active scene id, must have already been
+     *            registered with the scene manager.
      */
     public void setScene(int sceneId) {
-        IScene scene = scenes.get(sceneId);
+        currentSceneId = sceneId;
+        IScene scene = scenes.get(currentSceneId);
         pendingScene = scene;
         if (scene == null) {
-            Class<? extends IScene> type = sceneTypes.get(sceneId);
+            Class<? extends IScene> type = sceneTypes.get(currentSceneId);
             try {
                 pendingScene = type.newInstance();
             } catch (InstantiationException e) {
@@ -74,7 +76,7 @@ public class SceneManager {
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
-            scenes.put(sceneId, pendingScene);
+            scenes.put(currentSceneId, pendingScene);
         }
     }
 
@@ -86,8 +88,8 @@ public class SceneManager {
     }
 
     /**
-     * Sets the current scene. {@link IScene#hide()} is called on any old
-     * scene, and {@link IScene#show()} is called on the new scene, if any.
+     * Sets the current scene. {@link IScene#hide()} is called on any old scene,
+     * and {@link IScene#show()} is called on the new scene, if any.
      * 
      * @param scene may be {@code null}
      */
@@ -107,6 +109,10 @@ public class SceneManager {
             scene.show();
             scene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
+    }
+
+    public boolean isCurrentScene(int sceneId) {
+        return currentSceneId == sceneId;
     }
 
     //--------------------------------------------------------------------------
@@ -175,8 +181,7 @@ public class SceneManager {
     }
 
     /**
-     * {@link IApplication#resize(int, int)}, resizes the {@link #getScene()}
-     * .
+     * {@link IApplication#resize(int, int)}, resizes the {@link #getScene()} .
      * 
      * @param width Application width.
      * @param height Application height.
@@ -203,8 +208,8 @@ public class SceneManager {
     }
 
     /**
-     * {@link IApplication#dispose()}, disposes all instantiated
-     * {@link IScene}s that this scene manager contains.
+     * {@link IApplication#dispose()}, disposes all instantiated {@link IScene}s
+     * that this scene manager contains.
      */
     public void dispose() {
         for (Object scene : scenes.values) {
@@ -212,4 +217,5 @@ public class SceneManager {
                 ((IScene)scene).dispose();
         }
     }
+
 }
