@@ -307,8 +307,11 @@ public class RackNode extends NodeBase {
 
     public File saveSongAs(File file) throws IOException {
         File song = saveSong(file.getName().replace(".caustic", ""));
-        FileUtils.copyFileToDirectory(song, file.getParentFile());
-        song.delete();
+        if (!file.getParentFile().equals(file.getParentFile())
+                && file.getName().equals(song.getName())) {
+            FileUtils.copyFileToDirectory(song, file.getParentFile());
+            song.delete();
+        }
         return file;
     }
 
