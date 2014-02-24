@@ -81,7 +81,8 @@ public abstract class ListRowRenderer extends Table {
     public void createChildren() {
         LabelStyle labelStyle = new LabelStyle(style.font, style.fontColor);
         label = new Label(text, labelStyle);
-        add(label).left();
+        label.setAlignment(Align.left);
+        add(label).expand().fill();
     }
 
     @Override
