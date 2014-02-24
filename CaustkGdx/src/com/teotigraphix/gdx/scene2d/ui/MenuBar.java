@@ -55,12 +55,7 @@ public class MenuBar extends ButtonBar {
     private InputListener stageListener = new InputListener() {
         @Override
         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            Actor hit = getStage().hit(x, y, true);
-            if (hit == menu) {
-                execute();
-            } else {
-                hide();
-            }
+            hide();
             return false;
         }
     };
@@ -86,7 +81,7 @@ public class MenuBar extends ButtonBar {
         menu.setPosition(localCoords.x, localCoords.y - menu.getHeight());
     }
 
-    protected void execute() {
+    protected void _execute() {
         String selection = list.getSelection();
         System.out.println("Execute: " + selection);
         hide();
