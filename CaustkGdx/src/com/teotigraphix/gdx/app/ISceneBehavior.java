@@ -19,7 +19,6 @@
 
 package com.teotigraphix.gdx.app;
 
-
 /**
  * The {@link ISceneBehavior} is registered with a {@link Scene} to mediate its
  * views and receives messages from the scene.
@@ -39,6 +38,15 @@ public interface ISceneBehavior extends ISceneComponent {
      * Update is called every frame, if the behavior is enabled.
      */
     void onUpdate();
+
+    /**
+     * Resize is called when the main application frame is resized.
+     * <p>
+     * This callback can be used for things like hiding a menubar's menu if the
+     * main frame has been resized, or adjust other popups that may need to
+     * change position due to the frame size change.
+     */
+    void onResize();
 
     /**
      * Reset behavior to default values.

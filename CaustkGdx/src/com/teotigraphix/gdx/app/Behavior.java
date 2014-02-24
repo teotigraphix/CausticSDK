@@ -131,6 +131,13 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     }
 
     @Override
+    public void onResize() {
+        for (ISceneBehavior child : children) {
+            child.onResize();
+        }
+    }
+
+    @Override
     public void onReset() {
         for (ISceneBehavior child : children) {
             child.onReset();

@@ -65,6 +65,10 @@ public abstract class Scene implements IScene {
 
     private List<ISceneBehavior> behaviors = new ArrayList<ISceneBehavior>();
 
+    protected final List<ISceneBehavior> getBehaviors() {
+        return behaviors;
+    }
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------

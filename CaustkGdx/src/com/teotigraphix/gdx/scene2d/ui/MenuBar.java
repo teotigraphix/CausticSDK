@@ -38,6 +38,15 @@ public class MenuBar extends ButtonBar {
         initialize();
     }
 
+    /**
+     * Hides the popup menu.
+     */
+    public void hideMenu() {
+        if (isOpen) {
+            hide();
+        }
+    }
+
     protected void initialize() {
         setBackground(menuBarStyle.background);
         setSelectedIndex(-1);
@@ -222,4 +231,5 @@ public class MenuBar extends ButtonBar {
         public MenuBarStyle() {
         }
     }
+
 }
