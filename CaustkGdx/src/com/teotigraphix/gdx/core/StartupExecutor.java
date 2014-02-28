@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.app.internal;
+package com.teotigraphix.gdx.core;
 
 import java.io.File;
 import java.io.IOException;

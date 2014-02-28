@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.gdx.app.internal.SceneManager;
-import com.teotigraphix.gdx.app.internal.StartupExecutor;
+import com.teotigraphix.gdx.core.StartupExecutor;
 
 /**
  * The base implementation of the {@link IApplication} API.
