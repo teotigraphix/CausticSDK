@@ -172,7 +172,12 @@ public class PaneStack extends Table {
             Array<ButtonBarItem> labels = new Array<ButtonBarItem>();
             for (Actor pane : pendingPanes) {
                 stack.addActor(pane);
-                labels.add(new ButtonBarItem(pane.getName(), "", "TODO PaneStack help text"));
+                PaneInfo info = (PaneInfo)pane.getUserObject();
+                if (info == null) {
+                    labels.add(new ButtonBarItem(pane.getName(), null, null));
+                } else {
+                    labels.add(new ButtonBarItem(info.getName(), info.getIcon(), info.getHelpText()));
+                }
             }
             pendingPanes.clear();
             buttonBar.setItems(labels);
@@ -181,6 +186,45 @@ public class PaneStack extends Table {
         super.layout();
 
         updateSelectedIndex();
+    }
+
+    public static class PaneInfo {
+
+        private String name;
+
+        private String icon;
+
+        private String helpText;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public void setIcon(String icon) {
+            this.icon = icon;
+        }
+
+        public String getHelpText() {
+            return helpText;
+        }
+
+        public void setHelpText(String helpText) {
+            this.helpText = helpText;
+        }
+
+        public PaneInfo(String name, String helpText) {
+            this.name = name;
+            this.helpText = helpText;
+        }
+
     }
 
     public static class PaneStackStyle {

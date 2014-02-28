@@ -19,7 +19,12 @@
 
 package com.teotigraphix.gdx.scene2d.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -141,6 +146,8 @@ public class ButtonBar extends ControlTable {
 
     private TextButtonStyle buttonStyle;
 
+    private int pendingTipIndex;
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -238,8 +245,52 @@ public class ButtonBar extends ControlTable {
                 }
             }
         });
+        button.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                pendingTipIndex = group.getButtons()
+                        .indexOf((Button)event.getListenerActor(), true);
+                float cx = Gdx.input.getX();
+                float cy = Gdx.input.getY();
+                startTooltip(cx, cy);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                stopTooltip();
+            }
+        });
         return button;
     }
+
+    protected void startTooltip(final float cx, final float cy) {
+        addAction(Actions.sequence(Actions.delay(1f), Actions.run(new Runnable() {
+            @Override
+            public void run() {
+                showTooltip(cx, cy);
+            }
+        })));
+    }
+
+    protected void showTooltip(float cx, float cy) {
+        if (toolTip != null)
+            return;
+        String helpText = items.get(pendingTipIndex).getHelpText();
+        if (helpText != null) {
+            toolTip = Tooltip.show(getStage(), getSkin(), helpText);
+            toolTip.setPosition(cx, getStage().getHeight() - cy - toolTip.getHeight());
+        }
+    }
+
+    protected void stopTooltip() {
+        clearActions();
+        if (toolTip == null)
+            return;
+        toolTip.hide();
+        toolTip = null;
+    }
+
+    private Tooltip toolTip;
 
     protected void onChange(int selectedIndex, int oldIndex) {
     }
