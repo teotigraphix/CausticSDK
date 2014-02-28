@@ -70,8 +70,8 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     }
 
     @Override
-    public void setScene(IScene scene) {
-        super.setScene(scene);
+    protected void onSceneChange(IScene screen) {
+        super.onSceneChange(screen);
         attachChildren();
     }
 
@@ -89,6 +89,9 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     // LifeCycle
     //--------------------------------------------------------------------------
 
+    /**
+     * Called during a scene change.
+     */
     protected abstract void attachChildren();
 
     protected void onParentChanged(Behavior parent) {

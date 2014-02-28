@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pools;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarChangeEvent;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
@@ -24,38 +26,27 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
  */
 public class PaneStack extends Table {
 
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
     private Skin skin;
 
-    private Stack stack;
+    private PaneStackStyle style;
+
+    private Table barContainer;
+
+    private Table contentContainer;
 
     private ButtonBar buttonBar;
 
-    private Table extrasBar;
-
-    public Table getToolsBar() {
-        if (extrasBar == null)
-            extrasBar = new Table(getSkin());
-        return extrasBar;
-    }
-
-    private Skin getSkin() {
-        return skin;
-    }
+    private Stack stack;
 
     Array<Actor> pendingPanes = new Array<Actor>();
 
     private int buttonBarAlign;
 
     private Float maxButtonSize;
-
-    public void setMaxButtonSize(Float value) {
-        maxButtonSize = value;
-        invalidateHierarchy();
-    }
-
-    public Float getMaxButtonSize() {
-        return maxButtonSize;
-    }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -67,12 +58,6 @@ public class PaneStack extends Table {
 
     private int selectedIndex;
 
-    private Table toolBar;
-
-    private OnPaneStackListener listener;
-
-    private PaneStackStyle style;
-
     public int getSelectedIndex() {
         return selectedIndex;
     }
@@ -80,10 +65,28 @@ public class PaneStack extends Table {
     public void setSelectedIndex(int value) {
         if (value == selectedIndex)
             return;
+        int old = selectedIndex;
         selectedIndex = value;
-        if (listener != null)
-            listener.onChange(selectedIndex);
+        PaneStackEvent event = Pools.obtain(PaneStackEvent.class);
+        event.setType(PaneStackEventType.SelectedIndexChange);
+        if (fire(event)) {
+            selectedIndex = old;
+        }
+        Pools.free(event);
         invalidate();
+    }
+
+    //----------------------------------
+    // maxButtonSize
+    //----------------------------------
+
+    public void setMaxButtonSize(Float maxButtonSize) {
+        this.maxButtonSize = maxButtonSize;
+        invalidateHierarchy();
+    }
+
+    public Float getMaxButtonSize() {
+        return maxButtonSize;
     }
 
     //--------------------------------------------------------------------------
@@ -103,15 +106,24 @@ public class PaneStack extends Table {
         initialize();
     }
 
-    private void initialize() {
-        toolBar = new Table(getSkin());
-        toolBar.left();
+    public void addPane(Actor actor) {
+        pendingPanes.add(actor);
+    }
+
+    protected void initialize() {
+        pad(5f);
+
+        barContainer = new Table();
+        barContainer.left();
+        barContainer.setBackground(style.tabBarBackground);
 
         Array<ButtonBarItem> items = new Array<ButtonBar.ButtonBarItem>();
 
-        buttonBar = new ButtonBar(getSkin(), items, false, style.buttonStyle);
+        buttonBar = new ButtonBar(skin, items, false, style.tabStyle);
+        buttonBar.padBottom(-1f).padTop(4f);
+        buttonBar.padLeft(6f);
         buttonBar.setMaxButtonSize(maxButtonSize);
-        buttonBar.setGap(2f);
+        buttonBar.setGap(style.tabBarGap);
         buttonBar.addListener(new EventListener() {
             @Override
             public boolean handle(Event event) {
@@ -125,26 +137,24 @@ public class PaneStack extends Table {
             }
         });
 
-        if (extrasBar == null)
-            extrasBar = new Table(getSkin());
+        barContainer.add(buttonBar);
 
-        toolBar.add(buttonBar);
-        toolBar.add(extrasBar).fillY();
+        contentContainer = new Table();
+        contentContainer.setBackground(style.background);
+        contentContainer.pad(5f);
 
         stack = new Stack();
 
         if (buttonBarAlign == Align.top) {
-            //add(buttonBar).expandX().height(30f).align(Align.left);
-            //add(extrasBar);
-            add(toolBar).fillX().padTop(4f).padLeft(4f).padRight(4f).left();
+            add(barContainer).fillX();
             row();
-            add(stack).fill().expand().pad(4f);
-        } else {
-            add(stack).fill().expand();
+            add(contentContainer).expand().fill();
+            contentContainer.add(stack).expand().fill();
+        } else if (buttonBarAlign == Align.bottom) {
+            add(contentContainer).expand().fill();
+            contentContainer.add(stack).expand().fill();
             row();
-            //add(buttonBar).expandX().height(30f).align(Align.left);
-            //add(extrasBar);
-            add(toolBar).expandX().fillX();
+            add(barContainer).fillX();
         }
     }
 
@@ -173,26 +183,50 @@ public class PaneStack extends Table {
         updateSelectedIndex();
     }
 
-    public void addPane(Actor actor) {
-        pendingPanes.add(actor);
-    }
-
-    public void setOnOnPaneStackListener(OnPaneStackListener l) {
-        listener = l;
-    }
-
-    public interface OnPaneStackListener {
-        void onChange(int index);
-    }
-
     public static class PaneStackStyle {
 
-        public TextButtonStyle buttonStyle;
+        public Drawable tabBarBackground;
+
+        public Drawable background;
+
+        public TextButtonStyle tabStyle;
+
+        public float tabBarGap = 2f;
 
         public float maxTabWidth = Float.NaN;
 
         public PaneStackStyle() {
         }
+    }
 
+    public enum PaneStackEventType {
+        SelectedIndexChange
+    }
+
+    public static class PaneStackEvent extends Event {
+
+        private PaneStackEventType type;
+
+        @Override
+        public PaneStack getTarget() {
+            return (PaneStack)super.getTarget();
+        }
+
+        public PaneStackEventType getType() {
+            return type;
+        }
+
+        public void setType(PaneStackEventType type) {
+            this.type = type;
+        }
+
+        public PaneStackEvent() {
+        }
+
+        @Override
+        public void reset() {
+            super.reset();
+            type = null;
+        }
     }
 }
