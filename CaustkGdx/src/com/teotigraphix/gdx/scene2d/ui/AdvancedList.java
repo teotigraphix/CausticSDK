@@ -105,7 +105,11 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
             renderers.get(selectedIndex).setIsSelected(true);
 
         AdvancedListChangeEvent changeEvent = Pools.obtain(AdvancedListChangeEvent.class);
-        changeEvent.setSelectedIndex(selectedIndex);
+        Object selection = null;
+        if (getSelection() != null) {
+            selection = getSelection().getUserObject();
+        }
+        changeEvent.setSelectedIndex(selectedIndex, selection);
         if (fire(changeEvent)) {
         }
         Pools.free(changeEvent);
@@ -113,7 +117,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         invalidate();
     }
 
-    public static class AdvancedListChangeEvent extends Event {
+    public static class AdvancedListItemChangeEvent extends Event {
         private int selectedIndex;
 
         public int getSelectedIndex() {
@@ -122,6 +126,25 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
         public void setSelectedIndex(int selectedIndex) {
             this.selectedIndex = selectedIndex;
+        }
+    }
+
+    public static class AdvancedListChangeEvent extends Event {
+        private int selectedIndex;
+
+        private Object selection;
+
+        public int getSelectedIndex() {
+            return selectedIndex;
+        }
+
+        public Object getSelection() {
+            return selection;
+        }
+
+        public void setSelectedIndex(int selectedIndex, Object selection) {
+            this.selectedIndex = selectedIndex;
+            this.selection = selection;
         }
     }
 

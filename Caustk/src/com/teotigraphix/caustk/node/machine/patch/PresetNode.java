@@ -374,4 +374,9 @@ public class PresetNode extends MachineComponent {
         String tempName = "$___" + UUID.randomUUID().toString(); // will be deleted
         restoredData = PresetUtils.readPresetBytes(getRack(), machineIndex, type, tempName);
     }
+
+    @Override
+    public String toString() {
+        return getType() + ":" + getName();
+    }
 }

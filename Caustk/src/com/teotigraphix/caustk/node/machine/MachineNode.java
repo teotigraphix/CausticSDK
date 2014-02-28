@@ -410,6 +410,11 @@ public abstract class MachineNode extends NodeBase {
         clips = new ClipsNode(this);
     }
 
+    @Override
+    public String toString() {
+        return name + ":" + type;
+    }
+
     //--------------------------------------------------------------------------
     // Events
     //--------------------------------------------------------------------------

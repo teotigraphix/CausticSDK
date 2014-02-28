@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListChangeEvent;
 import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListDoubleTapEvent;
 import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListLongPressEvent;
 
@@ -105,11 +104,11 @@ public abstract class ListRowRenderer extends Table {
 
         this.isSelected = isSelected;
 
-        if (isSelected) {
-            AdvancedListChangeEvent e = Pools.obtain(AdvancedListChangeEvent.class);
-            fire(e);
-            Pools.free(e);
-        }
+        //        if (isSelected) {
+        //            AdvancedListChangeEvent e = Pools.obtain(AdvancedListChangeEvent.class);
+        //            fire(e);
+        //            Pools.free(e);
+        //        }
 
         if (style == null)
             return;
