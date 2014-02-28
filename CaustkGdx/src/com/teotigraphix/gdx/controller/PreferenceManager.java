@@ -17,6 +17,7 @@ public class PreferenceManager extends ApplicationComponent implements IPreferen
     public PreferenceManager() {
     }
 
+    @Override
     public final Preferences get(String name) {
         Preferences instance = preferences.get(name);
         if (instance == null) {
@@ -26,9 +27,22 @@ public class PreferenceManager extends ApplicationComponent implements IPreferen
         return instance;
     }
 
+    @Override
     public final void save() {
         for (Preferences preference : preferences.values()) {
             preference.flush();
         }
+    }
+
+    @Override
+    protected String getPreferenceId() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected void construct() {
+        // TODO Auto-generated method stub
+
     }
 }

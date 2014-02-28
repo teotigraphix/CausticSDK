@@ -58,6 +58,7 @@ public class StartupExecutor {
      * @param soundGenerator The platform specific {@link ISoundGenerator}.
      */
     public StartupExecutor(ISoundGenerator soundGenerator) {
+        System.out.println("StartupExecutor : Create CaustkRuntime");
         runtime = CaustkRuntime.createInstance(soundGenerator);
     }
 
@@ -76,8 +77,7 @@ public class StartupExecutor {
      * @see {@link RuntimeUtils#STORAGE_ROOT}
      * @see {@link RuntimeUtils#APP_ROOT}
      */
-    public CaustkRuntime create(IApplication gdxApplication) throws CausticException,
-            IOException {
+    public CaustkRuntime create(IApplication gdxApplication) throws CausticException, IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
         File caustic = new File(root, "caustic");
         if (!caustic.exists()) {

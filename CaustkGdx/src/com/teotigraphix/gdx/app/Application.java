@@ -39,6 +39,8 @@ import com.teotigraphix.gdx.app.internal.StartupExecutor;
  */
 public abstract class Application implements IApplication {
 
+    private static final String TAG = "Application";
+
     // TODO Temp metrics
     static float WIDTH = 800f;
 
@@ -134,11 +136,15 @@ public abstract class Application implements IApplication {
 
     @Override
     public final void create() {
-        Gdx.app.log("GdxApplication", "create()");
+        Gdx.app.log(TAG, "create()");
         try {
+            Gdx.app.log("StartupExecutor", "create()");
             runtime = startupExecutor.create(this);
+            getLogger().log("Rack", "initialize()");
             runtime.getRack().initialize();
+            getLogger().log("Rack", "onStart()");
             runtime.getRack().onStart();
+            getLogger().log("SceneManager", "create()");
             sceneManager.create();
         } catch (CausticException e) {
             // TODO Auto-generated catch block
@@ -154,19 +160,16 @@ public abstract class Application implements IApplication {
 
     @Override
     public void render() {
-        //Gdx.app.log("GdxApplication", "render()");
         sceneManager.preRender();
-
         if (runtime.getRack().isLoaded()) {
             runtime.getRack().frameChanged(Gdx.graphics.getDeltaTime());
         }
-
         sceneManager.postRender();
     }
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log("GdxApplication", "resize(" + width + ", " + height + ")");
+        getLogger().log(TAG, "resize(" + width + ", " + height + ")");
         if (sceneManager != null)
             sceneManager.resize(width, height);
     }
@@ -174,20 +177,20 @@ public abstract class Application implements IApplication {
     @Override
     public void pause() {
         runtime.getRack().onPause();
-        Gdx.app.log("GdxApplication", "pause()");
+        getLogger().log(TAG, "pause()");
         sceneManager.pause();
     }
 
     @Override
     public void resume() {
         runtime.getRack().onResume();
-        Gdx.app.log("GdxApplication", "resume()");
+        getLogger().log(TAG, "resume()");
         sceneManager.resume();
     }
 
     @Override
     public void dispose() {
-        Gdx.app.log("GdxApplication", "dispose()");
+        getLogger().log(TAG, "dispose()");
         sceneManager.dispose();
         runtime.getRack().onDestroy();
     }

@@ -1,13 +1,18 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.badlogic.gdx.Preferences;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
+import com.teotigraphix.gdx.controller.IPreferenceManager;
 
 /**
  * Injectable model's for application model, manager, state etc.
  */
 public abstract class ApplicationComponent implements IApplicationComponent {
+
+    @Inject
+    private IPreferenceManager preferenceManager;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -22,6 +27,20 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
+    // preferences
+    //----------------------------------
+
+    @Override
+    public Preferences getPreferences() {
+        return preferenceManager.get(getPreferenceId());
+    }
+
+    /**
+     * Return the preference id for the sub class.
+     */
+    protected abstract String getPreferenceId();
+
+    //----------------------------------
     // application
     //----------------------------------
 
@@ -33,6 +52,7 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     @Inject
     public void setApplication(IApplication application) {
         this.application = application;
+        construct();
     }
 
     //----------------------------------
@@ -57,4 +77,10 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     public ApplicationComponent() {
         eventBus = new EventBus();
     }
+
+    /**
+     * Initialize the model after the {@link IApplication} has been injected.
+     */
+    protected abstract void construct();
+
 }

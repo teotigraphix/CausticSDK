@@ -19,6 +19,7 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.badlogic.gdx.Preferences;
 import com.google.common.eventbus.EventBus;
 
 /**
@@ -32,6 +33,11 @@ import com.google.common.eventbus.EventBus;
  * @since 1.0
  */
 public interface IApplicationComponent {
+
+    /**
+     * The model's {@link Preferences} instance.
+     */
+    Preferences getPreferences();
 
     /**
      * The model's local {@link EventBus}.

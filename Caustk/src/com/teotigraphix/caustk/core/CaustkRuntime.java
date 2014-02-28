@@ -135,8 +135,11 @@ public class CaustkRuntime {
     //--------------------------------------------------------------------------
 
     private void initialize() {
+        System.out.println("CaustkRuntime : Create CaustkLogger");
         logger = new CaustkLogger();
+        System.out.println("CaustkRuntime : Create CaustkFactory");
         factory = new CaustkFactory(this);
+        System.out.println("CaustkRuntime : Create CaustkRack");
         rack = new CaustkRack(this);
     }
 
