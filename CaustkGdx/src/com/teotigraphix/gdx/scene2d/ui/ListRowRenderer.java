@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,6 +29,10 @@ public abstract class ListRowRenderer extends Table {
     private String text = "";
 
     private Skin skin;
+
+    private Image background;
+
+    private Table content;
 
     public Skin getSkin() {
         return skin;
@@ -78,10 +83,16 @@ public abstract class ListRowRenderer extends Table {
     }
 
     public void createChildren() {
+        content = new Table();
+
+        background = new Image(style.background);
+
         LabelStyle labelStyle = new LabelStyle(style.font, style.fontColor);
         label = new Label(text, labelStyle);
         label.setAlignment(Align.left);
-        add(label).expand().fill();
+        content.add(label).expand().fill().pad(4f);
+
+        stack(background, content).expand().fill();
     }
 
     @Override
@@ -94,8 +105,8 @@ public abstract class ListRowRenderer extends Table {
     public void setStyle(ListRowRendererStyle style) {
         this.style = style;
 
-        if (style != null)
-            setBackground(style.background);
+        //        if (style != null)
+        //            setBackground(style.background);
     }
 
     public void setIsSelected(boolean isSelected) {
@@ -114,9 +125,9 @@ public abstract class ListRowRenderer extends Table {
             return;
 
         if (isSelected)
-            setBackground(style.selection, false);
+            background.setDrawable(style.selection);
         else
-            setBackground(style.background, false);
+            background.setDrawable(style.background);
     }
 
     public boolean isSelected() {

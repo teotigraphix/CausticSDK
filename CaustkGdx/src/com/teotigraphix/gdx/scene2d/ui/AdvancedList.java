@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
@@ -24,7 +23,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
     private Array<T> renderers = new Array<T>();
 
-    private int selectedIndex;
+    private int selectedIndex = -1;
 
     private boolean selectable = true;
 
@@ -104,15 +103,15 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         if (value != -1)
             renderers.get(selectedIndex).setIsSelected(true);
 
-        AdvancedListChangeEvent changeEvent = Pools.obtain(AdvancedListChangeEvent.class);
-        Object selection = null;
-        if (getSelection() != null) {
-            selection = getSelection().getUserObject();
-        }
-        changeEvent.setSelectedIndex(selectedIndex, selection);
-        if (fire(changeEvent)) {
-        }
-        Pools.free(changeEvent);
+        //        AdvancedListChangeEvent changeEvent = Pools.obtain(AdvancedListChangeEvent.class);
+        //        Object selection = null;
+        //        if (getSelection() != null) {
+        //            selection = getSelection().getUserObject();
+        //        }
+        //        changeEvent.setSelectedIndex(selectedIndex, selection);
+        //        if (fire(changeEvent)) {
+        //        }
+        //        Pools.free(changeEvent);
 
         invalidate();
     }
@@ -287,7 +286,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     public void setItems(Object[] items) {
         this.items = items;
         renderers.clear();
-        selectedIndex = 0;
+        selectedIndex = -1;
         clearChildren();
         createChildren(skin);
         invalidateHierarchy();
@@ -296,8 +295,23 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     private void fireChange(int newSelectedIndex) {
         int oldIndex = selectedIndex;
         if (oldIndex != newSelectedIndex) {
-            ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
+            //            ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
+            //            setSelectedIndex(newSelectedIndex);
+            //            if (fire(changeEvent)) {
+            //                setSelectedIndex(oldIndex);
+            //            }
+            //            Pools.free(changeEvent);
+
+            AdvancedListChangeEvent changeEvent = Pools.obtain(AdvancedListChangeEvent.class);
             setSelectedIndex(newSelectedIndex);
+
+            Object selection = null;
+            if (getSelection() != null) {
+                selection = getSelection().getUserObject();
+            }
+
+            changeEvent.setSelectedIndex(newSelectedIndex, selection);
+
             if (fire(changeEvent)) {
                 setSelectedIndex(oldIndex);
             }
