@@ -158,6 +158,14 @@ public class CaustkFactory {
         return libraryFactory.createLibrary(name);
     }
 
+    /**
+     * @param reletiveOrAbsDirectory
+     * @return
+     */
+    public Library createLibrary(File reletiveOrAbsDirectory) {
+        return libraryFactory.createLibrary(reletiveOrAbsDirectory);
+    }
+
     //----------------------------------
     // RackNode
     //----------------------------------

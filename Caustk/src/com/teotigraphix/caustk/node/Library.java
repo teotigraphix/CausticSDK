@@ -123,8 +123,12 @@ public class Library extends NodeBase {
      * directory.
      */
     public final File getDirectory() {
-        if (directory != null)
-            return RuntimeUtils.getApplicationDirectory(directory.getPath());
+        if (directory != null) {
+            if (!directory.isAbsolute())
+                return RuntimeUtils.getApplicationDirectory(directory.getPath());
+            else
+                return directory;
+        }
         return new File(getLibrariesDirectory(), getName());
     }
 
