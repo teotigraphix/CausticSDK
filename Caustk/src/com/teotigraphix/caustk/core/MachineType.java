@@ -46,6 +46,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  * The type enum for the native Caustic machines.
  * 
  * @author Michael Schmalle
+ * @since 1.0
  */
 public enum MachineType {
 
