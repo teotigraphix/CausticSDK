@@ -115,19 +115,15 @@ public abstract class ListRowRenderer extends Table {
 
         this.isSelected = isSelected;
 
-        //        if (isSelected) {
-        //            AdvancedListChangeEvent e = Pools.obtain(AdvancedListChangeEvent.class);
-        //            fire(e);
-        //            Pools.free(e);
-        //        }
-
         if (style == null)
             return;
 
-        if (isSelected)
-            background.setDrawable(style.selection);
-        else
-            background.setDrawable(style.background);
+        if (background != null && style != null) {
+            if (isSelected)
+                background.setDrawable(style.selection);
+            else
+                background.setDrawable(style.background);
+        }
     }
 
     public boolean isSelected() {

@@ -193,7 +193,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public void addRenderItem(T item) {
-        item.addListener(new ClickListener() {
+        item.addCaptureListener(new ClickListener() {
             @SuppressWarnings("unchecked")
             @Override
             public void clicked(InputEvent event, float x, float y) {

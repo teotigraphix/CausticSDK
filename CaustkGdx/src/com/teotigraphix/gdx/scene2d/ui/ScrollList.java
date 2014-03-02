@@ -81,6 +81,10 @@ public class ScrollList extends ScrollPane {
         list.setSelectable(selectable);
     }
 
+    public void setMouseDownChange(boolean mouseDownChange) {
+        list.setMouseDownChange(mouseDownChange);
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
