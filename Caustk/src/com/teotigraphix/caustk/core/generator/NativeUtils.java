@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.io.FileUtils;
+
 /**
  * Simple library class for working with JNI (Java Native Interface)
  * 
@@ -57,7 +59,7 @@ public class NativeUtils {
      *             {@see File#createTempFile(java.lang.String,
      *             java.lang.String)}).
      */
-    public static void loadLibraryFromJar(String path) throws IOException {
+    public static File loadLibraryFromJar(String path, boolean load) throws IOException {
 
         if (!path.startsWith("/")) {
             throw new IllegalArgumentException("The path to be absolute (start with '/').");
@@ -111,7 +113,47 @@ public class NativeUtils {
             is.close();
         }
 
-        // Finally, load the library
-        System.load(temp.getAbsolutePath());
+        File dest = new File(temp.getParentFile(), prefix + suffix);
+        FileUtils.copyFile(temp, dest);
+        FileUtils.deleteQuietly(temp);
+        //
+        //        // Finally, load the library
+        //        //if (load)
+        //        //    System.load(dest.getAbsolutePath());
+        //
+        //        final String libraryPrefix = prefix;
+        //        final String lockSuffix = ".lock";
+        //
+        //        // create lock file
+        //        final File lock = new File(temp.getAbsolutePath() + lockSuffix);
+        //        lock.createNewFile();
+        //        lock.deleteOnExit();
+        //
+        //        // file filter for library file (without .lock files)
+        //        FileFilter tmpDirFilter = new FileFilter() {
+        //            @Override
+        //            public boolean accept(File pathname) {
+        //                return pathname.getName().startsWith(libraryPrefix)
+        //                        && !pathname.getName().endsWith(lockSuffix);
+        //            }
+        //        };
+        //
+        //        // get all library files from temp folder  
+        //        String tmpDirName = System.getProperty("java.io.tmpdir");
+        //        File tmpDir = new File(tmpDirName);
+        //        File[] tmpFiles = tmpDir.listFiles(tmpDirFilter);
+        //
+        //        // delete all files which don't have n accompanying lock file
+        //        for (int i = 0; i < tmpFiles.length; i++) {
+        //            // Create a file to represent the lock and test.
+        //            File lockFile = new File(tmpFiles[i].getAbsolutePath() + lockSuffix);
+        //            if (!lockFile.exists()) {
+        //                System.out.println("deleting: " + tmpFiles[i].getAbsolutePath());
+        //                tmpFiles[i].delete();
+        //            }
+        //        }
+
+        return dest;
     }
+
 }

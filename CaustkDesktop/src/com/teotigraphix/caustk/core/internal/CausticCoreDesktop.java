@@ -19,11 +19,14 @@
 
 package com.teotigraphix.caustk.core.internal;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.sun.jna.Native;
 import com.teotigraphix.caustk.core.CaustkEngine;
+import com.teotigraphix.caustk.core.generator.NativeUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class CausticCoreDesktop {
@@ -36,7 +39,18 @@ public class CausticCoreDesktop {
         String s = currentRelativePath.toAbsolutePath().toString();
         System.out.println("CausticCoreDesktop: Construct - relative path is: " + s);
 
-        System.setProperty("jna.library.path", s + "\\libs");
+        File root;
+        try {
+            NativeUtils.loadLibraryFromJar("/CausticCore.lib", false);
+            NativeUtils.loadLibraryFromJar("/fmodex.dll", false);
+            root = NativeUtils.loadLibraryFromJar("/CausticCore.dll", true);
+
+            //System.setProperty("jna.library.path", s + "\\libs");
+            System.setProperty("jna.library.path", root.getParentFile().getAbsolutePath());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         m_byResponseString = new byte[4096];
         caustic = (CausticLibrary)Native.loadLibrary("CausticCore.dll", CausticLibrary.class);
