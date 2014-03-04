@@ -94,12 +94,16 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public void setSelectedIndex(int value) {
+        int old = selectedIndex;
+
+        selectedIndex = value;
+        invalidate();
+
         if (renderers.size == 0)
             return;
 
-        if (selectedIndex != -1)
-            renderers.get(selectedIndex).setIsSelected(false);
-        selectedIndex = value;
+        if (old != -1)
+            renderers.get(old).setIsSelected(false);
         if (value != -1)
             renderers.get(selectedIndex).setIsSelected(true);
 
@@ -113,7 +117,6 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         //        }
         //        Pools.free(changeEvent);
 
-        invalidate();
     }
 
     public static class AdvancedListItemChangeEvent extends Event {
