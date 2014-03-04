@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
@@ -35,6 +36,12 @@ public class MenuRowRenderer extends ListRowRenderer {
     @Override
     public void createChildren() {
 
+        content = new Table();
+
+        background = new Image(getStyle().background);
+
+        stack(background, content).expand().fill();
+
         // Image | Label | Label | Image(expand arrow)
 
         MenuItem menuItem = getUserObject();
@@ -46,28 +53,28 @@ public class MenuRowRenderer extends ListRowRenderer {
             if (icon != null && !icon.equals("")) {
                 image.setDrawable(getSkin().getDrawable(icon));
             }
-            add(image).minWidth(35f);
+            content.add(image).minWidth(35f);
 
             LabelStyle labelStyle = getLabelStyle();
             menuLabel = new Label(getText(), labelStyle);
             menuLabel.setTouchable(Touchable.disabled);
-            add(menuLabel).left().minWidth(125f);
+            content.add(menuLabel).left().minWidth(125f);
 
             bindingLabel = new Label(menuItem.getKeyBinding(), labelStyle);
             bindingLabel.setAlignment(Align.right);
             bindingLabel.setTouchable(Touchable.disabled);
-            add(bindingLabel).right().minWidth(50f).fillX().expandX();
+            content.add(bindingLabel).right().minWidth(50f).fillX().expandX();
 
             Image arrow = new Image();
-            add(arrow).minWidth(15f);
+            content.add(arrow).minWidth(15f);
             validate();
         } else {
-            add().minWidth(35f);
+            content.add().minWidth(35f);
             Image separator = new Image(getStyle().separator);
             setTouchable(Touchable.disabled);
-            add(separator).fillX().expandX();
-            add();
-            add();
+            content.add(separator).fillX().expandX();
+            content.add();
+            content.add();
         }
     }
 

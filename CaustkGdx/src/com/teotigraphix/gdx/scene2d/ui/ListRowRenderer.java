@@ -30,9 +30,9 @@ public abstract class ListRowRenderer extends Table {
 
     private Skin skin;
 
-    private Image background;
+    protected Image background;
 
-    private Table content;
+    protected Table content;
 
     public Skin getSkin() {
         return skin;
