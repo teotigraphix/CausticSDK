@@ -19,64 +19,39 @@
 
 package com.teotigraphix.gdx.scene2d.ui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuItem;
+import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;
 
-public class ContextMenu extends Dialog {
+public class ContextMenu extends Menu {
 
-    private Skin skin;
+    private InputListener stageListener = new InputListener() {
+        @Override
+        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            hide();
+            return false;
+        }
+    };
 
-    private List list;
-
-    private Object[] items;
-
-    public Object[] getItems() {
-        return items;
+    public ContextMenu(Array<MenuItem> menuItems, WindowStyle windowStyle,
+            MenuRowRendererStyle menuRowRendererStyle, Skin skin) {
+        super(menuItems, windowStyle, menuRowRendererStyle, skin);
     }
 
-    public void setItems(Object[] items) {
-        this.items = items;
-        //debug();
-        list = new List(items, skin);
-        list.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                listener.onSelect(list.getSelectedIndex());
-            }
-        });
-        list.setSelectedIndex(-1);
-        getContentTable().add(list).fill().expand();
-    }
-
-    public ContextMenu(WindowStyle windowStyle) {
-        super("", windowStyle);
-    }
-
-    public ContextMenu(Skin skin, String windowStyleName) {
-        super("", skin, windowStyleName);
-        this.skin = skin;
+    @Override
+    public Dialog show(Stage stage) {
+        stage.addCaptureListener(stageListener);
+        return super.show(stage);
     }
 
     @Override
     public void hide() {
+        getStage().removeCaptureListener(stageListener);
         super.hide();
-        listener.onSelect(-1);
-    }
-
-    private OnContextMenuListener listener;
-
-    public void setOnContextMenuListener(OnContextMenuListener l) {
-        this.listener = l;
-    }
-
-    public interface OnContextMenuListener {
-        /**
-         * @param selectedIndex The selectedIndex choosen when the context menu
-         *            is hidden, -1 for dismissal of the menu with no selection.
-         */
-        void onSelect(int selectedIndex);
     }
 }

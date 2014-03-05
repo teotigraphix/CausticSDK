@@ -187,6 +187,14 @@ public class MenuBar extends ButtonBar {
             children = new Array<MenuBar.MenuItem>();
         }
 
+        public MenuItem(String label, String icon, String keyBinding, String helpText,
+                String command) {
+            super(label, icon, helpText);
+            this.keyBinding = keyBinding;
+            children = new Array<MenuBar.MenuItem>();
+            setCommand(command);
+        }
+
         public MenuItem() {
             super("", "", "");
             isSeparator = true;

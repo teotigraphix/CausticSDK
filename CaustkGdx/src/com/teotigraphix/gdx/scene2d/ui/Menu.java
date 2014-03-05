@@ -15,26 +15,45 @@ import com.badlogic.gdx.utils.Pools;
 import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListChangeEvent;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuBarStyle;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuItem;
+import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;
 
 public class Menu extends Dialog {
 
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private MenuBar menuBar;
+
     private Array<MenuItem> menuItems;
 
-    private MenuBarStyle menuBarStyle;
+    private MenuRowRendererStyle menuRowRendererStyle;
 
     private Skin skin;
 
-    private Tooltip tooltip;
-
     private AdvancedList<MenuRowRenderer> list;
 
-    private MenuBar menuBar;
+    private Tooltip tooltip;
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public Menu(MenuBar menuBar, Array<MenuItem> menuItems, MenuBarStyle menuBarStyle, Skin skin) {
         super("", menuBarStyle.windowStyle);
         this.menuBar = menuBar;
         this.menuItems = menuItems;
-        this.menuBarStyle = menuBarStyle;
+        this.menuRowRendererStyle = menuBarStyle.rowRendererStyle;
+        this.skin = skin;
+        setModal(false);
+        initialize();
+    }
+
+    public Menu(Array<MenuItem> menuItems, WindowStyle windowStyle,
+            MenuRowRendererStyle menuRowRendererStyle, Skin skin) {
+        super("", windowStyle);
+        this.menuItems = menuItems;
+        this.menuRowRendererStyle = menuRowRendererStyle;
         this.skin = skin;
         setModal(false);
         initialize();
@@ -43,7 +62,7 @@ public class Menu extends Dialog {
     private void initialize() {
 
         list = new AdvancedList<MenuRowRenderer>(menuItems.toArray(), MenuRowRenderer.class, skin,
-                menuBarStyle.rowRendererStyle);
+                menuRowRendererStyle);
         list.setItems(menuItems.toArray());
         getContentTable().add(list);
 
@@ -51,6 +70,7 @@ public class Menu extends Dialog {
             @Override
             public boolean handle(Event event) {
                 if (event instanceof AdvancedListChangeEvent) {
+                    System.out.println(event);
                     //AdvancedList<?> list = (AdvancedList<?>)event.getListenerActor();
                     int selectedIndex = ((AdvancedListChangeEvent)event).getSelectedIndex();
                     //System.out.println(selectedIndex);
@@ -80,7 +100,11 @@ public class Menu extends Dialog {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 AdvancedList<?> listenerActor = (AdvancedList<?>)event.getListenerActor();
-                MenuItem menuItem = menuItems.get(listenerActor.getSelectedIndex());
+                MenuItem menuItem = null;
+                if (listenerActor.getSelectedIndex() == -1)
+                    menuItem = null;
+                else
+                    menuItem = menuItems.get(listenerActor.getSelectedIndex());
                 itemClick(menuItem);
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -121,7 +145,10 @@ public class Menu extends Dialog {
         System.out.println("ItemClick : " + menuItem);
         MenuItemClickEvent event = Pools.obtain(MenuItemClickEvent.class);
         event.setMenuItem(menuItem);
-        menuBar.fire(event);
+        if (menuBar != null)
+            menuBar.fire(event);
+        else
+            fire(event);
         Pools.free(event);
     }
 
