@@ -4,6 +4,7 @@ package com.teotigraphix.gdx.scene2d.ui;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -112,33 +113,26 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public void setSelectedIndex(int value) {
-        setSelectedIndex(value, false);
-    }
-
-    public void setSelectedIndex(int value, boolean noEvent) {
         if (value == selectedIndex)
             return;
 
         int oldIndex = selectedIndex;
         this.selectedIndex = value;
 
-        // for Menu
-        if (!noEvent) {
-            AdvancedListEvent changeEvent = Pools.obtain(AdvancedListEvent.class);
-            changeEvent.setKind(AdvancedListEventKind.Change);
+        AdvancedListEvent changeEvent = Pools.obtain(AdvancedListEvent.class);
+        changeEvent.setKind(AdvancedListEventKind.Change);
 
-            Object selection = null;
-            if (getSelection() != null) {
-                selection = getSelection().getUserObject();
-            }
-
-            changeEvent.setSelectedIndex(selectedIndex, selection);
-
-            if (fire(changeEvent)) {
-                this.selectedIndex = oldIndex;
-            }
-            Pools.free(changeEvent);
+        Object selection = null;
+        if (getSelection() != null) {
+            selection = getSelection().getUserObject();
         }
+
+        changeEvent.setSelectedIndex(selectedIndex, selection);
+
+        if (fire(changeEvent)) {
+            this.selectedIndex = oldIndex;
+        }
+        Pools.free(changeEvent);
 
         invalidate();
     }
@@ -214,8 +208,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         return renderers.get(0).getHeight();
     }
 
-    public void addRenderItem(T item) {
-        item.addCaptureListener(new ClickListener() {
+    public void addRenderItem(final T item) {
+        item.addListener(new ClickListener() {
             @SuppressWarnings("unchecked")
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -234,11 +228,62 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
                 }
                 return false;
             }
+
+            @Override
+            public boolean mouseMoved(InputEvent event, float x, float y) {
+                Actor actor = event.getListenerActor();
+                Vector2 localCoords = new Vector2(x, y);
+                localCoords = actor.localToParentCoordinates(localCoords);
+                touchMove(localCoords.y);
+                return super.mouseMoved(event, x, y);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                if (toActor == null || !toActor.isDescendantOf(AdvancedList.this))
+                    setOverIndex(-1);
+            }
         });
 
         renderers.add(item);
         add(item);
         row();
+    }
+
+    private int overIndex = -1;
+
+    public int getOverIndex() {
+        return overIndex;
+    }
+
+    public void setOverIndex(int overIndex) {
+        if (overIndex == this.overIndex)
+            return;
+
+        this.overIndex = overIndex;
+
+        Object item = null;
+        if (overIndex != -1) {
+            item = items[overIndex];
+        }
+
+        AdvancedListEvent event = Pools.obtain(AdvancedListEvent.class);
+        event.setKind(AdvancedListEventKind.OverChange);
+        event.setOverIndex(overIndex, item);
+        if (fire(event)) {
+        }
+        Pools.free(event);
+        invalidate();
+    }
+
+    void touchMove(float y) {
+        int oldIndex = overIndex;
+        int newOverIndex = (int)((getHeight() - y) / getItemHeight());
+        newOverIndex = Math.max(0, newOverIndex);
+        newOverIndex = Math.min(getItems().length - 1, newOverIndex);
+        if (oldIndex != newOverIndex) {
+            setOverIndex(newOverIndex);
+        }
     }
 
     public void removeRenderItem(T item) {
@@ -278,10 +323,14 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         if (renderers.size != 0) {
             for (T renderer : renderers) {
                 renderer.setSelected(false);
+                renderer.setOver(false);
             }
 
             if (selectedIndex != -1)
                 renderers.get(selectedIndex).setSelected(true);
+
+            if (overIndex != -1)
+                renderers.get(overIndex).setOver(true);
         }
     }
 
@@ -299,6 +348,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
             if (e.getKind() == AdvancedListEventKind.Change)
                 changed(e, event.getTarget());
+            if (e.getKind() == AdvancedListEventKind.OverChange)
+                overChanged(e, event.getTarget());
             if (e.getKind() == AdvancedListEventKind.LongPress)
                 longPress(e, event.getTarget());
             if (e.getKind() == AdvancedListEventKind.DoubleTap)
@@ -310,6 +361,9 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         public void changed(AdvancedListEvent event, Actor actor) {
         }
 
+        public void overChanged(AdvancedListEvent event, Actor actor) {
+        }
+
         public void longPress(AdvancedListEvent event, Actor actor) {
         }
 
@@ -318,7 +372,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public enum AdvancedListEventKind {
-        Change, LongPress, DoubleTap
+        Change, OverChange, LongPress, DoubleTap
     }
 
     public static class AdvancedListEvent extends Event {
@@ -326,6 +380,10 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         private AdvancedListEventKind kind;
 
         private int selectedIndex;
+
+        private int overIndex;
+
+        private Object overSelection;
 
         private Object selection;
 
@@ -341,13 +399,26 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
             return selectedIndex;
         }
 
+        public int getOverIndex() {
+            return overIndex;
+        }
+
         public Object getSelection() {
             return selection;
+        }
+
+        public Object getOverSelection() {
+            return overSelection;
         }
 
         public void setSelectedIndex(int selectedIndex, Object selection) {
             this.selectedIndex = selectedIndex;
             this.selection = selection;
+        }
+
+        public void setOverIndex(int overIndex, Object overSelection) {
+            this.overIndex = overIndex;
+            this.overSelection = overSelection;
         }
 
         public AdvancedListEvent() {
@@ -359,6 +430,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
             kind = null;
             selectedIndex = -1;
             selection = null;
+            overSelection = null;
+            overIndex = -1;
         }
     }
 

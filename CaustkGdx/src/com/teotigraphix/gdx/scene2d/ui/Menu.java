@@ -3,14 +3,10 @@ package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pools;
 import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEvent;
 import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListListener;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuBarStyle;
@@ -22,8 +18,6 @@ public class Menu extends Dialog {
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
-
-    private MenuBar menuBar;
 
     private Array<MenuItem> menuItems;
 
@@ -39,12 +33,12 @@ public class Menu extends Dialog {
     // Constructors
     //--------------------------------------------------------------------------
 
-    public Menu(MenuBar menuBar, Array<MenuItem> menuItems, MenuBarStyle menuBarStyle, Skin skin) {
+    public Menu(Array<MenuItem> menuItems, MenuBarStyle menuBarStyle, Skin skin) {
         super("", menuBarStyle.windowStyle);
-        this.menuBar = menuBar;
         this.menuItems = menuItems;
         this.menuRowRendererStyle = menuBarStyle.rowRendererStyle;
         this.skin = skin;
+
         setModal(false);
         initialize();
     }
@@ -60,7 +54,6 @@ public class Menu extends Dialog {
     }
 
     private void initialize() {
-
         list = new AdvancedList<MenuRowRenderer>(menuItems.toArray(), MenuRowRenderer.class, skin,
                 menuRowRendererStyle);
         list.setItems(menuItems.toArray());
@@ -68,44 +61,17 @@ public class Menu extends Dialog {
 
         list.addListener(new AdvancedListListener() {
             @Override
-            public void changed(AdvancedListEvent event, Actor actor) {
-                //AdvancedList<?> list = (AdvancedList<?>)event.getListenerActor();
-                int selectedIndex = event.getSelectedIndex();
-                //System.out.println(selectedIndex);
-                if (selectedIndex == -1) {
+            public void overChanged(AdvancedListEvent event, Actor actor) {
+                int overIndex = event.getOverIndex();
+                if (overIndex == -1) {
                     stopTooltip();
                 } else {
-                    startTooltip(selectedIndex);
+                    if (tooltip != null)
+                        stopTooltip();
+                    startTooltip(overIndex);
                 }
             }
         });
-
-        list.addCaptureListener(new InputListener() {
-            @Override
-            public boolean mouseMoved(InputEvent event, float x, float y) {
-                touchMove((AdvancedList<?>)event.getListenerActor(), y);
-                return super.mouseMoved(event, x, y);
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                AdvancedList<?> list = (AdvancedList<?>)event.getListenerActor();
-                list.setSelectedIndex(-1, true); // noEvent
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                AdvancedList<?> listenerActor = (AdvancedList<?>)event.getListenerActor();
-                MenuItem menuItem = null;
-                if (listenerActor.getSelectedIndex() == -1)
-                    menuItem = null;
-                else
-                    menuItem = menuItems.get(listenerActor.getSelectedIndex());
-                itemClick(menuItem);
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-        list.setSelectedIndex(-1);
     }
 
     protected void stopTooltip() {
@@ -128,58 +94,12 @@ public class Menu extends Dialog {
     protected void showTooltip() {
         if (tooltip != null)
             return;
-        if (list.getSelectedIndex() == -1)
+        if (list.getOverIndex() == -1)
             return;
 
-        MenuItem menuItem = menuItems.get(list.getSelectedIndex());
+        MenuItem menuItem = menuItems.get(list.getOverIndex());
         tooltip = Tooltip.show(getStage(), skin, menuItem.getHelpText());
         tooltip.setPosition(Gdx.input.getX() + 20f, getStage().getHeight() - Gdx.input.getY()
                 - tooltip.getHeight() - 20f);
-    }
-
-    protected void itemClick(MenuItem menuItem) {
-        System.out.println("ItemClick : " + menuItem);
-        MenuItemClickEvent event = Pools.obtain(MenuItemClickEvent.class);
-        event.setMenuItem(menuItem);
-        if (menuBar != null)
-            menuBar.fire(event);
-        else
-            fire(event);
-        Pools.free(event);
-    }
-
-    public static class MenuItemClickEvent extends Event {
-
-        private MenuItem menuItem;
-
-        public MenuItem getMenuItem() {
-            return menuItem;
-        }
-
-        public void setMenuItem(MenuItem menuItem) {
-            this.menuItem = menuItem;
-        }
-
-        @Override
-        public void reset() {
-            super.reset();
-            menuItem = null;
-        }
-    }
-
-    void touchMove(AdvancedList<?> list, float y) {
-        int oldIndex = list.getSelectedIndex();
-        int selectedIndex = (int)((list.getHeight() - y) / list.getItemHeight());
-        selectedIndex = Math.max(0, selectedIndex);
-        selectedIndex = Math.min(list.getItems().length - 1, selectedIndex);
-        if (oldIndex != selectedIndex) {
-            list.setSelectedIndex(selectedIndex, true); // noEvent
-            //list.validate();
-        }
-        //        if (oldIndex != selectedIndex) {
-        //            ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
-        //            if (fire(changeEvent)) selectedIndex = oldIndex;
-        //            Pools.free(changeEvent);
-        //        }
     }
 }

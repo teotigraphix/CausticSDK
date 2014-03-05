@@ -4,10 +4,10 @@ package com.teotigraphix.gdx.scene2d.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -15,13 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEvent;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListListener;
 import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;
 
 public class MenuBar extends ButtonBar {
 
     private Dialog menu;
-
-    private List list;
 
     private boolean isOpen;
 
@@ -76,15 +76,20 @@ public class MenuBar extends ButtonBar {
         localCoords = listenerActor.getParent().localToStageCoordinates(localCoords);
 
         Dialog.fadeDuration = 0f;
-        menu = new Menu(this, menuItem.getChildren(), menuBarStyle, getSkin());
+        menu = new Menu(menuItem.getChildren(), menuBarStyle, getSkin());
         menu.show(getStage());
         menu.setPosition(localCoords.x, localCoords.y - menu.getHeight());
-    }
-
-    protected void _execute() {
-        String selection = list.getSelection();
-        System.out.println("Execute: " + selection);
-        hide();
+        // hack to push list events to the MenuBar which is not a parent of the menu
+        menu.addListener(new AdvancedListListener() {
+            @Override
+            public boolean handle(Event event) {
+                if (event instanceof AdvancedListEvent) {
+                    fire(event);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     protected void hide() {

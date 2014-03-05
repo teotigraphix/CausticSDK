@@ -38,6 +38,8 @@ public abstract class ListRowRenderer extends Table {
 
     protected Table content;
 
+    private boolean over;
+
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
@@ -87,20 +89,24 @@ public abstract class ListRowRenderer extends Table {
             return;
 
         this.selected = selected;
-
-        if (style == null)
-            return;
-
-        if (background != null && style != null) {
-            if (selected)
-                background.setDrawable(style.selection);
-            else
-                background.setDrawable(style.background);
-        }
+        invalidate();
     }
 
     public boolean isSelected() {
         return selected;
+    }
+
+    //----------------------------------
+    // over
+    //----------------------------------
+
+    public boolean isOver() {
+        return over;
+    }
+
+    public void setOver(boolean over) {
+        this.over = over;
+        invalidate();
     }
 
     //--------------------------------------------------------------------------
@@ -158,6 +164,12 @@ public abstract class ListRowRenderer extends Table {
         super.layout();
         if (label != null)
             label.setText(text);
+        if (background != null && style != null) {
+            if (selected || over)
+                background.setDrawable(style.selection);
+            else
+                background.setDrawable(style.background);
+        }
     }
 
     public static class ListRowRendererStyle {

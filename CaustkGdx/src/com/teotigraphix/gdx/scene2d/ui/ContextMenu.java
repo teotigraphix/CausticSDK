@@ -45,13 +45,14 @@ public class ContextMenu extends Menu {
 
     @Override
     public Dialog show(Stage stage) {
-        stage.addCaptureListener(stageListener);
+        Dialog.fadeDuration = 0f;
+        stage.addListener(stageListener);
         return super.show(stage);
     }
 
     @Override
     public void hide() {
-        getStage().removeCaptureListener(stageListener);
+        getStage().removeListener(stageListener);
         super.hide();
     }
 }
