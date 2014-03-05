@@ -21,25 +21,33 @@ import com.teotigraphix.gdx.scene2d.ui.ScrollList.LabelRow;
 
 public class AdvancedList<T extends ListRowRenderer> extends Table {
 
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private Object[] items;
+
+    private Class<T> type;
+
+    private Skin skin;
+
+    private ListRowRendererStyle rendererStyle;
+
     private Array<T> renderers = new Array<T>();
 
     private int selectedIndex = -1;
 
     private boolean selectable = true;
 
-    private Object[] items;
-
-    public Object[] getItems() {
-        return items;
-    }
-
-    private Class<T> type;
-
-    private Skin skin;
-
     private boolean mouseDownChange = true;
 
-    private ListRowRendererStyle rendererStyle;
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // mouseDownChange
+    //----------------------------------
 
     public boolean isMouseDownChange() {
         return mouseDownChange;
@@ -49,28 +57,34 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         this.mouseDownChange = mouseDownChange;
     }
 
-    //private OnAdvancedListListener listener;
+    //----------------------------------
+    // items
+    //----------------------------------
+
+    public Object[] getItems() {
+        return items;
+    }
+
+    public void setItems(Object[] items) {
+        this.items = items;
+        renderers.clear();
+        selectedIndex = -1;
+        clearChildren();
+        createChildren(skin);
+        invalidateHierarchy();
+    }
+
+    //----------------------------------
+    // type
+    //----------------------------------
 
     protected Class<T> getType() {
         return type;
     }
 
-    public AdvancedList() {
-        this(null, null, null, null);
-    }
-
-    public AdvancedList(Object[] items, Class<T> type, Skin skin, ListRowRendererStyle rendererStyle) {
-        this.items = items;
-        this.type = type;
-        this.skin = skin;
-        this.rendererStyle = rendererStyle;
-
-        //setWidth(getPrefWidth());
-        //setHeight(getPrefHeight());
-
-        align(Align.top);
-        defaults().expandX().fillX();
-    }
+    //----------------------------------
+    // selectable
+    //----------------------------------
 
     /**
      * Sets whether this List's items are selectable. If not selectable, touch
@@ -85,6 +99,10 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         return selectable;
     }
 
+    //----------------------------------
+    // selectedIndex
+    //----------------------------------
+
     /**
      * @return The index of the currently selected item. The top item has an
      *         index of 0. Nothing selected has an index of -1.
@@ -94,29 +112,53 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public void setSelectedIndex(int value) {
-        int old = selectedIndex;
+        setSelectedIndex(value, false);
+    }
 
-        selectedIndex = value;
-        invalidate();
-
-        if (renderers.size == 0)
+    public void setSelectedIndex(int value, boolean noEvent) {
+        if (value == selectedIndex)
             return;
 
-        if (old != -1)
-            renderers.get(old).setIsSelected(false);
-        if (value != -1)
-            renderers.get(selectedIndex).setIsSelected(true);
+        int oldIndex = selectedIndex;
+        this.selectedIndex = value;
 
-        //        AdvancedListChangeEvent changeEvent = Pools.obtain(AdvancedListChangeEvent.class);
-        //        Object selection = null;
-        //        if (getSelection() != null) {
-        //            selection = getSelection().getUserObject();
-        //        }
-        //        changeEvent.setSelectedIndex(selectedIndex, selection);
-        //        if (fire(changeEvent)) {
-        //        }
-        //        Pools.free(changeEvent);
+        // for Menu
+        if (!noEvent) {
+            AdvancedListEvent changeEvent = Pools.obtain(AdvancedListEvent.class);
+            changeEvent.setKind(AdvancedListEventKind.Change);
 
+            Object selection = null;
+            if (getSelection() != null) {
+                selection = getSelection().getUserObject();
+            }
+
+            changeEvent.setSelectedIndex(selectedIndex, selection);
+
+            if (fire(changeEvent)) {
+                this.selectedIndex = oldIndex;
+            }
+            Pools.free(changeEvent);
+        }
+
+        invalidate();
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    public AdvancedList() {
+        this(null, null, null, null);
+    }
+
+    public AdvancedList(Object[] items, Class<T> type, Skin skin, ListRowRendererStyle rendererStyle) {
+        this.items = items;
+        this.type = type;
+        this.skin = skin;
+        this.rendererStyle = rendererStyle;
+
+        align(Align.top);
+        defaults().expandX().fillX();
     }
 
     public static class AdvancedListItemChangeEvent extends Event {
@@ -128,25 +170,6 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
         public void setSelectedIndex(int selectedIndex) {
             this.selectedIndex = selectedIndex;
-        }
-    }
-
-    public static class AdvancedListChangeEvent extends Event {
-        private int selectedIndex;
-
-        private Object selection;
-
-        public int getSelectedIndex() {
-            return selectedIndex;
-        }
-
-        public Object getSelection() {
-            return selection;
-        }
-
-        public void setSelectedIndex(int selectedIndex, Object selection) {
-            this.selectedIndex = selectedIndex;
-            this.selection = selection;
         }
     }
 
@@ -191,10 +214,6 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         return renderers.get(0).getHeight();
     }
 
-    public Array<T> _getItems() {
-        return renderers;
-    }
-
     public void addRenderItem(T item) {
         item.addCaptureListener(new ClickListener() {
             @SuppressWarnings("unchecked")
@@ -226,7 +245,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         item.remove();
         int _index = renderers.indexOf(item, false);
         renderers.removeValue(item, false);
-        renderers.get(_index).setIsSelected(true);
+        renderers.get(_index).setSelected(true);
     }
 
     /**
@@ -238,40 +257,6 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
 
         removeRenderItem(renderers.get(selectedIndex));
     }
-
-    public static abstract class AdvancedListListener implements EventListener {
-        @Override
-        public boolean handle(Event event) {
-            if (!(event instanceof AdvancedListEvent))
-                return false;
-            if (event instanceof AdvancedListChangeEvent)
-                changed((AdvancedListChangeEvent)event, event.getTarget());
-            if (event instanceof AdvancedListLongPressEvent)
-                longPress((AdvancedListLongPressEvent)event, event.getTarget());
-            if (event instanceof AdvancedListDoubleTapEvent)
-                doubleTap((AdvancedListDoubleTapEvent)event, event.getTarget());
-            return false;
-        }
-
-        public abstract void changed(AdvancedListChangeEvent event, Actor actor);
-
-        public abstract void longPress(AdvancedListLongPressEvent event, Actor actor);
-
-        public abstract void doubleTap(AdvancedListDoubleTapEvent event, Actor actor);
-
-    }
-
-    public static abstract class AdvancedListEvent extends Event {
-    }
-
-    public static class AdvancedListLongPressEvent extends AdvancedListEvent {
-    }
-
-    public static class AdvancedListDoubleTapEvent extends AdvancedListEvent {
-    }
-
-    //    public static class AdvancedListChangeEvent extends AdvancedListEvent {
-    //    }
 
     /**
      * Refreshes the item renderers.
@@ -286,39 +271,94 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         }
     }
 
-    public void setItems(Object[] items) {
-        this.items = items;
-        renderers.clear();
-        selectedIndex = -1;
-        clearChildren();
-        createChildren(skin);
-        invalidateHierarchy();
+    @Override
+    public void layout() {
+        super.layout();
+
+        if (renderers.size != 0) {
+            for (T renderer : renderers) {
+                renderer.setSelected(false);
+            }
+
+            if (selectedIndex != -1)
+                renderers.get(selectedIndex).setSelected(true);
+        }
     }
 
     private void fireChange(int newSelectedIndex) {
-        int oldIndex = selectedIndex;
-        if (oldIndex != newSelectedIndex) {
-            //            ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
-            //            setSelectedIndex(newSelectedIndex);
-            //            if (fire(changeEvent)) {
-            //                setSelectedIndex(oldIndex);
-            //            }
-            //            Pools.free(changeEvent);
+        setSelectedIndex(newSelectedIndex);
+    }
 
-            AdvancedListChangeEvent changeEvent = Pools.obtain(AdvancedListChangeEvent.class);
-            setSelectedIndex(newSelectedIndex);
+    public static class AdvancedListListener implements EventListener {
+        @Override
+        public boolean handle(Event event) {
+            if (!(event instanceof AdvancedListEvent))
+                return false;
 
-            Object selection = null;
-            if (getSelection() != null) {
-                selection = getSelection().getUserObject();
-            }
+            AdvancedListEvent e = (AdvancedListEvent)event;
 
-            changeEvent.setSelectedIndex(newSelectedIndex, selection);
+            if (e.getKind() == AdvancedListEventKind.Change)
+                changed(e, event.getTarget());
+            if (e.getKind() == AdvancedListEventKind.LongPress)
+                longPress(e, event.getTarget());
+            if (e.getKind() == AdvancedListEventKind.DoubleTap)
+                doubleTap(e, event.getTarget());
 
-            if (fire(changeEvent)) {
-                setSelectedIndex(oldIndex);
-            }
-            Pools.free(changeEvent);
+            return false;
+        }
+
+        public void changed(AdvancedListEvent event, Actor actor) {
+        }
+
+        public void longPress(AdvancedListEvent event, Actor actor) {
+        }
+
+        public void doubleTap(AdvancedListEvent event, Actor actor) {
+        }
+    }
+
+    public enum AdvancedListEventKind {
+        Change, LongPress, DoubleTap
+    }
+
+    public static class AdvancedListEvent extends Event {
+
+        private AdvancedListEventKind kind;
+
+        private int selectedIndex;
+
+        private Object selection;
+
+        public AdvancedListEventKind getKind() {
+            return kind;
+        }
+
+        public void setKind(AdvancedListEventKind kind) {
+            this.kind = kind;
+        }
+
+        public int getSelectedIndex() {
+            return selectedIndex;
+        }
+
+        public Object getSelection() {
+            return selection;
+        }
+
+        public void setSelectedIndex(int selectedIndex, Object selection) {
+            this.selectedIndex = selectedIndex;
+            this.selection = selection;
+        }
+
+        public AdvancedListEvent() {
+        }
+
+        @Override
+        public void reset() {
+            super.reset();
+            kind = null;
+            selectedIndex = -1;
+            selection = null;
         }
     }
 

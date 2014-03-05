@@ -15,12 +15,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListDoubleTapEvent;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListLongPressEvent;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEvent;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEventKind;
 
 public abstract class ListRowRenderer extends Table {
 
-    private boolean isSelected;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private boolean selected;
 
     private ListRowRendererStyle style;
 
@@ -34,13 +38,36 @@ public abstract class ListRowRenderer extends Table {
 
     protected Table content;
 
+    //--------------------------------------------------------------------------
+    // Public Property :: API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // skin
+    //----------------------------------
+
     public Skin getSkin() {
         return skin;
     }
 
+    //----------------------------------
+    // style
+    //----------------------------------
+
     public ListRowRendererStyle getStyle() {
         return style;
     }
+
+    public void setStyle(ListRowRendererStyle style) {
+        this.style = style;
+
+        //        if (style != null)
+        //            setBackground(style.background);
+    }
+
+    //----------------------------------
+    // text
+    //----------------------------------
 
     public String getText() {
         return text;
@@ -50,6 +77,35 @@ public abstract class ListRowRenderer extends Table {
         text = value;
         invalidate();
     }
+
+    //----------------------------------
+    // selected
+    //----------------------------------
+
+    public void setSelected(boolean selected) {
+        if (selected == this.selected)
+            return;
+
+        this.selected = selected;
+
+        if (style == null)
+            return;
+
+        if (background != null && style != null) {
+            if (selected)
+                background.setDrawable(style.selection);
+            else
+                background.setDrawable(style.background);
+        }
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
 
     public ListRowRenderer(Skin skin) {
         super(skin);
@@ -66,7 +122,8 @@ public abstract class ListRowRenderer extends Table {
             @Override
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 if (count == 2) {
-                    AdvancedListDoubleTapEvent e = Pools.obtain(AdvancedListDoubleTapEvent.class);
+                    AdvancedListEvent e = Pools.obtain(AdvancedListEvent.class);
+                    e.setKind(AdvancedListEventKind.DoubleTap);
                     fire(e);
                     Pools.free(e);
                 }
@@ -74,7 +131,8 @@ public abstract class ListRowRenderer extends Table {
 
             @Override
             public boolean longPress(Actor actor, float x, float y) {
-                AdvancedListLongPressEvent e = Pools.obtain(AdvancedListLongPressEvent.class);
+                AdvancedListEvent e = Pools.obtain(AdvancedListEvent.class);
+                e.setKind(AdvancedListEventKind.LongPress);
                 fire(e);
                 Pools.free(e);
                 return true;
@@ -100,34 +158,6 @@ public abstract class ListRowRenderer extends Table {
         super.layout();
         if (label != null)
             label.setText(text);
-    }
-
-    public void setStyle(ListRowRendererStyle style) {
-        this.style = style;
-
-        //        if (style != null)
-        //            setBackground(style.background);
-    }
-
-    public void setIsSelected(boolean isSelected) {
-        if (isSelected == this.isSelected)
-            return;
-
-        this.isSelected = isSelected;
-
-        if (style == null)
-            return;
-
-        if (background != null && style != null) {
-            if (isSelected)
-                background.setDrawable(style.selection);
-            else
-                background.setDrawable(style.background);
-        }
-    }
-
-    public boolean isSelected() {
-        return isSelected;
     }
 
     public static class ListRowRendererStyle {

@@ -4,7 +4,6 @@ package com.teotigraphix.gdx.scene2d.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -12,7 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListChangeEvent;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEvent;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListListener;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuBarStyle;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuItem;
 import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;
@@ -66,21 +66,17 @@ public class Menu extends Dialog {
         list.setItems(menuItems.toArray());
         getContentTable().add(list);
 
-        list.addListener(new EventListener() {
+        list.addListener(new AdvancedListListener() {
             @Override
-            public boolean handle(Event event) {
-                if (event instanceof AdvancedListChangeEvent) {
-                    System.out.println(event);
-                    //AdvancedList<?> list = (AdvancedList<?>)event.getListenerActor();
-                    int selectedIndex = ((AdvancedListChangeEvent)event).getSelectedIndex();
-                    //System.out.println(selectedIndex);
-                    if (selectedIndex == -1) {
-                        stopTooltip();
-                    } else {
-                        startTooltip(selectedIndex);
-                    }
+            public void changed(AdvancedListEvent event, Actor actor) {
+                //AdvancedList<?> list = (AdvancedList<?>)event.getListenerActor();
+                int selectedIndex = event.getSelectedIndex();
+                //System.out.println(selectedIndex);
+                if (selectedIndex == -1) {
+                    stopTooltip();
+                } else {
+                    startTooltip(selectedIndex);
                 }
-                return false;
             }
         });
 
@@ -94,7 +90,7 @@ public class Menu extends Dialog {
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 AdvancedList<?> list = (AdvancedList<?>)event.getListenerActor();
-                list.setSelectedIndex(-1);
+                list.setSelectedIndex(-1, true); // noEvent
             }
 
             @Override
@@ -177,9 +173,8 @@ public class Menu extends Dialog {
         selectedIndex = Math.max(0, selectedIndex);
         selectedIndex = Math.min(list.getItems().length - 1, selectedIndex);
         if (oldIndex != selectedIndex) {
-            list.setSelectedIndex(selectedIndex);
-            list.invalidate();
-            list.validate();
+            list.setSelectedIndex(selectedIndex, true); // noEvent
+            //list.validate();
         }
         //        if (oldIndex != selectedIndex) {
         //            ChangeEvent changeEvent = Pools.obtain(ChangeEvent.class);
