@@ -98,8 +98,12 @@ public class Menu extends Dialog {
             return;
 
         MenuItem menuItem = menuItems.get(list.getOverIndex());
-        tooltip = Tooltip.show(getStage(), skin, menuItem.getHelpText());
-        tooltip.setPosition(Gdx.input.getX() + 20f, getStage().getHeight() - Gdx.input.getY()
-                - tooltip.getHeight() - 20f);
+
+        String helpText = menuItem.getHelpText();
+        if (helpText != null && !helpText.equals("")) {
+            tooltip = Tooltip.show(getStage(), skin, helpText);
+            tooltip.setPosition(Gdx.input.getX() + 20f, getStage().getHeight() - Gdx.input.getY()
+                    - tooltip.getHeight() - 20f);
+        }
     }
 }

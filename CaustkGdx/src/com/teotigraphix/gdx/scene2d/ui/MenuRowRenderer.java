@@ -92,6 +92,8 @@ public class MenuRowRenderer extends ListRowRenderer {
         LabelStyle labelStyle = new LabelStyle(getStyle().font, getStyle().fontColor);
         if (isSelected()) {
             labelStyle.fontColor = getStyle().fontSelectedColor;
+        } else if (isOver()) {
+            labelStyle.fontColor = getStyle().fontOverColor;
         }
         return labelStyle;
     }

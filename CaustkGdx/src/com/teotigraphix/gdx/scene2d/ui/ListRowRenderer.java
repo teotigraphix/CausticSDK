@@ -162,11 +162,15 @@ public abstract class ListRowRenderer extends Table {
     @Override
     public void layout() {
         super.layout();
+
         if (label != null)
             label.setText(text);
+
         if (background != null && style != null) {
-            if (selected || over)
+            if (selected)
                 background.setDrawable(style.selection);
+            else if (over && style.over != null)
+                background.setDrawable(style.over);
             else
                 background.setDrawable(style.background);
         }
@@ -178,11 +182,15 @@ public abstract class ListRowRenderer extends Table {
 
         public Drawable selection;
 
+        public Drawable over;
+
         public BitmapFont font;
 
         public Color fontColor;
 
         public Color fontSelectedColor;
+
+        public Color fontOverColor;
 
         public ListRowRendererStyle() {
         }
