@@ -280,9 +280,8 @@ public class CaustkFactory {
      * @param node The {@link ICaustkNode} to serialize.
      * @param prettyPrint Whether to pretty print for debugging.
      * @return A serialized JSON String of the {@link ICaustkNode}.
-     * @throws CausticException Serialization exception.
      */
-    public String serialize(ICaustkNode node, boolean prettyPrint) throws CausticException {
+    public String serialize(ICaustkNode node, boolean prettyPrint) {
         GsonBuilder builder = new GsonBuilder();
         if (prettyPrint)
             builder.setPrettyPrinting();
@@ -296,9 +295,8 @@ public class CaustkFactory {
      * 
      * @param node The {@link ICaustkNode} to serialize.
      * @return A serialized JSON String of the {@link ICaustkNode}.
-     * @throws CausticException Serialization exception.
      */
-    public String serialize(ICaustkNode node) throws CausticException {
+    public String serialize(ICaustkNode node) {
         return serialize(node, false);
     }
 

@@ -214,9 +214,8 @@ public class Library extends NodeBase {
      * 
      * @param node The node to add and serialize to the library on disk.
      * @throws IOException
-     * @throws CausticException
      */
-    public final boolean add(ICaustkNode node) throws IOException, CausticException {
+    public final boolean add(ICaustkNode node) throws IOException {
         if (contains(node))
             return false;
         definitionAdded(node);
@@ -231,13 +230,15 @@ public class Library extends NodeBase {
      * @throws IOException
      * @throws IllegalArgumentException must be file, no directory
      */
-    public void remove(File file) throws IOException {
+    public final boolean remove(File file) throws IOException {
         if (file.isDirectory())
             throw new IllegalArgumentException("remove() must take a File");
         NodeInfo nodeInfo = get(file);
-        if (remove(nodeInfo)) {
+        boolean removed = remove(nodeInfo);
+        if (removed) {
             save();
         }
+        return removed;
     }
 
     public NodeInfo get(File file) {
@@ -301,13 +302,7 @@ public class Library extends NodeBase {
 
     public void save() throws IOException {
         File manifestFile = getManifestFile();
-        String json = null;
-        try {
-            json = getFactory().serialize(this);
-        } catch (CausticException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        String json = getFactory().serialize(this);
         FileUtils.writeStringToFile(manifestFile, json);
     }
 
@@ -319,7 +314,7 @@ public class Library extends NodeBase {
      * @throws CausticException
      * @throws IOException
      */
-    public File save(ICaustkNode node) throws CausticException, IOException {
+    public File save(ICaustkNode node) throws IOException {
         File location = resolveAbsoluteArchive(node.getInfo());
         String json = getFactory().serialize(node);
 
@@ -453,10 +448,10 @@ public class Library extends NodeBase {
     // Private :: Methods
     //--------------------------------------------------------------------------
 
-    private void definitionAdded(ICaustkNode node) throws CausticException, IOException {
+    private void definitionAdded(ICaustkNode node) throws IOException {
         //        invalidated = true;
         if (node.getInfo().getFile() == null && node.getInfo().getName() == null)
-            throw new CausticException("File and/or Name is null on NodeInfo for write");
+            throw new RuntimeException("File and/or Name is null on NodeInfo for write");
 
         NodeInfo info = node.getInfo();
         UUID uuid = info.getId();
@@ -482,17 +477,15 @@ public class Library extends NodeBase {
         deleteFromDisk(info);
     }
 
-    private File writeToDisk(ICaustkNode node) throws CausticException {
+    private File writeToDisk(ICaustkNode node) throws IOException {
         // definition must exist in Library
         if (!contains(node))
-            throw new CausticException("Library does not contian node; " + node);
+            throw new IOException("Library does not contian node; " + node);
 
         File location = null;
-        try {
-            location = save(node);
-        } catch (IOException e) {
-            throw new CausticException("Failed to write library item: " + node, e);
-        }
+
+        location = save(node);
+
         return location;
     }
 
