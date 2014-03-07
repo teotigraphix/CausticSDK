@@ -33,6 +33,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
@@ -132,6 +133,10 @@ public class Library extends NodeBase {
         return new File(getLibrariesDirectory(), getName());
     }
 
+    public void setDirectory(File directory) {
+        this.directory = directory;
+    }
+
     /**
      * Returns the
      * <code>/storageRoot/AppName/Libraries/[library_name]/.library</code> file.
@@ -219,6 +224,34 @@ public class Library extends NodeBase {
     }
 
     /**
+     * Removes a file from the library and uses the absolute location to remove
+     * the item from the library manifest.
+     * 
+     * @param file
+     * @throws IOException
+     * @throws IllegalArgumentException must be file, no directory
+     */
+    public void remove(File file) throws IOException {
+        if (file.isDirectory())
+            throw new IllegalArgumentException("remove() must take a File");
+        NodeInfo nodeInfo = get(file);
+        if (remove(nodeInfo)) {
+            save();
+        }
+    }
+
+    public NodeInfo get(File file) {
+        for (Map<UUID, NodeInfo> types : map.values()) {
+            for (NodeInfo info : types.values()) {
+                File other = resolveAbsoluteArchive(info);
+                if (other.compareTo(file) == 0)
+                    return info;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Remove a node from the library by {@link UUID}.
      * <p>
      * The {@link Library} holds copies(templates) of nodes and at no time is a
@@ -246,6 +279,16 @@ public class Library extends NodeBase {
         return true;
     }
 
+    private boolean remove(NodeInfo nodeInfo) throws IOException {
+        Map<UUID, NodeInfo> typeMap = getTypeMap(nodeInfo);
+        NodeInfo removed = typeMap.remove(nodeInfo.getId());
+        if (removed == null)
+            throw new IllegalStateException("Failed to remove node");
+
+        definitionRemoved(removed);
+        return true;
+    }
+
     public List<NodeInfo> findAll(NodeType type) {
         List<NodeInfo> result = new ArrayList<NodeInfo>();
         Map<UUID, NodeInfo> list = map.get(type);
@@ -254,6 +297,18 @@ public class Library extends NodeBase {
                 result.add(info);
         }
         return result;
+    }
+
+    public void save() throws IOException {
+        File manifestFile = getManifestFile();
+        String json = null;
+        try {
+            json = getFactory().serialize(this);
+        } catch (CausticException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        FileUtils.writeStringToFile(manifestFile, json);
     }
 
     /**
@@ -278,7 +333,7 @@ public class Library extends NodeBase {
         // XXX construct the archive for the specific node type
         // for now the only special node type is MachineNode that needs
         // the presets directory
-        if (node instanceof MachineNode) {
+        if (node instanceof MachineNode && !(node instanceof VocoderMachine)) {
             File presetsDirectory = new File(sourceDirectory, "presets");
             MachineNode machineNode = (MachineNode)node;
             File file = new File(presetsDirectory, fileName + "."
@@ -369,10 +424,7 @@ public class Library extends NodeBase {
         if (!exists())
             getDirectory().mkdirs();
         try {
-            save(this);
-        } catch (CausticException e) {
-            // TODO log err()
-            e.printStackTrace();
+            save();
         } catch (IOException e) {
             // TODO log err()
             e.printStackTrace();
@@ -421,6 +473,8 @@ public class Library extends NodeBase {
 
         list.put(uuid, info);
         writeToDisk(node);
+
+        save();
     }
 
     private void definitionRemoved(NodeInfo info) throws FileNotFoundException {
@@ -437,7 +491,7 @@ public class Library extends NodeBase {
         try {
             location = save(node);
         } catch (IOException e) {
-            throw new CausticException("Failed to load Library: " + node, e);
+            throw new CausticException("Failed to write library item: " + node, e);
         }
         return location;
     }

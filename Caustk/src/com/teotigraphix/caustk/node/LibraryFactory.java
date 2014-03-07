@@ -20,6 +20,11 @@
 package com.teotigraphix.caustk.node;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
+import com.teotigraphix.caustk.core.CausticException;
 
 /**
  * Factory to create a {@link Library}.
@@ -45,11 +50,18 @@ public class LibraryFactory extends NodeFactoryBase {
         return caustkLibrary;
     }
 
-    //    public Library loadLibrary(String name) throws IOException {
-    //        Library library = createLibrary(name);
-    //        library = getFactory().load(library.getManifestFile(), Library.class);
-    //        library.setFactory(getFactory());
-    //        return library;
-    //    }
+    public Library loadLibrary(File reletiveOrAbsDirectory) throws IOException {
+        Library library = null;
+        File manifestFile = new File(reletiveOrAbsDirectory, ".library");
+        String json = FileUtils.readFileToString(manifestFile);
+        try {
+            library = getFactory().deserialize(json, Library.class);
+        } catch (CausticException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        library.setFactory(getFactory());
+        return library;
+    }
 
 }

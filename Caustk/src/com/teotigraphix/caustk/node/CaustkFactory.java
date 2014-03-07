@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
@@ -164,6 +165,10 @@ public class CaustkFactory {
      */
     public Library createLibrary(File reletiveOrAbsDirectory) {
         return libraryFactory.createLibrary(reletiveOrAbsDirectory);
+    }
+
+    public Library loadLibrary(File reletiveOrAbsDirectory) throws IOException {
+        return libraryFactory.loadLibrary(reletiveOrAbsDirectory);
     }
 
     //----------------------------------
