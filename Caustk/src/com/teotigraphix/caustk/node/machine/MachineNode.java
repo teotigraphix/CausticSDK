@@ -305,7 +305,21 @@ public abstract class MachineNode extends NodeBase {
         sequencer.setMachineIndex(index);
         track.setMachineIndex(index);
         clips.setMachineIndex(index);
+
+        setupMachineType();
+
         create();
+    }
+
+    private void setupMachineType() {
+        volume.setMachineType(type);
+        preset.setMachineType(type);
+        synth.setMachineType(type);
+        mixer.setMachineType(type);
+        effects.setMachineType(type);
+        sequencer.setMachineType(type);
+        track.setMachineType(type);
+        clips.setMachineType(type);
     }
 
     /**
@@ -326,6 +340,7 @@ public abstract class MachineNode extends NodeBase {
         if (isNative)
             throw new IllegalStateException("Machine is native");
         RackMessage.CREATE.send(getRack(), type.getType(), name, index);
+        setupMachineType();
         isNative = true;
         volume.create();
         preset.create();
@@ -355,6 +370,7 @@ public abstract class MachineNode extends NodeBase {
 
     @Override
     protected void restoreComponents() {
+        setupMachineType();
         volume.restore();
         preset.restore();
         synth.restore();
@@ -370,6 +386,7 @@ public abstract class MachineNode extends NodeBase {
     protected void updateComponents() {
         // the RackNode calls us, and its our job to create
         RackMessage.CREATE.send(getRack(), type.getType(), name, index);
+        setupMachineType();
         isNative = true;
         volume.update();
         preset.update();

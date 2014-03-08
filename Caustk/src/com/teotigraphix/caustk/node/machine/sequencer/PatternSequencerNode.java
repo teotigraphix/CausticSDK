@@ -270,6 +270,7 @@ public class PatternSequencerNode extends MachineComponent {
             return;
         for (String name : result.split(" ")) {
             PatternNode patternNode = new PatternNode(name, machineIndex);
+            patternNode.setMachineType(machineType);
             patterns.put(patternNode.getName(), patternNode);
             PatternSequencerMessage.BANK.send(getRack(), machineIndex, patternNode.getBankIndex());
             PatternSequencerMessage.PATTERN.send(getRack(), machineIndex,

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.NodeBase;
 
 /**
@@ -35,6 +36,8 @@ public abstract class MachineComponent extends NodeBase {
     //--------------------------------------------------------------------------
 
     protected int machineIndex = -1;
+
+    protected MachineType machineType;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -54,6 +57,17 @@ public abstract class MachineComponent extends NodeBase {
      */
     public void setMachineIndex(int machineIndex) {
         this.machineIndex = machineIndex;
+    }
+
+    /**
+     * Returns the machine type of the parent, may be null if not set.
+     */
+    public MachineType getMachineType() {
+        return machineType;
+    }
+
+    public void setMachineType(MachineType machineType) {
+        this.machineType = machineType;
     }
 
     //--------------------------------------------------------------------------

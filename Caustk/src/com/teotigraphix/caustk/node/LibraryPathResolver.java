@@ -26,6 +26,7 @@ import org.apache.commons.io.FilenameUtils;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.patch.PresetNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 
 /**
  * Resolves {@link Library} archives based on {@link NodeInfo} and
@@ -71,6 +72,10 @@ public class LibraryPathResolver {
             // /Effect/Phaser/
             EffectNode effectDefinition = (EffectNode)node;
             subDirectory = effectDefinition.getType().name();
+        } else if (type == NodeType.Pattern) {
+            // /Effect/Phaser/
+            PatternNode patternNode = (PatternNode)node;
+            subDirectory = patternNode.getMachineType().name();
         }
 
         return resolvePath(node.getInfo(), subDirectory);

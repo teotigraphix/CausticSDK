@@ -802,4 +802,5 @@ public class PatternNode extends MachineComponent {
             this.note = note;
         }
     }
+
 }
