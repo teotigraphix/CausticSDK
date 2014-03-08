@@ -52,7 +52,9 @@ public class ContextMenu extends Menu {
 
     @Override
     public void hide() {
-        getStage().removeListener(stageListener);
+        Stage stage = getStage();
+        if (stage != null)
+            getStage().removeListener(stageListener);
         super.hide();
     }
 }
