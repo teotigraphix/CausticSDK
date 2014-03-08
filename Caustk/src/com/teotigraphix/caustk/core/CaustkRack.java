@@ -250,6 +250,16 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     }
 
     /**
+     * Sets up the {@link RackNode} by setting the instance on the
+     * {@link CaustkRack}.
+     * 
+     * @param rackNode A blank rack node.
+     */
+    public void setup(RackNode rackNode) {
+        setRackNode(rackNode);
+    }
+
+    /**
      * Restores a {@link RackNode} state, machines, effects etc.
      * 
      * @param rackNode The {@link RackNode} to restore, this method will fail if
