@@ -55,11 +55,6 @@ public interface IApplication extends ApplicationListener {
     float getHeight();
 
     /**
-     * Returns the application rack.
-     */
-    CaustkRack getRack();
-
-    /**
      * Returns the application logger.
      */
     ICaustkLogger getLogger();
@@ -69,6 +64,14 @@ public interface IApplication extends ApplicationListener {
      */
     EventBus getEventBus();
 
+    /**
+     * Returns the application rack.
+     */
+    CaustkRack getRack();
+
+    /**
+     * Returns the current scene.
+     */
     IScene getScene();
 
     /**
@@ -80,6 +83,11 @@ public interface IApplication extends ApplicationListener {
      */
     void setScene(int sceneId);
 
+    /**
+     * Whether the current scene id matches the argument passed.
+     * 
+     * @param sceneId The scene id to test against the current scene's id.
+     */
     boolean isCurrentScene(int sceneId);
 
     //--------------------------------------------------------------------------
