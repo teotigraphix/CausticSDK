@@ -29,6 +29,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
 /**
@@ -154,7 +155,7 @@ public abstract class Scene implements IScene {
      * Creates a new {@link Scene}.
      */
     public Scene() {
-        setStage(new Stage());
+        setStage(new Stage(new FitViewport(800f, 480f)));
         atlas = new TextureAtlas(Gdx.files.internal("skin.atlas"));
         skin = new Skin(atlas);
     }
@@ -205,8 +206,9 @@ public abstract class Scene implements IScene {
     @Override
     public void resize(int width, int height) {
         Gdx.app.log(LOG, "Resizing scene: " + getName() + " to: " + width + " x " + height);
-        stage.setViewport(application.getWidth(), application.getHeight(), true);
-        stage.getCamera().translate(-stage.getGutterWidth(), -stage.getGutterHeight(), 0);
+        stage.getViewport().update(width, height);
+        // stage.setViewport(application.getWidth(), application.getHeight(), true);
+        // stage.getCamera().translate(-stage.getGutterWidth(), -stage.getGutterHeight(), 0);
     }
 
     @Override
