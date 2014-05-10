@@ -217,5 +217,4 @@ public class SceneManager {
                 ((IScene)scene).dispose();
         }
     }
-
 }

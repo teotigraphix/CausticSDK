@@ -133,7 +133,7 @@ public class DesktopSoundGenerator implements ISoundGenerator {
     }
 
     @Override
-    public void dispose() {
+    public void onDispose() {
     }
 
     @Override

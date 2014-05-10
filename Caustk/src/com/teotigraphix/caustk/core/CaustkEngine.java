@@ -23,6 +23,8 @@ import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 
+// TODO (caustk) create custom exception handler for all EventBus usages
+
 /**
  * The {@link CaustkEngine} manages all messages sent to the native sound
  * engine.
@@ -80,7 +82,7 @@ public class CaustkEngine implements ISoundGenerator {
 
     CaustkEngine(ISoundGenerator soundGenerator) {
         this.soundGenerator = soundGenerator;
-        eventBus = new EventBus("engine");
+        this.eventBus = new EventBus("engine");
     }
 
     //--------------------------------------------------------------------------
@@ -148,8 +150,8 @@ public class CaustkEngine implements ISoundGenerator {
     }
 
     @Override
-    public void dispose() {
-        // XXX impl CaustkRack.dispose()
+    public void onDispose() {
+        soundGenerator.onDispose();
     }
 
     //--------------------------------------------------------------------------
@@ -158,21 +160,27 @@ public class CaustkEngine implements ISoundGenerator {
 
     private final StringBuilder oscMessages = new StringBuilder();
 
+    private boolean collectOscMessaged = false;
+
     public String getRawOSCMessages() {
         return oscMessages.toString();
     }
 
     @Override
     public final float sendMessage(String message) {
-        oscMessages.append("[Message] " + message);
-        oscMessages.append("\n");
+        if (collectOscMessaged) {
+            oscMessages.append("[Message] " + message);
+            oscMessages.append("\n");
+        }
         return soundGenerator.sendMessage(message);
     }
 
     @Override
     public final String queryMessage(String message) {
-        oscMessages.append("[  Query] " + message);
-        oscMessages.append("\n");
+        if (collectOscMessaged) {
+            oscMessages.append("[  Query] " + message);
+            oscMessages.append("\n");
+        }
         return soundGenerator.queryMessage(message);
     }
 }

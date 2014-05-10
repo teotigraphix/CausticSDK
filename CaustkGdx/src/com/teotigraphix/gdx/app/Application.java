@@ -41,24 +41,23 @@ public abstract class Application implements IApplication {
 
     private static final String TAG = "Application";
 
-    // TODO Temp metrics
-    static float WIDTH = 800f;
-
-    static float HEIGHT = 480f;
-
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
+
+    private String applicationName;
+
+    private int width;
+
+    private int height;
+
+    private EventBus eventBus;
 
     private CaustkRuntime runtime;
 
     private StartupExecutor startupExecutor;
 
     private SceneManager sceneManager;
-
-    private String applicationName;
-
-    private EventBus eventBus;
 
     //--------------------------------------------------------------------------
     // IGdxApplication API :: Properties
@@ -71,17 +70,25 @@ public abstract class Application implements IApplication {
 
     @Override
     public float getWidth() {
-        return WIDTH;
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     @Override
     public float getHeight() {
-        return HEIGHT;
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     @Override
-    public CaustkRack getRack() {
-        return runtime.getRack();
+    public final EventBus getEventBus() {
+        return eventBus;
     }
 
     @Override
@@ -90,8 +97,8 @@ public abstract class Application implements IApplication {
     }
 
     @Override
-    public final EventBus getEventBus() {
-        return eventBus;
+    public CaustkRack getRack() {
+        return runtime.getRack();
     }
 
     @Override
@@ -108,7 +115,7 @@ public abstract class Application implements IApplication {
     // Protected :: Properties
     //--------------------------------------------------------------------------
 
-    protected SceneManager getSceneManager() {
+    protected final SceneManager getSceneManager() {
         return sceneManager;
     }
 
@@ -224,6 +231,11 @@ public abstract class Application implements IApplication {
      */
     protected abstract void onCreate();
 
+    /**
+     * Called by the {@link SceneManager} during a scene change.
+     * 
+     * @param scene The active scene.
+     */
     public void onSceneChange(IScene scene) {
     }
 }

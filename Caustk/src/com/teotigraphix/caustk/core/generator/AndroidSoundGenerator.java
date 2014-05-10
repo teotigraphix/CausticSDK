@@ -147,7 +147,7 @@ public class AndroidSoundGenerator implements ISoundGenerator {
     //--------------------------------------------------------------------------
 
     @Override
-    public void dispose() {
+    public void onDispose() {
         if (causticCore != null) {
             onStop();
             causticCore = null;

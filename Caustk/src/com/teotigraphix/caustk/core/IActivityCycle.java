@@ -36,5 +36,5 @@ public interface IActivityCycle {
 
     void onRestart();
 
-    void dispose();
+    void onDispose();
 }
