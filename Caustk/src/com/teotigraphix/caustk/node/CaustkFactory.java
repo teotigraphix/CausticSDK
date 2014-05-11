@@ -44,7 +44,7 @@ import com.teotigraphix.caustk.node.effect.DistortionEffect;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectNodeFactory;
 import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.effect.EffectsChannelNode;
+import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.effect.FlangerEffect;
 import com.teotigraphix.caustk.node.effect.LimiterEffect;
 import com.teotigraphix.caustk.node.effect.MultiFilterEffect;
@@ -214,10 +214,10 @@ public class CaustkFactory {
      * Creates an {@link EffectNode} subclass using the {@link EffectType}.
      * 
      * @param machineIndex The machine index of the new effect.
-     * @param slot The effect slot within the {@link EffectsChannelNode}.
+     * @param slot The effect slot within the {@link EffectsChannel}.
      * @param effectType The {@link EffectType} of the effect to be created.
      * @return A new {@link EffectNode}, has not been added to an
-     *         {@link EffectsChannelNode}.
+     *         {@link EffectsChannel}.
      */
     public <T extends EffectNode> T createEffect(int machineIndex, int slot, EffectType effectType) {
         NodeInfo info = createInfo(NodeType.Effect);

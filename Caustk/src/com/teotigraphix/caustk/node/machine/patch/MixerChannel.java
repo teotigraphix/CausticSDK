@@ -26,14 +26,14 @@ import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
- * The {@link MixerChannelNode} manages the machine's main mixer panel controls
+ * The {@link MixerChannel} manages the machine's main mixer panel controls
  * channel.
  * 
  * @author Michael Schmalle
  * @since 1.0
  * @see MixerChannelNodeChangeEvent
  */
-public class MixerChannelNode extends MachineComponent {
+public class MixerChannel extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -367,14 +367,14 @@ public class MixerChannelNode extends MachineComponent {
     /**
      * Serialization
      */
-    public MixerChannelNode() {
+    public MixerChannel() {
     }
 
-    public MixerChannelNode(int machineIndex) {
+    public MixerChannel(int machineIndex) {
         this.machineIndex = machineIndex;
     }
 
-    public MixerChannelNode(MachineNode machineNode) {
+    public MixerChannel(MachineNode machineNode) {
         this(machineNode.getIndex());
     }
 
@@ -445,7 +445,7 @@ public class MixerChannelNode extends MachineComponent {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        MixerChannelNode other = (MixerChannelNode)obj;
+        MixerChannel other = (MixerChannel)obj;
         if (Float.floatToIntBits(bass) != Float.floatToIntBits(other.bass))
             return false;
         if (Float.floatToIntBits(delaySend) != Float.floatToIntBits(other.delaySend))
@@ -478,7 +478,7 @@ public class MixerChannelNode extends MachineComponent {
     }
 
     /**
-     * Base event for the {@link MixerChannelNode}.
+     * Base event for the {@link MixerChannel}.
      * 
      * @author Michael Schmalle
      * @since 1.0
@@ -492,7 +492,7 @@ public class MixerChannelNode extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see MixerChannelNode
+     * @see MixerChannel
      */
     public static class MixerChannelNodeChangeEvent extends NodeEvent {
         private float value;
@@ -512,11 +512,11 @@ public class MixerChannelNode extends MachineComponent {
         /**
          * The soloed mixer channel soloed.
          */
-        public MixerChannelNode getMixerChannel() {
-            return (MixerChannelNode)super.getTarget();
+        public MixerChannel getMixerChannel() {
+            return (MixerChannel)super.getTarget();
         }
 
-        public OnRackSoloRefresh(MixerChannelNode mixerChannel) {
+        public OnRackSoloRefresh(MixerChannel mixerChannel) {
             super(mixerChannel);
         }
     }

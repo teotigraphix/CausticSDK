@@ -30,13 +30,13 @@ import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
- * The {@link PatternSequencerNode} manages the {@link PatternNode}s in a native
+ * The {@link PatternSequencerComponent} manages the {@link PatternNode}s in a native
  * machine's pattern sequencer.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PatternSequencerNode extends MachineComponent {
+public class PatternSequencerComponent extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -203,10 +203,10 @@ public class PatternSequencerNode extends MachineComponent {
     /**
      * Serialization
      */
-    public PatternSequencerNode() {
+    public PatternSequencerComponent() {
     }
 
-    public PatternSequencerNode(int machineIndex) {
+    public PatternSequencerComponent(int machineIndex) {
         this.machineIndex = machineIndex;
         // init these here since the sequencer is being created explicitly
         // not through a restore, here we KNOW that bank and patter are 0 in native
@@ -214,7 +214,7 @@ public class PatternSequencerNode extends MachineComponent {
         currentPatternIndex = 0;
     }
 
-    public PatternSequencerNode(MachineNode machineNode) {
+    public PatternSequencerComponent(MachineNode machineNode) {
         this(machineNode.getIndex());
     }
 
@@ -326,7 +326,7 @@ public class PatternSequencerNode extends MachineComponent {
     //--------------------------------------------------------------------------
 
     /**
-     * Base event for the {@link PatternSequencerNode}.
+     * Base event for the {@link PatternSequencerComponent}.
      * 
      * @author Michael Schmalle
      * @since 1.0
@@ -340,7 +340,7 @@ public class PatternSequencerNode extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerNode#setBankPatternIndex(int, int)
+     * @see PatternSequencerComponent#setBankPatternIndex(int, int)
      */
     public static class PatternSequencerNodeBankEvent extends NodeEvent {
         private int bank;
@@ -359,7 +359,7 @@ public class PatternSequencerNode extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerNode#setBankPatternIndex(int, int)
+     * @see PatternSequencerComponent#setBankPatternIndex(int, int)
      */
     public static class PatternSequencerNodePatternEvent extends NodeEvent {
         private int pattern;
@@ -378,7 +378,7 @@ public class PatternSequencerNode extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerNode#clearPattern(int, int)
+     * @see PatternSequencerComponent#clearPattern(int, int)
      */
     public static class PatternSequencerNodeClearEvent extends NodeEvent {
         public PatternSequencerNodeClearEvent(NodeBase target, PatternSequencerControl control) {

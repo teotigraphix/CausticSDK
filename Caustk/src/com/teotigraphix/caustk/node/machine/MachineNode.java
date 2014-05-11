@@ -26,13 +26,13 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.effect.EffectsChannelNode;
-import com.teotigraphix.caustk.node.machine.patch.MixerChannelNode;
-import com.teotigraphix.caustk.node.machine.patch.PresetNode;
+import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
+import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.ClipsNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerNode;
+import com.teotigraphix.caustk.node.machine.sequencer.ClipsComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackNode;
 
 /**
@@ -69,19 +69,19 @@ public abstract class MachineNode extends NodeBase {
 
     private VolumeComponent volume;
 
-    private PresetNode preset;
+    private PresetComponent preset;
 
     private SynthComponent synth;
 
-    private MixerChannelNode mixer;
+    private MixerChannel mixer;
 
-    private EffectsChannelNode effects;
+    private EffectsChannel effects;
 
-    private PatternSequencerNode sequencer;
+    private PatternSequencerComponent sequencer;
 
     private TrackNode track;
 
-    private ClipsNode clips;
+    private ClipsComponent clips;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -177,7 +177,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's preset patch.
      */
-    public PresetNode getPreset() {
+    public PresetComponent getPreset() {
         return preset;
     }
 
@@ -203,7 +203,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's mixer channel.
      */
-    public MixerChannelNode getMixer() {
+    public MixerChannel getMixer() {
         return mixer;
     }
 
@@ -214,7 +214,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's effects channel.
      */
-    public EffectsChannelNode getEffects() {
+    public EffectsChannel getEffects() {
         return effects;
     }
 
@@ -236,7 +236,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's pattern sequencer.
      */
-    public PatternSequencerNode getSequencer() {
+    public PatternSequencerComponent getSequencer() {
         return sequencer;
     }
 
@@ -258,7 +258,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's clips sequencer.
      */
-    public ClipsNode getClips() {
+    public ClipsComponent getClips() {
         return clips;
     }
 
@@ -417,14 +417,14 @@ public abstract class MachineNode extends NodeBase {
      * Initializes the machine's composites.
      */
     protected void intialize() {
-        preset = new PresetNode(this);
+        preset = new PresetComponent(this);
         volume = new VolumeComponent(this);
-        mixer = new MixerChannelNode(this);
-        effects = new EffectsChannelNode(this);
+        mixer = new MixerChannel(this);
+        effects = new EffectsChannel(this);
         synth = new SynthComponent(this);
-        sequencer = new PatternSequencerNode(this);
+        sequencer = new PatternSequencerComponent(this);
         track = new TrackNode(this);
-        clips = new ClipsNode(this);
+        clips = new ClipsComponent(this);
     }
 
     @Override

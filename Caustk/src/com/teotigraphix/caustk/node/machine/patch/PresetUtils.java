@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
- * {@link PresetNode} utilities.
+ * {@link PresetComponent} utilities.
  * 
  * @author Michael Schmalle
  * @since 1.0

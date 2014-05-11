@@ -25,7 +25,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.PresetNode;
+import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 
 /**
@@ -62,7 +62,7 @@ public class LibraryPathResolver {
 
         if (type == NodeType.Patch) {
             // /Preset/SubSynth/
-            PresetNode presetDefinition = (PresetNode)node;
+            PresetComponent presetDefinition = (PresetComponent)node;
             subDirectory = presetDefinition.getType().name();
         } else if (type == NodeType.Machine) {
             // /Machine/SubSynth/

@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
-import com.teotigraphix.caustk.node.machine.patch.PresetNode;
+import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControls;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulator;
 
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulator;
 public class VocoderMachine extends MachineNode {
 
     @Override
-    public PresetNode getPreset() {
+    public PresetComponent getPreset() {
         throw new IllegalStateException("Vocoder does not use presets");
     }
 

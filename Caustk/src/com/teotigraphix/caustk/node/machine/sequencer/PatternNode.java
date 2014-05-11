@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.machine.sequencer.NoteNode.NoteFlag;
 
 /**
  * The {@link PatternNode} holds a bank and pattern position in a
- * {@link PatternSequencerNode}.
+ * {@link PatternSequencerComponent}.
  * <p>
  * Measure length can be adjusted, notes added/removed, shuffle set.
  * 
@@ -768,7 +768,7 @@ public class PatternNode extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerNode#updateNode(NoteNode, int, float, float, float,
+     * @see PatternSequencerComponent#updateNode(NoteNode, int, float, float, float,
      *      int)
      */
     public static class PatternNodeNoteUpdateEvent extends NodeEvent {

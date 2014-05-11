@@ -35,12 +35,12 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
- * The {@link PresetNode} API wraps machine preset read/write operations.
+ * The {@link PresetComponent} API wraps machine preset read/write operations.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PresetNode extends MachineComponent {
+public class PresetComponent extends MachineComponent {
 
     private transient byte[] restoredData;
 
@@ -73,7 +73,7 @@ public class PresetNode extends MachineComponent {
     /**
      * Returns the preset's name.
      * <p>
-     * If this name was restored from the rack, the {@link PresetNode} will not
+     * If this name was restored from the rack, the {@link PresetComponent} will not
      * contain a valid path. If the path is non null, the name will be the file
      * name without extension.
      */
@@ -173,23 +173,23 @@ public class PresetNode extends MachineComponent {
     /**
      * Serialization
      */
-    public PresetNode() {
+    public PresetComponent() {
     }
 
-    public PresetNode(int machineIndex) {
+    public PresetComponent(int machineIndex) {
         this.machineIndex = machineIndex;
     }
 
-    public PresetNode(MachineNode machineNode) {
+    public PresetComponent(MachineNode machineNode) {
         this(machineNode.getIndex());
     }
 
-    public PresetNode(int machineIndex, String path) {
+    public PresetComponent(int machineIndex, String path) {
         this(machineIndex);
         setPath(path);
     }
 
-    public PresetNode(MachineNode machineNode, String path) {
+    public PresetComponent(MachineNode machineNode, String path) {
         this(machineNode.getIndex(), path);
     }
 

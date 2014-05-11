@@ -36,7 +36,7 @@ import com.teotigraphix.caustk.utils.ExceptionUtils;
  * @since 1.0
  * @see EffectNodeChangeEvent
  */
-public class EffectNode extends MachineComponent {
+public abstract class EffectNode extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API

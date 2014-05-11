@@ -36,7 +36,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see MachineNode#getEffects()
  */
-public class EffectsChannelNode extends MachineComponent {
+public class EffectsChannel extends MachineComponent {
 
     // If machineIndex is -1, this is the master effect channel
 
@@ -82,14 +82,14 @@ public class EffectsChannelNode extends MachineComponent {
     /**
      * Serialization
      */
-    public EffectsChannelNode() {
+    public EffectsChannel() {
     }
 
-    public EffectsChannelNode(int machineIndex) {
+    public EffectsChannel(int machineIndex) {
         this.machineIndex = machineIndex;
     }
 
-    public EffectsChannelNode(MachineNode machineNode) {
+    public EffectsChannel(MachineNode machineNode) {
         this(machineNode.getIndex());
     }
 
@@ -177,7 +177,7 @@ public class EffectsChannelNode extends MachineComponent {
     //--------------------------------------------------------------------------
 
     /**
-     * Base event for the {@link EffectsChannelNode}.
+     * Base event for the {@link EffectsChannel}.
      * 
      * @author Michael Schmalle
      * @since 1.0
@@ -191,7 +191,7 @@ public class EffectsChannelNode extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see EffectsChannelNode#createEffect(int, EffectType)
+     * @see EffectsChannel#createEffect(int, EffectType)
      */
     public static class EffectsChannelNodeCreateEvent extends NodeEvent {
         private EffectNode effectNode;

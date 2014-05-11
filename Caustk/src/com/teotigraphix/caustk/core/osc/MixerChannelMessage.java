@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.node.machine.patch.MixerChannelNode;
+import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 
 /**
  * The {@link MixerChannelMessage} holds all OSC messages associated with the
- * {@link MixerChannelNode} API for each machine.
+ * {@link MixerChannel} API for each machine.
  * 
  * @author Michael Schmalle
  * @since 1.0
