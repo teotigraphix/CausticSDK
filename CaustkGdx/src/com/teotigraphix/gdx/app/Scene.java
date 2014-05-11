@@ -26,9 +26,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.teotigraphix.gdx.skin.SkinLibrary;
 
@@ -55,6 +57,8 @@ public abstract class Scene implements IScene {
     private Stage stage;
 
     private Skin skin;
+
+    private Group root;
 
     private TextureAtlas atlas;
 
@@ -103,6 +107,15 @@ public abstract class Scene implements IScene {
     @Override
     public Skin getSkin() {
         return skin;
+    }
+
+    //----------------------------------
+    // root
+    //----------------------------------
+
+    @Override
+    public Group getRoot() {
+        return root;
     }
 
     //----------------------------------
@@ -174,6 +187,10 @@ public abstract class Scene implements IScene {
     @Override
     public void create() {
         Gdx.app.log(LOG, ">>>Creating scene: " + getName());
+        root = new WidgetGroup();
+        root.setBounds(0f, 0f, application.getWidth(), application.getHeight());
+        stage.addActor(root);
+
         createUI();
         // all behaviors create their user interface components
         for (ISceneBehavior behavior : behaviors) {

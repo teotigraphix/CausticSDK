@@ -20,6 +20,7 @@
 package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.teotigraphix.gdx.app.internal.SceneManager;
@@ -48,10 +49,13 @@ public interface IScene {
 
     /**
      * Returns the themed skin used with this screen.
-     * 
-     * @return
      */
     Skin getSkin();
+
+    /**
+     * The root container for the scene in which all view components are placed.
+     */
+    Group getRoot();
 
     /**
      * Returns whether this screen has been initialized.
