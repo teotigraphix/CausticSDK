@@ -28,7 +28,7 @@ import java.util.Collections;
  */
 public final class TrackNodeUtils {
 
-    public static int nearestStart(TrackNode track, TrackEntryNode trackEntry) {
+    public static int nearestStart(TrackComponent track, TrackEntryNode trackEntry) {
         // all entries have their start measure greater than the entries end
         ArrayList<TrackEntryNode> tests = new ArrayList<TrackEntryNode>(track.getEntries().values());
         Collections.reverse(tests);
@@ -46,7 +46,7 @@ public final class TrackNodeUtils {
         return lastEntry.getStartMeasure();
     }
 
-    public static int nearestEnd(TrackNode track, TrackEntryNode trackEntry) {
+    public static int nearestEnd(TrackComponent track, TrackEntryNode trackEntry) {
         // all entries have their end measure less than the entries start
         TrackEntryNode lastEntry = null;
         for (TrackEntryNode testEntry : track.getEntries().values()) {

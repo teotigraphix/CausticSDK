@@ -23,10 +23,10 @@ import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.node.NodeBase;
 
 /**
- * A {@link TrackEntryNode} is an entry in a {@link TrackNode}.
+ * A {@link TrackEntryNode} is an entry in a {@link TrackComponent}.
  * <p>
  * The track entry is a read-only API, if start and end measures are adjusted,
- * the operation is handled in the {@link TrackNode}.
+ * the operation is handled in the {@link TrackComponent}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -56,7 +56,7 @@ public class TrackEntryNode extends NodeBase {
     //----------------------------------
 
     /**
-     * The owning {@link TrackNode}'s machine index.
+     * The owning {@link TrackComponent}'s machine index.
      */
     public int getMachineIndex() {
         return machineIndex;
@@ -213,7 +213,7 @@ public class TrackEntryNode extends NodeBase {
      * <p>
      * Note: Do not use in normal move operations, this is used with dnd
      * operations where the entry does not represent a real track entry in the
-     * {@link TrackNode}.
+     * {@link TrackComponent}.
      * 
      * @param startMeasure The new start measure.
      * @param endMeasure The new end measure.

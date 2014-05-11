@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ClipsComponent extends MachineComponent {
+public class ClipComponent extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -59,7 +59,7 @@ public class ClipsComponent extends MachineComponent {
 
     /**
      * Returns the number of {@link ClipEntryNode} that exist this
-     * {@link ClipsComponent}.
+     * {@link ClipComponent}.
      */
     public int size() {
         return entries.size();
@@ -84,14 +84,14 @@ public class ClipsComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public ClipsComponent() {
+    public ClipComponent() {
     }
 
-    public ClipsComponent(int machineIndex) {
+    public ClipComponent(int machineIndex) {
         this.machineIndex = machineIndex;
     }
 
-    public ClipsComponent(MachineNode machineNode) {
+    public ClipComponent(MachineNode machineNode) {
         this(machineNode.getIndex());
     }
 

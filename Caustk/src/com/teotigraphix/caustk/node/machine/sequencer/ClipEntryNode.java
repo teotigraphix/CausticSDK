@@ -42,7 +42,7 @@ public class ClipEntryNode extends NodeBase {
     //----------------------------------
 
     /**
-     * The owning {@link ClipsComponent}'s machine index.
+     * The owning {@link ClipComponent}'s machine index.
      */
     public int getMachineIndex() {
         return machineIndex;

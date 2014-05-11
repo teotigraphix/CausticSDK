@@ -27,7 +27,7 @@ import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.sequencer.TrackNode;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
 
 /**
  * The {@link SequencerNode} API manages the song/pattern sequencer and output
@@ -227,19 +227,19 @@ public class SequencerNode extends NodeBase {
     //----------------------------------
 
     /**
-     * Returns the {@link TrackNode} for the machine index.
+     * Returns the {@link TrackComponent} for the machine index.
      * <p>
      * Convenience; {@link CaustkRack#getRackNode()} must not be
      * <code>null</code>.
      * 
      * @param machineIndex The machine index for the track(0..13).
      */
-    public TrackNode getTrack(int machineIndex) {
+    public TrackComponent getTrack(int machineIndex) {
         return getRack().getMachine(machineIndex).getTrack();
     }
 
-    List<TrackNode> getTracks() {
-        ArrayList<TrackNode> result = new ArrayList<TrackNode>();
+    List<TrackComponent> getTracks() {
+        ArrayList<TrackComponent> result = new ArrayList<TrackComponent>();
         for (int i = 0; i < 14; i++) {
             MachineNode machine = getRack().getMachine(i);
             if (machine != null) {
@@ -257,7 +257,7 @@ public class SequencerNode extends NodeBase {
      */
     public int getMeasureCount() {
         int appendMeasure = 0;
-        for (TrackNode trackNode : getTracks()) {
+        for (TrackComponent trackNode : getTracks()) {
             if (trackNode.getAppendMeasure() > appendMeasure)
                 appendMeasure = trackNode.getAppendMeasure();
         }

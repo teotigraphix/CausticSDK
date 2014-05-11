@@ -30,13 +30,13 @@ import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
- * A {@link TrackNode} represents a track in the song sequencer of a
+ * A {@link TrackComponent} represents a track in the song sequencer of a
  * {@link MachineNode}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class TrackNode extends MachineComponent {
+public class TrackComponent extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -66,7 +66,7 @@ public class TrackNode extends MachineComponent {
 
     /**
      * Returns the number of {@link TrackEntryNode} that exist this
-     * {@link TrackNode}.
+     * {@link TrackComponent}.
      */
     public int size() {
         return entries.size();
@@ -236,7 +236,7 @@ public class TrackNode extends MachineComponent {
     }
 
     /**
-     * Adds an existing {@link TrackEntryNode} to the {@link TrackNode}. This
+     * Adds an existing {@link TrackEntryNode} to the {@link TrackComponent}. This
      * may happen during an undo operation, where the track entry existed in
      * this track prior.
      * 
@@ -304,14 +304,14 @@ public class TrackNode extends MachineComponent {
     /**
      * Serialization
      */
-    public TrackNode() {
+    public TrackComponent() {
     }
 
-    public TrackNode(int machineIndex) {
+    public TrackComponent(int machineIndex) {
         this.machineIndex = machineIndex;
     }
 
-    public TrackNode(MachineNode machineNode) {
+    public TrackComponent(MachineNode machineNode) {
         this(machineNode.getIndex());
     }
 

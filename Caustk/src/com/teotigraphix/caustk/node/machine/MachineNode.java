@@ -31,9 +31,9 @@ import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.ClipsComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.ClipComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.TrackNode;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
 
 /**
  * The base node for all {@link MachineNode} subclasses.
@@ -73,15 +73,15 @@ public abstract class MachineNode extends NodeBase {
 
     private SynthComponent synth;
 
+    private PatternSequencerComponent sequencer;
+
     private MixerChannel mixer;
 
     private EffectsChannel effects;
 
-    private PatternSequencerComponent sequencer;
+    private TrackComponent track;
 
-    private TrackNode track;
-
-    private ClipsComponent clips;
+    private ClipComponent clips;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -247,7 +247,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's track sequencer.
      */
-    public TrackNode getTrack() {
+    public TrackComponent getTrack() {
         return track;
     }
 
@@ -258,7 +258,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's clips sequencer.
      */
-    public ClipsComponent getClips() {
+    public ClipComponent getClips() {
         return clips;
     }
 
@@ -423,8 +423,8 @@ public abstract class MachineNode extends NodeBase {
         effects = new EffectsChannel(this);
         synth = new SynthComponent(this);
         sequencer = new PatternSequencerComponent(this);
-        track = new TrackNode(this);
-        clips = new ClipsComponent(this);
+        track = new TrackComponent(this);
+        clips = new ClipComponent(this);
     }
 
     @Override
