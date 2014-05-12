@@ -105,6 +105,7 @@ public class SceneManager {
                 ((Application)application).onSceneChange(scene);
                 scene.initialize(application);
                 scene.create();
+                scene.start();
             }
             scene.show();
             scene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

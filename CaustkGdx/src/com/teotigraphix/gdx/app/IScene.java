@@ -94,6 +94,11 @@ public interface IScene {
     void create();
 
     /**
+     * Called after start but before show() is called for the first time.
+     */
+    void start();
+
+    /**
      * Called when the screen should render itself.
      * 
      * @param delta The time in seconds since the last render.
@@ -136,4 +141,5 @@ public interface IScene {
      * Called when the scene must reset it's ui to a base state.
      */
     void reset();
+
 }

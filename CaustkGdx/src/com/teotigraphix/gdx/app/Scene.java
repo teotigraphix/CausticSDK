@@ -186,7 +186,7 @@ public abstract class Scene implements IScene {
 
     @Override
     public void create() {
-        Gdx.app.log(LOG, ">>>Creating scene: " + getName());
+        Gdx.app.log(LOG, ">Creating scene: " + getName());
         root = new WidgetGroup();
         root.setBounds(0f, 0f, application.getWidth(), application.getHeight());
         stage.addActor(root);
@@ -196,10 +196,14 @@ public abstract class Scene implements IScene {
         for (ISceneBehavior behavior : behaviors) {
             behavior.onStart();
         }
-        Gdx.app.log(LOG, "<<<Behaviors started");
+        Gdx.app.log(LOG, "<Behaviors started");
     }
 
     protected abstract void createUI();
+
+    @Override
+    public void start() {
+    }
 
     @Override
     public void render(float delta) {
