@@ -239,7 +239,7 @@ public abstract class Scene implements IScene {
         Gdx.input.setInputProcessor(stage);
 
         for (ISceneBehavior behavior : behaviors) {
-            behavior.onShow();
+            behavior.setVisible(true);
         }
     }
 
@@ -255,7 +255,7 @@ public abstract class Scene implements IScene {
         Gdx.app.log(LOG, "Hiding scene: " + getName());
 
         for (ISceneBehavior behavior : behaviors) {
-            behavior.onHide();
+            behavior.setVisible(false);
         }
     }
 
@@ -264,7 +264,7 @@ public abstract class Scene implements IScene {
         Gdx.app.log(LOG, "Pausing scene: " + getName());
 
         for (ISceneBehavior behavior : behaviors) {
-            behavior.onDisable();
+            behavior.onPause();
         }
     }
 
@@ -273,7 +273,7 @@ public abstract class Scene implements IScene {
         Gdx.app.log(LOG, "Resuming scene: " + getName());
 
         for (ISceneBehavior behavior : behaviors) {
-            behavior.onEnable();
+            behavior.onResume();
         }
     }
 

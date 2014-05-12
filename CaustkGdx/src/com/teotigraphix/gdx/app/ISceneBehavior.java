@@ -28,6 +28,14 @@ package com.teotigraphix.gdx.app;
  */
 public interface ISceneBehavior extends ISceneComponent {
 
+    boolean isVisible();
+
+    void setVisible(boolean visible);
+
+    boolean isEnabled();
+
+    void setEnabled(boolean enabled);
+
     /**
      * Start is called on the frame when a behavior is enabled just before any
      * of the Update methods is called the first time.
@@ -56,7 +64,7 @@ public interface ISceneBehavior extends ISceneComponent {
     /**
      * The behavior is shown.
      * 
-     * @see IScene#show()
+     * @see IScene#set
      */
     void onShow();
 
@@ -80,4 +88,18 @@ public interface ISceneBehavior extends ISceneComponent {
      * @see IScene#dispose()
      */
     void onDisable();
+
+    /**
+     * The behavior is paused.
+     * 
+     * @see IScene#pause()
+     */
+    void onPause();
+
+    /**
+     * The behavior is resumed.
+     * 
+     * @see IScene#resume()
+     */
+    void onResume();
 }

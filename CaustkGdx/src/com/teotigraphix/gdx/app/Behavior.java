@@ -44,6 +44,10 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
 
     private final List<ISceneBehavior> children = new ArrayList<ISceneBehavior>();
 
+    private boolean visible = false;
+
+    private boolean enabled = false;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -73,6 +77,48 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     protected void onSceneChange(IScene screen) {
         super.onSceneChange(screen);
         attachChildren();
+    }
+
+    //----------------------------------
+    // visible
+    //----------------------------------
+
+    @Override
+    public boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        if (visible == this.visible)
+            return;
+
+        this.visible = visible;
+        if (visible)
+            onShow();
+        else
+            onHide();
+    }
+
+    //----------------------------------
+    // enabled
+    //----------------------------------
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (enabled == this.enabled)
+            return;
+
+        this.enabled = enabled;
+        if (enabled)
+            onEnable();
+        else
+            onDisable();
     }
 
     //--------------------------------------------------------------------------
@@ -148,7 +194,7 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     }
 
     /**
-     * Called during {@link IScene#show()}.
+     * Called during {@link #setVisible(boolean)}.
      */
     @Override
     public void onShow() {
@@ -158,7 +204,7 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     }
 
     /**
-     * Called during {@link IScene#hide()}.
+     * Called during {@link #setVisible(boolean)}.
      */
     @Override
     public void onHide() {
@@ -168,7 +214,7 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     }
 
     /**
-     * Called during {@link IScene#resume()}.
+     * Called during {@link #setEnabled(boolean)}.
      */
     @Override
     public void onEnable() {
@@ -178,12 +224,32 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     }
 
     /**
-     * Called during {@link IScene#pause()}, or {@link IScene#dispose()}.
+     * Called during {@link #setEnabled(boolean)}.
      */
     @Override
     public void onDisable() {
         for (ISceneBehavior child : children) {
             child.onDisable();
+        }
+    }
+
+    /**
+     * Called during {@link IScene#pause()}, or {@link IScene#dispose()}.
+     */
+    @Override
+    public void onPause() {
+        for (ISceneBehavior child : children) {
+            child.onPause();
+        }
+    }
+
+    /**
+     * Called during {@link IScene#resume()}.
+     */
+    @Override
+    public void onResume() {
+        for (ISceneBehavior child : children) {
+            child.onResume();
         }
     }
 
