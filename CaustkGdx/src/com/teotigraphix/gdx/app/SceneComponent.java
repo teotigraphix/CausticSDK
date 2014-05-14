@@ -22,6 +22,7 @@ package com.teotigraphix.gdx.app;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.caustk.core.ICaustkLogger;
 
 /**
  * The {@link SceneComponent} is the base class for all view behaviors.
@@ -113,7 +114,14 @@ public abstract class SceneComponent implements ISceneComponent {
      * Behaviors can listen to application events using this eventBus.
      */
     protected EventBus getEventBus() {
-        return scene.getApplication().getEventBus();
+        return application.getEventBus();
+    }
+
+    /**
+     * Returns the application's {@link ICaustkLogger}.
+     */
+    protected ICaustkLogger getLogger() {
+        return application.getLogger();
     }
 
     //--------------------------------------------------------------------------
