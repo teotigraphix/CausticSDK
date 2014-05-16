@@ -21,6 +21,8 @@ package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -298,6 +300,21 @@ public class ButtonBar extends ControlTable {
     //--------------------------------------------------------------------------
     // Event
     //--------------------------------------------------------------------------
+
+    public static abstract class ButtonBarListener implements EventListener {
+
+        @Override
+        public boolean handle(Event event) {
+            if (event instanceof ButtonBarChangeEvent) {
+                ButtonBarChangeEvent e = (ButtonBarChangeEvent)event;
+                selectedIndexChange(e.getSelectedIndex());
+                return false;
+            }
+            return false;
+        }
+
+        public abstract void selectedIndexChange(int selectedIndex);
+    }
 
     public static class ButtonBarChangeEvent extends ChangeEvent {
 
