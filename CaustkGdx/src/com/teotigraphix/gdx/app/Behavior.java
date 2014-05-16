@@ -266,6 +266,27 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
         setScene(null);
     }
 
+    @Override
+    public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior child : children) {
+            child.onBeatChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    @Override
+    public void onSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior child : children) {
+            child.onSixteenthChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    @Override
+    public void onThirtysecondChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior child : children) {
+            child.onThirtysecondChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Protected :: Methods
     //--------------------------------------------------------------------------

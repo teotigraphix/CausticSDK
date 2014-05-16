@@ -299,6 +299,27 @@ public abstract class Scene implements IScene {
             atlas.dispose();
     }
 
+    @Override
+    public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior behavior : behaviors) {
+            behavior.onBeatChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    @Override
+    public void onSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior behavior : behaviors) {
+            behavior.onSixteenthChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    @Override
+    public void onThirtysecondChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior behavior : behaviors) {
+            behavior.onThirtysecondChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Protected :: Methods
     //--------------------------------------------------------------------------

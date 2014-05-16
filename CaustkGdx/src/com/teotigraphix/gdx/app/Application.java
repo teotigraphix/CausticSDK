@@ -170,6 +170,20 @@ public abstract class Application implements IApplication {
         sceneManager.preRender();
         if (runtime.getRack().isLoaded()) {
             runtime.getRack().frameChanged(Gdx.graphics.getDeltaTime());
+            int measure = runtime.getRack().getSequencer().getCurrentMeasure();
+            float beat = runtime.getRack().getSequencer().getCurrentFloatBeat();
+            int sixteenth = runtime.getRack().getSequencer().getCurrentSixteenthStep();
+            int thirtysecond = runtime.getRack().getSequencer().getCurrentThritySecondStep();
+            if (runtime.getRack().getSequencer().isBeatChanged()) {
+                sceneManager.getScene().onBeatChange(measure, beat, sixteenth, thirtysecond);
+            }
+            if (runtime.getRack().getSequencer().isSixteenthChanged()) {
+                sceneManager.getScene().onSixteenthChange(measure, beat, sixteenth, thirtysecond);
+            }
+            if (runtime.getRack().getSequencer().isThirtysecondChanged()) {
+                sceneManager.getScene()
+                        .onThirtysecondChange(measure, beat, sixteenth, thirtysecond);
+            }
         }
         sceneManager.postRender();
     }
