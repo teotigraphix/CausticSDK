@@ -189,7 +189,7 @@ public class PatternNode extends MachineComponent {
     public Collection<NoteNode> getNotes(float startBeat, float endBeat) {
         List<NoteNode> result = new ArrayList<NoteNode>();
         for (NoteNode note : notes) {
-            if (note.getStart() >= startBeat && note.getEnd() < endBeat)
+            if (note.getStart() >= startBeat && note.getEnd() <= endBeat)
                 result.add(note);
         }
         return result;
@@ -331,6 +331,10 @@ public class PatternNode extends MachineComponent {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    public boolean containsNote(float beat, int pitch) {
+        return getNote(beat, pitch) != null;
+    }
+
     /**
      * Creates and adds a {@link NoteNode} to the pattern.
      * 
@@ -344,11 +348,11 @@ public class PatternNode extends MachineComponent {
      * @see PatternNodeNoteCreateEvent
      */
     public NoteNode createNote(float startBeat, int pitch, float endBeat, float velocity, int flags) {
-        NoteNode note = getNote(startBeat, pitch);
-        if (note != null)
+        if (containsNote(startBeat, pitch))
             throw new IllegalStateException("Note exists at beat:" + startBeat + " and pitch:"
                     + pitch);
 
+        NoteNode note = getNote(startBeat, pitch);
         // Message: /caustic/[machine_index]/pattern_sequencer/note_data [start] [pitch] [velocity] [end] [flags] 
         PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, startBeat, pitch, velocity,
                 endBeat, flags);
@@ -802,5 +806,4 @@ public class PatternNode extends MachineComponent {
             this.note = note;
         }
     }
-
 }
