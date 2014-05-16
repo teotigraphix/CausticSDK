@@ -189,7 +189,7 @@ public class PatternNode extends MachineComponent {
     public Collection<NoteNode> getNotes(float startBeat, float endBeat) {
         List<NoteNode> result = new ArrayList<NoteNode>();
         for (NoteNode note : notes) {
-            if (startBeat >= note.getStart() && endBeat <= note.getEnd())
+            if (note.getStart() >= startBeat && note.getEnd() < endBeat)
                 result.add(note);
         }
         return result;
@@ -768,8 +768,8 @@ public class PatternNode extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerComponent#updateNode(NoteNode, int, float, float, float,
-     *      int)
+     * @see PatternSequencerComponent#updateNode(NoteNode, int, float, float,
+     *      float, int)
      */
     public static class PatternNodeNoteUpdateEvent extends NodeEvent {
         private NoteNode noteNode;
