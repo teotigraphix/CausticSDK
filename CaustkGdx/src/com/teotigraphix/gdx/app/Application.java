@@ -174,6 +174,8 @@ public abstract class Application implements IApplication {
             float beat = runtime.getRack().getSequencer().getCurrentFloatBeat();
             int sixteenth = runtime.getRack().getSequencer().getCurrentSixteenthStep();
             int thirtysecond = runtime.getRack().getSequencer().getCurrentThritySecondStep();
+            if (measure == -1)
+                measure = (int)(beat / 4);
             if (runtime.getRack().getSequencer().isBeatChanged()) {
                 sceneManager.getScene().onBeatChange(measure, beat, sixteenth, thirtysecond);
             }
