@@ -63,8 +63,8 @@ public final class PatternUtils {
         return chars[index];
     }
 
-    public static final String toString(int bank, int index) {
-        return toBank(bank) + toPattern(index);
+    public static final String toString(int bankIndex, int patternIndex) {
+        return toBank(bankIndex) + toPattern(patternIndex);
     }
 
     //    public static String toString(Phrase phrase) {

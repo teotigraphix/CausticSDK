@@ -199,6 +199,8 @@ public class ButtonBar extends ControlTable {
                 Cell cell = add(button).space(gap);//.uniform().fill().expand().align(Align.left).space(4f);
                 if (maxButtonSize != null)
                     cell.maxWidth(maxButtonSize).prefWidth(maxButtonSize);
+                else
+                    cell.uniform().fill().expand();
             }
         }
     }
