@@ -315,6 +315,24 @@ public class RackNode extends NodeBase {
         return file;
     }
 
+    public void setSolo(int machineIndex, boolean selected) {
+        if (selected) {
+            for (MachineNode machineNode : getMachines()) {
+                if (machineNode.getIndex() != machineIndex) {
+                    machineNode.getMixer().setMute(true);
+                    machineNode.getMixer().setSolo(false, true);
+                }
+            }
+            getMachine(machineIndex).getMixer().setMute(false);
+            getMachine(machineIndex).getMixer().setSolo(true, true);
+        } else {
+            for (MachineNode machineNode : getMachines()) {
+                machineNode.getMixer().setMute(false);
+                machineNode.getMixer().setSolo(false);
+            }
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Overridden Protected :: Methods
     //--------------------------------------------------------------------------
