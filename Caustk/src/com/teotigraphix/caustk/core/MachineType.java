@@ -98,7 +98,12 @@ public enum MachineType {
     /**
      * The fmsynth machine.
      */
-    FMSynth("fmsynth", "fmsynth");
+    FMSynth("fmsynth", "fmsynth"),
+
+    /**
+     * The kssynth machine.
+     */
+    KSSynth("kssynth", "kssynth");
 
     //----------------------------------
     // type

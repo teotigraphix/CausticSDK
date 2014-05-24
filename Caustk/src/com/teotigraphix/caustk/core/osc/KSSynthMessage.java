@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2012 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,30 +17,21 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.core.osc;
 
 /**
- * The {@link IRestore} API restores a device to it's default OSC state.
- * <p>
- * Note; this is not the same as the {@link IPersist} API where a memento is
- * used to load and save state. The restoration API solely restores a state
- * using OSC calls to the CausticCore.
- * </p>
+ * The {@link KSSynthMessage} holds all OSC messages associated with the
+ * {@link KSSynthTone} API.
  * 
  * @author Michael Schmalle
- * @copyright Teoti Graphix, LLC
- * @since 1.0
+ * @since 3.1
  */
-public interface IRestore {
+public class KSSynthMessage extends CausticMessage {
 
-    //--------------------------------------------------------------------------
-    //
-    // Methods
-    //
-    //--------------------------------------------------------------------------
+    // XXX Implement OSC KSSynthMessage
 
-    /**
-     * Restores a device from a serialized CausticCore OSC state.
-     */
-    void restore();
+    KSSynthMessage(String message) {
+        super(message);
+    }
+
 }

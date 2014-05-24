@@ -71,6 +71,9 @@ public class MachineNodeFactory extends NodeFactoryBase {
             case Vocoder:
                 machineNode = new VocoderMachine(index, name);
                 break;
+            case KSSynth:
+                machineNode = new KSSynthMachine(index, name);
+                break;
         }
         machineNode.setInfo(info);
         return (T)machineNode;
