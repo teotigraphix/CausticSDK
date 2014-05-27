@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarChangeEvent;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener.ButtonBarChangeEvent;
 
 /**
  * The {@link PaneStack} holds a stack of panes and uses a selectedIndex to show

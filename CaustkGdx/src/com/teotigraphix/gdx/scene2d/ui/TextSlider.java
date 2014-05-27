@@ -31,21 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.teotigraphix.gdx.scene2d.ControlTable;
 
-/**
- * The {@link TextSlider} is a composite that holds a {@link Slider} and
- * {@link Label} component.
- * <p>
- * The component can be vertical or horizontal.
- * 
- * @author Michael Schmalle
- * @since 1.0
- */
 public class TextSlider extends ControlTable {
-
-    @Override
-    public String getHelpText() {
-        return "Value: " + getValue();
-    }
 
     private String text;
 
@@ -92,14 +78,14 @@ public class TextSlider extends ControlTable {
         styleClass = TextSliderStyle.class;
         String name = (vertical) ? "vertical" : "horizontal";
         setStyleName("default-" + name);
-        initialize();
+        createChildren();
     }
 
     //--------------------------------------------------------------------------
     // Overridden :: Methods
     //--------------------------------------------------------------------------
 
-    protected void initialize() {
+    protected void createChildren() {
         TextSliderStyle style = getStyle();
 
         slider = new Slider(minimum, maximum, stepSize, vertical, style);
@@ -167,6 +153,12 @@ public class TextSlider extends ControlTable {
 
     public interface OnTextSliderListener {
         void onChange(float value);
+    }
+
+    @Override
+    public String getHelpText() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

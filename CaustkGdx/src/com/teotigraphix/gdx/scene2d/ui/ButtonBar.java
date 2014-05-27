@@ -21,8 +21,6 @@ package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -33,13 +31,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.esotericsoftware.tablelayout.Cell;
 import com.teotigraphix.gdx.controller.IHelpManager;
 import com.teotigraphix.gdx.scene2d.ControlTable;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener.ButtonBarChangeEvent;
 
 public class ButtonBar extends ControlTable {
 
@@ -297,47 +295,6 @@ public class ButtonBar extends ControlTable {
     private Tooltip toolTip;
 
     protected void onChange(int selectedIndex, int oldIndex) {
-    }
-
-    //--------------------------------------------------------------------------
-    // Event
-    //--------------------------------------------------------------------------
-
-    public static abstract class ButtonBarListener implements EventListener {
-
-        @Override
-        public boolean handle(Event event) {
-            if (event instanceof ButtonBarChangeEvent) {
-                ButtonBarChangeEvent e = (ButtonBarChangeEvent)event;
-                selectedIndexChange(e.getSelectedIndex());
-                return false;
-            }
-            return false;
-        }
-
-        public abstract void selectedIndexChange(int selectedIndex);
-    }
-
-    public static class ButtonBarChangeEvent extends ChangeEvent {
-
-        private int selectedIndex;
-
-        public int getSelectedIndex() {
-            return selectedIndex;
-        }
-
-        void setSelectedIndex(int selectedIndex) {
-            this.selectedIndex = selectedIndex;
-        }
-
-        public ButtonBarChangeEvent() {
-        }
-
-        @Override
-        public void reset() {
-            super.reset();
-            selectedIndex = -1;
-        }
     }
 
     //--------------------------------------------------------------------------
