@@ -97,7 +97,7 @@ public class ToggleButton extends TextButton {
     //--------------------------------------------------------------------------
 
     public ToggleButton(String text, Skin skin) {
-        super(text, skin);
+        this(text, skin.get("default-toggle", TextButtonStyle.class));
     }
 
     public ToggleButton(String text, TextButtonStyle style) {

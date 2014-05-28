@@ -112,7 +112,7 @@ public class PaneStack extends Table {
 
     protected void initialize() {
         pad(5f);
-
+        debug();
         barContainer = new Table();
         barContainer.left();
         barContainer.setBackground(style.tabBarBackground);
@@ -181,6 +181,7 @@ public class PaneStack extends Table {
             }
             pendingPanes.clear();
             buttonBar.setItems(labels);
+            buttonBar.validate();
         }
 
         super.layout();
