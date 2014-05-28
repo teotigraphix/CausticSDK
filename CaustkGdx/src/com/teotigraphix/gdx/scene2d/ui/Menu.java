@@ -7,8 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEvent;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListListener;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuBarStyle;
 import com.teotigraphix.gdx.scene2d.ui.MenuBar.MenuItem;
 import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;

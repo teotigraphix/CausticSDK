@@ -15,8 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEvent;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEventKind;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedListListener.AdvancedListEvent;
+import com.teotigraphix.gdx.scene2d.ui.AdvancedListListener.AdvancedListEventKind;
 
 public abstract class ListRowRenderer extends Table {
 

@@ -24,6 +24,7 @@ import java.util.TreeMap;
 
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
+import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
@@ -77,8 +78,8 @@ public class PCMSamplerComponent extends MachineComponent {
      * @see PCMSynthMessage#SAMPLE_INDEX
      */
     public void setActiveIndex(int activeIndex) {
-        if (activeIndex == this.activeIndex)
-            return;
+        //        if (activeIndex == this.activeIndex)
+        //            return;
         if (activeIndex < 0 || activeIndex >= NUM_SAMPLER_CHANNELS)
             throw newRangeException(PCMSynthMessage.SAMPLE_INDEX, "0..63", activeIndex);
 
@@ -169,17 +170,19 @@ public class PCMSamplerComponent extends MachineComponent {
     }
 
     /**
-     * Loads a <strong>wav</strong> sample in the the cample channel index.
+     * Loads a <strong>wav</strong> sample in the the sample channel index.
      * 
      * @param index The sample channel index (0..63).
      * @param wavFile The wav file, absolute location.
      * @return The loaded {@link PCMSamplerChannel}
+     * @see PCMSamplerRefreshEvent
      */
     public PCMSamplerChannel loadChannel(int index, File wavFile) {
         setActiveIndex(index);
         PCMSamplerChannel result = getActiveChannel();
         loadSample(wavFile);
         result.restore();
+        post(new PCMSamplerRefreshEvent(this));
         return result;
     }
 
@@ -245,5 +248,11 @@ public class PCMSamplerComponent extends MachineComponent {
             channel.restore();
         }
         setActiveIndex(old);
+    }
+
+    public static class PCMSamplerRefreshEvent extends NodeEvent {
+        public PCMSamplerRefreshEvent(NodeBase target) {
+            super(target);
+        }
     }
 }

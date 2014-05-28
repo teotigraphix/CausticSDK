@@ -15,8 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListEvent;
-import com.teotigraphix.gdx.scene2d.ui.AdvancedList.AdvancedListListener;
 import com.teotigraphix.gdx.scene2d.ui.MenuRowRenderer.MenuRowRendererStyle;
 
 public class MenuBar extends ButtonBar {
