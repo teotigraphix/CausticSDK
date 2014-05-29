@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -210,16 +211,27 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     public void addRenderItem(final T item) {
-        item.addListener(new ClickListener() {
+
+        item.addListener(new ActorGestureListener() {
             @SuppressWarnings("unchecked")
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void tap(InputEvent event, float x, float y, int count, int button) {
                 T listenerActor = (T)event.getListenerActor(); // renderer item
                 if (selectable && !mouseDownChange) {
-                    fireChange(renderers.indexOf(listenerActor, false));
+                    if (count == 1) {
+                        fireChange(renderers.indexOf(listenerActor, false));
+                    } else if (count == 2) {
+                        AdvancedListEvent e = Pools.obtain(AdvancedListEvent.class);
+                        e.setKind(AdvancedListEventKind.DoubleTap);
+                        e.setSelectedIndex(selectedIndex, getSelection());
+                        fire(e);
+                        Pools.free(e);
+                    }
                 }
             }
+        });
 
+        item.addListener(new ClickListener() {
             @SuppressWarnings("unchecked")
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -227,7 +239,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
                 if (selectable && mouseDownChange) {
                     fireChange(renderers.indexOf(listenerActor, false));
                 }
-                return false;
+                return true;
             }
 
             @Override

@@ -27,6 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.Singleton;
@@ -89,10 +90,11 @@ public class DialogManager implements IDialogManager {
     @Override
     public void createToast(IScene scene, String message, float duration) {
         final PopUp popUp = createPopUp(scene, "", null);
-        popUp.setStyle(scene.getSkin().get("toast", WindowStyle.class));
+        WindowStyle style = scene.getSkin().get("toast", WindowStyle.class);
+        popUp.setStyle(style);
         popUp.setMovable(false);
         popUp.clearChildren();
-        popUp.add(new Label(message, scene.getSkin()));
+        popUp.add(new Label(message, new LabelStyle(style.titleFont, style.titleFontColor)));
         popUp.show(scene.getStage());
         popUp.addAction(Actions.delay(duration, new Action() {
             @Override

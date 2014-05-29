@@ -154,7 +154,7 @@ public abstract class ListRowRenderer extends Table {
         LabelStyle labelStyle = new LabelStyle(style.font, style.fontColor);
         label = new Label(text, labelStyle);
         label.setAlignment(Align.left);
-        content.add(label).expand().fill().pad(4f);
+        content.add(label).expand().fill().pad(style.padding);
 
         stack(background, content).expand().fill();
     }
@@ -191,6 +191,8 @@ public abstract class ListRowRenderer extends Table {
         public Color fontSelectedColor;
 
         public Color fontOverColor;
+
+        public float padding;
 
         public ListRowRendererStyle() {
         }

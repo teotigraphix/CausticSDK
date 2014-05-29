@@ -122,7 +122,7 @@ public class ScrollList extends ScrollPane {
 
     private void initialize() {
         setFadeScrollBars(false);
-        setFlickScroll(false);
+        //setFlickScroll(false);
         list = new AdvancedList<LabelRow>(new Object[] {}, LabelRow.class, skin,
                 skin.get(ListRowRendererStyle.class));
         list.createChildren(skin);
