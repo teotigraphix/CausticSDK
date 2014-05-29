@@ -40,6 +40,8 @@ public abstract class ListRowRenderer extends Table {
 
     private boolean over;
 
+    protected boolean down;
+
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
@@ -109,6 +111,19 @@ public abstract class ListRowRenderer extends Table {
         invalidate();
     }
 
+    //----------------------------------
+    // down
+    //----------------------------------
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public void setDown(boolean down) {
+        this.down = down;
+        invalidate();
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -124,7 +139,7 @@ public abstract class ListRowRenderer extends Table {
         align(Align.left);
         setTouchable(Touchable.enabled);
         setStyle(style);
-        addListener(new ActorGestureListener() {
+        addCaptureListener(new ActorGestureListener() {
             @Override
             public void tap(InputEvent event, float x, float y, int count, int button) {
                 if (count == 2) {
@@ -169,8 +184,10 @@ public abstract class ListRowRenderer extends Table {
         if (background != null && style != null) {
             if (selected)
                 background.setDrawable(style.selection);
-            else if (over && style.over != null)
-                background.setDrawable(style.over);
+            //else if (over && style.over != null)
+            //    background.setDrawable(style.over);
+            else if (down && style.down != null)
+                background.setDrawable(style.down);
             else
                 background.setDrawable(style.background);
         }
@@ -183,6 +200,8 @@ public abstract class ListRowRenderer extends Table {
         public Drawable selection;
 
         public Drawable over;
+
+        public Drawable down;
 
         public BitmapFont font;
 

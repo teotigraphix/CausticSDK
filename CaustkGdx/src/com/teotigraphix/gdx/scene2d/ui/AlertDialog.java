@@ -83,8 +83,8 @@ public class AlertDialog extends Dialog {
 
         button(okButton, true);
         button(cancelButton, false);
-        getButtonTable().getCell(okButton).width(100f);
-        getButtonTable().getCell(cancelButton).width(100f);
+        getButtonTable().getCell(okButton).size(100f, 50f);
+        getButtonTable().getCell(cancelButton).size(100f, 50f);
     }
 
     @Override

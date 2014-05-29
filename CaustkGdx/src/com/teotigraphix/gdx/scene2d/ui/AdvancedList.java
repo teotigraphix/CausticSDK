@@ -227,11 +227,19 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
                         fire(e);
                         Pools.free(e);
                     }
+                    listenerActor.setDown(false);
                 }
             }
         });
 
         item.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                @SuppressWarnings("unchecked")
+                T listenerActor = (T)event.getListenerActor(); // renderer item
+                listenerActor.setDown(false);
+            }
+
             @SuppressWarnings("unchecked")
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -239,6 +247,8 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
                 if (selectable && mouseDownChange) {
                     fireChange(renderers.indexOf(listenerActor, false));
                 }
+                if (selectable)
+                    listenerActor.setDown(true);
                 return true;
             }
 
