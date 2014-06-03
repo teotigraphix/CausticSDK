@@ -19,8 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
-
-public class Oscillator extends ModularComponentBase {
+public class WaveformGenerator extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -239,11 +238,12 @@ public class Oscillator extends ModularComponentBase {
         setValue("out_gain", value);
     }
 
-    public Oscillator() {
+    public WaveformGenerator() {
     }
 
-    public Oscillator(int bay) {
+    public WaveformGenerator(int bay) {
         super(bay);
+        setLabel("WaveformGenerator");
     }
 
     @Override
@@ -251,11 +251,13 @@ public class Oscillator extends ModularComponentBase {
         return 2;
     }
 
-    public enum OscillatorJack implements IModularJack {
+    public enum WaveformGeneratorJack implements IModularJack {
 
         InNote(0),
 
         InModulation(1),
+
+        // XXX WaveformGenerator InSync
 
         InFM(2),
 
@@ -272,7 +274,7 @@ public class Oscillator extends ModularComponentBase {
             return value;
         }
 
-        OscillatorJack(int value) {
+        WaveformGeneratorJack(int value) {
             this.value = value;
         }
     }

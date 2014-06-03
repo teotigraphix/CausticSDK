@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
-
 public class Crossfader extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
@@ -113,6 +112,7 @@ public class Crossfader extends ModularComponentBase {
 
     public Crossfader(int bay) {
         super(bay);
+        setLabel("Crossfader");
     }
 
     @Override

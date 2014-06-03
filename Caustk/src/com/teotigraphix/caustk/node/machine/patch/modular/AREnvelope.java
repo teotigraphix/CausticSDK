@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
-
 public class AREnvelope extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
@@ -183,6 +182,7 @@ public class AREnvelope extends ModularComponentBase {
 
     public AREnvelope(int bay) {
         super(bay);
+        setLabel("AREnvelope");
     }
 
     @Override

@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -35,6 +38,12 @@ public class ModularBayComponent extends MachineComponent {
     // TODO think about the further impl of ModularBayComponent
     // for now the Modular supports preset loading and dynamic creation but no
     // reserialization of node graph
+
+    private Map<Integer, IModularComponent> components = new HashMap<Integer, IModularComponent>();
+
+    public Map<Integer, IModularComponent> getComponents() {
+        return components;
+    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -71,8 +80,8 @@ public class ModularBayComponent extends MachineComponent {
                 component = new SixInputMixer(bay);
                 component.setMachineIndex(machineIndex);
                 break;
-            case Oscillator:
-                component = new Oscillator(bay);
+            case WaveformGenerator:
+                component = new WaveformGenerator(bay);
                 component.setMachineIndex(machineIndex);
                 break;
             case SubOscillator:
@@ -99,8 +108,8 @@ public class ModularBayComponent extends MachineComponent {
                 component = new SVFilter(bay);
                 component.setMachineIndex(machineIndex);
                 break;
-            case StereoLPF:
-                component = new StereoLPF(bay);
+            case ResonantLP:
+                component = new ResonantLP(bay);
                 component.setMachineIndex(machineIndex);
                 break;
             case FormantFilter:
@@ -173,5 +182,18 @@ public class ModularBayComponent extends MachineComponent {
 
     @Override
     protected void restoreComponents() {
+        for (int i = 0; i < 16; i++) {
+            int component = (int)ModularMessage.TYPE.send(getRack(), 0, i);
+            if (component != 0) {
+                ModularComponentType type = ModularComponentType.fromInt(component);
+                ModularComponentBase comp = create(type, i);
+                components.put(i, comp);
+                if (comp.getNumBays() > 1)
+                    i++;
+            }
+        }
+        for (IModularComponent component : components.values()) {
+            component.restore();
+        }
     }
 }

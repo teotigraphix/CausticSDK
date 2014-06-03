@@ -78,6 +78,14 @@ public class ModularMessage extends CausticMessage {
      */
     public static final ModularMessage SET = new ModularMessage("/caustic/${0}/${1}/${2} ${3}");
 
+    // 
+
+    /**
+     * /caustic/[machine_index]/type <component bay#> returns the type# from the
+     * list above
+     */
+    public static final ModularMessage TYPE = new ModularMessage("/caustic/${0}/type/${1}");
+
     public ModularMessage(String message) {
         super(message);
     }
@@ -92,7 +100,7 @@ public class ModularMessage extends CausticMessage {
 
         SixToOneMixer(3),
 
-        Oscillator(4),
+        WaveformGenerator(4),
 
         SubOscillator(5),
 
@@ -106,7 +114,7 @@ public class ModularMessage extends CausticMessage {
 
         SVFilter(10),
 
-        StereoLPF(11),
+        ResonantLP(11),
 
         FormantFilter(12),
 
@@ -142,6 +150,14 @@ public class ModularMessage extends CausticMessage {
 
         ModularComponentType(int value) {
             this.value = value;
+        }
+
+        public static ModularComponentType fromInt(int type) {
+            for (ModularComponentType item : values()) {
+                if (item.getValue() == type)
+                    return item;
+            }
+            return null;
         }
     }
 }

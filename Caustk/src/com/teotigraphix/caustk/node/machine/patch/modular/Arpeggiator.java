@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
-
 public class Arpeggiator extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
@@ -137,6 +136,7 @@ public class Arpeggiator extends ModularComponentBase {
 
     public Arpeggiator(int bay) {
         super(bay);
+        setLabel("Arpeggiator");
     }
 
     @Override

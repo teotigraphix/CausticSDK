@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
-
 public class Saturator extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
@@ -113,6 +112,7 @@ public class Saturator extends ModularComponentBase {
 
     public Saturator(int bay) {
         super(bay);
+        setLabel("Saturator");
     }
 
     @Override

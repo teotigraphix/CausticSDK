@@ -19,10 +19,44 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.teotigraphix.caustk.core.osc.ModularMessage;
+import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 
-public abstract class ModularComponentBase extends MachineComponent {
+public abstract class ModularComponentBase extends MachineComponent implements IModularComponent {
+
+    @Override
+    public Collection<ModularControl> getControls() {
+        return ModularUtils.getControls(getType()).values();
+    }
+
+    @Override
+    public Collection<ModularControl> getFrontControls() {
+        ArrayList<ModularControl> result = new ArrayList<ModularControl>();
+        for (ModularControl control : getControls()) {
+            if (control.getControl().name().contains("Front_"))
+                result.add(control);
+        }
+        return result;
+    }
+
+    @Override
+    public Collection<ModularControl> getRearControls() {
+        ArrayList<ModularControl> result = new ArrayList<ModularControl>();
+        for (ModularControl control : getControls()) {
+            if (control.getControl().name().contains("Rear_"))
+                result.add(control);
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + getBay() + "]" + getLabel();
+    }
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -39,7 +73,8 @@ public abstract class ModularComponentBase extends MachineComponent {
      */
     protected abstract int getNumBays();
 
-    protected int getBay() {
+    @Override
+    public int getBay() {
         return bay;
     }
 
@@ -63,7 +98,21 @@ public abstract class ModularComponentBase extends MachineComponent {
         ModularMessage.SET.send(getRack(), getMachineIndex(), getBay(), control, value);
     }
 
-    public void connect(IModularJack outJack, ModularComponentBase destination,
+    @Override
+    public ModularComponentType getType() {
+        if (this instanceof WaveformGenerator)
+            return ModularComponentType.WaveformGenerator;
+        else if (this instanceof ResonantLP)
+            return ModularComponentType.ResonantLP;
+        else if (this instanceof Saturator)
+            return ModularComponentType.Saturator;
+        else if (this instanceof DecayEnvelope)
+            return ModularComponentType.DecayEnvelope;
+        return null;
+    }
+
+    @Override
+    public void connect(IModularJack outJack, IModularComponent destination,
             IModularJack destinationInJack) {
         // /caustic/[machine]/connect [src_bay] [src_jack] [dest_bay] [dest_jack]
 

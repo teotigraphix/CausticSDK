@@ -19,8 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
-
-public class StereoLPF extends ModularComponentBase {
+public class ResonantLP extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -162,12 +161,13 @@ public class StereoLPF extends ModularComponentBase {
         setValue("res_mod", value);
     }
 
-    public StereoLPF() {
+    public ResonantLP() {
         //ComponentType.StereoLPF;
     }
 
-    public StereoLPF(int bay) {
+    public ResonantLP(int bay) {
         super(bay);
+        setLabel("ResonantLP");
     }
 
     @Override
@@ -184,7 +184,7 @@ public class StereoLPF extends ModularComponentBase {
         setSlope(getSlope(true));
     }
 
-    public enum StereoLPFJack implements IModularJack {
+    public enum ResonantLPJack implements IModularJack {
 
         InInputLeft(0),
 
@@ -205,7 +205,7 @@ public class StereoLPF extends ModularComponentBase {
             return value;
         }
 
-        StereoLPFJack(int value) {
+        ResonantLPJack(int value) {
             this.value = value;
         }
     }

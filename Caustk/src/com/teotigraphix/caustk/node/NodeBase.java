@@ -89,7 +89,7 @@ public abstract class NodeBase implements ICaustkNode {
      * @see NodeLabelEvent
      */
     public void setLabel(String label) {
-        if (this.label.equals(label))
+        if (this.label != null && this.label.equals(label))
             return;
         this.label = label;
         post(new NodeLabelEvent(this, label));

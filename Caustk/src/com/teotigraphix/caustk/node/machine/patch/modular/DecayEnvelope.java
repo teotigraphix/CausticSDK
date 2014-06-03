@@ -112,6 +112,7 @@ public class DecayEnvelope extends ModularComponentBase {
 
     public DecayEnvelope(int bay) {
         super(bay);
+        setLabel("DecayEnvelope");
     }
 
     @Override
