@@ -186,6 +186,10 @@ public class ModularBayComponent extends MachineComponent {
             int component = (int)ModularMessage.TYPE.send(getRack(), 0, i);
             if (component != 0) {
                 ModularComponentType type = ModularComponentType.fromInt(component);
+                if (type == null) {
+                    System.err.println("Modular Type null: " + this);
+                    continue;
+                }
                 ModularComponentBase comp = create(type, i);
                 components.put(i, comp);
                 if (comp.getNumBays() > 1)
