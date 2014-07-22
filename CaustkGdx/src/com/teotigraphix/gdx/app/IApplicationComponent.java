@@ -27,7 +27,7 @@ import com.google.common.eventbus.EventBus;
  * events.
  * <p>
  * Components will dispatch events through their local {@link EventBus} or
- * global {@link IApplication#getEventBus()}.
+ * global {@link ICaustkApplication#getEventBus()}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -45,7 +45,7 @@ public interface IApplicationComponent {
     EventBus getEventBus();
 
     /**
-     * Returns the {@link IApplication} instance.
+     * Returns the {@link ICaustkApplication} instance.
      */
-    IApplication getApplication();
+    ICaustkApplication getApplication();
 }

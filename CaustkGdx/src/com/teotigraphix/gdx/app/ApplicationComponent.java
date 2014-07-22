@@ -20,7 +20,7 @@ public abstract class ApplicationComponent implements IApplicationComponent {
 
     private EventBus eventBus;
 
-    private IApplication application;
+    private ICaustkApplication application;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -45,12 +45,12 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     //----------------------------------
 
     @Override
-    public IApplication getApplication() {
+    public ICaustkApplication getApplication() {
         return application;
     }
 
     @Inject
-    public void setApplication(IApplication application) {
+    public void setApplication(ICaustkApplication application) {
         this.application = application;
         construct();
     }
@@ -79,7 +79,7 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     }
 
     /**
-     * Initialize the model after the {@link IApplication} has been injected.
+     * Initialize the model after the {@link ICaustkApplication} has been injected.
      */
     protected abstract void construct();
 

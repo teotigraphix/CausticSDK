@@ -21,75 +21,37 @@ package com.teotigraphix.gdx.app;
 
 import java.io.IOException;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.gdx.app.internal.SceneManager;
 import com.teotigraphix.gdx.core.StartupExecutor;
 
 /**
- * The base implementation of the {@link IApplication} API.
+ * The base implementation of the {@link ICaustkApplication} API.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public abstract class Application implements IApplication {
+public abstract class CaustkApplication extends Application implements ICaustkApplication,
+        ApplicationListener {
 
-    private static final String TAG = "Application";
+    private static final String TAG = "CaustkApplication";
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private String applicationName;
-
-    private int width;
-
-    private int height;
-
-    private EventBus eventBus;
-
     private CaustkRuntime runtime;
 
     private StartupExecutor startupExecutor;
 
-    private SceneManager sceneManager;
-
     //--------------------------------------------------------------------------
     // IGdxApplication API :: Properties
     //--------------------------------------------------------------------------
-
-    @Override
-    public String getApplicationName() {
-        return applicationName;
-    }
-
-    @Override
-    public float getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    @Override
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    @Override
-    public final EventBus getEventBus() {
-        return eventBus;
-    }
 
     @Override
     public ICaustkLogger getLogger() {
@@ -102,39 +64,28 @@ public abstract class Application implements IApplication {
     }
 
     @Override
-    public IScene getScene() {
-        return getSceneManager().getScene();
-    }
-
-    @Override
-    public boolean isCurrentScene(int sceneId) {
-        return getSceneManager().isCurrentScene(sceneId);
+    public ICaustkScene getScene() {
+        return (ICaustkScene)super.getScene();
     }
 
     //--------------------------------------------------------------------------
     // Protected :: Properties
     //--------------------------------------------------------------------------
 
-    protected final SceneManager getSceneManager() {
-        return sceneManager;
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link Application} specific to the platform
+     * Creates a new {@link CaustkApplication} specific to the platform
      * {@link ISoundGenerator}.
      * 
      * @param applicationName The name of the application.
      * @param soundGenerator The platform specific {@link ISoundGenerator}.
      */
-    public Application(String applicationName, ISoundGenerator soundGenerator) {
-        this.applicationName = applicationName;
-        eventBus = new EventBus("application");
+    public CaustkApplication(String applicationName, ISoundGenerator soundGenerator) {
+        super(applicationName);
         startupExecutor = new StartupExecutor(soundGenerator);
-        sceneManager = new SceneManager(this);
     }
 
     //--------------------------------------------------------------------------
@@ -152,7 +103,7 @@ public abstract class Application implements IApplication {
             getLogger().log("Rack", "onStart()");
             runtime.getRack().onStart();
             getLogger().log("SceneManager", "create()");
-            sceneManager.create();
+            getSceneManager().create();
         } catch (CausticException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -167,7 +118,7 @@ public abstract class Application implements IApplication {
 
     @Override
     public void render() {
-        sceneManager.preRender();
+        getSceneManager().preRender();
         if (runtime.getRack().isLoaded()) {
             runtime.getRack().frameChanged(Gdx.graphics.getDeltaTime());
             int measure = runtime.getRack().getSequencer().getCurrentMeasure();
@@ -177,44 +128,43 @@ public abstract class Application implements IApplication {
             if (measure == -1)
                 measure = (int)(beat / 4);
             if (runtime.getRack().getSequencer().isBeatChanged()) {
-                sceneManager.getScene().onBeatChange(measure, beat, sixteenth, thirtysecond);
+                getScene().onBeatChange(measure, beat, sixteenth, thirtysecond);
             }
             if (runtime.getRack().getSequencer().isSixteenthChanged()) {
-                sceneManager.getScene().onSixteenthChange(measure, beat, sixteenth, thirtysecond);
+                getScene().onSixteenthChange(measure, beat, sixteenth, thirtysecond);
             }
             if (runtime.getRack().getSequencer().isThirtysecondChanged()) {
-                sceneManager.getScene()
-                        .onThirtysecondChange(measure, beat, sixteenth, thirtysecond);
+                getScene().onThirtysecondChange(measure, beat, sixteenth, thirtysecond);
             }
         }
-        sceneManager.postRender();
+        getSceneManager().postRender();
     }
 
     @Override
     public void resize(int width, int height) {
         getLogger().log(TAG, "resize(" + width + ", " + height + ")");
-        if (sceneManager != null)
-            sceneManager.resize(width, height);
+        if (getSceneManager() != null)
+            getSceneManager().resize(width, height);
     }
 
     @Override
     public void pause() {
         runtime.getRack().onPause();
         getLogger().log(TAG, "pause()");
-        sceneManager.pause();
+        getSceneManager().pause();
     }
 
     @Override
     public void resume() {
         runtime.getRack().onResume();
         getLogger().log(TAG, "resume()");
-        sceneManager.resume();
+        getSceneManager().resume();
     }
 
     @Override
     public void dispose() {
         getLogger().log(TAG, "dispose()");
-        sceneManager.dispose();
+        getSceneManager().dispose();
         runtime.getRack().onDestroy();
     }
 
@@ -229,14 +179,16 @@ public abstract class Application implements IApplication {
      * 
      * @see ApplicationComponentRegistery#put(Class, IModel)
      */
+    @Override
     protected abstract void onRegisterModels();
 
     /**
-     * Add {@link IScene}s to the application.
+     * Add {@link ICaustkScene}s to the application.
      * 
      * @see #onRegisterModels()
      * @see SceneManager#addScene(int, Class)
      */
+    @Override
     protected abstract void onRegisterScenes();
 
     /**
@@ -245,6 +197,7 @@ public abstract class Application implements IApplication {
      * 
      * @see #onRegisterScenes()
      */
+    @Override
     protected abstract void onCreate();
 
     /**
@@ -252,6 +205,7 @@ public abstract class Application implements IApplication {
      * 
      * @param scene The active scene.
      */
-    public void onSceneChange(IScene scene) {
+    @Override
+    public void onSceneChange(ICaustkScene scene) {
     }
 }

@@ -19,39 +19,42 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 
 /**
- * The {@link IApplication} API is the top level container for all user
+ * The {@link ICaustkApplication} API is the top level container for all user
  * interface and Caustic Core logic.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface IApplication extends ApplicationListener {
+public interface ICaustkApplication extends IApplication {
 
     /**
      * The application name, will show up in the title bar in desktop
      * applications.
      */
+    @Override
     String getApplicationName();
 
     /**
      * The OSC machine name of this application.
      */
+    @Override
     String getApplicationId();
 
     /**
      * The width of the application.
      */
+    @Override
     float getWidth();
 
     /**
      * The height of the application.
      */
+    @Override
     float getHeight();
 
     /**
@@ -62,6 +65,7 @@ public interface IApplication extends ApplicationListener {
     /**
      * Returns the application level event bus.
      */
+    @Override
     EventBus getEventBus();
 
     /**
@@ -72,7 +76,8 @@ public interface IApplication extends ApplicationListener {
     /**
      * Returns the current scene.
      */
-    IScene getScene();
+    @Override
+    ICaustkScene getScene();
 
     /**
      * Sets the current scene.
@@ -81,6 +86,7 @@ public interface IApplication extends ApplicationListener {
      * 
      * @param sceneId The scene id.
      */
+    @Override
     void setScene(int sceneId);
 
     /**
@@ -88,6 +94,7 @@ public interface IApplication extends ApplicationListener {
      * 
      * @param sceneId The scene id to test against the current scene's id.
      */
+    @Override
     boolean isCurrentScene(int sceneId);
 
     //--------------------------------------------------------------------------
@@ -99,5 +106,7 @@ public interface IApplication extends ApplicationListener {
 
     public static class OnApplicationDestoryEvent {
     }
+
+    void onSceneChange(ICaustkScene scene);
 
 }

@@ -31,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.Singleton;
-import com.teotigraphix.gdx.app.IScene;
+import com.teotigraphix.gdx.app.ICaustkScene;
 import com.teotigraphix.gdx.scene2d.ui.PopUp;
 
 @Singleton
@@ -80,7 +80,7 @@ public class DialogManager implements IDialogManager {
     //    }
 
     @Override
-    public PopUp createPopUp(IScene scene, String title, Actor actor) {
+    public PopUp createPopUp(ICaustkScene scene, String title, Actor actor) {
         final PopUp dialog = new PopUp(title, scene.getSkin());
         dialog.setModal(false);
         dialog.setMovable(true);
@@ -88,7 +88,7 @@ public class DialogManager implements IDialogManager {
     }
 
     @Override
-    public void createToast(IScene scene, String message, float duration) {
+    public void createToast(ICaustkScene scene, String message, float duration) {
         final PopUp popUp = createPopUp(scene, "", null);
         WindowStyle style = scene.getSkin().get("toast", WindowStyle.class);
         popUp.setStyle(style);
@@ -106,7 +106,7 @@ public class DialogManager implements IDialogManager {
     }
 
     @Override
-    public void show(IScene scene, final Dialog dialog, Vector2 point) {
+    public void show(ICaustkScene scene, final Dialog dialog, Vector2 point) {
         dialog.show(scene.getStage());
         dialog.setWidth(150f);
         dialog.setPosition(point.x, point.y - dialog.getHeight());
@@ -120,7 +120,7 @@ public class DialogManager implements IDialogManager {
     }
 
     @Override
-    public void show(IScene scene, Dialog dialog) {
+    public void show(ICaustkScene scene, Dialog dialog) {
         dialog.show(scene.getStage());
     }
 }

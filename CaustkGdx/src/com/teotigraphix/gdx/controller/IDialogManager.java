@@ -22,7 +22,7 @@ package com.teotigraphix.gdx.controller;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.teotigraphix.gdx.app.IScene;
+import com.teotigraphix.gdx.app.ICaustkScene;
 import com.teotigraphix.gdx.scene2d.ui.PopUp;
 
 public interface IDialogManager {
@@ -36,22 +36,22 @@ public interface IDialogManager {
     //
     //    ContextMenu createContextMenu(Object[] items);
 
-    PopUp createPopUp(IScene scene, String title, Actor actor);
+    PopUp createPopUp(ICaustkScene scene, String title, Actor actor);
 
-    void createToast(IScene scene, String message, float duration);
+    void createToast(ICaustkScene scene, String message, float duration);
 
     /**
      * @param scene
      * @param dialog
      * @param point
      */
-    void show(IScene scene, Dialog dialog, Vector2 point);
+    void show(ICaustkScene scene, Dialog dialog, Vector2 point);
 
     /**
      * Shows the dialog centered on the Stage.
      * 
      * @param dialog
      */
-    void show(IScene scene, Dialog dialog);
+    void show(ICaustkScene scene, Dialog dialog);
 
 }
