@@ -20,8 +20,8 @@
 package com.teotigraphix.gdx.app;
 
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.ICaustkLogger;
+import com.teotigraphix.caustk.core.ICaustkRack;
 
 /**
  * The {@link ICaustkApplication} API is the top level container for all user
@@ -71,7 +71,7 @@ public interface ICaustkApplication extends IApplication {
     /**
      * Returns the application rack.
      */
-    CaustkRack getRack();
+    ICaustkRack getRack();
 
     /**
      * Returns the current scene.

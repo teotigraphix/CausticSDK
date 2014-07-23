@@ -45,7 +45,7 @@ import com.teotigraphix.caustk.node.sequencer.SequencerNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class CaustkRack extends CaustkEngine implements IRackEventBus {
+public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -59,9 +59,7 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     // Public Property API
     //--------------------------------------------------------------------------
 
-    /**
-     * Returns whether the rack has a valid {@link RackNode} backing state.
-     */
+    @Override
     public final boolean isLoaded() {
         return rackNode != null;
     }
@@ -70,14 +68,7 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     // rackNode
     //----------------------------------
 
-    /**
-     * Returns the current {@link RackNode} native rack state.
-     * <p>
-     * When listening to the rack's eventBus, there is no need to worry about
-     * memory leaks with events because the {@link NodeBase} is not a dispatcher
-     * or listener. All views would register the subscribers to the rack's
-     * eventBus, which is constant throughout the whole application life cycle.
-     */
+    @Override
     public final RackNode getRackNode() {
         return rackNode;
     }
@@ -101,14 +92,17 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     // RackNode
     //----------------------------------
 
+    @Override
     public String getName() {
         return rackNode.getName();
     }
 
+    @Override
     public String getPath() {
         return rackNode.getPath();
     }
 
+    @Override
     public File getFile() {
         return rackNode.getAbsoluteFile();
     }
@@ -117,22 +111,27 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     // MasterNode
     //----------------------------------
 
+    @Override
     public MasterDelayNode getDelay() {
         return rackNode.getMaster().getDelay();
     }
 
+    @Override
     public MasterReverbNode getReverb() {
         return rackNode.getMaster().getReverb();
     }
 
+    @Override
     public MasterEqualizerNode getEqualizer() {
         return rackNode.getMaster().getEqualizer();
     }
 
+    @Override
     public MasterLimiterNode getLimiter() {
         return rackNode.getMaster().getLimiter();
     }
 
+    @Override
     public MasterVolumeNode getVolume() {
         return rackNode.getMaster().getVolume();
     }
@@ -141,10 +140,12 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     // MachineNode
     //----------------------------------
 
+    @Override
     public Collection<? extends MachineNode> getMachines() {
         return rackNode.getMachines();
     }
 
+    @Override
     public MachineNode getMachine(int machineIndex) {
         return rackNode.getMachine(machineIndex);
     }
@@ -153,6 +154,7 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     // SequencerNode
     //----------------------------------
 
+    @Override
     public SequencerNode getSequencer() {
         return rackNode.getSequencer();
     }
@@ -184,64 +186,27 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
     // Public Method API
     //--------------------------------------------------------------------------
 
-    /**
-     * Creates a new {@link RackNode} and returns it.
-     * <p>
-     * This is the only {@link RackNode} creation method that does NOT assign
-     * the node the this rack(which will call {@link RackMessage#BLANKRACK}).
-     * <p>
-     * This method allows for {@link RackNode}s to be created and initialized
-     * before assigning that state to the native rack(this rack).
-     */
+    @Override
     public RackNode create() {
         RackNode rackNode = runtime.getFactory().createRack();
         return rackNode;
     }
 
-    /**
-     * Creates a new {@link RackNode} and returns it.
-     * 
-     * @param relativeOrAbsolutePath The relative or absolute location of the
-     *            <code>.caustic</code> file. The file is for saving, not
-     *            loading with this method. See {@link #create(File)} to restore
-     *            a {@link RackNode} from an existing <code>.caustic</code>
-     *            file.
-     */
+    @Override
     public RackNode create(String relativeOrAbsolutePath) {
         RackNode rackNode = runtime.getFactory().createRack(relativeOrAbsolutePath);
         restore(rackNode);
         return rackNode;
     }
 
-    /**
-     * Creates a new {@link RackNode} that wraps an existing
-     * <code>.caustic</code> file and returns it.
-     * <p>
-     * After the {@link RackNode} is created, the native rack is cleared with
-     * {@link RackMessage#BLANKRACK} and the {@link RackNode#restore()} method
-     * is called which restores the internal state of the {@link RackNode} with
-     * the state that was loaded into the native rack by the rack node's
-     * <code>.caustic</code> file.
-     * 
-     * @param file The <code>.caustic</code> file that will be used to restore
-     *            the {@link RackNode}'s state.
-     */
+    @Override
     public RackNode create(File file) {
         RackNode rackNode = runtime.getFactory().createRack(file);
         restore(rackNode);
         return rackNode;
     }
 
-    /**
-     * Takes the state of the {@link RackNode} and applies it to the
-     * {@link CaustkRack} by creating machines and updating all native rack
-     * state based on the node graph.
-     * <p>
-     * The {@link CaustkRack} is reset, native rack cleared and all machines are
-     * created through OSC and updated through OSC in the node graph.
-     * 
-     * @param rackNode The new rack node state.
-     */
+    @Override
     public void create(RackNode rackNode) {
         // the native rack is created based on the state of the node graph
         // machines/patterns/effects in the node graph get created through OSC
@@ -249,22 +214,12 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
         rackNode.create();
     }
 
-    /**
-     * Sets up the {@link RackNode} by setting the instance on the
-     * {@link CaustkRack}.
-     * 
-     * @param rackNode A blank rack node.
-     */
+    @Override
     public void setup(RackNode rackNode) {
         setRackNode(rackNode);
     }
 
-    /**
-     * Restores a {@link RackNode} state, machines, effects etc.
-     * 
-     * @param rackNode The {@link RackNode} to restore, this method will fail if
-     *            the machines are already native.
-     */
+    @Override
     public void restore(RackNode rackNode) {
         // will save the state of the native rack into the node
         // this basically takes a snap shot of the native rack
@@ -272,13 +227,7 @@ public class CaustkRack extends CaustkEngine implements IRackEventBus {
         rackNode.restore();
     }
 
-    /**
-     * Called when a frame changes in the application, update measure and beat
-     * positions.
-     * 
-     * @param deltaTime The amount of time that has changed since the last
-     *            frame.
-     */
+    @Override
     public void frameChanged(float deltaTime) {
         getRackNode().getSequencer().frameChanged(deltaTime);
     }

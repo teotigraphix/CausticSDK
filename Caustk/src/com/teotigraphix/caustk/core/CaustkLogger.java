@@ -19,10 +19,7 @@
 
 package com.teotigraphix.caustk.core;
 
-
 /**
- * Default implementation of the {@link ICausticLogger}.
- * 
  * @author Michael Schmalle
  * @since 1.0
  */

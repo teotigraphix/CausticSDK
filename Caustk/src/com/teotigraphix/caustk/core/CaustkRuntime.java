@@ -38,7 +38,7 @@ import com.teotigraphix.caustk.node.Library;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class CaustkRuntime {
+public class CaustkRuntime implements ICaustkRuntime {
 
     private static CaustkRuntime instance;
 
@@ -63,13 +63,15 @@ public class CaustkRuntime {
     /**
      * Returns the session {@link CaustkLogger} instance.
      */
-    public final CaustkLogger getLogger() {
+    @Override
+    public final ICaustkLogger getLogger() {
         return logger;
     }
 
     /**
      * Returns the session {@link CaustkRack} instance.
      */
+    @Override
     public final CaustkRack getRack() {
         return rack;
     }
@@ -78,6 +80,7 @@ public class CaustkRuntime {
      * Returns the session {@link CaustkFactory} for created {@link ICaustkNode}
      * s.
      */
+    @Override
     public final CaustkFactory getFactory() {
         return factory;
     }
@@ -85,6 +88,7 @@ public class CaustkRuntime {
     /**
      * The current library loaded for an application.
      */
+    @Override
     public final Library getLibrary() {
         return library;
     }
@@ -111,6 +115,7 @@ public class CaustkRuntime {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    @Override
     public Library loadLibrary(File file) throws CausticException, IOException {
         if (file.exists())
             throw new FileNotFoundException("Library does not exist: " + file);
@@ -121,6 +126,7 @@ public class CaustkRuntime {
         return library;
     }
 
+    @Override
     public Library createLibrary(String relativePath) throws CausticException {
         Library library = getFactory().createLibrary(relativePath);
         //        if (library.exists())
