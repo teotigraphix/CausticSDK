@@ -133,7 +133,7 @@ public class Library extends NodeBase {
         return new File(getLibrariesDirectory(), getName());
     }
 
-    public void setDirectory(File directory) {
+    protected void setDirectory(File directory) {
         this.directory = directory;
     }
 
@@ -241,17 +241,6 @@ public class Library extends NodeBase {
         return removed;
     }
 
-    public NodeInfo get(File file) {
-        for (Map<UUID, NodeInfo> types : map.values()) {
-            for (NodeInfo info : types.values()) {
-                File other = resolveAbsoluteArchive(info);
-                if (other.compareTo(file) == 0)
-                    return info;
-            }
-        }
-        return null;
-    }
-
     /**
      * Remove a node from the library by {@link UUID}.
      * <p>
@@ -288,6 +277,17 @@ public class Library extends NodeBase {
 
         definitionRemoved(removed);
         return true;
+    }
+
+    public NodeInfo get(File file) {
+        for (Map<UUID, NodeInfo> types : map.values()) {
+            for (NodeInfo info : types.values()) {
+                File other = resolveAbsoluteArchive(info);
+                if (other.compareTo(file) == 0)
+                    return info;
+            }
+        }
+        return null;
     }
 
     public List<NodeInfo> findAll(NodeType type) {

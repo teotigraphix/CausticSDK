@@ -20,9 +20,11 @@
 package com.teotigraphix.caustk.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.groove.LibraryGroup;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -132,6 +134,27 @@ public interface ICaustkRack extends ISoundGenerator, IRackEventBus {
      * @param rackNode The new rack node state.
      */
     void create(RackNode rackNode);
+
+    /**
+     * @param libraryGroup
+     * @return
+     * @throws CausticException
+     * @throws IOException
+     */
+    RackNode create(LibraryGroup libraryGroup) throws CausticException, IOException;
+
+    /**
+     * @param libraryGroup
+     * @param importPreset
+     * @param importEffects
+     * @param importPatterns
+     * @param importMixer
+     * @return
+     * @throws CausticException
+     * @throws IOException
+     */
+    RackNode create(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
+            boolean importPatterns, boolean importMixer) throws CausticException, IOException;
 
     /**
      * Sets up the {@link RackNode} by setting the instance on the

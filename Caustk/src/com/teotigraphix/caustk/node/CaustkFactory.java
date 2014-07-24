@@ -274,6 +274,16 @@ public class CaustkFactory {
         return (T)gson.fromJson(json, clazz);
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T _deserialize(String json, Class<? extends Object> clazz) throws CausticException {
+        GsonBuilder deserializer = new GsonBuilder().setPrettyPrinting();
+        deserializer.registerTypeAdapter(MachineNode.class, new MachineNodeDeserializer());
+        deserializer.registerTypeAdapter(EffectNode.class, new EffectNodeDeserializer());
+        deserializer.registerTypeAdapter(NoteNode.class, new NoteNodeDeserializer());
+        Gson gson = deserializer.create();
+        return (T)gson.fromJson(json, clazz);
+    }
+
     /**
      * Serializes an {@link ICaustkNode} into a JSON String.
      * 
@@ -282,6 +292,15 @@ public class CaustkFactory {
      * @return A serialized JSON String of the {@link ICaustkNode}.
      */
     public String serialize(ICaustkNode node, boolean prettyPrint) {
+        GsonBuilder builder = new GsonBuilder();
+        if (prettyPrint)
+            builder.setPrettyPrinting();
+        Gson serializer = builder.create();
+        String json = serializer.toJson(node);
+        return json;
+    }
+
+    public String serialize(Object node, boolean prettyPrint) {
         GsonBuilder builder = new GsonBuilder();
         if (prettyPrint)
             builder.setPrettyPrinting();

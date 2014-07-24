@@ -427,6 +427,16 @@ public abstract class MachineNode extends NodeBase {
         clips = new ClipComponent(this);
     }
 
+    public void updateMixer(MixerChannel mixer) {
+        this.mixer = mixer;
+        this.mixer.update();
+    }
+
+    public void updateSequencer(PatternSequencerComponent sequencer) {
+        this.sequencer = sequencer;
+        this.sequencer.update();
+    }
+
     @Override
     public String toString() {
         return name + ":" + type;
@@ -487,4 +497,5 @@ public abstract class MachineNode extends NodeBase {
             this.channelIndex = channelIndex;
         }
     }
+
 }

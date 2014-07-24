@@ -20,12 +20,19 @@
 package com.teotigraphix.caustk.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.groove.LibraryEffect;
+import com.teotigraphix.caustk.groove.LibraryGroup;
+import com.teotigraphix.caustk.groove.LibraryInstrument;
+import com.teotigraphix.caustk.groove.LibrarySound;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
 import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
@@ -212,6 +219,51 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         // machines/patterns/effects in the node graph get created through OSC
         setRackNode(rackNode);
         rackNode.create();
+    }
+
+    @Override
+    public RackNode create(LibraryGroup libraryGroup) throws CausticException, IOException {
+        return create(libraryGroup, true, true, true, true);
+    }
+
+    @Override
+    public RackNode create(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
+            boolean importPatterns, boolean importMixer) throws CausticException, IOException {
+        RackNode rackNode = create();
+
+        // create machines
+        for (LibrarySound librarySound : libraryGroup.getSounds()) {
+            LibraryEffect effect = librarySound.getEffect();
+            LibraryInstrument instrument = librarySound.getInstrument();
+
+            PatternSequencerComponent oldSequencer = instrument.getMachineNode().getSequencer();
+            MixerChannel oldMixer = instrument.getMachineNode().getMixer();
+
+            int index = librarySound.getIndex();
+            MachineType machineType = instrument.getMachineNode().getType();
+            String name = instrument.getMachineNode().getName();
+            MachineNode machineNode = rackNode.createMachine(index, machineType, name);
+
+            instrument.setMachineNode(machineNode);
+
+            if (importPreset) {
+                machineNode.getPreset().load(instrument.getPendingPresetFile());
+            }
+
+            if (importEffects) {
+                machineNode.getEffects().updateEffects(effect.get(0), effect.get(1));
+            }
+
+            if (importMixer) {
+                machineNode.updateMixer(oldMixer);
+            }
+
+            if (importPatterns) {
+                machineNode.updateSequencer(oldSequencer);
+            }
+        }
+
+        return rackNode;
     }
 
     @Override
