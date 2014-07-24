@@ -73,9 +73,9 @@ public class PresetComponent extends MachineComponent {
     /**
      * Returns the preset's name.
      * <p>
-     * If this name was restored from the rack, the {@link PresetComponent} will not
-     * contain a valid path. If the path is non null, the name will be the file
-     * name without extension.
+     * If this name was restored from the rack, the {@link PresetComponent} will
+     * not contain a valid path. If the path is non null, the name will be the
+     * file name without extension.
      */
     public String getName() {
         return name;
@@ -371,7 +371,7 @@ public class PresetComponent extends MachineComponent {
             throw new IllegalStateException(
                     "Can only restore bytes during existing native rack session");
         // store the original bytes
-        String tempName = "$___" + UUID.randomUUID().toString(); // will be deleted
+        String tempName = "__" + UUID.randomUUID().toString().substring(0, 20); // will be deleted
         restoredData = PresetUtils.readPresetBytes(getRack(), machineIndex, type, tempName);
     }
 

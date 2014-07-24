@@ -37,8 +37,8 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public final class PresetUtils {
 
-    public static byte[] readPresetBytes(CaustkRack caustkRack, int machineIndex, MachineType machineType,
-            String tempPresetName) {
+    public static byte[] readPresetBytes(CaustkRack caustkRack, int machineIndex,
+            MachineType machineType, String tempPresetName) {
         SynthMessage.SAVE_PRESET.send(caustkRack, machineIndex, tempPresetName);
 
         // get the preset file from the caustic presets directory
