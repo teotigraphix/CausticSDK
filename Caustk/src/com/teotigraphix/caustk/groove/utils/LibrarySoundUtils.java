@@ -21,16 +21,23 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibrarySoundUtils {
 
+    private static final String DIR_TEMP_EFFECT = "C:\\Users\\Teoti\\Desktop\\TempEffect";
+
     private static final String DIR_TEMP_INSTRUMENT = "C:\\Users\\Teoti\\Desktop\\TempInstrument";
 
     private static final String DIR_TEMP_SOUND = "C:\\Users\\Teoti\\Desktop\\TempSound";
 
     public static LibrarySound createSound(LibraryProduct product, String groupName,
             MachineNode machineNode, File targetDirectory) throws IOException {
-        File soundDirectory = new File(DIR_TEMP_SOUND);
-        soundDirectory.mkdirs();
+
+        File effectDirectory = new File(DIR_TEMP_EFFECT);
+        effectDirectory.mkdirs();
+
         File instrumentDirectory = new File(DIR_TEMP_INSTRUMENT);
         instrumentDirectory.mkdirs();
+
+        File soundDirectory = new File(DIR_TEMP_SOUND);
+        soundDirectory.mkdirs();
 
         // create Effect
         // /TempSound/effects/effect-[i].gfx
@@ -46,9 +53,12 @@ public class LibrarySoundUtils {
         LibrarySound sound = new LibrarySound(UUID.randomUUID(), product.getId(), fileInfo,
                 manifest);
 
-        LibraryEffectUtils.saveEffect(effect, LibraryEffectUtils.toEffectFile(soundDirectory));
+        LibraryEffectUtils.saveEffect(effect, effectDirectory,
+                LibraryEffectUtils.toEffectFile(soundDirectory));
+
         LibraryInstrumentUtils.saveInstrument(instrument, instrumentDirectory,
                 LibraryInstrumentUtils.toInstrumentFile(soundDirectory));
+
         LibrarySoundUtils.saveSound(sound, soundDirectory, new File(targetDirectory, "sound-"
                 + Integer.toString(machineNode.getIndex()) + ".gsnd"));
 

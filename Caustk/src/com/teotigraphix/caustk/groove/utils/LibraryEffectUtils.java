@@ -16,6 +16,8 @@ import com.teotigraphix.caustk.groove.LibraryProduct;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.utils.ZipCompress;
+import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryEffectUtils {
 
@@ -38,20 +40,30 @@ public class LibraryEffectUtils {
         return effect;
     }
 
-    public static void saveEffect(LibraryEffect effect, File file) throws IOException {
+    public static void saveEffect(LibraryEffect effect, File sourceDirectory, File zipFile)
+            throws IOException {
         String json = CaustkRuntime.getInstance().getFactory().serialize(effect, true);
-        FileUtils.write(file, json);
+        FileUtils.write(new File(sourceDirectory, "manifest.json"), json);
+        ZipCompress compress = new ZipCompress(sourceDirectory);
+        compress.zip(zipFile);
     }
 
     public static LibraryEffect importEffect(File soundDirectory) throws CausticException,
             IOException {
-        File manifest = new File(soundDirectory, "effect.gfx");
+        File tempDirectory = new File(soundDirectory, "effect/");
+
+        File effectFile = new File(soundDirectory, "effect.gfx");
+        ZipUncompress uncompress = new ZipUncompress(effectFile);
+        uncompress.unzip(tempDirectory);
+
+        File manifest = new File(tempDirectory, "manifest.json");
         if (!manifest.exists())
-            throw new CausticException("effect.gfx does not exist");
+            throw new CausticException("manifest.json does not exist");
 
         String json = FileUtils.readFileToString(manifest);
         LibraryEffect libraryEffect = CaustkRuntime.getInstance().getFactory()
                 ._deserialize(json, LibraryEffect.class);
+
         return libraryEffect;
     }
 

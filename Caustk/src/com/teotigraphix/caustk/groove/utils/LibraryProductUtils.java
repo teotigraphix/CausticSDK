@@ -4,7 +4,6 @@ package com.teotigraphix.caustk.groove.utils;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
@@ -91,8 +90,6 @@ public class LibraryProductUtils {
 
     private static void parseEffect(File file, LibraryProduct product) throws IOException,
             CausticException {
-        String string = FileUtils.readFileToString(file);
-        LibraryEffect libraryItem = SerializeUtils.unpack(string, LibraryEffect.class);
-        product.addItem(libraryItem);
+        addToProduct(file, product, LibraryEffect.class);
     }
 }
