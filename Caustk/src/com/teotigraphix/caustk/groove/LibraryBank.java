@@ -6,13 +6,32 @@ import java.util.List;
 
 /*
 
+Drill Down
+
+Format   - Instrument
+
+Name     - Vendor/Pack name 'CaustkSynths v1'
+
 Category - SubSynth
 Types - tag list
 Modes - tag list
 
+
+The main Browser holds LibraryProducts
+
+LibraryProduct
+- name - The directory it uncompresses to
+- file - The eventual uncompressed location OR existing location of uncompressed product
+
+LibraryBankManager.install(LibraryProduct, 
+
 */
 
-public class LibraryItemBank {
+public class LibraryBank {
+
+    private LibraryItemFormat format;
+
+    private String name;
 
     private String category;
 
@@ -32,7 +51,7 @@ public class LibraryItemBank {
         return modes;
     }
 
-    public LibraryItemBank() {
+    public LibraryBank() {
     }
 
 }

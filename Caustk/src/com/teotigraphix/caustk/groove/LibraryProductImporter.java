@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public class BrowserImporter {
+public class LibraryProductImporter {
 
     private BrowserModel browserModel;
 
     private Map<BrowserBank, List<File>> locations = new HashMap<BrowserBank, List<File>>();
 
-    public BrowserImporter(BrowserModel browserModel) {
+    public LibraryProductImporter(BrowserModel browserModel) {
         this.browserModel = browserModel;
     }
 

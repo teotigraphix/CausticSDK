@@ -8,7 +8,10 @@ import java.util.UUID;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 
-public class LibraryEffect extends LibraryItem {
+public class LibraryEffect extends LibraryProductItem {
+
+    @Tag(10)
+    private Map<Integer, EffectNode> effects = new HashMap<Integer, EffectNode>();
 
     private transient LibrarySound sound;
 
@@ -20,11 +23,9 @@ public class LibraryEffect extends LibraryItem {
         this.sound = sound;
     }
 
-    @Tag(10)
-    private Map<Integer, EffectNode> effects = new HashMap<Integer, EffectNode>();
-
-    public LibraryEffect(UUID id, FileInfo fileInfo, LibraryItemManifest manifest) {
-        super(id, fileInfo, manifest);
+    public LibraryEffect(UUID id, UUID productId, FileInfo fileInfo, LibraryItemManifest manifest) {
+        super(id, productId, fileInfo, manifest);
+        setFormat(LibraryItemFormat.Effect);
     }
 
     public EffectNode get(int slot) {
@@ -34,4 +35,5 @@ public class LibraryEffect extends LibraryItem {
     public void add(int slot, EffectNode effectNode) {
         effects.put(slot, effectNode);
     }
+
 }

@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 
 public class GrooveLibrary {
 
-    private File rootDirectory;
+    private File contentDirectory;
 
     private Map<UUID, LibraryProject> projects = new HashMap<UUID, LibraryProject>();
 
@@ -26,10 +26,15 @@ public class GrooveLibrary {
 
     private Map<UUID, LibrarySample> samples = new HashMap<UUID, LibrarySample>();
 
-    private DefaultContentProvider defaultContentProvider;
+    private FactoryProductProvider defaultContentProvider;
 
-    public File getRootDirectory() {
-        return rootDirectory;
+    /**
+     * The location of the application's Content folder.
+     * <p>
+     * All factory content is installed here.
+     */
+    public File getContentDirectory() {
+        return contentDirectory;
     }
 
     public Collection<LibraryProject> getProjects() {
@@ -56,22 +61,22 @@ public class GrooveLibrary {
         return samples.values();
     }
 
-    public GrooveLibrary(File rootDirectory, DefaultContentProvider defaultContentProvider)
+    public GrooveLibrary(File contentDirectory, FactoryProductProvider defaultContentProvider)
             throws IOException {
-        this.rootDirectory = rootDirectory;
+        this.contentDirectory = contentDirectory;
         this.defaultContentProvider = defaultContentProvider;
-        initRootDirectory(rootDirectory);
+        initContentDirectory(contentDirectory);
     }
 
-    private void initRootDirectory(File rootDirectory) throws IOException {
-        if (!rootDirectory.exists()) {
-            FileUtils.forceMkdir(rootDirectory);
-            installDefaultContent(rootDirectory);
+    private void initContentDirectory(File contentDirectory) throws IOException {
+        if (!contentDirectory.exists()) {
+            FileUtils.forceMkdir(contentDirectory);
+            installDefaultContent(contentDirectory);
         }
     }
 
-    private void installDefaultContent(File rootDirectory) {
-        defaultContentProvider.install(this, rootDirectory);
+    private void installDefaultContent(File contentDirectory) {
+        defaultContentProvider.install(this, contentDirectory);
         save();
     }
 

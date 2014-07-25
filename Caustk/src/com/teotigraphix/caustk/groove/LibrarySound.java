@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
-public class LibrarySound extends LibraryItem {
+public class LibrarySound extends LibraryProductItem {
 
     @Tag(10)
     private int index = -1;
@@ -58,7 +58,8 @@ public class LibrarySound extends LibraryItem {
         return instrument;
     }
 
-    public LibrarySound(UUID id, FileInfo fileInfo, LibraryItemManifest manifest) {
-        super(id, fileInfo, manifest);
+    public LibrarySound(UUID id, UUID productId, FileInfo fileInfo, LibraryItemManifest manifest) {
+        super(id, productId, fileInfo, manifest);
+        setFormat(LibraryItemFormat.Sound);
     }
 }

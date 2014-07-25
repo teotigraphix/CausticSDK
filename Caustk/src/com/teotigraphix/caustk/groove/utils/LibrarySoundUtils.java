@@ -13,6 +13,7 @@ import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.LibraryEffect;
 import com.teotigraphix.caustk.groove.LibraryInstrument;
 import com.teotigraphix.caustk.groove.LibraryItemManifest;
+import com.teotigraphix.caustk.groove.LibraryProduct;
 import com.teotigraphix.caustk.groove.LibrarySound;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipCompress;
@@ -24,8 +25,8 @@ public class LibrarySoundUtils {
 
     private static final String DIR_TEMP_SOUND = "C:\\Users\\Teoti\\Desktop\\TempSound";
 
-    public static LibrarySound createSound(String groupName, MachineNode machineNode,
-            File targetDirectory) throws IOException {
+    public static LibrarySound createSound(LibraryProduct product, String groupName,
+            MachineNode machineNode, File targetDirectory) throws IOException {
         File soundDirectory = new File(DIR_TEMP_SOUND);
         soundDirectory.mkdirs();
         File instrumentDirectory = new File(DIR_TEMP_INSTRUMENT);
@@ -33,15 +34,17 @@ public class LibrarySoundUtils {
 
         // create Effect
         // /TempSound/effects/effect-[i].gfx
-        LibraryEffect effect = LibraryEffectUtils.createEffect(machineNode);
+        LibraryEffect effect = LibraryEffectUtils.createEffect(product, machineNode);
 
         // create Instrument
-        LibraryInstrument instrument = LibraryInstrumentUtils.createInstrument(machineNode);
+        LibraryInstrument instrument = LibraryInstrumentUtils
+                .createInstrument(product, machineNode);
 
         FileInfo fileInfo = new FileInfo(null);
-        LibraryItemManifest manifest = new LibraryItemManifest(null, groupName + "-"
+        LibraryItemManifest manifest = new LibraryItemManifest(groupName + "-"
                 + machineNode.getName());
-        LibrarySound sound = new LibrarySound(UUID.randomUUID(), fileInfo, manifest);
+        LibrarySound sound = new LibrarySound(UUID.randomUUID(), product.getId(), fileInfo,
+                manifest);
 
         LibraryEffectUtils.saveEffect(effect, LibraryEffectUtils.toEffectFile(soundDirectory));
         LibraryInstrumentUtils.saveInstrument(instrument, instrumentDirectory,

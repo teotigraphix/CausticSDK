@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import com.teotigraphix.caustk.core.CausticException;
 
-public class LibraryGroup extends LibraryItem {
+public class LibraryGroup extends LibraryProductItem {
 
     private Map<Integer, LibrarySound> sounds = new TreeMap<Integer, LibrarySound>();
 
@@ -20,8 +20,9 @@ public class LibraryGroup extends LibraryItem {
         return sounds.values();
     }
 
-    public LibraryGroup(UUID id, FileInfo fileInfo, LibraryItemManifest manifest) {
-        super(id, fileInfo, manifest);
+    public LibraryGroup(UUID id, UUID productId, FileInfo fileInfo, LibraryItemManifest manifest) {
+        super(id, productId, fileInfo, manifest);
+        setFormat(LibraryItemFormat.Group);
     }
 
     public void addSound(int index, LibrarySound sound) throws CausticException {

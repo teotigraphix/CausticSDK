@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.groove.utils;
 
@@ -13,20 +31,41 @@ import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.LibraryInstrument;
 import com.teotigraphix.caustk.groove.LibraryItem;
 import com.teotigraphix.caustk.groove.LibraryItemManifest;
+import com.teotigraphix.caustk.groove.LibraryProduct;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibraryInstrumentUtils {
 
-    public static LibraryInstrument createInstrument(MachineNode machineNode) {
-        FileInfo fileInfo = new FileInfo(null);
-        LibraryItemManifest manifest = new LibraryItemManifest(null, machineNode.getName());
-        LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), fileInfo, manifest);
+    //--------------------------------------------------------------------------
+    // Public Creation API
+    //--------------------------------------------------------------------------
+
+    public static LibraryInstrument createInstrument(LibraryProduct product,
+            MachineNode machineNode, FileInfo fileInfo, LibraryItemManifest manifest) {
+        LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), product.getId(),
+                fileInfo, manifest);
         instrument.setMachineNode(machineNode);
         return instrument;
     }
+
+    public static LibraryInstrument createInstrument(LibraryProduct product, MachineNode machineNode) {
+        LibraryItemManifest manifest = new LibraryItemManifest(machineNode.getName());
+        LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), product.getId(),
+                null, manifest);
+        instrument.setMachineNode(machineNode);
+        return instrument;
+    }
+
+    //--------------------------------------------------------------------------
+    // Public State API
+    //--------------------------------------------------------------------------
 
     public static void saveInstrument(LibraryInstrument instrument, File tempDirectory, File file)
             throws IOException {

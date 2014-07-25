@@ -12,20 +12,22 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.LibraryEffect;
 import com.teotigraphix.caustk.groove.LibraryItemManifest;
+import com.teotigraphix.caustk.groove.LibraryProduct;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class LibraryEffectUtils {
 
-    public static LibraryEffect createEffect(MachineNode machineNode) {
+    public static LibraryEffect createEffect(LibraryProduct product, MachineNode machineNode) {
         EffectsChannel effects = machineNode.getEffects();
         EffectNode efffect0 = effects.getEfffect(0);
         EffectNode efffect1 = effects.getEfffect(1);
 
         FileInfo fileInfo = new FileInfo(null);
-        LibraryItemManifest manifest = new LibraryItemManifest(null, machineNode.getName() + "-FX");
-        LibraryEffect effect = new LibraryEffect(UUID.randomUUID(), fileInfo, manifest);
+        LibraryItemManifest manifest = new LibraryItemManifest(machineNode.getName() + "-FX");
+        LibraryEffect effect = new LibraryEffect(UUID.randomUUID(), product.getId(), fileInfo,
+                manifest);
 
         if (efffect0 != null) {
             effect.add(0, efffect0);

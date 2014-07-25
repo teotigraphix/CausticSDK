@@ -8,11 +8,11 @@ public class BrowserModel {
 
     private GrooveLibrary library;
 
-    private BrowserImporter importer;
+    private LibraryProductImporter importer;
 
     private BrowserBank bank = BrowserBank.Factory;
 
-    public BrowserModel(GrooveLibrary library, BrowserImporter importer) {
+    public BrowserModel(GrooveLibrary library, LibraryProductImporter importer) {
         this.library = library;
         this.importer = importer;
     }

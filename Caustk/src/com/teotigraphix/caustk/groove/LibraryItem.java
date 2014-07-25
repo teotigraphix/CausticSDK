@@ -16,6 +16,9 @@ public abstract class LibraryItem {
     @Tag(2)
     private LibraryItemManifest manifest;
 
+    @Tag(3)
+    private LibraryItemFormat format;
+
     public UUID getId() {
         return id;
     }
@@ -28,8 +31,22 @@ public abstract class LibraryItem {
         return manifest;
     }
 
-    public LibraryItemFormat getFormat() {
-        return fileInfo.getFormat();
+    public final LibraryItemFormat getFormat() {
+        return format;
+    }
+
+    protected void setFormat(LibraryItemFormat format) {
+        this.format = format;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialization
+     */
+    LibraryItem() {
     }
 
     public LibraryItem(UUID id, FileInfo fileInfo, LibraryItemManifest manifest) {

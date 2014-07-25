@@ -6,26 +6,34 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
-public class DefaultContentProvider {
+public class FactoryProductProvider {
 
-    public DefaultContentProvider() {
+    /**
+     * The zip archive File that holds the factory content directory and
+     * {@link LibraryProduct} manifest at the root.
+     * 
+     * @param sourceProduct The location of the factory content archive to be
+     *            extracted into the conentDirectory at
+     *            {@link #install(GrooveLibrary, File)}.
+     */
+    public FactoryProductProvider(File sourceProduct) {
     }
 
-    public void install(GrooveLibrary grooveLibrary, File rootDirectory) {
+    public void install(GrooveLibrary grooveLibrary, File contentDirectory) {
         // copy/unzip folders
-        unarchiveAndCopyContent(rootDirectory);
+        unarchiveAndCopyContent(contentDirectory);
         // scan tree hierarchy and add elements to the library
-        initializeLibrary(rootDirectory, grooveLibrary);
+        initializeLibrary(contentDirectory, grooveLibrary);
     }
 
-    private void unarchiveAndCopyContent(File rootDirectory) {
+    private void unarchiveAndCopyContent(File contentDirectory) {
         // TODO Auto-generated method stub
 
     }
 
-    private void initializeLibrary(File rootDirectory, GrooveLibrary grooveLibrary) {
+    private void initializeLibrary(File contentDirectory, GrooveLibrary grooveLibrary) {
 
-        FileUtils.listFiles(rootDirectory, new IOFileFilter() {
+        FileUtils.listFiles(contentDirectory, new IOFileFilter() {
             // File
             @Override
             public boolean accept(File directory, String filename) {

@@ -50,6 +50,8 @@ public class RuntimeUtils {
 
     private static final String DOT = ".";
 
+    private static final String CONTENT = "content";
+
     private static final String CAUSTIC = "caustic";
 
     private static final String CAUSTIC_EXTENSION = ".caustic";
@@ -86,11 +88,26 @@ public class RuntimeUtils {
         return directory;
     }
 
+    /**
+     * Returns the directory within the application root, safe for extracting
+     * and saving temp files for the application.
+     * <p>
+     * Could be deleted at any time.
+     */
     public static final File getApplicationTempDirectory() {
         final File directory = getApplicationDirectory(TEMP);
         if (!directory.exists())
             directory.mkdirs();
         return directory;
+    }
+
+    /**
+     * Returns the <code>/sdcard/Application/Content</code> directory.
+     * <p>
+     * This directory is where all default and factory content is installed.
+     */
+    public static File getApplicationContentDirectory() {
+        return getApplicationDirectory(CONTENT);
     }
 
     public static final File getApplicationDirectory(String path) {

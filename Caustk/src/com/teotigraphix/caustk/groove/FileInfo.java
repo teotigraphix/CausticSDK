@@ -40,6 +40,10 @@ public class FileInfo {
         return getFormat().getExtension();
     }
 
+    public String getName() {
+        return FilenameUtils.getBaseName(file.getName());
+    }
+
     public FileInfo(File file) {
         this.file = file;
     }

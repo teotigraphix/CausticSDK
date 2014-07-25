@@ -3,11 +3,11 @@ package com.teotigraphix.caustk.groove;
 
 public class LibraryItemManifest {
 
-    private LibraryItemBank libraryBank;
+    private LibraryBank libraryBank;
 
     private String name;
 
-    public LibraryItemBank getLibraryBank() {
+    public LibraryBank getLibraryBank() {
         return libraryBank;
     }
 
@@ -15,9 +15,13 @@ public class LibraryItemManifest {
         return name;
     }
 
-    public LibraryItemManifest(LibraryItemBank libraryBank, String name) {
-        this.libraryBank = libraryBank;
+    public LibraryItemManifest(String name) {
         this.name = name;
+    }
+
+    public LibraryItemManifest(String name, LibraryBank libraryBank) {
+        this(name);
+        this.libraryBank = libraryBank;
     }
 
 }

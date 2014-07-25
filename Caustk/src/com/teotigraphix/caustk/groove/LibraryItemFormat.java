@@ -3,6 +3,8 @@ package com.teotigraphix.caustk.groove;
 
 public enum LibraryItemFormat {
 
+    Product("gprd"),
+
     Project("gprj"),
 
     Group("ggrp"),
