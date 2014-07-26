@@ -3,6 +3,8 @@ package com.teotigraphix.caustk.groove;
 
 import java.util.Collection;
 
+import com.teotigraphix.caustk.groove.importer.LibraryProductImporter;
+
 @SuppressWarnings("unused")
 public class BrowserModel {
 

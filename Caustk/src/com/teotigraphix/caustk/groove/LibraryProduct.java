@@ -7,13 +7,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 
 public class LibraryProduct extends LibraryItem {
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(20)
+    private LibraryProductManifest manifest;
 
     // has to describe its entire contents without having
     // the contents extracted, so what do I need to do this?
 
+    @Tag(21)
     private List<LibraryItemDescriptor> list = new ArrayList<LibraryItemDescriptor>();
 
     //----------------------------------
@@ -36,8 +46,9 @@ public class LibraryProduct extends LibraryItem {
     LibraryProduct() {
     }
 
-    public LibraryProduct(UUID id, FileInfo fileInfo, LibraryItemManifest manifest) {
-        super(id, fileInfo, manifest);
+    public LibraryProduct(UUID id, FileInfo fileInfo, LibraryProductManifest manifest) {
+        super(id, fileInfo);
+        this.manifest = manifest;
         setFormat(LibraryItemFormat.Product);
     }
 

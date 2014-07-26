@@ -1,10 +1,13 @@
 
-package com.teotigraphix.caustk.groove;
+package com.teotigraphix.caustk.groove.importer;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.teotigraphix.caustk.groove.BrowserBank;
+import com.teotigraphix.caustk.groove.BrowserModel;
 
 @SuppressWarnings("unused")
 public class LibraryProductImporter {

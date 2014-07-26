@@ -1,5 +1,7 @@
 
-package com.teotigraphix.caustk.groove;
+package com.teotigraphix.caustk.groove.manifest;
+
+import com.teotigraphix.caustk.groove.LibraryBank;
 
 public class LibraryItemManifest {
 

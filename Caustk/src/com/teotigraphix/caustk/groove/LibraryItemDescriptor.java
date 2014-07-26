@@ -4,6 +4,7 @@ package com.teotigraphix.caustk.groove;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
 public class LibraryItemDescriptor {
 
@@ -16,6 +17,7 @@ public class LibraryItemDescriptor {
     @Tag(2)
     private LibraryItemFormat format;
 
+    // XXX Need converter, that uses format to create the correct manifest
     @Tag(3)
     private LibraryItemManifest manifest;
 

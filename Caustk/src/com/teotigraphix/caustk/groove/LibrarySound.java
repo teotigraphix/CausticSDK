@@ -4,11 +4,25 @@ package com.teotigraphix.caustk.groove;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
+import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 
 public class LibrarySound extends LibraryProductItem {
 
-    @Tag(10)
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(20)
+    private LibrarySoundManifest manifest;
+
+    @Tag(21)
     private int index = -1;
+
+    private LibraryInstrumentManifest instrumentManifest;
+
+    private LibraryEffectManifest effectManifest;
 
     private transient LibraryGroup group;
 
@@ -22,6 +36,14 @@ public class LibrarySound extends LibraryProductItem {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public LibraryEffectManifest getEffectManifest() {
+        return effectManifest;
+    }
+
+    public LibraryInstrumentManifest getInstrumentManifest() {
+        return instrumentManifest;
     }
 
     public LibraryGroup getGroup() {
@@ -43,6 +65,7 @@ public class LibrarySound extends LibraryProductItem {
         this.effect = effect;
         if (effect != null)
             effect.setSound(this);
+        effectManifest = (LibraryEffectManifest)effect.getManifest();
     }
 
     public void setInstrument(LibraryInstrument instrument) {
@@ -52,14 +75,16 @@ public class LibrarySound extends LibraryProductItem {
         this.instrument = instrument;
         if (instrument != null)
             instrument.setSound(this);
+        instrumentManifest = (LibraryInstrumentManifest)instrument.getManifest();
     }
 
     public LibraryInstrument getInstrument() {
         return instrument;
     }
 
-    public LibrarySound(UUID id, UUID productId, FileInfo fileInfo, LibraryItemManifest manifest) {
-        super(id, productId, fileInfo, manifest);
+    public LibrarySound(UUID id, UUID productId, FileInfo fileInfo, LibrarySoundManifest manifest) {
+        super(id, productId, fileInfo);
+        this.manifest = manifest;
         setFormat(LibraryItemFormat.Sound);
     }
 }

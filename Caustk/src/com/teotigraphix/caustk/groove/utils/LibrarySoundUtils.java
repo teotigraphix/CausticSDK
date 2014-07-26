@@ -12,9 +12,10 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.LibraryEffect;
 import com.teotigraphix.caustk.groove.LibraryInstrument;
-import com.teotigraphix.caustk.groove.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.LibraryProduct;
 import com.teotigraphix.caustk.groove.LibrarySound;
+import com.teotigraphix.caustk.groove.importer.CausticSound;
+import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
@@ -27,8 +28,9 @@ public class LibrarySoundUtils {
 
     private static final String DIR_TEMP_SOUND = "C:\\Users\\Teoti\\Desktop\\TempSound";
 
-    public static LibrarySound createSound(LibraryProduct product, String groupName,
-            MachineNode machineNode, File targetDirectory) throws IOException {
+    public static LibrarySound createSound(LibraryProduct product, String soundNameWithExtension,
+            String groupName, MachineNode machineNode, File targetDirectory,
+            CausticSound causticSound) throws IOException {
 
         File effectDirectory = new File(DIR_TEMP_EFFECT);
         effectDirectory.mkdirs();
@@ -41,15 +43,19 @@ public class LibrarySoundUtils {
 
         // create Effect
         // /TempSound/effects/effect-[i].gfx
-        LibraryEffect effect = LibraryEffectUtils.createEffect(product, machineNode);
+        LibraryEffect effect = LibraryEffectUtils.createEffect(product, machineNode, causticSound);
 
         // create Instrument
-        LibraryInstrument instrument = LibraryInstrumentUtils
-                .createInstrument(product, machineNode);
+        LibraryInstrument instrument = LibraryInstrumentUtils.createInstrument(product,
+                machineNode, causticSound);
+
+        // 
+        String displayName = groupName + "-" + machineNode.getName();
+        if (causticSound != null)
+            displayName = causticSound.getDisplayName();
 
         FileInfo fileInfo = new FileInfo(null);
-        LibraryItemManifest manifest = new LibraryItemManifest(groupName + "-"
-                + machineNode.getName());
+        LibrarySoundManifest manifest = new LibrarySoundManifest(displayName);
         LibrarySound sound = new LibrarySound(UUID.randomUUID(), product.getId(), fileInfo,
                 manifest);
 
@@ -59,11 +65,11 @@ public class LibrarySoundUtils {
         LibraryInstrumentUtils.saveInstrument(instrument, instrumentDirectory,
                 LibraryInstrumentUtils.toInstrumentFile(soundDirectory));
 
-        LibrarySoundUtils.saveSound(sound, soundDirectory, new File(targetDirectory, "sound-"
-                + Integer.toString(machineNode.getIndex()) + ".gsnd"));
-
         sound.setEffect(effect);
         sound.setInstrument(instrument);
+
+        LibrarySoundUtils.saveSound(sound, soundDirectory, new File(targetDirectory,
+                soundNameWithExtension));
 
         try {
             Thread.sleep(200);

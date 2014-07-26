@@ -10,7 +10,7 @@ public abstract class LibraryProductItem extends LibraryItem {
     @Tag(10)
     private UUID productId;
 
-    @Tag(1)
+    @Tag(11)
     private String productPath;
 
     public UUID getProductId() {
@@ -33,9 +33,8 @@ public abstract class LibraryProductItem extends LibraryItem {
     public LibraryProductItem() {
     }
 
-    public LibraryProductItem(UUID id, UUID productId, FileInfo fileInfo,
-            LibraryItemManifest manifest) {
-        super(id, fileInfo, manifest);
+    public LibraryProductItem(UUID id, UUID productId, FileInfo fileInfo) {
+        super(id, fileInfo);
         this.productId = productId;
     }
 

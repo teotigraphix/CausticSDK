@@ -39,6 +39,14 @@ public class LibraryBank {
 
     private List<String> modes = new ArrayList<String>();
 
+    public LibraryItemFormat getFormat() {
+        return format;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public String getCategory() {
         return category;
     }

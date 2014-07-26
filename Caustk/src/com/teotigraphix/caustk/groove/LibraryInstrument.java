@@ -23,6 +23,7 @@ import java.io.File;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -35,7 +36,10 @@ public class LibraryInstrument extends LibraryProductItem {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(10)
+    @Tag(20)
+    private LibraryInstrumentManifest manifest;
+
+    @Tag(21)
     private MachineNode machineNode;
 
     private transient LibrarySound sound;
@@ -93,8 +97,9 @@ public class LibraryInstrument extends LibraryProductItem {
     }
 
     public LibraryInstrument(UUID id, UUID productId, FileInfo fileInfo,
-            LibraryItemManifest manifest) {
-        super(id, productId, fileInfo, manifest);
+            LibraryInstrumentManifest manifest) {
+        super(id, productId, fileInfo);
+        this.manifest = manifest;
         setFormat(LibraryItemFormat.Instrument);
     }
 }

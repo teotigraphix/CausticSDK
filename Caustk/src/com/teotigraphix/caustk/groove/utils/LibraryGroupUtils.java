@@ -11,9 +11,10 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.LibraryGroup;
-import com.teotigraphix.caustk.groove.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.LibraryProduct;
 import com.teotigraphix.caustk.groove.LibrarySound;
+import com.teotigraphix.caustk.groove.importer.CausticGroup;
+import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipCompress;
@@ -24,7 +25,8 @@ public class LibraryGroupUtils {
     public static final File DIR_TEMP_GROUP = new File("C:\\Users\\Teoti\\Desktop\\__Group__");
 
     public static LibraryGroup exportGroup(LibraryProduct product, File causticFile,
-            FileInfo fileInfo, LibraryItemManifest manifest) throws IOException, CausticException {
+            FileInfo fileInfo, LibraryGroupManifest manifest, CausticGroup causticGroup)
+            throws IOException, CausticException {
         final String groupName = manifest.getName();
 
         RackNode rackNode = CaustkRuntime.getInstance().getRack().create(causticFile);
@@ -42,8 +44,9 @@ public class LibraryGroupUtils {
             int index = machineNode.getIndex();
             File tempSoundsDir = new File(tempGroupDirectory, "sounds");
             // create Sound 
-            LibrarySound sound = LibrarySoundUtils.createSound(product, groupName, machineNode,
-                    tempSoundsDir);
+            String soundName = "sound-" + Integer.toString(machineNode.getIndex()) + ".gsnd";
+            LibrarySound sound = LibrarySoundUtils.createSound(product, soundName, groupName,
+                    machineNode, tempSoundsDir, causticGroup.getSounds().get(index));
             group.addSound(index, sound);
         }
 

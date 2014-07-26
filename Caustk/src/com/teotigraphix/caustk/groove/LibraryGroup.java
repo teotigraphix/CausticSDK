@@ -6,10 +6,16 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 
 public class LibraryGroup extends LibraryProductItem {
 
+    @Tag(20)
+    private LibraryGroupManifest manifest;
+
+    @Tag(21)
     private Map<Integer, LibrarySound> sounds = new TreeMap<Integer, LibrarySound>();
 
     public LibrarySound getSound(int index) {
@@ -20,8 +26,9 @@ public class LibraryGroup extends LibraryProductItem {
         return sounds.values();
     }
 
-    public LibraryGroup(UUID id, UUID productId, FileInfo fileInfo, LibraryItemManifest manifest) {
-        super(id, productId, fileInfo, manifest);
+    public LibraryGroup(UUID id, UUID productId, FileInfo fileInfo, LibraryGroupManifest manifest) {
+        super(id, productId, fileInfo);
+        this.manifest = manifest;
         setFormat(LibraryItemFormat.Group);
     }
 

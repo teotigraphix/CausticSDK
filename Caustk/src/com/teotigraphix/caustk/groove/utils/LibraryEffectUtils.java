@@ -11,8 +11,9 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.LibraryEffect;
-import com.teotigraphix.caustk.groove.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.LibraryProduct;
+import com.teotigraphix.caustk.groove.importer.CausticSound;
+import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -21,13 +22,19 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryEffectUtils {
 
-    public static LibraryEffect createEffect(LibraryProduct product, MachineNode machineNode) {
+    public static LibraryEffect createEffect(LibraryProduct product, MachineNode machineNode,
+            CausticSound causticSound) {
         EffectsChannel effects = machineNode.getEffects();
         EffectNode efffect0 = effects.getEfffect(0);
         EffectNode efffect1 = effects.getEfffect(1);
 
+        String displayName = machineNode.getName() + "-FX";
+        if (causticSound != null)
+            displayName = causticSound.getEffect().getDisplayName();
+
         FileInfo fileInfo = new FileInfo(null);
-        LibraryItemManifest manifest = new LibraryItemManifest(machineNode.getName() + "-FX");
+
+        LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, efffect0, efffect1);
         LibraryEffect effect = new LibraryEffect(UUID.randomUUID(), product.getId(), fileInfo,
                 manifest);
 

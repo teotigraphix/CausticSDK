@@ -30,8 +30,9 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.LibraryInstrument;
 import com.teotigraphix.caustk.groove.LibraryItem;
-import com.teotigraphix.caustk.groove.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.LibraryProduct;
+import com.teotigraphix.caustk.groove.importer.CausticSound;
+import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.utils.ZipCompress;
@@ -47,16 +48,20 @@ public class LibraryInstrumentUtils {
     // Public Creation API
     //--------------------------------------------------------------------------
 
-    public static LibraryInstrument createInstrument(LibraryProduct product,
-            MachineNode machineNode, FileInfo fileInfo, LibraryItemManifest manifest) {
+    public static LibraryInstrument _createInstrument(LibraryProduct product,
+            MachineNode machineNode, FileInfo fileInfo, LibraryInstrumentManifest manifest) {
         LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), product.getId(),
                 fileInfo, manifest);
         instrument.setMachineNode(machineNode);
         return instrument;
     }
 
-    public static LibraryInstrument createInstrument(LibraryProduct product, MachineNode machineNode) {
-        LibraryItemManifest manifest = new LibraryItemManifest(machineNode.getName());
+    public static LibraryInstrument createInstrument(LibraryProduct product,
+            MachineNode machineNode, CausticSound causticSound) {
+        String displayName = machineNode.getName();
+        if (causticSound != null)
+            displayName = causticSound.getDisplayName() + "$" + displayName;
+        LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(displayName, machineNode);
         LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), product.getId(),
                 null, manifest);
         instrument.setMachineNode(machineNode);
