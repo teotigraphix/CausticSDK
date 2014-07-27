@@ -4,7 +4,6 @@ package com.teotigraphix.caustk.groove.library;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
@@ -83,8 +82,8 @@ public class LibrarySound extends LibraryProductItem {
         return instrument;
     }
 
-    public LibrarySound(UUID id, UUID productId, FileInfo fileInfo, LibrarySoundManifest manifest) {
-        super(id, productId, fileInfo);
+    public LibrarySound(UUID id, UUID productId, LibrarySoundManifest manifest) {
+        super(id, productId);
         this.manifest = manifest;
         setFormat(LibraryItemFormat.Sound);
     }

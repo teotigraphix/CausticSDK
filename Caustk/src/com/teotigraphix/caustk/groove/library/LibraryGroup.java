@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 
 public class LibraryGroup extends LibraryProductItem {
@@ -27,8 +26,8 @@ public class LibraryGroup extends LibraryProductItem {
         return sounds.values();
     }
 
-    public LibraryGroup(UUID id, UUID productId, FileInfo fileInfo, LibraryGroupManifest manifest) {
-        super(id, productId, fileInfo);
+    public LibraryGroup(UUID id, UUID productId, LibraryGroupManifest manifest) {
+        super(id, productId);
         this.manifest = manifest;
         setFormat(LibraryItemFormat.Group);
     }

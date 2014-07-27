@@ -4,7 +4,6 @@ package com.teotigraphix.caustk.groove.library;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.groove.FileInfo;
 
 public abstract class LibraryProductItem extends LibraryItem {
 
@@ -34,8 +33,8 @@ public abstract class LibraryProductItem extends LibraryItem {
     public LibraryProductItem() {
     }
 
-    public LibraryProductItem(UUID id, UUID productId, FileInfo fileInfo) {
-        super(id, fileInfo);
+    public LibraryProductItem(UUID id, UUID productId) {
+        super(id);
         this.productId = productId;
     }
 

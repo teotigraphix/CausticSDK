@@ -1,16 +1,12 @@
 
 package com.teotigraphix.caustk.groove.manifest;
 
-import com.teotigraphix.caustk.groove.LibraryBank;
+import java.io.File;
 
 public class LibrarySoundManifest extends LibraryItemManifest {
 
-    public LibrarySoundManifest(String name) {
-        super(name);
-    }
-
-    public LibrarySoundManifest(String name, LibraryBank libraryBank) {
-        super(name, libraryBank);
+    public LibrarySoundManifest(String displayName, File archiveFile, String relativePath) {
+        super(displayName, archiveFile, relativePath);
     }
 
 }

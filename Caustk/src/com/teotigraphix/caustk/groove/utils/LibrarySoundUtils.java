@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -54,10 +53,8 @@ public class LibrarySoundUtils {
         if (causticSound != null)
             displayName = causticSound.getDisplayName();
 
-        FileInfo fileInfo = new FileInfo(null);
-        LibrarySoundManifest manifest = new LibrarySoundManifest(displayName);
-        LibrarySound sound = new LibrarySound(UUID.randomUUID(), product.getId(), fileInfo,
-                manifest);
+        LibrarySoundManifest manifest = new LibrarySoundManifest(displayName, null, "");
+        LibrarySound sound = new LibrarySound(UUID.randomUUID(), product.getId(), manifest);
 
         LibraryEffectUtils.saveEffect(effect, effectDirectory,
                 LibraryEffectUtils.toEffectFile(soundDirectory));

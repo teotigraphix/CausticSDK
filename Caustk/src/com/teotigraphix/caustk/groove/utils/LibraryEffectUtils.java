@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
@@ -28,15 +27,19 @@ public class LibraryEffectUtils {
         EffectNode efffect0 = effects.getEfffect(0);
         EffectNode efffect1 = effects.getEfffect(1);
 
+        //------------------------------
+
         String displayName = machineNode.getName() + "-FX";
         if (causticSound != null)
             displayName = causticSound.getEffect().getDisplayName();
+        File archiveFile = null;
+        String relativePath = "";
 
-        FileInfo fileInfo = new FileInfo(null);
+        //------------------------------
 
-        LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, efffect0, efffect1);
-        LibraryEffect effect = new LibraryEffect(UUID.randomUUID(), product.getId(), fileInfo,
-                manifest);
+        LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, archiveFile,
+                relativePath, efffect0, efffect1);
+        LibraryEffect effect = new LibraryEffect(UUID.randomUUID(), product.getId(), manifest);
 
         if (efffect0 != null) {
             effect.add(0, efffect0);

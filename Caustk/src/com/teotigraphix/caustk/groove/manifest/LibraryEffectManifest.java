@@ -1,7 +1,8 @@
 
 package com.teotigraphix.caustk.groove.manifest;
 
-import com.teotigraphix.caustk.groove.LibraryBank;
+import java.io.File;
+
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 
@@ -19,16 +20,13 @@ public class LibraryEffectManifest extends LibraryItemManifest {
         return type1;
     }
 
-    public LibraryEffectManifest(String name, EffectNode efffect0, EffectNode efffect1) {
-        super(name);
+    public LibraryEffectManifest(String displayName, File archiveFile, String relativePath,
+            EffectNode efffect0, EffectNode efffect1) {
+        super(displayName, archiveFile, relativePath);
         if (efffect0 != null)
             this.type0 = efffect0.getType();
         if (efffect1 != null)
             this.type1 = efffect1.getType();
-    }
-
-    public LibraryEffectManifest(String name, LibraryBank libraryBank) {
-        super(name, libraryBank);
     }
 
 }

@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 
 public class LibraryProduct extends LibraryItem {
@@ -41,14 +40,14 @@ public class LibraryProduct extends LibraryItem {
     }
 
     public File getSourceDirectory() {
-        return getFileInfo().getFile();
+        return getManifest().getArchiveFile();
     }
 
     LibraryProduct() {
     }
 
-    public LibraryProduct(UUID id, FileInfo fileInfo, LibraryProductManifest manifest) {
-        super(id, fileInfo);
+    public LibraryProduct(UUID id, LibraryProductManifest manifest) {
+        super(id);
         this.manifest = manifest;
         setFormat(LibraryItemFormat.Product);
     }

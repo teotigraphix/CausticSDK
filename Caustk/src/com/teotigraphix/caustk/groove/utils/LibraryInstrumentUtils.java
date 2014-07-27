@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryItem;
@@ -48,22 +47,23 @@ public class LibraryInstrumentUtils {
     // Public Creation API
     //--------------------------------------------------------------------------
 
-    public static LibraryInstrument _createInstrument(LibraryProduct product,
-            MachineNode machineNode, FileInfo fileInfo, LibraryInstrumentManifest manifest) {
-        LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), product.getId(),
-                fileInfo, manifest);
-        instrument.setMachineNode(machineNode);
-        return instrument;
-    }
-
     public static LibraryInstrument createInstrument(LibraryProduct product,
             MachineNode machineNode, CausticSound causticSound) {
+
+        //------------------------------
+
         String displayName = machineNode.getName();
         if (causticSound != null)
             displayName = causticSound.getDisplayName() + "$" + displayName;
-        LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(displayName, machineNode);
+        File archiveFile = null;
+        String relativePath = "";
+
+        //------------------------------
+
+        LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(displayName,
+                archiveFile, relativePath, machineNode);
         LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), product.getId(),
-                null, manifest);
+                manifest);
         instrument.setMachineNode(machineNode);
         return instrument;
     }

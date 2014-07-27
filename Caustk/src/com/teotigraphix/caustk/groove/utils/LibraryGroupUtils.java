@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
@@ -25,28 +24,34 @@ public class LibraryGroupUtils {
     public static final File DIR_TEMP_GROUP = new File("C:\\Users\\Teoti\\Desktop\\__Group__");
 
     public static LibraryGroup exportGroup(LibraryProduct product, File causticFile,
-            FileInfo fileInfo, LibraryGroupManifest manifest, CausticGroup causticGroup)
-            throws IOException, CausticException {
-        final String groupName = manifest.getName();
+            LibraryGroupManifest manifest, CausticGroup causticGroup) throws IOException,
+            CausticException {
 
         RackNode rackNode = CaustkRuntime.getInstance().getRack().create(causticFile);
 
         File tempGroupDirectory = DIR_TEMP_GROUP;
         tempGroupDirectory.mkdirs();
 
-        final File groupArchive = fileInfo.getFile(); // .ggrp
+        //------------------------------
+
+        String groupDisplayName = manifest.getDisplayName();
+        File groupArchive = manifest.getArchiveFile(); // .ggrp
+        @SuppressWarnings("unused")
+        String relativePath = "";
+
+        //------------------------------
 
         // create Group
-        LibraryGroup group = new LibraryGroup(UUID.randomUUID(), product.getId(), fileInfo,
-                manifest);
+        LibraryGroup group = new LibraryGroup(UUID.randomUUID(), product.getId(), manifest);
 
         for (MachineNode machineNode : rackNode.getMachines()) {
             int index = machineNode.getIndex();
             File tempSoundsDir = new File(tempGroupDirectory, "sounds");
             // create Sound 
             String soundName = "sound-" + Integer.toString(machineNode.getIndex()) + ".gsnd";
-            LibrarySound sound = LibrarySoundUtils.createSound(product, soundName, groupName,
-                    machineNode, tempSoundsDir, causticGroup.getSounds().get(index));
+            LibrarySound sound = LibrarySoundUtils.createSound(product, soundName,
+                    groupDisplayName, machineNode, tempSoundsDir,
+                    causticGroup.getSounds().get(index));
             group.addSound(index, sound);
         }
 

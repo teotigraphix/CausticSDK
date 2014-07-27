@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 
@@ -28,8 +27,8 @@ public class LibraryEffect extends LibraryProductItem {
         this.sound = sound;
     }
 
-    public LibraryEffect(UUID id, UUID productId, FileInfo fileInfo, LibraryEffectManifest manifest) {
-        super(id, productId, fileInfo);
+    public LibraryEffect(UUID id, UUID productId, LibraryEffectManifest manifest) {
+        super(id, productId);
         this.manifest = manifest;
         setFormat(LibraryItemFormat.Effect);
     }

@@ -50,7 +50,7 @@ public class LibraryItemDescriptor {
 
     @Override
     public String toString() {
-        return "\n[" + format.toString() + "] - " + manifest.getName();
+        return "\n[" + format.toString() + "] - " + manifest.getDisplayName();
     }
 
 }

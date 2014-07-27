@@ -26,7 +26,6 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
@@ -124,11 +123,18 @@ public class CausticFileImporter {
             throws IOException, CausticException {
         File causticFile = causticGroup.getSourceFile();
 
-        FileInfo fileInfo = new FileInfo(targetFile);
-        LibraryGroupManifest manifest = new LibraryGroupManifest(causticGroup.getDisplayName());
-        @SuppressWarnings("unused")
-        LibraryGroup libraryGroup = LibraryGroupUtils.exportGroup(product, causticFile, fileInfo,
-                manifest, causticGroup);
-    }
+        //------------------------------
 
+        String displayName = causticGroup.getDisplayName();
+        File archiveFile = targetFile; // .ggrp
+        String relativePath = "";
+
+        //------------------------------
+
+        LibraryGroupManifest manifest = new LibraryGroupManifest(displayName, archiveFile,
+                relativePath);
+        @SuppressWarnings("unused")
+        LibraryGroup libraryGroup = LibraryGroupUtils.exportGroup(product, causticFile, manifest,
+                causticGroup);
+    }
 }

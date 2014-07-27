@@ -1,16 +1,12 @@
 
 package com.teotigraphix.caustk.groove.manifest;
 
-import com.teotigraphix.caustk.groove.LibraryBank;
+import java.io.File;
 
 public class LibraryGroupManifest extends LibraryItemManifest {
 
-    public LibraryGroupManifest(String name) {
-        super(name);
-    }
-
-    public LibraryGroupManifest(String name, LibraryBank libraryBank) {
-        super(name, libraryBank);
+    public LibraryGroupManifest(String displayName, File archiveFile, String relativePath) {
+        super(displayName, archiveFile, relativePath);
     }
 
 }
