@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.teotigraphix.caustk.core.osc.RackMessage;
-import com.teotigraphix.caustk.groove.LibraryGroup;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;

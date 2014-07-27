@@ -7,14 +7,14 @@ import java.io.IOException;
 import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.groove.LibraryEffect;
-import com.teotigraphix.caustk.groove.LibraryGroup;
-import com.teotigraphix.caustk.groove.LibraryInstrument;
-import com.teotigraphix.caustk.groove.LibraryItemFormat;
-import com.teotigraphix.caustk.groove.LibraryProduct;
-import com.teotigraphix.caustk.groove.LibraryProductItem;
-import com.teotigraphix.caustk.groove.LibraryProject;
-import com.teotigraphix.caustk.groove.LibrarySound;
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
+import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.library.LibraryProduct;
+import com.teotigraphix.caustk.groove.library.LibraryProductItem;
+import com.teotigraphix.caustk.groove.library.LibraryProject;
+import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipUtils;
 

@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.teotigraphix.caustk.groove.BrowserBank;
-import com.teotigraphix.caustk.groove.BrowserModel;
+import com.teotigraphix.caustk.groove.browser.BrowserBank;
+import com.teotigraphix.caustk.groove.browser.BrowserModel;
 
 @SuppressWarnings("unused")
 public class LibraryProductImporter {

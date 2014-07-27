@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.groove;
+package com.teotigraphix.caustk.groove.library;
 
 import java.util.UUID;
 

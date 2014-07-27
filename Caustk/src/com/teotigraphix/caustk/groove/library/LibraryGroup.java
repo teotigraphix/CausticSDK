@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.groove;
+package com.teotigraphix.caustk.groove.library;
 
 import java.util.Collection;
 import java.util.Map;
@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.groove.FileInfo;
 import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 
 public class LibraryGroup extends LibraryProductItem {

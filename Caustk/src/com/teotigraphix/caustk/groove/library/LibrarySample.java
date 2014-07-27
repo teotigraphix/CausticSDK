@@ -1,7 +1,9 @@
 
-package com.teotigraphix.caustk.groove;
+package com.teotigraphix.caustk.groove.library;
 
 import java.util.UUID;
+
+import com.teotigraphix.caustk.groove.FileInfo;
 
 public class LibrarySample extends LibraryProductItem {
 

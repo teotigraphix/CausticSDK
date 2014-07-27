@@ -1,9 +1,16 @@
 
-package com.teotigraphix.caustk.groove;
+package com.teotigraphix.caustk.groove.browser;
 
 import java.util.Collection;
 
 import com.teotigraphix.caustk.groove.importer.LibraryProductImporter;
+import com.teotigraphix.caustk.groove.library.GrooveLibrary;
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
+import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.groove.library.LibraryProject;
+import com.teotigraphix.caustk.groove.library.LibrarySample;
+import com.teotigraphix.caustk.groove.library.LibrarySound;
 
 @SuppressWarnings("unused")
 public class BrowserModel {
