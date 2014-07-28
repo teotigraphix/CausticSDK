@@ -7,13 +7,13 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
-import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
@@ -48,15 +48,16 @@ public class LibrarySoundUtils {
                 machineNode, causticSound);
 
         // 
-        String displayName = groupName + "-" + machineNode.getName();
+        String name = groupName + "-" + machineNode.getName();
         if (causticSound != null)
-            displayName = causticSound.getDisplayName();
+            name = causticSound.getDisplayName();
 
-        LibrarySoundManifest manifest = new LibrarySoundManifest(displayName, null, "");
-        LibrarySound sound = new LibrarySound(product.getId(), manifest);
+        CaustkFactory factory = CaustkRuntime.getInstance().getFactory();
 
-        LibraryEffectUtils.saveEffect(effect, effectDirectory,
-                LibraryEffectUtils.toEffectFile(soundDirectory));
+        LibrarySound sound = factory.createLibrarySound(product, name, "");
+
+        //        LibraryEffectUtils.saveEffect(effect, effectDirectory,
+        //                LibraryEffectUtils.toEffectFile(soundDirectory));
 
         LibraryInstrumentUtils.saveInstrument(instrument, instrumentDirectory,
                 LibraryInstrumentUtils.toInstrumentFile(soundDirectory));
@@ -64,7 +65,7 @@ public class LibrarySoundUtils {
         sound.setEffect(effect);
         sound.setInstrument(instrument);
 
-        LibrarySoundUtils.saveSound(sound, soundDirectory, new File(targetDirectory,
+        LibrarySoundUtils._saveSound(sound, soundDirectory, new File(targetDirectory,
                 soundNameWithExtension));
 
         try {
@@ -78,7 +79,40 @@ public class LibrarySoundUtils {
         return sound;
     }
 
-    public static void saveSound(LibrarySound sound, File sourceDirectory, File zipFile)
+    public static void saveSound(LibrarySound item, LibraryProduct product, File tempDirectory)
+            throws IOException {
+
+        LibraryEffect effect = item.getEffect();
+        LibraryInstrument instrument = item.getInstrument();
+
+        File tempEffectDir = new File(tempDirectory, "effect");
+        File tempInstrumentDir = new File(tempDirectory, "instrument");
+
+        LibraryEffectUtils.saveEffect(effect, product, tempEffectDir);
+        LibraryInstrumentUtils.saveInstrument(instrument, product, tempInstrumentDir);
+
+        ZipCompress compress = null;
+
+        compress = new ZipCompress(tempEffectDir);
+        compress.zip(new File(tempDirectory, "effect.gfx"));
+
+        compress = new ZipCompress(tempInstrumentDir);
+        compress.zip(new File(tempDirectory, "instrument.gfx"));
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        FileUtils.forceDelete(tempEffectDir);
+        FileUtils.forceDelete(tempInstrumentDir);
+
+        String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
+        FileUtils.write(new File(tempDirectory, "manifest.json"), json);
+    }
+
+    public static void _saveSound(LibrarySound sound, File sourceDirectory, File zipFile)
             throws IOException {
         String json = CaustkRuntime.getInstance().getFactory().serialize(sound, true);
         FileUtils.write(new File(sourceDirectory, "manifest.json"), json);

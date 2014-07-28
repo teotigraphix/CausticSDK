@@ -1,8 +1,6 @@
 
 package com.teotigraphix.caustk.groove.manifest;
 
-import java.io.File;
-
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
@@ -17,9 +15,8 @@ public class LibraryInstrumentManifest extends LibraryItemManifest {
         return machineType;
     }
 
-    public LibraryInstrumentManifest(String displayName, File archiveFile, String relativePath,
-            MachineNode machineNode) {
-        super(LibraryItemFormat.Instrument, displayName, archiveFile, relativePath);
+    public LibraryInstrumentManifest(String name, String relativePath, MachineNode machineNode) {
+        super(LibraryItemFormat.Instrument, name, relativePath);
         this.machineType = machineNode.getType();
     }
 

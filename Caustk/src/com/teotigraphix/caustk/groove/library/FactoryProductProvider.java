@@ -6,8 +6,10 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
-
 public class FactoryProductProvider {
+
+    @SuppressWarnings("unused")
+    private LibraryProduct product;
 
     /**
      * The zip archive File that holds the factory content directory and
@@ -17,7 +19,8 @@ public class FactoryProductProvider {
      *            extracted into the conentDirectory at
      *            {@link #install(GrooveLibrary, File)}.
      */
-    public FactoryProductProvider(File sourceProduct) {
+    public FactoryProductProvider(LibraryProduct product) {
+        this.product = product;
     }
 
     public void install(GrooveLibrary grooveLibrary, File contentDirectory) {

@@ -1,8 +1,6 @@
 
 package com.teotigraphix.caustk.groove.library;
 
-import java.util.UUID;
-
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
 public class LibrarySample extends LibraryProductItem {
@@ -12,7 +10,6 @@ public class LibrarySample extends LibraryProductItem {
         return null;
     }
 
-    public LibrarySample(UUID productId) {
-        super(productId);
+    public LibrarySample() {
     }
 }

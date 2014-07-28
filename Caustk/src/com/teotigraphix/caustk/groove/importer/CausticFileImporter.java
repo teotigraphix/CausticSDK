@@ -29,7 +29,6 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
-import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
 import com.teotigraphix.caustk.groove.utils.LibrarySoundUtils;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -68,7 +67,7 @@ public class CausticFileImporter {
     public void addToDirectory(LibraryProduct product, CausticGroup causticGroup)
             throws IOException, CausticException {
 
-        File productDirectory = product.getSourceDirectory();
+        File productDirectory = product.getDirectory();
 
         File groupsDirectory = new File(productDirectory, "Groups");
         File soundsDirectory = new File(productDirectory, "Sounds");
@@ -123,18 +122,8 @@ public class CausticFileImporter {
             throws IOException, CausticException {
         File causticFile = causticGroup.getSourceFile();
 
-        //------------------------------
-
-        String displayName = causticGroup.getDisplayName();
-        File archiveFile = targetFile; // .ggrp
-        String relativePath = "";
-
-        //------------------------------
-
-        LibraryGroupManifest manifest = new LibraryGroupManifest(displayName, archiveFile,
-                relativePath);
         @SuppressWarnings("unused")
-        LibraryGroup libraryGroup = LibraryGroupUtils.exportGroup(product, causticFile, manifest,
+        LibraryGroup libraryGroup = LibraryGroupUtils.exportGroup(product, causticFile, targetFile,
                 causticGroup);
     }
 }

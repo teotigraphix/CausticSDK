@@ -1,20 +1,15 @@
 
 package com.teotigraphix.caustk.groove.library;
 
+import java.io.File;
 import java.util.UUID;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 
 public abstract class LibraryProductItem extends LibraryItem {
 
-    @Tag(10)
-    private UUID productId;
-
-    @Tag(11)
-    private String productPath;
-
     public UUID getProductId() {
-        return productId;
+        return getManifest().getProductId();
     }
 
     /**
@@ -22,19 +17,14 @@ public abstract class LibraryProductItem extends LibraryItem {
      * <p>
      * E.g <code>/Groups/ALLEY 01.ggrp</code>
      */
-    public String getProductPath() {
+    public File getProductPath() {
+        final String formatDirectoryName = LibraryProductUtils.toItemBaseDirectoryName(this);
+        final File base = new File(formatDirectoryName, getRelativePath());
+        final File productPath = new File(base, getFileName());
         return productPath;
     }
 
-    public void setProductPath(String productPath) {
-        this.productPath = productPath;
-    }
-
-    public LibraryProductItem() {
-    }
-
-    public LibraryProductItem(UUID productId) {
-        this.productId = productId;
+    LibraryProductItem() {
     }
 
 }

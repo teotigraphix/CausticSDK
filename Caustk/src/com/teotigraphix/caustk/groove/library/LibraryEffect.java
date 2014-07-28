@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.groove.library;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
@@ -35,8 +34,7 @@ public class LibraryEffect extends LibraryProductItem {
     LibraryEffect() {
     }
 
-    public LibraryEffect(UUID productId, LibraryEffectManifest manifest) {
-        super(productId);
+    public LibraryEffect(LibraryEffectManifest manifest) {
         this.manifest = manifest;
     }
 

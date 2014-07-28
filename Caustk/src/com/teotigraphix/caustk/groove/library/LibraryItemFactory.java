@@ -19,12 +19,12 @@
 
 package com.teotigraphix.caustk.groove.library;
 
-import java.io.File;
-
 import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.node.effect.EffectNode;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * @author Michael Schmalle
@@ -41,24 +41,33 @@ public class LibraryItemFactory extends CaustkFactoryChildBase {
     }
 
     //----------------------------------
-    // LibraryManifest
+    // LibraryEffect
     //----------------------------------
 
-    public LibraryEffect createLibraryEffect(LibraryProduct product, String displayName,
-            File archiveFile, String relativePath, EffectNode efffect0, EffectNode efffect1) {
+    public LibraryEffect createLibraryEffect(LibraryProduct product, String name,
+            String relativePath, EffectNode efffect0, EffectNode efffect1) {
 
-        LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, archiveFile,
-                relativePath, efffect0, efffect1);
+        LibraryEffectManifest manifest = new LibraryEffectManifest(name, relativePath, efffect0,
+                efffect1);
+        manifest.setProductId(product.getId());
 
-        LibraryEffect libraryEffect = new LibraryEffect(product.getId(), manifest);
+        LibraryEffect libraryEffect = new LibraryEffect(manifest);
         libraryEffect.add(0, efffect0);
         libraryEffect.add(1, efffect1);
 
         return libraryEffect;
     }
 
-    //----------------------------------
-    // LibraryEffect
-    //----------------------------------
+    public LibraryInstrument createInstrument(LibraryProduct product, String name,
+            String relativePath, MachineNode machineNode) {
 
+        LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(name,
+                relativePath, machineNode);
+        manifest.setProductId(product.getId());
+
+        LibraryInstrument instrument = new LibraryInstrument(manifest);
+        instrument.setMachineNode(machineNode);
+
+        return instrument;
+    }
 }

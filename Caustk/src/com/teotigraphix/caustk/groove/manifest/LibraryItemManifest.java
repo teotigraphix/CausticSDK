@@ -1,58 +1,106 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.groove.manifest;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.groove.library.GrooveLibrary;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
-import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.node.Library;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibraryItemManifest {
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
     @Tag(0)
     private UUID id;
 
     @Tag(1)
+    private UUID productId;
+
+    @Tag(2)
     private LibraryItemFormat format;
 
     @Tag(3)
-    private File archiveFile;
-
-    @Tag(2)
-    private String displayName;
+    private String name;
 
     @Tag(4)
+    private String displayName;
+
+    @Tag(5)
     private String relativePath;
 
+    @Tag(6)
     private String author;
 
+    @Tag(7)
     private String description;
 
+    @Tag(8)
     private Date created;
 
+    @Tag(9)
     private Date modified;
 
+    @Tag(10)
     private List<String> tags;
 
-    private boolean selected;
+    @Tag(11)
+    private Boolean selected;
+
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  id
+    //----------------------------------
 
     public UUID getId() {
         return id;
+    }
+
+    //----------------------------------
+    //  productId
+    //----------------------------------
+
+    public UUID getProductId() {
+        return productId;
+    }
+
+    public void setProductId(UUID productId) {
+        this.productId = productId;
     }
 
     public final LibraryItemFormat getFormat() {
@@ -70,6 +118,27 @@ public class LibraryItemManifest {
     //    }
 
     //----------------------------------
+    //  name
+    //----------------------------------
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Whether the item has an explicit name.
+     * 
+     * @see #getName()
+     */
+    public boolean hasName() {
+        return name != null && !name.equals("Untitled");
+    }
+
+    //----------------------------------
     //  displayName
     //----------------------------------
 
@@ -78,39 +147,17 @@ public class LibraryItemManifest {
     }
 
     /**
-     * Whether the item has an explicit name.
-     * 
-     * @see #getDisplayName()
-     */
-    public boolean hasDisplayName() {
-        return displayName != null && !displayName.equals("Untitled");
-    }
-
-    /**
      * Sets the display name of the item.
      * 
      * @param name A String display name.
      */
-    public final void setName(String displayName) {
+    public final void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
 
     //----------------------------------
-    //  archiveFile
+    //  relativePath
     //----------------------------------
-
-    /**
-     * Returns the relative path from the owning {@link LibraryProduct}.
-     * <p>
-     * The path could be something like; <code>Kits/Drums/Trance/909.ggrp</code>
-     * <p>
-     * <strong>Do not</strong> use getAbsolutePath() on this File, use
-     * {@link GrooveLibrary#resolveLocation(ICaustkDefinition)} instead to
-     * resolve the directory correctly.
-     */
-    public File getArchiveFile() {
-        return archiveFile;
-    }
 
     /**
      * Returns the full relative path from the Library's base;
@@ -271,42 +318,45 @@ public class LibraryItemManifest {
 
     //--------------------------------------------------------------------------
 
-    public long getModified() {
-        return archiveFile.lastModified();
-    }
-
-    public String toModifiedString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US);
-        return sdf.format(archiveFile.lastModified());
-    }
-
-    public long getSize() {
-        return FileUtils.sizeOf(archiveFile);
-    }
+    //    public long getModified() {
+    //        return archiveFile.lastModified();
+    //    }
+    //
+    //    public String toModifiedString() {
+    //        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US);
+    //        return sdf.format(archiveFile.lastModified());
+    //    }
+    //
+    //    public long getSize() {
+    //        return FileUtils.sizeOf(archiveFile);
+    //    }
 
     public String getExtension() {
         return getFormat().getExtension();
     }
 
-    public String getFileName() {
-        return FilenameUtils.getBaseName(archiveFile.getName());
+    //    public String getFileName() {
+    //        return FilenameUtils.getBaseName(archiveFile.getName());
+    //    }
+
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialization.
+     */
+    LibraryItemManifest() {
     }
 
-    public LibraryItemManifest(LibraryItemFormat format, String displayName, File archiveFile,
-            String relativePath) {
+    public LibraryItemManifest(LibraryItemFormat format, String name, String relativePath) {
         this.format = format;
-        this.displayName = displayName;
-        this.archiveFile = archiveFile;
+        this.name = name;
         this.relativePath = relativePath;
         this.id = UUID.randomUUID();
         setCreated(new Date());
         setModified(new Date());
     }
-
-    //    public LibraryItemManifest(String name, LibraryBank libraryBank) {
-    //        this(name);
-    //        this.libraryBank = libraryBank;
-    //    }
 
     //--------------------------------------------------------------------------
     //  Methods

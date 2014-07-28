@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.groove.library;
 
 import java.io.File;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
@@ -101,8 +100,7 @@ public class LibraryInstrument extends LibraryProductItem {
     LibraryInstrument() {
     }
 
-    public LibraryInstrument(UUID productId, LibraryInstrumentManifest manifest) {
-        super(productId);
+    public LibraryInstrument(LibraryInstrumentManifest manifest) {
         this.manifest = manifest;
     }
 }

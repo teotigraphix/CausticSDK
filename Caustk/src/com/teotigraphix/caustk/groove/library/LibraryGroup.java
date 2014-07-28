@@ -4,7 +4,6 @@ package com.teotigraphix.caustk.groove.library;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
@@ -31,8 +30,7 @@ public class LibraryGroup extends LibraryProductItem {
         return sounds.values();
     }
 
-    public LibraryGroup(UUID productId, LibraryGroupManifest manifest) {
-        super(productId);
+    public LibraryGroup(LibraryGroupManifest manifest) {
         this.manifest = manifest;
     }
 

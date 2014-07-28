@@ -39,8 +39,6 @@ public abstract class NodeBase implements ICaustkNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    //private NodeInfo info = null;
-
     private String label = null;
 
     private Object icon = null;

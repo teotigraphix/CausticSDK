@@ -7,18 +7,20 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryEffectUtils {
+
+    private static final String MANIFEST_JSON = "manifest.json";
 
     public static LibraryEffect createEffect(LibraryProduct product, MachineNode machineNode,
             CausticSound causticSound) {
@@ -28,33 +30,23 @@ public class LibraryEffectUtils {
 
         //------------------------------
 
-        String displayName = machineNode.getName() + "-FX";
+        String name = machineNode.getName() + "-FX";
         if (causticSound != null)
-            displayName = causticSound.getEffect().getDisplayName();
-        File archiveFile = null;
+            name = causticSound.getEffect().getDisplayName();
         String relativePath = "";
 
         //------------------------------
+        CaustkFactory factory = CaustkRuntime.getInstance().getFactory();
+        LibraryEffect libraryEffect = factory.createLibraryEffect(product, name, relativePath,
+                efffect0, efffect1);
 
-        LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, archiveFile,
-                relativePath, efffect0, efffect1);
-        LibraryEffect effect = new LibraryEffect(product.getId(), manifest);
-
-        if (efffect0 != null) {
-            effect.add(0, efffect0);
-        }
-        if (efffect1 != null) {
-            effect.add(1, efffect1);
-        }
-        return effect;
+        return libraryEffect;
     }
 
-    public static void saveEffect(LibraryEffect effect, File sourceDirectory, File zipFile)
-            throws IOException {
-        String json = CaustkRuntime.getInstance().getFactory().serialize(effect, true);
-        FileUtils.write(new File(sourceDirectory, "manifest.json"), json);
-        ZipCompress compress = new ZipCompress(sourceDirectory);
-        compress.zip(zipFile);
+    public static void saveEffect(LibraryProductItem item, LibraryProduct product,
+            File tempDirectory) throws IOException {
+        String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
+        FileUtils.write(new File(tempDirectory, MANIFEST_JSON), json);
     }
 
     public static LibraryEffect importEffect(File soundDirectory) throws CausticException,
@@ -65,7 +57,7 @@ public class LibraryEffectUtils {
         ZipUncompress uncompress = new ZipUncompress(effectFile);
         uncompress.unzip(tempDirectory);
 
-        File manifest = new File(tempDirectory, "manifest.json");
+        File manifest = new File(tempDirectory, MANIFEST_JSON);
         if (!manifest.exists())
             throw new CausticException("manifest.json does not exist");
 

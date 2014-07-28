@@ -30,9 +30,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
+import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryItemFactory;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.groove.library.LibrarySound;
+import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
+import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
@@ -109,16 +113,31 @@ public class CaustkFactory implements ICaustkFactory {
     //  Groove Library
     //--------------------------------------------------------------------------
 
-    public LibraryEffect createLibraryEffect(LibraryProduct product, String displayName,
-            File archiveFile, String relativePath, EffectNode efffect0, EffectNode efffect1) {
-        LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, archiveFile,
-                relativePath, efffect0, efffect1);
-        LibraryEffect libraryEffect = new LibraryEffect(product.getId(), manifest);
-        libraryEffect.add(0, efffect0);
-        libraryEffect.add(1, efffect1);
+    public LibraryEffect createLibraryEffect(LibraryProduct product, String name,
+            String relativePath, EffectNode efffect0, EffectNode efffect1) {
+        return libraryItemFactory.createLibraryEffect(product, name, relativePath, efffect0,
+                efffect1);
+    }
 
-        return libraryItemFactory.createLibraryEffect(product, displayName, archiveFile,
-                relativePath, efffect0, efffect1);
+    public LibraryInstrument createLibraryInstrument(LibraryProduct product, String name,
+            String relativePath, MachineNode machineNode) {
+        return libraryItemFactory.createInstrument(product, name, relativePath, machineNode);
+    }
+
+    public LibraryGroup createLibraryGroup(LibraryProduct product, String name, String relativePath) {
+
+        LibraryGroupManifest manifest = new LibraryGroupManifest(name, relativePath);
+        manifest.setProductId(product.getId());
+
+        LibraryGroup libraryGroup = new LibraryGroup(manifest);
+
+        return libraryGroup;
+    }
+
+    public LibrarySound createLibrarySound(LibraryProduct product, String name, String relativePath) {
+        LibrarySoundManifest manifest = new LibrarySoundManifest(name, relativePath);
+        LibrarySound librarySound = new LibrarySound(manifest);
+        return librarySound;
     }
 
     //--------------------------------------------------------------------------
