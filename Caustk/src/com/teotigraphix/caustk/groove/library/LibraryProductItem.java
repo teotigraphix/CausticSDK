@@ -33,8 +33,7 @@ public abstract class LibraryProductItem extends LibraryItem {
     public LibraryProductItem() {
     }
 
-    public LibraryProductItem(UUID id, UUID productId) {
-        super(id);
+    public LibraryProductItem(UUID productId) {
         this.productId = productId;
     }
 

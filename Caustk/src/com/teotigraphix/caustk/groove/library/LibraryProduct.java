@@ -26,6 +26,11 @@ public class LibraryProduct extends LibraryItem {
     @Tag(21)
     private List<LibraryItemDescriptor> list = new ArrayList<LibraryItemDescriptor>();
 
+    @Override
+    public LibraryProductManifest getManifest() {
+        return manifest;
+    }
+
     //----------------------------------
     // Descriptors
     //----------------------------------
@@ -47,9 +52,8 @@ public class LibraryProduct extends LibraryItem {
     }
 
     public LibraryProduct(UUID id, LibraryProductManifest manifest) {
-        super(id);
+        super();
         this.manifest = manifest;
-        setFormat(LibraryItemFormat.Product);
     }
 
     public LibraryItemDescriptor addItem(LibraryProductItem item) throws CausticException {

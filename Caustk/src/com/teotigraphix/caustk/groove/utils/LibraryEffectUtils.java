@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.groove.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -39,7 +38,7 @@ public class LibraryEffectUtils {
 
         LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, archiveFile,
                 relativePath, efffect0, efffect1);
-        LibraryEffect effect = new LibraryEffect(UUID.randomUUID(), product.getId(), manifest);
+        LibraryEffect effect = new LibraryEffect(product.getId(), manifest);
 
         if (efffect0 != null) {
             effect.add(0, efffect0);

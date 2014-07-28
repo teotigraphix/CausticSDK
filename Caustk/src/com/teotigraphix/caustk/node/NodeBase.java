@@ -38,7 +38,7 @@ public abstract class NodeBase implements ICaustkNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private NodeInfo info = null;
+    //private NodeInfo info = null;
 
     private String label = null;
 
@@ -52,23 +52,23 @@ public abstract class NodeBase implements ICaustkNode {
     // Public Property API
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // info
-    //----------------------------------
-
-    @Override
-    public NodeInfo getInfo() {
-        return info;
-    }
-
-    /**
-     * Sets the node's information metadata.
-     * 
-     * @param info The {@link NodeInfo} that describes this node.
-     */
-    public void setInfo(NodeInfo info) {
-        this.info = info;
-    }
+    //    //----------------------------------
+    //    // info
+    //    //----------------------------------
+    //
+    //    @Override
+    //    public NodeInfo getInfo() {
+    //        return info;
+    //    }
+    //
+    //    /**
+    //     * Sets the node's information metadata.
+    //     * 
+    //     * @param info The {@link NodeInfo} that describes this node.
+    //     */
+    //    public void setInfo(NodeInfo info) {
+    //        this.info = info;
+    //    }
 
     //----------------------------------
     // label
@@ -78,6 +78,7 @@ public abstract class NodeBase implements ICaustkNode {
      * The node's display label, this human readable name would be different
      * than a machine readable name.
      */
+    @Override
     public String getLabel() {
         return label;
     }

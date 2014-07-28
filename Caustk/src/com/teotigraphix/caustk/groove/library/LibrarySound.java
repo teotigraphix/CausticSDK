@@ -30,6 +30,11 @@ public class LibrarySound extends LibraryProductItem {
 
     private transient LibraryInstrument instrument;
 
+    @Override
+    public LibrarySoundManifest getManifest() {
+        return manifest;
+    }
+
     public int getIndex() {
         return index;
     }
@@ -65,7 +70,7 @@ public class LibrarySound extends LibraryProductItem {
         this.effect = effect;
         if (effect != null)
             effect.setSound(this);
-        effectManifest = (LibraryEffectManifest)effect.getManifest();
+        effectManifest = effect.getManifest();
     }
 
     public void setInstrument(LibraryInstrument instrument) {
@@ -75,16 +80,15 @@ public class LibrarySound extends LibraryProductItem {
         this.instrument = instrument;
         if (instrument != null)
             instrument.setSound(this);
-        instrumentManifest = (LibraryInstrumentManifest)instrument.getManifest();
+        instrumentManifest = instrument.getManifest();
     }
 
     public LibraryInstrument getInstrument() {
         return instrument;
     }
 
-    public LibrarySound(UUID id, UUID productId, LibrarySoundManifest manifest) {
-        super(id, productId);
+    public LibrarySound(UUID productId, LibrarySoundManifest manifest) {
+        super(productId);
         this.manifest = manifest;
-        setFormat(LibraryItemFormat.Sound);
     }
 }

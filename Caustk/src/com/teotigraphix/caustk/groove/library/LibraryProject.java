@@ -15,9 +15,13 @@ public class LibraryProject extends LibraryProductItem {
     @Tag(20)
     private LibraryProjectManifest manifest;
 
-    public LibraryProject(UUID id, UUID productId, LibraryProjectManifest manifest) {
-        super(id, productId);
+    @Override
+    public LibraryProjectManifest getManifest() {
+        return manifest;
+    }
+
+    public LibraryProject(UUID productId, LibraryProjectManifest manifest) {
+        super(productId);
         this.manifest = manifest;
-        setFormat(LibraryItemFormat.Project);
     }
 }

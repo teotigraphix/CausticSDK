@@ -18,6 +18,11 @@ public class LibraryGroup extends LibraryProductItem {
     @Tag(21)
     private Map<Integer, LibrarySound> sounds = new TreeMap<Integer, LibrarySound>();
 
+    @Override
+    public LibraryGroupManifest getManifest() {
+        return manifest;
+    }
+
     public LibrarySound getSound(int index) {
         return sounds.get(index);
     }
@@ -26,10 +31,9 @@ public class LibraryGroup extends LibraryProductItem {
         return sounds.values();
     }
 
-    public LibraryGroup(UUID id, UUID productId, LibraryGroupManifest manifest) {
-        super(id, productId);
+    public LibraryGroup(UUID productId, LibraryGroupManifest manifest) {
+        super(productId);
         this.manifest = manifest;
-        setFormat(LibraryItemFormat.Group);
     }
 
     public void addSound(int index, LibrarySound sound) throws CausticException {

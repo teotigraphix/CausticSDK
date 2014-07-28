@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.groove.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -62,8 +61,7 @@ public class LibraryInstrumentUtils {
 
         LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(displayName,
                 archiveFile, relativePath, machineNode);
-        LibraryInstrument instrument = new LibraryInstrument(UUID.randomUUID(), product.getId(),
-                manifest);
+        LibraryInstrument instrument = new LibraryInstrument(product.getId(), manifest);
         instrument.setMachineNode(machineNode);
         return instrument;
     }

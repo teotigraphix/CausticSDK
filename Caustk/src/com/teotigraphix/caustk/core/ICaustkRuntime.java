@@ -19,11 +19,7 @@
 
 package com.teotigraphix.caustk.core;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.teotigraphix.caustk.node.CaustkFactory;
-import com.teotigraphix.caustk.node.Library;
 
 /**
  * @author Michael Schmalle
@@ -37,10 +33,10 @@ public interface ICaustkRuntime {
 
     CaustkFactory getFactory();
 
-    Library getLibrary();
-
-    Library loadLibrary(File file) throws CausticException, IOException;
-
-    Library createLibrary(String relativePath) throws CausticException;
+    //    Library getLibrary();
+    //
+    //    Library loadLibrary(File file) throws CausticException, IOException;
+    //
+    //    Library createLibrary(String relativePath) throws CausticException;
 
 }

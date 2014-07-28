@@ -20,13 +20,13 @@
 package com.teotigraphix.caustk.node;
 
 /**
- * The {@link NodeFactoryBase}, base factory class for sub factories in the
+ * The {@link CaustkFactoryChildBase}, base factory class for sub factories in the
  * {@link CaustkFactory}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class NodeFactoryBase {
+public class CaustkFactoryChildBase {
 
     private CaustkFactory factory;
 
@@ -38,7 +38,7 @@ public class NodeFactoryBase {
     //  Constructor
     //--------------------------------------------------------------------------
 
-    public NodeFactoryBase(CaustkFactory factory) {
+    public CaustkFactoryChildBase(CaustkFactory factory) {
         this.factory = factory;
     }
 }

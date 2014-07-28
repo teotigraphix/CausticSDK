@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.node;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
@@ -33,6 +32,10 @@ import com.google.gson.JsonParseException;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryItemFactory;
+import com.teotigraphix.caustk.groove.library.LibraryProduct;
+import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
 import com.teotigraphix.caustk.node.effect.BitcrusherEffect;
 import com.teotigraphix.caustk.node.effect.CabinetSimulatorEffect;
@@ -82,13 +85,11 @@ public class CaustkFactory {
 
     private CaustkRuntime runtime;
 
-    private NodeInfoFactory nodeInfoFactory;
-
-    private LibraryFactory libraryFactory;
-
     private EffectNodeFactory effectNodeFactory;
 
     private MachineNodeFactory machineNodeFactory;
+
+    private LibraryItemFactory libraryItemFactory;
 
     //--------------------------------------------------------------------------
     //  Public API :: Properties
@@ -106,6 +107,22 @@ public class CaustkFactory {
     }
 
     //--------------------------------------------------------------------------
+    //  Groove Library
+    //--------------------------------------------------------------------------
+
+    public LibraryEffect createLibraryEffect(LibraryProduct product, String displayName,
+            File archiveFile, String relativePath, EffectNode efffect0, EffectNode efffect1) {
+        LibraryEffectManifest manifest = new LibraryEffectManifest(displayName, archiveFile,
+                relativePath, efffect0, efffect1);
+        LibraryEffect libraryEffect = new LibraryEffect(product.getId(), manifest);
+        libraryEffect.add(0, efffect0);
+        libraryEffect.add(1, efffect1);
+
+        return libraryItemFactory.createLibraryEffect(product, displayName, archiveFile,
+                relativePath, efffect0, efffect1);
+    }
+
+    //--------------------------------------------------------------------------
     //  Constructor
     //--------------------------------------------------------------------------
 
@@ -117,59 +134,60 @@ public class CaustkFactory {
      */
     public CaustkFactory(CaustkRuntime runtime) {
         this.runtime = runtime;
-        nodeInfoFactory = new NodeInfoFactory(this);
-        libraryFactory = new LibraryFactory(this);
+
         effectNodeFactory = new EffectNodeFactory(this);
         machineNodeFactory = new MachineNodeFactory(this);
+
+        libraryItemFactory = new LibraryItemFactory(this);
     }
 
     //----------------------------------
     // NodeInfo
     //----------------------------------
 
-    public NodeInfo createInfo(NodeType nodeType) {
-        return nodeInfoFactory.createInfo(nodeType);
-    }
+    //    public NodeInfo createInfo(NodeType nodeType) {
+    //        return nodeInfoFactory.createInfo(nodeType);
+    //    }
+    //
+    //    public NodeInfo createInfo(NodeType nodeType, String name) {
+    //        return nodeInfoFactory.createInfo(nodeType, name);
+    //    }
+    //
+    //    public NodeInfo createInfo(NodeType nodeType, String relativePath, String name) {
+    //        return nodeInfoFactory.createInfo(nodeType, relativePath, name);
+    //    }
+    //
+    //    public NodeInfo createInfo(NodeType nodeType, File relativePath, String name) {
+    //        return nodeInfoFactory.createInfo(nodeType, relativePath, name);
+    //    }
 
-    public NodeInfo createInfo(NodeType nodeType, String name) {
-        return nodeInfoFactory.createInfo(nodeType, name);
-    }
-
-    public NodeInfo createInfo(NodeType nodeType, String relativePath, String name) {
-        return nodeInfoFactory.createInfo(nodeType, relativePath, name);
-    }
-
-    public NodeInfo createInfo(NodeType nodeType, File relativePath, String name) {
-        return nodeInfoFactory.createInfo(nodeType, relativePath, name);
-    }
-
-    //----------------------------------
-    // Library
-    //----------------------------------
-
-    /**
-     * Creates an empty {@link Library} with a name.
-     * <p>
-     * The name is used for the directory name held within the
-     * <code>/storageRoot/AppName/libraries</code> directory.
-     * 
-     * @param name The name of the library, used as the directory name.
-     */
-    public Library createLibrary(String name) {
-        return libraryFactory.createLibrary(name);
-    }
-
-    /**
-     * @param reletiveOrAbsDirectory
-     * @return
-     */
-    public Library createLibrary(File reletiveOrAbsDirectory) {
-        return libraryFactory.createLibrary(reletiveOrAbsDirectory);
-    }
-
-    public Library loadLibrary(File reletiveOrAbsDirectory) throws IOException {
-        return libraryFactory.loadLibrary(reletiveOrAbsDirectory);
-    }
+    //    //----------------------------------
+    //    // Library
+    //    //----------------------------------
+    //
+    //    /**
+    //     * Creates an empty {@link Library} with a name.
+    //     * <p>
+    //     * The name is used for the directory name held within the
+    //     * <code>/storageRoot/AppName/libraries</code> directory.
+    //     * 
+    //     * @param name The name of the library, used as the directory name.
+    //     */
+    //    public Library createLibrary(String name) {
+    //        return libraryFactory.createLibrary(name);
+    //    }
+    //
+    //    /**
+    //     * @param reletiveOrAbsDirectory
+    //     * @return
+    //     */
+    //    public Library createLibrary(File reletiveOrAbsDirectory) {
+    //        return libraryFactory.createLibrary(reletiveOrAbsDirectory);
+    //    }
+    //
+    //    public Library loadLibrary(File reletiveOrAbsDirectory) throws IOException {
+    //        return libraryFactory.loadLibrary(reletiveOrAbsDirectory);
+    //    }
 
     //----------------------------------
     // RackNode
@@ -220,13 +238,7 @@ public class CaustkFactory {
      *         {@link EffectsChannel}.
      */
     public <T extends EffectNode> T createEffect(int machineIndex, int slot, EffectType effectType) {
-        NodeInfo info = createInfo(NodeType.Effect);
-        return createEffect(info, machineIndex, slot, effectType);
-    }
-
-    private <T extends EffectNode> T createEffect(NodeInfo info, int machineIndex, int slot,
-            EffectType effectType) {
-        return effectNodeFactory.createEffect(info, machineIndex, slot, effectType);
+        return effectNodeFactory.createEffect(machineIndex, slot, effectType);
     }
 
     //----------------------------------
@@ -241,14 +253,9 @@ public class CaustkFactory {
      * @param name The machine name (10 character alpha numeric).
      * @return A new {@link MachineNode}, added to the native rack.
      */
-    public <T extends MachineNode> T createMachine(int index, MachineType type, String name) {
-        NodeInfo info = nodeInfoFactory.createInfo(NodeType.Machine, name);
-        return createMachine(info, index, type, name);
-    }
 
-    private <T extends MachineNode> T createMachine(NodeInfo info, int index, MachineType type,
-            String name) {
-        return machineNodeFactory.createMachine(info, index, type, name);
+    public <T extends MachineNode> T createMachine(int index, MachineType type, String name) {
+        return machineNodeFactory.createMachine(index, type, name);
     }
 
     //--------------------------------------------------------------------------

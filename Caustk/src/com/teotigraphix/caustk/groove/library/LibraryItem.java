@@ -3,31 +3,18 @@ package com.teotigraphix.caustk.groove.library;
 
 import java.util.UUID;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
 public abstract class LibraryItem {
 
-    @Tag(0)
-    private UUID id;
-
-    @Tag(1)
-    private LibraryItemFormat format;
-
-    public UUID getId() {
-        return id;
+    public final UUID getId() {
+        return getManifest().getId();
     }
 
-    public LibraryItemManifest getManifest() {
-        return null;
-    }
+    public abstract LibraryItemManifest getManifest();
 
     public final LibraryItemFormat getFormat() {
-        return format;
-    }
-
-    protected void setFormat(LibraryItemFormat format) {
-        this.format = format;
+        return getManifest().getFormat();
     }
 
     //--------------------------------------------------------------------------
@@ -38,10 +25,6 @@ public abstract class LibraryItem {
      * Serialization
      */
     LibraryItem() {
-    }
-
-    public LibraryItem(UUID id) {
-        this.id = id;
     }
 
 }

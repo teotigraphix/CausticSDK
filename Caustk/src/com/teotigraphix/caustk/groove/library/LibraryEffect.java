@@ -19,6 +19,11 @@ public class LibraryEffect extends LibraryProductItem {
 
     private transient LibrarySound sound;
 
+    @Override
+    public LibraryEffectManifest getManifest() {
+        return manifest;
+    }
+
     public LibrarySound getSound() {
         return sound;
     }
@@ -27,10 +32,12 @@ public class LibraryEffect extends LibraryProductItem {
         this.sound = sound;
     }
 
-    public LibraryEffect(UUID id, UUID productId, LibraryEffectManifest manifest) {
-        super(id, productId);
+    LibraryEffect() {
+    }
+
+    public LibraryEffect(UUID productId, LibraryEffectManifest manifest) {
+        super(productId);
         this.manifest = manifest;
-        setFormat(LibraryItemFormat.Effect);
     }
 
     public EffectNode get(int slot) {
@@ -38,7 +45,8 @@ public class LibraryEffect extends LibraryProductItem {
     }
 
     public void add(int slot, EffectNode effectNode) {
-        effects.put(slot, effectNode);
+        if (effectNode != null)
+            effects.put(slot, effectNode);
     }
 
 }

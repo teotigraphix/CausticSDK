@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.groove.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -42,7 +41,7 @@ public class LibraryGroupUtils {
         //------------------------------
 
         // create Group
-        LibraryGroup group = new LibraryGroup(UUID.randomUUID(), product.getId(), manifest);
+        LibraryGroup group = new LibraryGroup(product.getId(), manifest);
 
         for (MachineNode machineNode : rackNode.getMachines()) {
             int index = machineNode.getIndex();

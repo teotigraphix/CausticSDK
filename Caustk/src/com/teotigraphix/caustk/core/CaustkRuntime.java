@@ -19,15 +19,8 @@
 
 package com.teotigraphix.caustk.core;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-
 import com.teotigraphix.caustk.node.CaustkFactory;
 import com.teotigraphix.caustk.node.ICaustkNode;
-import com.teotigraphix.caustk.node.Library;
 
 /**
  * The {@link CaustkRuntime} encapsulates the {@link ISoundGenerator} and
@@ -50,7 +43,7 @@ public class CaustkRuntime implements ICaustkRuntime {
 
     private CaustkFactory factory;
 
-    private Library library;
+    //    private Library library;
 
     ISoundGenerator getSoundGenerator() {
         return soundGenerator;
@@ -85,17 +78,17 @@ public class CaustkRuntime implements ICaustkRuntime {
         return factory;
     }
 
-    /**
-     * The current library loaded for an application.
-     */
-    @Override
-    public final Library getLibrary() {
-        return library;
-    }
-
-    private void setLibrary(Library library) {
-        this.library = library;
-    }
+    //    /**
+    //     * The current library loaded for an application.
+    //     */
+    //    @Override
+    //    public final Library getLibrary() {
+    //        return library;
+    //    }
+    //
+    //    private void setLibrary(Library library) {
+    //        this.library = library;
+    //    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -115,26 +108,26 @@ public class CaustkRuntime implements ICaustkRuntime {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    @Override
-    public Library loadLibrary(File file) throws CausticException, IOException {
-        if (file.exists())
-            throw new FileNotFoundException("Library does not exist: " + file);
-
-        String json = FileUtils.readFileToString(file);
-        library = getFactory().deserialize(json, Library.class);
-
-        return library;
-    }
-
-    @Override
-    public Library createLibrary(String relativePath) throws CausticException {
-        Library library = getFactory().createLibrary(relativePath);
-        //        if (library.exists())
-        //            throw new CausticException("Library exists: " + library.getDirectory());
-        setLibrary(library);
-        library.create();
-        return library;
-    }
+    //    @Override
+    //    public Library loadLibrary(File file) throws CausticException, IOException {
+    //        if (file.exists())
+    //            throw new FileNotFoundException("Library does not exist: " + file);
+    //
+    //        String json = FileUtils.readFileToString(file);
+    //        library = getFactory().deserialize(json, Library.class);
+    //
+    //        return library;
+    //    }
+    //
+    //    @Override
+    //    public Library createLibrary(String relativePath) throws CausticException {
+    //        Library library = getFactory().createLibrary(relativePath);
+    //        //        if (library.exists())
+    //        //            throw new CausticException("Library exists: " + library.getDirectory());
+    //        setLibrary(library);
+    //        library.create();
+    //        return library;
+    //    }
 
     //--------------------------------------------------------------------------
     // Private :: Methods

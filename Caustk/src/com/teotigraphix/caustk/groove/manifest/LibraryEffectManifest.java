@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.groove.manifest;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 
@@ -22,7 +23,7 @@ public class LibraryEffectManifest extends LibraryItemManifest {
 
     public LibraryEffectManifest(String displayName, File archiveFile, String relativePath,
             EffectNode efffect0, EffectNode efffect1) {
-        super(displayName, archiveFile, relativePath);
+        super(LibraryItemFormat.Effect, displayName, archiveFile, relativePath);
         if (efffect0 != null)
             this.type0 = efffect0.getType();
         if (efffect1 != null)

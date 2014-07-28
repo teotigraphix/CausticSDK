@@ -21,8 +21,7 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.CaustkFactory;
-import com.teotigraphix.caustk.node.NodeFactoryBase;
-import com.teotigraphix.caustk.node.NodeInfo;
+import com.teotigraphix.caustk.node.CaustkFactoryChildBase;
 
 /**
  * Factory to create {@link MachineNode}s.
@@ -30,15 +29,14 @@ import com.teotigraphix.caustk.node.NodeInfo;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class MachineNodeFactory extends NodeFactoryBase {
+public class MachineNodeFactory extends CaustkFactoryChildBase {
 
     public MachineNodeFactory(CaustkFactory factory) {
         super(factory);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends MachineNode> T createMachine(NodeInfo info, int index, MachineType type,
-            String name) {
+    public <T extends MachineNode> T createMachine(int index, MachineType type, String name) {
         MachineNode machineNode = null;
         switch (type) {
             case SubSynth:
@@ -75,7 +73,6 @@ public class MachineNodeFactory extends NodeFactoryBase {
                 machineNode = new KSSynthMachine(index, name);
                 break;
         }
-        machineNode.setInfo(info);
         return (T)machineNode;
     }
 }

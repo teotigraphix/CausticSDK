@@ -46,6 +46,11 @@ public class LibraryInstrument extends LibraryProductItem {
 
     private transient File pendingPresetFile;
 
+    @Override
+    public LibraryInstrumentManifest getManifest() {
+        return manifest;
+    }
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -96,9 +101,8 @@ public class LibraryInstrument extends LibraryProductItem {
     LibraryInstrument() {
     }
 
-    public LibraryInstrument(UUID id, UUID productId, LibraryInstrumentManifest manifest) {
-        super(id, productId);
+    public LibraryInstrument(UUID productId, LibraryInstrumentManifest manifest) {
+        super(productId);
         this.manifest = manifest;
-        setFormat(LibraryItemFormat.Instrument);
     }
 }

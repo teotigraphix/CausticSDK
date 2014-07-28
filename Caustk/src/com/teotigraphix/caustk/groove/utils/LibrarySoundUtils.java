@@ -3,7 +3,6 @@ package com.teotigraphix.caustk.groove.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -54,7 +53,7 @@ public class LibrarySoundUtils {
             displayName = causticSound.getDisplayName();
 
         LibrarySoundManifest manifest = new LibrarySoundManifest(displayName, null, "");
-        LibrarySound sound = new LibrarySound(UUID.randomUUID(), product.getId(), manifest);
+        LibrarySound sound = new LibrarySound(product.getId(), manifest);
 
         LibraryEffectUtils.saveEffect(effect, effectDirectory,
                 LibraryEffectUtils.toEffectFile(soundDirectory));

@@ -39,7 +39,7 @@ public interface ICaustkNode {
      * Can be <code>null</code>, the node will not serialize this field if
      * <code>null</code>.
      */
-    NodeInfo getInfo();
+    //NodeInfo getInfo();
 
     String getLabel();
 

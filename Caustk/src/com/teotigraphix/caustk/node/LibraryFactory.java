@@ -19,12 +19,6 @@
 
 package com.teotigraphix.caustk.node;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-
-import com.teotigraphix.caustk.core.CausticException;
 
 /**
  * Factory to create a {@link Library}.
@@ -32,36 +26,36 @@ import com.teotigraphix.caustk.core.CausticException;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class LibraryFactory extends NodeFactoryBase {
+public class LibraryFactory extends CaustkFactoryChildBase {
 
     LibraryFactory(CaustkFactory factory) {
         super(factory);
     }
 
-    public Library createLibrary(File reletiveDirectory) {
-        NodeInfo info = getFactory().createInfo(NodeType.Library, reletiveDirectory.getName());
-        Library caustkLibrary = new Library(info, getFactory(), reletiveDirectory);
-        return caustkLibrary;
-    }
-
-    public Library createLibrary(String name) {
-        NodeInfo info = getFactory().createInfo(NodeType.Library, name);
-        Library caustkLibrary = new Library(info, getFactory());
-        return caustkLibrary;
-    }
-
-    public Library loadLibrary(File reletiveOrAbsDirectory) throws IOException {
-        Library library = null;
-        File manifestFile = new File(reletiveOrAbsDirectory, ".library");
-        String json = FileUtils.readFileToString(manifestFile);
-        try {
-            library = getFactory().deserialize(json, Library.class);
-        } catch (CausticException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        library.setFactory(getFactory());
-        return library;
-    }
+    //    public Library createLibrary(File reletiveDirectory) {
+    //        NodeInfo info = getFactory().createInfo(NodeType.Library, reletiveDirectory.getName());
+    //        Library caustkLibrary = new Library(info, getFactory(), reletiveDirectory);
+    //        return caustkLibrary;
+    //    }
+    //
+    //    public Library createLibrary(String name) {
+    //        NodeInfo info = getFactory().createInfo(NodeType.Library, name);
+    //        Library caustkLibrary = new Library(info, getFactory());
+    //        return caustkLibrary;
+    //    }
+    //
+    //    public Library loadLibrary(File reletiveOrAbsDirectory) throws IOException {
+    //        Library library = null;
+    //        File manifestFile = new File(reletiveOrAbsDirectory, ".library");
+    //        String json = FileUtils.readFileToString(manifestFile);
+    //        try {
+    //            library = getFactory().deserialize(json, Library.class);
+    //        } catch (CausticException e) {
+    //            // TODO Auto-generated catch block
+    //            e.printStackTrace();
+    //        }
+    //        library.setFactory(getFactory());
+    //        return library;
+    //    }
 
 }
