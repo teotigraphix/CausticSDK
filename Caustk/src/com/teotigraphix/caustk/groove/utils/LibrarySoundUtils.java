@@ -35,65 +35,6 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibrarySoundUtils {
 
-    private static final String DIR_TEMP_EFFECT = "C:\\Users\\Teoti\\Desktop\\TempEffect";
-
-    private static final String DIR_TEMP_INSTRUMENT = "C:\\Users\\Teoti\\Desktop\\TempInstrument";
-
-    private static final String DIR_TEMP_SOUND = "C:\\Users\\Teoti\\Desktop\\TempSound";
-
-    //    public static LibrarySound __createSound(LibraryProduct product, String soundNameWithExtension,
-    //            String groupName, MachineNode machineNode, File targetDirectory,
-    //            CausticSound causticSound) throws IOException {
-    //
-    //        File effectDirectory = new File(DIR_TEMP_EFFECT);
-    //        effectDirectory.mkdirs();
-    //
-    //        File instrumentDirectory = new File(DIR_TEMP_INSTRUMENT);
-    //        instrumentDirectory.mkdirs();
-    //
-    //        File soundDirectory = new File(DIR_TEMP_SOUND);
-    //        soundDirectory.mkdirs();
-    //
-    //        // create Effect
-    //        // /TempSound/effects/effect-[i].gfx
-    //        LibraryEffect effect = LibraryEffectUtils.createEffect(product, machineNode, causticSound);
-    //
-    //        // create Instrument
-    //        LibraryInstrument instrument = LibraryInstrumentUtils.createInstrument(product,
-    //                machineNode, causticSound);
-    //
-    //        // 
-    //        String name = groupName + "-" + machineNode.getName();
-    //        if (causticSound != null)
-    //            name = causticSound.getDisplayName();
-    //
-    //        CaustkFactory factory = CaustkRuntime.getInstance().getFactory();
-    //
-    //        LibrarySound sound = factory.createLibrarySound(product, name, "");
-    //
-    //        //        LibraryEffectUtils.saveEffect(effect, effectDirectory,
-    //        //                LibraryEffectUtils.toEffectFile(soundDirectory));
-    //
-    //        LibraryInstrumentUtils.saveInstrument(instrument, instrumentDirectory,
-    //                LibraryInstrumentUtils.toInstrumentFile(soundDirectory));
-    //
-    //        sound.setEffect(effect);
-    //        sound.setInstrument(instrument);
-    //
-    //        LibrarySoundUtils._saveSound(sound, soundDirectory, new File(targetDirectory,
-    //                soundNameWithExtension));
-    //
-    //        try {
-    //            Thread.sleep(200);
-    //        } catch (InterruptedException e) {
-    //            e.printStackTrace();
-    //        }
-    //
-    //        FileUtils.deleteDirectory(soundDirectory);
-    //        FileUtils.deleteDirectory(instrumentDirectory);
-    //        return sound;
-    //    }
-
     public static void saveSound(LibrarySound item, LibraryProduct product, File tempDirectory)
             throws IOException {
 
@@ -125,14 +66,6 @@ public class LibrarySoundUtils {
 
         String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
         FileUtils.write(new File(tempDirectory, "manifest.json"), json);
-    }
-
-    public static void _saveSound(LibrarySound sound, File sourceDirectory, File zipFile)
-            throws IOException {
-        String json = CaustkRuntime.getInstance().getFactory().serialize(sound, true);
-        FileUtils.write(new File(sourceDirectory, "manifest.json"), json);
-        ZipCompress compress = new ZipCompress(sourceDirectory);
-        compress.zip(zipFile);
     }
 
     public static void importSound(LibrarySound librarySound, File groupDirectory)

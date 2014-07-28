@@ -25,41 +25,15 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
-import com.teotigraphix.caustk.node.effect.EffectNode;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryEffectUtils {
 
     private static final String MANIFEST_JSON = "manifest.json";
-
-    public static LibraryEffect createEffect(LibraryProduct product, MachineNode machineNode,
-            CausticSound causticSound) {
-        EffectsChannel effects = machineNode.getEffects();
-        EffectNode efffect0 = effects.getEfffect(0);
-        EffectNode efffect1 = effects.getEfffect(1);
-
-        //------------------------------
-
-        String name = machineNode.getName() + "-FX";
-        if (causticSound != null)
-            name = causticSound.getEffect().getDisplayName();
-        String relativePath = "";
-
-        //------------------------------
-        CaustkFactory factory = CaustkRuntime.getInstance().getFactory();
-        LibraryEffect libraryEffect = factory.createLibraryEffect(product, name, relativePath,
-                efffect0, efffect1);
-
-        return libraryEffect;
-    }
 
     public static void saveEffect(LibraryProductItem item, LibraryProduct product,
             File tempDirectory) throws IOException {
@@ -85,9 +59,4 @@ public class LibraryEffectUtils {
 
         return libraryEffect;
     }
-
-    public static File toEffectFile(File parent) {
-        return new File(parent, "effect.gfx");
-    }
-
 }

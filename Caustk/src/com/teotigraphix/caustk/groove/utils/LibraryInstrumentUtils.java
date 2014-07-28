@@ -29,12 +29,10 @@ import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
-import com.teotigraphix.caustk.groove.library.LibraryItem;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
-import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
 /**
@@ -70,13 +68,6 @@ public class LibraryInstrumentUtils {
     // Public State API
     //--------------------------------------------------------------------------
 
-    public static void saveInstrument(LibraryInstrument instrument, File tempDirectory, File file)
-            throws IOException {
-        //String json = getFactory().serialize(instrument, true);
-        //FileUtils.write(file, json);
-        save(instrument, tempDirectory, file);
-    }
-
     public static void saveInstrument(LibraryProductItem item, LibraryProduct product,
             File tempDirectory) throws IOException {
         //File location = resolveAbsoluteArchive(node.getInfo());
@@ -106,56 +97,6 @@ public class LibraryInstrumentUtils {
             // for a machine we don't even know exists
             //machineNode.getPreset().fill();
         }
-
-        //        ZipCompress compress = new ZipCompress(tempDirectory);
-        //        compress.zip(location);
-        //        try {
-        //            Thread.sleep(200);
-        //        } catch (InterruptedException e) {
-        //            // TODO Auto-generated catch block
-        //            e.printStackTrace();
-        //        }
-    }
-
-    public static File save(LibraryItem item, File tempDirectory, File location) throws IOException {
-        //File location = resolveAbsoluteArchive(node.getInfo());
-        String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-
-        //String fileName = FilenameUtils.getBaseName(location.getName());
-        //File sourceDirectory = new File(RuntimeUtils.getApplicationTempDirectory(), fileName);
-        //sourceDirectory.mkdirs();
-        String fileName = "preset";
-        File stateFile = new File(tempDirectory, "manifest.json");
-        FileUtils.writeStringToFile(stateFile, json);
-
-        // XXX construct the archive for the specific node type
-        // for now the only special node type is MachineNode that needs
-        // the presets directory
-        if (item instanceof LibraryInstrument
-                && !(((LibraryInstrument)item).getMachineNode() instanceof VocoderMachine)) {
-            File presetsDirectory = tempDirectory;
-            MachineNode machineNode = ((LibraryInstrument)item).getMachineNode();
-            File file = new File(presetsDirectory, fileName + "."
-                    + machineNode.getType().getExtension());
-            FileUtils.writeByteArrayToFile(file, machineNode.getPreset().getRestoredData());
-            //            machineNode.getPreset().exportPreset(presetsDirectory,
-            //                    machineNode.getPreset().getName());
-            // XXX Must have the bytes for this to work in this state
-            // who knows where the rack is and we can't just "save" a preset
-            // for a machine we don't even know exists
-            //machineNode.getPreset().fill();
-        }
-
-        ZipCompress compress = new ZipCompress(tempDirectory);
-        compress.zip(location);
-        //        try {
-        //            Thread.sleep(200);
-        //        } catch (InterruptedException e) {
-        //            // TODO Auto-generated catch block
-        //            e.printStackTrace();
-        //        }
-
-        return location;
     }
 
     public static LibraryInstrument importInstrument(File soundDirectory) throws CausticException,
