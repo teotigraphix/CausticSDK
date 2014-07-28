@@ -136,4 +136,9 @@ public class LibraryProductUtils {
         String name = item.getFormat().name();
         return name + "s";
     }
+
+    public static void fillGroup(LibraryGroup libraryGroup, File causticFile) {
+        // TODO Auto-generated method stub
+
+    }
 }

@@ -5,6 +5,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.teotigraphix.caustk.core.CaustkFactory;
+import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
+import com.teotigraphix.caustk.groove.library.LibraryProduct;
+
 /**
  * Imported from a .caustic file.
  */
@@ -44,6 +49,17 @@ public class CausticGroup extends CausticItem {
         CausticSound machine = new CausticSound(index, soundName, effectName);
         sounds.put(index, machine);
         return machine;
+    }
+
+    public LibraryGroup create(LibraryProduct product) {
+        LibraryGroup libraryGroup = getFactory().createLibraryGroup(product, getDisplayName(),
+                getPath());
+        libraryGroup.setCausticGroup(this);
+        return libraryGroup;
+    }
+
+    private CaustkFactory getFactory() {
+        return CaustkRuntime.getInstance().getFactory();
     }
 
 }

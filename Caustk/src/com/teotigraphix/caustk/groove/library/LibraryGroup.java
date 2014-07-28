@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 
 public class LibraryGroup extends LibraryProductItem {
@@ -16,6 +17,16 @@ public class LibraryGroup extends LibraryProductItem {
 
     @Tag(21)
     private Map<Integer, LibrarySound> sounds = new TreeMap<Integer, LibrarySound>();
+
+    private transient CausticGroup causticGroup;
+
+    public CausticGroup getCausticGroup() {
+        return causticGroup;
+    }
+
+    public void setCausticGroup(CausticGroup causticGroup) {
+        this.causticGroup = causticGroup;
+    }
 
     @Override
     public LibraryGroupManifest getManifest() {

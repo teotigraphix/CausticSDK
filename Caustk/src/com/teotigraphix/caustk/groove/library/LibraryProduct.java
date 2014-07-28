@@ -14,6 +14,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
+import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 
 public class LibraryProduct extends LibraryItem {
@@ -96,5 +97,9 @@ public class LibraryProduct extends LibraryItem {
 
     public void saveItem(LibraryProductItem item) throws IOException {
         LibraryProductUtils.addArchiveToProduct(item, this);
+    }
+
+    public void fillGroup(LibraryGroup libraryGroup) throws CausticException {
+        LibraryGroupUtils.fillGroup(this, libraryGroup);
     }
 }
