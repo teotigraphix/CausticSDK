@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.caustk.groove.utils;
 
@@ -7,14 +25,11 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
-import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
@@ -26,58 +41,58 @@ public class LibrarySoundUtils {
 
     private static final String DIR_TEMP_SOUND = "C:\\Users\\Teoti\\Desktop\\TempSound";
 
-    public static LibrarySound createSound(LibraryProduct product, String soundNameWithExtension,
-            String groupName, MachineNode machineNode, File targetDirectory,
-            CausticSound causticSound) throws IOException {
-
-        File effectDirectory = new File(DIR_TEMP_EFFECT);
-        effectDirectory.mkdirs();
-
-        File instrumentDirectory = new File(DIR_TEMP_INSTRUMENT);
-        instrumentDirectory.mkdirs();
-
-        File soundDirectory = new File(DIR_TEMP_SOUND);
-        soundDirectory.mkdirs();
-
-        // create Effect
-        // /TempSound/effects/effect-[i].gfx
-        LibraryEffect effect = LibraryEffectUtils.createEffect(product, machineNode, causticSound);
-
-        // create Instrument
-        LibraryInstrument instrument = LibraryInstrumentUtils.createInstrument(product,
-                machineNode, causticSound);
-
-        // 
-        String name = groupName + "-" + machineNode.getName();
-        if (causticSound != null)
-            name = causticSound.getDisplayName();
-
-        CaustkFactory factory = CaustkRuntime.getInstance().getFactory();
-
-        LibrarySound sound = factory.createLibrarySound(product, name, "");
-
-        //        LibraryEffectUtils.saveEffect(effect, effectDirectory,
-        //                LibraryEffectUtils.toEffectFile(soundDirectory));
-
-        LibraryInstrumentUtils.saveInstrument(instrument, instrumentDirectory,
-                LibraryInstrumentUtils.toInstrumentFile(soundDirectory));
-
-        sound.setEffect(effect);
-        sound.setInstrument(instrument);
-
-        LibrarySoundUtils._saveSound(sound, soundDirectory, new File(targetDirectory,
-                soundNameWithExtension));
-
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        FileUtils.deleteDirectory(soundDirectory);
-        FileUtils.deleteDirectory(instrumentDirectory);
-        return sound;
-    }
+    //    public static LibrarySound __createSound(LibraryProduct product, String soundNameWithExtension,
+    //            String groupName, MachineNode machineNode, File targetDirectory,
+    //            CausticSound causticSound) throws IOException {
+    //
+    //        File effectDirectory = new File(DIR_TEMP_EFFECT);
+    //        effectDirectory.mkdirs();
+    //
+    //        File instrumentDirectory = new File(DIR_TEMP_INSTRUMENT);
+    //        instrumentDirectory.mkdirs();
+    //
+    //        File soundDirectory = new File(DIR_TEMP_SOUND);
+    //        soundDirectory.mkdirs();
+    //
+    //        // create Effect
+    //        // /TempSound/effects/effect-[i].gfx
+    //        LibraryEffect effect = LibraryEffectUtils.createEffect(product, machineNode, causticSound);
+    //
+    //        // create Instrument
+    //        LibraryInstrument instrument = LibraryInstrumentUtils.createInstrument(product,
+    //                machineNode, causticSound);
+    //
+    //        // 
+    //        String name = groupName + "-" + machineNode.getName();
+    //        if (causticSound != null)
+    //            name = causticSound.getDisplayName();
+    //
+    //        CaustkFactory factory = CaustkRuntime.getInstance().getFactory();
+    //
+    //        LibrarySound sound = factory.createLibrarySound(product, name, "");
+    //
+    //        //        LibraryEffectUtils.saveEffect(effect, effectDirectory,
+    //        //                LibraryEffectUtils.toEffectFile(soundDirectory));
+    //
+    //        LibraryInstrumentUtils.saveInstrument(instrument, instrumentDirectory,
+    //                LibraryInstrumentUtils.toInstrumentFile(soundDirectory));
+    //
+    //        sound.setEffect(effect);
+    //        sound.setInstrument(instrument);
+    //
+    //        LibrarySoundUtils._saveSound(sound, soundDirectory, new File(targetDirectory,
+    //                soundNameWithExtension));
+    //
+    //        try {
+    //            Thread.sleep(200);
+    //        } catch (InterruptedException e) {
+    //            e.printStackTrace();
+    //        }
+    //
+    //        FileUtils.deleteDirectory(soundDirectory);
+    //        FileUtils.deleteDirectory(instrumentDirectory);
+    //        return sound;
+    //    }
 
     public static void saveSound(LibrarySound item, LibraryProduct product, File tempDirectory)
             throws IOException {

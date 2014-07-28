@@ -25,11 +25,11 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
+import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
-import com.teotigraphix.caustk.groove.utils.LibrarySoundUtils;
-import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -41,15 +41,18 @@ public class CausticFileImporter {
 
         xstream = new XStream(new DomDriver());
         xstream.alias("group", CausticGroup.class);
+        xstream.useAttributeFor(CausticGroup.class, "path");
         xstream.useAttributeFor(CausticGroup.class, "sourceFile");
         xstream.useAttributeFor(CausticGroup.class, "displayName");
 
         xstream.alias("sound", CausticSound.class);
         xstream.addImplicitMap(CausticGroup.class, "sounds", CausticSound.class, "index");
 
+        xstream.useAttributeFor(CausticSound.class, "path");
         xstream.useAttributeFor(CausticSound.class, "index");
         xstream.useAttributeFor(CausticSound.class, "displayName");
 
+        xstream.useAttributeFor(CausticEffect.class, "path");
         xstream.useAttributeFor(CausticEffect.class, "displayName");
 
         //String xml = xstream.toXML(causticGroup);
@@ -62,6 +65,7 @@ public class CausticFileImporter {
         return causticGroup;
     }
 
+    @SuppressWarnings("unused")
     public void addToDirectory(LibraryProduct product, CausticGroup causticGroup)
             throws IOException, CausticException {
 
@@ -69,59 +73,46 @@ public class CausticFileImporter {
 
         File groupsDirectory = new File(productDirectory, "Groups");
         File soundsDirectory = new File(productDirectory, "Sounds");
-        //        File instrumentsDirectory = new File(productDirectory, "Instruments");
-        //        File effectsDirectory = new File(productDirectory, "Effects");
+        File instrumentsDirectory = new File(productDirectory, "Instruments");
+        File effectsDirectory = new File(productDirectory, "Effects");
+
+        LibraryGroup libraryGroup = causticGroup.create(product);
+        product.fillGroup(libraryGroup);
 
         // export Group
-        exportGroup(product, new File(groupsDirectory, causticGroup.getDisplayName() + ".ggrp"),
-                causticGroup);
+        product.addItem(libraryGroup);
+        product.saveItem(libraryGroup);
 
         // export Sounds
-        exportSounds(product, causticGroup, soundsDirectory);
-
-        // export Instrument
+        for (LibrarySound librarySound : libraryGroup.getSounds()) {
+            product.addItem(librarySound);
+            product.saveItem(librarySound);
+        }
 
         // export Effect
-
-    }
-
-    private void exportSounds(LibraryProduct product, CausticGroup causticGroup,
-            File soundsDirectory) throws IOException {
-
-        for (CausticSound causticSound : causticGroup.getSounds().values()) {
-            MachineNode machineNode = CaustkRuntime.getInstance().getRack()
-                    .getMachine(causticSound.getIndex());
-            int index = machineNode.getIndex();
-
-            File sourceDirectory = new File(soundsDirectory, "__sound__" + index);
-            //            File zipFile = new File(soundsDirectory, causticSound.getDisplayName() + ".gsnd");
-
-            String soundName = causticSound.getDisplayName() + ".gsnd";
-
-            // create Sound 
-            @SuppressWarnings("unused")
-            LibrarySound sound = LibrarySoundUtils.createSound(product, soundName, causticGroup
-                    .getDisplayName(), machineNode, soundsDirectory,
-                    causticGroup.getSounds().get(index));
-
-            //group.addSound(index, sound);
+        for (LibrarySound librarySound : libraryGroup.getSounds()) {
+            LibraryEffect libraryEffect = librarySound.getEffect();
+            product.addItem(libraryEffect);
+            product.saveItem(libraryEffect);
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            FileUtils.deleteDirectory(sourceDirectory);
         }
-    }
 
-    private void exportGroup(LibraryProduct product, File targetFile, CausticGroup causticGroup)
-            throws IOException, CausticException {
-        //        File causticFile = causticGroup.getSourceFile();
-        //
-        //        @SuppressWarnings("unused")
-        //        LibraryGroup libraryGroup = LibraryGroupUtils.exportGroup(product, causticFile, targetFile,
-        //                causticGroup);
+        // export Instrument
+        for (LibrarySound librarySound : libraryGroup.getSounds()) {
+            LibraryInstrument libraryInstrument = librarySound.getInstrument();
+            product.addItem(libraryInstrument);
+            product.saveItem(libraryInstrument);
+
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

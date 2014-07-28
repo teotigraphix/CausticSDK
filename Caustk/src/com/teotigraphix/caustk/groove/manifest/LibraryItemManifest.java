@@ -171,6 +171,10 @@ public class LibraryItemManifest {
         return relativePath;
     }
 
+    public void setRelativePath(String relativePath) {
+        this.relativePath = relativePath;
+    }
+
     //--------------------------------------------------------------------------
     //  Properties
     //--------------------------------------------------------------------------
