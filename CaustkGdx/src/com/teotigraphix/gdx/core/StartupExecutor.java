@@ -24,9 +24,10 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.caustk.node.CaustkFactory;
 import com.teotigraphix.caustk.node.Library;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.gdx.app.ICaustkApplication;
@@ -70,14 +71,15 @@ public class StartupExecutor {
      * Creates the application root and sets {@link RuntimeUtils} session
      * properties.
      * 
-     * @param gdxApplication The main application.
+     * @param application The main application.
      * @throws CausticException the caustic folder does not exist, is caustic
      *             installed?
      * @throws IOException
      * @see {@link RuntimeUtils#STORAGE_ROOT}
      * @see {@link RuntimeUtils#APP_ROOT}
      */
-    public CaustkRuntime create(ICaustkApplication gdxApplication) throws CausticException, IOException {
+    public ICaustkRuntime create(ICaustkApplication application) throws CausticException,
+            IOException {
         File root = new File(Gdx.files.getExternalStoragePath());
         File caustic = new File(root, "caustic");
         if (!caustic.exists()) {
@@ -89,8 +91,7 @@ public class StartupExecutor {
         }
 
         RuntimeUtils.STORAGE_ROOT = root.getAbsolutePath();
-        RuntimeUtils.APP_ROOT = new File(root, gdxApplication.getApplicationName())
-                .getAbsolutePath();
+        RuntimeUtils.APP_ROOT = new File(root, application.getApplicationName()).getAbsolutePath();
 
         return runtime;
     }

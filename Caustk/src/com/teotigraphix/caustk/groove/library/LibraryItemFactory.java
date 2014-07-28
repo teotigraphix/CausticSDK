@@ -21,9 +21,9 @@ package com.teotigraphix.caustk.groove.library;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.core.CaustkFactory;
+import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
-import com.teotigraphix.caustk.node.CaustkFactory;
-import com.teotigraphix.caustk.node.CaustkFactoryChildBase;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 
 /**

@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.node.effect;
 
-import com.teotigraphix.caustk.node.CaustkFactory;
-import com.teotigraphix.caustk.node.CaustkFactoryChildBase;
+import com.teotigraphix.caustk.core.CaustkFactory;
+import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
 
 /**
  * The {@link EffectNodeFactory} for creating {@link EffectNode}s.

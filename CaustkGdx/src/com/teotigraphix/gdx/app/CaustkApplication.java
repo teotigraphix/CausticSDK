@@ -24,9 +24,9 @@ import java.io.IOException;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRack;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkLogger;
+import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.gdx.core.StartupExecutor;
 
@@ -45,7 +45,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private CaustkRuntime runtime;
+    private ICaustkRuntime runtime;
 
     private StartupExecutor startupExecutor;
 
@@ -59,7 +59,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     }
 
     @Override
-    public CaustkRack getRack() {
+    public ICaustkRack getRack() {
         return runtime.getRack();
     }
 

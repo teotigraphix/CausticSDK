@@ -17,7 +17,9 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node;
+package com.teotigraphix.caustk.core.factory;
+
+import com.teotigraphix.caustk.core.CaustkFactory;
 
 /**
  * The {@link CaustkFactoryChildBase}, base factory class for sub factories in the

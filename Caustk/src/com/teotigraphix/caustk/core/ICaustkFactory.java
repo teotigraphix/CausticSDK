@@ -23,11 +23,6 @@ package com.teotigraphix.caustk.core;
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface ICaustkRuntime {
+public interface ICaustkFactory {
 
-    ICaustkLogger getLogger();
-
-    ICaustkRack getRack();
-
-    ICaustkFactory getFactory();
 }

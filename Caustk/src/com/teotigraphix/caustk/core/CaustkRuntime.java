@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core;
 
-import com.teotigraphix.caustk.node.CaustkFactory;
 import com.teotigraphix.caustk.node.ICaustkNode;
 
 /**

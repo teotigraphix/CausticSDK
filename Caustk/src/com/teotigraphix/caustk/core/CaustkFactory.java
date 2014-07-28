@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node;
+package com.teotigraphix.caustk.core;
 
 import java.io.File;
 import java.lang.reflect.Type;
@@ -29,13 +29,12 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryItemFactory;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.node.ICaustkNode;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
 import com.teotigraphix.caustk.node.effect.BitcrusherEffect;
 import com.teotigraphix.caustk.node.effect.CabinetSimulatorEffect;
@@ -81,7 +80,7 @@ import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class CaustkFactory {
+public class CaustkFactory implements ICaustkFactory {
 
     private CaustkRuntime runtime;
 
