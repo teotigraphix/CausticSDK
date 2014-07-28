@@ -41,18 +41,26 @@ public class LibraryInstrument extends LibraryProductItem {
     @Tag(21)
     private MachineNode machineNode;
 
+    //--------------------------------------------------------------------------
+    // Transient :: Variables
+    //--------------------------------------------------------------------------
+
     private transient LibrarySound sound;
 
     private transient File pendingPresetFile;
+
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // manifest
+    //----------------------------------
 
     @Override
     public LibraryInstrumentManifest getManifest() {
         return manifest;
     }
-
-    //--------------------------------------------------------------------------
-    // Public Property API
-    //--------------------------------------------------------------------------
 
     //----------------------------------
     // pendingPresetFile

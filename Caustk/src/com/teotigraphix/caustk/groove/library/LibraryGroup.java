@@ -30,13 +30,25 @@ import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 
 public class LibraryGroup extends LibraryProductItem {
 
-    @Tag(20)
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(10)
     private LibraryGroupManifest manifest;
 
-    @Tag(21)
+    @Tag(11)
     private Map<Integer, LibrarySound> sounds = new TreeMap<Integer, LibrarySound>();
 
     private transient CausticGroup causticGroup;
+
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // causticGroup
+    //----------------------------------
 
     public CausticGroup getCausticGroup() {
         return causticGroup;
@@ -47,22 +59,44 @@ public class LibraryGroup extends LibraryProductItem {
         setReletivePath(causticGroup.getPath());
     }
 
+    //----------------------------------
+    // manifest
+    //----------------------------------
+
     @Override
     public LibraryGroupManifest getManifest() {
         return manifest;
+    }
+
+    //----------------------------------
+    // sounds
+    //----------------------------------
+
+    public Collection<LibrarySound> getSounds() {
+        return sounds.values();
     }
 
     public LibrarySound getSound(int index) {
         return sounds.get(index);
     }
 
-    public Collection<LibrarySound> getSounds() {
-        return sounds.values();
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialized.
+     */
+    LibraryGroup() {
     }
 
     public LibraryGroup(LibraryGroupManifest manifest) {
         this.manifest = manifest;
     }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
     public void addSound(int index, LibrarySound sound) throws CausticException {
         if (sounds.containsKey(index))

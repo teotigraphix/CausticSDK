@@ -24,22 +24,56 @@ import java.util.UUID;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public abstract class LibraryItem {
 
+    /**
+     * The library item's descriptor, defines all the unique properties of this
+     * item.
+     * 
+     * @return Each subclass of {@link LibraryItem} will return its own manifest
+     *         class type.
+     */
+    public abstract LibraryItemManifest getManifest();
+
+    //--------------------------------------------------------------------------
+    // Manifest Proxy :: Properties
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns the {@link UUID} that was assigned when this library item was
+     * created.
+     */
     public final UUID getId() {
         return getManifest().getId();
     }
 
-    public abstract LibraryItemManifest getManifest();
-
+    /**
+     * Returns the {@link LibraryItemFormat} of this library item.
+     */
     public final LibraryItemFormat getFormat() {
         return getManifest().getFormat();
     }
 
+    /**
+     * The file name of the library item using the
+     * {@link LibraryItemManifest#getName()} and
+     * {@link LibraryItemManifest#getExtension()}
+     * 
+     * @return E.g <code>MySound.gsnd</code>
+     */
     public String getFileName() {
         return getManifest().getName() + "." + getManifest().getExtension();
     }
 
+    /**
+     * The relative path within the containing {@link LibraryProduct}.
+     * 
+     * @return E.g <code>Synth/Lead</code>
+     */
     public String getRelativePath() {
         return getManifest().getRelativePath();
     }
@@ -62,5 +96,4 @@ public abstract class LibraryItem {
     public String toString() {
         return CaustkRuntime.getInstance().getFactory().serialize(this, true);
     }
-
 }

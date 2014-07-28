@@ -21,25 +21,60 @@ package com.teotigraphix.caustk.groove.manifest;
 
 import java.io.File;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibraryProductManifest extends LibraryItemManifest {
 
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    @Tag(20)
     private File directory;
 
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  directory
+    //----------------------------------
+
+    /**
+     * Returns the absolute directory of the library product.
+     */
+    public File getDirectory() {
+        return directory;
+    }
+
+    /**
+     * Whether the product directory exists on disk.
+     */
     public boolean exists() {
         return (directory != null && directory.exists());
     }
 
-    public File getDirectory() {
-        return directory;
-    }
+    //--------------------------------------------------------------------------
+    // Overridden Public :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public String getRelativePath() {
         throw new UnsupportedOperationException();
     }
 
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialization.
+     */
     public LibraryProductManifest(String name, File directory) {
         super(LibraryItemFormat.Product, name, null);
         this.directory = directory;

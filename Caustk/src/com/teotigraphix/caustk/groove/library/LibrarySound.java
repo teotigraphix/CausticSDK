@@ -24,6 +24,10 @@ import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibrarySound extends LibraryProductItem {
 
     //--------------------------------------------------------------------------
@@ -36,9 +40,15 @@ public class LibrarySound extends LibraryProductItem {
     @Tag(21)
     private int index = -1;
 
+    @Tag(22)
     private LibraryInstrumentManifest instrumentManifest;
 
+    @Tag(23)
     private LibraryEffectManifest effectManifest;
+
+    //--------------------------------------------------------------------------
+    // Transient :: Variables
+    //--------------------------------------------------------------------------
 
     private transient LibraryGroup group;
 
@@ -46,10 +56,22 @@ public class LibrarySound extends LibraryProductItem {
 
     private transient LibraryInstrument instrument;
 
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // manifest
+    //----------------------------------
+
     @Override
     public LibrarySoundManifest getManifest() {
         return manifest;
     }
+
+    //----------------------------------
+    // index
+    //----------------------------------
 
     public int getIndex() {
         return index;
@@ -59,13 +81,25 @@ public class LibrarySound extends LibraryProductItem {
         this.index = index;
     }
 
+    //----------------------------------
+    // effectManifest
+    //----------------------------------
+
     public LibraryEffectManifest getEffectManifest() {
         return effectManifest;
     }
 
+    //----------------------------------
+    // instrumentManifest
+    //----------------------------------
+
     public LibraryInstrumentManifest getInstrumentManifest() {
         return instrumentManifest;
     }
+
+    //----------------------------------
+    // group
+    //----------------------------------
 
     public LibraryGroup getGroup() {
         return group;
@@ -74,6 +108,10 @@ public class LibrarySound extends LibraryProductItem {
     public void setGroup(LibraryGroup group) {
         this.group = group;
     }
+
+    //----------------------------------
+    // effect
+    //----------------------------------
 
     public LibraryEffect getEffect() {
         return effect;
@@ -89,6 +127,10 @@ public class LibrarySound extends LibraryProductItem {
         effectManifest = effect.getManifest();
     }
 
+    //----------------------------------
+    // instrument
+    //----------------------------------
+
     public void setInstrument(LibraryInstrument instrument) {
         LibraryInstrument old = this.instrument;
         if (old != null)
@@ -101,6 +143,16 @@ public class LibrarySound extends LibraryProductItem {
 
     public LibraryInstrument getInstrument() {
         return instrument;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialized.
+     */
+    LibrarySound() {
     }
 
     public LibrarySound(LibrarySoundManifest manifest) {

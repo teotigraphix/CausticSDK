@@ -24,18 +24,43 @@ import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibraryInstrumentManifest extends LibraryItemManifest {
+
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
 
     @Tag(10)
     private MachineType machineType;
 
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    //  machineType
+    //----------------------------------
+
     public MachineType getMachineType() {
         return machineType;
+    }
+
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialization.
+     */
+    LibraryInstrumentManifest() {
     }
 
     public LibraryInstrumentManifest(String name, String relativePath, MachineNode machineNode) {
         super(LibraryItemFormat.Instrument, name, relativePath);
         this.machineType = machineNode.getType();
     }
-
 }

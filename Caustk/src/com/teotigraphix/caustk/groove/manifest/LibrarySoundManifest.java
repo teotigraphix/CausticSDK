@@ -21,7 +21,21 @@ package com.teotigraphix.caustk.groove.manifest;
 
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibrarySoundManifest extends LibraryItemManifest {
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialized.
+     */
+    LibrarySoundManifest() {
+    }
 
     public LibrarySoundManifest(String name, String relativePath) {
         super(LibraryItemFormat.Sound, name, relativePath);

@@ -35,34 +35,57 @@ import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibraryProduct extends LibraryItem {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(20)
+    @Tag(10)
     private LibraryProductManifest manifest;
 
-    // has to describe its entire contents without having
-    // the contents extracted, so what do I need to do this?
-
-    @Tag(21)
+    @Tag(11)
     private List<LibraryItemManifest> list = new ArrayList<LibraryItemManifest>();
+
+    //--------------------------------------------------------------------------
+    // Public Property API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // manifest
+    //----------------------------------
 
     @Override
     public LibraryProductManifest getManifest() {
         return manifest;
     }
 
+    //----------------------------------
+    // directory
+    //----------------------------------
+
+    /**
+     * Returns the absolute directory of the library product.
+     */
     public final File getDirectory() {
         return manifest.getDirectory();
     }
 
     //----------------------------------
-    // Descriptors
+    // descriptors
     //----------------------------------
 
+    /**
+     * Returns a collection of {@link LibraryItemManifest} instances that match
+     * the {@link LibraryItemFormat}.
+     * 
+     * @param format The format to match manifest instances against.
+     * @return A collection of manifests matching the passed format.
+     */
     public Collection<LibraryItemManifest> getDescriptors(LibraryItemFormat format) {
         ArrayList<LibraryItemManifest> result = new ArrayList<LibraryItemManifest>();
         for (LibraryItemManifest manifest : list) {
@@ -72,6 +95,13 @@ public class LibraryProduct extends LibraryItem {
         return result;
     }
 
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialized.
+     */
     LibraryProduct() {
     }
 
@@ -80,20 +110,22 @@ public class LibraryProduct extends LibraryItem {
         this.manifest = manifest;
     }
 
-    public LibraryItemManifest addItem(LibraryProductItem item) throws CausticException {
-        // if (map.containsKey(libraryItem.getId()))
-        //    throw new CausticException("Product contains item.");
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
-        LibraryItemManifest manifest = item.getManifest();
-        list.add(manifest);
-
-        return manifest;
-    }
-
+    /**
+     * Returns whether this library product exists on disk.
+     */
     public final boolean exists() {
         return manifest.exists();
     }
 
+    /**
+     * Creates the library product's directory.
+     * 
+     * @throws IOException Directory exists
+     */
     public final void create() throws IOException {
         if (exists())
             throw new IOException("Directory exists; " + getDirectory());
@@ -101,6 +133,11 @@ public class LibraryProduct extends LibraryItem {
         FileUtils.forceMkdir(getDirectory());
     }
 
+    /**
+     * Destroys the library product's directory.
+     * 
+     * @throws IOException Directory does not exist
+     */
     public final void destroy() throws IOException {
         if (!exists())
             throw new IOException("Directory does not exist; " + getDirectory());
@@ -108,15 +145,48 @@ public class LibraryProduct extends LibraryItem {
         FileUtils.forceDelete(getDirectory());
     }
 
+    /**
+     * Adds a {@link LibraryProductItem} to the library product.
+     * 
+     * @param item The product item, Project, Group, Sound, IInstrument, Effect.
+     * @throws CausticException
+     */
+    public void addItem(LibraryProductItem item) throws CausticException {
+        if (list.contains(item))
+            throw new CausticException("Product contains item.");
+
+        LibraryItemManifest manifest = item.getManifest();
+        list.add(manifest);
+    }
+
+    /**
+     * Resolves the product item's internal product url.
+     * 
+     * @param item The product item.
+     */
     public final File resolveInternalArchive(LibraryProductItem item) {
         File archive = new File(getDirectory(), item.getProductPath().getPath());
         return archive;
     }
 
+    /**
+     * Saves the product item to disk within the product's directory.
+     * 
+     * @param item The product item.
+     * @throws IOException
+     */
     public void saveItem(LibraryProductItem item) throws IOException {
         LibraryProductUtils.addArchiveToProduct(item, this);
     }
 
+    /**
+     * Fills the {@link LibraryGroup} with its elements parsed from a native
+     * <code>.caustic</code> source file.
+     * 
+     * @param libraryGroup The library group to fill and populate with
+     *            {@link LibraryItem}s parsed from a .caustic file.
+     * @throws CausticException
+     */
     public void fillGroup(LibraryGroup libraryGroup) throws CausticException {
         LibraryGroupUtils.fillGroup(this, libraryGroup);
     }

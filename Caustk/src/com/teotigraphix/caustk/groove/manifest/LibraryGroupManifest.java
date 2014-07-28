@@ -21,10 +21,23 @@ package com.teotigraphix.caustk.groove.manifest;
 
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 
+/**
+ * @author Michael Schmalle
+ * @since 1.0
+ */
 public class LibraryGroupManifest extends LibraryItemManifest {
+
+    //--------------------------------------------------------------------------
+    // Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialized.
+     */
+    LibraryGroupManifest() {
+    }
 
     public LibraryGroupManifest(String name, String relativePath) {
         super(LibraryItemFormat.Group, name, relativePath);
     }
-
 }
