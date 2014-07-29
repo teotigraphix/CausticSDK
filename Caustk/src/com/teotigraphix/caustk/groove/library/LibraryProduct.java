@@ -114,11 +114,27 @@ public class LibraryProduct extends LibraryItem {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
     /**
      * Returns whether this library product exists on disk.
      */
     public final boolean exists() {
         return manifest.exists();
+    }
+
+    public LibraryGroup loadGroup(LibraryItemManifest manifest) throws CausticException,
+            IOException {
+        File archive = new File(getDirectory(), manifest.getProductPath().getPath());
+        //String json = ZipUtils.readZipString(archive, new File("manifest.json"));
+        //LibraryGroup instance = SerializeUtils.unpack(json, LibraryGroup.class);
+        // need to then load the sounds which will load the instrument and effects
+
+        LibraryGroup instance = LibraryGroupUtils.importGroup(archive);
+
+        return instance;
     }
 
     /**
@@ -190,4 +206,5 @@ public class LibraryProduct extends LibraryItem {
     public void fillGroup(LibraryGroup libraryGroup) throws CausticException {
         LibraryGroupUtils.fillGroup(this, libraryGroup);
     }
+
 }

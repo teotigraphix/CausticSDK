@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.node.Library;
 
@@ -105,6 +106,18 @@ public class LibraryItemManifest {
 
     public final LibraryItemFormat getFormat() {
         return format;
+    }
+
+    public File getProductPath() {
+        final String formatDirectoryName = LibraryProductUtils.toItemBaseDirectoryName(this);
+        final File base = getRelativePath() != null ? new File(formatDirectoryName,
+                getRelativePath()) : new File(formatDirectoryName);
+        final File productPath = new File(base, getFileName());
+        return productPath;
+    }
+
+    private String getFileName() {
+        return getName() + "." + format.getExtension();
     }
 
     //    protected void setFormat(LibraryItemFormat format) {

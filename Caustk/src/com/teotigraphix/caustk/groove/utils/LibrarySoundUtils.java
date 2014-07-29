@@ -53,7 +53,7 @@ public class LibrarySoundUtils {
         compress.zip(new File(tempDirectory, "effect.gfx"));
 
         compress = new ZipCompress(tempInstrumentDir);
-        compress.zip(new File(tempDirectory, "instrument.gfx"));
+        compress.zip(new File(tempDirectory, "instrument.ginst"));
 
         try {
             Thread.sleep(100);

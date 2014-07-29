@@ -122,7 +122,8 @@ public class LibraryGroupUtils {
             relativePath = causticSound.getPath();
         }
 
-        LibraryEffect libraryEffect = fillEffect(machineNode.getEffects(), product, causticSound);
+        LibraryEffect libraryEffect = fillEffect(machineNode.getEffects(), product,
+                machineNode.getName(), groupName, causticSound);
         LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, name, groupName);
 
         LibrarySound librarySound = getFactory().createLibrarySound(product, name, relativePath);
@@ -134,14 +135,17 @@ public class LibraryGroupUtils {
     }
 
     private static LibraryEffect fillEffect(EffectsChannel effectsChannel, LibraryProduct product,
-            CausticSound causticSound) {
-        CausticEffect causticEffect = causticSound.getEffect();
-        String name = "";
-        String relativePath = "";
-        if (causticEffect != null) {
-            name = causticEffect.getDisplayName();
-            relativePath = causticEffect.getPath();
+            String machineName, String groupName, CausticSound causticSound) {
+        String name = machineName + " FX";
+        String relativePath = groupName;
+        if (causticSound != null) {
+            CausticEffect causticEffect = causticSound.getEffect();
+            if (causticEffect != null) {
+                name = causticEffect.getDisplayName();
+                relativePath = causticEffect.getPath();
+            }
         }
+
         EffectNode efffect0 = effectsChannel.getEfffect(0);
         EffectNode efffect1 = effectsChannel.getEfffect(1);
 

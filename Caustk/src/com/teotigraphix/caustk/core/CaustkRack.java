@@ -230,6 +230,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     public RackNode create(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
             boolean importPatterns, boolean importMixer) throws CausticException, IOException {
         RackNode rackNode = create();
+        setRackNode(rackNode);
 
         // create machines
         for (LibrarySound librarySound : libraryGroup.getSounds()) {

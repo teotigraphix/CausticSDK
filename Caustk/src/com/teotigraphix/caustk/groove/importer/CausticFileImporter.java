@@ -21,19 +21,28 @@ package com.teotigraphix.caustk.groove.importer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
+import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
+import com.teotigraphix.caustk.utils.SerializeUtils;
+import com.teotigraphix.caustk.utils.ZipCompress;
+import com.teotigraphix.caustk.utils.ZipUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class CausticFileImporter {
+
+    private static final String MANIFEST_JSON = "manifest.json";
 
     private XStream xstream;
 
@@ -66,8 +75,8 @@ public class CausticFileImporter {
     }
 
     @SuppressWarnings("unused")
-    public void addToDirectory(LibraryProduct product, CausticGroup causticGroup)
-            throws IOException, CausticException {
+    public void addToDirectory(LibraryProduct product, CausticGroup causticGroup,
+            boolean exportAsGroup) throws IOException, CausticException {
 
         File productDirectory = product.getDirectory();
 
@@ -79,9 +88,11 @@ public class CausticFileImporter {
         LibraryGroup libraryGroup = causticGroup.create(product);
         product.fillGroup(libraryGroup);
 
+        //if (exportAsGroup) {
         // export Group
         product.addItem(libraryGroup);
         product.saveItem(libraryGroup);
+        //} else {
 
         // export Sounds
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
@@ -114,5 +125,62 @@ public class CausticFileImporter {
                 e.printStackTrace();
             }
         }
+        //}
     }
+
+    public LibraryProduct loadProduct(File productArchive) throws CausticException {
+        String json = ZipUtils.readZipString(productArchive, new File(MANIFEST_JSON));
+        LibraryProduct product = SerializeUtils.unpack(json, LibraryProduct.class);
+        return product;
+    }
+
+    public void exportProduct(final LibraryProduct product, File targetArchive) throws IOException,
+            CausticException {
+        final File productDirectory = product.getDirectory();
+        File manifestFile = new File(productDirectory, MANIFEST_JSON);
+        String json = CaustkRuntime.getInstance().getFactory().serialize(product, true);
+        FileUtils.write(manifestFile, json);
+        ZipCompress compress = new ZipCompress(productDirectory);
+        compress.zip(targetArchive);
+    }
+
+    public void packageProduct(final LibraryProduct product, File targetArchive)
+            throws IOException, CausticException {
+        final File productDirectory = product.getDirectory();
+
+        Collection<File> files = FileUtils.listFiles(productDirectory, new IOFileFilter() {
+            // File
+            @Override
+            public boolean accept(File directory, String filename) {
+                System.out.println("File1: " + filename);
+                return true;
+            }
+
+            @Override
+            public boolean accept(File pathname) {
+                //System.out.println("File2: " + pathname);
+                return true;
+            }
+        }, new IOFileFilter() {
+            // Directory
+            @Override
+            public boolean accept(File directory, String filename) {
+                System.out.println("Directory1: " + filename);
+                return true;
+            }
+
+            @Override
+            public boolean accept(File pathname) {
+                System.out.println("Directory2: " + pathname);
+                return true;
+            }
+        });
+
+        for (File file : files) {
+            LibraryProductUtils.parse(file, product);
+        }
+
+        exportProduct(product, targetArchive);
+    }
+
 }

@@ -34,6 +34,7 @@ import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
+import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
@@ -84,6 +85,11 @@ public class LibraryProductUtils {
         final String json = ZipUtils.readZipString(archiveFile, new File(MANIFEST_JSON));
         final LibraryProductItem libraryItem = SerializeUtils.unpack(json, clazz);
         product.addItem(libraryItem);
+    }
+
+    public static String toItemBaseDirectoryName(LibraryItemManifest manifest) {
+        String name = manifest.getFormat().name();
+        return name + "s";
     }
 
     public static String toItemBaseDirectoryName(LibraryProductItem item) {
