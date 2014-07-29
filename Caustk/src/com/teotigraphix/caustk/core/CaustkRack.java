@@ -230,41 +230,58 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     public RackNode create(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
             boolean importPatterns, boolean importMixer) throws CausticException, IOException {
         RackNode rackNode = create();
+        // remove all machines, clear rack
         setRackNode(rackNode);
 
         // create machines
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
-            LibraryEffect effect = librarySound.getEffect();
-            LibraryInstrument instrument = librarySound.getInstrument();
-
-            PatternSequencerComponent oldSequencer = instrument.getMachineNode().getSequencer();
-            MixerChannel oldMixer = instrument.getMachineNode().getMixer();
+            LibraryEffect libraryEffect = librarySound.getEffect();
+            LibraryInstrument libraryInstrument = librarySound.getInstrument();
 
             int index = librarySound.getIndex();
-            MachineType machineType = instrument.getMachineNode().getType();
-            String name = instrument.getMachineNode().getName();
-            MachineNode machineNode = rackNode.createMachine(index, machineType, name);
+            MachineType machineType = libraryInstrument.getMachineNode().getType();
+            String machineName = libraryInstrument.getMachineNode().getName();
+            MachineNode machineNode = rackNode.createMachine(index, machineType, machineName);
 
-            instrument.setMachineNode(machineNode);
+            libraryInstrument.setMachineNode(machineNode);
 
             if (importPreset) {
-                machineNode.getPreset().load(instrument.getPendingPresetFile());
+                loadPrest(machineNode, libraryInstrument);
             }
 
             if (importEffects) {
-                machineNode.getEffects().updateEffects(effect.get(0), effect.get(1));
+                loadEffects(machineNode, libraryEffect);
             }
 
             if (importMixer) {
-                machineNode.updateMixer(oldMixer);
+                loadMixerChannel(machineNode, libraryInstrument);
             }
 
             if (importPatterns) {
-                machineNode.updateSequencer(oldSequencer);
+                loadPatternSequencer(machineNode, libraryInstrument);
             }
         }
 
         return rackNode;
+    }
+
+    public void loadPrest(MachineNode machineNode, LibraryInstrument libraryInstrument)
+            throws IOException {
+        machineNode.getPreset().load(libraryInstrument.getPendingPresetFile());
+    }
+
+    public void loadEffects(MachineNode machineNode, LibraryEffect libraryEffect) {
+        machineNode.getEffects().updateEffects(libraryEffect.get(0), libraryEffect.get(1));
+    }
+
+    public void loadMixerChannel(MachineNode machineNode, LibraryInstrument libraryInstrument) {
+        MixerChannel oldMixer = libraryInstrument.getMachineNode().getMixer();
+        machineNode.updateMixer(oldMixer);
+    }
+
+    public void loadPatternSequencer(MachineNode machineNode, LibraryInstrument libraryInstrument) {
+        PatternSequencerComponent oldSequencer = machineNode.getSequencer();
+        machineNode.updateSequencer(oldSequencer);
     }
 
     @Override
