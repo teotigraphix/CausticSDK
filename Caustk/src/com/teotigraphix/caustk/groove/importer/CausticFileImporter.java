@@ -74,6 +74,23 @@ public class CausticFileImporter {
         return causticGroup;
     }
 
+    /**
+     * Adds the contents of the {@link CausticGroup} to the
+     * {@link LibraryProduct#getDirectory()}.
+     * <p>
+     * As the library items are created, the CausticGroup is used to map names,
+     * tags, met data etc into the library items.
+     * <p>
+     * The <code>.caustic</code> file is loaded during this operation and
+     * blank_rack is called, needs to be used in a utility application.
+     * 
+     * @param product The {@link LibraryProduct} to add library items to.
+     * @param causticGroup The {@link CausticGroup} used in mapping existing
+     *            items from the .caustic file into the library item.
+     * @param exportAsGroup
+     * @throws IOException
+     * @throws CausticException
+     */
     @SuppressWarnings("unused")
     public void addToDirectory(LibraryProduct product, CausticGroup causticGroup,
             boolean exportAsGroup) throws IOException, CausticException {
@@ -134,13 +151,21 @@ public class CausticFileImporter {
         return product;
     }
 
+    /**
+     * Export product to the .gprod targetArchive
+     * 
+     * @param product
+     * @param targetArchive
+     * @throws IOException
+     * @throws CausticException
+     */
     public void exportProduct(final LibraryProduct product, File targetArchive) throws IOException,
             CausticException {
         final File productDirectory = product.getDirectory();
-        File manifestFile = new File(productDirectory, MANIFEST_JSON);
-        String json = CaustkRuntime.getInstance().getFactory().serialize(product, true);
+        final File manifestFile = new File(productDirectory, MANIFEST_JSON);
+        final String json = CaustkRuntime.getInstance().getFactory().serialize(product, true);
         FileUtils.write(manifestFile, json);
-        ZipCompress compress = new ZipCompress(productDirectory);
+        final ZipCompress compress = new ZipCompress(productDirectory);
         compress.zip(targetArchive);
     }
 
@@ -176,8 +201,9 @@ public class CausticFileImporter {
             }
         });
 
-        for (File file : files) {
-            LibraryProductUtils.parse(file, product);
+        for (File archiveFile : files) {
+            // adds the manifest of the LibraryItem to the LibraryProduct
+            LibraryProductUtils.addLibraryItemArchive(archiveFile, product);
         }
 
         exportProduct(product, targetArchive);

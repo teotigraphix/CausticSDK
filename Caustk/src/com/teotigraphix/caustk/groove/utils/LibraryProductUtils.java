@@ -99,9 +99,9 @@ public class LibraryProductUtils {
 
     //--------------------------------------------------------------------------
 
-    public static void parse(File file, LibraryProduct product) throws IOException,
+    public static void addLibraryItemArchive(File archiveFile, LibraryProduct product) throws IOException,
             CausticException {
-        String extension = FilenameUtils.getExtension(file.getName());
+        String extension = FilenameUtils.getExtension(archiveFile.getName());
 
         LibraryItemFormat format = LibraryItemFormat.fromString(extension);
         if (format == null) {
@@ -111,44 +111,44 @@ public class LibraryProductUtils {
 
         switch (format) {
             case Effect:
-                parseEffect(file, product);
+                addEffectArchive(archiveFile, product);
                 break;
             case Group:
-                parseGroup(file, product);
+                addGroupArchive(archiveFile, product);
                 break;
             case Instrument:
-                parseInstrument(file, product);
+                addInstrumentArchive(archiveFile, product);
                 break;
             case Product:
                 break;
             case Project:
-                parseProject(file, product);
+                addProjectArchive(archiveFile, product);
                 break;
             case Sample:
                 break;
             case Sound:
-                parseSound(file, product);
+                addSoundArchive(archiveFile, product);
                 break;
         }
     }
 
-    private static void parseGroup(File file, LibraryProduct product) throws CausticException {
+    private static void addGroupArchive(File file, LibraryProduct product) throws CausticException {
         addToProduct(file, product, LibraryGroup.class);
     }
 
-    private static void parseInstrument(File file, LibraryProduct product) throws CausticException {
+    private static void addInstrumentArchive(File file, LibraryProduct product) throws CausticException {
         addToProduct(file, product, LibraryInstrument.class);
     }
 
-    private static void parseProject(File file, LibraryProduct product) throws CausticException {
+    private static void addProjectArchive(File file, LibraryProduct product) throws CausticException {
         addToProduct(file, product, LibraryProject.class);
     }
 
-    private static void parseSound(File file, LibraryProduct product) throws CausticException {
+    private static void addSoundArchive(File file, LibraryProduct product) throws CausticException {
         addToProduct(file, product, LibrarySound.class);
     }
 
-    private static void parseEffect(File file, LibraryProduct product) throws IOException,
+    private static void addEffectArchive(File file, LibraryProduct product) throws IOException,
             CausticException {
         addToProduct(file, product, LibraryEffect.class);
     }
