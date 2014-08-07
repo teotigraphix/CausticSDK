@@ -25,8 +25,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
@@ -57,7 +57,7 @@ public class LibraryInstrumentUtils {
 
         //------------------------------
 
-        CaustkFactory factory = CaustkRuntime.getInstance().getFactory();
+        ICaustkFactory factory = CaustkRuntime.getInstance().getFactory();
         LibraryInstrument instrument = factory.createLibraryInstrument(product, name, relativePath,
                 machineNode);
 

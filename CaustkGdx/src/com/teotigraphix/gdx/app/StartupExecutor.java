@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.core;
+package com.teotigraphix.gdx.app;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,6 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-import com.teotigraphix.gdx.app.ICaustkApplication;
 
 /**
  * The {@link StartupExecutor} manages and creates the {@link CaustkRuntime}
@@ -45,7 +44,7 @@ public class StartupExecutor {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private CaustkRuntime runtime;
+    private ICaustkRuntime runtime;
 
     //--------------------------------------------------------------------------
     // Constructors

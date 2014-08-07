@@ -32,7 +32,7 @@ public class CaustkRuntime implements ICaustkRuntime {
 
     private static final String TAG = "CaustkRuntime";
 
-    private static CaustkRuntime instance;
+    private static ICaustkRuntime instance;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -40,11 +40,11 @@ public class CaustkRuntime implements ICaustkRuntime {
 
     private ISoundGenerator soundGenerator;
 
-    private CaustkLogger logger;
+    private ICaustkLogger logger;
 
-    private CaustkRack rack;
+    private ICaustkRack rack;
 
-    private CaustkFactory factory;
+    private ICaustkFactory factory;
 
     //--------------------------------------------------------------------------
     // Internal :: Properties
@@ -64,12 +64,12 @@ public class CaustkRuntime implements ICaustkRuntime {
     }
 
     @Override
-    public final CaustkRack getRack() {
+    public final ICaustkRack getRack() {
         return rack;
     }
 
     @Override
-    public final CaustkFactory getFactory() {
+    public final ICaustkFactory getFactory() {
         return factory;
     }
 
@@ -111,7 +111,7 @@ public class CaustkRuntime implements ICaustkRuntime {
      * @param soundGenerator The platform sound generator.
      * @return The single instance of the CaustkRuntime
      */
-    public static CaustkRuntime createInstance(ISoundGenerator soundGenerator) {
+    public static ICaustkRuntime createInstance(ISoundGenerator soundGenerator) {
         if (instance == null)
             instance = new CaustkRuntime(soundGenerator);
         return instance;
@@ -123,7 +123,7 @@ public class CaustkRuntime implements ICaustkRuntime {
      * {@link #createInstance(ISoundGenerator)} must be called before access to
      * this method.
      */
-    public static CaustkRuntime getInstance() {
+    public static ICaustkRuntime getInstance() {
         if (instance == null)
             throw new IllegalStateException("CaustkRuntime.createInstance() must be called");
         return instance;

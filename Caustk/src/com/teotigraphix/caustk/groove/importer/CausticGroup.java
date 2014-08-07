@@ -23,8 +23,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 
@@ -76,7 +76,7 @@ public class CausticGroup extends CausticItem {
         return libraryGroup;
     }
 
-    private CaustkFactory getFactory() {
+    private ICaustkFactory getFactory() {
         return CaustkRuntime.getInstance().getFactory();
     }
 

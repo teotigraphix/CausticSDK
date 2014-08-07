@@ -189,6 +189,11 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         getEventBus().register(subscriber);
     }
 
+    @Override
+    public void post(Object event) {
+        getEventBus().post(event);
+    }
+
     //--------------------------------------------------------------------------
     // Public Method API
     //--------------------------------------------------------------------------

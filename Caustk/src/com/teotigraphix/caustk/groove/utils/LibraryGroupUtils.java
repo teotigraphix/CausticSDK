@@ -25,8 +25,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.groove.importer.CausticEffect;
 import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
@@ -164,7 +164,7 @@ public class LibraryGroupUtils {
         return libraryInstrument;
     }
 
-    private static CaustkFactory getFactory() {
+    private static ICaustkFactory getFactory() {
         return CaustkRuntime.getInstance().getFactory();
     }
 }

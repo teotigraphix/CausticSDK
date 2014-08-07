@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teotigraphix.caustk.core.CaustkRack;
+import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 
@@ -98,7 +98,7 @@ public final class PatternUtils {
         return numLoops + fraction;
     }
 
-    public static int getNumMeasures(CaustkRack rack, int machineIndex, int bank, int pattern) {
+    public static int getNumMeasures(ICaustkRack rack, int machineIndex, int bank, int pattern) {
         int originalBank = (int)PatternSequencerMessage.BANK.query(rack, machineIndex);
         int originalPattern = (int)PatternSequencerMessage.PATTERN.query(rack, machineIndex);
         PatternSequencerMessage.BANK.send(rack, machineIndex, bank);
@@ -109,7 +109,7 @@ public final class PatternUtils {
         return numMeasures;
     }
 
-    public static void setNumMeasures(CaustkRack rack, int machineIndex, int bank, int pattern,
+    public static void setNumMeasures(ICaustkRack rack, int machineIndex, int bank, int pattern,
             int numMeasures) {
         int originalBank = (int)PatternSequencerMessage.BANK.query(rack, machineIndex);
         int originalPattern = (int)PatternSequencerMessage.PATTERN.query(rack, machineIndex);
@@ -120,7 +120,7 @@ public final class PatternUtils {
         PatternSequencerMessage.PATTERN.send(rack, machineIndex, originalPattern);
     }
 
-    public static List<String> getPatterns(CaustkRack rack, int machineIndex) {
+    public static List<String> getPatterns(ICaustkRack rack, int machineIndex) {
         List<String> result = new ArrayList<String>();
         // [machin_index] [start_measure] [bank] [pattern] [end_measure]
         String patterns = SequencerMessage.QUERY_PATTERN_EVENT.queryString(rack);

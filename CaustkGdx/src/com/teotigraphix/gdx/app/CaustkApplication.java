@@ -28,7 +28,6 @@ import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.gdx.core.StartupExecutor;
 
 /**
  * The base implementation of the {@link ICaustkApplication} API.

@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.core.CaustkRack;
+import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
@@ -37,7 +37,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public final class PresetUtils {
 
-    public static byte[] readPresetBytes(CaustkRack caustkRack, int machineIndex,
+    public static byte[] readPresetBytes(ICaustkRack caustkRack, int machineIndex,
             MachineType machineType, String tempPresetName) {
         SynthMessage.SAVE_PRESET.send(caustkRack, machineIndex, tempPresetName);
 

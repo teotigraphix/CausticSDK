@@ -17,11 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.app;
+package com.teotigraphix.gdx.scene2d;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.gdx.app.ISceneBehavior;
 
 /**
  * The {@link IView} API wraps a view widget.

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.CaustkRack;
+import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.MachineType;
 
 /**
@@ -30,14 +30,14 @@ import com.teotigraphix.caustk.core.MachineType;
  */
 public final class OSCUtils {
 
-    public static String toMachineName(CaustkRack rack, int machineIndex) {
+    public static String toMachineName(ICaustkRack rack, int machineIndex) {
         String name = RackMessage.QUERY_MACHINE_NAME.queryString(rack, machineIndex);
         if (name != null && name.equals(""))
             name = null;
         return name;
     }
 
-    public static MachineType toMachineType(CaustkRack rack, int machineIndex) {
+    public static MachineType toMachineType(ICaustkRack rack, int machineIndex) {
         String type = RackMessage.QUERY_MACHINE_TYPE.queryString(rack, machineIndex);
         return MachineType.fromString(type);
     }

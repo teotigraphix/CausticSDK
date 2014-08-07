@@ -20,8 +20,8 @@
 package com.teotigraphix.caustk.core;
 
 /**
- * The {@link IRackEventBus} API allows subscription to the {@link CaustkRack}'s
- * event buss.
+ * The {@link IRackEventBus} API allows subscription to the {@link ICaustkRack}
+ * 's event buss.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -42,4 +42,10 @@ public interface IRackEventBus {
      */
     void unregister(Object subscriber);
 
+    /**
+     * Posts an event through the {@link ICaustkRack}.
+     * 
+     * @param event The event object.
+     */
+    void post(Object event);
 }

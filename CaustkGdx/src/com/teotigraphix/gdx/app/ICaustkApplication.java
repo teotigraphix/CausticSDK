@@ -19,7 +19,6 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
 
@@ -33,40 +32,9 @@ import com.teotigraphix.caustk.core.ICaustkRack;
 public interface ICaustkApplication extends IApplication {
 
     /**
-     * The application name, will show up in the title bar in desktop
-     * applications.
-     */
-    @Override
-    String getApplicationName();
-
-    /**
-     * The OSC machine name of this application.
-     */
-    @Override
-    String getApplicationId();
-
-    /**
-     * The width of the application.
-     */
-    @Override
-    float getWidth();
-
-    /**
-     * The height of the application.
-     */
-    @Override
-    float getHeight();
-
-    /**
      * Returns the application logger.
      */
     ICaustkLogger getLogger();
-
-    /**
-     * Returns the application level event bus.
-     */
-    @Override
-    EventBus getEventBus();
 
     /**
      * Returns the application rack.
@@ -101,12 +69,5 @@ public interface ICaustkApplication extends IApplication {
     // Events
     //--------------------------------------------------------------------------
 
-    //    public static class OnApplicationAwakeEvent {
-    //    }
-
-    public static class OnApplicationDestoryEvent {
-    }
-
     void onSceneChange(ICaustkScene scene);
-
 }
