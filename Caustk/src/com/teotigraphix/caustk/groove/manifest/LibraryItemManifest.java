@@ -32,7 +32,6 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 import com.teotigraphix.caustk.node.ICaustkNode;
-import com.teotigraphix.caustk.node.Library;
 
 /**
  * @author Michael Schmalle
