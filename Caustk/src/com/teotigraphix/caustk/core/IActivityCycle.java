@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.core;
 
 /**
+ * The life cycle of a caustic application.
+ * 
  * @author Michael Schmalle
  */
 public interface IActivityCycle {

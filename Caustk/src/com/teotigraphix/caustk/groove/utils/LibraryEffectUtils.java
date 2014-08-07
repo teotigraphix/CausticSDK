@@ -55,7 +55,7 @@ public class LibraryEffectUtils {
 
         String json = FileUtils.readFileToString(manifest);
         LibraryEffect libraryEffect = CaustkRuntime.getInstance().getFactory()
-                ._deserialize(json, LibraryEffect.class);
+                .deserialize(json, LibraryEffect.class);
 
         return libraryEffect;
     }

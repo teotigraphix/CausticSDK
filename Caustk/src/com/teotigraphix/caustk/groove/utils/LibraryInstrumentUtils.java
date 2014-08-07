@@ -113,7 +113,7 @@ public class LibraryInstrumentUtils {
 
         String json = FileUtils.readFileToString(manifest);
         LibraryInstrument libraryInstrument = CaustkRuntime.getInstance().getFactory()
-                ._deserialize(json, LibraryInstrument.class);
+                .deserialize(json, LibraryInstrument.class);
         String type = libraryInstrument.getMachineNode().getType().getExtension();
         libraryInstrument.setPendingPresetFile(new File(tempDirectory, "preset." + type));
 

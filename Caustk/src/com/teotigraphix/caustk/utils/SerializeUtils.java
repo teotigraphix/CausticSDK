@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 public class SerializeUtils {
 
     public static <T> T unpack(String json, Class<?> clazz) throws CausticException {
-        return CaustkRuntime.getInstance().getFactory()._deserialize(json, clazz);
+        return CaustkRuntime.getInstance().getFactory().deserialize(json, clazz);
     }
 
 }

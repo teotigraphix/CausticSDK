@@ -96,7 +96,7 @@ public class LibraryGroupUtils {
 
         String json = FileUtils.readFileToString(manifest);
         LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory()
-                ._deserialize(json, LibraryGroup.class);
+                .deserialize(json, LibraryGroup.class);
 
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
             librarySound.setGroup(libraryGroup);

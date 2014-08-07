@@ -50,7 +50,6 @@ import com.teotigraphix.caustk.node.effect.DistortionEffect;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectNodeFactory;
 import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.effect.FlangerEffect;
 import com.teotigraphix.caustk.node.effect.LimiterEffect;
 import com.teotigraphix.caustk.node.effect.MultiFilterEffect;
@@ -74,12 +73,12 @@ import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 
 /**
- * A factory that creates {@link ICaustkNode}s for the {@link CaustkRuntime}.
+ * A factory that creates {@link ICaustkNode}s for the {@link ICaustkRuntime}.
  * <p>
  * Holds the serialization contracts for the {@link ICaustkNode} framework.
  * <p>
- * There is a one to one relationship between the {@link CaustkFactory} and the
- * {@link CaustkRuntime}.
+ * There is a one to one relationship between the {@link ICaustkFactory} and the
+ * {@link ICaustkRuntime}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -105,39 +104,9 @@ public class CaustkFactory implements ICaustkFactory {
     /**
      * The {@link CaustkRuntime} that owns this factory.
      */
+    @Override
     public final CaustkRuntime getRuntime() {
         return runtime;
-    }
-
-    //--------------------------------------------------------------------------
-    //  Groove Library
-    //--------------------------------------------------------------------------
-
-    public LibraryEffect createLibraryEffect(LibraryProduct product, String name,
-            String relativePath, EffectNode efffect0, EffectNode efffect1) {
-        return libraryItemFactory.createLibraryEffect(product, name, relativePath, efffect0,
-                efffect1);
-    }
-
-    public LibraryInstrument createLibraryInstrument(LibraryProduct product, String name,
-            String relativePath, MachineNode machineNode) {
-        return libraryItemFactory.createInstrument(product, name, relativePath, machineNode);
-    }
-
-    public LibraryGroup createLibraryGroup(LibraryProduct product, String name, String relativePath) {
-
-        LibraryGroupManifest manifest = new LibraryGroupManifest(name, relativePath);
-        manifest.setProductId(product.getId());
-
-        LibraryGroup libraryGroup = new LibraryGroup(manifest);
-
-        return libraryGroup;
-    }
-
-    public LibrarySound createLibrarySound(LibraryProduct product, String name, String relativePath) {
-        LibrarySoundManifest manifest = new LibrarySoundManifest(name, relativePath);
-        LibrarySound librarySound = new LibrarySound(manifest);
-        return librarySound;
     }
 
     //--------------------------------------------------------------------------
@@ -159,138 +128,80 @@ public class CaustkFactory implements ICaustkFactory {
         libraryItemFactory = new LibraryItemFactory(this);
     }
 
-    //----------------------------------
-    // NodeInfo
-    //----------------------------------
+    //--------------------------------------------------------------------------
+    // Public Rack Creation API :: Methods
+    //--------------------------------------------------------------------------
 
-    //    public NodeInfo createInfo(NodeType nodeType) {
-    //        return nodeInfoFactory.createInfo(nodeType);
-    //    }
-    //
-    //    public NodeInfo createInfo(NodeType nodeType, String name) {
-    //        return nodeInfoFactory.createInfo(nodeType, name);
-    //    }
-    //
-    //    public NodeInfo createInfo(NodeType nodeType, String relativePath, String name) {
-    //        return nodeInfoFactory.createInfo(nodeType, relativePath, name);
-    //    }
-    //
-    //    public NodeInfo createInfo(NodeType nodeType, File relativePath, String name) {
-    //        return nodeInfoFactory.createInfo(nodeType, relativePath, name);
-    //    }
-
-    //    //----------------------------------
-    //    // Library
-    //    //----------------------------------
-    //
-    //    /**
-    //     * Creates an empty {@link Library} with a name.
-    //     * <p>
-    //     * The name is used for the directory name held within the
-    //     * <code>/storageRoot/AppName/libraries</code> directory.
-    //     * 
-    //     * @param name The name of the library, used as the directory name.
-    //     */
-    //    public Library createLibrary(String name) {
-    //        return libraryFactory.createLibrary(name);
-    //    }
-    //
-    //    /**
-    //     * @param reletiveOrAbsDirectory
-    //     * @return
-    //     */
-    //    public Library createLibrary(File reletiveOrAbsDirectory) {
-    //        return libraryFactory.createLibrary(reletiveOrAbsDirectory);
-    //    }
-    //
-    //    public Library loadLibrary(File reletiveOrAbsDirectory) throws IOException {
-    //        return libraryFactory.loadLibrary(reletiveOrAbsDirectory);
-    //    }
-
-    //----------------------------------
-    // RackNode
-    //----------------------------------
-
-    /**
-     * Creates and returns a new initialized {@link RackNode}.
-     */
+    @Override
     public RackNode createRack() {
         RackNode rackNode = new RackNode();
         return rackNode;
     }
 
-    /**
-     * Creates and returns a {@link RackNode} that wraps a <code>.caustic</code>
-     * file.
-     * 
-     * @param relativeOrAbsolutePath The relative or absolute
-     *            <code>.caustic</code> file location.
-     */
+    @Override
     public RackNode createRack(String relativeOrAbsolutePath) {
         RackNode rackNode = new RackNode(relativeOrAbsolutePath);
         return rackNode;
     }
 
-    /**
-     * Creates and returns a {@link RackNode} that wraps a <code>.caustic</code>
-     * file.
-     * 
-     * @param file The <code>.caustic</code> file location.
-     */
+    @Override
     public RackNode createRack(File file) {
         RackNode rackNode = new RackNode(file);
         return rackNode;
     }
 
-    //----------------------------------
-    // EffectNode
-    //----------------------------------
-
-    /**
-     * Creates an {@link EffectNode} subclass using the {@link EffectType}.
-     * 
-     * @param machineIndex The machine index of the new effect.
-     * @param slot The effect slot within the {@link EffectsChannel}.
-     * @param effectType The {@link EffectType} of the effect to be created.
-     * @return A new {@link EffectNode}, has not been added to an
-     *         {@link EffectsChannel}.
-     */
+    @Override
     public <T extends EffectNode> T createEffect(int machineIndex, int slot, EffectType effectType) {
         return effectNodeFactory.createEffect(machineIndex, slot, effectType);
     }
 
-    //----------------------------------
-    // MachineNode
-    //----------------------------------
-
-    /**
-     * Creates a {@link MachineNode} subclass using the {@link MachineType}.
-     * 
-     * @param index The machine index lost in the native rack.
-     * @param type The {@link MachineType} of machine to create.
-     * @param name The machine name (10 character alpha numeric).
-     * @return A new {@link MachineNode}, added to the native rack.
-     */
-
+    @Override
     public <T extends MachineNode> T createMachine(int index, MachineType type, String name) {
         return machineNodeFactory.createMachine(index, type, name);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public Groove Library Creation API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public LibraryEffect createLibraryEffect(LibraryProduct product, String name,
+            String relativePath, EffectNode efffect0, EffectNode efffect1) {
+        return libraryItemFactory.createLibraryEffect(product, name, relativePath, efffect0,
+                efffect1);
+    }
+
+    @Override
+    public LibraryInstrument createLibraryInstrument(LibraryProduct product, String name,
+            String relativePath, MachineNode machineNode) {
+        return libraryItemFactory.createInstrument(product, name, relativePath, machineNode);
+    }
+
+    @Override
+    public LibraryGroup createLibraryGroup(LibraryProduct product, String name, String relativePath) {
+
+        LibraryGroupManifest manifest = new LibraryGroupManifest(name, relativePath);
+        manifest.setProductId(product.getId());
+
+        LibraryGroup libraryGroup = new LibraryGroup(manifest);
+
+        return libraryGroup;
+    }
+
+    @Override
+    public LibrarySound createLibrarySound(LibraryProduct product, String name, String relativePath) {
+        LibrarySoundManifest manifest = new LibrarySoundManifest(name, relativePath);
+        LibrarySound librarySound = new LibrarySound(manifest);
+        return librarySound;
     }
 
     //--------------------------------------------------------------------------
     // Public Serialization API :: Methods
     //--------------------------------------------------------------------------
 
-    /**
-     * Deserializes a JSON String into a {@link ICaustkNode}.
-     * 
-     * @param json The valid JSON formated serial String.
-     * @param clazz The {@link ICaustkNode} implementation result.
-     * @return A new instance of the {@link ICaustkNode} deserialized.
-     * @throws CausticException Serialization exception.
-     */
+    @Override
     @SuppressWarnings("unchecked")
-    public <T extends ICaustkNode> T deserialize(String json, Class<? extends ICaustkNode> clazz)
-            throws CausticException {
+    public <T> T deserialize(String json, Class<? extends Object> clazz) throws CausticException {
         GsonBuilder deserializer = new GsonBuilder().setPrettyPrinting();
         deserializer.registerTypeAdapter(MachineNode.class, new MachineNodeDeserializer());
         deserializer.registerTypeAdapter(EffectNode.class, new EffectNodeDeserializer());
@@ -299,32 +210,7 @@ public class CaustkFactory implements ICaustkFactory {
         return (T)gson.fromJson(json, clazz);
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T _deserialize(String json, Class<? extends Object> clazz) throws CausticException {
-        GsonBuilder deserializer = new GsonBuilder().setPrettyPrinting();
-        deserializer.registerTypeAdapter(MachineNode.class, new MachineNodeDeserializer());
-        deserializer.registerTypeAdapter(EffectNode.class, new EffectNodeDeserializer());
-        deserializer.registerTypeAdapter(NoteNode.class, new NoteNodeDeserializer());
-        Gson gson = deserializer.create();
-        return (T)gson.fromJson(json, clazz);
-    }
-
-    /**
-     * Serializes an {@link ICaustkNode} into a JSON String.
-     * 
-     * @param node The {@link ICaustkNode} to serialize.
-     * @param prettyPrint Whether to pretty print for debugging.
-     * @return A serialized JSON String of the {@link ICaustkNode}.
-     */
-    public String serialize(ICaustkNode node, boolean prettyPrint) {
-        GsonBuilder builder = new GsonBuilder();
-        if (prettyPrint)
-            builder.setPrettyPrinting();
-        Gson serializer = builder.create();
-        String json = serializer.toJson(node);
-        return json;
-    }
-
+    @Override
     public String serialize(Object node, boolean prettyPrint) {
         GsonBuilder builder = new GsonBuilder();
         if (prettyPrint)
@@ -334,13 +220,8 @@ public class CaustkFactory implements ICaustkFactory {
         return json;
     }
 
-    /**
-     * Serializes an {@link ICaustkNode} into a JSON String.
-     * 
-     * @param node The {@link ICaustkNode} to serialize.
-     * @return A serialized JSON String of the {@link ICaustkNode}.
-     */
-    public String serialize(ICaustkNode node) {
+    @Override
+    public String serialize(Object node) {
         return serialize(node, false);
     }
 
@@ -481,5 +362,4 @@ public class CaustkFactory implements ICaustkFactory {
             return result;
         }
     }
-
 }

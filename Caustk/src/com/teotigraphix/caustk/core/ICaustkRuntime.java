@@ -19,15 +19,27 @@
 
 package com.teotigraphix.caustk.core;
 
+import com.teotigraphix.caustk.node.ICaustkNode;
+
 /**
  * @author Michael Schmalle
  * @since 1.0
  */
 public interface ICaustkRuntime {
 
+    /**
+     * Returns the session {@link ICaustkLogger} instance.
+     */
     ICaustkLogger getLogger();
 
+    /**
+     * Returns the session {@link ICaustkRack} instance.
+     */
     ICaustkRack getRack();
 
+    /**
+     * Returns the session {@link ICaustkFactory} for created
+     * {@link ICaustkNode} s.
+     */
     ICaustkFactory getFactory();
 }

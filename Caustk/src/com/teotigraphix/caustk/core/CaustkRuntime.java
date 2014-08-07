@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.core;
 
-import com.teotigraphix.caustk.node.ICaustkNode;
-
 /**
  * The {@link CaustkRuntime} encapsulates the {@link ISoundGenerator} and
  * {@link CaustkRack} creation and initialization.
@@ -32,7 +30,13 @@ import com.teotigraphix.caustk.node.ICaustkNode;
  */
 public class CaustkRuntime implements ICaustkRuntime {
 
+    private static final String TAG = "CaustkRuntime";
+
     private static CaustkRuntime instance;
+
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
 
     private ISoundGenerator soundGenerator;
 
@@ -42,7 +46,9 @@ public class CaustkRuntime implements ICaustkRuntime {
 
     private CaustkFactory factory;
 
-    //    private Library library;
+    //--------------------------------------------------------------------------
+    // Internal :: Properties
+    //--------------------------------------------------------------------------
 
     ISoundGenerator getSoundGenerator() {
         return soundGenerator;
@@ -52,42 +58,20 @@ public class CaustkRuntime implements ICaustkRuntime {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    /**
-     * Returns the session {@link CaustkLogger} instance.
-     */
     @Override
     public final ICaustkLogger getLogger() {
         return logger;
     }
 
-    /**
-     * Returns the session {@link CaustkRack} instance.
-     */
     @Override
     public final CaustkRack getRack() {
         return rack;
     }
 
-    /**
-     * Returns the session {@link CaustkFactory} for created {@link ICaustkNode}
-     * s.
-     */
     @Override
     public final CaustkFactory getFactory() {
         return factory;
     }
-
-    //    /**
-    //     * The current library loaded for an application.
-    //     */
-    //    @Override
-    //    public final Library getLibrary() {
-    //        return library;
-    //    }
-    //
-    //    private void setLibrary(Library library) {
-    //        this.library = library;
-    //    }
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -104,40 +88,15 @@ public class CaustkRuntime implements ICaustkRuntime {
     }
 
     //--------------------------------------------------------------------------
-    // Public API :: Methods
-    //--------------------------------------------------------------------------
-
-    //    @Override
-    //    public Library loadLibrary(File file) throws CausticException, IOException {
-    //        if (file.exists())
-    //            throw new FileNotFoundException("Library does not exist: " + file);
-    //
-    //        String json = FileUtils.readFileToString(file);
-    //        library = getFactory().deserialize(json, Library.class);
-    //
-    //        return library;
-    //    }
-    //
-    //    @Override
-    //    public Library createLibrary(String relativePath) throws CausticException {
-    //        Library library = getFactory().createLibrary(relativePath);
-    //        //        if (library.exists())
-    //        //            throw new CausticException("Library exists: " + library.getDirectory());
-    //        setLibrary(library);
-    //        library.create();
-    //        return library;
-    //    }
-
-    //--------------------------------------------------------------------------
     // Private :: Methods
     //--------------------------------------------------------------------------
 
     private void initialize() {
-        System.out.println("CaustkRuntime : Create CaustkLogger");
         logger = new CaustkLogger();
-        System.out.println("CaustkRuntime : Create CaustkFactory");
+        logger.log(TAG, "Create CaustkLogger");
+        logger.log(TAG, "Create CaustkFactory");
         factory = new CaustkFactory(this);
-        System.out.println("CaustkRuntime : Create CaustkRack");
+        logger.log(TAG, "Create CaustkRack");
         rack = new CaustkRack(this);
     }
 
@@ -153,17 +112,13 @@ public class CaustkRuntime implements ICaustkRuntime {
      * @return The single instance of the CaustkRuntime
      */
     public static CaustkRuntime createInstance(ISoundGenerator soundGenerator) {
-        if (instance != null)
-            return instance;
-        //        if (instance != null)
-        //            throw new IllegalStateException(
-        //                    "CaustkRuntime.createInstance() must be called only once");
-        instance = new CaustkRuntime(soundGenerator);
+        if (instance == null)
+            instance = new CaustkRuntime(soundGenerator);
         return instance;
     }
 
     /**
-     * Returns the single instance of the {@link CaustkRuntime}.
+     * Returns the single instance of the {@link ICaustkRuntime}.
      * <p>
      * {@link #createInstance(ISoundGenerator)} must be called before access to
      * this method.

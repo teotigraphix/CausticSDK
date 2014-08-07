@@ -19,25 +19,38 @@
 
 package com.teotigraphix.caustk.core;
 
+import com.singlecellsoftware.causticcore.CausticCore;
 
 /**
- * The {@link ISoundGenerator} API wraps the Native CausticCore audio loop and
- * JNI interface.
+ * The {@link ISoundGenerator} API wraps the Native {@link CausticCore} audio
+ * loop and JNI interface.
  * 
  * @author Michael Schmalle
  */
 public interface ISoundGenerator extends ICausticEngine {
 
+    /**
+     * @see CausticCore#getCurrentBeat()
+     */
+    float getCurrentBeat();
+
+    /**
+     * @see CausticCore#getCurrentSongMeasure()
+     */
+    float getCurrentSongMeasure();
+
+    /**
+     * @see CausticCore#getVersion()
+     */
+    int getVerison();
+
+    /**
+     * Initializes the CausticCore event loop and sets up.
+     */
     void initialize();
 
     /**
      * Closes the CausticCore event loop and cleans up.
      */
     void close();
-
-    float getCurrentBeat();
-
-    float getCurrentSongMeasure();
-
-    int getVerison();
 }
