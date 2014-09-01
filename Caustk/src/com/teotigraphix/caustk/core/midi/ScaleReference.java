@@ -111,7 +111,7 @@ public enum ScaleReference {
 
     private String name;
 
-    private int[] intervales;
+    private int[] intervals;
 
     public String getName() {
         return name;
@@ -125,13 +125,13 @@ public enum ScaleReference {
      * @return int array containing the degrees between 0 - 12 representing the
      *         scale
      */
-    public int[] getIntervales() {
-        return intervales;
+    public int[] getIntervals() {
+        return intervals;
     }
 
-    ScaleReference(String name, int[] intervales) {
+    ScaleReference(String name, int[] intervals) {
         this.name = name;
-        this.intervales = intervales;
+        this.intervals = intervals;
 
     }
 

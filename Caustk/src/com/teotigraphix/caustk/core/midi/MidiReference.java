@@ -255,7 +255,7 @@ public class MidiReference {
      * @return int[] scale
      */
     public static int[] createScale(ScaleReference baseScale, NoteReference baseNote) {
-        return createScale(baseScale.getIntervales(), baseNote.getBaseNumber());
+        return createScale(baseScale.getIntervals(), baseNote.getBaseNumber());
     }
 
     /**
