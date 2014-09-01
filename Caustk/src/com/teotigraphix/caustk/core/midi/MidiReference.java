@@ -4,7 +4,6 @@ package com.teotigraphix.caustk.core.midi;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Collection of methods designed to make translating between the language of
  * music to midi values. Contains methods that make note numbers, not names, and
@@ -256,7 +255,7 @@ public class MidiReference {
      * @return int[] scale
      */
     public static int[] createScale(ScaleReference baseScale, NoteReference baseNote) {
-        return createScale(baseScale.getDegrees(), baseNote.getBaseNumber());
+        return createScale(baseScale.getIntervales(), baseNote.getBaseNumber());
     }
 
     /**
