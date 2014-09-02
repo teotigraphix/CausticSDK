@@ -16,6 +16,16 @@ public final class ScaleMatrixUtils {
         return result;
     }
 
+    public static List<Integer> getNotes(ScaleReference scaleReference, int rootPitch,
+            int numColumns, int numRows) {
+        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> matrix = createScale(scaleReference, numColumns, numRows, 0);
+        for (int i = 0; i < numRows; i++) {
+            result.add(matrix.get(i));
+        }
+        return result;
+    }
+
     static List<Integer> createScale(ScaleReference scaleReference, int numColumns, int numRows,
             int shift) {
         int[] intervales = scaleReference.getIntervals();

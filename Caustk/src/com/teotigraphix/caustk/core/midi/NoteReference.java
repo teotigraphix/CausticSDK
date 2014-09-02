@@ -122,7 +122,7 @@ public enum NoteReference {
         return baseNumber;
     }
 
-    String getBaseName() {
+    public String getBaseName() {
         return baseNoteName;
     }
 
@@ -136,5 +136,13 @@ public enum NoteReference {
      */
     public static NoteReference get(String baseName) {
         return lookup.get(baseName);
+    }
+
+    public static NoteReference getNote(int baseNumber) {
+        for (NoteReference noteReference : lookup.values()) {
+            if (noteReference.getBaseNumber() == baseNumber)
+                return noteReference;
+        }
+        return null;
     }
 }

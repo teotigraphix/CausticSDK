@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.teotigraphix.caustk.core.midi.MidiScale;
 import com.teotigraphix.caustk.core.midi.MidiScale.OnMidiScaleListener;
+import com.teotigraphix.caustk.core.midi.NoteReference;
+import com.teotigraphix.caustk.core.midi.ScaleMatrixUtils;
 
 /*
 
@@ -18,17 +20,27 @@ public class NoteMatrix {
 
     private MidiScale scale;
 
+    private boolean compact;
+
     private int numColumns;
 
     private int numRows;
 
     private float cellWidth;
 
+    private float compactCellWidth;
+
     private float cellHeight;
+
+    private float compactCellHeight;
 
     private List<NoteMatrixEntry> entries;
 
     private int currentColumn;
+
+    //----------------------------------
+    // scale
+    //----------------------------------
 
     /**
      * @param scale
@@ -56,9 +68,61 @@ public class NoteMatrix {
         return scale;
     }
 
+    //----------------------------------
+    // compact
+    //----------------------------------
+
+    public boolean isCompact() {
+        return compact;
+    }
+
+    public void setCompact(boolean compact) {
+        this.compact = compact;
+    }
+
+    //----------------------------------
+    // numColumns
+    //----------------------------------
+
+    public int getNumColumns() {
+        return numColumns;
+    }
+
+    //----------------------------------
+    // numRows
+    //----------------------------------
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    //----------------------------------
+    // cellWidth
+    //----------------------------------
+
+    public final float getCellWidth() {
+        return compact ? compactCellWidth : cellWidth;
+    }
+
+    //----------------------------------
+    // cellHeight
+    //----------------------------------
+
+    public final float getCellHeight() {
+        return compact ? compactCellHeight : cellHeight;
+    }
+
+    //----------------------------------
+    // entries
+    //----------------------------------
+
     public final List<NoteMatrixEntry> getEntries() {
         return entries;
     }
+
+    //----------------------------------
+    // currentColumn
+    //----------------------------------
 
     public int getCurrentColumn() {
         return currentColumn;
@@ -75,13 +139,18 @@ public class NoteMatrix {
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
     public NoteMatrix(int numColumns, int numRows, float cellWidth, float cellHeight,
             MidiScale scale) {
         this.numColumns = numColumns;
         this.numRows = numRows;
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
-
+        compactCellWidth = cellWidth * 2;
+        compactCellHeight = cellHeight * 2;
         setScale(scale);
     }
 
@@ -97,6 +166,29 @@ public class NoteMatrix {
         }
     }
 
+    public NoteReference getNoteName(int row) {
+        NoteMatrixEntry entry = getEntries().get(row);
+        return getNoteName(entry);
+    }
+
+    NoteReference getNoteName(NoteMatrixEntry entry) {
+        List<Integer> notes = ScaleMatrixUtils.getNotes(scale.getScaleReference(), 0, 16, 16);
+        List<NoteReference> nrefs = new ArrayList<NoteReference>();
+        NoteReference noteReference = scale.getNoteReference();
+        for (Integer baseNumber : notes) {
+            baseNumber += noteReference.getBaseNumber();
+            if (baseNumber >= 12 && baseNumber < 24)
+                baseNumber = baseNumber - 12;
+            else if (baseNumber >= 24 && baseNumber < 36)
+                baseNumber = baseNumber - 24;
+            else if (baseNumber >= 36 && baseNumber < 48)
+                baseNumber = baseNumber - 36;
+
+            nrefs.add(NoteReference.getNote(baseNumber));
+        }
+        return nrefs.get(entry.getRow());
+    }
+
     public final NoteMatrixEntry getEntry(int column, int row) {
         for (NoteMatrixEntry entry : entries) {
             if (entry.getColumn() == column && entry.getRow() == row)
@@ -106,8 +198,9 @@ public class NoteMatrix {
     }
 
     public final NoteMatrixEntry getEntry(float x, float y) {
-        int tx = (int)(Math.floor(x / cellWidth));
-        int ty = (int)(Math.floor(y / cellHeight));
+        int tx = (int)(Math.floor(x / getCellWidth()));
+        int ty = (int)(Math.floor(y / getCellHeight()));
+
         return getEntry(tx, ty);
     }
 
@@ -152,4 +245,5 @@ public class NoteMatrix {
 
         void onCurrentColumnChanged(int column);
     }
+
 }

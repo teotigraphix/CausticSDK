@@ -36,7 +36,7 @@ public enum ScaleReference {
     }),
 
     LOCRIAN("Locrian", new int[] {
-            0, 1, 3, 4, 6, 8, 10
+            0, 1, 3, 5, 6, 8, 10
     }),
 
     DIMINISHED("Diminished", new int[] {

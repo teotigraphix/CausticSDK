@@ -37,7 +37,9 @@ import com.teotigraphix.gdx.scene2d.utils.StyleUtils;
 public abstract class ControlTable extends Table implements IHelpManagerAware {//, IValueAware {
 
     @Override
-    public abstract String getHelpText();
+    public String getHelpText() {
+        return null;
+    };
 
     //--------------------------------------------------------------------------
     // Public Property :: API
