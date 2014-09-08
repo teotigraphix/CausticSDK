@@ -20,9 +20,16 @@
 package com.teotigraphix.gdx.app;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
@@ -40,6 +47,13 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     private static final String TAG = "CaustkApplication";
 
+    @Inject
+    IApplicationController applicationController;
+
+    public IApplicationController getApplicationController() {
+        return applicationController;
+    }
+
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
@@ -47,6 +61,10 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     private ICaustkRuntime runtime;
 
     private StartupExecutor startupExecutor;
+
+    private Set<Module> modules = new HashSet<Module>();
+
+    private Injector injector;
 
     //--------------------------------------------------------------------------
     // IGdxApplication API :: Properties
@@ -87,9 +105,49 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         startupExecutor = new StartupExecutor(soundGenerator);
     }
 
+    private void createGuice() {
+        final ICaustkApplication instance = this;
+
+        final Set<Module> additionalModules = new HashSet<Module>();
+        modules.add(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(ICaustkApplication.class).toInstance(instance);
+            }
+        });
+        modules.add(createApplicationModule());
+
+        // Propagates initialization of additional modules to the specific
+        // subclass of this Application instance.
+        modules.addAll(additionalModules);
+
+        // Creates an injector with all of the required modules.
+        injector = Guice.createInjector(modules);
+
+        // Injects all fields annotated with @Inject into this IGame instance.
+        injector.injectMembers(instance);
+    }
+
+    protected abstract Module createApplicationModule();
+
+    public final void addModule(Module module) {
+        modules.add(module);
+    }
+
     //--------------------------------------------------------------------------
-    // IGdxApplication API :: Methods
+    // ICaustkApplication API :: Methods
     //--------------------------------------------------------------------------
+
+    @Override
+    public void startScene() {
+        setScene(getInitialScene());
+    }
+
+    @Override
+    public void onSceneChange(IScene scene) {
+        super.onSceneChange(scene);
+        injector.injectMembers(scene);
+    }
 
     @Override
     public final void create() {
@@ -110,8 +168,15 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        createGuice();
+
         onRegisterScenes();
         onRegisterModels();
+
+        applicationController.setup();
+        applicationController.startup(); // async after load, sets main scene ui
+
         onCreate();
     }
 
@@ -163,6 +228,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     @Override
     public void dispose() {
         getLogger().log(TAG, "dispose()");
+        applicationController.dispose();
         getSceneManager().dispose();
         runtime.getRack().onDestroy();
     }

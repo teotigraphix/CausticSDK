@@ -58,6 +58,11 @@ public interface ICaustkApplication extends IApplication {
     void setScene(int sceneId);
 
     /**
+     * Starts the inital scene of the application.
+     */
+    void startScene();
+
+    /**
      * Whether the current scene id matches the argument passed.
      * 
      * @param sceneId The scene id to test against the current scene's id.
@@ -70,4 +75,5 @@ public interface ICaustkApplication extends IApplication {
     //--------------------------------------------------------------------------
 
     void onSceneChange(ICaustkScene scene);
+
 }

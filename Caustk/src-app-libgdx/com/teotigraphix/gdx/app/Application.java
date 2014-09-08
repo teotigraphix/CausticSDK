@@ -21,6 +21,7 @@ package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.caustk.core.ISoundGenerator;
 
 /**
  * @author Michael Schmalle
@@ -34,6 +35,8 @@ public abstract class Application implements IApplication {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    private String applicationId;
+
     private String applicationName;
 
     private int width;
@@ -44,14 +47,37 @@ public abstract class Application implements IApplication {
 
     private SceneManager sceneManager;
 
+    private int initialScene;
+
     //--------------------------------------------------------------------------
     // IApplication API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // applicationName
+    //----------------------------------
+
+    @Override
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    protected void setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+    }
+
+    //----------------------------------
+    // applicationName
+    //----------------------------------
 
     @Override
     public String getApplicationName() {
         return applicationName;
     }
+
+    //----------------------------------
+    // width
+    //----------------------------------
 
     @Override
     public float getWidth() {
@@ -62,6 +88,10 @@ public abstract class Application implements IApplication {
         this.width = width;
     }
 
+    //----------------------------------
+    // height
+    //----------------------------------
+
     @Override
     public float getHeight() {
         return height;
@@ -71,10 +101,18 @@ public abstract class Application implements IApplication {
         this.height = height;
     }
 
+    //----------------------------------
+    // eventBus
+    //----------------------------------
+
     @Override
     public final EventBus getEventBus() {
         return eventBus;
     }
+
+    //----------------------------------
+    // scene
+    //----------------------------------
 
     @Override
     public IScene getScene() {
@@ -89,6 +127,18 @@ public abstract class Application implements IApplication {
     @Override
     public boolean isCurrentScene(int sceneId) {
         return getSceneManager().isCurrentScene(sceneId);
+    }
+
+    //----------------------------------
+    // initialScene
+    //----------------------------------
+
+    protected int getInitialScene() {
+        return initialScene;
+    }
+
+    protected void setInitialScene(int initialScene) {
+        this.initialScene = initialScene;
     }
 
     //--------------------------------------------------------------------------
