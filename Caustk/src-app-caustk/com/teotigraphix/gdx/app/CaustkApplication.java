@@ -140,6 +140,8 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     @Override
     public void startScene() {
+        // XXX This will be the first thing called after a new Project is loaded
+        getSceneManager().reset();
         setScene(getInitialScene());
     }
 

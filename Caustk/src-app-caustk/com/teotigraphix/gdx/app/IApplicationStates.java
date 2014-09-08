@@ -1,11 +1,12 @@
 
 package com.teotigraphix.gdx.app;
 
-import com.teotigraphix.gdx.app.IApplicationComponent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public interface IApplicationStates extends IApplicationComponent {
 
-    void loadLastProjectState();
+    void loadLastProjectState() throws IOException;
 
     /**
      * Called when Scene has been created and user interface behaviors can
@@ -14,5 +15,7 @@ public interface IApplicationStates extends IApplicationComponent {
     void startUI();
 
     void restartUI();
+
+    void save(ApplicationProject project) throws FileNotFoundException;
 
 }

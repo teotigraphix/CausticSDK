@@ -21,9 +21,6 @@ package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
-import com.teotigraphix.gdx.app.Application;
-import com.teotigraphix.gdx.app.IApplication;
-import com.teotigraphix.gdx.app.IScene;
 
 /**
  * The {@link SceneManager} manages {@link IScene}s in an {@link IApplication}.
@@ -217,5 +214,20 @@ public class SceneManager {
             if (scene != null)
                 ((IScene)scene).dispose();
         }
+    }
+
+    /**
+     * Flushes all scene instances so when the next scene is set, its a brand
+     * new instance with no state.
+     */
+    public void reset() {
+        for (Object scene : scenes.values) {
+            if (scene != null)
+                ((IScene)scene).dispose();
+        }
+        currentSceneId = -1;
+        pendingScene = null;
+        scene = null;
+        scenes = new ArrayMap<Integer, IScene>();
     }
 }
