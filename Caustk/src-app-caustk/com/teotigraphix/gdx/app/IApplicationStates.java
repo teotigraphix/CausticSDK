@@ -18,4 +18,10 @@ public interface IApplicationStates extends IApplicationComponent {
 
     void save(ApplicationProject project) throws FileNotFoundException;
 
+    void onProjectCreate(ApplicationProject project);
+
+    void onProjectLoad(ApplicationProject project);
+
+    void onProjectSave(ApplicationProject project);
+
 }

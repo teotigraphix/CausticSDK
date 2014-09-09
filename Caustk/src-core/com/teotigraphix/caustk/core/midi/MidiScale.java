@@ -44,6 +44,9 @@ public class MidiScale {
         return (octave * 12) + noteReference.getBaseNumber();
     }
 
+    MidiScale() {
+    }
+
     /**
      * Create a new scale with scale intervals, note key, octave (middle C is 5,
      * C4 zero index, octave 0 is C0).
@@ -78,8 +81,8 @@ public class MidiScale {
         this.noteReference = noteReference;
         this.octave = octave;
         updateIntervals();
-        if (listener != null)
-            listener.onUpdate(this);
+        //        if (listener != null)
+        //            listener.onUpdate(this);
     }
 
     private void updateIntervals() {
@@ -87,13 +90,13 @@ public class MidiScale {
                 numRows);
     }
 
-    private OnMidiScaleListener listener;
-
-    public void setListener(OnMidiScaleListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnMidiScaleListener {
-        void onUpdate(MidiScale midiScale);
-    }
+    //    private OnMidiScaleListener listener;
+    //
+    //    public void setListener(OnMidiScaleListener listener) {
+    //        this.listener = listener;
+    //    }
+    //
+    //    public interface OnMidiScaleListener {
+    //        void onUpdate(MidiScale midiScale);
+    //    }
 }

@@ -4,8 +4,8 @@ package com.teotigraphix.caustk.groove.sequencer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.midi.MidiScale;
-import com.teotigraphix.caustk.core.midi.MidiScale.OnMidiScaleListener;
 import com.teotigraphix.caustk.core.midi.NoteReference;
 import com.teotigraphix.caustk.core.midi.ScaleMatrixUtils;
 
@@ -18,24 +18,34 @@ and dispatch EventBus application events which mediators will handle
 
 public class NoteMatrix {
 
+    @Tag(0)
     private MidiScale scale;
 
+    @Tag(1)
     private boolean compact;
 
+    @Tag(2)
     private int numColumns;
 
+    @Tag(3)
     private int numRows;
 
+    @Tag(4)
     private float cellWidth;
 
+    @Tag(5)
     private float compactCellWidth;
 
+    @Tag(6)
     private float cellHeight;
 
+    @Tag(7)
     private float compactCellHeight;
 
+    @Tag(8)
     private List<NoteMatrixEntry> entries;
 
+    @Tag(9)
     private int currentColumn;
 
     //----------------------------------
@@ -47,21 +57,22 @@ public class NoteMatrix {
      * @see OnNoteMatrixListener#onScaleChanged(MidiScale, MidiScale)
      */
     public void setScale(MidiScale scale) {
+        @SuppressWarnings("unused")
         MidiScale oldScale = this.scale;
-        if (oldScale != null) {
-            oldScale.setListener(null);
-        }
+        //        if (oldScale != null) {
+        //            oldScale.setListener(null);
+        //        }
         this.scale = scale;
-        scale.setListener(new OnMidiScaleListener() {
-            @Override
-            public void onUpdate(MidiScale midiScale) {
-                // TODO Impl OnMidiScaleListener#onUpdate()
-            }
-        });
+        //        scale.setListener(new OnMidiScaleListener() {
+        //            @Override
+        //            public void onUpdate(MidiScale midiScale) {
+        //                // TODO Impl OnMidiScaleListener#onUpdate()
+        //            }
+        //        });
         initialize();
-        if (listener != null) {
-            listener.onScaleChanged(scale, oldScale);
-        }
+        //        if (listener != null) {
+        //            listener.onScaleChanged(scale, oldScale);
+        //        }
     }
 
     public MidiScale getScale() {
@@ -134,14 +145,17 @@ public class NoteMatrix {
      */
     public void setCurrentColumn(int currentColumn) {
         this.currentColumn = currentColumn;
-        if (listener != null) {
-            listener.onCurrentColumnChanged(currentColumn);
-        }
+        //        if (listener != null) {
+        //            listener.onCurrentColumnChanged(currentColumn);
+        //        }
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
+
+    NoteMatrix() {
+    }
 
     public NoteMatrix(int numColumns, int numRows, float cellWidth, float cellHeight,
             MidiScale scale) {
@@ -228,10 +242,10 @@ public class NoteMatrix {
         final NoteMatrixEntry entry = getEntry(x, y);
         if (entry.isSelected() != selected) {
             entry.setSelected(selected);
-            if (listener != null) {
-                int pitch = getPitch(entry);
-                listener.onSelectionChanged(entry, pitch);
-            }
+            //            if (listener != null) {
+            //                int pitch = getPitch(entry);
+            //                listener.onSelectionChanged(entry, pitch);
+            //            }
         }
         return entry;
     }
@@ -240,18 +254,18 @@ public class NoteMatrix {
         initialize();
     }
 
-    private OnNoteMatrixListener listener;
-
-    public void setListener(OnNoteMatrixListener listener) {
-        this.listener = listener;
-    }
-
-    public interface OnNoteMatrixListener {
-        void onSelectionChanged(NoteMatrixEntry entry, int pitch);
-
-        void onScaleChanged(MidiScale scale, MidiScale oldScale);
-
-        void onCurrentColumnChanged(int column);
-    }
+    //    private transient OnNoteMatrixListener listener;
+    //
+    //    public void setListener(OnNoteMatrixListener listener) {
+    //        this.listener = listener;
+    //    }
+    //
+    //    public interface OnNoteMatrixListener {
+    //        void onSelectionChanged(NoteMatrixEntry entry, int pitch);
+    //
+    //        void onScaleChanged(MidiScale scale, MidiScale oldScale);
+    //
+    //        void onCurrentColumnChanged(int column);
+    //    }
 
 }

@@ -57,13 +57,16 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
         File projectsDirectory = new File(rootDirectory, "projects");
         File projectLocation = null;
 
-        if (!projectsDirectory.exists())
-            projectsDirectory.mkdirs();
+        String projectName = "Untitled";
+        File projectBaseDirectory = new File(projectsDirectory, projectName);
+
+        if (!projectBaseDirectory.exists())
+            projectBaseDirectory.mkdirs();
 
         if (path != null) {
             projectLocation = new File(path);
         } else {
-            projectLocation = new File(projectsDirectory, "Untitled.prj");
+            projectLocation = new File(projectBaseDirectory, projectName + ".prj");
         }
         // C:\Users\Teoti\Documents\Tones\projects\Untitled.prj
         if (!projectLocation.exists()) {
@@ -83,6 +86,7 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
 
     }
 
+    @Override
     public void save(ApplicationProject project) throws FileNotFoundException {
         saveProject(project);
     }

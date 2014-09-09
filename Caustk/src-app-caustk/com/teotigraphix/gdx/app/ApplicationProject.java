@@ -32,6 +32,10 @@ public abstract class ApplicationProject {
         return new File(location);
     }
 
+    public File getDirectory() {
+        return getLocation().getParentFile();
+    }
+
     public ApplicationProject() {
     }
 

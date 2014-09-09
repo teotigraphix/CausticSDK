@@ -71,17 +71,18 @@ public class ApplicationController extends ApplicationComponent implements IAppl
     @Subscribe
     public void onApplicationModelProjectCreateHandler(ApplicationModelProjectCreateEvent event) {
         getApplication().getLogger().log(TAG, "onApplicationModelProjectCreateHandler()");
-        try {
-            applicationStates.save(event.getProject());
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+
+        applicationStates.onProjectCreate(event.getProject());
+
+        save();
     }
 
     @Subscribe
     public void onApplicationModelProjectLoadHandler(ApplicationModelProjectLoadEvent event) {
         getApplication().getLogger().log(TAG, "onApplicationModelProjectLoadHandler()");
+
+        applicationStates.onProjectLoad(event.getProject());
+
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
@@ -99,10 +100,23 @@ public class ApplicationController extends ApplicationComponent implements IAppl
     }
 
     @Override
+    public void save() {
+        applicationStates.onProjectSave(applicationModel.getProject());
+
+        try {
+            applicationStates.save(applicationModel.getProject());
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        preferenceManager.save();
+    }
+
+    @Override
     public void dispose() {
         getApplication().getLogger().log(TAG, "exit()");
         //exitStrategy.exit();
-        preferenceManager.save();
+        save();
     }
 
     @Override

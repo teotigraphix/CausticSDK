@@ -32,4 +32,6 @@ public interface IApplicationController extends IApplicationComponent {
     void shutdown();
 
     void dispose();
+
+    void save();
 }
