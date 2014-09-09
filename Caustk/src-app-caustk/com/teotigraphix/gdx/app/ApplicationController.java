@@ -1,10 +1,10 @@
 
 package com.teotigraphix.gdx.app;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.kryo.KryoException;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -65,6 +65,8 @@ public class ApplicationController extends ApplicationComponent implements IAppl
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (KryoException e2) {
+            e2.printStackTrace();
         }
     }
 
@@ -105,7 +107,7 @@ public class ApplicationController extends ApplicationComponent implements IAppl
 
         try {
             applicationStates.save(applicationModel.getProject());
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

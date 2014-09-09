@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -40,6 +41,7 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
 
     protected void register(Kryo kryo) {
 
+        kryo.register(ArrayList.class);
         kryo.register(HashMap.class);
         kryo.register(File.class);
 
@@ -105,7 +107,7 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
 
     protected abstract ApplicationProject readProject(Kryo kryo, Input input);
 
-    protected abstract ApplicationProject createDefaultProject(String string, String location);
+    protected abstract ApplicationProject createDefaultProject(String name, String location);
 
     @Override
     public void startUI() {
