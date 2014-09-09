@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
+
 /**
  * The native OSC messages for the <strong>8BitSynth</strong>.
  * 

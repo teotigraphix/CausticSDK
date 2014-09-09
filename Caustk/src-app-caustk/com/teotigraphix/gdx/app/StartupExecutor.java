@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
+import com.sun.jna.Library;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.CaustkRuntime;

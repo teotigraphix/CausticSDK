@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
+
 /**
  * The {@link FilterMessage} holds all OSC messages associated with the
  * {@link FilterComponentBase} and {@link SynthFilterComponent} API.

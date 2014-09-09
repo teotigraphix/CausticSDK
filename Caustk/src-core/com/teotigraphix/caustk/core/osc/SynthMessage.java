@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
+
 /**
  * The {@link SynthMessage} holds all OSC messages associated with the
  * {@link SynthComponent}, {@link MachineNode#getSynth()} API.

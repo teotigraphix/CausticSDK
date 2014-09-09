@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import com.teotigraphix.caustk.node.machine.patch.bassline.DistortionComponent;
+
 public class BasslineMessage extends CausticMessage {
 
     /**
