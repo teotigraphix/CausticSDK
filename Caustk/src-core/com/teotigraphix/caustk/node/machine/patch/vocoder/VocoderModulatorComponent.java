@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.machine.VocoderMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class VocoderModulator extends MachineComponent {
+public class VocoderModulatorComponent extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -134,14 +134,14 @@ public class VocoderModulator extends MachineComponent {
     /**
      * Serialization
      */
-    public VocoderModulator() {
+    public VocoderModulatorComponent() {
     }
 
-    public VocoderModulator(int machineIndex) {
+    public VocoderModulatorComponent(int machineIndex) {
         super(machineIndex);
     }
 
-    public VocoderModulator(MachineNode machineNode) {
+    public VocoderModulatorComponent(MachineNode machineNode) {
         super(machineNode);
     }
 

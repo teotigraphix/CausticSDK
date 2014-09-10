@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
-import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.EightBitControls;
+import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.EightBitControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.ExpressionComponent;
 
 /**
@@ -37,7 +37,7 @@ public class EightBitSynthMachine extends MachineNode {
 
     private ExpressionComponent expression;
 
-    private EightBitControls controls;
+    private EightBitControlsComponent controls;
 
     //--------------------------------------------------------------------------
     // Components
@@ -55,7 +55,7 @@ public class EightBitSynthMachine extends MachineNode {
     // controls
     //----------------------------------
 
-    public EightBitControls getControls() {
+    public EightBitControlsComponent getControls() {
         return controls;
     }
 
@@ -81,7 +81,7 @@ public class EightBitSynthMachine extends MachineNode {
     protected void intialize() {
         super.intialize();
         expression = new ExpressionComponent(this);
-        controls = new EightBitControls(this);
+        controls = new EightBitControlsComponent(this);
     }
 
     @Override

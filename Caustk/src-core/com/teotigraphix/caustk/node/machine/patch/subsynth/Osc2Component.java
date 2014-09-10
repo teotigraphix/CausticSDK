@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.machine.patch.subsynth;
 
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.CentsMode;
-import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2WaveForm;
+import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
@@ -48,7 +48,7 @@ public class Osc2Component extends MachineComponent {
 
     private CentsMode centsMode = CentsMode.CENTS;
 
-    private Osc2WaveForm waveForm = Osc2WaveForm.None;
+    private Osc2Waveform waveForm = Osc2Waveform.None;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -200,12 +200,12 @@ public class Osc2Component extends MachineComponent {
     /**
      * @see SubSynthMessage#OSC2_WAVEFORM
      */
-    public Osc2WaveForm getWaveform() {
+    public Osc2Waveform getWaveform() {
         return waveForm;
     }
 
-    Osc2WaveForm getWaveform(boolean restore) {
-        return Osc2WaveForm.toType(SubSynthMessage.OSC2_WAVEFORM
+    Osc2Waveform getWaveform(boolean restore) {
+        return Osc2Waveform.toType(SubSynthMessage.OSC2_WAVEFORM
                 .query(getRack(), getMachineIndex()));
     }
 
@@ -213,7 +213,7 @@ public class Osc2Component extends MachineComponent {
      * @see SubSynthMessage#OSC2_WAVEFORM
      * @param value Osc2WaveForm
      */
-    public void setWaveform(Osc2WaveForm value) {
+    public void setWaveform(Osc2Waveform value) {
         if (value == waveForm)
             return;
         waveForm = value;

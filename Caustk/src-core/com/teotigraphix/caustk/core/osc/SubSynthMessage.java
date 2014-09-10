@@ -773,7 +773,7 @@ public class SubSynthMessage extends CausticMessage {
         }
     }
 
-    public enum Osc2WaveForm {
+    public enum Osc2Waveform {
 
         None(0),
 
@@ -798,13 +798,13 @@ public class SubSynthMessage extends CausticMessage {
         private final int value;
 
         /**
-         * Returns in integer value for the {@link Osc2WaveForm}.
+         * Returns in integer value for the {@link Osc2Waveform}.
          */
         public int getValue() {
             return value;
         }
 
-        Osc2WaveForm(int value) {
+        Osc2Waveform(int value) {
             this.value = value;
         }
 
@@ -813,8 +813,8 @@ public class SubSynthMessage extends CausticMessage {
          * 
          * @param type The int type.
          */
-        public static Osc2WaveForm toType(Integer type) {
-            for (Osc2WaveForm result : values()) {
+        public static Osc2Waveform toType(Integer type) {
+            for (Osc2Waveform result : values()) {
                 if (result.getValue() == type)
                     return result;
             }
@@ -824,7 +824,7 @@ public class SubSynthMessage extends CausticMessage {
         /**
          * @see #toType(Integer)
          */
-        public static Osc2WaveForm toType(Float type) {
+        public static Osc2Waveform toType(Float type) {
             return toType(type.intValue());
         }
     }

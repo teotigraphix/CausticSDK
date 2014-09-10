@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
-import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControls;
-import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulator;
+import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControlsComponent;
+import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorComponent;
 
 /**
  * The Caustic <strong>Vocoder</strong> OSC decorator.
@@ -41,9 +41,9 @@ public class VocoderMachine extends MachineNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private VocoderModulator modulator;
+    private VocoderModulatorComponent modulator;
 
-    private ModulatorControls controls;
+    private ModulatorControlsComponent controls;
 
     //--------------------------------------------------------------------------
     // Components
@@ -53,7 +53,7 @@ public class VocoderMachine extends MachineNode {
     // modulator
     //----------------------------------
 
-    public VocoderModulator getModulator() {
+    public VocoderModulatorComponent getModulator() {
         return modulator;
     }
 
@@ -61,7 +61,7 @@ public class VocoderMachine extends MachineNode {
     // controls
     //----------------------------------
 
-    public ModulatorControls getControls() {
+    public ModulatorControlsComponent getControls() {
         return controls;
     }
 
@@ -86,8 +86,8 @@ public class VocoderMachine extends MachineNode {
     @Override
     protected void intialize() {
         super.intialize();
-        modulator = new VocoderModulator(this);
-        controls = new ModulatorControls(this);
+        modulator = new VocoderModulatorComponent(this);
+        controls = new ModulatorControlsComponent(this);
     }
 
     @Override

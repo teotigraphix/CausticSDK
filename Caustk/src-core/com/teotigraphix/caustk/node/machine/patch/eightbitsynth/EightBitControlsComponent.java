@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see EightBitSynthMachine#getControls()
  */
-public class EightBitControls extends MachineComponent {
+public class EightBitControlsComponent extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -176,14 +176,14 @@ public class EightBitControls extends MachineComponent {
     /**
      * Serialization
      */
-    public EightBitControls() {
+    public EightBitControlsComponent() {
     }
 
-    public EightBitControls(int machineIndex) {
+    public EightBitControlsComponent(int machineIndex) {
         super(machineIndex);
     }
 
-    public EightBitControls(MachineNode machineNode) {
+    public EightBitControlsComponent(MachineNode machineNode) {
         super(machineNode);
     }
 

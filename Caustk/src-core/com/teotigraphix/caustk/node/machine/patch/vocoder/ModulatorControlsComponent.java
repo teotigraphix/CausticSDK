@@ -34,7 +34,7 @@ import com.teotigraphix.caustk.node.machine.VocoderMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ModulatorControls extends MachineComponent {
+public class ModulatorControlsComponent extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -319,14 +319,14 @@ public class ModulatorControls extends MachineComponent {
     /**
      * Serialization
      */
-    public ModulatorControls() {
+    public ModulatorControlsComponent() {
     }
 
-    public ModulatorControls(int machineIndex) {
+    public ModulatorControlsComponent(int machineIndex) {
         super(machineIndex);
     }
 
-    public ModulatorControls(MachineNode machineNode) {
+    public ModulatorControlsComponent(MachineNode machineNode) {
         super(machineNode);
     }
 
