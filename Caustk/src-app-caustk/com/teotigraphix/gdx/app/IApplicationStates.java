@@ -1,8 +1,9 @@
 
 package com.teotigraphix.gdx.app;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import com.teotigraphix.caustk.core.CaustkProject;
 
 public interface IApplicationStates extends IApplicationComponent {
 
@@ -16,12 +17,12 @@ public interface IApplicationStates extends IApplicationComponent {
 
     void restartUI();
 
-    void save(ApplicationProject project) throws FileNotFoundException;
+    void save(CaustkProject project) throws IOException;
 
-    void onProjectCreate(ApplicationProject project);
+    void onProjectCreate(CaustkProject project);
 
-    void onProjectLoad(ApplicationProject project);
+    void onProjectLoad(CaustkProject project);
 
-    void onProjectSave(ApplicationProject project);
+    void onProjectSave(CaustkProject project);
 
 }

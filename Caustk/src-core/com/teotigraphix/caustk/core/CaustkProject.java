@@ -106,6 +106,14 @@ public class CaustkProject {
         return rackBytes;
     }
 
+    /**
+     * Returns whether the {@link #getRackBytes()} is null, meaning the project
+     * was just created (has no bytes) or existing (has bytes).
+     */
+    public boolean isCreated() {
+        return rackBytes != null;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -113,7 +121,7 @@ public class CaustkProject {
     /**
      * Serialized.
      */
-    CaustkProject() {
+    public CaustkProject() {
     }
 
     public CaustkProject(ICaustkRack rack, File nativeLocation, String name) {
@@ -129,6 +137,11 @@ public class CaustkProject {
     }
 
     public void save() throws IOException {
+        flush();
+        rack.getSerializer().serialize(getFile(), this);
+    }
+
+    public void flush() throws IOException {
         File tempDirectory = RuntimeUtils.getApplicationTempDirectory();
         File racksDirectory = new File(tempDirectory, "racks");
         File tempFile = new File(racksDirectory, id.toString() + ".caustic");
@@ -143,8 +156,6 @@ public class CaustkProject {
         rackBytes = FileUtils.readFileToByteArray(tempFile);
 
         FileUtils.deleteQuietly(tempFile);
-
-        rack.getSerializer().serialize(getFile(), this);
     }
 
 }

@@ -2,27 +2,15 @@
 package com.teotigraphix.gdx.app;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
 
 import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.Serializer;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.serializers.MapSerializer;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.CaustkEngine;
+import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public abstract class ApplicationStates extends ApplicationComponent implements IApplicationStates {
-
-    private Kryo kryo;
 
     @Inject
     private IApplicationModel applicationModel;
@@ -33,25 +21,11 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
     }
 
     public ApplicationStates() {
-        kryo = new Kryo();
-        kryo.setRegistrationRequired(true);
-
-        register(kryo);
-    }
-
-    protected void register(Kryo kryo) {
-
-        kryo.register(ArrayList.class);
-        kryo.register(HashMap.class);
-        kryo.register(File.class);
-
-        kryo.register(HashMap.class, new MapSerializer());
-        kryo.register(File.class, new FileSerializer());
     }
 
     @Override
     public void loadLastProjectState() throws IOException {
-        ApplicationProject project = null;
+        CaustkProject project = null;
 
         String path = applicationModel.getPreferences().getString(
                 ApplicationModel.LAST_PROJECT_PATH, null);
@@ -59,7 +33,8 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
         File projectsDirectory = new File(rootDirectory, "projects");
         File projectLocation = null;
 
-        String projectName = "Untitled";
+        String projectName = getNextProjectName();
+
         File projectBaseDirectory = new File(projectsDirectory, projectName);
 
         if (!projectBaseDirectory.exists())
@@ -72,7 +47,7 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
         }
         // C:\Users\Teoti\Documents\Tones\projects\Untitled.prj
         if (!projectLocation.exists()) {
-            project = createDefaultProject("Untitled", projectLocation.getAbsolutePath());
+            project = createDefaultProject(projectName, projectLocation.getAbsolutePath());
         } else {
             project = loadProject(projectLocation);
         }
@@ -88,26 +63,23 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
 
     }
 
+    private String getNextProjectName() {
+        return "Untitled";
+    }
+
     @Override
-    public void save(ApplicationProject project) throws FileNotFoundException {
-        saveProject(project);
+    public void save(CaustkProject project) throws IOException {
+        project.save();
     }
 
-    private void saveProject(ApplicationProject project) throws FileNotFoundException {
-        Output output = new Output(new FileOutputStream(project.getLocation().getAbsolutePath()));
-        kryo.writeObject(output, project);
-        output.close();
-    }
-
-    private ApplicationProject loadProject(File projectLocation) throws FileNotFoundException {
-        Input input = new Input(new FileInputStream(projectLocation));
-        ApplicationProject instance = readProject(kryo, input);
+    private CaustkProject loadProject(File projectLocation) throws IOException {
+        CaustkProject instance = readProject(projectLocation);
         return instance;
     }
 
-    protected abstract ApplicationProject readProject(Kryo kryo, Input input);
+    protected abstract CaustkProject readProject(File file) throws IOException;
 
-    protected abstract ApplicationProject createDefaultProject(String name, String location);
+    protected abstract CaustkProject createDefaultProject(String name, String location);
 
     @Override
     public void startUI() {
@@ -120,7 +92,11 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
     @Override
     public void restartUI() {
         getApplication().getLogger().log(">>>>> ApplicationStates", "restartUI()");
-        applicationModel.setProject(applicationModel.getProject());
+        try {
+            applicationModel.setProject(applicationModel.getProject());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -136,37 +112,4 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
         return new File(new File(storagePath), ".caustk");
     }
 
-    //--------------------------------------------------------------------------
-
-    public class FileSerializer extends Serializer<File> {
-
-        @Override
-        public File read(Kryo kryo, Input input, Class<File> file) {
-            String readString = input.readString();
-            return new File(readString);
-        }
-
-        @Override
-        public void write(Kryo kryo, Output output, File file) {
-            output.write(file.getAbsolutePath().getBytes());
-        }
-
-    }
-
-    public class UUIDSerializer extends Serializer<UUID> {
-        public UUIDSerializer() {
-            setImmutable(true);
-        }
-
-        @Override
-        public void write(final Kryo kryo, final Output output, final UUID uuid) {
-            output.writeLong(uuid.getMostSignificantBits());
-            output.writeLong(uuid.getLeastSignificantBits());
-        }
-
-        @Override
-        public UUID read(final Kryo kryo, final Input input, final Class<UUID> uuidClass) {
-            return new UUID(input.readLong(), input.readLong());
-        }
-    }
 }

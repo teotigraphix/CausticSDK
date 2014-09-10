@@ -3,18 +3,26 @@ package com.teotigraphix.caustk.core.midi;
 
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
 public class MidiScale {
 
+    @Tag(0)
     private ScaleReference scaleReference;
 
+    @Tag(1)
     private List<Integer> intervals;
 
+    @Tag(2)
     private NoteReference noteReference;
 
+    @Tag(3)
     private int octave;
 
+    @Tag(4)
     private int numColumns;
 
+    @Tag(5)
     private int numRows;
 
     public String getName() {

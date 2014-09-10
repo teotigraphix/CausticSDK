@@ -1,42 +1,47 @@
 
 package com.teotigraphix.gdx.app;
 
+import java.io.IOException;
+
+import com.teotigraphix.caustk.core.CaustkProject;
+
 public interface IApplicationModel extends IApplicationComponent {
 
     ApplicationPreferences getApplicationPreferences();
 
-    ApplicationProject getProject();
+    CaustkProject getProject();
 
     /**
      * @param project
+     * @throws IOException
      * @see ApplicationModelProjectCreateEvent
      * @see ApplicationModelProjectLoadEvent
      */
-    void setProject(ApplicationProject project);
+    void setProject(CaustkProject project) throws IOException;
 
     public static class ApplicationModelProjectEvent {
 
-        private ApplicationProject project;
+        private CaustkProject project;
 
-        public ApplicationProject getProject() {
+        public CaustkProject getProject() {
             return project;
         }
 
-        public ApplicationModelProjectEvent(ApplicationProject project) {
+        public ApplicationModelProjectEvent(CaustkProject project) {
             this.project = project;
         }
     }
 
     public static class ApplicationModelProjectCreateEvent extends ApplicationModelProjectEvent {
 
-        public ApplicationModelProjectCreateEvent(ApplicationProject project) {
+        public ApplicationModelProjectCreateEvent(CaustkProject project) {
             super(project);
         }
     }
 
     public static class ApplicationModelProjectLoadEvent extends ApplicationModelProjectEvent {
 
-        public ApplicationModelProjectLoadEvent(ApplicationProject project) {
+        public ApplicationModelProjectLoadEvent(CaustkProject project) {
             super(project);
         }
     }

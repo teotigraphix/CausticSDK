@@ -25,6 +25,7 @@ import java.util.Set;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.kryo.Kryo;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -173,6 +174,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
         createGuice();
 
+        onRegister(runtime.getRack().getSerializer().getKryo());
         onRegisterScenes();
         onRegisterModels();
 
@@ -240,14 +242,11 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     //--------------------------------------------------------------------------
 
     /**
-     * Register application {@link IModel}s.
-     * <p>
-     * First of the register methods to be called.
+     * Reigster Project dependent classes.
      * 
-     * @see ApplicationComponentRegistery#put(Class, IModel)
+     * @param kryo
      */
-    @Override
-    protected abstract void onRegisterModels();
+    protected abstract void onRegister(Kryo kryo);
 
     /**
      * Add {@link ICaustkScene}s to the application.
@@ -257,6 +256,16 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
      */
     @Override
     protected abstract void onRegisterScenes();
+
+    /**
+     * Register application {@link IModel}s.
+     * <p>
+     * First of the register methods to be called.
+     * 
+     * @see ApplicationComponentRegistery#put(Class, IModel)
+     */
+    @Override
+    protected abstract void onRegisterModels();
 
     /**
      * Set the initial {@link Scene} that starts the application, and perform
