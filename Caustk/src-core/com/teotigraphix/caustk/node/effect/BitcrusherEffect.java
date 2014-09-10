@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.BitcrusherControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link BitcrusherEffect} effect node.
@@ -165,11 +166,10 @@ public class BitcrusherEffect extends EffectNode {
      * Serialization
      */
     public BitcrusherEffect() {
-        setType(EffectType.Bitcrusher);
     }
 
-    public BitcrusherEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public BitcrusherEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Bitcrusher);
     }
 

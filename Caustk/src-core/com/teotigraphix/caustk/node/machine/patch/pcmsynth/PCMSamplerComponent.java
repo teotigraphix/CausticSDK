@@ -202,7 +202,7 @@ public class PCMSamplerComponent extends MachineComponent {
     protected final PCMSamplerChannel getPCMSample(int index) {
         PCMSamplerChannel channel = channels.get(index);
         if (channel == null) {
-            channel = new PCMSamplerChannel(getMachineIndex(), index);
+            channel = new PCMSamplerChannel(getMachineNode(), index);
             channels.put(index, channel);
         }
         return channel;

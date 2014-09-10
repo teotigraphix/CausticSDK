@@ -42,18 +42,6 @@ public class ClipComponent extends MachineComponent {
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // machineIndex
-    //----------------------------------
-
-    @Override
-    public void setMachineIndex(int machineIndex) {
-        super.setMachineIndex(machineIndex);
-        for (ClipEntryNode clipEntryNode : entries.values()) {
-            clipEntryNode.setMachineIndex(machineIndex);
-        }
-    }
-
-    //----------------------------------
     // entries
     //----------------------------------
 
@@ -84,15 +72,11 @@ public class ClipComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public ClipComponent() {
-    }
-
-    public ClipComponent(int machineIndex) {
-        this.machineIndex = machineIndex;
+    protected ClipComponent() {
     }
 
     public ClipComponent(MachineNode machineNode) {
-        this(machineNode.getIndex());
+        super(machineNode);
     }
 
     //--------------------------------------------------------------------------

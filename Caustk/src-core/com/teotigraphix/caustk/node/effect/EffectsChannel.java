@@ -86,12 +86,8 @@ public class EffectsChannel extends MachineComponent {
     public EffectsChannel() {
     }
 
-    public EffectsChannel(int machineIndex) {
-        this.machineIndex = machineIndex;
-    }
-
     public EffectsChannel(MachineNode machineNode) {
-        this(machineNode.getIndex());
+        super(machineNode);
     }
 
     //--------------------------------------------------------------------------
@@ -114,7 +110,7 @@ public class EffectsChannel extends MachineComponent {
         if (containsEffect(slot))
             throw new CausticException("Effect channel contains effect at slot: " + slot);
 
-        EffectNode effectNode = getFactory().createEffect(machineIndex, slot, effectType);
+        EffectNode effectNode = getFactory().createEffect(getMachineNode(), slot, effectType);
         EffectsRackMessage.CREATE.send(getRack(), effectNode.getMachineIndex(),
                 effectNode.getSlot(), effectNode.getType().getValue());
 
@@ -167,7 +163,7 @@ public class EffectsChannel extends MachineComponent {
     protected void restoreComponents() {
         for (int i = 0; i < NUM_SLOTS; i++) {
             EffectType type = EffectType.fromInt((int)EffectsRackMessage.TYPE.send(getRack(),
-                    machineIndex, i));
+                    getMachineIndex(), i));
             if (type != null) {
                 EffectNode effect;
                 try {

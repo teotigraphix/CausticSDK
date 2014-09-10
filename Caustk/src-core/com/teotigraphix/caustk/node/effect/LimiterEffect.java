@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.LimiterControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link LimiterEffect} effect node.
@@ -165,11 +166,10 @@ public class LimiterEffect extends EffectNode {
      * Serialization
      */
     public LimiterEffect() {
-        setType(EffectType.Limiter);
     }
 
-    public LimiterEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public LimiterEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Limiter);
     }
 

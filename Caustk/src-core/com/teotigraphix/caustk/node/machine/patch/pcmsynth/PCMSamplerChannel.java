@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.pcmsynth;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
 /**
@@ -365,11 +366,11 @@ public class PCMSamplerChannel extends MachineComponent {
     /**
      * Creates a sampler channel.
      * 
-     * @param machineIndex The {@link PCMSynthMachine}'s machine index.
+     * @param machineNode The {@link PCMSynthMachine}.
      * @param channelIndex The sample channel index (0..63).
      */
-    public PCMSamplerChannel(int machineIndex, int channelIndex) {
-        super(machineIndex);
+    public PCMSamplerChannel(MachineNode machineNode, int channelIndex) {
+        super(machineNode);
         this.channelIndex = channelIndex;
     }
 

@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ParametricEQControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link ParametricEQEffect} effect node.
@@ -135,11 +136,10 @@ public class ParametricEQEffect extends EffectNode {
      * Serialization
      */
     public ParametricEQEffect() {
-        setType(EffectType.ParametricEQ);
     }
 
-    public ParametricEQEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public ParametricEQEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.ParametricEQ);
     }
 

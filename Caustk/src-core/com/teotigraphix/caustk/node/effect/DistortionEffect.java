@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionProgram;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link DistortionEffect} effect node.
@@ -164,11 +165,10 @@ public class DistortionEffect extends EffectNode {
      * Serialization
      */
     public DistortionEffect() {
-        setType(EffectType.Distortion);
     }
 
-    public DistortionEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public DistortionEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Distortion);
     }
 

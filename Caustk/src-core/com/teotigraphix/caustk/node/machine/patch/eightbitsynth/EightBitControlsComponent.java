@@ -179,10 +179,6 @@ public class EightBitControlsComponent extends MachineComponent {
     public EightBitControlsComponent() {
     }
 
-    public EightBitControlsComponent(int machineIndex) {
-        super(machineIndex);
-    }
-
     public EightBitControlsComponent(MachineNode machineNode) {
         super(machineNode);
     }

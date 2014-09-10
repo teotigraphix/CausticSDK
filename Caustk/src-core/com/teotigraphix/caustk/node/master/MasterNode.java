@@ -133,7 +133,7 @@ public class MasterNode extends NodeBase {
         equalizer = new MasterEqualizerNode();
         limiter = new MasterLimiterNode();
         volume = new MasterVolumeNode();
-        effects = new EffectsChannel(-1);
+        effects = new EffectsChannel(null);
     }
 
     //--------------------------------------------------------------------------

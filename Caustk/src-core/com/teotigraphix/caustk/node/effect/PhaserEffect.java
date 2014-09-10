@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.PhaserControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link PhaserEffect} effect node.
@@ -195,11 +196,10 @@ public class PhaserEffect extends EffectNode {
      * Serialization
      */
     public PhaserEffect() {
-        setType(EffectType.Phaser);
     }
 
-    public PhaserEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public PhaserEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Phaser);
     }
 

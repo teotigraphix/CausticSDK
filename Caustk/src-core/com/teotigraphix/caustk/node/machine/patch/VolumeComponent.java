@@ -93,7 +93,7 @@ public class VolumeComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public VolumeComponent() {
+    protected VolumeComponent() {
     }
 
     public VolumeComponent(MachineNode machineNode) {

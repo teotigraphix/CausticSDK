@@ -78,10 +78,6 @@ public class FMOperatorComponent extends MachineComponent {
     public FMOperatorComponent() {
     }
 
-    public FMOperatorComponent(int machineIndex) {
-        super(machineIndex);
-    }
-
     public FMOperatorComponent(MachineNode machineNode) {
         super(machineNode);
         operators.add(new HashMap<FMSynthMessage.FMOperatorControl, Float>());

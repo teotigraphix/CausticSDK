@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link MultiFilterEffect} effect node.
@@ -164,11 +165,10 @@ public class MultiFilterEffect extends EffectNode {
      * Serialization
      */
     public MultiFilterEffect() {
-        setType(EffectType.MultiFilter);
     }
 
-    public MultiFilterEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public MultiFilterEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.MultiFilter);
     }
 

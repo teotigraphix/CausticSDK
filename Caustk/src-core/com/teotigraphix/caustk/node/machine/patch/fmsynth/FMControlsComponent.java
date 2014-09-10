@@ -164,10 +164,6 @@ public class FMControlsComponent extends MachineComponent {
     public FMControlsComponent() {
     }
 
-    public FMControlsComponent(int machineIndex) {
-        super(machineIndex);
-    }
-
     public FMControlsComponent(MachineNode machineNode) {
         super(machineNode);
     }

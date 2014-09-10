@@ -65,13 +65,13 @@ public interface ICaustkFactory {
     /**
      * Creates an {@link EffectNode} subclass using the {@link EffectType}.
      * 
-     * @param machineIndex The machine index of the new effect.
+     * @param machineNode The machine for the new effect.
      * @param slot The effect slot within the {@link EffectsChannel}.
      * @param effectType The {@link EffectType} of the effect to be created.
      * @return A new {@link EffectNode}, has not been added to an
      *         {@link EffectsChannel}.
      */
-    <T extends EffectNode> T createEffect(int machineIndex, int slot, EffectType effectType);
+    <T extends EffectNode> T createEffect(MachineNode machineNode, int slot, EffectType effectType);
 
     /**
      * Creates a {@link MachineNode} subclass using the {@link MachineType}.

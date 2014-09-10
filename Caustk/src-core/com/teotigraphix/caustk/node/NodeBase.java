@@ -196,7 +196,7 @@ public abstract class NodeBase implements ICaustkNode {
     /**
      * Serialization
      */
-    public NodeBase() {
+    protected NodeBase() {
     }
 
     //--------------------------------------------------------------------------

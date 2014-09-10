@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.NodeBase;
 
@@ -35,39 +36,33 @@ public abstract class MachineComponent extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    protected int machineIndex = -1;
-
-    protected MachineType machineType;
+    @Tag(50)
+    private MachineNode machineNode;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
+    public MachineNode getMachineNode() {
+        return machineNode;
+    }
+
+    public void setMachineNode(MachineNode machineNode) {
+        this.machineNode = machineNode;
+    }
+
     /**
      * Returns the machine index this component decorates (0..13).
      */
     public final int getMachineIndex() {
-        return machineIndex;
-    }
-
-    /**
-     * Sets the owning machine index.
-     * 
-     * @param machineIndex The owner's machine index(0..13).
-     */
-    public void setMachineIndex(int machineIndex) {
-        this.machineIndex = machineIndex;
+        return machineNode.getIndex();
     }
 
     /**
      * Returns the machine type of the parent, may be null if not set.
      */
     public MachineType getMachineType() {
-        return machineType;
-    }
-
-    public void setMachineType(MachineType machineType) {
-        this.machineType = machineType;
+        return machineNode.getType();
     }
 
     //--------------------------------------------------------------------------
@@ -77,14 +72,10 @@ public abstract class MachineComponent extends NodeBase {
     /**
      * Serialization
      */
-    public MachineComponent() {
-    }
-
-    public MachineComponent(int machineIndex) {
-        this.machineIndex = machineIndex;
+    protected MachineComponent() {
     }
 
     public MachineComponent(MachineNode machineNode) {
-        this(machineNode.getIndex());
+        this.machineNode = machineNode;
     }
 }

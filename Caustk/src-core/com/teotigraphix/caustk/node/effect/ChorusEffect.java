@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link ChorusEffect} effect node.
@@ -194,11 +195,10 @@ public class ChorusEffect extends EffectNode {
      * Serialization
      */
     public ChorusEffect() {
-        setType(EffectType.Chorus);
     }
 
-    public ChorusEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public ChorusEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Chorus);
     }
 

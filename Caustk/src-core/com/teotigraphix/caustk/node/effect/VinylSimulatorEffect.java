@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.VinylSimulatorControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link VinylSimulatorEffect} effect node.
@@ -195,11 +196,10 @@ public class VinylSimulatorEffect extends EffectNode {
      * Serialization
      */
     public VinylSimulatorEffect() {
-        setType(EffectType.VinylSimulator);
     }
 
-    public VinylSimulatorEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public VinylSimulatorEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.VinylSimulator);
     }
 

@@ -28,6 +28,7 @@ import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
@@ -119,9 +120,9 @@ public abstract class EffectNode extends MachineComponent {
     public EffectNode() {
     }
 
-    public EffectNode(int slot, int machineIndex) {
+    public EffectNode(MachineNode machineNode, int slot) {
+        super(machineNode);
         this.slot = slot;
-        this.machineIndex = machineIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -159,7 +160,7 @@ public abstract class EffectNode extends MachineComponent {
      * @param control The control to query.
      */
     protected final float get(IEffectControl control) {
-        return EffectsRackMessage.GET.query(getRack(), machineIndex, getSlot(),
+        return EffectsRackMessage.GET.query(getRack(), getMachineIndex(), getSlot(),
                 control.getControl());
     }
 
@@ -174,8 +175,8 @@ public abstract class EffectNode extends MachineComponent {
      * @param value The new float value for the control.
      */
     protected final void set(IEffectControl control, float value) {
-        EffectsRackMessage.SET
-                .send(getRack(), machineIndex, getSlot(), control.getControl(), value);
+        EffectsRackMessage.SET.send(getRack(), getMachineIndex(), getSlot(), control.getControl(),
+                value);
         post(new EffectNodeChangeEvent(this, control, value));
     }
 

@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayMode;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link DelayEffect} effect node.
@@ -168,11 +169,10 @@ public class DelayEffect extends EffectNode {
      * Serialization
      */
     public DelayEffect() {
-        setType(EffectType.Delay);
     }
 
-    public DelayEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public DelayEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Delay);
     }
 

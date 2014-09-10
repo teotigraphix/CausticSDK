@@ -137,10 +137,6 @@ public class VocoderModulatorComponent extends MachineComponent {
     public VocoderModulatorComponent() {
     }
 
-    public VocoderModulatorComponent(int machineIndex) {
-        super(machineIndex);
-    }
-
     public VocoderModulatorComponent(MachineNode machineNode) {
         super(machineNode);
     }

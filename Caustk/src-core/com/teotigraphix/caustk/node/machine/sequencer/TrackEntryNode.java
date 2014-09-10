@@ -20,7 +20,8 @@
 package com.teotigraphix.caustk.node.machine.sequencer;
 
 import com.teotigraphix.caustk.core.CausticError;
-import com.teotigraphix.caustk.node.NodeBase;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * A {@link TrackEntryNode} is an entry in a {@link TrackComponent}.
@@ -31,7 +32,7 @@ import com.teotigraphix.caustk.node.NodeBase;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class TrackEntryNode extends NodeBase {
+public class TrackEntryNode extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -50,26 +51,6 @@ public class TrackEntryNode extends NodeBase {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // machineIndex
-    //----------------------------------
-
-    /**
-     * The owning {@link TrackComponent}'s machine index.
-     */
-    public int getMachineIndex() {
-        return machineIndex;
-    }
-
-    /**
-     * Sets the machine index.
-     * 
-     * @param machineIndex The machine index (0..13).
-     */
-    public void setMachineIndex(int machineIndex) {
-        this.machineIndex = machineIndex;
-    }
 
     //----------------------------------
     // pattern
@@ -180,12 +161,12 @@ public class TrackEntryNode extends NodeBase {
     /**
      * Serialization
      */
-    public TrackEntryNode() {
+    protected TrackEntryNode() {
     }
 
-    public TrackEntryNode(int machineIndex, String patternName, int numMeasures, int startMeasure,
-            int endMeasure) {
-        this.machineIndex = machineIndex;
+    public TrackEntryNode(MachineNode machineNode, String patternName, int numMeasures,
+            int startMeasure, int endMeasure) {
+        super(machineNode);
         this.pattern = patternName;
         this.numMeasures = numMeasures;
         this.startMeasure = startMeasure;

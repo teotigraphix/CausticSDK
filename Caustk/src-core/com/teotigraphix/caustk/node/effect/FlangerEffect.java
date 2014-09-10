@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link FlangerEffect} effect node.
@@ -194,11 +195,10 @@ public class FlangerEffect extends EffectNode {
      * Serialization
      */
     public FlangerEffect() {
-        setType(EffectType.Flanger);
     }
 
-    public FlangerEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public FlangerEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Flanger);
     }
 

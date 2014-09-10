@@ -151,8 +151,9 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public <T extends EffectNode> T createEffect(int machineIndex, int slot, EffectType effectType) {
-        return effectNodeFactory.createEffect(machineIndex, slot, effectType);
+    public <T extends EffectNode> T createEffect(MachineNode machineNode, int slot,
+            EffectType effectType) {
+        return effectNodeFactory.createEffect(machineNode, slot, effectType);
     }
 
     @Override

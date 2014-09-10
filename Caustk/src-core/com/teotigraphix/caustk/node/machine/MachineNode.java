@@ -311,29 +311,7 @@ public abstract class MachineNode extends NodeBase {
         if (isNative)
             throw new IllegalStateException("machine already exists native");
         this.index = index;
-        volume.setMachineIndex(index);
-        preset.setMachineIndex(index);
-        synth.setMachineIndex(index);
-        mixer.setMachineIndex(index);
-        effects.setMachineIndex(index);
-        sequencer.setMachineIndex(index);
-        track.setMachineIndex(index);
-        clips.setMachineIndex(index);
-
-        setupMachineType();
-
         create();
-    }
-
-    private void setupMachineType() {
-        volume.setMachineType(type);
-        preset.setMachineType(type);
-        synth.setMachineType(type);
-        mixer.setMachineType(type);
-        effects.setMachineType(type);
-        sequencer.setMachineType(type);
-        track.setMachineType(type);
-        clips.setMachineType(type);
     }
 
     /**
@@ -354,7 +332,6 @@ public abstract class MachineNode extends NodeBase {
         if (isNative)
             throw new IllegalStateException("Machine is native");
         RackMessage.CREATE.send(getRack(), type.getType(), name, index);
-        setupMachineType();
         isNative = true;
         volume.create();
         preset.create();
@@ -384,7 +361,6 @@ public abstract class MachineNode extends NodeBase {
 
     @Override
     protected void restoreComponents() {
-        setupMachineType();
         volume.restore();
         preset.restore();
         synth.restore();
@@ -400,7 +376,6 @@ public abstract class MachineNode extends NodeBase {
     protected void updateComponents() {
         // the RackNode calls us, and its our job to create
         RackMessage.CREATE.send(getRack(), type.getType(), name, index);
-        setupMachineType();
         isNative = true;
         volume.update();
         preset.update();
@@ -431,7 +406,7 @@ public abstract class MachineNode extends NodeBase {
      * Initializes the machine's composites.
      */
     protected void intialize() {
-        preset = new PresetComponent(this);
+        preset = new PresetComponent(this, null);
         volume = new VolumeComponent(this);
         mixer = new MixerChannel(this);
         effects = new EffectsChannel(this);

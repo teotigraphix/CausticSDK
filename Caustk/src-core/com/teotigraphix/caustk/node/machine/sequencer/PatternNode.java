@@ -24,11 +24,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode.NoteFlag;
 
 /**
@@ -46,14 +48,19 @@ public class PatternNode extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private String name;
 
+    @Tag(101)
     private int numMeasures = 1;
 
+    @Tag(102)
     private ShuffleMode shuffleMode = ShuffleMode.Default;
 
+    @Tag(103)
     private float shuffleAmount;
 
+    @Tag(104)
     private List<NoteNode> notes = new ArrayList<NoteNode>();
 
     //--------------------------------------------------------------------------
@@ -107,7 +114,7 @@ public class PatternNode extends MachineComponent {
     }
 
     int getNumMeasures(boolean restore) {
-        return (int)PatternSequencerMessage.NUM_MEASURES.query(getRack(), machineIndex);
+        return (int)PatternSequencerMessage.NUM_MEASURES.query(getRack(), getMachineIndex());
     }
 
     /**
@@ -125,8 +132,8 @@ public class PatternNode extends MachineComponent {
         if (numMeasures < 1 || numMeasures > 8)
             throw newRangeException(PatternSequencerMessage.NUM_MEASURES, "1,2,4,8", numMeasures);
         this.numMeasures = numMeasures;
-        PatternUtils.setNumMeasures(getRack(), machineIndex, getBankIndex(), getPatternIndex(),
-                numMeasures);
+        PatternUtils.setNumMeasures(getRack(), getMachineIndex(), getBankIndex(),
+                getPatternIndex(), numMeasures);
         post(new PatternNodNumMeasuresEvent(this, PatternSequencerControl.NumMeausures, numMeasures));
     }
 
@@ -229,7 +236,7 @@ public class PatternNode extends MachineComponent {
 
     public ShuffleMode getShuffleMode(boolean restore) {
         return ShuffleMode.fromInt((int)PatternSequencerMessage.SHUFFLE_MODE.query(getRack(),
-                machineIndex));
+                getMachineIndex()));
     }
 
     /**
@@ -241,7 +248,8 @@ public class PatternNode extends MachineComponent {
         if (shuffleMode == this.shuffleMode)
             return;
         this.shuffleMode = shuffleMode;
-        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), machineIndex, shuffleMode.getValue());
+        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), getMachineIndex(),
+                shuffleMode.getValue());
         post(new PatternNodeShuffleModeEvent(this, PatternSequencerControl.ShuffleMode, shuffleMode));
     }
 
@@ -257,7 +265,7 @@ public class PatternNode extends MachineComponent {
     }
 
     public float getShuffleAmount(boolean restore) {
-        return PatternSequencerMessage.SHUFFLE_AMOUNT.query(getRack(), machineIndex);
+        return PatternSequencerMessage.SHUFFLE_AMOUNT.query(getRack(), getMachineIndex());
     }
 
     /**
@@ -271,7 +279,7 @@ public class PatternNode extends MachineComponent {
         this.shuffleAmount = shuffleAmount;
         if (shuffleAmount < 0f || shuffleAmount > 1f)
             throw newRangeException("shuffle_amount", "0..1", shuffleAmount);
-        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), machineIndex, shuffleAmount);
+        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), getMachineIndex(), shuffleAmount);
         post(new PatternNodeShuffleAmountEvent(this, PatternSequencerControl.ShuffleAmount,
                 shuffleAmount));
     }
@@ -301,7 +309,8 @@ public class PatternNode extends MachineComponent {
      * @param bankIndex The bank index (0..3).
      * @param patternIndex The pattern index (0..15).
      */
-    public PatternNode(int bankIndex, int patternIndex) {
+    public PatternNode(MachineNode machineNode, int bankIndex, int patternIndex) {
+        super(machineNode);
         this.name = PatternUtils.toString(bankIndex, patternIndex);
     }
 
@@ -311,9 +320,9 @@ public class PatternNode extends MachineComponent {
      * @param name The name of the pattern.
      * @param machineIndex The machine's rack index.
      */
-    public PatternNode(String name, int machineIndex) {
-        this(name);
-        this.machineIndex = machineIndex;
+    public PatternNode(MachineNode machineNode, String name) {
+        super(machineNode);
+        this.name = name;
     }
 
     /**
@@ -323,9 +332,9 @@ public class PatternNode extends MachineComponent {
      * @param patternIndex The pattern index (0..15).
      * @param machineIndex The machine's rack index.
      */
-    public PatternNode(int bankIndex, int patternIndex, int machineIndex) {
+    public PatternNode(int bankIndex, int patternIndex, MachineNode machineNode) {
         this.name = PatternUtils.toString(bankIndex, patternIndex);
-        this.machineIndex = machineIndex;
+        setMachineNode(machineNode);
     }
 
     //--------------------------------------------------------------------------
@@ -355,8 +364,8 @@ public class PatternNode extends MachineComponent {
 
         NoteNode note = getNote(startBeat, pitch);
         // Message: /caustic/[machine_index]/pattern_sequencer/note_data [start] [pitch] [velocity] [end] [flags] 
-        PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, startBeat, pitch, velocity,
-                endBeat, flags);
+        PatternSequencerMessage.NOTE_DATA.send(getRack(), getMachineIndex(), startBeat, pitch,
+                velocity, endBeat, flags);
         note = new NoteNode(pitch, startBeat, endBeat, velocity, flags);
         addNote(note);
         post(new PatternNodeNoteCreateEvent(this, PatternSequencerControl.NoteDataAdd, note));
@@ -377,11 +386,11 @@ public class PatternNode extends MachineComponent {
      */
     public void updateNode(NoteNode noteNode, int pitch, float startBeat, float endBeat,
             float velocity, int flags) {
-        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), machineIndex, noteNode.getStart(),
-                noteNode.getPitch());
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), getMachineIndex(),
+                noteNode.getStart(), noteNode.getPitch());
         noteNode.set(pitch, startBeat, endBeat, velocity, flags);
-        PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, startBeat, pitch, velocity,
-                endBeat, flags);
+        PatternSequencerMessage.NOTE_DATA.send(getRack(), getMachineIndex(), startBeat, pitch,
+                velocity, endBeat, flags);
         post(new PatternNodeNoteUpdateEvent(this, noteNode));
     }
 
@@ -471,8 +480,8 @@ public class PatternNode extends MachineComponent {
 
     private NoteNode destroyNote(NoteNode noteNode) {
         // Message: /caustic/[machine_index]/pattern_sequencer/note_data [start] [pitch] 
-        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), machineIndex, noteNode.getStart(),
-                noteNode.getPitch());
+        PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), getMachineIndex(),
+                noteNode.getStart(), noteNode.getPitch());
         removeNote(noteNode);
         post(new PatternNodeNoteDestroyEvent(this, PatternSequencerControl.NoteDataRemove, noteNode));
         return noteNode;
@@ -509,8 +518,8 @@ public class PatternNode extends MachineComponent {
     @Override
     protected void restoreComponents() {
         // create NoteNodes for each note
-        String result = PatternSequencerMessage.QUERY_NOTE_DATA
-                .queryString(getRack(), machineIndex);
+        String result = PatternSequencerMessage.QUERY_NOTE_DATA.queryString(getRack(),
+                getMachineIndex());
         if (result == null)
             return;
 
@@ -524,15 +533,16 @@ public class PatternNode extends MachineComponent {
     protected void updateComponents() {
         // when this call happens, the parent PatternNode has already
         // set the correct bank/pattern
-        PatternSequencerMessage.NUM_MEASURES.send(getRack(), machineIndex, numMeasures);
+        PatternSequencerMessage.NUM_MEASURES.send(getRack(), getMachineIndex(), numMeasures);
         // we already have the NoteNodes, just need to update the machine's pattern_sequencer
         for (NoteNode noteNode : notes) {
-            PatternSequencerMessage.NOTE_DATA.send(getRack(), machineIndex, noteNode.getStart(),
-                    noteNode.getPitch(), noteNode.getVelocity(), noteNode.getEnd(),
-                    noteNode.getFlags());
+            PatternSequencerMessage.NOTE_DATA.send(getRack(), getMachineIndex(),
+                    noteNode.getStart(), noteNode.getPitch(), noteNode.getVelocity(),
+                    noteNode.getEnd(), noteNode.getFlags());
         }
-        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), machineIndex, shuffleMode.getValue());
-        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), machineIndex, shuffleAmount);
+        PatternSequencerMessage.SHUFFLE_MODE.send(getRack(), getMachineIndex(),
+                shuffleMode.getValue());
+        PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), getMachineIndex(), shuffleAmount);
     }
 
     @Override

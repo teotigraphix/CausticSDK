@@ -48,17 +48,17 @@ public class TrackComponent extends MachineComponent {
     // Public Property API
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // machineIndex
-    //----------------------------------
-
-    @Override
-    public void setMachineIndex(int machineIndex) {
-        super.setMachineIndex(machineIndex);
-        for (TrackEntryNode trackEntryNode : entries.values()) {
-            trackEntryNode.setMachineIndex(machineIndex);
-        }
-    }
+    //    //----------------------------------
+    //    // machineIndex
+    //    //----------------------------------
+    //
+    //    @Override
+    //    public void setMachineIndex(int machineIndex) {
+    //        super.setMachineIndex(machineIndex);
+    //        for (TrackEntryNode trackEntryNode : entries.values()) {
+    //            trackEntryNode.setMachineIndex(machineIndex);
+    //        }
+    //    }
 
     //----------------------------------
     // entries
@@ -227,8 +227,8 @@ public class TrackComponent extends MachineComponent {
             throw new CausticException("Track entry span invalid, measures exist: " + startMeasure
                     + ", " + endMeasure);
 
-        TrackEntryNode trackEntryNode = new TrackEntryNode(patternNode.getMachineIndex(),
-                patternNode.getName(), patternNode.getNumMeasures(), startMeasure, endMeasure);
+        TrackEntryNode trackEntryNode = new TrackEntryNode(getMachineNode(), patternNode.getName(),
+                patternNode.getNumMeasures(), startMeasure, endMeasure);
 
         addEntry(trackEntryNode);
 
@@ -236,9 +236,9 @@ public class TrackComponent extends MachineComponent {
     }
 
     /**
-     * Adds an existing {@link TrackEntryNode} to the {@link TrackComponent}. This
-     * may happen during an undo operation, where the track entry existed in
-     * this track prior.
+     * Adds an existing {@link TrackEntryNode} to the {@link TrackComponent}.
+     * This may happen during an undo operation, where the track entry existed
+     * in this track prior.
      * 
      * @param trackEntry The track entry to add.
      */
@@ -304,15 +304,11 @@ public class TrackComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public TrackComponent() {
-    }
-
-    public TrackComponent(int machineIndex) {
-        this.machineIndex = machineIndex;
+    protected TrackComponent() {
     }
 
     public TrackComponent(MachineNode machineNode) {
-        this(machineNode.getIndex());
+        super(machineNode);
     }
 
     //--------------------------------------------------------------------------
@@ -387,6 +383,7 @@ public class TrackComponent extends MachineComponent {
     protected void restoreComponents() {
         // create TrackEntryNodes for nodes retured.
 
+        int machineIndex = getMachineIndex();
         List<String> patterns = PatternUtils.getPatterns(getRack(), machineIndex);
         for (String pattern : patterns) {
             String[] split = pattern.split(" ");
@@ -397,8 +394,9 @@ public class TrackComponent extends MachineComponent {
 
             int numMeasures = PatternUtils.getNumMeasures(getRack(), machineIndex, bankIndex,
                     patternIndex);
-            TrackEntryNode trackEntryNode = new TrackEntryNode(machineIndex, PatternUtils.toString(
-                    bankIndex, patternIndex), numMeasures, startMeasure, endMeasure);
+            TrackEntryNode trackEntryNode = new TrackEntryNode(getMachineNode(),
+                    PatternUtils.toString(bankIndex, patternIndex), numMeasures, startMeasure,
+                    endMeasure);
             entries.put(startMeasure, trackEntryNode);
         }
     }

@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ReverbControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link ReverbEffect} effect node.
@@ -195,11 +196,10 @@ public class ReverbEffect extends EffectNode {
      * Serialization
      */
     public ReverbEffect() {
-        setType(EffectType.Reverb);
     }
 
-    public ReverbEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public ReverbEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Reverb);
     }
 

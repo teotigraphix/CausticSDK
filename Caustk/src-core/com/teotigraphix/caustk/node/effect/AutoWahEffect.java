@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.AutowahControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link AutoWahEffect} effect node.
@@ -195,11 +196,10 @@ public class AutoWahEffect extends EffectNode {
      * Serialization
      */
     public AutoWahEffect() {
-        setType(EffectType.Autowah);
     }
 
-    public AutoWahEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public AutoWahEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Autowah);
     }
 

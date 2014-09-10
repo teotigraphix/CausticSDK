@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link EffectNodeFactory} for creating {@link EffectNode}s.
@@ -35,56 +36,57 @@ public class EffectNodeFactory extends CaustkFactoryChildBase {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends EffectNode> T createEffect(int machineIndex, int slot, EffectType effectType) {
+    public <T extends EffectNode> T createEffect(MachineNode machineNode, int slot,
+            EffectType effectType) {
         EffectNode effect = null;
         switch (effectType) {
             case Autowah:
-                effect = new AutoWahEffect(slot, machineIndex);
+                effect = new AutoWahEffect(machineNode, slot);
                 break;
             case Bitcrusher:
-                effect = new BitcrusherEffect(slot, machineIndex);
+                effect = new BitcrusherEffect(machineNode, slot);
                 break;
             case CabinetSimulator:
-                effect = new CabinetSimulatorEffect(slot, machineIndex);
+                effect = new CabinetSimulatorEffect(machineNode, slot);
                 break;
             case Chorus:
-                effect = new ChorusEffect(slot, machineIndex);
+                effect = new ChorusEffect(machineNode, slot);
                 break;
             case CombFilter:
-                effect = new CombFilterEffect(slot, machineIndex);
+                effect = new CombFilterEffect(machineNode, slot);
                 break;
             case Compressor:
-                effect = new CompressorEffect(slot, machineIndex);
+                effect = new CompressorEffect(machineNode, slot);
                 break;
             case Delay:
-                effect = new DelayEffect(slot, machineIndex);
+                effect = new DelayEffect(machineNode, slot);
                 break;
             case Distortion:
-                effect = new DistortionEffect(slot, machineIndex);
+                effect = new DistortionEffect(machineNode, slot);
                 break;
             case Flanger:
-                effect = new FlangerEffect(slot, machineIndex);
+                effect = new FlangerEffect(machineNode, slot);
                 break;
             case Limiter:
-                effect = new LimiterEffect(slot, machineIndex);
+                effect = new LimiterEffect(machineNode, slot);
                 break;
             case MultiFilter:
-                effect = new MultiFilterEffect(slot, machineIndex);
+                effect = new MultiFilterEffect(machineNode, slot);
                 break;
             case ParametricEQ:
-                effect = new ParametricEQEffect(slot, machineIndex);
+                effect = new ParametricEQEffect(machineNode, slot);
                 break;
             case Phaser:
-                effect = new PhaserEffect(slot, machineIndex);
+                effect = new PhaserEffect(machineNode, slot);
                 break;
             case Reverb:
-                effect = new ReverbEffect(slot, machineIndex);
+                effect = new ReverbEffect(machineNode, slot);
                 break;
             case StaticFlanger:
-                effect = new StaticFlangerEffect(slot, machineIndex);
+                effect = new StaticFlangerEffect(machineNode, slot);
                 break;
             case VinylSimulator:
-                effect = new VinylSimulatorEffect(slot, machineIndex);
+                effect = new VinylSimulatorEffect(machineNode, slot);
                 break;
         }
         return (T)effect;

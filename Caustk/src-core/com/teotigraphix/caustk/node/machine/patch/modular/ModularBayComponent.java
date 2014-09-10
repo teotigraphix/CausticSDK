@@ -64,101 +64,101 @@ public class ModularBayComponent extends MachineComponent {
      * @param bay
      * @return
      */
-    public ModularComponentBase create(ModularComponentType type, int bay) {
+    public ModularComponentBase create(MachineNode machineNode, ModularComponentType type, int bay) {
         ModularComponentBase component = null;
         int machineIndex = getMachineIndex();
         switch (type) {
             case TwoToOneMixerModulator:
                 component = new TwoInputMixer(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case ThreeToOneMixer:
                 component = new ThreeInputMixer(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case SixToOneMixer:
                 component = new SixInputMixer(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case WaveformGenerator:
                 component = new WaveformGenerator(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case SubOscillator:
                 component = new SubOscillator(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case PulseGenerator:
                 component = new PulseGenerator(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case DADSREnvelope:
                 component = new DADSREnvelope(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case AREnvelope:
                 component = new AREnvelope(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case DecayEnvelope:
                 component = new DecayEnvelope(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case SVFilter:
                 component = new SVFilter(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case ResonantLP:
                 component = new ResonantLP(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case FormantFilter:
                 component = new FormantFilter(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case MiniLFO:
                 component = new MiniLFO(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case NoiseGenerator:
                 component = new NoiseGenerator(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case PanModule:
                 component = new PanModule(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case CrossFade:
                 component = new Crossfader(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case LagProcessor:
                 component = new LagProcessor(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case Delay:
                 component = new DelayModule(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case SampleAndHold:
                 component = new SampleAndHold(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case CrossOver:
                 component = new CrossoverModule(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case Saturator:
                 component = new Saturator(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case FMPair:
                 component = new FMPair(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
             case Arpeggiator:
                 component = new Arpeggiator(bay);
-                component.setMachineIndex(machineIndex);
+                component.setMachineNode(machineNode);
                 break;
 
             default:
@@ -190,7 +190,7 @@ public class ModularBayComponent extends MachineComponent {
                     System.err.println("Modular Type null: " + this);
                     continue;
                 }
-                ModularComponentBase comp = create(type, i);
+                ModularComponentBase comp = create(getMachineNode(), type, i);
                 components.put(i, comp);
                 if (comp.getNumBays() > 1)
                     i++;

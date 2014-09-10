@@ -257,10 +257,6 @@ public class LFOComponent extends MachineComponent {
     public LFOComponent() {
     }
 
-    public LFOComponent(int machineIndex) {
-        super(machineIndex);
-    }
-
     public LFOComponent(MachineNode machineNode) {
         super(machineNode);
     }

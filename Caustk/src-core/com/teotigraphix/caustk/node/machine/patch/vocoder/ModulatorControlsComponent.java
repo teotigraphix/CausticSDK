@@ -322,10 +322,6 @@ public class ModulatorControlsComponent extends MachineComponent {
     public ModulatorControlsComponent() {
     }
 
-    public ModulatorControlsComponent(int machineIndex) {
-        super(machineIndex);
-    }
-
     public ModulatorControlsComponent(MachineNode machineNode) {
         super(machineNode);
     }

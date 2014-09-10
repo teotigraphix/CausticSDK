@@ -31,8 +31,8 @@ import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
- * The {@link PatternSequencerComponent} manages the {@link PatternNode}s in a native
- * machine's pattern sequencer.
+ * The {@link PatternSequencerComponent} manages the {@link PatternNode}s in a
+ * native machine's pattern sequencer.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -90,8 +90,8 @@ public class PatternSequencerComponent extends MachineComponent {
     public void setBankPatternIndex(int bankIndex, int patternIndex) {
         currentBankIndex = bankIndex;
         currentPatternIndex = patternIndex;
-        PatternSequencerMessage.BANK.send(getRack(), machineIndex, currentBankIndex);
-        PatternSequencerMessage.PATTERN.send(getRack(), machineIndex, currentPatternIndex);
+        PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(), currentBankIndex);
+        PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), currentPatternIndex);
         post(new PatternSequencerNodeBankEvent(this, PatternSequencerControl.Bank, currentBankIndex));
         post(new PatternSequencerNodePatternEvent(this, PatternSequencerControl.Pattern,
                 currentPatternIndex));
@@ -112,11 +112,11 @@ public class PatternSequencerComponent extends MachineComponent {
     }
 
     int queryCurrentBankIndex() {
-        return (int)PatternSequencerMessage.BANK.query(getRack(), machineIndex);
+        return (int)PatternSequencerMessage.BANK.query(getRack(), getMachineIndex());
     }
 
     int queryCurrentPatternIndex() {
-        return (int)PatternSequencerMessage.PATTERN.query(getRack(), machineIndex);
+        return (int)PatternSequencerMessage.PATTERN.query(getRack(), getMachineIndex());
     }
 
     /**
@@ -179,7 +179,7 @@ public class PatternSequencerComponent extends MachineComponent {
     public PatternNode getPattern(String name) {
         PatternNode pattern = findPattern(name);
         if (pattern == null) {
-            pattern = new PatternNode(name, machineIndex);
+            pattern = new PatternNode(getMachineNode(), name);
             patterns.put(name, pattern);
         }
         return pattern;
@@ -204,19 +204,15 @@ public class PatternSequencerComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public PatternSequencerComponent() {
+    protected PatternSequencerComponent() {
     }
 
-    public PatternSequencerComponent(int machineIndex) {
-        this.machineIndex = machineIndex;
+    public PatternSequencerComponent(MachineNode machineNode) {
+        super(machineNode);
         // init these here since the sequencer is being created explicitly
         // not through a restore, here we KNOW that bank and patter are 0 in native
         currentBankIndex = 0;
         currentPatternIndex = 0;
-    }
-
-    public PatternSequencerComponent(MachineNode machineNode) {
-        this(machineNode.getIndex());
     }
 
     //--------------------------------------------------------------------------
@@ -240,7 +236,7 @@ public class PatternSequencerComponent extends MachineComponent {
             throw new IllegalStateException("Pattern does not exists:"
                     + PatternUtils.toString(bankIndex, patternIndex));
 
-        PatternSequencerMessage.CLEAR_PATTERN.send(getRack(), machineIndex, patternIndex);
+        PatternSequencerMessage.CLEAR_PATTERN.send(getRack(), getMachineIndex(), patternIndex);
 
         // XXX remove all not data from the pattern sequencer
         // XXX remove all automation from the pattern sequencer
@@ -266,15 +262,15 @@ public class PatternSequencerComponent extends MachineComponent {
     @Override
     protected void restoreComponents() {
         String result = PatternSequencerMessage.QUERY_PATTERNS_WITH_DATA.queryString(getRack(),
-                machineIndex);
+                getMachineIndex());
         if (result == null)
             return;
         for (String name : result.split(" ")) {
-            PatternNode patternNode = new PatternNode(name, machineIndex);
-            patternNode.setMachineType(machineType);
+            PatternNode patternNode = new PatternNode(getMachineNode(), name);
             patterns.put(patternNode.getName(), patternNode);
-            PatternSequencerMessage.BANK.send(getRack(), machineIndex, patternNode.getBankIndex());
-            PatternSequencerMessage.PATTERN.send(getRack(), machineIndex,
+            PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(),
+                    patternNode.getBankIndex());
+            PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(),
                     patternNode.getPatternIndex());
             patternNode.restore();
         }

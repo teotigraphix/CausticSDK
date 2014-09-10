@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CabinetSimulatorControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link CabinetSimulatorEffect} effect node.
@@ -195,11 +196,10 @@ public class CabinetSimulatorEffect extends EffectNode {
      * Serialization
      */
     public CabinetSimulatorEffect() {
-        setType(EffectType.CabinetSimulator);
     }
 
-    public CabinetSimulatorEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public CabinetSimulatorEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.CabinetSimulator);
     }
 

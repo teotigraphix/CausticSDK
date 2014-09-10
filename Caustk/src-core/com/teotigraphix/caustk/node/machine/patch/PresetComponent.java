@@ -88,7 +88,7 @@ public class PresetComponent extends MachineComponent {
      * @see SynthMessage#QUERY_PRESET
      */
     public String queryPreset() {
-        return SynthMessage.QUERY_PRESET.queryString(getRack(), machineIndex);
+        return SynthMessage.QUERY_PRESET.queryString(getRack(), getMachineIndex());
     }
 
     //----------------------------------
@@ -162,7 +162,7 @@ public class PresetComponent extends MachineComponent {
         if (path != null)
             return MachineType.fromExtension(FilenameUtils.getExtension(path));
         //        if (machineIndex != null)
-        return OSCUtils.toMachineType(getRack(), machineIndex);
+        return OSCUtils.toMachineType(getRack(), getMachineIndex());
         //        return null;
     }
 
@@ -176,21 +176,9 @@ public class PresetComponent extends MachineComponent {
     public PresetComponent() {
     }
 
-    public PresetComponent(int machineIndex) {
-        this.machineIndex = machineIndex;
-    }
-
-    public PresetComponent(MachineNode machineNode) {
-        this(machineNode.getIndex());
-    }
-
-    public PresetComponent(int machineIndex, String path) {
-        this(machineIndex);
-        setPath(path);
-    }
-
     public PresetComponent(MachineNode machineNode, String path) {
-        this(machineNode.getIndex(), path);
+        super(machineNode);
+        setPath(path);
     }
 
     //--------------------------------------------------------------------------
@@ -207,7 +195,7 @@ public class PresetComponent extends MachineComponent {
         if (!presetFile.exists())
             throw new IOException("Preset file does not exist:" + presetFile);
         setPath(presetFile.getAbsolutePath());
-        SynthMessage.LOAD_PRESET.send(getRack(), machineIndex, path);
+        SynthMessage.LOAD_PRESET.send(getRack(), getMachineIndex(), path);
     }
 
     /**
@@ -238,7 +226,7 @@ public class PresetComponent extends MachineComponent {
      * @throws IllegalStateException index of parent machine not set
      */
     public File export() throws IOException {
-        if (machineIndex == -1)
+        if (getMachineIndex() == -1)
             throw new IllegalStateException("index of parent machine not set");
         File presetFile = getPresetFile();
         return exportPreset(presetFile.getParentFile(), getName());
@@ -257,7 +245,7 @@ public class PresetComponent extends MachineComponent {
      * @throws IllegalStateException Cannot export preset
      */
     public File exportPreset(File destDirectory, String fileName) throws IOException {
-        MachineType machineType = OSCUtils.toMachineType(getRack(), machineIndex);
+        MachineType machineType = OSCUtils.toMachineType(getRack(), getMachineIndex());
         if (machineType == null)
             throw new IllegalStateException("Cannot export preset");
 
@@ -266,7 +254,7 @@ public class PresetComponent extends MachineComponent {
             throw new IOException("Preset source file already exists with name: '" + fileName + "'");
 
         File destFile = new File(destDirectory, fileName + "." + machineType.getExtension());
-        SynthMessage.SAVE_PRESET.send(getRack(), machineIndex, fileName);
+        SynthMessage.SAVE_PRESET.send(getRack(), getMachineIndex(), fileName);
 
         // now copy if the locations differ and delete source in /presets dir
         if (!srcFile.equals(destFile)) {
@@ -306,7 +294,7 @@ public class PresetComponent extends MachineComponent {
                     + "correctly, File not created.");
         }
 
-        SynthMessage.LOAD_PRESET.send(getRack(), machineIndex, presetFile.getAbsolutePath());
+        SynthMessage.LOAD_PRESET.send(getRack(), getMachineIndex(), presetFile.getAbsolutePath());
 
         // delete the temp preset file
         FileUtils.deleteQuietly(presetFile);
@@ -335,7 +323,7 @@ public class PresetComponent extends MachineComponent {
 
     @Override
     protected void restoreComponents() {
-        MachineType type = OSCUtils.toMachineType(getRack(), machineIndex);
+        MachineType type = OSCUtils.toMachineType(getRack(), getMachineIndex());
         if (type == MachineType.Vocoder)
             return; // Vocoder does not save presets
 
@@ -345,7 +333,7 @@ public class PresetComponent extends MachineComponent {
         // be saved to the .rack archive, we have the original bytes to save
         // otherwise at the time, the client might just ignore these bytes and
         // use the refreshed bytes of the current machine's preset 
-        name = SynthMessage.QUERY_PRESET.queryString(getRack(), machineIndex);
+        name = SynthMessage.QUERY_PRESET.queryString(getRack(), getMachineIndex());
         path = null;
 
         // store the original bytes
@@ -366,13 +354,13 @@ public class PresetComponent extends MachineComponent {
     }
 
     private void fillRestoredData() {
-        MachineType type = OSCUtils.toMachineType(getRack(), machineIndex);
+        MachineType type = OSCUtils.toMachineType(getRack(), getMachineIndex());
         if (type == null)
             throw new IllegalStateException(
                     "Can only restore bytes during existing native rack session");
         // store the original bytes
         String tempName = "__" + UUID.randomUUID().toString().substring(0, 20); // will be deleted
-        restoredData = PresetUtils.readPresetBytes(getRack(), machineIndex, type, tempName);
+        restoredData = PresetUtils.readPresetBytes(getRack(), getMachineIndex(), type, tempName);
     }
 
     @Override

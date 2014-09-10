@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CombFilterControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link CombFilterEffect} effect node.
@@ -135,11 +136,10 @@ public class CombFilterEffect extends EffectNode {
      * Serialization
      */
     public CombFilterEffect() {
-        setType(EffectType.CombFilter);
     }
 
-    public CombFilterEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public CombFilterEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.CombFilter);
     }
 

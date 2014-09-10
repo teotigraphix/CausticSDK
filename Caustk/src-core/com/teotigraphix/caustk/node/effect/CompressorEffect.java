@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CompressorControl;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * The {@link CompressorEffect} effect node.
@@ -195,11 +196,10 @@ public class CompressorEffect extends EffectNode {
      * Serialization
      */
     public CompressorEffect() {
-        setType(EffectType.Compressor);
     }
 
-    public CompressorEffect(int slot, int machineIndex) {
-        super(slot, machineIndex);
+    public CompressorEffect(MachineNode machineNode, int slot) {
+        super(machineNode, slot);
         setType(EffectType.Compressor);
     }
 
