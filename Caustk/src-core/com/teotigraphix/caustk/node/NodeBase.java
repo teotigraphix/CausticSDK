@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
@@ -44,12 +45,16 @@ public abstract class NodeBase implements ICaustkNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(0)
     private String label = null;
 
+    @Tag(1)
     private Object icon = null;
 
+    @Tag(2)
     private Object color = null;
 
+    @Tag(3)
     private boolean selected = false;
 
     //--------------------------------------------------------------------------

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
@@ -38,17 +39,22 @@ public class SubSynthMachine extends MachineNode {
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
-
+    @Tag(100)
     private VolumeEnvelopeComponent volumeEnvelope;
 
+    @Tag(101)
     private SynthFilterComponent filter;
 
+    @Tag(102)
     private LFO1Component lfo1;
 
+    @Tag(103)
     private LFO2Component lfo2;
 
+    @Tag(104)
     private Osc1Component osc1;
 
+    @Tag(105)
     private Osc2Component osc2;
 
     //--------------------------------------------------------------------------

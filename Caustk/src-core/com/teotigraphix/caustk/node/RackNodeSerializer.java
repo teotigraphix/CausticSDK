@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
@@ -30,6 +31,15 @@ import com.teotigraphix.caustk.node.machine.sequencer.ClipComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
 
+/*
+TaggedFieldSerializer only serializes fields that have a @Tag annotation. 
+This is less flexible than FieldSerializer, which can handle most classes 
+without needing annotations, but allows TaggedFieldSerializer to support 
+adding new fields without invalidating previously serialized bytes. If a 
+field is removed it will invalidate previously serialized bytes, so fields 
+should be annotated with @Deprecated instead of being removed.
+*/
+
 public class RackNodeSerializer {
 
     private Kryo kryo;
@@ -37,6 +47,7 @@ public class RackNodeSerializer {
     public RackNodeSerializer() {
         kryo = new Kryo();
 
+        kryo.setDefaultSerializer(TaggedFieldSerializer.class);
         kryo.setRegistrationRequired(true);
 
         kryo.register(TreeMap.class);

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
@@ -60,28 +61,40 @@ public abstract class MachineNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(50)
     private int index = -1;
 
+    @Tag(51)
     private MachineType type;
 
+    @Tag(52)
     private String name;
 
+    @Tag(53)
     private Integer channelIndex;
 
+    @Tag(54)
     private VolumeComponent volume;
 
+    @Tag(55)
     private PresetComponent preset;
 
+    @Tag(56)
     private SynthComponent synth;
 
+    @Tag(57)
     private PatternSequencerComponent sequencer;
 
+    @Tag(58)
     private MixerChannel mixer;
 
+    @Tag(59)
     private EffectsChannel effects;
 
+    @Tag(60)
     private TrackComponent track;
 
+    @Tag(61)
     private ClipComponent clips;
 
     //--------------------------------------------------------------------------
