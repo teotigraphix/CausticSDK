@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.EightBitControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.ExpressionComponent;
 
@@ -69,8 +70,8 @@ public class EightBitSynthMachine extends MachineNode {
     public EightBitSynthMachine() {
     }
 
-    public EightBitSynthMachine(int index, String name) {
-        super(index, MachineType.EightBitSynth, name);
+    public EightBitSynthMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.EightBitSynth, name);
     }
 
     //--------------------------------------------------------------------------

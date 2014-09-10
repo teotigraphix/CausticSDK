@@ -157,8 +157,9 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public <T extends MachineNode> T createMachine(int index, MachineType type, String name) {
-        return machineNodeFactory.createMachine(index, type, name);
+    public <T extends MachineNode> T createMachine(RackNode rackNode, int index, MachineType type,
+            String name) {
+        return machineNodeFactory.createMachine(rackNode, index, type, name);
     }
 
     //--------------------------------------------------------------------------

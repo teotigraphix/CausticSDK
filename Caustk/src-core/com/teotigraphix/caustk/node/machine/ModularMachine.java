@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch._ModularVolumeBug;
 import com.teotigraphix.caustk.node.machine.patch.modular.ModularBayComponent;
 
@@ -59,8 +60,8 @@ public class ModularMachine extends MachineNode {
     public ModularMachine() {
     }
 
-    public ModularMachine(int index, String name) {
-        super(index, MachineType.Modular, name);
+    public ModularMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.Modular, name);
     }
 
     // To create:

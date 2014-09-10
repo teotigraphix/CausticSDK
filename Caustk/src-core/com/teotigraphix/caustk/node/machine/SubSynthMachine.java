@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO1Component;
@@ -119,8 +120,8 @@ public class SubSynthMachine extends MachineNode {
     public SubSynthMachine() {
     }
 
-    public SubSynthMachine(int index, String name) {
-        super(index, MachineType.SubSynth, name);
+    public SubSynthMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.SubSynth, name);
     }
 
     //--------------------------------------------------------------------------

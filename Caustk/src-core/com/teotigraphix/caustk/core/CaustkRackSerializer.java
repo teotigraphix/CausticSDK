@@ -1,20 +1,23 @@
 
-package com.teotigraphix.caustk.node;
+package com.teotigraphix.caustk.core;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
@@ -28,8 +31,17 @@ import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO2Component;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc1Component;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc2Component;
 import com.teotigraphix.caustk.node.machine.sequencer.ClipComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.master.MasterDelayNode;
+import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
+import com.teotigraphix.caustk.node.master.MasterLimiterNode;
+import com.teotigraphix.caustk.node.master.MasterNode;
+import com.teotigraphix.caustk.node.master.MasterReverbNode;
+import com.teotigraphix.caustk.node.master.MasterVolumeNode;
+import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 
 /*
 TaggedFieldSerializer only serializes fields that have a @Tag annotation. 
@@ -40,20 +52,53 @@ field is removed it will invalidate previously serialized bytes, so fields
 should be annotated with @Deprecated instead of being removed.
 */
 
-public class RackNodeSerializer {
+public class CaustkRackSerializer implements ICaustkRackSerializer {
 
     private Kryo kryo;
 
-    public RackNodeSerializer() {
+    @Override
+    public Kryo getKryo() {
+        return kryo;
+    }
+
+    CaustkRackSerializer() {
+
         kryo = new Kryo();
 
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);
         kryo.setRegistrationRequired(true);
 
+        kryo.register(byte[].class);
+        kryo.register(UUID.class, new UUIDSerializer());
+        kryo.register(ArrayList.class);
         kryo.register(TreeMap.class);
         kryo.register(HashMap.class);
 
+        kryo.register(CaustkProject.class);
+
         kryo.register(MachineType.class);
+
+        // RackNode
+        kryo.register(RackNode.class);
+
+        kryo.register(MasterNode.class);
+        kryo.register(MasterDelayNode.class);
+        kryo.register(MasterReverbNode.class);
+        kryo.register(MasterEqualizerNode.class);
+        kryo.register(MasterLimiterNode.class);
+        kryo.register(MasterVolumeNode.class);
+
+        kryo.register(SequencerNode.class);
+        kryo.register(SequencerNode.ExportLoopMode.class);
+        kryo.register(SequencerNode.ExportType.class);
+        kryo.register(SequencerNode.SequencerMode.class);
+        kryo.register(SequencerNode.ShuffleMode.class);
+        kryo.register(SequencerNode.SongEndMode.class);
+
+        kryo.register(PatternNode.class);
+        kryo.register(PatternNode.Resolution.class);
+        kryo.register(PatternNode.ShuffleMode.class);
+        kryo.register(NoteNode.class);
 
         kryo.register(VolumeComponent.class);
         kryo.register(PresetComponent.class);
@@ -86,16 +131,34 @@ public class RackNodeSerializer {
         kryo.register(SubSynthMessage.CentsMode.class);
     }
 
-    public void serialize(File target, NodeBase node) throws IOException {
+    @Override
+    public void serialize(File target, Object node) throws IOException {
         Output output = new Output(new FileOutputStream(target.getAbsolutePath()));
         kryo.writeObject(output, node);
         output.close();
     }
 
-    public <T extends NodeBase> T deserialize(File file, Class<T> type) throws IOException {
+    @Override
+    public <T> T deserialize(File file, Class<T> type) throws IOException {
         Input input = new Input(new FileInputStream(file));
         T instance = kryo.readObject(input, type);
         return instance;
     }
 
+    public class UUIDSerializer extends Serializer<UUID> {
+        public UUIDSerializer() {
+            setImmutable(true);
+        }
+
+        @Override
+        public void write(final Kryo kryo, final Output output, final UUID uuid) {
+            output.writeLong(uuid.getMostSignificantBits());
+            output.writeLong(uuid.getLeastSignificantBits());
+        }
+
+        @Override
+        public UUID read(final Kryo kryo, final Input input, final Class<UUID> uuidClass) {
+            return new UUID(input.readLong(), input.readLong());
+        }
+    }
 }

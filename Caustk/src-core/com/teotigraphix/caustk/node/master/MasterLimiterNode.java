@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
@@ -35,12 +36,16 @@ public class MasterLimiterNode extends MasterChildNode {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float pre = 1f;
 
+    @Tag(101)
     private float attack = 0.02f;
 
+    @Tag(102)
     private float release = 0.25f;
 
+    @Tag(103)
     private float post = 1f;
 
     //--------------------------------------------------------------------------
@@ -176,6 +181,10 @@ public class MasterLimiterNode extends MasterChildNode {
      * Serialization
      */
     public MasterLimiterNode() {
+    }
+
+    public MasterLimiterNode(MasterNode masterNode) {
+        super(masterNode);
     }
 
     //--------------------------------------------------------------------------

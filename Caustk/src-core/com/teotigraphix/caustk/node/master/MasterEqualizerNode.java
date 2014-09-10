@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
@@ -35,14 +36,19 @@ public class MasterEqualizerNode extends MasterChildNode {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float bass = 1.1f;
 
+    @Tag(101)
     private float bassMidFreq = 0.5f;
 
+    @Tag(102)
     private float mid = 1f;
 
+    @Tag(103)
     private float midHighFreq = 0.5f;
 
+    @Tag(104)
     private float high = 1.1f;
 
     //--------------------------------------------------------------------------
@@ -207,6 +213,10 @@ public class MasterEqualizerNode extends MasterChildNode {
      * Serialization
      */
     public MasterEqualizerNode() {
+    }
+
+    public MasterEqualizerNode(MasterNode masterNode) {
+        super(masterNode);
     }
 
     //--------------------------------------------------------------------------

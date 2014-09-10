@@ -22,11 +22,13 @@ package com.teotigraphix.caustk.node.sequencer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
 
@@ -43,16 +45,25 @@ public class SequencerNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(50)
+    private RackNode rackNode;
+
+    @Tag(51)
     private boolean isPlaying = false;
 
+    @Tag(52)
     private SequencerMode sequencerMode = SequencerMode.Pattern;
 
+    @Tag(53)
     private SongEndMode songEndMode = SongEndMode.Stop;
 
+    @Tag(54)
     private float bpm = 120f;
 
+    @Tag(55)
     private ShuffleMode shuffleMode = ShuffleMode.Sixteenth;
 
+    @Tag(56)
     private float shuffleAmount = 0f;
 
     //--------------------------------------------------------------------------
@@ -273,6 +284,10 @@ public class SequencerNode extends NodeBase {
      * Serialization.
      */
     public SequencerNode() {
+    }
+
+    public SequencerNode(RackNode rackNode) {
+        this.rackNode = rackNode;
     }
 
     //--------------------------------------------------------------------------

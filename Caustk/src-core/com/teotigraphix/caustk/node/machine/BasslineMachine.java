@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.bassline.DistortionComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.FilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.LFO1Component;
@@ -91,8 +92,8 @@ public class BasslineMachine extends MachineNode {
     public BasslineMachine() {
     }
 
-    public BasslineMachine(int index, String name) {
-        super(index, MachineType.Bassline, name);
+    public BasslineMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.Bassline, name);
     }
 
     //--------------------------------------------------------------------------

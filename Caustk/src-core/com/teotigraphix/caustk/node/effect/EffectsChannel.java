@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import java.util.HashMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectsRackControl;
@@ -29,6 +30,7 @@ import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.master.MasterNode;
 
 /**
  * The effect channel node, currently holds 2 slots.
@@ -47,7 +49,11 @@ public class EffectsChannel extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private HashMap<Integer, EffectNode> slots = new HashMap<Integer, EffectNode>();
+
+    @Tag(101)
+    private MasterNode masterNode;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -88,6 +94,11 @@ public class EffectsChannel extends MachineComponent {
 
     public EffectsChannel(MachineNode machineNode) {
         super(machineNode);
+    }
+
+    public EffectsChannel(MasterNode masterNode) {
+        super(null);
+        this.masterNode = masterNode;
     }
 
     //--------------------------------------------------------------------------

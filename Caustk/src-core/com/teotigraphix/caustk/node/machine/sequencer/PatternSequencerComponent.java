@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
@@ -43,10 +44,13 @@ public class PatternSequencerComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private Integer currentBankIndex;
 
+    @Tag(101)
     private Integer currentPatternIndex;
 
+    @Tag(102)
     private HashMap<String, PatternNode> patterns = new HashMap<String, PatternNode>();
 
     //--------------------------------------------------------------------------

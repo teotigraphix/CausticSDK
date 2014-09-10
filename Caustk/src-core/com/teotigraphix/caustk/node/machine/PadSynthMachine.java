@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.HarmonicsComponent;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO1Component;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO2Component;
@@ -102,8 +103,8 @@ public class PadSynthMachine extends MachineNode {
     public PadSynthMachine() {
     }
 
-    public PadSynthMachine(int index, String name) {
-        super(index, MachineType.PadSynth, name);
+    public PadSynthMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.PadSynth, name);
     }
 
     //--------------------------------------------------------------------------

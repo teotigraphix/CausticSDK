@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode.Resolution;
@@ -40,19 +41,25 @@ public class NoteNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    transient private int pitch;
+    @Tag(50)
+    private int pitch;
 
-    transient private float start;
+    @Tag(51)
+    private float start;
 
-    transient private float end;
+    @Tag(52)
+    private float end;
 
-    transient private float velocity;
+    @Tag(53)
+    private float velocity;
 
-    transient private int flags;
+    @Tag(54)
+    private int flags;
 
     @SuppressWarnings("unused")
     private String noteData;
 
+    @Tag(60)
     private Object data; // has to contain primitive value objects
 
     //--------------------------------------------------------------------------

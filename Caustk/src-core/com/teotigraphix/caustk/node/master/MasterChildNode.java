@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
@@ -45,7 +46,19 @@ public class MasterChildNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(50)
+    private MasterNode masterNode;
+
+    @Tag(51)
     private boolean bypass = false;
+
+    //----------------------------------
+    // masterNode
+    //----------------------------------
+
+    public final MasterNode getMasterNode() {
+        return masterNode;
+    }
 
     //----------------------------------
     // bypass
@@ -83,6 +96,10 @@ public class MasterChildNode extends NodeBase {
      * Serialization
      */
     public MasterChildNode() {
+    }
+
+    public MasterChildNode(MasterNode masterNode) {
+        this.masterNode = masterNode;
     }
 
     //--------------------------------------------------------------------------

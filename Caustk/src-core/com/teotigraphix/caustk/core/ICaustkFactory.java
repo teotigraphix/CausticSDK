@@ -82,7 +82,8 @@ public interface ICaustkFactory {
      * @return A new {@link MachineNode}, added to the native rack.
      */
 
-    <T extends MachineNode> T createMachine(int index, MachineType type, String name);
+    <T extends MachineNode> T createMachine(RackNode rackNode, int index, MachineType type,
+            String name);
 
     LibraryEffect createLibraryEffect(LibraryProduct product, String name, String relativePath,
             EffectNode efffect0, EffectNode efffect1);

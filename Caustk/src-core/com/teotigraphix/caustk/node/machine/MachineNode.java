@@ -62,44 +62,59 @@ public abstract class MachineNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     @Tag(50)
-    private int index = -1;
+    private RackNode rackNode;
 
     @Tag(51)
-    private MachineType type;
+    private int index = -1;
 
     @Tag(52)
-    private String name;
+    private MachineType type;
 
     @Tag(53)
-    private Integer channelIndex;
+    private String name;
 
     @Tag(54)
-    private VolumeComponent volume;
+    private Integer channelIndex;
 
     @Tag(55)
-    private PresetComponent preset;
+    private VolumeComponent volume;
 
     @Tag(56)
-    private SynthComponent synth;
+    private PresetComponent preset;
 
     @Tag(57)
-    private PatternSequencerComponent sequencer;
+    private SynthComponent synth;
 
     @Tag(58)
-    private MixerChannel mixer;
+    private PatternSequencerComponent sequencer;
 
     @Tag(59)
-    private EffectsChannel effects;
+    private MixerChannel mixer;
 
     @Tag(60)
-    private TrackComponent track;
+    private EffectsChannel effects;
 
     @Tag(61)
+    private TrackComponent track;
+
+    @Tag(62)
     private ClipComponent clips;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rackNode
+    //----------------------------------
+
+    public final RackNode getRackNode() {
+        return rackNode;
+    }
+
+    public void setRackNode(RackNode rackNode) {
+        this.rackNode = rackNode;
+    }
 
     //----------------------------------
     // index
@@ -108,18 +123,9 @@ public abstract class MachineNode extends NodeBase {
     /**
      * Returns the machine index.
      */
-    public Integer getIndex() {
+    public final int getIndex() {
         return index;
     }
-
-    //    /**
-    //     * Sets the machine index.
-    //     * 
-    //     * @param index The machine index (0..13).
-    //     */
-    //    public void setIndex(Integer index) {
-    //        this.index = index;
-    //    }
 
     //----------------------------------
     // type
@@ -140,7 +146,7 @@ public abstract class MachineNode extends NodeBase {
      * The machine's alphanumeric name within the native rack, 10 character
      * limit.
      */
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
@@ -152,7 +158,7 @@ public abstract class MachineNode extends NodeBase {
      * @see MachineNodeNameEvent
      * @see RackControl#MachineName
      */
-    public void setName(String name) {
+    public final void setName(String name) {
         if (name.equals(this.name))
             return;
         // XXX Check machine name length 10 char limit
@@ -296,7 +302,8 @@ public abstract class MachineNode extends NodeBase {
      * @param type The {@link MachineType}.
      * @param name The 10 character alphanumeric machine name.
      */
-    public MachineNode(int index, MachineType type, String name) {
+    public MachineNode(RackNode rackNode, int index, MachineType type, String name) {
+        this.rackNode = rackNode;
         this.index = index;
         this.type = type;
         this.name = name;

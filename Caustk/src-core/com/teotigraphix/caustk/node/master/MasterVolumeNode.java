@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
@@ -35,6 +36,7 @@ public class MasterVolumeNode extends MasterChildNode {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float out = 1f;
 
     //--------------------------------------------------------------------------
@@ -83,6 +85,10 @@ public class MasterVolumeNode extends MasterChildNode {
      * Serialization
      */
     public MasterVolumeNode() {
+    }
+
+    public MasterVolumeNode(MasterNode masterNode) {
+        super(masterNode);
     }
 
     //--------------------------------------------------------------------------

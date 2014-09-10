@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.master;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
@@ -38,22 +39,31 @@ public class MasterDelayNode extends MasterChildNode {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int steps = 2;
 
+    @Tag(101)
     private int loop = 2;
 
+    @Tag(102)
     private int time = 8;
 
+    @Tag(103)
     private int sync = 1;
 
+    @Tag(104)
     private float feedback = 0.5f;
 
+    @Tag(105)
     private int feedbackFirst = 0;
 
+    @Tag(106)
     private float damping = 0f;
 
+    @Tag(107)
     private float wet = 0.5f;
 
+    @Tag(108)
     private HashMap<Integer, Float> panSteps = new HashMap<Integer, Float>();
 
     //--------------------------------------------------------------------------
@@ -337,6 +347,10 @@ public class MasterDelayNode extends MasterChildNode {
      * Serialization
      */
     public MasterDelayNode() {
+    }
+
+    public MasterDelayNode(MasterNode masterNode) {
+        super(masterNode);
     }
 
     //--------------------------------------------------------------------------

@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
+import org.apache.commons.io.FileUtils;
+
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
@@ -39,6 +41,7 @@ import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * The {@link CaustkRack} holds the current {@link RackNode} session state.
@@ -60,6 +63,8 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     private final CaustkRuntime runtime;
 
+    private ICaustkRackSerializer serializer;
+
     private RackNode rackNode;
 
     //--------------------------------------------------------------------------
@@ -69,6 +74,15 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     @Override
     public final boolean isLoaded() {
         return rackNode != null;
+    }
+
+    //----------------------------------
+    // serializer
+    //----------------------------------
+
+    @Override
+    public ICaustkRackSerializer getSerializer() {
+        return serializer;
     }
 
     //----------------------------------
@@ -173,6 +187,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     CaustkRack(CaustkRuntime runtime) {
         super(runtime.getSoundGenerator());
         this.runtime = runtime;
+        this.serializer = new CaustkRackSerializer();
     }
 
     //--------------------------------------------------------------------------
@@ -289,6 +304,46 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         machineNode.updateSequencer(oldSequencer);
     }
 
+    private CaustkProject project;
+
+    @Override
+    public CaustkProject getProject() {
+        return project;
+    }
+
+    @Override
+    public <T extends CaustkProject> T setProject(File file, Class<T> type) throws IOException {
+        T project = getSerializer().deserialize(file, type);
+        setProject(project);
+        return project;
+    }
+
+    @Override
+    public void setProject(CaustkProject project) throws IOException {
+        this.project = project;
+
+        project.setRack(this);
+
+        setRackNode(project.getRackNode());
+
+        byte[] data = project.getRackBytes();
+
+        File tempDirectory = RuntimeUtils.getApplicationTempDirectory();
+        File racksDirectory = new File(tempDirectory, "racks");
+        File causticFile = new File(racksDirectory, project.getId().toString() + ".caustic");
+        FileUtils.writeByteArrayToFile(causticFile, data);
+
+        if (!causticFile.exists())
+            throw new IOException(".caustic file failed to write in .temp");
+
+        project.getRackNode().loadSong(causticFile);
+
+        FileUtils.deleteQuietly(causticFile);
+
+        if (causticFile.exists())
+            throw new IOException(".caustic file failed to delete in .temp");
+    }
+
     @Override
     public void setup(RackNode rackNode) {
         setRackNode(rackNode);
@@ -300,6 +355,12 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         // this basically takes a snap shot of the native rack
         setRackNode(rackNode);
         rackNode.restore();
+    }
+
+    @Override
+    public void update(RackNode rackNode) {
+        setRackNode(rackNode);
+        rackNode.update();
     }
 
     @Override

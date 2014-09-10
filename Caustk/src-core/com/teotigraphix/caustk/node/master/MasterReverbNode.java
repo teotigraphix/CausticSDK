@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
@@ -35,24 +36,34 @@ public class MasterReverbNode extends MasterChildNode {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float preDelay = 0.02f;
 
+    @Tag(101)
     private float roomSize = 0.75f;
 
+    @Tag(102)
     private float hfDamping = 0.156f;
 
+    @Tag(103)
     private float diffuse = 0.7f;
 
+    @Tag(104)
     private int ditherEchoes = 0;
 
+    @Tag(105)
     private float erGain = 1f;
 
+    @Tag(106)
     private float erDecay = 0.25f;
 
+    @Tag(107)
     private float stereoDelay = 0.5f;
 
+    @Tag(108)
     private float stereoSpread = 0.25f;
 
+    @Tag(100)
     private float wet = 0.25f;
 
     //--------------------------------------------------------------------------
@@ -362,6 +373,10 @@ public class MasterReverbNode extends MasterChildNode {
      * Serialization
      */
     public MasterReverbNode() {
+    }
+
+    public MasterReverbNode(MasterNode masterNode) {
+        super(masterNode);
     }
 
     //--------------------------------------------------------------------------

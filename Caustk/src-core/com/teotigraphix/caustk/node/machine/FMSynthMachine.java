@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.fmsynth.FMControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.fmsynth.FMOperatorComponent;
 import com.teotigraphix.caustk.node.machine.patch.fmsynth.LFOComponent;
@@ -80,8 +81,8 @@ public class FMSynthMachine extends MachineNode {
     public FMSynthMachine() {
     }
 
-    public FMSynthMachine(int index, String name) {
-        super(index, MachineType.FMSynth, name);
+    public FMSynthMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.FMSynth, name);
     }
 
     //--------------------------------------------------------------------------

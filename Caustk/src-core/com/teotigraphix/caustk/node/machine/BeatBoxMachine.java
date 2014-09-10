@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.beatbox.WavSamplerComponent;
 
 /**
@@ -58,8 +59,8 @@ public class BeatBoxMachine extends MachineNode {
     public BeatBoxMachine() {
     }
 
-    public BeatBoxMachine(int index, String name) {
-        super(index, MachineType.BeatBox, name);
+    public BeatBoxMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.BeatBox, name);
     }
 
     //--------------------------------------------------------------------------

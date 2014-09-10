@@ -19,9 +19,11 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 
 /**
@@ -38,21 +40,38 @@ public class MasterNode extends NodeBase {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    @Tag(50)
+    private RackNode rackNode;
+
+    @Tag(51)
     private MasterDelayNode delay;
 
+    @Tag(52)
     private MasterReverbNode reverb;
 
+    @Tag(53)
     private MasterEqualizerNode equalizer;
 
+    @Tag(54)
     private MasterLimiterNode limiter;
 
+    @Tag(55)
     private MasterVolumeNode volume;
 
+    @Tag(56)
     private EffectsChannel effects;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // rackNode
+    //----------------------------------
+
+    public final RackNode getRackNode() {
+        return rackNode;
+    }
 
     //----------------------------------
     // delay
@@ -128,12 +147,16 @@ public class MasterNode extends NodeBase {
      * Serialization
      */
     public MasterNode() {
-        delay = new MasterDelayNode();
-        reverb = new MasterReverbNode();
-        equalizer = new MasterEqualizerNode();
-        limiter = new MasterLimiterNode();
-        volume = new MasterVolumeNode();
-        effects = new EffectsChannel(null);
+    }
+
+    public MasterNode(RackNode rackNode) {
+        this.rackNode = rackNode;
+        delay = new MasterDelayNode(this);
+        reverb = new MasterReverbNode(this);
+        equalizer = new MasterEqualizerNode(this);
+        limiter = new MasterLimiterNode(this);
+        volume = new MasterVolumeNode(this);
+        effects = new EffectsChannel(this);
     }
 
     //--------------------------------------------------------------------------

@@ -29,6 +29,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
@@ -52,12 +53,16 @@ public class RackNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(50)
     private String path;
 
+    @Tag(51)
     private MasterNode master;
 
+    @Tag(52)
     private Map<Integer, MachineNode> machines = new HashMap<Integer, MachineNode>();
 
+    @Tag(53)
     private SequencerNode sequencer;
 
     //--------------------------------------------------------------------------
@@ -175,9 +180,9 @@ public class RackNode extends NodeBase {
      * Serialization
      */
     public RackNode() {
-        master = new MasterNode();
+        master = new MasterNode(this);
         machines = new HashMap<Integer, MachineNode>();
-        sequencer = new SequencerNode();
+        sequencer = new SequencerNode(this);
     }
 
     /**
@@ -271,7 +276,7 @@ public class RackNode extends NodeBase {
      * @see MachineNode#isNative()
      */
     MachineNode addMachine(int index, MachineType type, String name) {
-        MachineNode machineNode = getFactory().createMachine(index, type, name);
+        MachineNode machineNode = getFactory().createMachine(this, index, type, name);
         addMachine(machineNode);
         return machineNode;
     }

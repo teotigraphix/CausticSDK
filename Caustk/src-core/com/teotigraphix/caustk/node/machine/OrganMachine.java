@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.organ.LeslieComponent;
 
 /**
@@ -58,8 +59,8 @@ public class OrganMachine extends MachineNode {
     public OrganMachine() {
     }
 
-    public OrganMachine(int index, String name) {
-        super(index, MachineType.Organ, name);
+    public OrganMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.Organ, name);
     }
 
     //--------------------------------------------------------------------------

@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 
 /**
  * The Caustic <strong>KSSynth</strong> OSC decorator.
@@ -39,8 +40,8 @@ public class KSSynthMachine extends MachineNode {
     public KSSynthMachine() {
     }
 
-    public KSSynthMachine(int index, String name) {
-        super(index, MachineType.KSSynth, name);
+    public KSSynthMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.KSSynth, name);
     }
 
     //--------------------------------------------------------------------------

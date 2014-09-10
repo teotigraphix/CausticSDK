@@ -54,6 +54,14 @@ public interface ICaustkRack extends ISoundGenerator, IRackEventBus {
      */
     boolean isLoaded();
 
+    ICaustkRackSerializer getSerializer();
+
+    <T extends CaustkProject> T setProject(File file, Class<T> type) throws IOException;
+
+    void setProject(CaustkProject project) throws IOException;
+
+    CaustkProject getProject();
+
     /**
      * Returns the current {@link RackNode} native rack state.
      * <p>
@@ -171,6 +179,15 @@ public interface ICaustkRack extends ISoundGenerator, IRackEventBus {
      *            the machines are already native.
      */
     void restore(RackNode rackNode);
+
+    /**
+     * Updates the native rack with the {@link RackNode}'s internal state by
+     * sending OSC messages to the core.
+     * 
+     * @param rackNode The {@link RackNode} to use as the state to initialize
+     *            the native rack.
+     */
+    void update(RackNode rackNode);
 
     /**
      * Called when a frame changes in the application, update measure and beat

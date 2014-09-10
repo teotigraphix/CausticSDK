@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorComponent;
@@ -75,8 +76,8 @@ public class VocoderMachine extends MachineNode {
     public VocoderMachine() {
     }
 
-    public VocoderMachine(int index, String name) {
-        super(index, MachineType.Vocoder, name);
+    public VocoderMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.Vocoder, name);
     }
 
     //--------------------------------------------------------------------------

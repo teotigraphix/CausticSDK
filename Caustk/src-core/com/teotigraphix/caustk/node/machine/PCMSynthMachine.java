@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
 import com.teotigraphix.caustk.node.machine.patch.pcmsynth.LFO1Component;
@@ -102,8 +103,8 @@ public class PCMSynthMachine extends MachineNode {
     public PCMSynthMachine() {
     }
 
-    public PCMSynthMachine(int index, String name) {
-        super(index, MachineType.PCMSynth, name);
+    public PCMSynthMachine(RackNode rackNode, int index, String name) {
+        super(rackNode, index, MachineType.PCMSynth, name);
     }
 
     //--------------------------------------------------------------------------

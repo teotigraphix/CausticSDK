@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.machine;
 import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
+import com.teotigraphix.caustk.node.RackNode;
 
 /**
  * Factory to create {@link MachineNode}s.
@@ -36,41 +37,42 @@ public class MachineNodeFactory extends CaustkFactoryChildBase {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends MachineNode> T createMachine(int index, MachineType type, String name) {
+    public <T extends MachineNode> T createMachine(RackNode rackNode, int index, MachineType type,
+            String name) {
         MachineNode machineNode = null;
         switch (type) {
             case SubSynth:
-                machineNode = new SubSynthMachine(index, name);
+                machineNode = new SubSynthMachine(rackNode, index, name);
                 break;
             case Bassline:
-                machineNode = new BasslineMachine(index, name);
+                machineNode = new BasslineMachine(rackNode, index, name);
                 break;
             case BeatBox:
-                machineNode = new BeatBoxMachine(index, name);
+                machineNode = new BeatBoxMachine(rackNode, index, name);
                 break;
             case EightBitSynth:
-                machineNode = new EightBitSynthMachine(index, name);
+                machineNode = new EightBitSynthMachine(rackNode, index, name);
                 break;
             case FMSynth:
-                machineNode = new FMSynthMachine(index, name);
+                machineNode = new FMSynthMachine(rackNode, index, name);
                 break;
             case Modular:
-                machineNode = new ModularMachine(index, name);
+                machineNode = new ModularMachine(rackNode, index, name);
                 break;
             case Organ:
-                machineNode = new OrganMachine(index, name);
+                machineNode = new OrganMachine(rackNode, index, name);
                 break;
             case PCMSynth:
-                machineNode = new PCMSynthMachine(index, name);
+                machineNode = new PCMSynthMachine(rackNode, index, name);
                 break;
             case PadSynth:
-                machineNode = new PadSynthMachine(index, name);
+                machineNode = new PadSynthMachine(rackNode, index, name);
                 break;
             case Vocoder:
-                machineNode = new VocoderMachine(index, name);
+                machineNode = new VocoderMachine(rackNode, index, name);
                 break;
             case KSSynth:
-                machineNode = new KSSynthMachine(index, name);
+                machineNode = new KSSynthMachine(rackNode, index, name);
                 break;
         }
         return (T)machineNode;
