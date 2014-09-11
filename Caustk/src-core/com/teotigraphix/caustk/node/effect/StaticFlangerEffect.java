@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
@@ -36,12 +37,16 @@ public class StaticFlangerEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float delay = 0f; // Flanger.depth
 
+    @Tag(201)
     private float feedback = 0.575f;
 
+    @Tag(202)
     private float wet = 0.5f;
 
+    @Tag(203)
     private StaticFlangerMode mode = StaticFlangerMode.TriangleFull;
 
     //--------------------------------------------------------------------------

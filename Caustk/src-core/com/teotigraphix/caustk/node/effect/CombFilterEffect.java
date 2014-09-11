@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CombFilterControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -34,10 +35,13 @@ public class CombFilterEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private int freq = 10; // Phaser.rate
 
+    @Tag(201)
     private float reso = 0.47f; // Phaser.feedback
 
+    @Tag(202)
     private float wet = 0.8f; // Phaser.depth
 
     //--------------------------------------------------------------------------

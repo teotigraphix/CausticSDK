@@ -19,9 +19,12 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+
+// TODO Serialization TrackEntryNode
 
 /**
  * A {@link TrackEntryNode} is an entry in a {@link TrackComponent}.
@@ -38,14 +41,16 @@ public class TrackEntryNode extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private int machineIndex = -1;
-
+    @Tag(100)
     private String pattern;
 
+    @Tag(101)
     private int numMeasures;
 
+    @Tag(102)
     private int startMeasure;
 
+    @Tag(103)
     private int endMeasure;
 
     //--------------------------------------------------------------------------
@@ -232,7 +237,7 @@ public class TrackEntryNode extends MachineComponent {
 
     @Override
     public String toString() {
-        return "TrackEntryNode [machineIndex=" + machineIndex + ", pattern=" + pattern
+        return "TrackEntryNode [pattern=" + pattern + ", numMeasures=" + numMeasures
                 + ", startMeasure=" + startMeasure + ", endMeasure=" + endMeasure + "]";
     }
 

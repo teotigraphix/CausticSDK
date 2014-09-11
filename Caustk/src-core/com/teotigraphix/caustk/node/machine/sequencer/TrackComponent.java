@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -42,23 +43,12 @@ public class TrackComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private final TreeMap<Integer, TrackEntryNode> entries = new TreeMap<Integer, TrackEntryNode>();
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
-
-    //    //----------------------------------
-    //    // machineIndex
-    //    //----------------------------------
-    //
-    //    @Override
-    //    public void setMachineIndex(int machineIndex) {
-    //        super.setMachineIndex(machineIndex);
-    //        for (TrackEntryNode trackEntryNode : entries.values()) {
-    //            trackEntryNode.setMachineIndex(machineIndex);
-    //        }
-    //    }
 
     //----------------------------------
     // entries

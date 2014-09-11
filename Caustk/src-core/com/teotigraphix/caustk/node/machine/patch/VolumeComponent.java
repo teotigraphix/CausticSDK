@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
@@ -38,6 +39,7 @@ public class VolumeComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float out;
 
     //--------------------------------------------------------------------------

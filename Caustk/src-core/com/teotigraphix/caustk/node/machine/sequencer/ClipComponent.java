@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -35,6 +36,7 @@ public class ClipComponent extends MachineComponent {
     //--------------------------------------------------------------------------
 
     // key:0..63, does not relate to the bank/pattern assignment
+    @Tag(100)
     private TreeMap<Integer, ClipEntryNode> entries = new TreeMap<Integer, ClipEntryNode>();
 
     //--------------------------------------------------------------------------

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -35,12 +36,16 @@ public class MultiFilterEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float frequency = 0.54f;
 
+    @Tag(201)
     private float gain = 0f;
 
+    @Tag(202)
     private MultiFilterMode mode = MultiFilterMode.LowShelf;
 
+    @Tag(203)
     private float resonance = 0.5f;
 
     //--------------------------------------------------------------------------

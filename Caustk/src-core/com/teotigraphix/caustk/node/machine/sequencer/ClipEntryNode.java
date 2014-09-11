@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.NodeBase;
 
 /**
@@ -31,30 +32,19 @@ public class ClipEntryNode extends NodeBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private int machineIndex = -1;
+    @Tag(100)
+    private ClipComponent clipComponent;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // machineIndex
+    // clipComponent
     //----------------------------------
 
-    /**
-     * The owning {@link ClipComponent}'s machine index.
-     */
-    public int getMachineIndex() {
-        return machineIndex;
-    }
-
-    /**
-     * Sets the machine index.
-     * 
-     * @param machineIndex The machine index (0..13).
-     */
-    public void setMachineIndex(int machineIndex) {
-        this.machineIndex = machineIndex;
+    public ClipComponent getClipComponent() {
+        return clipComponent;
     }
 
     //--------------------------------------------------------------------------
@@ -67,8 +57,8 @@ public class ClipEntryNode extends NodeBase {
     public ClipEntryNode() {
     }
 
-    public ClipEntryNode(int machineIndex) {
-        this.machineIndex = machineIndex;
+    public ClipEntryNode(ClipComponent clipComponent) {
+        this.clipComponent = clipComponent;
     }
 
     //--------------------------------------------------------------------------

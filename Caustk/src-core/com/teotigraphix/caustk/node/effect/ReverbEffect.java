@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ReverbControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -34,14 +35,19 @@ public class ReverbEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float damping = 0.25f;
 
+    @Tag(201)
     private float delay = 0.04625f;
 
+    @Tag(202)
     private float room = 0.85f;
 
+    @Tag(203)
     private float wet = 0.195f;
 
+    @Tag(204)
     private float width = 1f;
 
     //--------------------------------------------------------------------------

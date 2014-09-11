@@ -105,6 +105,9 @@ public class NodeMetaData {
     /**
      * Serialization
      */
+    public NodeMetaData() {
+    }
+
     public NodeMetaData(ICaustkNode node) {
         this.node = node;
     }

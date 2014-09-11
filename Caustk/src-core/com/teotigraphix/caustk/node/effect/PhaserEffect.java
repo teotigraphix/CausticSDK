@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.PhaserControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -34,14 +35,19 @@ public class PhaserEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float depth = 0.8f;
 
+    @Tag(201)
     private float feedback = 0.47f;
 
+    @Tag(202)
     private float highFreq = 0.09f;
 
+    @Tag(203)
     private float lowFreq = 0.01f;
 
+    @Tag(204)
     private int rate = 10;
 
     //--------------------------------------------------------------------------

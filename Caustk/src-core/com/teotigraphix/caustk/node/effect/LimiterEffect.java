@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.LimiterControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -34,12 +35,16 @@ public class LimiterEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float attack = 0.01f;
 
+    @Tag(201)
     private float postGain = 0.5f;
 
+    @Tag(202)
     private float preGain = 2f;
 
+    @Tag(203)
     private float release = 0.5f;
 
     //--------------------------------------------------------------------------

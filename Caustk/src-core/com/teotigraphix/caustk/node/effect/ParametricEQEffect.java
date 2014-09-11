@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ParametricEQControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -34,10 +35,13 @@ public class ParametricEQEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float frequency = 0.54f;
 
+    @Tag(201)
     private float gain = 0;
 
+    @Tag(202)
     private float width = 0.49999994f;
 
     //--------------------------------------------------------------------------

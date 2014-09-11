@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -35,12 +36,16 @@ public class DelayEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float feedback = 0.5f;
 
+    @Tag(201)
     private int time = 8;
 
+    @Tag(202)
     private float wet = 0.5f;
 
+    @Tag(203)
     private DelayMode mode = DelayMode.Mono;
 
     //--------------------------------------------------------------------------

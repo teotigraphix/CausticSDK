@@ -75,7 +75,7 @@ public abstract class MachineNode extends NodeBase {
     private String name;
 
     @Tag(54)
-    private Integer channelIndex;
+    private int channelIndex;
 
     @Tag(55)
     private VolumeComponent volume;

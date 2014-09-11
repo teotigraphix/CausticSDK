@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.subsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.CentsMode;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
@@ -38,16 +39,22 @@ public class Osc2Component extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int cents = 0;
 
+    @Tag(101)
     private int octave = 0;
 
+    @Tag(102)
     private float phase = 0f;
 
+    @Tag(103)
     private int semis = 0;
 
+    @Tag(104)
     private CentsMode centsMode = CentsMode.CENTS;
 
+    @Tag(105)
     private Osc2Waveform waveForm = Osc2Waveform.None;
 
     //--------------------------------------------------------------------------

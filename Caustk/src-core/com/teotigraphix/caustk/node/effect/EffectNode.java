@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import android.media.effect.Effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
@@ -45,10 +46,13 @@ public abstract class EffectNode extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private Integer slot;
+    @Tag(100)
+    private int slot;
 
+    @Tag(101)
     private EffectType type;
 
+    @Tag(102)
     private boolean bypass = false;
 
     //--------------------------------------------------------------------------
@@ -62,11 +66,11 @@ public abstract class EffectNode extends MachineComponent {
     /**
      * The effect's slot within the effect channel.
      */
-    public Integer getSlot() {
+    public int getSlot() {
         return slot;
     }
 
-    void setSlot(Integer slot) {
+    void setSlot(int slot) {
         this.slot = slot;
     }
 

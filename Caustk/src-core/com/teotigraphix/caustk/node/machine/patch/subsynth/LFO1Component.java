@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.subsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO1Waveform;
@@ -38,12 +39,16 @@ public class LFO1Component extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     protected int rate = 1;
 
+    @Tag(101)
     private float depth = 0.0f;
 
+    @Tag(102)
     private LFO1Target target = LFO1Target.None;
 
+    @Tag(103)
     private LFO1Waveform waveform = LFO1Waveform.Sine;
 
     //--------------------------------------------------------------------------

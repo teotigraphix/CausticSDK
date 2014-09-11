@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.NodeBase;
@@ -40,24 +41,34 @@ public class MixerChannel extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float bass = 0f;
 
+    @Tag(101)
     private float mid = 0f;
 
+    @Tag(102)
     private float high = 0f;
 
+    @Tag(103)
     private float delaySend = 0f;
 
+    @Tag(104)
     private float reverbSend = 0f;
 
+    @Tag(105)
     private float pan = 0f;
 
+    @Tag(106)
     private float stereoWidth = 0f;
 
+    @Tag(107)
     private boolean mute = false;
 
+    @Tag(108)
     private boolean solo = false;
 
+    @Tag(109)
     private float volume = 1f;
 
     //--------------------------------------------------------------------------

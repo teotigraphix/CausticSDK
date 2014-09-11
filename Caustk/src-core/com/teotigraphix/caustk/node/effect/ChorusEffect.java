@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -35,14 +36,19 @@ public class ChorusEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float depth = 0.25f;
 
+    @Tag(201)
     private float rate = 0.4f;
 
+    @Tag(202)
     private float wet = 0.5f;
 
+    @Tag(203)
     private float delay;
 
+    @Tag(204)
     private ChorusMode mode;
 
     //--------------------------------------------------------------------------

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionProgram;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -35,12 +36,16 @@ public class DistortionEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private DistortionProgram program = DistortionProgram.Overdrive;
 
+    @Tag(201)
     private float preGain = 4.05f;
 
+    @Tag(202)
     private float amount = 16.3f;
 
+    @Tag(203)
     private float postGain = 0.1f;
 
     //--------------------------------------------------------------------------

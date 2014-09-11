@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CabinetSimulatorControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -34,14 +35,19 @@ public class CabinetSimulatorEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float damping;
 
+    @Tag(201)
     private float height;
 
+    @Tag(202)
     private float tone;
 
+    @Tag(203)
     private float wet;
 
+    @Tag(204)
     private float width;
 
     //--------------------------------------------------------------------------

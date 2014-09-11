@@ -15,11 +15,34 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayMode;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionProgram;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.effect.AutoWahEffect;
+import com.teotigraphix.caustk.node.effect.BitcrusherEffect;
+import com.teotigraphix.caustk.node.effect.CabinetSimulatorEffect;
+import com.teotigraphix.caustk.node.effect.ChorusEffect;
+import com.teotigraphix.caustk.node.effect.CombFilterEffect;
+import com.teotigraphix.caustk.node.effect.CompressorEffect;
+import com.teotigraphix.caustk.node.effect.DelayEffect;
+import com.teotigraphix.caustk.node.effect.DistortionEffect;
+import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.effect.FlangerEffect;
+import com.teotigraphix.caustk.node.effect.LimiterEffect;
+import com.teotigraphix.caustk.node.effect.MultiFilterEffect;
+import com.teotigraphix.caustk.node.effect.ParametricEQEffect;
+import com.teotigraphix.caustk.node.effect.PhaserEffect;
+import com.teotigraphix.caustk.node.effect.ReverbEffect;
+import com.teotigraphix.caustk.node.effect.StaticFlangerEffect;
+import com.teotigraphix.caustk.node.effect.VinylSimulatorEffect;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
@@ -110,6 +133,32 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(EffectsChannel.class);
         kryo.register(TrackComponent.class);
         kryo.register(ClipComponent.class);
+
+        // Effects
+        kryo.register(EffectType.class);
+        kryo.register(ChorusMode.class);
+        kryo.register(DelayMode.class);
+        kryo.register(DistortionProgram.class);
+        kryo.register(FlangerMode.class);
+        kryo.register(MultiFilterMode.class);
+        kryo.register(StaticFlangerMode.class);
+
+        kryo.register(AutoWahEffect.class);
+        kryo.register(BitcrusherEffect.class);
+        kryo.register(CabinetSimulatorEffect.class);
+        kryo.register(ChorusEffect.class);
+        kryo.register(CombFilterEffect.class);
+        kryo.register(CompressorEffect.class);
+        kryo.register(DelayEffect.class);
+        kryo.register(DistortionEffect.class);
+        kryo.register(FlangerEffect.class);
+        kryo.register(LimiterEffect.class);
+        kryo.register(MultiFilterEffect.class);
+        kryo.register(ParametricEQEffect.class);
+        kryo.register(PhaserEffect.class);
+        kryo.register(ReverbEffect.class);
+        kryo.register(StaticFlangerEffect.class);
+        kryo.register(VinylSimulatorEffect.class);
 
         // SubSynthMachine
         kryo.register(SubSynthMachine.class);

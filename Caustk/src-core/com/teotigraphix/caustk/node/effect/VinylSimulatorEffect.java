@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.VinylSimulatorControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -34,14 +35,19 @@ public class VinylSimulatorEffect extends EffectNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(200)
     private float age = 0.5f;
 
+    @Tag(201)
     private float dust = 0.75f;
 
+    @Tag(202)
     private float noise = 0.33f;
 
+    @Tag(203)
     private float scratch = 0.25f;
 
+    @Tag(204)
     private float wet = 1f;
 
     //--------------------------------------------------------------------------
