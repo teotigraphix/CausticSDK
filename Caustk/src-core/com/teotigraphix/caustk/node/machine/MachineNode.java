@@ -27,6 +27,7 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
+import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
@@ -307,6 +308,7 @@ public abstract class MachineNode extends NodeBase {
         this.index = index;
         this.type = type;
         this.name = name;
+        setData(new NodeMetaData(this));
         intialize();
     }
 

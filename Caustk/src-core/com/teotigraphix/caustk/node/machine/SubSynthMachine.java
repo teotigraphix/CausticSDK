@@ -40,6 +40,7 @@ public class SubSynthMachine extends MachineNode {
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
+
     @Tag(100)
     private VolumeEnvelopeComponent volumeEnvelope;
 

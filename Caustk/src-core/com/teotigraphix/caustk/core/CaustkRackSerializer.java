@@ -17,6 +17,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
+import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
@@ -77,6 +78,7 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(CaustkProject.class);
 
         kryo.register(MachineType.class);
+        kryo.register(NodeMetaData.class);
 
         // RackNode
         kryo.register(RackNode.class);

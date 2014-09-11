@@ -46,16 +46,15 @@ public abstract class NodeBase implements ICaustkNode {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private String label = null;
+    private NodeMetaData data = null;
 
-    @Tag(1)
-    private Object icon = null;
+    //----------------------------------
+    // data
+    //----------------------------------
 
-    @Tag(2)
-    private Object color = null;
-
-    @Tag(3)
-    private boolean selected = false;
+    protected void setData(NodeMetaData data) {
+        this.data = data;
+    }
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -71,7 +70,7 @@ public abstract class NodeBase implements ICaustkNode {
      */
     @Override
     public String getLabel() {
-        return label;
+        return data.getLabel();
     }
 
     /**
@@ -81,9 +80,10 @@ public abstract class NodeBase implements ICaustkNode {
      * @see NodeLabelEvent
      */
     public void setLabel(String label) {
-        if (this.label != null && this.label.equals(label))
+        final String oldLabel = data.getLabel();
+        if (oldLabel != null && oldLabel.equals(label))
             return;
-        this.label = label;
+        data.setLabel(label);
         post(new NodeLabelEvent(this, label));
     }
 
@@ -95,7 +95,7 @@ public abstract class NodeBase implements ICaustkNode {
      * The node's iconic visual display.
      */
     public Object getIcon() {
-        return icon;
+        return data.getIcon();
     }
 
     /**
@@ -108,9 +108,9 @@ public abstract class NodeBase implements ICaustkNode {
      * @see NodeIconEvent
      */
     public void setIcon(Object icon) {
-        if (icon == this.icon)
+        if (icon == data.getIcon())
             return;
-        this.icon = icon;
+        data.setIcon(icon);
         post(new NodeIconEvent(this, icon));
     }
 
@@ -125,7 +125,7 @@ public abstract class NodeBase implements ICaustkNode {
      *         implementation.
      */
     public Object getColor() {
-        return color;
+        return data.getColor();
     }
 
     /**
@@ -135,9 +135,9 @@ public abstract class NodeBase implements ICaustkNode {
      * @see NodeColorEvent
      */
     public void setColor(Object color) {
-        if (color == this.color)
+        if (color == data.getColor())
             return;
-        this.color = color;
+        data.setColor(color);
         post(new NodeColorEvent(this, color));
     }
 
@@ -149,7 +149,7 @@ public abstract class NodeBase implements ICaustkNode {
      * Whether this node is selected.
      */
     public boolean isSelected() {
-        return selected;
+        return data.isSelected();
     }
 
     /**
@@ -158,9 +158,9 @@ public abstract class NodeBase implements ICaustkNode {
      * @param selected The selected state.
      */
     public void setSelected(boolean selected) {
-        if (selected == this.selected)
+        if (selected == data.isSelected())
             return;
-        this.selected = selected;
+        data.setSelected(selected);
         post(new NodeSelectedEvent(this, selected));
     }
 

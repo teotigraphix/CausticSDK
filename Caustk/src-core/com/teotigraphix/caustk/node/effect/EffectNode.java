@@ -27,6 +27,7 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
+import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -123,6 +124,7 @@ public abstract class EffectNode extends MachineComponent {
     public EffectNode(MachineNode machineNode, int slot) {
         super(machineNode);
         this.slot = slot;
+        setData(new NodeMetaData(this));
     }
 
     //--------------------------------------------------------------------------
