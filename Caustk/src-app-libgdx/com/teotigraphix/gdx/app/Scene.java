@@ -26,6 +26,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -61,6 +62,8 @@ public abstract class Scene implements IScene {
     private SkinLibrary skinLibrary;
 
     private List<ISceneBehavior> behaviors = new ArrayList<ISceneBehavior>();
+
+    private ShapeRenderer debugRenderer;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -161,6 +164,8 @@ public abstract class Scene implements IScene {
         setStage(new Stage(new FitViewport(800f, 480f)));
         atlas = new TextureAtlas(Gdx.files.internal("skin.atlas"));
         skin = new Skin(atlas);
+        debugRenderer = new ShapeRenderer();
+        debugRenderer.setAutoShapeType(true);
     }
 
     //--------------------------------------------------------------------------
@@ -211,7 +216,10 @@ public abstract class Scene implements IScene {
         stage.draw();
 
         // draw the table debug lines
-        // XXX Table.drawDebug(stage);
+        //Table.drawDebug(stage);
+        debugRenderer.begin();
+        stage.getRoot().drawDebug(debugRenderer);
+        debugRenderer.end();
     }
 
     @Override
