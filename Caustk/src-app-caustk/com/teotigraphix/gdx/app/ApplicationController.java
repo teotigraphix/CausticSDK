@@ -5,23 +5,13 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.KryoException;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.gdx.app.IApplicationModel.ApplicationModelProjectCreateEvent;
-import com.teotigraphix.gdx.app.IApplicationModel.ApplicationModelProjectLoadEvent;
-import com.teotigraphix.gdx.controller.IPreferenceManager;
 
 @Singleton
 public class ApplicationController extends ApplicationComponent implements IApplicationController {
 
     private static final String TAG = "ApplicationController";
-
-    @Inject
-    private ICaustkApplication application;
-
-    @Inject
-    private IPreferenceManager preferenceManager;
 
     private IApplicationModel applicationModel;
 
@@ -62,6 +52,21 @@ public class ApplicationController extends ApplicationComponent implements IAppl
         //startupStrategy.startup();
         try {
             applicationStates.loadLastProjectState();
+
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run() {
+                    getApplication().startScene();
+                    // this gets called one frame later so behaviors have registered
+                    // onAwake(), onStart()
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            applicationStates.startUI();
+                        }
+                    });
+                }
+            });
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -70,61 +75,9 @@ public class ApplicationController extends ApplicationComponent implements IAppl
         }
     }
 
-    @Subscribe
-    public void onApplicationModelProjectCreateHandler(ApplicationModelProjectCreateEvent event) {
-        getApplication().getLogger().log(TAG, "onApplicationModelProjectCreateHandler()");
-
-        applicationStates.onProjectCreate(event.getProject());
-
-        save();
-    }
-
-    @Subscribe
-    public void onApplicationModelProjectLoadHandler(ApplicationModelProjectLoadEvent event) {
-        getApplication().getLogger().log(TAG, "onApplicationModelProjectLoadHandler()");
-
-        applicationStates.onProjectLoad(event.getProject());
-
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                application.startScene();
-                // this gets called one frame later so behaviors have registered
-                // onAwake(), onStart()
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        applicationStates.startUI();
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
-    public void save() {
-        applicationStates.onProjectSave(applicationModel.getProject());
-
-        try {
-            applicationStates.save(applicationModel.getProject());
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        preferenceManager.save();
-    }
-
     @Override
     public void dispose() {
-        getApplication().getLogger().log(TAG, "exit()");
-        //exitStrategy.exit();
-        save();
+        getApplication().getLogger().log(TAG, "dispose()");
+        applicationModel.dispose();
     }
-
-    @Override
-    public void shutdown() {
-        getApplication().getLogger().log(TAG, "shutdown()");
-        //exitStrategy.shutdown();
-    }
-
 }

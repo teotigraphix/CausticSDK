@@ -32,13 +32,13 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     @Inject
     private IPreferenceManager preferenceManager;
 
+    private ICaustkApplication application;
+
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
     private EventBus eventBus;
-
-    private ICaustkApplication application;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -98,7 +98,7 @@ public abstract class ApplicationComponent implements IApplicationComponent {
 
     /**
      * Initialize the model after the {@link ICaustkApplication} has been
-     * injected.
+     * injected through {@link #setApplication(ICaustkApplication)}.
      */
     protected abstract void construct();
 

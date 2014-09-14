@@ -9,7 +9,7 @@ public interface IApplicationModel extends IApplicationComponent {
 
     ApplicationPreferences getApplicationPreferences();
 
-    CaustkProject getProject();
+    <T extends CaustkProject> T getProject();
 
     /**
      * @param project
@@ -17,32 +17,35 @@ public interface IApplicationModel extends IApplicationComponent {
      * @see ApplicationModelProjectCreateEvent
      * @see ApplicationModelProjectLoadEvent
      */
-    void setProject(CaustkProject project) throws IOException;
+    <T extends CaustkProject> void setProject(T project) throws IOException;
 
-    public static class ApplicationModelProjectEvent {
+    void save();
 
-        private CaustkProject project;
+    void dispose();
 
-        public CaustkProject getProject() {
-            return project;
-        }
+    //    public enum ApplicationModelProjectEventKind {
+    //        Create, Load, Save, Close;
+    //    }
+    //
+    //    public static class ApplicationModelProjectEvent {
+    //
+    //        private ApplicationModelProjectEventKind kind;
+    //
+    //        private CaustkProject project;
+    //
+    //        public ApplicationModelProjectEventKind getKind() {
+    //            return kind;
+    //        }
+    //
+    //        public CaustkProject getProject() {
+    //            return project;
+    //        }
+    //
+    //        public ApplicationModelProjectEvent(ApplicationModelProjectEventKind kind,
+    //                CaustkProject project) {
+    //            this.kind = kind;
+    //            this.project = project;
+    //        }
+    //    }
 
-        public ApplicationModelProjectEvent(CaustkProject project) {
-            this.project = project;
-        }
-    }
-
-    public static class ApplicationModelProjectCreateEvent extends ApplicationModelProjectEvent {
-
-        public ApplicationModelProjectCreateEvent(CaustkProject project) {
-            super(project);
-        }
-    }
-
-    public static class ApplicationModelProjectLoadEvent extends ApplicationModelProjectEvent {
-
-        public ApplicationModelProjectLoadEvent(CaustkProject project) {
-            super(project);
-        }
-    }
 }

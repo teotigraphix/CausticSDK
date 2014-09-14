@@ -1,6 +1,7 @@
 
 package com.teotigraphix.gdx.app;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.core.CaustkProject;
@@ -17,12 +18,16 @@ public interface IApplicationStates extends IApplicationComponent {
 
     void restartUI();
 
-    void save(CaustkProject project) throws IOException;
-
     void onProjectCreate(CaustkProject project);
 
     void onProjectLoad(CaustkProject project);
 
     void onProjectSave(CaustkProject project);
+
+    void onProjectClose(CaustkProject project);
+
+    CaustkProject createDefaultProject(String name, File projectFile);
+
+    CaustkProject readProject(File projectFile) throws IOException;
 
 }

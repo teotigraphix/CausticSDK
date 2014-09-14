@@ -6,14 +6,15 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.core.CaustkEngine;
 import com.teotigraphix.caustk.core.CaustkProject;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public abstract class ApplicationStates extends ApplicationComponent implements IApplicationStates {
 
     @Inject
     private IApplicationModel applicationModel;
+
+    @Inject
+    private IFileManager fileManager;
 
     @Override
     protected String getPreferenceId() {
@@ -25,61 +26,25 @@ public abstract class ApplicationStates extends ApplicationComponent implements 
 
     @Override
     public void loadLastProjectState() throws IOException {
+        getApplication().getLogger().log("ApplicationStates", "loadLastProjectState()");
+        getApplication().getLogger().log("ApplicationStates", "");
+
         CaustkProject project = null;
 
-        String path = applicationModel.getPreferences().getString(
-                ApplicationModel.LAST_PROJECT_PATH, null);
-        File rootDirectory = RuntimeUtils.getApplicationDirectory();
-        File projectsDirectory = new File(rootDirectory, "projects");
-        File projectLocation = null;
+        getApplication().getLogger().log("ApplicationStates",
+                "Find last project path from preferences.");
 
-        String projectName = getNextProjectName();
-
-        File projectBaseDirectory = new File(projectsDirectory, projectName);
-
-        if (!projectBaseDirectory.exists())
-            projectBaseDirectory.mkdirs();
-
-        if (path != null) {
-            projectLocation = new File(path);
-        } else {
-            projectLocation = new File(projectBaseDirectory, projectName + ".prj");
-        }
-        // C:\Users\Teoti\Documents\Tones\projects\Untitled.prj
-        if (!projectLocation.exists()) {
-            project = createDefaultProject(projectName, projectLocation.getAbsolutePath());
-        } else {
-            project = loadProject(projectLocation);
-        }
-
-        getApplication().getLogger().log(">>>>> ApplicationStates", "loadLastProjectState()");
-        CaustkEngine.DEBUG_MESSAGES = false;
-        CaustkEngine.DEBUG_QUERIES = false;
-        // XXX        model.importSoundKit(RuntimeUtils.getSongFile("TESTLIB1"));
-        CaustkEngine.DEBUG_MESSAGES = true;
-        CaustkEngine.DEBUG_QUERIES = true;
+        project = fileManager.createOrLoadStartupProject();
 
         applicationModel.setProject(project);
 
     }
 
-    private String getNextProjectName() {
-        return "Untitled";
-    }
+    @Override
+    public abstract CaustkProject readProject(File projectFile) throws IOException;
 
     @Override
-    public void save(CaustkProject project) throws IOException {
-        project.save();
-    }
-
-    private CaustkProject loadProject(File projectLocation) throws IOException {
-        CaustkProject instance = readProject(projectLocation);
-        return instance;
-    }
-
-    protected abstract CaustkProject readProject(File file) throws IOException;
-
-    protected abstract CaustkProject createDefaultProject(String name, String location);
+    public abstract CaustkProject createDefaultProject(String name, File projectFile);
 
     @Override
     public void startUI() {

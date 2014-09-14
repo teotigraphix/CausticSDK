@@ -6,26 +6,30 @@ import java.io.IOException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CaustkProject;
+import com.teotigraphix.gdx.controller.IPreferenceManager;
 
 @Singleton
 public class ApplicationModel extends ApplicationComponent implements IApplicationModel {
-
-    public static final String LAST_PROJECT_PATH = "last-project-path";
-
-    protected String APP_PREFERENCES = null;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private ApplicationPreferences applicationPreferences;
-
     private CaustkProject project;
 
-    @Override
-    protected String getPreferenceId() {
-        return APP_PREFERENCES;
-    }
+    protected String APP_PREFERENCES = null;
+
+    //--------------------------------------------------------------------------
+    // Inject :: Variables
+    //--------------------------------------------------------------------------
+
+    private ApplicationPreferences applicationPreferences;
+
+    @Inject
+    private IPreferenceManager preferenceManager;
+
+    @Inject
+    private IFileManager fileManager;
 
     @Override
     @Inject
@@ -35,9 +39,21 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         applicationPreferences = new ApplicationPreferences(getPreferences());
     }
 
+    @Inject
+    private IApplicationStates applicationStates;
+
     //--------------------------------------------------------------------------
     // Public :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // preferenceId
+    //----------------------------------
+
+    @Override
+    protected String getPreferenceId() {
+        return APP_PREFERENCES;
+    }
 
     //----------------------------------
     // applicationPreferences
@@ -52,14 +68,16 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     // project
     //----------------------------------
 
+    @SuppressWarnings("unchecked")
     @Override
-    public CaustkProject getProject() {
-        return project;
+    public <T extends CaustkProject> T getProject() {
+        return (T)project;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void setProject(CaustkProject project) throws IOException {
-        CaustkProject oldProject = this.project;
+    public <T extends CaustkProject> void setProject(T project) throws IOException {
+        T oldProject = (T)this.project;
         if (oldProject != null) {
             closeProject(oldProject);
         }
@@ -67,21 +85,10 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         this.project = project;
 
         if (!project.isCreated()) {
-            project.save();
-            getEventBus().post(new ApplicationModelProjectCreateEvent(project));
+            createProject(project);
+        } else {
+            loadProject(project);
         }
-
-        openProject(project);
-
-        getPreferences().putString(LAST_PROJECT_PATH, project.getFile().getAbsolutePath());
-
-        getEventBus().post(new ApplicationModelProjectLoadEvent(project));
-    }
-
-    private void openProject(CaustkProject project) {
-    }
-
-    private void closeProject(CaustkProject project) {
     }
 
     //--------------------------------------------------------------------------
@@ -92,7 +99,42 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     }
 
     @Override
+    public void save() {
+        preferenceManager.save();
+        saveProject(project);
+    }
+
+    @Override
+    public void dispose() {
+        save();
+    }
+
+    @Override
     protected void construct() {
+    }
+
+    private void createProject(CaustkProject project) throws IOException {
+        applicationStates.onProjectCreate(project);
+        project.save();
+    }
+
+    private void loadProject(CaustkProject project) {
+        fileManager.setStartupProject(project);
+        applicationStates.onProjectLoad(project);
+    }
+
+    private void saveProject(CaustkProject project) {
+        applicationStates.onProjectSave(project);
+        try {
+            project.save();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    private void closeProject(CaustkProject project) {
+        applicationStates.onProjectClose(project);
     }
 
 }

@@ -29,9 +29,5 @@ public interface IApplicationController extends IApplicationComponent {
 
     void startup();
 
-    void shutdown();
-
     void dispose();
-
-    void save();
 }
