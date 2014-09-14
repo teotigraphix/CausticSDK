@@ -131,20 +131,13 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     protected abstract Module createApplicationModule();
 
-    public final void addModule(Module module) {
+    protected final void addModule(Module module) {
         modules.add(module);
     }
 
     //--------------------------------------------------------------------------
     // ICaustkApplication API :: Methods
     //--------------------------------------------------------------------------
-
-    @Override
-    public void startScene() {
-        // XXX This will be the first thing called after a new Project is loaded
-        getSceneManager().reset();
-        setScene(getInitialScene());
-    }
 
     @Override
     public void onSceneChange(IScene scene) {
@@ -179,9 +172,21 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         onRegisterModels();
 
         applicationController.setup();
-        applicationController.startup(); // async after load, sets main scene ui
+
+        // async after load, sets main scene ui
+        applicationController.startup();
+        // 1. - startup() - Loads last project state
+        // 2. - next frame startScene()
+        // 3. - next frame startUI()
 
         onCreate();
+    }
+
+    @Override
+    public void startScene() {
+        // XXX This will be the first thing called after a new Project is loaded
+        getSceneManager().reset();
+        setScene(getInitialScene());
     }
 
     @Override

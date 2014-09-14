@@ -19,16 +19,6 @@
 
 package com.teotigraphix.gdx.app;
 
-import java.io.IOException;
-
-import com.teotigraphix.caustk.core.CaustkProject;
-
-public interface IFileManager {
-
-    void setupApplicationDirectory();
-
-    void setStartupProject(CaustkProject project);
-
-    CaustkProject createOrLoadStartupProject() throws IOException;
+public interface IApplicationState extends IApplicationComponent {
 
 }

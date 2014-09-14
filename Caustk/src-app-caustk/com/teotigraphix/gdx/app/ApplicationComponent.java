@@ -55,8 +55,12 @@ public abstract class ApplicationComponent implements IApplicationComponent {
 
     /**
      * Return the preference id for the sub class.
+     * <p>
+     * Override in subclass that uses preferences.
      */
-    protected abstract String getPreferenceId();
+    protected String getPreferenceId() {
+        return null;
+    }
 
     //----------------------------------
     // application
@@ -99,7 +103,10 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     /**
      * Initialize the model after the {@link ICaustkApplication} has been
      * injected through {@link #setApplication(ICaustkApplication)}.
+     * <p>
+     * Do not add anything here that is dependent on project state.
      */
-    protected abstract void construct();
+    protected void construct() {
+    }
 
 }

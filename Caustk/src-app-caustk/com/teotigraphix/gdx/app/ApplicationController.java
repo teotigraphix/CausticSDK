@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.gdx.app;
 
@@ -22,7 +40,7 @@ public class ApplicationController extends ApplicationComponent implements IAppl
     }
 
     @Inject
-    private IApplicationStates applicationStates;
+    private IApplicationStateHandlers applicationStates;
 
     //--------------------------------------------------------------------------
     // Properties
@@ -32,14 +50,9 @@ public class ApplicationController extends ApplicationComponent implements IAppl
         System.out.println("ApplicationController");
     }
 
-    @Override
-    protected String getPreferenceId() {
-        return null;
-    }
-
-    @Override
-    protected void construct() {
-    }
+    //--------------------------------------------------------------------------
+    // Public IApplicationController :: API
+    //--------------------------------------------------------------------------
 
     @Override
     public void setup() {
@@ -49,9 +62,9 @@ public class ApplicationController extends ApplicationComponent implements IAppl
     @Override
     public void startup() {
         getApplication().getLogger().log(TAG, "startup()");
-        //startupStrategy.startup();
+
         try {
-            applicationStates.loadLastProjectState();
+            applicationStates.startup();
 
             Gdx.app.postRunnable(new Runnable() {
                 @Override
