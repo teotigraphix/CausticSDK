@@ -51,16 +51,4 @@ public class PreferenceManager extends ApplicationComponent implements IPreferen
             preference.flush();
         }
     }
-
-    @Override
-    protected String getPreferenceId() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    protected void construct() {
-        // TODO Auto-generated method stub
-
-    }
 }

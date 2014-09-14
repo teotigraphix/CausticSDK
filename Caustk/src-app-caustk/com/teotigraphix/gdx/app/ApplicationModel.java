@@ -29,6 +29,8 @@ import com.teotigraphix.gdx.controller.IPreferenceManager;
 @Singleton
 public class ApplicationModel extends ApplicationComponent implements IApplicationModel {
 
+    private static final String TAG = "ApplicationModel";
+
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
@@ -100,6 +102,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
             closeProject(oldProject);
         }
 
+        log(TAG, "setProject() - " + project.getNativePath());
         this.project = project;
 
         if (!project.isCreated()) {
@@ -127,21 +130,20 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         save();
     }
 
-    @Override
-    protected void construct() {
-    }
-
     private void createProject(CaustkProject project) throws IOException {
+        log(TAG, "createProject()");
         applicationStates.onProjectCreate(project);
         project.save();
     }
 
     private void loadProject(CaustkProject project) {
+        log(TAG, "loadProject()");
         fileManager.setStartupProject(project);
         applicationStates.onProjectLoad(project);
     }
 
     private void saveProject(CaustkProject project) {
+        log(TAG, "saveProject()");
         applicationStates.onProjectSave(project);
         try {
             project.save();
@@ -152,6 +154,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     }
 
     private void closeProject(CaustkProject project) {
+        log(TAG, "closeProject()");
         applicationStates.onProjectClose(project);
     }
 

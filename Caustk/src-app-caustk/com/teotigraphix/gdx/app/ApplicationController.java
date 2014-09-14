@@ -47,21 +47,20 @@ public class ApplicationController extends ApplicationComponent implements IAppl
     //--------------------------------------------------------------------------
 
     public ApplicationController() {
-        System.out.println("ApplicationController");
     }
 
     //--------------------------------------------------------------------------
-    // Public IApplicationController :: API
+    // IApplicationController API :: Methods
     //--------------------------------------------------------------------------
 
     @Override
     public void setup() {
-        getApplication().getLogger().log(TAG, "setup()");
+        log(TAG, "setup()");
     }
 
     @Override
     public void startup() {
-        getApplication().getLogger().log(TAG, "startup()");
+        log(TAG, "startup( BEG )");
 
         try {
             applicationStates.startup();
@@ -69,12 +68,18 @@ public class ApplicationController extends ApplicationComponent implements IAppl
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
+                    log(TAG, "    ------------------------------------");
+                    log(TAG, "    $$$$ NEXT FRAME");
+
                     getApplication().startScene();
                     // this gets called one frame later so behaviors have registered
                     // onAwake(), onStart()
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {
+                            log(TAG, "    ------------------------------------");
+                            log(TAG, "    %%%% NEXT FRAME");
+
                             applicationStates.startUI();
                         }
                     });
@@ -86,6 +91,8 @@ public class ApplicationController extends ApplicationComponent implements IAppl
         } catch (KryoException e2) {
             e2.printStackTrace();
         }
+
+        log(TAG, "startup( END )");
     }
 
     @Override

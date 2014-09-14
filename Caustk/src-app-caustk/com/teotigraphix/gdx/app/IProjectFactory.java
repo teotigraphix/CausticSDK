@@ -19,36 +19,14 @@
 
 package com.teotigraphix.gdx.app;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.core.CaustkProject;
 
-public interface IApplicationStateHandlers {
+public interface IProjectFactory {
 
-    /**
-     * Loads the last project state.
-     * <p>
-     * After the {@link CaustkProject} is deserialized, the
-     * {@link IApplicationModel#setProject(CaustkProject)} is called.
-     * 
-     * @throws IOException Cannot reload or create a project in the
-     *             application's directory.
-     */
-    void startup() throws IOException;
+    <T extends CaustkProject> T createDefaultProject(String name, File projectFile);
 
-    /**
-     * Called when Scene has been created and user interface behaviors can
-     * listen to model changes to get the current view state.
-     */
-    void startUI();
-
-    void restartUI();
-
-    void onProjectCreate(CaustkProject project);
-
-    void onProjectLoad(CaustkProject project);
-
-    void onProjectSave(CaustkProject project);
-
-    void onProjectClose(CaustkProject project);
+    <T extends CaustkProject> T readProject(File projectFile) throws IOException;
 }

@@ -19,7 +19,6 @@
 
 package com.teotigraphix.gdx.app;
 
-import java.io.File;
 import java.io.IOException;
 
 import com.google.inject.Inject;
@@ -27,6 +26,8 @@ import com.teotigraphix.caustk.core.CaustkProject;
 
 public abstract class ApplicationStateBase extends ApplicationComponent implements
         IApplicationState, IApplicationStateHandlers {
+
+    private static final String TAG = "ApplicationStateBase";
 
     @Inject
     private IApplicationModel applicationModel;
@@ -48,28 +49,19 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
     public void startup() throws IOException {
         getApplication().getEventBus().register(this);
 
-        fileManager.setupApplicationDirectory();
+        log(TAG, "startup()");
 
-        getApplication().getLogger().log("ApplicationStates", "loadLastProjectState()");
-        getApplication().getLogger().log("ApplicationStates", "");
+        fileManager.setupApplicationDirectory();
 
         CaustkProject project = null;
 
-        getApplication().getLogger().log("ApplicationStates",
-                "Find last project path from preferences.");
+        log(TAG, "Find last project path from preferences.");
 
         project = fileManager.createOrLoadStartupProject();
 
         // get onProjectCreate() and onProjectLoad() callbacks from ApplicationModel
         applicationModel.setProject(project);
-
     }
-
-    @Override
-    public abstract <T extends CaustkProject> T readProject(File projectFile) throws IOException;
-
-    @Override
-    public abstract <T extends CaustkProject> T createDefaultProject(String name, File projectFile);
 
     @Override
     public abstract void onProjectCreate(CaustkProject project);
@@ -85,13 +77,13 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
 
     @Override
     public void startUI() {
-        getApplication().getLogger().log(">>>>> ApplicationStates", "startUI()");
+        log(TAG, "startUI()");
         onStartUI();
     }
 
     @Override
     public void restartUI() {
-        getApplication().getLogger().log(">>>>> ApplicationStates", "restartUI()");
+        log(TAG, "restartUI()");
 
         try {
             applicationModel.setProject(applicationModel.getProject());

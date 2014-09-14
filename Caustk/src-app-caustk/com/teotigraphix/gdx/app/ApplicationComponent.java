@@ -74,7 +74,6 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     @Inject
     public void setApplication(ICaustkApplication application) {
         this.application = application;
-        construct();
     }
 
     //----------------------------------
@@ -100,13 +99,19 @@ public abstract class ApplicationComponent implements IApplicationComponent {
         eventBus = new EventBus();
     }
 
-    /**
-     * Initialize the model after the {@link ICaustkApplication} has been
-     * injected through {@link #setApplication(ICaustkApplication)}.
-     * <p>
-     * Do not add anything here that is dependent on project state.
-     */
-    protected void construct() {
+    //--------------------------------------------------------------------------
+    // Protected Log :: Methods
+    //--------------------------------------------------------------------------
+
+    protected void log(String tag, String message) {
+        getApplication().getLogger().log(tag, message);
     }
 
+    protected void err(String tag, String message) {
+        getApplication().getLogger().err(tag, message);
+    }
+
+    protected void err(String tag, String message, Throwable throwable) {
+        getApplication().getLogger().err(tag, message, throwable);
+    }
 }

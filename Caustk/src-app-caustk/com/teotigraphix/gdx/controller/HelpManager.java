@@ -68,16 +68,4 @@ public class HelpManager extends ApplicationComponent implements IHelpManager {
     protected void helpChange(Actor listenerActor) {
         getEventBus().post(new OnHelpManagerHelpChange(map.get(listenerActor)));
     }
-
-    @Override
-    protected String getPreferenceId() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    protected void construct() {
-        // TODO Auto-generated method stub
-
-    }
 }

@@ -32,6 +32,8 @@ public class FileManager implements IFileManager {
 
     public static final String LAST_PROJECT_PATH = "last-project-path";
 
+    private static final String TAG = "FileManager";
+
     //--------------------------------------------------------------------------
     // Inject :: Variables
     //--------------------------------------------------------------------------
@@ -40,7 +42,7 @@ public class FileManager implements IFileManager {
     private IApplicationModel applicationModel;
 
     @Inject
-    private IApplicationStateHandlers applicationStates;
+    private IProjectFactory projectFactory;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -93,6 +95,8 @@ public class FileManager implements IFileManager {
     // Called from ApplicationStates.construct()
     @Override
     public void setupApplicationDirectory() {
+        applicationModel.getApplication().getLogger().log(TAG, "setupApplicationDirectory()");
+
         // create the application projects folder if not exists
         // ExternalStorage/AppName
         applicationDirectory = RuntimeUtils.getApplicationDirectory();
@@ -112,6 +116,8 @@ public class FileManager implements IFileManager {
 
     @Override
     public CaustkProject createOrLoadStartupProject() throws IOException {
+        applicationModel.getApplication().getLogger().log(TAG, "createOrLoadStartupProject()");
+
         CaustkProject project = null;
 
         File projectFile = getStartupProjectFile();
@@ -125,11 +131,11 @@ public class FileManager implements IFileManager {
             projectFile = toProjectFile(projectBaseDirectory, projectName);
             System.err.println("  Creating new project " + projectFile.getAbsolutePath());
 
-            project = applicationStates.createDefaultProject(projectName, projectFile);
+            project = projectFactory.createDefaultProject(projectName, projectFile);
 
         } else {
             // load existing
-            project = applicationStates.readProject(projectFile);
+            project = projectFactory.readProject(projectFile);
         }
 
         return project;
