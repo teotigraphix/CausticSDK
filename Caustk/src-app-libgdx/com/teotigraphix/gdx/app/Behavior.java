@@ -142,7 +142,8 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
     /**
      * Called during a scene change.
      */
-    protected abstract void attachChildren();
+    protected void attachChildren() {
+    }
 
     protected void onParentChanged(Behavior parent) {
     }

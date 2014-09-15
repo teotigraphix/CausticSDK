@@ -72,6 +72,8 @@ public class FileManager implements IFileManager {
 
     private File getStartupProjectFile() {
         String path = applicationModel.getPreferences().getString(LAST_PROJECT_PATH, null);
+        if (path == null)
+            return new File("");
         return new File(path);
     }
 
