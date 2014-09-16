@@ -56,7 +56,7 @@ public abstract class SkinLibrary {
      * @see ICaustkScene#setup(com.teotigraphix.gdx.IGdxApplication)
      */
     public void initialize(Skin skin) {
-        initializeButtonStyle(skin);
+        //initializeButtonStyle(skin);
     }
 
     //--------------------------------------------------------------------------

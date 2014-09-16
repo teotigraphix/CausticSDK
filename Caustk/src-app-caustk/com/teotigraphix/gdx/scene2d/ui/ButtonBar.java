@@ -275,7 +275,7 @@ public class ButtonBar extends ControlTable {
     }
 
     protected void showTooltip(float cx, float cy) {
-        if (toolTip != null)
+        if (toolTip == null || toolTip.equals(""))
             return;
         String helpText = items.get(pendingTipIndex).getHelpText();
         if (helpText != null) {

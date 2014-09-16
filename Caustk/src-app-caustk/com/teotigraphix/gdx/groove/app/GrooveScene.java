@@ -5,16 +5,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.app.CaustkScene;
 import com.teotigraphix.gdx.app.IApplication;
+import com.teotigraphix.gdx.groove.ui.GrooveViewPaneBehavior;
 import com.teotigraphix.gdx.groove.ui.IContainerKind;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.IContainerMap.TwoBarViewTrimLayout;
+import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 
 public class GrooveScene extends CaustkScene {
 
     @Inject
+    private UIFactory factory;
+
+    @Inject
     private IContainerMap containerMap;
 
+    @Inject
+    private GrooveViewPaneBehavior grooveViewPaneBehavior;
+
     private TwoBarViewTrimLayout[] roots;
+
+    protected IContainerMap getContainerMap() {
+        return containerMap;
+    }
 
     protected void setRoots(TwoBarViewTrimLayout[] roots) {
         this.roots = roots;
@@ -25,9 +37,16 @@ public class GrooveScene extends CaustkScene {
 
     @Override
     public void initialize(IApplication application) {
+        super.initialize(application);
+
+        setRoots(TwoBarViewTrimLayout.values());
+
+        addComponent(grooveViewPaneBehavior);
+
         containerMap.register(this);
         containerMap.setScene(this);
-        super.initialize(application);
+
+        factory.createFonts(getSkin());
     }
 
     @Override
@@ -39,6 +58,12 @@ public class GrooveScene extends CaustkScene {
             table.setUserObject(kind);
             containerMap.addActor(kind, table);
         }
+
+        createTopBar();
+    }
+
+    protected void createTopBar() {
+        grooveViewPaneBehavior.create();
     }
 
 }

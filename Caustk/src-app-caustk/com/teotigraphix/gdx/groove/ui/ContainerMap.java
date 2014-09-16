@@ -31,7 +31,8 @@ public class ContainerMap implements IContainerMap {
         map.put(key, group);
     }
 
-    WidgetGroup get(IContainerKind key) {
+    @Override
+    public WidgetGroup get(IContainerKind key) {
         return map.get(key);
     }
 
@@ -45,7 +46,7 @@ public class ContainerMap implements IContainerMap {
         Rectangle bounds = kind.getBounds();
         scene.getRoot().addActor(actor);
         actor.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-        put(TwoBarViewTrimLayout.TopBar, actor);
+        put(kind, actor);
     }
 
 }

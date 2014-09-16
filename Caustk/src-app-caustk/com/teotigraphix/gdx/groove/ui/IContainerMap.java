@@ -9,6 +9,8 @@ public interface IContainerMap {
 
     void setScene(CaustkScene scene);
 
+    WidgetGroup get(IContainerKind key);
+
     void addActor(IContainerKind kind, WidgetGroup actor);
 
     void register(Object object);

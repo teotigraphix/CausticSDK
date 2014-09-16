@@ -176,7 +176,7 @@ public abstract class Scene implements IScene {
     public void initialize(IApplication application) {
         this.application = application;
         initialized = true;
-        skinLibrary.initialize(skin);
+        //skinLibrary.initialize(skin);
     }
 
     @Override
