@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.gdx.groove.ui.UIModel.UIModelState;
 
 /**
  * The project holds the single {@link RackNode} in the applications current
@@ -37,6 +38,9 @@ public class CaustkProject {
 
     @Tag(11)
     private byte[] rackBytes;
+
+    @Tag(25)
+    private UIModelState uiState;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -112,6 +116,16 @@ public class CaustkProject {
      */
     public boolean isCreated() {
         return rackBytes != null;
+    }
+
+    //----------------------------------
+    // uiState
+    //----------------------------------
+
+    public UIModelState getUiState() {
+        if (uiState == null)
+            uiState = new UIModelState();
+        return uiState;
     }
 
     //--------------------------------------------------------------------------

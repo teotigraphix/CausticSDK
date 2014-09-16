@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
+import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 
 /*
  * - All required styles must be in the StyleClass constructor
@@ -25,6 +26,8 @@ public class UIFactory {
 
     private TopBarFactory topBarFactory;
 
+    private ViewStackFactory viewStackFactory;
+
     public UIFactoryModel getFactoryModel() {
         return factoryModel;
     }
@@ -36,9 +39,11 @@ public class UIFactory {
 
     public UIFactory() {
         topBarFactory = new TopBarFactory(this);
+        viewStackFactory = new ViewStackFactory(this);
     }
 
     public void createFonts(Skin skin) {
+        createFont(skin, "default-font", "Eras-12-B", "font/Eras-12-B.fnt");
         // TopBar
         createFont(skin, TopBarFactory.Font_TextButton, "Eras-12-B", "font/Eras-12-B.fnt");
     }
@@ -55,5 +60,9 @@ public class UIFactory {
 
     public Table createTopBar_Center(Skin skin) {
         return topBarFactory.createTopBar_Center(skin);
+    }
+
+    public ViewStack createViewStack(Skin skin) {
+        return viewStackFactory.createViewStack(skin);
     }
 }

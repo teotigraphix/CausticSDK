@@ -5,10 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.app.CaustkScene;
 import com.teotigraphix.gdx.app.IApplication;
+import com.teotigraphix.gdx.app.IApplicationModel;
 import com.teotigraphix.gdx.groove.ui.GrooveViewPaneBehavior;
 import com.teotigraphix.gdx.groove.ui.IContainerKind;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.IContainerMap.TwoBarViewTrimLayout;
+import com.teotigraphix.gdx.groove.ui.UIModel;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 
 public class GrooveScene extends CaustkScene {
@@ -17,7 +19,13 @@ public class GrooveScene extends CaustkScene {
     private UIFactory factory;
 
     @Inject
+    private UIModel uiModel;
+
+    @Inject
     private IContainerMap containerMap;
+
+    @Inject
+    private IApplicationModel applicationModel;
 
     @Inject
     private GrooveViewPaneBehavior grooveViewPaneBehavior;
@@ -47,6 +55,12 @@ public class GrooveScene extends CaustkScene {
         containerMap.setScene(this);
 
         factory.createFonts(getSkin());
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        uiModel.restore(applicationModel.getProject().getUiState());
     }
 
     @Override

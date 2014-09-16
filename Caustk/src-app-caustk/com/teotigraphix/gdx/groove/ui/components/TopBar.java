@@ -4,6 +4,7 @@ package com.teotigraphix.gdx.groove.ui.components;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
 
 public class TopBar extends UITable {
 
@@ -19,6 +20,10 @@ public class TopBar extends UITable {
 
     public Table getCenterChild() {
         return center;
+    }
+
+    public ButtonBar getButtonBar() {
+        return (ButtonBar)center.getChildren().get(0);
     }
 
     public Table getRightChild() {
