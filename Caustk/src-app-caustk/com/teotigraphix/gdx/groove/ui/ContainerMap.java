@@ -12,16 +12,32 @@ import com.teotigraphix.gdx.app.CaustkScene;
 @Singleton
 public class ContainerMap implements IContainerMap {
 
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
     private HashMap<IContainerKind, WidgetGroup> map = new HashMap<IContainerKind, WidgetGroup>();
 
     private EventBus eventBus;
 
     private CaustkScene scene;
 
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // scene
+    //----------------------------------
+
     @Override
     public void setScene(CaustkScene scene) {
         this.scene = scene;
     }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public ContainerMap() {
         eventBus = new EventBus();
@@ -30,6 +46,10 @@ public class ContainerMap implements IContainerMap {
     void put(IContainerKind key, WidgetGroup group) {
         map.put(key, group);
     }
+
+    //--------------------------------------------------------------------------
+    // Public :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public WidgetGroup get(IContainerKind key) {

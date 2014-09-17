@@ -22,25 +22,26 @@ import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 @Singleton
 public class UIFactory {
 
-    private UIFactoryModel factoryModel;
-
-    private TopBarFactory topBarFactory;
-
-    private ViewStackFactory viewStackFactory;
-
-    public UIFactoryModel getFactoryModel() {
-        return factoryModel;
-    }
+    //--------------------------------------------------------------------------
+    // Inject
+    //--------------------------------------------------------------------------
 
     @Inject
-    public void setFactoryModel(UIFactoryModel factoryModel) {
-        this.factoryModel = factoryModel;
-    }
+    private TopBarFactory topBarFactory;
+
+    @Inject
+    private ViewStackFactory viewStackFactory;
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public UIFactory() {
-        topBarFactory = new TopBarFactory(this);
-        viewStackFactory = new ViewStackFactory(this);
     }
+
+    //--------------------------------------------------------------------------
+    // Creation :: Methods
+    //--------------------------------------------------------------------------
 
     public void createFonts(Skin skin) {
         createFont(skin, "default-font", "Eras-12-B", "font/Eras-12-B.fnt");
@@ -54,6 +55,10 @@ public class UIFactory {
         return font;
     }
 
+    //----------------------------------
+    // TopBar
+    //----------------------------------
+
     public TopBar createTopBar(Skin skin) {
         return topBarFactory.createTopBar(skin);
     }
@@ -61,6 +66,10 @@ public class UIFactory {
     public Table createTopBar_Center(Skin skin) {
         return topBarFactory.createTopBar_Center(skin);
     }
+
+    //----------------------------------
+    // ViewStack
+    //----------------------------------
 
     public ViewStack createViewStack(Skin skin) {
         return viewStackFactory.createViewStack(skin);

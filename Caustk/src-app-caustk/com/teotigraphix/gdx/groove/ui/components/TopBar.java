@@ -14,21 +14,45 @@ public class TopBar extends UITable {
 
     private Table right;
 
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // left
+    //----------------------------------
+
     public Table getLeftChild() {
         return left;
     }
+
+    //----------------------------------
+    // center
+    //----------------------------------
 
     public Table getCenterChild() {
         return center;
     }
 
-    public ButtonBar getButtonBar() {
-        return (ButtonBar)center.getChildren().get(0);
-    }
+    //----------------------------------
+    // right
+    //----------------------------------
 
     public Table getRightChild() {
         return right;
     }
+
+    //----------------------------------
+    // buttonBar
+    //----------------------------------
+
+    public ButtonBar getButtonBar() {
+        return (ButtonBar)center.getChildren().get(0);
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public TopBar(Skin skin) {
         super(skin);

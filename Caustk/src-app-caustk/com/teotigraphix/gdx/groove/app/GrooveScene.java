@@ -6,17 +6,21 @@ import com.google.inject.Inject;
 import com.teotigraphix.gdx.app.CaustkScene;
 import com.teotigraphix.gdx.app.IApplication;
 import com.teotigraphix.gdx.app.IApplicationModel;
-import com.teotigraphix.gdx.groove.ui.GrooveViewPaneBehavior;
 import com.teotigraphix.gdx.groove.ui.IContainerKind;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
-import com.teotigraphix.gdx.groove.ui.IContainerMap.TwoBarViewTrimLayout;
-import com.teotigraphix.gdx.groove.ui.UIModel;
+import com.teotigraphix.gdx.groove.ui.IContainerMap.MainTemplateLayout;
+import com.teotigraphix.gdx.groove.ui.behavior.MainTemplateBehavior;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
+import com.teotigraphix.gdx.groove.ui.model.UIModel;
 
 public class GrooveScene extends CaustkScene {
 
+    //--------------------------------------------------------------------------
+    // Inject
+    //--------------------------------------------------------------------------
+
     @Inject
-    private UIFactory factory;
+    private UIFactory uiFactory;
 
     @Inject
     private UIModel uiModel;
@@ -28,33 +32,45 @@ public class GrooveScene extends CaustkScene {
     private IApplicationModel applicationModel;
 
     @Inject
-    private GrooveViewPaneBehavior grooveViewPaneBehavior;
+    private MainTemplateBehavior mainTemplateBehavior;
 
-    private TwoBarViewTrimLayout[] roots;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private MainTemplateLayout[] roots;
 
     protected IContainerMap getContainerMap() {
         return containerMap;
     }
 
-    protected void setRoots(TwoBarViewTrimLayout[] roots) {
+    protected void setRoots(MainTemplateLayout[] roots) {
         this.roots = roots;
     }
 
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
     public GrooveScene() {
     }
+
+    //--------------------------------------------------------------------------
+    // Overridden Public :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public void initialize(IApplication application) {
         super.initialize(application);
 
-        setRoots(TwoBarViewTrimLayout.values());
+        setRoots(MainTemplateLayout.values());
 
-        addComponent(grooveViewPaneBehavior);
+        addComponent(mainTemplateBehavior);
 
         containerMap.register(this);
         containerMap.setScene(this);
 
-        factory.createFonts(getSkin());
+        uiFactory.createFonts(getSkin());
     }
 
     @Override
@@ -62,6 +78,10 @@ public class GrooveScene extends CaustkScene {
         super.start();
         uiModel.restore(applicationModel.getProject().getUiState());
     }
+
+    //--------------------------------------------------------------------------
+    // Overridden Protected :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     protected void createUI() {
@@ -73,11 +93,6 @@ public class GrooveScene extends CaustkScene {
             containerMap.addActor(kind, table);
         }
 
-        createTopBar();
+        mainTemplateBehavior.create();
     }
-
-    protected void createTopBar() {
-        grooveViewPaneBehavior.create();
-    }
-
 }

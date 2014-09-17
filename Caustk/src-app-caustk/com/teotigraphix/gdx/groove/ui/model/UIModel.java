@@ -1,14 +1,28 @@
 
-package com.teotigraphix.gdx.groove.ui;
+package com.teotigraphix.gdx.groove.ui.model;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.badlogic.gdx.utils.Array;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ApplicationComponent;
+import com.teotigraphix.gdx.groove.ui.behavior.MainTemplateBehavior;
+import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
+/**
+ * Holds state for the {@link MainTemplateBehavior} ui.
+ */
 @Singleton
 public class UIModel extends ApplicationComponent {
 
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
     private UIModelState state;
+
+    private Array<ViewStackData> views;
+
+    private Array<ButtonBarItem> buttons;
 
     @Override
     protected String getPreferenceId() {
@@ -24,7 +38,7 @@ public class UIModel extends ApplicationComponent {
     //----------------------------------
 
     public int getViewIndex() {
-        return state.viewIndex;
+        return state.getViewIndex();
     }
 
     /**
@@ -32,16 +46,42 @@ public class UIModel extends ApplicationComponent {
      * @see UIModelEventKind#ViewIndexChange
      */
     public void setViewIndex(int viewIndex) {
-        if (state.viewIndex == viewIndex)
+        if (state.getViewIndex() == viewIndex)
             return;
-        state.viewIndex = viewIndex;
+        state.setViewIndex(viewIndex);
         getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));
     }
 
-    public void restore(UIModelState state) {
-        this.state = state;
+    //----------------------------------
+    // views
+    //----------------------------------
 
-        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));
+    public Array<ViewStackData> getViews() {
+        return views;
+    }
+
+    public void setViews(Array<ViewStackData> views) {
+        this.views = views;
+    }
+
+    //----------------------------------
+    // buttons
+    //----------------------------------
+
+    public Array<ButtonBarItem> getButtons() {
+        if (buttons != null)
+            return buttons;
+
+        buttons = new Array<ButtonBarItem>();
+        for (ViewStackData data : views) {
+            buttons.add(data.toButtonBarItem());
+        }
+
+        return buttons;
+    }
+
+    public void setButtons(Array<ButtonBarItem> buttons) {
+        this.buttons = buttons;
     }
 
     //--------------------------------------------------------------------------
@@ -49,6 +89,12 @@ public class UIModel extends ApplicationComponent {
     //--------------------------------------------------------------------------
 
     public UIModel() {
+    }
+
+    public void restore(UIModelState state) {
+        this.state = state;
+
+        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));
     }
 
     //--------------------------------------------------------------------------
@@ -77,15 +123,5 @@ public class UIModel extends ApplicationComponent {
             this.kind = kind;
             this.model = model;
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // State
-    //--------------------------------------------------------------------------
-
-    public static class UIModelState {
-
-        @Tag(0)
-        private int viewIndex = -1;
     }
 }

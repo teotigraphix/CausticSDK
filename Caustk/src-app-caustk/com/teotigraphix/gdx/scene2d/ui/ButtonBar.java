@@ -50,11 +50,17 @@ public class ButtonBar extends ControlTable {
 
     public static class ButtonBarItem {
 
+        private String id;
+
         private String label;
 
         private String icon;
 
         private String helpText;
+
+        public String getId() {
+            return id;
+        }
 
         public String getLabel() {
             return label;
@@ -68,7 +74,8 @@ public class ButtonBar extends ControlTable {
             return helpText;
         }
 
-        public ButtonBarItem(String label, String icon, String helpText) {
+        public ButtonBarItem(String id, String label, String icon, String helpText) {
+            this.id = id;
             this.label = label;
             this.icon = icon;
             this.helpText = helpText;

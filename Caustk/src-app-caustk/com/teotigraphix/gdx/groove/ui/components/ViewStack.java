@@ -50,15 +50,18 @@ public class ViewStack extends UITable {
         stack = new Stack();
     }
 
+    //--------------------------------------------------------------------------
+    // Public :: Methods
+    //--------------------------------------------------------------------------
+
     public void addView(Actor actor) {
         stack.add(actor);
         actor.setVisible(false);
     }
 
-    @Override
-    protected void createChildren() {
-        add(stack).expand().fill();
-    }
+    //--------------------------------------------------------------------------
+    // Overridden Public :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public void layout() {
@@ -71,6 +74,11 @@ public class ViewStack extends UITable {
 
         super.layout();
 
+    }
+
+    @Override
+    protected void createChildren() {
+        add(stack).expand().fill();
     }
 
 }

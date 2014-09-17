@@ -4,28 +4,24 @@ package com.teotigraphix.gdx.groove.ui.factory;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.utils.Array;
-import com.google.inject.Inject;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
 import com.teotigraphix.gdx.groove.ui.components.TopBar.TopBarStyle;
-import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
-import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEventKind;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener;
 
-public class TopBarFactory {
-
-    @Inject
-    private UIFactoryModel factoryModel;
+public abstract class TopBarFactory extends UIFactoryChild {
 
     public static final String Font_TextButton = "TopBar.TextButton.Font";
 
-    private UIFactory factory;
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
-    public TopBarFactory(UIFactory factory) {
-        this.factory = factory;
+    public TopBarFactory() {
     }
+
+    //--------------------------------------------------------------------------
+    // Public :: Methods
+    //--------------------------------------------------------------------------
 
     public TopBar createTopBar(Skin skin) {
 
@@ -50,34 +46,6 @@ public class TopBarFactory {
         return instance;
     }
 
-    public Table createTopBar_Center(Skin skin) {
-
-        TopBarFactoryInfo info = factory.getFactoryModel().getTopBarInfo();
-
-        TextButtonStyle buttonStyle = skin.get("TopBar.TextButton", TextButtonStyle.class);
-        final ButtonBar instance = new ButtonBar(skin, info.getCenterItems(), false, buttonStyle);
-        instance.addListener(new ButtonBarListener() {
-            @Override
-            public void selectedIndexChange(int selectedIndex) {
-                TopBarEvent event = new TopBarEvent(TopBarEventKind.ViewIndexChange, selectedIndex);
-                instance.fire(event);
-            }
-        });
-        instance.setMaxButtonSize(80f);
-
-        return instance;
-    }
-
-    public static class TopBarFactoryInfo {
-        private Array<ButtonBarItem> centerItems;
-
-        public Array<ButtonBarItem> getCenterItems() {
-            return centerItems;
-        }
-
-        public void setCenterItems(Array<ButtonBarItem> centerItems) {
-            this.centerItems = centerItems;
-        }
-    }
+    public abstract Table createTopBar_Center(Skin skin);
 
 }

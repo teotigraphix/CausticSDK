@@ -18,7 +18,7 @@ public interface IContainerMap {
     /**
      * Container is a user interface component 'container'.
      */
-    public enum TwoBarViewTrimLayout implements IContainerKind {
+    public enum MainTemplateLayout implements IContainerKind {
 
         /**
          * 0,440 | 800x40
@@ -65,7 +65,7 @@ public interface IContainerMap {
             return new Rectangle(x, y, width, height);
         }
 
-        private TwoBarViewTrimLayout(String id, float x, float y, float width, float height) {
+        private MainTemplateLayout(String id, float x, float y, float width, float height) {
             this.id = id;
             this.x = x;
             this.y = y;

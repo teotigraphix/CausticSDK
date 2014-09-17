@@ -174,9 +174,10 @@ public class PaneStack extends Table {
                 stack.addActor(pane);
                 PaneInfo info = (PaneInfo)pane.getUserObject();
                 if (info == null) {
-                    labels.add(new ButtonBarItem(pane.getName(), null, null));
+                    labels.add(new ButtonBarItem(pane.getName(), pane.getName(), null, null));
                 } else {
-                    labels.add(new ButtonBarItem(info.getName(), info.getIcon(), info.getHelpText()));
+                    labels.add(new ButtonBarItem(pane.getName(), info.getName(), info.getIcon(),
+                            info.getHelpText()));
                 }
             }
             pendingPanes.clear();
