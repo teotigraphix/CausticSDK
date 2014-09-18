@@ -53,6 +53,25 @@ public class UIModel extends ApplicationComponent {
     }
 
     //----------------------------------
+    // prefsViewIndex
+    //----------------------------------
+
+    public int getPrefsViewIndex() {
+        return state.getPrefsViewIndex();
+    }
+
+    /**
+     * @param viewIndex
+     * @see UIModelEventKind#PrefsViewIndexChange
+     */
+    public void setPrefsViewIndex(int viewIndex) {
+        if (state.getPrefsViewIndex() == viewIndex)
+            return;
+        state.setPrefsViewIndex(viewIndex);
+        getEventBus().post(new UIModelEvent(UIModelEventKind.PrefsViewIndexChange, this));
+    }
+
+    //----------------------------------
     // views
     //----------------------------------
 
@@ -95,6 +114,7 @@ public class UIModel extends ApplicationComponent {
         this.state = state;
 
         getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));
+        getEventBus().post(new UIModelEvent(UIModelEventKind.PrefsViewIndexChange, this));
     }
 
     //--------------------------------------------------------------------------
@@ -102,7 +122,7 @@ public class UIModel extends ApplicationComponent {
     //--------------------------------------------------------------------------
 
     public enum UIModelEventKind {
-        ViewIndexChange
+        ViewIndexChange, PrefsViewIndexChange
     }
 
     public static class UIModelEvent {

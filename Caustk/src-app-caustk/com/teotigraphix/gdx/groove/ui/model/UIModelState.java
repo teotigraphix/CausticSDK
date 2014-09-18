@@ -17,7 +17,10 @@ public class UIModelState {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private int viewIndex = -1;
+    private int viewIndex = 0;
+
+    @Tag(1)
+    private int prefsViewIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -27,12 +30,30 @@ public class UIModelState {
     // viewIndex
     //----------------------------------
 
+    /**
+     * The view stack index of the main ViewStack.
+     */
     public int getViewIndex() {
         return viewIndex;
     }
 
     public void setViewIndex(int viewIndex) {
         this.viewIndex = viewIndex;
+    }
+
+    //----------------------------------
+    // prefsViewIndex
+    //----------------------------------
+
+    /**
+     * The view stack index of the Prefs/ViewStack
+     */
+    public int getPrefsViewIndex() {
+        return prefsViewIndex;
+    }
+
+    public void setPrefsViewIndex(int prefsViewIndex) {
+        this.prefsViewIndex = prefsViewIndex;
     }
 
     //--------------------------------------------------------------------------

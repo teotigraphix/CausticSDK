@@ -2,8 +2,6 @@
 package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -11,9 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pools;
+import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener.ButtonBarChangeEvent;
+import com.teotigraphix.gdx.scene2d.ui.PaneStackListener.PaneStackEvent;
+import com.teotigraphix.gdx.scene2d.ui.PaneStackListener.PaneStackEventKind;
 
 /**
  * The {@link PaneStack} holds a stack of panes and uses a selectedIndex to show
@@ -24,15 +23,11 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener.ButtonBarChangeEvent;
  * 
  * @author Michael Schmalle
  */
-public class PaneStack extends Table {
+public class PaneStack extends UITable {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
-
-    private Skin skin;
-
-    private PaneStackStyle style;
 
     private Table barContainer;
 
@@ -42,7 +37,7 @@ public class PaneStack extends Table {
 
     private Stack stack;
 
-    Array<Actor> pendingPanes = new Array<Actor>();
+    private Array<UITable> panes = new Array<UITable>();
 
     private int buttonBarAlign;
 
@@ -67,12 +62,11 @@ public class PaneStack extends Table {
             return;
         int old = selectedIndex;
         selectedIndex = value;
-        PaneStackEvent event = Pools.obtain(PaneStackEvent.class);
-        event.setType(PaneStackEventType.SelectedIndexChange);
+        PaneStackEvent event = new PaneStackEvent(PaneStackEventKind.SelectedIndexChange,
+                selectedIndex);
         if (fire(event)) {
             selectedIndex = old;
         }
-        Pools.free(event);
         invalidate();
     }
 
@@ -99,49 +93,52 @@ public class PaneStack extends Table {
      */
     public PaneStack(Skin skin, String styleName, int buttonBarAlign, float maxButtonSize) {
         super(skin);
-        style = skin.get(styleName, PaneStackStyle.class);
-        this.skin = skin;
+        setStyleName(styleName);
+        setStyleClass(PaneStackStyle.class);
+
         this.buttonBarAlign = buttonBarAlign;
         this.maxButtonSize = maxButtonSize;
-        initialize();
     }
 
-    public void addPane(Actor actor) {
-        pendingPanes.add(actor);
+    public void addPane(UITable actor) {
+        panes.add(actor);
     }
 
-    protected void initialize() {
-        pad(5f);
-        debug();
+    @Override
+    public void layout() {
+        updateSelectedIndex();
+        super.layout();
+    }
+
+    @Override
+    protected void createChildren() {
+        PaneStackStyle style = getStyle();
+
+        pad(style.padding);
+
+        //debug();
+
         barContainer = new Table();
         barContainer.left();
         barContainer.setBackground(style.tabBarBackground);
 
         Array<ButtonBarItem> items = new Array<ButtonBar.ButtonBarItem>();
 
-        buttonBar = new ButtonBar(skin, items, false, style.tabStyle);
-        buttonBar.padBottom(-1f).padTop(4f);
-        buttonBar.padLeft(6f);
+        buttonBar = new ButtonBar(getSkin(), items, false, style.tabStyle);
         buttonBar.setMaxButtonSize(maxButtonSize);
         buttonBar.setGap(style.tabBarGap);
-        buttonBar.addListener(new EventListener() {
+        buttonBar.addListener(new ButtonBarListener() {
             @Override
-            public boolean handle(Event event) {
-                if (event instanceof ButtonBarChangeEvent) {
-                    ButtonBarChangeEvent e = (ButtonBarChangeEvent)event;
-                    int index = e.getSelectedIndex();
-                    setSelectedIndex(index);
-                    return true;
-                }
-                return false;
+            public void selectedIndexChange(int selectedIndex) {
+                setSelectedIndex(selectedIndex);
             }
         });
 
-        barContainer.add(buttonBar);
+        barContainer.add(buttonBar).height(style.tabBarThickness);
 
         contentContainer = new Table();
         contentContainer.setBackground(style.background);
-        contentContainer.pad(5f);
+        // XXX contentContainer.pad(5f);
 
         stack = new Stack();
 
@@ -156,6 +153,21 @@ public class PaneStack extends Table {
             row();
             add(barContainer).fillX();
         }
+
+        //------------------------------
+        // Create content
+        Array<ButtonBarItem> labels = new Array<ButtonBarItem>();
+        for (Actor pane : panes) {
+            stack.addActor(pane);
+            PaneInfo info = (PaneInfo)pane.getUserObject();
+            labels.add(new ButtonBarItem(info.getId(), info.getName(), info.getIcon(), info
+                    .getHelpText()));
+        }
+
+        panes.clear();
+
+        buttonBar.setItems(labels);
+        buttonBar.validate();
     }
 
     protected void updateSelectedIndex() {
@@ -166,37 +178,19 @@ public class PaneStack extends Table {
         stack.getChildren().get(selectedIndex).setVisible(true);
     }
 
-    @Override
-    public void layout() {
-        if (pendingPanes.size > 0) {
-            Array<ButtonBarItem> labels = new Array<ButtonBarItem>();
-            for (Actor pane : pendingPanes) {
-                stack.addActor(pane);
-                PaneInfo info = (PaneInfo)pane.getUserObject();
-                if (info == null) {
-                    labels.add(new ButtonBarItem(pane.getName(), pane.getName(), null, null));
-                } else {
-                    labels.add(new ButtonBarItem(pane.getName(), info.getName(), info.getIcon(),
-                            info.getHelpText()));
-                }
-            }
-            pendingPanes.clear();
-            buttonBar.setItems(labels);
-            buttonBar.validate();
-        }
-
-        super.layout();
-
-        updateSelectedIndex();
-    }
-
     public static class PaneInfo {
+
+        private String id;
 
         private String name;
 
         private String icon;
 
         private String helpText;
+
+        public String getId() {
+            return id;
+        }
 
         public String getName() {
             return name;
@@ -222,8 +216,10 @@ public class PaneStack extends Table {
             this.helpText = helpText;
         }
 
-        public PaneInfo(String name, String helpText) {
+        public PaneInfo(String id, String name, String icon, String helpText) {
+            this.id = id;
             this.name = name;
+            this.icon = icon;
             this.helpText = helpText;
         }
 
@@ -239,40 +235,14 @@ public class PaneStack extends Table {
 
         public float tabBarGap = 2f;
 
+        public float tabBarThickness = 50f;
+
         public float maxTabWidth = Float.NaN;
+
+        public float padding = 0f;
 
         public PaneStackStyle() {
         }
     }
 
-    public enum PaneStackEventType {
-        SelectedIndexChange
-    }
-
-    public static class PaneStackEvent extends Event {
-
-        private PaneStackEventType type;
-
-        @Override
-        public PaneStack getTarget() {
-            return (PaneStack)super.getTarget();
-        }
-
-        public PaneStackEventType getType() {
-            return type;
-        }
-
-        public void setType(PaneStackEventType type) {
-            this.type = type;
-        }
-
-        public PaneStackEvent() {
-        }
-
-        @Override
-        public void reset() {
-            super.reset();
-            type = null;
-        }
-    }
 }
