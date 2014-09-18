@@ -32,7 +32,7 @@ public abstract class TopBarFactory extends UIFactoryChild {
         //TopBarStyle.TextButton
         TextButtonStyle textButtonStyle = new TextButtonStyle(
                 skin.getDrawable("TopBar_TextButton_up"),
-                skin.getDrawable("TopBar_TextButton_over"),
+                skin.getDrawable("TopBar_TextButton_checked"),
                 skin.getDrawable("TopBar_TextButton_checked"), skin.getFont(Font_TextButton));
         skin.add("TopBar.TextButton", textButtonStyle);
 

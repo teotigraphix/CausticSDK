@@ -157,11 +157,13 @@ public class PaneStack extends UITable {
         //------------------------------
         // Create content
         Array<ButtonBarItem> labels = new Array<ButtonBarItem>();
-        for (Actor pane : panes) {
+        for (UITable pane : panes) {
             stack.addActor(pane);
             PaneInfo info = (PaneInfo)pane.getUserObject();
             labels.add(new ButtonBarItem(info.getId(), info.getName(), info.getIcon(), info
                     .getHelpText()));
+            String paneStyleName = "";
+            pane.create(paneStyleName);
         }
 
         panes.clear();
