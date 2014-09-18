@@ -4,22 +4,38 @@ package com.teotigraphix.gdx.groove.ui.components;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackListener.ViewStackEvent;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackListener.ViewStackEventKind;
 
 public class ViewStack extends UITable {
+
+    private Stack stack;
+
+    private ViewStackData data;
+
+    private int selectedIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // selectedIndex
+    // data
     //----------------------------------
 
-    private int selectedIndex = 0;
+    public ViewStackData getData() {
+        return data;
+    }
 
-    private Stack stack;
+    public void setData(ViewStackData data) {
+        this.data = data;
+    }
+
+    //----------------------------------
+    // selectedIndex
+    //----------------------------------
 
     public int getSelectedIndex() {
         return selectedIndex;
@@ -43,11 +59,16 @@ public class ViewStack extends UITable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ViewStack(Skin skin) {
+    public ViewStack(Skin skin, String styleName) {
         super(skin);
-
+        setSkin(skin);
+        setStyleClass(ViewStackStyle.class);
+        setStyleName(styleName);
         // needs access
         stack = new Stack();
+
+        ViewStackStyle style = getStyle();
+        setBackground(style.background);
     }
 
     //--------------------------------------------------------------------------
@@ -66,19 +87,31 @@ public class ViewStack extends UITable {
     @Override
     public void layout() {
 
-        for (Actor actor : stack.getChildren()) {
-            actor.setVisible(false);
+        SnapshotArray<Actor> children = stack.getChildren();
+        if (children.size > 0) {
+            for (Actor actor : stack.getChildren()) {
+                actor.setVisible(false);
+            }
+
+            stack.getChildren().get(selectedIndex).setVisible(true);
         }
 
-        stack.getChildren().get(selectedIndex).setVisible(true);
-
         super.layout();
-
     }
 
     @Override
     protected void createChildren() {
         add(stack).expand().fill();
+    }
+
+    public static class ViewStackStyle {
+
+        public Drawable background;
+
+        public ViewStackStyle(Drawable background) {
+            this.background = background;
+        }
+
     }
 
 }

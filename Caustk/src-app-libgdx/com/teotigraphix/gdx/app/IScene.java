@@ -93,7 +93,7 @@ public interface IScene {
     void create();
 
     /**
-     * Called after cate() but before show() is called for the first time.
+     * Called after create() but before show() is called for the first time.
      */
     void start();
 

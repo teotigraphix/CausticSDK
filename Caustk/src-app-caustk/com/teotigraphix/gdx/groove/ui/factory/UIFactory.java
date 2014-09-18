@@ -2,7 +2,9 @@
 package com.teotigraphix.gdx.groove.ui.factory;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.inject.Inject;
@@ -47,6 +49,10 @@ public class UIFactory {
         createFont(skin, "default-font", "Eras-12-B", "font/Eras-12-B.fnt");
         // TopBar
         createFont(skin, TopBarFactory.Font_TextButton, "Eras-12-B", "font/Eras-12-B.fnt");
+
+        // create the default Label style
+        LabelStyle labelStyle = new LabelStyle(skin.getFont("default-font"), Color.WHITE);
+        skin.add("default", labelStyle);
     }
 
     private BitmapFont createFont(Skin skin, String id, String name, String location) {

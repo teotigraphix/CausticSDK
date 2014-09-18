@@ -17,7 +17,7 @@ public abstract class UITable extends Table {
 
     private String styleName;
 
-    protected Class<? extends Object> styleClass;
+    private Class<? extends Object> styleClass;
 
     private Skin skin;
 
