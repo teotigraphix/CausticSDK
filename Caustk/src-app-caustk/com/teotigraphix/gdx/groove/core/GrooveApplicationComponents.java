@@ -10,6 +10,8 @@ import com.teotigraphix.gdx.app.FileManager;
 import com.teotigraphix.gdx.app.IApplicationController;
 import com.teotigraphix.gdx.app.IApplicationModel;
 import com.teotigraphix.gdx.app.IFileManager;
+import com.teotigraphix.gdx.controller.FileModel;
+import com.teotigraphix.gdx.controller.IFileModel;
 import com.teotigraphix.gdx.controller.IPreferenceManager;
 import com.teotigraphix.gdx.controller.PreferenceManager;
 import com.teotigraphix.gdx.groove.ui.ContainerMap;
@@ -20,6 +22,7 @@ public class GrooveApplicationComponents implements Module {
     @Override
     public void configure(Binder binder) {
 
+        binder.bind(IFileModel.class).to(FileModel.class);
         binder.bind(IFileManager.class).to(FileManager.class).in(Singleton.class);
         binder.bind(IPreferenceManager.class).to(PreferenceManager.class).in(Singleton.class);
         binder.bind(IApplicationController.class).to(ApplicationController.class)

@@ -70,7 +70,7 @@ public class GrooveScene extends CaustkScene {
         containerMap.register(this);
         containerMap.setScene(this);
 
-        uiFactory.createFonts(getSkin());
+        uiFactory.createDefaults(getSkin());
     }
 
     @Override

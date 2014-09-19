@@ -33,19 +33,30 @@ public class AlertDialog extends Dialog {
 
     private Skin skin;
 
-    public Skin getSkin() {
-        return skin;
-    }
-
     private TextButton okButton;
 
     private TextButton cancelButton;
 
     private OnAlertDialogListener listener;
 
-    public AlertDialog(String title, Skin skin, String windowStyleName) {
+    private String buttonStyleName;
+
+    public Skin getSkin() {
+        return skin;
+    }
+
+    public TextButton getOkButton() {
+        return okButton;
+    }
+
+    public TextButton getCancelButton() {
+        return cancelButton;
+    }
+
+    public AlertDialog(String title, Skin skin, String windowStyleName, String buttonStyleName) {
         super(title, skin, windowStyleName);
         this.skin = skin;
+        this.buttonStyleName = buttonStyleName;
         createChildren();
     }
 
@@ -64,15 +75,17 @@ public class AlertDialog extends Dialog {
         // create buttons
         setTitleAlignment(Align.top);
 
-        okButton = new TextButton("OK", skin);
+        okButton = new TextButton("OK", skin, buttonStyleName);
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (okButton.isDisabled())
+                    return;
                 listener.onOk();
                 hide();
             }
         });
-        cancelButton = new TextButton("Cancel", skin);
+        cancelButton = new TextButton("Cancel", skin, buttonStyleName);
         cancelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
