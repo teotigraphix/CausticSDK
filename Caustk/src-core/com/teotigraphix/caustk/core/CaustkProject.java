@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.RackNode;
@@ -28,7 +29,7 @@ public abstract class CaustkProject {
     private UUID id;
 
     @Tag(1)
-    private String nativePath;
+    private String nativePath; // XXX This is dangerous, do you really want to hold onto this?
 
     @Tag(2)
     private String name;
@@ -78,8 +79,15 @@ public abstract class CaustkProject {
     // file
     //----------------------------------
 
+    /**
+     * Returns the .prj file location.
+     */
     public File getFile() {
         return new File(nativePath);
+    }
+
+    public File getDirectory() {
+        return getFile().getParentFile();
     }
 
     public boolean exists() {
@@ -150,6 +158,17 @@ public abstract class CaustkProject {
         this.name = name;
         id = UUID.randomUUID();
         this.rackNode = rack.create();
+    }
+
+    /**
+     * @param projectFile The prj file.
+     * @throws IOException Could not save
+     */
+    public void rename(File projectFile) throws IOException {
+        this.id = UUID.randomUUID();
+        this.name = FilenameUtils.getBaseName(projectFile.getName());
+        this.nativePath = projectFile.getAbsolutePath();
+        rack.getSerializer().serialize(projectFile, this);
     }
 
     public void save() throws IOException {

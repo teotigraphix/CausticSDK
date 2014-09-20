@@ -49,6 +49,14 @@ public interface IFileManager {
      */
     CaustkProject loadProject(File projectFile) throws IOException;
 
+    /**
+     * Reads a project file from a serialized state, no rack loading occurs.
+     * 
+     * @param projectFile
+     * @throws IOException
+     */
+    CaustkProject readProject(File projectFile) throws IOException;
+
     File getProjectsDirectory();
 
 }

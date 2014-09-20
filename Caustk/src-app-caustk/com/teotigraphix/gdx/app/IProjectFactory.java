@@ -28,5 +28,5 @@ public interface IProjectFactory {
 
     <T extends CaustkProject> T createDefaultProject(String name, File projectFile);
 
-    <T extends CaustkProject> T readProject(File projectFile) throws IOException;
+    <T extends CaustkProject> T readProject(File projectFile, boolean loadRack) throws IOException;
 }

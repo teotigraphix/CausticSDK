@@ -62,6 +62,12 @@ public class MainTemplateBehavior extends CaustkBehavior {
         uiModel.getEventBus().register(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        uiModel.getEventBus().unregister(this);
+    }
+
     //--------------------------------------------------------------------------
     // Public :: Methods
     //--------------------------------------------------------------------------

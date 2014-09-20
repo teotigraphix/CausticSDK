@@ -132,7 +132,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
         } else {
             // load existing
-            project = projectFactory.readProject(projectFile);
+            project = projectFactory.readProject(projectFile, true);
         }
 
         return project;
@@ -140,7 +140,13 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
     @Override
     public CaustkProject loadProject(File projectFile) throws IOException {
-        CaustkProject project = projectFactory.readProject(projectFile);
+        CaustkProject project = projectFactory.readProject(projectFile, true);
+        return project;
+    }
+
+    @Override
+    public CaustkProject readProject(File projectFile) throws IOException {
+        CaustkProject project = projectFactory.readProject(projectFile, false);
         return project;
     }
 

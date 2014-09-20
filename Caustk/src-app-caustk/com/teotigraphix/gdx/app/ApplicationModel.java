@@ -22,6 +22,9 @@ package com.teotigraphix.gdx.app;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+
+import com.badlogic.gdx.Gdx;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CaustkProject;
@@ -114,15 +117,49 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     }
 
     @Override
-    public void newProject(File file) throws IOException {
-        CaustkProject project = fileManager.createProject(file);
+    public void newProject(File projectLocation) throws IOException {
+        CaustkProject project = fileManager.createProject(projectLocation);
         setProject(project);
     }
 
     @Override
-    public void loadProject(File file) throws IOException {
-        CaustkProject project = fileManager.loadProject(file);
+    public void loadProject(File projectFile) throws IOException {
+        CaustkProject project = fileManager.loadProject(projectFile);
         setProject(project);
+    }
+
+    @Override
+    public void saveProjectAs(String projectName) throws IOException {
+        saveProjectAs(new File(fileManager.getProjectsDirectory(), projectName));
+    }
+
+    /**
+     * @param projectLocation The project directory, getName() returns the
+     *            project name to copy.
+     * @throws IOException
+     */
+    public void saveProjectAs(File projectLocation) throws IOException {
+        File srcDir = project.getDirectory();
+        File destDir = projectLocation;
+        FileUtils.copyDirectory(srcDir, destDir);
+
+        // load the copied project discreetly
+        final File oldProjectFile = new File(projectLocation, srcDir.getName() + ".prj");
+        File newProjectFile = new File(projectLocation, destDir.getName() + ".prj");
+
+        CaustkProject newProject = fileManager.readProject(oldProjectFile);
+        newProject.setRack(getApplication().getRack()); // needed for deserialization
+        newProject.rename(newProjectFile);
+
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                // XXX This is NOTE DELETING
+                FileUtils.deleteQuietly(oldProjectFile);
+            }
+        });
+
+        loadProject(newProject.getFile());
     }
 
     //--------------------------------------------------------------------------

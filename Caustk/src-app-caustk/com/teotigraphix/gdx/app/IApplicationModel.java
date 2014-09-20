@@ -42,7 +42,10 @@ public interface IApplicationModel extends IApplicationComponent {
 
     void loadProject(File file) throws IOException;
 
+    void saveProjectAs(String projectName) throws IOException;
+
     void save();
 
     void dispose();
+
 }
