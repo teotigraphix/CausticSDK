@@ -19,6 +19,7 @@
 
 package com.teotigraphix.gdx.app;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.google.inject.Inject;
@@ -55,7 +56,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     @Inject
     public void setApplication(ICaustkApplication application) {
         super.setApplication(application);
-        APP_PREFERENCES = application.getApplicationId() + "/applicationModel";
+        APP_PREFERENCES = application.getApplicationId() + "_applicationModel";
         applicationPreferences = new ApplicationPreferences(getPreferences());
     }
 
@@ -112,6 +113,17 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         }
     }
 
+    @Override
+    public void newProject(File file) {
+        try {
+            project = fileManager.createOrLoadStartupProject();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -133,6 +145,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     private void createProject(CaustkProject project) throws IOException {
         log(TAG, "createProject()");
         applicationStates.onProjectCreate(project);
+        fileManager.setStartupProject(project);
         project.save();
     }
 
