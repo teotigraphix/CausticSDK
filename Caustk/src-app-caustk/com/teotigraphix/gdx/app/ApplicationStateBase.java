@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.CaustkProject;
+import com.teotigraphix.gdx.controller.IFileManager;
 
 public abstract class ApplicationStateBase extends ApplicationComponent implements
         IApplicationState, IApplicationStateHandlers {

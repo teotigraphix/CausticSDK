@@ -28,6 +28,7 @@ import com.badlogic.gdx.Gdx;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CaustkProject;
+import com.teotigraphix.gdx.controller.IFileManager;
 import com.teotigraphix.gdx.controller.IPreferenceManager;
 
 @Singleton

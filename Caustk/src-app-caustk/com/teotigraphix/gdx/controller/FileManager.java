@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.app;
+package com.teotigraphix.gdx.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +26,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.gdx.app.ApplicationComponent;
+import com.teotigraphix.gdx.app.IApplicationModel;
+import com.teotigraphix.gdx.app.IProjectFactory;
 
 @Singleton
 public class FileManager extends ApplicationComponent implements IFileManager {
@@ -163,13 +166,29 @@ public class FileManager extends ApplicationComponent implements IFileManager {
         return project;
     }
 
+    @Override
+    public String getNextProjectName() {
+        String appName = getApplication().getApplicationName();
+        String name = "Untitled " + appName + " Project";
+
+        if (!new File(projectsDirectory, name).exists())
+            return name;
+
+        File projectsDirectory = getProjectsDirectory();
+        File testDirectory = null;
+
+        for (int i = 1; i < 100; i++) {
+            testDirectory = new File(projectsDirectory, name + " " + i);
+            if (!testDirectory.exists())
+                break;
+        }
+
+        return testDirectory.getName();
+    }
+
     //--------------------------------------------------------------------------
     // Private :: Methods
     //--------------------------------------------------------------------------
-
-    private String getNextProjectName() {
-        return "Untitled";
-    }
 
     private File toProjectFile(File projectDirectory, String projectName) {
         return new File(projectDirectory, projectName + ".prj");

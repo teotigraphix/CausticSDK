@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.app;
+package com.teotigraphix.gdx.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +29,10 @@ public interface IFileManager {
     void setupApplicationDirectory();
 
     void setStartupProject(CaustkProject project);
+
+    File getProjectsDirectory();
+
+    String getNextProjectName();
 
     CaustkProject createOrLoadStartupProject() throws IOException;
 
@@ -56,7 +60,5 @@ public interface IFileManager {
      * @throws IOException
      */
     CaustkProject readProject(File projectFile) throws IOException;
-
-    File getProjectsDirectory();
 
 }
