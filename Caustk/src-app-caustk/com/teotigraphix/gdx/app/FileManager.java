@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 @Singleton
-public class FileManager implements IFileManager {
+public class FileManager extends ApplicationComponent implements IFileManager {
 
     public static final String LAST_PROJECT_PATH = "last-project-path";
 
@@ -62,6 +62,7 @@ public class FileManager implements IFileManager {
         return applicationDirectory;
     }
 
+    @Override
     public final File getProjectsDirectory() {
         return projectsDirectory;
     }
@@ -125,20 +126,33 @@ public class FileManager implements IFileManager {
         File projectFile = getStartupProjectFile();
 
         if (!projectFile.exists()) {
-            System.err.println("Could not load project file " + projectFile.getAbsolutePath());
-
+            err(TAG, "Could not load project file " + projectFile.getAbsolutePath());
             // create new Untitled Project
-            String projectName = getNextProjectName();
-            File projectBaseDirectory = toProjectDirectory(projectName);
-            projectFile = toProjectFile(projectBaseDirectory, projectName);
-            System.err.println("  Creating new project " + projectFile.getAbsolutePath());
-
-            project = projectFactory.createDefaultProject(projectName, projectFile);
+            project = createProject(new File(getNextProjectName()));
 
         } else {
             // load existing
             project = projectFactory.readProject(projectFile);
         }
+
+        return project;
+    }
+
+    @Override
+    public CaustkProject loadProject(File projectFile) throws IOException {
+        CaustkProject project = projectFactory.readProject(projectFile);
+        return project;
+    }
+
+    @Override
+    public CaustkProject createProject(File projectLocation) throws IOException {
+        CaustkProject project = null;
+        String projectName = projectLocation.getName();
+        File projectBaseDirectory = toProjectDirectory(projectName);
+        File projectFile = toProjectFile(projectBaseDirectory, projectName);
+        log(TAG, "  Creating new project " + projectFile.getAbsolutePath());
+
+        project = projectFactory.createDefaultProject(projectName, projectFile);
 
         return project;
     }

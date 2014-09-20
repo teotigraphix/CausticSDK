@@ -42,8 +42,6 @@ public interface IApplicationStateHandlers {
      */
     void startUI();
 
-    void restartUI();
-
     void onProjectCreate(CaustkProject project);
 
     void onProjectLoad(CaustkProject project);

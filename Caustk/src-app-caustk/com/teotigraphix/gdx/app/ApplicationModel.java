@@ -114,14 +114,15 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     }
 
     @Override
-    public void newProject(File file) {
-        try {
-            project = fileManager.createOrLoadStartupProject();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void newProject(File file) throws IOException {
+        CaustkProject project = fileManager.createProject(file);
+        setProject(project);
+    }
 
+    @Override
+    public void loadProject(File file) throws IOException {
+        CaustkProject project = fileManager.loadProject(file);
+        setProject(project);
     }
 
     //--------------------------------------------------------------------------

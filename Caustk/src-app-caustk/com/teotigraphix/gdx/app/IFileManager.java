@@ -32,6 +32,23 @@ public interface IFileManager {
 
     CaustkProject createOrLoadStartupProject() throws IOException;
 
+    /**
+     * Creates a new Project.
+     * 
+     * @param projectLocation The directory location where the getName() is used
+     *            to create the base project directory.
+     * @throws IOException
+     */
+    CaustkProject createProject(File projectLocation) throws IOException;
+
+    /**
+     * Loads an existing Project.
+     * 
+     * @param projectFile The .prj file held within the same named directory.
+     * @throws IOException
+     */
+    CaustkProject loadProject(File projectFile) throws IOException;
+
     File getProjectsDirectory();
 
 }

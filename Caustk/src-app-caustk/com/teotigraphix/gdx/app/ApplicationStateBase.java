@@ -81,19 +81,6 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
         onStartUI();
     }
 
-    @Override
-    public void restartUI() {
-        log(TAG, "restartUI()");
-
-        try {
-            applicationModel.setProject(applicationModel.getProject());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        onRestartUI();
-    }
-
     protected abstract void onStartUI();
 
     protected abstract void onRestartUI();

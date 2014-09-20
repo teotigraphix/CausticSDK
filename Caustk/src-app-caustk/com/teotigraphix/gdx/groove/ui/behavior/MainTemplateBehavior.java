@@ -116,6 +116,8 @@ public class MainTemplateBehavior extends CaustkBehavior {
                 viewStack.setSelectedIndex(viewIndex);
                 topBar.getButtonBar().setSelectedIndex(viewIndex);
                 break;
+            case PrefsViewIndexChange:
+                break;
         }
     }
 }
