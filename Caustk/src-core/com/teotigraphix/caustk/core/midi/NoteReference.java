@@ -19,7 +19,7 @@ public enum NoteReference {
     /**
      * Base Number 1, Note Name "C#"
      */
-    Csharp(1, "C#"),
+    //Csharp(1, "C#"),
 
     /**
      * Base Number 1, Note Name "Db"
@@ -34,7 +34,7 @@ public enum NoteReference {
     /**
      * Base Number 3, Note Name "D#"
      */
-    Dsharp(3, "D#"),
+    //Dsharp(3, "D#"),
 
     /**
      * Base Number 3, Note Name "Eb"
@@ -54,7 +54,7 @@ public enum NoteReference {
     /**
      * Base Number 6, Note Name "F#"
      */
-    Fsharp(6, "F#"),
+    //Fsharp(6, "F#"),
 
     /**
      * Base Number 6, Note Name "Gb"
@@ -69,7 +69,7 @@ public enum NoteReference {
     /**
      * Base Number 8, Note Name "G#"
      */
-    Gsharp(8, "G#"),
+    //Gsharp(8, "G#"),
 
     /**
      * Base Number 8, Note Name "Ab"
@@ -84,7 +84,7 @@ public enum NoteReference {
     /**
      * Base Number 10, Note Name "A#"
      */
-    Asharp(10, "A#"),
+    //Asharp(10, "A#"),
 
     /**
      * Base Number 10, Note Name "Bb"

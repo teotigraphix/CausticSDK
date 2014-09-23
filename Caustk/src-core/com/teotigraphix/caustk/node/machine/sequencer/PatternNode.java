@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.midi.MidiScale;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
@@ -62,6 +63,12 @@ public class PatternNode extends MachineComponent {
 
     @Tag(104)
     private List<NoteNode> notes = new ArrayList<NoteNode>();
+
+    @Tag(105)
+    private MidiScale scale;
+
+    @Tag(106)
+    private int position = 0;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -284,6 +291,26 @@ public class PatternNode extends MachineComponent {
                 shuffleAmount));
     }
 
+    //----------------------------------
+    // scale
+    //----------------------------------
+
+    public MidiScale getScale() {
+        return scale;
+    }
+
+    //----------------------------------
+    // position
+    //----------------------------------
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -340,6 +367,19 @@ public class PatternNode extends MachineComponent {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
+
+    public void toggleStep(int step, float gate, int note, int velocity, Resolution resolution) {
+        float startBeat = Resolution.toBeat(step, resolution);
+        int pitch = note;
+        float endBeat = startBeat + gate;
+        int flags = 0;
+
+        if (!containsNote(startBeat, pitch)) {
+            createNote(startBeat, pitch, endBeat, velocity, flags);
+        } else {
+            destroyNote(startBeat, pitch);
+        }
+    }
 
     public boolean containsNote(float beat, int pitch) {
         return getNote(beat, pitch) != null;
@@ -817,4 +857,5 @@ public class PatternNode extends MachineComponent {
             this.note = note;
         }
     }
+
 }

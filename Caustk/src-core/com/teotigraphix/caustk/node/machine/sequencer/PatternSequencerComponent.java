@@ -45,10 +45,10 @@ public class PatternSequencerComponent extends MachineComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private Integer currentBankIndex;
+    private Integer selectedBankIndex;
 
     @Tag(101)
-    private Integer currentPatternIndex;
+    private Integer selectedPatternIndex;
 
     @Tag(102)
     private HashMap<String, PatternNode> patterns = new HashMap<String, PatternNode>();
@@ -62,19 +62,19 @@ public class PatternSequencerComponent extends MachineComponent {
     //----------------------------------
 
     /**
-     * Returns the current {@link PatternNode} based on the local bank and
+     * Returns the selected {@link PatternNode} based on the local bank and
      * pattern index.
      */
-    public PatternNode getCurrentPattern() {
-        return getPattern(currentBankIndex, currentPatternIndex);
+    public PatternNode getSelectedPattern() {
+        return getPattern(selectedBankIndex, selectedPatternIndex);
     }
 
-    PatternNode queryCurrentPattern() {
-        return getPattern(queryCurrentBankIndex(), queryCurrentPatternIndex());
+    PatternNode querySelectedPattern() {
+        return getPattern(querySelectedBankIndex(), querySelectedPatternIndex());
     }
 
     /**
-     * Sets the current {@link PatternNode}, internally sets
+     * Sets the selected {@link PatternNode}, internally sets
      * {@link #setBankPatternIndex(int, int)}.
      * 
      * @param patternNode The current {@link PatternNode}.
@@ -92,34 +92,35 @@ public class PatternSequencerComponent extends MachineComponent {
      * @see PatternSequencerNodePatternEvent
      */
     public void setBankPatternIndex(int bankIndex, int patternIndex) {
-        currentBankIndex = bankIndex;
-        currentPatternIndex = patternIndex;
-        PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(), currentBankIndex);
-        PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), currentPatternIndex);
-        post(new PatternSequencerNodeBankEvent(this, PatternSequencerControl.Bank, currentBankIndex));
+        selectedBankIndex = bankIndex;
+        selectedPatternIndex = patternIndex;
+        PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(), selectedBankIndex);
+        PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), selectedPatternIndex);
+        post(new PatternSequencerNodeBankEvent(this, PatternSequencerControl.Bank,
+                selectedBankIndex));
         post(new PatternSequencerNodePatternEvent(this, PatternSequencerControl.Pattern,
-                currentPatternIndex));
+                selectedPatternIndex));
     }
 
     /**
      * Returns the local bank index.
      */
-    public Integer getCurrentBankIndex() {
-        return currentBankIndex;
+    public Integer getSelectedBankIndex() {
+        return selectedBankIndex;
     }
 
     /**
      * Returns the local pattern index.
      */
-    public Integer getCurrentPatternIndex() {
-        return currentPatternIndex;
+    public Integer getSelectedPatternIndex() {
+        return selectedPatternIndex;
     }
 
-    int queryCurrentBankIndex() {
+    int querySelectedBankIndex() {
         return (int)PatternSequencerMessage.BANK.query(getRack(), getMachineIndex());
     }
 
-    int queryCurrentPatternIndex() {
+    int querySelectedPatternIndex() {
         return (int)PatternSequencerMessage.PATTERN.query(getRack(), getMachineIndex());
     }
 
@@ -215,8 +216,8 @@ public class PatternSequencerComponent extends MachineComponent {
         super(machineNode);
         // init these here since the sequencer is being created explicitly
         // not through a restore, here we KNOW that bank and patter are 0 in native
-        currentBankIndex = 0;
-        currentPatternIndex = 0;
+        selectedBankIndex = 0;
+        selectedPatternIndex = 0;
     }
 
     //--------------------------------------------------------------------------
@@ -282,13 +283,13 @@ public class PatternSequencerComponent extends MachineComponent {
 
     @Override
     protected void updateComponents() {
-        int oBank = currentBankIndex;
-        int oPattern = currentPatternIndex;
+        int oBank = selectedBankIndex;
+        int oPattern = selectedPatternIndex;
         // pushing patterns back into native machine pattern_sequencer
         for (PatternNode patternNode : patterns.values()) {
             // XXX TEMP until Rej gets this fixed
-            int oldBank = getCurrentBankIndex();
-            int oldPattern = getCurrentPatternIndex();
+            int oldBank = getSelectedBankIndex();
+            int oldPattern = getSelectedPatternIndex();
             setCurrentPattern(patternNode);
             patternNode.update();
             setBankPatternIndex(oldBank, oldPattern);

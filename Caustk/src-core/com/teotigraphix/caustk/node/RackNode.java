@@ -30,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
@@ -64,6 +65,9 @@ public class RackNode extends NodeBase {
 
     @Tag(53)
     private SequencerNode sequencer;
+
+    @Tag(54)
+    private int selectedIndex = -1;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -172,6 +176,49 @@ public class RackNode extends NodeBase {
         return sequencer;
     }
 
+    //----------------------------------
+    // sequencer
+    //----------------------------------
+
+    /**
+     * Returns the selected {@link MachineNode}.
+     */
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    /**
+     * Sets the selected {@link MachineNode}.
+     * 
+     * @param selectedIndex The new selected machine index.
+     */
+    public void setSelectedIndex(int selectedIndex) {
+        if (this.selectedIndex == selectedIndex)
+            return;
+
+        this.selectedIndex = selectedIndex;
+    }
+
+    /**
+     * Sets the selected {@link MachineNode}.
+     * 
+     * @param machineNode The new selected {@link MachineNode}
+     * @throws CausticError
+     */
+    public void setSelectedIndex(MachineNode machineNode) {
+        if (!containsMachine(machineNode.getIndex()))
+            throw new CausticError("Machine does not exist; " + machineNode);
+        setSelectedIndex(machineNode.getIndex());
+    }
+
+    /**
+     * Returns the selected {@link MachineNode}, if no selection, returns
+     * <code>null</code>.
+     */
+    public MachineNode getSelectedMachine() {
+        return getMachine(selectedIndex);
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -212,6 +259,9 @@ public class RackNode extends NodeBase {
 
     /**
      * Creates and adds a machine to this node graph an native rack.
+     * <p>
+     * Any time a machine is added to the rack, the {@link #getSelectedIndex()}
+     * will change to the machine's index.
      * 
      * @param index The machine index.
      * @param type The machine type.
@@ -229,6 +279,7 @@ public class RackNode extends NodeBase {
             throw new CausticException("machine exists in rack for index: " + index);
         MachineNode machineNode = addMachine(index, type, name);
         createMachine(machineNode);
+        setSelectedIndex(machineNode);
         post(new RackNodeCreateEvent(this, RackControl.Create, machineNode));
         return (T)machineNode;
     }
@@ -260,6 +311,9 @@ public class RackNode extends NodeBase {
     public <T extends MachineNode> T destroyMachine(int index) {
         MachineNode machineNode = removeMachine(index);
         machineNode.destroy();
+        if (selectedIndex == index) {
+            setSelectedIndex(-1); // XXX RackNode destroy machine rework selectedIndex
+        }
         post(new RackNodDestroyEvent(this, RackControl.Remove, machineNode));
         return (T)machineNode;
     }
