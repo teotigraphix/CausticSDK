@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.groove.ui.components.FileExplorer;
@@ -62,6 +63,7 @@ public class UIFactory {
         initializeListStyle(skin);
         initializePaneStack(skin);
         initializeViewStack(skin);
+        initializeWindow(skin);
     }
 
     protected void initializeFonts(Skin skin) {
@@ -152,6 +154,12 @@ public class UIFactory {
         ViewStackStyle style = new ViewStackStyle(
                 skin.getDrawable(StylesDefault.ViewStack_background));
         skin.add(StylesDefault.ViewStack, style);
+    }
+
+    protected void initializeWindow(Skin skin) {
+        WindowStyle windowStyle = new WindowStyle(skin.getFont(StylesDefault.Font), Color.WHITE,
+                skin.getDrawable(StylesDefault.Window_background));
+        skin.add(StylesDefault.Window, windowStyle);
     }
 
     //----------------------------------

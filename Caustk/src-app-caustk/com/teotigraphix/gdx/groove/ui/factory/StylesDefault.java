@@ -122,6 +122,8 @@ public class StylesDefault {
      */
     public static final String Window = "default";
 
+    public static final String Window_background = "defaults/Window_background";
+
     public static final String Window_stageBackground = "defaults/Window_stageBackground";
 
 }
