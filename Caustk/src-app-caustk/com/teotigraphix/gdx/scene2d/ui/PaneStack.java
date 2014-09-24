@@ -117,12 +117,25 @@ public class PaneStack extends UITable {
         pad(style.padding);
 
         //debug();
+        stack = new Stack();
 
         barContainer = new Table();
         barContainer.left();
         barContainer.setBackground(style.tabBarBackground);
 
-        Array<ButtonBarItem> items = new Array<ButtonBar.ButtonBarItem>();
+        //------------------------------
+        // Create content
+        Array<ButtonBarItem> items = new Array<ButtonBarItem>();
+        for (UITable pane : panes) {
+            stack.addActor(pane);
+            PaneInfo info = (PaneInfo)pane.getUserObject();
+            items.add(new ButtonBarItem(info.getId(), info.getName(), info.getIcon(), info
+                    .getHelpText()));
+            String paneStyleName = "";
+            pane.create(paneStyleName);
+        }
+
+        panes.clear();
 
         buttonBar = new ButtonBar(getSkin(), items, false, style.tabStyle);
         buttonBar.setMaxButtonSize(maxButtonSize);
@@ -140,8 +153,6 @@ public class PaneStack extends UITable {
         contentContainer.setBackground(style.background);
         // XXX contentContainer.pad(5f);
 
-        stack = new Stack();
-
         if (buttonBarAlign == Align.top) {
             add(barContainer).fillX();
             row();
@@ -154,22 +165,7 @@ public class PaneStack extends UITable {
             add(barContainer).fillX();
         }
 
-        //------------------------------
-        // Create content
-        Array<ButtonBarItem> labels = new Array<ButtonBarItem>();
-        for (UITable pane : panes) {
-            stack.addActor(pane);
-            PaneInfo info = (PaneInfo)pane.getUserObject();
-            labels.add(new ButtonBarItem(info.getId(), info.getName(), info.getIcon(), info
-                    .getHelpText()));
-            String paneStyleName = "";
-            pane.create(paneStyleName);
-        }
-
-        panes.clear();
-
-        buttonBar.setItems(labels);
-        buttonBar.validate();
+        buttonBar.create("default");
     }
 
     protected void updateSelectedIndex() {

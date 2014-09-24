@@ -2,15 +2,15 @@
 package com.teotigraphix.gdx.groove.ui.factory;
 
 import com.google.inject.Inject;
-import com.teotigraphix.gdx.groove.ui.model.UIModel;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public class UIFactoryChild {
 
     @Inject
-    private UIModel uiModel;
+    private IUIModel uiModel;
 
     @SuppressWarnings("unchecked")
-    protected <T extends UIModel> T getModel() {
+    protected <T extends IUIModel> T getModel() {
         return (T)uiModel;
     }
 

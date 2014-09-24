@@ -36,17 +36,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.teotigraphix.gdx.controller.IHelpManager;
-import com.teotigraphix.gdx.scene2d.ControlTable;
+import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener.ButtonBarChangeEvent;
 
-public class ButtonBar extends ControlTable {
+public class ButtonBar extends UITable {
 
     private int selectedIndex;
-
-    @Override
-    public String getHelpText() {
-        return "Foo";
-    }
 
     public static class ButtonBarItem {
 
@@ -123,16 +118,8 @@ public class ButtonBar extends ControlTable {
 
     private Array<ButtonBarItem> items;
 
-    private boolean itemsChanged;
-
     public Array<ButtonBarItem> getItems() {
         return items;
-    }
-
-    public void setItems(Array<ButtonBarItem> value) {
-        items = value;
-        itemsChanged = true;
-        invalidateHierarchy();
     }
 
     //----------------------------------
@@ -162,19 +149,29 @@ public class ButtonBar extends ControlTable {
     public ButtonBar(Skin skin, Array<ButtonBarItem> items, boolean isVertical,
             TextButtonStyle buttonStyle) {
         super(skin);
-        setItems(items);
+        this.items = items;
         this.isVertical = isVertical;
         this.buttonStyle = buttonStyle;
     }
 
-    @Override
-    public void setSkin(Skin skin) {
-        super.setSkin(skin);
+    protected void configureButton(TextButton button) {
+    }
 
-        if (itemsChanged) {
-            refreshButtons();
-            itemsChanged = false;
+    @Override
+    public void layout() {
+        super.layout();
+
+        if (selectedIndex != -1) {
+            TextButton button = (TextButton)group.getButtons().get(selectedIndex);
+            button.setChecked(true);
+        } else {
+            group.uncheckAll();
         }
+    }
+
+    @Override
+    protected void createChildren() {
+        refreshButtons();
     }
 
     @SuppressWarnings("rawtypes")
@@ -193,40 +190,20 @@ public class ButtonBar extends ControlTable {
             button.padLeft(padding).padRight(padding);
             configureButton(button);
             if (isVertical) {
-                Cell cell = add(button).uniform().align(Align.top);
+                Cell cell = add(button);
                 if (maxButtonSize != null) {
                     cell.fillX().expandX().maxHeight(maxButtonSize).prefHeight(maxButtonSize);
                 } else {
-                    cell.fill().expand().align(Align.top);
+                    cell.fill().expand().space(gap).align(Align.top);
                 }
                 row();
             } else {
-                Cell cell = add(button).space(gap);//.uniform().fill().expand().align(Align.left).space(4f);
+                Cell cell = add(button).space(gap);
                 if (maxButtonSize != null)
                     cell.maxWidth(maxButtonSize).prefWidth(maxButtonSize).fillY().expandY();
                 else
                     cell.uniform().fill().expand();
             }
-        }
-    }
-
-    protected void configureButton(TextButton button) {
-    }
-
-    @Override
-    public void layout() {
-        super.layout();
-
-        if (itemsChanged) {
-            refreshButtons();
-            itemsChanged = false;
-        }
-
-        if (selectedIndex != -1) {
-            TextButton button = (TextButton)group.getButtons().get(selectedIndex);
-            button.setChecked(true);
-        } else {
-            group.uncheckAll();
         }
     }
 
@@ -307,28 +284,6 @@ public class ButtonBar extends ControlTable {
     //--------------------------------------------------------------------------
     // Public API Methods
     //--------------------------------------------------------------------------
-
-    //    /**
-    //     * Sets the progress bar percent and visible on the button index.
-    //     * <p>
-    //     * All other progress overlays are invisible.
-    //     * 
-    //     * @param index The button index.
-    //     * @param percent The progress percent (0-100).
-    //     */
-    //    public void setProgressAt(int index, float percent) {
-    //        Array<Button> buttons = group.getButtons();
-    //        for (int i = 0; i < buttons.size; i++) {
-    //            TextButton button = (TextButton)buttons.get(i);
-    //            if (i == index) {
-    //                button.setIsProgress(true);
-    //                button.setProgress(percent);
-    //            } else {
-    //                button.setIsProgress(false);
-    //            }
-    //        }
-    //        invalidateHierarchy();
-    //    }
 
     public void select(int index, boolean selected) {
         TextButton button = (TextButton)group.getButtons().get(index);

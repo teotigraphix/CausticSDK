@@ -12,7 +12,7 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
  * Holds state for the {@link MainTemplateBehavior} ui.
  */
 @Singleton
-public class UIModel extends ApplicationComponent {
+public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -29,6 +29,10 @@ public class UIModel extends ApplicationComponent {
         return getApplication().getApplicationId() + "/UIModel";
     }
 
+    public UIModelState getState() {
+        return state;
+    }
+
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
@@ -37,6 +41,7 @@ public class UIModel extends ApplicationComponent {
     // viewIndex
     //----------------------------------
 
+    @Override
     public int getViewIndex() {
         return state.getViewIndex();
     }
@@ -45,6 +50,7 @@ public class UIModel extends ApplicationComponent {
      * @param viewIndex
      * @see UIModelEventKind#ViewIndexChange
      */
+    @Override
     public void setViewIndex(int viewIndex) {
         if (state.getViewIndex() == viewIndex)
             return;
@@ -56,6 +62,7 @@ public class UIModel extends ApplicationComponent {
     // prefsViewIndex
     //----------------------------------
 
+    @Override
     public int getPrefsViewIndex() {
         return state.getPrefsViewIndex();
     }
@@ -64,6 +71,7 @@ public class UIModel extends ApplicationComponent {
      * @param viewIndex
      * @see UIModelEventKind#PrefsViewIndexChange
      */
+    @Override
     public void setPrefsViewIndex(int viewIndex) {
         if (state.getPrefsViewIndex() == viewIndex)
             return;
@@ -75,10 +83,12 @@ public class UIModel extends ApplicationComponent {
     // views
     //----------------------------------
 
+    @Override
     public Array<ViewStackData> getViews() {
         return views;
     }
 
+    @Override
     public void setViews(Array<ViewStackData> views) {
         this.views = views;
     }
@@ -87,6 +97,7 @@ public class UIModel extends ApplicationComponent {
     // buttons
     //----------------------------------
 
+    @Override
     public Array<ButtonBarItem> getButtons() {
         if (buttons != null)
             return buttons;
@@ -99,6 +110,7 @@ public class UIModel extends ApplicationComponent {
         return buttons;
     }
 
+    @Override
     public void setButtons(Array<ButtonBarItem> buttons) {
         this.buttons = buttons;
     }
@@ -110,6 +122,7 @@ public class UIModel extends ApplicationComponent {
     public UIModel() {
     }
 
+    @Override
     public void restore(UIModelState state) {
         this.state = state;
 

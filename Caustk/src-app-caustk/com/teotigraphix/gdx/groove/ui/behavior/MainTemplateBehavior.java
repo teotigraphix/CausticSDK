@@ -15,6 +15,7 @@ import com.teotigraphix.gdx.groove.ui.components.TopBarListener;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackListener;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 import com.teotigraphix.gdx.groove.ui.model.UIModel;
 import com.teotigraphix.gdx.groove.ui.model.UIModel.UIModelEvent;
 
@@ -32,7 +33,7 @@ public class MainTemplateBehavior extends CaustkBehavior {
     private UIFactory uiFactory;
 
     @Inject
-    private UIModel uiModel;
+    private IUIModel uiModel;
 
     @Inject
     private IContainerMap containerMap;

@@ -11,7 +11,7 @@ import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.IContainerMap.MainTemplateLayout;
 import com.teotigraphix.gdx.groove.ui.behavior.MainTemplateBehavior;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
-import com.teotigraphix.gdx.groove.ui.model.UIModel;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public class GrooveScene extends CaustkScene {
 
@@ -23,7 +23,7 @@ public class GrooveScene extends CaustkScene {
     private UIFactory uiFactory;
 
     @Inject
-    private UIModel uiModel;
+    private IUIModel uiModel;
 
     @Inject
     private IContainerMap containerMap;
