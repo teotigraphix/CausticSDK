@@ -13,7 +13,7 @@ public class ViewStack extends UITable {
 
     private Stack stack;
 
-    private ViewStackData data;
+    // private ViewStackData data;
 
     private int selectedIndex = 0;
 
@@ -25,13 +25,13 @@ public class ViewStack extends UITable {
     // data
     //----------------------------------
 
-    public ViewStackData getData() {
-        return data;
-    }
-
-    public void setData(ViewStackData data) {
-        this.data = data;
-    }
+    //    public ViewStackData getData() {
+    //        return data;
+    //    }
+    //
+    //    public void setData(ViewStackData data) {
+    //        this.data = data;
+    //    }
 
     //----------------------------------
     // selectedIndex
