@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
@@ -39,14 +40,19 @@ public class PCMSynthMachine extends MachineNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private VolumeEnvelopeComponent volumeEnvelope;
 
+    @Tag(101)
     private SynthFilterComponent filter;
 
+    @Tag(102)
     private LFO1Component lfo1;
 
+    @Tag(103)
     private PCMSamplerComponent sampler;
 
+    @Tag(104)
     private PCMTunerComponent tuner;
 
     //--------------------------------------------------------------------------

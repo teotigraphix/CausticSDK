@@ -21,6 +21,8 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionProgram;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
+import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMAlgorithm;
+import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMOperatorControl;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.node.NodeMetaData;
@@ -43,6 +45,9 @@ import com.teotigraphix.caustk.node.effect.PhaserEffect;
 import com.teotigraphix.caustk.node.effect.ReverbEffect;
 import com.teotigraphix.caustk.node.effect.StaticFlangerEffect;
 import com.teotigraphix.caustk.node.effect.VinylSimulatorEffect;
+import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
+import com.teotigraphix.caustk.node.machine.FMSynthMachine;
+import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
@@ -50,6 +55,14 @@ import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
 import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
+import com.teotigraphix.caustk.node.machine.patch.beatbox.WavSamplerChannel;
+import com.teotigraphix.caustk.node.machine.patch.beatbox.WavSamplerComponent;
+import com.teotigraphix.caustk.node.machine.patch.fmsynth.FMControlsComponent;
+import com.teotigraphix.caustk.node.machine.patch.fmsynth.FMOperatorComponent;
+import com.teotigraphix.caustk.node.machine.patch.fmsynth.LFOComponent;
+import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerChannel;
+import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerComponent;
+import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMTunerComponent;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO1Component;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO2Component;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc1Component;
@@ -93,6 +106,7 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.setRegistrationRequired(true);
 
         kryo.register(byte[].class);
+        kryo.register(boolean[].class);
         kryo.register(UUID.class, new UUIDSerializer());
         kryo.register(ArrayList.class);
         kryo.register(TreeMap.class);
@@ -180,6 +194,33 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(SubSynthMessage.Osc1Waveform.class);
         kryo.register(SubSynthMessage.Osc2Waveform.class);
         kryo.register(SubSynthMessage.CentsMode.class);
+
+        // FMSynthMachine
+        kryo.register(FMSynthMachine.class);
+
+        kryo.register(FMAlgorithm.class);
+        kryo.register(FMOperatorControl.class);
+
+        kryo.register(FMControlsComponent.class);
+        kryo.register(LFOComponent.class);
+        kryo.register(FMOperatorComponent.class);
+
+        // PCMSynthMachine
+        kryo.register(PCMSynthMachine.class);
+
+        kryo.register(PCMSamplerChannel.class);
+
+        kryo.register(VolumeEnvelopeComponent.class);
+        kryo.register(SynthFilterComponent.class);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.pcmsynth.LFO1Component.class);
+        kryo.register(PCMSamplerComponent.class);
+        kryo.register(PCMTunerComponent.class);
+
+        // PCMSynthMachine
+        kryo.register(BeatBoxMachine.class);
+
+        kryo.register(WavSamplerComponent.class);
+        kryo.register(WavSamplerChannel.class);
     }
 
     @Override

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.pcmsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -36,10 +37,13 @@ public class PCMTunerComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int cents = 0;
 
+    @Tag(101)
     private int octave = 0;
 
+    @Tag(102)
     private int semis = 0;
 
     //--------------------------------------------------------------------------

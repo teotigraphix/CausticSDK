@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.beatbox;
 import java.io.File;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -42,6 +43,7 @@ public class WavSamplerComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private TreeMap<Integer, WavSamplerChannel> channels = new TreeMap<Integer, WavSamplerChannel>();
 
     //--------------------------------------------------------------------------

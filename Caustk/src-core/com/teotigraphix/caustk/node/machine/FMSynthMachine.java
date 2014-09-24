@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.fmsynth.FMControlsComponent;
@@ -37,10 +38,13 @@ public class FMSynthMachine extends MachineNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private FMControlsComponent controls;
 
+    @Tag(101)
     private LFOComponent lfo;
 
+    @Tag(102)
     private FMOperatorComponent operators;
 
     //--------------------------------------------------------------------------

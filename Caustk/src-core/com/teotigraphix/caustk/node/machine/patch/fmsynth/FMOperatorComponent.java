@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMOperatorControl;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -42,7 +43,7 @@ public class FMOperatorComponent extends MachineComponent {
     //--------------------------------------------------------------------------
 
     // TODO the FMOperatorControl API really needs to be added to FMOperatorComponent
-
+    @Tag(100)
     private ArrayList<HashMap<FMOperatorControl, Float>> operators = new ArrayList<HashMap<FMOperatorControl, Float>>();
 
     // /caustic/[machine_index]/operator [op_index] [command] [value]

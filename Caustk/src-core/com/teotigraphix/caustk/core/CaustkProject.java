@@ -193,4 +193,12 @@ public abstract class CaustkProject {
         FileUtils.deleteQuietly(tempFile);
     }
 
+    public abstract void onCreate();
+
+    public abstract void onLoad();
+
+    public abstract void onSave();
+
+    public abstract void onClose();
+
 }

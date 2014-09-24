@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.pcmsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -37,26 +38,37 @@ public class PCMSamplerChannel extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int channelIndex;
 
+    @Tag(101)
     private String name;
 
+    @Tag(102)
     private float level = 1.0f;
 
+    @Tag(103)
     private float pan = 0.5f;
 
+    @Tag(104)
     private int tune;
 
+    @Tag(105)
     private int rootKey;
 
+    @Tag(106)
     private int lowKey;
 
+    @Tag(107)
     private int highKey;
 
+    @Tag(108)
     private PlayMode mode;
 
+    @Tag(109)
     private int start;
 
+    @Tag(110)
     private int end;
 
     //--------------------------------------------------------------------------

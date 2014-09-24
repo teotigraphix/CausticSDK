@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.fmsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMAlgorithm;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -36,12 +37,16 @@ public class FMControlsComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private FMAlgorithm algorithm = FMAlgorithm.ThreeTwoOne;
 
+    @Tag(101)
     private float feedback = 0f;
 
+    @Tag(102)
     private boolean feedbackVelocity = false;
 
+    @Tag(103)
     private boolean volumeVelocity = false;
 
     //--------------------------------------------------------------------------
