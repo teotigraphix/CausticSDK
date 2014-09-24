@@ -44,8 +44,17 @@ public interface IApplicationModel extends IApplicationComponent {
 
     void saveProjectAs(String projectName) throws IOException;
 
+    void exportProject(File file, ApplicationExportType exportType) throws IOException;;
+
     void save();
 
     void dispose();
+
+    public static enum ApplicationExportType {
+
+        Caustic,
+
+        Project;
+    }
 
 }

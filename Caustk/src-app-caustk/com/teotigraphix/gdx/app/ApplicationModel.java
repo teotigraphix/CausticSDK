@@ -163,6 +163,17 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         loadProject(newProject.getFile());
     }
 
+    @Override
+    public void exportProject(File file, ApplicationExportType exportType) throws IOException {
+        File srcDir = project.getDirectory();
+        File exportedFile = new File(srcDir, "exported/");
+        exportedFile.mkdirs();
+        // NO .caustic ext
+        // XXX Can't have spaces, must replace all spaces with '-'
+        exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-"));
+        project.getRack().getRackNode().saveSongAs(exportedFile);
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
