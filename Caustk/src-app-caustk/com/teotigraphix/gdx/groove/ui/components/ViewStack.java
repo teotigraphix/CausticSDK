@@ -59,16 +59,13 @@ public class ViewStack extends UITable {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ViewStack(Skin skin, String styleName) {
+    public ViewStack(Skin skin) {
         super(skin);
         setSkin(skin);
         setStyleClass(ViewStackStyle.class);
-        setStyleName(styleName);
+
         // needs access
         stack = new Stack();
-
-        ViewStackStyle style = getStyle();
-        setBackground(style.background);
     }
 
     //--------------------------------------------------------------------------
@@ -101,6 +98,9 @@ public class ViewStack extends UITable {
 
     @Override
     protected void createChildren() {
+        ViewStackStyle style = getStyle();
+        setBackground(style.background);
+
         add(stack).expand().fill();
     }
 
@@ -111,7 +111,5 @@ public class ViewStack extends UITable {
         public ViewStackStyle(Drawable background) {
             this.background = background;
         }
-
     }
-
 }

@@ -9,12 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.groove.ui.components.FileExplorer;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
+import com.teotigraphix.gdx.groove.ui.components.ViewStack.ViewStackStyle;
 import com.teotigraphix.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
+import com.teotigraphix.gdx.scene2d.ui.PaneStack.PaneStackStyle;
 
 /*
  * - All required styles must be in the StyleClass constructor
@@ -50,20 +53,54 @@ public class UIFactory {
     //--------------------------------------------------------------------------
 
     public void createDefaults(Skin skin) {
-        createFonts(skin);
-        // XXX Turn this into an interface IStyleNames, then subclass for UIFactoryImpl style names
+        initializeFonts(skin);
+
+        initializeLabelStyle(skin);
+        initializeTextButton(skin);
+
         initializeScrollPaneStyle(skin);
         initializeListStyle(skin);
+        initializePaneStack(skin);
+        initializeViewStack(skin);
+    }
+
+    protected void initializeFonts(Skin skin) {
+        String name = "Ahaorni-14"; // Digital-18
+        createFont(skin, StylesDefault.Font, name, "font/" + name + ".fnt");
+
+        // TopBar XXX Should this be here?
+        createFont(skin, TopBarFactory.Font_TextButton, name, "font/" + name + ".fnt");
+    }
+
+    protected BitmapFont createFont(Skin skin, String id, String name, String location) {
+        BitmapFont font = new BitmapFont(Gdx.files.internal(location), skin.getRegion("fonts/"
+                + name), false);
+        skin.add(id, font);
+        return font;
+    }
+
+    protected void initializeLabelStyle(Skin skin) {
+        LabelStyle labelStyle = new LabelStyle(skin.getFont(StylesDefault.Font), Color.WHITE);
+        skin.add(StylesDefault.Label, labelStyle);
+    }
+
+    protected void initializeTextButton(Skin skin) {
+        TextButtonStyle style = new TextButtonStyle(skin.getDrawable(StylesDefault.TextButton_up),
+                skin.getDrawable(StylesDefault.TextButton_down),
+                skin.getDrawable(StylesDefault.TextButton_checked),
+                skin.getFont(StylesDefault.Font));
+        style.disabled = skin.getDrawable(StylesDefault.TextButton_disabled);
+        skin.add(StylesDefault.TextButton, style);
     }
 
     protected void initializeScrollPaneStyle(Skin skin) {
         ScrollPaneStyle style = new ScrollPaneStyle();
-        style.background = skin.getDrawable("defaults/ScrollPane_background");
-        style.vScrollKnob = skin.getDrawable("defaults/ScrollPane_vScrollKnob");
-        style.vScroll = skin.getDrawable("defaults/ScrollPane_vScroll");
-        style.hScrollKnob = skin.getDrawable("defaults/ScrollPane_hScrollKnob");
-        style.hScroll = skin.getDrawable("defaults/ScrollPane_hScroll");
-        skin.add("default", style);
+        style.background = skin.getDrawable(StylesDefault.ScrollPane_background);
+        style.vScrollKnob = skin.getDrawable(StylesDefault.ScrollPane_vScrollKnob);
+        style.vScroll = skin.getDrawable(StylesDefault.ScrollPane_vScroll);
+        style.hScrollKnob = skin.getDrawable(StylesDefault.ScrollPane_hScrollKnob);
+        style.hScroll = skin.getDrawable(StylesDefault.ScrollPane_hScroll);
+        skin.add(StylesDefault.ScrollPane, style);
     }
 
     protected void initializeListStyle(Skin skin) {
@@ -72,41 +109,49 @@ public class UIFactory {
         //------------------------------
 
         ListStyle listStyle = new ListStyle();
-        listStyle.background = skin.getDrawable("defaults/List_background");
-        listStyle.selection = skin.getDrawable("defaults/List_selection");
-        listStyle.font = skin.getFont("default-font");
+        listStyle.background = skin.getDrawable(StylesDefault.List_background);
+        listStyle.selection = skin.getDrawable(StylesDefault.List_selection);
+        listStyle.font = skin.getFont(StylesDefault.Font);
         listStyle.fontColorSelected = Color.CYAN; // #0099FF
         listStyle.fontColorUnselected = Color.WHITE;
-        skin.add("default", listStyle);
+        skin.add(StylesDefault.List, listStyle);
 
         //------------------------------
         // ListRowRendererStyle
         //------------------------------
 
         ListRowRendererStyle rendererStyle = new ListRowRendererStyle();
-        rendererStyle.background = skin.getDrawable("defaults/ListRowRenderer_background");
-        rendererStyle.selection = skin.getDrawable("defaults/ListRowRenderer_selection");
-        rendererStyle.down = skin.getDrawable("defaults/ListRowRenderer_down");
-        rendererStyle.font = skin.getFont("default-font");
+        rendererStyle.background = skin.getDrawable(StylesDefault.ListRowRenderer_background);
+        rendererStyle.selection = skin.getDrawable(StylesDefault.ListRowRenderer_selection);
+        rendererStyle.down = skin.getDrawable(StylesDefault.ListRowRenderer_selection);
+        rendererStyle.font = skin.getFont(StylesDefault.Font);
         rendererStyle.fontColor = Color.WHITE;
         rendererStyle.padding = 8f;
-        skin.add("default", rendererStyle);
+        skin.add(StylesDefault.ListRowRenderer, rendererStyle);
     }
 
-    private void createFonts(Skin skin) {
-        createFont(skin, "default-font", "Eras-12-B", "font/Eras-12-B.fnt");
-        // TopBar
-        createFont(skin, TopBarFactory.Font_TextButton, "Eras-12-B", "font/Eras-12-B.fnt");
+    protected void initializePaneStack(Skin skin) {
+        TextButtonStyle tabButtonStyle = new TextButtonStyle(
+                skin.getDrawable(StylesDefault.PaneStack_TabButton_up),
+                skin.getDrawable(StylesDefault.PaneStack_TabButton_down),
+                skin.getDrawable(StylesDefault.PaneStack_TabButton_down),
+                skin.getFont(StylesDefault.Font));
+        skin.add(StylesDefault.PaneStack_TabButton, tabButtonStyle);
 
-        // create the default Label style
-        LabelStyle labelStyle = new LabelStyle(skin.getFont("default-font"), Color.WHITE);
-        skin.add("default", labelStyle);
+        PaneStackStyle paneStackStyle = new PaneStackStyle();
+        paneStackStyle.background = skin.getDrawable(StylesDefault.PaneStack_background);
+        paneStackStyle.padding = 2f;
+        paneStackStyle.tabBarGap = 1f;
+        paneStackStyle.tabBarThickness = 50;
+        paneStackStyle.tabStyle = skin
+                .get(StylesDefault.PaneStack_TabButton, TextButtonStyle.class);
+        skin.add(StylesDefault.PaneStack, paneStackStyle);
     }
 
-    private BitmapFont createFont(Skin skin, String id, String name, String location) {
-        BitmapFont font = new BitmapFont(Gdx.files.internal(location), skin.getRegion(name), false);
-        skin.add(id, font);
-        return font;
+    protected void initializeViewStack(Skin skin) {
+        ViewStackStyle style = new ViewStackStyle(
+                skin.getDrawable(StylesDefault.ViewStack_background));
+        skin.add(StylesDefault.ViewStack, style);
     }
 
     //----------------------------------
@@ -133,6 +178,7 @@ public class UIFactory {
     // FileExplorer
     //----------------------------------
 
+    // TODO Fix style or delete
     public FileExplorer createFileExplorer(Skin skin, int type) {
         FileExplorer fileExplorer = new FileExplorer("Foo", skin, "default", "default");
         return fileExplorer;
