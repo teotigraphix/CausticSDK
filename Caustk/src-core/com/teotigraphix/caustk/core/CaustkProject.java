@@ -193,12 +193,30 @@ public abstract class CaustkProject {
         FileUtils.deleteQuietly(tempFile);
     }
 
+    /**
+     * Called before {@link #onCreate()} or {@link #onLoad()}.
+     */
+    public abstract void onInitialize();
+
+    /**
+     * Called when a new project is created.
+     */
     public abstract void onCreate();
 
+    /**
+     * Called when a project has been deserialized from a binary file.
+     */
     public abstract void onLoad();
 
+    /**
+     * Called when the project is saved.
+     */
     public abstract void onSave();
 
+    /**
+     * Called when a project is closed before another project is either created
+     * or loaded.
+     */
     public abstract void onClose();
 
 }

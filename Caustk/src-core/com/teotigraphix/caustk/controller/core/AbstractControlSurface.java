@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.controller.core;
 
 import com.teotigraphix.caustk.controller.helper.AbstractGrid;
+import com.teotigraphix.caustk.controller.sequencer.SequencerView;
 
 public abstract class AbstractControlSurface {
 
@@ -10,6 +11,8 @@ public abstract class AbstractControlSurface {
     //--------------------------------------------------------------------------
 
     private AbstractGrid pads;
+
+    private SequencerView sequencerView;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -25,6 +28,13 @@ public abstract class AbstractControlSurface {
 
     public void setPads(AbstractGrid pads) {
         this.pads = pads;
+    }
+
+    /**
+     * Returns the current sequencer based of the selected machine.
+     */
+    public SequencerView geSequencerView() {
+        return sequencerView;
     }
 
     //--------------------------------------------------------------------------
