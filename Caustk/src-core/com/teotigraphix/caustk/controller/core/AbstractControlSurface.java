@@ -3,7 +3,7 @@ package com.teotigraphix.caustk.controller.core;
 
 import com.teotigraphix.caustk.controller.helper.AbstractGrid;
 
-public class AbstractControlSurface {
+public abstract class AbstractControlSurface {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -33,5 +33,7 @@ public class AbstractControlSurface {
 
     public AbstractControlSurface() {
     }
+
+    public abstract void flush();
 
 }

@@ -158,7 +158,6 @@ public class SequencerView extends AbstractSequencerView {
             }
 
             getSurface().getPads().lightEx(x, y, color);
-
         } else {
 
             getSurface().getPads().lightEx(x, y, Model.PUSH_COLOR2_BLACK);
@@ -168,8 +167,8 @@ public class SequencerView extends AbstractSequencerView {
     @Override
     public void drawGrid() {
         //System.err.println("drawGrid()");
-        for (int x = 0; x < displayColumns; x++) {
-            for (int y = 0; y < displayRows; y++) {
+        for (int y = 0; y < displayRows; y++) {
+            for (int x = 0; x < displayColumns; x++) {
                 drawGridItem(x, y);
             }
         }
