@@ -38,7 +38,7 @@ public class AbstractView {
     // surface
     //----------------------------------
 
-    public AbstractControlSurface getSurface() {
+    protected AbstractControlSurface getSurface() {
         return surface;
     }
 

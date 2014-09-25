@@ -34,7 +34,12 @@ public abstract class AbstractControlSurface {
      * Returns the current sequencer based of the selected machine.
      */
     public SequencerView geSequencerView() {
-        return sequencerView;
+        return sequencerView; // XXX Would be in views[] hardcoded for now
+    }
+
+    public void setSequencerView(SequencerView sequencerView) {
+        this.sequencerView = sequencerView;
+        sequencerView.attachTo(this);
     }
 
     //--------------------------------------------------------------------------
