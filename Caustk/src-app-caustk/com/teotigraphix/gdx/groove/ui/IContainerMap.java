@@ -28,12 +28,12 @@ public interface IContainerMap {
         /**
          * 20,40 | 760x400
          */
-        ViewPane("viewPane", 0f, 40f, 800f, 400f),
+        ViewPane("viewPane", 0f, 0f, 800f, 440f);
 
         /**
          * 0,0 | 800x40
          */
-        BottomBar("bottomBar", 0f, 0f, 800f, 40f);
+        //BottomBar("bottomBar", 0f, 0f, 800f, 40f);
 
         /**
          * Floating; 0,40 | 20x400

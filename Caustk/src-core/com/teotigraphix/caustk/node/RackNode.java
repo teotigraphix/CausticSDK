@@ -191,12 +191,16 @@ public class RackNode extends NodeBase {
      * Sets the selected {@link MachineNode}.
      * 
      * @param selectedIndex The new selected machine index.
+     * @see RackNodeSelectionEvent
      */
     public void setSelectedIndex(int selectedIndex) {
         if (this.selectedIndex == selectedIndex)
             return;
 
+        MachineNode lastMachineNode = getSelectedMachine();
         this.selectedIndex = selectedIndex;
+
+        post(new RackNodeSelectionEvent(this, getSelectedMachine(), lastMachineNode));
     }
 
     /**
@@ -507,6 +511,25 @@ public class RackNode extends NodeBase {
     public static class RackNodDestroyEvent extends RackNodeEvent {
         public RackNodDestroyEvent(NodeBase target, RackControl control, MachineNode machineNode) {
             super(target, control, machineNode);
+        }
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     * @see RackNode#setSelectedIndex(int)
+     */
+    public static class RackNodeSelectionEvent extends RackNodeEvent {
+        private MachineNode lastMachineNode;
+
+        public MachineNode getLastMachineNode() {
+            return lastMachineNode;
+        }
+
+        public RackNodeSelectionEvent(NodeBase target, MachineNode machineNode,
+                MachineNode lastMachineNode) {
+            super(target, RackControl.SelectionChange, machineNode);
+            this.lastMachineNode = lastMachineNode;
         }
     }
 }

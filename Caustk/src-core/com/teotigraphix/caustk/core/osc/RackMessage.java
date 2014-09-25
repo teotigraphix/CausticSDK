@@ -220,6 +220,8 @@ public class RackMessage extends CausticMessage {
 
         Remove,
 
-        SaveSong
+        SaveSong,
+
+        SelectionChange
     }
 }
