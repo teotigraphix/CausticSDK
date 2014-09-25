@@ -19,11 +19,22 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.node.RackNode;
+
 public abstract class CaustkBehavior extends Behavior {
 
     @Override
-    public ICaustkApplication getApplication() {
+    public final ICaustkApplication getApplication() {
         return (ICaustkApplication)super.getApplication();
+    }
+
+    protected final ICaustkRack getRack() {
+        return getApplication().getRack();
+    }
+
+    protected final RackNode getRackNode() {
+        return getApplication().getRack().getRackNode();
     }
 
     public CaustkBehavior() {
