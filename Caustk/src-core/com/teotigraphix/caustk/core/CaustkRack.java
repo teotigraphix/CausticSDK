@@ -313,18 +313,8 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public <T extends CaustkProject> T setProject(File file, Class<T> type) throws IOException {
+
         T project = getSerializer().deserialize(file, type);
-        setProject(project);
-        return project;
-    }
-
-    @Override
-    public void setProject(CaustkProject project) throws IOException {
-        this.project = project;
-
-        project.setRack(this);
-
-        setRackNode(project.getRackNode());
 
         byte[] data = project.getRackBytes();
 
@@ -336,12 +326,27 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         if (!causticFile.exists())
             throw new IOException(".caustic file failed to write in .temp");
 
+        setProjectInternal(project);
+
         project.getRackNode().loadSong(causticFile);
 
         FileUtils.deleteQuietly(causticFile);
 
         if (causticFile.exists())
             throw new IOException(".caustic file failed to delete in .temp");
+
+        return project;
+    }
+
+    private void setProjectInternal(CaustkProject project) {
+        this.project = project;
+        project.setRack(this);
+        setRackNode(project.getRackNode());
+    }
+
+    @Override
+    public void setProject(CaustkProject project) throws IOException {
+        setProjectInternal(project);
     }
 
     @Override
