@@ -29,18 +29,42 @@ public abstract class CaustkBehavior extends Behavior {
     public CaustkBehavior() {
     }
 
+    /**
+     * Only called when {@link IRackSequencerListener} is implemented.
+     * 
+     * @param measure
+     * @param beat
+     * @param sixteenth
+     * @param thirtysecond
+     */
     public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
         for (ISceneBehavior child : getChildren()) {
             ((CaustkBehavior)child).onBeatChange(measure, beat, sixteenth, thirtysecond);
         }
     }
 
+    /**
+     * Only called when {@link IRackSequencerListener} is implemented.
+     * 
+     * @param measure
+     * @param beat
+     * @param sixteenth
+     * @param thirtysecond
+     */
     public void onSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond) {
         for (ISceneBehavior child : getChildren()) {
             ((CaustkBehavior)child).onSixteenthChange(measure, beat, sixteenth, thirtysecond);
         }
     }
 
+    /**
+     * Only called when {@link IRackSequencerListener} is implemented.
+     * 
+     * @param measure
+     * @param beat
+     * @param sixteenth
+     * @param thirtysecond
+     */
     public void onThirtysecondChange(int measure, float beat, int sixteenth, int thirtysecond) {
         for (ISceneBehavior child : getChildren()) {
             ((CaustkBehavior)child).onThirtysecondChange(measure, beat, sixteenth, thirtysecond);
