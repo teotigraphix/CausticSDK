@@ -325,6 +325,18 @@ public class SequencerNode extends NodeBase {
     }
 
     /**
+     * Forces a stop() then play()
+     */
+    public void restart(SequencerMode mode) {
+        setSequencerMode(mode);
+        isPlaying = false;
+        resetPostion();
+        isPlaying = true;
+        OutputPanelMessage.PLAY.send(getRack(), 1);
+        post(new SequencerNodeTransportChangeEvent(this, isPlaying));
+    }
+
+    /**
      * Stops the current sequencer from playing.
      * 
      * @see SequencerNodeTransportChangeEvent
