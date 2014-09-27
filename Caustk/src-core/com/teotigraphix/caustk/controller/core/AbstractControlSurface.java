@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.controller.core;
 
 import com.teotigraphix.caustk.controller.helper.AbstractGrid;
 import com.teotigraphix.caustk.controller.sequencer.SequencerView;
+import com.teotigraphix.caustk.core.ICaustkRack;
 
 public abstract class AbstractControlSurface {
 
@@ -13,6 +14,12 @@ public abstract class AbstractControlSurface {
     private AbstractGrid pads;
 
     private SequencerView sequencerView;
+
+    private ICaustkRack rack;
+
+    protected ICaustkRack getRack() {
+        return rack;
+    }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -46,9 +53,17 @@ public abstract class AbstractControlSurface {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public AbstractControlSurface() {
+    public AbstractControlSurface(ICaustkRack rack) {
+        this.rack = rack;
     }
 
     public abstract void flush();
 
+    public abstract void onArrowUp(boolean isDown);
+
+    public abstract void onArrowRight(boolean isDown);
+
+    public abstract void onArrowLeft(boolean isDown);
+
+    public abstract void onArrowDown(boolean isDown);
 }
