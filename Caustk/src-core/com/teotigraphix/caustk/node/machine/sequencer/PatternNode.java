@@ -131,7 +131,7 @@ public class PatternNode extends MachineComponent {
      * 
      * @param numMeasures Number of measures (1, 2, 4, 8).
      * @see PatternSequencerMessage#NUM_MEASURES
-     * @see PatternNodNumMeasuresEvent
+     * @see PatternNodeNumMeasuresEvent
      */
     public void setNumMeasures(Integer numMeasures) {
         if (numMeasures == this.numMeasures)
@@ -141,7 +141,7 @@ public class PatternNode extends MachineComponent {
         this.numMeasures = numMeasures;
         PatternUtils.setNumMeasures(getRack(), getMachineIndex(), getBankIndex(),
                 getPatternIndex(), numMeasures);
-        post(new PatternNodNumMeasuresEvent(this, PatternSequencerControl.NumMeausures, numMeasures));
+        post(new PatternNodeNumMeasuresEvent(this, PatternSequencerControl.NumMeausures, numMeasures));
     }
 
     //----------------------------------
@@ -749,14 +749,14 @@ public class PatternNode extends MachineComponent {
      * @since 1.0
      * @see PatternNode#setNumMeasures(Integer)
      */
-    public static class PatternNodNumMeasuresEvent extends PatternNodeEvent {
+    public static class PatternNodeNumMeasuresEvent extends PatternNodeEvent {
         private int value;
 
         public int getValue() {
             return value;
         }
 
-        public PatternNodNumMeasuresEvent(NodeBase target, PatternSequencerControl control,
+        public PatternNodeNumMeasuresEvent(NodeBase target, PatternSequencerControl control,
                 int value) {
             super(target, control);
             this.value = value;

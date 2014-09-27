@@ -53,6 +53,9 @@ public class PatternSequencerComponent extends MachineComponent {
     @Tag(102)
     private HashMap<String, PatternNode> patterns = new HashMap<String, PatternNode>();
 
+    @Tag(103)
+    private HashMap<Integer, Integer> bankMemory = new HashMap<Integer, Integer>();
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -94,12 +97,44 @@ public class PatternSequencerComponent extends MachineComponent {
     public void setBankPatternIndex(int bankIndex, int patternIndex) {
         selectedBankIndex = bankIndex;
         selectedPatternIndex = patternIndex;
+
+        bankMemory.put(selectedBankIndex, selectedPatternIndex);
+
         PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(), selectedBankIndex);
         PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), selectedPatternIndex);
         post(new PatternSequencerNodeBankEvent(this, PatternSequencerControl.Bank,
                 selectedBankIndex));
         post(new PatternSequencerNodePatternEvent(this, PatternSequencerControl.Pattern,
                 selectedPatternIndex));
+    }
+
+    public void setBankIndex(int bankIndex, boolean noEvent) {
+        if (selectedBankIndex == bankIndex)
+            return;
+        selectedBankIndex = bankIndex;
+
+        selectedPatternIndex = bankMemory.get(selectedBankIndex);
+        PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(), selectedBankIndex);
+        PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), selectedPatternIndex);
+
+        if (!noEvent) {
+            post(new PatternSequencerNodeBankEvent(this, PatternSequencerControl.Bank,
+                    selectedBankIndex));
+            post(new PatternSequencerNodePatternEvent(this, PatternSequencerControl.Pattern,
+                    selectedPatternIndex));
+        }
+    }
+
+    public void setPatternIndex(int patternIndex, boolean noEvent) {
+        if (selectedPatternIndex == patternIndex)
+            return;
+        selectedPatternIndex = patternIndex;
+        bankMemory.put(selectedBankIndex, selectedPatternIndex);
+        PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), selectedPatternIndex);
+        if (!noEvent) {
+            post(new PatternSequencerNodePatternEvent(this, PatternSequencerControl.Pattern,
+                    selectedPatternIndex));
+        }
     }
 
     /**
@@ -218,6 +253,11 @@ public class PatternSequencerComponent extends MachineComponent {
         // not through a restore, here we KNOW that bank and patter are 0 in native
         selectedBankIndex = 0;
         selectedPatternIndex = 0;
+
+        bankMemory.put(0, 0);
+        bankMemory.put(1, 0);
+        bankMemory.put(2, 0);
+        bankMemory.put(3, 0);
     }
 
     //--------------------------------------------------------------------------
