@@ -190,24 +190,17 @@ public class SequencerView extends AbstractSequencerView {
     }
 
     public void scrollDown(ButtonEvent event) {
-        setOffsetY(Math.max(0, this.getOffsetY() - numOctaves));
+        setOffsetY(Math.max(0, getOffsetY() - numOctaves));
         updateScale();
         String text = getScales().getSequencerRangeText(noteMap[0], noteMap[displayRows - 1]);
-        System.out.println("scrollDown()" + text);
-
-        // this.surface.getDisplay ().showNotification (
-        //    "          " + this.scales.getSequencerRangeText (this.noteMap[0], this.noteMap[7]));
+        getSurface().getSubDisplay().showNotification(text);
     }
 
     public void scrollUp(ButtonEvent event) {
-        setOffsetY(Math.min(this.getClip().getRowSize() - numOctaves, this.getOffsetY()
-                + numOctaves));
+        setOffsetY(Math.min(this.getClip().getRowSize() - numOctaves, getOffsetY() + numOctaves));
         updateScale();
-        String text = this.getScales().getSequencerRangeText(noteMap[0],
-                this.noteMap[displayRows - 1]);
-        System.out.println("scrollUp()" + text);
-        //this.surface.getDisplay ().showNotification (
-        //      "          " + this.getScales().getSequencerRangeText (this.noteMap[0], this.noteMap[7]));
+        String text = this.getScales().getSequencerRangeText(noteMap[0], noteMap[displayRows - 1]);
+        getSurface().getSubDisplay().showNotification(text);
     }
 
     protected void updateScale() {

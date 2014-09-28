@@ -13,6 +13,10 @@ public abstract class AbstractControlSurface {
 
     private AbstractGrid pads;
 
+    private AbstractDisplay display;
+
+    private AbstractDisplay subDisplay;
+
     private SequencerView sequencerView;
 
     private ICaustkRack rack;
@@ -35,6 +39,30 @@ public abstract class AbstractControlSurface {
 
     public void setPads(AbstractGrid pads) {
         this.pads = pads;
+    }
+
+    //----------------------------------
+    // display
+    //----------------------------------
+
+    public AbstractDisplay getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(AbstractDisplay display) {
+        this.display = display;
+    }
+
+    //----------------------------------
+    // subDisplay
+    //----------------------------------
+
+    public AbstractDisplay getSubDisplay() {
+        return subDisplay;
+    }
+
+    public void setSubDisplay(AbstractDisplay subDisplay) {
+        this.subDisplay = subDisplay;
     }
 
     /**
