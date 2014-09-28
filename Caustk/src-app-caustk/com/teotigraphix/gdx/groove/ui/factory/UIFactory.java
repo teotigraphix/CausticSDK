@@ -157,6 +157,10 @@ public class UIFactory {
     }
 
     protected void initializeWindow(Skin skin) {
+        WindowStyle toastStyle = new WindowStyle(skin.getFont(StylesDefault.Font), Color.WHITE,
+                skin.getDrawable(StylesDefault.Toast_background));
+        skin.add(StylesDefault.Toast, toastStyle);
+
         WindowStyle windowStyle = new WindowStyle(skin.getFont(StylesDefault.Font), Color.WHITE,
                 skin.getDrawable(StylesDefault.Window_background));
         skin.add(StylesDefault.Window, windowStyle);

@@ -114,6 +114,19 @@ public class StylesDefault {
     public static final String ViewStack_background = "defaults/ViewStack_background";
 
     //----------------------------------
+    // Toast
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String Toast = "toast";
+
+    public static final String Toast_background = "defaults/Window_background";
+
+    public static final String Toast_stageBackground = "defaults/Window_stageBackground";
+
+    //----------------------------------
     // Window
     //----------------------------------
 

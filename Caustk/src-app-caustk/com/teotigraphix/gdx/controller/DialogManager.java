@@ -32,6 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ICaustkScene;
+import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 import com.teotigraphix.gdx.scene2d.ui.PopUp;
 
 @Singleton
@@ -90,11 +91,13 @@ public class DialogManager implements IDialogManager {
     @Override
     public void createToast(ICaustkScene scene, String message, float duration) {
         final PopUp popUp = createPopUp(scene, "", null);
-        WindowStyle style = scene.getSkin().get("toast", WindowStyle.class);
+        WindowStyle style = scene.getSkin().get(StylesDefault.Toast, WindowStyle.class);
         popUp.setStyle(style);
         popUp.setMovable(false);
         popUp.clearChildren();
-        popUp.add(new Label(message, new LabelStyle(style.titleFont, style.titleFontColor)));
+        Label label = new Label(message, new LabelStyle(style.titleFont, style.titleFontColor));
+        label.setWrap(true);
+        popUp.add(label).width(400f);
         popUp.show(scene.getStage());
         popUp.addAction(Actions.delay(duration, new Action() {
             @Override

@@ -42,9 +42,9 @@ public interface IApplicationModel extends IApplicationComponent {
 
     void loadProject(File file) throws IOException;
 
-    void saveProjectAs(String projectName) throws IOException;
+    File saveProjectAs(String projectName) throws IOException;
 
-    void exportProject(File file, ApplicationExportType exportType) throws IOException;;
+    File exportProject(File file, ApplicationExportType exportType) throws IOException;;
 
     void save();
 

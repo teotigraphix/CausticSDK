@@ -130,8 +130,8 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     }
 
     @Override
-    public void saveProjectAs(String projectName) throws IOException {
-        saveProjectAs(new File(fileManager.getProjectsDirectory(), projectName));
+    public File saveProjectAs(String projectName) throws IOException {
+        return saveProjectAs(new File(fileManager.getProjectsDirectory(), projectName));
     }
 
     /**
@@ -139,7 +139,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
      *            project name to copy.
      * @throws IOException
      */
-    public void saveProjectAs(File projectLocation) throws IOException {
+    public File saveProjectAs(File projectLocation) throws IOException {
         File srcDir = project.getDirectory();
         File destDir = projectLocation;
         FileUtils.copyDirectory(srcDir, destDir);
@@ -161,17 +161,20 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         });
 
         loadProject(newProject.getFile());
+
+        return newProjectFile;
     }
 
     @Override
-    public void exportProject(File file, ApplicationExportType exportType) throws IOException {
+    public File exportProject(File file, ApplicationExportType exportType) throws IOException {
         File srcDir = project.getDirectory();
         File exportedFile = new File(srcDir, "exported/");
         exportedFile.mkdirs();
         // NO .caustic ext
         // XXX Can't have spaces, must replace all spaces with '-'
-        exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-"));
-        project.getRack().getRackNode().saveSongAs(exportedFile);
+        exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-") + ".caustic");
+        File savedFile = project.getRack().getRackNode().saveSongAs(exportedFile);
+        return savedFile;
     }
 
     //--------------------------------------------------------------------------
