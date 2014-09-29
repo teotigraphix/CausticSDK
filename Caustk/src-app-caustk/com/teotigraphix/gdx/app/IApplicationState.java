@@ -19,6 +19,8 @@
 
 package com.teotigraphix.gdx.app;
 
-public interface IApplicationState extends IApplicationComponent {
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
+public interface IApplicationState extends IApplicationComponent {
+    IUIModel getUI();
 }

@@ -2,10 +2,12 @@
 package com.teotigraphix.gdx.groove.ui.model;
 
 import com.badlogic.gdx.utils.Array;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.groove.ui.behavior.MainTemplateBehavior;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
+import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
 /**
@@ -14,11 +16,14 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 @Singleton
 public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
+    @Inject
+    private UIFactory uiFactory;
+
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private UIModelState state;
+    private UIState state;
 
     private Array<ViewStackData> views;
 
@@ -29,8 +34,17 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
         return getApplication().getApplicationId() + "/UIModel";
     }
 
-    public UIModelState getState() {
+    public UIState getState() {
         return state;
+    }
+
+    //----------------------------------
+    // uiFactory
+    //----------------------------------
+
+    @Override
+    public UIFactory getUIFactory() {
+        return uiFactory;
     }
 
     //--------------------------------------------------------------------------
@@ -123,7 +137,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     }
 
     @Override
-    public void restore(UIModelState state) {
+    public void restore(UIState state) {
         this.state = state;
 
         getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));

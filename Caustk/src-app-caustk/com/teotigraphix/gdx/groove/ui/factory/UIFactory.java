@@ -11,12 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
+import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.teotigraphix.gdx.groove.ui.components.FileExplorer;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
+import com.teotigraphix.gdx.groove.ui.components.TopBar.TopBarStyle;
+import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
+import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEventKind;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack.ViewStackStyle;
+import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
+import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener;
 import com.teotigraphix.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
 import com.teotigraphix.gdx.scene2d.ui.PaneStack.PaneStackStyle;
 
@@ -29,18 +37,19 @@ import com.teotigraphix.gdx.scene2d.ui.PaneStack.PaneStackStyle;
  * - All factories requiring fonts, declare them as constants
  */
 
-@Singleton
-public class UIFactory {
+public abstract class UIFactory {
 
     //--------------------------------------------------------------------------
     // Inject
     //--------------------------------------------------------------------------
 
     @Inject
-    private TopBarFactory topBarFactory;
+    private IUIModel uiModel;
 
-    @Inject
-    private ViewStackFactory viewStackFactory;
+    @SuppressWarnings("unchecked")
+    protected <T extends IUIModel> T getModel() {
+        return (T)uiModel;
+    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -69,9 +78,7 @@ public class UIFactory {
     protected void initializeFonts(Skin skin) {
         String name = "Ahaorni-14"; // Digital-18
         createFont(skin, StylesDefault.Font, name, "font/" + name + ".fnt");
-
-        // TopBar XXX Should this be here?
-        createFont(skin, TopBarFactory.Font_TextButton, name, "font/" + name + ".fnt");
+        createFont(skin, StylesDefault.Font_TopBar_TextButton, name, "font/" + name + ".fnt");
     }
 
     protected BitmapFont createFont(Skin skin, String id, String name, String location) {
@@ -170,20 +177,67 @@ public class UIFactory {
     // TopBar
     //----------------------------------
 
-    public TopBar createTopBar(Skin skin) {
-        return topBarFactory.createTopBar(skin);
+    public final TopBar createTopBar(Skin skin) {
+
+        // TopBarStyle
+        TopBarStyle topBarStyle = new TopBarStyle(skin.getDrawable(StylesDefault.TopBar_background));
+        skin.add(StylesDefault.TopBar, topBarStyle);
+
+        //TopBarStyle.TextButton
+        TextButtonStyle textButtonStyle = new TextButtonStyle(
+                skin.getDrawable(StylesDefault.TopBar_TextButton_up),
+                skin.getDrawable(StylesDefault.TopBar_TextButton_checked),
+                skin.getDrawable(StylesDefault.TopBar_TextButton_checked),
+                skin.getFont(StylesDefault.Font_TopBar_TextButton));
+        skin.add(StylesDefault.TopBar_TextButton, textButtonStyle);
+
+        // Create TopBar
+        TopBar instance = new TopBar(skin);
+        instance.create(StylesDefault.TopBar);
+
+        ButtonBar buttonBar = (ButtonBar)createTopBar_Center(skin);
+        instance.getCenterChild().add(buttonBar).expand().fill();
+
+        return instance;
     }
 
-    public Table createTopBar_Center(Skin skin) {
-        return topBarFactory.createTopBar_Center(skin);
+    public final Table createTopBar_Center(Skin skin) {
+        IUIModel model = getModel();
+
+        Array<ButtonBarItem> buttons = model.getButtons();
+
+        TextButtonStyle buttonStyle = skin.get("TopBar.TextButton", TextButtonStyle.class);
+        final ButtonBar instance = new ButtonBar(skin, buttons, false, buttonStyle);
+        instance.addListener(new ButtonBarListener() {
+            @Override
+            public void selectedIndexChange(int selectedIndex) {
+                TopBarEvent event = new TopBarEvent(TopBarEventKind.ViewIndexChange, selectedIndex);
+                instance.fire(event);
+            }
+        });
+        instance.setMaxButtonSize(80f);
+        instance.create("default");
+        return instance;
     }
 
     //----------------------------------
     // ViewStack
     //----------------------------------
 
-    public ViewStack createViewStack(Skin skin) {
-        return viewStackFactory.createViewStack(skin);
+    public final ViewStack createViewStack(Skin skin) {
+
+        IUIModel model = getModel();
+
+        ViewStack instance = new ViewStack(skin);
+        for (ViewStackData data : model.getViews()) {
+            data.getBehavior().setData(data);
+            Table table = data.getBehavior().create();
+            instance.addView(table);
+        }
+
+        instance.create(StylesDefault.ViewStack);
+
+        return instance;
     }
 
     //----------------------------------

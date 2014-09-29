@@ -12,6 +12,11 @@ public class StylesDefault {
      */
     public static final String Font = "default-font";
 
+    /**
+     * Style.
+     */
+    public static final String Font_TopBar_TextButton = Font;
+
     //----------------------------------
     // Label
     //----------------------------------
@@ -101,6 +106,26 @@ public class StylesDefault {
     public static final String TextButton_checked = "defaults/TextButton_checked";
 
     public static final String TextButton_disabled = "defaults/TextButton_disabled";
+
+    //----------------------------------
+    // TopBar
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String TopBar = "default";
+
+    public static final String TopBar_background = "defaults/TopBar_background";
+
+    /**
+     * Style.
+     */
+    public static final String TopBar_TextButton = "TopBar.TextButton";
+
+    public static final String TopBar_TextButton_up = "defaults/TopBar_TextButton_up";
+
+    public static final String TopBar_TextButton_checked = "defaults/TopBar_TextButton_checked";
 
     //----------------------------------
     // ViewStack

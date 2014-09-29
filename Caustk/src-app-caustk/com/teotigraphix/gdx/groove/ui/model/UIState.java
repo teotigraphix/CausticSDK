@@ -10,7 +10,7 @@ import com.teotigraphix.caustk.core.CaustkProject;
  * Each {@link CaustkProject} owns an instance of this and will be serialized
  * with the project.
  */
-public class UIModelState {
+public class UIState {
 
     //--------------------------------------------------------------------------
     // Serialization
@@ -60,7 +60,7 @@ public class UIModelState {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public UIModelState() {
+    public UIState() {
     }
 
 }

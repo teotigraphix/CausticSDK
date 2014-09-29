@@ -24,6 +24,7 @@ import java.io.IOException;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.gdx.controller.IFileManager;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public abstract class ApplicationStateBase extends ApplicationComponent implements
         IApplicationState, IApplicationStateHandlers {
@@ -36,9 +37,17 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
     @Inject
     private IFileManager fileManager;
 
+    @Inject
+    private IUIModel uiModel;
+
     @Override
     protected String getPreferenceId() {
         throw new IllegalStateException();
+    }
+
+    @Override
+    public IUIModel getUI() {
+        return uiModel;
     }
 
     public ApplicationStateBase() {
