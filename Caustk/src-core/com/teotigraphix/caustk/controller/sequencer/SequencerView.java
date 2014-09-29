@@ -36,7 +36,8 @@ public class SequencerView extends AbstractSequencerView {
 
     public void setMidiBase(int midiRoot) {
         this.midiRoot = midiRoot;
-        getScales().setMidiRange(midiRoot, midiRoot + (displayColumns * displayColumns));
+        getScales().update(midiRoot, midiRoot + (displayColumns * displayColumns), displayColumns,
+                displayRows);
 
         setOffsetY(midiRoot);
         // XXX This would call out to the main app to set the scroll position of a 
@@ -122,8 +123,8 @@ public class SequencerView extends AbstractSequencerView {
     public void onGridNote(int note, int velocity) {
         if (velocity == 0)
             return;
-        int numRows = noteMap.length;
-        int index = note - 36;
+        int numRows = noteMap.length; // vertical not map
+        int index = note;//+ midiRoot;//note - midiRoot;
         int x = index % numRows;
         int y = (int)Math.floor(index / numRows);
 

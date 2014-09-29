@@ -111,7 +111,7 @@ public abstract class AbstractControlSurface {
 
         Scales scale = new Scales(midiRoot, midiRoot + (columns * columns), columns, rows);
         scale.setSelectdScale(ScaleSelection.MinorPentatonic);
-        scale.setScaleOffset(NoteReference.D);
+        scale.setRootKey(NoteReference.D);
         scales.add(scale);
 
         SequencerView sequencerView = new SequencerView(model, scale, columns, rows);

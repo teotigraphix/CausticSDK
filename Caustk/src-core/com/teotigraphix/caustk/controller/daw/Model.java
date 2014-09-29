@@ -8,11 +8,11 @@ import com.teotigraphix.caustk.node.RackNode;
 
 public class Model {
 
-    public static final Color PUSH_COLOR_BLACK = Colors.Gray.getColor();
+    public static final Color BLACK = Colors.Gray.getColor();
 
-    public static final Color PUSH_COLOR2_WHITE = Color.WHITE;
+    public static final Color WHITE = Color.WHITE;
 
-    public static final Color PUSH_COLOR2_OCEAN_HI = Colors.Cyan.getColor();
+    public static final Color OCEAN = Colors.Cyan.getColor();
 
     public static final Color PUSH_COLOR2_GREEN_HI = Colors.DarkGreen.getColor();
 
@@ -29,8 +29,6 @@ public class Model {
     private MachineBankProxy machineBank;
 
     private AbstractControlSurface surface;
-
-    private int midiRoot;
 
     private int gridSize;
 
@@ -86,9 +84,8 @@ public class Model {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Model(ICaustkRack rack, int midiRoot, int gridSize) {
+    public Model(ICaustkRack rack, int gridSize) {
         this.rack = rack;
-        this.midiRoot = midiRoot;
         this.gridSize = gridSize;
 
         machineBank = new MachineBankProxy(this);
