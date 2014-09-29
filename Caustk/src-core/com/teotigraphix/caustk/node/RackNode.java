@@ -67,7 +67,7 @@ public class RackNode extends NodeBase {
     private SequencerNode sequencer;
 
     @Tag(54)
-    private int selectedIndex = -1;
+    private int selectedIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -263,9 +263,6 @@ public class RackNode extends NodeBase {
 
     /**
      * Creates and adds a machine to this node graph an native rack.
-     * <p>
-     * Any time a machine is added to the rack, the {@link #getSelectedIndex()}
-     * will change to the machine's index.
      * 
      * @param index The machine index.
      * @param type The machine type.
@@ -283,7 +280,6 @@ public class RackNode extends NodeBase {
             throw new CausticException("machine exists in rack for index: " + index);
         MachineNode machineNode = addMachine(index, type, name);
         createMachine(machineNode);
-        setSelectedIndex(machineNode);
         post(new RackNodeCreateEvent(this, RackControl.Create, machineNode));
         return (T)machineNode;
     }

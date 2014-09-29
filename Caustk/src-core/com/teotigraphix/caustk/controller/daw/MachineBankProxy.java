@@ -16,7 +16,7 @@ public class MachineBankProxy {
         return getSelectedMachine().getSequencer().getSelectedPattern();
     }
 
-    protected MachineNode getSelectedMachine() {
+    public MachineNode getSelectedMachine() {
         return model.getRackNode().getSelectedMachine();
     }
 }

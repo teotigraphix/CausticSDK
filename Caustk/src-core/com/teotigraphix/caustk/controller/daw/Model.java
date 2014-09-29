@@ -2,7 +2,8 @@
 package com.teotigraphix.caustk.controller.daw;
 
 import com.badlogic.gdx.graphics.Color;
-import com.teotigraphix.caustk.controller.helper.Scales;
+import com.teotigraphix.caustk.controller.core.AbstractControlSurface;
+import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
 
 public class Model {
@@ -23,23 +24,47 @@ public class Model {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private Scales scales;
-
-    private RackNode rackNode;
+    private ICaustkRack rack;
 
     private MachineBankProxy machineBank;
+
+    private AbstractControlSurface surface;
+
+    private int midiRoot;
+
+    private int gridSize;
+
+    protected AbstractControlSurface getSurface() {
+        return surface;
+    }
+
+    protected void setSurface(AbstractControlSurface surface) {
+        this.surface = surface;
+    }
+
+    public ICaustkRack getRack() {
+        return rack;
+    }
+
+    //    public int getMidiRoot() {
+    //        return midiRoot;
+    //    }
+
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    public int getNumRows() {
+        return gridSize;
+    }
+
+    public int getNumColumns() {
+        return gridSize;
+    }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // pads
-    //----------------------------------
-
-    public Scales getScales() {
-        return scales;
-    }
 
     //----------------------------------
     // machineBank
@@ -54,18 +79,27 @@ public class Model {
     //----------------------------------
 
     RackNode getRackNode() {
-        return rackNode;
+        return rack.getRackNode();
     }
 
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public Model(RackNode rackNode, Scales scales) {
-        this.rackNode = rackNode;
-        this.scales = scales;
+    public Model(ICaustkRack rack, int midiRoot, int gridSize) {
+        this.rack = rack;
+        this.midiRoot = midiRoot;
+        this.gridSize = gridSize;
 
         machineBank = new MachineBankProxy(this);
+    }
+
+    public void flush() {
+        surface.flush();
+    }
+
+    public void flush(boolean forceRefresh) {
+        surface.flush(forceRefresh);
     }
 
     public CursorClipProxy createCursorClip(int cols, int rows) {

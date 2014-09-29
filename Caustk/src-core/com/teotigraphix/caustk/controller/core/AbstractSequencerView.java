@@ -74,7 +74,7 @@ public class AbstractSequencerView extends AbstractView {
         this.offsetY = offsetY;
     }
 
-    public AbstractSequencerView(Model model, int rows, int cols) {
+    public AbstractSequencerView(Model model, Scales scales, int rows, int cols) {
         super(model);
         //  1/4    1/4t     1/8      1/8t    1/16      1/16t    1/32      1/32t
         // [1.0, 0.6666667, 0.5, 0.33333334, 0.25, 0.16666667, 0.125, 0.083333336]
@@ -87,7 +87,7 @@ public class AbstractSequencerView extends AbstractView {
                 1f, 2f / 3f, 1f / 2f, 1f / 3f, 1f / 4f, 1f / 6f, 1f / 8f, 1f / 12f
         };
         this.selectedIndex = 4;
-        this.scales = getModel().getScales();
+        this.scales = scales;
 
         this.offsetX = 0;
         this.offsetY = 0;

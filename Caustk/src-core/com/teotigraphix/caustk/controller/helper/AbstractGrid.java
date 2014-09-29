@@ -12,4 +12,6 @@ public abstract class AbstractGrid {
 
     public abstract void flush();
 
+    public abstract void clear();
+
 }

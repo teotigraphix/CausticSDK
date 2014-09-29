@@ -6,6 +6,7 @@ import com.teotigraphix.caustk.controller.core.AbstractSequencerView;
 import com.teotigraphix.caustk.controller.daw.Colors;
 import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.caustk.controller.helper.ButtonEvent;
+import com.teotigraphix.caustk.controller.helper.Scales;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode.Resolution;
 
@@ -21,7 +22,7 @@ public class SequencerView extends AbstractSequencerView {
 
     private int numOctaves = 12;
 
-    private int midiBase = 36;
+    private int midiRoot = 36;
 
     private int[] noteMap;
 
@@ -29,9 +30,31 @@ public class SequencerView extends AbstractSequencerView {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
+    public int getMidiRoot() {
+        return midiRoot;
+    }
+
+    public void setMidiBase(int midiRoot) {
+        this.midiRoot = midiRoot;
+        getScales().setMidiRange(midiRoot, midiRoot + (displayColumns * displayColumns));
+
+        setOffsetY(midiRoot);
+        // XXX This would call out to the main app to set the scroll position of a 
+        // piano roll or something
+        getClip().scrollTo(0, midiRoot);
+    }
+
     //----------------------------------
     // pads
     //----------------------------------
+
+    public int getDisplayColumns() {
+        return displayColumns;
+    }
+
+    public int getDisplayRows() {
+        return displayRows;
+    }
 
     public void setGridLayout(int displayColumns, int displayRows) {
         this.displayColumns = displayColumns;
@@ -70,16 +93,16 @@ public class SequencerView extends AbstractSequencerView {
      * @param model
      * @param displayColums Number of columns in the 'grid' eg 8 or 16.
      */
-    public SequencerView(Model model, int displayColumns, int displayRows) {
-        super(model, 128, displayColumns);
+    public SequencerView(Model model, Scales scales, int displayColumns, int displayRows) {
+        super(model, scales, 128, displayColumns);
         // the displayColumns is the view, not the internal calc above of 128
         this.displayColumns = displayColumns;
         this.displayRows = displayRows;
 
-        setOffsetY(midiBase);
+        setOffsetY(midiRoot);
         // XXX This would call out to the main app to set the scroll position of a 
         // piano roll or something
-        getClip().scrollTo(0, midiBase);
+        getClip().scrollTo(0, midiRoot);
     }
 
     //--------------------------------------------------------------------------

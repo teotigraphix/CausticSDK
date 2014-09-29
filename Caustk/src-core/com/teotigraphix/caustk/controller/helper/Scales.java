@@ -90,6 +90,11 @@ public class Scales {
 
     private int drumOctave;
 
+    public void setMidiRange(int startNote, int endNote) {
+        this.startNote = startNote;
+        this.endNote = endNote;
+    }
+
     public String getName(int scale) {
         return scale < Scales.intervals.length ? Scales.intervals[scale].name : "";
     }
@@ -408,8 +413,10 @@ public class Scales {
     }
 
     public Scales(int startNote, int endNote, int numColumns, int numRows) {
-        this.startNote = startNote;
-        this.endNote = endNote; // last note + 1
+        //this.startNote = startNote;
+        //this.endNote = endNote; // last note + 1
+        setMidiRange(startNote, endNote);
+
         this.numColumns = numColumns;
         this.numRows = numRows;
 
