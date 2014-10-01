@@ -92,6 +92,10 @@ public class LibraryItemManifest {
         return id;
     }
 
+    protected void setId(UUID id) {
+        this.id = id;
+    }
+
     //----------------------------------
     //  productId
     //----------------------------------
@@ -370,7 +374,7 @@ public class LibraryItemManifest {
         this.format = format;
         this.name = name;
         this.relativePath = relativePath;
-        this.id = UUID.randomUUID();
+        setId(UUID.randomUUID());
         setCreated(new Date());
         setModified(new Date());
     }

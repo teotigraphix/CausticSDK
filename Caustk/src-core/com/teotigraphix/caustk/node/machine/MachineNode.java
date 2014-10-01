@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.GsonExclude;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.core.osc.RackMessage;
@@ -63,6 +64,7 @@ public abstract class MachineNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     @Tag(50)
+    @GsonExclude
     private RackNode rackNode;
 
     @Tag(51)

@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.GsonExclude;
 import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
@@ -46,6 +47,7 @@ public abstract class NodeBase implements ICaustkNode {
     //--------------------------------------------------------------------------
 
     @Tag(0)
+    @GsonExclude
     private NodeMetaData data = null;
 
     //----------------------------------

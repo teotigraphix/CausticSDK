@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.groove.manifest;
 
 import java.io.File;
+import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
@@ -75,8 +76,9 @@ public class LibraryProductManifest extends LibraryItemManifest {
     /**
      * Serialization.
      */
-    public LibraryProductManifest(String name, File directory) {
+    public LibraryProductManifest(UUID id, String name, File directory) {
         super(LibraryItemFormat.Product, name, null);
+        setId(id);
         this.directory = directory;
     }
 }

@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.GsonExclude;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.NodeBase;
 
@@ -37,6 +38,7 @@ public abstract class MachineComponent extends NodeBase {
     //--------------------------------------------------------------------------
 
     @Tag(50)
+    @GsonExclude
     private MachineNode machineNode;
 
     //--------------------------------------------------------------------------

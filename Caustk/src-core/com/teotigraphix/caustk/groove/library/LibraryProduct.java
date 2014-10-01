@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -105,7 +104,7 @@ public class LibraryProduct extends LibraryItem {
     LibraryProduct() {
     }
 
-    public LibraryProduct(UUID id, LibraryProductManifest manifest) {
+    public LibraryProduct(LibraryProductManifest manifest) {
         super();
         this.manifest = manifest;
     }
