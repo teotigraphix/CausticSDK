@@ -56,12 +56,6 @@ public class NoteNode extends NodeBase {
     @Tag(54)
     private int flags;
 
-    @SuppressWarnings("unused")
-    private String noteData;
-
-    @Tag(60)
-    private Object data; // has to contain primitive value objects
-
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -155,31 +149,6 @@ public class NoteNode extends NodeBase {
     }
 
     //----------------------------------
-    // data
-    //----------------------------------
-
-    /**
-     * Returns the note's abstract data if any.
-     */
-    public Object getData() {
-        return data;
-    }
-
-    /**
-     * Sets the data for the note.
-     * <p>
-     * Clients of the note can use this property to tack on additional data that
-     * relates to the note in the context of their application.
-     * <p>
-     * Works with serialization.
-     * 
-     * @param value The data associated with the note and client application.
-     */
-    public void setData(Object value) {
-        data = value;
-    }
-
-    //----------------------------------
     // step
     //----------------------------------
 
@@ -216,7 +185,6 @@ public class NoteNode extends NodeBase {
         this.velocity = Float.valueOf(split[2]);
         this.end = Float.valueOf(split[3]);
         this.flags = Float.valueOf(split[4]).intValue();
-        onNoteDataInvalid();
     }
 
     /**
@@ -253,7 +221,6 @@ public class NoteNode extends NodeBase {
         this.end = end;
         this.velocity = velocity;
         this.flags = flags;
-        onNoteDataInvalid();
     }
 
     /**
@@ -290,10 +257,6 @@ public class NoteNode extends NodeBase {
 
     @Override
     protected void restoreComponents() {
-    }
-
-    private void onNoteDataInvalid() {
-        noteData = toNoteData();
     }
 
     @Override

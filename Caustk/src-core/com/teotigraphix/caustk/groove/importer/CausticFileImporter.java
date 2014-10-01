@@ -68,8 +68,18 @@ public class CausticFileImporter {
 
     }
 
-    public CausticGroup importCaustic(File targetFile) throws IOException {
-        String xml = FileUtils.readFileToString(targetFile);
+    public LibraryGroup importCausticIntoProduct(LibraryProduct product, File causticFile,
+            String groupName) throws IOException, CausticException {
+        CausticGroup causticGroup = new CausticGroup(causticFile, groupName);
+        LibraryGroup libraryGroup = causticGroup.create(product);
+        //product.fillGroup(libraryGroup); called in addToDirectory()
+        boolean exportAsGroup = true;
+        addToDirectory(product, causticGroup, exportAsGroup);
+        return libraryGroup;
+    }
+
+    public CausticGroup importFromGroupManifest(File manifestFile) throws IOException {
+        String xml = FileUtils.readFileToString(manifestFile);
         CausticGroup causticGroup = (CausticGroup)xstream.fromXML(xml);
         return causticGroup;
     }

@@ -22,6 +22,8 @@ package com.teotigraphix.caustk.core;
 import java.io.File;
 import java.lang.reflect.Type;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -204,17 +206,19 @@ public class CaustkFactory implements ICaustkFactory {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String json, Class<? extends Object> clazz) throws CausticException {
-        GsonBuilder deserializer = new GsonBuilder().setPrettyPrinting();
-        deserializer.registerTypeAdapter(MachineNode.class, new MachineNodeDeserializer());
-        deserializer.registerTypeAdapter(EffectNode.class, new EffectNodeDeserializer());
-        deserializer.registerTypeAdapter(NoteNode.class, new NoteNodeDeserializer());
-        Gson gson = deserializer.create();
+        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
+        builder.setExclusionStrategies(new GsonExclusionStrategy(null));
+        builder.registerTypeAdapter(MachineNode.class, new MachineNodeDeserializer());
+        builder.registerTypeAdapter(EffectNode.class, new EffectNodeDeserializer());
+        builder.registerTypeAdapter(NoteNode.class, new NoteNodeDeserializer());
+        Gson gson = builder.create();
         return (T)gson.fromJson(json, clazz);
     }
 
     @Override
     public String serialize(Object node, boolean prettyPrint) {
         GsonBuilder builder = new GsonBuilder();
+        builder.setExclusionStrategies(new GsonExclusionStrategy(null));
         if (prettyPrint)
             builder.setPrettyPrinting();
         Gson serializer = builder.create();
@@ -230,6 +234,27 @@ public class CaustkFactory implements ICaustkFactory {
     //--------------------------------------------------------------------------
     // Serializers
     //--------------------------------------------------------------------------
+
+    public class GsonExclusionStrategy implements ExclusionStrategy {
+
+        private final Class<?> typeToExclude;
+
+        public GsonExclusionStrategy(Class<?> clazz) {
+            this.typeToExclude = clazz;
+        }
+
+        @Override
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return (this.typeToExclude != null && this.typeToExclude == clazz)
+                    || clazz.getAnnotation(GsonExclude.class) != null;
+        }
+
+        @Override
+        public boolean shouldSkipField(FieldAttributes f) {
+            return f.getAnnotation(GsonExclude.class) != null;
+        }
+
+    }
 
     class NoteNodeDeserializer implements JsonDeserializer<NoteNode> {
         @Override

@@ -51,7 +51,7 @@ public class CausticCoreDesktop {
             e.printStackTrace();
         }
 
-        m_byResponseString = new byte[4096];
+        m_byResponseString = new byte[16384];
         caustic = (CausticLibrary)Native.loadLibrary("CausticCore.dll", CausticLibrary.class);
         caustic.CausticCore_Init(1024);
         String storageRoot = RuntimeUtils.STORAGE_ROOT;
@@ -71,12 +71,17 @@ public class CausticCoreDesktop {
     }
 
     public String QueryOSC(String message) {
-        m_byResponseString = new byte[4096];
+        m_byResponseString = new byte[16384]; // 4096
         if (CaustkEngine.DEBUG_QUERIES) {
             System.out.println("Query: " + message);
         }
         int nStrLen = (int)caustic.CausticCore_OSCMessage(message, m_byResponseString);
-        return new String(m_byResponseString, 0, nStrLen);
+        try {
+            return new String(m_byResponseString, 0, nStrLen);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public int getVersion() {

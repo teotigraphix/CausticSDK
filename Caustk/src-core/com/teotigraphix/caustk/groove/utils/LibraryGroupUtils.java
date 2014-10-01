@@ -49,6 +49,9 @@ public class LibraryGroupUtils {
             throws CausticException {
 
         File causticFile = libraryGroup.getCausticGroup().getSourceFile();
+        if (!causticFile.exists())
+            throw new CausticException(".caustic File does not exist ;" + causticFile);
+
         RackNode rackNode = CaustkRuntime.getInstance().getRack().create(causticFile);
 
         for (MachineNode machineNode : rackNode.getMachines()) {
