@@ -34,16 +34,16 @@ public class LibrarySound extends LibraryProductItem {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(20)
+    @Tag(50)
     private LibrarySoundManifest manifest;
 
-    @Tag(21)
+    @Tag(51)
     private int index = -1;
 
-    @Tag(22)
+    @Tag(52)
     private LibraryInstrumentManifest instrumentManifest;
 
-    @Tag(23)
+    @Tag(53)
     private LibraryEffectManifest effectManifest;
 
     //--------------------------------------------------------------------------

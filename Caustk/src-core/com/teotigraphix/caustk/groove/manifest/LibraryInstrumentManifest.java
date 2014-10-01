@@ -34,7 +34,7 @@ public class LibraryInstrumentManifest extends LibraryItemManifest {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(10)
+    @Tag(50)
     private MachineType machineType;
 
     //--------------------------------------------------------------------------

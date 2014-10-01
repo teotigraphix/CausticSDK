@@ -36,10 +36,10 @@ public class LibraryEffect extends LibraryProductItem {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(20)
+    @Tag(50)
     private LibraryEffectManifest manifest;
 
-    @Tag(21)
+    @Tag(51)
     private Map<Integer, EffectNode> effects = new HashMap<Integer, EffectNode>();
 
     //--------------------------------------------------------------------------

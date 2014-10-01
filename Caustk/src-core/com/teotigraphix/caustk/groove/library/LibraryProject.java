@@ -28,7 +28,7 @@ public class LibraryProject extends LibraryProductItem {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(20)
+    @Tag(50)
     private LibraryProjectManifest manifest;
 
     @Override

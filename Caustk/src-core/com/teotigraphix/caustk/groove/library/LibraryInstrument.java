@@ -35,10 +35,10 @@ public class LibraryInstrument extends LibraryProductItem {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(20)
+    @Tag(50)
     private LibraryInstrumentManifest manifest;
 
-    @Tag(21)
+    @Tag(51)
     private MachineNode machineNode;
 
     //--------------------------------------------------------------------------

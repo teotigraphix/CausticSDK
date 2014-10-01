@@ -34,10 +34,10 @@ public class LibraryGroup extends LibraryProductItem {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(10)
+    @Tag(50)
     private LibraryGroupManifest manifest;
 
-    @Tag(11)
+    @Tag(51)
     private Map<Integer, LibrarySound> sounds = new TreeMap<Integer, LibrarySound>();
 
     private transient CausticGroup causticGroup;

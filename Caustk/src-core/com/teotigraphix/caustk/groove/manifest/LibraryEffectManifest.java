@@ -37,7 +37,7 @@ public class LibraryEffectManifest extends LibraryItemManifest {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(20)
+    @Tag(50)
     private Map<Integer, EffectType> effectTypes = new HashMap<Integer, EffectType>();
 
     //--------------------------------------------------------------------------

@@ -45,10 +45,10 @@ public class LibraryProduct extends LibraryItem {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(10)
+    @Tag(25)
     private LibraryProductManifest manifest;
 
-    @Tag(11)
+    @Tag(26)
     private List<LibraryItemManifest> list = new ArrayList<LibraryItemManifest>();
 
     //--------------------------------------------------------------------------

@@ -34,7 +34,7 @@ public class LibraryProductManifest extends LibraryItemManifest {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    @Tag(20)
+    @Tag(50)
     private File directory;
 
     //--------------------------------------------------------------------------
