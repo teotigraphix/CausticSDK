@@ -94,6 +94,32 @@ public abstract class CaustkProject {
         return getFile().exists();
     }
 
+    /**
+     * Returns a directory or file from within the project's root directory.
+     * <p>
+     * Does not create a directory.
+     * 
+     * @param relativePath The resource path.
+     */
+    public File findResource(String relativePath) {
+        return new File(getDirectory(), relativePath);
+    }
+
+    /**
+     * Returns a directory or file from within the project's root directory.
+     * <p>
+     * Create the file or directory if not exists.
+     * 
+     * @param relativePath The resource path.
+     * @throws IOException
+     */
+    public File getResource(String relativePath) throws IOException {
+        File resource = findResource(relativePath);
+        if (!resource.exists())
+            resource.mkdirs();
+        return resource;
+    }
+
     //----------------------------------
     // name
     //----------------------------------

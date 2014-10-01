@@ -22,9 +22,16 @@ package com.teotigraphix.gdx.controller;
 import java.io.File;
 import java.io.IOException;
 
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.CaustkProject;
+import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.app.IApplicationModel;
@@ -166,10 +173,11 @@ public class FileManager extends ApplicationComponent implements IFileManager {
         return project;
     }
 
+    // TODO Rej Ask to fix space bug in export WAV
     @Override
     public String getNextProjectName() {
         String appName = getApplication().getApplicationName();
-        String name = "Untitled " + appName + " Project";
+        String name = "Untitled" + appName + "Project";
 
         if (!new File(projectsDirectory, name).exists())
             return name;
@@ -178,12 +186,134 @@ public class FileManager extends ApplicationComponent implements IFileManager {
         File testDirectory = null;
 
         for (int i = 1; i < 100; i++) {
-            testDirectory = new File(projectsDirectory, name + " " + i);
+            testDirectory = new File(projectsDirectory, name + "" + i);
             if (!testDirectory.exists())
                 break;
         }
 
         return testDirectory.getName();
+    }
+
+    private int count = 0;
+
+    @Override
+    public Array<File> exportPatternStems(final String exportName, final Array<PatternNode> patterns)
+            throws IOException {
+        final Array<File> files = new Array<File>();
+
+        CaustkProject project = applicationModel.getProject();
+
+        final ICaustkRack rack = applicationModel.getApplication().getRack();
+        // Root/CausticLive/Projects/MyProj1/export/exportName
+        final File tempDirectory = new File(project.getResource("export"), exportName);
+
+        String nativepath = tempDirectory.getAbsolutePath();//.replaceAll(" ", "-");
+        final File exportDirectory = new File(nativepath);
+        exportDirectory.mkdirs();
+        // Root/CausticLive/Projects/MyProj1/export/exportName/
+
+        count = 0;
+
+        Timer t = new Timer();
+        t.scheduleTask(new Task() {
+            @Override
+            public void run() {
+                PatternNode patternNode = patterns.get(count);
+                int bankIndex = patternNode.getBankIndex();
+                int patternIndex = patternNode.getPatternIndex();
+                int patternLength = patternNode.getNumMeasures();
+                exportStem(files, rack, exportDirectory, exportName, patternNode.getMachineIndex(),
+                        bankIndex, patternIndex, patternLength);
+                System.out.println("Exported " + count);
+                count++;
+                if (count == patterns.size) {
+                    stemExportComplete();
+                }
+            }
+        }, 0f, 1f, patterns.size - 1);
+
+        return files;
+    }
+
+    public static void exportStem(Array<File> files, ICaustkRack rack, File exportDirectory,
+            String exportName, int machineIndex, int bankIndex, int patternIndex, int patternLength) {
+
+        SequencerMessage.CLEAR_PATTERNS.send(rack);
+
+        SequencerMessage.LOOP_POINTS.send(rack, 0, patternLength);
+        SequencerMessage.PLAY_POSITION.send(rack, 0);
+
+        SequencerMessage.PATTERN_EVENT.send(rack, machineIndex, 0, bankIndex, patternIndex,
+                patternLength);
+
+        // caustic/studio/export/[ALLEY 01]-[120bpm]//[ALLEY 01]-[INST1]-[A2]-[120bpm].wav
+        String sampleName = getExportStemSampleName(rack, exportName, machineIndex, bankIndex,
+                patternIndex);
+        File location = new File(exportDirectory, sampleName);
+        SequencerMessage.EXPORT.send(rack, "loop", "WAV", 100, location.getAbsolutePath());
+
+        files.add(location);
+    }
+
+    // ALLEY 01-INST1-A2-120bpm
+    public static String getExportStemSampleName(ICaustkRack rack, String exportName,
+            int machineIndex, int bankIndex, int patternIndex) {
+        String machineName = rack.getMachine(machineIndex).getName();
+        String patternName = PatternUtils.toString(bankIndex, patternIndex);
+        String bpm = (int)rack.getSequencer().getBPM() + "";
+        return exportName + "-" + machineName + "-" + patternName + "-" + bpm + "bpm";
+    }
+
+    //    public void exportPatternStems(String currentName) {
+    //        // caustic/studio/export/ALLEY 01-120bpm
+    //        String stemDirectoryName = getExportStemDirectoryName(getApplication(), this);
+    //        final File stemDirectory = getStudioExportFile(stemDirectoryName);
+    //        if (!stemDirectory.exists())
+    //            stemDirectory.mkdirs();
+    //
+    //        final int bankIndex = getSelectedBank();
+    //        final int patternIndex = getSelectedPattern();
+    //        final int patternLength = getSelectedPatternLength();
+    //
+    //        count = 0;
+    //        Timer t = new Timer();
+    //        t.scheduleTask(new Task() {
+    //            @Override
+    //            public void run() {
+    //                exportStem(count, stemDirectory, bankIndex, patternIndex, patternLength);
+    //                System.out.println("Exported " + count);
+    //                count++;
+    //                if (count == 14) {
+    //                    stemExportComplete();
+    //                }
+    //            }
+    //        }, 0f, 1f, 13);
+    //    }
+    //
+    //    // ALLEY 01-120bpm
+    //    public static String getExportStemDirectoryName(ICaustkApplication application,
+    //            IApplicationModel applicationModel) {
+    //        ICaustkRack rack = application.getRack();
+    //        String bpm = (int)rack.getSequencer().getBPM() + "";
+    //        String currentName = applicationModel.getSoundKit().getName().replace(".caustic", "");
+    //        return currentName + "-" + bpm + "bpm";
+    //    }
+    //
+    //    public static File getStudioExportFile(String nameNoExtension) {
+    //        File file = new File(getStudioExportDirectory(), nameNoExtension);
+    //        return file;
+    //    }
+    //
+    //    public static File getStudioExportDirectory() {
+    //        File root = RuntimeUtils.getCausticDirectory();
+    //        root = new File(root, "studio/export");
+    //        if (!root.exists())
+    //            root.mkdirs();
+    //        return root;
+    //    }
+
+    private void stemExportComplete() {
+        //XXX post(new OnApplicationMangerShowOptions(false));
     }
 
     //--------------------------------------------------------------------------

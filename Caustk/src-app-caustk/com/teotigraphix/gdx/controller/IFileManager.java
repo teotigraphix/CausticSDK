@@ -22,7 +22,9 @@ package com.teotigraphix.gdx.controller;
 import java.io.File;
 import java.io.IOException;
 
+import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.core.CaustkProject;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 
 public interface IFileManager {
 
@@ -60,5 +62,8 @@ public interface IFileManager {
      * @throws IOException
      */
     CaustkProject readProject(File projectFile) throws IOException;
+
+    Array<File> exportPatternStems(String exportName, Array<PatternNode> patterns)
+            throws IOException;
 
 }
