@@ -172,18 +172,22 @@ public class EffectsChannel extends MachineComponent {
 
     @Override
     protected void restoreComponents() {
-        for (int i = 0; i < NUM_SLOTS; i++) {
-            EffectType type = EffectType.fromInt((int)EffectsRackMessage.TYPE.send(getRack(),
-                    getMachineIndex(), i));
-            if (type != null) {
-                EffectNode effect;
-                try {
-                    effect = createEffect(i, type);
-                    effect.restore();
-                } catch (CausticException e) {
-                    getLogger().err("EffectsChannelNode", e.getMessage());
+        if (getMachineNode() != null) {
+            for (int i = 0; i < NUM_SLOTS; i++) {
+                EffectType type = EffectType.fromInt((int)EffectsRackMessage.TYPE.send(getRack(),
+                        getMachineIndex(), i));
+                if (type != null) {
+                    EffectNode effect;
+                    try {
+                        effect = createEffect(i, type);
+                        effect.restore();
+                    } catch (CausticException e) {
+                        getLogger().err("EffectsChannelNode", e.getMessage());
+                    }
                 }
             }
+        } else if (masterNode != null) {
+            // XXX Implement MasterNode effects restore
         }
     }
 
