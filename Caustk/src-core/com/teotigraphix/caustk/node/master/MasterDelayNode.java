@@ -388,4 +388,13 @@ public class MasterDelayNode extends MasterChildNode {
         setTime(queryTime());
         setWet(queryWet());
     }
+
+    @Override
+    public String toString() {
+        return "MasterDelayNode [steps=" + steps + ", loop=" + loop + ", time=" + time + ", sync="
+                + sync + ", feedback=" + feedback + ", feedbackFirst=" + feedbackFirst
+                + ", damping=" + damping + ", wet=" + wet + ", panSteps=" + panSteps
+                + ", isBypass=" + isBypass() + "]";
+    }
+
 }

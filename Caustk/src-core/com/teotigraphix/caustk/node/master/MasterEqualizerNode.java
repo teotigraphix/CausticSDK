@@ -240,4 +240,12 @@ public class MasterEqualizerNode extends MasterChildNode {
         setMid(queryMid());
         setMidHighFreq(queryMidHighFreq());
     }
+
+    @Override
+    public String toString() {
+        return "MasterEqualizerNode [bass=" + bass + ", bassMidFreq=" + bassMidFreq + ", mid="
+                + mid + ", midHighFreq=" + midHighFreq + ", high=" + high + ", isBypass="
+                + isBypass() + "]";
+    }
+
 }

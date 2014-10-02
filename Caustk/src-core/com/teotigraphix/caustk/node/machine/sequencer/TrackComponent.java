@@ -391,4 +391,9 @@ public class TrackComponent extends MachineComponent {
         }
     }
 
+    @Override
+    public String toString() {
+        return "TrackComponent [entries=" + entries + "]";
+    }
+
 }

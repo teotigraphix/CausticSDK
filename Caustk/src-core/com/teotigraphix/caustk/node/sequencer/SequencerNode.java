@@ -820,4 +820,11 @@ public class SequencerNode extends NodeBase {
             this.bpm = bpm;
         }
     }
+
+    @Override
+    public String toString() {
+        return "SequencerNode [isPlaying=" + isPlaying + ", sequencerMode=" + sequencerMode
+                + ", songEndMode=" + songEndMode + ", bpm=" + bpm + ", shuffleMode=" + shuffleMode
+                + ", shuffleAmount=" + shuffleAmount + "]";
+    }
 }

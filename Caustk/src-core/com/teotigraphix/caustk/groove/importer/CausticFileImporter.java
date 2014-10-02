@@ -34,6 +34,9 @@ import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
+import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUtils;
@@ -49,18 +52,21 @@ public class CausticFileImporter {
     public CausticFileImporter() {
 
         xstream = new XStream(new DomDriver());
+
+        // CausticGroup
         xstream.alias("group", CausticGroup.class);
         xstream.useAttributeFor(CausticGroup.class, "path");
         xstream.useAttributeFor(CausticGroup.class, "sourceFile");
         xstream.useAttributeFor(CausticGroup.class, "displayName");
 
+        // CausticSound
         xstream.alias("sound", CausticSound.class);
         xstream.addImplicitMap(CausticGroup.class, "sounds", CausticSound.class, "index");
-
         xstream.useAttributeFor(CausticSound.class, "path");
         xstream.useAttributeFor(CausticSound.class, "index");
         xstream.useAttributeFor(CausticSound.class, "displayName");
 
+        // CausticEffect
         xstream.useAttributeFor(CausticEffect.class, "path");
         xstream.useAttributeFor(CausticEffect.class, "displayName");
 
@@ -68,9 +74,81 @@ public class CausticFileImporter {
 
     }
 
+    public CausticGroup createGroupFromCausticFile(File causticFile, String name, String displayname)
+            throws CausticException {
+        CausticGroup causticGroup = new CausticGroup(causticFile, name, displayname);
+        fillGroup(causticGroup);
+        return causticGroup;
+    }
+
+    static void fillGroup(CausticGroup causticGroup) throws CausticException {
+
+        File causticFile = causticGroup.getSourceFile();
+        if (!causticFile.exists())
+            throw new CausticException(".caustic File does not exist ;" + causticFile);
+
+        RackNode rackNode = CaustkRuntime.getInstance().getRack().create(causticFile);
+
+        for (MachineNode machineNode : rackNode.getMachines()) {
+            CausticSound causticSound = fillSound(causticGroup, machineNode);
+            causticGroup.addSound(causticSound);
+        }
+    }
+
+    private static CausticSound fillSound(CausticGroup causticGroup, MachineNode machineNode) {
+        CausticSound causticSound = new CausticSound(machineNode.getIndex(), machineNode.getName(),
+                "DefaultEffect");
+
+        String groupName = causticGroup.getDisplayName();
+        String name = groupName + "-" + machineNode.getName();
+        String relativePath = "";
+        if (causticSound != null) {
+            name = causticSound.getDisplayName();
+            relativePath = causticSound.getPath();
+        }
+
+        CausticEffect causticEffect = fillEffect(machineNode.getEffects(), machineNode.getName(),
+                groupName, causticSound);
+
+        //        LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, name, groupName);
+        //
+        //        LibrarySound librarySound = getFactory().createLibrarySound(product, name, relativePath);
+        //
+        //        librarySound.setEffect(libraryEffect);
+        //        librarySound.setInstrument(libraryInstrument);
+
+        return causticSound;
+    }
+
+    private static CausticEffect fillEffect(EffectsChannel effectsChannel, String machineName,
+            String groupName, CausticSound causticSound) {
+        String name = machineName + " FX";
+        String relativePath = groupName;
+        if (causticSound != null) {
+            CausticEffect causticEffect = causticSound.getEffect();
+            if (causticEffect != null) {
+                name = causticEffect.getDisplayName();
+                relativePath = causticEffect.getPath();
+            }
+        }
+
+        //        CausticEffect causticEffect = new CausticEffect(index, displayName);
+        //        EffectNode efffect0 = effectsChannel.getEfffect(0);
+        //        EffectNode efffect1 = effectsChannel.getEfffect(1);
+
+        //        LibraryEffect libraryEffect = getFactory().createLibraryEffect(product, name, relativePath,
+        //                efffect0, efffect1);
+
+        return null;
+    }
+
+    //--------------------------------------------------------------------------
+    // 
+    //--------------------------------------------------------------------------
+
     public LibraryGroup importCausticIntoProduct(LibraryProduct product, File causticFile,
             String groupName) throws IOException, CausticException {
-        CausticGroup causticGroup = new CausticGroup(causticFile, groupName);
+        CausticGroup causticGroup = new CausticGroup(causticFile, groupName, groupName);
         LibraryGroup libraryGroup = causticGroup.create(product);
         //product.fillGroup(libraryGroup); called in addToDirectory()
         boolean exportAsGroup = true;
@@ -78,6 +156,12 @@ public class CausticFileImporter {
         return libraryGroup;
     }
 
+    /**
+     * Imports an XML file containing {@link CausticGroup} serialization.
+     * 
+     * @param manifestFile the group XML file
+     * @throws IOException
+     */
     public CausticGroup importFromGroupManifest(File manifestFile) throws IOException {
         String xml = FileUtils.readFileToString(manifestFile);
         CausticGroup causticGroup = (CausticGroup)xstream.fromXML(xml);
@@ -217,6 +301,10 @@ public class CausticFileImporter {
         }
 
         exportProduct(product, targetArchive);
+    }
+
+    String toXML(Object instance) {
+        return xstream.toXML(instance);
     }
 
 }

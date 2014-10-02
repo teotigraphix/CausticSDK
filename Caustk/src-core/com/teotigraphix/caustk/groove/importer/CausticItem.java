@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.groove.importer;
 
 public abstract class CausticItem {
 
-    private boolean export;
+    private transient boolean export;
 
     private String path;
 

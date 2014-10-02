@@ -50,4 +50,11 @@ public class CausticSound extends CausticItem {
         this.displayName = displayName;
         effect = new CausticEffect(index, effectName);
     }
+
+    @Override
+    public String toString() {
+        return "CausticSound [\nname=" + name + ", displayName=" + displayName + ", index=" + index
+                + ", effect=" + effect + "\n]";
+    }
+
 }

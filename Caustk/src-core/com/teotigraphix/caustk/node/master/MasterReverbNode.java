@@ -410,4 +410,14 @@ public class MasterReverbNode extends MasterChildNode {
         setStereoSpread(queryStereoSpread());
         setWet(queryWet());
     }
+
+    @Override
+    public String toString() {
+        return "MasterReverbNode [preDelay=" + preDelay + ", roomSize=" + roomSize + ", hfDamping="
+                + hfDamping + ", diffuse=" + diffuse + ", ditherEchoes=" + ditherEchoes
+                + ", erGain=" + erGain + ", erDecay=" + erDecay + ", stereoDelay=" + stereoDelay
+                + ", stereoSpread=" + stereoSpread + ", wet=" + wet + ", isBypass=" + isBypass()
+                + "]";
+    }
+
 }

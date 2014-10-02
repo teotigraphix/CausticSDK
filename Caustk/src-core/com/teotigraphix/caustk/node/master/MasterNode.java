@@ -221,4 +221,11 @@ public class MasterNode extends NodeBase {
             this.value = value;
         }
     }
+
+    @Override
+    public String toString() {
+        return "MasterNode [delay=" + delay + ", reverb=" + reverb + ", equalizer=" + equalizer
+                + ", limiter=" + limiter + ", volume=" + volume + ", effects=" + effects + "]";
+    }
+
 }

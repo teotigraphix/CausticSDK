@@ -104,4 +104,10 @@ public class MasterVolumeNode extends MasterChildNode {
     protected void restoreComponents() {
         setOut(queryOut());
     }
+
+    @Override
+    public String toString() {
+        return "MasterVolumeNode [out=" + out + ", isBypass=" + isBypass() + "]";
+    }
+
 }

@@ -30,4 +30,10 @@ public class CausticEffect extends CausticItem {
     public CausticEffect(int index, String displayName) {
         this.displayName = displayName;
     }
+
+    @Override
+    public String toString() {
+        return "CausticEffect [\ndisplayName=" + displayName + "\n]";
+    }
+
 }

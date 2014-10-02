@@ -206,4 +206,11 @@ public class MasterLimiterNode extends MasterChildNode {
         setPre(queryPre());
         setRelease(queryRelease());
     }
+
+    @Override
+    public String toString() {
+        return "MasterLimiterNode [pre=" + pre + ", attack=" + attack + ", release=" + release
+                + ", post=" + post + ", isBypass=" + isBypass() + "]";
+    }
+
 }
