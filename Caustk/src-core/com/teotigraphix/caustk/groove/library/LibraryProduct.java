@@ -29,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
@@ -197,6 +198,9 @@ public class LibraryProduct extends LibraryItem {
     /**
      * Fills the {@link LibraryGroup} with its elements parsed from a native
      * <code>.caustic</code> source file.
+     * <p>
+     * the library group must had a {@link CausticGroup} created and loaded
+     * before this method is called.
      * 
      * @param libraryGroup The library group to fill and populate with
      *            {@link LibraryItem}s parsed from a .caustic file.

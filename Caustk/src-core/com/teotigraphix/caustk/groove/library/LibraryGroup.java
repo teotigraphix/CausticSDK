@@ -68,6 +68,14 @@ public class LibraryGroup extends LibraryProductItem {
         return manifest;
     }
 
+    public String getName() {
+        return manifest.getName();
+    }
+
+    public String getDisplayName() {
+        return manifest.getDisplayName();
+    }
+
     //----------------------------------
     // sounds
     //----------------------------------
@@ -105,4 +113,5 @@ public class LibraryGroup extends LibraryProductItem {
         sounds.put(index, sound);
         sound.setGroup(this);
     }
+
 }
