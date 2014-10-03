@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.vocoder;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VocoderMessage;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -40,22 +41,31 @@ public class ModulatorControlsComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private TreeMap<Integer, Float> character = new TreeMap<Integer, Float>();
 
+    @Tag(101)
     private boolean sendNotes;
 
+    @Tag(102)
     private CarrierOscWaveform waveform;
 
+    @Tag(103)
     private float unison;
 
+    @Tag(104)
     private float sub;
 
+    @Tag(105)
     private float noise;
 
+    @Tag(106)
     private float slew;
 
+    @Tag(107)
     private float hfBypass;
 
+    @Tag(108)
     private float dry;
 
     //--------------------------------------------------------------------------

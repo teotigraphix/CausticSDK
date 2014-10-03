@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.organ;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OrganMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -36,16 +37,22 @@ public class LeslieComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int[] drawbar;
 
+    @Tag(101)
     private float percTone;
 
+    @Tag(102)
     private float percDecay;
 
+    @Tag(103)
     private float leslieRate;
 
+    @Tag(104)
     private float leslieDepth;
 
+    @Tag(105)
     private float drive;
 
     //--------------------------------------------------------------------------

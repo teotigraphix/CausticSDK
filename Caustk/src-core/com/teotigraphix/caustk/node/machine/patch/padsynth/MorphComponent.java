@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.padsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -37,16 +38,22 @@ public class MorphComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float blend = 0f;
 
+    @Tag(101)
     private boolean evelopeEnabled = true;
 
+    @Tag(102)
     private float attack = 0f;
 
+    @Tag(103)
     private float decay = 0f;
 
+    @Tag(104)
     private float sustain = 1f;
 
+    @Tag(105)
     private float release = 0f;
 
     //--------------------------------------------------------------------------

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.padsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -38,12 +39,16 @@ public class LFO1Component extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     protected LFO1Target target = LFO1Target.Off;
 
+    @Tag(101)
     protected int rate = 6;
 
+    @Tag(102)
     protected float depth = 0f;
 
+    @Tag(103)
     protected float phase = 0f;
 
     //--------------------------------------------------------------------------

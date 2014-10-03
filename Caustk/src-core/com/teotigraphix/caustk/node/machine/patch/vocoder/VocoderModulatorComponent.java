@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.machine.patch.vocoder;
 
 import java.io.File;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VocoderMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -38,8 +39,10 @@ public class VocoderModulatorComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int previewIndex;
 
+    @Tag(101)
     private int carrierSource;
 
     //--------------------------------------------------------------------------

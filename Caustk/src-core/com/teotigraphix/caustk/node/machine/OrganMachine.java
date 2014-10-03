@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.organ.LeslieComponent;
@@ -35,6 +36,7 @@ public class OrganMachine extends MachineNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private LeslieComponent leslie;
 
     //--------------------------------------------------------------------------

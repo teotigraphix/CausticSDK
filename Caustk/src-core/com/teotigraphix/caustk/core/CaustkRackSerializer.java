@@ -27,6 +27,15 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
+import com.teotigraphix.caustk.core.osc.FilterMessage.FilterType;
+import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Waveform;
+import com.teotigraphix.caustk.core.osc.PadSynthMessage.LFO1Target;
+import com.teotigraphix.caustk.core.osc.SubSynthMessage.CentsMode;
+import com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO2Target;
+import com.teotigraphix.caustk.core.osc.SubSynthMessage.ModulationMode;
+import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc1Waveform;
+import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
+import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
@@ -55,11 +64,13 @@ import com.teotigraphix.caustk.node.machine.KSSynthMachine;
 import com.teotigraphix.caustk.node.machine.ModularMachine;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
+import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
+import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.DistortionComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.FilterComponent;
@@ -94,6 +105,18 @@ import com.teotigraphix.caustk.node.machine.patch.modular.SubOscillator;
 import com.teotigraphix.caustk.node.machine.patch.modular.ThreeInputMixer;
 import com.teotigraphix.caustk.node.machine.patch.modular.TwoInputMixer;
 import com.teotigraphix.caustk.node.machine.patch.modular.WaveformGenerator;
+import com.teotigraphix.caustk.node.machine.patch.organ.LeslieComponent;
+import com.teotigraphix.caustk.node.machine.patch.padsynth.HarmonicsComponent;
+import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO1Component;
+import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO2Component;
+import com.teotigraphix.caustk.node.machine.patch.padsynth.MorphComponent;
+import com.teotigraphix.caustk.node.machine.patch.padsynth.VolumeEnvelopeComponent;
+import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerComponent;
+import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMTunerComponent;
+import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc1Component;
+import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc2Component;
+import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControlsComponent;
+import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.ClipComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
@@ -132,150 +155,231 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.setDefaultSerializer(TaggedFieldSerializer.class);
         kryo.setRegistrationRequired(true);
 
-        // native 0-50
+        //------------------------------
+        // native 0-100
+        //------------------------------
+
         kryo.register(byte[].class, 0);
         kryo.register(boolean[].class, 1);
-        kryo.register(UUID.class, new UUIDSerializer(), 2);
-        kryo.register(ArrayList.class, 3);
-        kryo.register(TreeMap.class, 4);
-        kryo.register(HashMap.class, 5);
+        kryo.register(int[].class, 2);
+        kryo.register(double[].class, 3);
+        kryo.register(float[].class, 4);
+        kryo.register(float[][].class, 5);
         kryo.register(String[].class, 6);
+        kryo.register(Integer[].class, 7);
+        kryo.register(Float[].class, 8);
+        kryo.register(UUID.class, new UUIDSerializer(), 9);
+        kryo.register(ArrayList.class, 10);
+        kryo.register(TreeMap.class, 11);
+        kryo.register(HashMap.class, 12);
 
-        // core 51 - 100
-        kryo.register(CausticFile.class, 51);
-        kryo.register(CaustkProject.class, 52);
-        kryo.register(MachineType.class, 53);
+        //------------------------------
+        // core 101 - 300
+        //------------------------------
 
-        kryo.register(ChordReference.class, 54);
-        kryo.register(MidiReference.class, 55);
-        kryo.register(NoteReference.class, 56);
-        kryo.register(ScaleReference.class, 57);
+        kryo.register(CausticFile.class, 101);
+        kryo.register(CaustkProject.class, 102);
+        kryo.register(MachineType.class, 103);
 
-        // 101-500 node
-        kryo.register(NodeMetaData.class, 101);
-        kryo.register(RackNode.class, 102);
+        kryo.register(ChordReference.class, 104);
+        kryo.register(MidiReference.class, 105);
+        kryo.register(NoteReference.class, 106);
+        kryo.register(ScaleReference.class, 107);
 
-        // node/effects 120-200
-        kryo.register(EffectType.class, 120);
-        kryo.register(ChorusMode.class, 121);
-        kryo.register(DelayMode.class, 122);
-        kryo.register(DistortionProgram.class, 123);
-        kryo.register(FlangerMode.class, 124);
-        kryo.register(MultiFilterMode.class, 125);
-        kryo.register(StaticFlangerMode.class, 126);
+        kryo.register(NodeMetaData.class, 108);
+        kryo.register(RackNode.class, 109);
 
-        kryo.register(AutoWahEffect.class, 140);
-        kryo.register(BitcrusherEffect.class, 141);
-        kryo.register(CabinetSimulatorEffect.class, 142);
-        kryo.register(ChorusEffect.class, 143);
-        kryo.register(CombFilterEffect.class, 144);
-        kryo.register(CompressorEffect.class, 145);
-        kryo.register(DelayEffect.class, 156);
-        kryo.register(DistortionEffect.class, 157);
-        kryo.register(FlangerEffect.class, 148);
-        kryo.register(LimiterEffect.class, 149);
-        kryo.register(MultiFilterEffect.class, 150);
-        kryo.register(ParametricEQEffect.class, 151);
-        kryo.register(PhaserEffect.class, 152);
-        kryo.register(ReverbEffect.class, 153);
-        kryo.register(StaticFlangerEffect.class, 154);
-        kryo.register(VinylSimulatorEffect.class, 155);
+        // effects
+        kryo.register(EffectType.class, 200);
+        kryo.register(ChorusMode.class, 201);
+        kryo.register(DelayMode.class, 202);
+        kryo.register(DistortionProgram.class, 203);
+        kryo.register(FlangerMode.class, 204);
+        kryo.register(MultiFilterMode.class, 205);
+        kryo.register(StaticFlangerMode.class, 206);
+
+        kryo.register(AutoWahEffect.class, 207);
+        kryo.register(BitcrusherEffect.class, 208);
+        kryo.register(CabinetSimulatorEffect.class, 209);
+        kryo.register(ChorusEffect.class, 210);
+        kryo.register(CombFilterEffect.class, 211);
+        kryo.register(CompressorEffect.class, 212);
+        kryo.register(DelayEffect.class, 213);
+        kryo.register(DistortionEffect.class, 214);
+        kryo.register(FlangerEffect.class, 215);
+        kryo.register(LimiterEffect.class, 216);
+        kryo.register(MultiFilterEffect.class, 217);
+        kryo.register(ParametricEQEffect.class, 218);
+        kryo.register(PhaserEffect.class, 219);
+        kryo.register(ReverbEffect.class, 220);
+        kryo.register(StaticFlangerEffect.class, 221);
+        kryo.register(VinylSimulatorEffect.class, 222);
 
         // Main
-        kryo.register(MasterNode.class);
-        kryo.register(MasterDelayNode.class);
-        kryo.register(MasterReverbNode.class);
-        kryo.register(MasterEqualizerNode.class);
-        kryo.register(MasterLimiterNode.class);
-        kryo.register(MasterVolumeNode.class);
+        kryo.register(MasterNode.class, 250);
+        kryo.register(MasterDelayNode.class, 251);
+        kryo.register(MasterReverbNode.class, 252);
+        kryo.register(MasterEqualizerNode.class, 253);
+        kryo.register(MasterLimiterNode.class, 254);
+        kryo.register(MasterVolumeNode.class, 255);
 
-        kryo.register(SequencerNode.class);
-        kryo.register(SequencerNode.SequencerMode.class);
-        kryo.register(SequencerNode.ShuffleMode.class);
-        kryo.register(SequencerNode.SongEndMode.class);
+        kryo.register(SequencerNode.class, 256);
+        kryo.register(SequencerNode.SequencerMode.class, 257);
+        kryo.register(SequencerNode.ShuffleMode.class, 258);
+        kryo.register(SequencerNode.SongEndMode.class, 259);
 
-        kryo.register(PatternNode.class);
-        kryo.register(PatternNode.Resolution.class);
-        kryo.register(PatternNode.ShuffleMode.class);
-        kryo.register(NoteNode.class);
+        kryo.register(PatternNode.class, 260);
+        kryo.register(PatternNode.Resolution.class, 261);
+        kryo.register(PatternNode.ShuffleMode.class, 262);
+        kryo.register(NoteNode.class, 263);
 
-        kryo.register(VolumeComponent.class);
-        kryo.register(PresetComponent.class);
-        kryo.register(SynthComponent.class);
-        kryo.register(PatternSequencerComponent.class);
-        kryo.register(MixerChannel.class);
-        kryo.register(EffectsChannel.class);
-        kryo.register(TrackComponent.class);
-        kryo.register(ClipComponent.class);
+        kryo.register(VolumeComponent.class, 264);
+        kryo.register(PresetComponent.class, 265);
+        kryo.register(SynthComponent.class, 266);
+        kryo.register(PatternSequencerComponent.class, 267);
+        kryo.register(MixerChannel.class, 268);
+        kryo.register(EffectsChannel.class, 269);
+        kryo.register(TrackComponent.class, 270);
+        kryo.register(ClipComponent.class, 271);
 
-        // node/machine 200-220
-        kryo.register(BasslineMachine.class, 200);
-        kryo.register(BeatBoxMachine.class, 201);
-        kryo.register(EightBitSynthMachine.class, 202);
-        kryo.register(FMSynthMachine.class, 203);
-        kryo.register(KSSynthMachine.class, 204);
-        kryo.register(ModularMachine.class, 205);
-        kryo.register(OrganMachine.class, 206);
-        kryo.register(PCMSynthMachine.class, 207);
-        kryo.register(SubSynthMachine.class, 208);
-        kryo.register(VocoderMachine.class, 209);
+        //------------------------------
+        // machines 301-350
+        //------------------------------
 
-        // node/machine 200
-        // node/machine/patch/bassline 200-220
-        kryo.register(DistortionComponent.class);
-        kryo.register(BasslineMessage.DistorionProgram.class);
-        kryo.register(FilterComponent.class);
-        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.LFO1Component.class);
-        kryo.register(BasslineMessage.LFOTarget.class);
-        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.Osc1Component.class);
-        kryo.register(BasslineMessage.Osc1Waveform.class);
+        kryo.register(BasslineMachine.class, 301);
+        kryo.register(BeatBoxMachine.class, 302);
+        kryo.register(EightBitSynthMachine.class, 303);
+        kryo.register(FMSynthMachine.class, 304);
+        kryo.register(KSSynthMachine.class, 305);
+        kryo.register(ModularMachine.class, 306);
+        kryo.register(OrganMachine.class, 307);
+        kryo.register(PadSynthMachine.class, 308);
+        kryo.register(PCMSynthMachine.class, 309);
+        kryo.register(SubSynthMachine.class, 310);
+        kryo.register(VocoderMachine.class, 311);
 
-        // node/machine/patch/beatbox 221-240
-        kryo.register(WavSamplerComponent.class);
-        kryo.register(WavSamplerChannel.class);
+        //------------------------------
+        // Bassline 351-400
+        //------------------------------
 
-        // node/machine/patch/eightbitsynth 241-260
-        kryo.register(EightBitSynthControlsComponent.class);
-        kryo.register(ExpressionComponent.class);
+        kryo.register(DistortionComponent.class, 351);
+        kryo.register(BasslineMessage.DistorionProgram.class, 352);
+        kryo.register(FilterComponent.class, 353);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.LFO1Component.class, 354);
+        kryo.register(BasslineMessage.LFOTarget.class, 355);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.Osc1Component.class, 356);
+        kryo.register(BasslineMessage.Osc1Waveform.class, 357);
 
-        // node/machine/patch/fmsynth 261-280
-        kryo.register(FMControlsComponent.class);
-        kryo.register(FMSynthMessage.FMAlgorithm.class);
-        kryo.register(LFOComponent.class);
-        kryo.register(FMOperatorComponent.class);
+        //------------------------------
+        // BeatBox 401-450
+        //------------------------------
 
-        // node/machine/patch/modular 280-320
-        kryo.register(ModularBayComponent.class);
-        kryo.register(AREnvelope.class);
-        kryo.register(AREnvelope.EnvelopeSlope.class);
-        kryo.register(Arpeggiator.class);
-        kryo.register(Arpeggiator.Sequence.class);
-        kryo.register(Crossfader.class);
-        kryo.register(CrossoverModule.class);
-        kryo.register(DADSREnvelope.class);
-        kryo.register(DADSREnvelope.EnvelopeSlope.class);
-        kryo.register(DecayEnvelope.class);
-        kryo.register(DelayModule.class);
-        kryo.register(FMPair.class);
-        kryo.register(FormantFilter.class);
-        kryo.register(LagProcessor.class);
-        kryo.register(MiniLFO.class);
-        kryo.register(MiniLFO.WaveForm.class);
-        kryo.register(NoiseGenerator.class);
-        kryo.register(PanModule.class);
-        kryo.register(PulseGenerator.class);
-        kryo.register(ResonantLP.class);
-        kryo.register(SampleAndHold.class);
-        kryo.register(Saturator.class);
-        kryo.register(SixInputMixer.class);
-        kryo.register(SubOscillator.class);
-        kryo.register(SVFilter.class);
-        kryo.register(ThreeInputMixer.class);
-        kryo.register(TwoInputMixer.class);
-        kryo.register(WaveformGenerator.class);
+        kryo.register(WavSamplerComponent.class, 401);
+        kryo.register(WavSamplerChannel.class, 402);
+
+        //------------------------------
+        // EightBitSynth 451-500
+        //------------------------------
+
+        kryo.register(EightBitSynthControlsComponent.class, 451);
+        kryo.register(ExpressionComponent.class, 452);
+
+        //------------------------------
+        // FMSynth 501-550
+        //------------------------------
+
+        kryo.register(FMControlsComponent.class, 501);
+        kryo.register(FMSynthMessage.FMAlgorithm.class, 502);
+        kryo.register(LFOComponent.class, 503);
+        kryo.register(FMOperatorComponent.class, 504);
+
+        //------------------------------
+        // Modular 551-600
+        //------------------------------
+
+        kryo.register(ModularBayComponent.class, 551);
+        kryo.register(AREnvelope.class, 552);
+        kryo.register(AREnvelope.EnvelopeSlope.class, 553);
+        kryo.register(Arpeggiator.class, 554);
+        kryo.register(Arpeggiator.Sequence.class, 555);
+        kryo.register(Crossfader.class, 556);
+        kryo.register(CrossoverModule.class, 557);
+        kryo.register(DADSREnvelope.class, 558);
+        kryo.register(DADSREnvelope.EnvelopeSlope.class, 559);
+        kryo.register(DecayEnvelope.class, 560);
+        kryo.register(DelayModule.class, 561);
+        kryo.register(FMPair.class, 562);
+        kryo.register(FormantFilter.class, 563);
+        kryo.register(LagProcessor.class, 564);
+        kryo.register(MiniLFO.class, 565);
+        kryo.register(MiniLFO.WaveForm.class, 566);
+        kryo.register(NoiseGenerator.class, 567);
+        kryo.register(PanModule.class, 568);
+        kryo.register(PulseGenerator.class, 569);
+        kryo.register(ResonantLP.class, 570);
+        kryo.register(SampleAndHold.class, 571);
+        kryo.register(Saturator.class, 572);
+        kryo.register(SixInputMixer.class, 573);
+        kryo.register(SubOscillator.class, 574);
+        kryo.register(SVFilter.class, 575);
+        kryo.register(ThreeInputMixer.class, 576);
+        kryo.register(TwoInputMixer.class, 577);
+        kryo.register(WaveformGenerator.class, 578);
         //kryo.register(ModularVolumeBug.class);
-        // node/machine/patch/modular 280-320
 
+        //------------------------------
+        // Organ 601-650
+        //------------------------------
+
+        kryo.register(LeslieComponent.class, 601);
+
+        //------------------------------
+        // PadSynth 651-700
+        //------------------------------
+
+        kryo.register(HarmonicsComponent.class, 651);
+        kryo.register(LFO1Component.class, 652);
+        kryo.register(LFO1Target.class, 653);
+        kryo.register(LFO2Component.class, 654);
+        kryo.register(MorphComponent.class, 655);
+        kryo.register(VolumeEnvelopeComponent.class, 656);
+
+        //------------------------------
+        // PCMSynth 701-750
+        //------------------------------
+
+        kryo.register(SynthFilterComponent.class, 701);
+        kryo.register(FilterType.class, 702);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.pcmsynth.LFO1Component.class, 703);
+        kryo.register(com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Target.class, 704);
+        kryo.register(LFO1Waveform.class, 705);
+        kryo.register(PCMSamplerComponent.class, 706);
+        kryo.register(PCMTunerComponent.class, 707);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent.class, 708);
+
+        //------------------------------
+        // SubSynth 751-800
+        //------------------------------
+
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.subsynth.LFO1Component.class, 751);
+        kryo.register(com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO1Target.class, 752);
+        kryo.register(com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO1Waveform.class, 753);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.subsynth.LFO2Component.class, 754);
+        kryo.register(LFO2Target.class, 755);
+        kryo.register(Osc1Component.class, 756);
+        kryo.register(ModulationMode.class, 757);
+        kryo.register(Osc1Waveform.class, 758);
+        kryo.register(Osc2Component.class, 759);
+        kryo.register(CentsMode.class, 760);
+        kryo.register(Osc2Waveform.class, 761);
+
+        //------------------------------
+        // Vocoder 801-850
+        //------------------------------
+
+        kryo.register(ModulatorControlsComponent.class, 801);
+        kryo.register(CarrierOscWaveform.class, 802);
+        kryo.register(VocoderModulatorComponent.class, 803);
     }
 
     @Override

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
@@ -42,8 +43,10 @@ public class VocoderMachine extends MachineNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private VocoderModulatorComponent modulator;
 
+    @Tag(101)
     private ModulatorControlsComponent controls;
 
     //--------------------------------------------------------------------------

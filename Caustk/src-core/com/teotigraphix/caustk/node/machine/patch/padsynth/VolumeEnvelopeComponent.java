@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.padsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -37,16 +38,22 @@ public class VolumeEnvelopeComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float gain1;
 
+    @Tag(101)
     private float gain2;
 
+    @Tag(102)
     private float attack;
 
+    @Tag(103)
     private float decay;
 
+    @Tag(104)
     private float sustain;
 
+    @Tag(105)
     private float release;
 
     //--------------------------------------------------------------------------
