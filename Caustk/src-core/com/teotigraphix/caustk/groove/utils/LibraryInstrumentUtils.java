@@ -42,6 +42,14 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
  */
 public class LibraryInstrumentUtils {
 
+    private static final String SOUND_INSTRUMENT_ARCHIVE = "instrument.ginst";
+
+    private static final String SOUND_INSTRUMENT_DIR = "instrument/";
+
+    private static final String PRESET = "preset";
+
+    private static final String INSTRUMENT_BIN = "instrument.bin";
+
     //--------------------------------------------------------------------------
     // Public Creation API
     //--------------------------------------------------------------------------
@@ -69,19 +77,9 @@ public class LibraryInstrumentUtils {
     // Public State API
     //--------------------------------------------------------------------------
 
-    public static void saveInstrument(LibraryProductItem item, LibraryProduct product,
-            File tempDirectory) throws IOException {
-        //File location = resolveAbsoluteArchive(node.getInfo());
-        // String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-
-        //String fileName = FilenameUtils.getBaseName(location.getName());
-        //File sourceDirectory = new File(RuntimeUtils.getApplicationTempDirectory(), fileName);
-        //sourceDirectory.mkdirs();
-        String fileName = "preset";
-        File stateFile = new File(tempDirectory, "manifest.bin");
-        //        FileUtils.writeStringToFile(stateFile, json);
-
-        SerializeUtils.pack(stateFile, item);
+    public static void serialize(LibraryProductItem item, LibraryProduct product, File tempDirectory)
+            throws IOException {
+        SerializeUtils.pack(new File(tempDirectory, INSTRUMENT_BIN), item);
 
         // XXX construct the archive for the specific node type
         // for now the only special node type is MachineNode that needs
@@ -90,43 +88,34 @@ public class LibraryInstrumentUtils {
                 && !(((LibraryInstrument)item).getMachineNode() instanceof VocoderMachine)) {
             File presetsDirectory = tempDirectory;
             MachineNode machineNode = ((LibraryInstrument)item).getMachineNode();
-            File file = new File(presetsDirectory, fileName + "."
+            File file = new File(presetsDirectory, PRESET + "."
                     + machineNode.getType().getExtension());
             FileUtils.writeByteArrayToFile(file, machineNode.getPreset().getRestoredData());
-            //            machineNode.getPreset().exportPreset(presetsDirectory,
-            //                    machineNode.getPreset().getName());
-            // XXX Must have the bytes for this to work in this state
-            // who knows where the rack is and we can't just "save" a preset
-            // for a machine we don't even know exists
-            //machineNode.getPreset().fill();
         }
     }
 
-    public static LibraryInstrument importInstrument(File soundDirectory) throws CausticException,
-            IOException {
-        File tempDirectory = new File(soundDirectory, "instrument/");
+    public static LibraryInstrument importInstrumentFromSoundDirectory(File soundDirectory)
+            throws CausticException, IOException {
+        File uncompressDirectory = new File(soundDirectory, SOUND_INSTRUMENT_DIR);
+        File instrumentFile = new File(soundDirectory, SOUND_INSTRUMENT_ARCHIVE);
+        return importInstrument(uncompressDirectory, instrumentFile);
+    }
 
-        File instrumentFile = new File(soundDirectory, "instrument.ginst");
+    public static LibraryInstrument importInstrument(File uncompressDirectory, File instrumentFile)
+            throws CausticException, IOException {
         ZipUncompress uncompress = new ZipUncompress(instrumentFile);
-        uncompress.unzip(tempDirectory);
+        uncompress.unzip(uncompressDirectory);
 
-        File manifest = new File(tempDirectory, "manifest.json");
+        File manifest = new File(uncompressDirectory, INSTRUMENT_BIN);
         if (!manifest.exists())
-            throw new CausticException("manifest.json does not exist");
+            throw new CausticException(INSTRUMENT_BIN + " does not exist");
 
-        //        String json = FileUtils.readFileToString(manifest);
-        //        LibraryInstrument libraryInstrument = CaustkRuntime.getInstance().getFactory()
-        //                .deserialize(json, LibraryInstrument.class);
         LibraryInstrument libraryInstrument = SerializeUtils.unpack(manifest,
                 LibraryInstrument.class);
 
         String type = libraryInstrument.getMachineNode().getType().getExtension();
-        libraryInstrument.setPendingPresetFile(new File(tempDirectory, "preset." + type));
+        libraryInstrument.setPendingPresetFile(new File(uncompressDirectory, "preset." + type));
 
         return libraryInstrument;
-    }
-
-    public static File toInstrumentFile(File parent) {
-        return new File(parent, "instrument.ginst");
     }
 }

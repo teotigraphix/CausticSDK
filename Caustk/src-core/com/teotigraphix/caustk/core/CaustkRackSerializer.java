@@ -38,8 +38,10 @@ import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
@@ -394,6 +396,8 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
 
         kryo.register(LibraryEffect.class, 925);
         kryo.register(LibraryEffectManifest.class, 926);
+        kryo.register(LibraryInstrument.class, 927);
+        kryo.register(LibraryInstrumentManifest.class, 928);
     }
 
     @Override

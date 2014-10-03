@@ -59,7 +59,7 @@ public class LibraryProductUtils {
                 LibraryGroupUtils.saveGroup((LibraryGroup)item, product, tempDirectory);
                 break;
             case Instrument:
-                LibraryInstrumentUtils.saveInstrument(item, product, tempDirectory);
+                LibraryInstrumentUtils.serialize(item, product, tempDirectory);
                 break;
             case Product:
                 break;

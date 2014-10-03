@@ -45,7 +45,7 @@ public class LibrarySoundUtils {
         File tempInstrumentDir = new File(tempDirectory, "instrument");
 
         LibraryEffectUtils.serialize(effect, product, tempEffectDir);
-        LibraryInstrumentUtils.saveInstrument(instrument, product, tempInstrumentDir);
+        LibraryInstrumentUtils.serialize(instrument, product, tempInstrumentDir);
 
         ZipCompress compress = null;
 
@@ -92,7 +92,7 @@ public class LibrarySoundUtils {
         LibraryEffect effect = LibraryEffectUtils.importEffectFromSoundDirectory(tempDirectory);
         librarySound.setEffect(effect);
 
-        LibraryInstrument instrument = LibraryInstrumentUtils.importInstrument(tempDirectory);
+        LibraryInstrument instrument = LibraryInstrumentUtils.importInstrumentFromSoundDirectory(tempDirectory);
         librarySound.setInstrument(instrument);
     }
 }

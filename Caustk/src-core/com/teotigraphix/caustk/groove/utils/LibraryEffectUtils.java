@@ -35,7 +35,7 @@ public class LibraryEffectUtils {
 
     private static final String EFFECT_BIN = "effect.bin";
 
-    private static final String SOUND_EFFECT_DIRECTORY = "effect/";
+    private static final String SOUND_EFFECT_DIR = "effect/";
 
     private static final String SOUND_EFFECT_ARCHIVE = "effect.gfx";
 
@@ -50,7 +50,7 @@ public class LibraryEffectUtils {
 
     public static LibraryEffect importEffectFromSoundDirectory(File soundDirectory)
             throws CausticException, IOException {
-        File uncompressDirectory = new File(soundDirectory, SOUND_EFFECT_DIRECTORY);
+        File uncompressDirectory = new File(soundDirectory, SOUND_EFFECT_DIR);
         File effectFile = new File(soundDirectory, SOUND_EFFECT_ARCHIVE);
         return importEffect(uncompressDirectory, effectFile);
     }
