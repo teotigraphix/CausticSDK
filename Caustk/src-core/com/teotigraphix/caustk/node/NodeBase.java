@@ -22,7 +22,6 @@ package com.teotigraphix.caustk.node;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CaustkRack;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.core.GsonExclude;
 import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
@@ -47,8 +46,19 @@ public abstract class NodeBase implements ICaustkNode {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    @GsonExclude
     private NodeMetaData data = null;
+
+    @Tag(1)
+    private String label;
+
+    @Tag(2)
+    private Object icon;
+
+    @Tag(3)
+    private Object color;
+
+    @Tag(4)
+    private boolean selected;
 
     //----------------------------------
     // data
@@ -68,7 +78,9 @@ public abstract class NodeBase implements ICaustkNode {
 
     @Override
     public String getLabel() {
-        return data.getLabel();
+        if (data != null)
+            return data.getLabel();
+        return label;
     }
 
     /**
@@ -78,10 +90,14 @@ public abstract class NodeBase implements ICaustkNode {
      * @see NodeLabelEvent
      */
     public void setLabel(String label) {
-        final String oldLabel = data.getLabel();
-        if (oldLabel != null && oldLabel.equals(label))
-            return;
-        data.setLabel(label);
+        if (data != null) {
+            final String oldLabel = data.getLabel();
+            if (oldLabel != null && oldLabel.equals(label))
+                return;
+            data.setLabel(label);
+        } else {
+            this.label = label;
+        }
         post(new NodeLabelEvent(this, label));
     }
 
@@ -93,7 +109,9 @@ public abstract class NodeBase implements ICaustkNode {
      * The node's iconic visual display.
      */
     public Object getIcon() {
-        return data.getIcon();
+        if (data != null)
+            return data.getIcon();
+        return icon;
     }
 
     /**
@@ -106,9 +124,13 @@ public abstract class NodeBase implements ICaustkNode {
      * @see NodeIconEvent
      */
     public void setIcon(Object icon) {
-        if (icon == data.getIcon())
-            return;
-        data.setIcon(icon);
+        if (data != null) {
+            if (icon == data.getIcon())
+                return;
+            data.setIcon(icon);
+        } else {
+            this.icon = icon;
+        }
         post(new NodeIconEvent(this, icon));
     }
 
@@ -123,7 +145,9 @@ public abstract class NodeBase implements ICaustkNode {
      *         implementation.
      */
     public Object getColor() {
-        return data.getColor();
+        if (data != null)
+            return data.getColor();
+        return icon;
     }
 
     /**
@@ -133,9 +157,13 @@ public abstract class NodeBase implements ICaustkNode {
      * @see NodeColorEvent
      */
     public void setColor(Object color) {
-        if (color == data.getColor())
-            return;
-        data.setColor(color);
+        if (data != null) {
+            if (color == data.getColor())
+                return;
+            data.setColor(color);
+        } else {
+            this.color = color;
+        }
         post(new NodeColorEvent(this, color));
     }
 
@@ -147,7 +175,9 @@ public abstract class NodeBase implements ICaustkNode {
      * Whether this node is selected.
      */
     public boolean isSelected() {
-        return data.isSelected();
+        if (data != null)
+            return data.isSelected();
+        return selected;
     }
 
     /**
@@ -156,9 +186,13 @@ public abstract class NodeBase implements ICaustkNode {
      * @param selected The selected state.
      */
     public void setSelected(boolean selected) {
-        if (selected == data.isSelected())
-            return;
-        data.setSelected(selected);
+        if (data != null) {
+            if (selected == data.isSelected())
+                return;
+            data.setSelected(selected);
+        } else {
+            this.selected = selected;
+        }
         post(new NodeSelectedEvent(this, selected));
     }
 
