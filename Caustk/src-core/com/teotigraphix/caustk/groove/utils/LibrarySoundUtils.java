@@ -35,6 +35,12 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibrarySoundUtils {
 
+    private static final String INSTRUMENT_GINST = "instrument.ginst";
+
+    private static final String EFFECT_GFX = "effect.gfx";
+
+    private static final String SOUND_BIN = "sound.bin";
+
     public static void saveSound(LibrarySound item, LibraryProduct product, File tempDirectory)
             throws IOException {
 
@@ -42,7 +48,11 @@ public class LibrarySoundUtils {
         LibraryInstrument instrument = item.getInstrument();
 
         File tempEffectDir = new File(tempDirectory, "effect");
+        if (!tempEffectDir.exists())
+            FileUtils.forceMkdir(tempEffectDir);
         File tempInstrumentDir = new File(tempDirectory, "instrument");
+        if (!tempInstrumentDir.exists())
+            FileUtils.forceMkdir(tempInstrumentDir);
 
         LibraryEffectUtils.serialize(effect, product, tempEffectDir);
         LibraryInstrumentUtils.serialize(instrument, product, tempInstrumentDir);
@@ -50,10 +60,10 @@ public class LibrarySoundUtils {
         ZipCompress compress = null;
 
         compress = new ZipCompress(tempEffectDir);
-        compress.zip(new File(tempDirectory, "effect.gfx"));
+        compress.zip(new File(tempDirectory, EFFECT_GFX));
 
         compress = new ZipCompress(tempInstrumentDir);
-        compress.zip(new File(tempDirectory, "instrument.ginst"));
+        compress.zip(new File(tempDirectory, INSTRUMENT_GINST));
 
         try {
             Thread.sleep(100);
@@ -64,10 +74,7 @@ public class LibrarySoundUtils {
         FileUtils.forceDelete(tempEffectDir);
         FileUtils.forceDelete(tempInstrumentDir);
 
-        //String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-        //FileUtils.write(new File(tempDirectory, "manifest.json"), json);
-        SerializeUtils.pack(new File(tempDirectory, "manifest.bin"), item);
-
+        SerializeUtils.pack(new File(tempDirectory, SOUND_BIN), item);
     }
 
     public static void importSound(LibrarySound librarySound, File groupDirectory)
@@ -81,18 +88,11 @@ public class LibrarySoundUtils {
         ZipUncompress uncompress = new ZipUncompress(soundFile);
         uncompress.unzip(tempDirectory);
 
-        //        File manifest = new File(tempDirectory, "manifest.json");
-        //        if (!manifest.exists())
-        //            throw new CausticException("manifest does not exist");
-        //        
-        //        String json = FileUtils.readFileToString(manifest);
-        //        LibrarySound librarySound = CaustkRuntime.getInstance().getFactory()
-        //                ._deserialize(json, LibrarySound.class);
-
         LibraryEffect effect = LibraryEffectUtils.importEffectFromSoundDirectory(tempDirectory);
         librarySound.setEffect(effect);
 
-        LibraryInstrument instrument = LibraryInstrumentUtils.importInstrumentFromSoundDirectory(tempDirectory);
+        LibraryInstrument instrument = LibraryInstrumentUtils
+                .importInstrumentFromSoundDirectory(tempDirectory);
         librarySound.setInstrument(instrument);
     }
 }

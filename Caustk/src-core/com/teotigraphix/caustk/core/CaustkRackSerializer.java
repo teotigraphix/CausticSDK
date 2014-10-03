@@ -38,10 +38,14 @@ import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
+import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
@@ -128,6 +132,7 @@ import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
 import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
@@ -248,6 +253,7 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(EffectsChannel.class, 269);
         kryo.register(TrackComponent.class, 270);
         kryo.register(ClipComponent.class, 271);
+        kryo.register(TrackEntryNode.class, 272);
 
         //------------------------------
         // machines 301-350
@@ -398,6 +404,10 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(LibraryEffectManifest.class, 926);
         kryo.register(LibraryInstrument.class, 927);
         kryo.register(LibraryInstrumentManifest.class, 928);
+        kryo.register(LibrarySound.class, 929);
+        kryo.register(LibrarySoundManifest.class, 930);
+        kryo.register(LibraryGroup.class, 931);
+        kryo.register(LibraryGroupManifest.class, 932);
     }
 
     @Override

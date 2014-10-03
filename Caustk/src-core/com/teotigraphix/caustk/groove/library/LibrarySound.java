@@ -85,6 +85,7 @@ public class LibrarySound extends LibraryProductItem {
         return index;
     }
 
+    // used when creating a sound for a group
     public void setIndex(int index) {
         this.index = index;
     }
@@ -144,8 +145,9 @@ public class LibrarySound extends LibraryProductItem {
         if (old != null)
             old.setSound(null);
         this.instrument = instrument;
-        if (instrument != null)
+        if (instrument != null) {
             instrument.setSound(this);
+        }
         instrumentManifest = instrument.getManifest();
     }
 
@@ -163,7 +165,8 @@ public class LibrarySound extends LibraryProductItem {
     LibrarySound() {
     }
 
-    public LibrarySound(LibrarySoundManifest manifest) {
+    public LibrarySound(LibrarySoundManifest manifest, int index) {
         this.manifest = manifest;
+        this.index = index;
     }
 }

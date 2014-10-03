@@ -156,9 +156,10 @@ public class CaustkFactory implements ICaustkFactory {
     }
 
     @Override
-    public LibrarySound createLibrarySound(LibraryProduct product, String name, String relativePath) {
+    public LibrarySound createLibrarySound(LibraryProduct product, int index, String name,
+            String relativePath) {
         LibrarySoundManifest manifest = new LibrarySoundManifest(name, relativePath);
-        LibrarySound librarySound = new LibrarySound(manifest);
+        LibrarySound librarySound = new LibrarySound(manifest, index);
         return librarySound;
     }
 

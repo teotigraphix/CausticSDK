@@ -225,10 +225,11 @@ public class LibraryProduct extends LibraryItem {
      * Saves the product item to disk within the product's directory.
      * 
      * @param item The product item.
+     * @return
      * @throws IOException
      */
-    public void saveItem(LibraryProductItem item) throws IOException {
-        LibraryProductUtils.addArchiveToProduct(item, this);
+    public File saveItem(LibraryProductItem item) throws IOException {
+        return LibraryProductUtils.addArchiveToProduct(item, this);
     }
 
     /**

@@ -50,6 +50,8 @@ public class LibraryProductUtils {
         tempDirectory = new File(tempDirectory, "__" + name + "__");
         if (tempDirectory.exists())
             FileUtils.cleanDirectory(tempDirectory);
+        else
+            FileUtils.forceMkdir(tempDirectory);
 
         switch (item.getFormat()) {
             case Effect:

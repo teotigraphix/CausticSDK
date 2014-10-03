@@ -46,6 +46,8 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryGroupUtils {
 
+    private static final String GROUP_BIN = "group.bin";
+
     public static void fillGroup(LibraryProduct product, LibraryGroup libraryGroup)
             throws CausticException {
 
@@ -56,8 +58,8 @@ public class LibraryGroupUtils {
         RackNode rackNode = CaustkRuntime.getInstance().getRack().create(causticFile);
 
         for (MachineNode machineNode : rackNode.getMachines()) {
-
-            LibrarySound librarySound = fillSound(product, libraryGroup, machineNode);
+            int index = machineNode.getIndex();
+            LibrarySound librarySound = fillSound(index, product, libraryGroup, machineNode);
             libraryGroup.addSound(machineNode.getIndex(), librarySound);
         }
     }
@@ -85,7 +87,7 @@ public class LibraryGroupUtils {
 
         //String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
 
-        SerializeUtils.pack(new File(tempDirectory, "manifest.bin"), item);
+        SerializeUtils.pack(new File(tempDirectory, GROUP_BIN), item);
 
         //FileUtils.write(new File(tempDirectory, "manifest.json"), json);
     }
@@ -97,13 +99,10 @@ public class LibraryGroupUtils {
         ZipUncompress uncompress = new ZipUncompress(sourceFile);
         uncompress.unzip(tempDirectory);
 
-        File manifest = new File(tempDirectory, "manifest.json");
+        File manifest = new File(tempDirectory, GROUP_BIN);
         if (!manifest.exists())
-            throw new CausticException("manifest does not exist");
+            throw new CausticException(GROUP_BIN + " does not exist");
 
-        //        String json = FileUtils.readFileToString(manifest);
-        //        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory()
-        //                .deserialize(json, LibraryGroup.class);
         LibraryGroup libraryGroup = SerializeUtils.unpack(manifest, LibraryGroup.class);
 
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
@@ -116,8 +115,8 @@ public class LibraryGroupUtils {
 
     //--------------------------------------------------------------------------
 
-    private static LibrarySound fillSound(LibraryProduct product, LibraryGroup libraryGroup,
-            MachineNode machineNode) {
+    private static LibrarySound fillSound(int index, LibraryProduct product,
+            LibraryGroup libraryGroup, MachineNode machineNode) {
         CausticGroup causticGroup = libraryGroup.getCausticGroup();
         CausticSound causticSound = libraryGroup.getCausticGroup().getSounds()
                 .get(machineNode.getIndex());
@@ -134,7 +133,8 @@ public class LibraryGroupUtils {
                 machineNode.getName(), groupName, causticSound);
         LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, name, groupName);
 
-        LibrarySound librarySound = getFactory().createLibrarySound(product, name, relativePath);
+        LibrarySound librarySound = getFactory().createLibrarySound(product, index, name,
+                relativePath);
 
         librarySound.setEffect(libraryEffect);
         librarySound.setInstrument(libraryInstrument);
