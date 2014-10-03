@@ -40,8 +40,6 @@ import com.teotigraphix.caustk.utils.ZipCompress;
 
 public class LibraryProductUtils {
 
-    //private static final String MANIFEST_JSON = "manifest.json";
-
     public static File addArchiveToProduct(LibraryProductItem item, LibraryProduct product)
             throws IOException {
         // save the manifest in the correct folder of the product, no zip archive
@@ -55,10 +53,10 @@ public class LibraryProductUtils {
 
         switch (item.getFormat()) {
             case Effect:
-                LibraryEffectUtils.serialize(item, product, tempDirectory);
+                LibraryEffectUtils.serialize((LibraryEffect)item, product, tempDirectory);
                 break;
             case Group:
-                LibraryGroupUtils.saveGroup((LibraryGroup)item, product, tempDirectory);
+                LibraryGroupUtils.serialize((LibraryGroup)item, product, tempDirectory);
                 break;
             case Instrument:
                 LibraryInstrumentUtils.serialize(item, product, tempDirectory);
@@ -70,7 +68,7 @@ public class LibraryProductUtils {
             case Sample:
                 break;
             case Sound:
-                LibrarySoundUtils.saveSound((LibrarySound)item, product, tempDirectory);
+                LibrarySoundUtils.serialize((LibrarySound)item, product, tempDirectory);
                 break;
         }
 

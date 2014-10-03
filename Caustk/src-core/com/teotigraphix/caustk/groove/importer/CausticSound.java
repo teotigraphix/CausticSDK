@@ -33,6 +33,7 @@ public class CausticSound extends CausticItem {
         return name;
     }
 
+    @Override
     public String getDisplayName() {
         return displayName;
     }
@@ -45,10 +46,11 @@ public class CausticSound extends CausticItem {
         return effect;
     }
 
-    public CausticSound(int index, String displayName, String effectName) {
+    public CausticSound(String path, int index, String displayName, String effectName) {
+        super(path, displayName);
         this.index = index;
         this.displayName = displayName;
-        effect = new CausticEffect(index, effectName);
+        effect = new CausticEffect(null, effectName, null, null);
     }
 
     @Override

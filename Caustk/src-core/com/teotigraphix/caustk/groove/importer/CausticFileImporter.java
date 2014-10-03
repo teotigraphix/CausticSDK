@@ -20,6 +20,8 @@
 package com.teotigraphix.caustk.groove.importer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -33,8 +35,10 @@ import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
+import com.teotigraphix.caustk.groove.utils.LibraryEffectUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.SerializeUtils;
@@ -54,28 +58,24 @@ public class CausticFileImporter {
 
         // CausticGroup
         xstream.alias("group", CausticGroup.class);
+        xstream.addImplicitMap(CausticGroup.class, "sounds", CausticSound.class, "index");
         xstream.useAttributeFor(CausticGroup.class, "path");
         xstream.useAttributeFor(CausticGroup.class, "sourceFile");
-        xstream.useAttributeFor(CausticGroup.class, "displayName");
+        xstream.useAttributeFor(CausticItem.class, "displayName");
 
         // CausticSound
         xstream.alias("sound", CausticSound.class);
-        xstream.addImplicitMap(CausticGroup.class, "sounds", CausticSound.class, "index");
         xstream.useAttributeFor(CausticSound.class, "path");
         xstream.useAttributeFor(CausticSound.class, "index");
-        xstream.useAttributeFor(CausticSound.class, "displayName");
+        //xstream.useAttributeFor(CausticSound.class, "displayName");
 
-        // CausticEffect
-        xstream.useAttributeFor(CausticEffect.class, "path");
-        xstream.useAttributeFor(CausticEffect.class, "displayName");
-
-        //String xml = xstream.toXML(causticGroup);
-
+        LibraryEffectUtils.configureXStream(xstream);
     }
 
     public CausticGroup createGroupFromCausticFile(File causticFile, String name, String displayname)
             throws CausticException {
-        CausticGroup causticGroup = new CausticGroup(causticFile, name, displayname);
+        String path = null;
+        CausticGroup causticGroup = new CausticGroup(path, causticFile, name, displayname);
         fillGroup(causticGroup);
         return causticGroup;
     }
@@ -96,8 +96,9 @@ public class CausticFileImporter {
 
     @SuppressWarnings("unused")
     private static CausticSound fillSound(CausticGroup causticGroup, MachineNode machineNode) {
-        CausticSound causticSound = new CausticSound(machineNode.getIndex(), machineNode.getName(),
-                "DefaultEffect");
+        String path = null;
+        CausticSound causticSound = new CausticSound(path, machineNode.getIndex(),
+                machineNode.getName(), "DefaultEffect");
 
         String groupName = causticGroup.getDisplayName();
         String name = groupName + "-" + machineNode.getName();
@@ -149,7 +150,8 @@ public class CausticFileImporter {
 
     public LibraryGroup importCausticIntoProduct(LibraryProduct product, File causticFile,
             String groupName) throws IOException, CausticException {
-        CausticGroup causticGroup = new CausticGroup(causticFile, groupName, groupName);
+        String path = null;
+        CausticGroup causticGroup = new CausticGroup(path, causticFile, groupName, groupName);
         LibraryGroup libraryGroup = causticGroup.create(product);
         //product.fillGroup(libraryGroup); called in addToDirectory()
         boolean exportAsGroup = true;
@@ -310,6 +312,29 @@ public class CausticFileImporter {
 
     String toXML(Object instance) {
         return xstream.toXML(instance);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T fromXMLManifest(File manifestFile, Class<T> clazz) throws FileNotFoundException {
+        return (T)xstream.fromXML(new FileReader(manifestFile));
+    }
+
+    CausticEffect createEffect(LibraryEffect item) {
+        String path = null;
+        EffectType type1 = null;
+        EffectType type2 = null;
+        if (item.get(0) != null)
+            type1 = item.get(0).getType();
+        if (item.get(1) != null)
+            type2 = item.get(1).getType();
+        CausticEffect causticEffect = new CausticEffect(path, item.getDisplayName(), type1, type2);
+        return causticEffect;
+    }
+
+    public String toEffectXML(LibraryEffect item) {
+        CausticEffect causticEffect = createEffect(item);
+        String xml = xstream.toXML(causticEffect);
+        return xml;
     }
 
 }

@@ -159,6 +159,10 @@ public class LibraryItemManifest {
     //  displayName
     //----------------------------------
 
+    public boolean hasDisplayName() {
+        return displayName != null && !displayName.equals("");
+    }
+
     public String getDisplayName() {
         return displayName;
     }

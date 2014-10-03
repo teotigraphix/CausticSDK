@@ -64,12 +64,12 @@ public class LibraryGroupUtils {
         }
     }
 
-    public static void saveGroup(LibraryGroup item, LibraryProduct product, File tempDirectory)
+    public static void serialize(LibraryGroup item, LibraryProduct product, File tempDirectory)
             throws IOException {
 
         for (LibrarySound librarySound : item.getSounds()) {
             File tempSoundDir = new File(tempDirectory, "sounds/sound-" + librarySound.getIndex());
-            LibrarySoundUtils.saveSound(librarySound, product, tempSoundDir);
+            LibrarySoundUtils.serialize(librarySound, product, tempSoundDir);
 
             ZipCompress compress = new ZipCompress(tempSoundDir);
             File zipFile = new File(tempDirectory, "sounds/sound-" + librarySound.getIndex()
@@ -85,11 +85,7 @@ public class LibraryGroupUtils {
             FileUtils.forceDelete(tempSoundDir);
         }
 
-        //String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-
         SerializeUtils.pack(new File(tempDirectory, GROUP_BIN), item);
-
-        //FileUtils.write(new File(tempDirectory, "manifest.json"), json);
     }
 
     public static LibraryGroup importGroup(File sourceFile) throws CausticException, IOException {

@@ -92,6 +92,8 @@ public class LibraryEffect extends LibraryProductItem {
     //--------------------------------------------------------------------------
 
     public EffectNode get(int slot) {
+        if (!effects.containsKey(slot))
+            return null;
         return effects.get(slot);
     }
 

@@ -42,6 +42,8 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public class LibraryProduct extends LibraryItem {
 
+    private static final String CACHE = "cache/";
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -88,6 +90,17 @@ public class LibraryProduct extends LibraryItem {
      */
     public File getTempDirectory(String reletivePath) throws IOException {
         return getTempDirectory(reletivePath, false);
+    }
+
+    /**
+     * Returns a sub directory in the application's <code>cache</code>
+     * directory.
+     * 
+     * @param reletivePath The path within the cache directory.
+     * @throws IOException
+     */
+    public File getCacheDirectory(String reletivePath) throws IOException {
+        return getTempDirectory(CACHE + reletivePath);
     }
 
     /**

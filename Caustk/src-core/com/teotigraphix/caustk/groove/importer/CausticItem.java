@@ -25,6 +25,12 @@ public abstract class CausticItem {
 
     private String path;
 
+    private String displayName;
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public boolean isExport() {
         return export;
     }
@@ -33,7 +39,9 @@ public abstract class CausticItem {
         return path;
     }
 
-    public CausticItem() {
+    public CausticItem(String path, String displayName) {
+        this.path = path;
+        this.displayName = displayName;
     }
 
 }

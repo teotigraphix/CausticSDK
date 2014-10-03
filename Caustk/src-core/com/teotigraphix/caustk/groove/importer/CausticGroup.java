@@ -86,8 +86,6 @@ public class CausticGroup extends CausticItem {
 
     private File sourceFile;
 
-    private String displayName;
-
     Map<Integer, CausticSound> sounds = new HashMap<Integer, CausticSound>();
 
     public String getName() {
@@ -98,18 +96,14 @@ public class CausticGroup extends CausticItem {
         return sourceFile;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
     public Map<Integer, CausticSound> getSounds() {
         return sounds;
     }
 
-    public CausticGroup(File sourceFile, String name, String displayName) {
+    public CausticGroup(String path, File sourceFile, String name, String displayName) {
+        super(path, displayName);
         this.sourceFile = sourceFile;
         this.name = name;
-        this.displayName = displayName;
     }
 
     public CausticSound addSound(CausticSound sound) {
@@ -118,7 +112,7 @@ public class CausticGroup extends CausticItem {
     }
 
     public CausticSound addSound(int index, String soundName, String effectName) {
-        CausticSound machine = new CausticSound(index, soundName, effectName);
+        CausticSound machine = new CausticSound(null, index, soundName, effectName);
         sounds.put(index, machine);
         return machine;
     }
@@ -137,7 +131,7 @@ public class CausticGroup extends CausticItem {
     @Override
     public String toString() {
         return "CausticGroup [name=" + name + ", sourceFile=" + sourceFile + ", displayName="
-                + displayName + ", sounds=" + sounds + "]";
+                + getDisplayName() + ", sounds=" + sounds + "]";
     }
 
 }

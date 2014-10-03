@@ -31,6 +31,22 @@ public abstract class LibraryProductItem extends LibraryItem {
     }
 
     /**
+     * Returns the manifet's name.
+     */
+    public String getName() {
+        return getManifest().getName();
+    }
+
+    /**
+     * Returns the manifet's display name, if null returns the name.
+     */
+    public String getDisplayName() {
+        if (!getManifest().hasDisplayName())
+            return getManifest().getName();
+        return getManifest().getDisplayName();
+    }
+
+    /**
      * Returns the relative base of the file within the product.
      * <p>
      * E.g <code>/Groups/ALLEY 01.ggrp</code>

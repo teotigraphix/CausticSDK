@@ -41,7 +41,7 @@ public class LibrarySoundUtils {
 
     private static final String SOUND_BIN = "sound.bin";
 
-    public static void saveSound(LibrarySound item, LibraryProduct product, File tempDirectory)
+    public static void serialize(LibrarySound item, LibraryProduct product, File tempDirectory)
             throws IOException {
 
         LibraryEffect effect = item.getEffect();

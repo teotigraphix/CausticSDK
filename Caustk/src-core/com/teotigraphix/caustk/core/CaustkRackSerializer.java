@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.core;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ import com.teotigraphix.caustk.core.osc.SubSynthMessage.ModulationMode;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
+import com.teotigraphix.caustk.groove.importer.CausticFileImporter;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -152,6 +154,8 @@ should be annotated with @Deprecated instead of being removed.
 
 public class CaustkRackSerializer implements ICaustkRackSerializer {
 
+    private CausticFileImporter importer;
+
     private Kryo kryo;
 
     @Override
@@ -160,6 +164,8 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
     }
 
     CaustkRackSerializer() {
+
+        importer = new CausticFileImporter();
 
         kryo = new Kryo();
 
@@ -424,6 +430,16 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         return instance;
     }
 
+    @Override
+    public String toEffectXML(LibraryEffect item) {
+        return importer.toEffectXML(item);
+    }
+
+    @Override
+    public <T> T fromXMLManifest(File manifestFile, Class<T> clazz) throws FileNotFoundException {
+        return importer.fromXMLManifest(manifestFile, clazz);
+    }
+
     public class UUIDSerializer extends Serializer<UUID> {
         public UUIDSerializer() {
             setImmutable(true);
@@ -440,4 +456,5 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
             return new UUID(input.readLong(), input.readLong());
         }
     }
+
 }
