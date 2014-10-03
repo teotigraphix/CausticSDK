@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class PulseGenerator extends ModularComponentBase {
 
@@ -26,16 +28,22 @@ public class PulseGenerator extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int octave;
 
+    @Tag(101)
     private int semis;
 
+    @Tag(102)
     private int cents;
 
+    @Tag(103)
     private float pulseWidth;
 
+    @Tag(104)
     private float width;
 
+    @Tag(105)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -189,8 +197,9 @@ public class PulseGenerator extends ModularComponentBase {
     public PulseGenerator() {
     }
 
-    public PulseGenerator(int bay) {
-        super(bay);
+    public PulseGenerator(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("PulseGenerator");
     }
 
     @Override

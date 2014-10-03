@@ -24,7 +24,9 @@ import java.util.Collection;
 
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
+import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public abstract class ModularComponentBase extends MachineComponent implements IModularComponent {
 
@@ -85,9 +87,10 @@ public abstract class ModularComponentBase extends MachineComponent implements I
     public ModularComponentBase() {
     }
 
-    public ModularComponentBase(int bay) {
-        super();
+    public ModularComponentBase(MachineNode machineNode, int bay) {
+        super(machineNode);
         this.bay = bay;
+        setData(new NodeMetaData(this));
     }
 
     protected float getValue(String control) {

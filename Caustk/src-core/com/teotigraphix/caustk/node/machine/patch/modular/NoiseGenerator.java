@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class NoiseGenerator extends ModularComponentBase {
 
@@ -26,10 +28,13 @@ public class NoiseGenerator extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float lfGain;
 
+    @Tag(101)
     private float pinkGain;
 
+    @Tag(102)
     private float whiteGain;
 
     //--------------------------------------------------------------------------
@@ -111,8 +116,9 @@ public class NoiseGenerator extends ModularComponentBase {
     public NoiseGenerator() {
     }
 
-    public NoiseGenerator(int bay) {
-        super(bay);
+    public NoiseGenerator(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("NoiseGenerator");
     }
 
     @Override

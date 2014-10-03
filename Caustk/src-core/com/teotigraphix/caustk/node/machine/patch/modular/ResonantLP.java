@@ -19,20 +19,28 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class ResonantLP extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int slope;
 
+    @Tag(101)
     private float cutoff;
 
+    @Tag(102)
     private float resonance;
 
+    @Tag(103)
     private float cutoffModulation;
 
+    @Tag(104)
     private float resonanceModulation;
 
     //--------------------------------------------------------------------------
@@ -165,8 +173,8 @@ public class ResonantLP extends ModularComponentBase {
         //ComponentType.StereoLPF;
     }
 
-    public ResonantLP(int bay) {
-        super(bay);
+    public ResonantLP(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
         setLabel("ResonantLP");
     }
 

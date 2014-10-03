@@ -24,7 +24,9 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public abstract class MixerBase extends ModularComponentBase {
 
@@ -32,9 +34,11 @@ public abstract class MixerBase extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     @SuppressLint("UseSparseArrays")
     private Map<Integer, Float> gains = new HashMap<Integer, Float>();
 
+    @Tag(101)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -98,8 +102,9 @@ public abstract class MixerBase extends ModularComponentBase {
     public MixerBase() {
     }
 
-    public MixerBase(int bay) {
-        super(bay);
+    public MixerBase(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("MixerBase");
     }
 
     @Override

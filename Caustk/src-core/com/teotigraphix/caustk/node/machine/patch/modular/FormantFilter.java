@@ -19,26 +19,37 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class FormantFilter extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int formant1;
 
+    @Tag(101)
     private float morph;
 
+    @Tag(102)
     private int formant2;
 
+    @Tag(103)
     private float gain;
 
+    @Tag(104)
     private float inGain;
 
+    @Tag(105)
     private float morphModulation;
 
+    @Tag(106)
     private float gainModulation;
 
+    @Tag(107)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -244,8 +255,9 @@ public class FormantFilter extends ModularComponentBase {
     public FormantFilter() {
     }
 
-    public FormantFilter(int bay) {
-        super(bay);
+    public FormantFilter(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("FormantFilter");
     }
 
     @Override

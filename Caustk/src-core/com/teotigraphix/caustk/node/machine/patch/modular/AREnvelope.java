@@ -19,22 +19,31 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class AREnvelope extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float attack;
 
+    @Tag(101)
     private float release;
 
+    @Tag(102)
     private int legato;
 
-    private EnvelopeSlope attackSlope;
+    @Tag(103)
+    private EnvelopeSlope attackSlope = EnvelopeSlope.Linear;
 
-    private EnvelopeSlope releaseSlope;
+    @Tag(104)
+    private EnvelopeSlope releaseSlope = EnvelopeSlope.Linear;
 
+    @Tag(105)
     private float outGain;
 
     //----------------------------------
@@ -180,8 +189,8 @@ public class AREnvelope extends ModularComponentBase {
     public AREnvelope() {
     }
 
-    public AREnvelope(int bay) {
-        super(bay);
+    public AREnvelope(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
         setLabel("AREnvelope");
     }
 

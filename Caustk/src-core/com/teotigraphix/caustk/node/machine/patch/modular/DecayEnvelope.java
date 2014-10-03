@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.patch.modular.AREnvelope.EnvelopeSlope;
 
 public class DecayEnvelope extends ModularComponentBase {
@@ -27,10 +29,13 @@ public class DecayEnvelope extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float decay;
 
-    private EnvelopeSlope decaySlope;
+    @Tag(101)
+    private EnvelopeSlope decaySlope = EnvelopeSlope.Linear;
 
+    @Tag(102)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -110,8 +115,8 @@ public class DecayEnvelope extends ModularComponentBase {
     public DecayEnvelope() {
     }
 
-    public DecayEnvelope(int bay) {
-        super(bay);
+    public DecayEnvelope(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
         setLabel("DecayEnvelope");
     }
 

@@ -19,26 +19,37 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class WaveformGenerator extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float waveform;
 
+    @Tag(101)
     private int octave;
 
+    @Tag(102)
     private int semis;
 
+    @Tag(103)
     private int cents;
 
+    @Tag(104)
     private float fm;
 
+    @Tag(105)
     private float am;
 
+    @Tag(106)
     private float pitch;
 
+    @Tag(107)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -241,8 +252,8 @@ public class WaveformGenerator extends ModularComponentBase {
     public WaveformGenerator() {
     }
 
-    public WaveformGenerator(int bay) {
-        super(bay);
+    public WaveformGenerator(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
         setLabel("WaveformGenerator");
     }
 

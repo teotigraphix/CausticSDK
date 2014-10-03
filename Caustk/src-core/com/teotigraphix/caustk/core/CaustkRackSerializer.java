@@ -20,20 +20,13 @@ import com.teotigraphix.caustk.core.midi.MidiReference;
 import com.teotigraphix.caustk.core.midi.NoteReference;
 import com.teotigraphix.caustk.core.midi.ScaleReference;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
-import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionProgram;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
-import com.teotigraphix.caustk.core.osc.EightBitSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
-import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMAlgorithm;
-import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMOperatorControl;
-import com.teotigraphix.caustk.core.osc.FilterMessage;
-import com.teotigraphix.caustk.core.osc.ModularMessage;
-import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
@@ -67,9 +60,7 @@ import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
-import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
-import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.DistortionComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.FilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.beatbox.WavSamplerChannel;
@@ -103,13 +94,6 @@ import com.teotigraphix.caustk.node.machine.patch.modular.SubOscillator;
 import com.teotigraphix.caustk.node.machine.patch.modular.ThreeInputMixer;
 import com.teotigraphix.caustk.node.machine.patch.modular.TwoInputMixer;
 import com.teotigraphix.caustk.node.machine.patch.modular.WaveformGenerator;
-import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerChannel;
-import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerComponent;
-import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMTunerComponent;
-import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO1Component;
-import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO2Component;
-import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc1Component;
-import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc2Component;
 import com.teotigraphix.caustk.node.machine.sequencer.ClipComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
@@ -155,6 +139,7 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(ArrayList.class, 3);
         kryo.register(TreeMap.class, 4);
         kryo.register(HashMap.class, 5);
+        kryo.register(String[].class, 6);
 
         // core 51 - 100
         kryo.register(CausticFile.class, 51);
@@ -196,78 +181,7 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(StaticFlangerEffect.class, 154);
         kryo.register(VinylSimulatorEffect.class, 155);
 
-        // node/machine 200-220
-        kryo.register(BasslineMachine.class, 200);
-        kryo.register(BeatBoxMachine.class, 201);
-        kryo.register(EightBitSynthMachine.class, 202);
-        kryo.register(FMSynthMachine.class, 203);
-        kryo.register(KSSynthMachine.class, 204);
-        kryo.register(ModularMachine.class, 205);
-        kryo.register(OrganMachine.class, 206);
-        kryo.register(PCMSynthMachine.class, 207);
-        kryo.register(SubSynthMachine.class, 208);
-        kryo.register(VocoderMachine.class, 209);
-
-        // node/machine 200
-        // node/machine/patch/bassline 200-220
-        kryo.register(BasslineMachine.class);
-        kryo.register(DistortionComponent.class);
-        kryo.register(BasslineMessage.DistorionProgram.class);
-        kryo.register(FilterComponent.class);
-        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.LFO1Component.class);
-        kryo.register(BasslineMessage.LFOTarget.class);
-        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.Osc1Component.class);
-        kryo.register(BasslineMessage.Osc1Waveform.class);
-
-        // node/machine/patch/beatbox 221-240
-        kryo.register(WavSamplerComponent.class);
-        kryo.register(WavSamplerChannel.class);
-        kryo.register(BeatboxMessage.class);
-
-        // node/machine/patch/eightbitsynth 241-260
-        //kryo.register(EightBitSynthMachine.class);
-        kryo.register(ExpressionComponent.class);
-        kryo.register(EightBitSynthControlsComponent.class);
-        kryo.register(EightBitSynthMessage.class);
-
-        // node/machine/patch/fmsynth 261-280
-        kryo.register(FMSynthMachine.class);
-        kryo.register(FMControlsComponent.class);
-        kryo.register(LFOComponent.class);
-        kryo.register(FMSynthMessage.FMAlgorithm.class);
-        kryo.register(FMSynthMessage.FMOperatorControl.class);
-
-        // node/machine/patch/modular 280-320
-        kryo.register(ModularMachine.class);
-        kryo.register(ModularBayComponent.class);
-        kryo.register(AREnvelope.class);
-        kryo.register(Arpeggiator.class);
-        kryo.register(Crossfader.class);
-        kryo.register(CrossoverModule.class);
-        kryo.register(DADSREnvelope.class);
-        kryo.register(DecayEnvelope.class);
-        kryo.register(DelayModule.class);
-        kryo.register(FMPair.class);
-        kryo.register(FormantFilter.class);
-        kryo.register(LagProcessor.class);
-        kryo.register(MiniLFO.class);
-        kryo.register(NoiseGenerator.class);
-        kryo.register(PanModule.class);
-        kryo.register(PulseGenerator.class);
-        kryo.register(ResonantLP.class);
-        kryo.register(SampleAndHold.class);
-        kryo.register(Saturator.class);
-        kryo.register(SixInputMixer.class);
-        kryo.register(SubOscillator.class);
-        kryo.register(SVFilter.class);
-        kryo.register(ThreeInputMixer.class);
-        kryo.register(TwoInputMixer.class);
-        kryo.register(WaveformGenerator.class);
-        kryo.register(ModularMessage.class);
-        kryo.register(ModularMessage.ModularComponentType.class);
-
-        // node/machine/patch/modular 280-320
-
+        // Main
         kryo.register(MasterNode.class);
         kryo.register(MasterDelayNode.class);
         kryo.register(MasterReverbNode.class);
@@ -276,8 +190,6 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(MasterVolumeNode.class);
 
         kryo.register(SequencerNode.class);
-        kryo.register(SequencerNode.ExportLoopMode.class);
-        kryo.register(SequencerNode.ExportType.class);
         kryo.register(SequencerNode.SequencerMode.class);
         kryo.register(SequencerNode.ShuffleMode.class);
         kryo.register(SequencerNode.SongEndMode.class);
@@ -296,49 +208,73 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(TrackComponent.class);
         kryo.register(ClipComponent.class);
 
-        // SubSynthMachine
-        kryo.register(SubSynthMachine.class);
+        // node/machine 200-220
+        kryo.register(BasslineMachine.class, 200);
+        kryo.register(BeatBoxMachine.class, 201);
+        kryo.register(EightBitSynthMachine.class, 202);
+        kryo.register(FMSynthMachine.class, 203);
+        kryo.register(KSSynthMachine.class, 204);
+        kryo.register(ModularMachine.class, 205);
+        kryo.register(OrganMachine.class, 206);
+        kryo.register(PCMSynthMachine.class, 207);
+        kryo.register(SubSynthMachine.class, 208);
+        kryo.register(VocoderMachine.class, 209);
 
-        kryo.register(SynthFilterComponent.class);
-        kryo.register(LFO1Component.class);
-        kryo.register(LFO2Component.class);
-        kryo.register(Osc1Component.class);
-        kryo.register(Osc2Component.class);
-        kryo.register(VolumeEnvelopeComponent.class);
+        // node/machine 200
+        // node/machine/patch/bassline 200-220
+        kryo.register(DistortionComponent.class);
+        kryo.register(BasslineMessage.DistorionProgram.class);
+        kryo.register(FilterComponent.class);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.LFO1Component.class);
+        kryo.register(BasslineMessage.LFOTarget.class);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.bassline.Osc1Component.class);
+        kryo.register(BasslineMessage.Osc1Waveform.class);
 
-        kryo.register(FilterMessage.FilterType.class);
+        // node/machine/patch/beatbox 221-240
+        kryo.register(WavSamplerComponent.class);
+        kryo.register(WavSamplerChannel.class);
 
-        kryo.register(SubSynthMessage.LFO1Target.class);
-        kryo.register(SubSynthMessage.LFO1Waveform.class);
-        kryo.register(SubSynthMessage.LFO2Target.class);
+        // node/machine/patch/eightbitsynth 241-260
+        kryo.register(EightBitSynthControlsComponent.class);
+        kryo.register(ExpressionComponent.class);
 
-        kryo.register(SubSynthMessage.ModulationMode.class);
-        kryo.register(SubSynthMessage.Osc1Waveform.class);
-        kryo.register(SubSynthMessage.Osc2Waveform.class);
-        kryo.register(SubSynthMessage.CentsMode.class);
-
-        // FMSynthMachine
-        kryo.register(FMSynthMachine.class);
-
-        kryo.register(FMAlgorithm.class);
-        kryo.register(FMOperatorControl.class);
-
+        // node/machine/patch/fmsynth 261-280
         kryo.register(FMControlsComponent.class);
+        kryo.register(FMSynthMessage.FMAlgorithm.class);
         kryo.register(LFOComponent.class);
         kryo.register(FMOperatorComponent.class);
 
-        // PCMSynthMachine
-        kryo.register(PCMSynthMachine.class);
-
-        kryo.register(PCMSamplerChannel.class);
-
-        kryo.register(VolumeEnvelopeComponent.class);
-        kryo.register(SynthFilterComponent.class);
-        kryo.register(com.teotigraphix.caustk.node.machine.patch.pcmsynth.LFO1Component.class);
-        kryo.register(PCMSamplerComponent.class);
-        kryo.register(PCMTunerComponent.class);
-
-        // PCMSynthMachine
+        // node/machine/patch/modular 280-320
+        kryo.register(ModularBayComponent.class);
+        kryo.register(AREnvelope.class);
+        kryo.register(AREnvelope.EnvelopeSlope.class);
+        kryo.register(Arpeggiator.class);
+        kryo.register(Arpeggiator.Sequence.class);
+        kryo.register(Crossfader.class);
+        kryo.register(CrossoverModule.class);
+        kryo.register(DADSREnvelope.class);
+        kryo.register(DADSREnvelope.EnvelopeSlope.class);
+        kryo.register(DecayEnvelope.class);
+        kryo.register(DelayModule.class);
+        kryo.register(FMPair.class);
+        kryo.register(FormantFilter.class);
+        kryo.register(LagProcessor.class);
+        kryo.register(MiniLFO.class);
+        kryo.register(MiniLFO.WaveForm.class);
+        kryo.register(NoiseGenerator.class);
+        kryo.register(PanModule.class);
+        kryo.register(PulseGenerator.class);
+        kryo.register(ResonantLP.class);
+        kryo.register(SampleAndHold.class);
+        kryo.register(Saturator.class);
+        kryo.register(SixInputMixer.class);
+        kryo.register(SubOscillator.class);
+        kryo.register(SVFilter.class);
+        kryo.register(ThreeInputMixer.class);
+        kryo.register(TwoInputMixer.class);
+        kryo.register(WaveformGenerator.class);
+        //kryo.register(ModularVolumeBug.class);
+        // node/machine/patch/modular 280-320
 
     }
 

@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class SampleAndHold extends ModularComponentBase {
 
@@ -26,8 +28,10 @@ public class SampleAndHold extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int rate;
 
+    @Tag(101)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -85,8 +89,9 @@ public class SampleAndHold extends ModularComponentBase {
     public SampleAndHold() {
     }
 
-    public SampleAndHold(int bay) {
-        super(bay);
+    public SampleAndHold(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("SampleAndHold");
     }
 
     @Override

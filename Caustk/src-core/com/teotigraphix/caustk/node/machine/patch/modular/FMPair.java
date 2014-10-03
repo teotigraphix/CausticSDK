@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class FMPair extends ModularComponentBase {
 
@@ -26,18 +28,25 @@ public class FMPair extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int octave1;
 
+    @Tag(101)
     private int octave2;
 
+    @Tag(102)
     private int semis2;
 
+    @Tag(103)
     private float fm;
 
+    @Tag(104)
     private float feedback;
 
+    @Tag(105)
     private float fmModulation;
 
+    @Tag(106)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -215,8 +224,9 @@ public class FMPair extends ModularComponentBase {
     public FMPair() {
     }
 
-    public FMPair(int bay) {
-        super(bay);
+    public FMPair(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("FMPair");
     }
 
     @Override

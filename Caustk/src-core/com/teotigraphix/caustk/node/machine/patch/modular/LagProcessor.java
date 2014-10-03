@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class LagProcessor extends ModularComponentBase {
 
@@ -26,8 +28,10 @@ public class LagProcessor extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float rateA;
 
+    @Tag(101)
     private float rateB;
 
     //--------------------------------------------------------------------------
@@ -85,8 +89,9 @@ public class LagProcessor extends ModularComponentBase {
     public LagProcessor() {
     }
 
-    public LagProcessor(int bay) {
-        super(bay);
+    public LagProcessor(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("LagProcessor");
     }
 
     @Override

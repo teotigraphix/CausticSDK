@@ -19,16 +19,22 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class Saturator extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float amount;
 
+    @Tag(101)
     private float inGain;
 
+    @Tag(102)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -110,8 +116,8 @@ public class Saturator extends ModularComponentBase {
     public Saturator() {
     }
 
-    public Saturator(int bay) {
-        super(bay);
+    public Saturator(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
         setLabel("Saturator");
     }
 

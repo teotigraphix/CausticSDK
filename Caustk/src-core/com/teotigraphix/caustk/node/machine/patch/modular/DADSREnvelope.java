@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class DADSREnvelope extends ModularComponentBase {
 
@@ -26,26 +28,37 @@ public class DADSREnvelope extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float delay;
 
+    @Tag(101)
     private float attack;
 
+    @Tag(102)
     private float decay;
 
+    @Tag(103)
     private float sustain;
 
+    @Tag(104)
     private float release;
 
+    @Tag(105)
     private int legato;
 
-    private EnvelopeSlope attackSlope;
+    @Tag(106)
+    private EnvelopeSlope attackSlope = EnvelopeSlope.Linear;
 
-    private EnvelopeSlope decaySlope;
+    @Tag(107)
+    private EnvelopeSlope decaySlope = EnvelopeSlope.Linear;
 
-    private EnvelopeSlope releaseSlope;
+    @Tag(108)
+    private EnvelopeSlope releaseSlope = EnvelopeSlope.Linear;
 
+    @Tag(109)
     private float outGain;
 
+    @Tag(110)
     private float invoutGain;
 
     //--------------------------------------------------------------------------
@@ -313,8 +326,9 @@ public class DADSREnvelope extends ModularComponentBase {
     public DADSREnvelope() {
     }
 
-    public DADSREnvelope(int bay) {
-        super(bay);
+    public DADSREnvelope(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("DADSREnvelope");
     }
 
     @Override

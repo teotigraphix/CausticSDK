@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class SVFilter extends ModularComponentBase {
 
@@ -26,10 +28,13 @@ public class SVFilter extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float cutoff;
 
+    @Tag(101)
     private float resonance;
 
+    @Tag(102)
     private float inGain;
 
     //--------------------------------------------------------------------------
@@ -111,8 +116,9 @@ public class SVFilter extends ModularComponentBase {
     public SVFilter() {
     }
 
-    public SVFilter(int bay) {
-        super(bay);
+    public SVFilter(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("SVFilter");
     }
 
     @Override

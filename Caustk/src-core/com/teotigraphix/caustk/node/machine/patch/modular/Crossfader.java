@@ -19,16 +19,22 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class Crossfader extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float gainA;
 
+    @Tag(101)
     private float gainB;
 
+    @Tag(102)
     private float gainOut;
 
     //--------------------------------------------------------------------------
@@ -110,8 +116,8 @@ public class Crossfader extends ModularComponentBase {
     public Crossfader() {
     }
 
-    public Crossfader(int bay) {
-        super(bay);
+    public Crossfader(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
         setLabel("Crossfader");
     }
 

@@ -22,7 +22,6 @@ package com.teotigraphix.caustk.node.machine;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.patch._ModularVolumeBug;
 import com.teotigraphix.caustk.node.machine.patch.modular.ModularBayComponent;
 
 /**
@@ -85,7 +84,7 @@ public class ModularMachine extends MachineNode {
     @Override
     protected void intialize() {
         super.intialize();
-        setVolume(new _ModularVolumeBug(this));
+        //setVolume(new ModularVolumeBug(this));
         bay = new ModularBayComponent(this);
     }
 

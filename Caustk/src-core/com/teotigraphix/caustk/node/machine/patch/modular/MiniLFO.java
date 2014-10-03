@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class MiniLFO extends ModularComponentBase {
 
@@ -26,12 +28,16 @@ public class MiniLFO extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    private WaveForm waveForm;
+    @Tag(100)
+    private WaveForm waveForm = WaveForm.Sine;
 
+    @Tag(101)
     private int rate;
 
+    @Tag(102)
     private int noteSync;
 
+    @Tag(103)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -121,8 +127,9 @@ public class MiniLFO extends ModularComponentBase {
     public MiniLFO() {
     }
 
-    public MiniLFO(int bay) {
-        super(bay);
+    public MiniLFO(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("MiniLFO");
     }
 
     @Override

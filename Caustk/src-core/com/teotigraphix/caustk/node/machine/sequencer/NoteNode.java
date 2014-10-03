@@ -157,8 +157,8 @@ public class NoteNode extends NodeBase {
      * 
      * @param resolution The resolution of the calculation.
      */
-    public final int getStep(NoteResolution resolution) {
-        return NoteResolution.toStep(start, resolution);
+    public final int getStep(Resolution resolution) {
+        return Resolution.toStep(start, resolution);
     }
 
     //--------------------------------------------------------------------------
@@ -334,82 +334,6 @@ public class NoteNode extends NodeBase {
 
         NoteFlag(int value) {
             this.value = value;
-        }
-    }
-
-    /**
-     * @author Michael Schmalle
-     * @copyright Teoti Graphix, LLC
-     * @since 1.0
-     */
-    public enum NoteResolution {
-
-        /**
-         * A whole note.
-         */
-        WHOLE(1f), // 1
-
-        /**
-         * A half note.
-         */
-        HALF(0.5f), // 2
-
-        /**
-         * A quarter note.
-         */
-        QUATER(0.25f), // 4
-
-        /**
-         * An eighth note.
-         */
-        EIGHTH(0.125f), // 8
-
-        /**
-         * A sixteenth note.
-         */
-        SIXTEENTH(0.0625f), // 16
-
-        /**
-         * A thirtysecond note.
-         */
-        THIRTYSECOND(0.03125f), // 32
-
-        /**
-         * A sixtyfourth note.
-         */
-        SIXTYFOURTH(0.015625f); // 1 / 0.015625f = 64
-
-        NoteResolution(float value) {
-            mValue = value;
-        }
-
-        private float mValue;
-
-        /**
-         * Returns the amount of steps in a measure for the given phrase
-         * resolution.
-         * 
-         * @param resolution The note resolution.
-         * @return The number of steps in a measure for the given phrase
-         *         resolution.
-         */
-        public final static int toSteps(NoteResolution resolution) {
-            return (int)(1 / resolution.getValue());
-        }
-
-        public float getValue() {
-            return mValue;
-        }
-
-        private static int beatsInMeasure = 4;
-
-        public static int toStep(float beat, NoteResolution resolution) {
-            // (beat(5) / 0.0625) / 4
-            return (int)(beat / resolution.getValue()) / beatsInMeasure;
-        }
-
-        public static float toBeat(int step, NoteResolution resolution) {
-            return (step * resolution.getValue()) * beatsInMeasure;
         }
     }
 }

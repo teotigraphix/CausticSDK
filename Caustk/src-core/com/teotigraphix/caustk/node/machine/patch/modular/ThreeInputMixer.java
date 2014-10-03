@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 /**
  * 3 gain input mixer.
  */
@@ -27,8 +29,9 @@ public class ThreeInputMixer extends MixerBase {
     public ThreeInputMixer() {
     }
 
-    public ThreeInputMixer(int bay) {
-        super(bay);
+    public ThreeInputMixer(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("ThreeInputMixer");
     }
 
     @Override

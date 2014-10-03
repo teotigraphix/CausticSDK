@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class CrossoverModule extends ModularComponentBase {
 
@@ -26,12 +28,16 @@ public class CrossoverModule extends ModularComponentBase {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float frequency;
 
+    @Tag(101)
     private float inGain;
 
+    @Tag(102)
     private float lowGain;
 
+    @Tag(103)
     private float highGain;
 
     //--------------------------------------------------------------------------
@@ -137,8 +143,9 @@ public class CrossoverModule extends ModularComponentBase {
     public CrossoverModule() {
     }
 
-    public CrossoverModule(int bay) {
-        super(bay);
+    public CrossoverModule(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("CrossoverModule");
     }
 
     @Override

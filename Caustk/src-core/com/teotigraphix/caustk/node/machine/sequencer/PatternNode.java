@@ -66,6 +66,9 @@ public class PatternNode extends MachineComponent {
     @Tag(105)
     private int position = 0;
 
+    @Tag(106)
+    private Resolution resolution = Resolution.Sixteenth;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -298,6 +301,18 @@ public class PatternNode extends MachineComponent {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    //----------------------------------
+    // resolution
+    //----------------------------------
+
+    public Resolution getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(Resolution resolution) {
+        this.resolution = resolution;
     }
 
     //--------------------------------------------------------------------------

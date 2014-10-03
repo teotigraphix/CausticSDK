@@ -19,16 +19,22 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class SubOscillator extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int octave;
 
+    @Tag(101)
     private int semis;
 
+    @Tag(102)
     private float outGain;
 
     //--------------------------------------------------------------------------
@@ -111,8 +117,9 @@ public class SubOscillator extends ModularComponentBase {
         super();
     }
 
-    public SubOscillator(int bay) {
-        super(bay);
+    public SubOscillator(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
+        setLabel("SubOscillator");
     }
 
     @Override

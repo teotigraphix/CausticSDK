@@ -19,18 +19,25 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+
 public class Arpeggiator extends ModularComponentBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private int active;
 
-    private Sequence sequence;
+    @Tag(101)
+    private Sequence sequence = Sequence.Rising;
 
+    @Tag(102)
     private int octaves;
 
+    @Tag(103)
     private int rate;
 
     //--------------------------------------------------------------------------
@@ -134,8 +141,8 @@ public class Arpeggiator extends ModularComponentBase {
     public Arpeggiator() {
     }
 
-    public Arpeggiator(int bay) {
-        super(bay);
+    public Arpeggiator(MachineNode machineNode, int bay) {
+        super(machineNode, bay);
         setLabel("Arpeggiator");
     }
 
