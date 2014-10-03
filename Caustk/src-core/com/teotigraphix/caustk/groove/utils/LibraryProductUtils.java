@@ -36,13 +36,11 @@ import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
-import com.teotigraphix.caustk.utils.ZipUtils;
 
 public class LibraryProductUtils {
 
-    private static final String MANIFEST_JSON = "manifest.json";
+    //private static final String MANIFEST_JSON = "manifest.json";
 
     public static File addArchiveToProduct(LibraryProductItem item, LibraryProduct product)
             throws IOException {
@@ -82,9 +80,10 @@ public class LibraryProductUtils {
 
     public static void addToProduct(File archiveFile, LibraryProduct product, Class<?> clazz)
             throws CausticException {
-        final String json = ZipUtils.readZipString(archiveFile, new File(MANIFEST_JSON));
-        final LibraryProductItem libraryItem = SerializeUtils.unpack(json, clazz);
-        product.addItem(libraryItem);
+        // XXX FIX readZipString()
+        //        final String json = ZipUtils.readZipString(archiveFile, new File(MANIFEST_JSON));
+        //        final LibraryProductItem libraryItem = SerializeUtils.unpack(json, clazz);
+        //        product.addItem(libraryItem);
     }
 
     public static String toItemBaseDirectoryName(LibraryItemManifest manifest) {
@@ -99,8 +98,8 @@ public class LibraryProductUtils {
 
     //--------------------------------------------------------------------------
 
-    public static void addLibraryItemArchive(File archiveFile, LibraryProduct product) throws IOException,
-            CausticException {
+    public static void addLibraryItemArchive(File archiveFile, LibraryProduct product)
+            throws IOException, CausticException {
         String extension = FilenameUtils.getExtension(archiveFile.getName());
 
         LibraryItemFormat format = LibraryItemFormat.fromString(extension);
@@ -136,11 +135,13 @@ public class LibraryProductUtils {
         addToProduct(file, product, LibraryGroup.class);
     }
 
-    private static void addInstrumentArchive(File file, LibraryProduct product) throws CausticException {
+    private static void addInstrumentArchive(File file, LibraryProduct product)
+            throws CausticException {
         addToProduct(file, product, LibraryInstrument.class);
     }
 
-    private static void addProjectArchive(File file, LibraryProduct product) throws CausticException {
+    private static void addProjectArchive(File file, LibraryProduct product)
+            throws CausticException {
         addToProduct(file, product, LibraryProject.class);
     }
 

@@ -25,11 +25,11 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
+import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
@@ -64,8 +64,10 @@ public class LibrarySoundUtils {
         FileUtils.forceDelete(tempEffectDir);
         FileUtils.forceDelete(tempInstrumentDir);
 
-        String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-        FileUtils.write(new File(tempDirectory, "manifest.json"), json);
+        //String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
+        //FileUtils.write(new File(tempDirectory, "manifest.json"), json);
+        SerializeUtils.pack(new File(tempDirectory, "manifest.bin"), item);
+
     }
 
     public static void importSound(LibrarySound librarySound, File groupDirectory)

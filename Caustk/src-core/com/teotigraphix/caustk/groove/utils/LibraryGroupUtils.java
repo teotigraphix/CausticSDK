@@ -40,6 +40,7 @@ import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
@@ -82,8 +83,11 @@ public class LibraryGroupUtils {
             FileUtils.forceDelete(tempSoundDir);
         }
 
-        String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-        FileUtils.write(new File(tempDirectory, "manifest.json"), json);
+        //String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
+
+        SerializeUtils.pack(new File(tempDirectory, "manifest.bin"), item);
+
+        //FileUtils.write(new File(tempDirectory, "manifest.json"), json);
     }
 
     public static LibraryGroup importGroup(File sourceFile) throws CausticException, IOException {
@@ -97,9 +101,10 @@ public class LibraryGroupUtils {
         if (!manifest.exists())
             throw new CausticException("manifest does not exist");
 
-        String json = FileUtils.readFileToString(manifest);
-        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory()
-                .deserialize(json, LibraryGroup.class);
+        //        String json = FileUtils.readFileToString(manifest);
+        //        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory()
+        //                .deserialize(json, LibraryGroup.class);
+        LibraryGroup libraryGroup = SerializeUtils.unpack(manifest, LibraryGroup.class);
 
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
             librarySound.setGroup(libraryGroup);

@@ -95,33 +95,33 @@ public interface ICaustkFactory {
 
     LibrarySound createLibrarySound(LibraryProduct product, String name, String relativePath);
 
-    /**
-     * Deserializes a JSON String into a {@link Object} of type T.
-     * 
-     * @param json The valid JSON formated serial String.
-     * @param clazz The T implementation result.
-     * @return A new instance of the T type deserialized.
-     * @throws CausticException Serialization exception.
-     */
-    <T> T deserialize(String json, Class<? extends Object> clazz) throws CausticException;
-
-    /**
-     * Serializes an Object into a JSON String.
-     * 
-     * @param node The object to serialize.
-     * @param prettyPrint Whether to pretty print for debugging.
-     * @return A serialized JSON String of the object.
-     */
-    String serialize(Object node, boolean prettyPrint);
-
-    /**
-     * Serializes an Object into a JSON String.
-     * <p>
-     * Does not pretty print json string.
-     * 
-     * @param node The object to serialize.
-     * @return A serialized JSON String of the object.
-     */
-    String serialize(Object node);
+    //    /**
+    //     * Deserializes a JSON String into a {@link Object} of type T.
+    //     * 
+    //     * @param json The valid JSON formated serial String.
+    //     * @param clazz The T implementation result.
+    //     * @return A new instance of the T type deserialized.
+    //     * @throws CausticException Serialization exception.
+    //     */
+    //    <T> T deserialize(String json, Class<? extends Object> clazz) throws CausticException;
+    //
+    //    /**
+    //     * Serializes an Object into a JSON String.
+    //     * 
+    //     * @param node The object to serialize.
+    //     * @param prettyPrint Whether to pretty print for debugging.
+    //     * @return A serialized JSON String of the object.
+    //     */
+    //    String serialize(Object node, boolean prettyPrint);
+    //
+    //    /**
+    //     * Serializes an Object into a JSON String.
+    //     * <p>
+    //     * Does not pretty print json string.
+    //     * 
+    //     * @param node The object to serialize.
+    //     * @return A serialized JSON String of the object.
+    //     */
+    //    String serialize(Object node);
 
 }

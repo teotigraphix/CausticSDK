@@ -22,14 +22,13 @@ package com.teotigraphix.caustk.groove.utils;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkRackSerializer;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
+import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryEffectUtils {
@@ -62,10 +61,10 @@ public class LibraryEffectUtils {
         if (!manifest.exists())
             throw new CausticException("manifest.json does not exist");
 
-        String json = FileUtils.readFileToString(manifest);
-        LibraryEffect libraryEffect = CaustkRuntime.getInstance().getFactory()
-                .deserialize(json, LibraryEffect.class);
-
+        //        String json = FileUtils.readFileToString(manifest);
+        //        LibraryEffect libraryEffect = CaustkRuntime.getInstance().getFactory()
+        //                .deserialize(json, LibraryEffect.class);
+        LibraryEffect libraryEffect = SerializeUtils.unpack(manifest, LibraryEffect.class);
         return libraryEffect;
     }
 }

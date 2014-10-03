@@ -39,7 +39,6 @@ import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
-import com.teotigraphix.caustk.utils.ZipUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
@@ -95,6 +94,7 @@ public class CausticFileImporter {
         }
     }
 
+    @SuppressWarnings("unused")
     private static CausticSound fillSound(CausticGroup causticGroup, MachineNode machineNode) {
         CausticSound causticSound = new CausticSound(machineNode.getIndex(), machineNode.getName(),
                 "DefaultEffect");
@@ -120,6 +120,7 @@ public class CausticFileImporter {
         return causticSound;
     }
 
+    @SuppressWarnings("unused")
     private static CausticEffect fillEffect(EffectsChannel effectsChannel, String machineName,
             String groupName, CausticSound causticSound) {
         String name = machineName + " FX";
@@ -240,9 +241,10 @@ public class CausticFileImporter {
     }
 
     public LibraryProduct loadProduct(File productArchive) throws CausticException {
-        String json = ZipUtils.readZipString(productArchive, new File(MANIFEST_JSON));
-        LibraryProduct product = SerializeUtils.unpack(json, LibraryProduct.class);
-        return product;
+        // XXX FIX
+        //        String json = ZipUtils.readZipString(productArchive, new File(MANIFEST_JSON));
+        //        LibraryProduct product = SerializeUtils.unpack(json, LibraryProduct.class);
+        return null;
     }
 
     /**
@@ -257,8 +259,11 @@ public class CausticFileImporter {
             CausticException {
         final File productDirectory = product.getDirectory();
         final File manifestFile = new File(productDirectory, MANIFEST_JSON);
-        final String json = CaustkRuntime.getInstance().getFactory().serialize(product, true);
-        FileUtils.write(manifestFile, json);
+        //        final String json = CaustkRuntime.getInstance().getFactory().serialize(product, true);
+        //        FileUtils.write(manifestFile, json);
+        //        
+        SerializeUtils.pack(manifestFile, product);
+
         final ZipCompress compress = new ZipCompress(productDirectory);
         compress.zip(targetArchive);
     }

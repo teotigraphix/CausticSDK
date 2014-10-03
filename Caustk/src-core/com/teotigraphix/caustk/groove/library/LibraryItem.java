@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.groove.library;
 
 import java.util.UUID;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
 /**
@@ -94,6 +93,6 @@ public abstract class LibraryItem {
 
     @Override
     public String toString() {
-        return CaustkRuntime.getInstance().getFactory().serialize(this, true);
+        return "[LibraryItem]";
     }
 }

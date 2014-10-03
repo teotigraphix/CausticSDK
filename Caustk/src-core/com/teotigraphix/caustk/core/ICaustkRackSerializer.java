@@ -10,7 +10,7 @@ public interface ICaustkRackSerializer {
 
     Kryo getKryo();
 
-    void serialize(File target, Object node) throws IOException;
+    void serialize(File target, Object instance) throws IOException;
 
     <T> T deserialize(File file, Class<T> type) throws IOException;
 }

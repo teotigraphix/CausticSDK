@@ -33,6 +33,7 @@ import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
+import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
 /**
@@ -71,14 +72,16 @@ public class LibraryInstrumentUtils {
     public static void saveInstrument(LibraryProductItem item, LibraryProduct product,
             File tempDirectory) throws IOException {
         //File location = resolveAbsoluteArchive(node.getInfo());
-        String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
+        // String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
 
         //String fileName = FilenameUtils.getBaseName(location.getName());
         //File sourceDirectory = new File(RuntimeUtils.getApplicationTempDirectory(), fileName);
         //sourceDirectory.mkdirs();
         String fileName = "preset";
-        File stateFile = new File(tempDirectory, "manifest.json");
-        FileUtils.writeStringToFile(stateFile, json);
+        File stateFile = new File(tempDirectory, "manifest.bin");
+        //        FileUtils.writeStringToFile(stateFile, json);
+
+        SerializeUtils.pack(stateFile, item);
 
         // XXX construct the archive for the specific node type
         // for now the only special node type is MachineNode that needs
@@ -111,9 +114,12 @@ public class LibraryInstrumentUtils {
         if (!manifest.exists())
             throw new CausticException("manifest.json does not exist");
 
-        String json = FileUtils.readFileToString(manifest);
-        LibraryInstrument libraryInstrument = CaustkRuntime.getInstance().getFactory()
-                .deserialize(json, LibraryInstrument.class);
+        //        String json = FileUtils.readFileToString(manifest);
+        //        LibraryInstrument libraryInstrument = CaustkRuntime.getInstance().getFactory()
+        //                .deserialize(json, LibraryInstrument.class);
+        LibraryInstrument libraryInstrument = SerializeUtils.unpack(manifest,
+                LibraryInstrument.class);
+
         String type = libraryInstrument.getMachineNode().getType().getExtension();
         libraryInstrument.setPendingPresetFile(new File(tempDirectory, "preset." + type));
 

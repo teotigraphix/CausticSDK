@@ -19,13 +19,25 @@
 
 package com.teotigraphix.caustk.utils;
 
-import com.teotigraphix.caustk.core.CausticException;
+import java.io.File;
+import java.io.IOException;
+
 import com.teotigraphix.caustk.core.CaustkRuntime;
 
 public class SerializeUtils {
 
-    public static <T> T unpack(String json, Class<?> clazz) throws CausticException {
-        return CaustkRuntime.getInstance().getFactory().deserialize(json, clazz);
+    public static <T> void pack(File file, T instance) throws IOException {
+        CaustkRuntime.getInstance().getFactory().getRuntime().getRack().getSerializer()
+                .serialize(file, instance);
     }
+
+    public static <T> T unpack(File file, Class<T> clazz) throws IOException {
+        return clazz.cast(CaustkRuntime.getInstance().getFactory().getRuntime().getRack()
+                .getSerializer().deserialize(file, clazz));
+    }
+
+    //    public static <T> T unpack(String json, Class<?> clazz) throws CausticException {
+    //        return CaustkRuntime.getInstance().getFactory().deserialize(json, clazz);
+    //    }
 
 }
