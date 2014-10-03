@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.eightbitsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EightBitSynthMessage;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -38,6 +39,7 @@ public class ExpressionComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private String[] expressions = new String[2];
 
     //--------------------------------------------------------------------------

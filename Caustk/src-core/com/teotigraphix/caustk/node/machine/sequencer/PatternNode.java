@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.midi.MidiScale;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
@@ -65,9 +64,6 @@ public class PatternNode extends MachineComponent {
     private List<NoteNode> notes = new ArrayList<NoteNode>();
 
     @Tag(105)
-    private MidiScale scale;
-
-    @Tag(106)
     private int position = 0;
 
     //--------------------------------------------------------------------------
@@ -141,7 +137,8 @@ public class PatternNode extends MachineComponent {
         this.numMeasures = numMeasures;
         PatternUtils.setNumMeasures(getRack(), getMachineIndex(), getBankIndex(),
                 getPatternIndex(), numMeasures);
-        post(new PatternNodeNumMeasuresEvent(this, PatternSequencerControl.NumMeausures, numMeasures));
+        post(new PatternNodeNumMeasuresEvent(this, PatternSequencerControl.NumMeausures,
+                numMeasures));
     }
 
     //----------------------------------
@@ -289,14 +286,6 @@ public class PatternNode extends MachineComponent {
         PatternSequencerMessage.SHUFFLE_AMOUNT.send(getRack(), getMachineIndex(), shuffleAmount);
         post(new PatternNodeShuffleAmountEvent(this, PatternSequencerControl.ShuffleAmount,
                 shuffleAmount));
-    }
-
-    //----------------------------------
-    // scale
-    //----------------------------------
-
-    public MidiScale getScale() {
-        return scale;
     }
 
     //----------------------------------

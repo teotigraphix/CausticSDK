@@ -25,7 +25,6 @@ package com.teotigraphix.caustk.node;
  * 
  * @author Michael Schmalle
  * @since 1.0
- * @see NodeType
  */
 public interface ICaustkNode {
 
@@ -34,13 +33,9 @@ public interface ICaustkNode {
     //--------------------------------------------------------------------------
 
     /**
-     * Returns the node's information metadata.
-     * <p>
-     * Can be <code>null</code>, the node will not serialize this field if
-     * <code>null</code>.
+     * The node's display label, this human readable name would be different
+     * than a machine readable name.
      */
-    //NodeInfo getInfo();
-
     String getLabel();
 
     //--------------------------------------------------------------------------

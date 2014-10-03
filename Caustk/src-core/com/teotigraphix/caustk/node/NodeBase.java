@@ -66,10 +66,6 @@ public abstract class NodeBase implements ICaustkNode {
     // label
     //----------------------------------
 
-    /**
-     * The node's display label, this human readable name would be different
-     * than a machine readable name.
-     */
     @Override
     public String getLabel() {
         return data.getLabel();

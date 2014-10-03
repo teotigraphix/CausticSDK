@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.bassline;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.core.osc.BasslineMessage.Osc1Waveform;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
@@ -38,12 +39,16 @@ public class Osc1Component extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float accent = 0.5f;
 
+    @Tag(101)
     private float pulseWidth = 0.5f;
 
+    @Tag(102)
     private int tune = 0;
 
+    @Tag(103)
     private Osc1Waveform waveform = Osc1Waveform.SAW;
 
     //--------------------------------------------------------------------------

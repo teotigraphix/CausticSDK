@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkRackSerializer;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
@@ -35,10 +36,18 @@ public class LibraryEffectUtils {
 
     private static final String MANIFEST_JSON = "manifest.json";
 
+    private static final String EFFECT_BIN = "effect.bin";
+
+    private static ICaustkRackSerializer getSerializer() {
+        return CaustkRuntime.getInstance().getFactory().getRuntime().getRack().getSerializer();
+    }
+
     public static void saveEffect(LibraryProductItem item, LibraryProduct product,
             File tempDirectory) throws IOException {
-        String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-        FileUtils.write(new File(tempDirectory, MANIFEST_JSON), json);
+        // String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
+        // FileUtils.write(new File(tempDirectory, MANIFEST_JSON), json);
+        getSerializer().serialize(new File(tempDirectory, EFFECT_BIN), item);
+
     }
 
     public static LibraryEffect importEffect(File soundDirectory) throws CausticException,

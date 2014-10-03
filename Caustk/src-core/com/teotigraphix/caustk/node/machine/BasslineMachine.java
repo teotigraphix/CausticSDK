@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.bassline.DistortionComponent;
@@ -38,12 +39,16 @@ public class BasslineMachine extends MachineNode {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private FilterComponent filter;
 
+    @Tag(101)
     private Osc1Component osc1;
 
+    @Tag(102)
     private LFO1Component lfo1;
 
+    @Tag(103)
     private DistortionComponent distortion;
 
     //--------------------------------------------------------------------------

@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.modular;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -39,6 +40,7 @@ public class ModularBayComponent extends MachineComponent {
     // for now the Modular supports preset loading and dynamic creation but no
     // reserialization of node graph
 
+    @Tag(100)
     private Map<Integer, IModularComponent> components = new HashMap<Integer, IModularComponent>();
 
     public Map<Integer, IModularComponent> getComponents() {

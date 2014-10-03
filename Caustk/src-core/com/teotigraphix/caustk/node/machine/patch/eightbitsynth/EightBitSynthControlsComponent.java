@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.eightbitsynth;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EightBitSynthMessage;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -31,18 +32,22 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see EightBitSynthMachine#getControls()
  */
-public class EightBitControlsComponent extends MachineComponent {
+public class EightBitSynthControlsComponent extends MachineComponent {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float abBlend = 0f;
 
+    @Tag(101)
     private int octave = 0;
 
+    @Tag(102)
     private int semis = 0;
 
+    @Tag(103)
     private int cents = 0;
 
     //--------------------------------------------------------------------------
@@ -176,10 +181,10 @@ public class EightBitControlsComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public EightBitControlsComponent() {
+    public EightBitSynthControlsComponent() {
     }
 
-    public EightBitControlsComponent(MachineNode machineNode) {
+    public EightBitSynthControlsComponent(MachineNode machineNode) {
         super(machineNode);
     }
 

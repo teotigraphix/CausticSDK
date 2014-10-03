@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.bassline;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -37,8 +38,10 @@ public class FilterComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     private float decay = 0f;
 
+    @Tag(101)
     private float envMod = 0.99f;
 
     //--------------------------------------------------------------------------

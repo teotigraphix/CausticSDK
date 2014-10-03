@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.bassline;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.core.osc.BasslineMessage.LFOTarget;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
@@ -38,12 +39,16 @@ public class LFO1Component extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
+    @Tag(100)
     protected int rate = 1;
 
+    @Tag(101)
     private float depth = 0.0f;
 
+    @Tag(102)
     private float phase = 0f;
 
+    @Tag(103)
     private LFOTarget target = LFOTarget.OFF;
 
     //--------------------------------------------------------------------------

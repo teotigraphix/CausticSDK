@@ -125,6 +125,8 @@ public interface ICaustkRack extends ISoundGenerator, IRackEventBus {
      * is called which restores the internal state of the {@link RackNode} with
      * the state that was loaded into the native rack by the rack node's
      * <code>.caustic</code> file.
+     * <p>
+     * The rack nod is the on the {@link ICaustkRack}.
      * 
      * @param file The <code>.caustic</code> file that will be used to restore
      *            the {@link RackNode}'s state.
