@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -36,6 +37,9 @@ import com.teotigraphix.caustk.core.osc.SubSynthMessage.ModulationMode;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
@@ -172,6 +176,7 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(ArrayList.class, 10);
         kryo.register(TreeMap.class, 11);
         kryo.register(HashMap.class, 12);
+        kryo.register(Date.class, 13);
 
         //------------------------------
         // core 101 - 300
@@ -380,6 +385,15 @@ public class CaustkRackSerializer implements ICaustkRackSerializer {
         kryo.register(ModulatorControlsComponent.class, 801);
         kryo.register(CarrierOscWaveform.class, 802);
         kryo.register(VocoderModulatorComponent.class, 803);
+
+        //------------------------------
+        // Goove framework 901-1000
+        //------------------------------
+
+        kryo.register(LibraryItemFormat.class, 901);
+
+        kryo.register(LibraryEffect.class, 925);
+        kryo.register(LibraryEffectManifest.class, 926);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class LibraryProductUtils {
 
         switch (item.getFormat()) {
             case Effect:
-                LibraryEffectUtils.saveEffect(item, product, tempDirectory);
+                LibraryEffectUtils.serialize(item, product, tempDirectory);
                 break;
             case Group:
                 LibraryGroupUtils.saveGroup((LibraryGroup)item, product, tempDirectory);

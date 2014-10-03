@@ -41,6 +41,8 @@ import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
  */
 public class LibraryProduct extends LibraryItem {
 
+    private static final String TEMP_DIRECTORY = ".temp";
+
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
@@ -73,6 +75,39 @@ public class LibraryProduct extends LibraryItem {
      */
     public final File getDirectory() {
         return manifest.getDirectory();
+    }
+
+    /**
+     * Returns a sub directory of the <code>.temp</code> directory inside the
+     * product.
+     * <p>
+     * Does NOT clean the relative directory.
+     * 
+     * @param reletivePath The path of the .temp sub directory.
+     * @throws IOException the .temp or relative directory cannot be created.
+     */
+    public File getTempDirectory(String reletivePath) throws IOException {
+        return getTempDirectory(reletivePath, false);
+    }
+
+    /**
+     * Returns a sub directory of the <code>.temp</code> directory inside the
+     * product.
+     * 
+     * @param reletivePath The path of the .temp sub directory.
+     * @param clean Whether to clean the sub directory if exists.
+     * @throws IOException the .temp or relative directory cannot be created.
+     */
+    public File getTempDirectory(String reletivePath, boolean clean) throws IOException {
+        File tempDir = new File(getDirectory(), TEMP_DIRECTORY);
+        if (!tempDir.exists())
+            FileUtils.forceMkdir(tempDir);
+        File directory = new File(tempDir, reletivePath);
+        if (!directory.exists())
+            FileUtils.forceMkdir(directory);
+        if (clean)
+            FileUtils.cleanDirectory(directory);
+        return directory;
     }
 
     //----------------------------------

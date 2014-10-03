@@ -44,7 +44,7 @@ public class LibrarySoundUtils {
         File tempEffectDir = new File(tempDirectory, "effect");
         File tempInstrumentDir = new File(tempDirectory, "instrument");
 
-        LibraryEffectUtils.saveEffect(effect, product, tempEffectDir);
+        LibraryEffectUtils.serialize(effect, product, tempEffectDir);
         LibraryInstrumentUtils.saveInstrument(instrument, product, tempInstrumentDir);
 
         ZipCompress compress = null;
@@ -89,7 +89,7 @@ public class LibrarySoundUtils {
         //        LibrarySound librarySound = CaustkRuntime.getInstance().getFactory()
         //                ._deserialize(json, LibrarySound.class);
 
-        LibraryEffect effect = LibraryEffectUtils.importEffect(tempDirectory);
+        LibraryEffect effect = LibraryEffectUtils.importEffectFromSoundDirectory(tempDirectory);
         librarySound.setEffect(effect);
 
         LibraryInstrument instrument = LibraryInstrumentUtils.importInstrument(tempDirectory);

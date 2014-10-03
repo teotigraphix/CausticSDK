@@ -81,7 +81,7 @@ public class LibraryEffectManifest extends LibraryItemManifest {
      * @param slot The effect slot index.
      */
     public final EffectType get(int slot) {
-        return effectTypes.get(1);
+        return effectTypes.get(slot);
     }
 
     //--------------------------------------------------------------------------

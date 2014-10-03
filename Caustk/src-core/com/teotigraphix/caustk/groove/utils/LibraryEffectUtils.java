@@ -33,37 +33,47 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryEffectUtils {
 
-    private static final String MANIFEST_JSON = "manifest.json";
-
     private static final String EFFECT_BIN = "effect.bin";
 
+    private static final String SOUND_EFFECT_DIRECTORY = "effect/";
+
+    private static final String SOUND_EFFECT_ARCHIVE = "effect.gfx";
+
     private static ICaustkRackSerializer getSerializer() {
-        return CaustkRuntime.getInstance().getFactory().getRuntime().getRack().getSerializer();
+        return CaustkRuntime.getInstance().getRack().getSerializer();
     }
 
-    public static void saveEffect(LibraryProductItem item, LibraryProduct product,
-            File tempDirectory) throws IOException {
-        // String json = CaustkRuntime.getInstance().getFactory().serialize(item, true);
-        // FileUtils.write(new File(tempDirectory, MANIFEST_JSON), json);
+    public static void serialize(LibraryProductItem item, LibraryProduct product, File tempDirectory)
+            throws IOException {
         getSerializer().serialize(new File(tempDirectory, EFFECT_BIN), item);
-
     }
 
-    public static LibraryEffect importEffect(File soundDirectory) throws CausticException,
-            IOException {
-        File tempDirectory = new File(soundDirectory, "effect/");
+    public static LibraryEffect importEffectFromSoundDirectory(File soundDirectory)
+            throws CausticException, IOException {
+        File uncompressDirectory = new File(soundDirectory, SOUND_EFFECT_DIRECTORY);
+        File effectFile = new File(soundDirectory, SOUND_EFFECT_ARCHIVE);
+        return importEffect(uncompressDirectory, effectFile);
+    }
 
-        File effectFile = new File(soundDirectory, "effect.gfx");
+    /**
+     * Deserializes a {@link LibraryEffect} from a <code>.gfx</code> file.
+     * 
+     * @param uncompressDirectory The directory to uncompress the effect
+     *            archive.
+     * @param effectFile The absolute location to the effect archive.
+     * @return The deserialized {@link LibraryEffect}.
+     * @throws CausticException
+     * @throws IOException
+     */
+    public static LibraryEffect importEffect(File uncompressDirectory, File effectFile)
+            throws CausticException, IOException {
         ZipUncompress uncompress = new ZipUncompress(effectFile);
-        uncompress.unzip(tempDirectory);
+        uncompress.unzip(uncompressDirectory);
 
-        File manifest = new File(tempDirectory, MANIFEST_JSON);
+        File manifest = new File(uncompressDirectory, EFFECT_BIN);
         if (!manifest.exists())
-            throw new CausticException("manifest.json does not exist");
+            throw new CausticException(EFFECT_BIN + " does not exist");
 
-        //        String json = FileUtils.readFileToString(manifest);
-        //        LibraryEffect libraryEffect = CaustkRuntime.getInstance().getFactory()
-        //                .deserialize(json, LibraryEffect.class);
         LibraryEffect libraryEffect = SerializeUtils.unpack(manifest, LibraryEffect.class);
         return libraryEffect;
     }
