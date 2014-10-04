@@ -41,7 +41,6 @@ import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
-import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
@@ -194,24 +193,14 @@ public class LibraryProductUtils {
      * </effect>
      */
     static CausticEffect createEffect(LibraryEffect item) {
-        String path = null;
-        EffectType type1 = null;
-        EffectType type2 = null;
-        if (item.get(0) != null)
-            type1 = item.get(0).getType();
-        if (item.get(1) != null)
-            type2 = item.get(1).getType();
-        CausticEffect causticEffect = new CausticEffect(path, item.getDisplayName(), type1, type2);
-        return causticEffect;
+        return new CausticEffect(item);
     }
 
     /*
      * <instrument displayName="Foo Instrument" type="SubSynth"/>
      */
     static CausticInstrument createInstrument(LibraryInstrument item) {
-        String path = null;
-        CausticInstrument causticInstrument = new CausticInstrument(path, item.getDisplayName(),
-                item.getManifest().getMachineType());
+        CausticInstrument causticInstrument = new CausticInstrument(item);
         return causticInstrument;
     }
 
@@ -225,9 +214,9 @@ public class LibraryProductUtils {
      * </sound>
      */
     static CausticSound createSound(LibrarySound item) {
-        String path = null;
-        CausticSound causticSound = new CausticSound(path, item.getIndex(), item.getDisplayName());
-
+        CausticSound causticSound = new CausticSound(item);
+        causticSound.setInstrument(createInstrument(item.getInstrument()));
+        causticSound.setEffect(createEffect(item.getEffect()));
         return causticSound;
     }
 

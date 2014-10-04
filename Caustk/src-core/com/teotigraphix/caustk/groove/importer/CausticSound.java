@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
+import com.teotigraphix.caustk.groove.library.LibrarySound;
+
 public class CausticSound extends CausticItem {
 
     private int index;
@@ -35,13 +37,21 @@ public class CausticSound extends CausticItem {
         return effect;
     }
 
+    public void setEffect(CausticEffect effect) {
+        this.effect = effect;
+    }
+
     public CausticInstrument getInstrument() {
         return instrument;
     }
 
-    public CausticSound(String path, int index, String displayName) {
-        super(path, displayName);
-        this.index = index;
+    public void setInstrument(CausticInstrument instrument) {
+        this.instrument = instrument;
+    }
+
+    public CausticSound(LibrarySound item) {
+        super(item);
+        this.index = item.getIndex();
     }
 
 }

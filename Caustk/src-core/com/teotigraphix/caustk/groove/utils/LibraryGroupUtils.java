@@ -103,7 +103,7 @@ public class LibraryGroupUtils {
 
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
             librarySound.setGroup(libraryGroup);
-            LibrarySoundUtils.importSound(librarySound, tempDirectory);
+            LibrarySoundUtils.importSoundFromGroupDirectory(librarySound, tempDirectory);
         }
 
         return libraryGroup;

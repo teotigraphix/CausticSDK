@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.groove.importer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.node.effect.EffectType;
 
 /*
@@ -40,10 +41,18 @@ public class CausticEffect extends CausticItem {
         return types.get(index).getType();
     }
 
-    public CausticEffect(String path, String displayName, EffectType effect1, EffectType effect2) {
-        super(path, displayName);
-        types.put(0, new CausticEffectType(0, effect1));
-        types.put(1, new CausticEffectType(1, effect2));
+    public CausticEffect(LibraryEffect item) {
+        super(item);
+
+        EffectType type1 = null;
+        EffectType type2 = null;
+        if (item.get(0) != null)
+            type1 = item.get(0).getType();
+        if (item.get(1) != null)
+            type2 = item.get(1).getType();
+
+        types.put(0, new CausticEffectType(0, type1));
+        types.put(1, new CausticEffectType(1, type2));
     }
 
     @Override

@@ -38,6 +38,7 @@ import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.utils.LibraryEffectUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryInstrumentUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
+import com.teotigraphix.caustk.groove.utils.LibrarySoundUtils;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -63,22 +64,18 @@ public class CausticFileImporter {
         xstream.useAttributeFor(CausticGroup.class, "sourceFile");
         xstream.useAttributeFor(CausticItem.class, "displayName");
 
-        // CausticSound
-        xstream.alias("sound", CausticSound.class);
-        xstream.useAttributeFor(CausticSound.class, "path");
-        xstream.useAttributeFor(CausticSound.class, "index");
-        //xstream.useAttributeFor(CausticSound.class, "displayName");
-
+        LibrarySoundUtils.configureXStream(xstream);
         LibraryEffectUtils.configureXStream(xstream);
         LibraryInstrumentUtils.configureXStream(xstream);
     }
 
     public CausticGroup createGroupFromCausticFile(File causticFile, String name, String displayname)
             throws CausticException {
-        String path = null;
-        CausticGroup causticGroup = new CausticGroup(path, causticFile, name, displayname);
-        fillGroup(causticGroup);
-        return causticGroup;
+        //        String path = null;
+        //        CausticGroup causticGroup = new CausticGroup(path, causticFile, name, displayname);
+        //        fillGroup(causticGroup);
+        //        return causticGroup;
+        return null;
     }
 
     static void fillGroup(CausticGroup causticGroup) throws CausticException {
@@ -95,31 +92,30 @@ public class CausticFileImporter {
         }
     }
 
-    @SuppressWarnings("unused")
     private static CausticSound fillSound(CausticGroup causticGroup, MachineNode machineNode) {
-        String path = null;
-        CausticSound causticSound = new CausticSound(path, machineNode.getIndex(),
-                machineNode.getName());
-
-        String groupName = causticGroup.getDisplayName();
-        String name = groupName + "-" + machineNode.getName();
-        String relativePath = "";
-        if (causticSound != null) {
-            name = causticSound.getDisplayName();
-            relativePath = causticSound.getPath();
-        }
-
-        CausticEffect causticEffect = fillEffect(machineNode.getEffects(), machineNode.getName(),
-                groupName, causticSound);
-
-        //        LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, name, groupName);
+        //        String path = null;
+        //        CausticSound causticSound = new CausticSound(path, machineNode.getIndex(),
+        //                machineNode.getName());
         //
-        //        LibrarySound librarySound = getFactory().createLibrarySound(product, name, relativePath);
+        //        String groupName = causticGroup.getDisplayName();
+        //        String name = groupName + "-" + machineNode.getName();
+        //        String relativePath = "";
+        //        if (causticSound != null) {
+        //            name = causticSound.getDisplayName();
+        //            relativePath = causticSound.getPath();
+        //        }
         //
-        //        librarySound.setEffect(libraryEffect);
-        //        librarySound.setInstrument(libraryInstrument);
+        //        CausticEffect causticEffect = fillEffect(machineNode.getEffects(), machineNode.getName(),
+        //                groupName, causticSound);
+        //
+        //        //        LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, name, groupName);
+        //        //
+        //        //        LibrarySound librarySound = getFactory().createLibrarySound(product, name, relativePath);
+        //        //
+        //        //        librarySound.setEffect(libraryEffect);
+        //        //        librarySound.setInstrument(libraryInstrument);
 
-        return causticSound;
+        return null;
     }
 
     @SuppressWarnings("unused")
@@ -151,13 +147,14 @@ public class CausticFileImporter {
 
     public LibraryGroup importCausticIntoProduct(LibraryProduct product, File causticFile,
             String groupName) throws IOException, CausticException {
-        String path = null;
-        CausticGroup causticGroup = new CausticGroup(path, causticFile, groupName, groupName);
-        LibraryGroup libraryGroup = causticGroup.create(product);
-        //product.fillGroup(libraryGroup); called in addToDirectory()
-        boolean exportAsGroup = true;
-        addToDirectory(product, causticGroup, exportAsGroup);
-        return libraryGroup;
+        //        String path = null;
+        //        CausticGroup causticGroup = new CausticGroup(path, causticFile, groupName, groupName);
+        //        LibraryGroup libraryGroup = causticGroup.create(product);
+        //        //product.fillGroup(libraryGroup); called in addToDirectory()
+        //        boolean exportAsGroup = true;
+        //        addToDirectory(product, causticGroup, exportAsGroup);
+        //        return libraryGroup;
+        return null;
     }
 
     /**

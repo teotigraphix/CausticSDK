@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.groove.importer;
 
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 
 public class CausticInstrument extends CausticItem {
 
@@ -11,9 +12,9 @@ public class CausticInstrument extends CausticItem {
         return type;
     }
 
-    public CausticInstrument(String path, String displayName, MachineType type) {
-        super(path, displayName);
-        this.type = type;
+    public CausticInstrument(LibraryInstrument item) {
+        super(item);
+        this.type = item.getManifest().getMachineType();
     }
 
 }

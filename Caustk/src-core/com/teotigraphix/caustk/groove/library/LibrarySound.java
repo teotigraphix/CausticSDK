@@ -69,14 +69,6 @@ public class LibrarySound extends LibraryProductItem {
         return manifest;
     }
 
-    public String getName() {
-        return manifest.getName();
-    }
-
-    public String getDisplayName() {
-        return manifest.getDisplayName();
-    }
-
     //----------------------------------
     // index
     //----------------------------------

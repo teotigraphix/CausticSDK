@@ -159,6 +159,7 @@ public class CaustkFactory implements ICaustkFactory {
     public LibrarySound createLibrarySound(LibraryProduct product, int index, String name,
             String relativePath) {
         LibrarySoundManifest manifest = new LibrarySoundManifest(name, relativePath);
+        manifest.setProductId(product.getId());
         LibrarySound librarySound = new LibrarySound(manifest, index);
         return librarySound;
     }

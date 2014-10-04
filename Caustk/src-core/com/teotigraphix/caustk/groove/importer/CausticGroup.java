@@ -100,10 +100,9 @@ public class CausticGroup extends CausticItem {
         return sounds;
     }
 
-    public CausticGroup(String path, File sourceFile, String name, String displayName) {
-        super(path, displayName);
+    public CausticGroup(LibraryGroup item, File sourceFile) {
+        super(item);
         this.sourceFile = sourceFile;
-        this.name = name;
     }
 
     public CausticSound addSound(CausticSound sound) {
@@ -112,9 +111,10 @@ public class CausticGroup extends CausticItem {
     }
 
     public CausticSound addSound(int index, String soundName, String effectName) {
-        CausticSound machine = new CausticSound(null, index, soundName);
-        sounds.put(index, machine);
-        return machine;
+        //        CausticSound machine = new CausticSound(null, index, soundName);
+        //        sounds.put(index, machine);
+        //        return machine;
+        return null;
     }
 
     public LibraryGroup create(LibraryProduct product) {

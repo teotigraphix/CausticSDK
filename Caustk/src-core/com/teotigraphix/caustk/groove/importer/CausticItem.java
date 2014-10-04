@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
+import com.teotigraphix.caustk.groove.library.LibraryProductItem;
+
 public abstract class CausticItem {
 
     private transient boolean export;
@@ -39,9 +41,9 @@ public abstract class CausticItem {
         return path;
     }
 
-    public CausticItem(String path, String displayName) {
-        this.path = path;
-        this.displayName = displayName;
+    public CausticItem(LibraryProductItem item) {
+        this.path = item.getPath();
+        this.displayName = item.getDisplayName();
     }
 
 }

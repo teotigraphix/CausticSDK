@@ -25,6 +25,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
@@ -32,6 +33,7 @@ import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
+import com.thoughtworks.xstream.XStream;
 
 public class LibrarySoundUtils {
 
@@ -40,6 +42,13 @@ public class LibrarySoundUtils {
     private static final String EFFECT_GFX = "effect.gfx";
 
     private static final String SOUND_BIN = "sound.bin";
+
+    public static void configureXStream(XStream xstream) {
+        xstream.alias("sound", CausticSound.class);
+        xstream.useAttributeFor(CausticSound.class, "path");
+        xstream.useAttributeFor(CausticSound.class, "index");
+        xstream.useAttributeFor(CausticSound.class, "displayName");
+    }
 
     public static void serialize(LibrarySound item, LibraryProduct product, File tempDirectory)
             throws IOException {
@@ -80,7 +89,7 @@ public class LibrarySoundUtils {
         SerializeUtils.pack(new File(tempDirectory, SOUND_BIN), item);
     }
 
-    public static void importSound(LibrarySound librarySound, File groupDirectory)
+    public static void importSoundFromGroupDirectory(LibrarySound librarySound, File groupDirectory)
             throws CausticException, IOException {
         String fileName = "sound-" + Integer.toString(librarySound.getIndex());
         File tempDirectory = new File(groupDirectory, "sounds/" + fileName);
@@ -97,5 +106,26 @@ public class LibrarySoundUtils {
         LibraryInstrument instrument = LibraryInstrumentUtils
                 .importInstrumentFromSoundDirectory(tempDirectory);
         librarySound.setInstrument(instrument);
+    }
+
+    public static LibrarySound importSound(File uncompressDirectory, File soundFile)
+            throws CausticException, IOException {
+        ZipUncompress uncompress = new ZipUncompress(soundFile);
+        uncompress.unzip(uncompressDirectory);
+
+        LibraryEffect libraryEffect = LibraryEffectUtils
+                .importEffectFromSoundDirectory(uncompressDirectory);
+        LibraryInstrument libraryInstrument = LibraryInstrumentUtils
+                .importInstrumentFromSoundDirectory(uncompressDirectory);
+
+        File manifest = new File(uncompressDirectory, "sound.bin");
+        if (!manifest.exists())
+            throw new CausticException("sound.bin" + " does not exist");
+
+        LibrarySound librarySound = SerializeUtils.unpack(manifest, LibrarySound.class);
+        librarySound.setEffect(libraryEffect);
+        librarySound.setInstrument(libraryInstrument);
+
+        return librarySound;
     }
 }

@@ -47,6 +47,17 @@ public abstract class LibraryProductItem extends LibraryItem {
     }
 
     /**
+     * Returns the relative path from within the item's type IE
+     * <code>Effects</code> would be the item's type and
+     * <code>Delay/PingPong</code> would be the relative path.
+     * <p>
+     * The return value would then be <code>Delay/PingPong</code>.
+     */
+    public String getPath() {
+        return getManifest().getRelativePath();
+    }
+
+    /**
      * Returns the relative base of the file within the product.
      * <p>
      * E.g <code>/Groups/ALLEY 01.ggrp</code>
