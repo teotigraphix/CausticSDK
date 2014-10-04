@@ -52,6 +52,8 @@ import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryProductUtils {
 
+    static final String PRODUCT_BIN = "product.bin";
+
     private static final String TEMP_EXTRACTION = ".tempExtraction";
 
     static final String MANIFEST_XML = "manifest.xml";

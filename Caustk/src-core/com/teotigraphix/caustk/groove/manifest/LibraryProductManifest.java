@@ -76,6 +76,9 @@ public class LibraryProductManifest extends LibraryItemManifest {
     /**
      * Serialization.
      */
+    LibraryProductManifest() {
+    }
+
     public LibraryProductManifest(UUID id, String name, File directory) {
         super(LibraryItemFormat.Product, name, null);
         setId(id);

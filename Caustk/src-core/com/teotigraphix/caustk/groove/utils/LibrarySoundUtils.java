@@ -47,7 +47,6 @@ public class LibrarySoundUtils {
         xstream.alias("sound", CausticSound.class);
         xstream.useAttributeFor(CausticSound.class, "path");
         xstream.useAttributeFor(CausticSound.class, "index");
-        xstream.useAttributeFor(CausticSound.class, "displayName");
     }
 
     public static void serialize(LibrarySound item, LibraryProduct product, File tempDirectory)

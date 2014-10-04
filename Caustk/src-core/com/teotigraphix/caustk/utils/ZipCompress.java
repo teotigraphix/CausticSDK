@@ -45,6 +45,31 @@ public class ZipCompress {
 
         fileList = new ArrayList<String>();
         generateFileList(sourceDirectory);
+        //        Collection<File> listFiles = FileUtils.listFiles(sourceDirectory, new IOFileFilter() {
+        //            @Override
+        //            public boolean accept(File arg0, String arg1) {
+        //                return false;
+        //            }
+        //
+        //            @Override
+        //            public boolean accept(File arg0) {
+        //                return false;
+        //            }
+        //        }, new IOFileFilter() {
+        //            @Override
+        //            public boolean accept(File arg0, String arg1) {
+        //                return true;
+        //            }
+        //
+        //            @Override
+        //            public boolean accept(File arg0) {
+        //                return true;
+        //            }
+        //        });
+        //
+        //        for (File file : listFiles) {
+        //            fileList.add(generateZipEntry(file.getAbsolutePath()));
+        //        }
     }
 
     /**
@@ -100,7 +125,7 @@ public class ZipCompress {
 
         //add file only
         if (node.isFile()) {
-            fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));
+            fileList.add(generateZipEntry(node.getAbsolutePath()));
         }
 
         if (node.isDirectory()) {
@@ -119,6 +144,7 @@ public class ZipCompress {
      * @return Formatted file path
      */
     private String generateZipEntry(String file) {
-        return file.substring(sourceDirectory.toString().length() + 1, file.length());
+        return file.substring(sourceDirectory.getAbsoluteFile().getAbsolutePath().length() + 1,
+                file.length());
     }
 }

@@ -22,6 +22,8 @@ package com.teotigraphix.caustk.utils;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
@@ -37,6 +39,29 @@ public final class ZipUtils {
     public static String readZipString(File archiveFile, File fileToRead) {
         ZipUncompress uncompress = new ZipUncompress(archiveFile);
         return uncompress.unzipString(fileToRead);
+    }
+
+    public static void writeZipEntryToFile(File archiveFile, String entryName, File outputFile)
+            throws IOException {
+        FileInputStream fis = new FileInputStream(archiveFile);
+        ZipInputStream zis = new ZipInputStream(fis);
+
+        ZipEntry entry = null;
+        while ((entry = zis.getNextEntry()) != null) {
+            System.out.println("Reading " + entry.getName());
+            if (entry.getName().equals(entryName)) {
+                FileOutputStream outputfile = new FileOutputStream(outputFile);
+                int data = 0;
+                while ((data = zis.read()) != -1) {
+                    outputfile.write(data);
+                }
+                outputfile.close();
+                break;
+            }
+        }
+
+        zis.close();
+        fis.close();
     }
 
     public static final void readZip(InputStream is) throws IOException {

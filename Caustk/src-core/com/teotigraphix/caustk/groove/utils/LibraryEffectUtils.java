@@ -47,7 +47,6 @@ public class LibraryEffectUtils {
         xstream.alias("type", EffectType.class);
         xstream.alias("type", CausticEffectType.class);
         xstream.useAttributeFor(CausticEffect.class, "path");
-        //xstream.useAttributeFor(CausticEffect.class, "displayName");
         xstream.useAttributeFor(CausticEffectType.class, "index");
         xstream.useAttributeFor(CausticEffectType.class, "type");
         xstream.addImplicitMap(CausticEffect.class, "types", CausticEffectType.class, "index");

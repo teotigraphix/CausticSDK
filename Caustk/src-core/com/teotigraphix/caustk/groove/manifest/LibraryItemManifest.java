@@ -29,10 +29,9 @@ import java.util.List;
 import java.util.UUID;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.sun.jna.Library;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
-import com.teotigraphix.caustk.node.ICaustkNode;
 
 /**
  * @author Michael Schmalle
@@ -112,14 +111,6 @@ public class LibraryItemManifest {
         return format;
     }
 
-    public File getProductPath() {
-        final String formatDirectoryName = LibraryProductUtils.toItemBaseDirectoryName(this);
-        final File base = getRelativePath() != null ? new File(formatDirectoryName,
-                getRelativePath()) : new File(formatDirectoryName);
-        final File productPath = new File(base, getFileName());
-        return productPath;
-    }
-
     private String getFileName() {
         return getName() + "." + format.getExtension();
     }
@@ -181,12 +172,8 @@ public class LibraryItemManifest {
     //----------------------------------
 
     /**
-     * Returns the full relative path from the Library's base;
-     * <code>/root/MyApp/Libraries/MyLib/[Effect/Distortion/SubDir/MyDistorion.effect]</code>
-     * <p>
-     * This property is non <code>null</code> when the component is added to the
-     * {@link Library#add(ICaustkNode)}, or {@link #setFile(File)} is explicitly
-     * called with a relative path value.
+     * Returns the relative path.
+     * <code>/root/MyApp/Libraries/MyLib/Effect/Distortion/[SubDir]/MyDistorion.effect]</code>
      */
     public String getRelativePath() {
         return relativePath;
@@ -194,6 +181,28 @@ public class LibraryItemManifest {
 
     public void setRelativePath(String relativePath) {
         this.relativePath = relativePath;
+    }
+
+    /**
+     * Returns the full relative path from the Product's base;
+     * <code>/root/MyApp/Products/MyProduct/[Effect/Distortion/SubDir/MyDistorion.effect]</code>
+     */
+    public String getProductPath() {
+        final String formatDirectoryName = LibraryProductUtils.toItemBaseDirectoryName(this);
+        final File base = getRelativePath() != null ? new File(formatDirectoryName,
+                getRelativePath()) : new File(formatDirectoryName);
+        final File productPath = new File(base, getFileName());
+        return productPath.getPath();
+    }
+
+    /**
+     * Returns the full absolute path from the Product's base;
+     * <code>/root/MyApp/Products/MyProduct/[Effect/Distortion/SubDir/MyDistorion.effect]</code>
+     * 
+     * @param product The owning product of the item.
+     */
+    public File getAbsoluteProductPath(LibraryProduct product) {
+        return new File(product.getDirectory(), getProductPath());
     }
 
     //--------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,10 +37,12 @@ import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
@@ -167,6 +170,7 @@ public final class CaustkSerializerTags {
         kryo.register(TreeMap.class, 11);
         kryo.register(HashMap.class, 12);
         kryo.register(Date.class, 13);
+        kryo.register(File.class, new FileSerializer(), 14);
 
         //------------------------------
         // core 101 - 300
@@ -391,6 +395,8 @@ public final class CaustkSerializerTags {
         kryo.register(LibrarySoundManifest.class, 930);
         kryo.register(LibraryGroup.class, 931);
         kryo.register(LibraryGroupManifest.class, 932);
+        kryo.register(LibraryProduct.class, 933);
+        kryo.register(LibraryProductManifest.class, 934);
     }
 
     public static class UUIDSerializer extends Serializer<UUID> {
@@ -407,6 +413,19 @@ public final class CaustkSerializerTags {
         @Override
         public UUID read(final Kryo kryo, final Input input, final Class<UUID> uuidClass) {
             return new UUID(input.readLong(), input.readLong());
+        }
+    }
+
+    public static class FileSerializer extends Serializer<File> {
+
+        @Override
+        public File read(Kryo kryo, Input input, Class<File> clazz) {
+            return new File(input.readString());
+        }
+
+        @Override
+        public void write(Kryo kryo, Output output, File file) {
+            output.writeString(file.getAbsolutePath());
         }
     }
 }
