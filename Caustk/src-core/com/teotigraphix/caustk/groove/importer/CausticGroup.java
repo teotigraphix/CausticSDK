@@ -112,7 +112,7 @@ public class CausticGroup extends CausticItem {
     }
 
     public CausticSound addSound(int index, String soundName, String effectName) {
-        CausticSound machine = new CausticSound(null, index, soundName, effectName);
+        CausticSound machine = new CausticSound(null, index, soundName);
         sounds.put(index, machine);
         return machine;
     }

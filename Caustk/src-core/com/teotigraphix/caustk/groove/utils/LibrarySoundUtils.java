@@ -44,6 +44,9 @@ public class LibrarySoundUtils {
     public static void serialize(LibrarySound item, LibraryProduct product, File tempDirectory)
             throws IOException {
 
+        FileUtils.writeStringToFile(new File(tempDirectory, LibraryProductUtils.MANIFEST_XML),
+                LibraryProductUtils.toSoundXML(item));
+
         LibraryEffect effect = item.getEffect();
         LibraryInstrument instrument = item.getInstrument();
 

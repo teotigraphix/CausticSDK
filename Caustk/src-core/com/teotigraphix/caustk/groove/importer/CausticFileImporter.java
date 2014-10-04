@@ -36,9 +36,9 @@ import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.utils.LibraryEffectUtils;
+import com.teotigraphix.caustk.groove.utils.LibraryInstrumentUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.SerializeUtils;
@@ -70,6 +70,7 @@ public class CausticFileImporter {
         //xstream.useAttributeFor(CausticSound.class, "displayName");
 
         LibraryEffectUtils.configureXStream(xstream);
+        LibraryInstrumentUtils.configureXStream(xstream);
     }
 
     public CausticGroup createGroupFromCausticFile(File causticFile, String name, String displayname)
@@ -98,7 +99,7 @@ public class CausticFileImporter {
     private static CausticSound fillSound(CausticGroup causticGroup, MachineNode machineNode) {
         String path = null;
         CausticSound causticSound = new CausticSound(path, machineNode.getIndex(),
-                machineNode.getName(), "DefaultEffect");
+                machineNode.getName());
 
         String groupName = causticGroup.getDisplayName();
         String name = groupName + "-" + machineNode.getName();
@@ -310,31 +311,13 @@ public class CausticFileImporter {
         exportProduct(product, targetArchive);
     }
 
-    String toXML(Object instance) {
+    public String toXML(Object instance) {
         return xstream.toXML(instance);
     }
 
     @SuppressWarnings("unchecked")
     public <T> T fromXMLManifest(File manifestFile, Class<T> clazz) throws FileNotFoundException {
         return (T)xstream.fromXML(new FileReader(manifestFile));
-    }
-
-    CausticEffect createEffect(LibraryEffect item) {
-        String path = null;
-        EffectType type1 = null;
-        EffectType type2 = null;
-        if (item.get(0) != null)
-            type1 = item.get(0).getType();
-        if (item.get(1) != null)
-            type2 = item.get(1).getType();
-        CausticEffect causticEffect = new CausticEffect(path, item.getDisplayName(), type1, type2);
-        return causticEffect;
-    }
-
-    public String toEffectXML(LibraryEffect item) {
-        CausticEffect causticEffect = createEffect(item);
-        String xml = xstream.toXML(causticEffect);
-        return xml;
     }
 
 }

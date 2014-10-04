@@ -54,7 +54,7 @@ public interface ICaustkRack extends ISoundGenerator, IRackEventBus {
      */
     boolean isLoaded();
 
-    ICaustkRackSerializer getSerializer();
+    ICaustkSerializer getSerializer();
 
     <T extends CaustkProject> T setProject(File file, Class<T> type) throws IOException;
 

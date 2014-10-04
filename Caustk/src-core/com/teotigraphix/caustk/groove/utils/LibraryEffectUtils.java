@@ -21,13 +21,12 @@ package com.teotigraphix.caustk.groove.utils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.core.ICaustkRackSerializer;
+import com.teotigraphix.caustk.core.ICaustkSerializer;
 import com.teotigraphix.caustk.groove.importer.CausticEffect;
 import com.teotigraphix.caustk.groove.importer.CausticEffectType;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
@@ -39,20 +38,10 @@ import com.thoughtworks.xstream.XStream;
 
 public class LibraryEffectUtils {
 
-    private static final String EFFECT_BIN = "effect.bin";
+    private static ICaustkSerializer getSerializer() {
+        return CaustkRuntime.getInstance().getRack().getSerializer();
+    }
 
-    private static final String MANIFEST_XML = "manifest.xml";
-
-    private static final String SOUND_EFFECT_DIR = "effect/";
-
-    private static final String SOUND_EFFECT_ARCHIVE = "effect.gfx";
-
-    /*
-     <effect displayName="Foo Effect">
-    <type index="0" type="Autowah"/>
-    <type index="1" type="Delay"/>
-    </effect>
-     */
     public static void configureXStream(XStream xstream) {
         xstream.alias("effect", CausticEffect.class);
         xstream.alias("type", EffectType.class);
@@ -64,21 +53,17 @@ public class LibraryEffectUtils {
         xstream.addImplicitMap(CausticEffect.class, "types", CausticEffectType.class, "index");
     }
 
-    private static ICaustkRackSerializer getSerializer() {
-        return CaustkRuntime.getInstance().getRack().getSerializer();
-    }
-
     public static void serialize(LibraryEffect item, LibraryProduct product, File tempDirectory)
             throws IOException {
-        String xml = getSerializer().toEffectXML(item);
-        FileUtils.writeStringToFile(new File(tempDirectory, MANIFEST_XML), xml);
-        getSerializer().serialize(new File(tempDirectory, EFFECT_BIN), item);
+        FileUtils.writeStringToFile(new File(tempDirectory, LibraryProductUtils.MANIFEST_XML),
+                LibraryProductUtils.toEffectXML(item));
+        getSerializer().serialize(new File(tempDirectory, LibraryProductUtils.EFFECT_BIN), item);
     }
 
     public static LibraryEffect importEffectFromSoundDirectory(File soundDirectory)
             throws CausticException, IOException {
-        File uncompressDirectory = new File(soundDirectory, SOUND_EFFECT_DIR);
-        File effectFile = new File(soundDirectory, SOUND_EFFECT_ARCHIVE);
+        File uncompressDirectory = new File(soundDirectory, LibraryProductUtils.SOUND_EFFECT_DIR);
+        File effectFile = new File(soundDirectory, LibraryProductUtils.SOUND_EFFECT_ARCHIVE);
         return importEffect(uncompressDirectory, effectFile);
     }
 
@@ -97,25 +82,12 @@ public class LibraryEffectUtils {
         ZipUncompress uncompress = new ZipUncompress(effectFile);
         uncompress.unzip(uncompressDirectory);
 
-        File manifest = new File(uncompressDirectory, EFFECT_BIN);
+        File manifest = new File(uncompressDirectory, LibraryProductUtils.EFFECT_BIN);
         if (!manifest.exists())
-            throw new CausticException(EFFECT_BIN + " does not exist");
+            throw new CausticException(LibraryProductUtils.EFFECT_BIN + " does not exist");
 
         LibraryEffect libraryEffect = SerializeUtils.unpack(manifest, LibraryEffect.class);
         return libraryEffect;
     }
 
-    public static CausticEffect readXMLManifest(LibraryProduct product, File archive)
-            throws IOException {
-        if (!archive.exists())
-            throw new IOException("Archive does not exist: " + archive);
-        ZipUncompress uncompress = new ZipUncompress(archive);
-        File uncompressDirectory = product.getCacheDirectory(UUID.randomUUID().toString());
-        uncompress.unzip(uncompressDirectory);
-        File manifestFile = new File(uncompressDirectory, MANIFEST_XML);
-        CausticEffect causticEffect = getSerializer().fromXMLManifest(manifestFile,
-                CausticEffect.class);
-        FileUtils.forceDeleteOnExit(uncompressDirectory);
-        return causticEffect;
-    }
 }

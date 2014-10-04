@@ -63,7 +63,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     private final CaustkRuntime runtime;
 
-    private ICaustkRackSerializer serializer;
+    private ICaustkSerializer serializer;
 
     private RackNode rackNode;
 
@@ -81,7 +81,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public ICaustkRackSerializer getSerializer() {
+    public ICaustkSerializer getSerializer() {
         return serializer;
     }
 
@@ -187,7 +187,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     CaustkRack(CaustkRuntime runtime) {
         super(runtime.getSoundGenerator());
         this.runtime = runtime;
-        this.serializer = new CaustkRackSerializer();
+        this.serializer = new CaustkSerializer();
     }
 
     //--------------------------------------------------------------------------

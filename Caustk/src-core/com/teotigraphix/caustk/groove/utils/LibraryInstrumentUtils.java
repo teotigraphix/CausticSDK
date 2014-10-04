@@ -27,14 +27,15 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
+import com.teotigraphix.caustk.groove.importer.CausticInstrument;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipUncompress;
+import com.thoughtworks.xstream.XStream;
 
 /**
  * @author Michael Schmalle
@@ -49,6 +50,11 @@ public class LibraryInstrumentUtils {
     private static final String PRESET = "preset";
 
     private static final String INSTRUMENT_BIN = "instrument.bin";
+
+    public static void configureXStream(XStream xstream) {
+        xstream.alias("instrument", CausticInstrument.class);
+        xstream.useAttributeFor(CausticInstrument.class, "type");
+    }
 
     //--------------------------------------------------------------------------
     // Public Creation API
@@ -77,17 +83,19 @@ public class LibraryInstrumentUtils {
     // Public State API
     //--------------------------------------------------------------------------
 
-    public static void serialize(LibraryProductItem item, LibraryProduct product, File tempDirectory)
+    public static void serialize(LibraryInstrument item, LibraryProduct product, File tempDirectory)
             throws IOException {
+
+        FileUtils.writeStringToFile(new File(tempDirectory, LibraryProductUtils.MANIFEST_XML),
+                LibraryProductUtils.toInstrumentXML(item));
         SerializeUtils.pack(new File(tempDirectory, INSTRUMENT_BIN), item);
 
         // XXX construct the archive for the specific node type
         // for now the only special node type is MachineNode that needs
         // the presets directory
-        if (item instanceof LibraryInstrument
-                && !(((LibraryInstrument)item).getMachineNode() instanceof VocoderMachine)) {
+        if (item instanceof LibraryInstrument && !(item.getMachineNode() instanceof VocoderMachine)) {
             File presetsDirectory = tempDirectory;
-            MachineNode machineNode = ((LibraryInstrument)item).getMachineNode();
+            MachineNode machineNode = item.getMachineNode();
             File file = new File(presetsDirectory, PRESET + "."
                     + machineNode.getType().getExtension());
             FileUtils.writeByteArrayToFile(file, machineNode.getPreset().getRestoredData());
@@ -118,4 +126,5 @@ public class LibraryInstrumentUtils {
 
         return libraryInstrument;
     }
+
 }

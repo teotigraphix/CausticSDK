@@ -24,6 +24,12 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.node.effect.EffectType;
 
+/*
+<effect displayName="Foo Effect">
+<type index="0" type="Autowah"/>
+<type index="1" type="Delay"/>
+</effect>
+*/
 public class CausticEffect extends CausticItem {
 
     private Map<Integer, CausticEffectType> types = new HashMap<Integer, CausticEffectType>();

@@ -21,22 +21,11 @@ package com.teotigraphix.caustk.groove.importer;
 
 public class CausticSound extends CausticItem {
 
-    private String name;
-
-    private String displayName;
-
     private int index;
 
     private CausticEffect effect;
 
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getDisplayName() {
-        return displayName;
-    }
+    private CausticInstrument instrument;
 
     public int getIndex() {
         return index;
@@ -46,17 +35,13 @@ public class CausticSound extends CausticItem {
         return effect;
     }
 
-    public CausticSound(String path, int index, String displayName, String effectName) {
-        super(path, displayName);
-        this.index = index;
-        this.displayName = displayName;
-        effect = new CausticEffect(null, effectName, null, null);
+    public CausticInstrument getInstrument() {
+        return instrument;
     }
 
-    @Override
-    public String toString() {
-        return "CausticSound [\nname=" + name + ", displayName=" + displayName + ", index=" + index
-                + ", effect=" + effect + "\n]";
+    public CausticSound(String path, int index, String displayName) {
+        super(path, displayName);
+        this.index = index;
     }
 
 }

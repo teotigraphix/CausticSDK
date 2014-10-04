@@ -21,11 +21,17 @@ package com.teotigraphix.caustk.groove.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkSerializer;
+import com.teotigraphix.caustk.groove.importer.CausticEffect;
+import com.teotigraphix.caustk.groove.importer.CausticInstrument;
+import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -35,10 +41,24 @@ import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
+import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.utils.ZipCompress;
+import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryProductUtils {
+
+    static final String MANIFEST_XML = "manifest.xml";
+
+    static final String EFFECT_BIN = "effect.bin";
+
+    static final String SOUND_EFFECT_DIR = "effect/";
+
+    static final String SOUND_EFFECT_ARCHIVE = "effect.gfx";
+
+    private static ICaustkSerializer getSerializer() {
+        return CaustkRuntime.getInstance().getRack().getSerializer();
+    }
 
     public static File addArchiveToProduct(LibraryProductItem item, LibraryProduct product)
             throws IOException {
@@ -59,7 +79,7 @@ public class LibraryProductUtils {
                 LibraryGroupUtils.serialize((LibraryGroup)item, product, tempDirectory);
                 break;
             case Instrument:
-                LibraryInstrumentUtils.serialize(item, product, tempDirectory);
+                LibraryInstrumentUtils.serialize((LibraryInstrument)item, product, tempDirectory);
                 break;
             case Product:
                 break;
@@ -152,6 +172,81 @@ public class LibraryProductUtils {
     private static void addEffectArchive(File file, LibraryProduct product) throws IOException,
             CausticException {
         addToProduct(file, product, LibraryEffect.class);
+    }
+
+    public static <T> T readXMLManifest(LibraryProduct product, File archive, Class<T> clazz)
+            throws IOException {
+        if (!archive.exists())
+            throw new IOException("Archive does not exist: " + archive);
+        ZipUncompress uncompress = new ZipUncompress(archive);
+        File uncompressDirectory = product.getCacheDirectory(UUID.randomUUID().toString());
+        uncompress.unzip(uncompressDirectory);
+        File manifestFile = new File(uncompressDirectory, MANIFEST_XML);
+        T instance = getSerializer().fromXMLManifest(manifestFile, clazz);
+        FileUtils.forceDeleteOnExit(uncompressDirectory);
+        return instance;
+    }
+
+    /*
+     * <effect displayName="Foo Effect">
+     *   <type index="0" type="Autowah"/>
+     *   <type index="1" type="Delay"/>
+     * </effect>
+     */
+    static CausticEffect createEffect(LibraryEffect item) {
+        String path = null;
+        EffectType type1 = null;
+        EffectType type2 = null;
+        if (item.get(0) != null)
+            type1 = item.get(0).getType();
+        if (item.get(1) != null)
+            type2 = item.get(1).getType();
+        CausticEffect causticEffect = new CausticEffect(path, item.getDisplayName(), type1, type2);
+        return causticEffect;
+    }
+
+    /*
+     * <instrument displayName="Foo Instrument" type="SubSynth"/>
+     */
+    static CausticInstrument createInstrument(LibraryInstrument item) {
+        String path = null;
+        CausticInstrument causticInstrument = new CausticInstrument(path, item.getDisplayName(),
+                item.getManifest().getMachineType());
+        return causticInstrument;
+    }
+
+    /*
+     * <sound displayName="Ride" index="3" path="Drum/Percussion">
+     *   <instrument displayName="Foo Instrument" type="SubSynth"/>
+     *   <effect displayName="Foo Effect">
+     *     <type index="0" type="Autowah"/>
+     *     <type index="1" type="Delay"/>
+     *   </effect>
+     * </sound>
+     */
+    static CausticSound createSound(LibrarySound item) {
+        String path = null;
+        CausticSound causticSound = new CausticSound(path, item.getIndex(), item.getDisplayName());
+
+        return causticSound;
+    }
+
+    public static String toEffectXML(LibraryEffect item) {
+        CausticEffect causticEffect = createEffect(item);
+        String xml = getSerializer().toXML(causticEffect);
+        return xml;
+    }
+
+    public static String toInstrumentXML(LibraryInstrument item) {
+        CausticInstrument causticInstrument = createInstrument(item);
+        String xml = getSerializer().toXML(causticInstrument);
+        return xml;
+    }
+
+    public static String toSoundXML(LibrarySound item) {
+        CausticSound causticSound = createSound(item);
+        String xml = getSerializer().toXML(causticSound);
+        return xml;
     }
 
 }

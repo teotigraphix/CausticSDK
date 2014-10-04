@@ -6,9 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.teotigraphix.caustk.groove.library.LibraryEffect;
 
-public interface ICaustkRackSerializer {
+public interface ICaustkSerializer {
 
     Kryo getKryo();
 
@@ -16,7 +15,8 @@ public interface ICaustkRackSerializer {
 
     <T> T deserialize(File file, Class<T> type) throws IOException;
 
-    String toEffectXML(LibraryEffect item);
-
     <T> T fromXMLManifest(File manifestFile, Class<T> clazz) throws FileNotFoundException;
+
+    String toXML(Object instance);
+
 }
