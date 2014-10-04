@@ -27,6 +27,7 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
+import com.teotigraphix.caustk.groove.library.LibrarySound;
 
 /*
 <group sourceFile="C:\Users\Teoti\Documents\caustic\songs\ALLEY 01.caustic" 
@@ -82,16 +83,13 @@ import com.teotigraphix.caustk.groove.library.LibraryProduct;
  */
 public class CausticGroup extends CausticItem {
 
-    private String name;
-
     private File sourceFile;
 
     Map<Integer, CausticSound> sounds = new HashMap<Integer, CausticSound>();
 
-    public String getName() {
-        return name;
-    }
-
+    /**
+     * The source .caustic file that created this group
+     */
     public File getSourceFile() {
         return sourceFile;
     }
@@ -100,21 +98,21 @@ public class CausticGroup extends CausticItem {
         return sounds;
     }
 
-    public CausticGroup(LibraryGroup item, File sourceFile) {
+    public CausticGroup(LibraryGroup item) {
         super(item);
+        for (LibrarySound librarySound : item.getSounds()) {
+            sounds.put(librarySound.getIndex(), new CausticSound(librarySound));
+        }
+    }
+
+    public CausticGroup(String path, String displayName, File sourceFile) {
+        super(path, displayName);
         this.sourceFile = sourceFile;
     }
 
     public CausticSound addSound(CausticSound sound) {
         sounds.put(sound.getIndex(), sound);
         return sound;
-    }
-
-    public CausticSound addSound(int index, String soundName, String effectName) {
-        //        CausticSound machine = new CausticSound(null, index, soundName);
-        //        sounds.put(index, machine);
-        //        return machine;
-        return null;
     }
 
     public LibraryGroup create(LibraryProduct product) {
@@ -130,8 +128,8 @@ public class CausticGroup extends CausticItem {
 
     @Override
     public String toString() {
-        return "CausticGroup [name=" + name + ", sourceFile=" + sourceFile + ", displayName="
-                + getDisplayName() + ", sounds=" + sounds + "]";
+        return "CausticGroup [sourceFile=" + sourceFile + ", displayName=" + getDisplayName()
+                + ", sounds=" + sounds + "]";
     }
 
 }

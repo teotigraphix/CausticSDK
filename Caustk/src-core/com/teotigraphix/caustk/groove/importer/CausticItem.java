@@ -41,6 +41,11 @@ public abstract class CausticItem {
         return path;
     }
 
+    public CausticItem(String path, String displayName) {
+        this.path = path;
+        this.displayName = displayName;
+    }
+
     public CausticItem(LibraryProductItem item) {
         this.path = item.getPath();
         this.displayName = item.getDisplayName();

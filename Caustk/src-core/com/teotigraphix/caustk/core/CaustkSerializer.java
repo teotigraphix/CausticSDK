@@ -20,6 +20,11 @@ public class CaustkSerializer implements ICaustkSerializer {
     private Kryo kryo;
 
     @Override
+    public CausticFileImporter getImporter() {
+        return importer;
+    }
+
+    @Override
     public Kryo getKryo() {
         return kryo;
     }
@@ -53,11 +58,6 @@ public class CaustkSerializer implements ICaustkSerializer {
     @Override
     public <T> T fromXMLManifest(File manifestFile, Class<T> clazz) throws FileNotFoundException {
         return importer.fromXMLManifest(manifestFile, clazz);
-    }
-
-    @Override
-    public String toXML(Object instance) {
-        return importer.toXML(instance);
     }
 
 }

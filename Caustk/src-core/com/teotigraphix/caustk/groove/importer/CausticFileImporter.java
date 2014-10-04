@@ -69,17 +69,14 @@ public class CausticFileImporter {
         LibraryInstrumentUtils.configureXStream(xstream);
     }
 
-    public CausticGroup createGroupFromCausticFile(File causticFile, String name, String displayname)
+    public CausticGroup createGroupFromCausticFile(String path, String displayName, File causticFile)
             throws CausticException {
-        //        String path = null;
-        //        CausticGroup causticGroup = new CausticGroup(path, causticFile, name, displayname);
-        //        fillGroup(causticGroup);
-        //        return causticGroup;
-        return null;
+        CausticGroup causticGroup = new CausticGroup(path, displayName, causticFile);
+        fillGroup(causticGroup);
+        return causticGroup;
     }
 
     static void fillGroup(CausticGroup causticGroup) throws CausticException {
-
         File causticFile = causticGroup.getSourceFile();
         if (!causticFile.exists())
             throw new CausticException(".caustic File does not exist ;" + causticFile);
@@ -93,7 +90,7 @@ public class CausticFileImporter {
     }
 
     private static CausticSound fillSound(CausticGroup causticGroup, MachineNode machineNode) {
-        //        String path = null;
+        //String path = null;
         //        CausticSound causticSound = new CausticSound(path, machineNode.getIndex(),
         //                machineNode.getName());
         //
@@ -114,7 +111,6 @@ public class CausticFileImporter {
         //        //
         //        //        librarySound.setEffect(libraryEffect);
         //        //        librarySound.setInstrument(libraryInstrument);
-
         return null;
     }
 

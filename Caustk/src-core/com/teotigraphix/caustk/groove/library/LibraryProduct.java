@@ -29,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
@@ -176,13 +177,9 @@ public class LibraryProduct extends LibraryItem {
 
     public LibraryGroup loadGroup(LibraryItemManifest manifest) throws CausticException,
             IOException {
-        File archive = new File(getDirectory(), manifest.getProductPath().getPath());
-        //String json = ZipUtils.readZipString(archive, new File("manifest.json"));
-        //LibraryGroup instance = SerializeUtils.unpack(json, LibraryGroup.class);
-        // need to then load the sounds which will load the instrument and effects
-
-        LibraryGroup instance = LibraryGroupUtils.importGroup(archive);
-
+        File groupArchive = new File(getDirectory(), manifest.getProductPath().getPath());
+        File uncompressDirectory = null;
+        LibraryGroup instance = LibraryGroupUtils.importGroup(groupArchive, uncompressDirectory);
         return instance;
     }
 
@@ -257,7 +254,12 @@ public class LibraryProduct extends LibraryItem {
      * @throws CausticException
      */
     public void fillGroup(LibraryGroup libraryGroup) throws CausticException {
-        LibraryGroupUtils.fillGroup(this, libraryGroup);
+        // XXX LibraryGroupUtils.fillGroup(this, libraryGroup);
     }
 
+    public LibraryGroup createGroup(String path, String displayName, File causticFile) {
+        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory()
+                .createLibraryGroup(this, displayName, path);
+        return libraryGroup;
+    }
 }

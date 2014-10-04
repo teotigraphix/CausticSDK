@@ -85,15 +85,15 @@ public interface ICaustkFactory {
     <T extends MachineNode> T createMachine(RackNode rackNode, int index, MachineType type,
             String name);
 
-    LibraryEffect createLibraryEffect(LibraryProduct product, String name, String relativePath,
+    LibraryEffect createLibraryEffect(LibraryProduct product, String name, String path,
             EffectNode efffect0, EffectNode efffect1);
 
-    LibraryInstrument createLibraryInstrument(LibraryProduct product, String name,
-            String relativePath, MachineNode machineNode);
+    LibraryInstrument createLibraryInstrument(LibraryProduct product, String displayName,
+            String path, MachineNode machineNode);
 
-    LibrarySound createLibrarySound(LibraryProduct product, int index, String name,
-            String relativePath);
+    LibrarySound createLibrarySound(LibraryProduct product, int index, String displayName,
+            String path);
 
-    LibraryGroup createLibraryGroup(LibraryProduct product, String name, String relativePath);
+    LibraryGroup createLibraryGroup(LibraryProduct product, String displayName, String path);
 
 }

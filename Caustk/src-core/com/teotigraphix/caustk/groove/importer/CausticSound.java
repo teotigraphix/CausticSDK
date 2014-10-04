@@ -37,21 +37,15 @@ public class CausticSound extends CausticItem {
         return effect;
     }
 
-    public void setEffect(CausticEffect effect) {
-        this.effect = effect;
-    }
-
     public CausticInstrument getInstrument() {
         return instrument;
-    }
-
-    public void setInstrument(CausticInstrument instrument) {
-        this.instrument = instrument;
     }
 
     public CausticSound(LibrarySound item) {
         super(item);
         this.index = item.getIndex();
+        this.instrument = new CausticInstrument(item.getInstrument());
+        this.effect = new CausticEffect(item.getEffect());
     }
 
 }

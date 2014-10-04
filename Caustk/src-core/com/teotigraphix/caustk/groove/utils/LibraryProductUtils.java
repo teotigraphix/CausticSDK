@@ -28,8 +28,10 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.core.ICaustkSerializer;
 import com.teotigraphix.caustk.groove.importer.CausticEffect;
+import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.importer.CausticInstrument;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
@@ -41,11 +43,16 @@ import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.effect.EffectNode;
+import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 
 public class LibraryProductUtils {
+
+    private static final String TEMP_EXTRACTION = ".tempExtraction";
 
     static final String MANIFEST_XML = "manifest.xml";
 
@@ -59,16 +66,77 @@ public class LibraryProductUtils {
         return CaustkRuntime.getInstance().getRack().getSerializer();
     }
 
-    public static File addArchiveToProduct(LibraryProductItem item, LibraryProduct product)
-            throws IOException {
-        // save the manifest in the correct folder of the product, no zip archive
-        File tempDirectory = RuntimeUtils.getApplicationTempDirectory();
-        String name = item.getFormat().name();
-        tempDirectory = new File(tempDirectory, "__" + name + "__");
-        if (tempDirectory.exists())
-            FileUtils.cleanDirectory(tempDirectory);
-        else
-            FileUtils.forceMkdir(tempDirectory);
+    public static void addToDirectory(LibraryProduct product, File groupArchive)
+            throws IOException, CausticException {
+        File productDirectory = product.getDirectory();
+
+        File groupsDirectory = new File(productDirectory, "Groups");
+        File soundsDirectory = new File(productDirectory, "Sounds");
+        File instrumentsDirectory = new File(productDirectory, "Instruments");
+        File effectsDirectory = new File(productDirectory, "Effects");
+
+        File uncompressDir = product.getCacheDirectory(TEMP_EXTRACTION);
+        File uncompressSoundsDir = new File(uncompressDir, "sounds");
+        LibraryGroup libraryGroup = LibraryGroupUtils.importGroup(groupArchive, uncompressDir);
+
+        //------------------------------
+        // Copy LibraryGroup.ggrp to Product directory
+        File groupSrc = groupArchive;
+
+        String groupPath = libraryGroup.getPath();
+        String groupName = libraryGroup.getFileName();
+        File groupDest = new File(groupsDirectory, groupPath);
+
+        // Save group to product directory
+        FileUtils.copyFile(groupSrc, new File(groupDest, groupName));
+        product.addItem(libraryGroup);
+
+        //------------------------------
+        for (LibrarySound librarySound : libraryGroup.getSounds()) {
+            // SOUND
+            int index = librarySound.getIndex();
+            String soundPath = librarySound.getPath();
+            String soundName = librarySound.getName();
+            File soundDest = new File(soundsDirectory, soundPath);
+            File soundArchiveSrc = new File(uncompressSoundsDir, "sound-" + index + ".gsnd");
+
+            // Save sound to product directory
+            FileUtils.copyFile(soundArchiveSrc, new File(soundDest, soundName + ".gsnd"));
+            product.addItem(librarySound);
+
+            // INSTRUMENT
+            LibraryInstrument libraryInstrument = librarySound.getInstrument();
+            String intType = libraryInstrument.getManifest().getMachineType().name();
+            String instPath = intType + File.separator + libraryInstrument.getPath();
+            String instName = libraryInstrument.getName();
+
+            File instDest = new File(instrumentsDirectory, instPath);
+            File instArchiveSrc = new File(uncompressSoundsDir, "sound-" + index + File.separator
+                    + "instrument.ginst");
+
+            // Save instrument to product directory
+            FileUtils.copyFile(instArchiveSrc, new File(instDest, instName + ".ginst"));
+            product.addItem(libraryInstrument);
+
+            // EFFECT
+            LibraryEffect libraryEffect = librarySound.getEffect();
+            String effectPath = libraryEffect.getPath();
+            String effectName = libraryEffect.getName();
+
+            File effectDest = new File(effectsDirectory, effectPath);
+            File effectArchiveSrc = new File(uncompressSoundsDir, "sound-" + index + File.separator
+                    + "effect.gfx");
+
+            // Save instrument to product directory
+            FileUtils.copyFile(effectArchiveSrc, new File(effectDest, effectName + ".gfx"));
+            product.addItem(libraryEffect);
+        }
+    }
+
+    public static File saveItemAsArchive(LibraryProductItem item, LibraryProduct product,
+            File zipFile) throws IOException {
+        File tempDirectory = product.getCacheDirectory("extract");
+        FileUtils.forceMkdir(tempDirectory);
 
         switch (item.getFormat()) {
             case Effect:
@@ -91,10 +159,25 @@ public class LibraryProductUtils {
                 break;
         }
 
-        File zipFile = product.resolveInternalArchive(item);
         ZipCompress compress = new ZipCompress(tempDirectory);
         compress.zip(zipFile);
+        FileUtils.forceDeleteOnExit(tempDirectory);
         return zipFile;
+    }
+
+    public static File addArchiveToProduct(LibraryProductItem item, LibraryProduct product)
+            throws IOException {
+        // save the manifest in the correct folder of the product, no zip archive
+        //        File tempDirectory = RuntimeUtils.getApplicationTempDirectory();
+        //        String name = item.getFormat().name();
+        //        tempDirectory = new File(tempDirectory, "__" + name + "__");
+        //        if (tempDirectory.exists())
+        //            FileUtils.cleanDirectory(tempDirectory);
+        //        else
+        //            FileUtils.forceMkdir(tempDirectory);
+
+        File zipFile = product.resolveInternalArchive(item);
+        return saveItemAsArchive(item, product, zipFile);
     }
 
     public static void addToProduct(File archiveFile, LibraryProduct product, Class<?> clazz)
@@ -215,27 +298,109 @@ public class LibraryProductUtils {
      */
     static CausticSound createSound(LibrarySound item) {
         CausticSound causticSound = new CausticSound(item);
-        causticSound.setInstrument(createInstrument(item.getInstrument()));
-        causticSound.setEffect(createEffect(item.getEffect()));
         return causticSound;
+    }
+
+    static CausticGroup createGroup(LibraryGroup item) {
+        CausticGroup causticGroup = new CausticGroup(item);
+        return causticGroup;
     }
 
     public static String toEffectXML(LibraryEffect item) {
         CausticEffect causticEffect = createEffect(item);
-        String xml = getSerializer().toXML(causticEffect);
+        String xml = getSerializer().getImporter().toXML(causticEffect);
         return xml;
     }
 
     public static String toInstrumentXML(LibraryInstrument item) {
         CausticInstrument causticInstrument = createInstrument(item);
-        String xml = getSerializer().toXML(causticInstrument);
+        String xml = getSerializer().getImporter().toXML(causticInstrument);
         return xml;
     }
 
     public static String toSoundXML(LibrarySound item) {
         CausticSound causticSound = createSound(item);
-        String xml = getSerializer().toXML(causticSound);
+        String xml = getSerializer().getImporter().toXML(causticSound);
         return xml;
     }
 
+    public static String toGroupXML(LibraryGroup item) {
+        CausticGroup causticGroup = createGroup(item);
+        String xml = getSerializer().getImporter().toXML(causticGroup);
+        return xml;
+    }
+
+    private static void fillGroup(LibraryProduct product, LibraryGroup libraryGroup,
+            File causticFile) throws CausticException {
+        if (!causticFile.exists())
+            throw new CausticException(".caustic File does not exist ;" + causticFile);
+
+        RackNode rackNode = CaustkRuntime.getInstance().getRack().create(causticFile);
+
+        for (MachineNode machineNode : rackNode.getMachines()) {
+            int index = machineNode.getIndex();
+            LibrarySound librarySound = fillSound(index, product, libraryGroup, machineNode);
+            libraryGroup.addSound(machineNode.getIndex(), librarySound);
+        }
+    }
+
+    private static LibrarySound fillSound(int index, LibraryProduct product,
+            LibraryGroup libraryGroup, MachineNode machineNode) {
+        String groupName = libraryGroup.getDisplayName();
+        String displayName = groupName + "-" + machineNode.getName();
+        String path = groupName;
+
+        LibrarySound librarySound = getFactory().createLibrarySound(product, index, displayName,
+                path);
+
+        LibraryEffect libraryEffect = fillEffect(machineNode.getEffects(), product,
+                machineNode.getName(), groupName, librarySound);
+        LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, displayName,
+                groupName);
+
+        librarySound.setEffect(libraryEffect);
+        librarySound.setInstrument(libraryInstrument);
+
+        return librarySound;
+    }
+
+    private static LibraryEffect fillEffect(EffectsChannel effectsChannel, LibraryProduct product,
+            String machineName, String groupName, LibrarySound librarySound) {
+        String name = machineName + " FX";
+        String relativePath = groupName;
+
+        EffectNode efffect0 = effectsChannel.getEfffect(0);
+        EffectNode efffect1 = effectsChannel.getEfffect(1);
+
+        LibraryEffect libraryEffect = getFactory().createLibraryEffect(product, name, relativePath,
+                efffect0, efffect1);
+
+        return libraryEffect;
+    }
+
+    private static LibraryInstrument fillInstrument(MachineNode machineNode,
+            LibraryProduct product, String name, String groupName) {
+        String relativePath = groupName;
+        LibraryInstrument libraryInstrument = getFactory().createLibraryInstrument(product, name,
+                relativePath, machineNode);
+
+        return libraryInstrument;
+    }
+
+    public static LibraryGroup createGroupFromCausticFile(LibraryProduct product, String path,
+            String displayName, File causticFile) throws CausticException {
+
+        // - load .caustic into rack
+        // - restore rack
+        // - 
+
+        LibraryGroup libraryGroup = product.createGroup(path, displayName, causticFile);
+        fillGroup(product, libraryGroup, causticFile);
+
+        return libraryGroup;
+    }
+
+    private static ICaustkFactory getFactory() {
+        return CaustkRuntime.getInstance().getFactory();
+    }
 }
