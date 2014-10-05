@@ -330,7 +330,8 @@ public class RackNode extends NodeBase {
      * @see MachineNode#isNative()
      */
     MachineNode addMachine(int index, MachineType type, String name) {
-        MachineNode machineNode = getFactory().createMachine(this, index, type, name);
+        MachineNode machineNode = getFactory().getNodeFactory().createMachine(this, index, type,
+                name);
         addMachine(machineNode);
         return machineNode;
     }

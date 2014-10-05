@@ -25,6 +25,8 @@ public enum LibraryItemFormat {
 
     Project("gprj"),
 
+    PatternBank("gptbk"),
+
     Group("ggrp"),
 
     Sound("gsnd"),

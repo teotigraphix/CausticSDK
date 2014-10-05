@@ -121,7 +121,8 @@ public class EffectsChannel extends MachineComponent {
         if (containsEffect(slot))
             throw new CausticException("Effect channel contains effect at slot: " + slot);
 
-        EffectNode effectNode = getFactory().createEffect(getMachineNode(), slot, effectType);
+        EffectNode effectNode = getFactory().getNodeFactory().createEffect(getMachineNode(), slot,
+                effectType);
         EffectsRackMessage.CREATE.send(getRack(), effectNode.getMachineIndex(),
                 effectNode.getSlot(), effectNode.getType().getValue());
 

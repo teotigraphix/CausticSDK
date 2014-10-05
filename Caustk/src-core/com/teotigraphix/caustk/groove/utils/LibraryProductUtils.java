@@ -159,6 +159,8 @@ public class LibraryProductUtils {
             case Sound:
                 LibrarySoundUtils.serialize((LibrarySound)item, product, tempDirectory);
                 break;
+            case PatternBank:
+                break;
         }
 
         ZipCompress compress = new ZipCompress(tempDirectory);
@@ -231,6 +233,8 @@ public class LibraryProductUtils {
                 break;
             case Sound:
                 addSoundArchive(archiveFile, product);
+                break;
+            case PatternBank:
                 break;
         }
     }
@@ -352,8 +356,8 @@ public class LibraryProductUtils {
         String displayName = groupName + "-" + machineNode.getName();
         String path = groupName;
 
-        LibrarySound librarySound = getFactory().createLibrarySound(product, index, displayName,
-                path);
+        LibrarySound librarySound = getFactory().getLibraryFactory().createSound(product, index,
+                displayName, path);
 
         LibraryEffect libraryEffect = fillEffect(machineNode.getEffects(), product,
                 machineNode.getName(), groupName, librarySound);
@@ -374,8 +378,8 @@ public class LibraryProductUtils {
         EffectNode efffect0 = effectsChannel.getEfffect(0);
         EffectNode efffect1 = effectsChannel.getEfffect(1);
 
-        LibraryEffect libraryEffect = getFactory().createLibraryEffect(product, name, relativePath,
-                efffect0, efffect1);
+        LibraryEffect libraryEffect = getFactory().getLibraryFactory().createEffect(product, name,
+                relativePath, efffect0, efffect1);
 
         return libraryEffect;
     }
@@ -383,8 +387,8 @@ public class LibraryProductUtils {
     private static LibraryInstrument fillInstrument(MachineNode machineNode,
             LibraryProduct product, String name, String groupName) {
         String relativePath = groupName;
-        LibraryInstrument libraryInstrument = getFactory().createLibraryInstrument(product, name,
-                relativePath, machineNode);
+        LibraryInstrument libraryInstrument = getFactory().getLibraryFactory().createInstrument(
+                product, name, relativePath, machineNode);
 
         return libraryInstrument;
     }

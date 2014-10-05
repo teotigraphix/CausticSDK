@@ -21,16 +21,9 @@ package com.teotigraphix.caustk.core;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.groove.library.LibraryEffect;
-import com.teotigraphix.caustk.groove.library.LibraryGroup;
-import com.teotigraphix.caustk.groove.library.LibraryInstrument;
-import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.groove.library.LibrarySound;
+import com.teotigraphix.caustk.core.factory.LibraryFactory;
+import com.teotigraphix.caustk.core.factory.NodeFactory;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.effect.EffectNode;
-import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
  * @author Michael Schmalle
@@ -38,6 +31,9 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  */
 public interface ICaustkFactory {
 
+    /**
+     * The {@link CaustkRuntime} that owns this factory.
+     */
     ICaustkRuntime getRuntime();
 
     /**
@@ -62,38 +58,7 @@ public interface ICaustkFactory {
      */
     RackNode createRack(File file);
 
-    /**
-     * Creates an {@link EffectNode} subclass using the {@link EffectType}.
-     * 
-     * @param machineNode The machine for the new effect.
-     * @param slot The effect slot within the {@link EffectsChannel}.
-     * @param effectType The {@link EffectType} of the effect to be created.
-     * @return A new {@link EffectNode}, has not been added to an
-     *         {@link EffectsChannel}.
-     */
-    <T extends EffectNode> T createEffect(MachineNode machineNode, int slot, EffectType effectType);
+    NodeFactory getNodeFactory();
 
-    /**
-     * Creates a {@link MachineNode} subclass using the {@link MachineType}.
-     * 
-     * @param index The machine index lost in the native rack.
-     * @param type The {@link MachineType} of machine to create.
-     * @param name The machine name (10 character alpha numeric).
-     * @return A new {@link MachineNode}, added to the native rack.
-     */
-
-    <T extends MachineNode> T createMachine(RackNode rackNode, int index, MachineType type,
-            String name);
-
-    LibraryEffect createLibraryEffect(LibraryProduct product, String name, String path,
-            EffectNode efffect0, EffectNode efffect1);
-
-    LibraryInstrument createLibraryInstrument(LibraryProduct product, String displayName,
-            String path, MachineNode machineNode);
-
-    LibrarySound createLibrarySound(LibraryProduct product, int index, String displayName,
-            String path);
-
-    LibraryGroup createLibraryGroup(LibraryProduct product, String displayName, String path);
-
+    LibraryFactory getLibraryFactory();
 }

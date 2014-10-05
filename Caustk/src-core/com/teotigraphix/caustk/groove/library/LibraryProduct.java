@@ -298,8 +298,8 @@ public class LibraryProduct extends LibraryItem {
     }
 
     public LibraryGroup createGroup(String path, String displayName, File causticFile) {
-        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory()
-                .createLibraryGroup(this, displayName, path);
+        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory().getLibraryFactory()
+                .createGroup(this, displayName, path);
         return libraryGroup;
     }
 

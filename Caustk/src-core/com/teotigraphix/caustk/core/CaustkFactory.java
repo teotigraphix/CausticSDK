@@ -21,21 +21,10 @@ package com.teotigraphix.caustk.core;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.groove.library.LibraryEffect;
-import com.teotigraphix.caustk.groove.library.LibraryGroup;
-import com.teotigraphix.caustk.groove.library.LibraryInstrument;
-import com.teotigraphix.caustk.groove.library.LibraryItemFactory;
-import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.groove.library.LibrarySound;
-import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
-import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
+import com.teotigraphix.caustk.core.factory.LibraryFactory;
+import com.teotigraphix.caustk.core.factory.NodeFactory;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.effect.EffectNode;
-import com.teotigraphix.caustk.node.effect.EffectNodeFactory;
-import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.MachineNodeFactory;
 
 /**
  * A factory that creates {@link ICaustkNode}s for the {@link ICaustkRuntime}.
@@ -52,26 +41,35 @@ public class CaustkFactory implements ICaustkFactory {
 
     private CaustkRuntime runtime;
 
-    private EffectNodeFactory effectNodeFactory;
+    private NodeFactory nodeFactory;
 
-    private MachineNodeFactory machineNodeFactory;
-
-    private LibraryItemFactory libraryItemFactory;
+    private LibraryFactory libraryFactory;
 
     //--------------------------------------------------------------------------
     //  Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    //  factory
+    //  runtime
     //----------------------------------
 
-    /**
-     * The {@link CaustkRuntime} that owns this factory.
-     */
     @Override
     public final CaustkRuntime getRuntime() {
         return runtime;
+    }
+
+    //----------------------------------
+    //  factory
+    //----------------------------------
+
+    @Override
+    public final NodeFactory getNodeFactory() {
+        return nodeFactory;
+    }
+
+    @Override
+    public final LibraryFactory getLibraryFactory() {
+        return libraryFactory;
     }
 
     //--------------------------------------------------------------------------
@@ -87,10 +85,8 @@ public class CaustkFactory implements ICaustkFactory {
     public CaustkFactory(CaustkRuntime runtime) {
         this.runtime = runtime;
 
-        effectNodeFactory = new EffectNodeFactory(this);
-        machineNodeFactory = new MachineNodeFactory(this);
-
-        libraryItemFactory = new LibraryItemFactory(this);
+        nodeFactory = new NodeFactory(this);
+        libraryFactory = new LibraryFactory(this);
     }
 
     //--------------------------------------------------------------------------
@@ -113,55 +109,6 @@ public class CaustkFactory implements ICaustkFactory {
     public RackNode createRack(File file) {
         RackNode rackNode = new RackNode(file);
         return rackNode;
-    }
-
-    @Override
-    public <T extends EffectNode> T createEffect(MachineNode machineNode, int slot,
-            EffectType effectType) {
-        return effectNodeFactory.createEffect(machineNode, slot, effectType);
-    }
-
-    @Override
-    public <T extends MachineNode> T createMachine(RackNode rackNode, int index, MachineType type,
-            String name) {
-        return machineNodeFactory.createMachine(rackNode, index, type, name);
-    }
-
-    //--------------------------------------------------------------------------
-    // Public Groove Library Creation API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public LibraryEffect createLibraryEffect(LibraryProduct product, String name,
-            String relativePath, EffectNode efffect0, EffectNode efffect1) {
-        return libraryItemFactory.createLibraryEffect(product, name, relativePath, efffect0,
-                efffect1);
-    }
-
-    @Override
-    public LibraryInstrument createLibraryInstrument(LibraryProduct product, String name,
-            String relativePath, MachineNode machineNode) {
-        return libraryItemFactory.createInstrument(product, name, relativePath, machineNode);
-    }
-
-    @Override
-    public LibraryGroup createLibraryGroup(LibraryProduct product, String name, String relativePath) {
-
-        LibraryGroupManifest manifest = new LibraryGroupManifest(name, relativePath);
-        manifest.setProductId(product.getId());
-
-        LibraryGroup libraryGroup = new LibraryGroup(manifest);
-
-        return libraryGroup;
-    }
-
-    @Override
-    public LibrarySound createLibrarySound(LibraryProduct product, int index, String name,
-            String relativePath) {
-        LibrarySoundManifest manifest = new LibrarySoundManifest(name, relativePath);
-        manifest.setProductId(product.getId());
-        LibrarySound librarySound = new LibrarySound(manifest, index);
-        return librarySound;
     }
 
     //--------------------------------------------------------------------------

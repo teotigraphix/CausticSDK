@@ -73,8 +73,8 @@ public class LibraryInstrumentUtils {
         //------------------------------
 
         ICaustkFactory factory = CaustkRuntime.getInstance().getFactory();
-        LibraryInstrument instrument = factory.createLibraryInstrument(product, name, relativePath,
-                machineNode);
+        LibraryInstrument instrument = factory.getLibraryFactory().createInstrument(product, name,
+                relativePath, machineNode);
 
         return instrument;
     }

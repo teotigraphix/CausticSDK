@@ -116,8 +116,8 @@ public class CausticGroup extends CausticItem {
     }
 
     public LibraryGroup create(LibraryProduct product) {
-        LibraryGroup libraryGroup = getFactory().createLibraryGroup(product, getDisplayName(),
-                getPath());
+        LibraryGroup libraryGroup = getFactory().getLibraryFactory().createGroup(product,
+                getDisplayName(), getPath());
         libraryGroup.setCausticGroup(this);
         return libraryGroup;
     }

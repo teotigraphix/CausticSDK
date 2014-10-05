@@ -17,21 +17,32 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node.machine;
+package com.teotigraphix.caustk.groove.manifest;
 
-import com.teotigraphix.caustk.core.CaustkFactory;
-import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
+import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 
 /**
- * Factory to create {@link MachineNode}s.
- * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class MachineNodeFactory extends CaustkFactoryChildBase {
+public class LibraryPatternBankManifest extends LibraryItemManifest {
 
-    public MachineNodeFactory(CaustkFactory factory) {
-        super(factory);
+    //--------------------------------------------------------------------------
+    // Serialized API
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    //  Constructors
+    //--------------------------------------------------------------------------
+
+    /**
+     * Serialization.
+     */
+    LibraryPatternBankManifest() {
+    }
+
+    public LibraryPatternBankManifest(String name, String relativePath) {
+        super(LibraryItemFormat.PatternBank, name, relativePath);
     }
 
 }

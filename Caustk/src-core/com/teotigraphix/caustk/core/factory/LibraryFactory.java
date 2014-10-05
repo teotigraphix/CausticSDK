@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,12 +17,18 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.groove.library;
+package com.teotigraphix.caustk.core.factory;
 
 import com.teotigraphix.caustk.core.CaustkFactory;
-import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.groove.library.LibraryGroup;
+import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.groove.library.LibraryProduct;
+import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
+import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -30,22 +36,14 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class LibraryItemFactory extends CaustkFactoryChildBase {
+public class LibraryFactory extends CaustkFactoryChildBase {
 
-    //--------------------------------------------------------------------------
-    //  Constructor
-    //--------------------------------------------------------------------------
-
-    public LibraryItemFactory(CaustkFactory factory) {
+    public LibraryFactory(CaustkFactory factory) {
         super(factory);
     }
 
-    //----------------------------------
-    // LibraryEffect
-    //----------------------------------
-
-    public LibraryEffect createLibraryEffect(LibraryProduct product, String name,
-            String relativePath, EffectNode efffect0, EffectNode efffect1) {
+    public LibraryEffect createEffect(LibraryProduct product, String name, String relativePath,
+            EffectNode efffect0, EffectNode efffect1) {
 
         LibraryEffectManifest manifest = new LibraryEffectManifest(name, relativePath, efffect0,
                 efffect1);
@@ -61,13 +59,28 @@ public class LibraryItemFactory extends CaustkFactoryChildBase {
     public LibraryInstrument createInstrument(LibraryProduct product, String name,
             String relativePath, MachineNode machineNode) {
 
-        LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(name,
-                relativePath, machineNode);
+        LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(name, relativePath,
+                machineNode);
         manifest.setProductId(product.getId());
 
         LibraryInstrument instrument = new LibraryInstrument(manifest);
         instrument.setMachineNode(machineNode);
 
         return instrument;
+    }
+
+    public LibrarySound createSound(LibraryProduct product, int index, String name,
+            String relativePath) {
+        LibrarySoundManifest manifest = new LibrarySoundManifest(name, relativePath);
+        manifest.setProductId(product.getId());
+        LibrarySound librarySound = new LibrarySound(manifest, index);
+        return librarySound;
+    }
+
+    public LibraryGroup createGroup(LibraryProduct product, String name, String relativePath) {
+        LibraryGroupManifest manifest = new LibraryGroupManifest(name, relativePath);
+        manifest.setProductId(product.getId());
+        LibraryGroup libraryGroup = new LibraryGroup(manifest);
+        return libraryGroup;
     }
 }
