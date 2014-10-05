@@ -98,8 +98,10 @@ public class LibraryEffect extends LibraryProductItem {
     }
 
     public void add(int slot, EffectNode effectNode) {
-        if (effectNode != null)
+        if (effectNode != null) {
+            effectNode.setMachineNode(null);
             effects.put(slot, effectNode);
+        }
     }
 
 }

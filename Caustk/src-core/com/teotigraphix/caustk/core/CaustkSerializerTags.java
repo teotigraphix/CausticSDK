@@ -24,8 +24,10 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
+import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMOperatorControl;
 import com.teotigraphix.caustk.core.osc.FilterMessage.FilterType;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Waveform;
+import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.CentsMode;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO2Target;
@@ -119,6 +121,7 @@ import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO1Component;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO2Component;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.MorphComponent;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.VolumeEnvelopeComponent;
+import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerChannel;
 import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMTunerComponent;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc1Component;
@@ -292,6 +295,7 @@ public final class CaustkSerializerTags {
         kryo.register(FMSynthMessage.FMAlgorithm.class, 502);
         kryo.register(LFOComponent.class, 503);
         kryo.register(FMOperatorComponent.class, 504);
+        kryo.register(FMOperatorControl.class, 505);
 
         //------------------------------
         // Modular 551-600
@@ -356,6 +360,8 @@ public final class CaustkSerializerTags {
         kryo.register(PCMSamplerComponent.class, 706);
         kryo.register(PCMTunerComponent.class, 707);
         kryo.register(com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent.class, 708);
+        kryo.register(PCMSamplerChannel.class, 709);
+        kryo.register(PlayMode.class, 710);
 
         //------------------------------
         // SubSynth 751-800

@@ -50,8 +50,13 @@ public class LibraryFactory extends CaustkFactoryChildBase {
         manifest.setProductId(product.getId());
 
         LibraryEffect libraryEffect = new LibraryEffect(manifest);
-        libraryEffect.add(0, efffect0);
-        libraryEffect.add(1, efffect1);
+
+        if (efffect0 != null) {
+            libraryEffect.add(0, efffect0);
+        }
+        if (efffect1 != null) {
+            libraryEffect.add(1, efffect1);
+        }
 
         return libraryEffect;
     }

@@ -96,6 +96,9 @@ public class LibraryInstrument extends LibraryProductItem {
 
     public void setMachineNode(MachineNode machineNode) {
         this.machineNode = machineNode;
+        if (machineNode != null) {
+            machineNode.setRackNode(null);
+        }
     }
 
     //--------------------------------------------------------------------------
