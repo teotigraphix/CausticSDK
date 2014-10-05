@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.groove.library;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -132,13 +132,15 @@ public class LibraryProduct extends LibraryItem {
     //----------------------------------
 
     /**
-     * Returns a collection of {@link LibraryItemManifest} instances that match
-     * the {@link LibraryItemFormat}.
+     * Returns a list of {@link LibraryItemManifest} instances that match the
+     * {@link LibraryItemFormat}.
+     * <p>
+     * The list order is not relevant.
      * 
      * @param format The format to match manifest instances against.
-     * @return A collection of manifests matching the passed format.
+     * @return A list of manifests matching the passed format.
      */
-    public Collection<LibraryItemManifest> getDescriptors(LibraryItemFormat format) {
+    public List<LibraryItemManifest> getDescriptors(LibraryItemFormat format) {
         ArrayList<LibraryItemManifest> result = new ArrayList<LibraryItemManifest>();
         for (LibraryItemManifest manifest : map.values()) {
             if (manifest.getFormat() == format)

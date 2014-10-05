@@ -404,6 +404,34 @@ public class LibraryItemManifest {
     }
 
     /**
+     * Returns whether this item contains any of the searchTags.
+     * 
+     * @param searchTags A list of tags to search for.
+     */
+    public final boolean hasTag(List<String> searchTags) {
+        if (tags == null)
+            return false;
+        for (String tag : searchTags) {
+            if (hasTag(tag))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether this item contains the searchTag.
+     * 
+     * @param searchTag A tag to search for.
+     */
+    public final boolean hasTag(String searchTag) {
+        if (tags == null)
+            return false;
+        if (tags.contains(searchTag))
+            return true;
+        return false;
+    }
+
+    /**
      * Add a tag to the node information.
      * 
      * @param tag A String tag with no spaces.
