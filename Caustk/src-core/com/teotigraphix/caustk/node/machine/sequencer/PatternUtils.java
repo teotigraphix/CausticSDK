@@ -138,4 +138,18 @@ public final class PatternUtils {
         }
         return result;
     }
+
+    public static void setNoteData(ICaustkRack rack, int machineIndex, PatternNode patternNode,
+            ArrayList<NoteNode> notes) {
+        int originalBank = (int)PatternSequencerMessage.BANK.query(rack, machineIndex);
+        int originalPattern = (int)PatternSequencerMessage.PATTERN.query(rack, machineIndex);
+        PatternSequencerMessage.BANK.send(rack, machineIndex, patternNode.getBankIndex());
+        PatternSequencerMessage.PATTERN.send(rack, machineIndex, patternNode.getPatternIndex());
+        for (NoteNode noteData : notes) {
+            patternNode.createNote(noteData.getStart(), noteData.getPitch(), noteData.getEnd(),
+                    noteData.getVelocity(), noteData.getFlags());
+        }
+        PatternSequencerMessage.BANK.send(rack, machineIndex, originalBank);
+        PatternSequencerMessage.PATTERN.send(rack, machineIndex, originalPattern);
+    }
 }

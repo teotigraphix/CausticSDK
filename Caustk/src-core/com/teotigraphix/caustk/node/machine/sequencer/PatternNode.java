@@ -531,7 +531,26 @@ public class PatternNode extends MachineComponent {
         return noteNode;
     }
 
-    private void assignNoteData(String data) {
+    /**
+     * Sets the note data, creates {@link NoteNode}s and sends native NOTE_ADD
+     * messages.
+     * 
+     * @param data The caustic serial note dat.
+     */
+    public void setNoteData(String data) {
+        assignNoteData(data, true);
+    }
+
+    void assignNoteData(String data) {
+        assignNoteData(data, false);
+    }
+
+    public void setNoteData(ArrayList<NoteNode> notes) {
+        // XXX Hack until OSC is changed
+        PatternUtils.setNoteData(getRack(), getMachineIndex(), this, notes);
+    }
+
+    void assignNoteData(String data, boolean doNative) {
         // push the notes into the machines sequencer
         String[] notes = data.split("\\|");
         for (String noteData : notes) {
@@ -544,7 +563,20 @@ public class PatternNode extends MachineComponent {
             int flags = Float.valueOf(split[4]).intValue();
             NoteNode note = new NoteNode(pitch, startBeat, endBeat, velocity, flags);
             addNote(note);
+            if (doNative) {
+                PatternSequencerMessage.NOTE_DATA.send(getRack(), getMachineIndex(), startBeat,
+                        pitch, velocity, endBeat, flags);
+            }
         }
+    }
+
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        for (NoteNode noteNode : notes) {
+            sb.append(noteNode.toNoteData());
+            sb.append("|");
+        }
+        return sb.toString();
     }
 
     //--------------------------------------------------------------------------

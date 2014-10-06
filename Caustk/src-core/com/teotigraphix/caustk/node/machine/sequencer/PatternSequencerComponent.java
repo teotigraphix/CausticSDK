@@ -57,6 +57,14 @@ public class PatternSequencerComponent extends MachineComponent {
     private HashMap<Integer, Integer> bankMemory = new HashMap<Integer, Integer>();
 
     //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private int pendingBankIndex = -1;
+
+    private int pendingPatternIndex = -1;
+
+    //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
@@ -427,4 +435,31 @@ public class PatternSequencerComponent extends MachineComponent {
             super(target, control);
         }
     }
+
+    /**
+     * Until OSC gets changed for pattern events, this method will store the
+     * current bank and pattern for calls that need to change properties of the
+     * non selected Pattern.
+     * 
+     * @param save true saves pending values, false resets the sequencer's
+     *            current pattern.
+     */
+    public void store(boolean save, PatternNode patternNode) {
+        int bank;
+        int pattern;
+        if (save) {
+            pendingBankIndex = selectedBankIndex;
+            pendingPatternIndex = selectedPatternIndex;
+            bank = patternNode.getBankIndex();
+            pattern = patternNode.getPatternIndex();
+        } else {
+            bank = pendingBankIndex;
+            pattern = pendingPatternIndex;
+            pendingBankIndex = -1;
+            pendingPatternIndex = -1;
+        }
+        PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(), bank);
+        PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), pattern);
+    }
+
 }
