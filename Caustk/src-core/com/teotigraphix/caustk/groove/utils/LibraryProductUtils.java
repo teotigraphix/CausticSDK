@@ -45,6 +45,7 @@ import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectsChannel;
@@ -74,6 +75,29 @@ public class LibraryProductUtils {
 
     private static ICaustkSerializer getSerializer() {
         return CaustkRuntime.getInstance().getRack().getSerializer();
+    }
+
+    private static File toProductBinary(File productDir) {
+        return new File(productDir, PRODUCT_BIN);
+    }
+
+    public static LibraryProduct createProduct(UUID productId, String productName, File productDir)
+            throws IOException {
+        LibraryProductManifest manifest = new LibraryProductManifest(productId, productName,
+                productDir);
+        LibraryProduct product = new LibraryProduct(manifest);
+        product.create();
+        getSerializer().serialize(toProductBinary(productDir), product);
+        return product;
+    }
+
+    public static LibraryProduct loadProduct(UUID productId, String productName, File productDir)
+            throws IOException, CausticException {
+        LibraryProduct product = getSerializer().deserialize(toProductBinary(productDir),
+                LibraryProduct.class);
+        if (!productId.equals(product.getId()))
+            throw new CausticException("Product does not match id");
+        return product;
     }
 
     public static void addToDirectory(LibraryProduct product, File groupArchive)
@@ -384,11 +408,11 @@ public class LibraryProductUtils {
     }
 
     private static void fillGroup(LibraryProduct product, LibraryGroup libraryGroup,
-            File causticFile) throws CausticException {
+            File causticFile) throws CausticException, IOException {
         if (!causticFile.exists())
             throw new CausticException(".caustic File does not exist ;" + causticFile);
 
-        RackNode rackNode = CaustkRuntime.getInstance().getRack().create(causticFile);
+        RackNode rackNode = CaustkRuntime.getInstance().getRack().fill(causticFile);
 
         for (MachineNode machineNode : rackNode.getMachines()) {
             int index = machineNode.getIndex();
@@ -452,7 +476,7 @@ public class LibraryProductUtils {
     }
 
     public static LibraryGroup createGroupFromCausticFile(LibraryProduct product, String path,
-            String displayName, File causticFile) throws CausticException {
+            String displayName, File causticFile) throws CausticException, IOException {
 
         // - load .caustic into rack
         // - restore rack

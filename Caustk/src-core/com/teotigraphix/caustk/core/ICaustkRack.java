@@ -134,6 +134,18 @@ public interface ICaustkRack extends ISoundGenerator, IRackEventBus {
     RackNode create(File file);
 
     /**
+     * Fills a {@link RackNode} using the .caustic file loaded an restore() on
+     * the node structure.
+     * <p>
+     * The {@link RackNode} will be populated, the original rack node and state
+     * will be restored to the rack after the method returns.
+     * 
+     * @param file The absolute location of the .caustic file to load.
+     * @throws IOException
+     */
+    RackNode fill(File file) throws IOException;
+
+    /**
      * Takes the state of the {@link RackNode} and applies it to the
      * {@link CaustkRack} by creating machines and updating all native rack
      * state based on the node graph.

@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -242,6 +243,28 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         RackNode rackNode = runtime.getFactory().createRack(file);
         restore(rackNode);
         return rackNode;
+    }
+
+    @Override
+    public RackNode fill(File file) throws IOException {
+
+        File directory = runtime.getFactory().getCacheDirectory("fills");
+        File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString().substring(0, 10)
+                + ".caustic");
+        tempCausticSnapshot = getRackNode().saveSongAs(tempCausticSnapshot);
+        if (!tempCausticSnapshot.exists())
+            throw new IOException("failed to save temp .caustic file in fill()");
+
+        RackNode oldNode = this.rackNode;
+        RackNode rackNodeFill = runtime.getFactory().createRack(file);
+        this.rackNode = rackNodeFill;
+        RackMessage.BLANKRACK.send(this);
+        restore(rackNode); // fill the node
+
+        this.rackNode = oldNode;
+        this.rackNode.loadSong(tempCausticSnapshot);
+
+        return rackNodeFill;
     }
 
     @Override

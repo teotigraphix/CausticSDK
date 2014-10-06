@@ -19,9 +19,16 @@
 
 package com.teotigraphix.caustk.groove.library;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 
 /**
@@ -87,5 +94,20 @@ public class LibraryPatternBank extends LibraryProductItem {
         manifest.setMachineType(machineNode.getType());
         this.sequencer = machineNode.getSequencer();
         this.sequencer.setMachineNode(null);
+    }
+
+    /**
+     * Returns a sorted copy of the sequencers {@link PatternNode}s.
+     */
+    public Collection<PatternNode> getPatterns() {
+        Collection<PatternNode> patterns = sequencer.getPatterns();
+        List<PatternNode> result = new ArrayList<PatternNode>(patterns);
+        Collections.sort(result, new Comparator<PatternNode>() {
+            @Override
+            public int compare(PatternNode lhs, PatternNode rhs) {
+                return lhs.getName().compareTo(rhs.getName());
+            }
+        });
+        return result;
     }
 }
