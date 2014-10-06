@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.node.machine.patch.fmsynth;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMOperatorControl;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -41,15 +41,32 @@ public class FMOperatorComponent extends MachineComponent {
     // Serialized API
     //--------------------------------------------------------------------------
 
-    // TODO the FMOperatorControl API really needs to be added to FMOperatorComponent
-    // XXX BUG with serialization "ordinal of -2 IndexOutOfBounds @Tag(100) 
-    private ArrayList<HashMap<FMOperatorControl, Float>> operators = new ArrayList<HashMap<FMOperatorControl, Float>>();
+    @Tag(100)
+    private HashMap<FMOperatorControl, Float> op1 = new HashMap<FMOperatorControl, Float>();
+
+    @Tag(101)
+    private HashMap<FMOperatorControl, Float> op2 = new HashMap<FMOperatorControl, Float>();
+
+    @Tag(102)
+    private HashMap<FMOperatorControl, Float> op3 = new HashMap<FMOperatorControl, Float>();
 
     // /caustic/[machine_index]/operator [op_index] [command] [value]
 
     public Float getOperatorValue(int index, FMOperatorControl control) {
-        Map<FMOperatorControl, Float> map = operators.get(index);
+        Map<FMOperatorControl, Float> map = get(index);
         return map.get(control);
+    }
+
+    private Map<FMOperatorControl, Float> get(int index) {
+        switch (index) {
+            case 0:
+                return op1;
+            case 1:
+                return op2;
+            case 2:
+                return op3;
+        }
+        return null;
     }
 
     public void setOperatorValue(int index, FMOperatorControl control, boolean value) {
@@ -62,7 +79,7 @@ public class FMOperatorComponent extends MachineComponent {
     }
 
     public void setOperatorValue(int index, FMOperatorControl control, float value) {
-        Map<FMOperatorControl, Float> map = operators.get(index);
+        Map<FMOperatorControl, Float> map = get(index);
         map.put(control, value);
         FMSynthMessage.OPERATOR
                 .send(getRack(), getMachineIndex(), index, control.getValue(), value);
@@ -76,16 +93,10 @@ public class FMOperatorComponent extends MachineComponent {
      * Serialization
      */
     public FMOperatorComponent() {
-        operators.add(new HashMap<FMSynthMessage.FMOperatorControl, Float>());
-        operators.add(new HashMap<FMSynthMessage.FMOperatorControl, Float>());
-        operators.add(new HashMap<FMSynthMessage.FMOperatorControl, Float>());
     }
 
     public FMOperatorComponent(MachineNode machineNode) {
         super(machineNode);
-        operators.add(new HashMap<FMSynthMessage.FMOperatorControl, Float>());
-        operators.add(new HashMap<FMSynthMessage.FMOperatorControl, Float>());
-        operators.add(new HashMap<FMSynthMessage.FMOperatorControl, Float>());
     }
 
     //--------------------------------------------------------------------------
@@ -103,7 +114,7 @@ public class FMOperatorComponent extends MachineComponent {
     @Override
     protected void updateComponents() {
         for (int i = 0; i < 3; i++) {
-            Map<FMOperatorControl, Float> map = operators.get(i);
+            Map<FMOperatorControl, Float> map = get(i);
             for (Entry<FMOperatorControl, Float> entry : map.entrySet()) {
                 FMSynthMessage.OPERATOR.send(getRack(), getMachineIndex(), i, entry.getKey()
                         .getValue(), entry.getValue());

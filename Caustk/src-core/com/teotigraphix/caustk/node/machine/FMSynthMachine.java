@@ -45,7 +45,7 @@ public class FMSynthMachine extends MachineNode {
     private LFOComponent lfo;
 
     @Tag(102)
-    private FMOperatorComponent operators;
+    private FMOperatorComponent operator;
 
     //--------------------------------------------------------------------------
     // Components
@@ -72,7 +72,7 @@ public class FMSynthMachine extends MachineNode {
     //----------------------------------
 
     public FMOperatorComponent getOperators() {
-        return operators;
+        return operator;
     }
 
     //--------------------------------------------------------------------------
@@ -98,7 +98,7 @@ public class FMSynthMachine extends MachineNode {
         super.intialize();
         controls = new FMControlsComponent(this);
         lfo = new LFOComponent(this);
-        operators = new FMOperatorComponent(this);
+        operator = new FMOperatorComponent(this);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class FMSynthMachine extends MachineNode {
         super.createComponents();
         controls.create();
         lfo.create();
-        operators.create();
+        operator.create();
     }
 
     @Override
@@ -114,7 +114,7 @@ public class FMSynthMachine extends MachineNode {
         super.destroyComponents();
         controls.destroy();
         lfo.destroy();
-        operators.destroy();
+        operator.destroy();
     }
 
     @Override
@@ -122,13 +122,13 @@ public class FMSynthMachine extends MachineNode {
         super.updateComponents();
         controls.update();
         lfo.update();
-        operators.update();
+        operator.update();
     }
 
     @Override
     protected void restorePresetProperties() {
         controls.restore();
         lfo.restore();
-        operators.restore();
+        operator.restore();
     }
 }
