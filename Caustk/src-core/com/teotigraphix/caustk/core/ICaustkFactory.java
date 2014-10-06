@@ -72,4 +72,6 @@ public interface ICaustkFactory {
      */
     RackNode createRack(File file);
 
+    void initialize() throws CausticException;
+
 }

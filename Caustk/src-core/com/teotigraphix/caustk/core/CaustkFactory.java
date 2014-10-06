@@ -99,10 +99,13 @@ public class CaustkFactory implements ICaustkFactory {
         nodeFactory = new NodeFactory(this);
         libraryFactory = new LibraryFactory(this);
 
+    }
+
+    public void initialize() throws CausticException {
         try {
             cacheDirectory = getTempDirectory("cache", true);
         } catch (IOException e) {
-            runtime.getLogger().err("", "Cache directory could not be created or cleaned");
+            throw new CausticException("Cache directory could not be created or cleaned");
         }
     }
 

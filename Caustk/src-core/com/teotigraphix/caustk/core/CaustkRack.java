@@ -190,6 +190,17 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         this.serializer = new CaustkSerializer();
     }
 
+    @Override
+    public void initialize() {
+        super.initialize();
+        try {
+            runtime.getFactory().initialize();
+        } catch (CausticException e) {
+            e.printStackTrace();
+            runtime.getLogger().err("", "Cache directory could not be created or cleaned");
+        }
+    }
+
     //--------------------------------------------------------------------------
     // IRackEventBus API
     //--------------------------------------------------------------------------
