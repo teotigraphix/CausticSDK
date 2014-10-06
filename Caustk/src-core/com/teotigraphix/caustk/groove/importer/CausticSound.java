@@ -29,6 +29,8 @@ public class CausticSound extends CausticItem {
 
     private CausticInstrument instrument;
 
+    private CausticPatternBank patternBank;
+
     public int getIndex() {
         return index;
     }
@@ -41,11 +43,16 @@ public class CausticSound extends CausticItem {
         return instrument;
     }
 
+    public CausticPatternBank getPatternBank() {
+        return patternBank;
+    }
+
     public CausticSound(LibrarySound item) {
         super(item);
         this.index = item.getIndex();
         this.instrument = new CausticInstrument(item.getInstrument());
         this.effect = new CausticEffect(item.getEffect());
+        this.patternBank = new CausticPatternBank(item.getPatternBank());
     }
 
 }

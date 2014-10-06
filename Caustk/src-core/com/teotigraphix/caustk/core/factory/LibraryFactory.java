@@ -23,11 +23,13 @@ import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -44,11 +46,9 @@ public class LibraryFactory extends CaustkFactoryChildBase {
 
     public LibraryEffect createEffect(LibraryProduct product, String name, String relativePath,
             EffectNode efffect0, EffectNode efffect1) {
-
         LibraryEffectManifest manifest = new LibraryEffectManifest(name, relativePath, efffect0,
                 efffect1);
         manifest.setProductId(product.getId());
-
         LibraryEffect libraryEffect = new LibraryEffect(manifest);
 
         if (efffect0 != null) {
@@ -63,14 +63,11 @@ public class LibraryFactory extends CaustkFactoryChildBase {
 
     public LibraryInstrument createInstrument(LibraryProduct product, String name,
             String relativePath, MachineNode machineNode) {
-
         LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(name, relativePath,
                 machineNode);
         manifest.setProductId(product.getId());
-
         LibraryInstrument instrument = new LibraryInstrument(manifest);
         instrument.setMachineNode(machineNode);
-
         return instrument;
     }
 
@@ -87,5 +84,13 @@ public class LibraryFactory extends CaustkFactoryChildBase {
         manifest.setProductId(product.getId());
         LibraryGroup libraryGroup = new LibraryGroup(manifest);
         return libraryGroup;
+    }
+
+    public LibraryPatternBank createPatternBank(LibraryProduct product, String name,
+            String relativePath, MachineNode machineNode) {
+        LibraryPatternBankManifest manifest = new LibraryPatternBankManifest(name, relativePath);
+        manifest.setProductId(product.getId());
+        LibraryPatternBank libraryPatternBank = new LibraryPatternBank(manifest, machineNode);
+        return libraryPatternBank;
     }
 }

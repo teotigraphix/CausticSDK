@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.groove.library;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 
 /**
@@ -46,6 +47,9 @@ public class LibrarySound extends LibraryProductItem {
     @Tag(53)
     private LibraryEffectManifest effectManifest;
 
+    @Tag(54)
+    private LibraryPatternBankManifest patternBankManifest;
+
     //--------------------------------------------------------------------------
     // Transient :: Variables
     //--------------------------------------------------------------------------
@@ -55,6 +59,8 @@ public class LibrarySound extends LibraryProductItem {
     private transient LibraryEffect effect;
 
     private transient LibraryInstrument instrument;
+
+    private transient LibraryPatternBank patternBank;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -96,6 +102,14 @@ public class LibrarySound extends LibraryProductItem {
 
     public LibraryInstrumentManifest getInstrumentManifest() {
         return instrumentManifest;
+    }
+
+    //----------------------------------
+    // patternBankManifest
+    //----------------------------------
+
+    public LibraryPatternBankManifest getPatternBankManifest() {
+        return patternBankManifest;
     }
 
     //----------------------------------
@@ -145,6 +159,25 @@ public class LibrarySound extends LibraryProductItem {
 
     public LibraryInstrument getInstrument() {
         return instrument;
+    }
+
+    //----------------------------------
+    // patternBank
+    //----------------------------------
+
+    public void setPatternBank(LibraryPatternBank patternBank) {
+        LibraryPatternBank old = this.patternBank;
+        if (old != null)
+            old.setSound(null);
+        this.patternBank = patternBank;
+        if (patternBank != null) {
+            patternBank.setSound(this);
+        }
+        patternBankManifest = patternBank.getManifest();
+    }
+
+    public LibraryPatternBank getPatternBank() {
+        return patternBank;
     }
 
     //--------------------------------------------------------------------------

@@ -33,11 +33,13 @@ import com.teotigraphix.caustk.core.ICaustkSerializer;
 import com.teotigraphix.caustk.groove.importer.CausticEffect;
 import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.importer.CausticInstrument;
+import com.teotigraphix.caustk.groove.importer.CausticPatternBank;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
 import com.teotigraphix.caustk.groove.library.LibraryProject;
@@ -64,6 +66,12 @@ public class LibraryProductUtils {
 
     static final String SOUND_EFFECT_ARCHIVE = "effect.gfx";
 
+    static final String PATTERNS_BIN = "patterns.bin";
+
+    static final String SOUND_PATTERNS_DIR = "patterns/";
+
+    static final String SOUND_PATTERNS_ARCHIVE = "patterns.gptbk";
+
     private static ICaustkSerializer getSerializer() {
         return CaustkRuntime.getInstance().getRack().getSerializer();
     }
@@ -76,6 +84,7 @@ public class LibraryProductUtils {
         File soundsDirectory = new File(productDirectory, "Sounds");
         File instrumentsDirectory = new File(productDirectory, "Instruments");
         File effectsDirectory = new File(productDirectory, "Effects");
+        File patternsDirectory = new File(productDirectory, "PatternBanks");
 
         File uncompressDir = product.getCacheDirectory(TEMP_EXTRACTION);
         File uncompressSoundsDir = new File(uncompressDir, "sounds");
@@ -120,6 +129,20 @@ public class LibraryProductUtils {
             FileUtils.copyFile(instArchiveSrc, new File(instDest, instName + ".ginst"));
             product.addItem(libraryInstrument);
 
+            // PATTERNS
+            LibraryPatternBank libraryPatternBank = librarySound.getPatternBank();
+            //String pbType = libraryPatternBank.getManifest().getMachineType().name();
+            String pbPath = intType + File.separator + libraryPatternBank.getPath();
+            String pbName = libraryPatternBank.getName();
+
+            File pbDest = new File(patternsDirectory, pbPath);
+            File pbArchiveSrc = new File(uncompressSoundsDir, "sound-" + index + File.separator
+                    + "patterns.gptbk");
+
+            // Save patternBank to product directory
+            FileUtils.copyFile(pbArchiveSrc, new File(pbDest, pbName + ".gptbk"));
+            product.addItem(libraryPatternBank);
+
             // EFFECT
             LibraryEffect libraryEffect = librarySound.getEffect();
             String effectPath = libraryEffect.getPath();
@@ -144,23 +167,32 @@ public class LibraryProductUtils {
             case Effect:
                 LibraryEffectUtils.serialize((LibraryEffect)item, product, tempDirectory);
                 break;
-            case Group:
-                LibraryGroupUtils.serialize((LibraryGroup)item, product, tempDirectory);
-                break;
+
             case Instrument:
                 LibraryInstrumentUtils.serialize((LibraryInstrument)item, product, tempDirectory);
                 break;
-            case Product:
+
+            case PatternBank:
+                LibraryPatternBankUtils.serialize((LibraryPatternBank)item, product, tempDirectory);
                 break;
-            case Project:
-                break;
-            case Sample:
-                break;
+
             case Sound:
                 LibrarySoundUtils.serialize((LibrarySound)item, product, tempDirectory);
                 break;
-            case PatternBank:
+
+            case Group:
+                LibraryGroupUtils.serialize((LibraryGroup)item, product, tempDirectory);
                 break;
+
+            case Product:
+                break;
+
+            case Project:
+                break;
+
+            case Sample:
+                break;
+
         }
 
         ZipCompress compress = new ZipCompress(tempDirectory);
@@ -171,15 +203,6 @@ public class LibraryProductUtils {
 
     public static File addArchiveToProduct(LibraryProductItem item, LibraryProduct product)
             throws IOException {
-        // save the manifest in the correct folder of the product, no zip archive
-        //        File tempDirectory = RuntimeUtils.getApplicationTempDirectory();
-        //        String name = item.getFormat().name();
-        //        tempDirectory = new File(tempDirectory, "__" + name + "__");
-        //        if (tempDirectory.exists())
-        //            FileUtils.cleanDirectory(tempDirectory);
-        //        else
-        //            FileUtils.forceMkdir(tempDirectory);
-
         File zipFile = product.resolveInternalArchive(item);
         return saveItemAsArchive(item, product, zipFile);
     }
@@ -218,23 +241,31 @@ public class LibraryProductUtils {
             case Effect:
                 addEffectArchive(archiveFile, product);
                 break;
-            case Group:
-                addGroupArchive(archiveFile, product);
-                break;
+
             case Instrument:
                 addInstrumentArchive(archiveFile, product);
                 break;
-            case Product:
+
+            case PatternBank:
+                addPatternBankArchive(archiveFile, product);
                 break;
-            case Project:
-                addProjectArchive(archiveFile, product);
-                break;
-            case Sample:
-                break;
+
             case Sound:
                 addSoundArchive(archiveFile, product);
                 break;
-            case PatternBank:
+
+            case Group:
+                addGroupArchive(archiveFile, product);
+                break;
+
+            case Product:
+                break;
+
+            case Project:
+                addProjectArchive(archiveFile, product);
+                break;
+
+            case Sample:
                 break;
         }
     }
@@ -246,6 +277,11 @@ public class LibraryProductUtils {
     private static void addInstrumentArchive(File file, LibraryProduct product)
             throws CausticException {
         addToProduct(file, product, LibraryInstrument.class);
+    }
+
+    private static void addPatternBankArchive(File file, LibraryProduct product)
+            throws CausticException {
+        addToProduct(file, product, LibraryPatternBank.class);
     }
 
     private static void addProjectArchive(File file, LibraryProduct product)
@@ -293,6 +329,10 @@ public class LibraryProductUtils {
         return causticInstrument;
     }
 
+    static CausticPatternBank createPatternBank(LibraryPatternBank item) {
+        return new CausticPatternBank(item);
+    }
+
     /*
      * <sound displayName="Ride" index="3" path="Drum/Percussion">
      *   <instrument displayName="Foo Instrument" type="SubSynth"/>
@@ -321,6 +361,12 @@ public class LibraryProductUtils {
     public static String toInstrumentXML(LibraryInstrument item) {
         CausticInstrument causticInstrument = createInstrument(item);
         String xml = getSerializer().getImporter().toXML(causticInstrument);
+        return xml;
+    }
+
+    public static String toPatternBankXML(LibraryPatternBank item) {
+        CausticPatternBank causticPatternBank = createPatternBank(item);
+        String xml = getSerializer().getImporter().toXML(causticPatternBank);
         return xml;
     }
 
@@ -363,9 +409,12 @@ public class LibraryProductUtils {
                 machineNode.getName(), groupName, librarySound);
         LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, displayName,
                 groupName);
+        LibraryPatternBank libraryPatternBank = fillPatternBank(machineNode, product, displayName,
+                groupName);
 
         librarySound.setEffect(libraryEffect);
         librarySound.setInstrument(libraryInstrument);
+        librarySound.setPatternBank(libraryPatternBank);
 
         return librarySound;
     }
@@ -391,6 +440,14 @@ public class LibraryProductUtils {
                 product, name, relativePath, machineNode);
 
         return libraryInstrument;
+    }
+
+    private static LibraryPatternBank fillPatternBank(MachineNode machineNode,
+            LibraryProduct product, String name, String groupName) {
+        String relativePath = groupName;
+        LibraryPatternBank libraryPatternBank = getFactory().getLibraryFactory().createPatternBank(
+                product, name, relativePath, machineNode);
+        return libraryPatternBank;
     }
 
     public static LibraryGroup createGroupFromCausticFile(LibraryProduct product, String path,

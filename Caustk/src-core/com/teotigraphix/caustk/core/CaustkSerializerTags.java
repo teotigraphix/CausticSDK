@@ -39,11 +39,13 @@ import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
+import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.NodeMetaData;
@@ -403,6 +405,8 @@ public final class CaustkSerializerTags {
         kryo.register(LibraryGroupManifest.class, 932);
         kryo.register(LibraryProduct.class, 933);
         kryo.register(LibraryProductManifest.class, 934);
+        kryo.register(LibraryPatternBank.class, 935);
+        kryo.register(LibraryPatternBankManifest.class, 936);
     }
 
     public static class UUIDSerializer extends Serializer<UUID> {

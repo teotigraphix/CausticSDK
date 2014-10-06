@@ -35,6 +35,7 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
+import com.teotigraphix.caustk.groove.utils.LibraryPatternBankUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductExportUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
@@ -197,6 +198,18 @@ public class LibraryProduct extends LibraryItem {
         File groupArchive = new File(getDirectory(), manifest.getProductPath());
         File uncompressDirectory = null;
         LibraryGroup instance = LibraryGroupUtils.importGroup(groupArchive, uncompressDirectory);
+        return instance;
+    }
+
+    public LibraryProductItem createFromManifest(LibraryItemManifest libraryItemManifest)
+            throws CausticException, IOException {
+        File archive = libraryItemManifest.getAbsoluteProductPath(this);
+        if (!archive.exists())
+            throw new IOException("Archive doe snot exist: " + archive);
+        File uncompressDirectory = getCacheDirectory("imports/" + UUID.randomUUID());
+        LibraryPatternBank instance = LibraryPatternBankUtils.importPatternBank(archive,
+                uncompressDirectory);
+        FileUtils.forceDelete(uncompressDirectory);
         return instance;
     }
 

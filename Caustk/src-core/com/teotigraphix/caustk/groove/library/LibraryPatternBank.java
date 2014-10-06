@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.groove.library;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 
 /**
@@ -81,7 +82,9 @@ public class LibraryPatternBank extends LibraryProductItem {
     LibraryPatternBank() {
     }
 
-    public LibraryPatternBank(LibraryPatternBankManifest manifest) {
+    public LibraryPatternBank(LibraryPatternBankManifest manifest, MachineNode machineNode) {
         this.manifest = manifest;
+        this.sequencer = machineNode.getSequencer();
+        this.sequencer.setMachineNode(null);
     }
 }

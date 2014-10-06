@@ -26,6 +26,7 @@ import java.io.FileReader;
 import com.teotigraphix.caustk.groove.utils.LibraryEffectUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryInstrumentUtils;
+import com.teotigraphix.caustk.groove.utils.LibraryPatternBankUtils;
 import com.teotigraphix.caustk.groove.utils.LibrarySoundUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -52,6 +53,7 @@ public class CausticFileImporter {
         LibrarySoundUtils.configureXStream(xstream);
         LibraryEffectUtils.configureXStream(xstream);
         LibraryInstrumentUtils.configureXStream(xstream);
+        LibraryPatternBankUtils.configureXStream(xstream);
     }
 
     //--------------------------------------------------------------------------

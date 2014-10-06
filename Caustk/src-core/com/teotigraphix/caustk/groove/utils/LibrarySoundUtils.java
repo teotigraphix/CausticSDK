@@ -28,6 +28,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.utils.SerializeUtils;
@@ -38,6 +39,8 @@ import com.thoughtworks.xstream.XStream;
 public class LibrarySoundUtils {
 
     private static final String INSTRUMENT_GINST = "instrument.ginst";
+
+    private static final String PATTERNS_GPTBK = "patterns.gptbk";
 
     private static final String EFFECT_GFX = "effect.gfx";
 
@@ -57,6 +60,7 @@ public class LibrarySoundUtils {
 
         LibraryEffect effect = item.getEffect();
         LibraryInstrument instrument = item.getInstrument();
+        LibraryPatternBank patternBank = item.getPatternBank();
 
         File tempEffectDir = new File(tempDirectory, "effect");
         if (!tempEffectDir.exists())
@@ -64,9 +68,13 @@ public class LibrarySoundUtils {
         File tempInstrumentDir = new File(tempDirectory, "instrument");
         if (!tempInstrumentDir.exists())
             FileUtils.forceMkdir(tempInstrumentDir);
+        File tempPatternDir = new File(tempDirectory, "pattern");
+        if (!tempPatternDir.exists())
+            FileUtils.forceMkdir(tempPatternDir);
 
         LibraryEffectUtils.serialize(effect, product, tempEffectDir);
         LibraryInstrumentUtils.serialize(instrument, product, tempInstrumentDir);
+        LibraryPatternBankUtils.serialize(patternBank, product, tempPatternDir);
 
         ZipCompress compress = null;
 
@@ -76,6 +84,9 @@ public class LibrarySoundUtils {
         compress = new ZipCompress(tempInstrumentDir);
         compress.zip(new File(tempDirectory, INSTRUMENT_GINST));
 
+        compress = new ZipCompress(tempPatternDir);
+        compress.zip(new File(tempDirectory, PATTERNS_GPTBK));
+
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -84,6 +95,7 @@ public class LibrarySoundUtils {
 
         FileUtils.forceDelete(tempEffectDir);
         FileUtils.forceDelete(tempInstrumentDir);
+        FileUtils.forceDelete(tempPatternDir);
 
         SerializeUtils.pack(new File(tempDirectory, SOUND_BIN), item);
     }
@@ -105,6 +117,10 @@ public class LibrarySoundUtils {
         LibraryInstrument instrument = LibraryInstrumentUtils
                 .importInstrumentFromSoundDirectory(tempDirectory);
         librarySound.setInstrument(instrument);
+
+        LibraryPatternBank patternBank = LibraryPatternBankUtils
+                .importPatternBankFromSoundDirectory(tempDirectory);
+        librarySound.setPatternBank(patternBank);
     }
 
     public static LibrarySound importSound(File uncompressDirectory, File soundFile)
@@ -116,6 +132,8 @@ public class LibrarySoundUtils {
                 .importEffectFromSoundDirectory(uncompressDirectory);
         LibraryInstrument libraryInstrument = LibraryInstrumentUtils
                 .importInstrumentFromSoundDirectory(uncompressDirectory);
+        LibraryPatternBank patternBank = LibraryPatternBankUtils
+                .importPatternBankFromSoundDirectory(uncompressDirectory);
 
         File manifest = new File(uncompressDirectory, "sound.bin");
         if (!manifest.exists())
@@ -124,6 +142,7 @@ public class LibrarySoundUtils {
         LibrarySound librarySound = SerializeUtils.unpack(manifest, LibrarySound.class);
         librarySound.setEffect(libraryEffect);
         librarySound.setInstrument(libraryInstrument);
+        librarySound.setPatternBank(patternBank);
 
         return librarySound;
     }
