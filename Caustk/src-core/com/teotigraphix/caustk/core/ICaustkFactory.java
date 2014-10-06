@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.core;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.teotigraphix.caustk.core.factory.LibraryFactory;
 import com.teotigraphix.caustk.core.factory.NodeFactory;
@@ -35,6 +36,19 @@ public interface ICaustkFactory {
      * The {@link CaustkRuntime} that owns this factory.
      */
     ICaustkRuntime getRuntime();
+
+    NodeFactory getNodeFactory();
+
+    LibraryFactory getLibraryFactory();
+
+    /**
+     * Returns a sub directory in the application's <code>cache</code>
+     * directory.
+     * 
+     * @param reletivePath The path within the cache directory.
+     * @throws IOException
+     */
+    File getCacheDirectory(String relativePath);
 
     /**
      * Creates and returns a new initialized {@link RackNode}.
@@ -58,7 +72,4 @@ public interface ICaustkFactory {
      */
     RackNode createRack(File file);
 
-    NodeFactory getNodeFactory();
-
-    LibraryFactory getLibraryFactory();
 }

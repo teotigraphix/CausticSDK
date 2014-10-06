@@ -20,11 +20,15 @@
 package com.teotigraphix.caustk.core;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.factory.LibraryFactory;
 import com.teotigraphix.caustk.core.factory.NodeFactory;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * A factory that creates {@link ICaustkNode}s for the {@link ICaustkRuntime}.
@@ -44,6 +48,8 @@ public class CaustkFactory implements ICaustkFactory {
     private NodeFactory nodeFactory;
 
     private LibraryFactory libraryFactory;
+
+    private File cacheDirectory;
 
     //--------------------------------------------------------------------------
     //  Public API :: Properties
@@ -72,6 +78,11 @@ public class CaustkFactory implements ICaustkFactory {
         return libraryFactory;
     }
 
+    @Override
+    public File getCacheDirectory(String relativePath) {
+        return new File(cacheDirectory, relativePath);
+    }
+
     //--------------------------------------------------------------------------
     //  Constructor
     //--------------------------------------------------------------------------
@@ -87,6 +98,33 @@ public class CaustkFactory implements ICaustkFactory {
 
         nodeFactory = new NodeFactory(this);
         libraryFactory = new LibraryFactory(this);
+
+        try {
+            cacheDirectory = getTempDirectory("cache", true);
+        } catch (IOException e) {
+            runtime.getLogger().err("", "Cache directory could not be created or cleaned");
+        }
+    }
+
+    /**
+     * Returns a sub directory of the <code>.temp</code> directory inside the
+     * application.
+     * 
+     * @param reletivePath The path of the .temp sub directory.
+     * @param clean Whether to clean the sub directory if exists.
+     * @throws IOException the .temp or relative directory cannot be created.
+     * @see RuntimeUtils#getApplicationTempDirectory()
+     */
+    private File getTempDirectory(String reletivePath, boolean clean) throws IOException {
+        File tempDir = RuntimeUtils.getApplicationTempDirectory();
+        if (!tempDir.exists())
+            FileUtils.forceMkdir(tempDir);
+        File directory = new File(tempDir, reletivePath);
+        if (!directory.exists())
+            FileUtils.forceMkdir(directory);
+        if (clean)
+            FileUtils.cleanDirectory(directory);
+        return directory;
     }
 
     //--------------------------------------------------------------------------

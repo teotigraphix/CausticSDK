@@ -38,15 +38,12 @@ import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryPatternBankUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductExportUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * @author Michael Schmalle
  * @since 1.0
  */
 public class LibraryProduct extends LibraryItem {
-
-    private static final String CACHE = "cache/";
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -80,52 +77,6 @@ public class LibraryProduct extends LibraryItem {
      */
     public final File getDirectory() {
         return manifest.getDirectory();
-    }
-
-    /**
-     * Returns a sub directory of the <code>.temp</code> directory inside the
-     * application.
-     * <p>
-     * Does NOT clean the relative directory.
-     * 
-     * @param reletivePath The path of the .temp sub directory.
-     * @throws IOException the .temp or relative directory cannot be created.
-     * @see RuntimeUtils#getApplicationTempDirectory()
-     */
-    public File getTempDirectory(String reletivePath) throws IOException {
-        return getTempDirectory(reletivePath, false);
-    }
-
-    /**
-     * Returns a sub directory in the application's <code>cache</code>
-     * directory.
-     * 
-     * @param reletivePath The path within the cache directory.
-     * @throws IOException
-     */
-    public File getCacheDirectory(String reletivePath) throws IOException {
-        return getTempDirectory(CACHE + reletivePath);
-    }
-
-    /**
-     * Returns a sub directory of the <code>.temp</code> directory inside the
-     * application.
-     * 
-     * @param reletivePath The path of the .temp sub directory.
-     * @param clean Whether to clean the sub directory if exists.
-     * @throws IOException the .temp or relative directory cannot be created.
-     * @see RuntimeUtils#getApplicationTempDirectory()
-     */
-    public File getTempDirectory(String reletivePath, boolean clean) throws IOException {
-        File tempDir = RuntimeUtils.getApplicationTempDirectory();
-        if (!tempDir.exists())
-            FileUtils.forceMkdir(tempDir);
-        File directory = new File(tempDir, reletivePath);
-        if (!directory.exists())
-            FileUtils.forceMkdir(directory);
-        if (clean)
-            FileUtils.cleanDirectory(directory);
-        return directory;
     }
 
     //----------------------------------
@@ -206,10 +157,10 @@ public class LibraryProduct extends LibraryItem {
         File archive = libraryItemManifest.getAbsoluteProductPath(this);
         if (!archive.exists())
             throw new IOException("Archive doe snot exist: " + archive);
-        File uncompressDirectory = getCacheDirectory("imports/" + UUID.randomUUID());
+        File uncompressDirectory = CaustkRuntime.getInstance().getFactory()
+                .getCacheDirectory("imports/" + UUID.randomUUID());
         LibraryPatternBank instance = LibraryPatternBankUtils.importPatternBank(
                 uncompressDirectory, archive);
-        FileUtils.forceDeleteOnExit(uncompressDirectory);
         return instance;
     }
 

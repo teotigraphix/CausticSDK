@@ -86,7 +86,8 @@ public class LibraryProductUtils {
         File effectsDirectory = new File(productDirectory, "Effects");
         File patternsDirectory = new File(productDirectory, "PatternBanks");
 
-        File uncompressDir = product.getCacheDirectory(TEMP_EXTRACTION);
+        File uncompressDir = CaustkRuntime.getInstance().getFactory()
+                .getCacheDirectory(TEMP_EXTRACTION);
         File uncompressSoundsDir = new File(uncompressDir, "sounds");
         LibraryGroup libraryGroup = LibraryGroupUtils.importGroup(groupArchive, uncompressDir);
 
@@ -159,7 +160,7 @@ public class LibraryProductUtils {
 
     public static File saveItemAsArchive(LibraryProductItem item, LibraryProduct product,
             File zipFile) throws IOException {
-        File tempDirectory = product.getCacheDirectory("extract");
+        File tempDirectory = CaustkRuntime.getInstance().getFactory().getCacheDirectory("extract");
         FileUtils.forceMkdir(tempDirectory);
 
         switch (item.getFormat()) {
@@ -302,7 +303,8 @@ public class LibraryProductUtils {
         if (!archive.exists())
             throw new IOException("Archive does not exist: " + archive);
         ZipUncompress uncompress = new ZipUncompress(archive);
-        File uncompressDirectory = product.getCacheDirectory(UUID.randomUUID().toString());
+        File uncompressDirectory = CaustkRuntime.getInstance().getFactory()
+                .getCacheDirectory(UUID.randomUUID().toString());
         uncompress.unzip(uncompressDirectory);
         File manifestFile = new File(uncompressDirectory, MANIFEST_XML);
         T instance = getSerializer().fromXMLManifest(manifestFile, clazz);
