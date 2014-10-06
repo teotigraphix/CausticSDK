@@ -47,7 +47,7 @@ public abstract class CausticItem {
     }
 
     public CausticItem(LibraryProductItem item) {
-        this.path = item.getPath();
+        this.path = item.getRawRelativePath();
         this.displayName = item.getDisplayName();
     }
 

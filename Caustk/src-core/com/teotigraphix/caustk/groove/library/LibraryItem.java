@@ -68,19 +68,6 @@ public abstract class LibraryItem {
         return getManifest().getName() + "." + getManifest().getExtension();
     }
 
-    /**
-     * The relative path within the containing {@link LibraryProduct}.
-     * 
-     * @return E.g <code>Synth/Lead</code>
-     */
-    public String getRelativePath() {
-        return getManifest().getRelativePath();
-    }
-
-    public void setReletivePath(String relativePath) {
-        getManifest().setRelativePath(relativePath);
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

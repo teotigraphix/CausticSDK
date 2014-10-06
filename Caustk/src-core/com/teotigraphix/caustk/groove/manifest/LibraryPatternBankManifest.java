@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.groove.manifest;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 
 /**
@@ -30,6 +32,22 @@ public class LibraryPatternBankManifest extends LibraryItemManifest {
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
+
+    @Tag(100)
+    private MachineType machineType;
+
+    public MachineType getMachineType() {
+        return machineType;
+    }
+
+    public void setMachineType(MachineType machineType) {
+        this.machineType = machineType;
+    }
+
+    @Override
+    public String getCalculatedPath() {
+        return machineType.name() + "/" + super.getRelativePath();
+    }
 
     //--------------------------------------------------------------------------
     //  Constructors

@@ -94,7 +94,7 @@ public class LibraryProductUtils {
         // Copy LibraryGroup.ggrp to Product directory
         File groupSrc = groupArchive;
 
-        String groupPath = libraryGroup.getPath();
+        String groupPath = libraryGroup.getCalculatedPath();
         String groupName = libraryGroup.getFileName();
         File groupDest = new File(groupsDirectory, groupPath);
 
@@ -106,7 +106,7 @@ public class LibraryProductUtils {
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
             // SOUND
             int index = librarySound.getIndex();
-            String soundPath = librarySound.getPath();
+            String soundPath = librarySound.getCalculatedPath();
             String soundName = librarySound.getName();
             File soundDest = new File(soundsDirectory, soundPath);
             File soundArchiveSrc = new File(uncompressSoundsDir, "sound-" + index + ".gsnd");
@@ -117,8 +117,7 @@ public class LibraryProductUtils {
 
             // INSTRUMENT
             LibraryInstrument libraryInstrument = librarySound.getInstrument();
-            String intType = libraryInstrument.getManifest().getMachineType().name();
-            String instPath = intType + File.separator + libraryInstrument.getPath();
+            String instPath = libraryInstrument.getCalculatedPath();
             String instName = libraryInstrument.getName();
 
             File instDest = new File(instrumentsDirectory, instPath);
@@ -132,7 +131,7 @@ public class LibraryProductUtils {
             // PATTERNS
             LibraryPatternBank libraryPatternBank = librarySound.getPatternBank();
             //String pbType = libraryPatternBank.getManifest().getMachineType().name();
-            String pbPath = intType + File.separator + libraryPatternBank.getPath();
+            String pbPath = libraryPatternBank.getCalculatedPath();
             String pbName = libraryPatternBank.getName();
 
             File pbDest = new File(patternsDirectory, pbPath);
@@ -145,7 +144,7 @@ public class LibraryProductUtils {
 
             // EFFECT
             LibraryEffect libraryEffect = librarySound.getEffect();
-            String effectPath = libraryEffect.getPath();
+            String effectPath = libraryEffect.getCalculatedPath();
             String effectName = libraryEffect.getName();
 
             File effectDest = new File(effectsDirectory, effectPath);

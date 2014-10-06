@@ -84,6 +84,7 @@ public class LibraryPatternBank extends LibraryProductItem {
 
     public LibraryPatternBank(LibraryPatternBankManifest manifest, MachineNode machineNode) {
         this.manifest = manifest;
+        manifest.setMachineType(machineNode.getType());
         this.sequencer = machineNode.getSequencer();
         this.sequencer.setMachineNode(null);
     }

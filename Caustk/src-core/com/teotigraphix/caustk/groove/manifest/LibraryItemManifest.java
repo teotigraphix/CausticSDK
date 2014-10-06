@@ -183,14 +183,18 @@ public class LibraryItemManifest {
         this.relativePath = relativePath;
     }
 
+    public String getCalculatedPath() {
+        return relativePath;
+    }
+
     /**
      * Returns the full relative path from the Product's base;
      * <code>/root/MyApp/Products/MyProduct/[Effect/Distortion/SubDir/MyDistorion.effect]</code>
      */
     public String getProductPath() {
         final String formatDirectoryName = LibraryProductUtils.toItemBaseDirectoryName(this);
-        final File base = getRelativePath() != null ? new File(formatDirectoryName,
-                getRelativePath()) : new File(formatDirectoryName);
+        final File base = getCalculatedPath() != null ? new File(formatDirectoryName,
+                getCalculatedPath()) : new File(formatDirectoryName);
         final File productPath = new File(base, getFileName());
         return productPath.getPath();
     }

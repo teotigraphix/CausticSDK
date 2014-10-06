@@ -207,9 +207,9 @@ public class LibraryProduct extends LibraryItem {
         if (!archive.exists())
             throw new IOException("Archive doe snot exist: " + archive);
         File uncompressDirectory = getCacheDirectory("imports/" + UUID.randomUUID());
-        LibraryPatternBank instance = LibraryPatternBankUtils.importPatternBank(archive,
-                uncompressDirectory);
-        FileUtils.forceDelete(uncompressDirectory);
+        LibraryPatternBank instance = LibraryPatternBankUtils.importPatternBank(
+                uncompressDirectory, archive);
+        FileUtils.forceDeleteOnExit(uncompressDirectory);
         return instance;
     }
 

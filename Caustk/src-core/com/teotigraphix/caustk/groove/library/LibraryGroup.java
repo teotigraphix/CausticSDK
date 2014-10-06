@@ -56,7 +56,7 @@ public class LibraryGroup extends LibraryProductItem {
 
     public void setCausticGroup(CausticGroup causticGroup) {
         this.causticGroup = causticGroup;
-        setReletivePath(causticGroup.getPath());
+        getManifest().setRelativePath(causticGroup.getPath());
     }
 
     //----------------------------------
@@ -68,10 +68,12 @@ public class LibraryGroup extends LibraryProductItem {
         return manifest;
     }
 
+    @Override
     public String getName() {
         return manifest.getName();
     }
 
+    @Override
     public String getDisplayName() {
         return manifest.getDisplayName();
     }

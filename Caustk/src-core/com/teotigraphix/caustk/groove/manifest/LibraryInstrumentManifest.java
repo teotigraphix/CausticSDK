@@ -49,6 +49,11 @@ public class LibraryInstrumentManifest extends LibraryItemManifest {
         return machineType;
     }
 
+    @Override
+    public String getCalculatedPath() {
+        return machineType.name() + "/" + super.getRelativePath();
+    }
+
     //--------------------------------------------------------------------------
     //  Constructors
     //--------------------------------------------------------------------------

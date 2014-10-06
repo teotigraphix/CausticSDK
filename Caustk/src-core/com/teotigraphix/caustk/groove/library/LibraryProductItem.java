@@ -53,8 +53,12 @@ public abstract class LibraryProductItem extends LibraryItem {
      * <p>
      * The return value would then be <code>Delay/PingPong</code>.
      */
-    public String getPath() {
+    public String getRawRelativePath() {
         return getManifest().getRelativePath();
+    }
+
+    public String getCalculatedPath() {
+        return getManifest().getCalculatedPath();
     }
 
     /**
@@ -64,8 +68,8 @@ public abstract class LibraryProductItem extends LibraryItem {
      */
     public File getProductPath() {
         final String formatDirectoryName = LibraryProductUtils.toItemBaseDirectoryName(this);
-        final File base = getRelativePath() != null ? new File(formatDirectoryName,
-                getRelativePath()) : new File(formatDirectoryName);
+        final File base = getCalculatedPath() != null ? new File(formatDirectoryName,
+                getCalculatedPath()) : new File(formatDirectoryName);
         final File productPath = new File(base, getFileName());
         return productPath;
     }
