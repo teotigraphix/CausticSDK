@@ -37,7 +37,7 @@ public class Scene {
     private SceneManager sceneManager;
 
     @Tag(1)
-    private int index;
+    private int linearIndex;
 
     @Tag(2)
     private int bankIndex;
@@ -48,14 +48,8 @@ public class Scene {
     @Tag(4)
     private Map<Integer, Clip> clips = new HashMap<Integer, Clip>(14);
 
-    @Tag(5)
-    private boolean playing;
-
-    @Tag(6)
-    private boolean queded;
-
     @Tag(10)
-    private String name;
+    private SceneInfo info;
 
     private ArrayList<Clip> queueClips = new ArrayList<Clip>();
 
@@ -67,8 +61,8 @@ public class Scene {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    public int getIndex() {
-        return index;
+    public int getLinearIndex() {
+        return linearIndex;
     }
 
     public int getBankIndex() {
@@ -80,15 +74,37 @@ public class Scene {
     }
 
     public boolean isPlaying() {
-        return playing;
+        for (Clip clip : clips.values()) {
+            if (clip.isPlaying())
+                return true;
+        }
+        return false;
     }
 
     public boolean isQueded() {
-        return queded;
+        if (isPlaying())
+            return false;
+        for (Clip clip : clips.values()) {
+            if (clip.isQueded())
+                return true;
+        }
+        return false;
     }
 
     public String getName() {
-        return name;
+        return info.getName();
+    }
+
+    //--------------------------------------------------------------------------
+    // Internal :: Properties
+    //--------------------------------------------------------------------------
+
+    SceneManager getSceneManager() {
+        return sceneManager;
+    }
+
+    SessionManager getSessionManager() {
+        return sceneManager.getSessionManager();
     }
 
     Collection<Clip> getClips() {
@@ -99,11 +115,11 @@ public class Scene {
         return sceneManager.getMachine(machineIndex);
     }
 
-    public boolean containsClip(int index) {
+    boolean containsClip(int index) {
         return clips.containsKey(index);
     }
 
-    public Clip getClip(int index) {
+    Clip getClip(int index) {
         return clips.get(index);
     }
 
@@ -117,10 +133,10 @@ public class Scene {
     Scene() {
     }
 
-    public Scene(SceneManager sceneManager, String name, int index, int bankIndex, int sceneIndex) {
+    public Scene(SceneManager sceneManager, SceneInfo info, int index, int bankIndex, int sceneIndex) {
         this.sceneManager = sceneManager;
-        this.name = name;
-        this.index = index;
+        this.info = info;
+        this.linearIndex = index;
         this.bankIndex = bankIndex;
         this.sceneIndex = sceneIndex;
     }
@@ -130,67 +146,161 @@ public class Scene {
     //--------------------------------------------------------------------------
 
     void onMeasureStart(int measure, float beat, int sixteenth, int thirtysecond) {
-        for (Clip clip : queueClips) {
-            clip.play();
-            playClips.add(clip);
-        }
-        queueClips.clear();
-        for (Clip clip : clips.values()) {
-            clip.onMeasureStart(measure, beat, sixteenth, thirtysecond);
-        }
+        //        for (Clip clip : queueClips) {
+        //            clip.play();
+        //            playClips.add(clip);
+        //        }
+        //        queueClips.clear();
+        //        for (Clip clip : clips.values()) {
+        //            clip.onMeasureStart(measure, beat, sixteenth, thirtysecond);
+        //        }
     }
 
-    public Clip addClip(int machineIndex) {
-        Clip clip = new Clip(this, machineIndex);
+    Clip addClip(int machineIndex, ClipInfo info) {
+        Clip clip = new Clip(this, machineIndex, info);
         clips.put(machineIndex, clip);
         return clip;
     }
 
-    public Clip removeClip(int trackIndex) {
-        Clip clip = clips.remove(trackIndex);
-        return clip;
+    Clip addClip(int machineIndex, String name) {
+        ClipInfo info = new ClipInfo(name);
+        return addClip(machineIndex, info);
     }
 
-    public void queue() {
-        for (Clip clip : clips.values()) {
-            clip.queue();
-        }
+    Clip removeClip(Clip clip) {
+        return removeClip(clip.getMachineIndex());
     }
 
-    public Clip touch(int index) {
+    Clip removeClip(int trackIndex) {
+        Clip removed = clips.remove(trackIndex);
+        return removed;
+    }
+
+    Clip touch(int index) {
         Clip clip = clips.get(index);
-        if (!clip.isPlaying() && !clip.isQueded()) { // stopped AND notQueued
-            //queue(clip);
-            clip.queue();
-            queueClips.add(clip);
-        } else if (clip.isPlaying()) { // playing
-            //dequeue(clip);
-            clip.dequeue();
-            dequeueClips.add(clip);
-        } else if (clip.isQueded() && !clip.isPlaying()) { // queued AND notPlaying
-            //stop(clip);
-            clip.stop();
-            queueClips.remove(clip);
+
+        if (clip.isIdle()) { // Idle
+            if (!clip.isPlaying()) {
+                queue(clip);
+            } else {
+                dequeue(clip);
+            }
+            return clip;
+        } else if (clip.isQueded()) { // Queued
+            if (!clip.isPlaying()) {
+                idle(clip);
+                return clip;
+            }
+        } else if (clip.isDequeded()) { // Dequeued
+            if (clip.isPlaying()) { // Dequeued but playing
+                // XXX Test this
+                cancelDequeue(clip);
+            }
+            return clip;
+        } else if (clip.isPlaying()) { // Play
+            dequeue(clip);
+            return clip;
+        } else if (!clip.isPlaying()) { // not playing
+            idle(clip);
+            return clip;
+        }
+
+        return null;
+    }
+
+    private void cancelDequeue(Clip clip) {
+        clip.softPlay();
+        dequeueClips.remove(clip);
+        playClips.add(clip);
+    }
+
+    private void idle(Clip clip) {
+        clip.idle();
+        playClips.remove(clip);
+        queueClips.remove(clip);
+        dequeueClips.remove(clip);
+    }
+
+    private void dequeue(Clip clip) {
+        clip.dequeue();
+        dequeueClips.add(clip);
+    }
+
+    private void queue(Clip clip) {
+        Clip conflict = sceneManager.isConflict(clip);
+        if (conflict != null) {
+            // need to dequeue from the conflict's scene
+            conflict.getScene().dequeue(conflict);
+            System.err.println("Removing conflict:" + conflict);
+        }
+        clip.queue();
+        queueClips.add(clip);
+    }
+
+    void commitClips() {
+        if (clips.size() == 0)
+            return;
+        // 1 bar measure change on next beat
+
+        // All queued clips play
+        ArrayList<Clip> tempQueue = new ArrayList<Clip>(queueClips);
+        for (Clip clip : tempQueue) {
+            play(clip);
+        }
+
+        // All dequeued clips stop
+        ArrayList<Clip> tempDequeue = new ArrayList<Clip>(dequeueClips);
+        for (Clip clip : tempDequeue) {
+            stop(clip);
+        }
+
+        for (Clip clip : playClips) {
+            clip.commitPlay();
+        }
+
+    }
+
+    Clip isConflict(int machineIndex) {
+        for (Clip clip : playClips) {
+            if (clip.getMachineIndex() == machineIndex)
+                return clip;
         }
         return null;
     }
 
-    public void play() {
+    private void stop(Clip clip) {
+        playClips.remove(clip);
+        queueClips.remove(clip);
+        dequeueClips.remove(clip);
+        clip.commitStop();
+    }
+
+    private void play(Clip clip) {
+        playClips.add(clip);
+        queueClips.remove(clip);
+        clip.commitPlay();
+    }
+
+    void play() {
         for (Clip clip : clips.values()) {
-            clip.play();
+            if (!playClips.contains(clip) && !queueClips.contains(clip)) {
+                queue(clip);
+            }
         }
     }
 
-    public void stop() {
+    void stop() {
         for (Clip clip : clips.values()) {
-            clip.stop();
+            if (playClips.contains(clip) || queueClips.contains(clip)) {
+                dequeue(clip);
+            }
         }
     }
 
     @Override
     public String toString() {
-        return "Scene [index=" + index + ", bankIndex=" + bankIndex + ", sceneIndex=" + sceneIndex
-                + ", playing=" + playing + ", name=" + name + "]";
+        return "Scene [index=" + linearIndex + ", bankIndex=" + bankIndex + ", sceneIndex="
+                + sceneIndex + ", playing=" + isPlaying() + ", name=" + getName() + "]";
     }
 
 }

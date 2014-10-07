@@ -38,9 +38,21 @@ public class SessionManager {
     @Tag(1)
     private Map<Integer, MachineNode> machines = new HashMap<Integer, MachineNode>();
 
+    private int measure;
+
+    private double beat;
+
+    private int sixteenth;
+
+    private RackNode rackNode;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    public RackNode getRackNode() {
+        return rackNode;
+    }
 
     SceneManager getSceneManager() {
         return sceneManager;
@@ -54,6 +66,18 @@ public class SessionManager {
         return machines.get(machineIndex);
     }
 
+    public int getMeasure() {
+        return measure;
+    }
+
+    public double getBeat() {
+        return beat;
+    }
+
+    public int getSixteenth() {
+        return sixteenth;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -65,6 +89,7 @@ public class SessionManager {
     }
 
     public SessionManager(RackNode rackNode) {
+        this.rackNode = rackNode;
         sceneManager = new SceneManager(this);
     }
 
@@ -83,13 +108,38 @@ public class SessionManager {
         return removedMachine;
     }
 
-    public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
-        boolean isMeasureStart = (Math.floor(beat)) % 4 == 0;
-        if (isMeasureStart) {
-            onMeasureStart(measure, beat, sixteenth, thirtysecond);
+    public Clip touch(Clip clip) {
+        return getSceneManager().getScene(clip.getSceneIndex()).touch(clip.getMachineIndex());
+    }
+
+    void onSixteenthChange(int measure, int sixteenth) {
+        this.measure = measure;
+
+        System.out.println(sixteenth); // 0, 4, 8, 12, 0, ...
+        if (sixteenth == 12) {
+            // 1 bar measure change on next beat
+            commitClips();
         }
     }
 
+    private void commitClips() {
+        System.out.println("SessionManager.commitClips()");
+        getSceneManager().commitClips();
+    }
+
+    public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        this.measure = measure;
+        this.beat = Math.floor(beat);
+        this.sixteenth = sixteenth;
+
+        boolean isCommitBeat = sixteenth == 12;
+        if (isCommitBeat) {
+            commitClips();
+            //onMeasureStart(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    @SuppressWarnings("unused")
     private void onMeasureStart(int measure, float beat, int sixteenth, int thirtysecond) {
         for (Scene scene : sceneManager.getScenes()) {
             scene.onMeasureStart(measure, beat, sixteenth, thirtysecond);

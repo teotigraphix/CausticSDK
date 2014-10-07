@@ -41,6 +41,10 @@ public class SceneManager {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
+    SessionManager getSessionManager() {
+        return sessionManager;
+    }
+
     List<Scene> getScenes() {
         return scenes;
     }
@@ -75,35 +79,59 @@ public class SceneManager {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public Clip addClip(int trackIndex, int sceneIndex) { // x, y
+    public Clip addClip(int sceneIndex, int trackIndex, String name) { // x, y
         Scene scene = getScene(sceneIndex);
         Clip clip = null;
         if (!scene.containsClip(trackIndex)) {
-            clip = scene.addClip(trackIndex);
+            clip = scene.addClip(trackIndex, name);
         }
         return clip;
     }
 
     public Clip removeClip(Clip clip) {
-        return removeClip(clip.getMachineIndex(), clip.getSceneIndex());
+        return removeClip(clip.getSceneIndex(), clip.getMachineIndex());
     }
 
-    public Clip removeClip(int trackIndex, int sceneIndex) { // x, y
+    public Clip removeClip(int sceneIndex, int trackIndex) { // x, y
         Scene scene = getScene(sceneIndex);
         Clip clip = scene.removeClip(trackIndex);
         return clip;
     }
 
-    public void play() {
+    public void play(int sceneIndex) {
+        Scene scene = getScene(sceneIndex);
+        for (Scene otherScene : scenes) {
+            if (scene != otherScene) {
+                otherScene.stop();
+            }
+        }
+        scene.play();
+    }
+
+    public void stop(int sceneIndex) {
+        Scene scene = getScene(sceneIndex);
+        scene.stop();
+    }
+
+    void commitClips() {
         for (Scene scene : scenes) {
-            scene.play();
+            scene.commitClips();
         }
     }
 
-    public void stop() {
+    Clip isConflict(Clip queuedClip) {
+        Clip conflict = null;
+        int machineIndex = queuedClip.getMachineIndex();
         for (Scene scene : scenes) {
-            scene.stop();
+            // only work on scenes other than the queued clip
+            if (scene != queuedClip.getScene()) {
+                conflict = scene.isConflict(machineIndex);
+                if (conflict != null)
+                    return conflict;
+            }
+
         }
+        return conflict;
     }
 
     //--------------------------------------------------------------------------
@@ -131,7 +159,8 @@ public class SceneManager {
         int index = 0;
         for (int bankIndex = 0; bankIndex < 4; bankIndex++) {
             for (int sceneIndex = 0; sceneIndex < 16; sceneIndex++) {
-                Scene scene = new Scene(this, "Scene " + index, index, bankIndex, sceneIndex);
+                SceneInfo info = new SceneInfo("Scene " + index);
+                Scene scene = new Scene(this, info, index, bankIndex, sceneIndex);
                 scenes.add(scene);
                 index++;
             }
