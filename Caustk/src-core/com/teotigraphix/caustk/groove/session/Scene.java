@@ -134,6 +134,18 @@ public class Scene {
         return true;
     }
 
+    public boolean isDequeded() {
+        if (isEmpty())
+            return false;
+        for (Clip clip : clips.values()) {
+            if (!clip.hasPattern())
+                continue;
+            if (!clip.isStateDequeded())
+                return false;
+        }
+        return true;
+    }
+
     //--------------------------------------------------------------------------
     // Internal :: Properties
     //--------------------------------------------------------------------------
@@ -359,7 +371,8 @@ public class Scene {
                 if (clip.isPlaying()) {
                     dequeue(clip);
                 } else if (clip.isQueued()) {
-                    dequeue(clip);
+                    stop(clip);
+                } else if (clip.isDequeued()) {
                 }
             }
         }

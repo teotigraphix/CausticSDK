@@ -351,11 +351,8 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         //        PatternSequencerComponent oldSequencer = libraryInstrument.getMachineNode().getSequencer();
         //        machineNode.updateSequencer(oldSequencer);
 
-        Collection<PatternNode> patterns = patternBank.getPatterns();
-
-        for (PatternNode patternNode : patterns) {
-            System.out.println("    " + patternNode.getName());
-            //System.err.println("Length:" + patternNode.getNumMeasures());
+        for (PatternNode patternNode : patternBank.getPatterns()) {
+            //System.out.println("    " + patternNode.getName());
             machineNode.getSequencer().addPattern(patternNode);
         }
     }
