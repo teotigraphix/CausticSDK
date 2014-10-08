@@ -102,21 +102,36 @@ public class Scene {
     }
 
     public boolean isPlaying() {
+        if (isEmpty())
+            return false;
+
         for (Clip clip : clips.values()) {
-            if (clip.isStatePlaying())
-                return true;
+            if (!clip.hasPattern())
+                continue;
+            if (!clip.isStatePlaying())
+                return false;
         }
-        return false;
+        return true;
+    }
+
+    private boolean isEmpty() {
+        for (Clip clip : clips.values()) {
+            if (clip.hasPattern())
+                return false;
+        }
+        return true;
     }
 
     public boolean isQueded() {
-        if (isPlaying())
+        if (isEmpty() || isPlaying())
             return false;
         for (Clip clip : clips.values()) {
-            if (clip.isStateQueded())
-                return true;
+            if (!clip.hasPattern())
+                continue;
+            if (!clip.isStateQueded())
+                return false;
         }
-        return false;
+        return true;
     }
 
     //--------------------------------------------------------------------------
@@ -261,7 +276,7 @@ public class Scene {
                 conflict.getScene().idle(conflict);
                 System.err.println("Removing Queued conflict to Idle:" + conflict);
             } else if (conflict.isStateDequeded()) {
-                conflict.getScene().idle(conflict);
+                //conflict.getScene().idle(conflict);
                 System.err.println("Removing Dequeded conflict to Idle:" + conflict);
             }
         }

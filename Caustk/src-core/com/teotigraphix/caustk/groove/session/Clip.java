@@ -105,6 +105,10 @@ public class Clip {
         return scene.getMachine(index);
     }
 
+    boolean hasPattern() {
+        return getPattern().getNotes().size() > 0;
+    }
+
     PatternNode getPattern() {
         return getMachineNode().getSequencer().getPattern(scene.getBankIndex(),
                 scene.getMatrixIndex());
