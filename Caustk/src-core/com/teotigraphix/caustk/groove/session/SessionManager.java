@@ -48,6 +48,8 @@ public class SessionManager {
 
     private RackNode rackNode;
 
+    private boolean locks = true;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -82,6 +84,14 @@ public class SessionManager {
 
     public int getSixteenth() {
         return sixteenth;
+    }
+
+    public boolean isLocks() {
+        return locks;
+    }
+
+    public void setLocks(boolean locks) {
+        this.locks = locks;
     }
 
     //--------------------------------------------------------------------------
@@ -129,6 +139,8 @@ public class SessionManager {
     }
 
     boolean isLockMeasure() {
+        if (!locks)
+            return false;
         return sixteenth >= 12;
     }
 

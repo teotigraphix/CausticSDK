@@ -262,6 +262,8 @@ public class Scene {
 
     private void dequeue(Clip clip) {
         clip.dequeueState();
+        playClips.remove(clip);
+        queueClips.remove(clip);
         dequeueClips.add(clip);
     }
 
@@ -343,16 +345,22 @@ public class Scene {
 
     void play() {
         for (Clip clip : clips.values()) {
-            if (!playClips.contains(clip) && !queueClips.contains(clip)) {
-                queue(clip);
+            if (clip.hasPattern()) {
+                if (!clip.isPlaying()) {
+                    queue(clip);
+                }
             }
         }
     }
 
     void stop() {
         for (Clip clip : clips.values()) {
-            if (playClips.contains(clip) || queueClips.contains(clip)) {
-                dequeue(clip);
+            if (clip.hasPattern()) {
+                if (clip.isPlaying()) {
+                    dequeue(clip);
+                } else if (clip.isQueued()) {
+                    dequeue(clip);
+                }
             }
         }
     }

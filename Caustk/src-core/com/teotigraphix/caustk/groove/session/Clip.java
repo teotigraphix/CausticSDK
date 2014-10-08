@@ -250,10 +250,15 @@ public class Clip {
             TrackEntryNode entry = track.getLastEntry();
 
             int startMeasure = entry.getStartMeasure(); // 4
-            int endMeasure = getScene().getSessionManager().getNextMeasure() + 1; // 6
-            System.out.println("Clip - startMeasure" + startMeasure + ", endMeasure" + endMeasure);
+            int endMeasure = getScene().getSessionManager().getCurrentMeasure() + 1; // 6
+            //System.out.println("Clip - startMeasure" + startMeasure + ", endMeasure" + endMeasure);
 
-            track.trimEntry(entry, startMeasure, endMeasure);
+            if (startMeasure == endMeasure) {
+                System.out.println("Error: start == end " + this);
+            } else {
+                track.trimEntry(entry, startMeasure, endMeasure);
+            }
+
         }
 
         lastState = state;
