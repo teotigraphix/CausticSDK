@@ -48,6 +48,12 @@ import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
+import com.teotigraphix.caustk.groove.session.Clip;
+import com.teotigraphix.caustk.groove.session.ClipInfo;
+import com.teotigraphix.caustk.groove.session.Scene;
+import com.teotigraphix.caustk.groove.session.SceneInfo;
+import com.teotigraphix.caustk.groove.session.SceneManager;
+import com.teotigraphix.caustk.groove.session.SessionManager;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
@@ -390,7 +396,7 @@ public final class CaustkSerializerTags {
         kryo.register(VocoderModulatorComponent.class, 803);
 
         //------------------------------
-        // Goove framework 901-1000
+        // Groove framework 901-1000
         //------------------------------
 
         kryo.register(LibraryItemFormat.class, 901);
@@ -407,6 +413,14 @@ public final class CaustkSerializerTags {
         kryo.register(LibraryProductManifest.class, 934);
         kryo.register(LibraryPatternBank.class, 935);
         kryo.register(LibraryPatternBankManifest.class, 936);
+
+        kryo.register(SessionManager.class, 950);
+        kryo.register(SceneManager.class, 951);
+        kryo.register(Scene.class, 952);
+        kryo.register(SceneInfo.class, 953);
+        kryo.register(Clip.class, 954);
+        kryo.register(Clip.ClipState.class, 955);
+        kryo.register(ClipInfo.class, 956);
     }
 
     public static class UUIDSerializer extends Serializer<UUID> {

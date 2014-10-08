@@ -19,10 +19,12 @@
 
 package com.teotigraphix.caustk.groove.session;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -98,6 +100,7 @@ public class SessionManager {
     //--------------------------------------------------------------------------
 
     public void connect(MachineNode machineNode) {
+        CaustkRuntime.getInstance().getLogger().log("SessionManager", "connect() " + machineNode);
         machines.put(machineNode.getIndex(), machineNode);
         machineAdded(machineNode);
     }
@@ -109,14 +112,17 @@ public class SessionManager {
     }
 
     public Clip touch(Clip clip) {
+        CaustkRuntime.getInstance().getLogger().log("SessionManager", "touch() " + clip);
         return getSceneManager().getScene(clip.getSceneIndex()).touch(clip.getMachineIndex());
     }
 
     void onSixteenthChange(int measure, int sixteenth) {
         this.measure = measure;
 
-        System.out.println(sixteenth); // 0, 4, 8, 12, 0, ...
-        if (sixteenth == 12) {
+        System.out.println("m:" + measure + ", s:" + sixteenth); // 0, 4, 8, 12, 0, ...
+        if (measure == 0 && sixteenth == 0) {
+            start();
+        } else if (sixteenth == 12) {
             // 1 bar measure change on next beat
             commitClips();
         }
@@ -132,11 +138,11 @@ public class SessionManager {
         this.beat = Math.floor(beat);
         this.sixteenth = sixteenth;
 
-        boolean isCommitBeat = sixteenth == 12;
-        if (isCommitBeat) {
-            commitClips();
-            //onMeasureStart(measure, beat, sixteenth, thirtysecond);
-        }
+        onSixteenthChange(measure, sixteenth);
+    }
+
+    private void start() {
+        commitClips();
     }
 
     @SuppressWarnings("unused")
@@ -175,6 +181,58 @@ public class SessionManager {
     public void load() {
         // only gets called when a project is loaded AFTER initialize
         sceneManager.load();
+    }
+
+    //--------------------------------------------------------------------------
+    // Used in App :: Methods
+    //--------------------------------------------------------------------------
+
+    /**
+     * Returns a {@link Scene} based on the linear index of the scene.
+     * 
+     * @param index The linear index.
+     */
+    public Scene getScene(int index) {
+        return sceneManager.getScene(index);
+    }
+
+    /**
+     * Stops all clips playing in a scene at the next commit cycle.
+     * 
+     * @param scene the scene to stop.
+     */
+    public void stopScene(Scene scene) {
+        sceneManager.stop(scene);
+    }
+
+    /**
+     * Queues then plays all clips of the scene at the next commit cycle.
+     * 
+     * @param scene the scene to play.
+     */
+    public void playScene(Scene scene) {
+        sceneManager.play(scene);
+    }
+
+    /**
+     * Returns a clip at the scene and track index, <code>null</code> if a clip
+     * does not exist.
+     * 
+     * @param sceneIndex The x column grid.
+     * @param trackIndex the y column grid.
+     */
+    public Clip getClip(int sceneIndex, int trackIndex) {
+        Clip clip = sceneManager.getScene(sceneIndex).getClip(trackIndex);
+        return clip;
+    }
+
+    public void addClip(int sceneIndex, int trackIndex, String name) {
+        CaustkRuntime.getInstance().getLogger().log("SessionManager", "addClip() " + name);
+        sceneManager.addClip(sceneIndex, trackIndex, name);
+    }
+
+    public Collection<Clip> getClips(int sceneIndex) {
+        return getScene(sceneIndex).getClips();
     }
 
 }

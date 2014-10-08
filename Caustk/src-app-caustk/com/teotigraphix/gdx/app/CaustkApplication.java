@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.google.inject.AbstractModule;
@@ -35,6 +37,7 @@ import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * The base implementation of the {@link ICaustkApplication} API.
@@ -155,6 +158,14 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
             runtime = startupExecutor.create(this);
             getLogger().log("Rack", "initialize()");
             runtime.getRack().initialize();
+
+            try {
+                FileUtils.forceDelete(RuntimeUtils.getApplicationDirectory());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
             getLogger().log("Rack", "onStart()");
             runtime.getRack().onStart();
             getLogger().log("SceneManager", "create()");

@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -460,6 +461,15 @@ public class PatternSequencerComponent extends MachineComponent {
         }
         PatternSequencerMessage.BANK.send(getRack(), getMachineIndex(), bank);
         PatternSequencerMessage.PATTERN.send(getRack(), getMachineIndex(), pattern);
+    }
+
+    public void addPattern(PatternNode patternNode) {
+        PatternNode newPattern = getPattern(patternNode.getName());
+        newPattern.setNumMeasures(patternNode.getNumMeasures());
+        //String data = patternNode.serialize();
+        //newPattern.assignNoteData(data, true);
+        PatternUtils.setNoteData(getRack(), getMachineIndex(), newPattern, new ArrayList<NoteNode>(
+                patternNode.getNotes()));
     }
 
 }

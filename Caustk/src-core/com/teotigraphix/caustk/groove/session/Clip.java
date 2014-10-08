@@ -145,19 +145,19 @@ public class Clip {
         return state;
     }
 
-    boolean isIdle() {
+    public boolean isIdle() {
         return state == ClipState.Idle;
     }
 
-    boolean isPlaying() {
+    public boolean isPlaying() {
         return state == ClipState.Play;
     }
 
-    boolean isQueded() {
+    public boolean isQueded() {
         return state == ClipState.Queued;
     }
 
-    boolean isDequeded() {
+    public boolean isDequeded() {
         return state == ClipState.Dequeued;
     }
 
@@ -213,14 +213,15 @@ public class Clip {
         lastState = state;
         state = ClipState.Play;
         // /caustic/sequencer/pattern_event [machin_index] [start_measure] [bank] [pattern] [end_measure] 
-        int startMeasure = getScene().getSessionManager().getMeasure();
+        int currentMeasure = getScene().getSessionManager().getMeasure();
+        int startMeasure = currentMeasure;
         int length = getLoopLength();
-
+        //System.out.println("Clip - current" + currentMeasure);
         // add to sequencer
         TrackComponent track = getTrack();
-        if (!track.isContained(startMeasure)) {
+        if (!track.isContained(currentMeasure + 1)) {
             try {
-                track.addEntry(getPattern(), startMeasure, startMeasure + length);
+                track.addEntry(getPattern(), startMeasure + 1, startMeasure + 1 + length);
             } catch (CausticException e) {
                 e.printStackTrace();
             }
@@ -236,7 +237,12 @@ public class Clip {
 
             int endMeasure = getScene().getSessionManager().getMeasure(); // 6
             int startMeasure = entry.getStartMeasure(); // 4
-            track.trimEntry(entry, startMeasure, endMeasure);
+            try {
+                track.trimEntry(entry, startMeasure, endMeasure);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+
         }
 
         lastState = state;

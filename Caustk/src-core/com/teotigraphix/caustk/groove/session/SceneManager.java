@@ -99,7 +99,10 @@ public class SceneManager {
     }
 
     public void play(int sceneIndex) {
-        Scene scene = getScene(sceneIndex);
+        play(getScene(sceneIndex));
+    }
+
+    public void play(Scene scene) {
         for (Scene otherScene : scenes) {
             if (scene != otherScene) {
                 otherScene.stop();
@@ -108,8 +111,14 @@ public class SceneManager {
         scene.play();
     }
 
-    public void stop(int sceneIndex) {
-        Scene scene = getScene(sceneIndex);
+    /**
+     * @param index Linear index.
+     */
+    public void stop(int index) {
+        stop(getScene(index));
+    }
+
+    public void stop(Scene scene) {
         scene.stop();
     }
 

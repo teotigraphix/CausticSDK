@@ -249,7 +249,8 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     public RackNode fill(File file) throws IOException {
 
         File directory = runtime.getFactory().getCacheDirectory("fills");
-        File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString().substring(0, 10)
+        File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString()
+                .substring(0, 10)
                 + ".caustic");
         tempCausticSnapshot = getRackNode().saveSongAs(tempCausticSnapshot);
         if (!tempCausticSnapshot.exists())

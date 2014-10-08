@@ -278,7 +278,7 @@ public class Scene {
     private void play(Clip clip) {
         playClips.add(clip);
         queueClips.remove(clip);
-        clip.commitPlay();
+        //clip.commitPlay();
     }
 
     void play() {

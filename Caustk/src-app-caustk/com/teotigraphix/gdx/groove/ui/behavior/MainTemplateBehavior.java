@@ -117,14 +117,17 @@ public class MainTemplateBehavior extends CaustkBehavior {
      */
     @Subscribe
     public void onUIModelEventHandler(UIModelEvent event) {
-        switch (event.getKind()) {
-            case ViewIndexChange:
-                int viewIndex = event.getModel().getViewIndex();
-                viewStack.setSelectedIndex(viewIndex);
-                topBar.getButtonBar().setSelectedIndex(viewIndex);
-                break;
-            case PrefsViewIndexChange:
-                break;
-        }
+        //        if (event.getModel() == null)
+        //            return;
+        //
+        //        switch (event.getKind()) {
+        //            case ViewIndexChange:
+        //                int viewIndex = event.getModel().getViewIndex();
+        //                viewStack.setSelectedIndex(viewIndex);
+        //                topBar.getButtonBar().setSelectedIndex(viewIndex);
+        //                break;
+        //            case PrefsViewIndexChange:
+        //                break;
+        //        }
     }
 }
