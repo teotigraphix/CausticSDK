@@ -77,6 +77,22 @@ public class Clip {
         return info;
     }
 
+    public boolean isIdle() {
+        return isStateIdle();
+    }
+
+    public boolean isPlaying() {
+        return isStatePlaying();
+    }
+
+    public boolean isQueued() {
+        return isStateQueded();
+    }
+
+    public boolean isDequeued() {
+        return isStateDequeded();
+    }
+
     //--------------------------------------------------------------------------
     // Internal :: Properties
     //--------------------------------------------------------------------------
@@ -106,19 +122,19 @@ public class Clip {
         return state;
     }
 
-    boolean isIdle() {
+    boolean isStateIdle() {
         return state == ClipState.Idle;
     }
 
-    boolean isPlaying() {
+    boolean isStatePlaying() {
         return state == ClipState.Play;
     }
 
-    boolean isQueded() {
+    boolean isStateQueded() {
         return state == ClipState.Queued;
     }
 
-    boolean isDequeded() {
+    boolean isStateDequeded() {
         return state == ClipState.Dequeued;
     }
 
@@ -174,17 +190,20 @@ public class Clip {
     // Internal :: Methods
     //--------------------------------------------------------------------------
 
-    void idle() {
+    void refresh() {
+    }
+
+    void idleState() {
         lastState = state;
         state = ClipState.Idle;
     }
 
-    void queue() {
+    void queueState() {
         lastState = state;
         state = ClipState.Queued;
     }
 
-    void dequeue() {
+    void dequeueState() {
         lastState = state;
         state = ClipState.Dequeued;
     }
@@ -193,7 +212,7 @@ public class Clip {
      * Called when a dequeued playing clip is played again,
      * "while still playing".
      */
-    void softPlay() {
+    void softPlayState() {
         lastState = state;
         state = ClipState.Play;
     }
@@ -204,7 +223,7 @@ public class Clip {
         SessionManager sessionManager = getScene().getSessionManager();
 
         // /caustic/sequencer/pattern_event [machin_index] [start_measure] [bank] [pattern] [end_measure] 
-        int nextMeasure = sessionManager.getMeasure() + 1;
+        int nextMeasure = sessionManager.getNextMeasure();
         int length = getLoopLength();
 
         //System.out.println("Clip - current" + currentMeasure);
@@ -227,7 +246,8 @@ public class Clip {
             TrackEntryNode entry = track.getLastEntry();
 
             int startMeasure = entry.getStartMeasure(); // 4
-            int endMeasure = getScene().getSessionManager().getMeasure() + 1; // 6
+            int endMeasure = getScene().getSessionManager().getNextMeasure() + 1; // 6
+            System.out.println("Clip - startMeasure" + startMeasure + ", endMeasure" + endMeasure);
 
             track.trimEntry(entry, startMeasure, endMeasure);
         }
@@ -264,4 +284,5 @@ public class Clip {
          */
         Play;
     }
+
 }

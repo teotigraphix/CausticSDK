@@ -68,8 +68,12 @@ public class SessionManager {
         return machines.get(machineIndex);
     }
 
-    public int getMeasure() {
+    public int getCurrentMeasure() {
         return measure;
+    }
+
+    public int getNextMeasure() {
+        return measure + 1;
     }
 
     public double getBeat() {
@@ -112,6 +116,10 @@ public class SessionManager {
     }
 
     public Clip touch(Clip clip) {
+        if (isLockMeasure()) {
+            CaustkRuntime.getInstance().getLogger().log("SessionManager", "touch(LOCKED) " + clip);
+            return null;
+        }
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "touch() " + clip);
         return getSceneManager().getScene(clip.getScene().getMatrixIndex()).touch(clip.getIndex());
     }
@@ -120,11 +128,15 @@ public class SessionManager {
         return measure == 0 && sixteenth == 0;
     }
 
+    boolean isLockMeasure() {
+        return sixteenth >= 12;
+    }
+
     void onSixteenthChange(int measure, int sixteenth) {
         this.measure = measure;
         this.sixteenth = sixteenth;
 
-        //System.out.println("m:" + measure + ", s:" + sixteenth); // 0, 4, 8, 12, 0, ...
+        System.out.println("m:" + measure + ", s:" + sixteenth); // 0, 4, 8, 12, 0, ...
         if (measure == 0 && sixteenth == 0) {
             this.measure = -1;
             start();
@@ -132,12 +144,19 @@ public class SessionManager {
         } else if (sixteenth == 12) {
             // 1 bar measure change on next beat
             commitClips();
+        } else if (sixteenth == 15) {
+            refreshClips();
         }
     }
 
     private void commitClips() {
         System.out.println("SessionManager.commitClips()");
         getSceneManager().commitClips();
+    }
+
+    private void refreshClips() {
+        System.out.println("SessionManager.refreshClips()");
+        getSceneManager().refreshClips();
     }
 
     public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
@@ -233,13 +252,21 @@ public class SessionManager {
         return clip;
     }
 
-    public void addClip(int sceneIndex, int trackIndex, String name) {
+    public Clip addClip(int sceneIndex, int trackIndex, String name) {
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "addClip() " + name);
-        sceneManager.addClip(sceneIndex, trackIndex, name);
+        return sceneManager.addClip(sceneIndex, trackIndex, name);
     }
 
     public Collection<Clip> getClips(int sceneIndex) {
         return getScene(sceneIndex).getClips();
+    }
+
+    public void play(int sceneIndex) {
+        sceneManager.play(sceneIndex);
+    }
+
+    public void stop(int sceneIndex) {
+        sceneManager.stop(sceneIndex);
     }
 
 }

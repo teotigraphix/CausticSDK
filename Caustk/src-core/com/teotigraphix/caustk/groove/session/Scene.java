@@ -103,7 +103,7 @@ public class Scene {
 
     public boolean isPlaying() {
         for (Clip clip : clips.values()) {
-            if (clip.isPlaying())
+            if (clip.isStatePlaying())
                 return true;
         }
         return false;
@@ -113,7 +113,7 @@ public class Scene {
         if (isPlaying())
             return false;
         for (Clip clip : clips.values()) {
-            if (clip.isQueded())
+            if (clip.isStateQueded())
                 return true;
         }
         return false;
@@ -203,28 +203,28 @@ public class Scene {
     Clip touch(int index) {
         Clip clip = clips.get(index);
 
-        if (clip.isIdle()) { // Idle
-            if (!clip.isPlaying()) {
+        if (clip.isStateIdle()) { // Idle
+            if (!clip.isStatePlaying()) {
                 queue(clip);
             } else {
                 dequeue(clip);
             }
             return clip;
-        } else if (clip.isQueded()) { // Queued
-            if (!clip.isPlaying()) {
+        } else if (clip.isStateQueded()) { // Queued
+            if (!clip.isStatePlaying()) {
                 idle(clip);
                 return clip;
             }
-        } else if (clip.isDequeded()) { // Dequeued
-            if (clip.isPlaying()) { // Dequeued but playing
+        } else if (clip.isStateDequeded()) { // Dequeued
+            if (clip.isStatePlaying()) { // Dequeued but playing
                 // XXX Test this
                 cancelDequeue(clip);
             }
             return clip;
-        } else if (clip.isPlaying()) { // Play
+        } else if (clip.isStatePlaying()) { // Play
             dequeue(clip);
             return clip;
-        } else if (!clip.isPlaying()) { // not playing
+        } else if (!clip.isStatePlaying()) { // not playing
             idle(clip);
             return clip;
         }
@@ -233,20 +233,20 @@ public class Scene {
     }
 
     private void cancelDequeue(Clip clip) {
-        clip.softPlay();
+        clip.softPlayState();
         dequeueClips.remove(clip);
         playClips.add(clip);
     }
 
     private void idle(Clip clip) {
-        clip.idle();
+        clip.idleState();
         playClips.remove(clip);
         queueClips.remove(clip);
         dequeueClips.remove(clip);
     }
 
     private void dequeue(Clip clip) {
-        clip.dequeue();
+        clip.dequeueState();
         dequeueClips.add(clip);
     }
 
@@ -254,10 +254,18 @@ public class Scene {
         Clip conflict = sceneManager.isConflict(clip);
         if (conflict != null) {
             // need to dequeue from the conflict's scene
-            conflict.getScene().dequeue(conflict);
-            System.err.println("Removing conflict:" + conflict);
+            if (conflict.isStatePlaying()) {
+                conflict.getScene().dequeue(conflict);
+                System.err.println("Removing Play conflict to Dequeued:" + conflict);
+            } else if (conflict.isStateQueded()) {
+                conflict.getScene().idle(conflict);
+                System.err.println("Removing Queued conflict to Idle:" + conflict);
+            } else if (conflict.isStateDequeded()) {
+                conflict.getScene().idle(conflict);
+                System.err.println("Removing Dequeded conflict to Idle:" + conflict);
+            }
         }
-        clip.queue();
+        clip.queueState();
         queueClips.add(clip);
     }
 
@@ -266,26 +274,39 @@ public class Scene {
             return;
         // 1 bar measure change on next beat
 
-        // All queued clips play
-        ArrayList<Clip> tempQueue = new ArrayList<Clip>(queueClips);
-        for (Clip clip : tempQueue) {
-            play(clip);
-        }
-
         // All dequeued clips stop
         ArrayList<Clip> tempDequeue = new ArrayList<Clip>(dequeueClips);
         for (Clip clip : tempDequeue) {
             stop(clip);
         }
 
+        // All queued clips play
+        ArrayList<Clip> tempQueue = new ArrayList<Clip>(queueClips);
+        for (Clip clip : tempQueue) {
+            play(clip);
+        }
+
         for (Clip clip : playClips) {
             clip.commitPlay();
         }
+    }
 
+    void refreshClips() {
+        for (Clip clip : clips.values()) {
+            clip.refresh();
+        }
     }
 
     Clip isConflict(int machineIndex) {
         for (Clip clip : playClips) {
+            if (clip.getIndex() == machineIndex)
+                return clip;
+        }
+        for (Clip clip : queueClips) {
+            if (clip.getIndex() == machineIndex)
+                return clip;
+        }
+        for (Clip clip : dequeueClips) {
             if (clip.getIndex() == machineIndex)
                 return clip;
         }
