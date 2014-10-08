@@ -132,16 +132,18 @@ public class EffectsChannel extends MachineComponent {
         return (T)effectNode;
     }
 
-    public void updateEffects(EffectNode effect1, EffectNode effect2) {
+    public void updateEffects(MachineNode machineNode, EffectNode effect1, EffectNode effect2) {
         if (effect1 != null) {
             slots.put(0, effect1);
-            EffectsRackMessage.CREATE.send(getRack(), effect1.getMachineIndex(), effect1.getSlot(),
+            effect1.setMachineNode(getMachineNode());
+            EffectsRackMessage.CREATE.send(getRack(), machineNode.getIndex(), effect1.getSlot(),
                     effect1.getType().getValue());
             effect1.update();
         }
         if (effect2 != null) {
             slots.put(1, effect2);
-            EffectsRackMessage.CREATE.send(getRack(), effect2.getMachineIndex(), effect2.getSlot(),
+            effect2.setMachineNode(getMachineNode());
+            EffectsRackMessage.CREATE.send(getRack(), machineNode.getIndex(), effect2.getSlot(),
                     effect2.getType().getValue());
             effect2.update();
         }

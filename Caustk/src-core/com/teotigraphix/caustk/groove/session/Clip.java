@@ -105,7 +105,7 @@ public class Clip {
         return scene.getMachine(index);
     }
 
-    boolean hasPattern() {
+    public boolean hasPattern() {
         return getPattern().getNotes().size() > 0;
     }
 
