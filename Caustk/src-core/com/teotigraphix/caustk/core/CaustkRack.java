@@ -30,12 +30,13 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
 import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
@@ -292,15 +293,21 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         for (LibrarySound librarySound : libraryGroup.getSounds()) {
             LibraryEffect libraryEffect = librarySound.getEffect();
             LibraryInstrument libraryInstrument = librarySound.getInstrument();
+            LibraryPatternBank patternBank = librarySound.getPatternBank();
 
             int index = librarySound.getIndex();
             MachineType machineType = libraryInstrument.getMachineNode().getType();
             String machineName = libraryInstrument.getMachineNode().getName();
             MachineNode machineNode = rackNode.createMachine(index, machineType, machineName);
 
-            libraryInstrument.setMachineNode(machineNode);
+            //libraryInstrument.setMachineNode(machineNode);
 
             if (importPreset) {
+                File presetFile = libraryInstrument.getPendingPresetFile();
+                if (presetFile == null) {
+                    presetFile = loadTempPresetFile(libraryInstrument, machineNode);
+                    libraryInstrument.setPendingPresetFile(presetFile);
+                }
                 loadPrest(machineNode, libraryInstrument);
             }
 
@@ -313,11 +320,16 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
             }
 
             if (importPatterns) {
-                loadPatternSequencer(machineNode, libraryInstrument);
+                loadPatternSequencer(machineNode, patternBank);
             }
         }
 
         return rackNode;
+    }
+
+    @Override
+    public MachineNode loadSound(LibrarySound librarySound) {
+        return null;
     }
 
     public void loadPrest(MachineNode machineNode, LibraryInstrument libraryInstrument)
@@ -335,9 +347,17 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         machineNode.updateMixer(oldMixer);
     }
 
-    public void loadPatternSequencer(MachineNode machineNode, LibraryInstrument libraryInstrument) {
-        PatternSequencerComponent oldSequencer = machineNode.getSequencer();
-        machineNode.updateSequencer(oldSequencer);
+    public void loadPatternSequencer(MachineNode machineNode, LibraryPatternBank patternBank) {
+        //        PatternSequencerComponent oldSequencer = libraryInstrument.getMachineNode().getSequencer();
+        //        machineNode.updateSequencer(oldSequencer);
+
+        Collection<PatternNode> patterns = patternBank.getPatterns();
+
+        for (PatternNode patternNode : patterns) {
+            System.out.println("    " + patternNode.getName());
+            //System.err.println("Length:" + patternNode.getNumMeasures());
+            machineNode.getSequencer().addPattern(patternNode);
+        }
     }
 
     private CaustkProject project;
@@ -407,5 +427,25 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     @Override
     public void frameChanged(float deltaTime) {
         getRackNode().getSequencer().frameChanged(deltaTime);
+    }
+
+    private File loadTempPresetFile(LibraryInstrument libraryInstrument, MachineNode machineNode)
+            throws IOException {
+        File tempPreset = null;
+        MachineType machineType = machineNode.getType();
+        if (machineType != MachineType.Vocoder) {
+            File cacheDirectory = CaustkRuntime.getInstance().getFactory()
+                    .getCacheDirectory("temp_presets");
+            tempPreset = new File(cacheDirectory, "preset." + machineType.getExtension());
+            byte[] data = libraryInstrument.getMachineNode().getPreset().getRestoredData();
+            if (data != null) {
+                FileUtils.writeByteArrayToFile(tempPreset, data);
+            } else {
+                runtime.getLogger().err("CausticRack",
+                        "Could not load preset data for: " + libraryInstrument.getMachineNode());
+            }
+
+        }
+        return tempPreset;
     }
 }
