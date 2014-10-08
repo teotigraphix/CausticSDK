@@ -38,6 +38,14 @@ public class SceneManager {
     private List<Scene> scenes = new ArrayList<Scene>();
 
     //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private int numBanks = 4;
+
+    private int numMatrixScenes = 16;
+
+    //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
@@ -71,7 +79,7 @@ public class SceneManager {
     SceneManager() {
     }
 
-    public SceneManager(SessionManager sessionManager) {
+    SceneManager(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
 
@@ -79,6 +87,14 @@ public class SceneManager {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    /**
+     * Adds a clip the the scene, returns the clip if successful, null if the
+     * scene already contains a clip at the scene index.
+     * 
+     * @param sceneIndex The scene index.
+     * @param trackIndex The track index.
+     * @param name The name of the new clip.
+     */
     public Clip addClip(int sceneIndex, int trackIndex, String name) { // x, y
         Scene scene = getScene(sceneIndex);
         Clip clip = null;
@@ -88,20 +104,43 @@ public class SceneManager {
         return clip;
     }
 
+    /**
+     * Removes a clip from the scene, returns the clip removed if successful,
+     * null if the clip is not contained in the scene.
+     * 
+     * @param clip The clip to remove.
+     */
     public Clip removeClip(Clip clip) {
-        return removeClip(clip.getSceneIndex(), clip.getMachineIndex());
+        return removeClip(clip.getScene().getMatrixIndex(), clip.getIndex());
     }
 
+    /**
+     * Removes a clip from the scene, returns the clip removed if successful,
+     * null if the clip is not contained in the scene.
+     * 
+     * @param sceneIndex The scene index.
+     * @param trackIndex The track index.
+     */
     public Clip removeClip(int sceneIndex, int trackIndex) { // x, y
         Scene scene = getScene(sceneIndex);
         Clip clip = scene.removeClip(trackIndex);
         return clip;
     }
 
-    public void play(int sceneIndex) {
-        play(getScene(sceneIndex));
+    /**
+     * Plays a scene's clips.
+     * 
+     * @param index The scene index.
+     */
+    public void play(int index) {
+        play(getScene(index));
     }
 
+    /**
+     * Plays a scene's clips.
+     * 
+     * @param scene The scene to play.
+     */
     public void play(Scene scene) {
         for (Scene otherScene : scenes) {
             if (scene != otherScene) {
@@ -112,35 +151,21 @@ public class SceneManager {
     }
 
     /**
-     * @param index Linear index.
+     * Stops a scene's clips.
+     * 
+     * @param index The scene index.
      */
     public void stop(int index) {
         stop(getScene(index));
     }
 
+    /**
+     * Stops a scene's clips.
+     * 
+     * @param scene The scene to stop.
+     */
     public void stop(Scene scene) {
         scene.stop();
-    }
-
-    void commitClips() {
-        for (Scene scene : scenes) {
-            scene.commitClips();
-        }
-    }
-
-    Clip isConflict(Clip queuedClip) {
-        Clip conflict = null;
-        int machineIndex = queuedClip.getMachineIndex();
-        for (Scene scene : scenes) {
-            // only work on scenes other than the queued clip
-            if (scene != queuedClip.getScene()) {
-                conflict = scene.isConflict(machineIndex);
-                if (conflict != null)
-                    return conflict;
-            }
-
-        }
-        return conflict;
     }
 
     //--------------------------------------------------------------------------
@@ -155,6 +180,27 @@ public class SceneManager {
 
     }
 
+    void commitClips() {
+        for (Scene scene : scenes) {
+            scene.commitClips();
+        }
+    }
+
+    Clip isConflict(Clip queuedClip) {
+        Clip conflict = null;
+        int machineIndex = queuedClip.getIndex();
+        for (Scene scene : scenes) {
+            // only work on scenes other than the queued clip
+            if (scene != queuedClip.getScene()) {
+                conflict = scene.isConflict(machineIndex);
+                if (conflict != null)
+                    return conflict;
+            }
+
+        }
+        return conflict;
+    }
+
     //--------------------------------------------------------------------------
     // Startup :: Methods
     //--------------------------------------------------------------------------
@@ -166,8 +212,8 @@ public class SceneManager {
     void create() {
         // create 4 banks of 16
         int index = 0;
-        for (int bankIndex = 0; bankIndex < 4; bankIndex++) {
-            for (int sceneIndex = 0; sceneIndex < 16; sceneIndex++) {
+        for (int bankIndex = 0; bankIndex < numBanks; bankIndex++) {
+            for (int sceneIndex = 0; sceneIndex < numMatrixScenes; sceneIndex++) {
                 SceneInfo info = new SceneInfo("Scene " + index);
                 Scene scene = new Scene(this, info, index, bankIndex, sceneIndex);
                 scenes.add(scene);
@@ -179,5 +225,4 @@ public class SceneManager {
     void load() {
 
     }
-
 }

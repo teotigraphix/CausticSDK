@@ -113,15 +113,22 @@ public class SessionManager {
 
     public Clip touch(Clip clip) {
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "touch() " + clip);
-        return getSceneManager().getScene(clip.getSceneIndex()).touch(clip.getMachineIndex());
+        return getSceneManager().getScene(clip.getScene().getMatrixIndex()).touch(clip.getIndex());
+    }
+
+    boolean isStartMeasure() {
+        return measure == 0 && sixteenth == 0;
     }
 
     void onSixteenthChange(int measure, int sixteenth) {
         this.measure = measure;
+        this.sixteenth = sixteenth;
 
-        System.out.println("m:" + measure + ", s:" + sixteenth); // 0, 4, 8, 12, 0, ...
+        //System.out.println("m:" + measure + ", s:" + sixteenth); // 0, 4, 8, 12, 0, ...
         if (measure == 0 && sixteenth == 0) {
+            this.measure = -1;
             start();
+            this.measure = 0;
         } else if (sixteenth == 12) {
             // 1 bar measure change on next beat
             commitClips();

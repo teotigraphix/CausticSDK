@@ -31,34 +31,6 @@ import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 
 public class Clip {
 
-    public enum ClipState {
-
-        /**
-         * From: [Stop, Dequeued], To: [Queued, Dequeued].
-         */
-        Idle,
-
-        /**
-         * From: Idle, To: [Idle, Play].
-         */
-        Queued,
-
-        /**
-         * From: Play, To: [Stop, Idle]
-         */
-        Dequeued,
-
-        /**
-         * From: Queued, To: [Dequeued, Stop]
-         */
-        Play,
-
-        /**
-         * From: [Dequeued, Play] To: Idle
-         */
-        //Stop
-    }
-
     //--------------------------------------------------------------------------
     // Serialized :: Variables
     //--------------------------------------------------------------------------
@@ -67,7 +39,7 @@ public class Clip {
     private Scene scene;
 
     @Tag(1)
-    private int machineIndex;
+    private int index; // machineIndex
 
     @Tag(2)
     private ClipInfo info;
@@ -82,33 +54,21 @@ public class Clip {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    /**
-     * Returns the machine index of the clip.
-     */
-    public int getMachineIndex() {
-        return machineIndex;
-    }
+    //----------------------------------
+    // index
+    //----------------------------------
 
     /**
-     * Returns the scene's linear index (0..63).
+     * Returns the track index (row) of the clip within it's owner {@link Scene}
+     * .
      */
-    public int getSceneLinearIndex() {
-        return scene.getLinearIndex();
+    public int getIndex() {
+        return index;
     }
 
-    /**
-     * Returns the scene's bank index (0..3).
-     */
-    public int getBankIndex() {
-        return scene.getBankIndex();
-    }
-
-    /**
-     * Returns the scene's index within it's bank. (0..16).
-     */
-    public int getSceneIndex() {
-        return scene.getSceneIndex();
-    }
+    //----------------------------------
+    // info
+    //----------------------------------
 
     /**
      * Returns the clip's metadata info.
@@ -126,11 +86,12 @@ public class Clip {
     }
 
     MachineNode getMachineNode() {
-        return scene.getMachine(machineIndex);
+        return scene.getMachine(index);
     }
 
     PatternNode getPattern() {
-        return getMachineNode().getSequencer().getPattern(getBankIndex(), getSceneIndex());
+        return getMachineNode().getSequencer().getPattern(scene.getBankIndex(),
+                scene.getMatrixIndex());
     }
 
     TrackComponent getTrack() {
@@ -145,19 +106,19 @@ public class Clip {
         return state;
     }
 
-    public boolean isIdle() {
+    boolean isIdle() {
         return state == ClipState.Idle;
     }
 
-    public boolean isPlaying() {
+    boolean isPlaying() {
         return state == ClipState.Play;
     }
 
-    public boolean isQueded() {
+    boolean isQueded() {
         return state == ClipState.Queued;
     }
 
-    public boolean isDequeded() {
+    boolean isDequeded() {
         return state == ClipState.Dequeued;
     }
 
@@ -173,7 +134,7 @@ public class Clip {
 
     public Clip(Scene scene, int machineIndex, ClipInfo info) {
         this.scene = scene;
-        this.machineIndex = machineIndex;
+        this.index = machineIndex;
         this.info = info;
     }
 
@@ -183,6 +144,34 @@ public class Clip {
 
     //--------------------------------------------------------------------------
     // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    public void clearNoteData() {
+        PatternNode patternNode = getPattern();
+        patternNode.clear();
+    }
+
+    public void setNoteData(String data) {
+        PatternNode patternNode = getPattern();
+        patternNode.setNoteData(data);
+    }
+
+    public void setNoteData(ArrayList<NoteNode> notes) {
+        PatternNode patternNode = getPattern();
+        patternNode.setNoteData(notes);
+    }
+
+    public int getLoopLength() {
+        return getPattern().getNumMeasures();
+    }
+
+    public void setLoopLength(int length) {
+        PatternNode patternNode = getPattern();
+        patternNode.setNumMeasures(length);
+    }
+
+    //--------------------------------------------------------------------------
+    // Internal :: Methods
     //--------------------------------------------------------------------------
 
     void idle() {
@@ -212,16 +201,18 @@ public class Clip {
     void commitPlay() {
         lastState = state;
         state = ClipState.Play;
+        SessionManager sessionManager = getScene().getSessionManager();
+
         // /caustic/sequencer/pattern_event [machin_index] [start_measure] [bank] [pattern] [end_measure] 
-        int currentMeasure = getScene().getSessionManager().getMeasure();
-        int startMeasure = currentMeasure;
+        int nextMeasure = sessionManager.getMeasure() + 1;
         int length = getLoopLength();
+
         //System.out.println("Clip - current" + currentMeasure);
         // add to sequencer
         TrackComponent track = getTrack();
-        if (!track.isContained(currentMeasure + 1)) {
+        if (!track.isContained(nextMeasure)) {
             try {
-                track.addEntry(getPattern(), startMeasure + 1, startMeasure + 1 + length);
+                track.addEntry(getPattern(), nextMeasure, nextMeasure + length);
             } catch (CausticException e) {
                 e.printStackTrace();
             }
@@ -235,48 +226,42 @@ public class Clip {
 
             TrackEntryNode entry = track.getLastEntry();
 
-            int endMeasure = getScene().getSessionManager().getMeasure(); // 6
             int startMeasure = entry.getStartMeasure(); // 4
-            try {
-                track.trimEntry(entry, startMeasure, endMeasure);
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
+            int endMeasure = getScene().getSessionManager().getMeasure() + 1; // 6
 
+            track.trimEntry(entry, startMeasure, endMeasure);
         }
 
         lastState = state;
         state = ClipState.Idle;
     }
 
-    public void clearNoteData() {
-        PatternNode patternNode = getPattern();
-        patternNode.clear();
-    }
-
-    public void setNoteData(String data) {
-        PatternNode patternNode = getPattern();
-        patternNode.setNoteData(data);
-    }
-
-    public void setNoteData(ArrayList<NoteNode> notes) {
-        PatternNode patternNode = getPattern();
-        patternNode.setNoteData(notes);
-    }
-
-    public int getLoopLength() {
-        return getPattern().getNumMeasures();
-    }
-
-    public void setLoopLength(int length) {
-        PatternNode patternNode = getPattern();
-        patternNode.setNumMeasures(length);
-    }
-
     @Override
     public String toString() {
-        return "Clip [machineIndex=" + machineIndex + ", name=" + info.getName() + ", state="
-                + state + "]";
+        return "Clip [machineIndex=" + index + ", name=" + info.getName() + ", state=" + state
+                + "]";
     }
 
+    public enum ClipState {
+
+        /**
+         * From: [Stop, Dequeued], To: [Queued, Dequeued].
+         */
+        Idle,
+
+        /**
+         * From: Idle, To: [Idle, Play].
+         */
+        Queued,
+
+        /**
+         * From: Play, To: [Stop, Idle]
+         */
+        Dequeued,
+
+        /**
+         * From: Queued, To: [Dequeued, Stop]
+         */
+        Play;
+    }
 }

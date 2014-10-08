@@ -37,40 +37,68 @@ public class Scene {
     private SceneManager sceneManager;
 
     @Tag(1)
-    private int linearIndex;
+    private int index;
 
     @Tag(2)
     private int bankIndex;
 
     @Tag(3)
-    private int sceneIndex;
+    private int matrixIndex;
 
     @Tag(4)
+    private SceneInfo info;
+
+    @Tag(5)
     private Map<Integer, Clip> clips = new HashMap<Integer, Clip>(14);
 
     @Tag(10)
-    private SceneInfo info;
-
     private ArrayList<Clip> queueClips = new ArrayList<Clip>();
 
+    @Tag(11)
     private ArrayList<Clip> dequeueClips = new ArrayList<Clip>();
 
+    @Tag(12)
     private ArrayList<Clip> playClips = new ArrayList<Clip>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    public int getLinearIndex() {
-        return linearIndex;
+    //----------------------------------
+    // index
+    //----------------------------------
+
+    /**
+     * Returns the scene's linear index (0..63).
+     */
+    public int getIndex() {
+        return index;
     }
 
+    //----------------------------------
+    // bankIndex
+    //----------------------------------
+
+    /**
+     * Returns the scene's bank index (0..3).
+     */
     public int getBankIndex() {
         return bankIndex;
     }
 
-    public int getSceneIndex() {
-        return sceneIndex;
+    //----------------------------------
+    // matrixIndex
+    //----------------------------------
+
+    /**
+     * Returns the scene's index within it's bank matrix. (0..16).
+     */
+    public int getMatrixIndex() {
+        return matrixIndex;
+    }
+
+    public String getName() {
+        return info.getName();
     }
 
     public boolean isPlaying() {
@@ -89,10 +117,6 @@ public class Scene {
                 return true;
         }
         return false;
-    }
-
-    public String getName() {
-        return info.getName();
     }
 
     //--------------------------------------------------------------------------
@@ -136,9 +160,9 @@ public class Scene {
     public Scene(SceneManager sceneManager, SceneInfo info, int index, int bankIndex, int sceneIndex) {
         this.sceneManager = sceneManager;
         this.info = info;
-        this.linearIndex = index;
+        this.index = index;
         this.bankIndex = bankIndex;
-        this.sceneIndex = sceneIndex;
+        this.matrixIndex = sceneIndex;
     }
 
     //--------------------------------------------------------------------------
@@ -168,7 +192,7 @@ public class Scene {
     }
 
     Clip removeClip(Clip clip) {
-        return removeClip(clip.getMachineIndex());
+        return removeClip(clip.getIndex());
     }
 
     Clip removeClip(int trackIndex) {
@@ -262,7 +286,7 @@ public class Scene {
 
     Clip isConflict(int machineIndex) {
         for (Clip clip : playClips) {
-            if (clip.getMachineIndex() == machineIndex)
+            if (clip.getIndex() == machineIndex)
                 return clip;
         }
         return null;
@@ -299,8 +323,8 @@ public class Scene {
 
     @Override
     public String toString() {
-        return "Scene [index=" + linearIndex + ", bankIndex=" + bankIndex + ", sceneIndex="
-                + sceneIndex + ", playing=" + isPlaying() + ", name=" + getName() + "]";
+        return "Scene [index=" + index + ", bankIndex=" + bankIndex + ", sceneIndex=" + matrixIndex
+                + ", playing=" + isPlaying() + ", name=" + getName() + "]";
     }
 
 }
