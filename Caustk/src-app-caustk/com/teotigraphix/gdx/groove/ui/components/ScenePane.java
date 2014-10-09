@@ -2,6 +2,7 @@
 package com.teotigraphix.gdx.groove.ui.components;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -9,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.gdx.groove.ui.components.PatternPane.PatternPaneStyle;
-import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener.PatternSelectionEvent;
-import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener.PatternSelectionEventKind;
+import com.teotigraphix.gdx.groove.ui.components.SceneSelectionListener.SceneSelectionEvent;
+import com.teotigraphix.gdx.groove.ui.components.SceneSelectionListener.SceneSelectionEventKind;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener;
@@ -57,6 +58,15 @@ public class ScenePane extends UITable {
         add(topRow).height(40f).expandX().fillX();
         row();
         add(bottomRow).expand().fill();
+
+        disable(true);
+    }
+
+    public void disable(boolean disabled) {
+        bankBar.setDisabled(disabled);
+        for (Button button : gridGroup.getButtons()) {
+            button.setDisabled(disabled);
+        }
     }
 
     //--------------------------------------------------------------------------
@@ -75,8 +85,7 @@ public class ScenePane extends UITable {
         buttonBar.addListener(new ButtonBarListener() {
             @Override
             public void selectedIndexChange(int selectedIndex) {
-                PatternSelectionEvent e = new PatternSelectionEvent(
-                        PatternSelectionEventKind.bankChange);
+                SceneSelectionEvent e = new SceneSelectionEvent(SceneSelectionEventKind.bankChange);
                 e.setIndex(selectedIndex);
                 fire(e);
             }
@@ -93,14 +102,14 @@ public class ScenePane extends UITable {
         updating = true;
         for (int i = 0; i < 16; i++) {
             final int index = i;
-            TextButton button = new TextButton("Scene " + (i + 1), style.padButtonStyle);
+            TextButton button = new TextButton("", style.padButtonStyle);
             button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     if (updating)
                         return;
-                    PatternSelectionEvent e = new PatternSelectionEvent(
-                            PatternSelectionEventKind.patternChange);
+                    SceneSelectionEvent e = new SceneSelectionEvent(
+                            SceneSelectionEventKind.matrixChange);
                     e.setIndex(index);
                     fire(e);
                 }
@@ -113,4 +122,5 @@ public class ScenePane extends UITable {
         updating = false;
         return null;
     }
+
 }

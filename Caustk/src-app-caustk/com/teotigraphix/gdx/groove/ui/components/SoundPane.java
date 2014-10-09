@@ -30,6 +30,24 @@ public class SoundPane extends UITable {
         setStyleClass(PatternPaneStyle.class);
     }
 
+    public void setMachineName(int index, String name) {
+        ((TextButton)gridGroup.getButtons().get(index)).setText(name);
+    }
+
+    public void disable(int index, boolean disabled) {
+        gridGroup.getButtons().get(index).setDisabled(disabled);
+    }
+
+    public void disable(boolean disabled) {
+        for (int i = 0; i < 14; i++) {
+            disable(i, disabled);
+        }
+    }
+
+    public void select(int index) {
+        gridGroup.getButtons().get(index).setChecked(true);
+    }
+
     //--------------------------------------------------------------------------
     // Overridden Protected :: Methods
     //--------------------------------------------------------------------------
@@ -44,6 +62,10 @@ public class SoundPane extends UITable {
         createPatternGrid(topRow);
 
         add(topRow).expand().fill();
+
+        disable(true);
+        disable(14, true);
+        disable(15, true);
     }
 
     private ButtonGroup createPatternGrid(Table parent) {
@@ -53,18 +75,21 @@ public class SoundPane extends UITable {
         updating = true;
         for (int i = 0; i < 16; i++) {
             final int index = i;
-            TextButton button = new TextButton("Sound " + (i + 1), style.padButtonStyle);
-            button.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    if (updating)
-                        return;
-                    PatternSelectionEvent e = new PatternSelectionEvent(
-                            PatternSelectionEventKind.patternChange);
-                    e.setIndex(index);
-                    fire(e);
-                }
-            });
+            TextButton button = new TextButton("", style.padButtonStyle);
+            if (i < 14) {
+                button.addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        if (updating)
+                            return;
+                        PatternSelectionEvent e = new PatternSelectionEvent(
+                                PatternSelectionEventKind.patternChange);
+                        e.setIndex(index);
+                        fire(e);
+                    }
+                });
+            }
+
             parent.add(button).expand().fill().space(4f);
             gridGroup.add(button);
             if (i % 4 == 3)

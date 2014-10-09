@@ -87,7 +87,6 @@ public class GrooveScene extends CaustkScene {
     protected void createUI() {
         for (IContainerKind kind : roots) {
             Table table = new Table(getSkin());
-            table.debug();
             table.setName(kind.getId());
             table.setUserObject(kind);
             containerMap.addActor(kind, table);

@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.controller.daw;
 
 import com.badlogic.gdx.graphics.Color;
 import com.teotigraphix.caustk.controller.core.AbstractControlSurface;
+import com.teotigraphix.caustk.controller.core.AbstractDisplay;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
 
@@ -31,6 +32,14 @@ public class Model {
     private AbstractControlSurface surface;
 
     private int gridSize;
+
+    public AbstractDisplay getDisplay() {
+        return getSurface().getDisplay();
+    }
+
+    public AbstractDisplay getSubDisplay() {
+        return getSurface().getSubDisplay();
+    }
 
     protected AbstractControlSurface getSurface() {
         return surface;

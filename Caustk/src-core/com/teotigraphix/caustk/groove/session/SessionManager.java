@@ -40,6 +40,9 @@ public class SessionManager {
     @Tag(1)
     private Map<Integer, MachineNode> machines = new HashMap<Integer, MachineNode>();
 
+    @Tag(10)
+    private int selectedScene;
+
     private int measure;
 
     private double beat;
@@ -53,6 +56,14 @@ public class SessionManager {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    public int getSelectedScene() {
+        return selectedScene;
+    }
+
+    public void setSelectedScene(int selectedScene) {
+        this.selectedScene = selectedScene;
+    }
 
     public RackNode getRackNode() {
         return rackNode;

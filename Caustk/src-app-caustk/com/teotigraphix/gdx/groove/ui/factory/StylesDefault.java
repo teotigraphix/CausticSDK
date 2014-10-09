@@ -241,4 +241,14 @@ public class StylesDefault {
      */
     public static final String SoundPane = "default";
 
+    //----------------------------------
+    // DisplayPane
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String DisplayPane = "default";
+
+    public static final String DisplayPane_background = "defaults/DisplayPane_background";
 }

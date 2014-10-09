@@ -19,8 +19,11 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public interface IApplicationState extends IApplicationComponent {
     IUIModel getUI();
+
+    Model getModel();
 }

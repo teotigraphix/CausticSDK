@@ -15,7 +15,7 @@ import com.teotigraphix.gdx.groove.ui.components.PatternPane;
 import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 
-public class PatternPaneBehavior extends CaustkBehavior {
+public abstract class PatternPaneBehavior extends CaustkBehavior {
 
     @Inject
     private IApplicationState applicationState;

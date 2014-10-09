@@ -57,7 +57,6 @@ public class TopBar extends UITable {
     public TopBar(Skin skin) {
         super(skin);
         setStyleClass(TopBarStyle.class);
-        debug();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class PatternPane extends UITable {
 
     private ButtonBar bankBar;
 
-    private ButtonGroup pattternGridGroup;
+    private ButtonGroup gridGroup;
 
     private ButtonBar lengthBar;
 
@@ -52,15 +52,21 @@ public class PatternPane extends UITable {
         lengthMap.put(3, 8);
     }
 
+    public void disable(boolean disabled) {
+        bankBar.setDisabled(disabled);
+        for (Button button : gridGroup.getButtons()) {
+            button.setDisabled(disabled);
+        }
+        lengthBar.setDisabled(disabled);
+    }
+
     //--------------------------------------------------------------------------
     // Overridden Protected :: Methods
     //--------------------------------------------------------------------------
 
     @Override
     protected void createChildren() {
-        debug();
-
-        pattternGridGroup = new ButtonGroup();
+        gridGroup = new ButtonGroup();
 
         Table topRow = new Table();
         topRow.pad(4f);
@@ -81,6 +87,8 @@ public class PatternPane extends UITable {
 
         lengthBar = createLengthBar();
         bottomRow.add(lengthBar).expand().fill();
+
+        disable(true);
     }
 
     //--------------------------------------------------------------------------
@@ -92,7 +100,7 @@ public class PatternPane extends UITable {
             return;
         this.disabled = disabled;
         bankBar.setDisabled(disabled);
-        for (Button button : pattternGridGroup.getButtons()) {
+        for (Button button : gridGroup.getButtons()) {
             button.setDisabled(disabled);
         }
         lengthBar.setDisabled(disabled);
@@ -104,7 +112,7 @@ public class PatternPane extends UITable {
 
     public void selectPattern(int pattern) {
         updating = true;
-        pattternGridGroup.getButtons().get(pattern).setChecked(true);
+        gridGroup.getButtons().get(pattern).setChecked(true);
         updating = false;
     }
 
@@ -168,7 +176,7 @@ public class PatternPane extends UITable {
         updating = true;
         for (int i = 0; i < 16; i++) {
             final int index = i;
-            TextButton button = new TextButton("P " + (i + 1), style.padButtonStyle);
+            TextButton button = new TextButton("", style.padButtonStyle);
             button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -181,7 +189,7 @@ public class PatternPane extends UITable {
                 }
             });
             parent.add(button).expand().fill().space(4f);
-            pattternGridGroup.add(button);
+            gridGroup.add(button);
             if (i % 4 == 3)
                 parent.row();
         }
