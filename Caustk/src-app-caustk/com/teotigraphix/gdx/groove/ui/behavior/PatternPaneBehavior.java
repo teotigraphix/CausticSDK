@@ -105,4 +105,8 @@ public class PatternPaneBehavior extends CaustkBehavior {
     public void onPatternNodeNumMeasuresEvent(PatternNodeNumMeasuresEvent event) {
         view.selectLength(event.getValue());
     }
+
+    public void enable() {
+        view.setDisabled(false);
+    }
 }

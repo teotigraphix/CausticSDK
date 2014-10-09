@@ -202,7 +202,7 @@ public class StylesDefault {
     public static final String ModePane_background = "defaults/ModePane_background";
 
     //----------------------------------
-    // ModePane
+    // PatternPane
     //----------------------------------
 
     /**
@@ -222,5 +222,23 @@ public class StylesDefault {
     public static final String PatternPane_Pad_checked = "defaults/PatternPane_Pad_checked";
 
     public static final String PatternPane_Pad_disabled = "defaults/PatternPane_Pad_disabled";
+
+    //----------------------------------
+    // ScenePane
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String ScenePane = "default";
+
+    //----------------------------------
+    // SoundPane
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String SoundPane = "default";
 
 }
