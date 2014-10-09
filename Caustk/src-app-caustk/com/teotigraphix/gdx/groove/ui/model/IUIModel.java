@@ -11,6 +11,18 @@ public interface IUIModel extends IApplicationComponent {
 
     UIFactory getUIFactory();
 
+    //----------------------------------
+    // mainMode
+    //----------------------------------
+
+    MainMode getMainMode();
+
+    /**
+     * @param mainMode
+     * @see UIModelImplEventKind#MainModeChange
+     */
+    void setMainMode(MainMode mainMode);
+
     int getViewIndex();
 
     void setViewIndex(int viewIndex);
@@ -26,6 +38,10 @@ public interface IUIModel extends IApplicationComponent {
     Array<ButtonBarItem> getButtons();
 
     void setButtons(Array<ButtonBarItem> buttons);
+
+    Array<ButtonBarItem> getMainModes();
+
+    void setMainModes(Array<ButtonBarItem> mainModes);
 
     void restore(UIState state);
 

@@ -22,6 +22,9 @@ public class UIState {
     @Tag(1)
     private int prefsViewIndex = 0;
 
+    @Tag(2)
+    private MainMode mainMode;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -54,6 +57,18 @@ public class UIState {
 
     public void setPrefsViewIndex(int prefsViewIndex) {
         this.prefsViewIndex = prefsViewIndex;
+    }
+
+    //----------------------------------
+    // mainMode
+    //----------------------------------
+
+    public MainMode getMainMode() {
+        return mainMode;
+    }
+
+    public void setMainMode(MainMode mainMode) {
+        this.mainMode = mainMode;
     }
 
     //--------------------------------------------------------------------------

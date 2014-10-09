@@ -29,6 +29,8 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     private Array<ButtonBarItem> buttons;
 
+    private Array<ButtonBarItem> mainModes;
+
     @Override
     protected String getPreferenceId() {
         return getApplication().getApplicationId() + "/UIModel";
@@ -50,6 +52,23 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // mainMode
+    //----------------------------------
+
+    @Override
+    public MainMode getMainMode() {
+        return getState().getMainMode();
+    }
+
+    @Override
+    public void setMainMode(MainMode mainMode) {
+        if (getState().getMainMode() == mainMode)
+            return;
+        getState().setMainMode(mainMode);
+        getEventBus().post(new UIModelEvent(UIModelEventKind.MainModeChange, this));
+    }
 
     //----------------------------------
     // viewIndex
@@ -129,6 +148,20 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
         this.buttons = buttons;
     }
 
+    //----------------------------------
+    // mainModes
+    //----------------------------------
+
+    @Override
+    public Array<ButtonBarItem> getMainModes() {
+        return mainModes;
+    }
+
+    @Override
+    public void setMainModes(Array<ButtonBarItem> mainModes) {
+        this.mainModes = mainModes;
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -142,6 +175,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
         getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));
         getEventBus().post(new UIModelEvent(UIModelEventKind.PrefsViewIndexChange, this));
+        getEventBus().post(new UIModelEvent(UIModelEventKind.MainModeChange, this));
     }
 
     //--------------------------------------------------------------------------
@@ -149,7 +183,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     //--------------------------------------------------------------------------
 
     public enum UIModelEventKind {
-        ViewIndexChange, PrefsViewIndexChange
+        ViewIndexChange, PrefsViewIndexChange, MainModeChange
     }
 
     public static class UIModelEvent {

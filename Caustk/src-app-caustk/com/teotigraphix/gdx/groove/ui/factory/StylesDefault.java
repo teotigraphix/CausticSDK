@@ -164,4 +164,15 @@ public class StylesDefault {
 
     public static final String Window_stageBackground = "defaults/Window_stageBackground";
 
+    //----------------------------------
+    // ModePane
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String ModePane = "default";
+
+    public static final String ModePane_background = "defaults/ModePane_background";
+
 }

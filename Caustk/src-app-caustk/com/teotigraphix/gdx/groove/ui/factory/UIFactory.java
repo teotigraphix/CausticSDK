@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.groove.ui.components.FileExplorer;
+import com.teotigraphix.gdx.groove.ui.components.ModePane.ModePaneStyle;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
 import com.teotigraphix.gdx.groove.ui.components.TopBar.TopBarStyle;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
@@ -73,6 +74,8 @@ public abstract class UIFactory {
         initializePaneStack(skin);
         initializeViewStack(skin);
         initializeWindow(skin);
+
+        initializeModePane(skin);
     }
 
     protected void initializeFonts(Skin skin) {
@@ -171,6 +174,12 @@ public abstract class UIFactory {
         WindowStyle windowStyle = new WindowStyle(skin.getFont(StylesDefault.Font), Color.WHITE,
                 skin.getDrawable(StylesDefault.Window_background));
         skin.add(StylesDefault.Window, windowStyle);
+    }
+
+    private void initializeModePane(Skin skin) {
+        TextButtonStyle buttonStyle = skin.get(StylesDefault.TextButton, TextButtonStyle.class);
+        ModePaneStyle modePaneStyle = new ModePaneStyle(buttonStyle, 15);
+        skin.add(StylesDefault.ModePane, modePaneStyle);
     }
 
     //----------------------------------
