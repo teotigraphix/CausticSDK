@@ -55,6 +55,20 @@ public class StylesDefault {
     public static final String ListRowRenderer_selection = "defaults/ListRowRenderer_selection";
 
     //----------------------------------
+    // FileExplorer
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String FileExplorer_New = "FileExplorer.New";
+
+    /**
+     * Style.
+     */
+    public static final String FileExplorer_TextButton = "FileExplorer.TextButton";
+
+    //----------------------------------
     // PaneStack
     //----------------------------------
 
@@ -163,6 +177,18 @@ public class StylesDefault {
     public static final String Window_background = "defaults/Window_background";
 
     public static final String Window_stageBackground = "defaults/Window_stageBackground";
+
+    //----------------------------------
+    // FileExplorer
+    //----------------------------------
+
+    public static final String FileExplorer_background = "defaults/FileExplorer_background";
+
+    public static final String FileExplorer_font = "default-font"; // TODO FileExplorer_font
+
+    public static final String FileExplorer_TextButton_up = "defaults/TextButton_up"; // TODO
+
+    public static final String FileExplorer_TextButton_down = "defaults/TextButton_down"; // TODO
 
     //----------------------------------
     // ModePane
