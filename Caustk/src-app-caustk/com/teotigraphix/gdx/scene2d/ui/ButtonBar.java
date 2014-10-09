@@ -43,6 +43,8 @@ public class ButtonBar extends UITable {
 
     private int selectedIndex;
 
+    private boolean disabled;
+
     public static class ButtonBarItem {
 
         private String id;
@@ -74,6 +76,19 @@ public class ButtonBar extends UITable {
             this.label = label;
             this.icon = icon;
             this.helpText = helpText;
+        }
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+        for (Button button : group.getButtons()) {
+            button.setDisabled(disabled);
+            if (((TextButton)button).getText().equals(" "))
+                button.setDisabled(true);
         }
     }
 
@@ -167,6 +182,7 @@ public class ButtonBar extends UITable {
         } else {
             group.uncheckAll();
         }
+
     }
 
     @Override
@@ -208,7 +224,10 @@ public class ButtonBar extends UITable {
     }
 
     protected TextButton createButton(int index, TextButtonStyle style) {
-        final TextButton button = new TextButton(items.get(index).getLabel(), style);
+        String label = items.get(index).getLabel();
+        final TextButton button = new TextButton(label, style);
+        if (label.equals(" "))
+            button.setDisabled(true);
         button.setUserObject(items.get(index));
         if (helpManager != null) {
             helpManager.register(button, items.get(index).getHelpText());
@@ -217,6 +236,8 @@ public class ButtonBar extends UITable {
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if (disabled || button.isDisabled())
+                    return;
                 if (button.isChecked()) {
                     int oldIndex = selectedIndex;
                     setSelectedIndex(group.getButtons().indexOf(button, true));

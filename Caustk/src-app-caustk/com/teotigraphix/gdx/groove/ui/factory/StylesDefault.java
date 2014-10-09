@@ -175,4 +175,26 @@ public class StylesDefault {
 
     public static final String ModePane_background = "defaults/ModePane_background";
 
+    //----------------------------------
+    // ModePane
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String PatternPane = "default";
+
+    /**
+     * Style.
+     */
+    public static final String PatternPane_Pad = "PatternPane.Pad";
+
+    public static final String PatternPane_Pad_up = "defaults/PatternPane_Pad_up";
+
+    public static final String PatternPane_Pad_down = "defaults/PatternPane_Pad_down";
+
+    public static final String PatternPane_Pad_checked = "defaults/PatternPane_Pad_checked";
+
+    public static final String PatternPane_Pad_disabled = "defaults/PatternPane_Pad_disabled";
+
 }

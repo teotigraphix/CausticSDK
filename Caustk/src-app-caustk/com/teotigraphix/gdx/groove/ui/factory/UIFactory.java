@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.groove.ui.components.FileExplorer;
 import com.teotigraphix.gdx.groove.ui.components.ModePane.ModePaneStyle;
+import com.teotigraphix.gdx.groove.ui.components.PatternPane.PatternPaneStyle;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
 import com.teotigraphix.gdx.groove.ui.components.TopBar.TopBarStyle;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
@@ -76,6 +77,7 @@ public abstract class UIFactory {
         initializeWindow(skin);
 
         initializeModePane(skin);
+        initializePatternPane(skin);
     }
 
     protected void initializeFonts(Skin skin) {
@@ -180,6 +182,42 @@ public abstract class UIFactory {
         TextButtonStyle buttonStyle = skin.get(StylesDefault.TextButton, TextButtonStyle.class);
         ModePaneStyle modePaneStyle = new ModePaneStyle(buttonStyle, 15);
         skin.add(StylesDefault.ModePane, modePaneStyle);
+    }
+
+    private void initializePatternPane(Skin skin) {
+
+        TextButtonStyle bankButtonStyle = new TextButtonStyle(
+                skin.getDrawable(StylesDefault.PatternPane_Pad_up),
+                skin.getDrawable(StylesDefault.PatternPane_Pad_down),
+                skin.getDrawable(StylesDefault.PatternPane_Pad_checked),
+                skin.getFont(StylesDefault.Font));
+
+        TextButtonStyle padButtonStyle = new TextButtonStyle(
+                skin.getDrawable(StylesDefault.PatternPane_Pad_up),
+                skin.getDrawable(StylesDefault.PatternPane_Pad_down),
+                skin.getDrawable(StylesDefault.PatternPane_Pad_checked),
+                skin.getFont(StylesDefault.Font));
+
+        TextButtonStyle lengthButtonStyle = new TextButtonStyle(
+                skin.getDrawable(StylesDefault.PatternPane_Pad_up),
+                skin.getDrawable(StylesDefault.PatternPane_Pad_down),
+                skin.getDrawable(StylesDefault.PatternPane_Pad_checked),
+                skin.getFont(StylesDefault.Font));
+
+        bankButtonStyle.fontColor = Color.BLACK;
+        padButtonStyle.fontColor = Color.BLACK;
+        lengthButtonStyle.fontColor = Color.BLACK;
+
+        bankButtonStyle.disabledFontColor = Color.WHITE;
+        padButtonStyle.disabledFontColor = Color.WHITE;
+        lengthButtonStyle.disabledFontColor = Color.WHITE;
+        bankButtonStyle.disabled = skin.getDrawable(StylesDefault.PatternPane_Pad_disabled);
+        padButtonStyle.disabled = skin.getDrawable(StylesDefault.PatternPane_Pad_disabled);
+        lengthButtonStyle.disabled = skin.getDrawable(StylesDefault.PatternPane_Pad_disabled);
+
+        PatternPaneStyle style = new PatternPaneStyle(bankButtonStyle, padButtonStyle,
+                lengthButtonStyle);
+        skin.add(StylesDefault.PatternPane, style);
     }
 
     //----------------------------------
