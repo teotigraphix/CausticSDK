@@ -207,6 +207,10 @@ public class Scene {
         //        }
     }
 
+    public boolean hasClips() {
+        return clips.size() > 0;
+    }
+
     Clip addClip(int machineIndex, ClipInfo info) {
         Clip clip = new Clip(this, machineIndex, info);
         clips.put(machineIndex, clip);

@@ -12,8 +12,11 @@ public abstract class SoundPaneBehavior extends CaustkBehavior {
 
     private SoundPane view;
 
+    public SoundPane getView() {
+        return view;
+    }
+
     public SoundPaneBehavior() {
-        // TODO Auto-generated constructor stub
     }
 
     @Override

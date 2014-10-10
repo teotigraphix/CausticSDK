@@ -42,4 +42,12 @@ public interface ICaustkRuntime {
      * {@link ICaustkNode} s.
      */
     ICaustkFactory getFactory();
+
+    /**
+     * Dispatches the event through the {@link ICaustkRack#post(Object)} on the
+     * next frame.
+     * 
+     * @param event The event object.
+     */
+    void post(Object post);
 }

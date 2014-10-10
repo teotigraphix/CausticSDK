@@ -77,6 +77,13 @@ public class Clip {
         return info;
     }
 
+    /**
+     * Returns the clip's scene, read-only interface.
+     */
+    public Scene getScene() {
+        return scene;
+    }
+
     public boolean isIdle() {
         return isStateIdle();
     }
@@ -96,10 +103,6 @@ public class Clip {
     //--------------------------------------------------------------------------
     // Internal :: Properties
     //--------------------------------------------------------------------------
-
-    Scene getScene() {
-        return scene;
-    }
 
     MachineNode getMachineNode() {
         return scene.getMachine(index);

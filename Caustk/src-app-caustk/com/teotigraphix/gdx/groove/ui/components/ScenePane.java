@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.caustk.groove.session.Scene;
 import com.teotigraphix.gdx.groove.ui.components.PatternPane.PatternPaneStyle;
 import com.teotigraphix.gdx.groove.ui.components.SceneSelectionListener.SceneSelectionEvent;
 import com.teotigraphix.gdx.groove.ui.components.SceneSelectionListener.SceneSelectionEventKind;
@@ -60,6 +61,18 @@ public class ScenePane extends UITable {
         add(bottomRow).expand().fill();
 
         disable(true);
+    }
+
+    public void refresh(Scene scene) {
+        disable(scene.getMatrixIndex(), !scene.hasClips());
+        if (scene.hasClips()) {
+            TextButton button = (TextButton)gridGroup.getButtons().get(scene.getMatrixIndex());
+            button.setText(scene.getName());
+        }
+    }
+
+    public void disable(int matrixIndex, boolean isDisabled) {
+        gridGroup.getButtons().get(matrixIndex).setDisabled(isDisabled);
     }
 
     public void disable(boolean disabled) {
@@ -121,6 +134,10 @@ public class ScenePane extends UITable {
         }
         updating = false;
         return null;
+    }
+
+    public TextButton getScenePad(int index) {
+        return (TextButton)gridGroup.getButtons().get(index);
     }
 
 }

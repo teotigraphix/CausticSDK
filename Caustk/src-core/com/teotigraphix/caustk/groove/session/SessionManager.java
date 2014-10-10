@@ -19,8 +19,10 @@
 
 package com.teotigraphix.caustk.groove.session;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
@@ -41,7 +43,10 @@ public class SessionManager {
     private Map<Integer, MachineNode> machines = new HashMap<Integer, MachineNode>();
 
     @Tag(10)
-    private int selectedScene;
+    private int selectedSceneBankIndex;
+
+    @Tag(10)
+    private int selectedSceneMatrixIndex;
 
     private int measure;
 
@@ -57,12 +62,34 @@ public class SessionManager {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    public int getSelectedScene() {
-        return selectedScene;
+    public Scene getSelectedScene() {
+        return sceneManager.getScene(selectedSceneBankIndex, selectedSceneMatrixIndex);
     }
 
-    public void setSelectedScene(int selectedScene) {
-        this.selectedScene = selectedScene;
+    public int getSelectedSceneBankIndex() {
+        return selectedSceneBankIndex;
+    }
+
+    public void setSelectedSceneBankIndex(int selectedIndex) {
+        if (selectedIndex == this.selectedSceneBankIndex)
+            return;
+        this.selectedSceneBankIndex = selectedIndex;
+        CaustkRuntime.getInstance().post(
+                new SessionManagerEvent(SessionManagerEventKind.SelectedSceneChange, this,
+                        getSelectedScene()));
+    }
+
+    public int getSelectedSceneMatrixIndex() {
+        return selectedSceneMatrixIndex;
+    }
+
+    public void setSelectedSceneMatrixIndex(int selectedIndex) {
+        if (selectedIndex == this.selectedSceneMatrixIndex)
+            return;
+        this.selectedSceneMatrixIndex = selectedIndex;
+        CaustkRuntime.getInstance().post(
+                new SessionManagerEvent(SessionManagerEventKind.SelectedSceneChange, this,
+                        getSelectedScene()));
     }
 
     public RackNode getRackNode() {
@@ -124,15 +151,27 @@ public class SessionManager {
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
+    /**
+     * @param machineNode
+     * @see SessionManagerEventKind#Connect
+     */
     public void connect(MachineNode machineNode) {
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "connect() " + machineNode);
         machines.put(machineNode.getIndex(), machineNode);
         machineAdded(machineNode);
+        CaustkRuntime.getInstance().post(
+                new SessionManagerEvent(SessionManagerEventKind.Connect, this, machineNode));
     }
 
+    /**
+     * @param machineNode
+     * @see SessionManagerEventKind#Disconnect
+     */
     public MachineNode disconnect(MachineNode machineNode) {
         MachineNode removedMachine = machines.remove(machineNode.getIndex());
         machineRemoved(removedMachine);
+        CaustkRuntime.getInstance().post(
+                new SessionManagerEvent(SessionManagerEventKind.Disconnect, this, machineNode));
         return removedMachine;
     }
 
@@ -246,6 +285,20 @@ public class SessionManager {
     }
 
     /**
+     * Returns the current scene bank's matrix of scenes.
+     * <p>
+     * Will not return scenes that do not contain active clips.
+     */
+    public List<Scene> getViewScenes() {
+        ArrayList<Scene> result = new ArrayList<Scene>();
+        for (Scene scene : sceneManager.getScenes()) {
+            if (scene.getBankIndex() == selectedSceneBankIndex && scene.hasClips())
+                result.add(scene);
+        }
+        return result;
+    }
+
+    /**
      * Stops all clips playing in a scene at the next commit cycle.
      * 
      * @param scene the scene to stop.
@@ -275,9 +328,20 @@ public class SessionManager {
         return clip;
     }
 
+    /**
+     * @param sceneIndex
+     * @param trackIndex
+     * @param name
+     * @see SessionManagerEventKind#ClipAdd
+     */
     public Clip addClip(int sceneIndex, int trackIndex, String name) {
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "addClip() " + name);
-        return sceneManager.addClip(sceneIndex, trackIndex, name);
+        Clip clip = sceneManager.addClip(sceneIndex, trackIndex, name);
+        if (clip != null) {
+            CaustkRuntime.getInstance().post(
+                    new SessionManagerEvent(SessionManagerEventKind.ClipAdd, this, clip));
+        }
+        return clip;
     }
 
     public Collection<Clip> getClips(int sceneIndex) {
@@ -290,6 +354,79 @@ public class SessionManager {
 
     public void stop(int sceneIndex) {
         sceneManager.stop(sceneIndex);
+    }
+
+    public enum SessionManagerEventKind {
+        Connect,
+
+        Disconnect,
+
+        SelectedSceneBankIndex,
+
+        SelectedSceneMatrixIndex,
+
+        SelectedSceneChange,
+
+        ClipAdd,
+
+        ClipRemove;
+    }
+
+    public static class SessionManagerEvent {
+
+        private SessionManagerEventKind kind;
+
+        private SessionManager manager;
+
+        private Clip clip;
+
+        private MachineNode machineNode;
+
+        private Scene scene;
+
+        public SessionManagerEventKind getKind() {
+            return kind;
+        }
+
+        public SessionManager getManager() {
+            return manager;
+        }
+
+        public Clip getClip() {
+            return clip;
+        }
+
+        public MachineNode getMachineNode() {
+            return machineNode;
+        }
+
+        public Scene getScene() {
+            return scene;
+        }
+
+        public SessionManagerEvent(SessionManagerEventKind kind, SessionManager manager) {
+            this.kind = kind;
+            this.manager = manager;
+        }
+
+        public SessionManagerEvent(SessionManagerEventKind kind, SessionManager manager, Scene scene) {
+            this.kind = kind;
+            this.manager = manager;
+            this.scene = scene;
+        }
+
+        public SessionManagerEvent(SessionManagerEventKind kind, SessionManager manager, Clip clip) {
+            this.kind = kind;
+            this.manager = manager;
+            this.clip = clip;
+        }
+
+        public SessionManagerEvent(SessionManagerEventKind kind, SessionManager manager,
+                MachineNode machineNode) {
+            this.kind = kind;
+            this.manager = manager;
+            this.machineNode = machineNode;
+        }
     }
 
 }

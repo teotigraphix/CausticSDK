@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core;
 
+import com.badlogic.gdx.Gdx;
+
 /**
  * The {@link CaustkRuntime} encapsulates the {@link ISoundGenerator} and
  * {@link CaustkRack} creation and initialization.
@@ -98,6 +100,16 @@ public class CaustkRuntime implements ICaustkRuntime {
         factory = new CaustkFactory(this);
         logger.log(TAG, "Create CaustkRack");
         rack = new CaustkRack(this);
+    }
+
+    @Override
+    public void post(final Object event) {
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                getRack().post(event);
+            }
+        });
     }
 
     //--------------------------------------------------------------------------
