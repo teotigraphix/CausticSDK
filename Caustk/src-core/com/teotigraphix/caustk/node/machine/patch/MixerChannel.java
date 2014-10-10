@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * 
  * @author Michael Schmalle
  * @since 1.0
- * @see MixerChannelNodeChangeEvent
+ * @see MixerChannelChangeEvent
  */
 public class MixerChannel extends MachineComponent {
 
@@ -483,7 +483,7 @@ public class MixerChannel extends MachineComponent {
     //--------------------------------------------------------------------------
 
     protected void post(MixerChannelControl control, float value) {
-        post(new MixerChannelNodeChangeEvent(this, control, value));
+        post(new MixerChannelChangeEvent(this, control, value));
     }
 
     /**
@@ -503,14 +503,14 @@ public class MixerChannel extends MachineComponent {
      * @since 1.0
      * @see MixerChannel
      */
-    public static class MixerChannelNodeChangeEvent extends NodeEvent {
+    public static class MixerChannelChangeEvent extends NodeEvent {
         private float value;
 
         public float getValue() {
             return value;
         }
 
-        public MixerChannelNodeChangeEvent(NodeBase target, MixerChannelControl control, float value) {
+        public MixerChannelChangeEvent(NodeBase target, MixerChannelControl control, float value) {
             super(target, control);
             this.value = value;
         }

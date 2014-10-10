@@ -1,10 +1,13 @@
 
 package com.teotigraphix.gdx.groove.ui.model;
 
+import java.util.Collection;
+
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ApplicationComponent;
+import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.behavior.MainTemplateBehavior;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
@@ -29,7 +32,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     private Array<ButtonBarItem> buttons;
 
-    private Array<ButtonBarItem> mainModes;
+    private Array<ButtonBarItem> viewButtons;
 
     @Override
     protected String getPreferenceId() {
@@ -53,21 +56,26 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     // Public Property :: API
     //--------------------------------------------------------------------------
 
+    @Override
+    public Collection<ViewBase> getViews() {
+        return state.getViews().values();
+    }
+
     //----------------------------------
-    // mainMode
+    // selectedView
     //----------------------------------
 
     @Override
-    public MainMode getMainMode() {
-        return getState().getMainMode();
+    public ViewBase getSelectedView() {
+        return getState().getSelectedView();
     }
 
     @Override
-    public void setMainMode(MainMode mainMode) {
-        if (getState().getMainMode() == mainMode)
+    public void setSelectedViewId(int viewId) {
+        if (getState().getSelectedViewId() == viewId)
             return;
-        getState().setMainMode(mainMode);
-        getEventBus().post(new UIModelEvent(UIModelEventKind.MainModeChange, this));
+        getState().setSelectedViewId(viewId);
+        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
     }
 
     //----------------------------------
@@ -76,19 +84,27 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     @Override
     public int getViewIndex() {
-        return state.getViewIndex();
+        return getSelectedView().getIndex();
     }
 
     /**
      * @param viewIndex
-     * @see UIModelEventKind#ViewIndexChange
+     * @see UIModelEventKind#ViewChange
      */
     @Override
     public void setViewIndex(int viewIndex) {
-        if (state.getViewIndex() == viewIndex)
+        if (getViewIndex() == viewIndex)
             return;
-        state.setViewIndex(viewIndex);
-        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));
+        state.setSelectedViewId(getViewIdByIndex(viewIndex));
+        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
+    }
+
+    private int getViewIdByIndex(int viewIndex) {
+        for (ViewBase view : state.getViews().values()) {
+            if (view.getIndex() == viewIndex)
+                return view.getId();
+        }
+        return -1;
     }
 
     //----------------------------------
@@ -117,12 +133,12 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     //----------------------------------
 
     @Override
-    public Array<ViewStackData> getViews() {
+    public Array<ViewStackData> getSceneViews() {
         return views;
     }
 
     @Override
-    public void setViews(Array<ViewStackData> views) {
+    public void setSceneViews(Array<ViewStackData> views) {
         this.views = views;
     }
 
@@ -149,17 +165,17 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     }
 
     //----------------------------------
-    // mainModes
+    // viewButtons
     //----------------------------------
 
     @Override
-    public Array<ButtonBarItem> getMainModes() {
-        return mainModes;
+    public Array<ButtonBarItem> getViewButtons() {
+        return viewButtons;
     }
 
     @Override
-    public void setMainModes(Array<ButtonBarItem> mainModes) {
-        this.mainModes = mainModes;
+    public void setViewButtons(Array<ButtonBarItem> viewButtons) {
+        this.viewButtons = viewButtons;
     }
 
     //--------------------------------------------------------------------------
@@ -173,9 +189,9 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     public void restore(UIState state) {
         this.state = state;
 
-        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewIndexChange, this));
+        getEventBus().post(new UIModelEvent(UIModelEventKind.SceneViewChange, this));
+        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
         getEventBus().post(new UIModelEvent(UIModelEventKind.PrefsViewIndexChange, this));
-        getEventBus().post(new UIModelEvent(UIModelEventKind.MainModeChange, this));
     }
 
     //--------------------------------------------------------------------------
@@ -183,7 +199,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     //--------------------------------------------------------------------------
 
     public enum UIModelEventKind {
-        ViewIndexChange, PrefsViewIndexChange, MainModeChange
+        SceneViewChange, ViewChange, PrefsViewIndexChange
     }
 
     public static class UIModelEvent {

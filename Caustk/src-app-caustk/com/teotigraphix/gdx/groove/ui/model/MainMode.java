@@ -8,7 +8,7 @@ public class MainMode {
 
     private static List<MainMode> modes = new ArrayList<MainMode>();
 
-    public static MainMode create(int index, String id, String label) {
+    public static MainMode _create(int index, String id, String label) {
         MainMode mode = new MainMode(index, id, label);
         modes.add(mode);
         return mode;

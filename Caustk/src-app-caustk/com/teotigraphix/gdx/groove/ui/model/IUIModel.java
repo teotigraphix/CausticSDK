@@ -1,8 +1,11 @@
 
 package com.teotigraphix.gdx.groove.ui.model;
 
+import java.util.Collection;
+
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.gdx.app.IApplicationComponent;
+import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
@@ -15,13 +18,11 @@ public interface IUIModel extends IApplicationComponent {
     // mainMode
     //----------------------------------
 
-    MainMode getMainMode();
+    Collection<ViewBase> getViews();
 
-    /**
-     * @param mainMode
-     * @see UIModelImplEventKind#MainModeChange
-     */
-    void setMainMode(MainMode mainMode);
+    ViewBase getSelectedView();
+
+    void setSelectedViewId(int viewid);
 
     int getViewIndex();
 
@@ -31,17 +32,17 @@ public interface IUIModel extends IApplicationComponent {
 
     void setPrefsViewIndex(int viewIndex);
 
-    Array<ViewStackData> getViews();
+    Array<ViewStackData> getSceneViews();
 
-    void setViews(Array<ViewStackData> views);
+    void setSceneViews(Array<ViewStackData> views);
 
     Array<ButtonBarItem> getButtons();
 
     void setButtons(Array<ButtonBarItem> buttons);
 
-    Array<ButtonBarItem> getMainModes();
+    Array<ButtonBarItem> getViewButtons();
 
-    void setMainModes(Array<ButtonBarItem> mainModes);
+    void setViewButtons(Array<ButtonBarItem> mainModes);
 
     void restore(UIState state);
 

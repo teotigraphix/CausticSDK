@@ -1,8 +1,12 @@
 
 package com.teotigraphix.gdx.groove.ui.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CaustkProject;
+import com.teotigraphix.gdx.controller.ViewBase;
 
 /**
  * The internal state for the {@link UIModel}.
@@ -17,31 +21,52 @@ public class UIState {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private int viewIndex = 0;
+    private Map<Integer, ViewBase> views = new HashMap<Integer, ViewBase>();
 
     @Tag(1)
-    private int prefsViewIndex = 0;
+    private int selectedViewId = 0;
 
-    @Tag(2)
-    private MainMode mainMode;
+    @Tag(3)
+    private int prefsViewIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // viewIndex
+    // views
+    //----------------------------------
+
+    public ViewBase getView(int viewId) {
+        return views.get(viewId);
+    }
+
+    public Map<Integer, ViewBase> getViews() {
+        return views;
+    }
+
+    protected void addView(ViewBase view) {
+        views.put(view.getId(), view);
+    }
+
+    //----------------------------------
+    // selectedViewId
     //----------------------------------
 
     /**
-     * The view stack index of the main ViewStack.
+     * Returns the selected {@link ViewBase} based on the
+     * {@link #getSelectedViewId()}.
      */
-    public int getViewIndex() {
-        return viewIndex;
+    public ViewBase getSelectedView() {
+        return views.get(selectedViewId);
     }
 
-    public void setViewIndex(int viewIndex) {
-        this.viewIndex = viewIndex;
+    public void setSelectedViewId(int selectedViewId) {
+        this.selectedViewId = selectedViewId;
+    }
+
+    public int getSelectedViewId() {
+        return selectedViewId;
     }
 
     //----------------------------------
@@ -57,18 +82,6 @@ public class UIState {
 
     public void setPrefsViewIndex(int prefsViewIndex) {
         this.prefsViewIndex = prefsViewIndex;
-    }
-
-    //----------------------------------
-    // mainMode
-    //----------------------------------
-
-    public MainMode getMainMode() {
-        return mainMode;
-    }
-
-    public void setMainMode(MainMode mainMode) {
-        this.mainMode = mainMode;
     }
 
     //--------------------------------------------------------------------------

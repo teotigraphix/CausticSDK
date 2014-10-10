@@ -105,6 +105,21 @@ public class StylesDefault {
     public static final String ScrollPane_vScrollKnob = "defaults/ScrollPane_vScrollKnob";
 
     //----------------------------------
+    // Slider
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String Slider_Veritical = "default-vertical";
+
+    public static final String Slider_Horizontal = "default-horizontal";
+
+    public static final String Slider_background = "defaults/Slider_background";
+
+    public static final String Slider_knob = "defaults/Slider_knob";
+
+    //----------------------------------
     // TextButton
     //----------------------------------
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
@@ -73,11 +74,18 @@ public abstract class UIFactory {
         initializeScrollPaneStyle(skin);
         initializeListStyle(skin);
         initializePaneStack(skin);
+        initializeSlider(skin);
         initializeViewStack(skin);
         initializeWindow(skin);
 
         initializeModePane(skin);
         initializePatternPane(skin);
+    }
+
+    private void initializeSlider(Skin skin) {
+        SliderStyle verticalStyle = new SliderStyle(skin.getDrawable(StylesDefault.Slider_background),
+                skin.getDrawable(StylesDefault.Slider_knob));
+        skin.add(StylesDefault.Slider_Veritical, verticalStyle);
     }
 
     protected void initializeFonts(Skin skin) {
@@ -276,7 +284,7 @@ public abstract class UIFactory {
         IUIModel model = getModel();
 
         ViewStack instance = new ViewStack(skin);
-        for (ViewStackData data : model.getViews()) {
+        for (ViewStackData data : model.getSceneViews()) {
             data.getBehavior().setData(data);
             Table table = data.getBehavior().create();
             instance.addView(table);

@@ -35,13 +35,13 @@ public class ModePaneBehavior extends CaustkBehavior {
     }
 
     public ModePane create() {
-        view = new ModePane(getSkin(), applicationState.getUI().getMainModes());
+        view = new ModePane(getSkin(), applicationState.getUI().getViewButtons());
         view.addListener(new ModePaneListener() {
             @Override
             public void selectedIndexChange(ModePaneEvent event, int index) {
                 getApplication().getLogger().debug("",
                         "MainMode Change " + MainMode.fromIndex(index).getLabel());
-                applicationState.getUI().setMainMode(MainMode.fromIndex(index));
+                //applicationState.getUI().setMainMode(MainMode.fromIndex(index));
             }
         });
 
@@ -52,8 +52,8 @@ public class ModePaneBehavior extends CaustkBehavior {
 
     @Subscribe
     public void OnUIModelImplEvent(UIModelEvent event) {
-        if (event.getKind() == UIModelEventKind.MainModeChange) {
-            view.select(event.getModel().getMainMode().getIndex());
+        if (event.getKind() == UIModelEventKind.ViewChange) {
+            view.select(event.getModel().getSelectedView().getIndex());
         }
     }
 }

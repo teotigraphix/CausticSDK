@@ -1,6 +1,9 @@
 
 package com.teotigraphix.caustk.controller.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.caustk.controller.helper.AbstractGrid;
@@ -17,6 +20,8 @@ public abstract class AbstractControlSurface {
     //--------------------------------------------------------------------------
 
     private Model model;
+
+    private Map<Integer, AbstractView> views = new HashMap<Integer, AbstractView>();
 
     private AbstractGrid pads;
 
@@ -127,6 +132,24 @@ public abstract class AbstractControlSurface {
 
     public AbstractControlSurface(Model model) {
         this.model = model;
+    }
+
+    private int currentView = -1;
+
+    public void setView(int currentView) {
+        this.currentView = currentView;
+    }
+
+    public void addView(int viewId, AbstractView view) {
+        views.put(viewId, view);
+    }
+
+    public AbstractView getView(int viewId) {
+        return views.get(viewId);
+    }
+
+    public AbstractView getActiveView() {
+        return views.get(currentView);
     }
 
     public abstract void flush();
