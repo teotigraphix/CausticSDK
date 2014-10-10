@@ -1,7 +1,10 @@
 
 package com.teotigraphix.gdx.groove.ui.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
@@ -58,7 +61,14 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     @Override
     public Collection<ViewBase> getViews() {
-        return state.getViews().values();
+        ArrayList<ViewBase> values = new ArrayList<ViewBase>(state.getViews().values());
+        Collections.sort(values, new Comparator<ViewBase>() {
+            @Override
+            public int compare(ViewBase lhs, ViewBase rhs) {
+                return lhs.getIndex() > rhs.getIndex() ? 1 : -1;
+            }
+        });
+        return values;
     }
 
     //----------------------------------
@@ -99,6 +109,15 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
         getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
     }
 
+    @Override
+    public ViewBase getViewByIndex(int viewIndex) {
+        for (ViewBase view : state.getViews().values()) {
+            if (view.getIndex() == viewIndex)
+                return view;
+        }
+        return null;
+    }
+
     private int getViewIdByIndex(int viewIndex) {
         for (ViewBase view : state.getViews().values()) {
             if (view.getIndex() == viewIndex)
@@ -108,29 +127,21 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     }
 
     //----------------------------------
-    // prefsViewIndex
-    //----------------------------------
-
-    @Override
-    public int getPrefsViewIndex() {
-        return state.getPrefsViewIndex();
-    }
-
-    /**
-     * @param viewIndex
-     * @see UIModelEventKind#PrefsViewIndexChange
-     */
-    @Override
-    public void setPrefsViewIndex(int viewIndex) {
-        if (state.getPrefsViewIndex() == viewIndex)
-            return;
-        state.setPrefsViewIndex(viewIndex);
-        getEventBus().post(new UIModelEvent(UIModelEventKind.PrefsViewIndexChange, this));
-    }
-
-    //----------------------------------
     // views
     //----------------------------------
+
+    @Override
+    public void setSceneViewIndex(int viewIndex) {
+        if (state.getSceneViewIndex() == viewIndex)
+            return;
+        state.setSceneViewIndex(viewIndex);
+        getEventBus().post(new UIModelEvent(UIModelEventKind.SceneViewChange, this));
+    }
+
+    @Override
+    public int getSceneViewIndex() {
+        return state.getSceneViewIndex();
+    }
 
     @Override
     public Array<ViewStackData> getSceneViews() {
@@ -147,7 +158,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     //----------------------------------
 
     @Override
-    public Array<ButtonBarItem> getButtons() {
+    public Array<ButtonBarItem> getSceneButtons() {
         if (buttons != null)
             return buttons;
 
@@ -160,7 +171,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     }
 
     @Override
-    public void setButtons(Array<ButtonBarItem> buttons) {
+    public void setSceneButtons(Array<ButtonBarItem> buttons) {
         this.buttons = buttons;
     }
 

@@ -88,7 +88,7 @@ public class MainTemplateBehavior extends CaustkBehavior {
             public void viewIndexChange(TopBarEvent event, int index) {
                 getApplication().getLogger().log("MainTemplateBehavior",
                         "viewIndexChange() " + index);
-                uiModel.setViewIndex(index);
+                uiModel.setSceneViewIndex(index);
             }
         });
 
@@ -119,9 +119,9 @@ public class MainTemplateBehavior extends CaustkBehavior {
     public void onUIModelEventHandler(UIModelEvent event) {
         switch (event.getKind()) {
             case SceneViewChange:
-                int viewIndex = event.getModel().getViewIndex();
-                viewStack.setSelectedIndex(viewIndex);
-                topBar.getButtonBar().setSelectedIndex(viewIndex);
+                int sceneIndex = event.getModel().getSceneViewIndex();
+                viewStack.setSelectedIndex(sceneIndex);
+                topBar.getButtonBar().setSelectedIndex(sceneIndex);
                 break;
             case PrefsViewIndexChange:
                 break;

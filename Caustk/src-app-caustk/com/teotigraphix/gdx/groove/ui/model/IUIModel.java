@@ -15,10 +15,28 @@ public interface IUIModel extends IApplicationComponent {
     UIFactory getUIFactory();
 
     //----------------------------------
-    // mainMode
+    // SceneViews
+    //----------------------------------
+
+    Array<ButtonBarItem> getSceneButtons();
+
+    void setSceneButtons(Array<ButtonBarItem> buttons);
+
+    Array<ViewStackData> getSceneViews();
+
+    void setSceneViews(Array<ViewStackData> views);
+
+    int getSceneViewIndex();
+
+    void setSceneViewIndex(int viewIndex);
+
+    //----------------------------------
+    // Views
     //----------------------------------
 
     Collection<ViewBase> getViews();
+
+    ViewBase getViewByIndex(int viewIndex);
 
     ViewBase getSelectedView();
 
@@ -28,21 +46,9 @@ public interface IUIModel extends IApplicationComponent {
 
     void setViewIndex(int viewIndex);
 
-    int getPrefsViewIndex();
-
-    void setPrefsViewIndex(int viewIndex);
-
-    Array<ViewStackData> getSceneViews();
-
-    void setSceneViews(Array<ViewStackData> views);
-
-    Array<ButtonBarItem> getButtons();
-
-    void setButtons(Array<ButtonBarItem> buttons);
-
     Array<ButtonBarItem> getViewButtons();
 
-    void setViewButtons(Array<ButtonBarItem> mainModes);
+    void setViewButtons(Array<ButtonBarItem> buttons);
 
     void restore(UIState state);
 

@@ -259,7 +259,7 @@ public abstract class UIFactory {
     public final Table createTopBar_Center(Skin skin) {
         IUIModel model = getModel();
 
-        Array<ButtonBarItem> buttons = model.getButtons();
+        Array<ButtonBarItem> buttons = model.getSceneButtons();
 
         TextButtonStyle buttonStyle = skin.get("TopBar.TextButton", TextButtonStyle.class);
         final ButtonBar instance = new ButtonBar(skin, buttons, false, buttonStyle);

@@ -5,10 +5,10 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.app.CaustkBehavior;
 import com.teotigraphix.gdx.app.IApplicationState;
+import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.groove.ui.components.ModePane;
 import com.teotigraphix.gdx.groove.ui.components.ModePaneListener;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
-import com.teotigraphix.gdx.groove.ui.model.MainMode;
 import com.teotigraphix.gdx.groove.ui.model.UIModel.UIModelEvent;
 import com.teotigraphix.gdx.groove.ui.model.UIModel.UIModelEventKind;
 
@@ -16,6 +16,9 @@ public class ModePaneBehavior extends CaustkBehavior {
 
     @Inject
     private IApplicationState applicationState;
+
+    @Inject
+    private IViewManager viewManager;
 
     private ModePane view;
 
@@ -40,8 +43,8 @@ public class ModePaneBehavior extends CaustkBehavior {
             @Override
             public void selectedIndexChange(ModePaneEvent event, int index) {
                 getApplication().getLogger().debug("",
-                        "MainMode Change " + MainMode.fromIndex(index).getLabel());
-                //applicationState.getUI().setMainMode(MainMode.fromIndex(index));
+                        "View Change " + viewManager.getView(index).getLabel());
+                applicationState.getUI().setViewIndex(index);
             }
         });
 

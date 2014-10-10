@@ -1,6 +1,10 @@
 
 package com.teotigraphix.gdx.groove.ui.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,11 +31,26 @@ public class UIState {
     private int selectedViewId = 0;
 
     @Tag(3)
-    private int prefsViewIndex = 0;
+    private int sceneViewIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // sceneViewIndex
+    //----------------------------------
+
+    /**
+     * The view stack index of the Scene ViewStack.
+     */
+    public int getSceneViewIndex() {
+        return sceneViewIndex;
+    }
+
+    public void setSceneViewIndex(int sceneViewIndex) {
+        this.sceneViewIndex = sceneViewIndex;
+    }
 
     //----------------------------------
     // views
@@ -43,6 +62,17 @@ public class UIState {
 
     public Map<Integer, ViewBase> getViews() {
         return views;
+    }
+
+    public Collection<ViewBase> getViewsSorted() {
+        ArrayList<ViewBase> values = new ArrayList<ViewBase>(views.values());
+        Collections.sort(values, new Comparator<ViewBase>() {
+            @Override
+            public int compare(ViewBase lhs, ViewBase rhs) {
+                return lhs.getIndex() > rhs.getIndex() ? 1 : -1;
+            }
+        });
+        return values;
     }
 
     protected void addView(ViewBase view) {
@@ -67,21 +97,6 @@ public class UIState {
 
     public int getSelectedViewId() {
         return selectedViewId;
-    }
-
-    //----------------------------------
-    // prefsViewIndex
-    //----------------------------------
-
-    /**
-     * The view stack index of the Prefs/ViewStack
-     */
-    public int getPrefsViewIndex() {
-        return prefsViewIndex;
-    }
-
-    public void setPrefsViewIndex(int prefsViewIndex) {
-        this.prefsViewIndex = prefsViewIndex;
     }
 
     //--------------------------------------------------------------------------

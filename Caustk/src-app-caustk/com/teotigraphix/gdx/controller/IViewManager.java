@@ -1,17 +1,20 @@
 
 package com.teotigraphix.gdx.controller;
 
-import java.util.Map;
-
 public interface IViewManager {
 
-    void create();
+    //    void create();
+    //
+    //    void load(Map<Integer, ViewBase> views);
+    ViewBase getSelectedView();
 
-    void load(Map<Integer, ViewBase> views);
+    void setSelectedViewId(int selectedViewId);
 
-    void addView(ViewBase view);
+    ViewBase getView(int index);
 
-    ViewBase removeView(ViewBase view);
+    //    void addView(ViewBase view);
+    //
+    //    ViewBase removeView(ViewBase view);
 
     public static enum ViewManagerEventKind {
         ViewAdd,
@@ -34,4 +37,5 @@ public interface IViewManager {
         }
 
     }
+
 }
