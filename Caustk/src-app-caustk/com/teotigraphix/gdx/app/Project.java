@@ -221,27 +221,38 @@ public abstract class Project {
 
     /**
      * Called before {@link #onCreate()} or {@link #onLoad()}.
+     * 
+     * @see ApplicationState#onProjectCreate(Project)
+     * @see ApplicationState#onProjectLoad(Project)
      */
     public abstract void onInitialize();
 
     /**
      * Called when a new project is created.
+     * 
+     * @see ApplicationState#onProjectCreate(Project)
      */
     public abstract void onCreate();
 
     /**
-     * Called when a project has been deserialized from a binary file.
+     * Called when a project has been de-serialized from a binary file.
+     * 
+     * @see ApplicationState#onProjectLoad(Project)
      */
     public abstract void onLoad();
 
     /**
      * Called when the project is saved.
+     * 
+     * @see ApplicationState#onProjectSave(Project)
      */
     public abstract void onSave();
 
     /**
      * Called when a project is closed before another project is either created
      * or loaded.
+     * 
+     * @see ApplicationState#onProjectClose(Project)
      */
     public abstract void onClose();
 
