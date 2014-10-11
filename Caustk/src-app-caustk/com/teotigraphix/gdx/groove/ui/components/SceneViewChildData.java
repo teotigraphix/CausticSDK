@@ -1,16 +1,16 @@
 
 package com.teotigraphix.gdx.groove.ui.components;
 
-import com.teotigraphix.gdx.groove.ui.behavior.ViewBehaviorBase;
+import com.teotigraphix.gdx.groove.ui.behavior.SceneViewChildBehavior;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
-public class ViewStackData {
+public class SceneViewChildData {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private ViewBehaviorBase behavior;
+    private SceneViewChildBehavior behavior;
 
     private String id;
 
@@ -28,7 +28,7 @@ public class ViewStackData {
     // behavior
     //----------------------------------
 
-    public ViewBehaviorBase getBehavior() {
+    public SceneViewChildBehavior getBehavior() {
         return behavior;
     }
 
@@ -68,7 +68,7 @@ public class ViewStackData {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ViewStackData(ViewBehaviorBase behavior, String id, String label, String icon,
+    public SceneViewChildData(SceneViewChildBehavior behavior, String id, String label, String icon,
             String helpText) {
         this.behavior = behavior;
         this.id = id;

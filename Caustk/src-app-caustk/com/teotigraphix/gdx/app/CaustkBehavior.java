@@ -20,8 +20,13 @@
 package com.teotigraphix.gdx.app;
 
 import com.google.inject.Inject;
+import com.teotigraphix.caustk.controller.core.AbstractDisplay;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.gdx.controller.IDialogManager;
+import com.teotigraphix.gdx.controller.IFileManager;
+import com.teotigraphix.gdx.controller.IFileModel;
+import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.gdx.groove.ui.model.IUIModel;
@@ -29,16 +34,43 @@ import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 public abstract class CaustkBehavior extends Behavior {
 
     @Inject
-    IApplicationState applicationStateInternal;
+    private IApplicationModel applicationModel;
+
+    @Inject
+    private IApplicationState applicationStateInternal;
+
+    @Inject
+    private IFileManager fileManager;
+
+    @Inject
+    private IFileModel fileModel;
+
+    @Inject
+    private IViewManager viewManager;
+
+    @Inject
+    private IDialogManager dialogManager;
+
+    @Override
+    public final ICaustkApplication getApplication() {
+        return (ICaustkApplication)super.getApplication();
+    }
+
+    public final IApplicationModel getApplicationModel() {
+        return applicationModel;
+    }
+
+    public IUIModel getModel() {
+        return getScene().getModel();
+    }
 
     @Override
     public ICaustkScene getScene() {
         return (ICaustkScene)super.getScene();
     }
 
-    @Override
-    public final ICaustkApplication getApplication() {
-        return (ICaustkApplication)super.getApplication();
+    public IApplicationState getApplicationState() {
+        return applicationStateInternal;
     }
 
     protected final IContainerMap getContainerMap() {
@@ -57,11 +89,28 @@ public abstract class CaustkBehavior extends Behavior {
         return getScene().getFactory();
     }
 
-    /**
-     * Override in subclasses for type.
-     */
-    protected IUIModel getModel() {
-        return getScene().getModel();
+    protected final IViewManager getViewManager() {
+        return viewManager;
+    }
+
+    protected final IDialogManager getDialogManager() {
+        return dialogManager;
+    }
+
+    protected final AbstractDisplay getDisplay() {
+        return viewManager.getDisplay();
+    }
+
+    protected final AbstractDisplay getSubDisplay() {
+        return viewManager.getSubDisplay();
+    }
+
+    protected final IFileModel getFileModel() {
+        return fileModel;
+    }
+
+    protected final IFileManager getFileManager() {
+        return fileManager;
     }
 
     public CaustkBehavior() {
@@ -71,14 +120,14 @@ public abstract class CaustkBehavior extends Behavior {
     public void onAwake() {
         super.onAwake();
         getRack().getEventBus().register(this);
-        applicationStateInternal.getEventBus().register(this);
+        getApplicationState().getEventBus().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         getRack().getEventBus().unregister(this);
-        applicationStateInternal.getEventBus().unregister(this);
+        getApplicationState().getEventBus().unregister(this);
     }
 
     /**

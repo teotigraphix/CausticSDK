@@ -19,6 +19,7 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
@@ -34,6 +35,8 @@ public interface ICaustkScene extends IScene {
     UIFactory getFactory();
 
     IUIModel getModel();
+
+    IViewManager getViewManager();
 
     void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond);
 

@@ -20,6 +20,7 @@
 package com.teotigraphix.gdx.app;
 
 import com.google.inject.Inject;
+import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.gdx.groove.ui.model.IUIModel;
@@ -37,6 +38,9 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
 
     @Inject
     private IContainerMap containerMap;
+
+    @Inject
+    private IViewManager viewManager;
 
     @Override
     public UIFactory getFactory() {
@@ -56,14 +60,32 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
         return containerMap;
     }
 
+    @Override
+    public IViewManager getViewManager() {
+        return viewManager;
+    }
+
     public CaustkScene() {
     }
 
     @Override
     public void initialize(IApplication application) {
         super.initialize(application);
+        getFactory().createDefaults(getSkin());
         containerMap.register(this);
         containerMap.setScene(this);
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        getViewManager().flush();
+    }
+
+    @Override
+    public void start() {
+        super.start();
+        getModel().restore(getApplicationModel().getProject().getUiState());
     }
 
     @Override

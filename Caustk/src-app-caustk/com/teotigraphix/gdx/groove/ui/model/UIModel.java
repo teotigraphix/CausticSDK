@@ -11,7 +11,7 @@ import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.behavior.TopBarViewStackBehavior;
-import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
+import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
 /**
@@ -26,7 +26,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     private UIState state;
 
-    private Array<ViewStackData> views;
+    private Array<SceneViewChildData> views;
 
     private Array<ButtonBarItem> buttons;
 
@@ -130,12 +130,12 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     }
 
     @Override
-    public Array<ViewStackData> getSceneViews() {
+    public Array<SceneViewChildData> getSceneViews() {
         return views;
     }
 
     @Override
-    public void setSceneViews(Array<ViewStackData> views) {
+    public void setSceneViews(Array<SceneViewChildData> views) {
         this.views = views;
     }
 
@@ -149,7 +149,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
             return buttons;
 
         buttons = new Array<ButtonBarItem>();
-        for (ViewStackData data : views) {
+        for (SceneViewChildData data : views) {
             buttons.add(data.toButtonBarItem());
         }
 

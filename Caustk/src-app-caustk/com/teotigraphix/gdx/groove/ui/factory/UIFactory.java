@@ -23,7 +23,7 @@ import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEventKind;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack.ViewStackStyle;
-import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
+import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
@@ -284,7 +284,7 @@ public abstract class UIFactory {
         IUIModel model = getModel();
 
         ViewStack instance = new ViewStack(skin);
-        for (ViewStackData data : model.getSceneViews()) {
+        for (SceneViewChildData data : model.getSceneViews()) {
             data.getBehavior().setData(data);
             Table table = data.getBehavior().create();
             instance.addView(table);

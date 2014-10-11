@@ -6,7 +6,7 @@ import java.util.Collection;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.gdx.app.IApplicationComponent;
 import com.teotigraphix.gdx.controller.ViewBase;
-import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
+import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
 public interface IUIModel extends IApplicationComponent {
@@ -19,9 +19,9 @@ public interface IUIModel extends IApplicationComponent {
 
     void setSceneButtons(Array<ButtonBarItem> buttons);
 
-    Array<ViewStackData> getSceneViews();
+    Array<SceneViewChildData> getSceneViews();
 
-    void setSceneViews(Array<ViewStackData> views);
+    void setSceneViews(Array<SceneViewChildData> views);
 
     int getSceneViewIndex();
 
