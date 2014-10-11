@@ -33,11 +33,18 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
     private IApplicationModel applicationModel;
 
     @Inject
+    private IProjectModel projectModel;
+
+    @Inject
     private IFileManager fileManager;
 
     @Override
     protected String getPreferenceId() {
         throw new IllegalStateException();
+    }
+
+    protected final IProjectModelWrite getProjectModelWrittable() {
+        return (IProjectModelWrite)projectModel;
     }
 
     public ApplicationStateBase() {
@@ -60,7 +67,7 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
         project = fileManager.createOrLoadStartupProject();
 
         // get onProjectCreate() and onProjectLoad() callbacks from ApplicationModel
-        applicationModel.setProject(project);
+        getProjectModelWrittable().setProject(project);
     }
 
     @Override

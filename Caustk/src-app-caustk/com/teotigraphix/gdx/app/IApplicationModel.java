@@ -22,20 +22,9 @@ package com.teotigraphix.gdx.app;
 import java.io.File;
 import java.io.IOException;
 
-
 public interface IApplicationModel extends IApplicationComponent {
 
     ApplicationPreferences getApplicationPreferences();
-
-    <T extends Project> T getProject();
-
-    /**
-     * @param project
-     * @throws IOException
-     * @see ApplicationModelProjectCreateEvent
-     * @see ApplicationModelProjectLoadEvent
-     */
-    <T extends Project> void setProject(T project) throws IOException;
 
     void newProject(File file) throws IOException;
 

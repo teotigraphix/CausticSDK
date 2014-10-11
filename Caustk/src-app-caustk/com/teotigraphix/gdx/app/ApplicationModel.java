@@ -33,15 +33,8 @@ import com.teotigraphix.gdx.controller.IPreferenceManager;
 @Singleton
 public class ApplicationModel extends ApplicationComponent implements IApplicationModel {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "ApplicationModel";
-
-    //--------------------------------------------------------------------------
-    // Private :: Variables
-    //--------------------------------------------------------------------------
-
-    private Project project;
-
-    protected String APP_PREFERENCES = null;
 
     //--------------------------------------------------------------------------
     // Inject :: Variables
@@ -53,7 +46,16 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     private IPreferenceManager preferenceManager;
 
     @Inject
+    private IProjectModel projectModel;
+
+    @Inject
     private IFileManager fileManager;
+
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    protected String APP_PREFERENCES = null;
 
     @Override
     @Inject
@@ -63,8 +65,9 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         applicationPreferences = new ApplicationPreferences(getPreferences());
     }
 
-    @Inject
-    private IApplicationStateHandlers applicationStates;
+    protected final IProjectModelWrite getProjectModelWrittable() {
+        return (IProjectModelWrite)projectModel;
+    }
 
     //--------------------------------------------------------------------------
     // Public :: Properties
@@ -88,44 +91,16 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         return applicationPreferences;
     }
 
-    //----------------------------------
-    // project
-    //----------------------------------
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Project> T getProject() {
-        return (T)project;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Project> void setProject(T project) throws IOException {
-        T oldProject = (T)this.project;
-        if (oldProject != null) {
-            closeProject(oldProject);
-        }
-
-        log(TAG, "setProject() - " + project.getNativePath());
-        this.project = project;
-
-        if (!project.isCreated()) {
-            createProject(project);
-        } else {
-            loadProject(project);
-        }
-    }
-
     @Override
     public void newProject(File projectLocation) throws IOException {
         Project project = fileManager.createProject(projectLocation);
-        setProject(project);
+        getProjectModelWrittable().setProject(project);
     }
 
     @Override
     public void loadProject(File projectFile) throws IOException {
         Project project = fileManager.loadProject(projectFile);
-        setProject(project);
+        getProjectModelWrittable().setProject(project);
     }
 
     @Override
@@ -139,7 +114,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
      * @throws IOException
      */
     public File saveProjectAs(File projectLocation) throws IOException {
-        File srcDir = project.getDirectory();
+        File srcDir = projectModel.getProject().getDirectory();
         File destDir = projectLocation;
         FileUtils.copyDirectory(srcDir, destDir);
 
@@ -166,13 +141,13 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
 
     @Override
     public File exportProject(File file, ApplicationExportType exportType) throws IOException {
-        File srcDir = project.getDirectory();
+        File srcDir = projectModel.getProject().getDirectory();
         File exportedFile = new File(srcDir, "exported/");
         exportedFile.mkdirs();
         // NO .caustic ext
         // XXX Can't have spaces, must replace all spaces with '-'
         exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-") + ".caustic");
-        File savedFile = project.getRack().getRackNode().saveSongAs(exportedFile);
+        File savedFile = projectModel.getProject().getRack().getRackNode().saveSongAs(exportedFile);
         return savedFile;
     }
 
@@ -186,41 +161,11 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     @Override
     public void save() {
         preferenceManager.save();
-        saveProject(project);
+        getProjectModelWrittable().save();
     }
 
     @Override
     public void dispose() {
         save();
     }
-
-    private void createProject(Project project) throws IOException {
-        log(TAG, "createProject()");
-        applicationStates.onProjectCreate(project);
-        fileManager.setStartupProject(project);
-        project.save();
-    }
-
-    private void loadProject(Project project) {
-        log(TAG, "loadProject()");
-        fileManager.setStartupProject(project);
-        applicationStates.onProjectLoad(project);
-    }
-
-    private void saveProject(Project project) {
-        log(TAG, "saveProject()");
-        applicationStates.onProjectSave(project);
-        try {
-            project.save();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    private void closeProject(Project project) {
-        log(TAG, "closeProject()");
-        applicationStates.onProjectClose(project);
-    }
-
 }

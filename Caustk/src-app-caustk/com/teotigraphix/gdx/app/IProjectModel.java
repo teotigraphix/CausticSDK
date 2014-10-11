@@ -8,11 +8,16 @@ import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
+/**
+ * The {@link IApplicationModel} loads and sets the {@link #getProject()}.
+ */
 public interface IProjectModel {
 
     //--------------------------------------------------------------------------
     // Properties
     //--------------------------------------------------------------------------
+
+    <T extends Project> T getProject();
 
     //----------------------------------
     // SceneViews

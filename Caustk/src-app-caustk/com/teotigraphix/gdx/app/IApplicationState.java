@@ -20,11 +20,10 @@
 package com.teotigraphix.gdx.app;
 
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.caustk.controller.daw.Model;
 
 public interface IApplicationState extends IApplicationComponent {
 
-    Model getModel();
+    //Model getModel();
 
     /**
      * The application's global {@link EventBus}.

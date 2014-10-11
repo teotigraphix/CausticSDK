@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.session.SessionManager;
 import com.teotigraphix.gdx.controller.ViewBase;
 
 /**
@@ -24,17 +25,39 @@ public class ProjectState {
     //--------------------------------------------------------------------------
 
     @Tag(0)
+    private Project project;
+
+    @Tag(10)
+    private SessionManager sessionManager;
+
+    @Tag(20)
     private Map<Integer, ViewBase> views = new HashMap<Integer, ViewBase>();
 
-    @Tag(1)
+    @Tag(21)
     private int selectedViewId = 0;
 
-    @Tag(3)
+    @Tag(22)
     private int sceneViewIndex = 0;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // project
+    //----------------------------------
+
+    public Project getProject() {
+        return project;
+    }
+
+    //----------------------------------
+    // sessionManager
+    //----------------------------------
+
+    public SessionManager getSessionManager() {
+        return sessionManager;
+    }
 
     //----------------------------------
     // sceneViewIndex
@@ -102,7 +125,24 @@ public class ProjectState {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public ProjectState() {
+    protected ProjectState() {
+    }
+
+    public ProjectState(Project project) {
+        this.project = project;
+    }
+
+    public void initialize() {
+    }
+
+    public void create() {
+        sessionManager = new SessionManager(project.getRackNode());
+        sessionManager.initialize();
+        sessionManager.create();
+    }
+
+    public void load() {
+        sessionManager.load();
     }
 
 }

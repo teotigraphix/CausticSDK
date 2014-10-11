@@ -35,6 +35,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.app.IApplicationModel;
 import com.teotigraphix.gdx.app.IProjectFactory;
+import com.teotigraphix.gdx.app.IProjectModel;
 import com.teotigraphix.gdx.app.Project;
 
 @Singleton
@@ -53,6 +54,9 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
     @Inject
     private IProjectFactory projectFactory;
+
+    @Inject
+    private IProjectModel projectModel;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -201,7 +205,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
             throws IOException {
         final Array<File> files = new Array<File>();
 
-        Project project = applicationModel.getProject();
+        Project project = projectModel.getProject();
 
         final ICaustkRack rack = applicationModel.getApplication().getRack();
         // Root/CausticLive/Projects/MyProj1/export/exportName
