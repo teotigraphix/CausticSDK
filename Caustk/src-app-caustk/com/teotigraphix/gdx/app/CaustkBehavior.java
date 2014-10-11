@@ -19,14 +19,30 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.gdx.groove.ui.IContainerMap;
+import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public abstract class CaustkBehavior extends Behavior {
+
+    @Inject
+    IApplicationState applicationStateInternal;
+
+    @Override
+    public ICaustkScene getScene() {
+        return (ICaustkScene)super.getScene();
+    }
 
     @Override
     public final ICaustkApplication getApplication() {
         return (ICaustkApplication)super.getApplication();
+    }
+
+    protected final IContainerMap getContainerMap() {
+        return ((CaustkScene)getScene()).getContainerMap();
     }
 
     protected final ICaustkRack getRack() {
@@ -37,7 +53,32 @@ public abstract class CaustkBehavior extends Behavior {
         return getApplication().getRack().getRackNode();
     }
 
+    protected final UIFactory getFactory() {
+        return getScene().getFactory();
+    }
+
+    /**
+     * Override in subclasses for type.
+     */
+    protected IUIModel getModel() {
+        return getScene().getModel();
+    }
+
     public CaustkBehavior() {
+    }
+
+    @Override
+    public void onAwake() {
+        super.onAwake();
+        getRack().register(this);
+        applicationStateInternal.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getRack().unregister(this);
+        applicationStateInternal.unregister(this);
     }
 
     /**

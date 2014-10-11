@@ -7,23 +7,18 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.badlogic.gdx.utils.Array;
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.controller.ViewBase;
-import com.teotigraphix.gdx.groove.ui.behavior.MainTemplateBehavior;
+import com.teotigraphix.gdx.groove.ui.behavior.TopBarViewStackBehavior;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
-import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
 /**
- * Holds state for the {@link MainTemplateBehavior} ui.
+ * Holds state for the {@link TopBarViewStackBehavior} ui.
  */
 @Singleton
 public abstract class UIModel extends ApplicationComponent implements IUIModel {
-
-    @Inject
-    private UIFactory uiFactory;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -44,15 +39,6 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     public UIState getState() {
         return state;
-    }
-
-    //----------------------------------
-    // uiFactory
-    //----------------------------------
-
-    @Override
-    public UIFactory getUIFactory() {
-        return uiFactory;
     }
 
     //--------------------------------------------------------------------------
@@ -202,7 +188,6 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
         getEventBus().post(new UIModelEvent(UIModelEventKind.SceneViewChange, this));
         getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
-        getEventBus().post(new UIModelEvent(UIModelEventKind.PrefsViewIndexChange, this));
     }
 
     //--------------------------------------------------------------------------
@@ -210,7 +195,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     //--------------------------------------------------------------------------
 
     public enum UIModelEventKind {
-        SceneViewChange, ViewChange, PrefsViewIndexChange
+        SceneViewChange, ViewChange
     }
 
     public static class UIModelEvent {

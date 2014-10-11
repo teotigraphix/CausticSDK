@@ -59,8 +59,6 @@ public abstract class Scene implements IScene {
 
     private Group root;
 
-    private SkinLibrary skinLibrary;
-
     private List<ISceneBehavior> behaviors = new ArrayList<ISceneBehavior>();
 
     private ShapeRenderer debugRenderer;
@@ -122,26 +120,6 @@ public abstract class Scene implements IScene {
     // Protected :: Properties
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // skinLibrary
-    //----------------------------------
-
-    /**
-     * Returns the screen's {@link SkinLibrary} implementation.
-     */
-    protected SkinLibrary getSkinLibrary() {
-        return skinLibrary;
-    }
-
-    /**
-     * Assigns the screen's {@link SkinLibrary} implementation.
-     * 
-     * @param skinLibrary The implemented skin library.
-     */
-    protected void setSkinLibrary(SkinLibrary skinLibrary) {
-        this.skinLibrary = skinLibrary;
-    }
-
     /**
      * Returns the simple name of the class.
      */
@@ -176,7 +154,6 @@ public abstract class Scene implements IScene {
     public void initialize(IApplication application) {
         this.application = application;
         initialized = true;
-        //skinLibrary.initialize(skin);
     }
 
     @Override
@@ -287,6 +264,7 @@ public abstract class Scene implements IScene {
         // dispose all behaviors
         for (ISceneBehavior behavior : behaviors) {
             behavior.onDestroy();
+            behavior.dispose();
         }
 
         behaviors.clear();

@@ -7,12 +7,9 @@ import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.gdx.app.IApplicationComponent;
 import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackData;
-import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
 public interface IUIModel extends IApplicationComponent {
-
-    UIFactory getUIFactory();
 
     //----------------------------------
     // SceneViews

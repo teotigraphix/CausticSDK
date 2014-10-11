@@ -83,7 +83,6 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     /**
      * The model's local {@link EventBus}.
      */
-    @Override
     public final EventBus getEventBus() {
         return eventBus;
     }

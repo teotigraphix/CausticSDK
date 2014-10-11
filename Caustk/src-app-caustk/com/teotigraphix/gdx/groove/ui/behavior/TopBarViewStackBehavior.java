@@ -3,19 +3,14 @@ package com.teotigraphix.gdx.groove.ui.behavior;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.CaustkBehavior;
 import com.teotigraphix.gdx.app.SceneManager;
-import com.teotigraphix.gdx.groove.app.GrooveScene;
-import com.teotigraphix.gdx.groove.ui.IContainerMap;
-import com.teotigraphix.gdx.groove.ui.IContainerMap.MainTemplateLayout;
+import com.teotigraphix.gdx.groove.ui.IContainerMap.TopBarViewStackLayout;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackListener;
-import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
-import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 import com.teotigraphix.gdx.groove.ui.model.UIModel;
 import com.teotigraphix.gdx.groove.ui.model.UIModel.UIModelEvent;
 
@@ -23,20 +18,7 @@ import com.teotigraphix.gdx.groove.ui.model.UIModel.UIModelEvent;
  * Manages the TopBar, BottomBar and ViewPane transitions.
  */
 @Singleton
-public class MainTemplateBehavior extends CaustkBehavior {
-
-    //--------------------------------------------------------------------------
-    // Inject
-    //--------------------------------------------------------------------------
-
-    @Inject
-    private UIFactory uiFactory;
-
-    @Inject
-    private IUIModel uiModel;
-
-    @Inject
-    private IContainerMap containerMap;
+public class TopBarViewStackBehavior extends CaustkBehavior {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -50,23 +32,7 @@ public class MainTemplateBehavior extends CaustkBehavior {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public MainTemplateBehavior() {
-    }
-
-    //--------------------------------------------------------------------------
-    // Overridden Public :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public void onAwake() {
-        super.onAwake();
-        uiModel.getEventBus().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        uiModel.getEventBus().unregister(this);
+    public TopBarViewStackBehavior() {
     }
 
     //--------------------------------------------------------------------------
@@ -79,16 +45,16 @@ public class MainTemplateBehavior extends CaustkBehavior {
      */
     public void create() {
 
-        Table topBarParent = (Table)containerMap.get(MainTemplateLayout.TopBar);
-        Table viewPaneParent = (Table)containerMap.get(MainTemplateLayout.ViewPane);
+        Table topBarParent = (Table)getContainerMap().get(TopBarViewStackLayout.TopBar);
+        Table viewPaneParent = (Table)getContainerMap().get(TopBarViewStackLayout.ViewPane);
 
-        topBar = uiFactory.createTopBar(getSkin());
+        topBar = getFactory().createTopBar(getSkin());
         topBar.addListener(new TopBarListener() {
             @Override
             public void viewIndexChange(TopBarEvent event, int index) {
                 getApplication().getLogger().log("MainTemplateBehavior",
                         "viewIndexChange() " + index);
-                uiModel.setSceneViewIndex(index);
+                getModel().setSceneViewIndex(index);
             }
         });
 
@@ -96,7 +62,7 @@ public class MainTemplateBehavior extends CaustkBehavior {
 
         //------------------------------
 
-        viewStack = uiFactory.createViewStack(getSkin());
+        viewStack = getFactory().createViewStack(getSkin());
         viewStack.addListener(new ViewStackListener() {
             @Override
             public void selectedIndexChange(ViewStackEvent event, int index, int oldIndex) {
@@ -122,8 +88,6 @@ public class MainTemplateBehavior extends CaustkBehavior {
                 int sceneIndex = event.getModel().getSceneViewIndex();
                 viewStack.setSelectedIndex(sceneIndex);
                 topBar.getButtonBar().setSelectedIndex(sceneIndex);
-                break;
-            case PrefsViewIndexChange:
                 break;
             case ViewChange:
                 break;

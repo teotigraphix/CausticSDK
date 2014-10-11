@@ -19,9 +19,51 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.google.inject.Inject;
+import com.teotigraphix.gdx.groove.ui.IContainerMap;
+import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
+
 public abstract class CaustkScene extends Scene implements ICaustkScene {
 
+    @Inject
+    private IApplicationModel applicationModel;
+
+    @Inject
+    private UIFactory factory;
+
+    @Inject
+    private IUIModel model;
+
+    @Inject
+    private IContainerMap containerMap;
+
+    @Override
+    public UIFactory getFactory() {
+        return factory;
+    }
+
+    @Override
+    public IUIModel getModel() {
+        return model;
+    }
+
+    protected IApplicationModel getApplicationModel() {
+        return applicationModel;
+    }
+
+    protected IContainerMap getContainerMap() {
+        return containerMap;
+    }
+
     public CaustkScene() {
+    }
+
+    @Override
+    public void initialize(IApplication application) {
+        super.initialize(application);
+        containerMap.register(this);
+        containerMap.setScene(this);
     }
 
     @Override

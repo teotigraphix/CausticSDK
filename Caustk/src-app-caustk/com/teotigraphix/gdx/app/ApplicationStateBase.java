@@ -53,6 +53,21 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
     public ApplicationStateBase() {
     }
 
+    @Override
+    public void post(Object event) {
+        getEventBus().post(event);
+    }
+
+    @Override
+    public void register(Object instance) {
+        getEventBus().register(instance);
+    }
+
+    @Override
+    public void unregister(Object instance) {
+        getEventBus().unregister(instance);
+    }
+
     // Called from ApplicationController.startup() before startScene() and startUI()
     // everything needs to be synchronous, no app events
     @Override

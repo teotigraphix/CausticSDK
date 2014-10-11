@@ -25,18 +25,6 @@ public class ModePaneBehavior extends CaustkBehavior {
     public ModePaneBehavior() {
     }
 
-    @Override
-    public void onAwake() {
-        super.onAwake();
-        applicationState.getUI().getEventBus().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        applicationState.getUI().getEventBus().unregister(this);
-    }
-
     public ModePane create() {
         view = new ModePane(getSkin(), applicationState.getUI().getViewButtons());
         view.addListener(new ModePaneListener() {

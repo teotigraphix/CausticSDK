@@ -19,6 +19,9 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
+import com.teotigraphix.gdx.groove.ui.model.IUIModel;
+
 /**
  * The {@link ICaustkScene} API allows an application to display states as UI
  * screens.
@@ -28,9 +31,14 @@ package com.teotigraphix.gdx.app;
  */
 public interface ICaustkScene extends IScene {
 
+    UIFactory getFactory();
+
+    IUIModel getModel();
+
     void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond);
 
     void onSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond);
 
     void onThirtysecondChange(int measure, float beat, int sixteenth, int thirtysecond);
+
 }

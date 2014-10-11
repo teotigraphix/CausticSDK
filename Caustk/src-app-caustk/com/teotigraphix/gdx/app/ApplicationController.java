@@ -36,7 +36,6 @@ public class ApplicationController extends ApplicationComponent implements IAppl
     @Inject
     public void setApplicationModel(IApplicationModel applicationModel) {
         this.applicationModel = applicationModel;
-        this.applicationModel.getEventBus().register(this);
     }
 
     @Inject

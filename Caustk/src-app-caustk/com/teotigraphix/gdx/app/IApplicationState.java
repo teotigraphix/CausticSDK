@@ -26,4 +26,11 @@ public interface IApplicationState extends IApplicationComponent {
     IUIModel getUI();
 
     Model getModel();
+
+    void post(Object event);
+
+    void register(Object instance);
+
+    void unregister(Object instance);
+
 }

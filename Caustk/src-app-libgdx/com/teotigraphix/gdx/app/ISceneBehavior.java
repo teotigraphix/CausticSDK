@@ -102,4 +102,9 @@ public interface ISceneBehavior extends ISceneComponent {
      * @see IScene#resume()
      */
     void onResume();
+
+    /**
+     * De reference.
+     */
+    void dispose();
 }

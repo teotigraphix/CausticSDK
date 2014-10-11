@@ -268,6 +268,11 @@ public abstract class Behavior extends SceneComponent implements ISceneBehavior 
         for (ISceneBehavior child : children) {
             child.onDestroy();
         }
+    }
+
+    // called right after onDestroy()
+    @Override
+    public void dispose() {
         setScene(null);
     }
 

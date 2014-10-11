@@ -252,8 +252,9 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     @Override
     public void dispose() {
         getLogger().log(TAG, "dispose()");
-        applicationController.dispose();
+
         getSceneManager().dispose();
+        applicationController.dispose();
         runtime.getRack().onDestroy();
     }
 

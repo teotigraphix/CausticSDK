@@ -40,11 +40,6 @@ public interface IApplicationComponent {
     Preferences getPreferences();
 
     /**
-     * The model's local {@link EventBus}.
-     */
-    EventBus getEventBus();
-
-    /**
      * Returns the {@link ICaustkApplication} instance.
      */
     ICaustkApplication getApplication();
