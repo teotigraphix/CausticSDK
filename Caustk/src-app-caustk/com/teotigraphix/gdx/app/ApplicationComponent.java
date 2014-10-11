@@ -20,6 +20,7 @@
 package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.Preferences;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.controller.IPreferenceManager;
 
@@ -67,6 +68,10 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     @Inject
     public void setApplication(ICaustkApplication application) {
         this.application = application;
+    }
+
+    public final EventBus getEventBus() {
+        return application.getEventBus();
     }
 
     //--------------------------------------------------------------------------
