@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 import com.badlogic.gdx.Gdx;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.gdx.controller.IFileManager;
 import com.teotigraphix.gdx.controller.IPreferenceManager;
 
@@ -40,7 +39,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private CaustkProject project;
+    private Project project;
 
     protected String APP_PREFERENCES = null;
 
@@ -95,13 +94,13 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends CaustkProject> T getProject() {
+    public <T extends Project> T getProject() {
         return (T)project;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends CaustkProject> void setProject(T project) throws IOException {
+    public <T extends Project> void setProject(T project) throws IOException {
         T oldProject = (T)this.project;
         if (oldProject != null) {
             closeProject(oldProject);
@@ -119,13 +118,13 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
 
     @Override
     public void newProject(File projectLocation) throws IOException {
-        CaustkProject project = fileManager.createProject(projectLocation);
+        Project project = fileManager.createProject(projectLocation);
         setProject(project);
     }
 
     @Override
     public void loadProject(File projectFile) throws IOException {
-        CaustkProject project = fileManager.loadProject(projectFile);
+        Project project = fileManager.loadProject(projectFile);
         setProject(project);
     }
 
@@ -148,7 +147,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         final File oldProjectFile = new File(projectLocation, srcDir.getName() + ".prj");
         File newProjectFile = new File(projectLocation, destDir.getName() + ".prj");
 
-        CaustkProject newProject = fileManager.readProject(oldProjectFile);
+        Project newProject = fileManager.readProject(oldProjectFile);
         newProject.setRack(getApplication().getRack()); // needed for deserialization
         newProject.rename(newProjectFile);
 
@@ -195,20 +194,20 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         save();
     }
 
-    private void createProject(CaustkProject project) throws IOException {
+    private void createProject(Project project) throws IOException {
         log(TAG, "createProject()");
         applicationStates.onProjectCreate(project);
         fileManager.setStartupProject(project);
         project.save();
     }
 
-    private void loadProject(CaustkProject project) {
+    private void loadProject(Project project) {
         log(TAG, "loadProject()");
         fileManager.setStartupProject(project);
         applicationStates.onProjectLoad(project);
     }
 
-    private void saveProject(CaustkProject project) {
+    private void saveProject(Project project) {
         log(TAG, "saveProject()");
         applicationStates.onProjectSave(project);
         try {
@@ -219,7 +218,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         }
     }
 
-    private void closeProject(CaustkProject project) {
+    private void closeProject(Project project) {
         log(TAG, "closeProject()");
         applicationStates.onProjectClose(project);
     }

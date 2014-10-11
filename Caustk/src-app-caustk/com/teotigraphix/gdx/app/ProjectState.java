@@ -1,5 +1,5 @@
 
-package com.teotigraphix.gdx.groove.ui.model;
+package com.teotigraphix.gdx.app;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,16 +9,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.gdx.controller.ViewBase;
 
 /**
- * The internal state for the {@link UIModel}.
+ * The internal state for the {@link IApplicationModel} held within the project.
  * <p>
- * Each {@link CaustkProject} owns an instance of this and will be serialized
- * with the project.
+ * Each {@link Project} owns an instance of this and will be serialized with the
+ * project.
  */
-public class UIState {
+public class ProjectState {
 
     //--------------------------------------------------------------------------
     // Serialization
@@ -103,7 +102,7 @@ public class UIState {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public UIState() {
+    public ProjectState() {
     }
 
 }

@@ -44,6 +44,7 @@ import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.gdx.app.Project;
 
 /**
  * The {@link CaustkRack} holds the current {@link RackNode} session state.
@@ -338,15 +339,15 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         }
     }
 
-    private CaustkProject project;
+    private Project project;
 
     @Override
-    public CaustkProject getProject() {
+    public Project getProject() {
         return project;
     }
 
     @Override
-    public <T extends CaustkProject> T setProject(File file, Class<T> type) throws IOException {
+    public <T extends Project> T setProject(File file, Class<T> type) throws IOException {
 
         T project = getSerializer().deserialize(file, type);
 
@@ -372,14 +373,14 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         return project;
     }
 
-    private void setProjectInternal(CaustkProject project) {
+    private void setProjectInternal(Project project) {
         this.project = project;
         project.setRack(this);
         setRackNode(project.getRackNode());
     }
 
     @Override
-    public void setProject(CaustkProject project) throws IOException {
+    public void setProject(Project project) throws IOException {
         setProjectInternal(project);
     }
 

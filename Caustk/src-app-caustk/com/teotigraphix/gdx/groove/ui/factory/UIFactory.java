@@ -14,17 +14,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
+import com.teotigraphix.gdx.app.IProjectModel;
 import com.teotigraphix.gdx.groove.ui.components.FileExplorer;
 import com.teotigraphix.gdx.groove.ui.components.ModePane.ModePaneStyle;
 import com.teotigraphix.gdx.groove.ui.components.PatternPane.PatternPaneStyle;
+import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
 import com.teotigraphix.gdx.groove.ui.components.TopBar.TopBarStyle;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEventKind;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack.ViewStackStyle;
-import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
-import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener;
@@ -42,17 +42,8 @@ import com.teotigraphix.gdx.scene2d.ui.PaneStack.PaneStackStyle;
 
 public abstract class UIFactory {
 
-    //--------------------------------------------------------------------------
-    // Inject
-    //--------------------------------------------------------------------------
-
     @Inject
-    private IUIModel uiModel;
-
-    @SuppressWarnings("unchecked")
-    protected <T extends IUIModel> T getModel() {
-        return (T)uiModel;
-    }
+    private IProjectModel projectModel;
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -83,7 +74,8 @@ public abstract class UIFactory {
     }
 
     private void initializeSlider(Skin skin) {
-        SliderStyle verticalStyle = new SliderStyle(skin.getDrawable(StylesDefault.Slider_background),
+        SliderStyle verticalStyle = new SliderStyle(
+                skin.getDrawable(StylesDefault.Slider_background),
                 skin.getDrawable(StylesDefault.Slider_knob));
         skin.add(StylesDefault.Slider_Veritical, verticalStyle);
     }
@@ -257,9 +249,7 @@ public abstract class UIFactory {
     }
 
     public final Table createTopBar_Center(Skin skin) {
-        IUIModel model = getModel();
-
-        Array<ButtonBarItem> buttons = model.getSceneButtons();
+        Array<ButtonBarItem> buttons = projectModel.getSceneButtons();
 
         TextButtonStyle buttonStyle = skin.get("TopBar.TextButton", TextButtonStyle.class);
         final ButtonBar instance = new ButtonBar(skin, buttons, false, buttonStyle);
@@ -280,11 +270,8 @@ public abstract class UIFactory {
     //----------------------------------
 
     public final ViewStack createViewStack(Skin skin) {
-
-        IUIModel model = getModel();
-
         ViewStack instance = new ViewStack(skin);
-        for (SceneViewChildData data : model.getSceneViews()) {
+        for (SceneViewChildData data : projectModel.getSceneViews()) {
             data.getBehavior().setData(data);
             Table table = data.getBehavior().create();
             instance.addView(table);

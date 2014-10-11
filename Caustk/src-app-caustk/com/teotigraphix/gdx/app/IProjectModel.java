@@ -1,15 +1,18 @@
 
-package com.teotigraphix.gdx.groove.ui.model;
+package com.teotigraphix.gdx.app;
 
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Array;
-import com.teotigraphix.gdx.app.IApplicationComponent;
 import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
-public interface IUIModel extends IApplicationComponent {
+public interface IProjectModel {
+
+    //--------------------------------------------------------------------------
+    // Properties
+    //--------------------------------------------------------------------------
 
     //----------------------------------
     // SceneViews
@@ -47,6 +50,33 @@ public interface IUIModel extends IApplicationComponent {
 
     void setViewButtons(Array<ButtonBarItem> buttons);
 
-    void restore(UIState state);
+    //--------------------------------------------------------------------------
+    // Methods
+    //--------------------------------------------------------------------------
+
+    void restore(ProjectState state);
+
+    public static enum ProjectModelEventKind {
+        SceneViewChange, ViewChange;
+    }
+
+    public static class ProjectModelEvent {
+        private ProjectModelEventKind kind;
+
+        private IProjectModel model;
+
+        public ProjectModelEventKind getKind() {
+            return kind;
+        }
+
+        public IProjectModel getModel() {
+            return model;
+        }
+
+        public ProjectModelEvent(ProjectModelEventKind kind, IProjectModel model) {
+            this.kind = kind;
+            this.model = model;
+        }
+    }
 
 }

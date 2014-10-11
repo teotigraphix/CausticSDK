@@ -22,11 +22,10 @@ package com.teotigraphix.gdx.app;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.core.CaustkProject;
 
 public interface IProjectFactory {
 
-    <T extends CaustkProject> T createDefaultProject(String name, File projectFile);
+    <T extends Project> T createDefaultProject(String name, File projectFile);
 
-    <T extends CaustkProject> T readProject(File projectFile, boolean loadRack) throws IOException;
+    <T extends Project> T readProject(File projectFile, boolean loadRack) throws IOException;
 }

@@ -29,7 +29,6 @@ import com.teotigraphix.gdx.controller.IFileModel;
 import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
-import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public abstract class CaustkBehavior extends Behavior {
 
@@ -60,8 +59,8 @@ public abstract class CaustkBehavior extends Behavior {
         return applicationModel;
     }
 
-    public IUIModel getModel() {
-        return getScene().getModel();
+    public IProjectModel getProjectModel() {
+        return getScene().getProjectModel();
     }
 
     @Override

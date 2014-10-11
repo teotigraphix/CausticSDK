@@ -22,9 +22,7 @@ package com.teotigraphix.gdx.app;
 import java.io.IOException;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.gdx.controller.IFileManager;
-import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public abstract class ApplicationStateBase extends ApplicationComponent implements
         IApplicationState, IApplicationStateHandlers {
@@ -37,17 +35,9 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
     @Inject
     private IFileManager fileManager;
 
-    @Inject
-    private IUIModel uiModel;
-
     @Override
     protected String getPreferenceId() {
         throw new IllegalStateException();
-    }
-
-    @Override
-    public IUIModel getUI() {
-        return uiModel;
     }
 
     public ApplicationStateBase() {
@@ -63,7 +53,7 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
 
         fileManager.setupApplicationDirectory();
 
-        CaustkProject project = null;
+        Project project = null;
 
         log(TAG, "Find last project path from preferences.");
 
@@ -74,16 +64,16 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
     }
 
     @Override
-    public abstract void onProjectCreate(CaustkProject project);
+    public abstract void onProjectCreate(Project project);
 
     @Override
-    public abstract void onProjectLoad(CaustkProject project);
+    public abstract void onProjectLoad(Project project);
 
     @Override
-    public abstract void onProjectSave(CaustkProject project);
+    public abstract void onProjectSave(Project project);
 
     @Override
-    public abstract void onProjectClose(CaustkProject project);
+    public abstract void onProjectClose(Project project);
 
     @Override
     public void startUI() {

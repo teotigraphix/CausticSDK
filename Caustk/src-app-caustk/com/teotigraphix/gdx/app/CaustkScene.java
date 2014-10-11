@@ -23,7 +23,6 @@ import com.google.inject.Inject;
 import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
-import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public abstract class CaustkScene extends Scene implements ICaustkScene {
 
@@ -34,7 +33,7 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     private UIFactory factory;
 
     @Inject
-    private IUIModel model;
+    private IProjectModel projectModel;
 
     @Inject
     private IContainerMap containerMap;
@@ -48,8 +47,8 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     }
 
     @Override
-    public IUIModel getModel() {
-        return model;
+    public IProjectModel getProjectModel() {
+        return projectModel;
     }
 
     protected IApplicationModel getApplicationModel() {
@@ -85,7 +84,7 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     @Override
     public void start() {
         super.start();
-        getModel().restore(getApplicationModel().getProject().getUiState());
+        getProjectModel().restore(getApplicationModel().getProject().getState());
     }
 
     @Override

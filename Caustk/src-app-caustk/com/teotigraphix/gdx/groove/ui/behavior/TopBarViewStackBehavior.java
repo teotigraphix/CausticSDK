@@ -4,14 +4,13 @@ package com.teotigraphix.gdx.groove.ui.behavior;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.common.eventbus.Subscribe;
 import com.teotigraphix.gdx.app.CaustkBehavior;
+import com.teotigraphix.gdx.app.IProjectModel.ProjectModelEvent;
 import com.teotigraphix.gdx.app.SceneManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap.TopBarViewStackLayout;
 import com.teotigraphix.gdx.groove.ui.components.TopBar;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStackListener;
-import com.teotigraphix.gdx.groove.ui.model.UIModel;
-import com.teotigraphix.gdx.groove.ui.model.UIModel.UIModelEvent;
 
 /**
  * Manages the TopBar, BottomBar and ViewPane transitions.
@@ -52,7 +51,7 @@ public class TopBarViewStackBehavior extends CaustkBehavior {
             public void viewIndexChange(TopBarEvent event, int index) {
                 getApplication().getLogger().log("MainTemplateBehavior",
                         "viewIndexChange() " + index);
-                getModel().setSceneViewIndex(index);
+                getProjectModel().setSceneViewIndex(index);
             }
         });
 
@@ -74,13 +73,8 @@ public class TopBarViewStackBehavior extends CaustkBehavior {
     // Event
     //--------------------------------------------------------------------------
 
-    /**
-     * @param event
-     * @see UIModel#setViewIndex(int)
-     * @see UIModel#restore(com.teotigraphix.gdx.groove.ui.model.UIModelState)
-     */
     @Subscribe
-    public void onUIModelEventHandler(UIModelEvent event) {
+    public void onProjectModelEvent(ProjectModelEvent event) {
         switch (event.getKind()) {
             case SceneViewChange:
                 int sceneIndex = event.getModel().getSceneViewIndex();

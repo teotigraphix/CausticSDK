@@ -36,6 +36,7 @@ import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
+import com.teotigraphix.gdx.app.Project;
 
 /**
  * The {@link ICaustkRack} holds the current {@link RackNode} session state.
@@ -60,11 +61,11 @@ public interface ICaustkRack extends ISoundGenerator {
 
     ICaustkSerializer getSerializer();
 
-    <T extends CaustkProject> T setProject(File file, Class<T> type) throws IOException;
+    <T extends Project> T setProject(File file, Class<T> type) throws IOException;
 
-    void setProject(CaustkProject project) throws IOException;
+    void setProject(Project project) throws IOException;
 
-    CaustkProject getProject();
+    Project getProject();
 
     /**
      * Returns the current {@link RackNode} native rack state.

@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.gdx.app;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,15 +9,15 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-import com.teotigraphix.gdx.groove.ui.model.UIState;
 
 /**
  * The project holds the single {@link RackNode} in the applications current
  * session.
  */
-public abstract class CaustkProject {
+public abstract class Project {
 
     private ICaustkRack rack;
 
@@ -41,7 +41,7 @@ public abstract class CaustkProject {
     private byte[] rackBytes;
 
     @Tag(25)
-    private UIState uiState;
+    private ProjectState state;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -153,15 +153,15 @@ public abstract class CaustkProject {
     }
 
     //----------------------------------
-    // uiState
+    // state
     //----------------------------------
 
-    public UIState getUiState() {
-        return uiState;
+    public ProjectState getState() {
+        return state;
     }
 
-    protected void setUiState(UIState uiState) {
-        this.uiState = uiState;
+    protected void setState(ProjectState state) {
+        this.state = state;
     }
 
     //--------------------------------------------------------------------------
@@ -171,14 +171,14 @@ public abstract class CaustkProject {
     /**
      * Serialized.
      */
-    public CaustkProject() {
+    public Project() {
     }
 
-    public CaustkProject(ICaustkRack rack, File nativeLocation, String name) {
+    public Project(ICaustkRack rack, File nativeLocation, String name) {
         this(rack, nativeLocation.getAbsolutePath(), name);
     }
 
-    public CaustkProject(ICaustkRack rack, String nativePath, String name) {
+    public Project(ICaustkRack rack, String nativePath, String name) {
         this.rack = rack;
         this.nativePath = nativePath;
         this.name = name;

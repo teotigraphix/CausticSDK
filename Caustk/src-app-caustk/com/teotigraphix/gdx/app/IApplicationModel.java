@@ -22,13 +22,12 @@ package com.teotigraphix.gdx.app;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.core.CaustkProject;
 
 public interface IApplicationModel extends IApplicationComponent {
 
     ApplicationPreferences getApplicationPreferences();
 
-    <T extends CaustkProject> T getProject();
+    <T extends Project> T getProject();
 
     /**
      * @param project
@@ -36,7 +35,7 @@ public interface IApplicationModel extends IApplicationComponent {
      * @see ApplicationModelProjectCreateEvent
      * @see ApplicationModelProjectLoadEvent
      */
-    <T extends CaustkProject> void setProject(T project) throws IOException;
+    <T extends Project> void setProject(T project) throws IOException;
 
     void newProject(File file) throws IOException;
 

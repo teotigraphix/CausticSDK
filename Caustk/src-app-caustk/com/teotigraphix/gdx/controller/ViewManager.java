@@ -6,13 +6,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.core.AbstractDisplay;
 import com.teotigraphix.gdx.app.ApplicationComponent;
-import com.teotigraphix.gdx.groove.ui.model.IUIModel;
+import com.teotigraphix.gdx.app.IProjectModel;
 
 @Singleton
 public abstract class ViewManager extends ApplicationComponent implements IViewManager {
 
     @Inject
-    private IUIModel uiModel;
+    private IProjectModel projectModel;
 
     private AbstractDisplay display;
 
@@ -46,24 +46,24 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
 
     @Override
     public ViewBase getSelectedView() {
-        return uiModel.getSelectedView();
+        return projectModel.getSelectedView();
     }
 
     @Override
     public void setSelectedView(int index) {
-        uiModel.setViewIndex(index);
+        projectModel.setViewIndex(index);
         getSelectedView().onActivate();
         flush();
     }
 
     @Override
     public ViewBase getView(int index) {
-        return uiModel.getViewByIndex(index);
+        return projectModel.getViewByIndex(index);
     }
 
     @Override
     public ViewBase getViewById(int viewId) {
-        for (ViewBase view : uiModel.getViews()) {
+        for (ViewBase view : projectModel.getViews()) {
             if (view.getId() == viewId)
                 return view;
         }

@@ -27,7 +27,6 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
@@ -36,6 +35,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.app.IApplicationModel;
 import com.teotigraphix.gdx.app.IProjectFactory;
+import com.teotigraphix.gdx.app.Project;
 
 @Singleton
 public class FileManager extends ApplicationComponent implements IFileManager {
@@ -89,7 +89,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     }
 
     @Override
-    public void setStartupProject(CaustkProject project) {
+    public void setStartupProject(Project project) {
         applicationModel.getPreferences().putString(LAST_PROJECT_PATH,
                 project.getFile().getAbsolutePath());
     }
@@ -128,10 +128,10 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     }
 
     @Override
-    public CaustkProject createOrLoadStartupProject() throws IOException {
+    public Project createOrLoadStartupProject() throws IOException {
         applicationModel.getApplication().getLogger().log(TAG, "createOrLoadStartupProject()");
 
-        CaustkProject project = null;
+        Project project = null;
 
         File projectFile = getStartupProjectFile();
 
@@ -149,20 +149,20 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     }
 
     @Override
-    public CaustkProject loadProject(File projectFile) throws IOException {
-        CaustkProject project = projectFactory.readProject(projectFile, true);
+    public Project loadProject(File projectFile) throws IOException {
+        Project project = projectFactory.readProject(projectFile, true);
         return project;
     }
 
     @Override
-    public CaustkProject readProject(File projectFile) throws IOException {
-        CaustkProject project = projectFactory.readProject(projectFile, false);
+    public Project readProject(File projectFile) throws IOException {
+        Project project = projectFactory.readProject(projectFile, false);
         return project;
     }
 
     @Override
-    public CaustkProject createProject(File projectLocation) throws IOException {
-        CaustkProject project = null;
+    public Project createProject(File projectLocation) throws IOException {
+        Project project = null;
         String projectName = projectLocation.getName();
         File projectBaseDirectory = toProjectDirectory(projectName);
         File projectFile = toProjectFile(projectBaseDirectory, projectName);
@@ -201,7 +201,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
             throws IOException {
         final Array<File> files = new Array<File>();
 
-        CaustkProject project = applicationModel.getProject();
+        Project project = applicationModel.getProject();
 
         final ICaustkRack rack = applicationModel.getApplication().getRack();
         // Root/CausticLive/Projects/MyProj1/export/exportName

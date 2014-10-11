@@ -1,5 +1,5 @@
 
-package com.teotigraphix.gdx.groove.ui.model;
+package com.teotigraphix.gdx.app;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,24 +7,17 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.badlogic.gdx.utils.Array;
-import com.google.inject.Singleton;
-import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.controller.ViewBase;
-import com.teotigraphix.gdx.groove.ui.behavior.TopBarViewStackBehavior;
 import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 
-/**
- * Holds state for the {@link TopBarViewStackBehavior} ui.
- */
-@Singleton
-public abstract class UIModel extends ApplicationComponent implements IUIModel {
+public class ProjectModel extends ApplicationComponent implements IProjectModel {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private UIState state;
+    private ProjectState state;
 
     private Array<SceneViewChildData> views;
 
@@ -32,12 +25,12 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     private Array<ButtonBarItem> viewButtons;
 
-    @Override
-    protected String getPreferenceId() {
-        return getApplication().getApplicationId() + "/UIModel";
-    }
+    //    @Override
+    //    protected String getPreferenceId() {
+    //        return getApplication().getApplicationId() + "/UIModel";
+    //    }
 
-    public UIState getState() {
+    public ProjectState getState() {
         return state;
     }
 
@@ -71,7 +64,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
         if (getState().getSelectedViewId() == viewId)
             return;
         getState().setSelectedViewId(viewId);
-        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
+        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
     }
 
     //----------------------------------
@@ -85,14 +78,14 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
 
     /**
      * @param viewIndex
-     * @see UIModelEventKind#ViewChange
+     * @see ProjectModelEventKind#ViewChange
      */
     @Override
     public void setViewIndex(int viewIndex) {
         if (getViewIndex() == viewIndex)
             return;
         state.setSelectedViewId(getViewIdByIndex(viewIndex));
-        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
+        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
     }
 
     @Override
@@ -121,7 +114,7 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
         if (state.getSceneViewIndex() == viewIndex)
             return;
         state.setSceneViewIndex(viewIndex);
-        getEventBus().post(new UIModelEvent(UIModelEventKind.SceneViewChange, this));
+        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
     }
 
     @Override
@@ -179,42 +172,14 @@ public abstract class UIModel extends ApplicationComponent implements IUIModel {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public UIModel() {
+    public ProjectModel() {
     }
 
     @Override
-    public void restore(UIState state) {
+    public void restore(ProjectState state) {
         this.state = state;
 
-        getEventBus().post(new UIModelEvent(UIModelEventKind.SceneViewChange, this));
-        getEventBus().post(new UIModelEvent(UIModelEventKind.ViewChange, this));
-    }
-
-    //--------------------------------------------------------------------------
-    // Event
-    //--------------------------------------------------------------------------
-
-    public enum UIModelEventKind {
-        SceneViewChange, ViewChange
-    }
-
-    public static class UIModelEvent {
-
-        private UIModelEventKind kind;
-
-        private UIModel model;
-
-        public UIModelEventKind getKind() {
-            return kind;
-        }
-
-        public UIModel getModel() {
-            return model;
-        }
-
-        public UIModelEvent(UIModelEventKind kind, UIModel model) {
-            this.kind = kind;
-            this.model = model;
-        }
+        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
+        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
     }
 }

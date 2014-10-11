@@ -23,20 +23,20 @@ import java.io.File;
 import java.io.IOException;
 
 import com.badlogic.gdx.utils.Array;
-import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
+import com.teotigraphix.gdx.app.Project;
 
 public interface IFileManager {
 
     void setupApplicationDirectory();
 
-    void setStartupProject(CaustkProject project);
+    void setStartupProject(Project project);
 
     File getProjectsDirectory();
 
     String getNextProjectName();
 
-    CaustkProject createOrLoadStartupProject() throws IOException;
+    Project createOrLoadStartupProject() throws IOException;
 
     /**
      * Creates a new Project.
@@ -45,7 +45,7 @@ public interface IFileManager {
      *            to create the base project directory.
      * @throws IOException
      */
-    CaustkProject createProject(File projectLocation) throws IOException;
+    Project createProject(File projectLocation) throws IOException;
 
     /**
      * Loads an existing Project.
@@ -53,7 +53,7 @@ public interface IFileManager {
      * @param projectFile The .prj file held within the same named directory.
      * @throws IOException
      */
-    CaustkProject loadProject(File projectFile) throws IOException;
+    Project loadProject(File projectFile) throws IOException;
 
     /**
      * Reads a project file from a serialized state, no rack loading occurs.
@@ -61,7 +61,7 @@ public interface IFileManager {
      * @param projectFile
      * @throws IOException
      */
-    CaustkProject readProject(File projectFile) throws IOException;
+    Project readProject(File projectFile) throws IOException;
 
     Array<File> exportPatternStems(String exportName, Array<PatternNode> patterns)
             throws IOException;

@@ -149,6 +149,7 @@ import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
+import com.teotigraphix.gdx.app.Project;
 
 /*
 TaggedFieldSerializer only serializes fields that have a @Tag annotation. 
@@ -188,7 +189,7 @@ public final class CaustkSerializerTags {
         //------------------------------
 
         kryo.register(CausticFile.class, 101);
-        kryo.register(CaustkProject.class, 102);
+        kryo.register(Project.class, 102);
         kryo.register(MachineType.class, 103);
 
         kryo.register(ChordReference.class, 104);

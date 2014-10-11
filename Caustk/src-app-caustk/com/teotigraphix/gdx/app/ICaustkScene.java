@@ -21,7 +21,6 @@ package com.teotigraphix.gdx.app;
 
 import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
-import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 /**
  * The {@link ICaustkScene} API allows an application to display states as UI
@@ -34,7 +33,7 @@ public interface ICaustkScene extends IScene {
 
     UIFactory getFactory();
 
-    IUIModel getModel();
+    IProjectModel getProjectModel();
 
     IViewManager getViewManager();
 
