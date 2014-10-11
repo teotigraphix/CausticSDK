@@ -1,6 +1,8 @@
 
 package com.teotigraphix.gdx.controller;
 
+import com.teotigraphix.caustk.controller.core.AbstractDisplay;
+
 public interface IViewManager {
 
     ViewBase getSelectedView();
@@ -54,5 +56,9 @@ public interface IViewManager {
     void setSelectedView(int index);
 
     void flush();
+
+    AbstractDisplay getSubDisplay();
+
+    AbstractDisplay getDisplay();
 
 }

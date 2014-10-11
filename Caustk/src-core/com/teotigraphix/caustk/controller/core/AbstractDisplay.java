@@ -82,9 +82,8 @@ public abstract class AbstractDisplay {
         }
         notificationMessage = temp; //(padding + message + padding).substring(0, numChars);
 
-        flush();
-
         if (!isNotificationActive) {
+            isNotificationActive = true;
             Timer.schedule(new Task() {
                 @Override
                 public void run() {
@@ -93,8 +92,6 @@ public abstract class AbstractDisplay {
                 }
             }, delay);
         }
-
-        isNotificationActive = true;
     }
 
     public AbstractDisplay clear() {

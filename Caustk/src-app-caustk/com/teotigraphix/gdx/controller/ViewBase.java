@@ -8,6 +8,10 @@ public class ViewBase {
     @Tag(0)
     private int id;
 
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
     private int index;
 
     private String label;
@@ -19,6 +23,14 @@ public class ViewBase {
     private boolean canScrollLeftFlag;
 
     private boolean canScrollDownFlag;
+
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // model
+    //----------------------------------
 
     public boolean canScrollRight() {
         return canScrollRightFlag;
@@ -64,6 +76,10 @@ public class ViewBase {
         return label;
     }
 
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
     ViewBase() {
     }
 
@@ -91,5 +107,20 @@ public class ViewBase {
 
     public void updateArrows() {
 
+    }
+
+    public void onActivate() {
+    }
+
+    public void updateDevice() {
+        //        Object m = this.surface.getActiveMode ();
+        //        if (m != null)
+        //        {
+        //            m.updateDisplay ();
+        //            m.updateFirstRow ();
+        //            m.updateSecondRow ();
+        //        }
+        //        this.updateButtons ();
+        //        this.updateArrows ();
     }
 }

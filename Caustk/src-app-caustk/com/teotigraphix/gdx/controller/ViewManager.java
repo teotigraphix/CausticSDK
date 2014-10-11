@@ -4,14 +4,45 @@ package com.teotigraphix.gdx.controller;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustk.controller.core.AbstractDisplay;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 @Singleton
-public class ViewManager extends ApplicationComponent implements IViewManager {
+public abstract class ViewManager extends ApplicationComponent implements IViewManager {
 
     @Inject
     private IUIModel uiModel;
+
+    private AbstractDisplay display;
+
+    private AbstractDisplay subDisplay;
+
+    //----------------------------------
+    // display
+    //----------------------------------
+
+    @Override
+    public AbstractDisplay getDisplay() {
+        return display;
+    }
+
+    protected void setDisplay(AbstractDisplay display) {
+        this.display = display;
+    }
+
+    //----------------------------------
+    // subDisplay
+    //----------------------------------
+
+    @Override
+    public AbstractDisplay getSubDisplay() {
+        return subDisplay;
+    }
+
+    protected void setSubDisplay(AbstractDisplay subDisplay) {
+        this.subDisplay = subDisplay;
+    }
 
     @Override
     public ViewBase getSelectedView() {
@@ -21,6 +52,7 @@ public class ViewManager extends ApplicationComponent implements IViewManager {
     @Override
     public void setSelectedView(int index) {
         uiModel.setViewIndex(index);
+        getSelectedView().onActivate();
         flush();
     }
 
@@ -65,6 +97,9 @@ public class ViewManager extends ApplicationComponent implements IViewManager {
     public void flush() {
         ViewBase selectedView = getSelectedView();
         selectedView.updateArrows();
+
+        getDisplay().flush();
+        getSubDisplay().flush();
 
         for (IViewManagerFlushListener listener : flushListeners) {
             listener.flush();
