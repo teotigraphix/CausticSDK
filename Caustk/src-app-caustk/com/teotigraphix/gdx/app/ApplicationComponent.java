@@ -20,7 +20,6 @@
 package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.Preferences;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.controller.IPreferenceManager;
 
@@ -33,12 +32,6 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     private IPreferenceManager preferenceManager;
 
     private ICaustkApplication application;
-
-    //--------------------------------------------------------------------------
-    // Private :: Variables
-    //--------------------------------------------------------------------------
-
-    private EventBus eventBus;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -76,17 +69,6 @@ public abstract class ApplicationComponent implements IApplicationComponent {
         this.application = application;
     }
 
-    //----------------------------------
-    // eventBus
-    //----------------------------------
-
-    /**
-     * The model's local {@link EventBus}.
-     */
-    public final EventBus getEventBus() {
-        return eventBus;
-    }
-
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------
@@ -95,7 +77,6 @@ public abstract class ApplicationComponent implements IApplicationComponent {
      * Creates a new component.
      */
     public ApplicationComponent() {
-        eventBus = new EventBus();
     }
 
     //--------------------------------------------------------------------------

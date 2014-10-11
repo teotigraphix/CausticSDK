@@ -70,15 +70,15 @@ public abstract class CaustkBehavior extends Behavior {
     @Override
     public void onAwake() {
         super.onAwake();
-        getRack().register(this);
-        applicationStateInternal.register(this);
+        getRack().getEventBus().register(this);
+        applicationStateInternal.getEventBus().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getRack().unregister(this);
-        applicationStateInternal.unregister(this);
+        getRack().getEventBus().unregister(this);
+        applicationStateInternal.getEventBus().unregister(this);
     }
 
     /**

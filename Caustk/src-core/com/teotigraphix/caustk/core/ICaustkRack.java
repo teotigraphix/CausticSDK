@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
@@ -48,12 +49,14 @@ import com.teotigraphix.caustk.node.sequencer.SequencerNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public interface ICaustkRack extends ISoundGenerator, IRackEventBus {
+public interface ICaustkRack extends ISoundGenerator {
 
     /**
      * Returns whether the rack has a valid {@link RackNode} backing state.
      */
     boolean isLoaded();
+
+    EventBus getEventBus();
 
     ICaustkSerializer getSerializer();
 

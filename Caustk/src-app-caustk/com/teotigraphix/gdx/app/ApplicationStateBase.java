@@ -21,6 +21,7 @@ package com.teotigraphix.gdx.app;
 
 import java.io.IOException;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.CaustkProject;
 import com.teotigraphix.gdx.controller.IFileManager;
@@ -50,22 +51,19 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
         return uiModel;
     }
 
+    //----------------------------------
+    // eventBus
+    //----------------------------------
+
+    /**
+     * The application's gloabl {@link EventBus}.
+     */
+    @Override
+    public final EventBus getEventBus() {
+        return getApplication().getEventBus();
+    }
+
     public ApplicationStateBase() {
-    }
-
-    @Override
-    public void post(Object event) {
-        getEventBus().post(event);
-    }
-
-    @Override
-    public void register(Object instance) {
-        getEventBus().register(instance);
-    }
-
-    @Override
-    public void unregister(Object instance) {
-        getEventBus().unregister(instance);
     }
 
     // Called from ApplicationController.startup() before startScene() and startUI()

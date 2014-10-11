@@ -19,6 +19,7 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
 
@@ -46,6 +47,11 @@ public interface ICaustkApplication extends IApplication {
      */
     @Override
     ICaustkScene getScene();
+
+    /**
+     * The event bus the {@link ICaustkRack} dispatches from.
+     */
+    EventBus getRackEventBus();
 
     /**
      * Sets the current scene.

@@ -19,18 +19,6 @@ public abstract class SoundPaneBehavior extends CaustkBehavior {
     public SoundPaneBehavior() {
     }
 
-    @Override
-    public void onAwake() {
-        super.onAwake();
-        getRack().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getRack().unregister(this);
-    }
-
     public SoundPane create() {
         view = new SoundPane(getSkin());
         view.create(StylesDefault.SoundPane);

@@ -298,7 +298,7 @@ public abstract class NodeBase implements ICaustkNode {
      * @param event The {@link NodeEvent}.
      */
     protected void post(NodeEvent event) {
-        getRack().post(event);
+        getRack().getEventBus().post(event);
     }
 
     /**

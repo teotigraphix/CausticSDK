@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -84,6 +85,11 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     @Override
     public ICaustkRack getRack() {
         return runtime.getRack();
+    }
+
+    @Override
+    public EventBus getRackEventBus() {
+        return runtime.getRack().getEventBus();
     }
 
     @Override

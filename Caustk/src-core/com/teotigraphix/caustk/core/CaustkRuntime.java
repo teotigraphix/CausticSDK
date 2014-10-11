@@ -107,7 +107,7 @@ public class CaustkRuntime implements ICaustkRuntime {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                getRack().post(event);
+                getRack().getEventBus().post(event);
             }
         });
     }

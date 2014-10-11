@@ -3,7 +3,6 @@ package com.teotigraphix.gdx.groove.ui.behavior;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.CaustkBehavior;
 import com.teotigraphix.gdx.app.SceneManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap.TopBarViewStackLayout;
@@ -17,7 +16,6 @@ import com.teotigraphix.gdx.groove.ui.model.UIModel.UIModelEvent;
 /**
  * Manages the TopBar, BottomBar and ViewPane transitions.
  */
-@Singleton
 public class TopBarViewStackBehavior extends CaustkBehavior {
 
     //--------------------------------------------------------------------------

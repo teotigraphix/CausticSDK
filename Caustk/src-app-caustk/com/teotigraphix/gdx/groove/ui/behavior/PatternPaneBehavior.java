@@ -2,7 +2,6 @@
 package com.teotigraphix.gdx.groove.ui.behavior;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import com.teotigraphix.caustk.node.RackNode.RackNodeSelectionEvent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode.PatternNodeNumMeasuresEvent;
@@ -10,31 +9,15 @@ import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent.PatternSequencerNodeBankEvent;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent.PatternSequencerNodePatternEvent;
 import com.teotigraphix.gdx.app.CaustkBehavior;
-import com.teotigraphix.gdx.app.IApplicationState;
 import com.teotigraphix.gdx.groove.ui.components.PatternPane;
 import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 
 public abstract class PatternPaneBehavior extends CaustkBehavior {
 
-    @Inject
-    private IApplicationState applicationState;
-
     private PatternPane view;
 
     public PatternPaneBehavior() {
-    }
-
-    @Override
-    public void onAwake() {
-        super.onAwake();
-        getRack().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getRack().unregister(this);
     }
 
     public PatternPane create() {

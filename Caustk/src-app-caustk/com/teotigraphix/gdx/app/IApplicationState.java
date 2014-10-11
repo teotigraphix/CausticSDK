@@ -19,18 +19,19 @@
 
 package com.teotigraphix.gdx.app;
 
+import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.gdx.groove.ui.model.IUIModel;
 
 public interface IApplicationState extends IApplicationComponent {
+
     IUIModel getUI();
 
     Model getModel();
 
-    void post(Object event);
-
-    void register(Object instance);
-
-    void unregister(Object instance);
+    /**
+     * The application's global {@link EventBus}.
+     */
+    EventBus getEventBus();
 
 }
