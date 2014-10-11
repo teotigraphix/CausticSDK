@@ -3,18 +3,23 @@ package com.teotigraphix.gdx.controller;
 
 public interface IViewManager {
 
-    //    void create();
-    //
-    //    void load(Map<Integer, ViewBase> views);
     ViewBase getSelectedView();
 
-    void setSelectedViewId(int selectedViewId);
-
     ViewBase getView(int index);
+
+    ViewBase getViewById(int index);
 
     //    void addView(ViewBase view);
     //
     //    ViewBase removeView(ViewBase view);
+
+    void onArrowUp(boolean down);
+
+    void onArrowRight(boolean down);
+
+    void onArrowLeft(boolean down);
+
+    void onArrowDown(boolean down);
 
     public static enum ViewManagerEventKind {
         ViewAdd,
@@ -37,5 +42,17 @@ public interface IViewManager {
         }
 
     }
+
+    void addFlushListener(IViewManagerFlushListener listener);
+
+    void removeFlushListener(IViewManagerFlushListener listener);
+
+    public interface IViewManagerFlushListener {
+        void flush();
+    }
+
+    void setSelectedView(int index);
+
+    void flush();
 
 }

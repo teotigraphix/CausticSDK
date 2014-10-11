@@ -1,7 +1,45 @@
 
 package com.teotigraphix.gdx.groove.ui.factory;
 
+import com.badlogic.gdx.graphics.Color;
+import com.teotigraphix.caustk.core.MachineType;
+
 public class StylesDefault {
+
+    /*
+    SubSynth 79, 161, 204
+    PCMSynth 189, 228, 138
+    Bassline 253, 253, 253
+    Beatobx  178, 144, 119
+    PadSynth 252, 252, 177
+    BitSynth 210, 198, 160
+    Modular  113, 113, 113
+    Organ    174, 77, 7
+    Vocoder  189, 89, 89
+    FMSynth  75, 200, 196
+    KSSynth  141, 145, 113
+    */
+    public static final Color Color_SubSynth = new Color(79f / 256f, 161f / 256f, 204f / 256f, 1f);
+
+    public static final Color Color_PCMSynth = new Color(189f / 256f, 228f / 256f, 138f / 256f, 1f);
+
+    public static final Color Color_Bassline = new Color(253f / 256f, 253f / 256f, 253f / 256f, 1f);
+
+    public static final Color Color_Beatbox = new Color(178f / 256f, 144f / 256f, 119f / 256f, 1f);
+
+    public static final Color Color_PadSynth = new Color(252f / 256f, 252f / 256f, 177f / 256f, 1f);
+
+    public static final Color Color_BitSynth = new Color(210f / 256f, 198f / 256f, 160f / 256f, 1f);
+
+    public static final Color Color_Modular = new Color(113f / 256f, 113f / 256f, 113f / 256f, 1f);
+
+    public static final Color Color_Organ = new Color(174f / 256f, 77f / 256f, 7f / 256f, 1f);
+
+    public static final Color Color_Vocoder = new Color(189f / 256f, 89f / 256f, 89f / 256f, 1f);
+
+    public static final Color Color_FMSynth = new Color(75f / 256f, 200f / 256f, 196f / 256f, 1f);
+
+    public static final Color Color_KSSynth = new Color(141f / 256f, 145f / 256f, 113f / 256f, 1f);
 
     //----------------------------------
     // Font
@@ -266,4 +304,32 @@ public class StylesDefault {
     public static final String DisplayPane = "default";
 
     public static final String DisplayPane_background = "defaults/DisplayPane_background";
+
+    public static Object getMachineColor(MachineType type) {
+        switch (type) {
+            case Bassline:
+                return Color_Bassline;
+            case BeatBox:
+                return Color_Beatbox;
+            case EightBitSynth:
+                return Color_BitSynth;
+            case FMSynth:
+                return Color_FMSynth;
+            case KSSynth:
+                return Color_KSSynth;
+            case Modular:
+                return Color_Modular;
+            case Organ:
+                return Color_Organ;
+            case PCMSynth:
+                return Color_PCMSynth;
+            case PadSynth:
+                return Color_PadSynth;
+            case SubSynth:
+                return Color_SubSynth;
+            case Vocoder:
+                return Color_Vocoder;
+        }
+        return null;
+    }
 }

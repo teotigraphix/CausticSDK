@@ -44,7 +44,7 @@ public class ModePaneBehavior extends CaustkBehavior {
             public void selectedIndexChange(ModePaneEvent event, int index) {
                 getApplication().getLogger().debug("",
                         "View Change " + viewManager.getView(index).getLabel());
-                applicationState.getUI().setViewIndex(index);
+                viewManager.setSelectedView(index);
             }
         });
 

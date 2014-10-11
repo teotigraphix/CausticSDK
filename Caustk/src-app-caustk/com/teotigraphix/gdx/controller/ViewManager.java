@@ -1,6 +1,7 @@
 
 package com.teotigraphix.gdx.controller;
 
+import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ApplicationComponent;
@@ -18,8 +19,9 @@ public class ViewManager extends ApplicationComponent implements IViewManager {
     }
 
     @Override
-    public void setSelectedViewId(int selectedViewId) {
-        uiModel.setSelectedViewId(selectedViewId);
+    public void setSelectedView(int index) {
+        uiModel.setViewIndex(index);
+        flush();
     }
 
     @Override
@@ -27,30 +29,57 @@ public class ViewManager extends ApplicationComponent implements IViewManager {
         return uiModel.getViewByIndex(index);
     }
 
+    @Override
+    public ViewBase getViewById(int viewId) {
+        for (ViewBase view : uiModel.getViews()) {
+            if (view.getId() == viewId)
+                return view;
+        }
+        return null;
+    }
+
     public ViewManager() {
     }
 
-    //    @Override
-    //    public void create() {
-    //    }
-    //
-    //    /**
-    //     * Loads the deserialized views into the manager from the project.
-    //     * 
-    //     * @param views The deserialized views.
-    //     */
-    //    @Override
-    //    public void load(Map<Integer, ViewBase> views) {
-    //        //this.views = views;
-    //    }
+    @Override
+    public void onArrowUp(boolean down) {
+        getSelectedView().onArrowUp(down);
+    }
 
-    //    @Override
-    //    public void addView(ViewBase view) {
-    //        views.put(view.getId(), view);
-    //    }
-    //
-    //    @Override
-    //    public ViewBase removeView(ViewBase view) {
-    //        return views.remove(view.getId());
-    //    }
+    @Override
+    public void onArrowRight(boolean down) {
+        getSelectedView().onArrowRight(down);
+    }
+
+    @Override
+    public void onArrowLeft(boolean down) {
+        getSelectedView().onArrowLeft(down);
+    }
+
+    @Override
+    public void onArrowDown(boolean down) {
+        getSelectedView().onArrowDown(down);
+    }
+
+    @Override
+    public void flush() {
+        ViewBase selectedView = getSelectedView();
+        selectedView.updateArrows();
+
+        for (IViewManagerFlushListener listener : flushListeners) {
+            listener.flush();
+        }
+    }
+
+    private Array<IViewManagerFlushListener> flushListeners = new Array<IViewManagerFlushListener>();
+
+    @Override
+    public void addFlushListener(IViewManagerFlushListener listener) {
+        flushListeners.add(listener);
+    }
+
+    @Override
+    public void removeFlushListener(IViewManagerFlushListener listener) {
+        flushListeners.removeValue(listener, false);
+    }
 }

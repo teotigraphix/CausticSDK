@@ -38,6 +38,7 @@ import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.patch.MixerChannel.OnRackSoloRefresh;
 import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
@@ -374,6 +375,14 @@ public class RackNode extends NodeBase {
             song.delete();
         }
         return file;
+    }
+
+    public void setMute(int machineIndex, boolean selected) {
+        for (MachineNode machineNode : getMachines()) {
+            machineNode.getMixer().setSolo(false, false);
+        }
+        getMachine(machineIndex).getMixer().setMute(selected);
+        post(new OnRackSoloRefresh(null));
     }
 
     public void setSolo(int machineIndex, boolean selected) {

@@ -20,6 +20,7 @@
 package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -97,6 +98,13 @@ public class TextKnob extends Knob {
             // will need some type of rounding
             label.setText(Float.toString(getValue()));
         }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        TextKnobStyle style = getStyle();
+        label.setColor(getColor() != null ? getColor() : style.fontColor);
+        super.draw(batch, parentAlpha);
     }
 
     public static class TextKnobStyle extends KnobStyle {

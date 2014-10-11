@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.gdx.groove.ui.components.PatternPane.PatternPaneStyle;
-import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener.PatternSelectionEvent;
-import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener.PatternSelectionEventKind;
+import com.teotigraphix.gdx.groove.ui.components.SoundSelectionListener.SoundSelectionEvent;
+import com.teotigraphix.gdx.groove.ui.components.SoundSelectionListener.SoundSelectionEventKind;
 
 public class SoundPane extends UITable {
 
@@ -93,9 +93,8 @@ public class SoundPane extends UITable {
                     public void changed(ChangeEvent event, Actor actor) {
                         if (updating)
                             return;
-                        PatternSelectionEvent e = new PatternSelectionEvent(
-                                PatternSelectionEventKind.patternChange);
-                        e.setIndex(index);
+                        SoundSelectionEvent e = new SoundSelectionEvent(
+                                SoundSelectionEventKind.selectedIndexChange, index);
                         fire(e);
                     }
                 });

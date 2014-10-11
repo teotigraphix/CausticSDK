@@ -337,9 +337,9 @@ public class MixerChannel extends MachineComponent {
             MixerChannelMessage.SOLO.send(getRack(), getMachineIndex(), solo ? 1 : 0);
             post(MixerChannelControl.Solo, solo ? 1 : 0);
 
-            if (solo) {
-                post(new OnRackSoloRefresh(this));
-            }
+            //if (solo) {
+            post(new OnRackSoloRefresh(this));
+            //}
         }
     }
 
@@ -413,6 +413,41 @@ public class MixerChannel extends MachineComponent {
 
         MixerChannelMessage.MUTE.send(getRack(), machineIndex, mute ? 1 : 0);
         MixerChannelMessage.SOLO.send(getRack(), machineIndex, solo ? 1 : 0);
+    }
+
+    public void setValue(MixerChannelControl control, float value) {
+        switch (control) {
+            case Bass:
+                setBass(value);
+                break;
+            case DelaySend:
+                setDelaySend(value);
+                break;
+            case High:
+                setHigh(value);
+                break;
+            case Mid:
+                setMid(value);
+                break;
+            case Mute:
+                setMute(value == 0f ? false : true);
+                break;
+            case Pan:
+                setPan(value);
+                break;
+            case ReverbSend:
+                setReverbSend(value);
+                break;
+            case Solo:
+                setSolo(value == 0f ? false : true, true);
+                break;
+            case StereoWidth:
+                setStereoWidth(value);
+                break;
+            case Volume:
+                setVolume(value);
+                break;
+        }
     }
 
     @Override
