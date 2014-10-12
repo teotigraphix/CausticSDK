@@ -305,7 +305,7 @@ public class StylesDefault {
 
     public static final String DisplayPane_background = "defaults/DisplayPane_background";
 
-    public static Object getMachineColor(MachineType type) {
+    public static Color getMachineColor(MachineType type) {
         switch (type) {
             case Bassline:
                 return Color_Bassline;

@@ -29,6 +29,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 
 public class SessionManager {
 
@@ -355,6 +356,26 @@ public class SessionManager {
 
     public void stop(int sceneIndex) {
         sceneManager.stop(sceneIndex);
+    }
+
+    //--------------------------------------------------------------------------
+    // Used in TrackSequencer :: Methods
+    //--------------------------------------------------------------------------
+
+    public int getMeasureCount() {
+        return 200;
+    }
+
+    public List<MachineNode> getChannels() {
+        return new ArrayList<MachineNode>(machines.values());
+    }
+
+    public MachineNode getChannel(int machineIndex) {
+        return machines.get(machineIndex);
+    }
+
+    public TrackEntryNode getEntry(int channelIndex, int startMeasure) {
+        return getChannel(channelIndex).getTrack().getEntry(startMeasure);
     }
 
     public enum SessionManagerEventKind {

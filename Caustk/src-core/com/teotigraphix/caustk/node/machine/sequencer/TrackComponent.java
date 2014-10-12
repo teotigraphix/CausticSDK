@@ -241,6 +241,22 @@ public class TrackComponent extends MachineComponent {
         SequencerMessage.PATTERN_EVENT.send(getRack(), trackEntry.getMachineIndex(),
                 trackEntry.getStartMeasure(), trackEntry.getBankIndex(),
                 trackEntry.getPatternIndex(), trackEntry.getEndMeasure());
+
+        getRack().getEventBus().post(new TrackComponentAddEvent(trackEntry));
+    }
+
+    public static class TrackComponentAddEvent {
+
+        private TrackEntryNode trackEntry;
+
+        public TrackEntryNode getTrackEntry() {
+            return trackEntry;
+        }
+
+        public TrackComponentAddEvent(TrackEntryNode trackEntry) {
+            this.trackEntry = trackEntry;
+        }
+
     }
 
     /**
