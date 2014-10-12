@@ -263,7 +263,8 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
                     presetFile = loadTempPresetFile(libraryInstrument, machineNode);
                     libraryInstrument.setPendingPresetFile(presetFile);
                 }
-                loadPrest(machineNode, libraryInstrument);
+                if (machineType != MachineType.Vocoder)
+                    loadPrest(machineNode, libraryInstrument);
             }
 
             if (importEffects) {

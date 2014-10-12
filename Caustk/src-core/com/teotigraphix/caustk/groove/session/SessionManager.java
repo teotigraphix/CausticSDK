@@ -30,6 +30,7 @@ import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
+import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 
 public class SessionManager {
 
@@ -166,6 +167,7 @@ public class SessionManager {
     public void connect(MachineNode machineNode) {
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "connect() " + machineNode);
         machines.put(machineNode.getIndex(), machineNode);
+        machineNode.setColor(StylesDefault.getMachineColor(machineNode.getType()));
         machineAdded(machineNode);
         CaustkRuntime.getInstance().post(
                 new SessionManagerEvent(SessionManagerEventKind.Connect, this, machineNode));

@@ -1,6 +1,7 @@
 
 package com.teotigraphix.gdx.groove.ui.components;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,6 +12,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.gdx.groove.ui.components.PatternPane.PatternPaneStyle;
 import com.teotigraphix.gdx.groove.ui.components.SoundSelectionListener.SoundSelectionEvent;
 import com.teotigraphix.gdx.groove.ui.components.SoundSelectionListener.SoundSelectionEventKind;
+import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 
 public class SoundPane extends UITable {
 
@@ -107,6 +109,14 @@ public class SoundPane extends UITable {
         }
         updating = false;
         return null;
+    }
+
+    public void redraw(MachineNode machineNode) {
+        TextButton button = (TextButton)gridGroup.getButtons().get(machineNode.getIndex());
+        Color color = StylesDefault.getMachineColor(machineNode.getType());
+        if (color != null)
+            button.setColor(color);
+
     }
 
 }

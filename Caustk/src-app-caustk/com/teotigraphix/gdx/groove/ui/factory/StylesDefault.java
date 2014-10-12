@@ -277,24 +277,6 @@ public class StylesDefault {
     public static final String PatternPane_Pad_disabled = "defaults/PatternPane_Pad_disabled";
 
     //----------------------------------
-    // ScenePane
-    //----------------------------------
-
-    /**
-     * Style.
-     */
-    public static final String ScenePane = "default";
-
-    //----------------------------------
-    // SoundPane
-    //----------------------------------
-
-    /**
-     * Style.
-     */
-    public static final String SoundPane = "default";
-
-    //----------------------------------
     // DisplayPane
     //----------------------------------
 
