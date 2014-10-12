@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.core.factory.LibraryFactory;
 import com.teotigraphix.caustk.core.factory.NodeFactory;
 import com.teotigraphix.caustk.node.ICaustkNode;
-import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -101,6 +100,7 @@ public class CaustkFactory implements ICaustkFactory {
 
     }
 
+    @Override
     public void initialize() throws CausticException {
         try {
             cacheDirectory = getTempDirectory("cache", true);
@@ -128,28 +128,6 @@ public class CaustkFactory implements ICaustkFactory {
         if (clean)
             FileUtils.cleanDirectory(directory);
         return directory;
-    }
-
-    //--------------------------------------------------------------------------
-    // Public Rack Creation API :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    public RackNode createRack() {
-        RackNode rackNode = new RackNode();
-        return rackNode;
-    }
-
-    @Override
-    public RackNode createRack(String relativeOrAbsolutePath) {
-        RackNode rackNode = new RackNode(relativeOrAbsolutePath);
-        return rackNode;
-    }
-
-    @Override
-    public RackNode createRack(File file) {
-        RackNode rackNode = new RackNode(file);
-        return rackNode;
     }
 
     //--------------------------------------------------------------------------

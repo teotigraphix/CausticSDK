@@ -11,6 +11,7 @@ import org.apache.commons.io.FilenameUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackNodeUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -190,7 +191,8 @@ public abstract class Project {
         this.nativePath = nativePath;
         this.name = name;
         id = UUID.randomUUID();
-        this.rackNode = rack.create();
+        // XXX The CaustkRack is the only other place a RackNode is created in fill()
+        this.rackNode = RackNodeUtils.create();
         this.properties = new ProjectProperties();
     }
 

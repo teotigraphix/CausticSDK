@@ -26,6 +26,10 @@ import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 
 public abstract class CaustkScene extends Scene implements ICaustkScene {
 
+    //--------------------------------------------------------------------------
+    // Inject
+    //--------------------------------------------------------------------------
+
     @Inject
     private IApplicationModel applicationModel;
 
@@ -41,17 +45,42 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     @Inject
     private IViewManager viewManager;
 
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // factory
+    //----------------------------------
+
     @Override
     public UIFactory getFactory() {
         return factory;
     }
+
+    //----------------------------------
+    // projectModel
+    //----------------------------------
 
     @Override
     public IProjectModel getProjectModel() {
         return projectModel;
     }
 
-    protected IApplicationModel getApplicationModel() {
+    //----------------------------------
+    // viewManager
+    //----------------------------------
+
+    @Override
+    public IViewManager getViewManager() {
+        return viewManager;
+    }
+
+    //--------------------------------------------------------------------------
+    // Public :: Properties
+    //--------------------------------------------------------------------------
+
+    protected final IApplicationModel getApplicationModel() {
         return applicationModel;
     }
 
@@ -59,13 +88,16 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
         return containerMap;
     }
 
-    @Override
-    public IViewManager getViewManager() {
-        return viewManager;
-    }
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public CaustkScene() {
     }
+
+    //--------------------------------------------------------------------------
+    // Overridden Public :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public void initialize(IApplication application) {

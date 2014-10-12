@@ -24,7 +24,6 @@ import java.io.IOException;
 
 import com.teotigraphix.caustk.core.factory.LibraryFactory;
 import com.teotigraphix.caustk.core.factory.NodeFactory;
-import com.teotigraphix.caustk.node.RackNode;
 
 /**
  * @author Michael Schmalle
@@ -49,28 +48,6 @@ public interface ICaustkFactory {
      * @throws IOException
      */
     File getCacheDirectory(String relativePath);
-
-    /**
-     * Creates and returns a new initialized {@link RackNode}.
-     */
-    RackNode createRack();
-
-    /**
-     * Creates and returns a {@link RackNode} that wraps a <code>.caustic</code>
-     * file.
-     * 
-     * @param relativeOrAbsolutePath The relative or absolute
-     *            <code>.caustic</code> file location.
-     */
-    RackNode createRack(String relativeOrAbsolutePath);
-
-    /**
-     * Creates and returns a {@link RackNode} that wraps a <code>.caustic</code>
-     * file.
-     * 
-     * @param file The <code>.caustic</code> file location.
-     */
-    RackNode createRack(File file);
 
     void initialize() throws CausticException;
 

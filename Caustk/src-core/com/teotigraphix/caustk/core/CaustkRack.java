@@ -34,6 +34,7 @@ import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackNodeUtils;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
@@ -209,26 +210,6 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //--------------------------------------------------------------------------
 
     @Override
-    public RackNode create() {
-        RackNode rackNode = runtime.getFactory().createRack();
-        return rackNode;
-    }
-
-    @Override
-    public RackNode create(String relativeOrAbsolutePath) {
-        RackNode rackNode = runtime.getFactory().createRack(relativeOrAbsolutePath);
-        restore(rackNode);
-        return rackNode;
-    }
-
-    @Override
-    public RackNode create(File file) {
-        RackNode rackNode = runtime.getFactory().createRack(file);
-        restore(rackNode);
-        return rackNode;
-    }
-
-    @Override
     public RackNode fill(File file) throws IOException {
 
         File directory = runtime.getFactory().getCacheDirectory("fills");
@@ -240,7 +221,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
             throw new IOException("failed to save temp .caustic file in fill()");
 
         RackNode oldNode = this.rackNode;
-        RackNode rackNodeFill = runtime.getFactory().createRack(file);
+        RackNode rackNodeFill = RackNodeUtils.create(file);
         this.rackNode = rackNodeFill;
         RackMessage.BLANKRACK.send(this);
         restore(rackNode); // fill the node
@@ -252,20 +233,12 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     @Override
-    public void create(RackNode rackNode) {
-        // the native rack is created based on the state of the node graph
-        // machines/patterns/effects in the node graph get created through OSC
-        setRackNode(rackNode);
-        rackNode.create();
-    }
-
-    @Override
     public void fill(LibraryGroup libraryGroup) throws CausticException, IOException {
-        create(libraryGroup, true, true, true, true);
+        fill(libraryGroup, true, true, true, true);
     }
 
     @Override
-    public RackNode create(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
+    public RackNode fill(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
             boolean importPatterns, boolean importMixer) throws CausticException, IOException {
         //        RackNode rackNode = create();
         // remove all machines, clear rack
@@ -307,11 +280,6 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         }
 
         return rackNode;
-    }
-
-    @Override
-    public MachineNode loadSound(LibrarySound librarySound) {
-        return null;
     }
 
     public void loadPrest(MachineNode machineNode, LibraryInstrument libraryInstrument)
@@ -382,11 +350,6 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     @Override
     public void setProject(Project project) throws IOException {
         setProjectInternal(project);
-    }
-
-    @Override
-    public void setup(RackNode rackNode) {
-        setRackNode(rackNode);
     }
 
     @Override

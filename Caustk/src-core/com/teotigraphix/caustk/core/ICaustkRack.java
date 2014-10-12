@@ -24,9 +24,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
-import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -99,47 +97,6 @@ public interface ICaustkRack extends ISoundGenerator {
 
     SequencerNode getSequencer();
 
-    void fill(LibraryGroup group) throws CausticException, IOException;
-
-    /**
-     * Creates a new {@link RackNode} and returns it.
-     * <p>
-     * This is the only {@link RackNode} creation method that does NOT assign
-     * the node the this rack(which will call {@link RackMessage#BLANKRACK}).
-     * <p>
-     * This method allows for {@link RackNode}s to be created and initialized
-     * before assigning that state to the native rack(this rack).
-     */
-    RackNode create();
-
-    /**
-     * Creates a new {@link RackNode} and returns it.
-     * 
-     * @param relativeOrAbsolutePath The relative or absolute location of the
-     *            <code>.caustic</code> file. The file is for saving, not
-     *            loading with this method. See {@link #create(File)} to restore
-     *            a {@link RackNode} from an existing <code>.caustic</code>
-     *            file.
-     */
-    RackNode create(String relativeOrAbsolutePath);
-
-    /**
-     * Creates a new {@link RackNode} that wraps an existing
-     * <code>.caustic</code> file and returns it.
-     * <p>
-     * After the {@link RackNode} is created, the native rack is cleared with
-     * {@link RackMessage#BLANKRACK} and the {@link RackNode#restore()} method
-     * is called which restores the internal state of the {@link RackNode} with
-     * the state that was loaded into the native rack by the rack node's
-     * <code>.caustic</code> file.
-     * <p>
-     * The rack nod is the on the {@link ICaustkRack}.
-     * 
-     * @param file The <code>.caustic</code> file that will be used to restore
-     *            the {@link RackNode}'s state.
-     */
-    RackNode create(File file);
-
     /**
      * Fills a {@link RackNode} using the .caustic file loaded an restore() on
      * the node structure.
@@ -153,24 +110,11 @@ public interface ICaustkRack extends ISoundGenerator {
     RackNode fill(File file) throws IOException;
 
     /**
-     * Takes the state of the {@link RackNode} and applies it to the
-     * {@link CaustkRack} by creating machines and updating all native rack
-     * state based on the node graph.
-     * <p>
-     * The {@link CaustkRack} is reset, native rack cleared and all machines are
-     * created through OSC and updated through OSC in the node graph.
-     * 
-     * @param rackNode The new rack node state.
-     */
-    void create(RackNode rackNode);
-
-    /**
-     * @param libraryGroup
-     * @return
+     * @param group
      * @throws CausticException
      * @throws IOException
      */
-    // RackNode create(LibraryGroup libraryGroup) throws CausticException, IOException;
+    void fill(LibraryGroup group) throws CausticException, IOException;
 
     /**
      * @param libraryGroup
@@ -182,16 +126,8 @@ public interface ICaustkRack extends ISoundGenerator {
      * @throws CausticException
      * @throws IOException
      */
-    RackNode create(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
+    RackNode fill(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
             boolean importPatterns, boolean importMixer) throws CausticException, IOException;
-
-    /**
-     * Sets up the {@link RackNode} by setting the instance on the
-     * {@link CaustkRack}.
-     * 
-     * @param rackNode A blank rack node.
-     */
-    void setup(RackNode rackNode);
 
     /**
      * Restores a {@link RackNode} state, machines, effects etc.
@@ -218,7 +154,4 @@ public interface ICaustkRack extends ISoundGenerator {
      *            frame.
      */
     void frameChanged(float deltaTime);
-
-    MachineNode loadSound(LibrarySound librarySound);
-
 }
