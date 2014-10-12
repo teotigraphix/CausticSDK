@@ -54,7 +54,9 @@ public class SessionManager {
 
     private int measure;
 
-    private double beat;
+    private int beat;
+
+    private float floatBeat;
 
     private int sixteenth;
 
@@ -63,6 +65,10 @@ public class SessionManager {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    public float getCurrentBeat() {
+        return floatBeat;
+    }
 
     public Scene getSelectedScene() {
         return sceneManager.getScene(selectedSceneBankIndex, selectedSceneMatrixIndex);
@@ -225,7 +231,8 @@ public class SessionManager {
 
     public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
         this.measure = measure;
-        this.beat = Math.floor(beat);
+        this.floatBeat = beat;
+        this.beat = (int)Math.floor(beat);
         this.sixteenth = sixteenth;
 
         onSixteenthChange(measure, sixteenth);
