@@ -118,7 +118,18 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
         flushListeners.removeValue(listener, false);
     }
 
+    @Override
     public void onStartUI() {
+        getEventBus().post(new ViewManagerStartUIEvent());
+    }
 
+    @Override
+    public void onRestartUI() {
+        getEventBus().post(new ViewManagerReStartUIEvent());
+    }
+
+    @Override
+    public void onRefresh() {
+        getEventBus().post(new ViewManagerRefreshUIEvent());
     }
 }

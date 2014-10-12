@@ -304,18 +304,22 @@ public class SessionManager {
      * Stops all clips playing in a scene at the next commit cycle.
      * 
      * @param scene the scene to stop.
+     * @see SessionManagerSceneTransportEvent
      */
     public void stopScene(Scene scene) {
         sceneManager.stop(scene);
+        CaustkRuntime.getInstance().post(new SessionManagerSceneTransportEvent(this, scene, false));
     }
 
     /**
      * Queues then plays all clips of the scene at the next commit cycle.
      * 
      * @param scene the scene to play.
+     * @see SessionManagerSceneTransportEvent
      */
     public void playScene(Scene scene) {
         sceneManager.play(scene);
+        CaustkRuntime.getInstance().post(new SessionManagerSceneTransportEvent(this, scene, true));
     }
 
     /**
@@ -392,6 +396,33 @@ public class SessionManager {
         ClipAdd,
 
         ClipRemove;
+    }
+
+    public static class SessionManagerSceneTransportEvent {
+        private SessionManager manager;
+
+        private Scene scene;
+
+        private boolean playing;
+
+        public SessionManager getManager() {
+            return manager;
+        }
+
+        public Scene getScene() {
+            return scene;
+        }
+
+        public boolean isPlaying() {
+            return playing;
+        }
+
+        public SessionManagerSceneTransportEvent(SessionManager manager, Scene scene,
+                boolean playing) {
+            this.manager = manager;
+            this.scene = scene;
+            this.playing = playing;
+        }
     }
 
     public static class SessionManagerEvent {

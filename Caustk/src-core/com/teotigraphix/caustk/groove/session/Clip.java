@@ -109,10 +109,20 @@ public class Clip {
     }
 
     public boolean hasPattern() {
-        return getPattern().getNotes().size() > 0;
+        PatternNode pattern = findPattern();
+        if (pattern == null)
+            return false;
+        return pattern.getNotes().size() > 0;
+    }
+
+    PatternNode findPattern() {
+        return getMachineNode().getSequencer().findPattern(scene.getBankIndex(),
+                scene.getMatrixIndex());
     }
 
     PatternNode getPattern() {
+        if (!hasPattern())
+            return null;
         return getMachineNode().getSequencer().getPattern(scene.getBankIndex(),
                 scene.getMatrixIndex());
     }
@@ -170,25 +180,35 @@ public class Clip {
     //--------------------------------------------------------------------------
 
     public void clearNoteData() {
+        if (!hasPattern())
+            return;
         PatternNode patternNode = getPattern();
         patternNode.clear();
     }
 
     public void setNoteData(String data) {
+        if (!hasPattern())
+            return;
         PatternNode patternNode = getPattern();
         patternNode.setNoteData(data);
     }
 
     public void setNoteData(ArrayList<NoteNode> notes) {
+        if (!hasPattern())
+            return;
         PatternNode patternNode = getPattern();
         patternNode.setNoteData(notes);
     }
 
     public int getLoopLength() {
+        if (!hasPattern())
+            return -1;
         return getPattern().getNumMeasures();
     }
 
     public void setLoopLength(int length) {
+        if (!hasPattern())
+            return;
         PatternNode patternNode = getPattern();
         patternNode.setNumMeasures(length);
     }

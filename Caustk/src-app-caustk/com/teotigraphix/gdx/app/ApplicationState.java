@@ -89,6 +89,7 @@ public class ApplicationState extends ApplicationStateBase {
     protected void onRestartUI() {
         log(TAG, "onRestartUI()");
         getApplication().startScene();
+        viewManager.onRestartUI();
     }
 
 }

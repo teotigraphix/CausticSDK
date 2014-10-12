@@ -142,8 +142,6 @@ public class SequencerNode extends NodeBase {
      * @see SequencerMessage#SONG_END_MODE
      */
     public final void setSongEndMode(SongEndMode songEndMode) {
-        if (songEndMode == this.songEndMode)
-            return;
         this.songEndMode = songEndMode;
         SequencerMessage.SONG_END_MODE.send(getRack(), songEndMode.getValue());
     }
