@@ -37,15 +37,18 @@ public class SessionManager {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private SceneManager sceneManager;
+    private RackNode rackNode;
 
     @Tag(1)
+    private SceneManager sceneManager;
+
+    @Tag(2)
     private Map<Integer, MachineNode> machines = new HashMap<Integer, MachineNode>();
 
     @Tag(10)
     private int selectedSceneBankIndex;
 
-    @Tag(10)
+    @Tag(11)
     private int selectedSceneMatrixIndex;
 
     private int measure;
@@ -53,8 +56,6 @@ public class SessionManager {
     private double beat;
 
     private int sixteenth;
-
-    private RackNode rackNode;
 
     private boolean locks = true;
 
