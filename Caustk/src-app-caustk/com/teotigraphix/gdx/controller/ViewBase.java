@@ -8,13 +8,15 @@ public class ViewBase {
     @Tag(0)
     private int id;
 
+    @Tag(1)
+    private int index;
+
+    @Tag(2)
+    private String label;
+
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
-
-    private int index;
-
-    private String label;
 
     private boolean canScrollUpFlag;
 
@@ -27,6 +29,18 @@ public class ViewBase {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    public int getId() {
+        return id;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public String getLabel() {
+        return label;
+    }
 
     //----------------------------------
     // model
@@ -64,23 +78,11 @@ public class ViewBase {
         this.canScrollUpFlag = canScrollUp;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    ViewBase() {
+    protected ViewBase() {
     }
 
     public ViewBase(int id, int index, String label) {

@@ -40,11 +40,6 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
 
     private Array<ButtonBarItem> viewButtons;
 
-    //    @Override
-    //    protected String getPreferenceId() {
-    //        return getApplication().getApplicationId() + "/UIModel";
-    //    }
-
     public ProjectState getState() {
         return state;
     }
@@ -52,6 +47,11 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     //----------------------------------
     // project
     //----------------------------------
+
+    @Override
+    public ProjectProperties getProperties() {
+        return project.getProperties();
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -259,4 +259,5 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
     }
+
 }

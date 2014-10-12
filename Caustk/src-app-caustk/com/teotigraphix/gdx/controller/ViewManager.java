@@ -117,4 +117,8 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     public void removeFlushListener(IViewManagerFlushListener listener) {
         flushListeners.removeValue(listener, false);
     }
+
+    public void onStartUI() {
+
+    }
 }

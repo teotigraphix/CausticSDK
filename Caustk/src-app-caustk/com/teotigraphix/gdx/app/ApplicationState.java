@@ -3,6 +3,7 @@ package com.teotigraphix.gdx.app;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.gdx.controller.IViewManager;
 
 @Singleton
 public class ApplicationState extends ApplicationStateBase {
@@ -11,6 +12,9 @@ public class ApplicationState extends ApplicationStateBase {
 
     @Inject
     private IApplicationModel applicationModel;
+
+    @Inject
+    private IViewManager viewManager;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -78,6 +82,7 @@ public class ApplicationState extends ApplicationStateBase {
     @Override
     protected void onStartUI() {
         log(TAG, "onStartUI()");
+        viewManager.onStartUI();
     }
 
     @Override

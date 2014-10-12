@@ -26,12 +26,15 @@ public abstract class Project {
     //--------------------------------------------------------------------------
 
     @Tag(0)
+    private ProjectProperties properties;
+
+    @Tag(5)
     private UUID id;
 
-    @Tag(1)
+    @Tag(6)
     private String nativePath; // XXX This is dangerous, do you really want to hold onto this?
 
-    @Tag(2)
+    @Tag(7)
     private String name;
 
     @Tag(10)
@@ -46,6 +49,10 @@ public abstract class Project {
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
+
+    public ProjectProperties getProperties() {
+        return properties;
+    }
 
     //----------------------------------
     // rack
@@ -184,6 +191,7 @@ public abstract class Project {
         this.name = name;
         id = UUID.randomUUID();
         this.rackNode = rack.create();
+        this.properties = new ProjectProperties();
     }
 
     /**

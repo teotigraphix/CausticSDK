@@ -73,6 +73,8 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     private Injector injector;
 
+    protected boolean flushApplicationDirectory;
+
     //--------------------------------------------------------------------------
     // IGdxApplication API :: Properties
     //--------------------------------------------------------------------------
@@ -165,11 +167,13 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
             getLogger().log("Rack", "initialize()");
             runtime.getRack().initialize();
 
-            try {
-                FileUtils.forceDelete(RuntimeUtils.getApplicationDirectory());
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            if (flushApplicationDirectory) {
+                try {
+                    FileUtils.forceDelete(RuntimeUtils.getApplicationDirectory());
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
 
             getLogger().log("Rack", "onStart()");

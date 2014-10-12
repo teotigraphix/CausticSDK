@@ -150,6 +150,7 @@ import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 import com.teotigraphix.gdx.app.Project;
+import com.teotigraphix.gdx.app.ProjectProperties;
 
 /*
 TaggedFieldSerializer only serializes fields that have a @Tag annotation. 
@@ -422,6 +423,9 @@ public final class CaustkSerializerTags {
         kryo.register(Clip.class, 954);
         kryo.register(Clip.ClipState.class, 955);
         kryo.register(ClipInfo.class, 956);
+
+        kryo.register(ProjectProperties.class, 960);
+        //kryo.register(Project.class, 1001);
     }
 
     public static class UUIDSerializer extends Serializer<UUID> {

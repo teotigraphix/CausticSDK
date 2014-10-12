@@ -13,6 +13,8 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
  */
 public interface IProjectModel {
 
+    ProjectProperties getProperties();
+
     //--------------------------------------------------------------------------
     // Properties
     //--------------------------------------------------------------------------

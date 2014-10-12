@@ -99,6 +99,8 @@ public interface ICaustkRack extends ISoundGenerator {
 
     SequencerNode getSequencer();
 
+    void fill(LibraryGroup group) throws CausticException, IOException;
+
     /**
      * Creates a new {@link RackNode} and returns it.
      * <p>
@@ -168,7 +170,7 @@ public interface ICaustkRack extends ISoundGenerator {
      * @throws CausticException
      * @throws IOException
      */
-    RackNode create(LibraryGroup libraryGroup) throws CausticException, IOException;
+    // RackNode create(LibraryGroup libraryGroup) throws CausticException, IOException;
 
     /**
      * @param libraryGroup

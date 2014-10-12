@@ -61,4 +61,6 @@ public interface IViewManager {
 
     AbstractDisplay getDisplay();
 
+    void onStartUI();
+
 }
