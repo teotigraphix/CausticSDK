@@ -209,16 +209,22 @@ public class SessionManager {
         this.sixteenth = sixteenth;
 
         System.out.println("m:" + measure + ", s:" + sixteenth); // 0, 4, 8, 12, 0, ...
-        if (measure == 0 && sixteenth == 0) {
-            this.measure = -1;
-            start();
-            this.measure = 0;
-        } else if (sixteenth == 12) {
-            // 1 bar measure change on next beat
-            commitClips();
-        } else if (sixteenth == 15) {
-            refreshClips();
+
+        if (getRackNode().getSequencer().isRecording()) {
+            if (measure == 0 && sixteenth == 0) {
+                this.measure = -1;
+                start();
+                this.measure = 0;
+            } else if (sixteenth == 12) {
+                // 1 bar measure change on next beat
+                commitClips();
+            } else if (sixteenth == 15) {
+                refreshClips();
+            }
+        } else {
+
         }
+
     }
 
     private void commitClips() {

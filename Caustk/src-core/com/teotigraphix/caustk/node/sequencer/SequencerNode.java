@@ -49,7 +49,7 @@ public class SequencerNode extends NodeBase {
     private RackNode rackNode;
 
     @Tag(51)
-    private boolean isPlaying = false;
+    private boolean playing = false;
 
     @Tag(52)
     private SequencerMode sequencerMode = SequencerMode.Pattern;
@@ -66,6 +66,9 @@ public class SequencerNode extends NodeBase {
     @Tag(56)
     private float shuffleAmount = 0f;
 
+    @Tag(75)
+    private boolean recording = false;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -79,16 +82,16 @@ public class SequencerNode extends NodeBase {
      * sequencer.
      */
     public final boolean isPlaying() {
-        return isPlaying;
+        return playing;
     }
 
-    final void setIsPlaying(boolean isPlaying) {
-        if (isPlaying == this.isPlaying)
+    final void setPlaying(boolean playing) {
+        if (playing == this.playing)
             return;
-        this.isPlaying = isPlaying;
-        OutputPanelMessage.PLAY.send(getRack(), isPlaying ? 1 : 0);
+        this.playing = playing;
+        OutputPanelMessage.PLAY.send(getRack(), playing ? 1 : 0);
         resetPostion();
-        post(new SequencerNodeTransportChangeEvent(this, isPlaying));
+        post(new SequencerNodeTransportChangeEvent(this, playing, recording));
     }
 
     //----------------------------------
@@ -233,6 +236,31 @@ public class SequencerNode extends NodeBase {
     }
 
     //----------------------------------
+    // recording
+    //----------------------------------
+
+    /**
+     * Returns whether the output panel is playing the pattern or song
+     * sequencer.
+     */
+    public final boolean isRecording() {
+        return recording;
+    }
+
+    /**
+     * Sets recording state.
+     * 
+     * @param recording Whether recording.
+     * @see SequencerNodeTransportChangeEvent
+     */
+    public final void setRecording(boolean recording) {
+        if (recording == this.recording)
+            return;
+        this.recording = recording;
+        post(new SequencerNodeTransportChangeEvent(this, playing, recording));
+    }
+
+    //----------------------------------
     // track
     //----------------------------------
 
@@ -319,7 +347,7 @@ public class SequencerNode extends NodeBase {
      */
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
-        setIsPlaying(true);
+        setPlaying(true);
     }
 
     /**
@@ -327,11 +355,11 @@ public class SequencerNode extends NodeBase {
      */
     public void restart(SequencerMode mode) {
         setSequencerMode(mode);
-        isPlaying = false;
+        playing = false;
         resetPostion();
-        isPlaying = true;
+        playing = true;
         OutputPanelMessage.PLAY.send(getRack(), 1);
-        post(new SequencerNodeTransportChangeEvent(this, isPlaying));
+        post(new SequencerNodeTransportChangeEvent(this, playing, recording));
     }
 
     /**
@@ -340,7 +368,7 @@ public class SequencerNode extends NodeBase {
      * @see SequencerNodeTransportChangeEvent
      */
     public void stop() {
-        setIsPlaying(false);
+        setPlaying(false);
     }
 
     /**
@@ -572,7 +600,7 @@ public class SequencerNode extends NodeBase {
     }
 
     private void resetPostion() {
-        if (!isPlaying) {
+        if (!playing) {
             currentBeat = -1;
             currentFloatBeat = -1f;
             currentMeasure = -1;
@@ -794,15 +822,23 @@ public class SequencerNode extends NodeBase {
     }
 
     public static class SequencerNodeTransportChangeEvent extends NodeEvent {
-        private boolean isPlaying;
+
+        private boolean playing;
+
+        private boolean recording;
 
         public boolean isPlaying() {
-            return isPlaying;
+            return playing;
         }
 
-        public SequencerNodeTransportChangeEvent(NodeBase target, boolean isPlaying) {
+        public boolean isRecording() {
+            return recording;
+        }
+
+        public SequencerNodeTransportChangeEvent(NodeBase target, boolean playing, boolean recording) {
             super(target);
-            this.isPlaying = isPlaying;
+            this.playing = playing;
+            this.recording = recording;
         }
     }
 
@@ -821,7 +857,7 @@ public class SequencerNode extends NodeBase {
 
     @Override
     public String toString() {
-        return "SequencerNode [isPlaying=" + isPlaying + ", sequencerMode=" + sequencerMode
+        return "SequencerNode [isPlaying=" + playing + ", sequencerMode=" + sequencerMode
                 + ", songEndMode=" + songEndMode + ", bpm=" + bpm + ", shuffleMode=" + shuffleMode
                 + ", shuffleAmount=" + shuffleAmount + "]";
     }

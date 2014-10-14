@@ -22,7 +22,7 @@ package com.teotigraphix.gdx.scene2d.ui;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ToggleButtonInternal;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Scaling;
 
@@ -36,7 +36,7 @@ import com.badlogic.gdx.utils.Scaling;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ToggleButton extends TextButton {
+public class ToggleButton extends ToggleButtonInternal {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -97,7 +97,7 @@ public class ToggleButton extends TextButton {
     //--------------------------------------------------------------------------
 
     public ToggleButton(String text, Skin skin) {
-        this(text, skin.get("default-toggle", TextButtonStyle.class));
+        super(text, skin);
     }
 
     public ToggleButton(String text, TextButtonStyle style) {
@@ -111,18 +111,6 @@ public class ToggleButton extends TextButton {
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
-
-    /**
-     * Checks the button without dispatching a {@link ChangeEvent} event.
-     * 
-     * @param checked Whether the ui shows checked or unchecked.
-     */
-    public void check(boolean checked) {
-        // event is not posted when widget is disabled
-        setDisabled(true);
-        setChecked(checked);
-        setDisabled(false);
-    }
 
     @Override
     public void layout() {
