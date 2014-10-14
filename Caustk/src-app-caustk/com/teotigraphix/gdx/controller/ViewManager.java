@@ -96,10 +96,13 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     @Override
     public void flush() {
         ViewBase selectedView = getSelectedView();
-        selectedView.updateArrows();
+        if (selectedView != null)
+            selectedView.updateArrows();
 
-        getDisplay().flush();
-        getSubDisplay().flush();
+        if (getDisplay() != null) {
+            getDisplay().flush();
+            getSubDisplay().flush();
+        }
 
         for (IViewManagerFlushListener listener : flushListeners) {
             listener.flush();
