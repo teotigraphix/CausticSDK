@@ -1,5 +1,5 @@
 
-package com.teotigraphix.gdx.groove.core;
+package com.teotigraphix.gdx.groove.app;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
