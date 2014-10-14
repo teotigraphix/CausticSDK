@@ -14,6 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternUtils;
 import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener.PatternSelectionEvent;
 import com.teotigraphix.gdx.groove.ui.components.PatternSelectionListener.PatternSelectionEventKind;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
@@ -94,6 +97,28 @@ public class PatternPane extends UITable {
     //--------------------------------------------------------------------------
     // Public Method :: API
     //--------------------------------------------------------------------------
+
+    public void redraw(MachineNode machineNode) {
+        setDisabled(machineNode == null);
+
+        if (machineNode == null)
+            return;
+
+        PatternSequencerComponent sequencer = machineNode.getSequencer();
+        int bankIndex = sequencer.getSelectedBankIndex();
+        int patternIndex = sequencer.getSelectedPatternIndex();
+
+        selectBank(bankIndex);
+        selectPattern(patternIndex);
+        selectLength(sequencer.getSelectedPattern().getNumMeasures());
+
+        //PatternNode pattern = sequencer.getPattern(bankIndex, patternIndex);
+        for (Button button : gridGroup.getButtons()) {
+            TextButton textButton = (TextButton)button;
+            int index = (Integer)textButton.getUserObject();
+            textButton.setText(PatternUtils.toString(bankIndex, index));
+        }
+    }
 
     public void setDisabled(boolean disabled) {
         if (disabled == this.disabled)
@@ -177,6 +202,7 @@ public class PatternPane extends UITable {
         for (int i = 0; i < 16; i++) {
             final int index = i;
             TextButton button = new TextButton("", style.padButtonStyle);
+            button.setUserObject(index);
             button.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -223,4 +249,5 @@ public class PatternPane extends UITable {
         }
 
     }
+
 }
