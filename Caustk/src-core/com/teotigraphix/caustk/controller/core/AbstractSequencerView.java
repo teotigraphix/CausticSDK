@@ -2,11 +2,12 @@
 package com.teotigraphix.caustk.controller.core;
 
 import com.teotigraphix.caustk.controller.daw.CursorClipProxy;
-import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.caustk.controller.helper.Scales;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode.Resolution;
+import com.teotigraphix.gdx.controller.IViewManager;
+import com.teotigraphix.gdx.controller.ViewBase;
 
-public class AbstractSequencerView extends AbstractView {
+public class AbstractSequencerView extends ViewBase {
 
     private Resolution[] noteResolutions;
 
@@ -21,6 +22,10 @@ public class AbstractSequencerView extends AbstractView {
     private int offsetX;
 
     private int offsetY;
+
+    private int rows;
+
+    private int cols;
 
     public final Resolution getNoteResolution() {
         return noteResolutions[selectedIndex];
@@ -74,8 +79,10 @@ public class AbstractSequencerView extends AbstractView {
         this.offsetY = offsetY;
     }
 
-    public AbstractSequencerView(Model model, Scales scales, int rows, int cols) {
-        super(model);
+    public AbstractSequencerView(Scales scales, int rows, int cols) {
+        super();
+        this.rows = rows;
+        this.cols = cols;
         //  1/4    1/4t     1/8      1/8t    1/16      1/16t    1/32      1/32t
         // [1.0, 0.6666667, 0.5, 0.33333334, 0.25, 0.16666667, 0.125, 0.083333336]
         this.noteResolutions = new Resolution[] {
@@ -92,8 +99,15 @@ public class AbstractSequencerView extends AbstractView {
         this.offsetX = 0;
         this.offsetY = 0;
 
-        this.clip = getModel().createCursorClip(cols, rows);
-        this.clip.setStepGate(this.resolutions[this.selectedIndex]);
+    }
+
+    @Override
+    public void attachTo(IViewManager viewManager) {
+        super.attachTo(viewManager);
+
+        this.clip = new CursorClipProxy(cols, rows);
+        this.clip.setViewManager(viewManager);
+        this.clip.setStepGate(resolutions[selectedIndex]);
     }
 
     @Override
@@ -102,6 +116,11 @@ public class AbstractSequencerView extends AbstractView {
     }
 
     protected boolean isInXRange(int x) {
-        return x >= this.offsetX && x < this.offsetX + this.clip.getStepSize(); //1/4
+        return x >= offsetX && x < offsetX + clip.getStepSize(); //1/4
+    }
+
+    public void drawGrid() {
+        // TODO Auto-generated method stub
+
     }
 }

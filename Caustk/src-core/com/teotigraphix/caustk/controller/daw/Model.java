@@ -108,8 +108,4 @@ public class Model {
         surface.flush(forceRefresh);
     }
 
-    public CursorClipProxy createCursorClip(int cols, int rows) {
-        return new CursorClipProxy(this, cols, rows);
-    }
-
 }

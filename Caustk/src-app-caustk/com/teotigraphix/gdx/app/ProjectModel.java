@@ -10,7 +10,10 @@ import java.util.Comparator;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.controller.IFileManager;
+import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
@@ -25,6 +28,22 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
 
     @Inject
     private IFileManager fileManager;
+
+    @Inject
+    private IViewManager viewManager;
+
+    @Override
+    public MachineNode getSelectedMachine() {
+        return project.getRackNode().getSelectedMachine();
+    }
+
+    @Override
+    public PatternNode getSelectedPattern() {
+        MachineNode selectedMachine = getSelectedMachine();
+        if (selectedMachine == null)
+            return null;
+        return selectedMachine.getSequencer().getSelectedPattern();
+    }
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -258,6 +277,8 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
 
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
+
+        viewManager.restore(state);
     }
 
 }

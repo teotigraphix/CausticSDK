@@ -68,7 +68,7 @@ public class SequencerView extends AbstractSequencerView {
 
     @Override
     protected void setOffsetX(int offsetX) {
-        PatternNode patternNode = getModel().getMachineBank().getSelectedPattern();
+        PatternNode patternNode = getViewManager().getSelectedPattern();
         int totalStepsInMeasure = Resolution.toSteps(getNoteResolution())
                 * patternNode.getNumMeasures();
 
@@ -94,16 +94,13 @@ public class SequencerView extends AbstractSequencerView {
      * @param model
      * @param displayColums Number of columns in the 'grid' eg 8 or 16.
      */
-    public SequencerView(Model model, Scales scales, int displayColumns, int displayRows) {
-        super(model, scales, 128, displayColumns);
+    public SequencerView(Scales scales, int displayColumns, int displayRows) {
+        super(scales, 128, displayColumns);
         // the displayColumns is the view, not the internal calc above of 128
         this.displayColumns = displayColumns;
         this.displayRows = displayRows;
 
         setOffsetY(midiRoot);
-        // XXX This would call out to the main app to set the scroll position of a 
-        // piano roll or something
-        getClip().scrollTo(0, midiRoot);
     }
 
     //--------------------------------------------------------------------------
@@ -116,10 +113,11 @@ public class SequencerView extends AbstractSequencerView {
     @Override
     public void onActivate() {
         updateScale();
+        // piano roll or something
+        getClip().scrollTo(0, midiRoot);
         super.onActivate();
     }
 
-    @Override
     public void onGridNote(int note, int velocity) {
         if (velocity == 0)
             return;
@@ -181,10 +179,10 @@ public class SequencerView extends AbstractSequencerView {
                 color = Colors.Orange.getColor();
             }
 
-            getSurface().getPads().lightEx(x, y, color);
+            getViewManager().getPads().lightEx(x, y, color);
         } else {
 
-            getSurface().getPads().lightEx(x, y, Model.PUSH_COLOR2_BLACK);
+            getViewManager().getPads().lightEx(x, y, Model.PUSH_COLOR2_BLACK);
         }
     }
 
@@ -217,14 +215,14 @@ public class SequencerView extends AbstractSequencerView {
         setOffsetY(Math.max(0, getOffsetY() - numOctaves));
         updateScale();
         String text = getScales().getSequencerRangeText(noteMap[0], noteMap[displayRows - 1]);
-        getSurface().getSubDisplay().showNotification(text);
+        getViewManager().getSubDisplay().showNotification(text);
     }
 
     public void scrollUp(ButtonEvent event) {
         setOffsetY(Math.min(this.getClip().getRowSize() - numOctaves, getOffsetY() + numOctaves));
         updateScale();
         String text = this.getScales().getSequencerRangeText(noteMap[0], noteMap[displayRows - 1]);
-        getSurface().getSubDisplay().showNotification(text);
+        getViewManager().getSubDisplay().showNotification(text);
     }
 
     protected void updateScale() {
@@ -234,4 +232,5 @@ public class SequencerView extends AbstractSequencerView {
         noteMap = can ? getScales().getSequencerMatrix(displayRows, getOffsetY()) : getScales()
                 .getEmptyMatrix();
     }
+
 }

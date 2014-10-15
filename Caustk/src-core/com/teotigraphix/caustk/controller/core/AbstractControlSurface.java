@@ -8,10 +8,8 @@ import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.caustk.controller.helper.AbstractGrid;
 import com.teotigraphix.caustk.controller.helper.Scales;
-import com.teotigraphix.caustk.controller.helper.Scales.ScaleSelection;
 import com.teotigraphix.caustk.controller.sequencer.SequencerView;
 import com.teotigraphix.caustk.core.ICaustkRack;
-import com.teotigraphix.caustk.core.midi.NoteReference;
 
 public abstract class AbstractControlSurface {
 
@@ -110,20 +108,20 @@ public abstract class AbstractControlSurface {
     //    }
 
     public void onMachineAdd(int index, int midiRoot) {
-        int gridSize = model.getGridSize();
-        int columns = model.getNumColumns();
-        int rows = model.getNumRows();
-
-        Scales scale = new Scales(midiRoot, midiRoot + (columns * columns), columns, rows);
-        scale.setSelectdScale(ScaleSelection.MinorPentatonic);
-        scale.setRootKey(NoteReference.D);
-        scales.add(scale);
-
-        SequencerView sequencerView = new SequencerView(model, scale, columns, rows);
-        sequencerView.attachTo(this);
-        sequencerView.setGridLayout(gridSize, gridSize);
-        sequencerView.onActivate();
-        sequencers.add(sequencerView);
+        //        int gridSize = model.getGridSize();
+        //        int columns = model.getNumColumns();
+        //        int rows = model.getNumRows();
+        //
+        //        Scales scale = new Scales(midiRoot, midiRoot + (columns * columns), columns, rows);
+        //        scale.setSelectdScale(ScaleSelection.MinorPentatonic);
+        //        scale.setRootKey(NoteReference.D);
+        //        scales.add(scale);
+        //
+        //        SequencerView sequencerView = new SequencerView(model, scale, columns, rows);
+        //        sequencerView.attachTo(this);
+        //        sequencerView.setGridLayout(gridSize, gridSize);
+        //        sequencerView.onActivate();
+        //        sequencers.add(sequencerView);
     }
 
     //--------------------------------------------------------------------------

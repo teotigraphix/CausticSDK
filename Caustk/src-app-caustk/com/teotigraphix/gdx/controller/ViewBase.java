@@ -2,6 +2,7 @@
 package com.teotigraphix.gdx.controller;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class ViewBase {
 
@@ -25,6 +26,12 @@ public class ViewBase {
     private boolean canScrollLeftFlag;
 
     private boolean canScrollDownFlag;
+
+    private IViewManager viewManager;
+
+    public IViewManager getViewManager() {
+        return viewManager;
+    }
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -89,6 +96,14 @@ public class ViewBase {
         this.id = id;
         this.index = index;
         this.label = label;
+    }
+
+    public void attachTo(IViewManager viewManager) {
+        this.viewManager = viewManager;
+    }
+
+    public void onMachineAdd(MachineNode machineNode) {
+
     }
 
     public void onArrowUp(boolean down) {

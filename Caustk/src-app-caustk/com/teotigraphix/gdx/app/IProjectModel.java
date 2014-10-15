@@ -4,6 +4,8 @@ package com.teotigraphix.gdx.app;
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
@@ -12,6 +14,10 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
  * The {@link IApplicationModel} loads and sets the {@link #getProject()}.
  */
 public interface IProjectModel {
+
+    MachineNode getSelectedMachine();
+
+    PatternNode getSelectedPattern();
 
     ProjectProperties getProperties();
 

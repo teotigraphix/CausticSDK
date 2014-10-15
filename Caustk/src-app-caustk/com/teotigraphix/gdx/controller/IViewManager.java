@@ -2,10 +2,18 @@
 package com.teotigraphix.gdx.controller;
 
 import com.teotigraphix.caustk.controller.core.AbstractDisplay;
+import com.teotigraphix.caustk.controller.core.AbstractSequencerView;
+import com.teotigraphix.caustk.controller.helper.AbstractGrid;
 import com.teotigraphix.caustk.groove.session.SceneManager;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.CaustkApplication;
+import com.teotigraphix.gdx.app.ProjectState;
 
 public interface IViewManager {
+
+    PatternNode getSelectedPattern();
+
+    AbstractSequencerView getSequencerView();
 
     ViewBase getSelectedView();
 
@@ -59,9 +67,15 @@ public interface IViewManager {
 
     void flush();
 
+    void flush(boolean force);
+
     AbstractDisplay getSubDisplay();
 
     AbstractDisplay getDisplay();
+
+    AbstractGrid getPads();
+
+    void restore(ProjectState state);
 
     /**
      * Called when projects are loaded and the ui needs a clean redraw.
@@ -95,4 +109,7 @@ public interface IViewManager {
 
     public static class ViewManagerRefreshUIEvent {
     }
+
+    boolean isCurrent(int viewId);
+
 }

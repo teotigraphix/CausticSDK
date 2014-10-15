@@ -1,10 +1,15 @@
 
 package com.teotigraphix.gdx.controller;
 
+import java.util.Collection;
+
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.core.AbstractDisplay;
+import com.teotigraphix.caustk.controller.core.AbstractSequencerView;
+import com.teotigraphix.caustk.controller.helper.AbstractGrid;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.app.IProjectModel;
 
@@ -14,9 +19,36 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     @Inject
     private IProjectModel projectModel;
 
+    private AbstractGrid pads;
+
     private AbstractDisplay display;
 
     private AbstractDisplay subDisplay;
+
+    public IProjectModel getProjectModel() {
+        return projectModel;
+    }
+
+    @Override
+    public PatternNode getSelectedPattern() {
+        return projectModel.getSelectedPattern();
+    }
+
+    @Override
+    public AbstractSequencerView getSequencerView() {
+        if (getSelectedView() instanceof AbstractSequencerView)
+            return (AbstractSequencerView)getSelectedView();
+        return null;
+    }
+
+    @Override
+    public AbstractGrid getPads() {
+        return pads;
+    }
+
+    public void setPads(AbstractGrid pads) {
+        this.pads = pads;
+    }
 
     //----------------------------------
     // display
@@ -45,6 +77,14 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     }
 
     @Override
+    public boolean isCurrent(int viewId) {
+        ViewBase selectedView = getSelectedView();
+        if (selectedView == null)
+            return false;
+        return selectedView.getId() == viewId;
+    }
+
+    @Override
     public ViewBase getSelectedView() {
         return projectModel.getSelectedView();
     }
@@ -68,6 +108,10 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
                 return view;
         }
         return null;
+    }
+
+    public Collection<ViewBase> getViews() {
+        return projectModel.getViews();
     }
 
     public ViewManager() {
@@ -94,7 +138,12 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     }
 
     @Override
-    public void flush() {
+    public void flush(boolean clear) {
+
+        if (clear) {
+            getPads().clear();
+        }
+
         ViewBase selectedView = getSelectedView();
         if (selectedView != null)
             selectedView.updateArrows();
@@ -104,9 +153,18 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
             getSubDisplay().flush();
         }
 
+        if (getPads() != null) {
+            getPads().flush();
+        }
+
         for (IViewManagerFlushListener listener : flushListeners) {
             listener.flush();
         }
+    }
+
+    @Override
+    public void flush() {
+        flush(false);
     }
 
     private Array<IViewManagerFlushListener> flushListeners = new Array<IViewManagerFlushListener>();

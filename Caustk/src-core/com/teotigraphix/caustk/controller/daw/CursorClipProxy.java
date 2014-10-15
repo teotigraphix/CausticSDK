@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.controller.daw;
 
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode.Resolution;
+import com.teotigraphix.gdx.controller.IViewManager;
 
 public class CursorClipProxy {
 
@@ -12,18 +13,25 @@ public class CursorClipProxy {
 
     private int step = 4;
 
-    private Model model;
-
     private float stepGate;
 
-    public CursorClipProxy(Model model, int stepSize, int rowSize) {
-        this.model = model;
+    public CursorClipProxy(int stepSize, int rowSize) {
         this.stepSize = stepSize;
         this.rowSize = rowSize;
         this.step = -1;
 
         // Clip     createCursorClip (final int gridWidth, final int gridHeight)
         //this.clip = host.createCursorClip (this.stepSize, this.rowSize);
+    }
+
+    IViewManager viewManager;
+
+    public void setViewManager(IViewManager viewManager) {
+        this.viewManager = viewManager;
+    }
+
+    public IViewManager getViewManager() {
+        return viewManager;
     }
 
     /**
@@ -53,15 +61,13 @@ public class CursorClipProxy {
     }
 
     public NoteNode getStep(int x, int pitch, Resolution resolution) {
-        return model.getMachineBank().getSelectedPattern()
-                .getNote(Resolution.toBeat(x, resolution), pitch);
+        return viewManager.getSelectedPattern().getNote(Resolution.toBeat(x, resolution), pitch);
     }
 
     public void toggleStep(int step, int note, int velocity, Resolution resolution) {
         //System.out.println("CursorClipProxy.toggleStep() step:" + step + ", gate:" + stepGate
         //        + ", note:" + note + ",  velo:" + (float)velocity / 127);
-        model.getMachineBank().getSelectedPattern()
-                .toggleStep(step, stepGate, note, velocity, resolution);
+        viewManager.getSelectedPattern().toggleStep(step, stepGate, note, velocity, resolution);
     }
 
     public void scrollTo(int step, int row) {
