@@ -4,6 +4,8 @@ package com.teotigraphix.gdx.app;
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Array;
+import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackNode.RackNodeSelectionEvent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.controller.ViewBase;
@@ -14,6 +16,21 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
  * The {@link IApplicationModel} loads and sets the {@link #getProject()}.
  */
 public interface IProjectModel {
+
+    MachineNode getMachine(int machineIndex);
+
+    /**
+     * Returns the selected machine index within the RackNode.
+     */
+    int getSelectedMachineIndex();
+
+    /**
+     * Sets the selected machine index on the {@link RackNode}.
+     * 
+     * @param machineIndex The machine index 0..13.
+     * @see RackNodeSelectionEvent
+     */
+    void setSelectedMachineIndex(int machineIndex);
 
     MachineNode getSelectedMachine();
 

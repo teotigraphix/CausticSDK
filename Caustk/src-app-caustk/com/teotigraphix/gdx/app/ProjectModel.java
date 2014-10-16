@@ -33,12 +33,26 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     private IViewManager viewManager;
 
     @Override
-    public MachineNode getSelectedMachine() {
+    public final int getSelectedMachineIndex() {
+        return getSelectedMachine().getIndex();
+    }
+
+    @Override
+    public void setSelectedMachineIndex(int channelIndex) {
+        project.getRackNode().setSelectedIndex(channelIndex);
+    }
+
+    public MachineNode getMachine(int channelIndex) {
+        return project.getRackNode().getMachine(channelIndex);
+    }
+
+    @Override
+    public final MachineNode getSelectedMachine() {
         return project.getRackNode().getSelectedMachine();
     }
 
     @Override
-    public PatternNode getSelectedPattern() {
+    public final PatternNode getSelectedPattern() {
         MachineNode selectedMachine = getSelectedMachine();
         if (selectedMachine == null)
             return null;

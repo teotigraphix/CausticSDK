@@ -21,6 +21,8 @@ public class FileRequest {
 
     private String title;
 
+    private Object data;
+
     public Object getId() {
         return id;
     }
@@ -51,6 +53,17 @@ public class FileRequest {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    /**
+     * Extra data needed for the operation (per call unique).
+     */
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 
     public FileRequest(Object id, String title, File root, File location, String[] filter,
