@@ -11,6 +11,10 @@ import com.teotigraphix.gdx.app.ProjectState;
 
 public interface IViewManager {
 
+    int getSceneViewIndex();
+
+    void setSceneViewIndex(int index);
+
     PatternNode getSelectedPattern();
 
     AbstractSequencerView getSequencerView();

@@ -30,6 +30,16 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     }
 
     @Override
+    public int getSceneViewIndex() {
+        return getProjectModel().getSceneViewIndex();
+    }
+
+    @Override
+    public void setSceneViewIndex(int index) {
+        getProjectModel().setSceneViewIndex(index);
+    }
+
+    @Override
     public PatternNode getSelectedPattern() {
         return projectModel.getSelectedPattern();
     }
@@ -75,6 +85,10 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     protected void setSubDisplay(AbstractDisplay subDisplay) {
         this.subDisplay = subDisplay;
     }
+
+    //----------------------------------
+    // scene views
+    //----------------------------------
 
     @Override
     public boolean isCurrent(int viewId) {
