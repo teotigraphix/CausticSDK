@@ -116,7 +116,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
      */
     public CaustkApplication(String applicationName, ISoundGenerator soundGenerator) {
         super(applicationName);
-        startupExecutor = new StartupExecutor(soundGenerator);
+        startupExecutor = new StartupExecutor(this, soundGenerator);
     }
 
     private void createGuice() {

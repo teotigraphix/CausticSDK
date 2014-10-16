@@ -45,6 +45,7 @@ import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.gdx.app.ICaustkApplication;
 import com.teotigraphix.gdx.app.Project;
 
 /**
@@ -78,6 +79,15 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     @Override
     public final boolean isLoaded() {
         return rackNode != null;
+    }
+
+    //----------------------------------
+    // application
+    //----------------------------------
+
+    @Override
+    public ICaustkApplication getApplication() {
+        return runtime.getApplication();
     }
 
     //----------------------------------

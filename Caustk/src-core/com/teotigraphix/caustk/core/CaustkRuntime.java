@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core;
 
+import com.teotigraphix.gdx.app.ICaustkApplication;
+
 /**
  * The {@link CaustkRuntime} encapsulates the {@link ISoundGenerator} and
  * {@link CaustkRack} creation and initialization.
@@ -37,6 +39,8 @@ public class CaustkRuntime implements ICaustkRuntime {
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
+
+    private ICaustkApplication application;
 
     private ISoundGenerator soundGenerator;
 
@@ -57,6 +61,11 @@ public class CaustkRuntime implements ICaustkRuntime {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    @Override
+    public final ICaustkApplication getApplication() {
+        return application;
+    }
 
     @Override
     public final ICaustkLogger getLogger() {
@@ -80,9 +89,11 @@ public class CaustkRuntime implements ICaustkRuntime {
     /**
      * Creates a new runtime with {@link CaustkRack}.
      * 
+     * @param application
      * @param soundGenerator The platform sound engine.
      */
-    private CaustkRuntime(ISoundGenerator soundGenerator) {
+    private CaustkRuntime(ICaustkApplication application, ISoundGenerator soundGenerator) {
+        this.application = application;
         this.soundGenerator = soundGenerator;
         initialize();
     }
@@ -113,12 +124,14 @@ public class CaustkRuntime implements ICaustkRuntime {
      * Creates the single instance of the runtime, the method must only be
      * called at application startup.
      * 
+     * @param application
      * @param soundGenerator The platform sound generator.
      * @return The single instance of the CaustkRuntime
      */
-    public static ICaustkRuntime createInstance(ISoundGenerator soundGenerator) {
+    public static ICaustkRuntime createInstance(ICaustkApplication application,
+            ISoundGenerator soundGenerator) {
         if (instance == null)
-            instance = new CaustkRuntime(soundGenerator);
+            instance = new CaustkRuntime(application, soundGenerator);
         return instance;
     }
 

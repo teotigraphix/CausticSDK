@@ -34,6 +34,7 @@ import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
+import com.teotigraphix.gdx.app.ICaustkApplication;
 import com.teotigraphix.gdx.app.Project;
 
 /**
@@ -56,6 +57,8 @@ public interface ICaustkRack extends ISoundGenerator {
     boolean isLoaded();
 
     EventBus getEventBus();
+
+    ICaustkApplication getApplication();
 
     ICaustkSerializer getSerializer();
 

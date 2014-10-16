@@ -55,11 +55,12 @@ public class StartupExecutor {
      * Creates a new {@link StartupExecutor} with a platform implementation of
      * the {@link ISoundGenerator}.
      * 
+     * @param application The main caustk application.
      * @param soundGenerator The platform specific {@link ISoundGenerator}.
      */
-    public StartupExecutor(ISoundGenerator soundGenerator) {
+    public StartupExecutor(ICaustkApplication application, ISoundGenerator soundGenerator) {
         System.out.println("StartupExecutor : Create CaustkRuntime");
-        runtime = CaustkRuntime.createInstance(soundGenerator);
+        runtime = CaustkRuntime.createInstance(application, soundGenerator);
     }
 
     //--------------------------------------------------------------------------

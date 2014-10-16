@@ -20,12 +20,18 @@
 package com.teotigraphix.caustk.core;
 
 import com.teotigraphix.caustk.node.ICaustkNode;
+import com.teotigraphix.gdx.app.ICaustkApplication;
 
 /**
  * @author Michael Schmalle
  * @since 1.0
  */
 public interface ICaustkRuntime {
+
+    /**
+     * The main caustk application.
+     */
+    ICaustkApplication getApplication();
 
     /**
      * Returns the session {@link ICaustkLogger} instance.
