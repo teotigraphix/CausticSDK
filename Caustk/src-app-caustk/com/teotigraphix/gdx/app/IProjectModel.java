@@ -17,6 +17,8 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
  */
 public interface IProjectModel {
 
+    boolean hasMachine(int index);
+
     MachineNode getMachine(int machineIndex);
 
     /**

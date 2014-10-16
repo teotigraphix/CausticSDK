@@ -33,6 +33,11 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     private IViewManager viewManager;
 
     @Override
+    public boolean hasMachine(int index) {
+        return project.getRackNode().containsMachine(index);
+    }
+
+    @Override
     public final int getSelectedMachineIndex() {
         return getSelectedMachine().getIndex();
     }
@@ -42,6 +47,7 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
         project.getRackNode().setSelectedIndex(channelIndex);
     }
 
+    @Override
     public MachineNode getMachine(int channelIndex) {
         return project.getRackNode().getMachine(channelIndex);
     }
