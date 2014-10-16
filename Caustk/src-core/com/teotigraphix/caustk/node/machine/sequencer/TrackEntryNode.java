@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticError;
+import com.teotigraphix.caustk.groove.session.Clip;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -53,6 +54,9 @@ public class TrackEntryNode extends MachineComponent {
     @Tag(103)
     private int endMeasure;
 
+    @Tag(104)
+    private Clip clip;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -62,22 +66,32 @@ public class TrackEntryNode extends MachineComponent {
     //----------------------------------
 
     /**
+     * Returns the {@link PatternNode} that this entry plays in the track.
+     * <p>
+     * If the pattern does not exist in the machine's pattern sequencer, the
+     * method returns null.
+     */
+    public PatternNode getPattern() {
+        return getMachineNode().getSequencer().findPattern(pattern);
+    }
+
+    /**
      * Returns the String representation of the pattern, <strong>A1</strong> for
      * example.
      */
-    public String getPattern() {
+    public String getPatternName() {
         return pattern;
     }
 
     /**
-     * Returns the bank index (0..3) based on the {@link #getPattern()}.
+     * Returns the bank index (0..3) based on the {@link #getPatternName()}.
      */
     public int getBankIndex() {
         return PatternUtils.toBank(pattern);
     }
 
     /**
-     * Returns the pattern index (0..15) based on the {@link #getPattern()}.
+     * Returns the pattern index (0..15) based on the {@link #getPatternName()}.
      */
     public int getPatternIndex() {
         return PatternUtils.toPattern(pattern);
@@ -115,6 +129,21 @@ public class TrackEntryNode extends MachineComponent {
      */
     public int getEndMeasure() {
         return endMeasure;
+    }
+
+    //----------------------------------
+    // clip
+    //----------------------------------
+
+    /**
+     * Returns the clip the the entry was created with.
+     */
+    public Clip getClip() {
+        return clip;
+    }
+
+    public void setClip(Clip clip) {
+        this.clip = clip;
     }
 
     /**

@@ -121,8 +121,6 @@ public class Clip {
     }
 
     PatternNode getPattern() {
-        if (!hasPattern())
-            return null;
         return getMachineNode().getSequencer().getPattern(scene.getBankIndex(),
                 scene.getMatrixIndex());
     }
@@ -255,14 +253,19 @@ public class Clip {
 
         //System.out.println("Clip - current" + currentMeasure);
         // add to sequencer
-        TrackComponent track = getTrack();
-        if (!track.isContained(nextMeasure)) {
-            try {
-                track.addEntry(getPattern(), nextMeasure, nextMeasure + length);
-            } catch (CausticException e) {
-                e.printStackTrace();
+        if (sessionManager.isRecording()) {
+            TrackComponent track = getTrack();
+            if (!track.isContained(nextMeasure)) {
+                try {
+                    TrackEntryNode entry = track.addEntry(getPattern(), nextMeasure, nextMeasure
+                            + length);
+                    entry.setClip(this);
+                } catch (CausticException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
     }
 
     void commitStop() {
@@ -271,15 +274,17 @@ public class Clip {
             TrackComponent track = getTrack();
 
             TrackEntryNode entry = track.getLastEntry();
-
+            SessionManager sessionManager = getScene().getSessionManager();
             int startMeasure = entry.getStartMeasure(); // 4
             int endMeasure = getScene().getSessionManager().getCurrentMeasure() + 1; // 6
             //System.out.println("Clip - startMeasure" + startMeasure + ", endMeasure" + endMeasure);
 
-            if (startMeasure == endMeasure) {
-                System.out.println("Error: start == end " + this);
-            } else {
-                track.trimEntry(entry, startMeasure, endMeasure);
+            if (sessionManager.isRecording()) {
+                if (startMeasure == endMeasure) {
+                    System.out.println("Error: start == end " + this);
+                } else {
+                    track.trimEntry(entry, startMeasure, endMeasure);
+                }
             }
 
         }

@@ -128,6 +128,15 @@ public class SceneManager {
     }
 
     /**
+     * Resets all clip states to idle.
+     */
+    void reset() {
+        for (Scene scene : scenes) {
+            scene.reset();
+        }
+    }
+
+    /**
      * Plays a scene's clips.
      * 
      * @param index The scene index.

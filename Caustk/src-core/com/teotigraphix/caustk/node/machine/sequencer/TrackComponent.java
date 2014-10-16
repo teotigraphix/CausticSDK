@@ -46,6 +46,9 @@ public class TrackComponent extends MachineComponent {
     @Tag(100)
     private final TreeMap<Integer, TrackEntryNode> entries = new TreeMap<Integer, TrackEntryNode>();
 
+    @Tag(101)
+    private boolean inArrangement;
+
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
@@ -60,6 +63,22 @@ public class TrackComponent extends MachineComponent {
      */
     public int size() {
         return entries.size();
+    }
+
+    //----------------------------------
+    // inArrangement
+    //----------------------------------
+
+    /**
+     * Whether the track is playing from clips(false) or the track entry
+     * arrangement(true).
+     */
+    public boolean isInArrangement() {
+        return inArrangement;
+    }
+
+    public void setInArrangement(boolean inArrangement) {
+        this.inArrangement = inArrangement;
     }
 
     /**
@@ -93,6 +112,13 @@ public class TrackComponent extends MachineComponent {
         return isSpanValid(startMeasure, endMeasure);
     }
 
+    /**
+     * Whether an entry can be dropped into the track between the start and end
+     * measure without conflict.
+     * 
+     * @param startMeasure The start of the drop.
+     * @param endMeasure the end of the drop.
+     */
     public boolean canDrop(int startMeasure, int endMeasure) {
         return isSpanValid(startMeasure, endMeasure);
     }
@@ -124,6 +150,28 @@ public class TrackComponent extends MachineComponent {
         return true;
     }
 
+    /**
+     * Returns whether the track contains an entry that contains the measure.
+     * <p>
+     * The end measure of an entry is not included in this test as it would be
+     * the start measure for a new entry.
+     * 
+     * @param measure The measure to test.
+     */
+    public boolean contains(int measure) {
+        for (TrackEntryNode entry : entries.values()) {
+            if (entry.isContained(measure))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether the track contains an entry that starts at the specified
+     * measure.
+     * 
+     * @param measure The start measure to test.
+     */
     public boolean containsStart(int measure) {
         return entries.containsKey(measure);
     }
@@ -194,6 +242,36 @@ public class TrackComponent extends MachineComponent {
      */
     public TrackEntryNode getEntry(int measure) {
         return entries.get(measure);
+    }
+
+    /**
+     * Returns an entry that either starts at the measure or contains the
+     * measure, does not include the end measure of the entry.
+     * 
+     * @param measure The entry's start measure or contained measure.
+     */
+    public TrackEntryNode getEntryContaining(int measure) {
+        if (entries.containsKey(measure))
+            return getEntry(measure);
+        for (TrackEntryNode entry : entries.values()) {
+            if (entry.isContained(measure))
+                return entry;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the {@link PatternNode} for the entry at the measure, if there is
+     * no entry or pattern defined in the track or pattern sequencer, the method
+     * returns null.
+     * 
+     * @param measure The entry's start measure or contained measure.
+     */
+    public PatternNode getPattern(int measure) {
+        TrackEntryNode entry = getEntryContaining(measure);
+        if (entry == null)
+            return null;
+        return entry.getPattern();
     }
 
     /**

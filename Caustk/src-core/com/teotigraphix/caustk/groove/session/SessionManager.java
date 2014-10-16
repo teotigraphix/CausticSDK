@@ -141,6 +141,24 @@ public class SessionManager {
         this.locks = locks;
     }
 
+    public boolean isRecording() {
+        return rackNode.getSequencer().isRecording();
+    }
+
+    public void reset() {
+        measure = 0;
+        beat = 0;
+        floatBeat = 0;
+        getSceneManager().reset();
+    }
+
+    public void playPosition(int measure) {
+        getSceneManager().reset();
+        rackNode.getSequencer().playPosition(measure * 4);
+        onBeatChange(measure, (measure * 4), measure == 0 ? 0 : 12, -1);
+        //commitClips();
+    }
+
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -191,7 +209,10 @@ public class SessionManager {
             return null;
         }
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "touch() " + clip);
-        return getSceneManager().getScene(clip.getScene().getMatrixIndex()).touch(clip.getIndex());
+
+        Clip touch = getSceneManager().getScene(clip.getScene().getMatrixIndex()).touch(
+                clip.getIndex());
+        return touch;
     }
 
     boolean isStartMeasure() {
@@ -210,21 +231,16 @@ public class SessionManager {
 
         System.out.println("m:" + measure + ", s:" + sixteenth); // 0, 4, 8, 12, 0, ...
 
-        if (getRackNode().getSequencer().isRecording()) {
-            if (measure == 0 && sixteenth == 0) {
-                this.measure = -1;
-                start();
-                this.measure = 0;
-            } else if (sixteenth == 12) {
-                // 1 bar measure change on next beat
-                commitClips();
-            } else if (sixteenth == 15) {
-                refreshClips();
-            }
-        } else {
-
+        if (measure == 0 && sixteenth == 0) {
+            this.measure = -1;
+            start();
+            this.measure = 0;
+        } else if (sixteenth == 12) {
+            // 1 bar measure change on next beat
+            commitClips();
+        } else if (sixteenth == 15) {
+            refreshClips();
         }
-
     }
 
     private void commitClips() {

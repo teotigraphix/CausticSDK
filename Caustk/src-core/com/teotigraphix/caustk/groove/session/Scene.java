@@ -26,6 +26,8 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 
 public class Scene {
 
@@ -306,6 +308,17 @@ public class Scene {
         if (clips.size() == 0)
             return;
         // 1 bar measure change on next beat
+        //System.out.println("---------------------- commitClips() " + this);
+        //System.out.println("");
+        SessionManager sessionManager = sceneManager.getSessionManager();
+        if (!sessionManager.isRecording()) {
+            for (MachineNode machineNode : getSessionManager().getMachines().values()) {
+                TrackComponent track = machineNode.getTrack();
+                //if (track.isInArrangement()) {
+                queueTrackPlayClip(track);
+                //}
+            }
+        }
 
         // All dequeued clips stop
         ArrayList<Clip> tempDequeue = new ArrayList<Clip>(dequeueClips);
@@ -321,6 +334,36 @@ public class Scene {
 
         for (Clip clip : playClips) {
             clip.commitPlay();
+        }
+    }
+
+    private void queueTrackPlayClip(TrackComponent track) {
+
+        SessionManager sessionManager = sceneManager.getSessionManager();
+
+        int trackIndex = track.getMachineIndex();
+
+        // does the track have a clip for the next measure
+        int nextMeaure = sessionManager.getNextMeasure();
+
+        TrackEntryNode entry = track.getEntryContaining(nextMeaure);
+        Clip clip = getClip(trackIndex);
+
+        if (clip != null && entry != null) {
+
+            if (clip == entry.getClip()) {
+                //System.out.println("queueTrackPlayClip() " + track.getMachineNode());
+                //System.out.println(clip);
+                if (clip.isStateIdle()) {
+                    queue(clip);
+                }
+            }
+        } else if (clip != null) {
+            entry = track.getEntryContaining(nextMeaure - 1);
+            if (entry != null) {
+                dequeue(clip);
+            }
+
         }
     }
 
@@ -344,6 +387,13 @@ public class Scene {
                 return clip;
         }
         return null;
+    }
+
+    private void reset(Clip clip) {
+        playClips.remove(clip);
+        queueClips.remove(clip);
+        dequeueClips.remove(clip);
+        clip.commitStop();
     }
 
     private void stop(Clip clip) {
@@ -379,6 +429,12 @@ public class Scene {
                 } else if (clip.isDequeued()) {
                 }
             }
+        }
+    }
+
+    void reset() {
+        for (Clip clip : clips.values()) {
+            reset(clip);
         }
     }
 
