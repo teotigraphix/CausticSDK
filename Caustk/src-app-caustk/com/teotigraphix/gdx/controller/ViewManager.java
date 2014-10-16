@@ -40,8 +40,8 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     }
 
     @Override
-    public PatternNode getSelectedPattern() {
-        return projectModel.getSelectedPattern();
+    public PatternNode getSelectedMachinePattern() {
+        return projectModel.getSelectedMachinePattern();
     }
 
     @Override

@@ -68,7 +68,7 @@ public class SequencerView extends AbstractSequencerView {
 
     @Override
     protected void setOffsetX(int offsetX) {
-        PatternNode patternNode = getViewManager().getSelectedPattern();
+        PatternNode patternNode = getViewManager().getSelectedMachinePattern();
         int totalStepsInMeasure = Resolution.toSteps(getNoteResolution())
                 * patternNode.getNumMeasures();
 

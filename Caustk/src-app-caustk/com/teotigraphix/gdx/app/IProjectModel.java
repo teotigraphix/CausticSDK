@@ -36,7 +36,7 @@ public interface IProjectModel {
 
     MachineNode getSelectedMachine();
 
-    PatternNode getSelectedPattern();
+    PatternNode getSelectedMachinePattern();
 
     ProjectProperties getProperties();
 

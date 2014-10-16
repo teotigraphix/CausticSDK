@@ -61,13 +61,13 @@ public class CursorClipProxy {
     }
 
     public NoteNode getStep(int x, int pitch, Resolution resolution) {
-        return viewManager.getSelectedPattern().getNote(Resolution.toBeat(x, resolution), pitch);
+        return viewManager.getSelectedMachinePattern().getNote(Resolution.toBeat(x, resolution), pitch);
     }
 
     public void toggleStep(int step, int note, int velocity, Resolution resolution) {
         //System.out.println("CursorClipProxy.toggleStep() step:" + step + ", gate:" + stepGate
         //        + ", note:" + note + ",  velo:" + (float)velocity / 127);
-        viewManager.getSelectedPattern().toggleStep(step, stepGate, note, velocity, resolution);
+        viewManager.getSelectedMachinePattern().toggleStep(step, stepGate, note, velocity, resolution);
     }
 
     public void scrollTo(int step, int row) {

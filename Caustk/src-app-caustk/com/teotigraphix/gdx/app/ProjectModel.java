@@ -58,7 +58,7 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     }
 
     @Override
-    public final PatternNode getSelectedPattern() {
+    public final PatternNode getSelectedMachinePattern() {
         MachineNode selectedMachine = getSelectedMachine();
         if (selectedMachine == null)
             return null;

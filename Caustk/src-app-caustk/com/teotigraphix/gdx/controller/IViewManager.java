@@ -15,7 +15,7 @@ public interface IViewManager {
 
     void setSceneViewIndex(int index);
 
-    PatternNode getSelectedPattern();
+    PatternNode getSelectedMachinePattern();
 
     AbstractSequencerView getSequencerView();
 
