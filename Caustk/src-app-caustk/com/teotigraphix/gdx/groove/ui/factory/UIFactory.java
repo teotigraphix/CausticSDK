@@ -4,6 +4,7 @@ package com.teotigraphix.gdx.groove.ui.factory;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
@@ -60,6 +61,7 @@ public abstract class UIFactory {
         initializeFonts(skin);
 
         initializeLabelStyle(skin);
+        initializetButton(skin);
         initializeTextButton(skin);
 
         initializeScrollPaneStyle(skin);
@@ -98,13 +100,21 @@ public abstract class UIFactory {
         skin.add(StylesDefault.Label, labelStyle);
     }
 
+    protected void initializetButton(Skin skin) {
+        ButtonStyle style = new ButtonStyle(skin.getDrawable(StylesDefault.TextButton_up),
+                skin.getDrawable(StylesDefault.TextButton_down),
+                skin.getDrawable(StylesDefault.TextButton_checked));
+        style.disabled = skin.getDrawable(StylesDefault.TextButton_disabled);
+        skin.add(StylesDefault.TextButton, style);
+    }
+
     protected void initializeTextButton(Skin skin) {
         TextButtonStyle style = new TextButtonStyle(skin.getDrawable(StylesDefault.TextButton_up),
                 skin.getDrawable(StylesDefault.TextButton_down),
                 skin.getDrawable(StylesDefault.TextButton_checked),
                 skin.getFont(StylesDefault.Font));
         style.disabled = skin.getDrawable(StylesDefault.TextButton_disabled);
-        skin.add(StylesDefault.TextButton, style);
+        skin.add(StylesDefault.Button, style);
     }
 
     protected void initializeScrollPaneStyle(Skin skin) {

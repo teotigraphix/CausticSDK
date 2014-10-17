@@ -158,6 +158,15 @@ public class StylesDefault {
     public static final String Slider_knob = "defaults/Slider_knob";
 
     //----------------------------------
+    // Button
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String Button = "default";
+
+    //----------------------------------
     // TextButton
     //----------------------------------
 
