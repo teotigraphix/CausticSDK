@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.RackNode.RackNodeSelectionEvent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.controller.ViewBase;
@@ -16,6 +15,26 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
  * The {@link IApplicationModel} loads and sets the {@link #getProject()}.
  */
 public interface IProjectModel {
+
+    //--------------------------------------------------------------------------
+    // Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // properties
+    //----------------------------------
+
+    ProjectProperties getProperties();
+
+    //----------------------------------
+    // project
+    //----------------------------------
+
+    <T extends Project> T getProject();
+
+    //----------------------------------
+    // machine
+    //----------------------------------
 
     boolean hasMachine(int index);
 
@@ -30,21 +49,13 @@ public interface IProjectModel {
      * Sets the selected machine index on the {@link RackNode}.
      * 
      * @param machineIndex The machine index 0..13.
-     * @see RackNodeSelectionEvent
+     * @see ProjectModelEventKind#MachineSelectionChange
      */
     void setSelectedMachineIndex(int machineIndex);
 
     MachineNode getSelectedMachine();
 
     PatternNode getSelectedMachinePattern();
-
-    ProjectProperties getProperties();
-
-    //--------------------------------------------------------------------------
-    // Properties
-    //--------------------------------------------------------------------------
-
-    <T extends Project> T getProject();
 
     //----------------------------------
     // SceneViews
@@ -89,7 +100,7 @@ public interface IProjectModel {
     void restore(ProjectState state);
 
     public static enum ProjectModelEventKind {
-        SceneViewChange, ViewChange;
+        SceneViewChange, ViewChange, MachineSelectionChange;
     }
 
     public static class ProjectModelEvent {

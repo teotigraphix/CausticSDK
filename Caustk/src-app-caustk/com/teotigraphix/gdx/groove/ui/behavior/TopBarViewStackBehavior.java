@@ -83,6 +83,8 @@ public class TopBarViewStackBehavior extends CaustkBehavior {
                 break;
             case ViewChange:
                 break;
+            case MachineSelectionChange:
+                break;
         }
     }
 }

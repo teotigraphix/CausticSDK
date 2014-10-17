@@ -92,6 +92,13 @@ public class ToggleButton extends ToggleButtonInternal {
         super.setChecked(isChecked);
     }
 
+    @Override
+    public void setChecked(boolean isChecked, boolean fireEvent) {
+        if (!isToggle)
+            return;
+        super.setChecked(isChecked, fireEvent);
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

@@ -106,7 +106,7 @@ public class PaneStack extends UITable {
 
     @Override
     public void layout() {
-        updateSelectedIndex();
+        redrawSelectedIndex();
         super.layout();
     }
 
@@ -168,8 +168,8 @@ public class PaneStack extends UITable {
         buttonBar.create("default");
     }
 
-    protected void updateSelectedIndex() {
-        buttonBar.select(selectedIndex, true);
+    protected void redrawSelectedIndex() {
+        buttonBar.redrawSelection(selectedIndex, true);
         for (Actor actor : stack.getChildren()) {
             actor.setVisible(false);
         }

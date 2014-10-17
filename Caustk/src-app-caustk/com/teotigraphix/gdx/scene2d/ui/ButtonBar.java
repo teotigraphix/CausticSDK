@@ -177,12 +177,13 @@ public class ButtonBar extends UITable {
         super.layout();
 
         if (selectedIndex != -1) {
-            TextButton button = (TextButton)group.getButtons().get(selectedIndex);
-            button.setChecked(true);
+            ToggleButton button = (ToggleButton)group.getButtons().get(selectedIndex);
+            button.setChecked(true, false);
         } else {
-            group.uncheckAll();
+            for (Button button : group.getButtons()) {
+                ((ToggleButton)button).setChecked(false, false);
+            }
         }
-
     }
 
     @Override
@@ -225,7 +226,7 @@ public class ButtonBar extends UITable {
 
     protected TextButton createButton(int index, TextButtonStyle style) {
         String label = items.get(index).getLabel();
-        final TextButton button = new TextButton(label, style);
+        final ToggleButton button = new ToggleButton(label, style);
         if (label.equals(" "))
             button.setDisabled(true);
         button.setUserObject(items.get(index));
@@ -306,20 +307,32 @@ public class ButtonBar extends UITable {
     // Public API Methods
     //--------------------------------------------------------------------------
 
+    /**
+     * Selected the button and fires change event.
+     * 
+     * @param index
+     * @param selected
+     */
     public void select(int index, boolean selected) {
-        TextButton button = (TextButton)group.getButtons().get(index);
+        ToggleButton button = (ToggleButton)group.getButtons().get(index);
         button.setChecked(selected);
     }
 
-    public void updateSelection(int index, boolean selected) {
-        TextButton button = (TextButton)group.getButtons().get(index);
-        button.setChecked(selected);
+    /**
+     * Redraws the selection without firing a change event.
+     * 
+     * @param index
+     * @param selected
+     */
+    public void redrawSelection(int index, boolean selected) {
+        ToggleButton button = (ToggleButton)group.getButtons().get(index);
+        button.setChecked(selected, false);
     }
 
     public void disableFrom(int length) {
         SnapshotArray<Actor> children = getChildren();
         for (int i = 0; i < children.size; i++) {
-            TextButton button = (TextButton)children.get(i);
+            ToggleButton button = (ToggleButton)children.get(i);
             if (i < length) {
                 button.setDisabled(false);
                 button.invalidate();

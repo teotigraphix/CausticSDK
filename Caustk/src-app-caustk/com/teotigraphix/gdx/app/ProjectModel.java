@@ -43,8 +43,12 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     }
 
     @Override
-    public void setSelectedMachineIndex(int channelIndex) {
-        project.getRackNode().setSelectedIndex(channelIndex);
+    public void setSelectedMachineIndex(int machineIndex) {
+        if (project.getRackNode().getSelectedIndex() == machineIndex)
+            return;
+        project.getRackNode().setSelectedIndex(machineIndex);
+        getEventBus().post(
+                new ProjectModelEvent(ProjectModelEventKind.MachineSelectionChange, this));
     }
 
     @Override
