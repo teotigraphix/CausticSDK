@@ -32,6 +32,10 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     @Inject
     private IViewManager viewManager;
 
+    protected IFileManager getFileManager() {
+        return fileManager;
+    }
+
     @Override
     public boolean hasMachine(int index) {
         return project.getRackNode().containsMachine(index);
