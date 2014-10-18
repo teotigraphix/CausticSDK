@@ -2,6 +2,7 @@
 package com.teotigraphix.gdx.controller;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.gdx.app.ProjectState;
 
 /**
@@ -12,6 +13,8 @@ import com.teotigraphix.gdx.app.ProjectState;
  * component (Pane) and it's Behavior (PaneBehavior).
  */
 public class ViewPane {
+
+    // subclass tags start at 50
 
     @Tag(0)
     private String id;
@@ -67,5 +70,9 @@ public class ViewPane {
      * Called when the pane is deactivated/disabled and invisible.
      */
     public void onDeactivate() {
+    }
+
+    protected void post(Object event) {
+        CaustkRuntime.getInstance().getApplication().getEventBus().post(event);
     }
 }

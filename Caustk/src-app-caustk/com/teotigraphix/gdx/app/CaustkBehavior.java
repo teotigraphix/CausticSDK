@@ -88,7 +88,7 @@ public abstract class CaustkBehavior extends Behavior {
         return getScene().getFactory();
     }
 
-    protected final IViewManager getViewManager() {
+    protected IViewManager getViewManager() {
         return viewManager;
     }
 
