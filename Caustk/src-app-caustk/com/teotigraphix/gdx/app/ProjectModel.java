@@ -303,10 +303,10 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     public void restore(ProjectState state) {
         this.state = state;
 
+        viewManager.restore(state);
+
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
-
-        viewManager.restore(state);
     }
 
 }

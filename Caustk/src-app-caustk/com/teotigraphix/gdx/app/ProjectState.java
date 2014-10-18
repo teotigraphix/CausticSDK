@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.gdx.controller.ViewBase;
+import com.teotigraphix.gdx.controller.ViewPane;
 
 /**
  * The internal state for the {@link IApplicationModel} held within the project.
@@ -34,6 +35,9 @@ public class ProjectState {
 
     @Tag(22)
     private int sceneViewIndex = 0;
+
+    @Tag(23)
+    private Map<String, ViewPane> panes = new HashMap<String, ViewPane>();
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -107,6 +111,10 @@ public class ProjectState {
 
     public int getSelectedViewId() {
         return selectedViewId;
+    }
+
+    public Map<String, ViewPane> getPanes() {
+        return panes;
     }
 
     //--------------------------------------------------------------------------

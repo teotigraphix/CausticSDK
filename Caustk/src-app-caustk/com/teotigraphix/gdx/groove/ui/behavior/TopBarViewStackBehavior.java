@@ -51,7 +51,7 @@ public class TopBarViewStackBehavior extends CaustkBehavior {
             public void viewIndexChange(TopBarEvent event, int index) {
                 getApplication().getLogger().log("MainTemplateBehavior",
                         "viewIndexChange() " + index);
-                getProjectModel().setSceneViewIndex(index);
+                getViewManager().setSceneViewIndex(index);
             }
         });
 
