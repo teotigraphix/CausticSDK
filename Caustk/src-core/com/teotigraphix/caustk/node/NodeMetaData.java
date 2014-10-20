@@ -41,7 +41,7 @@ public class NodeMetaData {
     private Object icon = null;
 
     @Tag(3)
-    private Object color = null;
+    private int color = -1;
 
     @Tag(4)
     private boolean selected = false;
@@ -78,11 +78,11 @@ public class NodeMetaData {
     // color
     //----------------------------------
 
-    public Object getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(Object color) {
+    public void setColor(int color) {
         this.color = color;
     }
 

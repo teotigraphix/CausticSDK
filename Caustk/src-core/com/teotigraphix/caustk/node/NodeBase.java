@@ -55,7 +55,7 @@ public abstract class NodeBase implements ICaustkNode {
     private Object icon;
 
     @Tag(3)
-    private Object color;
+    private int color;
 
     @Tag(4)
     private boolean selected;
@@ -144,10 +144,10 @@ public abstract class NodeBase implements ICaustkNode {
      * @return A Color object based on the application framework's
      *         implementation.
      */
-    public Object getColor() {
+    public int getColor() {
         if (data != null)
             return data.getColor();
-        return icon;
+        return color;
     }
 
     /**
@@ -156,7 +156,7 @@ public abstract class NodeBase implements ICaustkNode {
      * @param color The color.
      * @see NodeColorEvent
      */
-    public void setColor(Object color) {
+    public void setColor(int color) {
         if (data != null) {
             if (color == data.getColor())
                 return;

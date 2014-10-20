@@ -6,6 +6,8 @@ import com.teotigraphix.caustk.core.MachineType;
 
 public class StylesDefault {
 
+    //private Color x = Colors.Aqua.getColor();
+
     /*
     SubSynth 79, 161, 204
     PCMSynth 189, 228, 138
@@ -54,6 +56,17 @@ public class StylesDefault {
      * Style.
      */
     public static final String Font_TopBar_TextButton = Font;
+
+    //----------------------------------
+    // ColorPicker
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String ColorPicker = "default";
+
+    public static final String ColorPicker_swatch_background = "defaults/ColorPicker_swatch_background";
 
     //----------------------------------
     // Label

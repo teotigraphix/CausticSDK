@@ -19,7 +19,7 @@ public enum Colors {
 
     DarkBlue(0.34117648005485535, 0.3803921639919281, 0.7764706015586853, 42),
 
-    LightBlue(0.5176470875740051, 0.5411764979362488, 0.8784313797950745, 44),
+    Lavendar(0.5176470875740051, 0.5411764979362488, 0.8784313797950745, 44),
 
     Purple(0.5843137502670288, 0.2862745225429535, 0.7960784435272217, 58),
 
@@ -35,7 +35,7 @@ public enum Colors {
 
     DarkGreen(0, 0.615686297416687, 0.27843138575553894, 26),
 
-    BluishGreen(0, 0.6509804129600525, 0.5803921818733215, 30),
+    Teal(0, 0.6509804129600525, 0.5803921818733215, 30),
 
     ElectricBlue(0, 0.6000000238418579, 0.8509804010391235, 37),
 
@@ -47,7 +47,7 @@ public enum Colors {
 
     Peach(1, 0.5137255191802979, 0.24313725531101227, 10),
 
-    LightBrown(0.8941176533699036, 0.7176470756530762, 0.30588236451148987, 61),
+    BurntOrange(0.8941176533699036, 0.7176470756530762, 0.30588236451148987, 61),
 
     OliveGreen(0.6274510025978088, 0.7529411911964417, 0.2980392277240753, 18),
 
@@ -55,16 +55,36 @@ public enum Colors {
 
     Aqua(0.26274511218070984, 0.8235294222831726, 0.7254902124404907, 32),
 
-    Cyan(0.2666666805744171, 0.7843137383460999, 1, 41);
+    Cyan(0.2666666805744171, 0.7843137383460999, 1, 41),
+
+    White(1f, 1f, 1f, 120);
 
     private Color color;
+
+    private int id;
+
+    public int getId() {
+        return id;
+    }
 
     public Color getColor() {
         return color;
     }
 
     Colors(double red, double green, double blue, int id) {
+        this.id = id;
         color = new Color((float)red, (float)green, (float)blue, 1f);
     }
 
+    public static Colors fromId(int id) {
+        for (Colors colors : values()) {
+            if (colors.getId() == id)
+                return colors;
+        }
+        return null;
+    }
+
+    public static boolean hasColor(int colorId) {
+        return fromId(colorId) != null;
+    }
 }
