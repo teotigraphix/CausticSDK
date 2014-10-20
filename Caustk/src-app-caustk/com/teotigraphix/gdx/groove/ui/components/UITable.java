@@ -94,6 +94,7 @@ public abstract class UITable extends Table {
      */
     @Override
     public void setSkin(Skin skin) {
+        super.setSkin(skin);
         this.skin = skin;
     }
 
