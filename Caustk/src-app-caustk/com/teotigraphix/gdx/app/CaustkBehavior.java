@@ -130,6 +130,21 @@ public abstract class CaustkBehavior extends Behavior {
     }
 
     /**
+     * Fires every 32nd step before any beat, sixteenth or thritysecond
+     * callbacks.
+     * 
+     * @param measure
+     * @param beat
+     * @param sixteenth
+     * @param thirtysecond
+     */
+    public void onPreCalculate(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior child : getChildren()) {
+            ((CaustkBehavior)child).onPreCalculate(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    /**
      * Only called when {@link IRackSequencerListener} is implemented.
      * 
      * @param measure
@@ -140,6 +155,21 @@ public abstract class CaustkBehavior extends Behavior {
     public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
         for (ISceneBehavior child : getChildren()) {
             ((CaustkBehavior)child).onBeatChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    /**
+     * Called before {@link #onSixteenthChange(int, float, int, int)} for global
+     * calculations that need to be accessed in the onSixteenthChange().
+     * 
+     * @param measure
+     * @param beat
+     * @param sixteenth
+     * @param thirtysecond
+     */
+    public void onPreSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior child : getChildren()) {
+            ((CaustkBehavior)child).onPreSixteenthChange(measure, beat, sixteenth, thirtysecond);
         }
     }
 

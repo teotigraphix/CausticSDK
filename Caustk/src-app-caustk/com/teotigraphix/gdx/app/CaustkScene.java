@@ -120,9 +120,23 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     }
 
     @Override
+    public void onPreCalculate(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior behavior : getBehaviors()) {
+            ((CaustkBehavior)behavior).onPreCalculate(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    @Override
     public void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond) {
         for (ISceneBehavior behavior : getBehaviors()) {
             ((CaustkBehavior)behavior).onBeatChange(measure, beat, sixteenth, thirtysecond);
+        }
+    }
+
+    @Override
+    public void onPreSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond) {
+        for (ISceneBehavior behavior : getBehaviors()) {
+            ((CaustkBehavior)behavior).onPreSixteenthChange(measure, beat, sixteenth, thirtysecond);
         }
     }
 

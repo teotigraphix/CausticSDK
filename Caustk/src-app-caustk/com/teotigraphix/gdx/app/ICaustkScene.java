@@ -37,7 +37,11 @@ public interface ICaustkScene extends IScene {
 
     IViewManager getViewManager();
 
+    void onPreCalculate(int measure, float beat, int sixteenth, int thirtysecond);
+
     void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond);
+
+    void onPreSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond);
 
     void onSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond);
 

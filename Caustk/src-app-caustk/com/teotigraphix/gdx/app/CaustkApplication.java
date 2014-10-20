@@ -225,8 +225,15 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
             int thirtysecond = runtime.getRack().getSequencer().getCurrentThritySecondStep();
             if (measure == -1)
                 measure = (int)(beat / 4);
+
+            if (runtime.getRack().getSequencer().isThirtysecondChanged()) {
+                getScene().onPreCalculate(measure, beat, sixteenth, thirtysecond);
+            }
             if (runtime.getRack().getSequencer().isBeatChanged()) {
                 getScene().onBeatChange(measure, beat, sixteenth, thirtysecond);
+            }
+            if (runtime.getRack().getSequencer().isSixteenthChanged()) {
+                getScene().onPreSixteenthChange(measure, beat, sixteenth, thirtysecond);
             }
             if (runtime.getRack().getSequencer().isSixteenthChanged()) {
                 getScene().onSixteenthChange(measure, beat, sixteenth, thirtysecond);
