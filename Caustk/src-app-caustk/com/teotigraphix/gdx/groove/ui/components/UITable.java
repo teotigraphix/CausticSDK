@@ -120,6 +120,10 @@ public abstract class UITable extends Table {
         createChildren();
     }
 
+    public final void create() {
+        create("default");
+    }
+
     /**
      * Create all component children using current {@link #getStyle()}.
      */
