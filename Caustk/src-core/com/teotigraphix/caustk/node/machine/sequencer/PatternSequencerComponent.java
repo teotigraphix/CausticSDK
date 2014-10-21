@@ -198,6 +198,41 @@ public class PatternSequencerComponent extends MachineComponent {
     }
 
     /**
+     * Returns whether the sequencer contains notes within the bank index.
+     * 
+     * @param bankIndex The bank index.
+     */
+    public final boolean hasBankNotes(int bankIndex) {
+        for (PatternNode patternNode : patterns.values()) {
+            if (patternNode.getBankIndex() == bankIndex) {
+                if (patternNode.hasNotes())
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether the sequencer contains notes within the bank's pattern
+     * index.
+     * 
+     * @param bankIndex The bank index.
+     * @param patternIndex The pattern index.
+     */
+    public boolean hasPatternNotes(int bankIndex, int patternIndex) {
+        if (!hasBankNotes(bankIndex))
+            return false;
+        for (PatternNode patternNode : patterns.values()) {
+            if (patternNode.getBankIndex() == bankIndex
+                    && patternNode.getPatternIndex() == patternIndex) {
+                if (patternNode.hasNotes())
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Attempts to find a {@link PatternNode} based on name, if the pattern is
      * not found, <code>null</code> is returned.
      * 

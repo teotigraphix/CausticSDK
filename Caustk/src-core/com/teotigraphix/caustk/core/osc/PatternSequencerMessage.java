@@ -289,6 +289,8 @@ public class PatternSequencerMessage extends CausticMessage {
 
         NoteDataRemove,
 
+        NoteDataUpdate,
+
         NumMeausures,
 
         Pattern,

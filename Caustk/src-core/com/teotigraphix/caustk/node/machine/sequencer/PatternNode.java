@@ -385,7 +385,14 @@ public class PatternNode extends MachineComponent {
         }
     }
 
-    public boolean containsNote(float beat, int pitch) {
+    /**
+     * Returns whether the pattern contains {@link NoteNode} entries.
+     */
+    public final boolean hasNotes() {
+        return notes.size() > 0;
+    }
+
+    public final boolean containsNote(float beat, int pitch) {
         return getNote(beat, pitch) != null;
     }
 
@@ -399,7 +406,7 @@ public class PatternNode extends MachineComponent {
      * @param flags The note flags; {@link NoteFlag}.
      * @return A new {@link NoteNode} added to the pattern.
      * @throws IllegalStateException Note exists at beat
-     * @see PatternNodeNoteCreateEvent
+     * @see PatternNodeNoteChangeEvent
      */
     public NoteNode createNote(float startBeat, int pitch, float endBeat, float velocity, int flags) {
         //        if (containsNote(startBeat, pitch))
@@ -412,7 +419,7 @@ public class PatternNode extends MachineComponent {
                 velocity, endBeat, flags);
         note = new NoteNode(pitch, startBeat, endBeat, velocity, flags);
         addNote(note);
-        post(new PatternNodeNoteCreateEvent(this, PatternSequencerControl.NoteDataAdd, note));
+        post(new PatternNodeNoteChangeEvent(this, PatternSequencerControl.NoteDataAdd, note));
         return note;
     }
 
@@ -435,7 +442,7 @@ public class PatternNode extends MachineComponent {
         noteNode.set(pitch, startBeat, endBeat, velocity, flags);
         PatternSequencerMessage.NOTE_DATA.send(getRack(), getMachineIndex(), startBeat, pitch,
                 velocity, endBeat, flags);
-        post(new PatternNodeNoteUpdateEvent(this, noteNode));
+        post(new PatternNodeNoteChangeEvent(this, PatternSequencerControl.NoteDataUpdate, noteNode));
     }
 
     /**
@@ -527,7 +534,7 @@ public class PatternNode extends MachineComponent {
         PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), getMachineIndex(),
                 noteNode.getStart(), noteNode.getPitch());
         removeNote(noteNode);
-        post(new PatternNodeNoteDestroyEvent(this, PatternSequencerControl.NoteDataRemove, noteNode));
+        post(new PatternNodeNoteChangeEvent(this, PatternSequencerControl.NoteDataRemove, noteNode));
         return noteNode;
     }
 
@@ -841,53 +848,21 @@ public class PatternNode extends MachineComponent {
      * @author Michael Schmalle
      * @since 1.0
      * @see PatternNode#createNote(float, int, float, float, int)
-     */
-    public static class PatternNodeNoteCreateEvent extends PatternNodeEvent {
-        private NoteNode note;
-
-        public NoteNode getNote() {
-            return note;
-        }
-
-        public PatternNodeNoteCreateEvent(NodeBase target, PatternSequencerControl control,
-                NoteNode note) {
-            super(target, control);
-            this.note = note;
-        }
-    }
-
-    /**
-     * @author Michael Schmalle
-     * @since 1.0
      * @see PatternSequencerComponent#updateNode(NoteNode, int, float, float,
      *      float, int)
-     */
-    public static class PatternNodeNoteUpdateEvent extends NodeEvent {
-        private NoteNode noteNode;
-
-        public NoteNode getNoteNode() {
-            return noteNode;
-        }
-
-        public PatternNodeNoteUpdateEvent(NodeBase target, NoteNode noteNode) {
-            super(target);
-            this.noteNode = noteNode;
-        }
-    }
-
-    /**
-     * @author Michael Schmalle
-     * @since 1.0
      * @see PatternNode#destroyNote(float, int)
+     * @see PatternSequencerControl#NoteDataAdd
+     * @see PatternSequencerControl#NoteDataRemove
+     * @see PatternSequencerControl#NoteDataUpdate
      */
-    public static class PatternNodeNoteDestroyEvent extends PatternNodeEvent {
+    public static class PatternNodeNoteChangeEvent extends PatternNodeEvent {
         private NoteNode note;
 
         public NoteNode getNote() {
             return note;
         }
 
-        public PatternNodeNoteDestroyEvent(NodeBase target, PatternSequencerControl control,
+        public PatternNodeNoteChangeEvent(NodeBase target, PatternSequencerControl control,
                 NoteNode note) {
             super(target, control);
             this.note = note;
