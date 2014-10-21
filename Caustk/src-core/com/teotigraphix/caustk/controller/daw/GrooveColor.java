@@ -3,7 +3,7 @@ package com.teotigraphix.caustk.controller.daw;
 
 import com.badlogic.gdx.graphics.Color;
 
-public enum Colors {
+public enum GrooveColor {
 
     DarkGrey(0.3294117748737335, 0.3294117748737335, 0.3294117748737335, 1),
 
@@ -71,13 +71,13 @@ public enum Colors {
         return color;
     }
 
-    Colors(double red, double green, double blue, int id) {
+    GrooveColor(double red, double green, double blue, int id) {
         this.id = id;
         color = new Color((float)red, (float)green, (float)blue, 1f);
     }
 
-    public static Colors fromId(int id) {
-        for (Colors colors : values()) {
+    public static GrooveColor fromId(int id) {
+        for (GrooveColor colors : values()) {
             if (colors.getId() == id)
                 return colors;
         }

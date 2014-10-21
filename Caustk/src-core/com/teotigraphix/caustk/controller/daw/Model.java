@@ -9,17 +9,17 @@ import com.teotigraphix.caustk.node.RackNode;
 
 public class Model {
 
-    public static final Color BLACK = Colors.Gray.getColor();
+    public static final Color BLACK = GrooveColor.Gray.getColor();
 
     public static final Color WHITE = Color.WHITE;
 
-    public static final Color OCEAN = Colors.Cyan.getColor();
+    public static final Color OCEAN = GrooveColor.Cyan.getColor();
 
-    public static final Color PUSH_COLOR2_GREEN_HI = Colors.DarkGreen.getColor();
+    public static final Color PUSH_COLOR2_GREEN_HI = GrooveColor.DarkGreen.getColor();
 
-    public static final Color PUSH_COLOR2_BLUE = Colors.ElectricBlue.getColor();
+    public static final Color PUSH_COLOR2_BLUE = GrooveColor.ElectricBlue.getColor();
 
-    public static final Color PUSH_COLOR2_BLACK = Colors.Gray.getColor();
+    public static final Color PUSH_COLOR2_BLACK = GrooveColor.Gray.getColor();
 
     //--------------------------------------------------------------------------
     // Private :: Variables

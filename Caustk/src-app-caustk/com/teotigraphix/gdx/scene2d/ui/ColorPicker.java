@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
-import com.teotigraphix.caustk.controller.daw.Colors;
+import com.teotigraphix.caustk.controller.daw.GrooveColor;
 import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 import com.teotigraphix.gdx.scene2d.ui.ColorPickerListener.ColorPickerEvent;
@@ -20,12 +20,12 @@ public class ColorPicker extends UITable {
     @Override
     protected void createChildren() {
 
-        Colors[] values = Colors.values();
+        GrooveColor[] values = GrooveColor.values();
 
         int index = 0;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                final Colors color = values[index];
+                final GrooveColor color = values[index];
                 Image image = new Image(getSkin().getDrawable(
                         StylesDefault.ColorPicker_swatch_background));
                 image.setColor(color.getColor());

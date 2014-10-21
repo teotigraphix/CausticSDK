@@ -3,7 +3,7 @@ package com.teotigraphix.caustk.controller.sequencer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.teotigraphix.caustk.controller.core.AbstractSequencerView;
-import com.teotigraphix.caustk.controller.daw.Colors;
+import com.teotigraphix.caustk.controller.daw.GrooveColor;
 import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.caustk.controller.helper.ButtonEvent;
 import com.teotigraphix.caustk.controller.helper.Scales;
@@ -176,7 +176,7 @@ public class SequencerView extends AbstractSequencerView {
                             this.noteMap, y);
 
             if (hilite && isSet) {
-                color = Colors.Orange.getColor();
+                color = GrooveColor.Orange.getColor();
             }
 
             getViewManager().getPads().lightEx(x, y, color);
