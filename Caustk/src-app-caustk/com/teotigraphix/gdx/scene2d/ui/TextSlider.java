@@ -136,8 +136,10 @@ public class TextSlider extends ControlTable {
         public TextSliderStyle() {
         }
 
-        public TextSliderStyle(Drawable background, Drawable knob) {
+        public TextSliderStyle(Drawable background, Drawable knob, BitmapFont font, Color fontColor) {
             super(background, knob);
+            this.font = font;
+            this.fontColor = fontColor;
         }
     }
 

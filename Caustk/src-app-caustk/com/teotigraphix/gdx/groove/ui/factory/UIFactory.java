@@ -31,6 +31,7 @@ import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener;
 import com.teotigraphix.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
 import com.teotigraphix.gdx.scene2d.ui.PaneStack.PaneStackStyle;
+import com.teotigraphix.gdx.scene2d.ui.TextSlider.TextSliderStyle;
 
 /*
  * - All required styles must be in the StyleClass constructor
@@ -68,6 +69,7 @@ public abstract class UIFactory {
         initializeListStyle(skin);
         initializePaneStack(skin);
         initializeSlider(skin);
+        initializeTextSlider(skin);
         initializeViewStack(skin);
         initializeWindow(skin);
 
@@ -75,7 +77,15 @@ public abstract class UIFactory {
         initializePatternPane(skin);
     }
 
-    private void initializeSlider(Skin skin) {
+    protected void initializeTextSlider(Skin skin) {
+        TextSliderStyle verticalStyle = new TextSliderStyle(
+                skin.getDrawable(StylesDefault.TextSlider_background),
+                skin.getDrawable(StylesDefault.TextSlider_knob), skin.getFont(StylesDefault.Font),
+                Color.WHITE);
+        skin.add(StylesDefault.TextSlider_Veritical, verticalStyle);
+    }
+
+    protected void initializeSlider(Skin skin) {
         SliderStyle verticalStyle = new SliderStyle(
                 skin.getDrawable(StylesDefault.Slider_background),
                 skin.getDrawable(StylesDefault.Slider_knob));

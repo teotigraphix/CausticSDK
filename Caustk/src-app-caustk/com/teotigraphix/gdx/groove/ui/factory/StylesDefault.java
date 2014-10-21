@@ -171,6 +171,21 @@ public class StylesDefault {
     public static final String Slider_knob = "defaults/Slider_knob";
 
     //----------------------------------
+    // TextSlider
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String TextSlider_Veritical = "default-vertical";
+
+    public static final String TextSlider_Horizontal = "default-horizontal";
+
+    public static final String TextSlider_background = "defaults/Slider_background";
+
+    public static final String TextSlider_knob = "defaults/Slider_knob";
+
+    //----------------------------------
     // Button
     //----------------------------------
 

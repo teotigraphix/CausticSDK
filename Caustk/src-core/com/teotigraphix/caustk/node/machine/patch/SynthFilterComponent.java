@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.core.osc.FilterMessage.FilterType;
+import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
@@ -349,5 +350,48 @@ public class SynthFilterComponent extends MachineComponent {
         }
 
         setType(queryType());
+    }
+
+    public static enum SynthFilterControl implements IOSCControl {
+
+        /**
+         * @see FilterMessage#FILTER_ATTACK
+         */
+        Attack,
+
+        /**
+         * @see FilterMessage#FILTER_CUTOFF
+         */
+        Cutoff,
+
+        /**
+         * @see FilterMessage#FILTER_DECAY
+         */
+        Decay,
+
+        /**
+         * @see FilterMessage#FILTER_RELEASE
+         */
+        Release,
+
+        /**
+         * @see FilterMessage#FILTER_RESONANCE
+         */
+        Resonance,
+
+        /**
+         * @see FilterMessage#FILTER_SUSTAIN
+         */
+        Sustain,
+
+        /**
+         * @see FilterMessage#FILTER_KBTRACK
+         */
+        Track,
+
+        /**
+         * @see FilterMessage#FILTER_TYPE
+         */
+        Type;
     }
 }
