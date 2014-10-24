@@ -1,3 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.gdx.groove.ui.components.mixer;
 
@@ -16,20 +34,70 @@ import com.teotigraphix.gdx.groove.ui.components.mixer.MixerPaneItem.MixerPaneIt
 
 public class MixerPane extends UITable {
 
-    private ScrollPane scrollPane;
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
+
+    private MixerPanePropertyProvider povider;
 
     private List<MixerPaneItem> mixers = new ArrayList<MixerPaneItem>();
 
     private MixerPaneListener listener;
 
+    //--------------------------------------------------------------------------
+    // Private Component :: Variables
+    //--------------------------------------------------------------------------
+
+    private ScrollPane scrollPane;
+
     private MixerPaneItem masterItem;
 
-    private MixerPanePropertyProvider povider;
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public MixerPane(Skin skin, MixerPanePropertyProvider povider) {
         super(skin);
         this.povider = povider;
     }
+
+    //--------------------------------------------------------------------------
+    // Public :: Methods
+    //--------------------------------------------------------------------------
+
+    public void scrollLeft(Rectangle bounds, boolean down) {
+        doScroll(bounds);
+    }
+
+    public void scrollRight(Rectangle bounds, boolean down) {
+        doScroll(bounds);
+    }
+
+    public void redraw(Collection<? extends MachineNode> machines) {
+        for (MachineNode machineNode : machines) {
+            redraw(machineNode);
+        }
+    }
+
+    public void redrawTriggers(List<Integer> machines) {
+        for (MixerPaneItem item : mixers) {
+            item.setTriggered(false);
+        }
+        for (Integer index : machines) {
+            mixers.get(index).setTriggered(true);
+        }
+    }
+
+    public void onMachineSelection(MachineNode machineNode) {
+        for (MixerPaneItem item : mixers) {
+            item.setSelected(false);
+        }
+        mixers.get(machineNode.getIndex()).setSelected(true);
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     protected void createChildren() {
@@ -67,44 +135,14 @@ public class MixerPane extends UITable {
         add(scrollPane);//.size(400f);
     }
 
-    public void scrollLeft(Rectangle bounds, boolean down) {
-        doScroll(bounds);
-    }
-
-    public void scrollRight(Rectangle bounds, boolean down) {
-        doScroll(bounds);
-    }
-
     private void doScroll(Rectangle bounds) { // the mixerpaneitem bounds
         scrollPane.scrollTo(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
-    public void onMachineSelection(MachineNode machineNode) {
-        for (MixerPaneItem item : mixers) {
-            item.setSelected(false);
-        }
-        mixers.get(machineNode.getIndex()).setSelected(true);
-    }
-
-    public void refreshSolo(Collection<? extends MachineNode> machines) {
+    public void _refreshSolo(Collection<? extends MachineNode> machines) {
         for (MachineNode machineNode : machines) {
             MixerPaneItem item = mixers.get(machineNode.getIndex());
-            item.refreshSolo(machineNode);
-        }
-    }
-
-    public static interface MixerPaneListener {
-        void onSend(int index, MixerChannelControl control, float value);
-    }
-
-    public void setMixerPaneListener(MixerPaneListener l) {
-        this.listener = l;
-
-    }
-
-    public void redraw(Collection<? extends MachineNode> machines) {
-        for (MachineNode machineNode : machines) {
-            redraw(machineNode);
+            item.redrawSolo(machineNode);
         }
     }
 
@@ -117,4 +155,14 @@ public class MixerPane extends UITable {
             masterItem.redraw(povider.getRack().getRackNode().getMaster());
         }
     }
+
+    public static interface MixerPaneListener {
+        void onSend(int index, MixerChannelControl control, float value);
+    }
+
+    public void setMixerPaneListener(MixerPaneListener l) {
+        this.listener = l;
+
+    }
+
 }

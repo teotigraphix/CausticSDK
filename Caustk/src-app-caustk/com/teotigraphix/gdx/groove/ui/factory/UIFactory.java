@@ -26,11 +26,14 @@ import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
 import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEventKind;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack.ViewStackStyle;
+import com.teotigraphix.gdx.groove.ui.components.mixer.MixerPaneItem.MixerPaneItemStyle;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener;
+import com.teotigraphix.gdx.scene2d.ui.Knob.KnobStyle;
 import com.teotigraphix.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
 import com.teotigraphix.gdx.scene2d.ui.PaneStack.PaneStackStyle;
+import com.teotigraphix.gdx.scene2d.ui.TextKnob.TextKnobStyle;
 import com.teotigraphix.gdx.scene2d.ui.TextSlider.TextSliderStyle;
 
 /*
@@ -75,6 +78,28 @@ public abstract class UIFactory {
 
         initializeModePane(skin);
         initializePatternPane(skin);
+        initializeMixerPane(skin);
+        initializeKnob(skin);
+    }
+
+    private void initializeKnob(Skin skin) {
+        KnobStyle kstyle = new KnobStyle();
+        kstyle.background = skin.getDrawable("defaults/Knob_background");
+        kstyle.knob = skin.getDrawable("defaults/Knob_knob");
+        skin.add("default", kstyle);
+
+        TextKnobStyle style = new TextKnobStyle();
+        style.background = skin.getDrawable("defaults/Knob_background");
+        style.knob = skin.getDrawable("defaults/Knob_knob");
+        style.font = skin.getFont("default-font");
+        skin.add("default", style);
+    }
+
+    private void initializeMixerPane(Skin skin) {
+        MixerPaneItemStyle itemStyle = new MixerPaneItemStyle(
+                skin.getDrawable(StylesDefault.MixerPaneItem_background),
+                skin.getDrawable(StylesDefault.MixerPaneItem_outline));
+        skin.add(StylesDefault.MixerPaneItem, itemStyle);
     }
 
     protected void initializeTextSlider(Skin skin) {

@@ -1,10 +1,31 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and 
+// limitations under the License
+// 
+// Author: Michael Schmalle, Principal Architect
+// mschmalle at teotigraphix dot com
+////////////////////////////////////////////////////////////////////////////////
 
 package com.teotigraphix.gdx.groove.ui.components.mixer;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
@@ -13,6 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -20,17 +42,35 @@ import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
-import com.teotigraphix.gdx.scene2d.ui.Knob.KnobStyle;
 import com.teotigraphix.gdx.scene2d.ui.TextKnob;
-import com.teotigraphix.gdx.scene2d.ui.TextKnob.TextKnobStyle;
 
 public class MixerPaneItem extends UITable {
+
+    //--------------------------------------------------------------------------
+    // Private :: Variables
+    //--------------------------------------------------------------------------
 
     private int index;
 
     private MixerItemState currentState;
 
     private MixerPaneItemListener listener;
+
+    private boolean updating;
+
+    private Array<TextKnob> knobs = new Array<TextKnob>();
+
+    private boolean selected;
+
+    private boolean triggered;
+
+    private Color machineColor;
+
+    //--------------------------------------------------------------------------
+    // Private Component :: Variables
+    //--------------------------------------------------------------------------
+
+    private Image outlineGlow;
 
     private TextButton stateButton;
 
@@ -71,75 +111,128 @@ public class MixerPaneItem extends UITable {
 
     private Label nameLabel;
 
-    private boolean updating;
-
     private Table paramTable;
 
-    private Array<TextKnob> knobs = new Array<TextKnob>();
+    //--------------------------------------------------------------------------
+    // Public :: Properties
+    //--------------------------------------------------------------------------
 
-    private boolean selected;
+    //----------------------------------
+    // index
+    //----------------------------------
 
-    private Color machineColor;
-
+    /**
+     * Returns the channel's machine index.
+     */
     public int getIndex() {
         return index;
     }
 
-    public MixerPaneItem(Skin skin, int index) {
-        super(skin);
-        this.index = index;
-    }
+    //----------------------------------
+    // machineColor
+    //----------------------------------
 
     public void setMachineColor(Color machineColor) {
         this.machineColor = machineColor;
         setColors();
     }
 
-    protected void setColors() {
-        if (selected) {
-            nameLabel.setColor(Color.ORANGE);
-            paramTable.setColor(Color.ORANGE);
-            for (TextKnob knob : knobs) {
-                knob.setColor(Color.BLACK);
-            }
-        } else {
-            if (nameLabel != null) {
-                nameLabel.setColor(Color.WHITE);
-                paramTable.setColor(machineColor != null ? machineColor : Color.BLACK);
-            }
-            for (TextKnob knob : knobs) {
-                knob.setColor(machineColor != null ? Color.BLACK : Color.WHITE);
-            }
-        }
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-        setColors();
-    }
+    //----------------------------------
+    // selected
+    //----------------------------------
 
     public boolean isSelected() {
         return selected;
     }
 
+    /**
+     * Sets selected state.
+     * 
+     * @param selected
+     */
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+        setColors();
+    }
+
+    //----------------------------------
+    // triggered
+    //----------------------------------
+
+    public boolean isTriggered() {
+        return triggered;
+    }
+
+    public void setTriggered(boolean triggered) {
+        this.triggered = triggered;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public MixerPaneItem(Skin skin, int index) {
+        super(skin);
+        this.index = index;
+        setStyleClass(MixerPaneItemStyle.class);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public :: Methods
+    //--------------------------------------------------------------------------
+
+    public void redraw(MasterNode masterNode) {
+        nameLabel.setText("Master");
+        panKnob.setVisible(false);
+        muteButton.setVisible(false);
+        soloButton.setVisible(false);
+        stateButton.setVisible(false);
+
+        highKnob.setValue(masterNode.getEqualizer().getHigh());
+        midKnob.setValue(masterNode.getEqualizer().getMid());
+        bassKnob.setValue(masterNode.getEqualizer().getBass());
+
+        volumeSlider.setValue(masterNode.getVolume().getOut());
+    }
+
+    public void redraw(MachineNode machineNode) {
+        nameLabel.setText(machineNode.getName());
+
+        MixerChannel channel = machineNode.getMixer();
+        panKnob.setValue(channel.getPan());
+        volumeSlider.setValue(channel.getVolume());
+
+        highKnob.setValue(channel.getHigh());
+        midKnob.setValue(channel.getMid());
+        bassKnob.setValue(channel.getBass());
+
+        widthKnob.setValue(channel.getStereoWidth());
+        delayKnob.setValue(channel.getDelaySend());
+        reverbKnob.setValue(channel.getReverbSend());
+
+        redrawSolo(machineNode);
+    }
+
+    public void redrawSolo(MachineNode machineNode) {
+        MixerChannel channel = machineNode.getMixer();
+        updating = true;
+        soloButton.setChecked(channel.isSolo());
+        muteButton.setChecked(channel.isMute());
+        updating = false;
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
+
     @Override
     protected void createChildren() {
-        //debug();
+
+        MixerPaneItemStyle style = getStyle();
 
         paramTable = new Table();
-        paramTable.setBackground(getSkin().getDrawable("MixerPaneItem_background"));
+        paramTable.setBackground(style.param_background);
         paramTable.setColor(Color.BLACK);
-
-        KnobStyle kstyle = new KnobStyle();
-        kstyle.background = getSkin().getDrawable("defaults/Knob_background");
-        kstyle.knob = getSkin().getDrawable("defaults/Knob_knob");
-        getSkin().add("default", kstyle);
-
-        TextKnobStyle style = new TextKnobStyle();
-        style.background = getSkin().getDrawable("defaults/Knob_background");
-        style.knob = getSkin().getDrawable("defaults/Knob_knob");
-        style.font = getSkin().getFont("default-font");
-        getSkin().add("default", style);
 
         nameRow = new Table();
 
@@ -169,9 +262,41 @@ public class MixerPaneItem extends UITable {
         row();
         add(controlRow).expandX().fillX();
 
+        outlineGlow = new Image(style.outline);
+        outlineGlow.setTouchable(Touchable.disabled);
+
+        addActor(outlineGlow);
+
         setCurrentState(MixerItemState.Volume);
 
         setColors();
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        outlineGlow.setVisible(triggered);
+        outlineGlow.setBounds(paramTable.getX() - 5f, paramTable.getY() - 5f,
+                paramTable.getWidth() + 10f, paramTable.getHeight() + 10f);
+        super.draw(batch, parentAlpha);
+    }
+
+    protected void setColors() {
+        if (selected) {
+            nameLabel.setColor(Color.ORANGE);
+            paramTable.setColor(Color.ORANGE);
+            for (TextKnob knob : knobs) {
+                knob.setColor(Color.BLACK);
+            }
+        } else {
+            if (nameLabel != null) {
+                nameLabel.setColor(Color.WHITE);
+                paramTable.setColor(machineColor != null ? machineColor : Color.BLACK);
+            }
+            for (TextKnob knob : knobs) {
+                knob.setColor(machineColor != null ? Color.BLACK : Color.WHITE);
+            }
+        }
+        outlineGlow.setColor(paramTable.getColor());
     }
 
     private void createName(Table parent) {
@@ -382,38 +507,6 @@ public class MixerPaneItem extends UITable {
             panCell.setActor(null);
     }
 
-    public void redraw(MasterNode masterNode) {
-        nameLabel.setText("Master");
-        panKnob.setVisible(false);
-        muteButton.setVisible(false);
-        soloButton.setVisible(false);
-        stateButton.setVisible(false);
-
-        highKnob.setValue(masterNode.getEqualizer().getHigh());
-        midKnob.setValue(masterNode.getEqualizer().getMid());
-        bassKnob.setValue(masterNode.getEqualizer().getBass());
-
-        volumeSlider.setValue(masterNode.getVolume().getOut());
-    }
-
-    public void redraw(MachineNode machineNode) {
-        nameLabel.setText(machineNode.getName());
-
-        MixerChannel channel = machineNode.getMixer();
-        panKnob.setValue(channel.getPan());
-        volumeSlider.setValue(channel.getVolume());
-
-        highKnob.setValue(channel.getHigh());
-        midKnob.setValue(channel.getMid());
-        bassKnob.setValue(channel.getBass());
-
-        widthKnob.setValue(channel.getStereoWidth());
-        delayKnob.setValue(channel.getDelaySend());
-        reverbKnob.setValue(channel.getReverbSend());
-
-        refreshSolo(machineNode);
-    }
-
     public static interface MixerPaneItemListener {
         void onSend(int index, MixerChannelControl control, float value);
     }
@@ -422,12 +515,17 @@ public class MixerPaneItem extends UITable {
         this.listener = l;
     }
 
-    public void refreshSolo(MachineNode machineNode) {
-        MixerChannel channel = machineNode.getMixer();
-        updating = true;
-        soloButton.setChecked(channel.isSolo());
-        muteButton.setChecked(channel.isMute());
-        updating = false;
+    public static class MixerPaneItemStyle {
+
+        public Drawable param_background;
+
+        public Drawable outline;
+
+        public MixerPaneItemStyle(Drawable param_background, Drawable outline) {
+            this.param_background = param_background;
+            this.outline = outline;
+        }
+
     }
 
 }

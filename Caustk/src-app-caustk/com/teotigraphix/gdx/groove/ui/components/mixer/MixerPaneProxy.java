@@ -1,6 +1,8 @@
 
 package com.teotigraphix.gdx.groove.ui.components.mixer;
 
+import java.util.List;
+
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.BehaviorUtils;
 import com.teotigraphix.gdx.groove.app.GrooveBehavior;
@@ -43,6 +45,10 @@ public class MixerPaneProxy {
 
     public void redraw() {
         pane.redraw(behavior.getRack().getMachines());
+    }
+
+    public void redrawTriggers(List<Integer> machines) {
+        pane.redrawTriggers(machines);
     }
 
     protected void send(int index, MixerChannelControl control, float value) {

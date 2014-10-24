@@ -324,6 +324,28 @@ public class StylesDefault {
 
     public static final String DisplayPane_background = "defaults/DisplayPane_background";
 
+    //----------------------------------
+    // MixerPane
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String MixerPane = "default";
+
+    //----------------------------------
+    // MixerPaneItem
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String MixerPaneItem = "default";
+
+    public static final String MixerPaneItem_background = "defaults/MixerPaneItem_background";
+
+    public static final String MixerPaneItem_outline = "defaults/MixerPaneItem_outline";
+
     public static Color getMachineColor(MachineType type) {
         switch (type) {
             case Bassline:
