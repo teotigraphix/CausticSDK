@@ -13,7 +13,6 @@ import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.groove.ui.components.mixer.MixerPaneItem.MixerPaneItemListener;
-import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 
 public class MixerPane extends UITable {
 
@@ -27,8 +26,11 @@ public class MixerPane extends UITable {
 
     private MixerPaneItem masterItem;
 
-    public MixerPane(Skin skin, boolean hasMaster) {
+    private MixerPanePropertyProvider povider;
+
+    public MixerPane(Skin skin, MixerPanePropertyProvider povider, boolean hasMaster) {
         super(skin);
+        this.povider = povider;
         this.hasMaster = hasMaster;
     }
 
@@ -112,8 +114,7 @@ public class MixerPane extends UITable {
 
     private void refresh(MachineNode machineNode) {
         MixerPaneItem item = mixers.get(machineNode.getIndex());
-        item.setMachineColor(StylesDefault.getMachineColor(machineNode.getType()));
+        item.setMachineColor(povider.getItemColor(machineNode.getIndex()));
         item.refresh(machineNode);
     }
-
 }

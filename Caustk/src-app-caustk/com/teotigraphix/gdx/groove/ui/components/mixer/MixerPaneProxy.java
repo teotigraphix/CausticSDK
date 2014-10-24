@@ -1,7 +1,6 @@
 
 package com.teotigraphix.gdx.groove.ui.components.mixer;
 
-import com.teotigraphix.caustk.controller.core.AbstractDisplay;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.BehaviorUtils;
 import com.teotigraphix.gdx.groove.app.GrooveBehavior;
@@ -23,15 +22,15 @@ public class MixerPaneProxy {
         return pane;
     }
 
-    private AbstractDisplay display;
+    private MixerPanePropertyProvider provider;
 
-    public MixerPaneProxy(GrooveBehavior behavior, AbstractDisplay display) {
+    public MixerPaneProxy(GrooveBehavior behavior, MixerPanePropertyProvider provider) {
         this.behavior = behavior;
-        this.display = display;
+        this.provider = provider;
     }
 
     public MixerPane create() {
-        pane = new MixerPane(behavior.getSkin(), false);
+        pane = new MixerPane(behavior.getSkin(), provider, false);
         pane.setMixerPaneListener(new MixerPaneListener() {
             @Override
             public void onSend(int index, MixerChannelControl control, float value) {
@@ -49,8 +48,8 @@ public class MixerPaneProxy {
     protected void send(int index, MixerChannelControl control, float value) {
         BehaviorUtils.send(behavior.getRack(), index, control, value);
         //viewManager.getSubDisplay().setCell(0, 1, value + "").done(0);
-        if (display != null)
-            display.showNotification(value + "", 1f);
+        if (provider.getDisplay() != null)
+            provider.getDisplay().showNotification(value + "", 1f);
     }
 
 }
