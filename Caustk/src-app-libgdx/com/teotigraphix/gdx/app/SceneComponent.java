@@ -88,7 +88,7 @@ public abstract class SceneComponent implements ISceneComponent {
     /**
      * Returns the screen's {@link Skin}.
      */
-    protected Skin getSkin() {
+    public Skin getSkin() {
         return scene.getSkin();
     }
 
@@ -99,7 +99,7 @@ public abstract class SceneComponent implements ISceneComponent {
     /**
      * Returns the screen's {@link Stage}.
      */
-    protected Stage getStage() {
+    public Stage getStage() {
         return scene.getStage();
     }
 

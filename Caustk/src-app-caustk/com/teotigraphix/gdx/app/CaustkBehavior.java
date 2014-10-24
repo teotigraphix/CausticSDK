@@ -76,7 +76,7 @@ public abstract class CaustkBehavior extends Behavior {
         return ((CaustkScene)getScene()).getContainerMap();
     }
 
-    protected final ICaustkRack getRack() {
+    public final ICaustkRack getRack() {
         return getApplication().getRack();
     }
 
@@ -88,7 +88,10 @@ public abstract class CaustkBehavior extends Behavior {
         return getScene().getFactory();
     }
 
-    protected IViewManager getViewManager() {
+    /**
+     * Used by Behavior proxy classes.
+     */
+    public IViewManager getViewManager() {
         return viewManager;
     }
 
