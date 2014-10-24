@@ -30,7 +30,7 @@ public class MixerPaneProxy {
     }
 
     public MixerPane create() {
-        pane = new MixerPane(behavior.getSkin(), provider, false);
+        pane = new MixerPane(behavior.getSkin(), provider);
         pane.setMixerPaneListener(new MixerPaneListener() {
             @Override
             public void onSend(int index, MixerChannelControl control, float value) {

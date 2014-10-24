@@ -22,21 +22,17 @@ public class MixerPane extends UITable {
 
     private MixerPaneListener listener;
 
-    private boolean hasMaster;
-
     private MixerPaneItem masterItem;
 
     private MixerPanePropertyProvider povider;
 
-    public MixerPane(Skin skin, MixerPanePropertyProvider povider, boolean hasMaster) {
+    public MixerPane(Skin skin, MixerPanePropertyProvider povider) {
         super(skin);
         this.povider = povider;
-        this.hasMaster = hasMaster;
     }
 
     @Override
     protected void createChildren() {
-        //debug();
         Table root = new Table();
 
         scrollPane = new ScrollPane(root);
@@ -52,11 +48,11 @@ public class MixerPane extends UITable {
                 }
             });
             item.create("default");
-            root.add(item).size(57f, 400f);
+            root.add(item).size(50f, 400f);
             mixers.add(item);
         }
 
-        if (hasMaster) {
+        if (povider.hasMaster()) {
             masterItem = new MixerPaneItem(getSkin(), -1);
             masterItem.setMixerPaneItemListener(new MixerPaneItemListener() {
                 @Override
@@ -68,7 +64,7 @@ public class MixerPane extends UITable {
             root.add(masterItem).size(60f, 400f);
         }
 
-        add(scrollPane).size(400f);
+        add(scrollPane);//.size(400f);
     }
 
     public void scrollLeft(Rectangle bounds, boolean down) {
@@ -108,13 +104,17 @@ public class MixerPane extends UITable {
 
     public void redraw(Collection<? extends MachineNode> machines) {
         for (MachineNode machineNode : machines) {
-            refresh(machineNode);
+            redraw(machineNode);
         }
     }
 
-    private void refresh(MachineNode machineNode) {
+    private void redraw(MachineNode machineNode) {
         MixerPaneItem item = mixers.get(machineNode.getIndex());
         item.setMachineColor(povider.getItemColor(machineNode.getIndex()));
-        item.refresh(machineNode);
+        item.redraw(machineNode);
+
+        if (povider.hasMaster()) {
+            masterItem.redraw(povider.getRack().getRackNode().getMaster());
+        }
     }
 }

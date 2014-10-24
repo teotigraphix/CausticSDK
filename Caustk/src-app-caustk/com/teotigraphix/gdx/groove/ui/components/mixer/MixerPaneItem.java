@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
+import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 import com.teotigraphix.gdx.scene2d.ui.Knob.KnobStyle;
@@ -381,7 +382,21 @@ public class MixerPaneItem extends UITable {
             panCell.setActor(null);
     }
 
-    public void refresh(MachineNode machineNode) {
+    public void redraw(MasterNode masterNode) {
+        nameLabel.setText("Master");
+        panKnob.setVisible(false);
+        muteButton.setVisible(false);
+        soloButton.setVisible(false);
+        stateButton.setVisible(false);
+
+        highKnob.setValue(masterNode.getEqualizer().getHigh());
+        midKnob.setValue(masterNode.getEqualizer().getMid());
+        bassKnob.setValue(masterNode.getEqualizer().getBass());
+
+        volumeSlider.setValue(masterNode.getVolume().getOut());
+    }
+
+    public void redraw(MachineNode machineNode) {
         nameLabel.setText(machineNode.getName());
 
         MixerChannel channel = machineNode.getMixer();

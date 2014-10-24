@@ -24,6 +24,26 @@ public final class BehaviorUtils {
             rack.getRackNode().setMute(index, value == 0f ? false : true);
             return;
         }
-        rack.getMachine(index).getMixer().setValue(control, value);
+
+        if (index == -1) {
+            switch (control) {
+                case Volume:
+                    rack.getRackNode().getMaster().getVolume().setOut(value);
+                    break;
+                case High:
+                    rack.getRackNode().getMaster().getEqualizer().setHigh(value);
+                    break;
+                case Mid:
+                    rack.getRackNode().getMaster().getEqualizer().setMid(value);
+                    break;
+                case Bass:
+                    rack.getRackNode().getMaster().getEqualizer().setBass(value);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            rack.getMachine(index).getMixer().setValue(control, value);
+        }
     }
 }
