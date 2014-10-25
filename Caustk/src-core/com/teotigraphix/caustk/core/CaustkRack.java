@@ -299,7 +299,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     public void loadEffects(MachineNode machineNode, LibraryEffect libraryEffect) {
-        machineNode.getEffects().updateEffects(machineNode, libraryEffect.get(0),
+        machineNode.getEffect().updateEffects(machineNode, libraryEffect.get(0),
                 libraryEffect.get(1));
     }
 

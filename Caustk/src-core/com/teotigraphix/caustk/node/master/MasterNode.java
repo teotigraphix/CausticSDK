@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.effect.EffectChannel;
 
 /**
  * The master insert of the rack.
@@ -59,7 +59,7 @@ public class MasterNode extends NodeBase {
     private MasterVolumeNode volume;
 
     @Tag(56)
-    private EffectsChannel effects;
+    private EffectChannel effects;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -135,7 +135,7 @@ public class MasterNode extends NodeBase {
     /**
      * The master effects node in the rack.
      */
-    public EffectsChannel getEffects() {
+    public EffectChannel getEffects() {
         return effects;
     }
 
@@ -156,7 +156,7 @@ public class MasterNode extends NodeBase {
         equalizer = new MasterEqualizerNode(this);
         limiter = new MasterLimiterNode(this);
         volume = new MasterVolumeNode(this);
-        effects = new EffectsChannel(this);
+        effects = new EffectChannel(this);
     }
 
     //--------------------------------------------------------------------------

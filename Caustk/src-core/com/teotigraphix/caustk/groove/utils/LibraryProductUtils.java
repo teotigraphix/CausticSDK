@@ -47,8 +47,8 @@ import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.effect.EffectNode;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.ZipCompress;
 import com.teotigraphix.caustk.utils.ZipUncompress;
@@ -430,7 +430,7 @@ public class LibraryProductUtils {
         LibrarySound librarySound = getFactory().getLibraryFactory().createSound(product, index,
                 displayName, path);
 
-        LibraryEffect libraryEffect = fillEffect(machineNode.getEffects(), product,
+        LibraryEffect libraryEffect = fillEffect(machineNode.getEffect(), product,
                 machineNode.getName(), groupName, librarySound);
         LibraryInstrument libraryInstrument = fillInstrument(machineNode, product, displayName,
                 groupName);
@@ -444,7 +444,7 @@ public class LibraryProductUtils {
         return librarySound;
     }
 
-    private static LibraryEffect fillEffect(EffectsChannel effectsChannel, LibraryProduct product,
+    private static LibraryEffect fillEffect(EffectChannel effectsChannel, LibraryProduct product,
             String machineName, String groupName, LibrarySound librarySound) {
         String name = machineName + " FX";
         String relativePath = groupName;

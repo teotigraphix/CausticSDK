@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.effect.DelayEffect;
 import com.teotigraphix.caustk.node.effect.DistortionEffect;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.effect.FlangerEffect;
 import com.teotigraphix.caustk.node.effect.LimiterEffect;
 import com.teotigraphix.caustk.node.effect.MultiFilterEffect;
@@ -72,10 +72,10 @@ public class NodeFactory extends CaustkFactoryChildBase {
      * Creates an {@link EffectNode} subclass using the {@link EffectType}.
      * 
      * @param machineNode The machine for the new effect.
-     * @param slot The effect slot within the {@link EffectsChannel}.
+     * @param slot The effect slot within the {@link EffectChannel}.
      * @param effectType The {@link EffectType} of the effect to be created.
      * @return A new {@link EffectNode}, has not been added to an
-     *         {@link EffectsChannel}.
+     *         {@link EffectChannel}.
      */
     @SuppressWarnings("unchecked")
     public <T extends EffectNode> T createEffect(MachineNode machineNode, int slot,

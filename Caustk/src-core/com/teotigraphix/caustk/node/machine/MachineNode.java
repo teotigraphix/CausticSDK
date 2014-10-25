@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
@@ -93,7 +93,7 @@ public abstract class MachineNode extends NodeBase {
     private MixerChannel mixer;
 
     @Tag(60)
-    private EffectsChannel effects;
+    private EffectChannel effect;
 
     @Tag(61)
     private TrackComponent track;
@@ -162,34 +162,38 @@ public abstract class MachineNode extends NodeBase {
     public final void setName(String name) {
         if (name.equals(this.name))
             return;
-        // XXX Check machine name length 10 char limit
+
+        if (name.length() > 10)
+            name = name.substring(0, 9);
+
         this.name = name;
+
         RackMessage.MACHINE_NAME.send(getRack(), index, name);
         post(new MachineNodeNameEvent(this, RackControl.MachineName, name));
     }
 
-    //----------------------------------
-    // channelIndex
-    //----------------------------------
-
-    /**
-     * The channel index within the arranger.
-     */
-    public Integer getChannelIndex() {
-        return channelIndex;
-    }
-
-    /**
-     * Sets the layout channel index within the arranger.
-     * 
-     * @param channelIndex The layout channel index.
-     * @see MachineNodeChannelIndexEvent
-     */
-    public void setChannelIndex(Integer channelIndex) {
-        if (channelIndex == this.channelIndex)
-            return;
-        this.channelIndex = channelIndex;
-    }
+    //    //----------------------------------
+    //    // channelIndex
+    //    //----------------------------------
+    //
+    //    /**
+    //     * The channel index within the arranger.
+    //     */
+    //    public Integer getChannelIndex() {
+    //        return channelIndex;
+    //    }
+    //
+    //    /**
+    //     * Sets the layout channel index within the arranger.
+    //     * 
+    //     * @param channelIndex The layout channel index.
+    //     * @see MachineNodeChannelIndexEvent
+    //     */
+    //    public void setChannelIndex(Integer channelIndex) {
+    //        if (channelIndex == this.channelIndex)
+    //            return;
+    //        this.channelIndex = channelIndex;
+    //    }
 
     //----------------------------------
     // preset
@@ -235,8 +239,8 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's effects channel.
      */
-    public EffectsChannel getEffects() {
-        return effects;
+    public EffectChannel getEffect() {
+        return effect;
     }
 
     //----------------------------------
@@ -346,7 +350,7 @@ public abstract class MachineNode extends NodeBase {
         preset.create();
         synth.create();
         mixer.create();
-        effects.create();
+        effect.create();
         sequencer.create();
         track.create();
         clips.create();
@@ -362,7 +366,7 @@ public abstract class MachineNode extends NodeBase {
         preset.destroy();
         synth.destroy();
         mixer.destroy();
-        effects.destroy();
+        effect.destroy();
         sequencer.destroy();
         track.destroy();
         clips.destroy();
@@ -374,7 +378,7 @@ public abstract class MachineNode extends NodeBase {
         preset.restore();
         synth.restore();
         mixer.restore();
-        effects.restore();
+        effect.restore();
         restorePresetProperties();
         sequencer.restore();
         track.restore();
@@ -390,7 +394,7 @@ public abstract class MachineNode extends NodeBase {
         preset.update();
         synth.update();
         mixer.update();
-        effects.update();
+        effect.update();
         sequencer.update();
         track.update();
         clips.update();
@@ -418,7 +422,7 @@ public abstract class MachineNode extends NodeBase {
         preset = new PresetComponent(this, null);
         volume = new VolumeComponent(this);
         mixer = new MixerChannel(this);
-        effects = new EffectsChannel(this);
+        effect = new EffectChannel(this);
         synth = new SynthComponent(this);
         sequencer = new PatternSequencerComponent(this);
         track = new TrackComponent(this);

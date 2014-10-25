@@ -65,7 +65,7 @@ import com.teotigraphix.caustk.node.effect.CompressorEffect;
 import com.teotigraphix.caustk.node.effect.DelayEffect;
 import com.teotigraphix.caustk.node.effect.DistortionEffect;
 import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.effect.EffectsChannel;
+import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.effect.FlangerEffect;
 import com.teotigraphix.caustk.node.effect.LimiterEffect;
 import com.teotigraphix.caustk.node.effect.MultiFilterEffect;
@@ -250,7 +250,7 @@ public final class CaustkSerializerTags {
         kryo.register(SynthComponent.class, 266);
         kryo.register(PatternSequencerComponent.class, 267);
         kryo.register(MixerChannel.class, 268);
-        kryo.register(EffectsChannel.class, 269);
+        kryo.register(EffectChannel.class, 269);
         kryo.register(TrackComponent.class, 270);
         kryo.register(ClipComponent.class, 271);
         kryo.register(TrackEntryNode.class, 272);

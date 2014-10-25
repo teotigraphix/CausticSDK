@@ -636,16 +636,6 @@ public class SequencerNode extends NodeBase {
         setShuffleAmount(queryShuffleAmount());
         setShuffleMode(queryShuffleMode());
         setSongEndMode(querySongEndMode());
-
-        // update the channel index to default appearance order
-        int index = 0;
-        for (int i = 0; i < 14; i++) {
-            MachineNode machine = getRack().getMachine(i);
-            if (machine != null) {
-                machine.setChannelIndex(index);
-                index++;
-            }
-        }
     }
 
     /**
