@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.AutowahControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -59,27 +59,24 @@ public class AutoWahEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see AutowahControl#Cutoff
+     * @see EffectControls#Autowah_Cutoff
      */
     public float getCutoff() {
         return cutoff;
     }
 
     public float queryCutoff() {
-        return get(AutowahControl.Cutoff);
+        return get(EffectControls.Autowah_Cutoff);
     }
 
     /**
-     * @see AutowahControl#Cutoff
-     * @param cutoff (0.5..4.0)
+     * @see EffectControls#Autowah_Cutoff
      */
     public void setCutoff(float cutoff) {
-        if (cutoff == this.cutoff)
+        if (!EffectControls.Autowah_Cutoff.set(cutoff, this.cutoff))
             return;
-        if (cutoff < 0.5f || cutoff > 4.0f)
-            throw newRangeException(AutowahControl.Cutoff, "0.5..4.0", cutoff);
         this.cutoff = cutoff;
-        set(AutowahControl.Cutoff, cutoff);
+        set(EffectControls.Autowah_Cutoff, cutoff);
     }
 
     //----------------------------------
@@ -87,27 +84,24 @@ public class AutoWahEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see AutowahControl#Depth
+     * @see EffectControls#Autowah_Depth
      */
     public float getDepth() {
         return depth;
     }
 
     public float queryDepth() {
-        return get(AutowahControl.Depth);
+        return get(EffectControls.Autowah_Depth);
     }
 
     /**
-     * @param depth (0..1)
-     * @see AutowahControl#Depth
+     * @see EffectControls#Autowah_Depth
      */
     public void setDepth(float depth) {
-        if (depth == this.depth)
+        if (!EffectControls.Autowah_Depth.set(depth, this.depth))
             return;
-        if (depth < 0f || depth > 1f)
-            throw newRangeException(AutowahControl.Depth, "0..1", depth);
         this.depth = depth;
-        set(AutowahControl.Depth, depth);
+        set(EffectControls.Autowah_Depth, depth);
     }
 
     //----------------------------------
@@ -115,27 +109,24 @@ public class AutoWahEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see AutowahControl#Resonance
+     * @see EffectControls#Autowah_Resonance
      */
     public float getResonance() {
         return resonance;
     }
 
     public float queryResonance() {
-        return get(AutowahControl.Resonance);
+        return get(EffectControls.Autowah_Resonance);
     }
 
     /**
-     * @param resonance (0..1)
-     * @see AutowahControl#Resonance
+     * @see EffectControls#Autowah_Resonance
      */
     public void setResonance(float resonance) {
-        if (resonance == this.resonance)
+        if (!EffectControls.Autowah_Resonance.set(resonance, this.resonance))
             return;
-        if (resonance < 0f || resonance > 1f)
-            throw newRangeException(AutowahControl.Resonance, "0..1", resonance);
         this.resonance = resonance;
-        set(AutowahControl.Resonance, resonance);
+        set(EffectControls.Autowah_Resonance, resonance);
     }
 
     //----------------------------------
@@ -143,27 +134,24 @@ public class AutoWahEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see AutowahControl#Speed
+     * @see EffectControls#Autowah_Speed
      */
     public float getSpeed() {
         return speed;
     }
 
     public float querySpeed() {
-        return get(AutowahControl.Speed);
+        return get(EffectControls.Autowah_Speed);
     }
 
     /**
-     * @param speed (0..0.5)
-     * @see AutowahControl#Speed
+     * @see EffectControls#Autowah_Speed
      */
     public void setSpeed(float speed) {
-        if (speed == this.speed)
+        if (!EffectControls.Autowah_Speed.set(speed, this.speed))
             return;
-        if (speed < 0f || speed > 0.5f)
-            throw newRangeException(AutowahControl.Speed, "0..0.5", speed);
         this.speed = speed;
-        set(AutowahControl.Speed, speed);
+        set(EffectControls.Autowah_Speed, speed);
     }
 
     //----------------------------------
@@ -171,27 +159,24 @@ public class AutoWahEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see AutowahControl#Wet
+     * @see EffectControls#Autowah_Wet
      */
     public float getWet() {
         return wet;
     }
 
     public float queryWet() {
-        return get(AutowahControl.Wet);
+        return get(EffectControls.Autowah_Wet);
     }
 
     /**
-     * @param wet (0..1)
-     * @see AutowahControl#Wet
+     * @see EffectControls#Autowah_Wet
      */
     public void setWet(float wet) {
-        if (wet == this.wet)
+        if (!EffectControls.Autowah_Wet.set(wet, this.wet))
             return;
-        if (wet < 0f || wet > 1f)
-            throw newRangeException(AutowahControl.Wet, "0..1", wet);
         this.wet = wet;
-        set(AutowahControl.Wet, wet);
+        set(EffectControls.Autowah_Wet, wet);
     }
 
     //--------------------------------------------------------------------------
@@ -216,11 +201,11 @@ public class AutoWahEffect extends EffectNode {
     @Override
     protected void updateComponents() {
         super.updateComponents();
-        set(AutowahControl.Cutoff, cutoff);
-        set(AutowahControl.Depth, depth);
-        set(AutowahControl.Resonance, resonance);
-        set(AutowahControl.Speed, speed);
-        set(AutowahControl.Wet, wet);
+        set(EffectControls.Autowah_Cutoff, cutoff);
+        set(EffectControls.Autowah_Depth, depth);
+        set(EffectControls.Autowah_Resonance, resonance);
+        set(EffectControls.Autowah_Speed, speed);
+        set(EffectControls.Autowah_Wet, wet);
     }
 
     @Override

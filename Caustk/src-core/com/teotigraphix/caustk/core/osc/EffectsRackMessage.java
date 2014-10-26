@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-
 /**
  * The {@link EffectsRackMessage} holds all OSC messages associated with the
  * {@link IEffectsRack} API.
@@ -154,45 +153,6 @@ public class EffectsRackMessage extends CausticMessage {
      */
     public static interface IEffectControl extends IOSCControl {
         String getControl();
-    }
-
-    public enum AutowahControl implements IEffectControl {
-
-        /**
-         * Values <code>0.5..4.0</code>; default <code>2.23</code>
-         */
-        Cutoff("cutoff"),
-
-        /**
-         * Values <code>0.0..1.0</code>; default <code>1.0</code>
-         */
-        Depth("depth"),
-
-        /**
-         * Values <code>0.0..0.1</code>; default <code>0.5</code>
-         */
-        Resonance("resonance"),
-
-        /**
-         * Values <code>0.0.5.0</code>; default <code>0.4</code>
-         */
-        Speed("speed"),
-
-        /**
-         * Values <code>0.0..1.0</code>; default <code>1.0</code>
-         */
-        Wet("wet");
-
-        private String control;
-
-        @Override
-        public String getControl() {
-            return control;
-        }
-
-        private AutowahControl(String control) {
-            this.control = control;
-        }
     }
 
     public enum BitcrusherControl implements IEffectControl {

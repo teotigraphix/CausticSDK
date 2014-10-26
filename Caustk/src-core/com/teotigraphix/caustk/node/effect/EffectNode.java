@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.effect;
 import android.media.effect.Effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
@@ -94,7 +95,7 @@ public abstract class EffectNode extends MachineComponent {
     //----------------------------------
 
     /**
-     * @see EffectControl#Bypass
+     * @see EffectControls#Global_Bypass
      */
     public boolean isBypass() {
         return bypass;
@@ -106,13 +107,13 @@ public abstract class EffectNode extends MachineComponent {
 
     /**
      * @param bypass Whether to bypass the effect.
-     * @see EffectControl#Bypass
+     * @see EffectControls#Global_Bypass
      */
     public void setBypass(boolean bypass) {
         if (bypass == this.bypass)
             return;
         this.bypass = bypass;
-        set(EffectControl.Bypass, bypass ? 1 : 0);
+        set(EffectControls.Global_Bypass, bypass ? 1 : 0);
     }
 
     //--------------------------------------------------------------------------
