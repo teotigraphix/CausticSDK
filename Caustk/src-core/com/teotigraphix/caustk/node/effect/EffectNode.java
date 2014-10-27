@@ -24,7 +24,6 @@ import android.media.effect.Effect;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
@@ -102,7 +101,7 @@ public abstract class EffectNode extends MachineComponent {
     }
 
     public boolean queryIsBypass() {
-        return get(EffectControl.Bypass) == 0f ? false : true;
+        return get(EffectControls.Global_Bypass) == 0f ? false : true;
     }
 
     /**
@@ -146,7 +145,7 @@ public abstract class EffectNode extends MachineComponent {
 
     @Override
     protected void updateComponents() {
-        set(EffectControl.Bypass, bypass ? 1 : 0);
+        set(EffectControls.Global_Bypass, bypass ? 1 : 0);
     }
 
     @Override

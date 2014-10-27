@@ -56,12 +56,12 @@ public enum EffectControls implements IEffectControl {
     Autowah_Depth("depth", EffectControlKind.Float, 0f, 1f, 1f),
 
     /**
-     * Values <code>0.0..0.1</code>; default <code>0.5</code>
+     * Values <code>0.0..1.0</code>; default <code>0.5</code>
      */
     Autowah_Resonance("resonance", EffectControlKind.Float, 0f, 1f, 0.5f),
 
     /**
-     * Values <code>0.0.5.0</code>; default <code>0.4</code>
+     * Values <code>0.0.0.5</code>; default <code>0.4</code>
      */
     Autowah_Speed("speed", EffectControlKind.Float, 0f, 0.5f, 0.4f),
 
@@ -83,7 +83,7 @@ public enum EffectControls implements IEffectControl {
      * Values <code>0.0..1.0</code>; default <code>0.0</code>
      */
     Bitcrusher_Jitter("jitter", EffectControlKind.Float, 0f, 1f, 0f),
-
+    // XXX TEST
     /**
      * Values <code>0.01..0.5</code>; default <code>1.0</code>
      */
@@ -161,12 +161,10 @@ public enum EffectControls implements IEffectControl {
     // CombFilter
     //----------------------------------
 
-    // XXX TODO Test this to figure out what is actually happening
-
     /**
-     * Values <code>0.1..0.95</code>; default <code>0.8</code>
+     * Values <code>2..50</code>; default <code>10</code>
      */
-    CombFilter_Wet("depth", EffectControlKind.Float, 0.1f, 0.95f, 0.8f), // depth
+    CombFilter_Freq("rate", EffectControlKind.Int, 2, 50, 10), // rate
 
     /**
      * Values <code>0.1..0.95</code>; default <code>0.475</code>
@@ -174,9 +172,9 @@ public enum EffectControls implements IEffectControl {
     CombFilter_Reso("feedback", EffectControlKind.Float, 0.1f, 0.95f, 0.475f), // feedback
 
     /**
-     * Values <code>2..50</code>; default <code>10</code>
+     * Values <code>0.1..0.9</code>; default <code>0.8</code>
      */
-    CombFilter_Freq("rate", EffectControlKind.Int, 2, 50, 10), // rate
+    CombFilter_Wet("depth", EffectControlKind.Float, 0.1f, 0.9f, 0.8f), // depth
 
     //----------------------------------
     // Compressor
@@ -225,7 +223,7 @@ public enum EffectControls implements IEffectControl {
     /**
      * Values <code>1..12</code>; default <code>8</code>
      */
-    Delay_Time("time", EffectControlKind.Int, 1, 8, 8),
+    Delay_Time("time", EffectControlKind.Int, 1, 12, 8),
 
     /**
      * Values <code>0.0..1.0</code>; default <code>0.5</code>
@@ -470,7 +468,7 @@ public enum EffectControls implements IEffectControl {
     /**
      * Values <code>0.0..2.0</code>; default <code>1.0</code>
      */
-    VinylSimulator_Wet("wet", EffectControlKind.Float, 0f, 1f, 1f);
+    VinylSimulator_Wet("wet", EffectControlKind.Float, 0f, 2f, 1f);
 
     private static Map<EffectType, Collection<IEffectControl>> map = new HashMap<EffectType, Collection<IEffectControl>>();
 
@@ -506,7 +504,11 @@ public enum EffectControls implements IEffectControl {
         add(EffectType.Chorus, Chorus_Rate);
         add(EffectType.Chorus, Chorus_Wet);
 
-        // XXX CombFilter
+        // CombFilter
+        add(EffectType.CombFilter, Global_Bypass);
+        add(EffectType.CombFilter, CombFilter_Freq);
+        add(EffectType.CombFilter, CombFilter_Reso);
+        add(EffectType.CombFilter, CombFilter_Wet);
 
         // Compressor
         add(EffectType.Compressor, Global_Bypass);

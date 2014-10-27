@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CombFilterControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -53,27 +53,24 @@ public class CombFilterEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CombFilterControl#Freq
+     * @see EffectControls#CombFilter_Freq
      */
     public int getFreq() {
         return freq;
     }
 
     public int queryFreq() {
-        return (int)get(CombFilterControl.Freq);
+        return (int)get(EffectControls.CombFilter_Freq);
     }
 
     /**
-     * @param freq (2..50)
-     * @see CombFilterControl#Freq
+     * @see EffectControls#CombFilter_Freq
      */
     public void setFreq(int freq) {
-        if (freq == this.freq)
+        if (!EffectControls.CombFilter_Freq.set(freq, this.freq))
             return;
-        if (freq < 2 || freq > 50)
-            throw newRangeException(CombFilterControl.Freq, "2..50", freq);
         this.freq = freq;
-        set(CombFilterControl.Freq, freq);
+        set(EffectControls.CombFilter_Freq, freq);
     }
 
     //----------------------------------
@@ -81,27 +78,24 @@ public class CombFilterEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CombFilterControl#Reso
+     * @see EffectControls#CombFilter_Reso
      */
     public float getReso() {
         return reso;
     }
 
     public float queryReso() {
-        return get(CombFilterControl.Reso);
+        return get(EffectControls.CombFilter_Reso);
     }
 
     /**
-     * @param freq (0.1..0.95)
-     * @see CombFilterControl#Reso
+     * @see EffectControls#CombFilter_Reso
      */
     public void setReso(float reso) {
-        if (reso == this.reso)
+        if (!EffectControls.CombFilter_Reso.set(reso, this.reso))
             return;
-        if (reso < 0f || reso > 0.95f)
-            throw newRangeException(CombFilterControl.Reso, "0..0.95", reso);
         this.reso = reso;
-        set(CombFilterControl.Reso, reso);
+        set(EffectControls.CombFilter_Reso, reso);
     }
 
     //----------------------------------
@@ -109,27 +103,24 @@ public class CombFilterEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CombFilterControl#Wet
+     * @see EffectControls#CombFilter_Wet
      */
     public float getWet() {
         return wet;
     }
 
     public float queryWet() {
-        return get(CombFilterControl.Wet);
+        return get(EffectControls.CombFilter_Wet);
     }
 
     /**
-     * @param freq (0.1..0.95)
-     * @see CombFilterControl#Wet
+     * @see EffectControls#CombFilter_Wet
      */
     public void setWet(float wet) {
-        if (wet == this.wet)
+        if (!EffectControls.CombFilter_Wet.set(wet, this.wet))
             return;
-        if (wet < 0f || wet > 0.9f)
-            throw newRangeException(CombFilterControl.Wet, "0..0.9", wet);
         this.wet = wet;
-        set(CombFilterControl.Wet, wet);
+        set(EffectControls.CombFilter_Wet, wet);
     }
 
     //--------------------------------------------------------------------------
@@ -154,9 +145,9 @@ public class CombFilterEffect extends EffectNode {
     @Override
     protected void updateComponents() {
         super.updateComponents();
-        set(CombFilterControl.Freq, getFreq());
-        set(CombFilterControl.Reso, getFreq());
-        set(CombFilterControl.Wet, getWet());
+        set(EffectControls.CombFilter_Freq, getFreq());
+        set(EffectControls.CombFilter_Reso, getFreq());
+        set(EffectControls.CombFilter_Wet, getWet());
     }
 
     @Override
