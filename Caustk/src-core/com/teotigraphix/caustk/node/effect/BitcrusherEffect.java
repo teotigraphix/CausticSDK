@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.BitcrusherControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -56,27 +56,24 @@ public class BitcrusherEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see BitcrusherControl#Depth
+     * @see EffectControls#Bitcrusher_Depth
      */
     public int getDepth() {
         return depth;
     }
 
     public int queryDepth() {
-        return (int)get(BitcrusherControl.Depth);
+        return (int)get(EffectControls.Bitcrusher_Depth);
     }
 
     /**
-     * @param depth (1..16)
-     * @see BitcrusherControl#Depth
+     * @see EffectControls#Bitcrusher_Depth
      */
     public void setDepth(int depth) {
-        if (depth == this.depth)
+        if (!EffectControls.Bitcrusher_Depth.set(depth, this.depth))
             return;
-        if (depth < 1 || depth > 16)
-            throw newRangeException(BitcrusherControl.Depth, "1..16", depth);
         this.depth = depth;
-        set(BitcrusherControl.Depth, depth);
+        set(EffectControls.Bitcrusher_Depth, depth);
     }
 
     //----------------------------------
@@ -84,27 +81,24 @@ public class BitcrusherEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see BitcrusherControl#Jitter
+     * @see EffectControls#Bitcrusher_Jitter
      */
     public float getJitter() {
         return jitter;
     }
 
     public float queryJitter() {
-        return get(BitcrusherControl.Jitter);
+        return get(EffectControls.Bitcrusher_Jitter);
     }
 
     /**
-     * @param jitter (0.0..1.0)
-     * @see BitcrusherControl#Jitter
+     * @see EffectControls#Bitcrusher_Jitter
      */
     public void setJitter(float jitter) {
-        if (jitter == this.jitter)
+        if (!EffectControls.Bitcrusher_Jitter.set(jitter, this.jitter))
             return;
-        if (jitter < 0f || jitter > 1f)
-            throw newRangeException(BitcrusherControl.Jitter, "0..1", jitter);
         this.jitter = jitter;
-        set(BitcrusherControl.Jitter, jitter);
+        set(EffectControls.Bitcrusher_Jitter, jitter);
     }
 
     //----------------------------------
@@ -112,27 +106,24 @@ public class BitcrusherEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see BitcrusherControl#Rate
+     * @see EffectControls#Bitcrusher_Rate
      */
     public float getRate() {
         return rate;
     }
 
     public float queryRate() {
-        return get(BitcrusherControl.Rate);
+        return get(EffectControls.Bitcrusher_Rate);
     }
 
     /**
-     * @param rate (0.01..0.5)
-     * @see BitcrusherControl#Rate
+     * @see EffectControls#Bitcrusher_Rate
      */
     public void setRate(float rate) {
-        if (rate == this.rate)
+        if (!EffectControls.Bitcrusher_Rate.set(rate, this.rate))
             return;
-        if (rate < 0.01f || rate > 0.5f)
-            throw newRangeException(BitcrusherControl.Rate, "0.01..0.5", rate);
         this.rate = rate;
-        set(BitcrusherControl.Rate, rate);
+        set(EffectControls.Bitcrusher_Rate, rate);
     }
 
     //----------------------------------
@@ -140,27 +131,24 @@ public class BitcrusherEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see BitcrusherControl#Wet
+     * @see EffectControls#Bitcrusher_Wet
      */
     public float getWet() {
         return wet;
     }
 
     public float queryWet() {
-        return get(BitcrusherControl.Wet);
+        return get(EffectControls.Bitcrusher_Wet);
     }
 
     /**
-     * @param wet (0.0..1.0)
-     * @see BitcrusherControl#Wet
+     * @see EffectControls#Bitcrusher_Wet
      */
     public void setWet(float wet) {
-        if (wet == this.wet)
+        if (!EffectControls.Bitcrusher_Wet.set(wet, this.wet))
             return;
-        if (wet < 0f || wet > 1f)
-            throw newRangeException(BitcrusherControl.Wet, "0..1", wet);
         this.wet = wet;
-        set(BitcrusherControl.Wet, wet);
+        set(EffectControls.Bitcrusher_Wet, wet);
     }
 
     //--------------------------------------------------------------------------
@@ -185,10 +173,10 @@ public class BitcrusherEffect extends EffectNode {
     @Override
     protected void updateComponents() {
         super.updateComponents();
-        set(BitcrusherControl.Depth, depth);
-        set(BitcrusherControl.Jitter, jitter);
-        set(BitcrusherControl.Rate, rate);
-        set(BitcrusherControl.Wet, wet);
+        set(EffectControls.Bitcrusher_Depth, depth);
+        set(EffectControls.Bitcrusher_Jitter, jitter);
+        set(EffectControls.Bitcrusher_Rate, rate);
+        set(EffectControls.Bitcrusher_Wet, wet);
     }
 
     @Override

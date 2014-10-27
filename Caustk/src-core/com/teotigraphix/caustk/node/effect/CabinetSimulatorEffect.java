@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CabinetSimulatorControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -59,27 +59,24 @@ public class CabinetSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CabinetSimulatorControl#Damping
+     * @see EffectControls#Damping
      */
     public float getDamping() {
         return damping;
     }
 
     public float queryDamping() {
-        return get(CabinetSimulatorControl.Damping);
+        return get(EffectControls.CabinetSimulator_Damping);
     }
 
     /**
-     * @param damping (0.25..1.0)
-     * @see CabinetSimulatorControl#Damping
+     * @see EffectControls#Damping
      */
     public void setDamping(float damping) {
-        if (damping == this.damping)
+        if (!EffectControls.CabinetSimulator_Damping.set(damping, this.damping))
             return;
-        if (damping < 0.25f || damping > 1f)
-            throw newRangeException(CabinetSimulatorControl.Damping, "0.25..1", damping);
         this.damping = damping;
-        set(CabinetSimulatorControl.Damping, damping);
+        set(EffectControls.CabinetSimulator_Damping, damping);
     }
 
     //----------------------------------
@@ -87,27 +84,24 @@ public class CabinetSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CabinetSimulatorControl#Height
+     * @see EffectControls#CabinetSimulator_Height
      */
     public float getHeight() {
         return height;
     }
 
     public float queryHeight() {
-        return get(CabinetSimulatorControl.Height);
+        return get(EffectControls.CabinetSimulator_Height);
     }
 
     /**
-     * @param height (0.0..1.0)
-     * @see CabinetSimulatorControl#Height
+     * @see EffectControls#CabinetSimulator_Height
      */
     public void setHeight(float height) {
-        if (height == this.height)
+        if (!EffectControls.CabinetSimulator_Height.set(height, this.height))
             return;
-        if (height < 0f || height > 1f)
-            throw newRangeException(CabinetSimulatorControl.Height, "0..1", height);
         this.height = height;
-        set(CabinetSimulatorControl.Height, height);
+        set(EffectControls.CabinetSimulator_Height, height);
     }
 
     //----------------------------------
@@ -115,27 +109,25 @@ public class CabinetSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CabinetSimulatorControl#Tone
+     * @see EffectControls#CabinetSimulator_Tone
      */
     public float getTone() {
         return tone;
     }
 
     public float queryTone() {
-        return get(CabinetSimulatorControl.Tone);
+        return get(EffectControls.CabinetSimulator_Tone);
     }
 
     /**
      * @param tone (0.0..1.0)
-     * @see CabinetSimulatorControl#Tone
+     * @see EffectControls#CabinetSimulator_Tone
      */
     public void setTone(float tone) {
-        if (tone == this.tone)
+        if (!EffectControls.CabinetSimulator_Tone.set(tone, this.tone))
             return;
-        if (tone < 0f || tone > 1f)
-            throw newRangeException(CabinetSimulatorControl.Tone, "0..1", tone);
         this.tone = tone;
-        set(CabinetSimulatorControl.Tone, tone);
+        set(EffectControls.CabinetSimulator_Tone, tone);
     }
 
     //----------------------------------
@@ -143,27 +135,24 @@ public class CabinetSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CabinetSimulatorControl#Wet
+     * @see EffectControls#CabinetSimulator_Wet
      */
     public float getWet() {
         return wet;
     }
 
     public float queryWet() {
-        return get(CabinetSimulatorControl.Wet);
+        return get(EffectControls.CabinetSimulator_Wet);
     }
 
     /**
-     * @param wet (0.0..1.0)
-     * @see CabinetSimulatorControl#Wet
+     * @see EffectControls#CabinetSimulator_Wet
      */
     public void setWet(float wet) {
-        if (wet == this.wet)
+        if (!EffectControls.CabinetSimulator_Wet.set(wet, this.wet))
             return;
-        if (wet < 0f || wet > 1f)
-            throw newRangeException(CabinetSimulatorControl.Wet, "0..1", wet);
         this.wet = wet;
-        set(CabinetSimulatorControl.Wet, wet);
+        set(EffectControls.CabinetSimulator_Wet, wet);
     }
 
     //----------------------------------
@@ -171,27 +160,24 @@ public class CabinetSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CabinetSimulatorControl#Width
+     * @see EffectControls#CabinetSimulator_Width
      */
     public float getWidth() {
         return width;
     }
 
     public float queryWidth() {
-        return get(CabinetSimulatorControl.Width);
+        return get(EffectControls.CabinetSimulator_Width);
     }
 
     /**
-     * @param width (0.0..1.0)
-     * @see CabinetSimulatorControl#Width
+     * @see EffectControls#CabinetSimulator_Width
      */
     public void setWidth(float width) {
-        if (width == this.width)
+        if (!EffectControls.CabinetSimulator_Width.set(width, this.width))
             return;
-        if (width < 0f || width > 1f)
-            throw newRangeException(CabinetSimulatorControl.Width, "0..1", width);
         this.width = width;
-        set(CabinetSimulatorControl.Width, width);
+        set(EffectControls.CabinetSimulator_Width, width);
     }
 
     //--------------------------------------------------------------------------
@@ -215,11 +201,11 @@ public class CabinetSimulatorEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(CabinetSimulatorControl.Damping, getDamping());
-        set(CabinetSimulatorControl.Height, getHeight());
-        set(CabinetSimulatorControl.Tone, getTone());
-        set(CabinetSimulatorControl.Wet, getWet());
-        set(CabinetSimulatorControl.Width, getWidth());
+        set(EffectControls.CabinetSimulator_Damping, getDamping());
+        set(EffectControls.CabinetSimulator_Height, getHeight());
+        set(EffectControls.CabinetSimulator_Tone, getTone());
+        set(EffectControls.CabinetSimulator_Wet, getWet());
+        set(EffectControls.CabinetSimulator_Width, getWidth());
     }
 
     @Override

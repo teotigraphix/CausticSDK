@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -40,131 +40,69 @@ public class ChorusEffect extends EffectNode {
     private float depth = 0.25f;
 
     @Tag(201)
-    private float rate = 0.4f;
-
-    @Tag(202)
-    private float wet = 0.5f;
-
-    @Tag(203)
     private float delay;
 
+    @Tag(202)
+    private ChorusMode mode = ChorusMode.TriangleFull;
+
+    @Tag(203)
+    private float rate = 0.4f;
+
     @Tag(204)
-    private ChorusMode mode;
+    private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // depth
-    //----------------------------------
-
-    /**
-     * @see ChorusControl#Depth
-     */
-    public float getDepth() {
-        return depth;
-    }
-
-    public float queryDepth() {
-        return get(ChorusControl.Depth);
-    }
-
-    /**
-     * @param depth (0.1..0.95)
-     * @see ChorusControl#Depth
-     */
-    public void setDepth(float depth) {
-        if (depth == this.depth)
-            return;
-        if (depth < 0.1f || depth > 0.95f)
-            throw newRangeException(ChorusControl.Depth, "0.1..0.95", depth);
-        this.depth = depth;
-        set(ChorusControl.Depth, depth);
-    }
-
-    //----------------------------------
-    // rate
-    //----------------------------------
-
-    /**
-     * @see ChorusControl#Rate
-     */
-    public float getRate() {
-        return rate;
-    }
-
-    public float queryRate() {
-        return get(ChorusControl.Rate);
-    }
-
-    /**
-     * @param rate (0.0..1.0)
-     * @see ChorusControl#Rate
-     */
-    public void setRate(float rate) {
-        if (rate == this.rate)
-            return;
-        if (rate < 0f || rate > 1.0f)
-            throw newRangeException(ChorusControl.Rate, "0.0..1.0", rate);
-        this.rate = rate;
-        set(ChorusControl.Rate, rate);
-    }
-
-    //----------------------------------
-    // wet
-    //----------------------------------
-
-    /**
-     * @see ChorusControl#Wet
-     */
-    public float getWet() {
-        return wet;
-    }
-
-    public float queryWet() {
-        return get(ChorusControl.Wet);
-    }
-
-    /**
-     * @param wet (0.0..0.5)
-     * @see ChorusControl#Wet
-     */
-    public void setWet(float wet) {
-        if (wet == this.wet)
-            return;
-        if (wet < 0f || wet > 0.5f)
-            throw newRangeException(ChorusControl.Wet, "0..0.5", wet);
-        this.wet = wet;
-        set(ChorusControl.Wet, wet);
-    }
-
-    //----------------------------------
     // delay
     //----------------------------------
 
     /**
-     * @see ChorusControl#Delay
+     * @see EffectControls#Chorus_Delay
      */
     public float getDelay() {
         return delay;
     }
 
     public float queryDelay() {
-        return get(ChorusControl.Delay);
+        return get(EffectControls.Chorus_Delay);
     }
 
     /**
-     * @param delay (0.0..0.7)
-     * @see ChorusControl#Delay
+     * @see EffectControls#Chorus_Delay
      */
     public void setDelay(float delay) {
-        if (delay == this.delay)
+        if (!EffectControls.Chorus_Delay.set(delay, this.delay))
             return;
-        if (delay < 0f || delay > 0.7f)
-            throw newRangeException(ChorusControl.Delay, "0..0.7", delay);
         this.delay = delay;
-        set(ChorusControl.Delay, delay);
+        set(EffectControls.Chorus_Delay, delay);
+    }
+
+    //----------------------------------
+    // depth
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Chorus_Depth
+     */
+    public float getDepth() {
+        return depth;
+    }
+
+    public float queryDepth() {
+        return get(EffectControls.Chorus_Depth);
+    }
+
+    /**
+     * @see EffectControls#Chorus_Depth
+     */
+    public void setDepth(float depth) {
+        if (!EffectControls.Chorus_Depth.set(depth, this.depth))
+            return;
+        this.depth = depth;
+        set(EffectControls.Chorus_Depth, depth);
     }
 
     //----------------------------------
@@ -172,25 +110,74 @@ public class ChorusEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ChorusControl#Mode
+     * @see EffectControls#Mode
      */
     public ChorusMode getMode() {
         return mode;
     }
 
     public ChorusMode queryMode() {
-        return ChorusMode.fromInt((int)get(ChorusControl.Mode));
+        return ChorusMode.fromInt((int)get(EffectControls.Chorus_Mode));
     }
 
     /**
-     * @param mode {@link ChorusMode}
-     * @see ChorusControl#Mode
+     * @see EffectControls#Mode
      */
     public void setMode(ChorusMode mode) {
-        if (mode == this.mode)
+        if (!EffectControls.Chorus_Mode.set(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
-        set(ChorusControl.Mode, mode.getValue());
+        set(EffectControls.Chorus_Mode, mode.getValue());
+    }
+
+    //----------------------------------
+    // rate
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Chorus_Rate
+     */
+    public float getRate() {
+        return rate;
+    }
+
+    public float queryRate() {
+        return get(EffectControls.Chorus_Rate);
+    }
+
+    /**
+     * @see EffectControls#Chorus_Rate
+     */
+    public void setRate(float rate) {
+        if (!EffectControls.Chorus_Rate.set(rate, this.rate))
+            return;
+        this.rate = rate;
+        set(EffectControls.Chorus_Rate, rate);
+    }
+
+    //----------------------------------
+    // wet
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Chorus_Wet
+     */
+    public float getWet() {
+        return wet;
+    }
+
+    public float queryWet() {
+        return get(EffectControls.Chorus_Wet);
+    }
+
+    /**
+     * @see EffectControls#Chorus_Wet
+     */
+    public void setWet(float wet) {
+        if (!EffectControls.Chorus_Wet.set(wet, this.wet))
+            return;
+        this.wet = wet;
+        set(EffectControls.Chorus_Wet, wet);
     }
 
     //--------------------------------------------------------------------------
@@ -214,17 +201,19 @@ public class ChorusEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(ChorusControl.Depth, depth);
-        set(ChorusControl.Rate, rate);
-        set(ChorusControl.Delay, delay);
-        set(ChorusControl.Wet, wet);
+        set(EffectControls.Chorus_Delay, delay);
+        set(EffectControls.Chorus_Depth, depth);
+        set(EffectControls.Chorus_Mode, mode.getValue());
+        set(EffectControls.Chorus_Rate, rate);
+        set(EffectControls.Chorus_Wet, wet);
     }
 
     @Override
     protected void restoreComponents() {
         setDepth(queryDepth());
-        setRate(queryRate());
         setDelay(queryDelay());
+        setMode(queryMode());
+        setRate(queryRate());
         setWet(queryWet());
     }
 }
