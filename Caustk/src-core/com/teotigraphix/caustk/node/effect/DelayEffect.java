@@ -96,6 +96,9 @@ public class DelayEffect extends EffectNode {
      * @see EffectControls#Delay_Mode
      */
     public void setMode(DelayMode mode) {
+        // XXX Unit test Bug?
+        if (mode == null)
+            return;
         if (!EffectControls.Delay_Mode.set(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
