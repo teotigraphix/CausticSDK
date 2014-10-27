@@ -153,6 +153,7 @@ public class CombFilterEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
+        super.updateComponents();
         set(CombFilterControl.Freq, getFreq());
         set(CombFilterControl.Reso, getFreq());
         set(CombFilterControl.Wet, getWet());
@@ -160,6 +161,7 @@ public class CombFilterEffect extends EffectNode {
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setFreq(queryFreq());
         setReso(queryReso());
         setWet(queryWet());

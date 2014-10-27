@@ -20,8 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerControl;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -44,10 +43,10 @@ public class StaticFlangerEffect extends EffectNode {
     private float feedback = 0.575f;
 
     @Tag(202)
-    private float wet = 0.5f;
+    private StaticFlangerMode mode = StaticFlangerMode.TriangleFull;
 
     @Tag(203)
-    private StaticFlangerMode mode = StaticFlangerMode.TriangleFull;
+    private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -57,28 +56,27 @@ public class StaticFlangerEffect extends EffectNode {
     // delay/depth
     //----------------------------------
 
+    // UI calls it delay, OSC is depth, targeting the same effect natively
+
     /**
-     * @see FlangerControl#Depth
+     * @see EffectControls#StaticFlanger_Depth
      */
     public float getDelay() {
         return delay;
     }
 
     public float queryDelay() {
-        return get(FlangerControl.Depth);
+        return get(EffectControls.StaticFlanger_Depth);
     }
 
     /**
-     * @param delay (-0.95..0.95)
-     * @see StaticFlangerControl#Depth
+     * @see EffectControls#StaticFlanger_Depth
      */
     public void setDelay(float delay) {
-        if (delay == this.delay)
+        if (!EffectControls.StaticFlanger_Depth.set(delay, this.delay))
             return;
-        if (delay < -0.95f || delay > 0.95f)
-            throw newRangeException(FlangerControl.Depth, "-0.95..0.95", delay);
         this.delay = delay;
-        set(FlangerControl.Depth, delay);
+        set(EffectControls.StaticFlanger_Depth, delay);
     }
 
     //----------------------------------
@@ -86,55 +84,24 @@ public class StaticFlangerEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see StaticFlangerControl#Feedback
+     * @see EffectControls#StaticFlanger_Feedback
      */
     public float getFeedback() {
         return feedback;
     }
 
     public float queryFeedback() {
-        return get(StaticFlangerControl.Feedback);
+        return get(EffectControls.StaticFlanger_Feedback);
     }
 
     /**
-     * @param feedback (0.25..0.9)
-     * @see StaticFlangerControl#Feedback
+     * @see EffectControls#StaticFlanger_Feedback
      */
     public void setFeedback(float feedback) {
-        if (feedback == this.feedback)
+        if (!EffectControls.StaticFlanger_Feedback.set(feedback, this.feedback))
             return;
-        if (feedback < 0.25f || feedback > 0.9f)
-            throw newRangeException(StaticFlangerControl.Feedback, "0.25..0.9", feedback);
         this.feedback = feedback;
-        set(StaticFlangerControl.Feedback, feedback);
-    }
-
-    //----------------------------------
-    // wet
-    //----------------------------------
-
-    /**
-     * @see StaticFlangerControl#Wet
-     */
-    public float getWet() {
-        return wet;
-    }
-
-    public float queryWet() {
-        return get(StaticFlangerControl.Wet);
-    }
-
-    /**
-     * @param wet (0.0..1.0)
-     * @see StaticFlangerControl#Wet
-     */
-    public void setWet(float wet) {
-        if (wet == this.wet)
-            return;
-        if (wet < 0f || wet > 1f)
-            throw newRangeException(StaticFlangerControl.Wet, "0..1", wet);
-        this.wet = wet;
-        set(StaticFlangerControl.Wet, wet);
+        set(EffectControls.StaticFlanger_Feedback, feedback);
     }
 
     //----------------------------------
@@ -142,25 +109,49 @@ public class StaticFlangerEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see StaticFlangerControl#Mode
+     * @see EffectControls#StaticFlanger_Mode
      */
     public StaticFlangerMode getMode() {
         return mode;
     }
 
     public StaticFlangerMode queryMode() {
-        return StaticFlangerMode.fromInt((int)get(StaticFlangerControl.Mode));
+        return StaticFlangerMode.fromInt((int)get(EffectControls.StaticFlanger_Mode));
     }
 
     /**
-     * @param mode {@link StaticFlangerMode}
-     * @see StaticFlangerControl#Mode
+     * @see EffectControls#StaticFlanger_Mode
      */
     public void setMode(StaticFlangerMode mode) {
-        if (mode == this.mode)
+        if (!EffectControls.StaticFlanger_Mode.set(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
-        set(StaticFlangerControl.Mode, mode.getValue());
+        set(EffectControls.StaticFlanger_Mode, mode.getValue());
+    }
+
+    //----------------------------------
+    // wet
+    //----------------------------------
+
+    /**
+     * @see EffectControls#StaticFlanger_Wet
+     */
+    public float getWet() {
+        return wet;
+    }
+
+    public float queryWet() {
+        return get(EffectControls.StaticFlanger_Wet);
+    }
+
+    /**
+     * @see EffectControls#StaticFlanger_Wet
+     */
+    public void setWet(float wet) {
+        if (!EffectControls.StaticFlanger_Wet.set(wet, this.wet))
+            return;
+        this.wet = wet;
+        set(EffectControls.StaticFlanger_Wet, wet);
     }
 
     //--------------------------------------------------------------------------
@@ -184,14 +175,16 @@ public class StaticFlangerEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(StaticFlangerControl.Depth, delay);
-        set(StaticFlangerControl.Feedback, feedback);
-        set(StaticFlangerControl.Mode, mode.getValue());
-        set(StaticFlangerControl.Wet, wet);
+        super.updateComponents();
+        set(EffectControls.StaticFlanger_Depth, delay);
+        set(EffectControls.StaticFlanger_Feedback, feedback);
+        set(EffectControls.StaticFlanger_Mode, mode.getValue());
+        set(EffectControls.StaticFlanger_Wet, wet);
     }
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setDelay(queryDelay());
         setFeedback(queryFeedback());
         setMode(queryMode());

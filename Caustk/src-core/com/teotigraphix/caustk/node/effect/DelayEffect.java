@@ -174,6 +174,7 @@ public class DelayEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
+        super.updateComponents();
         set(EffectControls.Delay_Feedback, feedback);
         set(EffectControls.Delay_Mode, mode.getValue());
         set(EffectControls.Delay_Time, time);
@@ -182,6 +183,7 @@ public class DelayEffect extends EffectNode {
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setFeedback(queryFeedback());
         setTime(queryTime());
         setWet(queryWet());

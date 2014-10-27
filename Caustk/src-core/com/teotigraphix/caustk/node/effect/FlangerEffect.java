@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -43,13 +43,13 @@ public class FlangerEffect extends EffectNode {
     private float feedback = 0.4f;
 
     @Tag(202)
-    private float rate = 0.4f;
+    private FlangerMode mode = FlangerMode.TriangleFull;
 
     @Tag(203)
-    private float wet = 0.5f;
+    private float rate = 0.4f;
 
     @Tag(204)
-    private FlangerMode mode = FlangerMode.TriangleFull;
+    private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -60,27 +60,24 @@ public class FlangerEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see FlangerControl#Depth
+     * @see EffectControls#Flanger_Depth
      */
     public float getDepth() {
         return depth;
     }
 
     public float queryDepth() {
-        return get(FlangerControl.Depth);
+        return get(EffectControls.Flanger_Depth);
     }
 
     /**
-     * @param depth (0.1..0.95)
-     * @see FlangerControl#Depth
+     * @see EffectControls#Depth
      */
     public void setDepth(float depth) {
-        if (depth == this.depth)
+        if (!EffectControls.Flanger_Depth.set(depth, this.depth))
             return;
-        if (depth < 0.1f || depth > 0.95f)
-            throw newRangeException(FlangerControl.Depth, "0.1..0.95", depth);
         this.depth = depth;
-        set(FlangerControl.Depth, depth);
+        set(EffectControls.Flanger_Depth, depth);
     }
 
     //----------------------------------
@@ -88,83 +85,24 @@ public class FlangerEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see FlangerControl#Feedback
+     * @see EffectControls#Flanger_Feedback
      */
     public float getFeedback() {
         return feedback;
     }
 
     public float queryFeedback() {
-        return get(FlangerControl.Feedback);
+        return get(EffectControls.Flanger_Feedback);
     }
 
     /**
-     * @param feedback (0.25..0.8)
-     * @see FlangerControl#Feedback
+     * @see EffectControls#Flanger_Feedback
      */
     public void setFeedback(float feedback) {
-        if (feedback == this.feedback)
+        if (!EffectControls.Flanger_Feedback.set(feedback, this.feedback))
             return;
-        if (feedback < 0.25f || feedback > 0.8f)
-            throw newRangeException(FlangerControl.Feedback, "0.25..0.8", feedback);
         this.feedback = feedback;
-        set(FlangerControl.Feedback, feedback);
-    }
-
-    //----------------------------------
-    // rate
-    //----------------------------------
-
-    /**
-     * @see FlangerControl#Rate
-     */
-    public float getRate() {
-        return rate;
-    }
-
-    public float queryRate() {
-        return get(FlangerControl.Rate);
-    }
-
-    /**
-     * @param rate (0.04..2.0)
-     * @see FlangerControl#Rate
-     */
-    public void setRate(float rate) {
-        if (rate == this.rate)
-            return;
-        if (rate < 0.04f || rate > 2.0f)
-            throw newRangeException(FlangerControl.Rate, "0.04..2.0", rate);
-        this.rate = rate;
-        set(FlangerControl.Rate, rate);
-    }
-
-    //----------------------------------
-    // wet
-    //----------------------------------
-
-    /**
-     * @see FlangerControl#Wet
-     */
-    public float getWet() {
-        return wet;
-    }
-
-    public float queryWet() {
-        return get(FlangerControl.Wet);
-    }
-
-    /**
-     * @param wet (0.0..1.0)
-     * @see FlangerControl#Wet
-     */
-    public void setWet(float wet) {
-        if (wet == this.wet)
-            return;
-        if (wet < 0f || wet > 1f)
-            throw newRangeException(FlangerControl.Wet, "0..1", wet);
-        this.wet = wet;
-        set(FlangerControl.Wet, wet);
+        set(EffectControls.Flanger_Feedback, feedback);
     }
 
     //----------------------------------
@@ -172,25 +110,74 @@ public class FlangerEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see FlangerControl#Mode
+     * @see EffectControls#Flanger_Mode
      */
     public FlangerMode getMode() {
         return mode;
     }
 
     public FlangerMode queryMode() {
-        return FlangerMode.fromInt((int)get(FlangerControl.Mode));
+        return FlangerMode.fromInt((int)get(EffectControls.Flanger_Mode));
     }
 
     /**
-     * @param mode {@link FlangerMode}
-     * @see FlangerControl#Mode
+     * @see EffectControls#Flanger_Mode
      */
     public void setMode(FlangerMode mode) {
-        if (mode == this.mode)
+        if (!EffectControls.Flanger_Mode.set(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
-        set(FlangerControl.Mode, mode.getValue());
+        set(EffectControls.Flanger_Mode, mode.getValue());
+    }
+
+    //----------------------------------
+    // rate
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Flanger_Rate
+     */
+    public float getRate() {
+        return rate;
+    }
+
+    public float queryRate() {
+        return get(EffectControls.Flanger_Rate);
+    }
+
+    /**
+     * @see EffectControls#Flanger_Rate
+     */
+    public void setRate(float rate) {
+        if (!EffectControls.Flanger_Rate.set(rate, this.rate))
+            return;
+        this.rate = rate;
+        set(EffectControls.Flanger_Rate, rate);
+    }
+
+    //----------------------------------
+    // wet
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Flanger_Wet
+     */
+    public float getWet() {
+        return wet;
+    }
+
+    public float queryWet() {
+        return get(EffectControls.Flanger_Wet);
+    }
+
+    /**
+     * @see EffectControls#Flanger_Wet
+     */
+    public void setWet(float wet) {
+        if (!EffectControls.Flanger_Wet.set(wet, this.wet))
+            return;
+        this.wet = wet;
+        set(EffectControls.Flanger_Wet, wet);
     }
 
     //--------------------------------------------------------------------------
@@ -214,15 +201,17 @@ public class FlangerEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(FlangerControl.Depth, depth);
-        set(FlangerControl.Feedback, feedback);
-        set(FlangerControl.Rate, rate);
-        set(FlangerControl.Wet, wet);
-        set(FlangerControl.Mode, mode.getValue());
+        super.updateComponents();
+        set(EffectControls.Flanger_Depth, depth);
+        set(EffectControls.Flanger_Feedback, feedback);
+        set(EffectControls.Flanger_Mode, mode.getValue());
+        set(EffectControls.Flanger_Rate, rate);
+        set(EffectControls.Flanger_Wet, wet);
     }
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setDepth(queryDepth());
         setFeedback(queryFeedback());
         setRate(queryRate());

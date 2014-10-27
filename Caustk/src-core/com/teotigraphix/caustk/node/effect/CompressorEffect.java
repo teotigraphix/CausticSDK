@@ -201,6 +201,7 @@ public class CompressorEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
+        super.updateComponents();
         set(EffectControls.Compressor_Attack, attack);
         set(EffectControls.Compressor_Ratio, ratio);
         set(EffectControls.Compressor_Release, release);
@@ -210,6 +211,7 @@ public class CompressorEffect extends EffectNode {
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setAttack(queryAttack());
         setRatio(queryRatio());
         setRelease(queryRelease());

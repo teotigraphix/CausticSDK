@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ReverbControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -59,27 +59,24 @@ public class ReverbEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ReverbControl#Damping
+     * @see EffectControls#Reverb_Damping
      */
     public float getDamping() {
         return damping;
     }
 
     public float queryDamping() {
-        return get(ReverbControl.Damping);
+        return get(EffectControls.Reverb_Damping);
     }
 
     /**
-     * @param damping (0.0..0.8)
-     * @see ReverbControl#Damping
+     * @see EffectControls#Reverb_Damping
      */
     public void setDamping(float damping) {
-        if (damping == this.damping)
+        if (!EffectControls.Reverb_Damping.set(damping, this.damping))
             return;
-        if (damping < 0f || damping > 0.8f)
-            throw newRangeException(ReverbControl.Damping, "0..0.8", delay);
         this.damping = damping;
-        set(ReverbControl.Damping, damping);
+        set(EffectControls.Reverb_Damping, damping);
     }
 
     //----------------------------------
@@ -87,27 +84,24 @@ public class ReverbEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ReverbControl#Delay
+     * @see EffectControls#Reverb_Delay
      */
     public float getDelay() {
         return delay;
     }
 
     public float queryDelay() {
-        return get(ReverbControl.Delay);
+        return get(EffectControls.Reverb_Delay);
     }
 
     /**
-     * @param delay (0.0..0.925)
-     * @see ReverbControl#Delay
+     * @see EffectControls#Reverb_Delay
      */
     public void setDelay(float delay) {
-        if (delay == this.delay)
+        if (!EffectControls.Reverb_Delay.set(delay, this.delay))
             return;
-        if (delay < 0f || delay > 0.925f)
-            throw newRangeException(ReverbControl.Delay, "0..0.925", delay);
         this.delay = delay;
-        set(ReverbControl.Delay, delay);
+        set(EffectControls.Reverb_Delay, delay);
     }
 
     //----------------------------------
@@ -115,27 +109,24 @@ public class ReverbEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ReverbControl#Room
+     * @see EffectControls#Reverb_Room
      */
     public float getRoom() {
         return room;
     }
 
     public float queryRoom() {
-        return get(ReverbControl.Room);
+        return get(EffectControls.Reverb_Room);
     }
 
     /**
-     * @param room (0.0..0.925)
-     * @see ReverbControl#Room
+     * @see EffectControls#Reverb_Room
      */
     public void setRoom(float room) {
-        if (room == this.room)
+        if (!EffectControls.Reverb_Room.set(room, this.room))
             return;
-        if (room < 0f || room > 0.925f)
-            throw newRangeException(ReverbControl.Room, "0..0.925", room);
         this.room = room;
-        set(ReverbControl.Room, room);
+        set(EffectControls.Reverb_Room, room);
     }
 
     //----------------------------------
@@ -143,27 +134,24 @@ public class ReverbEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ReverbControl#Wet
+     * @see EffectControls#Reverb_Wet
      */
     public float getWet() {
         return wet;
     }
 
     public float queryWet() {
-        return get(ReverbControl.Wet);
+        return get(EffectControls.Reverb_Wet);
     }
 
     /**
-     * @param wet (0.0..1.0)
-     * @see ReverbControl#Wet
+     * @see EffectControls#Reverb_Wet
      */
     public void setWet(float wet) {
-        if (wet == this.wet)
+        if (!EffectControls.Reverb_Wet.set(wet, this.wet))
             return;
-        if (wet < 0f || wet > 1f)
-            throw newRangeException(ReverbControl.Wet, "0..1", wet);
         this.wet = wet;
-        set(ReverbControl.Wet, wet);
+        set(EffectControls.Reverb_Wet, wet);
     }
 
     //----------------------------------
@@ -171,27 +159,24 @@ public class ReverbEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ReverbControl#Width
+     * @see EffectControls#Reverb_Width
      */
     public float getWidth() {
         return width;
     }
 
     public float queryWidth() {
-        return get(ReverbControl.Width);
+        return get(EffectControls.Reverb_Width);
     }
 
     /**
-     * @param width (0.0..1.0)
-     * @see ReverbControl#Width
+     * @see EffectControls#Width
      */
     public void setWidth(float width) {
-        if (width == this.width)
+        if (!EffectControls.Reverb_Width.set(width, this.width))
             return;
-        if (width < 0f || width > 1f)
-            throw newRangeException(ReverbControl.Width, "0..1", width);
         this.width = width;
-        set(ReverbControl.Width, width);
+        set(EffectControls.Reverb_Width, width);
     }
 
     //--------------------------------------------------------------------------
@@ -215,15 +200,17 @@ public class ReverbEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(ReverbControl.Damping, damping);
-        set(ReverbControl.Delay, delay);
-        set(ReverbControl.Room, room);
-        set(ReverbControl.Wet, wet);
-        set(ReverbControl.Width, width);
+        super.updateComponents();
+        set(EffectControls.Reverb_Damping, damping);
+        set(EffectControls.Reverb_Delay, delay);
+        set(EffectControls.Reverb_Room, room);
+        set(EffectControls.Reverb_Wet, wet);
+        set(EffectControls.Reverb_Width, width);
     }
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setDamping(queryDamping());
         setDelay(queryDelay());
         setRoom(queryRoom());

@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.VinylSimulatorControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -59,27 +59,24 @@ public class VinylSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see VinylSimulatorControl#Age
+     * @see EffectControls#VinylSimulator_Age
      */
     public float getAge() {
         return age;
     }
 
     public float queryAge() {
-        return get(VinylSimulatorControl.Age);
+        return get(EffectControls.VinylSimulator_Age);
     }
 
     /**
-     * @param age (0.0..1.0)
-     * @see VinylSimulatorControl#Age
+     * @see EffectControls#VinylSimulator_Age
      */
     public void setAge(float age) {
-        if (age == this.age)
+        if (!EffectControls.VinylSimulator_Age.set(age, this.age))
             return;
-        if (age < 0f || age > 1f)
-            throw newRangeException(VinylSimulatorControl.Age, "0..1", age);
         this.age = age;
-        set(VinylSimulatorControl.Age, age);
+        set(EffectControls.VinylSimulator_Age, age);
     }
 
     //----------------------------------
@@ -87,27 +84,24 @@ public class VinylSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see VinylSimulatorControl#Dust
+     * @see EffectControls#VinylSimulator_Dust
      */
     public float getDust() {
         return dust;
     }
 
     public float queryDust() {
-        return get(VinylSimulatorControl.Dust);
+        return get(EffectControls.VinylSimulator_Dust);
     }
 
     /**
-     * @param dust (0.0..1.0)
-     * @see VinylSimulatorControl#Dust
+     * @see EffectControls#VinylSimulator_Dust
      */
     public void setDust(float dust) {
-        if (dust == this.dust)
+        if (!EffectControls.VinylSimulator_Dust.set(dust, this.dust))
             return;
-        if (dust < 0f || dust > 1f)
-            throw newRangeException(VinylSimulatorControl.Dust, "0..1", dust);
         this.dust = dust;
-        set(VinylSimulatorControl.Dust, dust);
+        set(EffectControls.VinylSimulator_Dust, dust);
     }
 
     //----------------------------------
@@ -115,27 +109,24 @@ public class VinylSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see VinylSimulatorControl#Noise
+     * @see EffectControls#VinylSimulator_Noise
      */
     public float getNoise() {
         return noise;
     }
 
     public float queryNoise() {
-        return get(VinylSimulatorControl.Noise);
+        return get(EffectControls.VinylSimulator_Noise);
     }
 
     /**
-     * @param noise (0.0..1.0)
-     * @see VinylSimulatorControl#Noise
+     * @see EffectControls#VinylSimulator_Noise
      */
     public void setNoise(float noise) {
-        if (noise == this.noise)
+        if (!EffectControls.VinylSimulator_Noise.set(noise, this.noise))
             return;
-        if (noise < 0f || noise > 1f)
-            throw newRangeException(VinylSimulatorControl.Noise, "0..1", noise);
         this.noise = noise;
-        set(VinylSimulatorControl.Noise, noise);
+        set(EffectControls.VinylSimulator_Noise, noise);
     }
 
     //----------------------------------
@@ -143,27 +134,24 @@ public class VinylSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see VinylSimulatorControl#Scratch
+     * @see EffectControls#VinylSimulator_Scratch
      */
     public float getScratch() {
         return scratch;
     }
 
     public float queryScratch() {
-        return get(VinylSimulatorControl.Scratch);
+        return get(EffectControls.VinylSimulator_Scratch);
     }
 
     /**
-     * @param scratch (0.0..1.0)
-     * @see VinylSimulatorControl#Scratch
+     * @see EffectControls#VinylSimulator_Scratch
      */
     public void setScratch(float scratch) {
-        if (scratch == this.scratch)
+        if (!EffectControls.VinylSimulator_Scratch.set(scratch, this.scratch))
             return;
-        if (scratch < 0f || scratch > 1f)
-            throw newRangeException(VinylSimulatorControl.Scratch, "0..1", scratch);
         this.scratch = scratch;
-        set(VinylSimulatorControl.Scratch, scratch);
+        set(EffectControls.VinylSimulator_Scratch, scratch);
     }
 
     //----------------------------------
@@ -171,27 +159,24 @@ public class VinylSimulatorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see VinylSimulatorControl#Wet
+     * @see EffectControls#VinylSimulator_Wet
      */
     public float getWet() {
         return wet;
     }
 
     public float queryWet() {
-        return get(VinylSimulatorControl.Wet);
+        return get(EffectControls.VinylSimulator_Wet);
     }
 
     /**
-     * @param wet (0.0..2.0)
-     * @see VinylSimulatorControl#Wet
+     * @see EffectControls#VinylSimulator_Wet
      */
     public void setWet(float wet) {
-        if (wet == this.wet)
+        if (!EffectControls.VinylSimulator_Wet.set(wet, this.wet))
             return;
-        if (wet < 0f || wet > 2f)
-            throw newRangeException(VinylSimulatorControl.Wet, "0..2", wet);
         this.wet = wet;
-        set(VinylSimulatorControl.Wet, wet);
+        set(EffectControls.VinylSimulator_Wet, wet);
     }
 
     //--------------------------------------------------------------------------
@@ -215,15 +200,17 @@ public class VinylSimulatorEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(VinylSimulatorControl.Age, age);
-        set(VinylSimulatorControl.Dust, dust);
-        set(VinylSimulatorControl.Noise, noise);
-        set(VinylSimulatorControl.Scratch, scratch);
-        set(VinylSimulatorControl.Wet, wet);
+        super.updateComponents();
+        set(EffectControls.VinylSimulator_Age, age);
+        set(EffectControls.VinylSimulator_Dust, dust);
+        set(EffectControls.VinylSimulator_Noise, noise);
+        set(EffectControls.VinylSimulator_Scratch, scratch);
+        set(EffectControls.VinylSimulator_Wet, wet);
     }
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setAge(queryAge());
         setDust(queryDust());
         setNoise(queryNoise());

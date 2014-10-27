@@ -201,6 +201,7 @@ public class ChorusEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
+        super.updateComponents();
         set(EffectControls.Chorus_Delay, delay);
         set(EffectControls.Chorus_Depth, depth);
         set(EffectControls.Chorus_Mode, mode.getValue());
@@ -210,6 +211,7 @@ public class ChorusEffect extends EffectNode {
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setDepth(queryDepth());
         setDelay(queryDelay());
         setMode(queryMode());

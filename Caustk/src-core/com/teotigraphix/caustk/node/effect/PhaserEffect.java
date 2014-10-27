@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.PhaserControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -59,27 +59,24 @@ public class PhaserEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see PhaserControl#Depth
+     * @see EffectControls#Phaser_Depth
      */
     public float getDepth() {
         return depth;
     }
 
     public float queryDepth() {
-        return get(PhaserControl.Depth);
+        return get(EffectControls.Phaser_Depth);
     }
 
     /**
-     * @param depth (0.1..0.95)
-     * @see PhaserControl#Depth
+     * @see EffectControls#Phaser_Depth
      */
     public void setDepth(float depth) {
-        if (depth == this.depth)
+        if (!EffectControls.Phaser_Depth.set(depth, this.depth))
             return;
-        if (depth < 0.1f || depth > 0.95f)
-            throw newRangeException(PhaserControl.Depth, "0.1..0.95", depth);
         this.depth = depth;
-        set(PhaserControl.Depth, depth);
+        set(EffectControls.Phaser_Depth, depth);
     }
 
     //----------------------------------
@@ -87,27 +84,24 @@ public class PhaserEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see PhaserControl#Feedback
+     * @see EffectControls#Phaser_Feedback
      */
     public float getFeedback() {
         return feedback;
     }
 
     public float queryFeedback() {
-        return get(PhaserControl.Feedback);
+        return get(EffectControls.Phaser_Feedback);
     }
 
     /**
-     * @param feedback (0.1..0.95)
-     * @see PhaserControl#Feedback
+     * @see EffectControls#Phaser_Feedback
      */
     public void setFeedback(float feedback) {
-        if (feedback == this.feedback)
+        if (!EffectControls.Phaser_Feedback.set(feedback, this.feedback))
             return;
-        if (feedback < 0.1f || feedback > 0.95f)
-            throw newRangeException(PhaserControl.Feedback, "0.1..0.95", feedback);
         this.feedback = feedback;
-        set(PhaserControl.Feedback, feedback);
+        set(EffectControls.Phaser_Feedback, feedback);
     }
 
     //----------------------------------
@@ -115,27 +109,24 @@ public class PhaserEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see PhaserControl#HighFreq
+     * @see EffectControls#Phaser_HighFreq
      */
     public float getHighFreq() {
         return highFreq;
     }
 
     public float queryHighFreq() {
-        return get(PhaserControl.HighFreq);
+        return get(EffectControls.Phaser_HighFreq);
     }
 
     /**
-     * @param highFreq (0.002..0.5)
-     * @see PhaserControl#HighFreq
+     * @see EffectControls#Phaser_HighFreq
      */
     public void setHighFreq(float highFreq) {
-        if (highFreq == this.highFreq)
+        if (!EffectControls.Phaser_HighFreq.set(highFreq, this.highFreq))
             return;
-        if (highFreq < 0.002f || highFreq > 0.5f)
-            throw newRangeException(PhaserControl.HighFreq, "0.002..0.5", highFreq);
         this.highFreq = highFreq;
-        set(PhaserControl.HighFreq, highFreq);
+        set(EffectControls.Phaser_HighFreq, highFreq);
     }
 
     //----------------------------------
@@ -143,27 +134,24 @@ public class PhaserEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see PhaserControl#LowFreq
+     * @see EffectControls#Phaser_LowFreq
      */
     public float getLowFreq() {
         return lowFreq;
     }
 
     public float queryLowFreq() {
-        return get(PhaserControl.LowFreq);
+        return get(EffectControls.Phaser_LowFreq);
     }
 
     /**
-     * @param lowFreq (0.002..0.5)
-     * @see PhaserControl#LowFreq
+     * @see EffectControls#Phaser_LowFreq
      */
     public void setLowFreq(float lowFreq) {
-        if (lowFreq == this.lowFreq)
+        if (!EffectControls.Phaser_LowFreq.set(lowFreq, this.lowFreq))
             return;
-        if (lowFreq < 0.002f || lowFreq > 0.5f)
-            throw newRangeException(PhaserControl.LowFreq, "0.002..0.5", lowFreq);
         this.lowFreq = lowFreq;
-        set(PhaserControl.LowFreq, lowFreq);
+        set(EffectControls.Phaser_LowFreq, lowFreq);
     }
 
     //----------------------------------
@@ -171,27 +159,24 @@ public class PhaserEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see PhaserControl#Rate
+     * @see EffectControls#Phaser_Rate
      */
     public int getRate() {
         return rate;
     }
 
     public int queryRate() {
-        return (int)get(PhaserControl.Rate);
+        return (int)get(EffectControls.Phaser_Rate);
     }
 
     /**
-     * @param rate (2..50)
-     * @see PhaserControl#Rate
+     * @see EffectControls#Phaser_Rate
      */
     public void setRate(int rate) {
-        if (rate == this.rate)
+        if (!EffectControls.Phaser_Rate.set(rate, this.rate))
             return;
-        if (rate < 2 || rate > 50)
-            throw newRangeException(PhaserControl.Rate, "2..50", rate);
         this.rate = rate;
-        set(PhaserControl.Rate, rate);
+        set(EffectControls.Phaser_Rate, rate);
     }
 
     //--------------------------------------------------------------------------
@@ -215,15 +200,17 @@ public class PhaserEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(PhaserControl.Depth, depth);
-        set(PhaserControl.Feedback, feedback);
-        set(PhaserControl.HighFreq, highFreq);
-        set(PhaserControl.LowFreq, lowFreq);
-        set(PhaserControl.Rate, rate);
+        super.updateComponents();
+        set(EffectControls.Phaser_Depth, depth);
+        set(EffectControls.Phaser_Feedback, feedback);
+        set(EffectControls.Phaser_HighFreq, highFreq);
+        set(EffectControls.Phaser_LowFreq, lowFreq);
+        set(EffectControls.Phaser_Rate, rate);
     }
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setDepth(getDepth());
         setFeedback(getFeedback());
         setHighFreq(getHighFreq());

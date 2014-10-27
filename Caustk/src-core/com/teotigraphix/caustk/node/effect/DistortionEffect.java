@@ -173,6 +173,7 @@ public class DistortionEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
+        super.updateComponents();
         set(EffectControls.Distortion_Amount, amount);
         set(EffectControls.Distortion_PostGain, postGain);
         set(EffectControls.Distortion_PreGain, preGain);
@@ -181,6 +182,7 @@ public class DistortionEffect extends EffectNode {
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setAmount(queryAmount());
         setPreGain(queryPreGain());
         setProgram(queryProgram());

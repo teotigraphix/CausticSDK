@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -57,27 +57,24 @@ public class MultiFilterEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see MultiFilterControl#Frequency
+     * @see EffectControls#MultiFilter_Frequency
      */
     public float getFrequency() {
         return frequency;
     }
 
     public float queryFrequency() {
-        return get(MultiFilterControl.Frequency);
+        return get(EffectControls.MultiFilter_Frequency);
     }
 
     /**
-     * @param frequency (0.1..1.0)
-     * @see MultiFilterControl#Frequency
+     * @see EffectControls#MultiFilter_Frequency
      */
     public void setFrequency(float frequency) {
-        if (frequency == this.frequency)
+        if (!EffectControls.MultiFilter_Frequency.set(frequency, this.frequency))
             return;
-        if (frequency < 0.1f || frequency > 1f)
-            throw newRangeException(MultiFilterControl.Frequency, "0.1..1", frequency);
         this.frequency = frequency;
-        set(MultiFilterControl.Frequency, frequency);
+        set(EffectControls.MultiFilter_Frequency, frequency);
     }
 
     //----------------------------------
@@ -85,27 +82,24 @@ public class MultiFilterEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see MultiFilterControl#Gain
+     * @see EffectControls#MultiFilter_Gain
      */
     public float getGain() {
         return gain;
     }
 
     public float queryGain() {
-        return get(MultiFilterControl.Gain);
+        return get(EffectControls.MultiFilter_Gain);
     }
 
     /**
-     * @param gain (-12..12)
-     * @see MultiFilterControl#Gain
+     * @see EffectControls#MultiFilter_Gain
      */
     public void setGain(float gain) {
-        if (gain == this.gain)
+        if (!EffectControls.MultiFilter_Gain.set(gain, this.gain))
             return;
-        if (gain < -12f || gain > 12f)
-            throw newRangeException(MultiFilterControl.Gain, "-12..12", gain);
         this.gain = gain;
-        set(MultiFilterControl.Gain, gain);
+        set(EffectControls.MultiFilter_Gain, gain);
     }
 
     //----------------------------------
@@ -113,25 +107,24 @@ public class MultiFilterEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see MultiFilterControl#Mode
+     * @see EffectControls#MultiFilter_Mode
      */
     public MultiFilterMode getMode() {
         return mode;
     }
 
     public MultiFilterMode queryMode() {
-        return MultiFilterMode.fromInt((int)get(MultiFilterControl.Mode));
+        return MultiFilterMode.fromInt((int)get(EffectControls.MultiFilter_Mode));
     }
 
     /**
-     * @param mode MultiFilterMode
-     * @see MultiFilterControl#Mode
+     * @see EffectControls#MultiFilter_Mode
      */
     public void setMode(MultiFilterMode mode) {
-        if (mode == this.mode)
+        if (!EffectControls.MultiFilter_Mode.set(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
-        set(MultiFilterControl.Mode, mode.getValue());
+        set(EffectControls.MultiFilter_Mode, mode.getValue());
     }
 
     //----------------------------------
@@ -139,27 +132,24 @@ public class MultiFilterEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see MultiFilterControl#Resonance
+     * @see EffectControls#MultiFilter_Resonance
      */
     public float getResonance() {
         return resonance;
     }
 
     public float queryResonance() {
-        return get(MultiFilterControl.Resonance);
+        return get(EffectControls.MultiFilter_Resonance);
     }
 
     /**
-     * @param resonance (0.0..1.0)
-     * @see MultiFilterControl#Resonance
+     * @see EffectControls#MultiFilter_Resonance
      */
     public void setResonance(float resonance) {
-        if (resonance == this.resonance)
+        if (!EffectControls.MultiFilter_Resonance.set(resonance, this.resonance))
             return;
-        if (resonance < 0f || resonance > 1f)
-            throw newRangeException(MultiFilterControl.Resonance, "0..1", resonance);
         this.resonance = resonance;
-        set(MultiFilterControl.Resonance, resonance);
+        set(EffectControls.MultiFilter_Resonance, resonance);
     }
 
     //--------------------------------------------------------------------------
@@ -183,14 +173,16 @@ public class MultiFilterEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(MultiFilterControl.Mode, mode.getValue());
-        set(MultiFilterControl.Frequency, frequency);
-        set(MultiFilterControl.Gain, gain);
-        set(MultiFilterControl.Resonance, resonance);
+        super.updateComponents();
+        set(EffectControls.MultiFilter_Frequency, frequency);
+        set(EffectControls.MultiFilter_Gain, gain);
+        set(EffectControls.MultiFilter_Mode, mode.getValue());
+        set(EffectControls.MultiFilter_Resonance, resonance);
     }
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setFrequency(queryFrequency());
         setGain(queryGain());
         setMode(queryMode());

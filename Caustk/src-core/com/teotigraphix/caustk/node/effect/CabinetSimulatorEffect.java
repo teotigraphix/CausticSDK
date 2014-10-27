@@ -201,6 +201,7 @@ public class CabinetSimulatorEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
+        super.updateComponents();
         set(EffectControls.CabinetSimulator_Damping, getDamping());
         set(EffectControls.CabinetSimulator_Height, getHeight());
         set(EffectControls.CabinetSimulator_Tone, getTone());
@@ -210,6 +211,7 @@ public class CabinetSimulatorEffect extends EffectNode {
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setDamping(queryDamping());
         setHeight(queryHeight());
         setTone(queryTone());

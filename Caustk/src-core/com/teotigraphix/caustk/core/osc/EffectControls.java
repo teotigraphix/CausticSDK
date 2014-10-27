@@ -25,7 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
+import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
@@ -252,7 +254,223 @@ public enum EffectControls implements IEffectControl {
     /**
      * Values <code>0..3</code>; default <code>0</code>
      */
-    Distortion_Program("program", EffectControlKind.Enum_Int, 0, 3, 0);
+    Distortion_Program("program", EffectControlKind.Enum_Int, 0, 3, 0),
+
+    //----------------------------------
+    // Flanger
+    //----------------------------------
+
+    /**
+     * Values <code>0.1..0.95</code>; default <code>0.25</code>
+     */
+    Flanger_Depth("depth", EffectControlKind.Float, 0.1f, 0.95f, 0.25f),
+
+    /**
+     * Values <code>0.25..0.8</code>; default <code>0.4</code>
+     */
+    Flanger_Feedback("feedback", EffectControlKind.Float, 0.25f, 0.8f, 0.4f),
+
+    /**
+     * Values <code>0,1,2,3,4,5,6,7</code>; default <code>0</code>
+     * <p>
+     * triangleFull, sineFull, triangleHalf, sineHalf, triangleFullOpposed,
+     * sineFullOpposed, triangleHalfOpposed, sineHalfOpposed
+     * 
+     * @see FlangerMode
+     */
+    Flanger_Mode("mode", EffectControlKind.Enum_Int, 0, 7, 0),
+
+    /**
+     * Values <code>0.04..2.0</code>; default <code>0.4</code>
+     */
+    Flanger_Rate("rate", EffectControlKind.Float, 0.04f, 2f, 0.4f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.5</code>
+     */
+    Flanger_Wet("wet", EffectControlKind.Float, 0f, 1f, 0.5f),
+
+    //----------------------------------
+    // Limiter
+    //----------------------------------
+
+    /**
+     * Values <code>0..0.05</code>; default <code>0.01</code>
+     */
+    Limiter_Attack("attack", EffectControlKind.Float, 0f, 0.05f, 0.01f),
+
+    /**
+     * Values <code>0..2</code>; default <code>0.5</code>
+     */
+    Limiter_PostGain("post_gain", EffectControlKind.Float, 0f, 2f, 0.5f),
+
+    /**
+     * Values <code>0..4</code>; default <code>2</code>
+     */
+    Limiter_PreGain("pre_gain", EffectControlKind.Float, 0f, 4f, 2f),
+
+    /**
+     * Values <code>0.01..0.5</code>; default <code>0.5</code>
+     */
+    Limiter_Release("release", EffectControlKind.Float, 0.01f, 0.5f, 0.5f),
+
+    //----------------------------------
+    // MultiFilter
+    //----------------------------------
+
+    /**
+     * Values <code>0.1..1.0</code>; default <code>0.54</code>
+     */
+    MultiFilter_Frequency("frequency", EffectControlKind.Float, 0.1f, 1f, 0.54f),
+
+    /**
+     * Values <code>-12..12</code>; default <code>0.0</code>
+     */
+    MultiFilter_Gain("gain", EffectControlKind.Float, -12f, 12f, 0f),
+
+    /**
+     * Values <code>0,1,2,3,4,5</code>; default <code>0</code>
+     */
+    MultiFilter_Mode("mode", EffectControlKind.Enum_Int, 0, 5, 0),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.5</code>
+     */
+    MultiFilter_Resonance("resonance", EffectControlKind.Float, 0f, 1f, 0.5f),
+
+    //----------------------------------
+    // ParametricEQ
+    //----------------------------------
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.54</code>
+     */
+    ParametricEQ_Frequency("frequency", EffectControlKind.Float, 0f, 1f, 0.54f),
+
+    /**
+     * Values <code>-12.0..12.0</code>; default <code>0.0</code>
+     */
+    ParametricEQ_Gain("gain", EffectControlKind.Float, -12f, 12f, 0f),
+
+    /**
+     * Values <code>0.0..10.0</code>; default <code>0.5</code>
+     */
+    ParametricEQ_Width("width", EffectControlKind.Float, 0f, 10f, 0.5f),
+
+    //----------------------------------
+    // Phaser
+    //----------------------------------
+
+    /**
+     * Values <code>0.1..0.95</code>; default <code>0.8</code>
+     */
+    Phaser_Depth("depth", EffectControlKind.Float, 0.1f, 0.95f, 0.8f),
+
+    /**
+     * Values <code>0.1..0.95</code>; default <code>0.47</code>
+     */
+    Phaser_Feedback("feedback", EffectControlKind.Float, 0.1f, 0.95f, 0.47f),
+
+    /**
+     * Values <code>0.002..0.5</code>; default <code>0.09</code>
+     */
+    Phaser_HighFreq("highfreq", EffectControlKind.Float, 0.002f, 0.5f, 0.09f),
+
+    /**
+     * Values <code>0.002..0.5</code>; default <code>0.01</code>
+     */
+    Phaser_LowFreq("lowfreq", EffectControlKind.Float, 0.002f, 0.5f, 0.01f),
+
+    /**
+     * Values <code>2..50</code>; default <code>10</code>
+     */
+    Phaser_Rate("rate", EffectControlKind.Int, 2, 50, 10),
+
+    //----------------------------------
+    // Reverb
+    //----------------------------------
+
+    /**
+     * Values <code>0.0..0.8</code>; default <code>0.25</code>
+     */
+    Reverb_Damping("damping", EffectControlKind.Float, 0f, 0.8f, 0.25f),
+
+    /**
+     * Values <code>0.0..0.0925</code>; default <code>0.04625</code>
+     */
+    Reverb_Delay("delay", EffectControlKind.Float, 0f, 0.0925f, 0.04625f),
+
+    /**
+     * Values <code>0.0..0.925</code>; default <code>0.85</code>
+     */
+    Reverb_Room("room", EffectControlKind.Float, 0f, 0.925f, 0.85f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.195</code>
+     */
+    Reverb_Wet("wet", EffectControlKind.Float, 0f, 1f, 0.195f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>1.0</code>
+     */
+    Reverb_Width("width", EffectControlKind.Float, 0f, 1f, 1f),
+
+    //----------------------------------
+    // StaticFlanger
+    //----------------------------------
+
+    /**
+     * Values <code>-0.95..0.95</code>; default <code>0.0</code>
+     */
+    StaticFlanger_Depth("depth", EffectControlKind.Float, -0.95f, 0.95f, 0f),
+
+    /**
+     * Values <code>0.25..0.9</code>; default <code>0.575</code>
+     */
+    StaticFlanger_Feedback("feedback", EffectControlKind.Float, 0.25f, 0.9f, 0.575f),
+
+    /**
+     * Values <code>0,4</code>; default <code>0</code>
+     * <p>
+     * triangleFull, triangleFullOpposed
+     * 
+     * @see StaticFlangerMode
+     */
+    StaticFlanger_Mode("mode", EffectControlKind.Enum_Int, 0, 4, 0),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.5</code>
+     */
+    StaticFlanger_Wet("wet", EffectControlKind.Float, 0f, 1f, 0.5f),
+
+    //----------------------------------
+    // VinylSimulator
+    //----------------------------------
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.5</code>
+     */
+    VinylSimulator_Age("age", EffectControlKind.Float, 0f, 1f, 0.5f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.75</code>
+     */
+    VinylSimulator_Dust("dust", EffectControlKind.Float, 0f, 1f, 0.75f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.33</code>
+     */
+    VinylSimulator_Noise("noise", EffectControlKind.Float, 0f, 1f, 0.33f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.25</code>
+     */
+    VinylSimulator_Scratch("scratch", EffectControlKind.Float, 0f, 1f, 0.25f),
+
+    /**
+     * Values <code>0.0..2.0</code>; default <code>1.0</code>
+     */
+    VinylSimulator_Wet("wet", EffectControlKind.Float, 0f, 1f, 1f);
 
     private static Map<EffectType, Collection<IEffectControl>> map = new HashMap<EffectType, Collection<IEffectControl>>();
 
@@ -288,7 +506,7 @@ public enum EffectControls implements IEffectControl {
         add(EffectType.Chorus, Chorus_Rate);
         add(EffectType.Chorus, Chorus_Wet);
 
-        // CombFilter
+        // XXX CombFilter
 
         // Compressor
         add(EffectType.Compressor, Global_Bypass);
@@ -312,6 +530,64 @@ public enum EffectControls implements IEffectControl {
         add(EffectType.Distortion, Distortion_PreGain);
         add(EffectType.Distortion, Distortion_Program);
 
+        // Flanger
+        add(EffectType.Flanger, Global_Bypass);
+        add(EffectType.Flanger, Flanger_Depth);
+        add(EffectType.Flanger, Flanger_Feedback);
+        add(EffectType.Flanger, Flanger_Mode);
+        add(EffectType.Flanger, Flanger_Rate);
+        add(EffectType.Flanger, Flanger_Wet);
+
+        // Limiter
+        add(EffectType.Limiter, Global_Bypass);
+        add(EffectType.Limiter, Limiter_Attack);
+        add(EffectType.Limiter, Limiter_PostGain);
+        add(EffectType.Limiter, Limiter_PreGain);
+        add(EffectType.Limiter, Limiter_Release);
+
+        // MultiFilter
+        add(EffectType.MultiFilter, Global_Bypass);
+        add(EffectType.MultiFilter, MultiFilter_Frequency);
+        add(EffectType.MultiFilter, MultiFilter_Gain);
+        add(EffectType.MultiFilter, MultiFilter_Mode);
+        add(EffectType.MultiFilter, MultiFilter_Resonance);
+
+        // ParametricEQ
+        add(EffectType.ParametricEQ, Global_Bypass);
+        add(EffectType.ParametricEQ, ParametricEQ_Frequency);
+        add(EffectType.ParametricEQ, ParametricEQ_Gain);
+        add(EffectType.ParametricEQ, ParametricEQ_Width);
+
+        // Phaser
+        add(EffectType.Phaser, Global_Bypass);
+        add(EffectType.Phaser, Phaser_Depth);
+        add(EffectType.Phaser, Phaser_Feedback);
+        add(EffectType.Phaser, Phaser_HighFreq);
+        add(EffectType.Phaser, Phaser_LowFreq);
+        add(EffectType.Phaser, Phaser_Rate);
+
+        // Reverb
+        add(EffectType.Reverb, Global_Bypass);
+        add(EffectType.Reverb, Reverb_Damping);
+        add(EffectType.Reverb, Reverb_Delay);
+        add(EffectType.Reverb, Reverb_Room);
+        add(EffectType.Reverb, Reverb_Wet);
+        add(EffectType.Reverb, Reverb_Width);
+
+        // StaticFlanger
+        add(EffectType.StaticFlanger, Global_Bypass);
+        add(EffectType.StaticFlanger, StaticFlanger_Depth);
+        add(EffectType.StaticFlanger, StaticFlanger_Feedback);
+        add(EffectType.StaticFlanger, StaticFlanger_Mode);
+        add(EffectType.StaticFlanger, StaticFlanger_Wet);
+
+        // VinylSimulator
+        add(EffectType.VinylSimulator, Global_Bypass);
+        add(EffectType.VinylSimulator, VinylSimulator_Age);
+        add(EffectType.VinylSimulator, VinylSimulator_Dust);
+        add(EffectType.VinylSimulator, VinylSimulator_Noise);
+        add(EffectType.VinylSimulator, VinylSimulator_Scratch);
+        add(EffectType.VinylSimulator, VinylSimulator_Wet);
     }
 
     private static void add(EffectType effectType, IEffectControl control) {

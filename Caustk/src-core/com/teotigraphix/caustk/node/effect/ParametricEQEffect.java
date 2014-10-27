@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ParametricEQControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -53,27 +53,24 @@ public class ParametricEQEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ParametricEQControl#Frequency
+     * @see EffectControls#ParametricEQ_Frequency
      */
     public float getFrequency() {
         return frequency;
     }
 
     public float queryFrequency() {
-        return get(ParametricEQControl.Frequency);
+        return get(EffectControls.ParametricEQ_Frequency);
     }
 
     /**
-     * @param frequency (0.0..1.0)
-     * @see ParametricEQControl#Frequency
+     * @see EffectControls#ParametricEQ_Frequency
      */
     public void setFrequency(float frequency) {
-        if (frequency == this.frequency)
+        if (!EffectControls.ParametricEQ_Frequency.set(frequency, this.frequency))
             return;
-        if (frequency < 0f || frequency > 1f)
-            throw newRangeException(ParametricEQControl.Frequency, "0.0..1.0", frequency);
         this.frequency = frequency;
-        set(ParametricEQControl.Frequency, frequency);
+        set(EffectControls.ParametricEQ_Frequency, frequency);
     }
 
     //----------------------------------
@@ -81,27 +78,24 @@ public class ParametricEQEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ParametricEQControl#Gain
+     * @see EffectControls#ParametricEQ_Gain
      */
     public float getGain() {
         return gain;
     }
 
     public float queryGain() {
-        return get(ParametricEQControl.Gain);
+        return get(EffectControls.ParametricEQ_Gain);
     }
 
     /**
-     * @param gain (-12.0..12.0)
-     * @see ParametricEQControl#Gain
+     * @see EffectControls#ParametricEQ_Gain
      */
     public void setGain(float gain) {
-        if (gain == this.gain)
+        if (!EffectControls.ParametricEQ_Gain.set(gain, this.gain))
             return;
-        if (gain < -12f || gain > 12f)
-            throw newRangeException(ParametricEQControl.Gain, "-12..12", gain);
         this.gain = gain;
-        set(ParametricEQControl.Gain, gain);
+        set(EffectControls.ParametricEQ_Gain, gain);
     }
 
     //----------------------------------
@@ -109,27 +103,24 @@ public class ParametricEQEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see ParametricEQControl#Width
+     * @see EffectControls#ParametricEQ_Width
      */
     public float getWidth() {
         return width;
     }
 
     public float queryWidth() {
-        return get(ParametricEQControl.Width);
+        return get(EffectControls.ParametricEQ_Width);
     }
 
     /**
-     * @param width (0.0..10.0)
-     * @see ParametricEQControl#Width
+     * @see EffectControls#ParametricEQ_Width
      */
     public void setWidth(float width) {
-        if (width == this.width)
+        if (!EffectControls.ParametricEQ_Width.set(width, this.width))
             return;
-        if (width < 0f || width > 10f)
-            throw newRangeException(ParametricEQControl.Width, "0.0..10.0", width);
         this.width = width;
-        set(ParametricEQControl.Width, width);
+        set(EffectControls.ParametricEQ_Width, width);
     }
 
     //--------------------------------------------------------------------------
@@ -153,13 +144,15 @@ public class ParametricEQEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(ParametricEQControl.Frequency, frequency);
-        set(ParametricEQControl.Gain, gain);
-        set(ParametricEQControl.Width, width);
+        super.updateComponents();
+        set(EffectControls.ParametricEQ_Frequency, frequency);
+        set(EffectControls.ParametricEQ_Gain, gain);
+        set(EffectControls.ParametricEQ_Width, width);
     }
 
     @Override
     protected void restoreComponents() {
+        super.restoreComponents();
         setFrequency(queryFrequency());
         setGain(queryGain());
         setWidth(queryWidth());
