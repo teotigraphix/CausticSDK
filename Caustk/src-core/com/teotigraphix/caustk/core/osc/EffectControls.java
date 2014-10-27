@@ -174,11 +174,85 @@ public enum EffectControls implements IEffectControl {
     /**
      * Values <code>2..50</code>; default <code>10</code>
      */
-    CombFilter_Freq("rate", EffectControlKind.Int, 2, 50, 10); // rate
+    CombFilter_Freq("rate", EffectControlKind.Int, 2, 50, 10), // rate
 
     //----------------------------------
-    // CombFilter
+    // Compressor
     //----------------------------------
+
+    /**
+     * Values <code>0.00001..0.2</code>; default <code>0.01</code>
+     */
+    Compressor_Attack("attack", EffectControlKind.Float, 0.00001f, 0.2f, 0.01f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>1.0</code>
+     */
+    Compressor_Ratio("ratio", EffectControlKind.Float, 0f, 1f, 1f),
+
+    /**
+     * Values <code>0.001..0.2</code>; default <code>0.05</code>
+     */
+    Compressor_Release("release", EffectControlKind.Float, 0.001f, 0.2f, 0.05f),
+
+    /**
+     * Values <code>0..13</code>; default <code>-1</code>
+     */
+    Compressor_Sidechain("sidechain", EffectControlKind.Int, 0, 13, -1),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.1</code>
+     */
+    Compressor_Threshold("threshold", EffectControlKind.Float, 0f, 1f, 0.1f),
+
+    //----------------------------------
+    // Delay
+    //----------------------------------
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.5</code>
+     */
+    Delay_Feedback("feedback", EffectControlKind.Float, 0f, 1f, 0.5f),
+
+    /**
+     * Values <code>0,1,2,3,4</code> Mono, MonoLR, MonoRL, DualMono, PingPong;
+     * default <code>0</code>
+     */
+    Delay_Mode("mode", EffectControlKind.Enum_Int, 0, 4, 0),
+
+    /**
+     * Values <code>1..12</code>; default <code>8</code>
+     */
+    Delay_Time("time", EffectControlKind.Int, 1, 8, 8),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.5</code>
+     */
+    Delay_Wet("wet", EffectControlKind.Float, 0f, 1f, 0.5f),
+
+    //----------------------------------
+    // Distortion
+    //----------------------------------
+
+    /**
+     * Values <code>0.0..20.0</code>; default <code>16.3</code>
+     */
+    Distortion_Amount("amount", EffectControlKind.Float, 0f, 20f, 16.3f),
+
+    /**
+     * Values <code>0.0..1.0</code>; default <code>0.1</code>
+     */
+    Distortion_PostGain("post_gain", EffectControlKind.Float, 0f, 1f, 0.1f),
+
+    /**
+     * Values <code>0.0..5.0</code>; default <code>4.05</code>
+     */
+    Distortion_PreGain("pre_gain", EffectControlKind.Float, 0f, 5f, 4.05f),
+
+    /**
+     * Values <code>0..3</code>; default <code>0</code>
+     */
+    Distortion_Program("program", EffectControlKind.Enum_Int, 0, 3, 0);
 
     private static Map<EffectType, Collection<IEffectControl>> map = new HashMap<EffectType, Collection<IEffectControl>>();
 
@@ -213,6 +287,30 @@ public enum EffectControls implements IEffectControl {
         add(EffectType.Chorus, Chorus_Mode);
         add(EffectType.Chorus, Chorus_Rate);
         add(EffectType.Chorus, Chorus_Wet);
+
+        // CombFilter
+
+        // Compressor
+        add(EffectType.Compressor, Global_Bypass);
+        add(EffectType.Compressor, Compressor_Attack);
+        add(EffectType.Compressor, Compressor_Ratio);
+        add(EffectType.Compressor, Compressor_Release);
+        add(EffectType.Compressor, Compressor_Sidechain);
+        add(EffectType.Compressor, Compressor_Threshold);
+
+        // Delay
+        add(EffectType.Delay, Global_Bypass);
+        add(EffectType.Delay, Delay_Feedback);
+        add(EffectType.Delay, Delay_Mode);
+        add(EffectType.Delay, Delay_Time);
+        add(EffectType.Delay, Delay_Wet);
+
+        // Distortion
+        add(EffectType.Distortion, Global_Bypass);
+        add(EffectType.Distortion, Distortion_Amount);
+        add(EffectType.Distortion, Distortion_PostGain);
+        add(EffectType.Distortion, Distortion_PreGain);
+        add(EffectType.Distortion, Distortion_Program);
 
     }
 
@@ -273,12 +371,15 @@ public enum EffectControls implements IEffectControl {
     }
 
     private EffectControls(String control, EffectControlKind kind, boolean defaultValue) {
+        this.control = control;
+        this.kind = kind;
         defaultBooleanValue = defaultValue;
     }
 
     private EffectControls(String control, EffectControlKind kind, float min, float max,
             float defaultValue) {
         this.control = control;
+        this.kind = kind;
         this.min = min;
         this.max = max;
         this.defaultValue = defaultValue;

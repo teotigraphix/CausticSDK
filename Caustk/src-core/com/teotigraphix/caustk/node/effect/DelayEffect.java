@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayMode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -40,13 +40,13 @@ public class DelayEffect extends EffectNode {
     private float feedback = 0.5f;
 
     @Tag(201)
-    private int time = 8;
+    private DelayMode mode = DelayMode.Mono;
 
     @Tag(202)
-    private float wet = 0.5f;
+    private int time = 8;
 
     @Tag(203)
-    private DelayMode mode = DelayMode.Mono;
+    private float wet = 0.5f;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -57,55 +57,24 @@ public class DelayEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see DelayControl#Feedback
+     * @see EffectControls#Delay_Feedback
      */
     public float getFeedback() {
         return feedback;
     }
 
     public float queryFeedback() {
-        return get(DelayControl.Feedback);
+        return get(EffectControls.Delay_Feedback);
     }
 
     /**
-     * @param feedback (0.0..1.0)
-     * @see DelayControl#Feedback
+     * @see EffectControls#Delay_Feedback
      */
     public void setFeedback(float feedback) {
-        if (feedback == this.feedback)
+        if (!EffectControls.Delay_Feedback.set(feedback, this.feedback))
             return;
-        if (feedback < 0f || feedback > 1f)
-            throw newRangeException(DelayControl.Feedback, "0.0..1.0", feedback);
         this.feedback = feedback;
-        set(DelayControl.Feedback, feedback);
-    }
-
-    //----------------------------------
-    // time
-    //----------------------------------
-
-    /**
-     * @see DelayControl#Time
-     */
-    public int getTime() {
-        return time;
-    }
-
-    public int queryTime() {
-        return (int)get(DelayControl.Time);
-    }
-
-    /**
-     * @param time (1..12)
-     * @see DelayControl#Feedback
-     */
-    public void setTime(int time) {
-        if (time == this.time)
-            return;
-        if (time < 1 || time > 12)
-            throw newRangeException(DelayControl.Time, "1..12", time);
-        this.time = time;
-        set(DelayControl.Time, time);
+        set(EffectControls.Delay_Feedback, feedback);
     }
 
     //----------------------------------
@@ -113,27 +82,49 @@ public class DelayEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see DelayControl#Mode
+     * @see EffectControls#Delay_Mode
      */
     public DelayMode getMode() {
         return mode;
     }
 
     public DelayMode queryMode() {
-        return DelayMode.fromInt((int)get(DelayControl.Mode));
+        return DelayMode.fromInt((int)get(EffectControls.Delay_Mode));
     }
 
     /**
-     * @param mode DelayMode
-     * @see DelayControl#Mode
+     * @see EffectControls#Delay_Mode
      */
     public void setMode(DelayMode mode) {
-        if (mode == null)
-            return; // XXX
-        if (mode == this.mode)
+        if (!EffectControls.Delay_Mode.set(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
-        set(DelayControl.Mode, mode.getValue());
+        set(EffectControls.Delay_Mode, mode.getValue());
+    }
+
+    //----------------------------------
+    // time
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Delay_Time
+     */
+    public int getTime() {
+        return time;
+    }
+
+    public int queryTime() {
+        return (int)get(EffectControls.Delay_Time);
+    }
+
+    /**
+     * @see EffectControls#Delay_Time
+     */
+    public void setTime(int time) {
+        if (!EffectControls.Delay_Time.set(time, this.time))
+            return;
+        this.time = time;
+        set(EffectControls.Delay_Time, time);
     }
 
     //----------------------------------
@@ -141,30 +132,26 @@ public class DelayEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see DelayControl#Wet
+     * @see EffectControls#Delay_Wet
      */
     public float getWet() {
         return wet;
     }
 
     public float queryWet() {
-        return get(DelayControl.Wet);
+        return get(EffectControls.Delay_Wet);
     }
 
     /**
      * @param wet (0.0..1.0)
-     * @see DelayControl#Wet
+     * @see EffectControls#Delay_Wet
      */
     public void setWet(float wet) {
-        if (wet == this.wet)
+        if (!EffectControls.Delay_Wet.set(wet, this.wet))
             return;
-        if (wet < 0f || wet > 1f)
-            throw newRangeException(DelayControl.Wet, "0.0..1.0", wet);
         this.wet = wet;
-        set(DelayControl.Wet, wet);
+        set(EffectControls.Delay_Wet, wet);
     }
-
-    // XXX OSC Nedd Delay.mode
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -187,10 +174,10 @@ public class DelayEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(DelayControl.Feedback, feedback);
-        set(DelayControl.Time, time);
-        set(DelayControl.Wet, wet);
-        set(DelayControl.Mode, mode.getValue());
+        set(EffectControls.Delay_Feedback, feedback);
+        set(EffectControls.Delay_Mode, mode.getValue());
+        set(EffectControls.Delay_Time, time);
+        set(EffectControls.Delay_Wet, wet);
     }
 
     @Override

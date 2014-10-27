@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.CompressorControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -59,27 +59,24 @@ public class CompressorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CompressorControl#Attack
+     * @see EffectControls#Compressor_Attack
      */
     public float getAttack() {
         return attack;
     }
 
     public float queryAttack() {
-        return get(CompressorControl.Attack);
+        return get(EffectControls.Compressor_Attack);
     }
 
     /**
-     * @param attack (0.00001..0.2)
-     * @see CompressorControl#Attack
+     * @see EffectControls#Compressor_Attack
      */
     public void setAttack(float attack) {
-        if (attack == this.attack)
+        if (!EffectControls.Compressor_Attack.set(attack, this.attack))
             return;
-        if (attack < 0.00001f || attack > 0.2f)
-            throw newRangeException(CompressorControl.Attack, "0.00001..0.2", attack);
         this.attack = attack;
-        set(CompressorControl.Attack, attack);
+        set(EffectControls.Compressor_Attack, attack);
     }
 
     //----------------------------------
@@ -87,27 +84,24 @@ public class CompressorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CompressorControl#Ratio
+     * @see EffectControls#Compressor_Ratio
      */
     public float getRatio() {
         return ratio;
     }
 
     public float queryRatio() {
-        return get(CompressorControl.Ratio);
+        return get(EffectControls.Compressor_Ratio);
     }
 
     /**
-     * @param ratio (0.0..1.0)
-     * @see CompressorControl#Ratio
+     * @see EffectControls#Compressor_Ratio
      */
     public void setRatio(float ratio) {
-        if (ratio == this.ratio)
+        if (!EffectControls.Compressor_Attack.set(ratio, this.ratio))
             return;
-        if (ratio < 0f || ratio > 1.0f)
-            throw newRangeException(CompressorControl.Ratio, "0.0..1.0", ratio);
         this.ratio = ratio;
-        set(CompressorControl.Ratio, ratio);
+        set(EffectControls.Compressor_Ratio, ratio);
     }
 
     //----------------------------------
@@ -115,27 +109,25 @@ public class CompressorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CompressorControl#Release
+     * @see EffectControls#Compressor_Release
      */
     public float getRelease() {
         return release;
     }
 
     public float queryRelease() {
-        return get(CompressorControl.Release);
+        return get(EffectControls.Compressor_Release);
     }
 
     /**
      * @param release (0.001..0.2)
-     * @see CompressorControl#Release
+     * @see EffectControls#Compressor_Release
      */
     public void setRelease(float release) {
-        if (release == this.release)
+        if (!EffectControls.Compressor_Release.set(release, this.release))
             return;
-        if (release < 0.001f || release > 0.2f)
-            throw newRangeException(CompressorControl.Release, "0.001..0.2", release);
         this.release = release;
-        set(CompressorControl.Release, release);
+        set(EffectControls.Compressor_Release, release);
     }
 
     //----------------------------------
@@ -143,27 +135,24 @@ public class CompressorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CompressorControl#Sidechain
+     * @see EffectControls#Compressor_Sidechain
      */
     public int getSidechain() {
         return sidechain;
     }
 
     public int querySidechain() {
-        return (int)get(CompressorControl.Sidechain);
+        return (int)get(EffectControls.Compressor_Sidechain);
     }
 
     /**
-     * @param sidechain (0..13)
-     * @see CompressorControl#Sidechain
+     * @see EffectControls#Compressor_Sidechain
      */
     public void setSidechain(int sidechain) {
-        if (sidechain == this.sidechain)
+        if (!EffectControls.Compressor_Sidechain.set(sidechain, this.sidechain))
             return;
-        if (sidechain < 0 || sidechain > 13)
-            throw newRangeException(CompressorControl.Sidechain, "0..13", sidechain);
         this.sidechain = sidechain;
-        set(CompressorControl.Sidechain, sidechain);
+        set(EffectControls.Compressor_Sidechain, sidechain);
     }
 
     //----------------------------------
@@ -171,27 +160,24 @@ public class CompressorEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see CompressorControl#Threshold
+     * @see EffectControls#Compressor_Threshold
      */
     public float getThreshold() {
         return threshold;
     }
 
     public float queryThreshold() {
-        return get(CompressorControl.Threshold);
+        return get(EffectControls.Compressor_Threshold);
     }
 
     /**
-     * @param threshold (0.0..0.1)
-     * @see CompressorControl#Threshold
+     * @see EffectControls#Compressor_Threshold
      */
     public void setThreshold(float threshold) {
-        if (threshold == this.threshold)
+        if (!EffectControls.Compressor_Threshold.set(threshold, this.threshold))
             return;
-        if (threshold < 0f || threshold > 1.0f)
-            throw newRangeException(CompressorControl.Threshold, "0.0..1.0", threshold);
         this.threshold = threshold;
-        set(CompressorControl.Threshold, threshold);
+        set(EffectControls.Compressor_Threshold, threshold);
     }
 
     //--------------------------------------------------------------------------
@@ -215,11 +201,11 @@ public class CompressorEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(CompressorControl.Attack, attack);
-        set(CompressorControl.Ratio, ratio);
-        set(CompressorControl.Release, release);
-        set(CompressorControl.Sidechain, sidechain);
-        set(CompressorControl.Threshold, threshold);
+        set(EffectControls.Compressor_Attack, attack);
+        set(EffectControls.Compressor_Ratio, ratio);
+        set(EffectControls.Compressor_Release, release);
+        set(EffectControls.Compressor_Sidechain, sidechain);
+        set(EffectControls.Compressor_Threshold, threshold);
     }
 
     @Override

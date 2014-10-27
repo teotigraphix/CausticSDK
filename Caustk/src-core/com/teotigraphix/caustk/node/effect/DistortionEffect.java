@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionControl;
+import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionProgram;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
@@ -37,101 +37,44 @@ public class DistortionEffect extends EffectNode {
     //--------------------------------------------------------------------------
 
     @Tag(200)
-    private DistortionProgram program = DistortionProgram.Overdrive;
-
-    @Tag(201)
-    private float preGain = 4.05f;
-
-    @Tag(202)
     private float amount = 16.3f;
 
-    @Tag(203)
+    @Tag(201)
     private float postGain = 0.1f;
+
+    @Tag(202)
+    private float preGain = 4.05f;
+
+    @Tag(203)
+    private DistortionProgram program = DistortionProgram.Overdrive;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // program
-    //----------------------------------
-
-    /**
-     * @see DistortionControl#Program
-     */
-    public DistortionProgram getProgram() {
-        return program;
-    }
-
-    public DistortionProgram queryProgram() {
-        return DistortionProgram.fromInt((int)get(DistortionControl.Program));
-    }
-
-    /**
-     * @param program DistortionProgram
-     * @see DistortionControl#Program
-     */
-    public void setProgram(DistortionProgram program) {
-        if (program == this.program)
-            return;
-        this.program = program;
-        set(DistortionControl.Program, program.getValue());
-    }
-
-    //----------------------------------
-    // pre
-    //----------------------------------
-
-    /**
-     * @see DistortionControl#PreGain
-     */
-    public float getPreGain() {
-        return preGain;
-    }
-
-    public float queryPreGain() {
-        return get(DistortionControl.PreGain);
-    }
-
-    /**
-     * @param preGain (0.0..5.0)
-     * @see DistortionControl#PreGain
-     */
-    public void setPreGain(float preGain) {
-        if (preGain == this.preGain)
-            return;
-        if (preGain < 0f || preGain > 5f)
-            newRangeException(DistortionControl.PreGain, "0.0..5.0", preGain);
-        this.preGain = preGain;
-        set(DistortionControl.PreGain, preGain);
-    }
-
-    //----------------------------------
     // amount
     //----------------------------------
 
     /**
-     * @see DistortionControl#Amount
+     * @see EffectControls#Distortion_Amount
      */
     public float getAmount() {
         return amount;
     }
 
     public float queryAmount() {
-        return get(DistortionControl.Amount);
+        return get(EffectControls.Distortion_Amount);
     }
 
     /**
-     * @param amount (0.0..20.0)
-     * @see DistortionControl#Amount
+     * @see EffectControls#Distortion_Amount
      */
     public void setAmount(float amount) {
-        if (amount == this.amount)
+        if (!EffectControls.Distortion_Amount.set(amount, this.amount))
             return;
-        if (amount < 0f || amount > 20f)
-            newRangeException(DistortionControl.Amount, "0.0..20.0", amount);
         this.amount = amount;
-        set(DistortionControl.Amount, amount);
+        set(EffectControls.Distortion_Amount, amount);
     }
 
     //----------------------------------
@@ -139,27 +82,74 @@ public class DistortionEffect extends EffectNode {
     //----------------------------------
 
     /**
-     * @see DistortionControl#PostGain
+     * @see EffectControls#Distortion_PostGain
      */
     public float getPostGain() {
         return postGain;
     }
 
     public float queryPostGain() {
-        return get(DistortionControl.PostGain);
+        return get(EffectControls.Distortion_PostGain);
     }
 
     /**
-     * @param postGain (0.0..1.0)
-     * @see DistortionControl#PostGain
+     * @see EffectControls#Distortion_PostGain
      */
     public void setPostGain(float postGain) {
-        if (postGain == this.postGain)
+        if (!EffectControls.Distortion_PostGain.set(postGain, this.postGain))
             return;
-        if (postGain < 0f || postGain > 1f)
-            newRangeException(DistortionControl.PostGain, "0.0..1.0", postGain);
         this.postGain = postGain;
-        set(DistortionControl.PostGain, postGain);
+        set(EffectControls.Distortion_PostGain, postGain);
+    }
+
+    //----------------------------------
+    // pre
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Distortion_PreGain
+     */
+    public float getPreGain() {
+        return preGain;
+    }
+
+    public float queryPreGain() {
+        return get(EffectControls.Distortion_PreGain);
+    }
+
+    /**
+     * @see EffectControls#Distortion_PreGain
+     */
+    public void setPreGain(float preGain) {
+        if (!EffectControls.Distortion_PreGain.set(preGain, this.preGain))
+            return;
+        this.preGain = preGain;
+        set(EffectControls.Distortion_PreGain, preGain);
+    }
+
+    //----------------------------------
+    // program
+    //----------------------------------
+
+    /**
+     * @see EffectControls#Distortion_Program
+     */
+    public DistortionProgram getProgram() {
+        return program;
+    }
+
+    public DistortionProgram queryProgram() {
+        return DistortionProgram.fromInt((int)get(EffectControls.Distortion_Program));
+    }
+
+    /**
+     * @see EffectControls#Distortion_Program
+     */
+    public void setProgram(DistortionProgram program) {
+        if (!EffectControls.Distortion_Program.set(program.getValue(), this.program.getValue()))
+            return;
+        this.program = program;
+        set(EffectControls.Distortion_Program, program.getValue());
     }
 
     //--------------------------------------------------------------------------
@@ -183,10 +173,10 @@ public class DistortionEffect extends EffectNode {
 
     @Override
     protected void updateComponents() {
-        set(DistortionControl.Amount, amount);
-        set(DistortionControl.PostGain, postGain);
-        set(DistortionControl.PreGain, preGain);
-        set(DistortionControl.Program, program.getValue());
+        set(EffectControls.Distortion_Amount, amount);
+        set(EffectControls.Distortion_PostGain, postGain);
+        set(EffectControls.Distortion_PreGain, preGain);
+        set(EffectControls.Distortion_Program, program.getValue());
     }
 
     @Override
