@@ -165,10 +165,12 @@ public enum EffectControls implements IEffectControl {
      */
     CombFilter_Freq("rate", EffectControlKind.Int, 2, 50, 10), // rate
 
+    // XXX CombFilter_Reso BUG with min
+
     /**
      * Values <code>0.1..0.95</code>; default <code>0.475</code>
      */
-    CombFilter_Reso("feedback", EffectControlKind.Float, 0.1f, 0.95f, 0.475f), // feedback
+    CombFilter_Reso("feedback", EffectControlKind.Float, 0f, 0.95f, 0.475f), // feedback
 
     /**
      * Values <code>0.1..0.9</code>; default <code>0.8</code>
@@ -179,10 +181,12 @@ public enum EffectControls implements IEffectControl {
     // Compressor
     //----------------------------------
 
+    // XXX BUG temp change to max 1 from .2 getting 0.866
+
     /**
      * Values <code>0.00001..0.2</code>; default <code>0.01</code>
      */
-    Compressor_Attack("attack", EffectControlKind.Float, 0.00001f, 0.2f, 0.01f),
+    Compressor_Attack("attack", EffectControlKind.Float, 0f, 1f, 0.01f),
 
     /**
      * Values <code>0.0..1.0</code>; default <code>1.0</code>
@@ -649,6 +653,7 @@ public enum EffectControls implements IEffectControl {
         return defaultValue != null;
     }
 
+    @Override
     public float getDefaultValue() {
         if (defaultBooleanValue != null)
             return defaultBooleanValue ? 1f : 0f;
