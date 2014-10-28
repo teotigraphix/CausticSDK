@@ -92,6 +92,10 @@ public class DelayEffect extends EffectNode {
         return DelayMode.fromInt((int)get(EffectControls.Delay_Mode));
     }
 
+    public void setMode(float mode) {
+        setMode(DelayMode.fromInt((int)mode));
+    }
+
     /**
      * @see EffectControls#Delay_Mode
      */
@@ -118,6 +122,10 @@ public class DelayEffect extends EffectNode {
 
     public int queryTime() {
         return (int)get(EffectControls.Delay_Time);
+    }
+
+    public void setTime(float time) {
+        setTime((int)time);
     }
 
     /**

@@ -120,6 +120,10 @@ public class ChorusEffect extends EffectNode {
         return ChorusMode.fromInt((int)get(EffectControls.Chorus_Mode));
     }
 
+    public void setMode(float mode) {
+        setMode(ChorusMode.fromInt((int)mode));
+    }
+
     /**
      * @see EffectControls#Mode
      */

@@ -66,6 +66,10 @@ public class BitcrusherEffect extends EffectNode {
         return (int)get(EffectControls.Bitcrusher_Depth);
     }
 
+    public void setDepth(float depth) {
+        setDepth((int)depth);
+    }
+
     /**
      * @see EffectControls#Bitcrusher_Depth
      */

@@ -22,7 +22,6 @@ package com.teotigraphix.caustk.node.effect;
 import android.media.effect.Effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.IEffectControl;
@@ -105,6 +104,10 @@ public abstract class EffectNode extends MachineComponent {
         return get(EffectControls.Global_Bypass) == 0f ? false : true;
     }
 
+    public void setBypass(float bypass) {
+        setBypass(bypass == 0f ? false : true);
+    }
+
     /**
      * @param bypass Whether to bypass the effect.
      * @see EffectControls#Global_Bypass
@@ -171,20 +174,6 @@ public abstract class EffectNode extends MachineComponent {
                 control.getControl());
     }
 
-    public static float getValue(int machineIndex, int slot, IEffectControl control) {
-        float value = EffectsRackMessage.GET.query(CaustkRuntime.getInstance().getRack(),
-                machineIndex, slot, control.getControl());
-        if (value < control.getMin()) {
-            System.err.println(control + " MIN EffectNode " + value);
-            value = control.getMin();
-        } else if (value > control.getMax()) {
-            System.err.println(control + " MAX EffectNode " + value);
-            value = control.getMax();
-        }
-
-        return value;
-    }
-
     /**
      * Sets a float value using the {@link IEffectControl} parameter on the
      * effect.
@@ -213,6 +202,16 @@ public abstract class EffectNode extends MachineComponent {
      */
     protected final void set(IEffectControl control, int value) {
         set(control, (float)value);
+    }
+
+    /**
+     * Invokes the {@link IEffectControl}'s setter.
+     * 
+     * @param control The control.
+     * @param value the valid value for the property.
+     */
+    public void invoke(IEffectControl control, float value) {
+        EffectControls.setValue(this, control, value);
     }
 
     /**

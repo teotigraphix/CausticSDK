@@ -145,6 +145,10 @@ public class CompressorEffect extends EffectNode {
         return (int)get(EffectControls.Compressor_Sidechain);
     }
 
+    public void setSidechain(float sidechain) {
+        setSidechain((int)sidechain);
+    }
+
     /**
      * @see EffectControls#Compressor_Sidechain
      */

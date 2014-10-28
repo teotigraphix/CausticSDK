@@ -63,6 +63,10 @@ public class CombFilterEffect extends EffectNode {
         return (int)get(EffectControls.CombFilter_Freq);
     }
 
+    public void setRate(float freq) {
+        setFreq((int)freq);
+    }
+
     /**
      * @see EffectControls#CombFilter_Freq
      */
@@ -88,6 +92,10 @@ public class CombFilterEffect extends EffectNode {
         return get(EffectControls.CombFilter_Reso);
     }
 
+    public void setFeedback(float reso) {
+        setReso(reso);
+    }
+
     /**
      * @see EffectControls#CombFilter_Reso
      */
@@ -111,6 +119,10 @@ public class CombFilterEffect extends EffectNode {
 
     public float queryWet() {
         return get(EffectControls.CombFilter_Wet);
+    }
+
+    public void setDepth(float depth) {
+        setWet(depth);
     }
 
     /**

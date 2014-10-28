@@ -69,6 +69,10 @@ public class StaticFlangerEffect extends EffectNode {
         return get(EffectControls.StaticFlanger_Depth);
     }
 
+    public void setDepth(float delay) {
+        setDelay(delay);
+    }
+
     /**
      * @see EffectControls#StaticFlanger_Depth
      */
@@ -117,6 +121,10 @@ public class StaticFlangerEffect extends EffectNode {
 
     public StaticFlangerMode queryMode() {
         return StaticFlangerMode.fromInt((int)get(EffectControls.StaticFlanger_Mode));
+    }
+
+    public void setMode(float mode) {
+        setMode(StaticFlangerMode.fromInt((int)mode));
     }
 
     /**

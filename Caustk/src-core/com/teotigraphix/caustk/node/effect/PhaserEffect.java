@@ -111,18 +111,18 @@ public class PhaserEffect extends EffectNode {
     /**
      * @see EffectControls#Phaser_HighFreq
      */
-    public float getHighFreq() {
+    public float getHighfreq() {
         return highFreq;
     }
 
-    public float queryHighFreq() {
+    public float queryHighfreq() {
         return get(EffectControls.Phaser_HighFreq);
     }
 
     /**
      * @see EffectControls#Phaser_HighFreq
      */
-    public void setHighFreq(float highFreq) {
+    public void setHighfreq(float highFreq) {
         if (!EffectControls.Phaser_HighFreq.set(highFreq, this.highFreq))
             return;
         this.highFreq = highFreq;
@@ -136,18 +136,18 @@ public class PhaserEffect extends EffectNode {
     /**
      * @see EffectControls#Phaser_LowFreq
      */
-    public float getLowFreq() {
+    public float getLowfreq() {
         return lowFreq;
     }
 
-    public float queryLowFreq() {
+    public float queryLowfreq() {
         return get(EffectControls.Phaser_LowFreq);
     }
 
     /**
      * @see EffectControls#Phaser_LowFreq
      */
-    public void setLowFreq(float lowFreq) {
+    public void setLowfreq(float lowFreq) {
         if (!EffectControls.Phaser_LowFreq.set(lowFreq, this.lowFreq))
             return;
         this.lowFreq = lowFreq;
@@ -167,6 +167,10 @@ public class PhaserEffect extends EffectNode {
 
     public int queryRate() {
         return (int)get(EffectControls.Phaser_Rate);
+    }
+
+    public void setRate(float rate) {
+        setRate((int)rate);
     }
 
     /**
@@ -213,8 +217,8 @@ public class PhaserEffect extends EffectNode {
         super.restoreComponents();
         setDepth(getDepth());
         setFeedback(getFeedback());
-        setHighFreq(getHighFreq());
-        setLowFreq(getLowFreq());
+        setHighfreq(getHighfreq());
+        setLowfreq(getLowfreq());
         setRate(getRate());
     }
 }

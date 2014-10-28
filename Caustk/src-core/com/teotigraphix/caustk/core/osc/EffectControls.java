@@ -19,14 +19,19 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
+import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
 
@@ -82,11 +87,11 @@ public enum EffectControls implements IEffectControl {
      * Values <code>0.0..1.0</code>; default <code>0.0</code>
      */
     Bitcrusher_Jitter("jitter", EffectControlKind.Float, 0f, 1f, 0f),
-    // XXX TEST
+
     /**
-     * Values <code>0.01..0.5</code>; default <code>1.0</code>
+     * Values <code>0.01..0.5</code>; default <code>0.1</code>
      */
-    Bitcrusher_Rate("rate", EffectControlKind.Float, 0.01f, 0.5f, 1f),
+    Bitcrusher_Rate("rate", EffectControlKind.Float, 0.01f, 0.5f, 0.1f),
 
     /**
      * Values <code>0.0..1.0</code>; default <code>1.0</code>
@@ -606,6 +611,47 @@ public enum EffectControls implements IEffectControl {
 
     public static Collection<IEffectControl> get(EffectType effectType) {
         return map.get(effectType);
+    }
+
+    public static float getValue(int machineIndex, int slot, IEffectControl control) {
+        float value = EffectsRackMessage.GET.query(CaustkRuntime.getInstance().getRack(),
+                machineIndex, slot, control.getControl());
+        if (value < control.getMin()) {
+            System.err.println(control + " MIN EffectNode " + value);
+            value = control.getMin();
+        } else if (value > control.getMax()) {
+            System.err.println(control + " MAX EffectNode " + value);
+            value = control.getMax();
+        }
+
+        return value;
+    }
+
+    public static void setValue(EffectNode effectNode, IEffectControl control, float value) {
+        String methodName = control.getControl();
+        int index = methodName.indexOf("_");
+        if (index != -1) {
+            String start = methodName.substring(0, index);
+            String end = methodName.substring(index + 1);
+            String cap = String.valueOf(end.charAt(0)).toUpperCase(Locale.getDefault());
+            methodName = start + cap + end.substring(1);
+        }
+        String setterName = methodName.substring(1);
+        String mid = String.valueOf(methodName.charAt(0)).toUpperCase(Locale.getDefault());
+        setterName = "set" + mid + setterName;
+
+        try {
+            Method m = effectNode.getClass().getMethod(setterName, float.class);
+            m.invoke(effectNode, value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     private String control;

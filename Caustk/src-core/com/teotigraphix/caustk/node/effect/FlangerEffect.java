@@ -120,6 +120,10 @@ public class FlangerEffect extends EffectNode {
         return FlangerMode.fromInt((int)get(EffectControls.Flanger_Mode));
     }
 
+    public void setMode(float mode) {
+        setMode(FlangerMode.fromInt((int)mode));
+    }
+
     /**
      * @see EffectControls#Flanger_Mode
      */

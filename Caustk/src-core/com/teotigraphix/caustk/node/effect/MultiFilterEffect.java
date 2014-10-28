@@ -117,6 +117,10 @@ public class MultiFilterEffect extends EffectNode {
         return MultiFilterMode.fromInt((int)get(EffectControls.MultiFilter_Mode));
     }
 
+    public void setMode(float mode) {
+        setMode(MultiFilterMode.fromInt((int)mode));
+    }
+
     /**
      * @see EffectControls#MultiFilter_Mode
      */

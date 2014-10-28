@@ -142,6 +142,10 @@ public class DistortionEffect extends EffectNode {
         return DistortionProgram.fromInt((int)get(EffectControls.Distortion_Program));
     }
 
+    public void setProgram(float program) {
+        setProgram(DistortionProgram.fromInt((int)program));
+    }
+
     /**
      * @see EffectControls#Distortion_Program
      */
