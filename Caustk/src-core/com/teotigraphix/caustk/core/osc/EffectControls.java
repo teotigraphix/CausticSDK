@@ -631,10 +631,12 @@ public enum EffectControls implements IEffectControl {
         return name().split("_")[1];
     }
 
+    @Override
     public float getMin() {
         return min;
     }
 
+    @Override
     public float getMax() {
         return max;
     }

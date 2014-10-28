@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.node.effect;
 import android.media.effect.Effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.IEffectControl;
@@ -168,6 +169,20 @@ public abstract class EffectNode extends MachineComponent {
     protected final float get(IEffectControl control) {
         return EffectsRackMessage.GET.query(getRack(), getMachineIndex(), getSlot(),
                 control.getControl());
+    }
+
+    public static float getValue(int machineIndex, int slot, IEffectControl control) {
+        float value = EffectsRackMessage.GET.query(CaustkRuntime.getInstance().getRack(),
+                machineIndex, slot, control.getControl());
+        if (value < control.getMin()) {
+            System.err.println(control + " MIN EffectNode " + value);
+            value = control.getMin();
+        } else if (value > control.getMax()) {
+            System.err.println(control + " MAX EffectNode " + value);
+            value = control.getMax();
+        }
+
+        return value;
     }
 
     /**

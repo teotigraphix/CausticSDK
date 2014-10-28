@@ -5,4 +5,10 @@ public interface IEffectControl extends IOSCControl {
     String getControl();
 
     EffectControlKind getKind();
+
+    float getMin();
+
+    float getMax();
+
+    float getDefaultValue();
 }
