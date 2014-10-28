@@ -30,6 +30,10 @@ import com.teotigraphix.caustk.core.MachineType;
  */
 public final class OSCUtils {
 
+    private static final String[] REMOVABLE_CHARS = new String[] {
+            " ", "e", "a", "u", "i", "o"
+    };
+
     public static String toMachineName(ICaustkRack rack, int machineIndex) {
         String name = RackMessage.QUERY_MACHINE_NAME.queryString(rack, machineIndex);
         if (name != null && name.equals(""))
@@ -40,5 +44,22 @@ public final class OSCUtils {
     public static MachineType toMachineType(ICaustkRack rack, int machineIndex) {
         String type = RackMessage.QUERY_MACHINE_TYPE.queryString(rack, machineIndex);
         return MachineType.fromString(type);
+    }
+
+    public static String optimizeName(String name, int length) {
+        if (name == null)
+            return "";
+
+        for (int i = 0; i < REMOVABLE_CHARS.length; i++) {
+            if (name.length() <= length)
+                return name;
+            int pos = -1;
+            while ((pos = name.indexOf(REMOVABLE_CHARS[i])) != -1) {
+                name = name.substring(0, pos) + name.substring(pos + 1, name.length());
+                if (name.length() <= length)
+                    return name;
+            }
+        }
+        return name;
     }
 }

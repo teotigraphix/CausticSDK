@@ -222,6 +222,11 @@ public class RackMessage extends CausticMessage {
 
         SaveSong,
 
-        SelectionChange
+        SelectionChange;
+
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
     }
 }

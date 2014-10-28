@@ -147,16 +147,6 @@ public class EffectsRackMessage extends CausticMessage {
     // Controls
     //--------------------------------------------------------------------------
 
-    /**
-     * @author Michael Schmalle
-     * @since 1.0
-     */
-    public static interface IEffectControl extends IOSCControl {
-        String getControl();
-    }
-
-    //--------------------------------------------------------------------------
-
     public enum ChorusMode {
         TriangleFull(0),
 
@@ -388,6 +378,11 @@ public class EffectsRackMessage extends CausticMessage {
 
         Remove,
 
-        Set
+        Set;
+
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
     }
 }

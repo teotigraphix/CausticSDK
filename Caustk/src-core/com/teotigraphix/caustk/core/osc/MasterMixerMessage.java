@@ -641,5 +641,10 @@ public class MasterMixerMessage extends CausticMessage {
         Volume,
 
         VolumeBypass;
+
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
     }
 }

@@ -26,7 +26,6 @@ import java.util.Map;
 
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.FlangerMode;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
@@ -622,8 +621,14 @@ public enum EffectControls implements IEffectControl {
         return control;
     }
 
+    @Override
     public EffectControlKind getKind() {
         return kind;
+    }
+
+    @Override
+    public String getDisplayName() {
+        return name().split("_")[1];
     }
 
     public float getMin() {

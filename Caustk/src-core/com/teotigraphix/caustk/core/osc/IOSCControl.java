@@ -33,4 +33,6 @@ public interface IOSCControl {
      */
     String name();
 
+    String getDisplayName();
+
 }

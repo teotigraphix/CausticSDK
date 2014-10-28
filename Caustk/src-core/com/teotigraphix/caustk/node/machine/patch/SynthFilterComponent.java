@@ -393,5 +393,10 @@ public class SynthFilterComponent extends MachineComponent {
          * @see FilterMessage#FILTER_TYPE
          */
         Type;
+
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
     }
 }

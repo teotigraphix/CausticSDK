@@ -242,6 +242,11 @@ public class MixerChannelMessage extends CausticMessage {
 
         Volume;
 
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
+
         private MixerChannelControl() {
         }
     }

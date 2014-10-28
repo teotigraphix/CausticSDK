@@ -21,6 +21,7 @@ package com.teotigraphix.gdx.app;
 
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.caustk.core.ISoundGenerator;
 
 /**
  * @author Michael Schmalle

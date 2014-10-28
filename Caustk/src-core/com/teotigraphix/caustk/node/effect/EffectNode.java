@@ -24,7 +24,7 @@ import android.media.effect.Effect;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
-import com.teotigraphix.caustk.core.osc.EffectsRackMessage.IEffectControl;
+import com.teotigraphix.caustk.core.osc.IEffectControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;

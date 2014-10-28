@@ -297,6 +297,11 @@ public class PatternSequencerMessage extends CausticMessage {
 
         ShuffleAmount,
 
-        ShuffleMode
+        ShuffleMode;
+
+        @Override
+        public String getDisplayName() {
+            return name();
+        }
     }
 }
