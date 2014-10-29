@@ -55,7 +55,7 @@ public class MixerPaneProxy {
         BehaviorUtils.send(behavior.getRack(), index, control, value);
         //viewManager.getSubDisplay().setCell(0, 1, value + "").done(0);
         if (provider.getDisplay() != null)
-            provider.getDisplay().showNotification(value + "", 1f);
+            provider.getDisplay().showNotification(value + "", 1f, true);
     }
 
 }

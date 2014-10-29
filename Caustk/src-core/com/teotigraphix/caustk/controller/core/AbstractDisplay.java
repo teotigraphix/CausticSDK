@@ -34,6 +34,8 @@ public abstract class AbstractDisplay {
 
     private boolean isNotificationActive;
 
+    private Task task;
+
     public void setOuput(IDisplayOutput output) {
         this.output = output;
     }
@@ -70,27 +72,36 @@ public abstract class AbstractDisplay {
     //
 
     // Displays a notification message on the display for 3 seconds
-    public void showNotification(String message) {
-        showNotification(message, 3f);
+    public void showNotification(String message, boolean centered) {
+        showNotification(message, 3f, centered);
     }
 
-    public void showNotification(String message, float delay) {
+    public void showNotification(String message, float delay, boolean centered) {
         String padding = emptyLine.substring(0, Math.round((numChars - message.length()) / 2));
-        String temp = padding + message + padding;
+        String temp = message;
+        if (centered)
+            temp = padding + message + padding;
         if (temp.length() > numChars) {
             temp = temp.substring(0, numChars);
         }
         notificationMessage = temp; //(padding + message + padding).substring(0, numChars);
 
-        if (!isNotificationActive) {
-            isNotificationActive = true;
-            Timer.schedule(new Task() {
+        if (task != null) {
+            task.cancel();
+            isNotificationActive = false;
+        } else {
+            task = new Task() {
                 @Override
                 public void run() {
                     isNotificationActive = false;
                     forceFlush();
                 }
-            }, delay);
+            };
+        }
+
+        if (!isNotificationActive) {
+            isNotificationActive = true;
+            Timer.schedule(task, delay);
         }
     }
 

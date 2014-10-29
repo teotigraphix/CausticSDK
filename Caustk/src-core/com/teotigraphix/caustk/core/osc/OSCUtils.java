@@ -35,11 +35,14 @@ public final class OSCUtils {
 
     public static final int PRECISION = 4;
 
-    public static Float precision(Float d) {
-
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(PRECISION, BigDecimal.ROUND_HALF_UP);
+    public static Float precision(Float value, int length) {
+        BigDecimal bd = new BigDecimal(Float.toString(value));
+        bd = bd.setScale(length, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
+    }
+
+    public static Float precision(Float value) {
+        return precision(value, PRECISION);
     }
 
     private static final String[] REMOVABLE_CHARS = new String[] {

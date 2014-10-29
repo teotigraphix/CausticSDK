@@ -215,14 +215,14 @@ public class SequencerView extends AbstractSequencerView {
         setOffsetY(Math.max(0, getOffsetY() - numOctaves));
         updateScale();
         String text = getScales().getSequencerRangeText(noteMap[0], noteMap[displayRows - 1]);
-        getViewManager().getSubDisplay().showNotification(text);
+        getViewManager().getSubDisplay().showNotification(text, true);
     }
 
     public void scrollUp(ButtonEvent event) {
         setOffsetY(Math.min(this.getClip().getRowSize() - numOctaves, getOffsetY() + numOctaves));
         updateScale();
         String text = this.getScales().getSequencerRangeText(noteMap[0], noteMap[displayRows - 1]);
-        getViewManager().getSubDisplay().showNotification(text);
+        getViewManager().getSubDisplay().showNotification(text, true);
     }
 
     protected void updateScale() {
