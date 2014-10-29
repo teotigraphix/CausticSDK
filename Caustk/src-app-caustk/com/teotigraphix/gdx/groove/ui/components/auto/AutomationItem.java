@@ -38,7 +38,7 @@ public class AutomationItem {
         return value;
     }
 
-    void setValue(float value) {
+    public void setValue(float value) {
         this.value = value;
     }
 

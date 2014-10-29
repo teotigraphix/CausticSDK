@@ -19,12 +19,6 @@ import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
 public final class OSCControlsMap {
 
-    @SuppressWarnings("unused")
-    private static Class<EffectControls> effectControls = EffectControls.class;
-
-    @SuppressWarnings("unused")
-    private static Class<PCMSynthControls> pcmSynthControls = PCMSynthControls.class;
-
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
