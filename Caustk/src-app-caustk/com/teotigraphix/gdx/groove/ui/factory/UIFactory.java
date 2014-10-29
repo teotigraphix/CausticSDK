@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -76,10 +77,19 @@ public abstract class UIFactory {
         initializeViewStack(skin);
         initializeWindow(skin);
 
+        initializeSelectBox(skin);
+
         initializeModePane(skin);
         initializePatternPane(skin);
         initializeMixerPane(skin);
         initializeKnob(skin);
+    }
+
+    private void initializeSelectBox(Skin skin) {
+        SelectBoxStyle style = new SelectBoxStyle(skin.getFont(StylesDefault.Font), Color.WHITE,
+                skin.getDrawable(StylesDefault.SelectBox_background),
+                skin.get(ScrollPaneStyle.class), skin.get(ListStyle.class));
+        skin.add(StylesDefault.SelectBox, style);
     }
 
     private void initializeKnob(Skin skin) {

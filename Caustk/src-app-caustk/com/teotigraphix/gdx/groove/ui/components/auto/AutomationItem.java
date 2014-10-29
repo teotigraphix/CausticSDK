@@ -1,11 +1,12 @@
 
 package com.teotigraphix.gdx.groove.ui.components.auto;
 
-import com.teotigraphix.caustk.core.osc.IOSCControl;
+import com.teotigraphix.caustk.core.osc.IAutomatableControl;
+import com.teotigraphix.caustk.core.osc.OSCUtils;
 
 public class AutomationItem {
 
-    private IOSCControl control;
+    private IAutomatableControl control;
 
     private String label;
 
@@ -17,7 +18,7 @@ public class AutomationItem {
 
     private float step = 0.01f;
 
-    public IOSCControl getControl() {
+    public IAutomatableControl getControl() {
         return control;
     }
 
@@ -45,17 +46,16 @@ public class AutomationItem {
         return step;
     }
 
-    public AutomationItem(IOSCControl control, String label, float min, float max, float value) {
+    public AutomationItem(IAutomatableControl control) {
         this.control = control;
-        this.label = label;
-        this.min = min;
-        this.max = max;
-        this.value = value;
+        this.label = OSCUtils.optimizeName(control.getDisplayName(), 7);
+        this.min = control.getMin();
+        this.max = control.getMax();
+        this.value = control.getDefaultValue();
     }
 
-    public static AutomationItem create(IOSCControl id, String label, float min, float max,
-            float value) {
-        return new AutomationItem(id, label, min, max, value);
+    public static AutomationItem create(IAutomatableControl control) {
+        return new AutomationItem(control);
     }
 
     @Override

@@ -6,6 +6,8 @@ import com.teotigraphix.caustk.core.MachineType;
 
 public class StylesDefault {
 
+    UIFactory factory;
+
     //private Color x = Colors.Aqua.getColor();
 
     /*
@@ -154,6 +156,17 @@ public class StylesDefault {
     public static final String ScrollPane_vScroll = "defaults/ScrollPane_vScroll";
 
     public static final String ScrollPane_vScrollKnob = "defaults/ScrollPane_vScrollKnob";
+
+    //----------------------------------
+    // SelectBox
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String SelectBox = "default";
+
+    public static final String SelectBox_background = "defaults/SelectBox_background";
 
     //----------------------------------
     // Slider

@@ -14,6 +14,7 @@ import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
 public final class OSCControlsMap {
@@ -83,6 +84,19 @@ public final class OSCControlsMap {
 
     public static Collection<IMachineControl> get(MachineType type) {
         return machineMap.get(type);
+    }
+
+    public static float getValue(MachineNode machineNode, IMachineControl control) {
+        float value = CaustkRuntime.getInstance().getRack()
+                .sendMessage("/caustic/" + machineNode.getIndex() + "/" + control.getControl());
+        if (value < control.getMin()) {
+            System.err.println(control + " MIN EffectNode " + value);
+            value = control.getMin();
+        } else if (value > control.getMax()) {
+            System.err.println(control + " MAX EffectNode " + value);
+            value = control.getMax();
+        }
+        return value;
     }
 
     public static void setValue(PCMSynthMachine machine, IMachineControl control, float value) {
