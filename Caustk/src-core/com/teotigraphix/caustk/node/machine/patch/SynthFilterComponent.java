@@ -285,6 +285,10 @@ public class SynthFilterComponent extends MachineComponent {
         return FilterType.toType(FilterMessage.FILTER_TYPE.query(getRack(), getMachineIndex()));
     }
 
+    public void setType(float type) {
+        setType(FilterType.toType(type));
+    }
+
     /**
      * @param type FilterType
      * @see FilterMessage#FILTER_TYPE

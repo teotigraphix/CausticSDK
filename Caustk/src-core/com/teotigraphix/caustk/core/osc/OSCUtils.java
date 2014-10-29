@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.utils.ExceptionUtils;
 
 /**
  * Various OSC message utilities.
@@ -72,5 +73,23 @@ public final class OSCUtils {
             }
         }
         return name;
+    }
+
+    public static boolean isValid(IAutomatableControl control, float value, float oldValue)
+            throws RuntimeException {
+        if (value == oldValue)
+            return false;
+        if (value < control.getMin() || value > control.getMax())
+            throw newRangeException(control, toRangeString(control), value);
+        return true;
+    }
+
+    public static final RuntimeException newRangeException(IAutomatableControl control,
+            String range, Object value) {
+        return ExceptionUtils.newRangeException(control.getControl(), range, value);
+    }
+
+    static String toRangeString(IAutomatableControl control) {
+        return control.getMin() + ".." + control.getMax();
     }
 }

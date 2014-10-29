@@ -71,7 +71,7 @@ public class CombFilterEffect extends EffectNode {
      * @see EffectControls#CombFilter_Freq
      */
     public void setFreq(int freq) {
-        if (!EffectControls.CombFilter_Freq.set(freq, this.freq))
+        if (!EffectControls.CombFilter_Freq.isValid(freq, this.freq))
             return;
         this.freq = freq;
         set(EffectControls.CombFilter_Freq, freq);
@@ -100,7 +100,7 @@ public class CombFilterEffect extends EffectNode {
      * @see EffectControls#CombFilter_Reso
      */
     public void setReso(float reso) {
-        if (!EffectControls.CombFilter_Reso.set(reso, this.reso))
+        if (!EffectControls.CombFilter_Reso.isValid(reso, this.reso))
             return;
         this.reso = reso;
         set(EffectControls.CombFilter_Reso, reso);
@@ -129,7 +129,7 @@ public class CombFilterEffect extends EffectNode {
      * @see EffectControls#CombFilter_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.CombFilter_Wet.set(wet, this.wet))
+        if (!EffectControls.CombFilter_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.CombFilter_Wet, wet);

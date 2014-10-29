@@ -19,6 +19,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-public interface IEffectControl extends IOSCControl, IAutomatableControl {
+public interface IMachineControl extends IAutomatableControl {
 
 }

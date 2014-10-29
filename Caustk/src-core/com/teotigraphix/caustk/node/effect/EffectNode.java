@@ -26,6 +26,7 @@ import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage;
 import com.teotigraphix.caustk.core.osc.IEffectControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
+import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.NodeMetaData;
@@ -211,7 +212,7 @@ public abstract class EffectNode extends MachineComponent {
      * @param value the valid value for the property.
      */
     public void invoke(IEffectControl control, float value) {
-        EffectControls.setValue(this, control, value);
+        OSCControlsMap.setValue(this, control, value);
     }
 
     /**

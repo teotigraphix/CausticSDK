@@ -73,7 +73,7 @@ public class PhaserEffect extends EffectNode {
      * @see EffectControls#Phaser_Depth
      */
     public void setDepth(float depth) {
-        if (!EffectControls.Phaser_Depth.set(depth, this.depth))
+        if (!EffectControls.Phaser_Depth.isValid(depth, this.depth))
             return;
         this.depth = depth;
         set(EffectControls.Phaser_Depth, depth);
@@ -98,7 +98,7 @@ public class PhaserEffect extends EffectNode {
      * @see EffectControls#Phaser_Feedback
      */
     public void setFeedback(float feedback) {
-        if (!EffectControls.Phaser_Feedback.set(feedback, this.feedback))
+        if (!EffectControls.Phaser_Feedback.isValid(feedback, this.feedback))
             return;
         this.feedback = feedback;
         set(EffectControls.Phaser_Feedback, feedback);
@@ -123,7 +123,7 @@ public class PhaserEffect extends EffectNode {
      * @see EffectControls#Phaser_HighFreq
      */
     public void setHighfreq(float highFreq) {
-        if (!EffectControls.Phaser_HighFreq.set(highFreq, this.highFreq))
+        if (!EffectControls.Phaser_HighFreq.isValid(highFreq, this.highFreq))
             return;
         this.highFreq = highFreq;
         set(EffectControls.Phaser_HighFreq, highFreq);
@@ -148,7 +148,7 @@ public class PhaserEffect extends EffectNode {
      * @see EffectControls#Phaser_LowFreq
      */
     public void setLowfreq(float lowFreq) {
-        if (!EffectControls.Phaser_LowFreq.set(lowFreq, this.lowFreq))
+        if (!EffectControls.Phaser_LowFreq.isValid(lowFreq, this.lowFreq))
             return;
         this.lowFreq = lowFreq;
         set(EffectControls.Phaser_LowFreq, lowFreq);
@@ -177,7 +177,7 @@ public class PhaserEffect extends EffectNode {
      * @see EffectControls#Phaser_Rate
      */
     public void setRate(int rate) {
-        if (!EffectControls.Phaser_Rate.set(rate, this.rate))
+        if (!EffectControls.Phaser_Rate.isValid(rate, this.rate))
             return;
         this.rate = rate;
         set(EffectControls.Phaser_Rate, rate);

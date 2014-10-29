@@ -19,6 +19,17 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-public interface IEffectControl extends IOSCControl, IAutomatableControl {
+public interface IAutomatableControl {
 
+    String getControl();
+
+    OSCControlKind getKind();
+
+    float getMin();
+
+    float getMax();
+
+    float getDefaultValue();
+
+    String getDisplayName();
 }

@@ -70,7 +70,7 @@ public class LimiterEffect extends EffectNode {
      * @see EffectControls#Limiter_Attack
      */
     public void setAttack(float attack) {
-        if (!EffectControls.Limiter_Attack.set(attack, this.attack))
+        if (!EffectControls.Limiter_Attack.isValid(attack, this.attack))
             return;
         this.attack = attack;
         set(EffectControls.Limiter_Attack, attack);
@@ -95,7 +95,7 @@ public class LimiterEffect extends EffectNode {
      * @see EffectControls#Limiter_PostGain
      */
     public void setPostGain(float postGain) {
-        if (!EffectControls.Limiter_PostGain.set(postGain, this.postGain))
+        if (!EffectControls.Limiter_PostGain.isValid(postGain, this.postGain))
             return;
         this.postGain = postGain;
         set(EffectControls.Limiter_PostGain, postGain);
@@ -120,7 +120,7 @@ public class LimiterEffect extends EffectNode {
      * @see EffectControls#Limiter_PreGain
      */
     public void setPreGain(float preGain) {
-        if (!EffectControls.Limiter_PreGain.set(preGain, this.preGain))
+        if (!EffectControls.Limiter_PreGain.isValid(preGain, this.preGain))
             return;
         this.preGain = preGain;
         set(EffectControls.Limiter_PreGain, preGain);
@@ -145,7 +145,7 @@ public class LimiterEffect extends EffectNode {
      * @see EffectControls#Limiter_Release
      */
     public void setRelease(float release) {
-        if (!EffectControls.Limiter_Release.set(release, this.release))
+        if (!EffectControls.Limiter_Release.isValid(release, this.release))
             return;
         this.release = release;
         set(EffectControls.Limiter_Release, release);

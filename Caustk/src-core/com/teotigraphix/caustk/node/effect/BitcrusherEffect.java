@@ -74,7 +74,7 @@ public class BitcrusherEffect extends EffectNode {
      * @see EffectControls#Bitcrusher_Depth
      */
     public void setDepth(int depth) {
-        if (!EffectControls.Bitcrusher_Depth.set(depth, this.depth))
+        if (!EffectControls.Bitcrusher_Depth.isValid(depth, this.depth))
             return;
         this.depth = depth;
         set(EffectControls.Bitcrusher_Depth, depth);
@@ -99,7 +99,7 @@ public class BitcrusherEffect extends EffectNode {
      * @see EffectControls#Bitcrusher_Jitter
      */
     public void setJitter(float jitter) {
-        if (!EffectControls.Bitcrusher_Jitter.set(jitter, this.jitter))
+        if (!EffectControls.Bitcrusher_Jitter.isValid(jitter, this.jitter))
             return;
         this.jitter = jitter;
         set(EffectControls.Bitcrusher_Jitter, jitter);
@@ -124,7 +124,7 @@ public class BitcrusherEffect extends EffectNode {
      * @see EffectControls#Bitcrusher_Rate
      */
     public void setRate(float rate) {
-        if (!EffectControls.Bitcrusher_Rate.set(rate, this.rate))
+        if (!EffectControls.Bitcrusher_Rate.isValid(rate, this.rate))
             return;
         this.rate = rate;
         set(EffectControls.Bitcrusher_Rate, rate);
@@ -149,7 +149,7 @@ public class BitcrusherEffect extends EffectNode {
      * @see EffectControls#Bitcrusher_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.Bitcrusher_Wet.set(wet, this.wet))
+        if (!EffectControls.Bitcrusher_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.Bitcrusher_Wet, wet);

@@ -73,7 +73,7 @@ public class VinylSimulatorEffect extends EffectNode {
      * @see EffectControls#VinylSimulator_Age
      */
     public void setAge(float age) {
-        if (!EffectControls.VinylSimulator_Age.set(age, this.age))
+        if (!EffectControls.VinylSimulator_Age.isValid(age, this.age))
             return;
         this.age = age;
         set(EffectControls.VinylSimulator_Age, age);
@@ -98,7 +98,7 @@ public class VinylSimulatorEffect extends EffectNode {
      * @see EffectControls#VinylSimulator_Dust
      */
     public void setDust(float dust) {
-        if (!EffectControls.VinylSimulator_Dust.set(dust, this.dust))
+        if (!EffectControls.VinylSimulator_Dust.isValid(dust, this.dust))
             return;
         this.dust = dust;
         set(EffectControls.VinylSimulator_Dust, dust);
@@ -123,7 +123,7 @@ public class VinylSimulatorEffect extends EffectNode {
      * @see EffectControls#VinylSimulator_Noise
      */
     public void setNoise(float noise) {
-        if (!EffectControls.VinylSimulator_Noise.set(noise, this.noise))
+        if (!EffectControls.VinylSimulator_Noise.isValid(noise, this.noise))
             return;
         this.noise = noise;
         set(EffectControls.VinylSimulator_Noise, noise);
@@ -148,7 +148,7 @@ public class VinylSimulatorEffect extends EffectNode {
      * @see EffectControls#VinylSimulator_Scratch
      */
     public void setScratch(float scratch) {
-        if (!EffectControls.VinylSimulator_Scratch.set(scratch, this.scratch))
+        if (!EffectControls.VinylSimulator_Scratch.isValid(scratch, this.scratch))
             return;
         this.scratch = scratch;
         set(EffectControls.VinylSimulator_Scratch, scratch);
@@ -173,7 +173,7 @@ public class VinylSimulatorEffect extends EffectNode {
      * @see EffectControls#VinylSimulator_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.VinylSimulator_Wet.set(wet, this.wet))
+        if (!EffectControls.VinylSimulator_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.VinylSimulator_Wet, wet);

@@ -71,7 +71,7 @@ public class MultiFilterEffect extends EffectNode {
      * @see EffectControls#MultiFilter_Frequency
      */
     public void setFrequency(float frequency) {
-        if (!EffectControls.MultiFilter_Frequency.set(frequency, this.frequency))
+        if (!EffectControls.MultiFilter_Frequency.isValid(frequency, this.frequency))
             return;
         this.frequency = frequency;
         set(EffectControls.MultiFilter_Frequency, frequency);
@@ -96,7 +96,7 @@ public class MultiFilterEffect extends EffectNode {
      * @see EffectControls#MultiFilter_Gain
      */
     public void setGain(float gain) {
-        if (!EffectControls.MultiFilter_Gain.set(gain, this.gain))
+        if (!EffectControls.MultiFilter_Gain.isValid(gain, this.gain))
             return;
         this.gain = gain;
         set(EffectControls.MultiFilter_Gain, gain);
@@ -125,7 +125,7 @@ public class MultiFilterEffect extends EffectNode {
      * @see EffectControls#MultiFilter_Mode
      */
     public void setMode(MultiFilterMode mode) {
-        if (!EffectControls.MultiFilter_Mode.set(mode.getValue(), this.mode.getValue()))
+        if (!EffectControls.MultiFilter_Mode.isValid(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
         set(EffectControls.MultiFilter_Mode, mode.getValue());
@@ -150,7 +150,7 @@ public class MultiFilterEffect extends EffectNode {
      * @see EffectControls#MultiFilter_Resonance
      */
     public void setResonance(float resonance) {
-        if (!EffectControls.MultiFilter_Resonance.set(resonance, this.resonance))
+        if (!EffectControls.MultiFilter_Resonance.isValid(resonance, this.resonance))
             return;
         this.resonance = resonance;
         set(EffectControls.MultiFilter_Resonance, resonance);

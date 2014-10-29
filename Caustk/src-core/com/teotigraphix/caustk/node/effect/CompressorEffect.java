@@ -73,7 +73,7 @@ public class CompressorEffect extends EffectNode {
      * @see EffectControls#Compressor_Attack
      */
     public void setAttack(float attack) {
-        if (!EffectControls.Compressor_Attack.set(attack, this.attack))
+        if (!EffectControls.Compressor_Attack.isValid(attack, this.attack))
             return;
         this.attack = attack;
         set(EffectControls.Compressor_Attack, attack);
@@ -98,7 +98,7 @@ public class CompressorEffect extends EffectNode {
      * @see EffectControls#Compressor_Ratio
      */
     public void setRatio(float ratio) {
-        if (!EffectControls.Compressor_Attack.set(ratio, this.ratio))
+        if (!EffectControls.Compressor_Attack.isValid(ratio, this.ratio))
             return;
         this.ratio = ratio;
         set(EffectControls.Compressor_Ratio, ratio);
@@ -124,7 +124,7 @@ public class CompressorEffect extends EffectNode {
      * @see EffectControls#Compressor_Release
      */
     public void setRelease(float release) {
-        if (!EffectControls.Compressor_Release.set(release, this.release))
+        if (!EffectControls.Compressor_Release.isValid(release, this.release))
             return;
         this.release = release;
         set(EffectControls.Compressor_Release, release);
@@ -153,7 +153,7 @@ public class CompressorEffect extends EffectNode {
      * @see EffectControls#Compressor_Sidechain
      */
     public void setSidechain(int sidechain) {
-        if (!EffectControls.Compressor_Sidechain.set(sidechain, this.sidechain))
+        if (!EffectControls.Compressor_Sidechain.isValid(sidechain, this.sidechain))
             return;
         this.sidechain = sidechain;
         set(EffectControls.Compressor_Sidechain, sidechain);
@@ -178,7 +178,7 @@ public class CompressorEffect extends EffectNode {
      * @see EffectControls#Compressor_Threshold
      */
     public void setThreshold(float threshold) {
-        if (!EffectControls.Compressor_Threshold.set(threshold, this.threshold))
+        if (!EffectControls.Compressor_Threshold.isValid(threshold, this.threshold))
             return;
         this.threshold = threshold;
         set(EffectControls.Compressor_Threshold, threshold);

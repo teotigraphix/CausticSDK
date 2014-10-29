@@ -21,6 +21,8 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.osc.IMachineControl;
+import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
@@ -111,6 +113,10 @@ public class PCMSynthMachine extends MachineNode {
 
     public PCMSynthMachine(RackNode rackNode, int index, String name) {
         super(rackNode, index, MachineType.PCMSynth, name);
+    }
+
+    public void invoke(IMachineControl control, float value) {
+        OSCControlsMap.setValue(this, control, value);
     }
 
     //--------------------------------------------------------------------------

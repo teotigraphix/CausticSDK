@@ -73,7 +73,7 @@ public class AutoWahEffect extends EffectNode {
      * @see EffectControls#Autowah_Cutoff
      */
     public void setCutoff(float cutoff) {
-        if (!EffectControls.Autowah_Cutoff.set(cutoff, this.cutoff))
+        if (!EffectControls.Autowah_Cutoff.isValid(cutoff, this.cutoff))
             return;
         this.cutoff = cutoff;
         set(EffectControls.Autowah_Cutoff, cutoff);
@@ -98,7 +98,7 @@ public class AutoWahEffect extends EffectNode {
      * @see EffectControls#Autowah_Depth
      */
     public void setDepth(float depth) {
-        if (!EffectControls.Autowah_Depth.set(depth, this.depth))
+        if (!EffectControls.Autowah_Depth.isValid(depth, this.depth))
             return;
         this.depth = depth;
         set(EffectControls.Autowah_Depth, depth);
@@ -123,7 +123,7 @@ public class AutoWahEffect extends EffectNode {
      * @see EffectControls#Autowah_Resonance
      */
     public void setResonance(float resonance) {
-        if (!EffectControls.Autowah_Resonance.set(resonance, this.resonance))
+        if (!EffectControls.Autowah_Resonance.isValid(resonance, this.resonance))
             return;
         this.resonance = resonance;
         set(EffectControls.Autowah_Resonance, resonance);
@@ -148,7 +148,7 @@ public class AutoWahEffect extends EffectNode {
      * @see EffectControls#Autowah_Speed
      */
     public void setSpeed(float speed) {
-        if (!EffectControls.Autowah_Speed.set(speed, this.speed))
+        if (!EffectControls.Autowah_Speed.isValid(speed, this.speed))
             return;
         this.speed = speed;
         set(EffectControls.Autowah_Speed, speed);
@@ -173,7 +173,7 @@ public class AutoWahEffect extends EffectNode {
      * @see EffectControls#Autowah_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.Autowah_Wet.set(wet, this.wet))
+        if (!EffectControls.Autowah_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.Autowah_Wet, wet);

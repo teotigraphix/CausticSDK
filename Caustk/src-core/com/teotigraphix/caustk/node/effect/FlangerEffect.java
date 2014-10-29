@@ -74,7 +74,7 @@ public class FlangerEffect extends EffectNode {
      * @see EffectControls#Depth
      */
     public void setDepth(float depth) {
-        if (!EffectControls.Flanger_Depth.set(depth, this.depth))
+        if (!EffectControls.Flanger_Depth.isValid(depth, this.depth))
             return;
         this.depth = depth;
         set(EffectControls.Flanger_Depth, depth);
@@ -99,7 +99,7 @@ public class FlangerEffect extends EffectNode {
      * @see EffectControls#Flanger_Feedback
      */
     public void setFeedback(float feedback) {
-        if (!EffectControls.Flanger_Feedback.set(feedback, this.feedback))
+        if (!EffectControls.Flanger_Feedback.isValid(feedback, this.feedback))
             return;
         this.feedback = feedback;
         set(EffectControls.Flanger_Feedback, feedback);
@@ -128,7 +128,7 @@ public class FlangerEffect extends EffectNode {
      * @see EffectControls#Flanger_Mode
      */
     public void setMode(FlangerMode mode) {
-        if (!EffectControls.Flanger_Mode.set(mode.getValue(), this.mode.getValue()))
+        if (!EffectControls.Flanger_Mode.isValid(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
         set(EffectControls.Flanger_Mode, mode.getValue());
@@ -153,7 +153,7 @@ public class FlangerEffect extends EffectNode {
      * @see EffectControls#Flanger_Rate
      */
     public void setRate(float rate) {
-        if (!EffectControls.Flanger_Rate.set(rate, this.rate))
+        if (!EffectControls.Flanger_Rate.isValid(rate, this.rate))
             return;
         this.rate = rate;
         set(EffectControls.Flanger_Rate, rate);
@@ -178,7 +178,7 @@ public class FlangerEffect extends EffectNode {
      * @see EffectControls#Flanger_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.Flanger_Wet.set(wet, this.wet))
+        if (!EffectControls.Flanger_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.Flanger_Wet, wet);

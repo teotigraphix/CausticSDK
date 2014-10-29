@@ -71,6 +71,10 @@ public class LFO1Component extends MachineComponent {
         return (int)PCMSynthMessage.LFO_RATE.query(getRack(), getMachineIndex());
     }
 
+    public void setRate(float rate) {
+        setRate((int)rate);
+    }
+
     /**
      * @param value (1..12)
      * @see PCMSynthMessage#LFO_RATE
@@ -127,6 +131,10 @@ public class LFO1Component extends MachineComponent {
         return LFO1Target.toType(PCMSynthMessage.LFO_TARGET.query(getRack(), getMachineIndex()));
     }
 
+    public void setTarget(float target) {
+        setTarget(LFO1Target.toType(target));
+    }
+
     /**
      * @param value LFO1Target
      * @see PCMSynthMessage#LFO_TARGET
@@ -154,11 +162,15 @@ public class LFO1Component extends MachineComponent {
                 .toType(PCMSynthMessage.LFO_WAVEFORM.query(getRack(), getMachineIndex()));
     }
 
+    public void setWaveform(float waveform) {
+        setWaveform(LFO1Waveform.toType(waveform));
+    }
+
     /**
      * @param value LFO1Waveform
      * @see PCMSynthMessage#LFO_WAVEFORM
      */
-    public void setWaveForm(LFO1Waveform value) {
+    public void setWaveform(LFO1Waveform value) {
         if (value == waveform)
             return;
         waveform = value;
@@ -204,6 +216,6 @@ public class LFO1Component extends MachineComponent {
         setDepth(getDepth(true));
         setRate(getRate(true));
         setTarget(getTarget(true));
-        setWaveForm(getWaveform(true));
+        setWaveform(getWaveform(true));
     }
 }

@@ -71,7 +71,7 @@ public class DistortionEffect extends EffectNode {
      * @see EffectControls#Distortion_Amount
      */
     public void setAmount(float amount) {
-        if (!EffectControls.Distortion_Amount.set(amount, this.amount))
+        if (!EffectControls.Distortion_Amount.isValid(amount, this.amount))
             return;
         this.amount = amount;
         set(EffectControls.Distortion_Amount, amount);
@@ -96,7 +96,7 @@ public class DistortionEffect extends EffectNode {
      * @see EffectControls#Distortion_PostGain
      */
     public void setPostGain(float postGain) {
-        if (!EffectControls.Distortion_PostGain.set(postGain, this.postGain))
+        if (!EffectControls.Distortion_PostGain.isValid(postGain, this.postGain))
             return;
         this.postGain = postGain;
         set(EffectControls.Distortion_PostGain, postGain);
@@ -121,7 +121,7 @@ public class DistortionEffect extends EffectNode {
      * @see EffectControls#Distortion_PreGain
      */
     public void setPreGain(float preGain) {
-        if (!EffectControls.Distortion_PreGain.set(preGain, this.preGain))
+        if (!EffectControls.Distortion_PreGain.isValid(preGain, this.preGain))
             return;
         this.preGain = preGain;
         set(EffectControls.Distortion_PreGain, preGain);
@@ -150,7 +150,7 @@ public class DistortionEffect extends EffectNode {
      * @see EffectControls#Distortion_Program
      */
     public void setProgram(DistortionProgram program) {
-        if (!EffectControls.Distortion_Program.set(program.getValue(), this.program.getValue()))
+        if (!EffectControls.Distortion_Program.isValid(program.getValue(), this.program.getValue()))
             return;
         this.program = program;
         set(EffectControls.Distortion_Program, program.getValue());

@@ -77,7 +77,7 @@ public class StaticFlangerEffect extends EffectNode {
      * @see EffectControls#StaticFlanger_Depth
      */
     public void setDelay(float delay) {
-        if (!EffectControls.StaticFlanger_Depth.set(delay, this.delay))
+        if (!EffectControls.StaticFlanger_Depth.isValid(delay, this.delay))
             return;
         this.delay = delay;
         set(EffectControls.StaticFlanger_Depth, delay);
@@ -102,7 +102,7 @@ public class StaticFlangerEffect extends EffectNode {
      * @see EffectControls#StaticFlanger_Feedback
      */
     public void setFeedback(float feedback) {
-        if (!EffectControls.StaticFlanger_Feedback.set(feedback, this.feedback))
+        if (!EffectControls.StaticFlanger_Feedback.isValid(feedback, this.feedback))
             return;
         this.feedback = feedback;
         set(EffectControls.StaticFlanger_Feedback, feedback);
@@ -131,7 +131,7 @@ public class StaticFlangerEffect extends EffectNode {
      * @see EffectControls#StaticFlanger_Mode
      */
     public void setMode(StaticFlangerMode mode) {
-        if (!EffectControls.StaticFlanger_Mode.set(mode.getValue(), this.mode.getValue()))
+        if (!EffectControls.StaticFlanger_Mode.isValid(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
         set(EffectControls.StaticFlanger_Mode, mode.getValue());
@@ -156,7 +156,7 @@ public class StaticFlangerEffect extends EffectNode {
      * @see EffectControls#StaticFlanger_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.StaticFlanger_Wet.set(wet, this.wet))
+        if (!EffectControls.StaticFlanger_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.StaticFlanger_Wet, wet);

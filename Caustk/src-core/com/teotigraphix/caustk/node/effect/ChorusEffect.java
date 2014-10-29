@@ -74,7 +74,7 @@ public class ChorusEffect extends EffectNode {
      * @see EffectControls#Chorus_Delay
      */
     public void setDelay(float delay) {
-        if (!EffectControls.Chorus_Delay.set(delay, this.delay))
+        if (!EffectControls.Chorus_Delay.isValid(delay, this.delay))
             return;
         this.delay = delay;
         set(EffectControls.Chorus_Delay, delay);
@@ -99,7 +99,7 @@ public class ChorusEffect extends EffectNode {
      * @see EffectControls#Chorus_Depth
      */
     public void setDepth(float depth) {
-        if (!EffectControls.Chorus_Depth.set(depth, this.depth))
+        if (!EffectControls.Chorus_Depth.isValid(depth, this.depth))
             return;
         this.depth = depth;
         set(EffectControls.Chorus_Depth, depth);
@@ -128,7 +128,7 @@ public class ChorusEffect extends EffectNode {
      * @see EffectControls#Mode
      */
     public void setMode(ChorusMode mode) {
-        if (!EffectControls.Chorus_Mode.set(mode.getValue(), this.mode.getValue()))
+        if (!EffectControls.Chorus_Mode.isValid(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
         set(EffectControls.Chorus_Mode, mode.getValue());
@@ -153,7 +153,7 @@ public class ChorusEffect extends EffectNode {
      * @see EffectControls#Chorus_Rate
      */
     public void setRate(float rate) {
-        if (!EffectControls.Chorus_Rate.set(rate, this.rate))
+        if (!EffectControls.Chorus_Rate.isValid(rate, this.rate))
             return;
         this.rate = rate;
         set(EffectControls.Chorus_Rate, rate);
@@ -178,7 +178,7 @@ public class ChorusEffect extends EffectNode {
      * @see EffectControls#Chorus_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.Chorus_Wet.set(wet, this.wet))
+        if (!EffectControls.Chorus_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.Chorus_Wet, wet);

@@ -71,7 +71,7 @@ public class DelayEffect extends EffectNode {
      * @see EffectControls#Delay_Feedback
      */
     public void setFeedback(float feedback) {
-        if (!EffectControls.Delay_Feedback.set(feedback, this.feedback))
+        if (!EffectControls.Delay_Feedback.isValid(feedback, this.feedback))
             return;
         this.feedback = feedback;
         set(EffectControls.Delay_Feedback, feedback);
@@ -103,7 +103,7 @@ public class DelayEffect extends EffectNode {
         // XXX Unit test Bug?
         if (mode == null)
             return;
-        if (!EffectControls.Delay_Mode.set(mode.getValue(), this.mode.getValue()))
+        if (!EffectControls.Delay_Mode.isValid(mode.getValue(), this.mode.getValue()))
             return;
         this.mode = mode;
         set(EffectControls.Delay_Mode, mode.getValue());
@@ -132,7 +132,7 @@ public class DelayEffect extends EffectNode {
      * @see EffectControls#Delay_Time
      */
     public void setTime(int time) {
-        if (!EffectControls.Delay_Time.set(time, this.time))
+        if (!EffectControls.Delay_Time.isValid(time, this.time))
             return;
         this.time = time;
         set(EffectControls.Delay_Time, time);
@@ -158,7 +158,7 @@ public class DelayEffect extends EffectNode {
      * @see EffectControls#Delay_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.Delay_Wet.set(wet, this.wet))
+        if (!EffectControls.Delay_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.Delay_Wet, wet);

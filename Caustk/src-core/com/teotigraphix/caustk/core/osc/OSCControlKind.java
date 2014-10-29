@@ -1,7 +1,7 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-public enum EffectControlKind {
+public enum OSCControlKind {
     Boolean,
 
     Float,

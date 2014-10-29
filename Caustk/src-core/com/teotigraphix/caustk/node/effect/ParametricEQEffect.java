@@ -67,7 +67,7 @@ public class ParametricEQEffect extends EffectNode {
      * @see EffectControls#ParametricEQ_Frequency
      */
     public void setFrequency(float frequency) {
-        if (!EffectControls.ParametricEQ_Frequency.set(frequency, this.frequency))
+        if (!EffectControls.ParametricEQ_Frequency.isValid(frequency, this.frequency))
             return;
         this.frequency = frequency;
         set(EffectControls.ParametricEQ_Frequency, frequency);
@@ -92,7 +92,7 @@ public class ParametricEQEffect extends EffectNode {
      * @see EffectControls#ParametricEQ_Gain
      */
     public void setGain(float gain) {
-        if (!EffectControls.ParametricEQ_Gain.set(gain, this.gain))
+        if (!EffectControls.ParametricEQ_Gain.isValid(gain, this.gain))
             return;
         this.gain = gain;
         set(EffectControls.ParametricEQ_Gain, gain);
@@ -117,7 +117,7 @@ public class ParametricEQEffect extends EffectNode {
      * @see EffectControls#ParametricEQ_Width
      */
     public void setWidth(float width) {
-        if (!EffectControls.ParametricEQ_Width.set(width, this.width))
+        if (!EffectControls.ParametricEQ_Width.isValid(width, this.width))
             return;
         this.width = width;
         set(EffectControls.ParametricEQ_Width, width);

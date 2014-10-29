@@ -73,7 +73,7 @@ public class ReverbEffect extends EffectNode {
      * @see EffectControls#Reverb_Damping
      */
     public void setDamping(float damping) {
-        if (!EffectControls.Reverb_Damping.set(damping, this.damping))
+        if (!EffectControls.Reverb_Damping.isValid(damping, this.damping))
             return;
         this.damping = damping;
         set(EffectControls.Reverb_Damping, damping);
@@ -98,7 +98,7 @@ public class ReverbEffect extends EffectNode {
      * @see EffectControls#Reverb_Delay
      */
     public void setDelay(float delay) {
-        if (!EffectControls.Reverb_Delay.set(delay, this.delay))
+        if (!EffectControls.Reverb_Delay.isValid(delay, this.delay))
             return;
         this.delay = delay;
         set(EffectControls.Reverb_Delay, delay);
@@ -123,7 +123,7 @@ public class ReverbEffect extends EffectNode {
      * @see EffectControls#Reverb_Room
      */
     public void setRoom(float room) {
-        if (!EffectControls.Reverb_Room.set(room, this.room))
+        if (!EffectControls.Reverb_Room.isValid(room, this.room))
             return;
         this.room = room;
         set(EffectControls.Reverb_Room, room);
@@ -148,7 +148,7 @@ public class ReverbEffect extends EffectNode {
      * @see EffectControls#Reverb_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.Reverb_Wet.set(wet, this.wet))
+        if (!EffectControls.Reverb_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.Reverb_Wet, wet);
@@ -173,7 +173,7 @@ public class ReverbEffect extends EffectNode {
      * @see EffectControls#Width
      */
     public void setWidth(float width) {
-        if (!EffectControls.Reverb_Width.set(width, this.width))
+        if (!EffectControls.Reverb_Width.isValid(width, this.width))
             return;
         this.width = width;
         set(EffectControls.Reverb_Width, width);

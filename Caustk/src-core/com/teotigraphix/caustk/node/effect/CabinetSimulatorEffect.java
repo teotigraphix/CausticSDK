@@ -73,7 +73,7 @@ public class CabinetSimulatorEffect extends EffectNode {
      * @see EffectControls#Damping
      */
     public void setDamping(float damping) {
-        if (!EffectControls.CabinetSimulator_Damping.set(damping, this.damping))
+        if (!EffectControls.CabinetSimulator_Damping.isValid(damping, this.damping))
             return;
         this.damping = damping;
         set(EffectControls.CabinetSimulator_Damping, damping);
@@ -98,7 +98,7 @@ public class CabinetSimulatorEffect extends EffectNode {
      * @see EffectControls#CabinetSimulator_Height
      */
     public void setHeight(float height) {
-        if (!EffectControls.CabinetSimulator_Height.set(height, this.height))
+        if (!EffectControls.CabinetSimulator_Height.isValid(height, this.height))
             return;
         this.height = height;
         set(EffectControls.CabinetSimulator_Height, height);
@@ -124,7 +124,7 @@ public class CabinetSimulatorEffect extends EffectNode {
      * @see EffectControls#CabinetSimulator_Tone
      */
     public void setTone(float tone) {
-        if (!EffectControls.CabinetSimulator_Tone.set(tone, this.tone))
+        if (!EffectControls.CabinetSimulator_Tone.isValid(tone, this.tone))
             return;
         this.tone = tone;
         set(EffectControls.CabinetSimulator_Tone, tone);
@@ -149,7 +149,7 @@ public class CabinetSimulatorEffect extends EffectNode {
      * @see EffectControls#CabinetSimulator_Wet
      */
     public void setWet(float wet) {
-        if (!EffectControls.CabinetSimulator_Wet.set(wet, this.wet))
+        if (!EffectControls.CabinetSimulator_Wet.isValid(wet, this.wet))
             return;
         this.wet = wet;
         set(EffectControls.CabinetSimulator_Wet, wet);
@@ -174,7 +174,7 @@ public class CabinetSimulatorEffect extends EffectNode {
      * @see EffectControls#CabinetSimulator_Width
      */
     public void setWidth(float width) {
-        if (!EffectControls.CabinetSimulator_Width.set(width, this.width))
+        if (!EffectControls.CabinetSimulator_Width.isValid(width, this.width))
             return;
         this.width = width;
         set(EffectControls.CabinetSimulator_Width, width);

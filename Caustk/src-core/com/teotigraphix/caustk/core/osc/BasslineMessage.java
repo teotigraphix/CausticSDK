@@ -119,7 +119,7 @@ public class BasslineMessage extends CausticMessage {
      * </p>
      * 
      * @see OSC1Component#getWaveform()
-     * @see OSC1Component#setWaveForm(Waveform)
+     * @see OSC1Component#setWaveform(Waveform)
      */
     public static final BasslineMessage WAVEFORM = new BasslineMessage(
             "/caustic/${0}/waveform ${1}");

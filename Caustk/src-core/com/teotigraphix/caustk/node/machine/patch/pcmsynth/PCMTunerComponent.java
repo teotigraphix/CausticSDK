@@ -65,6 +65,10 @@ public class PCMTunerComponent extends MachineComponent {
         return (int)PCMSynthMessage.PITCH_CENTS.query(getRack(), getMachineIndex());
     }
 
+    public void setCents(float cents) {
+        setCents((int)cents);
+    }
+
     /**
      * @param cents (-50..50)
      * @see PCMSynthMessage#PITCH_CENTS
@@ -93,6 +97,10 @@ public class PCMTunerComponent extends MachineComponent {
         return (int)PCMSynthMessage.PITCH_OCTAVE.query(getRack(), getMachineIndex());
     }
 
+    public void setOctave(float cents) {
+        setOctave((int)cents);
+    }
+
     /**
      * @param octave (-4..4)
      * @see PCMSynthMessage#PITCH_OCTAVE
@@ -119,6 +127,10 @@ public class PCMTunerComponent extends MachineComponent {
 
     public int querySemis() {
         return (int)PCMSynthMessage.PITCH_SEMIS.query(getRack(), getMachineIndex());
+    }
+
+    public void setSemis(float semis) {
+        setSemis((int)semis);
     }
 
     /**
