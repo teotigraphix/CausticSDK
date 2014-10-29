@@ -29,6 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
+import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.gdx.scene2d.ControlTable;
 
 /**
@@ -85,6 +86,7 @@ public class Knob extends ControlTable {
 
     @Override
     public boolean setValue(float value) {
+        value = OSCUtils.precision(value);
         float oldValue = this.value;
         if (value == oldValue)
             return false;

@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import java.math.BigDecimal;
+
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.MachineType;
 
@@ -29,6 +31,15 @@ import com.teotigraphix.caustk.core.MachineType;
  * @since 1.0
  */
 public final class OSCUtils {
+
+    public static final int PRECISION = 4;
+
+    public static Float precision(Float d) {
+
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(PRECISION, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 
     private static final String[] REMOVABLE_CHARS = new String[] {
             " ", "e", "a", "u", "i", "o"

@@ -85,7 +85,7 @@ public class TextKnob extends Knob {
         TextKnobStyle style = getStyle();
         label = new Label(text, new LabelStyle(style.font, style.fontColor));
         label.setAlignment(Align.center);
-        add(label);
+        addActor(label);
     }
 
     @Override
@@ -98,6 +98,8 @@ public class TextKnob extends Knob {
             // will need some type of rounding
             label.setText(Float.toString(getValue()));
         }
+
+        label.setPosition(getWidth() / 2 - label.getWidth(), label.getHeight());
     }
 
     @Override
