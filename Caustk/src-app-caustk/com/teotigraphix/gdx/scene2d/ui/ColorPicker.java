@@ -23,8 +23,8 @@ public class ColorPicker extends UITable {
         GrooveColor[] values = GrooveColor.values();
 
         int index = 0;
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
                 final GrooveColor color = values[index];
                 Image image = new Image(getSkin().getDrawable(
                         StylesDefault.ColorPicker_swatch_background));

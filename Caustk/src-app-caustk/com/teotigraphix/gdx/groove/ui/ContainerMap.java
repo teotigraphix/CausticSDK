@@ -43,10 +43,6 @@ public class ContainerMap implements IContainerMap {
         eventBus = new EventBus();
     }
 
-    void put(IContainerKind key, WidgetGroup group) {
-        map.put(key, group);
-    }
-
     //--------------------------------------------------------------------------
     // Public :: Methods
     //--------------------------------------------------------------------------
@@ -54,6 +50,11 @@ public class ContainerMap implements IContainerMap {
     @Override
     public WidgetGroup get(IContainerKind key) {
         return map.get(key);
+    }
+
+    @Override
+    public void put(IContainerKind key, WidgetGroup group) {
+        map.put(key, group);
     }
 
     @Override

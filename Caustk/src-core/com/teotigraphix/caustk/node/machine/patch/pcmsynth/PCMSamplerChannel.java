@@ -63,7 +63,7 @@ public class PCMSamplerChannel extends MachineComponent {
     private int highKey;
 
     @Tag(108)
-    private PlayMode mode;
+    private PlayMode mode = PlayMode.PLAY_ONCE;
 
     @Tag(109)
     private int start;

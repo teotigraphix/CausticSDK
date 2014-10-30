@@ -11,6 +11,8 @@ public interface IContainerMap {
 
     WidgetGroup get(IContainerKind key);
 
+    void put(IContainerKind key, WidgetGroup group);
+
     void addActor(IContainerKind kind, WidgetGroup actor);
 
     void register(Object object);
