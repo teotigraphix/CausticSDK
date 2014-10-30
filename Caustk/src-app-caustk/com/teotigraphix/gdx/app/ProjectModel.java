@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -238,7 +239,14 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
         if (state.getSceneViewIndex() == viewIndex)
             return;
         state.setSceneViewIndex(viewIndex);
-        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                getEventBus().post(
+                        new ProjectModelEvent(ProjectModelEventKind.SceneViewChange,
+                                ProjectModel.this));
+            }
+        });
     }
 
     @Override

@@ -37,6 +37,9 @@ public class ViewPane {
     @Tag(0)
     private String id;
 
+    // the RUNTIME index, non serialized
+    private int index;
+
     private ProjectState state;
 
     private IViewManager viewManager;
@@ -55,6 +58,14 @@ public class ViewPane {
 
     public IViewManager getViewManager() {
         return viewManager;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     //--------------------------------------------------------------------------
@@ -93,4 +104,5 @@ public class ViewPane {
     protected void post(Object event) {
         CaustkRuntime.getInstance().getApplication().getEventBus().post(event);
     }
+
 }
