@@ -3,7 +3,7 @@ package com.teotigraphix.gdx.groove.ui.components.mixer;
 
 import java.util.List;
 
-import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
+import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.node.BehaviorUtils;
 import com.teotigraphix.gdx.groove.app.GrooveBehavior;
 import com.teotigraphix.gdx.groove.ui.components.mixer.MixerPane.MixerPaneListener;
@@ -35,7 +35,7 @@ public class MixerPaneProxy {
         pane = new MixerPane(behavior.getSkin(), provider);
         pane.setMixerPaneListener(new MixerPaneListener() {
             @Override
-            public void onSend(int index, MixerChannelControl control, float value) {
+            public void onSend(int index, MixerControls control, float value) {
                 send(index, control, value);
             }
         });
@@ -51,7 +51,7 @@ public class MixerPaneProxy {
         pane.redrawTriggers(machines);
     }
 
-    protected void send(int index, MixerChannelControl control, float value) {
+    protected void send(int index, MixerControls control, float value) {
         BehaviorUtils.send(behavior.getRack(), index, control, value);
         //viewManager.getSubDisplay().setCell(0, 1, value + "").done(0);
         if (provider.getDisplay() != null)

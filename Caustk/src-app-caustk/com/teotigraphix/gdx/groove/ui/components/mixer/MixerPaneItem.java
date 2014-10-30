@@ -36,7 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
+import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.master.MasterNode;
@@ -202,9 +202,9 @@ public class MixerPaneItem extends UITable {
         panKnob.setValue(channel.getPan());
         volumeSlider.setValue(channel.getVolume());
 
-        highKnob.setValue(channel.getHigh());
-        midKnob.setValue(channel.getMid());
-        bassKnob.setValue(channel.getBass());
+        highKnob.setValue(channel.getEqHigh());
+        midKnob.setValue(channel.getEqMid());
+        bassKnob.setValue(channel.getEqBass());
 
         widthKnob.setValue(channel.getStereoWidth());
         delayKnob.setValue(channel.getDelaySend());
@@ -309,7 +309,7 @@ public class MixerPaneItem extends UITable {
         widthKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.StereoWidth, widthKnob.getValue());
+                send(MixerControls.StereoWidth, widthKnob.getValue());
             }
         });
         parent.add(widthKnob).padTop(2f);
@@ -318,7 +318,7 @@ public class MixerPaneItem extends UITable {
         delayKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.DelaySend, delayKnob.getValue());
+                send(MixerControls.DelaySend, delayKnob.getValue());
             }
         });
         parent.add(delayKnob).padTop(2f);
@@ -327,7 +327,7 @@ public class MixerPaneItem extends UITable {
         reverbKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.ReverbSend, reverbKnob.getValue());
+                send(MixerControls.ReverbSend, reverbKnob.getValue());
             }
         });
         parent.add(reverbKnob).padTop(2f);
@@ -342,7 +342,7 @@ public class MixerPaneItem extends UITable {
         highKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.High, highKnob.getValue());
+                send(MixerControls.EqHigh, highKnob.getValue());
             }
         });
         parent.add(highKnob).padTop(2f);
@@ -351,7 +351,7 @@ public class MixerPaneItem extends UITable {
         midKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.Mid, midKnob.getValue());
+                send(MixerControls.EqMid, midKnob.getValue());
             }
         });
         parent.add(midKnob).padTop(2f);
@@ -360,7 +360,7 @@ public class MixerPaneItem extends UITable {
         bassKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.Bass, bassKnob.getValue());
+                send(MixerControls.EqBass, bassKnob.getValue());
             }
         });
         parent.add(bassKnob).padTop(2f);
@@ -375,7 +375,7 @@ public class MixerPaneItem extends UITable {
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.Volume, volumeSlider.getValue());
+                send(MixerControls.Volume, volumeSlider.getValue());
             }
         });
         parent.add(volumeSlider).width(45f).expandY().fillY().padTop(5f).padBottom(5f);
@@ -386,7 +386,7 @@ public class MixerPaneItem extends UITable {
         panKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                send(MixerChannelControl.Pan, panKnob.getValue());
+                send(MixerControls.Pan, panKnob.getValue());
             }
         });
         panKnob.setValue(0f);
@@ -395,7 +395,7 @@ public class MixerPaneItem extends UITable {
         knobs.add(panKnob);
     }
 
-    protected void send(MixerChannelControl control, float value) {
+    protected void send(MixerControls control, float value) {
         listener.onSend(index, control, value);
     }
 
@@ -426,7 +426,7 @@ public class MixerPaneItem extends UITable {
             public void changed(ChangeEvent event, Actor actor) {
                 if (updating)
                     return;
-                send(MixerChannelControl.Solo, soloButton.isChecked() ? 1f : 0f);
+                send(MixerControls.Solo, soloButton.isChecked() ? 1f : 0f);
             }
         });
 
@@ -436,7 +436,7 @@ public class MixerPaneItem extends UITable {
             public void changed(ChangeEvent event, Actor actor) {
                 if (updating)
                     return;
-                send(MixerChannelControl.Mute, muteButton.isChecked() ? 1f : 0f);
+                send(MixerControls.Mute, muteButton.isChecked() ? 1f : 0f);
             }
         });
 
@@ -508,7 +508,7 @@ public class MixerPaneItem extends UITable {
     }
 
     public static interface MixerPaneItemListener {
-        void onSend(int index, MixerChannelControl control, float value);
+        void onSend(int index, MixerControls control, float value);
     }
 
     public void setMixerPaneItemListener(MixerPaneItemListener l) {

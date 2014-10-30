@@ -467,7 +467,7 @@ public enum EffectControls implements IEffectControl {
      */
     VinylSimulator_Wet("wet", OSCControlKind.Float, 0f, 2f, 1f);
 
-    static {
+    static void initialize() {
         // Autowah
         OSCControlsMap.add(EffectType.Autowah, Global_Bypass);
         OSCControlsMap.add(EffectType.Autowah, Autowah_Cutoff);

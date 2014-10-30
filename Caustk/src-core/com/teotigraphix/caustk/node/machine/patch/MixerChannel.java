@@ -21,7 +21,8 @@ package com.teotigraphix.caustk.node.machine.patch;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MixerChannelMessage;
-import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
+import com.teotigraphix.caustk.core.osc.MixerControls;
+import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
@@ -42,13 +43,13 @@ public class MixerChannel extends MachineComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private float bass = 0f;
+    private float eqBass = 0f;
 
     @Tag(101)
-    private float mid = 0f;
+    private float eqMid = 0f;
 
     @Tag(102)
-    private float high = 0f;
+    private float eqHigh = 0f;
 
     @Tag(103)
     private float delaySend = 0f;
@@ -82,11 +83,11 @@ public class MixerChannel extends MachineComponent {
     /**
      * @see MixerChannelMessage#EQ_BASS
      */
-    public final float getBass() {
-        return bass;
+    public final float getEqBass() {
+        return eqBass;
     }
 
-    public float queryBass() {
+    public float queryEqBass() {
         return MixerChannelMessage.EQ_BASS.query(getRack(), getMachineIndex());
     }
 
@@ -94,14 +95,14 @@ public class MixerChannel extends MachineComponent {
      * @param bass (-1.0..1.0)
      * @see MixerChannelMessage#EQ_BASS
      */
-    public final void setBass(float bass) {
-        if (bass == this.bass)
+    public final void setEqBass(float bass) {
+        if (bass == this.eqBass)
             return;
         if (bass < -1f || bass > 1f)
             throw newRangeException(MixerChannelMessage.EQ_BASS, "-1.0..1.0", bass);
-        this.bass = bass;
+        this.eqBass = bass;
         MixerChannelMessage.EQ_BASS.send(getRack(), getMachineIndex(), bass);
-        post(MixerChannelControl.Bass, bass);
+        post(MixerControls.EqBass, bass);
     }
 
     //----------------------------------
@@ -111,11 +112,11 @@ public class MixerChannel extends MachineComponent {
     /**
      * @see MixerChannelMessage#EQ_MID
      */
-    public float getMid() {
-        return mid;
+    public float getEqMid() {
+        return eqMid;
     }
 
-    public float queryMid() {
+    public float queryEqMid() {
         return MixerChannelMessage.EQ_MID.query(getRack(), getMachineIndex());
     }
 
@@ -123,14 +124,14 @@ public class MixerChannel extends MachineComponent {
      * @param mid (-1.0..1.0)
      * @see MixerChannelMessage#EQ_MID
      */
-    public void setMid(float mid) {
-        if (mid == this.mid)
+    public void setEqMid(float mid) {
+        if (mid == this.eqMid)
             return;
         if (mid < -1f || mid > 1f)
             throw newRangeException(MixerChannelMessage.EQ_MID, "-1.0..1.0", mid);
-        this.mid = mid;
+        this.eqMid = mid;
         MixerChannelMessage.EQ_MID.send(getRack(), getMachineIndex(), mid);
-        post(MixerChannelControl.Mid, mid);
+        post(MixerControls.EqMid, mid);
     }
 
     //----------------------------------
@@ -140,11 +141,11 @@ public class MixerChannel extends MachineComponent {
     /**
      * @see MixerChannelMessage#EQ_HIGH
      */
-    public final float getHigh() {
-        return high;
+    public final float getEqHigh() {
+        return eqHigh;
     }
 
-    public float queryHigh() {
+    public float queryEqHigh() {
         return MixerChannelMessage.EQ_HIGH.query(getRack(), getMachineIndex());
     }
 
@@ -152,14 +153,14 @@ public class MixerChannel extends MachineComponent {
      * @param high (-1.0..1.0)
      * @see MixerChannelMessage#EQ_HIGH
      */
-    public final void setHigh(float high) {
-        if (high == this.high)
+    public final void setEqHigh(float high) {
+        if (high == this.eqHigh)
             return;
         if (high < -1f || high > 1f)
             throw newRangeException(MixerChannelMessage.EQ_HIGH, "-1.0..1.0", high);
-        this.high = high;
+        this.eqHigh = high;
         MixerChannelMessage.EQ_HIGH.send(getRack(), getMachineIndex(), high);
-        post(MixerChannelControl.High, high);
+        post(MixerControls.EqHigh, high);
     }
 
     //----------------------------------
@@ -188,7 +189,7 @@ public class MixerChannel extends MachineComponent {
             throw newRangeException(MixerChannelMessage.DELAY_SEND, "0.0..1.0", delaySend);
         this.delaySend = delaySend;
         MixerChannelMessage.DELAY_SEND.send(getRack(), getMachineIndex(), delaySend);
-        post(MixerChannelControl.DelaySend, delaySend);
+        post(MixerControls.DelaySend, delaySend);
     }
 
     //----------------------------------
@@ -217,7 +218,7 @@ public class MixerChannel extends MachineComponent {
             throw newRangeException(MixerChannelMessage.REVERB_SEND, "0.0..1.0", reverbSend);
         this.reverbSend = reverbSend;
         MixerChannelMessage.REVERB_SEND.send(getRack(), getMachineIndex(), reverbSend);
-        post(MixerChannelControl.ReverbSend, reverbSend);
+        post(MixerControls.ReverbSend, reverbSend);
     }
 
     //----------------------------------
@@ -246,7 +247,7 @@ public class MixerChannel extends MachineComponent {
             throw newRangeException(MixerChannelMessage.PAN, "-1.0..1.0", pan);
         this.pan = pan;
         MixerChannelMessage.PAN.send(getRack(), getMachineIndex(), pan);
-        post(MixerChannelControl.Pan, pan);
+        post(MixerControls.Pan, pan);
     }
 
     //----------------------------------
@@ -275,7 +276,7 @@ public class MixerChannel extends MachineComponent {
             throw newRangeException(MixerChannelMessage.STEREO_WIDTH, "-1.0..1.0", stereoWidth);
         this.stereoWidth = stereoWidth;
         MixerChannelMessage.STEREO_WIDTH.send(getRack(), getMachineIndex(), stereoWidth);
-        post(MixerChannelControl.StereoWidth, stereoWidth);
+        post(MixerControls.StereoWidth, stereoWidth);
     }
 
     //----------------------------------
@@ -293,6 +294,10 @@ public class MixerChannel extends MachineComponent {
         return MixerChannelMessage.MUTE.query(getRack(), getMachineIndex()) != 0f;
     }
 
+    public void setMute(float mute) {
+        setMute(mute == 0f ? false : true);
+    }
+
     /**
      * @param mute (true, false)
      * @see MixerChannelMessage#MUTE
@@ -302,7 +307,7 @@ public class MixerChannel extends MachineComponent {
         //            return;
         this.mute = mute;
         MixerChannelMessage.MUTE.send(getRack(), getMachineIndex(), mute ? 1 : 0);
-        post(MixerChannelControl.Mute, mute ? 1 : 0);
+        post(MixerControls.Mute, mute ? 1 : 0);
     }
 
     //----------------------------------
@@ -320,6 +325,10 @@ public class MixerChannel extends MachineComponent {
         return MixerChannelMessage.SOLO.query(getRack(), getMachineIndex()) != 0f;
     }
 
+    public void setSolo(float solo) {
+        setSolo(solo == 0f ? false : true);
+    }
+
     /**
      * @param solo (true, false)
      * @see MixerChannelMessage#SOLO
@@ -335,7 +344,7 @@ public class MixerChannel extends MachineComponent {
 
         if (send) {
             MixerChannelMessage.SOLO.send(getRack(), getMachineIndex(), solo ? 1 : 0);
-            post(MixerChannelControl.Solo, solo ? 1 : 0);
+            post(MixerControls.Solo, solo ? 1 : 0);
 
             //if (solo) {
             post(new OnRackSoloRefresh(this));
@@ -369,7 +378,7 @@ public class MixerChannel extends MachineComponent {
             throw newRangeException("volume", "0.0..2.0", volume);
         this.volume = volume;
         MixerChannelMessage.VOLUME.send(getRack(), getMachineIndex(), volume);
-        post(MixerChannelControl.Volume, volume);
+        post(MixerControls.Volume, volume);
     }
 
     //--------------------------------------------------------------------------
@@ -401,9 +410,9 @@ public class MixerChannel extends MachineComponent {
     @Override
     protected void updateComponents() {
         int machineIndex = getMachineIndex();
-        MixerChannelMessage.EQ_BASS.send(getRack(), machineIndex, getBass());
-        MixerChannelMessage.EQ_MID.send(getRack(), machineIndex, getMid());
-        MixerChannelMessage.EQ_HIGH.send(getRack(), machineIndex, getHigh());
+        MixerChannelMessage.EQ_BASS.send(getRack(), machineIndex, getEqBass());
+        MixerChannelMessage.EQ_MID.send(getRack(), machineIndex, getEqMid());
+        MixerChannelMessage.EQ_HIGH.send(getRack(), machineIndex, getEqHigh());
         MixerChannelMessage.REVERB_SEND.send(getRack(), machineIndex, getReverbSend());
         MixerChannelMessage.DELAY_SEND.send(getRack(), machineIndex, getDelaySend());
         MixerChannelMessage.STEREO_WIDTH.send(getRack(), machineIndex, getStereoWidth());
@@ -415,46 +424,15 @@ public class MixerChannel extends MachineComponent {
         MixerChannelMessage.SOLO.send(getRack(), machineIndex, solo ? 1 : 0);
     }
 
-    public void setValue(MixerChannelControl control, float value) {
-        switch (control) {
-            case Bass:
-                setBass(value);
-                break;
-            case DelaySend:
-                setDelaySend(value);
-                break;
-            case High:
-                setHigh(value);
-                break;
-            case Mid:
-                setMid(value);
-                break;
-            case Mute:
-                setMute(value == 0f ? false : true);
-                break;
-            case Pan:
-                setPan(value);
-                break;
-            case ReverbSend:
-                setReverbSend(value);
-                break;
-            case Solo:
-                setSolo(value == 0f ? false : true, true);
-                break;
-            case StereoWidth:
-                setStereoWidth(value);
-                break;
-            case Volume:
-                setVolume(value);
-                break;
-        }
+    public void invoke(MixerControls control, float value) {
+        OSCControlsMap.setValue(this, control, value);
     }
 
     @Override
     protected void restoreComponents() {
-        setBass(queryBass());
-        setMid(queryMid());
-        setHigh(queryHigh());
+        setEqBass(queryEqBass());
+        setEqMid(queryEqMid());
+        setEqHigh(queryEqHigh());
         setReverbSend(queryReverbSend());
         setDelaySend(queryDelaySend());
         setStereoWidth(queryStereoWidth());
@@ -468,10 +446,10 @@ public class MixerChannel extends MachineComponent {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Float.floatToIntBits(bass);
+        result = prime * result + Float.floatToIntBits(eqBass);
         result = prime * result + Float.floatToIntBits(delaySend);
-        result = prime * result + Float.floatToIntBits(high);
-        result = prime * result + Float.floatToIntBits(mid);
+        result = prime * result + Float.floatToIntBits(eqHigh);
+        result = prime * result + Float.floatToIntBits(eqMid);
         result = prime * result + (mute ? 1231 : 1237);
         result = prime * result + Float.floatToIntBits(pan);
         result = prime * result + Float.floatToIntBits(reverbSend);
@@ -490,13 +468,13 @@ public class MixerChannel extends MachineComponent {
         if (getClass() != obj.getClass())
             return false;
         MixerChannel other = (MixerChannel)obj;
-        if (Float.floatToIntBits(bass) != Float.floatToIntBits(other.bass))
+        if (Float.floatToIntBits(eqBass) != Float.floatToIntBits(other.eqBass))
             return false;
         if (Float.floatToIntBits(delaySend) != Float.floatToIntBits(other.delaySend))
             return false;
-        if (Float.floatToIntBits(high) != Float.floatToIntBits(other.high))
+        if (Float.floatToIntBits(eqHigh) != Float.floatToIntBits(other.eqHigh))
             return false;
-        if (Float.floatToIntBits(mid) != Float.floatToIntBits(other.mid))
+        if (Float.floatToIntBits(eqMid) != Float.floatToIntBits(other.eqMid))
             return false;
         if (mute != other.mute)
             return false;
@@ -517,7 +495,7 @@ public class MixerChannel extends MachineComponent {
     // Events
     //--------------------------------------------------------------------------
 
-    protected void post(MixerChannelControl control, float value) {
+    protected void post(MixerControls control, float value) {
         post(new MixerChannelChangeEvent(this, control, value));
     }
 
@@ -528,7 +506,7 @@ public class MixerChannel extends MachineComponent {
      * @since 1.0
      */
     public static class MixerChannelNodeEvent extends NodeEvent {
-        public MixerChannelNodeEvent(NodeBase target, MixerChannelControl message) {
+        public MixerChannelNodeEvent(NodeBase target, MixerControls message) {
             super(target, message);
         }
     }
@@ -545,7 +523,7 @@ public class MixerChannel extends MachineComponent {
             return value;
         }
 
-        public MixerChannelChangeEvent(NodeBase target, MixerChannelControl control, float value) {
+        public MixerChannelChangeEvent(NodeBase target, MixerControls control, float value) {
             super(target, control);
             this.value = value;
         }
@@ -564,4 +542,5 @@ public class MixerChannel extends MachineComponent {
             super(mixerChannel);
         }
     }
+
 }

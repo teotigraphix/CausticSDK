@@ -27,7 +27,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.caustk.core.osc.MixerChannelMessage.MixerChannelControl;
+import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.groove.ui.components.mixer.MixerPaneItem.MixerPaneItemListener;
@@ -111,7 +111,7 @@ public class MixerPane extends UITable {
             MixerPaneItem item = new MixerPaneItem(getSkin(), i);
             item.setMixerPaneItemListener(new MixerPaneItemListener() {
                 @Override
-                public void onSend(int index, MixerChannelControl control, float value) {
+                public void onSend(int index, MixerControls control, float value) {
                     listener.onSend(index, control, value);
                 }
             });
@@ -124,7 +124,7 @@ public class MixerPane extends UITable {
             masterItem = new MixerPaneItem(getSkin(), -1);
             masterItem.setMixerPaneItemListener(new MixerPaneItemListener() {
                 @Override
-                public void onSend(int index, MixerChannelControl control, float value) {
+                public void onSend(int index, MixerControls control, float value) {
                     listener.onSend(index, control, value);
                 }
             });
@@ -157,7 +157,7 @@ public class MixerPane extends UITable {
     }
 
     public static interface MixerPaneListener {
-        void onSend(int index, MixerChannelControl control, float value);
+        void onSend(int index, MixerControls control, float value);
     }
 
     public void setMixerPaneListener(MixerPaneListener l) {

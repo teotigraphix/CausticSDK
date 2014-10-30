@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
+import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 
 public final class OSCControlsMap {
 
@@ -26,6 +28,14 @@ public final class OSCControlsMap {
     private static Map<EffectType, Collection<IEffectControl>> effectMap = new HashMap<EffectType, Collection<IEffectControl>>();
 
     private static Map<MachineType, Collection<IMachineControl>> machineMap = new HashMap<MachineType, Collection<IMachineControl>>();
+
+    private static Collection<IMixerControl> mixerChannelList = new ArrayList<IMixerControl>();
+
+    static {
+        MixerControls.initialize();
+        EffectControls.initialize();
+        PCMSynthControls.initialize();
+    }
 
     //--------------------------------------------------------------------------
     // Public API
@@ -50,20 +60,10 @@ public final class OSCControlsMap {
     }
 
     public static void setValue(EffectNode effectNode, IEffectControl control, float value) {
-        String methodName = control.getControl();
-        int index = methodName.indexOf("_");
-        if (index != -1) {
-            String start = methodName.substring(0, index);
-            String end = methodName.substring(index + 1);
-            String cap = String.valueOf(end.charAt(0)).toUpperCase(Locale.getDefault());
-            methodName = start + cap + end.substring(1);
-        }
-        String setterName = methodName.substring(1);
-        String first = String.valueOf(methodName.charAt(0)).toUpperCase(Locale.getDefault());
-        setterName = "set" + first + setterName;
+        String methodName = toSetterName(control.getControl());
 
         try {
-            Method m = effectNode.getClass().getMethod(setterName, float.class);
+            Method m = effectNode.getClass().getMethod(methodName, float.class);
             m.invoke(effectNode, value);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -130,6 +130,41 @@ public final class OSCControlsMap {
         }
     }
 
+    public static void setValue(MixerChannel mixerChannel, IMixerControl control, float value) {
+        String methodName = toSetterName(control.getControl());
+
+        try {
+            Method m = mixerChannel.getClass().getMethod(methodName, float.class);
+            m.invoke(mixerChannel, value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String toSetterName(String methodName) {
+        int index = methodName.indexOf("_");
+        if (index != -1) {
+            String start = methodName.substring(0, index);
+            String end = methodName.substring(index + 1);
+            String cap = String.valueOf(end.charAt(0)).toUpperCase(Locale.getDefault());
+            methodName = start + cap + end.substring(1);
+        }
+        String setterName = methodName.substring(1);
+        String first = String.valueOf(methodName.charAt(0)).toUpperCase(Locale.getDefault());
+        setterName = "set" + first + setterName;
+        return setterName;
+    }
+
+    public static Collection<IMixerControl> getMixerChannels() {
+        return Collections.unmodifiableCollection(mixerChannelList);
+    }
+
     //--------------------------------------------------------------------------
     // Internal :: Methods
     //--------------------------------------------------------------------------
@@ -150,5 +185,9 @@ public final class OSCControlsMap {
             machineMap.put(type, collection);
         }
         collection.add(control);
+    }
+
+    static void add(IMixerControl control) {
+        mixerChannelList.add(control);
     }
 }

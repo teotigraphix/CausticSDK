@@ -213,41 +213,4 @@ public class MixerChannelMessage extends CausticMessage {
     public MixerChannelMessage(String message) {
         super(message);
     }
-
-    /**
-     * Controls for the {@link MixerChannelMessage}.
-     * 
-     * @author Michael Schmalle
-     * @since 1.0
-     */
-    public enum MixerChannelControl implements IOSCControl {
-
-        DelaySend,
-
-        Bass,
-
-        High,
-
-        Mid,
-
-        Mute,
-
-        Pan,
-
-        ReverbSend,
-
-        Solo,
-
-        StereoWidth,
-
-        Volume;
-
-        @Override
-        public String getDisplayName() {
-            return name();
-        }
-
-        private MixerChannelControl() {
-        }
-    }
 }
