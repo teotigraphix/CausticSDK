@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.gdx.app.IApplication;
+import com.teotigraphix.gdx.app.ICaustkApplication;
 import com.teotigraphix.gdx.controller.command.ICommandHistory.OnClearComplete;
 import com.teotigraphix.gdx.controller.command.ICommandHistory.OnFastForwardComplete;
 import com.teotigraphix.gdx.controller.command.ICommandHistory.OnRewindComplete;
@@ -44,7 +44,7 @@ public class CommandManager implements ICommandManager {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
-    private IApplication application;
+    private ICaustkApplication application;
 
     private EventBus eventBus;
 
@@ -87,7 +87,7 @@ public class CommandManager implements ICommandManager {
     }
 
     @Inject
-    public void setApplication(IApplication application) {
+    public void setApplication(ICaustkApplication application) {
         this.application = application;
         eventBus = new EventBus("command");
         commandHistory = new CommandHistory(eventBus);

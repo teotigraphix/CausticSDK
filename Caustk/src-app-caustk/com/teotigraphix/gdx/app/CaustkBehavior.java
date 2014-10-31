@@ -27,6 +27,8 @@ import com.teotigraphix.gdx.controller.IDialogManager;
 import com.teotigraphix.gdx.controller.IFileManager;
 import com.teotigraphix.gdx.controller.IFileModel;
 import com.teotigraphix.gdx.controller.IViewManager;
+import com.teotigraphix.gdx.controller.command.CommandExecutionException;
+import com.teotigraphix.gdx.controller.command.ICommandManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 
@@ -116,6 +118,19 @@ public abstract class CaustkBehavior extends Behavior {
     }
 
     public CaustkBehavior() {
+    }
+
+    @Inject
+    private ICommandManager commandManager;
+
+    public void execute(String message, Object... args) {
+
+        try {
+            commandManager.execute(message, args);
+        } catch (CommandExecutionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -41,7 +41,10 @@ public class CommandUtils {
 
     public static boolean getBoolean(CommandContext context, int index) {
         final OSCMessage message = context.getMessage();
-        final int arg = Integer.valueOf(message.getParameter(index));
+        String parameter = message.getParameter(index);
+        if (parameter.equals("true") || parameter.equals("false"))
+            return Boolean.valueOf(parameter);
+        final int arg = Integer.valueOf(parameter);
         boolean result = (arg == 0) ? false : true;
         return result;
     }
