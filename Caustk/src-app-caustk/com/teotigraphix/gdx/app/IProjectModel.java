@@ -22,9 +22,6 @@ package com.teotigraphix.gdx.app;
 import java.util.Collection;
 
 import com.badlogic.gdx.utils.Array;
-import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
 import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
@@ -50,30 +47,7 @@ public interface IProjectModel {
 
     <T extends Project> T getProject();
 
-    //----------------------------------
-    // machine
-    //----------------------------------
-
-    boolean hasMachine(int index);
-
-    MachineNode getMachine(int machineIndex);
-
-    /**
-     * Returns the selected machine index within the RackNode.
-     */
-    int getSelectedMachineIndex();
-
-    /**
-     * Sets the selected machine index on the {@link RackNode}.
-     * 
-     * @param machineIndex The machine index 0..13.
-     * @see ProjectModelEventKind#MachineSelectionChange
-     */
-    void setSelectedMachineIndex(int machineIndex);
-
-    MachineNode getSelectedMachine();
-
-    PatternNode getSelectedMachinePattern();
+    ProjectModelMachineAPI getMachineAPI();
 
     //----------------------------------
     // SceneViews

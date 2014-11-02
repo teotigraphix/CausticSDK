@@ -11,9 +11,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.controller.IFileManager;
+import com.teotigraphix.gdx.controller.IFileModel;
 import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.controller.ViewBase;
 import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
@@ -33,45 +32,22 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     @Inject
     private IViewManager viewManager;
 
-    protected IFileManager getFileManager() {
+    @Inject
+    private IFileModel fileModel;
+
+    private ProjectModelMachineAPI machineAPI;
+
+    public IFileManager getFileManager() {
         return fileManager;
     }
 
-    @Override
-    public boolean hasMachine(int index) {
-        return project.getRackNode().containsMachine(index);
+    public IFileModel getFileModel() {
+        return fileModel;
     }
 
     @Override
-    public final int getSelectedMachineIndex() {
-        return getSelectedMachine().getIndex();
-    }
-
-    @Override
-    public void setSelectedMachineIndex(int machineIndex) {
-        if (project.getRackNode().getSelectedIndex() == machineIndex)
-            return;
-        project.getRackNode().setSelectedIndex(machineIndex);
-        getEventBus().post(
-                new ProjectModelEvent(ProjectModelEventKind.MachineSelectionChange, this));
-    }
-
-    @Override
-    public MachineNode getMachine(int channelIndex) {
-        return project.getRackNode().getMachine(channelIndex);
-    }
-
-    @Override
-    public final MachineNode getSelectedMachine() {
-        return project.getRackNode().getSelectedMachine();
-    }
-
-    @Override
-    public final PatternNode getSelectedMachinePattern() {
-        MachineNode selectedMachine = getSelectedMachine();
-        if (selectedMachine == null)
-            return null;
-        return selectedMachine.getSequencer().getSelectedPattern();
+    public ProjectModelMachineAPI getMachineAPI() {
+        return machineAPI;
     }
 
     //--------------------------------------------------------------------------
@@ -305,6 +281,7 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     //--------------------------------------------------------------------------
 
     public ProjectModel() {
+        machineAPI = new ProjectModelMachineAPI(this);
     }
 
     @Override
