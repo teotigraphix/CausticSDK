@@ -196,7 +196,7 @@ public class MixerPaneItem extends UITable {
     }
 
     public void redraw(MachineNode machineNode) {
-        nameLabel.setText(machineNode.getName());
+        nameLabel.setText(String.valueOf(machineNode.getIndex() + 1));
 
         MixerChannel channel = machineNode.getMixer();
         panKnob.setValue(channel.getPan());
