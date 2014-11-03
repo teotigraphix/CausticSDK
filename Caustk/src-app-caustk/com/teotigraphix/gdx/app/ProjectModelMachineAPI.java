@@ -40,8 +40,8 @@ public class ProjectModelMachineAPI extends AbstractProductModelAPI {
         post(new ProjectModelEvent(ProjectModelEventKind.MachineSelectionChange, getProjectModel()));
     }
 
-    public MachineNode getMachine(int channelIndex) {
-        return getProject().getRackNode().getMachine(channelIndex);
+    public MachineNode getMachine(int index) {
+        return getProject().getRackNode().getMachine(index);
     }
 
     public final MachineNode getSelectedMachine() {

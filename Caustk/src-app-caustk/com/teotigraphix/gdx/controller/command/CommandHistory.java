@@ -76,8 +76,8 @@ public class CommandHistory implements ICommandHistory {
         return commands.get(currentCursor - 1);
     }
 
-    public CommandHistory(EventBus dispatcher) {
-        this.eventBus = dispatcher;
+    public CommandHistory(EventBus eventBus) {
+        this.eventBus = eventBus;
         commands = new ArrayList<IUndoCommand>();
         currentCursor = 0;
     }

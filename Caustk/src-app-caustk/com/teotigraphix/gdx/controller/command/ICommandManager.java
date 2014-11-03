@@ -40,4 +40,8 @@ public interface ICommandManager {
 
     Array<IUndoCommand> getCommands();
 
+    boolean canUndo();
+
+    boolean canRedo();
+
 }

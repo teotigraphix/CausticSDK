@@ -70,6 +70,16 @@ public class CommandManager implements ICommandManager {
     //----------------------------------
 
     @Override
+    public boolean canUndo() {
+        return commandHistory.getCurrent() != null;
+    }
+
+    @Override
+    public boolean canRedo() {
+        return commandHistory.getCursor() < commandHistory.size();
+    }
+
+    @Override
     public Array<IUndoCommand> getCommands() {
         Array<IUndoCommand> result = new Array<IUndoCommand>();
         for (IUndoCommand command : commandHistory.getCommands()) {
@@ -89,7 +99,7 @@ public class CommandManager implements ICommandManager {
     @Inject
     public void setApplication(ICaustkApplication application) {
         this.application = application;
-        eventBus = new EventBus("command");
+        eventBus = application.getEventBus();
         commandHistory = new CommandHistory(eventBus);
     }
 
@@ -181,6 +191,7 @@ public class CommandManager implements ICommandManager {
      *            be created.
      * @throws CommandExecutionException
      * @see #sendOSCCommand(OSCMessage)
+     * @see CommandManagerRefreshEvent
      */
     @Override
     public void execute(String message, Object... args) throws CommandExecutionException {
@@ -197,6 +208,7 @@ public class CommandManager implements ICommandManager {
      * Not for use within the same app API.
      * 
      * @throws CommandExecutionException
+     * @see CommandManagerRefreshEvent
      */
     public void sendOSCCommand(String message) throws CommandExecutionException {
         OSCMessage result = OSCMessage.initialize(message);
@@ -213,6 +225,7 @@ public class CommandManager implements ICommandManager {
      * @param message The command message without the controller/applicationId
      * @throws CausticException
      * @throws CommandExecutionException
+     * @see CommandManagerRefreshEvent
      */
     public void sendOSCCommand(OSCMessage message) throws CommandExecutionException {
         // This controller forces ALL messages to use it's root controller name
@@ -266,6 +279,7 @@ public class CommandManager implements ICommandManager {
                 // normal execute()
                 instance.execute();
             }
+            eventBus.post(new CommandManagerRefreshEvent());
         } catch (Exception e) {
             throw new CommandExecutionException(e);
         }
@@ -284,4 +298,6 @@ public class CommandManager implements ICommandManager {
         return sb.toString();
     }
 
+    public static class CommandManagerRefreshEvent {
+    }
 }
