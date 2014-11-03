@@ -1,12 +1,29 @@
 
 package com.teotigraphix.gdx.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.IProjectModel.ProjectModelEvent;
 import com.teotigraphix.gdx.app.IProjectModel.ProjectModelEventKind;
 
 public class ProjectModelMachineAPI extends AbstractProductModelAPI {
+
+    private List<Integer> triggereddMachines = new ArrayList<Integer>();
+
+    //----------------------------------
+    // triggereddMachines
+    //----------------------------------
+
+    public List<Integer> getTriggeredMachines() {
+        return triggereddMachines;
+    }
+
+    public void setTriggeredMachines(List<Integer> triggereddMachines) {
+        this.triggereddMachines = triggereddMachines;
+    }
 
     public boolean hasMachine(int index) {
         return getProject().getRackNode().containsMachine(index);
