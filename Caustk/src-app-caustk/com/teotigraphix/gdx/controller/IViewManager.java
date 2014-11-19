@@ -104,7 +104,7 @@ public interface IViewManager {
      * 
      * @see ViewManagerRefreshUIEvent
      */
-    void onRefresh();
+    void onRefresh(Object kind);
 
     /**
      * Called the last starup frame after behaviors have been created.
@@ -130,6 +130,20 @@ public interface IViewManager {
     }
 
     public static class ViewManagerRefreshUIEvent {
+
+        private Object kind;
+
+        public final Object getKind() {
+            return kind;
+        }
+
+        public final boolean isAll() {
+            return kind == null;
+        }
+
+        public ViewManagerRefreshUIEvent(Object kind) {
+            this.kind = kind;
+        }
     }
 
     boolean isCurrent(int viewId);

@@ -102,6 +102,8 @@ public class PCMSamplerChannel extends MachineComponent {
      * Returns the name of the channel's sample.
      */
     public final String getName() {
+        if (name == null)
+            name = queryName();
         return name;
     }
 

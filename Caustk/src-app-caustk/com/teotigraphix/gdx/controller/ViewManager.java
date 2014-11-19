@@ -57,7 +57,7 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
         this.redrawEnabled = redrawEnabled;
         if (this.redrawEnabled) {
             // flush since it was halted
-            onRefresh();
+            onRefresh(null);
         }
     }
 
@@ -236,8 +236,8 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh(Object kind) {
         if (redrawEnabled)
-            getEventBus().post(new ViewManagerRefreshUIEvent());
+            getEventBus().post(new ViewManagerRefreshUIEvent(kind));
     }
 }

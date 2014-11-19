@@ -34,13 +34,17 @@ public class GrooveBehavior extends CaustkBehavior {
     }
 
     @Subscribe
-    public void onViewManagerRefreshUIEvent(ViewManagerRefreshUIEvent event) {
+    public void onViewManagerRefreshUIEvent(final ViewManagerRefreshUIEvent event) {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
                 refresh(false);
+                redrawView(event.getKind());
             }
         });
+    }
+
+    protected void redrawView(Object kind) {
     }
 
     /**

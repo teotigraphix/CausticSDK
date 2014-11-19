@@ -108,8 +108,15 @@ public class PCMSamplerComponent extends MachineComponent {
      * @param channel (0..63)
      * @see PCMSynthMessage#QUERY_SAMPLE_NAME
      */
-    public final String querySampleName(int channel) {
+    public final String _querySampleName(int channel) {
         return PCMSynthMessage.QUERY_SAMPLE_NAME.queryString(getRack(), getMachineIndex(), channel);
+    }
+
+    public final String getSampleName(int channel) {
+        PCMSamplerChannel activeChannel = getPCMSample(channel);
+        if (activeChannel != null)
+            return activeChannel.getName();
+        return null;
     }
 
     //--------------------------------------------------------------------------
