@@ -1,6 +1,7 @@
 
 package com.teotigraphix.gdx.groove.ui.components.auto;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -37,6 +38,12 @@ public class AutoTextSlider extends AutomationTableBase {
             }
         });
         add(slider).expand().fill();
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        slider.setColor(getColor());
+        super.draw(batch, parentAlpha);
     }
 
 }

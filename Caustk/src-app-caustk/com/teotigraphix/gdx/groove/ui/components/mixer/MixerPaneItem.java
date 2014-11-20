@@ -285,18 +285,20 @@ public class MixerPaneItem extends UITable {
             nameLabel.setColor(Color.ORANGE);
             paramTable.setColor(Color.ORANGE);
             for (TextKnob knob : knobs) {
-                knob.setColor(Color.BLACK);
+                knob.setColor(Color.WHITE);
             }
         } else {
             if (nameLabel != null) {
                 nameLabel.setColor(Color.WHITE);
-                paramTable.setColor(machineColor != null ? machineColor : Color.BLACK);
+                paramTable.setColor(Color.BLACK);
+                // machineColor != null ? machineColor : Color.BLACK
+                volumeSlider.setColor(machineColor != null ? machineColor : Color.WHITE);
             }
             for (TextKnob knob : knobs) {
-                knob.setColor(machineColor != null ? Color.BLACK : Color.WHITE);
+                knob.setColor(Color.WHITE);
             }
         }
-        outlineGlow.setColor(paramTable.getColor());
+        outlineGlow.setColor(volumeSlider.getColor());
     }
 
     private void createName(Table parent) {

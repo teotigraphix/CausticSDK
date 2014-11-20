@@ -20,6 +20,7 @@
 package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -100,6 +101,12 @@ public class TextSlider extends ControlTable {
         row();
         label = new Label(text, new LabelStyle(style.font, style.fontColor));
         add(label);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        slider.setColor(getColor());
     }
 
     //--------------------------------------------------------------------------
