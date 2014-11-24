@@ -43,7 +43,7 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
 
     private AbstractDisplay subDisplay;
 
-    private boolean redrawEnabled = true;
+    protected boolean redrawEnabled = true;
 
     public IProjectModel getProjectModel() {
         return projectModel;
@@ -53,13 +53,7 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
         return redrawEnabled;
     }
 
-    public final void setRefreshEnabled(boolean redrawEnabled) {
-        this.redrawEnabled = redrawEnabled;
-        if (this.redrawEnabled) {
-            // flush since it was halted
-            onRefresh(null);
-        }
-    }
+    public abstract void setRefreshEnabled(boolean redrawEnabled);
 
     @Override
     public int getSceneViewIndex() {
