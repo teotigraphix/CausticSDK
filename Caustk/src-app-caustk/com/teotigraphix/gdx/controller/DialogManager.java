@@ -32,7 +32,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.app.ICaustkScene;
+import com.teotigraphix.gdx.app.IScene;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
+import com.teotigraphix.gdx.scene2d.ui.ListDialog;
 import com.teotigraphix.gdx.scene2d.ui.PopUp;
 
 @Singleton
@@ -55,15 +57,15 @@ public class DialogManager implements IDialogManager {
     //        return dialog;
     //    }
 
-    //    @Override
-    //    public ListDialog createListDialog(IScreen screen, String title, Object[] items, float width,
-    //            float height) {
-    //        final ListDialog dialog = new ListDialog(title, screen.getSkin());
-    //        dialog.setSize(width, height);
-    //        dialog.setItems(items);
-    //        dialog.setMovable(false);
-    //        return dialog;
-    //    }
+    @Override
+    public ListDialog createListDialog(IScene screen, String title, Object[] items, float width,
+            float height) {
+        final ListDialog dialog = new ListDialog(title, screen.getSkin());
+        dialog.setSize(width, height);
+        dialog.setItems(items);
+        dialog.setMovable(false);
+        return dialog;
+    }
 
     //    @Override
     //    public AlertDialog createAlert(IScreen screen, String title, Actor actor) {

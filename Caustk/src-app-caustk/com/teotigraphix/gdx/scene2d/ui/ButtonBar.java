@@ -234,9 +234,10 @@ public class ButtonBar extends UITable {
             helpManager.register(button, items.get(index).getHelpText());
         }
         group.add(button);
-        button.addListener(new ChangeListener() {
+        button.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                event.stop();
                 if (disabled || button.isDisabled())
                     return;
                 if (button.isChecked()) {

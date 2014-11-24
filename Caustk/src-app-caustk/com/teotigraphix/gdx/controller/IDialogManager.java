@@ -23,6 +23,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.teotigraphix.gdx.app.ICaustkScene;
+import com.teotigraphix.gdx.app.IScene;
+import com.teotigraphix.gdx.scene2d.ui.ListDialog;
 import com.teotigraphix.gdx.scene2d.ui.PopUp;
 
 public interface IDialogManager {
@@ -30,9 +32,10 @@ public interface IDialogManager {
     //    AlertDialog createAlert(IScreen screen, String title, Actor actor);
     //
     //    ListDialog createListDialog(String title, Object[] items, float width, float height);
-    //
-    //    ListDialog createListDialog(IScreen screen, String title, Object[] items, float width,
-    //            float height);
+
+    ListDialog createListDialog(IScene screen, String title, Object[] items, float width,
+            float height);
+
     //
     //    ContextMenu createContextMenu(Object[] items);
 
