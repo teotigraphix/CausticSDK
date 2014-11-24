@@ -200,6 +200,11 @@ public class RackNode extends NodeBase {
 
         MachineNode lastMachineNode = getSelectedMachine();
         this.selectedIndex = selectedIndex;
+        if (lastMachineNode != null)
+            lastMachineNode.setSelected(false);
+        MachineNode selectedMachine = getSelectedMachine();
+        if (selectedMachine != null)
+            selectedMachine.setSelected(true);
 
         post(new RackNodeSelectionEvent(this, getSelectedMachine(), lastMachineNode));
     }
