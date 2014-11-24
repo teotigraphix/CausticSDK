@@ -59,4 +59,10 @@ public class ProjectModelMachineAPI extends AbstractProductModelAPI {
         super(projectModel);
     }
 
+    @Override
+    public void restore(ProjectState state) {
+        getProjectModel().getEventBus().post(
+                new ProjectModelEvent(ProjectModelEventKind.MachineSelectionChange,
+                        getProjectModel()));
+    }
 }

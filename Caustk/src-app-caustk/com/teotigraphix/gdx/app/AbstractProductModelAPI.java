@@ -35,4 +35,6 @@ public abstract class AbstractProductModelAPI {
     protected Project getProject() {
         return projectModel.getProject();
     }
+
+    public abstract void restore(ProjectState state);
 }

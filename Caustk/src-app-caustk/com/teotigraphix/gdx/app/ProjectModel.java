@@ -292,6 +292,8 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
 
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
+
+        machineAPI.restore(state);
     }
 
 }
