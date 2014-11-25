@@ -83,16 +83,13 @@ public class ViewStack extends UITable {
 
     @Override
     public void layout() {
-
         SnapshotArray<Actor> children = stack.getChildren();
         if (children.size > 0) {
             for (Actor actor : stack.getChildren()) {
                 actor.setVisible(false);
             }
-
             stack.getChildren().get(selectedIndex).setVisible(true);
         }
-
         super.layout();
     }
 

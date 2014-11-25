@@ -237,13 +237,13 @@ public class ButtonBar extends UITable {
         button.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                event.stop();
                 if (disabled || button.isDisabled())
                     return;
                 if (button.isChecked()) {
                     int oldIndex = selectedIndex;
                     setSelectedIndex(group.getButtons().indexOf(button, true));
                     ButtonBarChangeEvent e = Pools.obtain(ButtonBarChangeEvent.class);
+                    e.setChangeEvent(event);
                     e.setSelectedIndex(selectedIndex);
                     if (fire(e)) {
                         selectedIndex = oldIndex;

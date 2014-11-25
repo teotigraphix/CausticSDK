@@ -15,6 +15,7 @@ public abstract class ButtonBarListener implements EventListener {
         if (event instanceof ButtonBarChangeEvent) {
             ButtonBarChangeEvent e = (ButtonBarChangeEvent)event;
             selectedIndexChange(e.getSelectedIndex());
+            //selectedIndexChange(e, e.getSelectedIndex());
             return false;
         }
         return false;
@@ -22,9 +23,14 @@ public abstract class ButtonBarListener implements EventListener {
 
     public abstract void selectedIndexChange(int selectedIndex);
 
-    public static class ButtonBarChangeEvent extends ChangeEvent {
+    public void selectedIndexChange(ButtonBarChangeEvent event, int selectedIndex) {
+    }
+
+    public static class ButtonBarChangeEvent extends Event {
 
         private int selectedIndex;
+
+        private ChangeEvent changeEvent;
 
         public int getSelectedIndex() {
             return selectedIndex;
@@ -34,6 +40,14 @@ public abstract class ButtonBarListener implements EventListener {
             this.selectedIndex = selectedIndex;
         }
 
+        public ChangeEvent getChangeEvent() {
+            return changeEvent;
+        }
+
+        public void setChangeEvent(ChangeEvent event) {
+            changeEvent = event;
+        }
+
         public ButtonBarChangeEvent() {
         }
 
@@ -41,7 +55,7 @@ public abstract class ButtonBarListener implements EventListener {
         public void reset() {
             super.reset();
             selectedIndex = -1;
+            changeEvent = null;
         }
     }
-
 }

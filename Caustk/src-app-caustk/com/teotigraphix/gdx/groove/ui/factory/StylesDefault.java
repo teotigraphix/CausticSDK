@@ -207,6 +207,10 @@ public class StylesDefault {
      */
     public static final String Button = "default";
 
+    public static final String ButtonBar_TextButton_Vertical = "ButtonBar.TextButton.Vertical";
+
+    public static final String ButtonBar_TextButton_Horizontal = "ButtonBar.TextButton.Horizontal";
+
     //----------------------------------
     // TextButton
     //----------------------------------
