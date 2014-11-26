@@ -32,13 +32,13 @@ public enum PCMSynthControls implements IMachineControl {
 
     Volume_Out("volume_out", OSCControlKind.Float, 0f, 8f, 2f),
 
-    Volume_Attack("volume_attack", OSCControlKind.Float, 0f, 3.0625f, 0f),
+    Volume_Attack("volume_attack", OSCControlKind.Float, 0f, 1f, 0f),
 
-    Volume_Decay("volume_decay", OSCControlKind.Float, 0f, 3.0625f, 0f),
+    Volume_Decay("volume_decay", OSCControlKind.Float, 0f, 1f, 0f),
 
     Volume_Sustain("volume_sustain", OSCControlKind.Float, 0f, 1f, 0f),
 
-    Volume_Release("volume_release", OSCControlKind.Float, 0f, 3.0625f, 0f),
+    Volume_Release("volume_release", OSCControlKind.Float, 0f, 1f, 0f),
 
     LFO_Depth("lfo_depth", OSCControlKind.Float, 0f, 1f, 0f),
 
@@ -60,13 +60,13 @@ public enum PCMSynthControls implements IMachineControl {
 
     Filter_Type("filter_type", OSCControlKind.Enum_Int, 0, 6, 0),
 
-    Filter_Attack("filter_attack", OSCControlKind.Float, 0f, 3.0625f, 0f),
+    Filter_Attack("filter_attack", OSCControlKind.Float, 0f, 1f, 0f),
 
     Filter_Decay("filter_decay", OSCControlKind.Float, 0f, 1f, 0f),
 
     Filter_Sustain("filter_sustain", OSCControlKind.Float, 0f, 1f, 1f),
 
-    Filter_Release("filter_release", OSCControlKind.Float, 0f, 3.0625f, 3.0625f);
+    Filter_Release("filter_release", OSCControlKind.Float, 0f, 1f, 1f);
 
     static void initialize() {
         for (PCMSynthControls control : values()) {
