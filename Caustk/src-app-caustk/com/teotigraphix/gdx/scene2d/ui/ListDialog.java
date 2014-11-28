@@ -25,6 +25,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+@SuppressWarnings({
+        "unchecked", "rawtypes"
+})
 public class ListDialog extends AlertDialog {
 
     List list;
