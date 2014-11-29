@@ -19,6 +19,9 @@
 
 package com.teotigraphix.gdx.groove.ui.components.mixer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,7 +31,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -41,10 +43,14 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.gdx.groove.ui.components.UITable;
+import com.teotigraphix.gdx.groove.ui.components.auto.AutoTextSlider;
+import com.teotigraphix.gdx.groove.ui.components.auto.AutomationItem;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 import com.teotigraphix.gdx.scene2d.ui.TextKnob;
 
 public class MixerPaneItem extends UITable {
+
+    private Map<MixerControls, AutomationItem> automationItems = new HashMap<MixerControls, AutomationItem>();
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -78,7 +84,7 @@ public class MixerPaneItem extends UITable {
 
     private TextButton muteButton;
 
-    private Slider volumeSlider;
+    private AutoTextSlider volumeSlider;
 
     private TextKnob panKnob;
 
@@ -228,6 +234,20 @@ public class MixerPaneItem extends UITable {
     @Override
     protected void createChildren() {
 
+        automationItems
+                .put(MixerControls.DelaySend, AutomationItem.create(MixerControls.DelaySend));
+        automationItems.put(MixerControls.EqBass, AutomationItem.create(MixerControls.EqBass));
+        automationItems.put(MixerControls.EqHigh, AutomationItem.create(MixerControls.EqHigh));
+        automationItems.put(MixerControls.EqMid, AutomationItem.create(MixerControls.EqMid));
+        automationItems.put(MixerControls.Mute, AutomationItem.create(MixerControls.Mute));
+        automationItems.put(MixerControls.Pan, AutomationItem.create(MixerControls.Pan));
+        automationItems.put(MixerControls.ReverbSend,
+                AutomationItem.create(MixerControls.ReverbSend));
+        automationItems.put(MixerControls.Solo, AutomationItem.create(MixerControls.Solo));
+        automationItems.put(MixerControls.StereoWidth,
+                AutomationItem.create(MixerControls.StereoWidth));
+        automationItems.put(MixerControls.Volume, AutomationItem.create(MixerControls.Volume));
+
         MixerPaneItemStyle style = getStyle();
 
         paramTable = new Table();
@@ -373,13 +393,14 @@ public class MixerPaneItem extends UITable {
     }
 
     private void createVolume(Table parent) {
-        volumeSlider = new Slider(0f, 2f, 0.01f, true, getSkin());
+        volumeSlider = new AutoTextSlider(getSkin(), automationItems.get(MixerControls.Volume));
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 send(MixerControls.Volume, volumeSlider.getValue());
             }
         });
+        volumeSlider.create();
         parent.add(volumeSlider).width(45f).expandY().fillY().padTop(5f).padBottom(5f);
 
         parent.row();
