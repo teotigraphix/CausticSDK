@@ -303,7 +303,7 @@ public class MixerPaneItem extends UITable {
     protected void setColors() {
         if (selected) {
             nameLabel.setColor(Color.ORANGE);
-            paramTable.setColor(Color.ORANGE);
+            paramTable.setColor(Color.DARK_GRAY);
             for (TextKnob knob : knobs) {
                 knob.setColor(Color.WHITE);
             }

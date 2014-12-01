@@ -46,6 +46,7 @@ public class MixerPaneProxy {
 
     public void redraw() {
         pane.redraw(behavior.getRack().getMachines());
+        pane.onMachineSelection(behavior.getProjectModel().getMachineAPI().getSelectedMachine());
     }
 
     public void redrawTriggers(List<Integer> machines) {

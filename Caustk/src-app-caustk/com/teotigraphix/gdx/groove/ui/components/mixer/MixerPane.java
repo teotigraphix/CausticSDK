@@ -150,7 +150,7 @@ public class MixerPane extends UITable {
         MixerPaneItem item = mixers.get(machineNode.getIndex());
         item.setMachineColor(povider.getItemColor(machineNode.getIndex()));
         item.redraw(machineNode);
-
+        // TODO needs to be moved
         if (povider.hasMaster()) {
             masterItem.redraw(povider.getRack().getRackNode().getMaster());
         }
