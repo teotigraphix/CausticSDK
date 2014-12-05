@@ -444,6 +444,7 @@ public class MixerPaneItem extends UITable {
         });
 
         soloButton = new TextButton("S", getSkin());
+        soloButton.setStyle(getSkin().get("MachineSlot_SoloButton", TextButtonStyle.class));
         soloButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -454,6 +455,7 @@ public class MixerPaneItem extends UITable {
         });
 
         muteButton = new TextButton("M", getSkin());
+        muteButton.setStyle(getSkin().get("MachineSlot_MuteButton", TextButtonStyle.class));
         muteButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
