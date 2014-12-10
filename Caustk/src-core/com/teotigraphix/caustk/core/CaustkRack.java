@@ -86,7 +86,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public ICaustkApplication getApplication() {
+    public final ICaustkApplication getApplication() {
         return runtime.getApplication();
     }
 
@@ -95,7 +95,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public ICaustkSerializer getSerializer() {
+    public final ICaustkSerializer getSerializer() {
         return serializer;
     }
 
@@ -128,17 +128,17 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public String getName() {
+    public final String getName() {
         return rackNode.getName();
     }
 
     @Override
-    public String getPath() {
+    public final String getPath() {
         return rackNode.getPath();
     }
 
     @Override
-    public File getFile() {
+    public final File getFile() {
         return rackNode.getAbsoluteFile();
     }
 
@@ -147,27 +147,27 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public MasterDelayNode getDelay() {
+    public final MasterDelayNode getDelay() {
         return rackNode.getMaster().getDelay();
     }
 
     @Override
-    public MasterReverbNode getReverb() {
+    public final MasterReverbNode getReverb() {
         return rackNode.getMaster().getReverb();
     }
 
     @Override
-    public MasterEqualizerNode getEqualizer() {
+    public final MasterEqualizerNode getEqualizer() {
         return rackNode.getMaster().getEqualizer();
     }
 
     @Override
-    public MasterLimiterNode getLimiter() {
+    public final MasterLimiterNode getLimiter() {
         return rackNode.getMaster().getLimiter();
     }
 
     @Override
-    public MasterVolumeNode getVolume() {
+    public final MasterVolumeNode getVolume() {
         return rackNode.getMaster().getVolume();
     }
 
@@ -176,12 +176,17 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public Collection<? extends MachineNode> getMachines() {
+    public final boolean contains(int machineIndex) {
+        return rackNode.containsMachine(machineIndex);
+    }
+
+    @Override
+    public final Collection<? extends MachineNode> machines() {
         return rackNode.getMachines();
     }
 
     @Override
-    public MachineNode getMachine(int machineIndex) {
+    public final MachineNode get(int machineIndex) {
         return rackNode.getMachine(machineIndex);
     }
 
@@ -190,7 +195,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public SequencerNode getSequencer() {
+    public final SequencerNode getSequencer() {
         return rackNode.getSequencer();
     }
 

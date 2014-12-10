@@ -92,7 +92,9 @@ public class MixerPane extends UITable {
         for (MixerPaneItem item : mixers) {
             item.setSelected(false);
         }
-        mixers.get(machineNode.getIndex()).setSelected(true);
+        if (machineNode != null) {
+            mixers.get(machineNode.getIndex()).setSelected(true);
+        }
     }
 
     //--------------------------------------------------------------------------

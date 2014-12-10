@@ -262,7 +262,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     // ALLEY 01-INST1-A2-120bpm
     public static String getExportStemSampleName(ICaustkRack rack, String exportName,
             int machineIndex, int bankIndex, int patternIndex) {
-        String machineName = rack.getMachine(machineIndex).getName();
+        String machineName = rack.get(machineIndex).getName();
         String patternName = PatternUtils.toString(bankIndex, patternIndex);
         String bpm = (int)rack.getSequencer().getBPM() + "";
         return exportName + "-" + machineName + "-" + patternName + "-" + bpm + "bpm";

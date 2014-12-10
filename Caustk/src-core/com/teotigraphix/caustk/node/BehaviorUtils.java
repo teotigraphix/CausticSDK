@@ -35,6 +35,9 @@ public final class BehaviorUtils {
      * @param value The float value for the mixer control.
      */
     public static void send(ICaustkRack rack, int index, MixerControls control, float value) {
+        if (!rack.contains(index))
+            return;
+
         if (control == MixerControls.Solo) {
             rack.getRackNode().setSolo(index, value == 0f ? false : true);
             return;
@@ -61,7 +64,7 @@ public final class BehaviorUtils {
                     break;
             }
         } else {
-            rack.getMachine(index).getMixer().invoke(control, value);
+            rack.get(index).getMixer().invoke(control, value);
         }
     }
 }

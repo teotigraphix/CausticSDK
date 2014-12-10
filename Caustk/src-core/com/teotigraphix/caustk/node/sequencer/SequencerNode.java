@@ -273,13 +273,13 @@ public class SequencerNode extends NodeBase {
      * @param machineIndex The machine index for the track(0..13).
      */
     public TrackComponent getTrack(int machineIndex) {
-        return getRack().getMachine(machineIndex).getTrack();
+        return getRack().get(machineIndex).getTrack();
     }
 
     List<TrackComponent> getTracks() {
         ArrayList<TrackComponent> result = new ArrayList<TrackComponent>();
         for (int i = 0; i < 14; i++) {
-            MachineNode machine = getRack().getMachine(i);
+            MachineNode machine = getRack().get(i);
             if (machine != null) {
                 result.add(machine.getTrack());
             }

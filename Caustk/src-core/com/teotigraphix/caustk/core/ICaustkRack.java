@@ -94,9 +94,11 @@ public interface ICaustkRack extends ISoundGenerator {
 
     MasterVolumeNode getVolume();
 
-    Collection<? extends MachineNode> getMachines();
+    boolean contains(int machineIndex);
 
-    MachineNode getMachine(int machineIndex);
+    Collection<? extends MachineNode> machines();
+
+    MachineNode get(int machineIndex);
 
     SequencerNode getSequencer();
 
