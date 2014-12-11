@@ -229,6 +229,10 @@ public class RackNode extends NodeBase {
         return getMachine(selectedIndex);
     }
 
+    public boolean hasSelected() {
+        return getMachine(selectedIndex) != null;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

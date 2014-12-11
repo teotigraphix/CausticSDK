@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -56,6 +57,9 @@ public class PatternPane extends UITable {
     }
 
     public void disable(boolean disabled) {
+        setDisabled(disabled);
+        setTouchable(disabled ? Touchable.disabled : Touchable.enabled);
+
         bankBar.setDisabled(disabled);
         for (Button button : gridGroup.getButtons()) {
             button.setDisabled(disabled);
