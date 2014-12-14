@@ -20,7 +20,6 @@
 package com.teotigraphix.gdx.controller;
 
 import com.teotigraphix.caustk.controller.core.AbstractDisplay;
-import com.teotigraphix.caustk.controller.core.AbstractSequencerView;
 import com.teotigraphix.caustk.controller.helper.AbstractGrid;
 import com.teotigraphix.caustk.groove.session.SceneManager;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
@@ -29,19 +28,15 @@ import com.teotigraphix.gdx.app.ProjectState;
 
 public interface IViewManager {
 
-    int getSceneViewIndex();
-
-    void setSceneViewIndex(int index);
-
     PatternNode getSelectedMachinePattern();
 
-    AbstractSequencerView getSequencerView();
+    //AbstractSequencerView getSequencerView();
 
-    ViewBase getSelectedView();
-
-    ViewBase getView(int index);
-
-    ViewBase getViewById(int index);
+    //    ViewBase getSelectedView();
+    //
+    //    ViewBase getView(int index);
+    //
+    //    ViewBase getViewById(int index);
 
     //    void addView(ViewBase view);
     //
@@ -85,7 +80,7 @@ public interface IViewManager {
         void flush();
     }
 
-    void setSelectedView(int index);
+    //void setSelectedView(int index);
 
     void flush();
 
@@ -145,7 +140,5 @@ public interface IViewManager {
             this.kind = kind;
         }
     }
-
-    boolean isCurrent(int viewId);
 
 }

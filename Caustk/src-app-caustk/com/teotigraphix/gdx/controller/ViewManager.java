@@ -19,13 +19,10 @@
 
 package com.teotigraphix.gdx.controller;
 
-import java.util.Collection;
-
 import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.controller.core.AbstractDisplay;
-import com.teotigraphix.caustk.controller.core.AbstractSequencerView;
 import com.teotigraphix.caustk.controller.helper.AbstractGrid;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.ApplicationComponent;
@@ -56,26 +53,16 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     public abstract void setRefreshEnabled(boolean redrawEnabled);
 
     @Override
-    public int getSceneViewIndex() {
-        return getProjectModel().getSceneViewIndex();
-    }
-
-    @Override
-    public void setSceneViewIndex(int index) {
-        getProjectModel().setSceneViewIndex(index);
-    }
-
-    @Override
     public PatternNode getSelectedMachinePattern() {
         return projectModel.getMachineAPI().getSelectedMachinePattern();
     }
 
-    @Override
-    public AbstractSequencerView getSequencerView() {
-        if (getSelectedView() instanceof AbstractSequencerView)
-            return (AbstractSequencerView)getSelectedView();
-        return null;
-    }
+    //    @Override
+    //    public AbstractSequencerView getSequencerView() {
+    //        if (getSelectedView() instanceof AbstractSequencerView)
+    //            return (AbstractSequencerView)getSelectedView();
+    //        return null;
+    //    }
 
     @Override
     public AbstractGrid getPads() {
@@ -116,65 +103,27 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     // scene views
     //----------------------------------
 
-    @Override
-    public boolean isCurrent(int viewId) {
-        ViewBase selectedView = getSelectedView();
-        if (selectedView == null)
-            return false;
-        return selectedView.getId() == viewId;
-    }
-
-    @Override
-    public ViewBase getSelectedView() {
-        return projectModel.getSelectedView();
-    }
-
-    @Override
-    public void setSelectedView(int index) {
-        projectModel.setViewIndex(index);
-        getSelectedView().onActivate();
-        flush();
-    }
-
-    @Override
-    public ViewBase getView(int index) {
-        return projectModel.getViewByIndex(index);
-    }
-
-    @Override
-    public ViewBase getViewById(int viewId) {
-        for (ViewBase view : projectModel.getViews()) {
-            if (view.getId() == viewId)
-                return view;
-        }
-        return null;
-    }
-
-    public Collection<ViewBase> getViews() {
-        return projectModel.getViews();
-    }
-
     public ViewManager() {
     }
 
     @Override
     public void onArrowUp(boolean down) {
-        getSelectedView().onArrowUp(down);
+        //getSelectedView().onArrowUp(down);
     }
 
     @Override
     public void onArrowRight(boolean down) {
-        getSelectedView().onArrowRight(down);
+        //getSelectedView().onArrowRight(down);
     }
 
     @Override
     public void onArrowLeft(boolean down) {
-        getSelectedView().onArrowLeft(down);
+        //getSelectedView().onArrowLeft(down);
     }
 
     @Override
     public void onArrowDown(boolean down) {
-        getSelectedView().onArrowDown(down);
+        //getSelectedView().onArrowDown(down);
     }
 
     @Override
@@ -184,9 +133,9 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
             getPads().clear();
         }
 
-        ViewBase selectedView = getSelectedView();
-        if (selectedView != null)
-            selectedView.updateArrows();
+        //        ViewBase selectedView = getSelectedView();
+        //        if (selectedView != null)
+        //            selectedView.updateArrows();
 
         if (getDisplay() != null) {
             getDisplay().flush();

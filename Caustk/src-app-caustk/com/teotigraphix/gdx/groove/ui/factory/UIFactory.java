@@ -11,26 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
-import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.app.IProjectModel;
 import com.teotigraphix.gdx.groove.ui.components.FileExplorer;
 import com.teotigraphix.gdx.groove.ui.components.ModePane.ModePaneStyle;
 import com.teotigraphix.gdx.groove.ui.components.PatternPane.PatternPaneStyle;
-import com.teotigraphix.gdx.groove.ui.components.SceneViewChildData;
-import com.teotigraphix.gdx.groove.ui.components.TopBar;
-import com.teotigraphix.gdx.groove.ui.components.TopBar.TopBarStyle;
-import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEvent;
-import com.teotigraphix.gdx.groove.ui.components.TopBarListener.TopBarEventKind;
-import com.teotigraphix.gdx.groove.ui.components.ViewStack;
 import com.teotigraphix.gdx.groove.ui.components.ViewStack.ViewStackStyle;
 import com.teotigraphix.gdx.groove.ui.components.mixer.MixerPaneItem.MixerPaneItemStyle;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBar;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
-import com.teotigraphix.gdx.scene2d.ui.ButtonBarListener;
 import com.teotigraphix.gdx.scene2d.ui.Knob.KnobStyle;
 import com.teotigraphix.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
 import com.teotigraphix.gdx.scene2d.ui.PaneStack.PaneStackStyle;
@@ -50,6 +39,10 @@ public abstract class UIFactory {
 
     @Inject
     private IProjectModel projectModel;
+
+    protected IProjectModel getProjectModel() {
+        return projectModel;
+    }
 
     //--------------------------------------------------------------------------
     // Constructor
@@ -273,68 +266,6 @@ public abstract class UIFactory {
         PatternPaneStyle style = new PatternPaneStyle(bankButtonStyle, padButtonStyle,
                 lengthButtonStyle);
         skin.add(StylesDefault.PatternPane, style);
-    }
-
-    //----------------------------------
-    // TopBar
-    //----------------------------------
-
-    public final TopBar createTopBar(Skin skin) {
-
-        // TopBarStyle
-        TopBarStyle topBarStyle = new TopBarStyle(skin.getDrawable(StylesDefault.TopBar_background));
-        skin.add(StylesDefault.TopBar, topBarStyle);
-
-        //TopBarStyle.TextButton
-        TextButtonStyle textButtonStyle = new TextButtonStyle(
-                skin.getDrawable(StylesDefault.TopBar_TextButton_up),
-                skin.getDrawable(StylesDefault.TopBar_TextButton_checked),
-                skin.getDrawable(StylesDefault.TopBar_TextButton_checked),
-                skin.getFont(StylesDefault.Font_TopBar_TextButton));
-        skin.add(StylesDefault.TopBar_TextButton, textButtonStyle);
-
-        // Create TopBar
-        TopBar instance = new TopBar(skin);
-        instance.create(StylesDefault.TopBar);
-
-        ButtonBar buttonBar = (ButtonBar)createTopBar_Center(skin);
-        instance.getCenterChild().add(buttonBar).expand().fill();
-
-        return instance;
-    }
-
-    public final Table createTopBar_Center(Skin skin) {
-        Array<ButtonBarItem> buttons = projectModel.getSceneButtons();
-
-        TextButtonStyle buttonStyle = skin.get("TopBar.TextButton", TextButtonStyle.class);
-        final ButtonBar instance = new ButtonBar(skin, buttons, false, buttonStyle);
-        instance.addListener(new ButtonBarListener() {
-            @Override
-            public void selectedIndexChange(int selectedIndex) {
-                TopBarEvent event = new TopBarEvent(TopBarEventKind.ViewIndexChange, selectedIndex);
-                instance.fire(event);
-            }
-        });
-        instance.setMaxButtonSize(80f);
-        instance.create("default");
-        return instance;
-    }
-
-    //----------------------------------
-    // ViewStack
-    //----------------------------------
-
-    public final ViewStack createViewStack(Skin skin) {
-        ViewStack instance = new ViewStack(skin);
-        for (SceneViewChildData data : projectModel.getSceneViews()) {
-            data.getBehavior().setData(data);
-            Table table = data.getBehavior().create();
-            instance.addView(table);
-        }
-
-        instance.create(StylesDefault.ViewStack);
-
-        return instance;
     }
 
     //----------------------------------
