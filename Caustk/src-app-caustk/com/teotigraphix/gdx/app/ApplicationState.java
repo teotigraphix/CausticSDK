@@ -22,6 +22,7 @@ package com.teotigraphix.gdx.app;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.gdx.controller.IViewManager;
+import com.teotigraphix.gdx.controller.ViewManager;
 
 @Singleton
 public class ApplicationState extends ApplicationStateBase {
@@ -100,14 +101,14 @@ public class ApplicationState extends ApplicationStateBase {
     @Override
     protected void onStartUI() {
         log(TAG, "onStartUI()");
-        viewManager.onStartUI();
+        ((ViewManager)viewManager).onStartUI();
     }
 
     @Override
     protected void onRestartUI() {
         log(TAG, "onRestartUI()");
         getApplication().startScene();
-        viewManager.onRestartUI();
+        ((ViewManager)viewManager).onRestartUI();
     }
 
 }

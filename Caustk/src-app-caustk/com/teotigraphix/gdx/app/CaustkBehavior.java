@@ -20,7 +20,6 @@
 package com.teotigraphix.gdx.app;
 
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.controller.core.AbstractDisplay;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.gdx.controller.IDialogManager;
@@ -29,6 +28,7 @@ import com.teotigraphix.gdx.controller.IFileModel;
 import com.teotigraphix.gdx.controller.IViewManager;
 import com.teotigraphix.gdx.controller.command.CommandExecutionException;
 import com.teotigraphix.gdx.controller.command.ICommandManager;
+import com.teotigraphix.gdx.controller.view.AbstractDisplay;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 

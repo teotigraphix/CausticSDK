@@ -3,7 +3,7 @@ package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.teotigraphix.caustk.controller.daw.GrooveColor;
+import com.teotigraphix.gdx.controller.view.GrooveColor;
 
 public abstract class ColorPickerListener implements EventListener {
 

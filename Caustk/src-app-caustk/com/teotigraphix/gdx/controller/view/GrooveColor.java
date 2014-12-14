@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller.daw;
+package com.teotigraphix.gdx.controller.view;
 
 import com.badlogic.gdx.graphics.Color;
 

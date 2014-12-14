@@ -17,24 +17,8 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller.daw;
+package com.teotigraphix.gdx.controller.view;
 
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-
-public class MachineBankProxy {
-
-    private Model model;
-
-    public MachineBankProxy(Model model) {
-        this.model = model;
-    }
-
-    public PatternNode getSelectedPattern() {
-        return getSelectedMachine().getSequencer().getSelectedPattern();
-    }
-
-    public MachineNode getSelectedMachine() {
-        return model.getRackNode().getSelectedMachine();
-    }
+public interface IDisplayOutput {
+    void setText(int row, String text);
 }

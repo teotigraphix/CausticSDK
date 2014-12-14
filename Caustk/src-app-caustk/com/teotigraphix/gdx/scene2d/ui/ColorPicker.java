@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
-import com.teotigraphix.caustk.controller.daw.GrooveColor;
+import com.teotigraphix.gdx.controller.view.GrooveColor;
 import com.teotigraphix.gdx.groove.ui.components.UITable;
 import com.teotigraphix.gdx.groove.ui.factory.StylesDefault;
 import com.teotigraphix.gdx.scene2d.ui.ColorPickerListener.ColorPickerEvent;

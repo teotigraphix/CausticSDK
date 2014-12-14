@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.Subscribe;
 import com.teotigraphix.gdx.app.CaustkBehavior;
 import com.teotigraphix.gdx.controller.IViewManager.ViewManagerReStartUIEvent;
-import com.teotigraphix.gdx.controller.IViewManager.ViewManagerRefreshUIEvent;
+import com.teotigraphix.gdx.controller.IViewManager.ViewManagerRedrawUIEvent;
 import com.teotigraphix.gdx.controller.IViewManager.ViewManagerStartUIEvent;
 
 public class GrooveBehavior extends CaustkBehavior {
@@ -34,7 +34,7 @@ public class GrooveBehavior extends CaustkBehavior {
     }
 
     @Subscribe
-    public void onViewManagerRefreshUIEvent(final ViewManagerRefreshUIEvent event) {
+    public void onViewManagerRefreshUIEvent(final ViewManagerRedrawUIEvent event) {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {

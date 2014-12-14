@@ -21,6 +21,7 @@ package com.teotigraphix.gdx.app;
 
 import com.google.inject.Inject;
 import com.teotigraphix.gdx.controller.IViewManager;
+import com.teotigraphix.gdx.controller.ViewManager;
 import com.teotigraphix.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.gdx.groove.ui.factory.UIFactory;
 
@@ -110,7 +111,7 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     @Override
     public void render(float delta) {
         super.render(delta);
-        getViewManager().flush();
+        ((ViewManager)getViewManager()).flush();
     }
 
     @Override

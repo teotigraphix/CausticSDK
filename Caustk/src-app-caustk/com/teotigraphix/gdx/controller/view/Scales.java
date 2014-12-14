@@ -17,10 +17,9 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller.helper;
+package com.teotigraphix.gdx.controller.view;
 
 import com.badlogic.gdx.graphics.Color;
-import com.teotigraphix.caustk.controller.daw.Model;
 import com.teotigraphix.caustk.core.midi.NoteReference;
 
 public class Scales {
@@ -272,21 +271,22 @@ public class Scales {
 
     // SequencerView uses
     public Color getSequencerColor(int[] noteMap, int note) {
-        int midiNote = noteMap[note];
-        if (midiNote == -1)
-            return Model.BLACK;
-        int n = (midiNote - Scales.OFFSETS[rootKey]) % 12;
-        if (n == 0)
-            return Model.OCEAN;
-        if (isChromatic()) {
-            int[] notes = Scales.intervals[selectedScale].notes;
-            for (int i = 0; i < notes.length; i++) {
-                if (notes[i] == n)
-                    return Model.WHITE;
-            }
-            return Model.BLACK;
-        }
-        return Model.WHITE;
+        //        int midiNote = noteMap[note];
+        //        if (midiNote == -1)
+        //            return Model.BLACK;
+        //        int n = (midiNote - Scales.OFFSETS[rootKey]) % 12;
+        //        if (n == 0)
+        //            return Model.OCEAN;
+        //        if (isChromatic()) {
+        //            int[] notes = Scales.intervals[selectedScale].notes;
+        //            for (int i = 0; i < notes.length; i++) {
+        //                if (notes[i] == n)
+        //                    return Model.WHITE;
+        //            }
+        //            return Model.BLACK;
+        //        }
+        //        return Model.WHITE;
+        return null;
     }
 
     // SequencerView uses
@@ -318,21 +318,22 @@ public class Scales {
     //--------------------------------------------------------------------------
 
     Color getColor(int[] noteMap, int note) {
-        int midiNote = noteMap[note];
-        if (midiNote == -1)
-            return Model.BLACK;
-        int n = (midiNote - Scales.OFFSETS[rootKey]) % 12;
-        if (n == 0)
-            return Model.OCEAN;
-        if (isChromatic()) {
-            int[] notes = Scales.intervals[selectedScale].notes;
-            for (int i = 0; i < notes.length; i++) {
-                if (notes[i] == n)
-                    return Model.WHITE;
-            }
-            return Model.BLACK;
-        }
-        return Model.WHITE;
+        //        int midiNote = noteMap[note];
+        //        if (midiNote == -1)
+        //            return Model.BLACK;
+        //        int n = (midiNote - Scales.OFFSETS[rootKey]) % 12;
+        //        if (n == 0)
+        //            return Model.OCEAN;
+        //        if (isChromatic()) {
+        //            int[] notes = Scales.intervals[selectedScale].notes;
+        //            for (int i = 0; i < notes.length; i++) {
+        //                if (notes[i] == n)
+        //                    return Model.WHITE;
+        //            }
+        //            return Model.BLACK;
+        //        }
+        //        return Model.WHITE;
+        return null;
     }
 
     int[] getActiveMatrix() {

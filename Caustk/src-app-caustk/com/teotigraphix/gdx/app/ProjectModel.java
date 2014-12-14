@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import com.teotigraphix.gdx.controller.IFileManager;
 import com.teotigraphix.gdx.controller.IFileModel;
 import com.teotigraphix.gdx.controller.IViewManager;
+import com.teotigraphix.gdx.controller.ViewManager;
 
 @Singleton
 public class ProjectModel extends ApplicationComponent implements IProjectModel, IProjectModelWrite {
@@ -130,7 +131,7 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     public void restore(ProjectState state) {
         this.state = state;
 
-        viewManager.restore(state);
+        ((ViewManager)viewManager).restore(state);
 
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
         getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));

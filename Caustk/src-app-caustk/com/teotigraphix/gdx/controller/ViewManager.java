@@ -19,14 +19,15 @@
 
 package com.teotigraphix.gdx.controller;
 
-import com.badlogic.gdx.utils.Array;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.controller.core.AbstractDisplay;
-import com.teotigraphix.caustk.controller.helper.AbstractGrid;
+import com.teotigraphix.caustk.groove.session.SceneManager;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.ApplicationComponent;
+import com.teotigraphix.gdx.app.CaustkApplication;
 import com.teotigraphix.gdx.app.IProjectModel;
+import com.teotigraphix.gdx.app.ProjectState;
+import com.teotigraphix.gdx.controller.view.AbstractDisplay;
 
 @Singleton
 public abstract class ViewManager extends ApplicationComponent implements IViewManager {
@@ -34,44 +35,41 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     @Inject
     private IProjectModel projectModel;
 
-    private AbstractGrid pads;
-
     private AbstractDisplay display;
 
     private AbstractDisplay subDisplay;
 
     protected boolean redrawEnabled = true;
 
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // projectModel
+    //----------------------------------
+
     public IProjectModel getProjectModel() {
         return projectModel;
     }
 
-    public final boolean isRefreshEnabled() {
+    //----------------------------------
+    // redrawEnabled
+    //----------------------------------
+
+    public final boolean isRedrawEnabled() {
         return redrawEnabled;
     }
 
-    public abstract void setRefreshEnabled(boolean redrawEnabled);
-
-    @Override
-    public PatternNode getSelectedMachinePattern() {
-        return projectModel.getMachineAPI().getSelectedMachinePattern();
+    public final void setRedrawEnabled(boolean redrawEnabled) {
+        this.redrawEnabled = redrawEnabled;
+        if (this.redrawEnabled) {
+            // flush since it was halted
+            onRedrawAll();
+        }
     }
 
-    //    @Override
-    //    public AbstractSequencerView getSequencerView() {
-    //        if (getSelectedView() instanceof AbstractSequencerView)
-    //            return (AbstractSequencerView)getSelectedView();
-    //        return null;
-    //    }
-
-    @Override
-    public AbstractGrid getPads() {
-        return pads;
-    }
-
-    public void setPads(AbstractGrid pads) {
-        this.pads = pads;
-    }
+    protected abstract void onRedrawAll();
 
     //----------------------------------
     // display
@@ -99,39 +97,28 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
         this.subDisplay = subDisplay;
     }
 
-    //----------------------------------
-    // scene views
-    //----------------------------------
+    // TODO remove!
+    @Override
+    public PatternNode getSelectedMachinePattern() {
+        return projectModel.getMachineAPI().getSelectedMachinePattern();
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
 
     public ViewManager() {
     }
 
-    @Override
-    public void onArrowUp(boolean down) {
-        //getSelectedView().onArrowUp(down);
-    }
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
 
-    @Override
-    public void onArrowRight(boolean down) {
-        //getSelectedView().onArrowRight(down);
-    }
-
-    @Override
-    public void onArrowLeft(boolean down) {
-        //getSelectedView().onArrowLeft(down);
-    }
-
-    @Override
-    public void onArrowDown(boolean down) {
-        //getSelectedView().onArrowDown(down);
-    }
-
-    @Override
     public void flush(boolean clear) {
 
-        if (clear) {
-            getPads().clear();
-        }
+        //        if (clear) {
+        //            getPads().clear();
+        //        }
 
         //        ViewBase selectedView = getSelectedView();
         //        if (selectedView != null)
@@ -142,45 +129,45 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
             getSubDisplay().flush();
         }
 
-        if (getPads() != null) {
-            getPads().flush();
-        }
-
-        for (IViewManagerFlushListener listener : flushListeners) {
-            listener.flush();
-        }
+        //        if (getPads() != null) {
+        //            getPads().flush();
+        //        }
     }
 
-    @Override
     public void flush() {
         flush(false);
     }
 
-    private Array<IViewManagerFlushListener> flushListeners = new Array<IViewManagerFlushListener>();
-
-    @Override
-    public void addFlushListener(IViewManagerFlushListener listener) {
-        flushListeners.add(listener);
-    }
-
-    @Override
-    public void removeFlushListener(IViewManagerFlushListener listener) {
-        flushListeners.removeValue(listener, false);
-    }
-
-    @Override
+    /**
+     * Called the last starup frame after behaviors have been created.
+     * 
+     * @see ApplicationStates#startUI()
+     * @see ViewManagerStartUIEvent
+     */
     public void onStartUI() {
         getEventBus().post(new ViewManagerStartUIEvent());
     }
 
-    @Override
+    /**
+     * {@link CaustkApplication#startScene()}
+     * 
+     * @see SceneManager#reset()
+     * @see SceneManager#setScene(getInitialScene());
+     * @see ViewManagerReStartUIEvent
+     */
     public void onRestartUI() {
         getEventBus().post(new ViewManagerReStartUIEvent());
     }
 
-    @Override
-    public void onRefresh(Object kind) {
+    /**
+     * Called when projects are loaded and the ui needs a clean redraw.
+     * 
+     * @see ViewManagerRedrawUIEvent
+     */
+    public void onRedraw(Object kind) {
         if (redrawEnabled)
-            getEventBus().post(new ViewManagerRefreshUIEvent(kind));
+            getEventBus().post(new ViewManagerRedrawUIEvent(kind));
     }
+
+    public abstract void restore(ProjectState state);
 }

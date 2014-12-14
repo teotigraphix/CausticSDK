@@ -17,9 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.controller.core;
-
-import com.teotigraphix.caustk.controller.daw.Model;
+package com.teotigraphix.gdx.controller.view;
 
 @SuppressWarnings("unused")
 public class AbstractView {
@@ -27,10 +25,6 @@ public class AbstractView {
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
-
-    private Model model;
-
-    private AbstractControlSurface surface;
 
     private boolean canScrollLeft;
 
@@ -44,30 +38,11 @@ public class AbstractView {
     // Public API :: Properties
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // model
-    //----------------------------------
-
-    public Model getModel() {
-        return model;
-    }
-
-    //----------------------------------
-    // surface
-    //----------------------------------
-
-    protected AbstractControlSurface getSurface() {
-        return surface;
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
 
-    public AbstractView(Model model) {
-        this.model = model;
-        this.surface = null;
-
+    public AbstractView() {
         this.canScrollLeft = true;
         this.canScrollRight = true;
         this.canScrollUp = true;
@@ -77,10 +52,6 @@ public class AbstractView {
     //--------------------------------------------------------------------------
     // Public :: Methods
     //--------------------------------------------------------------------------
-
-    public void attachTo(AbstractControlSurface surface) {
-        this.surface = surface;
-    }
 
     public void onActivate() {
     }
