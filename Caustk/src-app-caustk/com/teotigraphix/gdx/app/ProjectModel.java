@@ -14,6 +14,10 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
 
     private static final String TAG = "ProjectModel";
 
+    //--------------------------------------------------------------------------
+    // Inject :: Variables
+    //--------------------------------------------------------------------------
+
     @Inject
     private IApplicationStateHandlers applicationStates;
 
@@ -21,25 +25,10 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     private IFileManager fileManager;
 
     @Inject
-    private IViewManager viewManager;
-
-    @Inject
     private IFileModel fileModel;
 
-    private ProjectModelMachineAPI machineAPI;
-
-    public IFileManager getFileManager() {
-        return fileManager;
-    }
-
-    public IFileModel getFileModel() {
-        return fileModel;
-    }
-
-    @Override
-    public ProjectModelMachineAPI getMachineAPI() {
-        return machineAPI;
-    }
+    @Inject
+    private IViewManager viewManager;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -49,18 +38,49 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
 
     private ProjectState state;
 
-    public ProjectState getState() {
-        return state;
+    private ProjectModelMachineAPI machineAPI;
+
+    //--------------------------------------------------------------------------
+    // Public Property :: API
+    //--------------------------------------------------------------------------
+
+    //----------------------------------
+    // fileManager
+    //----------------------------------
+
+    public IFileManager getFileManager() {
+        return fileManager;
     }
 
     //----------------------------------
-    // project
+    // fileModel
+    //----------------------------------
+
+    public IFileModel getFileModel() {
+        return fileModel;
+    }
+
+    //----------------------------------
+    // machineAPI
+    //----------------------------------
+
+    @Override
+    public ProjectModelMachineAPI getMachineAPI() {
+        return machineAPI;
+    }
+
+    //----------------------------------
+    // properties
     //----------------------------------
 
     @Override
     public ProjectProperties getProperties() {
         return project.getProperties();
     }
+
+    //----------------------------------
+    // project
+    //----------------------------------
 
     @SuppressWarnings("unchecked")
     @Override
@@ -86,10 +106,46 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
         }
     }
 
+    //----------------------------------
+    // state
+    //----------------------------------
+
+    public ProjectState getState() {
+        return state;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public ProjectModel() {
+        machineAPI = new ProjectModelMachineAPI(this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public Method :: API
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void restore(ProjectState state) {
+        this.state = state;
+
+        viewManager.restore(state);
+
+        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
+        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
+
+        machineAPI.restore(state);
+    }
+
     @Override
     public void save() {
         saveProject(getProject());
     }
+
+    //--------------------------------------------------------------------------
+    // Private :: Methods
+    //--------------------------------------------------------------------------
 
     private void createProject(Project project) throws IOException {
         log(TAG, "createProject()");
@@ -118,30 +174,6 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     private void closeProject(Project project) {
         log(TAG, "closeProject()");
         applicationStates.onProjectClose(project);
-    }
-
-    //--------------------------------------------------------------------------
-    // Public Property :: API
-    //--------------------------------------------------------------------------
-
-    //--------------------------------------------------------------------------
-    // Constructor
-    //--------------------------------------------------------------------------
-
-    public ProjectModel() {
-        machineAPI = new ProjectModelMachineAPI(this);
-    }
-
-    @Override
-    public void restore(ProjectState state) {
-        this.state = state;
-
-        viewManager.restore(state);
-
-        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
-        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
-
-        machineAPI.restore(state);
     }
 
 }
