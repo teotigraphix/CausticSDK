@@ -38,7 +38,7 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
  */
 public abstract class Project {
 
-    private ICaustkRack rack;
+    private transient ICaustkRack rack;
 
     //--------------------------------------------------------------------------
     // Serialized :: Variables
@@ -69,6 +69,9 @@ public abstract class Project {
     // Public Property API
     //--------------------------------------------------------------------------
 
+    /**
+     * The Project's serialized primitive fields.
+     */
     public ProjectProperties getProperties() {
         return properties;
     }
@@ -77,6 +80,10 @@ public abstract class Project {
     // rack
     //----------------------------------
 
+    /**
+     * Returns the current {@link ICaustkRack} instance set by the
+     * {@link ApplicationModel} during a create/load operation.
+     */
     public ICaustkRack getRack() {
         return rack;
     }
@@ -94,28 +101,26 @@ public abstract class Project {
     }
 
     //----------------------------------
-    // nativePath
-    //----------------------------------
-
-    public String getNativePath() {
-        return nativePath;
-    }
-
-    //----------------------------------
     // file
     //----------------------------------
 
     /**
-     * Returns the .prj file location.
+     * Returns the .prj serialized file location.
      */
     public File getFile() {
         return new File(nativePath);
     }
 
+    /**
+     * Returns the .prj file's parent directory.
+     */
     public File getDirectory() {
         return getFile().getParentFile();
     }
 
+    /**
+     * Returns whether the .prj file exists on disk.
+     */
     public boolean exists() {
         return getFile().exists();
     }
@@ -171,11 +176,12 @@ public abstract class Project {
     }
 
     /**
-     * Returns whether the {@link #getRackBytes()} is null, meaning the project
-     * was just created (has no bytes) or existing (has bytes).
+     * Returns whether the File exists on disk and {@link #getRackBytes()} is
+     * null, meaning the project was just created (has no bytes) or not null
+     * (has bytes).
      */
     public boolean isCreated() {
-        return rackBytes != null;
+        return exists() && rackBytes != null;
     }
 
     //----------------------------------

@@ -76,7 +76,7 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
             closeProject(oldProject);
         }
 
-        log(TAG, "setProject() - " + project.getNativePath());
+        log(TAG, "setProject() - " + project.getFile());
         this.project = project;
 
         if (!project.isCreated()) {
