@@ -9,7 +9,7 @@ import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.IProjectModel.ProjectModelEvent;
 import com.teotigraphix.gdx.app.IProjectModel.ProjectModelEventKind;
 
-public class ProjectModelMachineAPI extends AbstractProductModelAPI {
+public class ProjectModelMachineAPI extends AbstractProjectModelAPI {
 
     private List<Integer> triggereddMachines = new ArrayList<Integer>();
 

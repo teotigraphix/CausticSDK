@@ -4,7 +4,7 @@ package com.teotigraphix.gdx.app;
 import com.teotigraphix.gdx.controller.IFileManager;
 import com.teotigraphix.gdx.controller.IFileModel;
 
-public abstract class AbstractProductModelAPI {
+public abstract class AbstractProjectModelAPI {
 
     private ProjectModel projectModel;
 
@@ -12,7 +12,7 @@ public abstract class AbstractProductModelAPI {
         return projectModel;
     }
 
-    public AbstractProductModelAPI(ProjectModel projectModel) {
+    public AbstractProjectModelAPI(ProjectModel projectModel) {
         this.projectModel = projectModel;
     }
 

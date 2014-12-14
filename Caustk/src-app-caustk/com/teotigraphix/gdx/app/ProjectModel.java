@@ -127,14 +127,10 @@ public class ProjectModel extends ApplicationComponent implements IProjectModel,
     // Public Method :: API
     //--------------------------------------------------------------------------
 
-    @Override
     public void restore(ProjectState state) {
         this.state = state;
 
         ((ViewManager)viewManager).restore(state);
-
-        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.SceneViewChange, this));
-        getEventBus().post(new ProjectModelEvent(ProjectModelEventKind.ViewChange, this));
 
         machineAPI.restore(state);
     }

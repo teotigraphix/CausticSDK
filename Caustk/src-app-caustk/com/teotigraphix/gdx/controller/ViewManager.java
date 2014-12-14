@@ -26,6 +26,7 @@ import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.app.CaustkApplication;
 import com.teotigraphix.gdx.app.CaustkScene;
 import com.teotigraphix.gdx.app.IProjectModel;
+import com.teotigraphix.gdx.app.ProjectModel;
 import com.teotigraphix.gdx.app.ProjectState;
 import com.teotigraphix.gdx.controller.view.AbstractDisplay;
 
@@ -168,5 +169,10 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
             getEventBus().post(new ViewManagerRedrawUIEvent(kind));
     }
 
+    /**
+     * Called from {@link ProjectModel#restore(ProjectState)}.
+     * 
+     * @param state the {@link ProjectState} impl.
+     */
     public abstract void restore(ProjectState state);
 }
