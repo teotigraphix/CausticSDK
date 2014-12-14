@@ -19,22 +19,18 @@
 
 package com.teotigraphix.gdx.controller;
 
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.controller.view.AbstractDisplay;
 
 public interface IViewManager {
-
-    // TODO remove, only used in View classes, not correct
-    PatternNode getSelectedMachinePattern();
 
     AbstractDisplay getSubDisplay();
 
     AbstractDisplay getDisplay();
 
-    public static class ViewManagerStartUIEvent {
-    }
+    public enum ViewManagerRedrawKind {
+        Start,
 
-    public static class ViewManagerReStartUIEvent {
+        ReStart
     }
 
     public static class ViewManagerRedrawUIEvent {

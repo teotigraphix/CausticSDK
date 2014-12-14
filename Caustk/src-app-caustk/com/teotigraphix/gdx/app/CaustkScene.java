@@ -111,7 +111,7 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     @Override
     public void render(float delta) {
         super.render(delta);
-        ((ViewManager)getViewManager()).flush();
+        ((ViewManager)getViewManager()).render();
     }
 
     @Override

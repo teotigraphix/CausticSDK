@@ -22,9 +22,9 @@ package com.teotigraphix.gdx.controller;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.groove.session.SceneManager;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.ApplicationComponent;
 import com.teotigraphix.gdx.app.CaustkApplication;
+import com.teotigraphix.gdx.app.CaustkScene;
 import com.teotigraphix.gdx.app.IProjectModel;
 import com.teotigraphix.gdx.app.ProjectState;
 import com.teotigraphix.gdx.controller.view.AbstractDisplay;
@@ -32,14 +32,22 @@ import com.teotigraphix.gdx.controller.view.AbstractDisplay;
 @Singleton
 public abstract class ViewManager extends ApplicationComponent implements IViewManager {
 
+    //--------------------------------------------------------------------------
+    // Inject :: Properties
+    //--------------------------------------------------------------------------
+
     @Inject
     private IProjectModel projectModel;
+
+    //--------------------------------------------------------------------------
+    // Private :: Properties
+    //--------------------------------------------------------------------------
 
     private AbstractDisplay display;
 
     private AbstractDisplay subDisplay;
 
-    protected boolean redrawEnabled = true;
+    private boolean redrawEnabled = true;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -97,12 +105,6 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
         this.subDisplay = subDisplay;
     }
 
-    // TODO remove!
-    @Override
-    public PatternNode getSelectedMachinePattern() {
-        return projectModel.getMachineAPI().getSelectedMachinePattern();
-    }
-
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
@@ -114,38 +116,34 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     // Public API :: Methods
     //--------------------------------------------------------------------------
 
-    public void flush(boolean clear) {
-
-        //        if (clear) {
-        //            getPads().clear();
-        //        }
-
-        //        ViewBase selectedView = getSelectedView();
-        //        if (selectedView != null)
-        //            selectedView.updateArrows();
-
+    /**
+     * Called every frame update.
+     * 
+     * @param clear Whether to clear state.
+     */
+    public void render(boolean clear) {
         if (getDisplay() != null) {
             getDisplay().flush();
             getSubDisplay().flush();
         }
-
-        //        if (getPads() != null) {
-        //            getPads().flush();
-        //        }
-    }
-
-    public void flush() {
-        flush(false);
     }
 
     /**
-     * Called the last starup frame after behaviors have been created.
+     * Called from {@link CaustkScene#render(float)} every frame.
+     */
+    public void render() {
+        render(false);
+    }
+
+    /**
+     * Called the last startup frame after behaviors have been created.
      * 
      * @see ApplicationStates#startUI()
-     * @see ViewManagerStartUIEvent
+     * @see ViewManagerRedrawUIEvent
+     * @see ViewManagerRedrawKind#Start
      */
     public void onStartUI() {
-        getEventBus().post(new ViewManagerStartUIEvent());
+        getEventBus().post(new ViewManagerRedrawUIEvent(ViewManagerRedrawKind.Start));
     }
 
     /**
@@ -153,10 +151,11 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
      * 
      * @see SceneManager#reset()
      * @see SceneManager#setScene(getInitialScene());
-     * @see ViewManagerReStartUIEvent
+     * @see ViewManagerRedrawUIEvent
+     * @see ViewManagerRedrawKind#ReStart
      */
     public void onRestartUI() {
-        getEventBus().post(new ViewManagerReStartUIEvent());
+        getEventBus().post(new ViewManagerRedrawUIEvent(ViewManagerRedrawKind.ReStart));
     }
 
     /**
