@@ -20,7 +20,6 @@
 package com.teotigraphix.gdx.scene2d.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.teotigraphix.gdx.scene2d.ControlTable;
 
 public class SliderGroup extends ControlTable {
 

@@ -19,7 +19,7 @@
 
 package com.teotigraphix.gdx.scene2d.utils;
 
-import com.teotigraphix.gdx.scene2d.ControlTable;
+import com.teotigraphix.gdx.scene2d.ui.ControlTable;
 
 public class StyleUtils {
     public static <T> T getStyle(ControlTable aware, Class<T> styleClass) {

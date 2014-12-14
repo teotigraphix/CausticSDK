@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.gdx.scene2d;
+package com.teotigraphix.gdx.scene2d.ui;
 
 import java.util.HashMap;
 import java.util.Map;

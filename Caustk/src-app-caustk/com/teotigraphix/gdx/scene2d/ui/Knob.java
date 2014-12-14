@@ -30,7 +30,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Pools;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
-import com.teotigraphix.gdx.scene2d.ControlTable;
 
 /**
  * The {@link Knob} is a slider that rotates.
