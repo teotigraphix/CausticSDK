@@ -66,17 +66,17 @@ public interface IProjectModel {
 
     //void restore(ProjectState state);
 
-    public static enum ProjectModelEventKind {
-        MachineSelectionChange;
-    }
-
     public static class ProjectModelEvent {
 
-        private ProjectModelEventKind kind;
+        public static enum Kind {
+            MachineSelectionChange;
+        }
+
+        private Kind kind;
 
         private IProjectModel model;
 
-        public ProjectModelEventKind getKind() {
+        public Kind getKind() {
             return kind;
         }
 
@@ -84,7 +84,7 @@ public interface IProjectModel {
             return model;
         }
 
-        public ProjectModelEvent(ProjectModelEventKind kind, IProjectModel model) {
+        public ProjectModelEvent(Kind kind, IProjectModel model) {
             this.kind = kind;
             this.model = model;
         }

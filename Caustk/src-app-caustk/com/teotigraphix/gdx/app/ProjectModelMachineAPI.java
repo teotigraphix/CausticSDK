@@ -7,7 +7,6 @@ import java.util.List;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.gdx.app.IProjectModel.ProjectModelEvent;
-import com.teotigraphix.gdx.app.IProjectModel.ProjectModelEventKind;
 
 public class ProjectModelMachineAPI extends AbstractProjectModelAPI {
 
@@ -37,7 +36,7 @@ public class ProjectModelMachineAPI extends AbstractProjectModelAPI {
         if (getProject().getRackNode().getSelectedIndex() == machineIndex)
             return;
         getProject().getRackNode().setSelectedIndex(machineIndex);
-        post(new ProjectModelEvent(ProjectModelEventKind.MachineSelectionChange, getProjectModel()));
+        post(new ProjectModelEvent(ProjectModelEvent.Kind.MachineSelectionChange, getProjectModel()));
     }
 
     public MachineNode getMachine(int index) {
@@ -62,7 +61,7 @@ public class ProjectModelMachineAPI extends AbstractProjectModelAPI {
     @Override
     public void restore(ProjectState state) {
         getProjectModel().getEventBus().post(
-                new ProjectModelEvent(ProjectModelEventKind.MachineSelectionChange,
+                new ProjectModelEvent(ProjectModelEvent.Kind.MachineSelectionChange,
                         getProjectModel()));
     }
 }
