@@ -19,15 +19,14 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
-import com.badlogic.gdx.Gdx;
+import java.io.File;
+import java.io.IOException;
+
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * The {@link StartupExecutor} manages and creates the
@@ -80,21 +79,10 @@ public class StartupExecutor {
      * @see {@link com.teotigraphix.caustk.utils.RuntimeUtils#STORAGE_ROOT}
      * @see {@link com.teotigraphix.caustk.utils.RuntimeUtils#APP_ROOT}
      */
-    public ICaustkRuntime create(ICaustkApplication application) throws CausticException,
-            IOException {
-        File root = new File(Gdx.files.getExternalStoragePath());
-        File caustic = new File(root, "caustic");
-        if (!caustic.exists()) {
-            File newRoot = getContainedDirectory(root, new File("caustic"));
-            if (newRoot == null)
-                throw new CausticException(
-                        "the caustic folder does not exist, is caustic installed?");
-            root = newRoot;
-        }
-
-        RuntimeUtils.STORAGE_ROOT = root.getAbsolutePath();
-        RuntimeUtils.APP_ROOT = new File(root, application.getApplicationName()).getAbsolutePath();
-
+    public ICaustkRuntime create(ICaustkApplication application, File storageRoot,
+            File applicationRoot) throws CausticException, IOException {
+        RuntimeUtils.STORAGE_ROOT = storageRoot.getAbsolutePath();
+        RuntimeUtils.APP_ROOT = applicationRoot.getAbsolutePath();
         return runtime;
     }
 

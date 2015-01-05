@@ -30,7 +30,7 @@ public abstract class Application implements IApplication {
 
     private static final String TAG = "Application";
 
-    public static boolean DEBUG = false;
+    public static boolean TEST = false;
 
     //--------------------------------------------------------------------------
     // Private :: Variables

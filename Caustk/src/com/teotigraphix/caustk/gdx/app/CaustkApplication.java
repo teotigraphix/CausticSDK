@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -165,12 +166,30 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         injector.injectMembers(scene);
     }
 
-    @Override
-    public final void create() {
-        Gdx.app.log(TAG, "create()");
+    private File getStorageRoot() throws IOException, CausticException {
+        File root = new File(Gdx.files.getExternalStoragePath());
+        File caustic = new File(root, "caustic");
+        if (!caustic.exists()) {
+            File newRoot = StartupExecutor.getContainedDirectory(root, new File("caustic"));
+            if (newRoot == null)
+                throw new CausticException(
+                        "the caustic folder does not exist, is caustic installed?");
+            root = newRoot;
+        }
+        return root;
+    }
+
+    private File getApplicationRoot(File root) {
+        return new File(root, getApplicationName());
+    }
+
+    // for unit testing synchronously
+    public final void setup(File storageRoot, File applicationRoot) {
+        Gdx.app.log(TAG, "setup()");
+
         try {
             Gdx.app.log("StartupExecutor", "create()");
-            runtime = startupExecutor.create(this);
+            runtime = startupExecutor.create(this, storageRoot, applicationRoot);
             getLogger().log("Rack", "initialize()");
             runtime.getRack().initialize();
 
@@ -206,10 +225,26 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
         // async after load, sets main scene ui
         applicationController.startup();
+    }
+
+    @Override
+    public final void create() {
+        Gdx.app.log(TAG, "create()");
+
+        if (!Application.TEST) {
+            try {
+                File root;
+                root = getStorageRoot();
+                setup(root, getApplicationRoot(root));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (CausticException e) {
+                e.printStackTrace();
+            }
+        }
         // 1. - startup() - Loads last project state
         // 2. - next frame startScene()
         // 3. - next frame startUI()
-
         onCreate();
     }
 
@@ -223,7 +258,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     @Override
     public void render() {
-        if (Application.DEBUG)
+        if (Application.TEST)
             return;
 
         getSceneManager().preRender();

@@ -139,7 +139,7 @@ public abstract class Scene implements IScene {
      * Creates a new {@link Scene}.
      */
     public Scene() {
-        if (Application.DEBUG)
+        if (Application.TEST)
             return;
         setStage(new Stage(new FitViewport(800f, 480f)));
         atlas = new TextureAtlas(Gdx.files.internal("skin.atlas"));
