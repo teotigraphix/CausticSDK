@@ -19,6 +19,11 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
@@ -26,11 +31,6 @@ import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 
 /**
  * The {@link PatternSequencerComponent} manages the {@link PatternNode}s in a
@@ -46,10 +46,10 @@ public class PatternSequencerComponent extends MachineComponent {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private Integer selectedBankIndex;
+    private int selectedBankIndex;
 
     @Tag(101)
-    private Integer selectedPatternIndex;
+    private int selectedPatternIndex;
 
     @Tag(102)
     private HashMap<String, PatternNode> patterns = new HashMap<String, PatternNode>();
@@ -149,14 +149,14 @@ public class PatternSequencerComponent extends MachineComponent {
     /**
      * Returns the local bank index.
      */
-    public Integer getSelectedBankIndex() {
+    public int getSelectedBankIndex() {
         return selectedBankIndex;
     }
 
     /**
      * Returns the local pattern index.
      */
-    public Integer getSelectedPatternIndex() {
+    public int getSelectedPatternIndex() {
         return selectedPatternIndex;
     }
 

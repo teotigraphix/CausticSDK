@@ -87,7 +87,9 @@ public enum ScaleReference {
             0, 1, 4, 5, 7, 8, 10
     }),
 
-    HIROJOSHI("Hirojoshi", new int[] {}),
+    HIROJOSHI("Hirojoshi", new int[] {
+            0, 4, 6, 7, 11
+    }),
 
     IN_SEN("In-Sen", new int[] {
             0, 4, 6, 7, 11

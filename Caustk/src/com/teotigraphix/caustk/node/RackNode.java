@@ -19,6 +19,16 @@
 
 package com.teotigraphix.caustk.node;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.core.CausticException;
@@ -32,16 +42,6 @@ import com.teotigraphix.caustk.node.machine.patch.MixerChannel.OnRackSoloRefresh
 import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The root node of a rack state.
@@ -339,7 +339,11 @@ public class RackNode extends NodeBase {
         MachineNode machineNode = removeMachine(index);
         machineNode.destroy();
         if (selectedIndex == index) {
-            setSelectedIndex(-1); // XXX RackNode destroy machine rework selectedIndex
+            for (int i = index; i >= 0; i--) {
+                if (machines.containsKey(i))
+                    break;
+            }
+            setSelectedIndex(Math.max(index, 0));
         }
         post(new RackNodDestroyEvent(this, RackControl.Remove, machineNode));
         return (T)machineNode;

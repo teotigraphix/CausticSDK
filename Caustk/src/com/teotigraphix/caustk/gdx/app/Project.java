@@ -19,18 +19,18 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.RackNodeUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 
 /**
  * The project holds the single {@link com.teotigraphix.caustk.node.RackNode} in
@@ -252,6 +252,10 @@ public abstract class Project {
         rackBytes = FileUtils.readFileToByteArray(tempFile);
 
         FileUtils.deleteQuietly(tempFile);
+    }
+
+    public void delete() throws IOException {
+        FileUtils.deleteDirectory(getDirectory());
     }
 
     /**

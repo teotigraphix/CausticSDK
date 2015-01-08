@@ -20,9 +20,19 @@
 package com.teotigraphix.caustk.gdx.controller.view;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.core.midi.NoteReference;
 
 public class Scales {
+
+    public Array<ScaleInfo> getScales() {
+        return new Array<Scales.ScaleInfo>(scales);
+    }
+
+    public int getPitch(int row) {
+        int[] sequencerMatrix = getSequencerMatrix();
+        return sequencerMatrix[row];
+    }
 
     //--------------------------------------------------------------------------
     // Public :: Constants
@@ -194,7 +204,7 @@ public class Scales {
         return scale < Scales.intervals.length ? Scales.intervals[scale].name : "";
     }
 
-    int getSelectedScale() {
+    public int getSelectedScale() {
         return selectedScale;
     }
 
@@ -213,7 +223,7 @@ public class Scales {
      * 
      * @param scale The new scale selection.
      */
-    public void setSelectdScale(ScaleSelection scale) {
+    public void setScale(ScaleSelection scale) {
         for (int i = 0; i < intervals.length; i++) {
             ScaleInterval interval = intervals[i];
             if (interval.name.equals(scale.getLabel())) {
@@ -236,18 +246,18 @@ public class Scales {
     //    }
 
     void setOctave(int octave) {
-        octave = Math.max(-3, Math.min(octave, 3));
+        this.octave = Math.max(-3, Math.min(octave, 3));
     }
 
-    int getOctave() {
+    public int getOctave() {
         return octave;
     }
 
-    void incOctave() {
+    public void incOctave() {
         setOctave(octave + 1);
     }
 
-    void decOctave() {
+    public void decOctave() {
         setOctave(octave - 1);
     }
 
@@ -292,23 +302,32 @@ public class Scales {
     }
 
     // SequencerView uses
+
+    public int[] getSequencerMatrix() {
+        return getSequencerMatrix(numRows);
+    }
+
+    private int[] getSequencerMatrix(int rows) {
+        return getSequencerMatrix(rows, startNote + (12 * octave));
+    }
+
     /**
      * @param rows The number of row notes eg 8 for Beatbox 47-54.
      * @param midiRoot The midi root value to start at, bottom to top.
      */
-    public int[] getSequencerMatrix(int rows, int midiRoot) {
+    private int[] getSequencerMatrix(int rows, int midiRoot) {
         int[] matrix = getActiveMatrix();
         int[] noteMap = initArray(-1, rows);
         for (int note = 0; note < rows; note++) {
             int n = matrix[note] + Scales.OFFSETS[rootKey] + midiRoot;
-            noteMap[note] = n < 0 || n > 127 ? -1 : n;
+            noteMap[note] = n < 0 || n > 256 ? -1 : n;
         }
         return noteMap;
     }
 
     // SequencerView uses
     public int[] getEmptyMatrix() {
-        return initArray(-1, 128);
+        return initArray(-1, 256);
     }
 
     public String getSequencerRangeText(int from, int to) {
@@ -342,12 +361,12 @@ public class Scales {
         return isChromatic() ? scales[selectedScale].chromaticMatrix : scales[selectedScale].matrix;
     };
 
-    int[] getNoteMatrix() {
+    public int[] getNoteMatrix() {
         int[] matrix = getActiveMatrix();
         int[] noteMap = getEmptyMatrix();
         for (int note = startNote; note < endNote; note++) {
             int n = matrix[note - startNote] + Scales.OFFSETS[rootKey] + startNote + octave * 12;
-            noteMap[note] = n < 0 || n > 127 ? -1 : n;
+            noteMap[note] = n < 0 || n > 256 ? -1 : n;
         }
         return noteMap;
     }
@@ -586,20 +605,24 @@ public class Scales {
             scales[i] = createScale(Scales.intervals[i]);
     }
 
-    class ScaleInfo {
+    public class ScaleInfo {
 
-        @SuppressWarnings("unused")
         private String name;
 
         private int[] matrix;
 
         private int[] chromaticMatrix;
 
+        public String getName() {
+            return name;
+        }
+
         public ScaleInfo(String name, int[] matrix, int[] chromaticMatrix) {
             this.name = name;
             this.matrix = matrix;
             this.chromaticMatrix = chromaticMatrix;
         }
+
     }
 
     class ScaleInterval {
@@ -620,4 +643,5 @@ public class Scales {
         }
         return result;
     }
+
 }
