@@ -53,13 +53,20 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     private static final String TAG = "CaustkApplication";
 
     @Inject
-    IApplicationConfigurator applicationConfigurator;
+    private IApplicationConfigurator applicationConfigurator;
 
     @Inject
-    IApplicationController applicationController;
+    private IApplicationController applicationController;
+
+    @Inject
+    private IProjectModel projectModel;
 
     public IApplicationController getApplicationController() {
         return applicationController;
+    }
+
+    public IProjectModel getProjectModel() {
+        return projectModel;
     }
 
     // --------------------------------------------------------------------------
