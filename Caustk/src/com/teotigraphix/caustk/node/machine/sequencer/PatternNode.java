@@ -436,7 +436,7 @@ public class PatternNode extends MachineComponent {
      * @see com.teotigraphix.caustk.node.machine.sequencer.NoteNode.NoteFlag
      * @see PatternNodeNoteUpdateEvent
      */
-    public void updateNode(NoteNode noteNode, int pitch, float startBeat, float endBeat,
+    public void updateNote(NoteNode noteNode, int pitch, float startBeat, float endBeat,
             float velocity, int flags) {
         PatternSequencerMessage.NOTE_DATA_REMOVE.send(getRack(), getMachineIndex(),
                 noteNode.getStart(), noteNode.getPitch());
@@ -849,7 +849,7 @@ public class PatternNode extends MachineComponent {
      * @author Michael Schmalle
      * @since 1.0
      * @see PatternNode#createNote(float, int, float, float, int)
-     * @see PatternSequencerComponent#updateNode(NoteNode, int, float, float,
+     * @see PatternSequencerComponent#updateNote(NoteNode, int, float, float,
      *      float, int)
      * @see PatternNode#destroyNote(float, int)
      * @see com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl#NoteDataAdd
