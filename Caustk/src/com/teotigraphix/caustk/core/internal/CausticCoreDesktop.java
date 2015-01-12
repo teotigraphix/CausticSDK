@@ -19,18 +19,20 @@
 
 package com.teotigraphix.caustk.core.internal;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.sun.jna.Native;
 import com.teotigraphix.caustk.core.CaustkEngine;
 import com.teotigraphix.caustk.core.generator.NativeUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
-import java.io.File;
-import java.io.IOException;
-
 public class CausticCoreDesktop {
     private static byte[] m_byResponseString;
 
     private static CausticLibrary caustic;
+
+    private boolean isDisposed = false;
 
     public CausticCoreDesktop() {
         //Path currentRelativePath = Paths.get("");
@@ -64,6 +66,9 @@ public class CausticCoreDesktop {
     }
 
     public float SendOSCMessage(String message) {
+        if (isDisposed)
+            return Float.NaN;
+
         if (CaustkEngine.DEBUG_MESSAGES) {
             System.out.println("Message: " + message);
         }
@@ -71,6 +76,9 @@ public class CausticCoreDesktop {
     }
 
     public String QueryOSC(String message) {
+        if (isDisposed)
+            return null;
+
         m_byResponseString = new byte[16384]; // 4096
         if (CaustkEngine.DEBUG_QUERIES) {
             System.out.println("Query: " + message);
@@ -97,6 +105,7 @@ public class CausticCoreDesktop {
     }
 
     public void deinit() {
+        isDisposed = true;
         caustic.CausticCore_Deinit();
     }
 }
