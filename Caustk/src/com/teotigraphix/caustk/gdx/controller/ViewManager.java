@@ -29,56 +29,56 @@ import com.teotigraphix.caustk.gdx.controller.view.AbstractDisplay;
 @Singleton
 public abstract class ViewManager extends ApplicationComponent implements IViewManager {
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Inject :: Properties
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     @Inject
     private IProjectModel projectModel;
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Private :: Properties
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     private AbstractDisplay display;
 
     private AbstractDisplay subDisplay;
 
-    private boolean redrawEnabled = true;
+    private boolean eventsEnabled = true;
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Public API :: Properties
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
-    // ----------------------------------
+    //----------------------------------
     // projectModel
-    // ----------------------------------
+    //----------------------------------
 
     public IProjectModel getProjectModel() {
         return projectModel;
     }
 
-    // ----------------------------------
-    // redrawEnabled
-    // ----------------------------------
+    //----------------------------------
+    // eventsEnabled
+    //----------------------------------
 
-    public final boolean isRedrawEnabled() {
-        return redrawEnabled;
+    public final boolean isEventsEnabled() {
+        return eventsEnabled;
     }
 
-    public final void setRedrawEnabled(boolean redrawEnabled) {
-        this.redrawEnabled = redrawEnabled;
-        if (this.redrawEnabled) {
+    public final void setEventsEnabled(boolean redrawEnabled) {
+        this.eventsEnabled = redrawEnabled;
+        if (this.eventsEnabled) {
             // flush since it was halted
-            onRedrawAll();
+            onEventsAll();
         }
     }
 
-    protected abstract void onRedrawAll();
+    protected abstract void onEventsAll();
 
-    // ----------------------------------
+    //----------------------------------
     // display
-    // ----------------------------------
+    //----------------------------------
 
     @Override
     public AbstractDisplay getDisplay() {
@@ -89,9 +89,9 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
         this.display = display;
     }
 
-    // ----------------------------------
+    //----------------------------------
     // subDisplay
-    // ----------------------------------
+    //----------------------------------
 
     @Override
     public AbstractDisplay getSubDisplay() {
@@ -102,16 +102,16 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
         this.subDisplay = subDisplay;
     }
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Constructor
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     public ViewManager() {
     }
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Public API :: Methods
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     /**
      * Called every frame update.
@@ -138,11 +138,11 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
      * Called the last startup frame after behaviors have been created.
      * 
      * @see ApplicationStates#startUI()
-     * @see ViewManagerRedrawUIEvent
-     * @see ViewManagerRedrawKind#Start
+     * @see ViewManagerEvent
+     * @see ViewManagerEventKind#Start
      */
     public void onStartUI() {
-        getEventBus().post(new ViewManagerRedrawUIEvent(ViewManagerRedrawKind.Start));
+        getEventBus().post(new ViewManagerEvent(ViewManagerEventKind.Start));
     }
 
     /**
@@ -151,21 +151,21 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
      * @see com.teotigraphix.caustk.groove.session.SceneManager#reset()
      * @see com.teotigraphix.caustk.groove.session.SceneManager#setScene(
      *      getInitialScene());
-     * @see ViewManagerRedrawUIEvent
-     * @see ViewManagerRedrawKind#ReStart
+     * @see ViewManagerEvent
+     * @see ViewManagerEventKind#ReStart
      */
     public void onRestartUI() {
-        getEventBus().post(new ViewManagerRedrawUIEvent(ViewManagerRedrawKind.ReStart));
+        getEventBus().post(new ViewManagerEvent(ViewManagerEventKind.ReStart));
     }
 
     /**
      * Called when projects are loaded and the ui needs a clean redraw.
      * 
-     * @see ViewManagerRedrawUIEvent
+     * @see ViewManagerEvent
      */
-    public void onRedraw(Object kind) {
-        if (redrawEnabled)
-            getEventBus().post(new ViewManagerRedrawUIEvent(kind));
+    public void onEvent(Object kind) {
+        if (eventsEnabled)
+            getEventBus().post(new ViewManagerEvent(kind));
     }
 
     /**

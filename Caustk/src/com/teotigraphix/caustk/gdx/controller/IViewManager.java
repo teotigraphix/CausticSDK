@@ -27,13 +27,13 @@ public interface IViewManager {
 
     AbstractDisplay getDisplay();
 
-    public enum ViewManagerRedrawKind {
+    public enum ViewManagerEventKind {
         Start,
 
         ReStart
     }
 
-    public static class ViewManagerRedrawUIEvent {
+    public static class ViewManagerEvent {
 
         private Object kind;
 
@@ -45,7 +45,7 @@ public interface IViewManager {
             return kind == null;
         }
 
-        public ViewManagerRedrawUIEvent(Object kind) {
+        public ViewManagerEvent(Object kind) {
             this.kind = kind;
         }
     }

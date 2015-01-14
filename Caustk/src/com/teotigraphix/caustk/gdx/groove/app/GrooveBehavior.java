@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.gdx.groove.app;
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.Subscribe;
 import com.teotigraphix.caustk.gdx.app.CaustkBehavior;
-import com.teotigraphix.caustk.gdx.controller.IViewManager.ViewManagerRedrawUIEvent;
+import com.teotigraphix.caustk.gdx.controller.IViewManager.ViewManagerEvent;
 
 public abstract class GrooveBehavior extends CaustkBehavior {
 
@@ -30,7 +30,7 @@ public abstract class GrooveBehavior extends CaustkBehavior {
     }
 
     @Subscribe
-    public void onViewManagerRefreshUIEvent(final ViewManagerRedrawUIEvent event) {
+    public void onViewManagerRefreshUIEvent(final ViewManagerEvent event) {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
