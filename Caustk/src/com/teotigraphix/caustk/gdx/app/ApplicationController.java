@@ -54,20 +54,15 @@ public class ApplicationController extends ApplicationComponent implements IAppl
 
     @Override
     public void setup() {
-        log(TAG, "setup()");
-        try {
-            applicationStates.startup();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        log(TAG, "setup() Not Implemented");
     }
 
     @Override
     public void startup() {
         log(TAG, "startup( BEG )");
         try {
-            setup();
+            //setup();
+            applicationStates.startup();
             if (!Application.TEST) {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
@@ -91,6 +86,8 @@ public class ApplicationController extends ApplicationComponent implements IAppl
                 });
             }
         } catch (KryoException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

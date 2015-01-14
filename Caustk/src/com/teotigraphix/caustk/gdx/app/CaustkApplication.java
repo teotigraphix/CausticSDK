@@ -228,6 +228,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         onRegisterScenes();
         onRegisterModels();
 
+        // Not Implemented
         applicationController.setup();
 
         // async after load, sets main scene ui

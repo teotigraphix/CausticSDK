@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.node.sequencer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
@@ -27,9 +30,6 @@ import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The {@link SequencerNode} API manages the song/pattern sequencer and output
@@ -85,8 +85,8 @@ public class SequencerNode extends NodeBase {
     }
 
     final void setPlaying(boolean playing) {
-        if (playing == this.playing)
-            return;
+        //if (playing == this.playing)
+        //    return;
         this.playing = playing;
         OutputPanelMessage.PLAY.send(getRack(), playing ? 1 : 0);
         resetPostion();
