@@ -164,8 +164,10 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
      * @see ViewManagerEvent
      */
     public void onEvent(Object kind) {
-        if (eventsEnabled)
+        if (eventsEnabled) {
+            err("ViewManager", "onEvent(" + kind + ")");
             getEventBus().post(new ViewManagerEvent(kind));
+        }
     }
 
     /**

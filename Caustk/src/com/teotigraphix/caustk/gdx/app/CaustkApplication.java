@@ -59,10 +59,18 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     private IApplicationController applicationController;
 
     @Inject
+    private IApplicationModel applicationModel;
+
+    @Inject
     private IProjectModel projectModel;
 
     public IApplicationController getApplicationController() {
         return applicationController;
+    }
+
+    @Override
+    public IApplicationModel getApplicationModel() {
+        return applicationModel;
     }
 
     public IProjectModel getProjectModel() {

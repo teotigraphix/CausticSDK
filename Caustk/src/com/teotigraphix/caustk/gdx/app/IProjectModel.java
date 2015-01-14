@@ -58,6 +58,11 @@ public interface IProjectModel {
      */
     ProjectModelMachineAPI getMachineAPI();
 
+    /**
+     * Safe to register any API listeners to the global EventBus.
+     */
+    void start();
+
     //--------------------------------------------------------------------------
     // Methods
     //--------------------------------------------------------------------------

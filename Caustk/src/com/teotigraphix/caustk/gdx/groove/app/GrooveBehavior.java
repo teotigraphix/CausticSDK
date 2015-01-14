@@ -30,7 +30,7 @@ public abstract class GrooveBehavior extends CaustkBehavior {
     }
 
     @Subscribe
-    public void onViewManagerRefreshUIEvent(final ViewManagerEvent event) {
+    public void onViewManagerEvent(final ViewManagerEvent event) {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {

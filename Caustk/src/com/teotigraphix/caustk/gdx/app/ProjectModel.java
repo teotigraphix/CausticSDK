@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import java.io.IOException;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.gdx.controller.IFileManager;
@@ -8,10 +10,9 @@ import com.teotigraphix.caustk.gdx.controller.IFileModel;
 import com.teotigraphix.caustk.gdx.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.controller.ViewManager;
 
-import java.io.IOException;
-
 @Singleton
-public class ProjectModel extends ApplicationComponent implements IProjectModel, IProjectModelWrite {
+public abstract class ProjectModel extends ApplicationComponent implements IProjectModel,
+        IProjectModelWrite {
 
     private static final String TAG = "ProjectModel";
 
