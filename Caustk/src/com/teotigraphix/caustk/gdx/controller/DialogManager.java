@@ -87,6 +87,16 @@ public class DialogManager implements IDialogManager {
         final PopUp dialog = new PopUp(title, scene.getSkin());
         dialog.setModal(false);
         dialog.setMovable(true);
+        dialog.getContentTable().add(actor).expand().fill();
+        return dialog;
+    }
+
+    @Override
+    public PopUp createModalPopUp(ICaustkScene scene, String title, Actor actor) {
+        final PopUp dialog = new PopUp(title, scene.getSkin());
+        dialog.setModal(true);
+        dialog.setMovable(false);
+        dialog.getContentTable().add(actor).expand().fill();
         return dialog;
     }
 

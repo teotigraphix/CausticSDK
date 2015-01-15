@@ -41,6 +41,8 @@ public interface IDialogManager {
 
     PopUp createPopUp(ICaustkScene scene, String title, Actor actor);
 
+    PopUp createModalPopUp(ICaustkScene scene, String title, Actor actor);
+
     void createToast(ICaustkScene scene, String message, float duration);
 
     /**
