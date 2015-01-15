@@ -44,8 +44,8 @@ public class GrooveApplicationComponents implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(ICommandManager.class).to(CommandManager.class).in(Singleton.class);
-        binder.bind(IDialogManager.class).to(DialogManager.class);
-        binder.bind(IFileModel.class).to(FileModel.class);
+        binder.bind(IDialogManager.class).to(DialogManager.class).in(Singleton.class);
+        binder.bind(IFileModel.class).to(FileModel.class).in(Singleton.class);
         binder.bind(IFileManager.class).to(FileManager.class).in(Singleton.class);
         binder.bind(IPreferenceManager.class).to(PreferenceManager.class).in(Singleton.class);
         binder.bind(IApplicationController.class).to(ApplicationController.class)

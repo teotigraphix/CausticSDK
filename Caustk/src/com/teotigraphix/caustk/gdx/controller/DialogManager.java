@@ -34,6 +34,7 @@ import com.google.inject.Singleton;
 import com.teotigraphix.caustk.gdx.app.ICaustkScene;
 import com.teotigraphix.caustk.gdx.app.IScene;
 import com.teotigraphix.caustk.gdx.groove.ui.factory.StylesDefault;
+import com.teotigraphix.caustk.gdx.scene2d.ui.AlertDialog;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ListDialog;
 import com.teotigraphix.caustk.gdx.scene2d.ui.PopUp;
 
@@ -58,22 +59,22 @@ public class DialogManager implements IDialogManager {
     //    }
 
     @Override
-    public ListDialog createListDialog(IScene screen, String title, Object[] items, float width,
+    public ListDialog createListDialog(IScene scene, String title, Object[] items, float width,
             float height) {
-        final ListDialog dialog = new ListDialog(title, screen.getSkin());
+        final ListDialog dialog = new ListDialog(title, scene.getSkin());
         dialog.setSize(width, height);
         dialog.setItems(items);
         dialog.setMovable(false);
         return dialog;
     }
 
-    //    @Override
-    //    public AlertDialog createAlert(IScreen screen, String title, Actor actor) {
-    //        final AlertDialog dialog = new AlertDialog(title, screen.getSkin());
-    //        dialog.setContent(actor);
-    //        dialog.setMovable(false);
-    //        return dialog;
-    //    }
+    @Override
+    public AlertDialog createAlert(IScene scene, String title, Actor actor) {
+        final AlertDialog dialog = new AlertDialog(title, scene.getSkin());
+        dialog.setContent(actor);
+        dialog.setMovable(false);
+        return dialog;
+    }
 
     //    @Override
     //    public ContextMenu createContextMenu(Object[] items) {

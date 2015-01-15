@@ -24,16 +24,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.teotigraphix.caustk.gdx.app.ICaustkScene;
 import com.teotigraphix.caustk.gdx.app.IScene;
+import com.teotigraphix.caustk.gdx.scene2d.ui.AlertDialog;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ListDialog;
 import com.teotigraphix.caustk.gdx.scene2d.ui.PopUp;
 
 public interface IDialogManager {
 
-    //    AlertDialog createAlert(IScreen screen, String title, Actor actor);
+    AlertDialog createAlert(IScene scene, String title, Actor actor);
+
     //
     //    ListDialog createListDialog(String title, Object[] items, float width, float height);
 
-    ListDialog createListDialog(IScene screen, String title, Object[] items, float width,
+    ListDialog createListDialog(IScene scene, String title, Object[] items, float width,
             float height);
 
     //

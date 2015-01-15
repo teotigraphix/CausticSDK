@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import com.teotigraphix.caustk.gdx.controller.IViewManager;
+
 /**
  * The {@link IApplicationModel} loads and sets the {@link #getProject()}.
  */
@@ -48,6 +50,12 @@ public interface IProjectModel {
      * Returns the current project impl loaded in the application.
      */
     <T extends Project> T getProject();
+
+    //----------------------------------
+    // viewManager
+    //----------------------------------
+
+    IViewManager getViewManager();
 
     //----------------------------------
     // machineAPI

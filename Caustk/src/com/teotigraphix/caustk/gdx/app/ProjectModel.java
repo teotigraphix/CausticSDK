@@ -63,6 +63,15 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     }
 
     //----------------------------------
+    // viewManager
+    //----------------------------------
+
+    @Override
+    public IViewManager getViewManager() {
+        return viewManager;
+    }
+
+    //----------------------------------
     // machineAPI
     //----------------------------------
 

@@ -25,7 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -39,7 +38,7 @@ public class AlertDialog extends Dialog {
 
     private OnAlertDialogListener listener;
 
-    private String buttonStyleName;
+    private String buttonStyleName = "default";
 
     public Skin getSkin() {
         return skin;
@@ -124,7 +123,7 @@ public class AlertDialog extends Dialog {
     @SuppressWarnings("rawtypes")
     public Cell setContent(Actor actor) {
         Cell cell = getContentTable().add(actor);//.size(getWidth(), getHeight());
-        ((WidgetGroup)actor).validate();
+        //((WidgetGroup)actor).validate();
         cell.size(actor.getWidth(), actor.getHeight());
         return cell;
     }
