@@ -146,7 +146,7 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     }
 
     @Override
-    public void save() {
+    public void save() throws IOException {
         saveProject(getProject());
     }
 
@@ -167,15 +167,10 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
         applicationStates.onProjectLoad(project);
     }
 
-    private void saveProject(Project project) {
+    private void saveProject(Project project) throws IOException {
         log(TAG, "saveProject()");
         applicationStates.onProjectSave(project);
-        try {
-            project.save();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        project.save();
     }
 
     private void closeProject(Project project) {

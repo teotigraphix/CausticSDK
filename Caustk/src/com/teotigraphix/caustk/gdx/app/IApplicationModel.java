@@ -24,6 +24,18 @@ import java.io.IOException;
 
 public interface IApplicationModel extends IApplicationComponent {
 
+    /**
+     * Whether the application is dirty.
+     */
+    boolean isDirty();
+
+    /**
+     * Sets the application state dirty.
+     * 
+     * @param dirty Whether the application is dirty.
+     */
+    void setDirty(boolean dirty);
+
     ApplicationPreferences getApplicationPreferences();
 
     void newProject(File file) throws IOException;
@@ -43,6 +55,31 @@ public interface IApplicationModel extends IApplicationComponent {
         Caustic,
 
         Project;
+    }
+
+    public static enum ApplicationModelEventKind {
+        IsDirtyChange
+    }
+
+    public static class ApplicationModelEvent {
+
+        private IApplicationModel applicationModel;
+
+        private ApplicationModelEventKind kind;
+
+        public IApplicationModel getApplicationModel() {
+            return applicationModel;
+        }
+
+        public ApplicationModelEventKind getKind() {
+            return kind;
+        }
+
+        public ApplicationModelEvent(IApplicationModel applicationModel,
+                ApplicationModelEventKind kind) {
+            this.applicationModel = applicationModel;
+            this.kind = kind;
+        }
     }
 
 }

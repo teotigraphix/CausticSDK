@@ -7,5 +7,5 @@ public interface IProjectModelWrite {
 
     <T extends Project> void setProject(T project) throws IOException;
 
-    void save();
+    void save() throws IOException;
 }

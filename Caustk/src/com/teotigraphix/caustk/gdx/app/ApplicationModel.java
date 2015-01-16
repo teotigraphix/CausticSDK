@@ -19,21 +19,20 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import com.badlogic.gdx.Gdx;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.gdx.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.controller.IPreferenceManager;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-
 @Singleton
 public class ApplicationModel extends ApplicationComponent implements IApplicationModel {
 
-    @SuppressWarnings("unused")
     private static final String TAG = "ApplicationModel";
 
     //--------------------------------------------------------------------------
@@ -55,6 +54,8 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    private boolean dirty = false;
+
     protected String APP_PREFERENCES = null;
 
     @Override
@@ -74,12 +75,21 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     //--------------------------------------------------------------------------
 
     //----------------------------------
-    // preferenceId
+    // dirty
     //----------------------------------
 
     @Override
-    protected String getPreferenceId() {
-        return APP_PREFERENCES;
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
+    public void setDirty(boolean dirty) {
+        if (dirty == this.dirty)
+            return;
+        this.dirty = dirty;
+        getEventBus()
+                .post(new ApplicationModelEvent(this, ApplicationModelEventKind.IsDirtyChange));
     }
 
     //----------------------------------
@@ -90,6 +100,45 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     public ApplicationPreferences getApplicationPreferences() {
         return applicationPreferences;
     }
+
+    //----------------------------------
+    // preferenceId
+    //----------------------------------
+
+    @Override
+    protected String getPreferenceId() {
+        return APP_PREFERENCES;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public ApplicationModel() {
+    }
+
+    @Override
+    public void save() {
+        // Always save preferences
+        preferenceManager.save();
+        if (dirty) {
+            try {
+                getProjectModelWrittable().save();
+                setDirty(false);
+            } catch (IOException e) {
+                err(TAG, "ApplicationModel.save(); failed", e);
+            }
+        }
+    }
+
+    @Override
+    public void dispose() {
+        save();
+    }
+
+    //--------------------------------------------------------------------------
+    // Project API :: Methods
+    //--------------------------------------------------------------------------
 
     @Override
     public void newProject(File projectLocation) throws IOException {
@@ -149,23 +198,5 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-") + ".caustic");
         File savedFile = projectModel.getProject().getRack().getRackNode().saveSongAs(exportedFile);
         return savedFile;
-    }
-
-    //--------------------------------------------------------------------------
-    // Constructor
-    //--------------------------------------------------------------------------
-
-    public ApplicationModel() {
-    }
-
-    @Override
-    public void save() {
-        preferenceManager.save();
-        getProjectModelWrittable().save();
-    }
-
-    @Override
-    public void dispose() {
-        save();
     }
 }
