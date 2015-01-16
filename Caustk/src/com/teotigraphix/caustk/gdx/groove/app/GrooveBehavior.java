@@ -34,7 +34,12 @@ public abstract class GrooveBehavior extends CaustkBehavior {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                redrawView(event.getKind());
+                if (getScene() != null) {
+                    redrawView(event.getKind());
+                } else {
+                    err(getClass().getName(), event.getKind()
+                            + "Failed in GrooveBehavior.onViewManagerEvent(No Scene)");
+                }
             }
         });
     }
