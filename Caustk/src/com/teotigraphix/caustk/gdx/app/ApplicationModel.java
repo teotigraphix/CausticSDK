@@ -84,7 +84,11 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     }
 
     @Override
-    public void setDirty(boolean dirty) {
+    public void setDirty() {
+        setDirty(true);
+    }
+
+    private void setDirty(boolean dirty) {
         if (dirty == this.dirty)
             return;
         this.dirty = dirty;

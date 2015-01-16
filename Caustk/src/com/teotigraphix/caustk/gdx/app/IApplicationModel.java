@@ -33,8 +33,9 @@ public interface IApplicationModel extends IApplicationComponent {
      * Sets the application state dirty.
      * 
      * @param dirty Whether the application is dirty.
+     * @see ApplicationModelEventKind#IsDirtyChange
      */
-    void setDirty(boolean dirty);
+    void setDirty();
 
     ApplicationPreferences getApplicationPreferences();
 

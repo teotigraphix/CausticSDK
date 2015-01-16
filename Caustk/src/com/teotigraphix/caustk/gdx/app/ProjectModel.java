@@ -21,6 +21,9 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     //--------------------------------------------------------------------------
 
     @Inject
+    private IApplicationModel applicationModel;
+
+    @Inject
     private IApplicationStateHandlers applicationStates;
 
     @Inject
@@ -123,6 +126,18 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
 
     public ProjectState getState() {
         return state;
+    }
+
+    //----------------------------------
+    // dirty
+    //----------------------------------
+
+    public boolean isDirty() {
+        return applicationModel.isDirty();
+    }
+
+    public void setDirty() {
+        applicationModel.setDirty();
     }
 
     //--------------------------------------------------------------------------

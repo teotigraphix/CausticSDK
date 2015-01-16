@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.gdx.app;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.ICaustkRack;
-import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.gdx.controller.IDialogManager;
 import com.teotigraphix.caustk.gdx.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.controller.IFileModel;
@@ -31,6 +30,7 @@ import com.teotigraphix.caustk.gdx.controller.command.ICommandManager;
 import com.teotigraphix.caustk.gdx.controller.view.AbstractDisplay;
 import com.teotigraphix.caustk.gdx.groove.ui.IContainerMap;
 import com.teotigraphix.caustk.gdx.groove.ui.factory.UIFactory;
+import com.teotigraphix.caustk.node.RackNode;
 
 public abstract class CaustkBehavior extends Behavior {
 
@@ -219,4 +219,23 @@ public abstract class CaustkBehavior extends Behavior {
         }
     }
 
+    //--------------------------------------------------------------------------
+    // Protected Log :: Methods
+    //--------------------------------------------------------------------------
+
+    protected void debug(String tag, String message) {
+        getApplication().getLogger().debug(tag, message);
+    }
+
+    protected void log(String tag, String message) {
+        getApplication().getLogger().log(tag, message);
+    }
+
+    protected void err(String tag, String message) {
+        getApplication().getLogger().err(tag, message);
+    }
+
+    protected void err(String tag, String message, Throwable throwable) {
+        getApplication().getLogger().err(tag, message, throwable);
+    }
 }

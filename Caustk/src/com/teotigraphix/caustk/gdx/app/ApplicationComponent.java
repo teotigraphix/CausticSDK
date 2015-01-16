@@ -88,6 +88,10 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     // Protected Log :: Methods
     //--------------------------------------------------------------------------
 
+    protected void debug(String tag, String message) {
+        getApplication().getLogger().debug(tag, message);
+    }
+
     protected void log(String tag, String message) {
         getApplication().getLogger().log(tag, message);
     }
