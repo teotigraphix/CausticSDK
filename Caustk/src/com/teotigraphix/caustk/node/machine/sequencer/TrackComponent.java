@@ -19,16 +19,18 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * A {@link TrackComponent} represents a track in the song sequencer of a
@@ -272,6 +274,16 @@ public class TrackComponent extends MachineComponent {
         if (entry == null)
             return null;
         return entry.getPattern();
+    }
+
+    /**
+     * Clears all TrackEntryNode from the track, nativly as well.
+     */
+    public void clearEntries() {
+        Collection<TrackEntryNode> collection = new ArrayList<TrackEntryNode>(entries.values());
+        for (TrackEntryNode entry : collection) {
+            removeEntry(entry);
+        }
     }
 
     /**

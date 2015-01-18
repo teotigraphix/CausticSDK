@@ -413,7 +413,8 @@ public class SequencerNode extends NodeBase {
      * options.
      * 
      * @param loopMode The type of export, loop or song.
-     * @param exportPath The absolute path for the exported media.
+     * @param exportPath The absolute path for the exported media (without .wav,
+     *            .ogg, .midi extensions).
      * @param type The
      *            {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.ExportType}
      *            of media.
