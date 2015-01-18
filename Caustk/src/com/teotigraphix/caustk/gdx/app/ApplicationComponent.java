@@ -23,16 +23,23 @@ import com.badlogic.gdx.Preferences;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.gdx.controller.IPreferenceManager;
+import com.teotigraphix.caustk.gdx.controller.command.CommandExecutionException;
+import com.teotigraphix.caustk.gdx.controller.command.ICommandManager;
 
 /**
  * Injectable model's for application model, manager, state etc.
  */
 public abstract class ApplicationComponent implements IApplicationComponent {
 
+    private static final String TAG = "ApplicationComponent";
+
     @Inject
     private IPreferenceManager preferenceManager;
 
     private ICaustkApplication application;
+
+    @Inject
+    private ICommandManager commandManager;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -72,6 +79,14 @@ public abstract class ApplicationComponent implements IApplicationComponent {
 
     public final EventBus getEventBus() {
         return application.getEventBus();
+    }
+
+    public void execute(String message, Object... args) {
+        try {
+            commandManager.execute(message, args);
+        } catch (CommandExecutionException e) {
+            err(TAG, "Failed to execute command " + message, e);
+        }
     }
 
     //--------------------------------------------------------------------------
