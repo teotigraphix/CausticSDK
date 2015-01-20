@@ -39,7 +39,7 @@ public class Caustic extends CausticCore {
 
     @Override
     public float SendOSCMessage(String message) {
-        if (!CaustkEngine.DEBUG_MESSAGES) {
+        if (CaustkEngine.DEBUG_MESSAGES) {
             Log.d(TAG, "Message: " + message);
         }
         return super.SendOSCMessage(message);

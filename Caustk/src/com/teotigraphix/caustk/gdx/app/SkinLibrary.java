@@ -53,7 +53,7 @@ public abstract class SkinLibrary {
      * here.
      * 
      * @param skin The {@link Skin} to add styles to.
-     * @see ICaustkScene#setup(com.teotigraphix.gdx.IGdxApplication)
+     * @see ICaustkScene#setup(com.teotigraphix.caustk.gdx.IGdxApplication)
      */
     public void initialize(Skin skin) {
         //initializeButtonStyle(skin);
