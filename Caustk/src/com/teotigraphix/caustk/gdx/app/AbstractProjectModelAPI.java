@@ -3,6 +3,7 @@ package com.teotigraphix.caustk.gdx.app;
 
 import com.teotigraphix.caustk.gdx.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.controller.IFileModel;
+import com.teotigraphix.caustk.node.RackNode;
 
 public abstract class AbstractProjectModelAPI {
 
@@ -14,6 +15,10 @@ public abstract class AbstractProjectModelAPI {
 
     public AbstractProjectModelAPI(ProjectModel projectModel) {
         this.projectModel = projectModel;
+    }
+
+    protected RackNode getRackNode() {
+        return projectModel.getProject().getRackNode();
     }
 
     protected ProjectProperties getProperties() {

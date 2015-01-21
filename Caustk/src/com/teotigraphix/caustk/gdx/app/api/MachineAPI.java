@@ -1,14 +1,17 @@
 
-package com.teotigraphix.caustk.gdx.app;
-
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.gdx.app.IProjectModel.ProjectModelEvent;
+package com.teotigraphix.caustk.gdx.app.api;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectModelMachineAPI extends AbstractProjectModelAPI {
+import com.teotigraphix.caustk.gdx.app.AbstractProjectModelAPI;
+import com.teotigraphix.caustk.gdx.app.IProjectModel.ProjectModelEvent;
+import com.teotigraphix.caustk.gdx.app.ProjectModel;
+import com.teotigraphix.caustk.gdx.app.ProjectState;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
+
+public class MachineAPI extends AbstractProjectModelAPI {
 
     private List<Integer> triggereddMachines = new ArrayList<Integer>();
 
@@ -54,7 +57,7 @@ public class ProjectModelMachineAPI extends AbstractProjectModelAPI {
         return selectedMachine.getSequencer().getSelectedPattern();
     }
 
-    public ProjectModelMachineAPI(ProjectModel projectModel) {
+    public MachineAPI(ProjectModel projectModel) {
         super(projectModel);
     }
 

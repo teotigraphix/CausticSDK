@@ -19,6 +19,7 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import com.teotigraphix.caustk.gdx.app.api.MachineAPI;
 import com.teotigraphix.caustk.gdx.controller.IViewManager;
 
 /**
@@ -72,7 +73,7 @@ public interface IProjectModel {
     /**
      * The {@link com.teotigraphix.caustk.node.machine.MachineNode} API.
      */
-    ProjectModelMachineAPI getMachineAPI();
+    MachineAPI getMachineAPI();
 
     /**
      * Safe to register any API listeners to the global EventBus.

@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.teotigraphix.caustk.gdx.app.api.ExportAPI;
+import com.teotigraphix.caustk.gdx.app.api.MachineAPI;
 import com.teotigraphix.caustk.gdx.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.controller.IFileModel;
 import com.teotigraphix.caustk.gdx.controller.IViewManager;
@@ -43,7 +45,9 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
 
     private ProjectState state;
 
-    private ProjectModelMachineAPI machineAPI;
+    private MachineAPI machineAPI;
+
+    private ExportAPI exportAPI;
 
     //--------------------------------------------------------------------------
     // Public Property :: API
@@ -79,8 +83,12 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     //----------------------------------
 
     @Override
-    public ProjectModelMachineAPI getMachineAPI() {
+    public MachineAPI getMachineAPI() {
         return machineAPI;
+    }
+
+    public ExportAPI getExportAPI() {
+        return exportAPI;
     }
 
     //----------------------------------
@@ -132,10 +140,12 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     // dirty
     //----------------------------------
 
+    @Override
     public boolean isDirty() {
         return applicationModel.isDirty();
     }
 
+    @Override
     public void setDirty() {
         applicationModel.setDirty();
     }
@@ -145,7 +155,8 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     //--------------------------------------------------------------------------
 
     public ProjectModel() {
-        machineAPI = new ProjectModelMachineAPI(this);
+        machineAPI = new MachineAPI(this);
+        exportAPI = new ExportAPI(this);
     }
 
     //--------------------------------------------------------------------------
@@ -158,6 +169,7 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
         ((ViewManager)viewManager).restore(state);
 
         machineAPI.restore(state);
+        exportAPI.restore(state);
     }
 
     @Override
