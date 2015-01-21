@@ -25,8 +25,6 @@ import com.teotigraphix.caustk.gdx.app.IProjectModel;
 import com.teotigraphix.caustk.gdx.app.ProjectModel;
 import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.app.controller.ViewManager;
-import com.teotigraphix.caustk.gdx.groove.ui.IContainerMap;
-import com.teotigraphix.caustk.gdx.groove.ui.factory.UIFactory;
 
 public abstract class CaustkScene extends Scene implements ICaustkScene {
 

@@ -33,7 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.gdx.app.ui.ICaustkScene;
 import com.teotigraphix.caustk.gdx.app.ui.IScene;
-import com.teotigraphix.caustk.gdx.groove.ui.factory.StylesDefault;
+import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
 import com.teotigraphix.caustk.gdx.scene2d.ui.AlertDialog;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ListDialog;
 import com.teotigraphix.caustk.gdx.scene2d.ui.PopUp;

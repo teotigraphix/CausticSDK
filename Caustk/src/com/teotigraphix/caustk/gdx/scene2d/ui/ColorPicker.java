@@ -24,10 +24,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.teotigraphix.caustk.gdx.app.controller.view.GrooveColor;
-import com.teotigraphix.caustk.gdx.groove.ui.components.UITable;
-import com.teotigraphix.caustk.gdx.groove.ui.factory.StylesDefault;
+import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ColorPickerListener.ColorPickerEvent;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ColorPickerListener.ColorPickerEventKind;
+import com.teotigraphix.caustk.gdx.scene2d.ui.app.UITable;
 
 public class ColorPicker extends UITable {
 

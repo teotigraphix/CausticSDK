@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.gdx.app.ui;
 
 import com.teotigraphix.caustk.gdx.app.IProjectModel;
 import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
-import com.teotigraphix.caustk.gdx.groove.ui.factory.UIFactory;
 
 /**
  * The {@link ICaustkScene} API allows an application to display states as UI

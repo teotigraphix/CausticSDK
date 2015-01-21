@@ -32,8 +32,6 @@ import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.app.controller.command.CommandExecutionException;
 import com.teotigraphix.caustk.gdx.app.controller.command.ICommandManager;
 import com.teotigraphix.caustk.gdx.app.controller.view.AbstractDisplay;
-import com.teotigraphix.caustk.gdx.groove.ui.IContainerMap;
-import com.teotigraphix.caustk.gdx.groove.ui.factory.UIFactory;
 import com.teotigraphix.caustk.node.RackNode;
 
 public abstract class CaustkBehavior extends Behavior {
