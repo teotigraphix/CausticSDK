@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.groove.utils;
+package com.teotigraphix.caustk.utils.groove;
 
 import java.util.ArrayList;
 import java.util.Collections;

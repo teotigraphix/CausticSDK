@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.groove.library;
 import java.io.File;
 import java.util.UUID;
 
-import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryProductUtils;
 
 public abstract class LibraryProductItem extends LibraryItem {
 

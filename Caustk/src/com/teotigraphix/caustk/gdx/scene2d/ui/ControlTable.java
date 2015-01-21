@@ -26,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.caustk.gdx.app.controller.IHelpManagerAware;
-import com.teotigraphix.caustk.gdx.scene2d.utils.StyleUtils;
+import com.teotigraphix.caustk.utils.gdx.StyleUtils;
 
 /**
  * The base abstract container for controls that are value/automation aware.

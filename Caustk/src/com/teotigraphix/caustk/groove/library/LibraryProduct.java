@@ -34,10 +34,10 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
-import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
-import com.teotigraphix.caustk.groove.utils.LibraryPatternBankUtils;
-import com.teotigraphix.caustk.groove.utils.LibraryProductExportUtils;
-import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryGroupUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryPatternBankUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryProductExportUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryProductUtils;
 
 /**
  * @author Michael Schmalle

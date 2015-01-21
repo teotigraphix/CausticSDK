@@ -31,7 +31,7 @@ import java.util.UUID;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryProductUtils;
 
 /**
  * @author Michael Schmalle

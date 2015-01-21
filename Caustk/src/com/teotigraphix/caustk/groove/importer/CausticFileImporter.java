@@ -23,11 +23,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import com.teotigraphix.caustk.groove.utils.LibraryEffectUtils;
-import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
-import com.teotigraphix.caustk.groove.utils.LibraryInstrumentUtils;
-import com.teotigraphix.caustk.groove.utils.LibraryPatternBankUtils;
-import com.teotigraphix.caustk.groove.utils.LibrarySoundUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryEffectUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryGroupUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryInstrumentUtils;
+import com.teotigraphix.caustk.utils.groove.LibraryPatternBankUtils;
+import com.teotigraphix.caustk.utils.groove.LibrarySoundUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 

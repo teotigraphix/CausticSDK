@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gdx.scene2d.utils;
+package com.teotigraphix.caustk.utils.gdx;
 
 import com.teotigraphix.caustk.gdx.scene2d.ui.ControlTable;
 
