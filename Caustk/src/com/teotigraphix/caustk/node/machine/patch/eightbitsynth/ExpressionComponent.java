@@ -106,7 +106,11 @@ public class ExpressionComponent extends MachineComponent {
 
     @Override
     protected void restoreComponents() {
-        setExpression(0, queryExpression(0));
-        setExpression(1, queryExpression(1));
+        String expression1 = queryExpression(0);
+        String expression2 = queryExpression(1);
+        if (expression1 != null)
+            setExpression(0, expression1);
+        if (expression2 != null)
+            setExpression(1, expression2);
     }
 }
