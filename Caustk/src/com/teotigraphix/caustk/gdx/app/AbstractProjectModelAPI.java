@@ -22,7 +22,7 @@ public abstract class AbstractProjectModelAPI {
 
     protected void save() {
         // XXX not right
-        projectModel.getApplication().getApplicationModel().save();
+        projectModel.getApplication().save();
     }
 
     protected RackNode getRackNode() {

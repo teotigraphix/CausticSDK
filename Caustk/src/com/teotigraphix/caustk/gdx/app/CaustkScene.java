@@ -32,9 +32,6 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     //--------------------------------------------------------------------------
 
     @Inject
-    private IApplicationModel applicationModel;
-
-    @Inject
     private UIFactory factory;
 
     @Inject
@@ -80,10 +77,6 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     //--------------------------------------------------------------------------
     // Public :: Properties
     //--------------------------------------------------------------------------
-
-    protected final IApplicationModel getApplicationModel() {
-        return applicationModel;
-    }
 
     protected IContainerMap getContainerMap() {
         return containerMap;

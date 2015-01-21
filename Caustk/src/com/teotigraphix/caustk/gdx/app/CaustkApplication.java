@@ -28,6 +28,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -54,6 +55,14 @@ import com.teotigraphix.caustk.utils.RuntimeUtils;
 public abstract class CaustkApplication extends Application implements ICaustkApplication,
         ApplicationListener {
 
+    protected final IProjectModelWrite getProjectModelWrittable() {
+        return (IProjectModelWrite)getProjectModel();
+    }
+
+    public Preferences getGlobalPreferences() {
+        return getPreferenceManager().get("com_teotigraphix_caustk_global");
+    }
+
     private static final String TAG = "CaustkApplication";
 
     @Inject
@@ -76,6 +85,14 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     @Inject
     private IViewManager viewManager;
+
+    // Private :: Variables
+
+    private ApplicationPreferences applicationPreferences;
+
+    public ApplicationPreferences getApplicationPreferences() {
+        return applicationPreferences;
+    }
 
     protected IApplicationStateHandlers getApplicationStates() {
         return applicationStates;
@@ -167,6 +184,8 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public CaustkApplication(String applicationName, ISoundGenerator soundGenerator) {
         super(applicationName);
         startupExecutor = new StartupExecutor(this, soundGenerator);
+        applicationPreferences = new ApplicationPreferences(getPreferenceManager().get(
+                getApplicationId() + "_application"));
     }
 
     private void createGuice() {
@@ -360,10 +379,85 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public void dispose() {
         getLogger().log(TAG, "dispose()");
 
-        getApplicationModel().dispose(); // calls save()
+        save();
         getSceneManager().dispose();
         applicationController.dispose();
         runtime.getRack().onDestroy();
+    }
+
+    // From AppModel
+    public void save() {
+        // Always save preferences
+        getPreferenceManager().save();
+        if (isDirty()) {
+            try {
+                getProjectModelWrittable().save();
+                setDirty(false);
+            } catch (IOException e) {
+                getLogger().err(TAG, "ApplicationModel.save(); failed", e);
+            }
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Project API :: Methods
+    //--------------------------------------------------------------------------
+
+    public void newProject(File projectLocation) throws IOException {
+        Project project = getFileManager().createProject(projectLocation);
+        getProjectModelWrittable().setProject(project);
+    }
+
+    public void loadProject(File projectFile) throws IOException {
+        Project project = getFileManager().loadProject(projectFile);
+        getProjectModelWrittable().setProject(project);
+    }
+
+    public File saveProjectAs(String projectName) throws IOException {
+        return saveProjectAs(new File(getFileManager().getProjectsDirectory(), projectName));
+    }
+
+    /**
+     * @param projectLocation The project directory, getName() returns the
+     *            project name to copy.
+     * @throws java.io.IOException
+     */
+    public File saveProjectAs(File projectLocation) throws IOException {
+        File srcDir = getProjectModel().getProjectDirectory();
+        File destDir = projectLocation;
+        FileUtils.copyDirectory(srcDir, destDir);
+
+        // load the copied project discreetly
+        final File oldProjectFile = new File(projectLocation, srcDir.getName() + ".prj");
+        File newProjectFile = new File(projectLocation, destDir.getName() + ".prj");
+
+        Project newProject = getFileManager().readProject(oldProjectFile);
+        newProject.setRack(getRack()); // needed for deserialization
+        newProject.rename(newProjectFile);
+
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                // XXX This is NOTE DELETING
+                FileUtils.deleteQuietly(oldProjectFile);
+            }
+        });
+
+        loadProject(newProject.getFile());
+
+        return newProjectFile;
+    }
+
+    public File exportProject(File file, ApplicationExportType exportType) throws IOException {
+        File srcDir = getProjectModel().getProjectDirectory();
+        File exportedFile = new File(srcDir, "exported/");
+        exportedFile.mkdirs();
+        // NO .caustic ext
+        // XXX Can't have spaces, must replace all spaces with '-'
+        exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-") + ".caustic");
+
+        File savedFile = getRackNode().saveSongAs(exportedFile);
+        return savedFile;
     }
 
     // --------------------------------------------------------------------------
@@ -409,4 +503,5 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     @Override
     public void onSceneChange(ICaustkScene scene) {
     }
+
 }

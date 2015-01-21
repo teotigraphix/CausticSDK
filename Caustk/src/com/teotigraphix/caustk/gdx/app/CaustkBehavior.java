@@ -35,9 +35,6 @@ import com.teotigraphix.caustk.node.RackNode;
 public abstract class CaustkBehavior extends Behavior {
 
     @Inject
-    private IApplicationModel applicationModel;
-
-    @Inject
     private IApplicationState applicationStateInternal;
 
     @Inject
@@ -55,10 +52,6 @@ public abstract class CaustkBehavior extends Behavior {
     @Override
     public final ICaustkApplication getApplication() {
         return (ICaustkApplication)super.getApplication();
-    }
-
-    public final IApplicationModel getApplicationModel() {
-        return applicationModel;
     }
 
     public IProjectModel getProjectModel() {

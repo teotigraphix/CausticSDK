@@ -29,10 +29,6 @@ public abstract class ApplicationStateBase extends ApplicationComponent implemen
 
     private static final String TAG = "ApplicationStateBase";
 
-    @SuppressWarnings("unused")
-    @Inject
-    private IApplicationModel applicationModel;
-
     @Inject
     private IProjectModel projectModel;
 

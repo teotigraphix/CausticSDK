@@ -32,6 +32,19 @@ import com.google.common.eventbus.EventBus;
 public interface IApplication extends ApplicationListener {
 
     /**
+     * Whether the application is dirty.
+     */
+    boolean isDirty();
+
+    /**
+     * Sets the application state dirty.
+     * 
+     * @param dirty Whether the application is dirty.
+     * @see ApplicationModelEventKind#IsDirtyChange
+     */
+    void setDirty();
+
+    /**
      * The application name, will show up in the title bar in desktop
      * applications.
      */
@@ -78,4 +91,34 @@ public interface IApplication extends ApplicationListener {
      */
     boolean isCurrentScene(int sceneId);
 
+    public static enum ApplicationExportType {
+
+        Caustic,
+
+        Project;
+    }
+
+    public static enum ApplicationEventKind {
+        IsDirtyChange
+    }
+
+    public static class ApplicationEvent {
+
+        private IApplication application;
+
+        private ApplicationEventKind kind;
+
+        public IApplication getApplication() {
+            return application;
+        }
+
+        public ApplicationEventKind getKind() {
+            return kind;
+        }
+
+        public ApplicationEvent(IApplication application, ApplicationEventKind kind) {
+            this.application = application;
+            this.kind = kind;
+        }
+    }
 }

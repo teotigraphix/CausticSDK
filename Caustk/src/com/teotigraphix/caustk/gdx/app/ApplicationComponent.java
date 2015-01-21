@@ -79,7 +79,7 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     }
 
     public final Preferences getGlobalPreferences() {
-        return application.getApplicationModel().getPreferences();
+        return application.getGlobalPreferences();
     }
 
     protected final ICaustkRack getRack() {

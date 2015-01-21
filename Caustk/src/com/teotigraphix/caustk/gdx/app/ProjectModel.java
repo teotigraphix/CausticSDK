@@ -100,12 +100,12 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
 
     @Override
     public boolean isDirty() {
-        return getApplication().getApplicationModel().isDirty();
+        return getApplication().isDirty();
     }
 
     @Override
     public void setDirty() {
-        getApplication().getApplicationModel().setDirty();
+        getApplication().setDirty();
     }
 
     //--------------------------------------------------------------------------

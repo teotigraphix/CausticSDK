@@ -29,10 +29,6 @@ public class ApplicationState extends ApplicationStateBase {
 
     private static final String TAG = "ApplicationStateImpl";
 
-    @SuppressWarnings("unused")
-    @Inject
-    private IApplicationModel applicationModel;
-
     @Inject
     private IViewManager viewManager;
 

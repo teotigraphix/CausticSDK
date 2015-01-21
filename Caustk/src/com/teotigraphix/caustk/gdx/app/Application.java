@@ -31,6 +31,31 @@ import com.teotigraphix.caustk.gdx.controller.command.ICommandManager;
  */
 public abstract class Application implements IApplication {
 
+    private boolean dirty = false;
+
+    //----------------------------------
+    // dirty
+    //----------------------------------
+
+    @Override
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    @Override
+    public void setDirty() {
+        setDirty(true);
+    }
+
+    protected void setDirty(boolean dirty) {
+        if (dirty == this.dirty)
+            return;
+        this.dirty = dirty;
+        getEventBus().post(new ApplicationEvent(this, ApplicationEventKind.IsDirtyChange));
+    }
+
+    //===============
+
     private static final String TAG = "Application";
 
     public static boolean TEST = false;
@@ -40,17 +65,10 @@ public abstract class Application implements IApplication {
     //--------------------------------------------------------------------------
 
     @Inject
-    private IApplicationModel applicationModel;
-
-    @Inject
     private ICommandManager commandManager;
 
     @Inject
     private IPreferenceManager preferenceManager;
-
-    protected IApplicationModel getApplicationModel() {
-        return applicationModel;
-    }
 
     //----------------------------------
     // ICommandManager
