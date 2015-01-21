@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import com.sun.jna.Native;
 import com.teotigraphix.caustk.core.internal.generator.NativeUtils;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 public class CausticCoreDesktop {
     private static byte[] m_byResponseString;

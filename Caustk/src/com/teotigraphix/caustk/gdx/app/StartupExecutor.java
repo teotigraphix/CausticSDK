@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
  * The {@link StartupExecutor} manages and creates the
@@ -70,14 +70,14 @@ public class StartupExecutor {
 
     /**
      * Creates the application root and sets
-     * {@link com.teotigraphix.caustk.utils.RuntimeUtils} session properties.
+     * {@link com.teotigraphix.caustk.utils.core.RuntimeUtils} session properties.
      * 
      * @param application The main application.
      * @throws com.teotigraphix.caustk.core.CausticException the caustic folder
      *             does not exist, is caustic installed?
      * @throws java.io.IOException
-     * @see {@link com.teotigraphix.caustk.utils.RuntimeUtils#STORAGE_ROOT}
-     * @see {@link com.teotigraphix.caustk.utils.RuntimeUtils#APP_ROOT}
+     * @see {@link com.teotigraphix.caustk.utils.core.RuntimeUtils#STORAGE_ROOT}
+     * @see {@link com.teotigraphix.caustk.utils.core.RuntimeUtils#APP_ROOT}
      */
     public ICaustkRuntime create(ICaustkApplication application, File storageRoot,
             File applicationRoot) throws CausticException, IOException {

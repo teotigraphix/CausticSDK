@@ -17,10 +17,13 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node.machine.sequencer;
+package com.teotigraphix.caustk.utils.node;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 
 /**
  * @author Michael Schmalle

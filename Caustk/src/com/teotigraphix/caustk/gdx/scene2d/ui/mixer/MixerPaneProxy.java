@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.gdx.scene2d.ui.mixer.MixerPane.MixerPaneListener;
 import com.teotigraphix.caustk.groove.behavior.GrooveBehavior;
-import com.teotigraphix.caustk.utils.BehaviorUtils;
+import com.teotigraphix.caustk.utils.gdx.BehaviorUtils;
 
 /**
  * @see com.teotigraphix.caustk.gdx.groove.ui.components.mixer.MixerPane

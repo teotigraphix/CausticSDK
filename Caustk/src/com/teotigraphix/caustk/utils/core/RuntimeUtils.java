@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.utils;
+package com.teotigraphix.caustk.utils.core;
 
 import java.io.BufferedReader;
 import java.io.File;

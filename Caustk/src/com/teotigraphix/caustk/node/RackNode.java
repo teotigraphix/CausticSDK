@@ -41,7 +41,7 @@ import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel.OnRackSoloRefresh;
 import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
  * The root node of a rack state.
@@ -89,7 +89,7 @@ public class RackNode extends NodeBase {
      * Sets the <code>.caustic</code> file path.
      * <p>
      * If the path is not absolute, the
-     * {@link com.teotigraphix.caustk.utils.RuntimeUtils#getSongFile(String)}
+     * {@link com.teotigraphix.caustk.utils.core.RuntimeUtils#getSongFile(String)}
      * will be used to calculate the location of the <code>.caustic</code> file
      * within the <code>caustic/songs</code> directory.
      * 

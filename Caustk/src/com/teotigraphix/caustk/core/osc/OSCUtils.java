@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.machine.MachineType;
-import com.teotigraphix.caustk.utils.ExceptionUtils;
+import com.teotigraphix.caustk.utils.core.ExceptionUtils;
 
 /**
  * Various OSC message utilities.

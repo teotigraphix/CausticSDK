@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.node.ICaustkNode;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
  * A factory that creates {@link ICaustkNode}s for the {@link ICaustkRuntime}.
@@ -119,7 +119,7 @@ public class CaustkFactory implements ICaustkFactory {
      * @param clean Whether to clean the sub directory if exists.
      * @throws java.io.IOException the .temp or relative directory cannot be
      *             created.
-     * @see com.teotigraphix.caustk.utils.RuntimeUtils#getApplicationTempDirectory()
+     * @see com.teotigraphix.caustk.utils.core.RuntimeUtils#getApplicationTempDirectory()
      */
     private File getTempDirectory(String reletivePath, boolean clean) throws IOException {
         File tempDir = RuntimeUtils.getApplicationTempDirectory();

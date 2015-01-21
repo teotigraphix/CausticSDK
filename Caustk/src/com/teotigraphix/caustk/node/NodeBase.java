@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeIconEvent;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeLabelEvent;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeSelectedEvent;
-import com.teotigraphix.caustk.utils.ExceptionUtils;
+import com.teotigraphix.caustk.utils.core.ExceptionUtils;
 
 /**
  * The base node for all caustk node types.

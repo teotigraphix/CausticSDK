@@ -31,6 +31,8 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.utils.node.PatternUtils;
+import com.teotigraphix.caustk.utils.node.TrackNodeUtils;
 
 /**
  * A {@link TrackComponent} represents a track in the song sequencer of a

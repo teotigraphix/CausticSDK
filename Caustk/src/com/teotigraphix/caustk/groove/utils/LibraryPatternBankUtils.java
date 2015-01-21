@@ -12,8 +12,8 @@ import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.importer.CausticPatternBank;
 import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.utils.SerializeUtils;
-import com.teotigraphix.caustk.utils.ZipUncompress;
+import com.teotigraphix.caustk.utils.core.SerializeUtils;
+import com.teotigraphix.caustk.utils.core.ZipUncompress;
 import com.thoughtworks.xstream.XStream;
 
 public final class LibraryPatternBankUtils {

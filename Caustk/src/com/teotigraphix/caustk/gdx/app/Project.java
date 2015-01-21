@@ -29,8 +29,8 @@ import org.apache.commons.io.FilenameUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.utils.RackNodeUtils;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
+import com.teotigraphix.caustk.utils.node.RackNodeUtils;
 
 /**
  * The project holds the single {@link com.teotigraphix.caustk.node.RackNode} in

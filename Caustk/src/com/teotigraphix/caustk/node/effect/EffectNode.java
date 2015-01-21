@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.utils.ExceptionUtils;
+import com.teotigraphix.caustk.utils.core.ExceptionUtils;
 
 /**
  * The base effect node.

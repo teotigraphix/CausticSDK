@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node.machine.sequencer;
+package com.teotigraphix.caustk.utils.node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,8 @@ import java.util.List;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
+import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 
 /**
  * @author Michael Schmalle

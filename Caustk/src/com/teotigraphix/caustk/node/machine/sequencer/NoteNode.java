@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode.Resolution;
-import com.teotigraphix.caustk.utils.MathUtils;
+import com.teotigraphix.caustk.utils.core.MathUtils;
 
 // XXX mutators should only be called from PatternNode
 

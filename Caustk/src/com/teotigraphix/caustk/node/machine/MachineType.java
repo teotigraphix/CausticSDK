@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.machine;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
  * The type enum for the native Caustic machines.
@@ -123,7 +123,7 @@ public enum MachineType {
      * Returns a preset in the native caustic app presets directory.
      * 
      * @param nameOrRelativePath The preset name or relative path.
-     * @see com.teotigraphix.caustk.utils.RuntimeUtils#getPresetsFile(MachineType,
+     * @see com.teotigraphix.caustk.utils.core.RuntimeUtils#getPresetsFile(MachineType,
      *      String)
      */
     public File getNativePresetFile(String nameOrRelativePath) {

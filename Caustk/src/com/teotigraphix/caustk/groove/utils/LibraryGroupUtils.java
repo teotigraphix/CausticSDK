@@ -30,9 +30,9 @@ import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
-import com.teotigraphix.caustk.utils.SerializeUtils;
-import com.teotigraphix.caustk.utils.ZipCompress;
-import com.teotigraphix.caustk.utils.ZipUncompress;
+import com.teotigraphix.caustk.utils.core.SerializeUtils;
+import com.teotigraphix.caustk.utils.core.ZipCompress;
+import com.teotigraphix.caustk.utils.core.ZipUncompress;
 import com.thoughtworks.xstream.XStream;
 
 public class LibraryGroupUtils {

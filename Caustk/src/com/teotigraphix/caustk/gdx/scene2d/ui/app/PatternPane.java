@@ -40,7 +40,7 @@ import com.teotigraphix.caustk.gdx.scene2d.ui.app.PatternSelectionListener.Patte
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.PatternSelectionListener.PatternSelectionEventKind;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternUtils;
+import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 public class PatternPane extends UITable {
 

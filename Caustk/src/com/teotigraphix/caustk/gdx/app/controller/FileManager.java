@@ -34,8 +34,8 @@ import com.teotigraphix.caustk.gdx.app.IProjectFactory;
 import com.teotigraphix.caustk.gdx.app.IProjectModel;
 import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternUtils;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
+import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 @Singleton
 public class FileManager extends ApplicationComponent implements IFileManager {

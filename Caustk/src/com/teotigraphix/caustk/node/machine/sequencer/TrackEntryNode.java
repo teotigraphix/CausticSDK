@@ -24,6 +24,7 @@ import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.groove.session.Clip;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 // TODO Serialization TrackEntryNode
 

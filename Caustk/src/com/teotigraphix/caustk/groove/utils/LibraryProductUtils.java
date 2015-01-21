@@ -50,8 +50,8 @@ import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.utils.ZipCompress;
-import com.teotigraphix.caustk.utils.ZipUncompress;
+import com.teotigraphix.caustk.utils.core.ZipCompress;
+import com.teotigraphix.caustk.utils.core.ZipUncompress;
 
 public class LibraryProductUtils {
 

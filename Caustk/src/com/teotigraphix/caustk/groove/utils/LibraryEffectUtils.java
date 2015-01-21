@@ -32,8 +32,8 @@ import com.teotigraphix.caustk.groove.importer.CausticEffectType;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.utils.SerializeUtils;
-import com.teotigraphix.caustk.utils.ZipUncompress;
+import com.teotigraphix.caustk.utils.core.SerializeUtils;
+import com.teotigraphix.caustk.utils.core.ZipUncompress;
 import com.thoughtworks.xstream.XStream;
 
 public class LibraryEffectUtils {

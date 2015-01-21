@@ -47,7 +47,7 @@ import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.app.ui.ICaustkScene;
 import com.teotigraphix.caustk.gdx.app.ui.IScene;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
  * The base implementation of the {@link ICaustkApplication} API.
@@ -572,7 +572,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
         /**
          * Returns the
-         * {@link com.teotigraphix.caustk.utils.RuntimeUtils#getCausticDirectory()}
+         * {@link com.teotigraphix.caustk.utils.core.RuntimeUtils#getCausticDirectory()}
          * or the root-directory found within the {@link #preferences}.
          */
         public String getRootDirectoryPath() {

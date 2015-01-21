@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node.machine.sequencer;
+package com.teotigraphix.caustk.utils.node;
 
 public class PhraseUtils {
 

@@ -57,8 +57,8 @@ import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
-import com.teotigraphix.caustk.utils.RackNodeUtils;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
+import com.teotigraphix.caustk.utils.node.RackNodeUtils;
 
 /**
  * The {@link CaustkRack} holds the current {@link RackNode} session state.

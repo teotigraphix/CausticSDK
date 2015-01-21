@@ -31,6 +31,7 @@ import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 /**
  * The {@link PatternSequencerComponent} manages the {@link PatternNode}s in a

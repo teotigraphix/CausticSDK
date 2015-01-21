@@ -33,8 +33,8 @@ import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
-import com.teotigraphix.caustk.utils.SerializeUtils;
-import com.teotigraphix.caustk.utils.ZipUncompress;
+import com.teotigraphix.caustk.utils.core.SerializeUtils;
+import com.teotigraphix.caustk.utils.core.ZipUncompress;
 import com.thoughtworks.xstream.XStream;
 
 /**
