@@ -17,11 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core.internal;
+package com.teotigraphix.caustk.core.internal.generator;
 
 import java.util.logging.Logger;
 
 import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.caustk.core.internal.CausticCoreDesktop;
 
 /**
  * The sound generator holds references the actual raw Caustic machines created

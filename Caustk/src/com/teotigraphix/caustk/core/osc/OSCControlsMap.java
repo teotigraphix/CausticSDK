@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 

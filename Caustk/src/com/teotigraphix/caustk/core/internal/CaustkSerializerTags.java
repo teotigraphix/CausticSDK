@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.core.internal;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.teotigraphix.caustk.core.CausticFile;
 import com.teotigraphix.caustk.core.midi.ChordReference;
 import com.teotigraphix.caustk.core.midi.MidiReference;
 import com.teotigraphix.caustk.core.midi.NoteReference;
@@ -81,6 +82,7 @@ import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.FMSynthMachine;
 import com.teotigraphix.caustk.node.machine.KSSynthMachine;
+import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.ModularMachine;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;

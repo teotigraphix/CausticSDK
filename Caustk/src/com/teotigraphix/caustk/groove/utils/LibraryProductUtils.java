@@ -27,9 +27,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.core.ICaustkSerializer;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.importer.CausticEffect;
 import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.importer.CausticInstrument;

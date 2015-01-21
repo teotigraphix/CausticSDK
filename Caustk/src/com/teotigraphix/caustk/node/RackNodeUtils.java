@@ -3,7 +3,7 @@ package com.teotigraphix.caustk.node;
 
 import java.io.File;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 
 public class RackNodeUtils {
 

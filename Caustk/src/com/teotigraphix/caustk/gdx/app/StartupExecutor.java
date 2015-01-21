@@ -23,16 +23,16 @@ import java.io.File;
 import java.io.IOException;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * The {@link StartupExecutor} manages and creates the
- * {@link com.teotigraphix.caustk.core.CaustkRuntime} that is responsible for
+ * {@link com.teotigraphix.caustk.core.internal.CaustkRuntime} that is responsible for
  * the {@link com.teotigraphix.caustk.core.ISoundGenerator}, {@link Rack},
- * {@link com.teotigraphix.caustk.core.CaustkFactory} and session
+ * {@link com.teotigraphix.caustk.core.factory.CaustkFactory} and session
  * {@link com.sun.jna.Library}.
  * 
  * @author Michael Schmalle

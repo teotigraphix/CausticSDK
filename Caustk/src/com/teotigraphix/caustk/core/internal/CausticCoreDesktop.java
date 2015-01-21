@@ -23,8 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.sun.jna.Native;
-import com.teotigraphix.caustk.core.CaustkEngine;
-import com.teotigraphix.caustk.core.generator.NativeUtils;
+import com.teotigraphix.caustk.core.internal.generator.NativeUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 public class CausticCoreDesktop {

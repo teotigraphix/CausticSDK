@@ -17,12 +17,14 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.core.internal;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.teotigraphix.caustk.core.generator.AndroidSoundGenerator;
+import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.caustk.core.internal.generator.AndroidSoundGenerator;
 
 /*
 

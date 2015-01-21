@@ -17,18 +17,29 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.core.internal;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
+import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.ICaustkSerializer;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 import com.teotigraphix.caustk.gdx.app.Project;
+import com.teotigraphix.caustk.groove.importer.CausticFileImporter;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -38,6 +49,7 @@ import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.RackNodeUtils;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
@@ -405,5 +417,55 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
         }
         return tempPreset;
+    }
+
+    class CaustkSerializer implements ICaustkSerializer {
+
+        private CausticFileImporter importer;
+
+        private Kryo kryo;
+
+        @Override
+        public CausticFileImporter getImporter() {
+            return importer;
+        }
+
+        @Override
+        public Kryo getKryo() {
+            return kryo;
+        }
+
+        CaustkSerializer() {
+
+            importer = new CausticFileImporter();
+
+            kryo = new Kryo();
+
+            kryo.setDefaultSerializer(TaggedFieldSerializer.class);
+            kryo.setRegistrationRequired(true);
+
+            CaustkSerializerTags.register(kryo);
+        }
+
+        @Override
+        public void serialize(File target, Object node) throws IOException {
+            Output output = new Output(new FileOutputStream(target.getAbsolutePath()));
+            kryo.writeObject(output, node);
+            output.close();
+        }
+
+        @Override
+        public <T> T deserialize(File file, Class<T> type) throws IOException {
+            Input input = new Input(new FileInputStream(file));
+            T instance = kryo.readObject(input, type);
+            return instance;
+        }
+
+        @Override
+        public <T> T fromXMLManifest(File manifestFile, Class<T> clazz)
+                throws FileNotFoundException {
+            return importer.fromXMLManifest(manifestFile, clazz);
+        }
+
     }
 }

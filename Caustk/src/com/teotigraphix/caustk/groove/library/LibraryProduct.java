@@ -31,7 +31,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
 import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;

@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.utils;
 import java.io.File;
 import java.io.IOException;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 
 public class SerializeUtils {
 

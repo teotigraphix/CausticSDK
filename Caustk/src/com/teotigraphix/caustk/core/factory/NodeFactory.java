@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.core.factory;
 
-import com.teotigraphix.caustk.core.CaustkFactory;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
 import com.teotigraphix.caustk.node.effect.BitcrusherEffect;
@@ -47,6 +45,7 @@ import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.FMSynthMachine;
 import com.teotigraphix.caustk.node.machine.KSSynthMachine;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.ModularMachine;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;

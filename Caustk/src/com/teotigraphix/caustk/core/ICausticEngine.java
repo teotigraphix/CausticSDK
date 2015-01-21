@@ -32,7 +32,7 @@ import com.singlecellsoftware.causticcore.CausticCore;
  * @copyright Teoti Graphix, LLC
  * @since 1.0
  */
-public interface ICausticEngine extends IActivityCycle {
+public interface ICausticEngine {
 
     /**
      * Sends an OSC message to the {@link CausticCore}.
@@ -54,4 +54,20 @@ public interface ICausticEngine extends IActivityCycle {
      * @since 1.0
      */
     String queryMessage(String message);
+
+    // Lifesycle
+
+    void onStart();
+
+    void onResume();
+
+    void onPause();
+
+    void onStop();
+
+    void onDestroy();
+
+    void onRestart();
+
+    void onDispose();
 }

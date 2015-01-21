@@ -27,7 +27,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 import com.teotigraphix.caustk.gdx.app.controller.command.ICommandHistory.OnClearComplete;
 import com.teotigraphix.caustk.gdx.app.controller.command.ICommandHistory.OnFastForwardComplete;

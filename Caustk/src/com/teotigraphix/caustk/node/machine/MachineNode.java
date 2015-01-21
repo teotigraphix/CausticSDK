@@ -21,7 +21,6 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
@@ -43,8 +42,8 @@ import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
  * 
  * @author Michael Schmalle
  * @since 1.0
- * @see com.teotigraphix.caustk.core.MachineType
- * @see RackNode#createMachine(int, com.teotigraphix.caustk.core.MachineType,
+ * @see com.teotigraphix.caustk.node.machine.MachineType
+ * @see RackNode#createMachine(int, com.teotigraphix.caustk.node.machine.MachineType,
  *      String)
  */
 public abstract class MachineNode extends NodeBase {
@@ -134,7 +133,7 @@ public abstract class MachineNode extends NodeBase {
     //----------------------------------
 
     /**
-     * The machine's {@link com.teotigraphix.caustk.core.MachineType}.
+     * The machine's {@link com.teotigraphix.caustk.node.machine.MachineType}.
      */
     public final MachineType getType() {
         return type;
@@ -303,10 +302,10 @@ public abstract class MachineNode extends NodeBase {
      * <p>
      * All sub components are created but the machine is not added to the native
      * rack, see
-     * {@link RackNode#createMachine(int, com.teotigraphix.caustk.core.MachineType, String)}.
+     * {@link RackNode#createMachine(int, com.teotigraphix.caustk.node.machine.MachineType, String)}.
      * 
      * @param index The machine index in the native rack.
-     * @param type The {@link com.teotigraphix.caustk.core.MachineType}.
+     * @param type The {@link com.teotigraphix.caustk.node.machine.MachineType}.
      * @param name The 10 character alphanumeric machine name.
      */
     public MachineNode(RackNode rackNode, int index, MachineType type, String name) {

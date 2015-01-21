@@ -20,8 +20,8 @@
 package com.teotigraphix.caustk.groove.manifest;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.node.machine.MachineType;
 
 /**
  * @author Michael Schmalle

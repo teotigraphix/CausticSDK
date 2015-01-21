@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.gdx.app.controller;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.ProjectState;
 
 /**

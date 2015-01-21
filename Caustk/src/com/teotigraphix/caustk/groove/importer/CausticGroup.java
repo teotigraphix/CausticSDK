@@ -23,8 +23,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;

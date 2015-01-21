@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.core.factory;
 
-import com.teotigraphix.caustk.core.CaustkFactory;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;

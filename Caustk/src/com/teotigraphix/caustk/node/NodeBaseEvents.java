@@ -7,11 +7,11 @@ public class NodeBaseEvents {
 
     /**
      * Base class for all {@link NodeBase} events posted through the
-     * {@link com.teotigraphix.caustk.core.CaustkRack#getEventBus()}.
+     * {@link com.teotigraphix.caustk.core.internal.CaustkRack#getEventBus()}.
      * 
      * @author Michael Schmalle
      * @since 1.0
-     * @see com.teotigraphix.caustk.core.CaustkRack#getEventBus()
+     * @see com.teotigraphix.caustk.core.internal.CaustkRack#getEventBus()
      */
     public static abstract class NodeEvent {
 

@@ -32,12 +32,12 @@ import org.apache.commons.io.FilenameUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel.OnRackSoloRefresh;
 import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
@@ -357,7 +357,7 @@ public class RackNode extends NodeBase {
      * {@link com.teotigraphix.caustk.node.machine.MachineNode#create()}.
      * 
      * @param index The machine index.
-     * @param type The {@link com.teotigraphix.caustk.core.MachineType}.
+     * @param type The {@link com.teotigraphix.caustk.node.machine.MachineType}.
      * @param name The 10 character machine name.
      * @return A new {@link com.teotigraphix.caustk.node.machine.MachineNode}.
      * @see com.teotigraphix.caustk.node.machine.MachineNode#isNative()
@@ -536,7 +536,7 @@ public class RackNode extends NodeBase {
      * @author Michael Schmalle
      * @since 1.0
      * @see RackNode#createMachine(int,
-     *      com.teotigraphix.caustk.core.MachineType, String)
+     *      com.teotigraphix.caustk.node.machine.MachineType, String)
      */
     public static class RackNodeCreateEvent extends RackNodeEvent {
         public RackNodeCreateEvent(NodeBase target, RackControl control, MachineNode machineNode) {

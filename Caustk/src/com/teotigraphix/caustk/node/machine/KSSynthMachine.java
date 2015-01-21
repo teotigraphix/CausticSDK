@@ -19,7 +19,6 @@
 
 package com.teotigraphix.caustk.node.machine;
 
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 
 /**

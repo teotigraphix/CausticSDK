@@ -17,12 +17,12 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core.generator;
+package com.teotigraphix.caustk.core.internal.generator;
 
 import android.util.Log;
 
 import com.singlecellsoftware.causticcore.CausticCore;
-import com.teotigraphix.caustk.core.CaustkEngine;
+import com.teotigraphix.caustk.core.internal.CaustkEngine;
 
 /**
  * @author Michael Schmalle

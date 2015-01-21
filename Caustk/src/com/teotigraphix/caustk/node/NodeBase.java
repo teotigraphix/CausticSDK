@@ -20,10 +20,10 @@
 package com.teotigraphix.caustk.node;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeColorEvent;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
@@ -292,7 +292,7 @@ public abstract class NodeBase implements ICaustkNode {
 
     /**
      * Posts a {@link NodeEvent} event to all subscribers of the
-     * {@link com.teotigraphix.caustk.core.CaustkRack#getEventBus()}.
+     * {@link com.teotigraphix.caustk.core.internal.CaustkRack#getEventBus()}.
      * 
      * @param event The {@link NodeEvent}.
      */

@@ -17,8 +17,14 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.core.internal;
 
+import com.teotigraphix.caustk.core.ICaustkFactory;
+import com.teotigraphix.caustk.core.ICaustkLogger;
+import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.ICaustkRuntime;
+import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.caustk.core.factory.CaustkFactory;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 
 /**
@@ -145,5 +151,75 @@ public class CaustkRuntime implements ICaustkRuntime {
         if (instance == null)
             throw new IllegalStateException("CaustkRuntime.createInstance() must be called");
         return instance;
+    }
+
+    /**
+     * @author Michael Schmalle
+     * @since 1.0
+     */
+    class CaustkLogger implements ICaustkLogger {
+
+        @Override
+        public void setLogLevel(int level) {
+        }
+
+        @Override
+        public void model(String tag, String message) {
+            debug(tag, message);
+        }
+
+        @Override
+        public void view(String tag, String message) {
+            debug(tag, message);
+        }
+
+        @Override
+        public void osc(String message) {
+            debug("OSC", message);
+        }
+
+        @Override
+        public void log(String tag, String message) {
+            System.out.println(tag + ", " + message);
+        }
+
+        @Override
+        public void log(String tag, String message, Exception exception) {
+            System.out.println(tag + ", " + message);
+            exception.printStackTrace();
+        }
+
+        @Override
+        public void debug(String tag, String message) {
+            System.out.println(tag + ", " + message);
+        }
+
+        @Override
+        public void debug(String tag, String message, Throwable throwable) {
+            System.out.println(tag + ", " + message);
+            throwable.printStackTrace();
+        }
+
+        @Override
+        public void warn(String tag, String message) {
+            System.err.println("WARNING:" + tag + ", " + message);
+        }
+
+        @Override
+        public void warn(String tag, String message, Throwable throwable) {
+            System.err.println("WARNING:" + tag + ", " + message);
+            throwable.printStackTrace();
+        }
+
+        @Override
+        public void err(String tag, String message) {
+            System.err.println(tag + ", " + message);
+        }
+
+        @Override
+        public void err(String tag, String message, Throwable throwable) {
+            System.err.println(tag + ", " + message);
+            throwable.printStackTrace();
+        }
     }
 }

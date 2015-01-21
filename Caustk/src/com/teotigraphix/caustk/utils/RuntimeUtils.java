@@ -30,7 +30,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.machine.MachineType;
 
 /**
  * Runtime file utility methods.
@@ -239,7 +239,7 @@ public class RuntimeUtils {
      * not be included, this is added automatically such as
      * <code>subsynth</code> or <code>modular</code>.
      * 
-     * @param machineType The {@link com.teotigraphix.caustk.core.MachineType}.
+     * @param machineType The {@link com.teotigraphix.caustk.node.machine.MachineType}.
      * @param nameOrRelativePath The preset name or preset name with relative
      *            path without extension. e.g <code>MyPreset</code>,
      *            <code>sub/dir/MyPreset</code>.

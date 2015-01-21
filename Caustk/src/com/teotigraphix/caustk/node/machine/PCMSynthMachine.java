@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.IMachineControl;
 import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.RackNode;

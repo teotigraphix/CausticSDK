@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.node.effect;
 
-import com.teotigraphix.caustk.core.CaustkFactory;
+import com.teotigraphix.caustk.core.factory.CaustkFactory;
 import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
 
 /**

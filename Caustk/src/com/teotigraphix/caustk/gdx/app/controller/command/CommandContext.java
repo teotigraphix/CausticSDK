@@ -20,8 +20,8 @@
 package com.teotigraphix.caustk.gdx.app.controller.command;
 
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.IApplication;
 
 public class CommandContext {

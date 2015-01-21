@@ -4,7 +4,7 @@ package com.teotigraphix.caustk.node.machine.patch.modular;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 

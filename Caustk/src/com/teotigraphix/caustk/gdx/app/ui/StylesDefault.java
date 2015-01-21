@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.gdx.app.ui;
 
 import com.badlogic.gdx.graphics.Color;
-import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.machine.MachineType;
 
 public class StylesDefault {
 

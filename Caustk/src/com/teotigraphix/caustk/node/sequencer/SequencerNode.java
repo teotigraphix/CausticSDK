@@ -277,7 +277,7 @@ public class SequencerNode extends NodeBase {
      * the machine index.
      * <p>
      * Convenience;
-     * {@link com.teotigraphix.caustk.core.CaustkRack#getRackNode()} must not be
+     * {@link com.teotigraphix.caustk.core.internal.CaustkRack#getRackNode()} must not be
      * <code>null</code>.
      * 
      * @param machineIndex The machine index for the track(0..13).

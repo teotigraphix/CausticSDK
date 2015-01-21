@@ -17,15 +17,17 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.core.factory;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-import com.teotigraphix.caustk.core.factory.LibraryFactory;
-import com.teotigraphix.caustk.core.factory.NodeFactory;
+import com.teotigraphix.caustk.core.CausticException;
+import com.teotigraphix.caustk.core.ICaustkFactory;
+import com.teotigraphix.caustk.core.ICaustkRuntime;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 

@@ -20,7 +20,6 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.HarmonicsComponent;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO1Component;

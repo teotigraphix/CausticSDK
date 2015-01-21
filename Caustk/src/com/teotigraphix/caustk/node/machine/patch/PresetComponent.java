@@ -28,11 +28,11 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -154,7 +154,7 @@ public class PresetComponent extends MachineComponent {
 
     /**
      * Returns the parent machine's
-     * {@link com.teotigraphix.caustk.core.MachineType}.
+     * {@link com.teotigraphix.caustk.node.machine.MachineType}.
      * <p>
      * If {@link #getPath()} is not null, uses the file extension, since the
      * node could have been created from code, the current index may not
@@ -238,7 +238,7 @@ public class PresetComponent extends MachineComponent {
 
     /**
      * Export the preset byte array to a preset file using the current index's
-     * {@link com.teotigraphix.caustk.core.MachineType}.
+     * {@link com.teotigraphix.caustk.node.machine.MachineType}.
      * <p>
      * This method does not alter the state of this preset node.
      * 

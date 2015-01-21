@@ -25,8 +25,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkSerializer;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.importer.CausticEffect;
 import com.teotigraphix.caustk.groove.importer.CausticEffectType;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;

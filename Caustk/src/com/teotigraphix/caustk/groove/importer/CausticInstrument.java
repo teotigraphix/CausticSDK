@@ -19,8 +19,8 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
-import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.node.machine.MachineType;
 
 public class CausticInstrument extends CausticItem {
 

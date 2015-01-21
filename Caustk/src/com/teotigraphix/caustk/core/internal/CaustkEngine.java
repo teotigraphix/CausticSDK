@@ -17,9 +17,10 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.core;
+package com.teotigraphix.caustk.core.internal;
 
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.RackNode;
 
