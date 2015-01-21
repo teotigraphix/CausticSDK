@@ -29,6 +29,7 @@ import org.apache.commons.io.FileUtils;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.esotericsoftware.kryo.KryoException;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
@@ -72,9 +73,6 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     private IApplicationStateHandlers applicationStates;
 
     @Inject
-    private IApplicationController applicationController;
-
-    @Inject
     private IProjectModel projectModel;
 
     @Inject
@@ -96,10 +94,6 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     protected IApplicationStateHandlers getApplicationStates() {
         return applicationStates;
-    }
-
-    protected IApplicationController getApplicationController() {
-        return applicationController;
     }
 
     protected IProjectModel getProjectModel() {
@@ -285,10 +279,54 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         onRegisterModels();
 
         // Not Implemented
-        applicationController.setup();
+        setup();
 
         // async after load, sets main scene ui
-        applicationController.startup();
+        startup();
+    }
+
+    //--------------------------------------------------------------------------
+    // IApplicationController API :: Methods
+    //--------------------------------------------------------------------------
+
+    public void setup() {
+        getLogger().log(TAG, "setup() Not Implemented");
+    }
+
+    public void startup() {
+        getLogger().log(TAG, "startup( BEG )");
+        try {
+            //setup();
+            getApplicationStates().startup();
+            if (!Application.TEST) {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        getLogger().log(TAG, "    ------------------------------------");
+                        getLogger().log(TAG, "    $$$$ NEXT FRAME");
+
+                        startScene();
+                        // this gets called one frame later so behaviors have registered
+                        // onAwake(), onStart()
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                getLogger().log(TAG, "    ------------------------------------");
+                                getLogger().log(TAG, "    %%%% NEXT FRAME");
+
+                                getApplicationStates().startUI();
+                            }
+                        });
+                    }
+                });
+            }
+        } catch (KryoException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        getLogger().log(TAG, "startup( END )");
     }
 
     @Override
@@ -381,7 +419,6 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
         save();
         getSceneManager().dispose();
-        applicationController.dispose();
         runtime.getRack().onDestroy();
     }
 
@@ -504,4 +541,51 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public void onSceneChange(ICaustkScene scene) {
     }
 
+    //--------------------------------------------------------------------------
+    // Classes
+    //--------------------------------------------------------------------------
+
+    class ApplicationPreferences {
+
+        private static final String ATT_ROOT_DIRECTORY = "root-directory";
+
+        private Preferences preferences;
+
+        // ApplicationModel creates
+        public ApplicationPreferences(Preferences preferences) {
+            this.preferences = preferences;
+        }
+
+        //----------------------------------
+        // ATT_ROOT_DIRECTORY
+        //----------------------------------
+
+        /**
+         * Returns the {@link #getRootDirectoryPath()} as a File.
+         */
+        public File getRootDirectoryFile() {
+            return new File(getRootDirectoryPath());
+        }
+
+        /**
+         * Returns the
+         * {@link com.teotigraphix.caustk.utils.RuntimeUtils#getCausticDirectory()}
+         * or the root-directory found within the {@link #preferences}.
+         */
+        public String getRootDirectoryPath() {
+            return preferences.getString(ATT_ROOT_DIRECTORY, RuntimeUtils.getCausticDirectory()
+                    .getAbsolutePath());
+        }
+
+        /**
+         * Sets the system dependent absolute directory path for the
+         * root-directory.
+         * 
+         * @param absolutePath The absolute directory path.
+         */
+        public void setRootDirectoryPath(String absolutePath) {
+            preferences.putString(ATT_ROOT_DIRECTORY, absolutePath);
+        }
+
+    }
 }

@@ -17,17 +17,13 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gdx.app;
+package com.teotigraphix.caustk.core;
 
-/**
- * @author Michael Schmalle
- * @since 1.0
- */
-public interface IApplicationController extends IApplicationComponent {
+public interface IRackSequencerListener {
 
-    void setup();
+    void onBeatChange(int measure, float beat, int sixteenth, int thirtysecond);
 
-    void startup();
+    void onSixteenthChange(int measure, float beat, int sixteenth, int thirtysecond);
 
-    void dispose();
+    void onThirtysecondChange(int measure, float beat, int sixteenth, int thirtysecond);
 }

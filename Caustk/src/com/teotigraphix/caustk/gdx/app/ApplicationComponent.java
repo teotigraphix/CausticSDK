@@ -43,7 +43,6 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     // preferences
     //----------------------------------
 
-    @Override
     public Preferences getPreferences() {
         return application.getPreferenceManager().get(getPreferenceId());
     }

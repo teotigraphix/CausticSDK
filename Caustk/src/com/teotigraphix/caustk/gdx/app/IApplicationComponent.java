@@ -19,29 +19,12 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
-import com.badlogic.gdx.Preferences;
-
 /**
  * The {@link IApplicationComponent} is a high level data structure that posts
  * events.
- * <p>
- * Components will dispatch events through their local
- * {@link com.google.common.eventbus.EventBus} or global
- * {@link com.teotigraphix.caustk.gdx.app.ICaustkApplication#getEventBus()}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
 public interface IApplicationComponent {
-
-    /**
-     * The model's {@link com.badlogic.gdx.Preferences} instance.
-     */
-    Preferences getPreferences();
-
-    /**
-     * Returns the {@link com.teotigraphix.caustk.gdx.app.ICaustkApplication}
-     * instance.
-     */
-    //ICaustkApplication getApplication();
 }

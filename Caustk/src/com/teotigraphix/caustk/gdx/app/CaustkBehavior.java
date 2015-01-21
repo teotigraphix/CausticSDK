@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.gdx.app;
 
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.IRackSequencerListener;
 import com.teotigraphix.caustk.gdx.controller.IDialogManager;
 import com.teotigraphix.caustk.gdx.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.controller.IFileModel;
@@ -130,14 +131,14 @@ public abstract class CaustkBehavior extends Behavior {
     public void onAwake() {
         super.onAwake();
         getRack().getEventBus().register(this);
-        getApplicationState().getEventBus().register(this);
+        getApplication().getEventBus().register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         getRack().getEventBus().unregister(this);
-        getApplicationState().getEventBus().unregister(this);
+        getApplication().getEventBus().unregister(this);
     }
 
     /**

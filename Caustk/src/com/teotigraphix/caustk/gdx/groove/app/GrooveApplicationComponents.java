@@ -22,8 +22,6 @@ package com.teotigraphix.caustk.gdx.groove.app;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.gdx.app.ApplicationController;
-import com.teotigraphix.caustk.gdx.app.IApplicationController;
 import com.teotigraphix.caustk.gdx.controller.DialogManager;
 import com.teotigraphix.caustk.gdx.controller.FileManager;
 import com.teotigraphix.caustk.gdx.controller.FileModel;
@@ -46,8 +44,6 @@ public class GrooveApplicationComponents implements Module {
         binder.bind(IFileModel.class).to(FileModel.class).in(Singleton.class);
         binder.bind(IFileManager.class).to(FileManager.class).in(Singleton.class);
         binder.bind(IPreferenceManager.class).to(PreferenceManager.class).in(Singleton.class);
-        binder.bind(IApplicationController.class).to(ApplicationController.class)
-                .in(Singleton.class);
         binder.bind(IContainerMap.class).to(ContainerMap.class).in(Singleton.class);
 
     }

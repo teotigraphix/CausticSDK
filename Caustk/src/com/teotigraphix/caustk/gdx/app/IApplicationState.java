@@ -19,15 +19,5 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
-import com.google.common.eventbus.EventBus;
-
 public interface IApplicationState extends IApplicationComponent {
-
-    //Model getModel();
-
-    /**
-     * The application's global {@link com.google.common.eventbus.EventBus}.
-     */
-    EventBus getEventBus();
-
 }

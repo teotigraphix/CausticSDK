@@ -19,22 +19,20 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
-import com.google.inject.Inject;
+import java.io.IOException;
+
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.gdx.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.controller.ViewManager;
 
 @Singleton
-public class ApplicationState extends ApplicationStateBase {
+public class ApplicationState extends ApplicationComponent implements IApplicationState,
+        IApplicationStateHandlers {
 
     private static final String TAG = "ApplicationStateImpl";
 
-    @Inject
-    private IViewManager viewManager;
-
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Private :: Variables
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     private String APP_PREFERENCES;
 
@@ -43,25 +41,53 @@ public class ApplicationState extends ApplicationStateBase {
         return APP_PREFERENCES;
     }
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Public :: Properties
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
-    // ----------------------------------
+    //----------------------------------
     //
-    // ----------------------------------
+    //----------------------------------
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Constructor
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     public ApplicationState() {
         super();
     }
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Public IStateModel :: Methods
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+
+    // Called from ApplicationController.startup() before startScene() and
+    // startUI()
+    // everything needs to be synchronous, no app events
+    @Override
+    public void startup() throws IOException {
+        getApplication().getEventBus().register(this);
+
+        log(TAG, "startup()");
+
+        getApplication().getFileManager().setupApplicationDirectory();
+
+        Project project = null;
+
+        log(TAG, "Find last project path from preferences.");
+
+        project = getApplication().getFileManager().createOrLoadStartupProject();
+
+        // get onProjectCreate() and onProjectLoad() callbacks from
+        // ApplicationModel
+        getApplication().getProjectModelWrittable().setProject(project);
+    }
+
+    @Override
+    public void startUI() {
+        log(TAG, "startUI()");
+        onStartUI();
+    }
 
     @Override
     public void onProjectCreate(Project project) {
@@ -95,17 +121,15 @@ public class ApplicationState extends ApplicationStateBase {
     // Overridden Protected :: Methods
     // --------------------------------------------------------------------------
 
-    @Override
     protected void onStartUI() {
         log(TAG, "onStartUI()");
-        ((ViewManager)viewManager).onStartUI();
+        ((ViewManager)getApplication().getViewManager()).onStartUI();
     }
 
-    @Override
     protected void onRestartUI() {
         log(TAG, "onRestartUI()");
         getApplication().startScene();
-        ((ViewManager)viewManager).onRestartUI();
+        ((ViewManager)getApplication().getViewManager()).onRestartUI();
     }
 
 }
