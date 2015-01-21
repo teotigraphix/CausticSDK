@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.gdx.controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -26,17 +29,13 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternUtils;
-import com.teotigraphix.caustk.utils.RuntimeUtils;
 import com.teotigraphix.caustk.gdx.app.ApplicationComponent;
-import com.teotigraphix.caustk.gdx.app.IApplicationModel;
 import com.teotigraphix.caustk.gdx.app.IProjectFactory;
 import com.teotigraphix.caustk.gdx.app.IProjectModel;
 import com.teotigraphix.caustk.gdx.app.Project;
-
-import java.io.File;
-import java.io.IOException;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternUtils;
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 @Singleton
 public class FileManager extends ApplicationComponent implements IFileManager {
@@ -48,9 +47,6 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     //--------------------------------------------------------------------------
     // Inject :: Variables
     //--------------------------------------------------------------------------
-
-    @Inject
-    private IApplicationModel applicationModel;
 
     @Inject
     private IProjectFactory projectFactory;
@@ -86,7 +82,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     }
 
     private File getStartupProjectFile() {
-        String path = applicationModel.getPreferences().getString(LAST_PROJECT_PATH, null);
+        String path = getGlobalPreferences().getString(LAST_PROJECT_PATH, null);
         if (path == null)
             return new File("");
         return new File(path);
@@ -94,8 +90,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
     @Override
     public void setStartupProject(Project project) {
-        applicationModel.getPreferences().putString(LAST_PROJECT_PATH,
-                project.getFile().getAbsolutePath());
+        getGlobalPreferences().putString(LAST_PROJECT_PATH, project.getFile().getAbsolutePath());
     }
 
     //--------------------------------------------------------------------------
@@ -112,7 +107,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     // Called from ApplicationStates.construct()
     @Override
     public void setupApplicationDirectory() {
-        applicationModel.getApplication().getLogger().log(TAG, "setupApplicationDirectory()");
+        log(TAG, "setupApplicationDirectory()");
 
         // create the application projects folder if not exists
         // ExternalStorage/AppName
@@ -133,7 +128,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
     @Override
     public Project createOrLoadStartupProject() throws IOException {
-        applicationModel.getApplication().getLogger().log(TAG, "createOrLoadStartupProject()");
+        log(TAG, "createOrLoadStartupProject()");
 
         Project project = null;
 
@@ -207,7 +202,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
         Project project = projectModel.getProject();
 
-        final ICaustkRack rack = applicationModel.getApplication().getRack();
+        final ICaustkRack rack = getRack();
         // Root/CausticLive/Projects/MyProj1/export/exportName
         final File tempDirectory = new File(project.getResource("export"), exportName);
 

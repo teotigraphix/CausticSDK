@@ -23,23 +23,12 @@ import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.KryoException;
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
 public class ApplicationController extends ApplicationComponent implements IApplicationController {
 
     private static final String TAG = "ApplicationController";
-
-    private IApplicationModel applicationModel;
-
-    @Inject
-    public void setApplicationModel(IApplicationModel applicationModel) {
-        this.applicationModel = applicationModel;
-    }
-
-    @Inject
-    private IApplicationStateHandlers applicationStates;
 
     //--------------------------------------------------------------------------
     // Properties
@@ -62,7 +51,7 @@ public class ApplicationController extends ApplicationComponent implements IAppl
         log(TAG, "startup( BEG )");
         try {
             //setup();
-            applicationStates.startup();
+            getApplication().getApplicationStates().startup();
             if (!Application.TEST) {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
@@ -79,7 +68,7 @@ public class ApplicationController extends ApplicationComponent implements IAppl
                                 log(TAG, "    ------------------------------------");
                                 log(TAG, "    %%%% NEXT FRAME");
 
-                                applicationStates.startUI();
+                                getApplication().getApplicationStates().startUI();
                             }
                         });
                     }
@@ -97,6 +86,6 @@ public class ApplicationController extends ApplicationComponent implements IAppl
     @Override
     public void dispose() {
         getApplication().getLogger().log(TAG, "dispose()");
-        applicationModel.dispose();
+        getApplication().dispose();
     }
 }

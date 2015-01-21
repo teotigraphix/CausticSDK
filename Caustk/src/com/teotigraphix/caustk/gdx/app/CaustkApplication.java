@@ -39,6 +39,10 @@ import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
+import com.teotigraphix.caustk.gdx.controller.IFileManager;
+import com.teotigraphix.caustk.gdx.controller.IFileModel;
+import com.teotigraphix.caustk.gdx.controller.IViewManager;
+import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
@@ -56,25 +60,45 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     private IApplicationConfigurator applicationConfigurator;
 
     @Inject
-    private IApplicationController applicationController;
+    private IApplicationStateHandlers applicationStates;
 
     @Inject
-    private IApplicationModel applicationModel;
+    private IApplicationController applicationController;
 
     @Inject
     private IProjectModel projectModel;
 
-    public IApplicationController getApplicationController() {
+    @Inject
+    private IFileManager fileManager;
+
+    @Inject
+    private IFileModel fileModel;
+
+    @Inject
+    private IViewManager viewManager;
+
+    protected IApplicationStateHandlers getApplicationStates() {
+        return applicationStates;
+    }
+
+    protected IApplicationController getApplicationController() {
         return applicationController;
     }
 
-    @Override
-    public IApplicationModel getApplicationModel() {
-        return applicationModel;
+    protected IProjectModel getProjectModel() {
+        return projectModel;
     }
 
-    public IProjectModel getProjectModel() {
-        return projectModel;
+    protected IFileManager getFileManager() {
+        return fileManager;
+    }
+
+    protected IFileModel getFileModel() {
+        return fileModel;
+    }
+
+    protected IViewManager getViewManager() {
+        return viewManager;
     }
 
     // --------------------------------------------------------------------------
@@ -107,6 +131,11 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     @Override
     public ICaustkRack getRack() {
         return runtime.getRack();
+    }
+
+    @Override
+    public RackNode getRackNode() {
+        return runtime.getRack().getRackNode();
     }
 
     @Override
@@ -331,6 +360,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public void dispose() {
         getLogger().log(TAG, "dispose()");
 
+        getApplicationModel().dispose(); // calls save()
         getSceneManager().dispose();
         applicationController.dispose();
         runtime.getRack().onDestroy();
@@ -355,7 +385,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
      * <p>
      * First of the register methods to be called.
      * 
-     * @see ApplicationComponentRegistery#put(Class, IModel)
+     * @see ApplicationComponentRegistery#putCommand(Class, IModel)
      */
     @Override
     protected abstract void onRegisterModels();

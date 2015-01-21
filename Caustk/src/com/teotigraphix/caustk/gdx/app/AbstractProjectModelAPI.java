@@ -7,6 +7,8 @@ import com.teotigraphix.caustk.node.RackNode;
 
 public abstract class AbstractProjectModelAPI {
 
+    private CaustkApplication application;
+
     private ProjectModel projectModel;
 
     protected ProjectModel getProjectModel() {
@@ -15,6 +17,12 @@ public abstract class AbstractProjectModelAPI {
 
     public AbstractProjectModelAPI(ProjectModel projectModel) {
         this.projectModel = projectModel;
+        application = projectModel.getApplication();
+    }
+
+    protected void save() {
+        // XXX not right
+        projectModel.getApplication().getApplicationModel().save();
     }
 
     protected RackNode getRackNode() {
@@ -26,11 +34,11 @@ public abstract class AbstractProjectModelAPI {
     }
 
     protected IFileManager getFileManager() {
-        return projectModel.getFileManager();
+        return application.getFileManager();
     }
 
     protected IFileModel getFileModel() {
-        return projectModel.getFileModel();
+        return application.getFileModel();
     }
 
     protected void post(Object event) {

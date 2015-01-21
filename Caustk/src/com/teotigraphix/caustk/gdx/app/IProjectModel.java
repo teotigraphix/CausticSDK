@@ -19,8 +19,9 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import java.io.File;
+
 import com.teotigraphix.caustk.gdx.app.api.MachineAPI;
-import com.teotigraphix.caustk.gdx.controller.IViewManager;
 
 /**
  * The {@link IApplicationModel} loads and sets the {@link #getProject()}.
@@ -60,11 +61,7 @@ public interface IProjectModel {
      */
     <T extends Project> T getProject();
 
-    //----------------------------------
-    // viewManager
-    //----------------------------------
-
-    IViewManager getViewManager();
+    File getProjectDirectory();
 
     //----------------------------------
     // machineAPI
@@ -79,6 +76,8 @@ public interface IProjectModel {
      * Safe to register any API listeners to the global EventBus.
      */
     void start();
+
+    void onEvent(Object kind);
 
     //--------------------------------------------------------------------------
     // Methods

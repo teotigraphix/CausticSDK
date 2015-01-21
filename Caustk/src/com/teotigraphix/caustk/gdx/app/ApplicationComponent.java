@@ -22,9 +22,9 @@ package com.teotigraphix.caustk.gdx.app;
 import com.badlogic.gdx.Preferences;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.gdx.controller.IPreferenceManager;
+import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.gdx.controller.command.CommandExecutionException;
-import com.teotigraphix.caustk.gdx.controller.command.ICommandManager;
+import com.teotigraphix.caustk.node.RackNode;
 
 /**
  * Injectable model's for application model, manager, state etc.
@@ -33,13 +33,7 @@ public abstract class ApplicationComponent implements IApplicationComponent {
 
     private static final String TAG = "ApplicationComponent";
 
-    @Inject
-    private IPreferenceManager preferenceManager;
-
-    private ICaustkApplication application;
-
-    @Inject
-    private ICommandManager commandManager;
+    private CaustkApplication application;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -51,7 +45,7 @@ public abstract class ApplicationComponent implements IApplicationComponent {
 
     @Override
     public Preferences getPreferences() {
-        return preferenceManager.get(getPreferenceId());
+        return application.getPreferenceManager().get(getPreferenceId());
     }
 
     /**
@@ -67,23 +61,38 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     // application
     //----------------------------------
 
-    @Override
-    public ICaustkApplication getApplication() {
+    protected CaustkApplication getApplication() {
         return application;
     }
 
     @Inject
     public void setApplication(ICaustkApplication application) {
-        this.application = application;
+        this.application = (CaustkApplication)application;
     }
+
+    //----------------------------------
+    // eventBus
+    //----------------------------------
 
     public final EventBus getEventBus() {
         return application.getEventBus();
     }
 
-    public void execute(String message, Object... args) {
+    public final Preferences getGlobalPreferences() {
+        return application.getApplicationModel().getPreferences();
+    }
+
+    protected final ICaustkRack getRack() {
+        return application.getRack();
+    }
+
+    protected final RackNode getRackNode() {
+        return application.getRackNode();
+    }
+
+    public final void execute(String message, Object... args) {
         try {
-            commandManager.execute(message, args);
+            application.getCommandManager().execute(message, args);
         } catch (CommandExecutionException e) {
             err(TAG, "Failed to execute command " + message, e);
         }
@@ -104,18 +113,18 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     //--------------------------------------------------------------------------
 
     protected void debug(String tag, String message) {
-        getApplication().getLogger().debug(tag, message);
+        application.getLogger().debug(tag, message);
     }
 
     protected void log(String tag, String message) {
-        getApplication().getLogger().log(tag, message);
+        application.getLogger().log(tag, message);
     }
 
     protected void err(String tag, String message) {
-        getApplication().getLogger().err(tag, message);
+        application.getLogger().err(tag, message);
     }
 
     protected void err(String tag, String message, Throwable throwable) {
-        getApplication().getLogger().err(tag, message, throwable);
+        application.getLogger().err(tag, message, throwable);
     }
 }

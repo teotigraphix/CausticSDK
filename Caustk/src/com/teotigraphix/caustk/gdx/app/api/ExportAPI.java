@@ -123,7 +123,7 @@ public class ExportAPI extends AbstractProjectModelAPI {
 
     public String createName(String name) {
         // [name]-[projectName]-[bmp]bpm
-        RackNode rackNode = projectModel.getApplication().getRack().getRackNode();
+        RackNode rackNode = getRackNode();
         String projectName = projectModel.getProject().getName();
         String bpm = Integer.toString((int)rackNode.getSequencer().getBPM());
         return projectName + "-" + name + "-" + bpm + "bpm";

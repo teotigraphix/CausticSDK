@@ -19,10 +19,8 @@
 
 package com.teotigraphix.caustk.gdx.controller;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.gdx.app.ApplicationComponent;
-import com.teotigraphix.caustk.gdx.app.IProjectModel;
 import com.teotigraphix.caustk.gdx.app.ProjectState;
 import com.teotigraphix.caustk.gdx.controller.view.AbstractDisplay;
 
@@ -32,9 +30,6 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     //--------------------------------------------------------------------------
     // Inject :: Properties
     //--------------------------------------------------------------------------
-
-    @Inject
-    private IProjectModel projectModel;
 
     //--------------------------------------------------------------------------
     // Private :: Properties
@@ -49,14 +44,6 @@ public abstract class ViewManager extends ApplicationComponent implements IViewM
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // projectModel
-    //----------------------------------
-
-    public IProjectModel getProjectModel() {
-        return projectModel;
-    }
 
     //----------------------------------
     // eventsEnabled

@@ -43,11 +43,6 @@ public interface IApplication extends ApplicationListener {
     String getApplicationId();
 
     /**
-     * The singleton application model.
-     */
-    IApplicationModel getApplicationModel();
-
-    /**
      * The width of the application.
      */
     float getWidth();

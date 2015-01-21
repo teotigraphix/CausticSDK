@@ -27,7 +27,6 @@ import org.apache.commons.io.FileUtils;
 import com.badlogic.gdx.Gdx;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.gdx.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.controller.IPreferenceManager;
 
 @Singleton
@@ -43,12 +42,6 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
 
     @Inject
     private IPreferenceManager preferenceManager;
-
-    @Inject
-    private IProjectModel projectModel;
-
-    @Inject
-    private IFileManager fileManager;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -67,7 +60,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
     }
 
     protected final IProjectModelWrite getProjectModelWrittable() {
-        return (IProjectModelWrite)projectModel;
+        return (IProjectModelWrite)getApplication().getProjectModel();
     }
 
     //--------------------------------------------------------------------------
@@ -146,19 +139,20 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
 
     @Override
     public void newProject(File projectLocation) throws IOException {
-        Project project = fileManager.createProject(projectLocation);
+        Project project = getApplication().getFileManager().createProject(projectLocation);
         getProjectModelWrittable().setProject(project);
     }
 
     @Override
     public void loadProject(File projectFile) throws IOException {
-        Project project = fileManager.loadProject(projectFile);
+        Project project = getApplication().getFileManager().loadProject(projectFile);
         getProjectModelWrittable().setProject(project);
     }
 
     @Override
     public File saveProjectAs(String projectName) throws IOException {
-        return saveProjectAs(new File(fileManager.getProjectsDirectory(), projectName));
+        return saveProjectAs(new File(getApplication().getFileManager().getProjectsDirectory(),
+                projectName));
     }
 
     /**
@@ -167,7 +161,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
      * @throws java.io.IOException
      */
     public File saveProjectAs(File projectLocation) throws IOException {
-        File srcDir = projectModel.getProject().getDirectory();
+        File srcDir = getApplication().getProjectModel().getProjectDirectory();
         File destDir = projectLocation;
         FileUtils.copyDirectory(srcDir, destDir);
 
@@ -175,7 +169,7 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
         final File oldProjectFile = new File(projectLocation, srcDir.getName() + ".prj");
         File newProjectFile = new File(projectLocation, destDir.getName() + ".prj");
 
-        Project newProject = fileManager.readProject(oldProjectFile);
+        Project newProject = getApplication().getFileManager().readProject(oldProjectFile);
         newProject.setRack(getApplication().getRack()); // needed for deserialization
         newProject.rename(newProjectFile);
 
@@ -194,13 +188,14 @@ public class ApplicationModel extends ApplicationComponent implements IApplicati
 
     @Override
     public File exportProject(File file, ApplicationExportType exportType) throws IOException {
-        File srcDir = projectModel.getProject().getDirectory();
+        File srcDir = getApplication().getProjectModel().getProjectDirectory();
         File exportedFile = new File(srcDir, "exported/");
         exportedFile.mkdirs();
         // NO .caustic ext
         // XXX Can't have spaces, must replace all spaces with '-'
         exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-") + ".caustic");
-        File savedFile = projectModel.getProject().getRack().getRackNode().saveSongAs(exportedFile);
+
+        File savedFile = getRackNode().saveSongAs(exportedFile);
         return savedFile;
     }
 }

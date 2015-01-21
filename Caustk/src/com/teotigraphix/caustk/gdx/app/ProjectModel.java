@@ -1,15 +1,12 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import java.io.File;
 import java.io.IOException;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.gdx.app.api.ExportAPI;
 import com.teotigraphix.caustk.gdx.app.api.MachineAPI;
-import com.teotigraphix.caustk.gdx.controller.IFileManager;
-import com.teotigraphix.caustk.gdx.controller.IFileModel;
-import com.teotigraphix.caustk.gdx.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.controller.ViewManager;
 
 @Singleton
@@ -17,25 +14,6 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
         IProjectModelWrite {
 
     private static final String TAG = "ProjectModel";
-
-    //--------------------------------------------------------------------------
-    // Inject :: Variables
-    //--------------------------------------------------------------------------
-
-    @Inject
-    private IApplicationModel applicationModel;
-
-    @Inject
-    private IApplicationStateHandlers applicationStates;
-
-    @Inject
-    private IFileManager fileManager;
-
-    @Inject
-    private IFileModel fileModel;
-
-    @Inject
-    private IViewManager viewManager;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -52,31 +30,6 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     //--------------------------------------------------------------------------
     // Public Property :: API
     //--------------------------------------------------------------------------
-
-    //----------------------------------
-    // fileManager
-    //----------------------------------
-
-    public IFileManager getFileManager() {
-        return fileManager;
-    }
-
-    //----------------------------------
-    // fileModel
-    //----------------------------------
-
-    public IFileModel getFileModel() {
-        return fileModel;
-    }
-
-    //----------------------------------
-    // viewManager
-    //----------------------------------
-
-    @Override
-    public IViewManager getViewManager() {
-        return viewManager;
-    }
 
     //----------------------------------
     // machineAPI
@@ -128,6 +81,11 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
         }
     }
 
+    @Override
+    public File getProjectDirectory() {
+        return getProject().getDirectory();
+    }
+
     //----------------------------------
     // state
     //----------------------------------
@@ -142,12 +100,12 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
 
     @Override
     public boolean isDirty() {
-        return applicationModel.isDirty();
+        return getApplication().getApplicationModel().isDirty();
     }
 
     @Override
     public void setDirty() {
-        applicationModel.setDirty();
+        getApplication().getApplicationModel().setDirty();
     }
 
     //--------------------------------------------------------------------------
@@ -166,10 +124,15 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     public void restore(ProjectState state) {
         this.state = state;
 
-        ((ViewManager)viewManager).restore(state);
+        ((ViewManager)getApplication().getViewManager()).restore(state);
 
         machineAPI.restore(state);
         exportAPI.restore(state);
+    }
+
+    @Override
+    public void onEvent(Object kind) {
+        ((ViewManager)getApplication().getViewManager()).onEvent(kind);
     }
 
     @Override
@@ -183,26 +146,26 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
 
     private void createProject(Project project) throws IOException {
         log(TAG, "createProject()");
-        applicationStates.onProjectCreate(project);
-        fileManager.setStartupProject(project);
+        getApplication().getApplicationStates().onProjectCreate(project);
+        getApplication().getFileManager().setStartupProject(project);
         project.save();
     }
 
     private void loadProject(Project project) {
         log(TAG, "loadProject()");
-        fileManager.setStartupProject(project);
-        applicationStates.onProjectLoad(project);
+        getApplication().getFileManager().setStartupProject(project);
+        getApplication().getApplicationStates().onProjectLoad(project);
     }
 
     private void saveProject(Project project) throws IOException {
         log(TAG, "saveProject()");
-        applicationStates.onProjectSave(project);
+        getApplication().getApplicationStates().onProjectSave(project);
         project.save();
     }
 
     private void closeProject(Project project) {
         log(TAG, "closeProject()");
-        applicationStates.onProjectClose(project);
+        getApplication().getApplicationStates().onProjectClose(project);
     }
 
 }

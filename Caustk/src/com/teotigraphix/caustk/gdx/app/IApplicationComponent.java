@@ -43,5 +43,5 @@ public interface IApplicationComponent {
      * Returns the {@link com.teotigraphix.caustk.gdx.app.ICaustkApplication}
      * instance.
      */
-    ICaustkApplication getApplication();
+    //ICaustkApplication getApplication();
 }

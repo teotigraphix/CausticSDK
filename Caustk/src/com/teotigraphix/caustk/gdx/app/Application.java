@@ -21,6 +21,9 @@ package com.teotigraphix.caustk.gdx.app;
 
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
+import com.teotigraphix.caustk.gdx.controller.IPreferenceManager;
+import com.teotigraphix.caustk.gdx.controller.command.ICommandManager;
 
 /**
  * @author Michael Schmalle
@@ -31,6 +34,35 @@ public abstract class Application implements IApplication {
     private static final String TAG = "Application";
 
     public static boolean TEST = false;
+
+    //--------------------------------------------------------------------------
+    // Inject :: Variables
+    //--------------------------------------------------------------------------
+
+    @Inject
+    private IApplicationModel applicationModel;
+
+    @Inject
+    private ICommandManager commandManager;
+
+    @Inject
+    private IPreferenceManager preferenceManager;
+
+    protected IApplicationModel getApplicationModel() {
+        return applicationModel;
+    }
+
+    //----------------------------------
+    // ICommandManager
+    //----------------------------------
+
+    public ICommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    protected IPreferenceManager getPreferenceManager() {
+        return preferenceManager;
+    }
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -234,7 +266,7 @@ public abstract class Application implements IApplication {
      * <p>
      * First of the register methods to be called.
      * 
-     * @see ApplicationComponentRegistery#put(Class, IModel)
+     * @see ApplicationComponentRegistery#putCommand(Class, IModel)
      */
     protected abstract void onRegisterModels();
 
