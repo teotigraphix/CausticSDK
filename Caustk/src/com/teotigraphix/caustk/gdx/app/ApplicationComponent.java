@@ -73,6 +73,10 @@ public abstract class ApplicationComponent implements IApplicationComponent {
     // eventBus
     //----------------------------------
 
+    protected IProjectModel getProjectModel() {
+        return getApplication().getProjectModel();
+    }
+
     public final EventBus getEventBus() {
         return application.getEventBus();
     }

@@ -27,27 +27,35 @@ public class MachineAPI extends AbstractProjectModelAPI {
         this.triggereddMachines = triggereddMachines;
     }
 
+    //----------------------------------
+    // machine
+    //----------------------------------
+
     public boolean hasMachine(int index) {
-        return getProject().getRackNode().containsMachine(index);
+        return getRackNode().containsMachine(index);
     }
+
+    public MachineNode getMachine(int index) {
+        return getRackNode().getMachine(index);
+    }
+
+    //----------------------------------
+    // selectedMachine
+    //----------------------------------
 
     public final int getSelectedMachineIndex() {
         return getSelectedMachine().getIndex();
     }
 
     public void setSelectedMachineIndex(int machineIndex) {
-        if (getProject().getRackNode().getSelectedIndex() == machineIndex)
+        if (getRackNode().getSelectedIndex() == machineIndex)
             return;
-        getProject().getRackNode().setSelectedIndex(machineIndex);
+        getRackNode().setSelectedIndex(machineIndex);
         post(new ProjectModelEvent(ProjectModelEvent.Kind.MachineSelectionChange, getProjectModel()));
     }
 
-    public MachineNode getMachine(int index) {
-        return getProject().getRackNode().getMachine(index);
-    }
-
     public final MachineNode getSelectedMachine() {
-        return getProject().getRackNode().getSelectedMachine();
+        return getRackNode().getSelectedMachine();
     }
 
     public final PatternNode getSelectedMachinePattern() {

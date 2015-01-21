@@ -1,6 +1,7 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
+import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.gdx.app.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.app.controller.IFileModel;
 import com.teotigraphix.caustk.node.RackNode;
@@ -25,7 +26,12 @@ public abstract class AbstractProjectModelAPI {
         projectModel.getApplication().save();
     }
 
-    protected RackNode getRackNode() {
+    // XXX DELETE
+    protected final ICaustkRack getRack() {
+        return application.getRack();
+    }
+
+    protected final RackNode getRackNode() {
         return projectModel.getProject().getRackNode();
     }
 
@@ -45,9 +51,9 @@ public abstract class AbstractProjectModelAPI {
         projectModel.getEventBus().post(event);
     }
 
-    protected Project getProject() {
-        return projectModel.getProject();
-    }
+    //    protected Project getProject() {
+    //        return projectModel.getProject();
+    //    }
 
     public abstract void restore(ProjectState state);
 }

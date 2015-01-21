@@ -52,7 +52,7 @@ public abstract class CaustkBehavior extends Behavior {
     private IDialogManager dialogManager;
 
     @Override
-    public final ICaustkApplication getApplication() {
+    public ICaustkApplication getApplication() {
         return (ICaustkApplication)super.getApplication();
     }
 
