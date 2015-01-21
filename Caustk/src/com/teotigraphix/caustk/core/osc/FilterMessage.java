@@ -96,7 +96,7 @@ public class FilterMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..3.0625)</li>
+     * <li><strong>value</strong>: (0..1.75)</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
@@ -112,7 +112,7 @@ public class FilterMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..1)</li>
+     * <li><strong>value</strong>: (0..1.75)</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
@@ -128,7 +128,7 @@ public class FilterMessage extends CausticMessage {
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..1.0)</li>
+     * <li><strong>value</strong>: (0..1.75)</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>
@@ -139,12 +139,12 @@ public class FilterMessage extends CausticMessage {
     /**
      * Message: <code>/caustic/[machine_index]/filter_release [value]</code>
      * <p>
-     * <strong>Default</strong>: <code>3.0625</code>
+     * <strong>Default</strong>: <code>1.75</code>
      * <p>
      * <strong>Parameters</strong>:
      * <ul>
      * <li><strong>machine_index</strong>: The machine index.</li>
-     * <li><strong>value</strong>: (0..3.0625)</li>
+     * <li><strong>value</strong>: (0..1.75)</li>
      * </ul>
      * <p>
      * <strong>Returns</strong>: <code>float</code>

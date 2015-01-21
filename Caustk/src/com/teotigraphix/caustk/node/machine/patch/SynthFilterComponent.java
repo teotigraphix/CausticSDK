@@ -140,16 +140,14 @@ public class SynthFilterComponent extends MachineComponent {
     }
 
     /**
-     * XXX 3.0625
-     * 
-     * @param attack (0.0..3.0)
+     * @param attack (0.0..1.75)
      * @see com.teotigraphix.caustk.core.osc.FilterMessage#FILTER_ATTACK
      */
     public void setAttack(float attack) {
         if (attack == this.attack)
             return;
-        if (attack < 0 || attack > 3.0625f)
-            throw newRangeException(FilterMessage.FILTER_ATTACK, "0..3.0625", attack);
+        if (attack < 0 || attack > 1.75f)
+            throw newRangeException(FilterMessage.FILTER_ATTACK, "0..1.75", attack);
         this.attack = attack;
         FilterMessage.FILTER_ATTACK.send(getRack(), getMachineIndex(), attack);
     }
@@ -170,16 +168,14 @@ public class SynthFilterComponent extends MachineComponent {
     }
 
     /**
-     * XXX 3.0625
-     * 
-     * @param decay (0.0..3.0)
+     * @param decay (0.0..1.75)
      * @see com.teotigraphix.caustk.core.osc.FilterMessage#FILTER_DECAY
      */
     public void setDecay(float decay) {
         if (decay == this.decay)
             return;
-        if (decay < 0 || decay > 3.0625f)
-            throw newRangeException(FilterMessage.FILTER_DECAY, "0..3.0625", decay);
+        if (decay < 0 || decay > 1.75f)
+            throw newRangeException(FilterMessage.FILTER_DECAY, "0..1.75", decay);
         this.decay = decay;
         FilterMessage.FILTER_DECAY.send(getRack(), getMachineIndex(), decay);
     }
@@ -200,16 +196,14 @@ public class SynthFilterComponent extends MachineComponent {
     }
 
     /**
-     * XXX 3.0625
-     * 
-     * @param release (0.0..3.0)
+     * @param release (0.0..1.75)
      * @see com.teotigraphix.caustk.core.osc.FilterMessage#FILTER_RELEASE
      */
     public void setRelease(float release) {
         if (release == this.release)
             return;
-        if (release < 0 || release > 3.0625f)
-            throw newRangeException(FilterMessage.FILTER_RELEASE, "0..3.0625", release);
+        if (release < 0 || release > 1.75f)
+            throw newRangeException(FilterMessage.FILTER_RELEASE, "0..1.75", release);
         this.release = release;
         FilterMessage.FILTER_RELEASE.send(getRack(), getMachineIndex(), release);
     }
@@ -230,14 +224,14 @@ public class SynthFilterComponent extends MachineComponent {
     }
 
     /**
-     * @param sustain (0.0..1.0)
+     * @param sustain (0.0..1.75)
      * @see com.teotigraphix.caustk.core.osc.FilterMessage#FILTER_SUSTAIN
      */
     public void setSustain(float sustain) {
         if (sustain == this.sustain)
             return;
-        if (sustain < 0f || sustain > 1.0f)
-            throw newRangeException(FilterMessage.FILTER_SUSTAIN, "0..1.0", sustain);
+        if (sustain < 0f || sustain > 1.75f)
+            throw newRangeException(FilterMessage.FILTER_SUSTAIN, "0..1.75", sustain);
         this.sustain = sustain;
         FilterMessage.FILTER_SUSTAIN.send(getRack(), getMachineIndex(), sustain);
     }
