@@ -19,15 +19,15 @@
 
 package com.teotigraphix.caustk.node.machine.patch;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * {@link PresetComponent} utilities.

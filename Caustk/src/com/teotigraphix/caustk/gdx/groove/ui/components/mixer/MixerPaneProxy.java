@@ -19,13 +19,13 @@
 
 package com.teotigraphix.caustk.gdx.groove.ui.components.mixer;
 
+import java.util.List;
+
 import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
-import com.teotigraphix.caustk.node.BehaviorUtils;
 import com.teotigraphix.caustk.gdx.groove.app.GrooveBehavior;
 import com.teotigraphix.caustk.gdx.groove.ui.components.mixer.MixerPane.MixerPaneListener;
-
-import java.util.List;
+import com.teotigraphix.caustk.node.BehaviorUtils;
 
 /**
  * @see com.teotigraphix.caustk.gdx.groove.ui.components.mixer.MixerPane

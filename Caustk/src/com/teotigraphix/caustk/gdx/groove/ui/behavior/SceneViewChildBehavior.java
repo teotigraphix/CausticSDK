@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.gdx.groove.ui.behavior;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.caustk.gdx.app.CaustkBehavior;
+import com.teotigraphix.caustk.gdx.app.ui.CaustkBehavior;
 import com.teotigraphix.caustk.gdx.groove.ui.components.SceneViewChildData;
 
 /**

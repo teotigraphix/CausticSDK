@@ -19,13 +19,13 @@
 
 package com.teotigraphix.caustk.gdx.groove.ui;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.gdx.app.CaustkScene;
-
-import java.util.HashMap;
+import com.teotigraphix.caustk.gdx.app.ui.CaustkScene;
 
 @Singleton
 public class ContainerMap implements IContainerMap {

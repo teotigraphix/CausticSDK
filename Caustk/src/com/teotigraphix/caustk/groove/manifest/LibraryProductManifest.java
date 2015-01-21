@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.groove.manifest;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
-
 import java.io.File;
 import java.util.UUID;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
 
 /**
  * @author Michael Schmalle

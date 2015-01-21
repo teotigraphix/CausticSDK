@@ -1,10 +1,10 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import java.util.Collection;
+
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.ICaustkNode;
-
-import java.util.Collection;
 
 public interface IModularComponent extends ICaustkNode {
 

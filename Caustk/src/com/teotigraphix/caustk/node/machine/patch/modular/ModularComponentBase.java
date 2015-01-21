@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public abstract class ModularComponentBase extends MachineComponent implements IModularComponent {
 

@@ -38,9 +38,9 @@ package com.teotigraphix.caustk.core;
 //mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-import com.teotigraphix.caustk.utils.RuntimeUtils;
-
 import java.io.File;
+
+import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**
  * The type enum for the native Caustic machines.

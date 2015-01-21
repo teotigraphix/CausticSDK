@@ -1,15 +1,6 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
-import com.teotigraphix.caustk.core.MachineType;
-import com.teotigraphix.caustk.node.effect.EffectNode;
-import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
-import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -18,6 +9,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import com.teotigraphix.caustk.core.CaustkRuntime;
+import com.teotigraphix.caustk.core.MachineType;
+import com.teotigraphix.caustk.node.effect.EffectNode;
+import com.teotigraphix.caustk.node.effect.EffectType;
+import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
+import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 
 public final class OSCControlsMap {
 

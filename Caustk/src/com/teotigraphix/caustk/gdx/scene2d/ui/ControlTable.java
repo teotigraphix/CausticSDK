@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.gdx.scene2d.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.teotigraphix.caustk.gdx.controller.IHelpManagerAware;
+import com.teotigraphix.caustk.gdx.app.controller.IHelpManagerAware;
 import com.teotigraphix.caustk.gdx.scene2d.utils.StyleUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The base abstract container for controls that are value/automation aware.

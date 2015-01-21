@@ -19,13 +19,13 @@
 
 package com.teotigraphix.caustk.node.master;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
-
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 /**
  * The master delay insert node.

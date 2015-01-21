@@ -19,6 +19,11 @@
 
 package com.teotigraphix.caustk.groove.utils;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
@@ -31,11 +36,6 @@ import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.utils.SerializeUtils;
 import com.teotigraphix.caustk.utils.ZipUncompress;
 import com.thoughtworks.xstream.XStream;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Michael Schmalle

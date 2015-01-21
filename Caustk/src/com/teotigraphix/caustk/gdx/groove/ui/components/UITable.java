@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.gdx.groove.ui.components;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public abstract class UITable extends Table {
 

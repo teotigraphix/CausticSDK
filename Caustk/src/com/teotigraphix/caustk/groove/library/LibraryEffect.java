@@ -19,12 +19,12 @@
 
 package com.teotigraphix.caustk.groove.library;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryEffectManifest;
 import com.teotigraphix.caustk.node.effect.EffectNode;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Michael Schmalle

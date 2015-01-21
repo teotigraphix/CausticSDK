@@ -19,11 +19,6 @@
 
 package com.teotigraphix.caustk.groove.manifest;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
-import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +27,11 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
+import com.teotigraphix.caustk.groove.library.LibraryProduct;
+import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 
 /**
  * @author Michael Schmalle

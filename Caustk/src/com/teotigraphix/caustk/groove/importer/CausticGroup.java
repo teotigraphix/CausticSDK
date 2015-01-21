@@ -19,15 +19,15 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.teotigraphix.caustk.core.CaustkRuntime;
 import com.teotigraphix.caustk.core.ICaustkFactory;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /*
 <group sourceFile="C:\Users\Teoti\Documents\caustic\songs\ALLEY 01.caustic" 

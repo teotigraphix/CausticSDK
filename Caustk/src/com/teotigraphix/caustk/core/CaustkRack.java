@@ -19,7 +19,16 @@
 
 package com.teotigraphix.caustk.core;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.UUID;
+
+import org.apache.commons.io.FileUtils;
+
 import com.teotigraphix.caustk.core.osc.RackMessage;
+import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
+import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -38,15 +47,6 @@ import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
-import com.teotigraphix.caustk.gdx.app.Project;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.UUID;
 
 /**
  * The {@link CaustkRack} holds the current {@link RackNode} session state.

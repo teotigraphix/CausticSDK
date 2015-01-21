@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.gdx.scene2d.ui;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -34,9 +37,6 @@ import com.teotigraphix.caustk.gdx.scene2d.ui.AdvancedListListener.AdvancedListE
 import com.teotigraphix.caustk.gdx.scene2d.ui.AdvancedListListener.AdvancedListEventKind;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ListRowRenderer.ListRowRendererStyle;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ScrollList.LabelRow;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 // http://www.badlogicgames.com/forum/viewtopic.php?f=11&t=11108&p=50062&hilit=list#p50062
 

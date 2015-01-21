@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.core.internal;
 
-import com.teotigraphix.caustk.core.ISoundGenerator;
-
 import java.util.logging.Logger;
+
+import com.teotigraphix.caustk.core.ISoundGenerator;
 
 /**
  * The sound generator holds references the actual raw Caustic machines created

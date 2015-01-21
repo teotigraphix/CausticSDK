@@ -19,12 +19,12 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Michael Schmalle

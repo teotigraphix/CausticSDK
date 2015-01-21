@@ -19,8 +19,6 @@
 
 package com.teotigraphix.caustk.utils;
 
-import com.teotigraphix.caustk.core.MachineType;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -31,6 +29,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import com.teotigraphix.caustk.core.MachineType;
 
 /**
  * Runtime file utility methods.

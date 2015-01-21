@@ -19,6 +19,10 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 import com.teotigraphix.caustk.groove.utils.LibraryEffectUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryGroupUtils;
 import com.teotigraphix.caustk.groove.utils.LibraryInstrumentUtils;
@@ -26,10 +30,6 @@ import com.teotigraphix.caustk.groove.utils.LibraryPatternBankUtils;
 import com.teotigraphix.caustk.groove.utils.LibrarySoundUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 public class CausticFileImporter {
 

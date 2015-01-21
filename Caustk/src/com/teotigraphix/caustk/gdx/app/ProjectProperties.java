@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-
 import java.util.HashMap;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 
 public class ProjectProperties {
 

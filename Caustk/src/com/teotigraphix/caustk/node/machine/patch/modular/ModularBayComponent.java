@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The modular synth bay component.

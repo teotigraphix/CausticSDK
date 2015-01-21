@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.groove.session;
 
+import java.util.ArrayList;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.node.machine.MachineNode;
@@ -26,8 +28,6 @@ import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
-
-import java.util.ArrayList;
 
 public class Clip {
 

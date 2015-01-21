@@ -19,13 +19,13 @@
 
 package com.teotigraphix.caustk.core.generator;
 
+import java.util.logging.Logger;
+
 import android.content.Context;
 
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICausticEngine;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-
-import java.util.logging.Logger;
 
 /**
  * The base implementation of the {@link ICausticEngine}.

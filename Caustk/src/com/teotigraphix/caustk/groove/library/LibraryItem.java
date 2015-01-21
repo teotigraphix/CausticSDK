@@ -19,9 +19,9 @@
 
 package com.teotigraphix.caustk.groove.library;
 
-import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
-
 import java.util.UUID;
+
+import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
 /**
  * @author Michael Schmalle

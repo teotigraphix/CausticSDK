@@ -22,8 +22,10 @@ package com.teotigraphix.caustk.gdx.app;
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
-import com.teotigraphix.caustk.gdx.controller.IPreferenceManager;
-import com.teotigraphix.caustk.gdx.controller.command.ICommandManager;
+import com.teotigraphix.caustk.gdx.app.controller.IPreferenceManager;
+import com.teotigraphix.caustk.gdx.app.controller.command.ICommandManager;
+import com.teotigraphix.caustk.gdx.app.ui.IScene;
+import com.teotigraphix.caustk.gdx.app.ui.SceneManager;
 
 /**
  * @author Michael Schmalle
@@ -289,7 +291,7 @@ public abstract class Application implements IApplication {
     protected abstract void onRegisterModels();
 
     /**
-     * Add {@link com.teotigraphix.caustk.gdx.app.IScene}s to the application.
+     * Add {@link com.teotigraphix.caustk.gdx.app.ui.IScene}s to the application.
      * 
      * @see #onRegisterModels()
      * @see SceneManager#addScene(int, Class)
@@ -297,7 +299,7 @@ public abstract class Application implements IApplication {
     protected abstract void onRegisterScenes();
 
     /**
-     * Set the initial {@link com.teotigraphix.caustk.gdx.app.Scene} that starts
+     * Set the initial {@link com.teotigraphix.caustk.gdx.app.ui.Scene} that starts
      * the application, and perform any other various setup tasks before the
      * main user interface is shown.
      * 

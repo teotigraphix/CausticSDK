@@ -23,7 +23,7 @@ import com.badlogic.gdx.Preferences;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.ICaustkRack;
-import com.teotigraphix.caustk.gdx.controller.command.CommandExecutionException;
+import com.teotigraphix.caustk.gdx.app.controller.command.CommandExecutionException;
 import com.teotigraphix.caustk.node.RackNode;
 
 /**

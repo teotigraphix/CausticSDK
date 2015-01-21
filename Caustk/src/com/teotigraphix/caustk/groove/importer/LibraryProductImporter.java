@@ -19,13 +19,13 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
-import com.teotigraphix.caustk.groove.browser.BrowserBank;
-import com.teotigraphix.caustk.groove.browser.BrowserModel;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.teotigraphix.caustk.groove.browser.BrowserBank;
+import com.teotigraphix.caustk.groove.browser.BrowserModel;
 
 @SuppressWarnings("unused")
 public class LibraryProductImporter {

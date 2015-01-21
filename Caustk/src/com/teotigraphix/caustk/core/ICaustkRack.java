@@ -19,6 +19,10 @@
 
 package com.teotigraphix.caustk.core;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+
 import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 import com.teotigraphix.caustk.gdx.app.Project;
@@ -32,10 +36,6 @@ import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
 
 /**
  * The {@link ICaustkRack} holds the current {@link RackNode} session state.

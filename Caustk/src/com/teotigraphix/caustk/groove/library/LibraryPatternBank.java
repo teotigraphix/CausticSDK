@@ -19,17 +19,17 @@
 
 package com.teotigraphix.caustk.groove.library;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
 
 /**
  * @author Michael Schmalle

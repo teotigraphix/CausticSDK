@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.gdx.groove.app;
 
 import com.badlogic.gdx.Gdx;
 import com.google.common.eventbus.Subscribe;
-import com.teotigraphix.caustk.gdx.app.CaustkBehavior;
-import com.teotigraphix.caustk.gdx.controller.IViewManager.ViewManagerEvent;
+import com.teotigraphix.caustk.gdx.app.controller.IViewManager.ViewManagerEvent;
+import com.teotigraphix.caustk.gdx.app.ui.CaustkBehavior;
 
 public abstract class GrooveBehavior extends CaustkBehavior {
 

@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
-import com.teotigraphix.caustk.groove.library.LibraryEffect;
-import com.teotigraphix.caustk.node.effect.EffectType;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.node.effect.EffectType;
 
 /*
 <effect displayName="Foo Effect">

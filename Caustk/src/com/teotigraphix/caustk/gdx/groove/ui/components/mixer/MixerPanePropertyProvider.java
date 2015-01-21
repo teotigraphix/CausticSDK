@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.gdx.groove.ui.components.mixer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.teotigraphix.caustk.core.ICaustkRack;
-import com.teotigraphix.caustk.gdx.controller.view.AbstractDisplay;
+import com.teotigraphix.caustk.gdx.app.controller.view.AbstractDisplay;
 
 public interface MixerPanePropertyProvider {
 

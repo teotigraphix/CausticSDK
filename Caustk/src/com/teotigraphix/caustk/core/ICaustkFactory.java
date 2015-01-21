@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.core;
 
+import java.io.File;
+
 import com.teotigraphix.caustk.core.factory.LibraryFactory;
 import com.teotigraphix.caustk.core.factory.NodeFactory;
-
-import java.io.File;
 
 /**
  * @author Michael Schmalle

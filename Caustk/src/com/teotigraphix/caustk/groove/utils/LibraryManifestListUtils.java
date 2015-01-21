@@ -1,12 +1,12 @@
 
 package com.teotigraphix.caustk.groove.utils;
 
-import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
 public final class LibraryManifestListUtils {
 

@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.gdx.groove.ui.components.mixer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -36,17 +39,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.core.osc.MixerControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
-import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.gdx.groove.ui.components.UITable;
 import com.teotigraphix.caustk.gdx.groove.ui.components.auto.AutoTextSlider;
 import com.teotigraphix.caustk.gdx.groove.ui.components.auto.AutomationItem;
 import com.teotigraphix.caustk.gdx.groove.ui.factory.StylesDefault;
 import com.teotigraphix.caustk.gdx.scene2d.ui.TextKnob;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
+import com.teotigraphix.caustk.node.master.MasterNode;
 
 public class MixerPaneItem extends UITable {
 

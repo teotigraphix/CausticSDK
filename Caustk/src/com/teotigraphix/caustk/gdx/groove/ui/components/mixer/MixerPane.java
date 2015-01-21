@@ -19,18 +19,18 @@
 
 package com.teotigraphix.caustk.gdx.groove.ui.components.mixer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.caustk.core.osc.MixerControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.gdx.groove.ui.components.UITable;
 import com.teotigraphix.caustk.gdx.groove.ui.components.mixer.MixerPaneItem.MixerPaneItemListener;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class MixerPane extends UITable {
 

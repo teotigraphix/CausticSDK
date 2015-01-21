@@ -1,12 +1,12 @@
 
 package com.teotigraphix.caustk.core;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.teotigraphix.caustk.groove.importer.CausticFileImporter;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import com.esotericsoftware.kryo.Kryo;
+import com.teotigraphix.caustk.groove.importer.CausticFileImporter;
 
 public interface ICaustkSerializer {
 

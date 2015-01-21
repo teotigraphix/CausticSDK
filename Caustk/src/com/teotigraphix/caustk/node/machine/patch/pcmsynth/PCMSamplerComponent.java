@@ -19,6 +19,9 @@
 
 package com.teotigraphix.caustk.node.machine.patch.pcmsynth;
 
+import java.io.File;
+import java.util.TreeMap;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
@@ -27,9 +30,6 @@ import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
-
-import java.io.File;
-import java.util.TreeMap;
 
 /**
  * The {@link PCMSynthMachine#getSampler()} component.

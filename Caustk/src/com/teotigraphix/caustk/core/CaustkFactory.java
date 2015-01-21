@@ -19,15 +19,15 @@
 
 package com.teotigraphix.caustk.core;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import com.teotigraphix.caustk.core.factory.LibraryFactory;
 import com.teotigraphix.caustk.core.factory.NodeFactory;
 import com.teotigraphix.caustk.node.ICaustkNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * A factory that creates {@link ICaustkNode}s for the {@link ICaustkRuntime}.

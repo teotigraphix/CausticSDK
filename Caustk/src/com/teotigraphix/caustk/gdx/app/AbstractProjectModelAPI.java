@@ -1,8 +1,8 @@
 
 package com.teotigraphix.caustk.gdx.app;
 
-import com.teotigraphix.caustk.gdx.controller.IFileManager;
-import com.teotigraphix.caustk.gdx.controller.IFileModel;
+import com.teotigraphix.caustk.gdx.app.controller.IFileManager;
+import com.teotigraphix.caustk.gdx.app.controller.IFileModel;
 import com.teotigraphix.caustk.node.RackNode;
 
 public abstract class AbstractProjectModelAPI {

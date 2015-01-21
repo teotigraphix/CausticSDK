@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.utils;
 
-import com.teotigraphix.caustk.core.CaustkRuntime;
-
 import java.io.File;
 import java.io.IOException;
+
+import com.teotigraphix.caustk.core.CaustkRuntime;
 
 public class SerializeUtils {
 

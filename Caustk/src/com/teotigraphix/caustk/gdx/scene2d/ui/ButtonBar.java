@@ -34,7 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.teotigraphix.caustk.gdx.controller.IHelpManager;
+import com.teotigraphix.caustk.gdx.app.controller.IHelpManager;
 import com.teotigraphix.caustk.gdx.groove.ui.components.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBarListener.ButtonBarChangeEvent;
 

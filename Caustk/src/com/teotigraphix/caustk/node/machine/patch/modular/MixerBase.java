@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.annotation.SuppressLint;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class MixerBase extends ModularComponentBase {
 

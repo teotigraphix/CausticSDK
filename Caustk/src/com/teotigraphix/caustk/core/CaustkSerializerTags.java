@@ -1,6 +1,13 @@
 
 package com.teotigraphix.caustk.core;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.TreeMap;
+import java.util.UUID;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
@@ -28,6 +35,8 @@ import com.teotigraphix.caustk.core.osc.SubSynthMessage.ModulationMode;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
+import com.teotigraphix.caustk.gdx.app.Project;
+import com.teotigraphix.caustk.gdx.app.ProjectProperties;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -142,15 +151,6 @@ import com.teotigraphix.caustk.node.master.MasterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode;
-import com.teotigraphix.caustk.gdx.app.Project;
-import com.teotigraphix.caustk.gdx.app.ProjectProperties;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.UUID;
 
 /*
 TaggedFieldSerializer only serializes fields that have a @Tag annotation. 

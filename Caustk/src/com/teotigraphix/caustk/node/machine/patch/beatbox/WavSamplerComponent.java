@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.node.machine.patch.beatbox;
 
+import java.io.File;
+import java.util.TreeMap;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-
-import java.io.File;
-import java.util.TreeMap;
 
 /**
  * The {@link BeatBoxMachine} sampler component.

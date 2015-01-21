@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.core.osc;
 
+import java.math.BigDecimal;
+
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.MachineType;
 import com.teotigraphix.caustk.utils.ExceptionUtils;
-
-import java.math.BigDecimal;
 
 /**
  * Various OSC message utilities.

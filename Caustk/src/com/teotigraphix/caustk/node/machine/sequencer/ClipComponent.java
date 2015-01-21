@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.node.machine.sequencer;
 
+import java.util.TreeMap;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-
-import java.util.TreeMap;
 
 /**
  * @author Michael Schmalle

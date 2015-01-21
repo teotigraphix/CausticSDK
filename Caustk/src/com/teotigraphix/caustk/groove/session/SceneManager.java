@@ -19,11 +19,11 @@
 
 package com.teotigraphix.caustk.groove.session;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.node.machine.MachineNode;
 
 public class SceneManager {
 

@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.gdx.app;
 import java.io.IOException;
 
 import com.google.inject.Singleton;
-import com.teotigraphix.caustk.gdx.controller.ViewManager;
+import com.teotigraphix.caustk.gdx.app.controller.ViewManager;
 
 @Singleton
 public class ApplicationState extends ApplicationComponent implements IApplicationState,

@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.gdx.app;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.google.common.eventbus.EventBus;
+import com.teotigraphix.caustk.gdx.app.ui.IScene;
 
 /**
  * The {@link IApplication} is the top level model used in an application with

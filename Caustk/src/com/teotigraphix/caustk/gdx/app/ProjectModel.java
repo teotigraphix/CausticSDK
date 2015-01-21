@@ -7,7 +7,7 @@ import java.io.IOException;
 import com.google.inject.Singleton;
 import com.teotigraphix.caustk.gdx.app.api.ExportAPI;
 import com.teotigraphix.caustk.gdx.app.api.MachineAPI;
-import com.teotigraphix.caustk.gdx.controller.ViewManager;
+import com.teotigraphix.caustk.gdx.app.controller.ViewManager;
 
 @Singleton
 public abstract class ProjectModel extends ApplicationComponent implements IProjectModel,

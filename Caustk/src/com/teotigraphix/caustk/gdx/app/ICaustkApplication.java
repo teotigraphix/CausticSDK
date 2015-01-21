@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.gdx.app;
 import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.gdx.app.ui.ICaustkScene;
 import com.teotigraphix.caustk.node.RackNode;
 
 /**

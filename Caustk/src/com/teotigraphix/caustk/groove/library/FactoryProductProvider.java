@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.groove.library;
 
+import java.io.File;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
-
-import java.io.File;
 
 public class FactoryProductProvider {
 

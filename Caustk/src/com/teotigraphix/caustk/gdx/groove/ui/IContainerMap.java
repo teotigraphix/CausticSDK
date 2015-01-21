@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.gdx.groove.ui;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
-import com.teotigraphix.caustk.gdx.app.CaustkScene;
+import com.teotigraphix.caustk.gdx.app.ui.CaustkScene;
 
 public interface IContainerMap {
 

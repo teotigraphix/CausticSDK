@@ -41,9 +41,11 @@ import com.teotigraphix.caustk.core.ICaustkLogger;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
-import com.teotigraphix.caustk.gdx.controller.IFileManager;
-import com.teotigraphix.caustk.gdx.controller.IFileModel;
-import com.teotigraphix.caustk.gdx.controller.IViewManager;
+import com.teotigraphix.caustk.gdx.app.controller.IFileManager;
+import com.teotigraphix.caustk.gdx.app.controller.IFileModel;
+import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
+import com.teotigraphix.caustk.gdx.app.ui.ICaustkScene;
+import com.teotigraphix.caustk.gdx.app.ui.IScene;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
@@ -178,8 +180,6 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public CaustkApplication(String applicationName, ISoundGenerator soundGenerator) {
         super(applicationName);
         startupExecutor = new StartupExecutor(this, soundGenerator);
-        applicationPreferences = new ApplicationPreferences(getPreferenceManager().get(
-                getApplicationId() + "_application"));
     }
 
     private void createGuice() {
@@ -205,6 +205,9 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
         // Injects all fields annotated with @Inject into this IGame instance.
         injector.injectMembers(instance);
+
+        applicationPreferences = new ApplicationPreferences(getPreferenceManager().get(
+                getApplicationId() + "_application"));
     }
 
     protected abstract Module createApplicationModule();
@@ -502,11 +505,11 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     // --------------------------------------------------------------------------
 
     /**
-     * Add {@link com.teotigraphix.caustk.gdx.app.ICaustkScene}s to the
+     * Add {@link com.teotigraphix.caustk.gdx.app.ui.ICaustkScene}s to the
      * application.
      * 
      * @see #onRegisterModels()
-     * @see com.teotigraphix.caustk.gdx.app.SceneManager#addScene(int, Class)
+     * @see com.teotigraphix.caustk.gdx.app.ui.SceneManager#addScene(int, Class)
      */
     @Override
     protected abstract void onRegisterScenes();
@@ -522,9 +525,9 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     protected abstract void onRegisterModels();
 
     /**
-     * Set the initial {@link com.teotigraphix.caustk.gdx.app.Scene} that starts
-     * the application, and perform any other various setup tasks before the
-     * main user interface is shown.
+     * Set the initial {@link com.teotigraphix.caustk.gdx.app.ui.Scene} that
+     * starts the application, and perform any other various setup tasks before
+     * the main user interface is shown.
      * 
      * @see #onRegisterScenes()
      */
@@ -532,8 +535,8 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     protected abstract void onCreate();
 
     /**
-     * Called by the {@link com.teotigraphix.caustk.gdx.app.SceneManager} during
-     * a scene change.
+     * Called by the {@link com.teotigraphix.caustk.gdx.app.ui.SceneManager}
+     * during a scene change.
      * 
      * @param scene The active scene.
      */

@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.groove.library;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.groove.importer.CausticGroup;
 import com.teotigraphix.caustk.groove.manifest.LibraryGroupManifest;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class LibraryGroup extends LibraryProductItem {
 

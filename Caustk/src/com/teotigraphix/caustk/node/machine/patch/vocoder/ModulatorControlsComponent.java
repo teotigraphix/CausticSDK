@@ -19,15 +19,15 @@
 
 package com.teotigraphix.caustk.node.machine.patch.vocoder;
 
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VocoderMessage;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
 import com.teotigraphix.caustk.node.machine.MachineComponent;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
-
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
 /**
  * The {@link VocoderMachine#getControls()} component.

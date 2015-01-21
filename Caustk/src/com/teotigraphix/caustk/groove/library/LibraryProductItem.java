@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.groove.library;
 
-import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
-
 import java.io.File;
 import java.util.UUID;
+
+import com.teotigraphix.caustk.groove.utils.LibraryProductUtils;
 
 public abstract class LibraryProductItem extends LibraryItem {
 
