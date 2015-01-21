@@ -1,6 +1,8 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
+import com.teotigraphix.caustk.utils.node.ModularUtils;
+
 public class ModularControl {
 
     private String name;

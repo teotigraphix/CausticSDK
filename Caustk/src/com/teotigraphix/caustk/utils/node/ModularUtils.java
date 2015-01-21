@@ -1,5 +1,5 @@
 
-package com.teotigraphix.caustk.node.machine.patch.modular;
+package com.teotigraphix.caustk.utils.node;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,8 @@ import java.util.Map;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
+import com.teotigraphix.caustk.node.machine.patch.modular.IModularComponentControl;
+import com.teotigraphix.caustk.node.machine.patch.modular.ModularControl;
 
 public class ModularUtils {
 

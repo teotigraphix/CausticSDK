@@ -17,7 +17,7 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node.machine.patch;
+package com.teotigraphix.caustk.utils.node;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +27,7 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineType;
+import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
