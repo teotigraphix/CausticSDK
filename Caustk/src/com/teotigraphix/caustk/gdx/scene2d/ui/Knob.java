@@ -41,7 +41,7 @@ import com.teotigraphix.caustk.core.osc.OSCUtils;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class Knob extends ControlTable {
+public class Knob extends UITable {
 
     @Override
     public String getHelpText() {
@@ -159,7 +159,7 @@ public class Knob extends ControlTable {
         this.stepSize = stepSize;
         //setTouchable(Touchable.enabled);
         setStyleName(styleName);
-
+        setStyleClass(KnobStyle.class);
         addListener(new InputListener() {
 
             @Override
@@ -203,12 +203,10 @@ public class Knob extends ControlTable {
                 currentAngle = getAngleFromValue(getValue());
             }
         });
-
-        initialize();
     }
 
-    protected void initialize() {
-        styleClass = KnobStyle.class;
+    @Override
+    protected void createChildren() {
 
         KnobStyle style = getStyle();
         background = new Image(style.background);
@@ -356,4 +354,5 @@ public class Knob extends ControlTable {
             knob = style.knob;
         }
     }
+
 }

@@ -28,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.PatternPane.PatternPaneStyle;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.SoundSelectionListener.SoundSelectionEvent;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.SoundSelectionListener.SoundSelectionEventKind;

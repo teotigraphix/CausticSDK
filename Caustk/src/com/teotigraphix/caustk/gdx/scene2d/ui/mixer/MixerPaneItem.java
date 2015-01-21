@@ -41,7 +41,7 @@ import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
 import com.teotigraphix.caustk.gdx.scene2d.ui.TextKnob;
-import com.teotigraphix.caustk.gdx.scene2d.ui.app.UITable;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.auto.AutoTextSlider;
 import com.teotigraphix.caustk.gdx.scene2d.ui.auto.AutomationItem;
 import com.teotigraphix.caustk.node.machine.MachineNode;

@@ -27,7 +27,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 /**
  * @author Michael Schmalle
  */
-public class FormItem extends ControlTable {
+public class FormItem extends UITable {
 
     private TextField textField;
 
@@ -74,9 +74,9 @@ public class FormItem extends ControlTable {
         this.labelText = labelText;
         this.initText = initText;
         this.columnWidth = columnWidth;
-        createChildren();
     }
 
+    @Override
     protected void createChildren() {
         label = new Label(labelText, getSkin());
         add(label).align(Align.left).width(columnWidth);

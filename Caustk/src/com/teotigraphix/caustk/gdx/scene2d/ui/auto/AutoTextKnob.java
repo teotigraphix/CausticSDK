@@ -34,8 +34,9 @@ public class AutoTextKnob extends AutomationTableBase {
     }
 
     @Override
-    public void setValue(float value) {
+    public boolean setValue(float value) {
         knob.setValue(value);
+        return true;
     }
 
     public AutoTextKnob(Skin skin, AutomationItem automationItem) {

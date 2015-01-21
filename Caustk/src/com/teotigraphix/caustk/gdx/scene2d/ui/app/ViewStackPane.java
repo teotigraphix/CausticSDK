@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 
 public class ViewStackPane extends UITable {
 

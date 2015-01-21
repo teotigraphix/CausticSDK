@@ -28,7 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.caustk.core.osc.MixerControls;
-import com.teotigraphix.caustk.gdx.scene2d.ui.app.UITable;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.mixer.MixerPaneItem.MixerPaneItemListener;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 

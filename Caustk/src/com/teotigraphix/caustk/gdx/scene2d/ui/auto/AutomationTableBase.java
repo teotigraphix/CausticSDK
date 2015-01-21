@@ -23,15 +23,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.Pools;
-import com.teotigraphix.caustk.gdx.scene2d.ui.app.UITable;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.auto.AutomationTableListener.AutomationTableEvent;
 import com.teotigraphix.caustk.gdx.scene2d.ui.auto.AutomationTableListener.AutomationTableEventKind;
 
 public abstract class AutomationTableBase extends UITable {
 
+    @Override
     public abstract float getValue();
 
-    public abstract void setValue(float value);
+    @Override
+    public abstract boolean setValue(float value);
 
     private AutomationItem automationItem;
 

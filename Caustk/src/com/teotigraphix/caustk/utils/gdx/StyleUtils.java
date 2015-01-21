@@ -19,10 +19,10 @@
 
 package com.teotigraphix.caustk.utils.gdx;
 
-import com.teotigraphix.caustk.gdx.scene2d.ui.ControlTable;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 
 public class StyleUtils {
-    public static <T> T getStyle(ControlTable aware, Class<T> styleClass) {
+    public static <T> T getStyle(UITable aware, Class<T> styleClass) {
         return styleClass.cast(aware.getSkin().get(aware.getStyleName(), styleClass));
     }
 }

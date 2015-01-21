@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,15 +17,16 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.gdx.scene2d.ui.app;
+package com.teotigraphix.caustk.gdx.scene2d.ui;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-public abstract class UITable extends Table {
+public abstract class UITable extends Table { // IHelpManagerAware, IValueAware
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -38,6 +39,8 @@ public abstract class UITable extends Table {
     private Class<? extends Object> styleClass;
 
     private Skin skin;
+
+    private float originalValue = Float.MIN_VALUE;
 
     //--------------------------------------------------------------------------
     // Public Property :: API
@@ -55,6 +58,14 @@ public abstract class UITable extends Table {
             properties = new HashMap<String, Object>();
         return properties;
     }
+
+    //----------------------------------
+    // helpText
+    //----------------------------------
+
+    public String getHelpText() {
+        return null;
+    };
 
     //----------------------------------
     // styleName
@@ -114,6 +125,41 @@ public abstract class UITable extends Table {
     public void setSkin(Skin skin) {
         super.setSkin(skin);
         this.skin = skin;
+    }
+
+    //----------------------------------
+    // originalValue
+    //----------------------------------
+
+    //@Override
+    public Actor getActor() {
+        return this;
+    }
+
+    //@Override
+    public float getValue() {
+        return Float.MIN_VALUE;
+    }
+
+    public boolean setValue(float value) {
+        return false;
+    }
+
+    //@Override
+    public float getOriginalValue() {
+        return originalValue;
+    }
+
+    //@Override
+    public void setOriginalValue(float value) {
+        originalValue = value;
+    }
+
+    //@Override
+    public void resetValue() {
+        if (originalValue == Float.MIN_VALUE)
+            return;
+        setValue(originalValue);
     }
 
     //--------------------------------------------------------------------------

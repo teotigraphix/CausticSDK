@@ -31,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
-public class TextSlider extends ControlTable {
+public class TextSlider extends UITable {
 
     private String text;
 
@@ -75,16 +75,16 @@ public class TextSlider extends ControlTable {
         this.maximum = maximum;
         this.stepSize = stepSize;
         this.vertical = vertical;
-        styleClass = TextSliderStyle.class;
+        setStyleClass(TextSliderStyle.class);
         String name = (vertical) ? "vertical" : "horizontal";
         setStyleName("default-" + name);
-        createChildren();
     }
 
     //--------------------------------------------------------------------------
     // Overridden :: Methods
     //--------------------------------------------------------------------------
 
+    @Override
     protected void createChildren() {
         TextSliderStyle style = getStyle();
 

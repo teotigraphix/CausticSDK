@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.gdx.scene2d.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class SliderGroup extends ControlTable {
+public class SliderGroup extends UITable {
 
     private SliderItem[] items;
 
@@ -31,6 +31,7 @@ public class SliderGroup extends ControlTable {
         //styleClass = SliderGroupStyle.class;
     }
 
+    @Override
     protected void createChildren() {
         for (SliderItem item : items) {
             TextSlider slider = new TextSlider(item.getText(), item.getMin(), item.getMax(),

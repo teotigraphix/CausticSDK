@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBar;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBarListener;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.ModePaneListener.ModePaneEvent;

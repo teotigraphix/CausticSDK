@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBar;
+import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 
 public class TopBar extends UITable {
 

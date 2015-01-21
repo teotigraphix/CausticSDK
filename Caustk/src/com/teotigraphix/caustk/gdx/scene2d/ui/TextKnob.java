@@ -68,6 +68,7 @@ public class TextKnob extends Knob {
     public TextKnob(float min, float max, float stepSize, String text, Skin skin, String styleName) {
         super(min, max, stepSize, skin, styleName);
         setText(text);
+        setStyleClass(TextKnobStyle.class);
     }
 
     //--------------------------------------------------------------------------
@@ -75,11 +76,8 @@ public class TextKnob extends Knob {
     //--------------------------------------------------------------------------
 
     @Override
-    protected void initialize() {
-        super.initialize();
-
-        styleClass = TextKnobStyle.class;
-
+    protected void createChildren() {
+        super.createChildren();
         row();
 
         TextKnobStyle style = getStyle();

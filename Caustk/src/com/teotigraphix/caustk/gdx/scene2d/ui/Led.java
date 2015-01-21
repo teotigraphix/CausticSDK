@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.gdx.scene2d.ui;
 
+import android.annotation.SuppressLint;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -30,7 +32,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
-public class Led extends ControlTable {
+@SuppressLint("RtlHardcoded")
+public class Led extends UITable {
 
     LedPlacement ledPlacement;
 
@@ -96,6 +99,7 @@ public class Led extends ControlTable {
         this.ledPlacement = ledPlacement;
     }
 
+    @Override
     protected void createChildren() {
         stack = new Stack();
         add(stack);
@@ -200,7 +204,9 @@ public class Led extends ControlTable {
     }
 
     public enum LedPlacement {
-        TOP, LEFT
+        TOP,
+
+        LEFT
     }
 
     public static class LedItem {

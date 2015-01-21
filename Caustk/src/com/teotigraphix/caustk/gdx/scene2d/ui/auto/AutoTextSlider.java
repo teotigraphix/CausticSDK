@@ -35,8 +35,9 @@ public class AutoTextSlider extends AutomationTableBase {
     }
 
     @Override
-    public void setValue(float value) {
+    public boolean setValue(float value) {
         slider.setValue(value);
+        return true;
     }
 
     public AutoTextSlider(Skin skin, AutomationItem automationItem) {

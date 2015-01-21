@@ -27,7 +27,6 @@ import com.teotigraphix.caustk.gdx.app.controller.view.GrooveColor;
 import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ColorPickerListener.ColorPickerEvent;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ColorPickerListener.ColorPickerEventKind;
-import com.teotigraphix.caustk.gdx.scene2d.ui.app.UITable;
 
 public class ColorPicker extends UITable {
 

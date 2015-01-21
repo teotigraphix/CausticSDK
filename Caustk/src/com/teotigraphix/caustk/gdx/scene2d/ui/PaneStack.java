@@ -30,7 +30,6 @@ import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.caustk.gdx.scene2d.ui.PaneStackListener.PaneStackEvent;
 import com.teotigraphix.caustk.gdx.scene2d.ui.PaneStackListener.PaneStackEventKind;
-import com.teotigraphix.caustk.gdx.scene2d.ui.app.UITable;
 
 /**
  * The {@link PaneStack} holds a stack of panes and uses a selectedIndex to show
