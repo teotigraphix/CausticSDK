@@ -29,7 +29,7 @@ import org.apache.commons.io.FilenameUtils;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.RackNodeUtils;
+import com.teotigraphix.caustk.utils.RackNodeUtils;
 import com.teotigraphix.caustk.utils.RuntimeUtils;
 
 /**

@@ -1,9 +1,10 @@
 
-package com.teotigraphix.caustk.node;
+package com.teotigraphix.caustk.utils;
 
 import java.io.File;
 
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
+import com.teotigraphix.caustk.node.RackNode;
 
 public class RackNodeUtils {
 
