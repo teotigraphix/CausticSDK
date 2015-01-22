@@ -38,9 +38,10 @@ public class ExportAPI extends AbstractProjectModelAPI {
      */
     public File exportWav(String name, PatternNode pattern) throws IOException, CausticException {
         String uniqueName = createName(name);
-        File location = new File(projectModel.getProject().getResource("export"), uniqueName);
-        final File absoluteLocation = new File(projectModel.getProject().getResource("export"),
-                uniqueName + ".wav");
+        File location = new File(getProjectModel().getProjectAPI().getProject()
+                .getResource("export"), uniqueName);
+        final File absoluteLocation = new File(getProjectModel().getProjectAPI().getProject()
+                .getResource("export"), uniqueName + ".wav");
 
         int numBars = pattern.getNumMeasures();
         int bankIndex = pattern.getBankIndex();
@@ -124,7 +125,7 @@ public class ExportAPI extends AbstractProjectModelAPI {
     public String createName(String name) {
         // [name]-[projectName]-[bmp]bpm
         RackNode rackNode = getRackNode();
-        String projectName = projectModel.getProject().getName();
+        String projectName = getProjectModel().getProjectAPI().getProject().getName();
         String bpm = Integer.toString((int)rackNode.getSequencer().getBPM());
         return projectName + "-" + name + "-" + bpm + "bpm";
     }

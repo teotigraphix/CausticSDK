@@ -58,10 +58,6 @@ import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 public abstract class CaustkApplication extends Application implements ICaustkApplication,
         ApplicationListener {
 
-    protected final IProjectModelWrite getProjectModelWrittable() {
-        return (IProjectModelWrite)getProjectModel();
-    }
-
     public Preferences getGlobalPreferences() {
         return getPreferenceManager().get("com_teotigraphix_caustk_global");
     }
@@ -182,34 +178,6 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         startupExecutor = new StartupExecutor(this, soundGenerator);
     }
 
-    private void createGuice() {
-        Gdx.app.log(TAG, "createGuice()");
-
-        final ICaustkApplication instance = this;
-
-        final Set<Module> additionalModules = new HashSet<Module>();
-        modules.add(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(ICaustkApplication.class).toInstance(instance);
-            }
-        });
-        modules.add(createApplicationModule());
-
-        // Propagates initialization of additional modules to the specific
-        // subclass of this Application instance.
-        modules.addAll(additionalModules);
-
-        // Creates an injector with all of the required modules.
-        injector = Guice.createInjector(modules);
-
-        // Injects all fields annotated with @Inject into this IGame instance.
-        injector.injectMembers(instance);
-
-        applicationPreferences = new ApplicationPreferences(getPreferenceManager().get(
-                getApplicationId() + "_application"));
-    }
-
     protected abstract Module createApplicationModule();
 
     protected final void addModule(Module module) {
@@ -226,26 +194,10 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         injector.injectMembers(scene);
     }
 
-    private File getStorageRoot() throws IOException, CausticException {
-        File root = new File(Gdx.files.getExternalStoragePath());
-        File caustic = new File(root, "caustic");
-        if (!caustic.exists()) {
-            File newRoot = StartupExecutor.getContainedDirectory(root, new File("caustic"));
-            if (newRoot == null)
-                throw new CausticException(
-                        "the caustic folder does not exist, is caustic installed?");
-            root = newRoot;
-        }
-        return root;
-    }
-
-    private File getApplicationRoot(File root) {
-        return new File(root, getApplicationName());
-    }
-
     // for unit testing synchronously
     public final void setup(File storageRoot, File applicationRoot) {
-        Gdx.app.log(TAG, "setup()");
+        Gdx.app.log(TAG, "====================================");
+        Gdx.app.log(TAG, "setup(START)");
 
         try {
             Gdx.app.log("StartupExecutor", "create()");
@@ -257,8 +209,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
                 try {
                     FileUtils.forceDelete(RuntimeUtils.getApplicationDirectory());
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    getLogger().err(TAG, "Force application directory not deleted", e);
                 }
             }
 
@@ -267,11 +218,9 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
             getLogger().log("SceneManager", "create()");
             getSceneManager().create();
         } catch (CausticException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            getLogger().err(TAG, "CaustkApplication.setup() failed", e);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            getLogger().err(TAG, "StartupExecutor failed", e);
         }
 
         createGuice();
@@ -281,23 +230,19 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         onRegisterScenes();
         onRegisterModels();
 
-        // Not Implemented
-        setup();
-
         // async after load, sets main scene ui
         startup();
+
+        Gdx.app.log(TAG, "setup(END)");
+        Gdx.app.log(TAG, "====================================");
     }
 
     //--------------------------------------------------------------------------
     // IApplicationController API :: Methods
     //--------------------------------------------------------------------------
 
-    public void setup() {
-        getLogger().log(TAG, "setup() Not Implemented");
-    }
-
     public void startup() {
-        getLogger().log(TAG, "startup( BEG )");
+        Gdx.app.log(TAG, "startup( BEG )");
         try {
             //setup();
             getApplicationStates().startup();
@@ -329,7 +274,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
             e.printStackTrace();
         }
 
-        getLogger().log(TAG, "startup( END )");
+        Gdx.app.log(TAG, "startup( END )");
     }
 
     @Override
@@ -420,84 +365,28 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public void dispose() {
         getLogger().log(TAG, "dispose()");
 
-        save();
+        try {
+            save();
+        } catch (CausticException e) {
+            getLogger().err(TAG, "Application.dispose() failed", e);
+        }
         getSceneManager().dispose();
         runtime.getRack().onDestroy();
     }
 
     // From AppModel
-    public void save() {
+    public void save() throws CausticException {
         // Always save preferences
         getPreferenceManager().save();
         if (isDirty()) {
             try {
-                getProjectModelWrittable().save();
+                // saves the Project
+                ((ProjectModel)getProjectModel()).getProjectAPI().save();
                 setDirty(false);
             } catch (IOException e) {
                 getLogger().err(TAG, "ApplicationModel.save(); failed", e);
             }
         }
-    }
-
-    //--------------------------------------------------------------------------
-    // Project API :: Methods
-    //--------------------------------------------------------------------------
-
-    public void newProject(File projectLocation) throws IOException {
-        Project project = getFileManager().createProject(projectLocation);
-        getProjectModelWrittable().setProject(project);
-    }
-
-    public void loadProject(File projectFile) throws IOException {
-        Project project = getFileManager().loadProject(projectFile);
-        getProjectModelWrittable().setProject(project);
-    }
-
-    public File saveProjectAs(String projectName) throws IOException {
-        return saveProjectAs(new File(getFileManager().getProjectsDirectory(), projectName));
-    }
-
-    /**
-     * @param projectLocation The project directory, getName() returns the
-     *            project name to copy.
-     * @throws java.io.IOException
-     */
-    public File saveProjectAs(File projectLocation) throws IOException {
-        File srcDir = getProjectModel().getProjectDirectory();
-        File destDir = projectLocation;
-        FileUtils.copyDirectory(srcDir, destDir);
-
-        // load the copied project discreetly
-        final File oldProjectFile = new File(projectLocation, srcDir.getName() + ".prj");
-        File newProjectFile = new File(projectLocation, destDir.getName() + ".prj");
-
-        Project newProject = getFileManager().readProject(oldProjectFile);
-        newProject.setRack(getRack()); // needed for deserialization
-        newProject.rename(newProjectFile);
-
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                // XXX This is NOTE DELETING
-                FileUtils.deleteQuietly(oldProjectFile);
-            }
-        });
-
-        loadProject(newProject.getFile());
-
-        return newProjectFile;
-    }
-
-    public File exportProject(File file, ApplicationExportType exportType) throws IOException {
-        File srcDir = getProjectModel().getProjectDirectory();
-        File exportedFile = new File(srcDir, "exported/");
-        exportedFile.mkdirs();
-        // NO .caustic ext
-        // XXX Can't have spaces, must replace all spaces with '-'
-        exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-") + ".caustic");
-
-        File savedFile = getRackNode().saveSongAs(exportedFile);
-        return savedFile;
     }
 
     // --------------------------------------------------------------------------
@@ -544,6 +433,51 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public void onSceneChange(ICaustkScene scene) {
     }
 
+    private void createGuice() {
+        getLogger().log(TAG, "createGuice()");
+
+        final ICaustkApplication instance = this;
+
+        final Set<Module> additionalModules = new HashSet<Module>();
+        modules.add(new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(ICaustkApplication.class).toInstance(instance);
+            }
+        });
+        modules.add(createApplicationModule());
+
+        // Propagates initialization of additional modules to the specific
+        // subclass of this Application instance.
+        modules.addAll(additionalModules);
+
+        // Creates an injector with all of the required modules.
+        injector = Guice.createInjector(modules);
+
+        // Injects all fields annotated with @Inject into this IGame instance.
+        injector.injectMembers(instance);
+
+        applicationPreferences = new ApplicationPreferences(getPreferenceManager().get(
+                getApplicationId() + "_application"));
+    }
+
+    private File getStorageRoot() throws IOException, CausticException {
+        File root = new File(Gdx.files.getExternalStoragePath());
+        File caustic = new File(root, "caustic");
+        if (!caustic.exists()) {
+            File newRoot = StartupExecutor.getContainedDirectory(root, new File("caustic"));
+            if (newRoot == null)
+                throw new CausticException(
+                        "the caustic folder does not exist, is caustic installed?");
+            root = newRoot;
+        }
+        return root;
+    }
+
+    private File getApplicationRoot(File root) {
+        return new File(root, getApplicationName());
+    }
+
     //--------------------------------------------------------------------------
     // Classes
     //--------------------------------------------------------------------------
@@ -554,7 +488,6 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
         private Preferences preferences;
 
-        // ApplicationModel creates
         public ApplicationPreferences(Preferences preferences) {
             this.preferences = preferences;
         }

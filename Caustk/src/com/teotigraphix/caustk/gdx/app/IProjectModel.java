@@ -21,7 +21,9 @@ package com.teotigraphix.caustk.gdx.app;
 
 import java.io.File;
 
+import com.teotigraphix.caustk.gdx.app.api.ExportAPI;
 import com.teotigraphix.caustk.gdx.app.api.MachineAPI;
+import com.teotigraphix.caustk.gdx.app.api.ProjectAPI;
 
 /**
  * The {@link IApplicationModel} loads and sets the {@link #getProject()}.
@@ -56,21 +58,20 @@ public interface IProjectModel {
     // project
     //----------------------------------
 
-    /**
-     * Returns the current project impl loaded in the application.
-     */
-    <T extends Project> T getProject();
-
     File getProjectDirectory();
 
     //----------------------------------
     // machineAPI
     //----------------------------------
 
+    ProjectAPI getProjectAPI();
+
     /**
      * The {@link com.teotigraphix.caustk.node.machine.MachineNode} API.
      */
     MachineAPI getMachineAPI();
+
+    ExportAPI getExportAPI();
 
     /**
      * Safe to register any API listeners to the global EventBus.
@@ -108,4 +109,5 @@ public interface IProjectModel {
             this.model = model;
         }
     }
+
 }

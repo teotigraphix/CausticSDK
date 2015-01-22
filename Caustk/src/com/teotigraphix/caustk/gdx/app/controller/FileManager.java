@@ -31,7 +31,6 @@ import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.gdx.app.ApplicationComponent;
 import com.teotigraphix.caustk.gdx.app.IProjectFactory;
-import com.teotigraphix.caustk.gdx.app.IProjectModel;
 import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
@@ -50,9 +49,6 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
     @Inject
     private IProjectFactory projectFactory;
-
-    @Inject
-    private IProjectModel projectModel;
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -200,7 +196,7 @@ public class FileManager extends ApplicationComponent implements IFileManager {
             throws IOException {
         final Array<File> files = new Array<File>();
 
-        Project project = projectModel.getProject();
+        Project project = getProjectModel().getProjectAPI().getProject();
 
         final ICaustkRack rack = getRack();
         // Root/CausticLive/Projects/MyProj1/export/exportName

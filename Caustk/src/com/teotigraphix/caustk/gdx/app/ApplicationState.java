@@ -80,7 +80,7 @@ public class ApplicationState extends ApplicationComponent implements IApplicati
 
         // get onProjectCreate() and onProjectLoad() callbacks from
         // ApplicationModel
-        getApplication().getProjectModelWrittable().setProject(project);
+        getProjectModel().getProjectAPI().setProject(project);
     }
 
     @Override

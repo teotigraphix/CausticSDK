@@ -111,7 +111,8 @@ public abstract class CaustkScene extends Scene implements ICaustkScene {
     @Override
     public void start() {
         super.start();
-        ((ProjectModel)getProjectModel()).restore(projectModel.getProject().getState());
+        ((ProjectModel)getProjectModel()).restore(getProjectModel().getProjectAPI().getProject()
+                .getState());
     }
 
     @Override
