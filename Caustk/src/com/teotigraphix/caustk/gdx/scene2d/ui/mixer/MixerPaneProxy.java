@@ -63,7 +63,7 @@ public class MixerPaneProxy {
     }
 
     public void redraw() {
-        pane.redraw(behavior.getRack().machines());
+        pane.redraw(behavior.getProjectModel().getMachineAPI().machines());
         pane.onMachineSelection(behavior.getProjectModel().getMachineAPI().getSelectedMachine());
     }
 
@@ -72,7 +72,8 @@ public class MixerPaneProxy {
     }
 
     protected void send(int index, MixerControls control, float value) {
-        BehaviorUtils.send(behavior.getRack(), index, control, value);
+        BehaviorUtils
+                .send(behavior.getProjectModel().getRackAPI().getRack(), index, control, value);
         if (provider.getDisplay() != null)
             provider.getDisplay().showNotification(
                     OSCUtils.optimizeName(control.getDisplayName(), 8) + " "

@@ -77,20 +77,20 @@ public abstract class ApplicationComponent implements IApplicationComponent {
         return getApplication().getProjectModel();
     }
 
-    public final EventBus getEventBus() {
-        return application.getEventBus();
-    }
-
     public final Preferences getGlobalPreferences() {
         return application.getGlobalPreferences();
     }
 
+    public final EventBus getEventBus() {
+        return getProjectModel().getRackAPI().getRackEventBus();
+    }
+
     protected final ICaustkRack getRack() {
-        return application.getRack();
+        return getProjectModel().getRackAPI().getRack();
     }
 
     protected final RackNode getRackNode() {
-        return application.getRackNode();
+        return getProjectModel().getRackAPI().getRackNode();
     }
 
     public final void execute(String message, Object... args) {

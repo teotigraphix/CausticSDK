@@ -30,7 +30,6 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.esotericsoftware.kryo.KryoException;
-import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -38,7 +37,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICaustkLogger;
-import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.gdx.app.controller.IFileManager;
@@ -46,7 +44,6 @@ import com.teotigraphix.caustk.gdx.app.controller.IFileModel;
 import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.app.ui.ICaustkScene;
 import com.teotigraphix.caustk.gdx.app.ui.IScene;
-import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
@@ -94,7 +91,8 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         return applicationStates;
     }
 
-    protected IProjectModel getProjectModel() {
+    @Override
+    public IProjectModel getProjectModel() {
         return projectModel;
     }
 
@@ -110,9 +108,9 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         return viewManager;
     }
 
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Private :: Variables
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
 
     private ICaustkRuntime runtime;
 
@@ -128,28 +126,13 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         return injector;
     }
 
-    // --------------------------------------------------------------------------
-    // IGdxApplication API :: Properties
-    // --------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
+    // IApplication API :: Properties
+    //--------------------------------------------------------------------------
 
     @Override
     public ICaustkLogger getLogger() {
         return runtime.getLogger();
-    }
-
-    @Override
-    public ICaustkRack getRack() {
-        return runtime.getRack();
-    }
-
-    @Override
-    public RackNode getRackNode() {
-        return runtime.getRack().getRackNode();
-    }
-
-    @Override
-    public EventBus getRackEventBus() {
-        return runtime.getRack().getEventBus();
     }
 
     @Override

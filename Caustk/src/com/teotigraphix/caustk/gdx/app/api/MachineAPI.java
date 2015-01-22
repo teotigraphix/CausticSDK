@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.gdx.app.api;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.teotigraphix.caustk.gdx.app.AbstractProjectModelAPI;
@@ -74,5 +75,9 @@ public class MachineAPI extends AbstractProjectModelAPI {
         getProjectModel().getEventBus().post(
                 new ProjectModelEvent(ProjectModelEvent.Kind.MachineSelectionChange,
                         getProjectModel()));
+    }
+
+    public Collection<? extends MachineNode> machines() {
+        return getRackNode().getMachines();
     }
 }

@@ -73,12 +73,12 @@ public abstract class CaustkBehavior extends Behavior {
         return ((CaustkScene)getScene()).getContainerMap();
     }
 
-    public final ICaustkRack getRack() {
-        return getApplication().getRack();
+    protected final ICaustkRack getRack() {
+        return getProjectModel().getRackAPI().getRack();
     }
 
     protected final RackNode getRackNode() {
-        return getApplication().getRack().getRackNode();
+        return getProjectModel().getRackAPI().getRackNode();
     }
 
     protected UIFactory getFactory() {

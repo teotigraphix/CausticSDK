@@ -76,11 +76,11 @@ public abstract class Application implements IApplication {
     // ICommandManager
     //----------------------------------
 
-    public ICommandManager getCommandManager() {
+    protected final ICommandManager getCommandManager() {
         return commandManager;
     }
 
-    protected IPreferenceManager getPreferenceManager() {
+    protected final IPreferenceManager getPreferenceManager() {
         return preferenceManager;
     }
 
@@ -291,7 +291,8 @@ public abstract class Application implements IApplication {
     protected abstract void onRegisterModels();
 
     /**
-     * Add {@link com.teotigraphix.caustk.gdx.app.ui.IScene}s to the application.
+     * Add {@link com.teotigraphix.caustk.gdx.app.ui.IScene}s to the
+     * application.
      * 
      * @see #onRegisterModels()
      * @see SceneManager#addScene(int, Class)
@@ -299,9 +300,9 @@ public abstract class Application implements IApplication {
     protected abstract void onRegisterScenes();
 
     /**
-     * Set the initial {@link com.teotigraphix.caustk.gdx.app.ui.Scene} that starts
-     * the application, and perform any other various setup tasks before the
-     * main user interface is shown.
+     * Set the initial {@link com.teotigraphix.caustk.gdx.app.ui.Scene} that
+     * starts the application, and perform any other various setup tasks before
+     * the main user interface is shown.
      * 
      * @see #onRegisterScenes()
      */

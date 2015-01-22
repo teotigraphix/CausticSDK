@@ -4,9 +4,11 @@ package com.teotigraphix.caustk.gdx.app;
 import java.io.File;
 
 import com.google.inject.Singleton;
+import com.teotigraphix.caustk.gdx.app.api.CommandAPI;
 import com.teotigraphix.caustk.gdx.app.api.ExportAPI;
 import com.teotigraphix.caustk.gdx.app.api.MachineAPI;
 import com.teotigraphix.caustk.gdx.app.api.ProjectAPI;
+import com.teotigraphix.caustk.gdx.app.api.RackAPI;
 import com.teotigraphix.caustk.gdx.app.controller.ViewManager;
 
 @Singleton
@@ -21,7 +23,11 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
 
     private ProjectState state;
 
+    private RackAPI rackAPI;
+
     private ProjectAPI projectAPI;
+
+    private CommandAPI commandAPI;
 
     private MachineAPI machineAPI;
 
@@ -39,9 +45,18 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     // machineAPI
     //----------------------------------
 
+    public RackAPI getRackAPI() {
+        return rackAPI;
+    }
+
     @Override
     public ProjectAPI getProjectAPI() {
         return projectAPI;
+    }
+
+    @Override
+    public CommandAPI getCommandAPI() {
+        return commandAPI;
     }
 
     @Override
@@ -95,7 +110,9 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
     //--------------------------------------------------------------------------
 
     public ProjectModel() {
+        rackAPI = new RackAPI(this);
         projectAPI = new ProjectAPI(this);
+        commandAPI = new CommandAPI(this);
         machineAPI = new MachineAPI(this);
         exportAPI = new ExportAPI(this);
     }
@@ -115,7 +132,9 @@ public abstract class ProjectModel extends ApplicationComponent implements IProj
 
         ((ViewManager)getApplication().getViewManager()).restore(state);
 
+        rackAPI.restore(state);
         projectAPI.restore(state);
+        commandAPI.restore(state);
         machineAPI.restore(state);
         exportAPI.restore(state);
     }
