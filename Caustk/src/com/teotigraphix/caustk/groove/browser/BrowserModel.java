@@ -26,7 +26,6 @@ import com.teotigraphix.caustk.groove.library.GrooveLibrary;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
-import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySample;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 
@@ -44,9 +43,9 @@ public class BrowserModel {
         this.importer = importer;
     }
 
-    public Collection<LibraryProject> getAllProjects() {
-        return library.getProjects();
-    }
+    //    public Collection<LibraryProject> getAllProjects() {
+    //        return library.getProjects();
+    //    }
 
     public Collection<LibraryGroup> getAllGroups() {
         return library.getGroups();

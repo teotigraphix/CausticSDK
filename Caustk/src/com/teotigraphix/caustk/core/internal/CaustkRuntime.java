@@ -26,6 +26,8 @@ import com.teotigraphix.caustk.core.ICaustkRuntime;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.core.factory.CaustkFactory;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
+import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.utils.node.RackNodeUtils;
 
 /**
  * The {@link CaustkRuntime} encapsulates the {@link ISoundGenerator} and
@@ -151,6 +153,18 @@ public class CaustkRuntime implements ICaustkRuntime {
         if (instance == null)
             throw new IllegalStateException("CaustkRuntime.createInstance() must be called");
         return instance;
+    }
+
+    /**
+     * DO NOT USE.
+     * 
+     * @param rack
+     * @param rackNode
+     */
+    public static RackNode createRackNode(CaustkRack rack) {
+        RackNode rackNode = RackNodeUtils.create();
+        rack.setRackNode(rackNode);
+        return rackNode;
     }
 
     /**

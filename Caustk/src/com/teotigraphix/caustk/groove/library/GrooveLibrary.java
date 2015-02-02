@@ -32,7 +32,7 @@ public class GrooveLibrary {
 
     private File contentDirectory;
 
-    private Map<UUID, LibraryProject> projects = new HashMap<UUID, LibraryProject>();
+    //    private Map<UUID, LibraryProject> projects = new HashMap<UUID, LibraryProject>();
 
     private Map<UUID, LibraryGroup> groups = new HashMap<UUID, LibraryGroup>();
 
@@ -55,9 +55,9 @@ public class GrooveLibrary {
         return contentDirectory;
     }
 
-    public Collection<LibraryProject> getProjects() {
-        return projects.values();
-    }
+    //    public Collection<LibraryProject> getProjects() {
+    //        return projects.values();
+    //    }
 
     public Collection<LibraryGroup> getGroups() {
         return groups.values();

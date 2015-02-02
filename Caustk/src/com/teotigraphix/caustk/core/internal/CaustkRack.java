@@ -120,7 +120,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         return rackNode;
     }
 
-    private void setRackNode(RackNode rackNode) {
+    protected void setRackNode(RackNode rackNode) {
         if (rackNode == this.rackNode)
             return;
         RackNode oldNode = this.rackNode;
