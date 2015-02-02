@@ -27,7 +27,7 @@ import com.teotigraphix.caustk.core.osc.RackMessage.RackControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.NodeMetaData;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.patch.PresetChannel;
@@ -38,15 +38,15 @@ import com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 
 /**
- * The base node for all {@link MachineNode} subclasses.
+ * The base node for all {@link Machine} subclasses.
  * 
  * @author Michael Schmalle
  * @since 1.0
  * @see com.teotigraphix.caustk.node.machine.MachineType
- * @see RackNode#createMachine(int, com.teotigraphix.caustk.node.machine.MachineType,
+ * @see RackInstance#createMachine(int, com.teotigraphix.caustk.node.machine.MachineType,
  *      String)
  */
-public abstract class MachineNode extends NodeBase {
+public abstract class Machine extends NodeBase {
 
     private transient boolean isNative;
 
@@ -63,7 +63,7 @@ public abstract class MachineNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     @Tag(50)
-    private RackNode rackNode;
+    private RackInstance rackNode;
 
     @Tag(51)
     private int index = -1;
@@ -109,11 +109,11 @@ public abstract class MachineNode extends NodeBase {
     // rackNode
     //----------------------------------
 
-    public final RackNode getRackNode() {
+    public final RackInstance getRackNode() {
         return rackNode;
     }
 
-    public void setRackNode(RackNode rackNode) {
+    public void setRackNode(RackInstance rackNode) {
         this.rackNode = rackNode;
     }
 
@@ -156,7 +156,7 @@ public abstract class MachineNode extends NodeBase {
      * 
      * @param name The new 10 character name.
      * @see com.teotigraphix.caustk.core.osc.RackMessage#MACHINE_NAME
-     * @see com.teotigraphix.caustk.node.machine.MachineNode.MachineNodeNameEvent
+     * @see com.teotigraphix.caustk.node.machine.Machine.MachineNodeNameEvent
      * @see com.teotigraphix.caustk.core.osc.RackMessage.RackControl#MachineName
      */
     public final void setName(String name) {
@@ -294,21 +294,21 @@ public abstract class MachineNode extends NodeBase {
     /**
      * Serialization
      */
-    public MachineNode() {
+    public Machine() {
     }
 
     /**
-     * Creates a new {@link MachineNode} with machine index, type and name.
+     * Creates a new {@link Machine} with machine index, type and name.
      * <p>
      * All sub components are created but the machine is not added to the native
      * rack, see
-     * {@link RackNode#createMachine(int, com.teotigraphix.caustk.node.machine.MachineType, String)}.
+     * {@link RackInstance#createMachine(int, com.teotigraphix.caustk.node.machine.MachineType, String)}.
      * 
      * @param index The machine index in the native rack.
      * @param type The {@link com.teotigraphix.caustk.node.machine.MachineType}.
      * @param name The 10 character alphanumeric machine name.
      */
-    public MachineNode(RackNode rackNode, int index, MachineType type, String name) {
+    public Machine(RackInstance rackNode, int index, MachineType type, String name) {
         this.rackNode = rackNode;
         this.index = index;
         this.type = type;
@@ -451,7 +451,7 @@ public abstract class MachineNode extends NodeBase {
 
     /**
      * Base event for the
-     * {@link com.teotigraphix.caustk.node.machine.MachineNode.MachineNodeEvent}
+     * {@link com.teotigraphix.caustk.node.machine.Machine.MachineNodeEvent}
      * .
      * 
      * @author Michael Schmalle
@@ -470,7 +470,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see MachineNode#setName(String)
+     * @see Machine#setName(String)
      */
     public static class MachineNodeNameEvent extends MachineNodeEvent {
         private String name;
@@ -488,7 +488,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see MachineNode#setChannelIndex(Integer)
+     * @see Machine#setChannelIndex(Integer)
      */
     public static class MachineNodeChannelIndexEvent extends MachineNodeEvent {
         private int channelIndex;

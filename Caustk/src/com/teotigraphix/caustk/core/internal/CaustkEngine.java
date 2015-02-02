@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.core.internal;
 import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.ISoundGenerator;
 import com.teotigraphix.caustk.node.NodeBase;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 
 // TODO (caustk) create custom exception handler for all EventBus usages
 
@@ -65,7 +65,7 @@ public class CaustkEngine implements ISoundGenerator {
      * {@link NodeBase} instances are never subscribers, only dispatchers.
      * <p>
      * A {@link NodeBase} event is prefixed with the node class name and post
-     * fixed with 'Event'. So a {@link RackNode} event would be
+     * fixed with 'Event'. So a {@link RackInstance} event would be
      * <code>RackNodeEvent</code>. Any custom event based off the
      * <code>RackNodeEvent</code> will look like
      * <code>RackNodeChangeEvent</code> or <code>RackNodeMachineAddEvent</code>.

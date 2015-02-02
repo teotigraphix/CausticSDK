@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.CausticMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 import com.teotigraphix.caustk.node.NodeBase;
-import com.teotigraphix.caustk.node.master.MasterNode.MasterNodeChangeEvent;
+import com.teotigraphix.caustk.node.master.MasterChannel.MasterNodeChangeEvent;
 
 /**
  * The base node for all master node types.
@@ -47,7 +47,7 @@ public class MasterChildNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     @Tag(50)
-    private MasterNode masterNode;
+    private MasterChannel masterNode;
 
     @Tag(51)
     private boolean bypass = false;
@@ -56,7 +56,7 @@ public class MasterChildNode extends NodeBase {
     // masterNode
     //----------------------------------
 
-    public final MasterNode getMasterNode() {
+    public final MasterChannel getMasterNode() {
         return masterNode;
     }
 
@@ -98,7 +98,7 @@ public class MasterChildNode extends NodeBase {
     public MasterChildNode() {
     }
 
-    public MasterChildNode(MasterNode masterNode) {
+    public MasterChildNode(MasterChannel masterNode) {
         this.masterNode = masterNode;
     }
 

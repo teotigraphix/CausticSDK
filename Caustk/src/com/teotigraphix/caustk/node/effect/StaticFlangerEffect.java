@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.effect;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.StaticFlangerMode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link StaticFlangerEffect} effect node.
@@ -172,7 +172,7 @@ public class StaticFlangerEffect extends EffectNode {
     public StaticFlangerEffect() {
     }
 
-    public StaticFlangerEffect(MachineNode machineNode, int slot) {
+    public StaticFlangerEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.StaticFlanger);
     }

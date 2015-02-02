@@ -9,12 +9,12 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.gdx.app.AbstractProjectModelAPI;
 import com.teotigraphix.caustk.gdx.app.ProjectModel;
 import com.teotigraphix.caustk.gdx.app.ProjectState;
-import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.RackInstance;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
-import com.teotigraphix.caustk.node.sequencer.SequencerNode.ExportLoopMode;
-import com.teotigraphix.caustk.node.sequencer.SequencerNode.ExportType;
+import com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.ExportLoopMode;
+import com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.ExportType;
 
 public class ExportAPI extends AbstractProjectModelAPI {
 
@@ -47,8 +47,8 @@ public class ExportAPI extends AbstractProjectModelAPI {
         int bankIndex = pattern.getBankIndex();
         int patternIndex = pattern.getPatternIndex();
 
-        RackNode rackNode = getRackNode();
-        MachineNode machine = rackNode.getMachine(0);
+        RackInstance rackNode = getRackInstance();
+        Machine machine = rackNode.getMachine(0);
 
         rackNode.getSequencer().clearPatterns();
 
@@ -124,7 +124,7 @@ public class ExportAPI extends AbstractProjectModelAPI {
 
     public String createName(String name) {
         // [name]-[projectName]-[bmp]bpm
-        RackNode rackNode = getRackNode();
+        RackInstance rackNode = getRackInstance();
         String projectName = getProjectModel().getProjectAPI().getProject().getName();
         String bpm = Integer.toString((int)rackNode.getSequencer().getBPM());
         return projectName + "-" + name + "-" + bpm + "bpm";

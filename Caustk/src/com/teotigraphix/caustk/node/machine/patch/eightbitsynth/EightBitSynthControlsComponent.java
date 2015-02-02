@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EightBitSynthMessage;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The 8bitsynth controls component.
@@ -184,7 +184,7 @@ public class EightBitSynthControlsComponent extends MachineChannel {
     public EightBitSynthControlsComponent() {
     }
 
-    public EightBitSynthControlsComponent(MachineNode machineNode) {
+    public EightBitSynthControlsComponent(Machine machineNode) {
         super(machineNode);
     }
 

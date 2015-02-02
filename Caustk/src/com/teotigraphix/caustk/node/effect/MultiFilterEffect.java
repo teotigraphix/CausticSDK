@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.effect;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.MultiFilterMode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link MultiFilterEffect} effect node.
@@ -166,7 +166,7 @@ public class MultiFilterEffect extends EffectNode {
     public MultiFilterEffect() {
     }
 
-    public MultiFilterEffect(MachineNode machineNode, int slot) {
+    public MultiFilterEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.MultiFilter);
     }

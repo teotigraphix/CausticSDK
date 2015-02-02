@@ -30,13 +30,13 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 import com.teotigraphix.caustk.utils.node.TrackNodeUtils;
 
 /**
  * A {@link TrackChannel} represents a track in the song sequencer of a
- * {@link MachineNode}.
+ * {@link Machine}.
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -407,7 +407,7 @@ public class TrackChannel extends MachineChannel {
     protected TrackChannel() {
     }
 
-    public TrackChannel(MachineNode machineNode) {
+    public TrackChannel(Machine machineNode) {
         super(machineNode);
     }
 

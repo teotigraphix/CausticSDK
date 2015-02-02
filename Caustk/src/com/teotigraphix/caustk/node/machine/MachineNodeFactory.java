@@ -23,7 +23,7 @@ import com.teotigraphix.caustk.core.factory.CaustkFactory;
 import com.teotigraphix.caustk.core.factory.CaustkFactoryChildBase;
 
 /**
- * Factory to create {@link MachineNode}s.
+ * Factory to create {@link Machine}s.
  * 
  * @author Michael Schmalle
  * @since 1.0

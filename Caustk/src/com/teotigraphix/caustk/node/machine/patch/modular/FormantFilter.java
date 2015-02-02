@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class FormantFilter extends ModularComponentBase {
 
@@ -255,7 +255,7 @@ public class FormantFilter extends ModularComponentBase {
     public FormantFilter() {
     }
 
-    public FormantFilter(MachineNode machineNode, int bay) {
+    public FormantFilter(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("FormantFilter");
     }

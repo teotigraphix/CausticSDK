@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
 import com.teotigraphix.caustk.gdx.app.controller.command.CommandExecutionException;
 import com.teotigraphix.caustk.gdx.app.controller.command.ICommandManager;
 import com.teotigraphix.caustk.gdx.app.controller.view.AbstractDisplay;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 
 public abstract class CaustkBehavior extends Behavior {
 
@@ -77,8 +77,8 @@ public abstract class CaustkBehavior extends Behavior {
         return getProjectModel().getRackAPI().getRack();
     }
 
-    protected final RackNode getRackNode() {
-        return getProjectModel().getRackAPI().getRackNode();
+    protected final RackInstance getRackInstance() {
+        return getProjectModel().getRackAPI().getRackInstance();
     }
 
     protected UIFactory getFactory() {

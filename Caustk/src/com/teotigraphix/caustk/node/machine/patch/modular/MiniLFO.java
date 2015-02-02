@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class MiniLFO extends ModularComponentBase {
 
@@ -127,7 +127,7 @@ public class MiniLFO extends ModularComponentBase {
     public MiniLFO() {
     }
 
-    public MiniLFO(MachineNode machineNode, int bay) {
+    public MiniLFO(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("MiniLFO");
     }

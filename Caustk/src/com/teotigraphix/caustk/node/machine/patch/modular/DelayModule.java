@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class DelayModule extends ModularComponentBase {
 
@@ -116,7 +116,7 @@ public class DelayModule extends ModularComponentBase {
     public DelayModule() {
     }
 
-    public DelayModule(MachineNode machineNode, int bay) {
+    public DelayModule(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("DelayModule");
     }

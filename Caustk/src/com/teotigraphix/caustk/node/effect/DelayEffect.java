@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.effect;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DelayMode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link DelayEffect} effect node.
@@ -174,7 +174,7 @@ public class DelayEffect extends EffectNode {
     public DelayEffect() {
     }
 
-    public DelayEffect(MachineNode machineNode, int slot) {
+    public DelayEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Delay);
     }

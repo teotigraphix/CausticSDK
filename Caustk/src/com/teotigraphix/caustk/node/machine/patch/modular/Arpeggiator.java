@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class Arpeggiator extends ModularComponentBase {
 
@@ -141,7 +141,7 @@ public class Arpeggiator extends ModularComponentBase {
     public Arpeggiator() {
     }
 
-    public Arpeggiator(MachineNode machineNode, int bay) {
+    public Arpeggiator(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("Arpeggiator");
     }

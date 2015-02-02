@@ -375,7 +375,7 @@ public class MasterReverbNode extends MasterChildNode {
     public MasterReverbNode() {
     }
 
-    public MasterReverbNode(MasterNode masterNode) {
+    public MasterReverbNode(MasterChannel masterNode) {
         super(masterNode);
     }
 

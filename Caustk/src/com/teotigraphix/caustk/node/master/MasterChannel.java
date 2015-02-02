@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.MasterMixerMessage.MasterMixerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.effect.EffectChannel;
 
 /**
@@ -34,14 +34,14 @@ import com.teotigraphix.caustk.node.effect.EffectChannel;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class MasterNode extends NodeBase {
+public class MasterChannel extends NodeBase {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
     //--------------------------------------------------------------------------
 
     @Tag(50)
-    private RackNode rackNode;
+    private RackInstance rackNode;
 
     @Tag(51)
     private MasterDelayNode delay;
@@ -69,7 +69,7 @@ public class MasterNode extends NodeBase {
     // rackNode
     //----------------------------------
 
-    public final RackNode getRackNode() {
+    public final RackInstance getRackNode() {
         return rackNode;
     }
 
@@ -146,10 +146,10 @@ public class MasterNode extends NodeBase {
     /**
      * Serialization
      */
-    public MasterNode() {
+    public MasterChannel() {
     }
 
-    public MasterNode(RackNode rackNode) {
+    public MasterChannel(RackInstance rackNode) {
         this.rackNode = rackNode;
         delay = new MasterDelayNode(this);
         reverb = new MasterReverbNode(this);
@@ -196,7 +196,7 @@ public class MasterNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     /**
-     * Base event for the {@link MasterNode} and {@link MasterChildNode}.
+     * Base event for the {@link MasterChannel} and {@link MasterChildNode}.
      * 
      * @author Michael Schmalle
      * @since 1.0

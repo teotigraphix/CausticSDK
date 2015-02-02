@@ -27,25 +27,25 @@ import com.teotigraphix.caustk.core.osc.OutputPanelMessage;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.RackInstance;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 
 /**
- * The {@link SequencerNode} API manages the song/pattern sequencer and output
+ * The {@link MasterSequencerChannel} API manages the song/pattern sequencer and output
  * panel (play/stop/bpm).
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class SequencerNode extends NodeBase {
+public class MasterSequencerChannel extends NodeBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
     @Tag(50)
-    private RackNode rackNode;
+    private RackInstance rackNode;
 
     @Tag(51)
     private boolean playing = false;
@@ -99,7 +99,7 @@ public class SequencerNode extends NodeBase {
 
     /**
      * Returns the current
-     * {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerMode}
+     * {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerMode}
      * .
      */
     public final SequencerMode getSequencerMode() {
@@ -112,7 +112,7 @@ public class SequencerNode extends NodeBase {
 
     /**
      * Sets the current
-     * {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerMode}
+     * {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerMode}
      * , if the sequencer is playing, it will continue to play when this value
      * is change.
      * 
@@ -145,7 +145,7 @@ public class SequencerNode extends NodeBase {
      * Sets the song end mode (Play, Stop, Loop).
      * 
      * @param songEndMode The new
-     *            {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.SongEndMode}
+     *            {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SongEndMode}
      *            .
      * @see com.teotigraphix.caustk.core.osc.SequencerMessage#SONG_END_MODE
      */
@@ -174,7 +174,7 @@ public class SequencerNode extends NodeBase {
      * 
      * @param bpm The beats per minute (60.0..250).
      * @see com.teotigraphix.caustk.core.osc.OutputPanelMessage#BPM
-     * @see com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerNodeBPMChangeEvent
+     * @see com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerNodeBPMChangeEvent
      */
     public final void setBPM(float bpm) {
         if (bpm == this.bpm)
@@ -203,7 +203,7 @@ public class SequencerNode extends NodeBase {
      * Sets the sequencer's shuffle mode.
      * 
      * @param shuffleMode The
-     *            {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.ShuffleMode}
+     *            {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.ShuffleMode}
      *            .
      * @see com.teotigraphix.caustk.core.osc.OutputPanelMessage#SHUFFLE_MODE
      */
@@ -258,7 +258,7 @@ public class SequencerNode extends NodeBase {
      * Sets recording state.
      * 
      * @param recording Whether recording.
-     * @see com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerNodeTransportChangeEvent
+     * @see com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerNodeTransportChangeEvent
      */
     public final void setRecording(boolean recording) {
         if (recording == this.recording)
@@ -277,7 +277,7 @@ public class SequencerNode extends NodeBase {
      * the machine index.
      * <p>
      * Convenience;
-     * {@link com.teotigraphix.caustk.core.internal.CaustkRack#getRackNode()} must not be
+     * {@link com.teotigraphix.caustk.core.internal.CaustkRack#getRackInstance()} must not be
      * <code>null</code>.
      * 
      * @param machineIndex The machine index for the track(0..13).
@@ -289,7 +289,7 @@ public class SequencerNode extends NodeBase {
     List<TrackChannel> getTracks() {
         ArrayList<TrackChannel> result = new ArrayList<TrackChannel>();
         for (int i = 0; i < 14; i++) {
-            MachineNode machine = getRack().get(i);
+            Machine machine = getRack().get(i);
             if (machine != null) {
                 result.add(machine.getTrack());
             }
@@ -319,10 +319,10 @@ public class SequencerNode extends NodeBase {
     /**
      * Serialization.
      */
-    public SequencerNode() {
+    public MasterSequencerChannel() {
     }
 
-    public SequencerNode(RackNode rackNode) {
+    public MasterSequencerChannel(RackInstance rackNode) {
         this.rackNode = rackNode;
     }
 
@@ -332,10 +332,10 @@ public class SequencerNode extends NodeBase {
 
     /**
      * Plays the pattern sequencer using
-     * {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerMode#Pattern}
+     * {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerMode#Pattern}
      * .
      * 
-     * @see com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerNodeTransportChangeEvent
+     * @see com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerNodeTransportChangeEvent
      */
     public void playLooped() {
         play(SequencerMode.Pattern);
@@ -343,10 +343,10 @@ public class SequencerNode extends NodeBase {
 
     /**
      * Plays the song sequencer using
-     * {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerMode#Song}
+     * {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerMode#Song}
      * .
      * 
-     * @see com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerNodeTransportChangeEvent
+     * @see com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerNodeTransportChangeEvent
      */
     public void play() {
         play(SequencerMode.Song);
@@ -357,9 +357,9 @@ public class SequencerNode extends NodeBase {
      * parameter.
      * 
      * @param mode The
-     *            {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerMode}
+     *            {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerMode}
      *            , Pattern or Song.
-     * @see com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerNodeTransportChangeEvent
+     * @see com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerNodeTransportChangeEvent
      */
     public void play(SequencerMode mode) {
         setSequencerMode(mode);
@@ -381,7 +381,7 @@ public class SequencerNode extends NodeBase {
     /**
      * Stops the current sequencer from playing.
      * 
-     * @see com.teotigraphix.caustk.node.sequencer.SequencerNode.SequencerNodeTransportChangeEvent
+     * @see com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.SequencerNodeTransportChangeEvent
      */
     public void stop() {
         setPlaying(false);
@@ -416,7 +416,7 @@ public class SequencerNode extends NodeBase {
      * @param exportPath The absolute path for the exported media (without .wav,
      *            .ogg, .midi extensions).
      * @param type The
-     *            {@link com.teotigraphix.caustk.node.sequencer.SequencerNode.ExportType}
+     *            {@link com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel.ExportType}
      *            of media.
      * @param quality The quality of media as a percentage (10..100).
      */

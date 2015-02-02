@@ -39,7 +39,7 @@ import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBar.ButtonBarItem;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ButtonBarListener;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.PatternSelectionListener.PatternSelectionEvent;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.PatternSelectionListener.PatternSelectionEventKind;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
@@ -121,7 +121,7 @@ public class PatternPane extends UITable {
     // Public Method :: API
     //--------------------------------------------------------------------------
 
-    public void redraw(MachineNode machineNode) {
+    public void redraw(Machine machineNode) {
         setDisabled(machineNode == null);
 
         if (machineNode == null)

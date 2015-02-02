@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
  * 
  * @author Michael Schmalle
  * @since 1.0
- * @see MachineNode#getSynth()
+ * @see Machine#getSynth()
  */
 public class SynthChannel extends MachineChannel {
 
@@ -105,7 +105,7 @@ public class SynthChannel extends MachineChannel {
     public SynthChannel() {
     }
 
-    public SynthChannel(MachineNode machineNode) {
+    public SynthChannel(Machine machineNode) {
         super(machineNode);
     }
 

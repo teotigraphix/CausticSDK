@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link BitcrusherEffect} effect node.
@@ -165,7 +165,7 @@ public class BitcrusherEffect extends EffectNode {
     public BitcrusherEffect() {
     }
 
-    public BitcrusherEffect(MachineNode machineNode, int slot) {
+    public BitcrusherEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Bitcrusher);
     }

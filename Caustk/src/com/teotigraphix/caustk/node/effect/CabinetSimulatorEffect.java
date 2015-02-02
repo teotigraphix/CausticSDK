@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link CabinetSimulatorEffect} effect node.
@@ -190,7 +190,7 @@ public class CabinetSimulatorEffect extends EffectNode {
     public CabinetSimulatorEffect() {
     }
 
-    public CabinetSimulatorEffect(MachineNode machineNode, int slot) {
+    public CabinetSimulatorEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.CabinetSimulator);
     }

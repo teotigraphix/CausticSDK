@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencer
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 /**
@@ -292,7 +292,7 @@ public class SequencerChannel extends MachineChannel {
     protected SequencerChannel() {
     }
 
-    public SequencerChannel(MachineNode machineNode) {
+    public SequencerChannel(Machine machineNode) {
         super(machineNode);
         // init these here since the sequencer is being created explicitly
         // not through a restore, here we KNOW that bank and patter are 0 in native

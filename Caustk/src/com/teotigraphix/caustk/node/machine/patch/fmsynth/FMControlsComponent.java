@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMAlgorithm;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The fm controls component.
@@ -169,7 +169,7 @@ public class FMControlsComponent extends MachineChannel {
     public FMControlsComponent() {
     }
 
-    public FMControlsComponent(MachineNode machineNode) {
+    public FMControlsComponent(Machine machineNode) {
         super(machineNode);
     }
 

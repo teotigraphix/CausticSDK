@@ -73,7 +73,7 @@ public interface IProjectModel {
     CommandAPI getCommandAPI();
 
     /**
-     * The {@link com.teotigraphix.caustk.node.machine.MachineNode} API.
+     * The {@link com.teotigraphix.caustk.node.machine.Machine} API.
      */
     MachineAPI getMachineAPI();
 

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
@@ -104,7 +104,7 @@ public class Clip {
     // Internal :: Properties
     //--------------------------------------------------------------------------
 
-    MachineNode getMachineNode() {
+    Machine getMachineNode() {
         return scene.getMachine(index);
     }
 

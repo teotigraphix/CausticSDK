@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.groove.manifest;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.library.LibraryItemFormat;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 
 /**
@@ -64,7 +64,7 @@ public class LibraryInstrumentManifest extends LibraryItemManifest {
     LibraryInstrumentManifest() {
     }
 
-    public LibraryInstrumentManifest(String name, String relativePath, MachineNode machineNode) {
+    public LibraryInstrumentManifest(String name, String relativePath, Machine machineNode) {
         super(LibraryItemFormat.Instrument, name, relativePath);
         this.machineType = machineNode.getType();
     }

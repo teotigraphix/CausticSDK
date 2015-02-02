@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The bassline filter component.
@@ -114,7 +114,7 @@ public class FilterComponent extends MachineChannel {
     public FilterComponent() {
     }
 
-    public FilterComponent(MachineNode machine) {
+    public FilterComponent(Machine machine) {
         super(machine);
     }
 

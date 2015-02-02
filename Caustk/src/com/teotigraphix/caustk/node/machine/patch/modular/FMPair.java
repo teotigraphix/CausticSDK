@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class FMPair extends ModularComponentBase {
 
@@ -224,7 +224,7 @@ public class FMPair extends ModularComponentBase {
     public FMPair() {
     }
 
-    public FMPair(MachineNode machineNode, int bay) {
+    public FMPair(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("FMPair");
     }

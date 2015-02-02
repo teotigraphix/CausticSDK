@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
 import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 import com.teotigraphix.caustk.node.effect.EffectNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * @author Michael Schmalle
@@ -61,7 +61,7 @@ public class LibraryFactory extends CaustkFactoryChildBase {
     }
 
     public LibraryInstrument createInstrument(LibraryProduct product, String name,
-            String relativePath, MachineNode machineNode) {
+            String relativePath, Machine machineNode) {
         LibraryInstrumentManifest manifest = new LibraryInstrumentManifest(name, relativePath,
                 machineNode);
         manifest.setProductId(product.getId());
@@ -86,7 +86,7 @@ public class LibraryFactory extends CaustkFactoryChildBase {
     }
 
     public LibraryPatternBank createPatternBank(LibraryProduct product, String name,
-            String relativePath, MachineNode machineNode) {
+            String relativePath, Machine machineNode) {
         LibraryPatternBankManifest manifest = new LibraryPatternBankManifest(name, relativePath);
         manifest.setProductId(product.getId());
         LibraryPatternBank libraryPatternBank = new LibraryPatternBank(manifest, machineNode);

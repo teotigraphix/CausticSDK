@@ -46,8 +46,8 @@ import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.node.NodeBase;
-import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.RackInstance;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
@@ -56,17 +56,17 @@ import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
-import com.teotigraphix.caustk.node.sequencer.SequencerNode;
+import com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 import com.teotigraphix.caustk.utils.node.RackNodeUtils;
 
 /**
- * The {@link CaustkRack} holds the current {@link RackNode} session state.
+ * The {@link CaustkRack} holds the current {@link RackInstance} session state.
  * <p>
  * All events dispatched through a {@link NodeBase} uses the rack's
  * {@link #getEventBus()}.
  * <p>
- * The rack is really just a Facade over the {@link RackNode} public API for
+ * The rack is really just a Facade over the {@link RackInstance} public API for
  * ease of access.
  * 
  * @author Michael Schmalle
@@ -82,7 +82,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     private ICaustkSerializer serializer;
 
-    private RackNode rackNode;
+    private RackInstance rackNode;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -116,14 +116,14 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public final RackNode getRackNode() {
+    public final RackInstance getRackInstance() {
         return rackNode;
     }
 
-    protected void setRackNode(RackNode rackNode) {
+    protected void setRackNode(RackInstance rackNode) {
         if (rackNode == this.rackNode)
             return;
-        RackNode oldNode = this.rackNode;
+        RackInstance oldNode = this.rackNode;
         if (oldNode != null) {
             oldNode.destroy();
         }
@@ -193,12 +193,12 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     @Override
-    public final Collection<? extends MachineNode> machines() {
+    public final Collection<? extends Machine> machines() {
         return rackNode.getMachines();
     }
 
     @Override
-    public final MachineNode get(int machineIndex) {
+    public final Machine get(int machineIndex) {
         return rackNode.getMachine(machineIndex);
     }
 
@@ -207,7 +207,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //----------------------------------
 
     @Override
-    public final SequencerNode getSequencer() {
+    public final MasterSequencerChannel getSequencer() {
         return rackNode.getSequencer();
     }
 
@@ -237,18 +237,18 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     //--------------------------------------------------------------------------
 
     @Override
-    public RackNode fill(File file) throws IOException {
+    public RackInstance fill(File file) throws IOException {
 
         File directory = runtime.getFactory().getCacheDirectory("fills");
         File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString()
                 .substring(0, 10)
                 + ".caustic");
-        tempCausticSnapshot = getRackNode().saveSongAs(tempCausticSnapshot);
+        tempCausticSnapshot = getRackInstance().saveSongAs(tempCausticSnapshot);
         if (!tempCausticSnapshot.exists())
             throw new IOException("failed to save temp .caustic file in fill()");
 
-        RackNode oldNode = this.rackNode;
-        RackNode rackNodeFill = RackNodeUtils.create(file);
+        RackInstance oldNode = this.rackNode;
+        RackInstance rackNodeFill = RackNodeUtils.create(file);
         this.rackNode = rackNodeFill;
         RackMessage.BLANKRACK.send(this);
         restore(rackNode); // fill the node
@@ -265,7 +265,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     @Override
-    public RackNode fill(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
+    public RackInstance fill(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
             boolean importPatterns, boolean importMixer) throws CausticException, IOException {
         //        RackNode rackNode = create();
         // remove all machines, clear rack
@@ -280,7 +280,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
             int index = librarySound.getIndex();
             MachineType machineType = libraryInstrument.getMachineNode().getType();
             String machineName = libraryInstrument.getMachineNode().getName();
-            MachineNode machineNode = rackNode.createMachine(index, machineType, machineName);
+            Machine machineNode = rackNode.createMachine(index, machineType, machineName);
 
             //libraryInstrument.setMachineNode(machineNode);
 
@@ -310,22 +310,22 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         return rackNode;
     }
 
-    public void loadPrest(MachineNode machineNode, LibraryInstrument libraryInstrument)
+    public void loadPrest(Machine machineNode, LibraryInstrument libraryInstrument)
             throws IOException {
         machineNode.getPreset().load(libraryInstrument.getPendingPresetFile());
     }
 
-    public void loadEffects(MachineNode machineNode, LibraryEffect libraryEffect) {
+    public void loadEffects(Machine machineNode, LibraryEffect libraryEffect) {
         machineNode.getEffect().updateEffects(machineNode, libraryEffect.get(0),
                 libraryEffect.get(1));
     }
 
-    public void loadMixerChannel(MachineNode machineNode, LibraryInstrument libraryInstrument) {
+    public void loadMixerChannel(Machine machineNode, LibraryInstrument libraryInstrument) {
         MixerChannel oldMixer = libraryInstrument.getMachineNode().getMixer();
         machineNode.updateMixer(oldMixer);
     }
 
-    public void loadPatternSequencer(MachineNode machineNode, LibraryPatternBank patternBank) {
+    public void loadPatternSequencer(Machine machineNode, LibraryPatternBank patternBank) {
         //        PatternSequencerComponent oldSequencer = libraryInstrument.getMachineNode().getSequencer();
         //        machineNode.updateSequencer(oldSequencer);
 
@@ -359,7 +359,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
         setProjectInternal(project);
 
-        project.getRackNode().loadSong(causticFile);
+        project.getRackInstance().loadSong(causticFile);
 
         FileUtils.deleteQuietly(causticFile);
 
@@ -372,7 +372,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     private void setProjectInternal(Project project) {
         this.project = project;
         project.setRack(this);
-        setRackNode(project.getRackNode());
+        setRackNode(project.getRackInstance());
     }
 
     @Override
@@ -381,7 +381,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     @Override
-    public void restore(RackNode rackNode) {
+    public void restore(RackInstance rackNode) {
         // will save the state of the native rack into the node
         // this basically takes a snap shot of the native rack
         setRackNode(rackNode);
@@ -389,17 +389,17 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     @Override
-    public void update(RackNode rackNode) {
+    public void update(RackInstance rackNode) {
         setRackNode(rackNode);
         rackNode.update();
     }
 
     @Override
     public void frameChanged(float deltaTime) {
-        getRackNode().getSequencer().frameChanged(deltaTime);
+        getRackInstance().getSequencer().frameChanged(deltaTime);
     }
 
-    private File loadTempPresetFile(LibraryInstrument libraryInstrument, MachineNode machineNode)
+    private File loadTempPresetFile(LibraryInstrument libraryInstrument, Machine machineNode)
             throws IOException {
         File tempPreset = null;
         MachineType machineType = machineNode.getType();

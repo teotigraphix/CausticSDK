@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
 /**
@@ -384,7 +384,7 @@ public class PCMSamplerChannel extends MachineChannel {
      * @param machineNode The {@link PCMSynthMachine}.
      * @param channelIndex The sample channel index (0..63).
      */
-    public PCMSamplerChannel(MachineNode machineNode, int channelIndex) {
+    public PCMSamplerChannel(Machine machineNode, int channelIndex) {
         super(machineNode);
         this.channelIndex = channelIndex;
     }

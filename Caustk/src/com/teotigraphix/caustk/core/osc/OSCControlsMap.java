@@ -14,7 +14,7 @@ import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
@@ -80,7 +80,7 @@ public final class OSCControlsMap {
         return machineMap.get(type);
     }
 
-    public static float getValue(MachineNode machineNode, IMachineControl control) {
+    public static float getValue(Machine machineNode, IMachineControl control) {
         float value = CaustkRuntime.getInstance().getRack()
                 .sendMessage("/caustic/" + machineNode.getIndex() + "/" + control.getControl());
         if (value < control.getMin()) {

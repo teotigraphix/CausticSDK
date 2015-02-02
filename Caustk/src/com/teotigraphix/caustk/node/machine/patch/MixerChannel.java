@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link MixerChannel} manages the machine's main mixer panel controls
@@ -391,7 +391,7 @@ public class MixerChannel extends MachineChannel {
     public MixerChannel() {
     }
 
-    public MixerChannel(MachineNode machineNode) {
+    public MixerChannel(Machine machineNode) {
         super(machineNode);
     }
 

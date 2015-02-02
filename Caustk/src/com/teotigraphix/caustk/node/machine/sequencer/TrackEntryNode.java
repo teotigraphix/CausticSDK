@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.groove.session.Clip;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 // TODO Serialization TrackEntryNode
@@ -199,7 +199,7 @@ public class TrackEntryNode extends MachineChannel {
     protected TrackEntryNode() {
     }
 
-    public TrackEntryNode(MachineNode machineNode, String patternName, int numMeasures,
+    public TrackEntryNode(Machine machineNode, String patternName, int numMeasures,
             int startMeasure, int endMeasure) {
         super(machineNode);
         this.pattern = patternName;

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class SceneManager {
 
@@ -65,7 +65,7 @@ public class SceneManager {
         return scenes.get((bankIndex * 16) + patternIndex);
     }
 
-    MachineNode getMachine(int machineIndex) {
+    Machine getMachine(int machineIndex) {
         return sessionManager.getMachine(machineIndex);
     }
 
@@ -181,11 +181,11 @@ public class SceneManager {
     // Internal :: Methods
     //--------------------------------------------------------------------------
 
-    void machineAdded(MachineNode machineNode) {
+    void machineAdded(Machine machineNode) {
 
     }
 
-    void machineRemoved(MachineNode machineNode) {
+    void machineRemoved(Machine machineNode) {
 
     }
 

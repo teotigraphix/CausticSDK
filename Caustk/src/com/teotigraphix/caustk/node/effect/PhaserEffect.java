@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link PhaserEffect} effect node.
@@ -193,7 +193,7 @@ public class PhaserEffect extends EffectNode {
     public PhaserEffect() {
     }
 
-    public PhaserEffect(MachineNode machineNode, int slot) {
+    public PhaserEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Phaser);
     }

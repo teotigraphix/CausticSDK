@@ -183,7 +183,7 @@ public class MasterLimiterNode extends MasterChildNode {
     public MasterLimiterNode() {
     }
 
-    public MasterLimiterNode(MasterNode masterNode) {
+    public MasterLimiterNode(MasterChannel masterNode) {
         super(masterNode);
     }
 

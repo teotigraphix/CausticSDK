@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.core.factory;
 
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
 import com.teotigraphix.caustk.node.effect.BitcrusherEffect;
 import com.teotigraphix.caustk.node.effect.CabinetSimulatorEffect;
@@ -44,7 +44,7 @@ import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.FMSynthMachine;
 import com.teotigraphix.caustk.node.machine.KSSynthMachine;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.ModularMachine;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
@@ -77,7 +77,7 @@ public class NodeFactory extends CaustkFactoryChildBase {
      *         {@link EffectChannel}.
      */
     @SuppressWarnings("unchecked")
-    public <T extends EffectNode> T createEffect(MachineNode machineNode, int slot,
+    public <T extends EffectNode> T createEffect(Machine machineNode, int slot,
             EffectType effectType) {
         EffectNode effect = null;
         switch (effectType) {
@@ -138,17 +138,17 @@ public class NodeFactory extends CaustkFactoryChildBase {
     //----------------------------------
 
     /**
-     * Creates a {@link MachineNode} subclass using the {@link MachineType}.
+     * Creates a {@link Machine} subclass using the {@link MachineType}.
      * 
      * @param index The machine index lost in the native rack.
      * @param type The {@link MachineType} of machine to create.
      * @param name The machine name (10 character alpha numeric).
-     * @return A new {@link MachineNode}, added to the native rack.
+     * @return A new {@link Machine}, added to the native rack.
      */
     @SuppressWarnings("unchecked")
-    public <T extends MachineNode> T createMachine(RackNode rackNode, int index, MachineType type,
+    public <T extends Machine> T createMachine(RackInstance rackNode, int index, MachineType type,
             String name) {
-        MachineNode machineNode = null;
+        Machine machineNode = null;
         switch (type) {
             case SubSynth:
                 machineNode = new SubSynthMachine(rackNode, index, name);

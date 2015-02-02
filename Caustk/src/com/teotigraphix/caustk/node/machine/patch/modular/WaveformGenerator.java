@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class WaveformGenerator extends ModularComponentBase {
 
@@ -252,7 +252,7 @@ public class WaveformGenerator extends ModularComponentBase {
     public WaveformGenerator() {
     }
 
-    public WaveformGenerator(MachineNode machineNode, int bay) {
+    public WaveformGenerator(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("WaveformGenerator");
     }

@@ -4,58 +4,58 @@ package com.teotigraphix.caustk.utils.node;
 import java.io.File;
 
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 
 public class RackNodeUtils {
 
     /**
-     * Creates a new {@link RackNode} and returns it.
+     * Creates a new {@link RackInstance} and returns it.
      * <p>
-     * This is the only {@link RackNode} creation method that does NOT assign
+     * This is the only {@link RackInstance} creation method that does NOT assign
      * the node the this rack(which will call
      * {@link com.teotigraphix.caustk.core.osc.RackMessage#BLANKRACK}).
      * <p>
-     * This method allows for {@link RackNode}s to be created and initialized
+     * This method allows for {@link RackInstance}s to be created and initialized
      * before assigning that state to the native rack(this rack).
      */
-    public static RackNode create() {
-        RackNode rackNode = new RackNode();
+    public static RackInstance create() {
+        RackInstance rackNode = new RackInstance();
         return rackNode;
     }
 
     /**
-     * Creates a new {@link RackNode} that wraps an existing
+     * Creates a new {@link RackInstance} that wraps an existing
      * <code>.caustic</code> file and returns it.
      * <p>
-     * After the {@link RackNode} is created, the native rack is cleared with
+     * After the {@link RackInstance} is created, the native rack is cleared with
      * {@link com.teotigraphix.caustk.core.osc.RackMessage#BLANKRACK} and the
-     * {@link RackNode#restore()} method is called which restores the internal
-     * state of the {@link RackNode} with the state that was loaded into the
+     * {@link RackInstance#restore()} method is called which restores the internal
+     * state of the {@link RackInstance} with the state that was loaded into the
      * native rack by the rack node's <code>.caustic</code> file.
      * <p>
      * The rack nod is the on the
      * {@link com.teotigraphix.caustk.core.ICaustkRack}.
      * 
      * @param file The <code>.caustic</code> file that will be used to restore
-     *            the {@link RackNode}'s state.
+     *            the {@link RackInstance}'s state.
      */
-    public static RackNode create(File file) {
-        RackNode rackNode = new RackNode(file);
+    public static RackInstance create(File file) {
+        RackInstance rackNode = new RackInstance(file);
         CaustkRuntime.getInstance().getRack().restore(rackNode);
         return rackNode;
     }
 
     /**
-     * Creates a new {@link RackNode} and returns it.
+     * Creates a new {@link RackInstance} and returns it.
      * 
      * @param relativeOrAbsolutePath The relative or absolute location of the
      *            <code>.caustic</code> file. The file is for saving, not
      *            loading with this method. See {@link #create(java.io.File)} to
-     *            restore a {@link RackNode} from an existing
+     *            restore a {@link RackInstance} from an existing
      *            <code>.caustic</code> file.
      */
-    public static RackNode create(String relativeOrAbsolutePath) {
-        RackNode rackNode = new RackNode(relativeOrAbsolutePath);
+    public static RackInstance create(String relativeOrAbsolutePath) {
+        RackInstance rackNode = new RackInstance(relativeOrAbsolutePath);
         CaustkRuntime.getInstance().getRack().restore(rackNode);
         return rackNode;
     }

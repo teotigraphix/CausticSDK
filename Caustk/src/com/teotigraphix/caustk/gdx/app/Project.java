@@ -28,12 +28,12 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICaustkRack;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 import com.teotigraphix.caustk.utils.node.RackNodeUtils;
 
 /**
- * The project holds the single {@link com.teotigraphix.caustk.node.RackNode} in
+ * The project holds the single {@link com.teotigraphix.caustk.node.RackInstance} in
  * the applications current session.
  */
 public abstract class Project {
@@ -57,7 +57,7 @@ public abstract class Project {
     private String name;
 
     @Tag(10)
-    private RackNode rackNode;
+    private RackInstance rackInstance;
 
     @Tag(11)
     private byte[] rackBytes;
@@ -164,8 +164,8 @@ public abstract class Project {
     // rackNode
     //----------------------------------
 
-    public RackNode getRackNode() {
-        return rackNode;
+    public RackInstance getRackInstance() {
+        return rackInstance;
     }
 
     //----------------------------------
@@ -217,7 +217,7 @@ public abstract class Project {
         this.name = name;
         id = UUID.randomUUID();
         // XXX The CaustkRack is the only other place a RackNode is created in fill()
-        this.rackNode = RackNodeUtils.create();
+        this.rackInstance = RackNodeUtils.create();
         this.properties = new ProjectProperties();
     }
 
@@ -244,7 +244,7 @@ public abstract class Project {
         if (!racksDirectory.exists())
             racksDirectory.mkdir();
 
-        rackNode.saveSongAs(tempFile);
+        rackInstance.saveSongAs(tempFile);
 
         if (!tempFile.exists())
             throw new IOException(".caustic file was not saved in .temp for project save");

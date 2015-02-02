@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.gdx.app.controller;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class ViewBase {
 
@@ -120,7 +120,7 @@ public class ViewBase {
         this.viewManager = viewManager;
     }
 
-    public void onMachineAdd(MachineNode machineNode) {
+    public void onMachineAdd(Machine machineNode) {
 
     }
 

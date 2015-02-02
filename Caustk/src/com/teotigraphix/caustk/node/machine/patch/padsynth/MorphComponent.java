@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.padsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 
 /**
@@ -236,7 +236,7 @@ public class MorphComponent extends MachineChannel {
     public MorphComponent() {
     }
 
-    public MorphComponent(MachineNode machineNode) {
+    public MorphComponent(Machine machineNode) {
         super(machineNode);
     }
 

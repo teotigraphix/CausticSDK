@@ -19,12 +19,12 @@
 
 package com.teotigraphix.caustk.core.osc;
 
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.patch.SynthChannel;
 
 /**
  * The {@link SynthMessage} holds all OSC messages associated with the
- * {@link SynthChannel}, {@link MachineNode#getSynth()} API.
+ * {@link SynthChannel}, {@link Machine#getSynth()} API.
  * 
  * @author Michael Schmalle
  * @since 1.0

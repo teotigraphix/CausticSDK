@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 
 /**
@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.node.machine.MachineType;
  * 
  * @author Michael Schmalle
  * @since 1.0
- * @see MachineNode#getVolume()
+ * @see Machine#getVolume()
  */
 public class VolumeChannel extends MachineChannel {
 
@@ -98,7 +98,7 @@ public class VolumeChannel extends MachineChannel {
     protected VolumeChannel() {
     }
 
-    public VolumeChannel(MachineNode machineNode) {
+    public VolumeChannel(Machine machineNode) {
         super(machineNode);
     }
 

@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.NodeBase;
 
 /**
- * The {@link MachineChannel} is the base class for all {@link MachineNode}
+ * The {@link MachineChannel} is the base class for all {@link Machine}
  * composite components.
  * 
  * @author Michael Schmalle
@@ -36,17 +36,17 @@ public abstract class MachineChannel extends NodeBase {
     //--------------------------------------------------------------------------
 
     @Tag(50)
-    private MachineNode machineNode;
+    private Machine machineNode;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
-    public MachineNode getMachineNode() {
+    public Machine getMachineNode() {
         return machineNode;
     }
 
-    public void setMachineNode(MachineNode machineNode) {
+    public void setMachineNode(Machine machineNode) {
         this.machineNode = machineNode;
     }
 
@@ -74,7 +74,7 @@ public abstract class MachineChannel extends NodeBase {
     protected MachineChannel() {
     }
 
-    public MachineChannel(MachineNode machineNode) {
+    public MachineChannel(Machine machineNode) {
         this.machineNode = machineNode;
     }
 }

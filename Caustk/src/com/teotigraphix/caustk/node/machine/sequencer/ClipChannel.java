@@ -23,7 +23,7 @@ import java.util.TreeMap;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * @author Michael Schmalle
@@ -77,7 +77,7 @@ public class ClipChannel extends MachineChannel {
     protected ClipChannel() {
     }
 
-    public ClipChannel(MachineNode machineNode) {
+    public ClipChannel(Machine machineNode) {
         super(machineNode);
     }
 

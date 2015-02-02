@@ -9,7 +9,7 @@ import com.teotigraphix.caustk.gdx.app.AbstractProjectModelAPI;
 import com.teotigraphix.caustk.gdx.app.IProjectModel.ProjectModelEvent;
 import com.teotigraphix.caustk.gdx.app.ProjectModel;
 import com.teotigraphix.caustk.gdx.app.ProjectState;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 
 public class MachineAPI extends AbstractProjectModelAPI {
@@ -33,11 +33,11 @@ public class MachineAPI extends AbstractProjectModelAPI {
     //----------------------------------
 
     public boolean hasMachine(int index) {
-        return getRackNode().containsMachine(index);
+        return getRackInstance().containsMachine(index);
     }
 
-    public MachineNode getMachine(int index) {
-        return getRackNode().getMachine(index);
+    public Machine getMachine(int index) {
+        return getRackInstance().getMachine(index);
     }
 
     //----------------------------------
@@ -49,18 +49,18 @@ public class MachineAPI extends AbstractProjectModelAPI {
     }
 
     public void setSelectedMachineIndex(int machineIndex) {
-        if (getRackNode().getSelectedIndex() == machineIndex)
+        if (getRackInstance().getSelectedIndex() == machineIndex)
             return;
-        getRackNode().setSelectedIndex(machineIndex);
+        getRackInstance().setSelectedIndex(machineIndex);
         post(new ProjectModelEvent(ProjectModelEvent.Kind.MachineSelectionChange, getProjectModel()));
     }
 
-    public final MachineNode getSelectedMachine() {
-        return getRackNode().getSelectedMachine();
+    public final Machine getSelectedMachine() {
+        return getRackInstance().getSelectedMachine();
     }
 
     public final PatternNode getSelectedMachinePattern() {
-        MachineNode selectedMachine = getSelectedMachine();
+        Machine selectedMachine = getSelectedMachine();
         if (selectedMachine == null)
             return null;
         return selectedMachine.getSequencer().getSelectedPattern();
@@ -77,7 +77,7 @@ public class MachineAPI extends AbstractProjectModelAPI {
                         getProjectModel()));
     }
 
-    public Collection<? extends MachineNode> machines() {
-        return getRackNode().getMachines();
+    public Collection<? extends Machine> machines() {
+        return getRackInstance().getMachines();
     }
 }

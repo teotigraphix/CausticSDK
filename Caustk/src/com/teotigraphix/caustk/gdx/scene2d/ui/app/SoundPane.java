@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.PatternPane.PatternPaneStyle;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.SoundSelectionListener.SoundSelectionEvent;
 import com.teotigraphix.caustk.gdx.scene2d.ui.app.SoundSelectionListener.SoundSelectionEventKind;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class SoundPane extends UITable {
 
@@ -53,7 +53,7 @@ public class SoundPane extends UITable {
         setStyleClass(PatternPaneStyle.class);
     }
 
-    public void refresh(MachineNode machineNode, boolean isConnected) {
+    public void refresh(Machine machineNode, boolean isConnected) {
         int index = machineNode.getIndex();
         if (isConnected) {
             setMachineName(index, machineNode.getName());
@@ -132,7 +132,7 @@ public class SoundPane extends UITable {
         return null;
     }
 
-    public void redraw(MachineNode machineNode) {
+    public void redraw(Machine machineNode) {
         TextButton button = gridGroup.getButtons().get(machineNode.getIndex());
         Color color = StylesDefault.getMachineColor(machineNode.getType());
         if (color != null)

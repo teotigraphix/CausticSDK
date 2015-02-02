@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.EightBitSynthControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.ExpressionComponent;
 
@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.node.machine.patch.eightbitsynth.ExpressionCompon
  * @author Michael Schmalle
  * @since 1.0
  */
-public class EightBitSynthMachine extends MachineNode {
+public class EightBitSynthMachine extends Machine {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -72,7 +72,7 @@ public class EightBitSynthMachine extends MachineNode {
     public EightBitSynthMachine() {
     }
 
-    public EightBitSynthMachine(RackNode rackNode, int index, String name) {
+    public EightBitSynthMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.EightBitSynth, name);
     }
 

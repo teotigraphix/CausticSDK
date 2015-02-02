@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.patch.modular.AREnvelope.EnvelopeSlope;
 
 public class DecayEnvelope extends ModularComponentBase {
@@ -115,7 +115,7 @@ public class DecayEnvelope extends ModularComponentBase {
     public DecayEnvelope() {
     }
 
-    public DecayEnvelope(MachineNode machineNode, int bay) {
+    public DecayEnvelope(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("DecayEnvelope");
     }

@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.core.osc.BasslineMessage.DistorionProgram;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The bassline distortion component.
@@ -176,7 +176,7 @@ public class DistortionComponent extends MachineChannel {
     public DistortionComponent() {
     }
 
-    public DistortionComponent(MachineNode machineNode) {
+    public DistortionComponent(Machine machineNode) {
         super(machineNode);
     }
 

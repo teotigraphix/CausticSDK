@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.padsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 
 /**
@@ -238,7 +238,7 @@ public class VolumeEnvelopeComponent extends MachineChannel {
     public VolumeEnvelopeComponent() {
     }
 
-    public VolumeEnvelopeComponent(MachineNode machineNode) {
+    public VolumeEnvelopeComponent(Machine machineNode) {
         super(machineNode);
     }
 

@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link ReverbEffect} effect node.
@@ -189,7 +189,7 @@ public class ReverbEffect extends EffectNode {
     public ReverbEffect() {
     }
 
-    public ReverbEffect(MachineNode machineNode, int slot) {
+    public ReverbEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Reverb);
     }

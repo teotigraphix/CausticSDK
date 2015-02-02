@@ -24,7 +24,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.gdx.app.controller.command.CommandExecutionException;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 
 /**
  * Injectable model's for application model, manager, state etc.
@@ -89,8 +89,8 @@ public abstract class ApplicationComponent implements IApplicationComponent {
         return getProjectModel().getRackAPI().getRack();
     }
 
-    protected final RackNode getRackNode() {
-        return getProjectModel().getRackAPI().getRackNode();
+    protected final RackInstance getRackInstance() {
+        return getProjectModel().getRackAPI().getRackInstance();
     }
 
     public final void execute(String message, Object... args) {

@@ -26,7 +26,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VocoderMessage;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 
 /**
@@ -332,7 +332,7 @@ public class ModulatorControlsComponent extends MachineChannel {
     public ModulatorControlsComponent() {
     }
 
-    public ModulatorControlsComponent(MachineNode machineNode) {
+    public ModulatorControlsComponent(Machine machineNode) {
         super(machineNode);
     }
 

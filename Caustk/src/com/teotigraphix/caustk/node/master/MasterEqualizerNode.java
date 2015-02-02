@@ -215,7 +215,7 @@ public class MasterEqualizerNode extends MasterChildNode {
     public MasterEqualizerNode() {
     }
 
-    public MasterEqualizerNode(MasterNode masterNode) {
+    public MasterEqualizerNode(MasterChannel masterNode) {
         super(masterNode);
     }
 

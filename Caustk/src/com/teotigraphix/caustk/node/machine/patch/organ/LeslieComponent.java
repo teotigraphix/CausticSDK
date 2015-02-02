@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.organ;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OrganMessage;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
 
 /**
@@ -242,7 +242,7 @@ public class LeslieComponent extends MachineChannel {
     public LeslieComponent() {
     }
 
-    public LeslieComponent(MachineNode machineNode) {
+    public LeslieComponent(Machine machineNode) {
         super(machineNode);
         drawbar = new int[8];
     }

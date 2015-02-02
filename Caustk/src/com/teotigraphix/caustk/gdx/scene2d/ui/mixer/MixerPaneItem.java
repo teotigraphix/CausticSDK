@@ -44,9 +44,9 @@ import com.teotigraphix.caustk.gdx.scene2d.ui.TextKnob;
 import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.auto.AutoTextSlider;
 import com.teotigraphix.caustk.gdx.scene2d.ui.auto.AutomationItem;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
-import com.teotigraphix.caustk.node.master.MasterNode;
+import com.teotigraphix.caustk.node.master.MasterChannel;
 
 public class MixerPaneItem extends UITable {
 
@@ -187,7 +187,7 @@ public class MixerPaneItem extends UITable {
     // Public :: Methods
     //--------------------------------------------------------------------------
 
-    public void redraw(MasterNode masterNode) {
+    public void redraw(MasterChannel masterNode) {
         nameLabel.setText("Master");
         panKnob.setVisible(false);
         muteButton.setVisible(false);
@@ -201,7 +201,7 @@ public class MixerPaneItem extends UITable {
         volumeSlider.setValue(masterNode.getVolume().getOut());
     }
 
-    public void redraw(MachineNode machineNode) {
+    public void redraw(Machine machineNode) {
         nameLabel.setText(String.valueOf(machineNode.getIndex() + 1));
 
         MixerChannel channel = machineNode.getMixer();
@@ -219,7 +219,7 @@ public class MixerPaneItem extends UITable {
         redrawSolo(machineNode);
     }
 
-    public void redrawSolo(MachineNode machineNode) {
+    public void redrawSolo(Machine machineNode) {
         MixerChannel channel = machineNode.getMixer();
         updating = true;
         soloButton.setChecked(channel.isSolo());

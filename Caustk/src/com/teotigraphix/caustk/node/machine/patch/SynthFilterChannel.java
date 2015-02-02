@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.core.osc.FilterMessage.FilterType;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 
 /**
@@ -304,7 +304,7 @@ public class SynthFilterChannel extends MachineChannel {
     public SynthFilterChannel() {
     }
 
-    public SynthFilterChannel(MachineNode machineNode) {
+    public SynthFilterChannel(Machine machineNode) {
         super(machineNode);
     }
 

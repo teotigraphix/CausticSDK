@@ -107,7 +107,7 @@ public class ProjectAPI extends AbstractProjectModelAPI {
         // XXX Can't have spaces, must replace all spaces with '-'
         exportedFile = new File(exportedFile, file.getName().replaceAll(" ", "-") + ".caustic");
 
-        File savedFile = getRackNode().saveSongAs(exportedFile);
+        File savedFile = getRackInstance().saveSongAs(exportedFile);
         return savedFile;
     }
 

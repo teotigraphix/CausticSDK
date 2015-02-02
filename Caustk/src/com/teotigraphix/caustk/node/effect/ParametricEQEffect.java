@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link ParametricEQEffect} effect node.
@@ -133,7 +133,7 @@ public class ParametricEQEffect extends EffectNode {
     public ParametricEQEffect() {
     }
 
-    public ParametricEQEffect(MachineNode machineNode, int slot) {
+    public ParametricEQEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.ParametricEQ);
     }

@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 
 /**
@@ -175,7 +175,7 @@ public class LFO1Component extends MachineChannel {
     public LFO1Component() {
     }
 
-    public LFO1Component(MachineNode machineNode) {
+    public LFO1Component(Machine machineNode) {
         super(machineNode);
     }
 

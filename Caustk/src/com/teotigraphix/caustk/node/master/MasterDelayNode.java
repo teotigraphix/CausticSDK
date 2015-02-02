@@ -349,7 +349,7 @@ public class MasterDelayNode extends MasterChildNode {
     public MasterDelayNode() {
     }
 
-    public MasterDelayNode(MasterNode masterNode) {
+    public MasterDelayNode(MasterChannel masterNode) {
         super(masterNode);
     }
 

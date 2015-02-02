@@ -23,7 +23,7 @@ import java.io.File;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryInstrumentManifest;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * @author Michael Schmalle
@@ -39,7 +39,7 @@ public class LibraryInstrument extends LibraryProductItem {
     private LibraryInstrumentManifest manifest;
 
     @Tag(51)
-    private MachineNode machineNode;
+    private Machine machineNode;
 
     //--------------------------------------------------------------------------
     // Transient :: Variables
@@ -90,11 +90,11 @@ public class LibraryInstrument extends LibraryProductItem {
     // machineNode
     //----------------------------------
 
-    public MachineNode getMachineNode() {
+    public Machine getMachineNode() {
         return machineNode;
     }
 
-    public void setMachineNode(MachineNode machineNode) {
+    public void setMachineNode(Machine machineNode) {
         this.machineNode = machineNode;
         if (machineNode != null) {
             machineNode.setRackNode(null);

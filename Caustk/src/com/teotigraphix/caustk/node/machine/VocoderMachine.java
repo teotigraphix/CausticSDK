@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.machine.patch.PresetChannel;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorComponent;
@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorCompon
  * @author Michael Schmalle
  * @since 1.0
  */
-public class VocoderMachine extends MachineNode {
+public class VocoderMachine extends Machine {
 
     @Override
     public PresetChannel getPreset() {
@@ -78,7 +78,7 @@ public class VocoderMachine extends MachineNode {
     public VocoderMachine() {
     }
 
-    public VocoderMachine(RackNode rackNode, int index, String name) {
+    public VocoderMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.Vocoder, name);
     }
 

@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.effect;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.DistortionProgram;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link DistortionEffect} effect node.
@@ -166,7 +166,7 @@ public class DistortionEffect extends EffectNode {
     public DistortionEffect() {
     }
 
-    public DistortionEffect(MachineNode machineNode, int slot) {
+    public DistortionEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Distortion);
     }

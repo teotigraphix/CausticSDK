@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencer
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 /**
@@ -340,7 +340,7 @@ public class PatternNode extends MachineChannel {
      * @param bankIndex The bank index (0..3).
      * @param patternIndex The pattern index (0..15).
      */
-    public PatternNode(MachineNode machineNode, int bankIndex, int patternIndex) {
+    public PatternNode(Machine machineNode, int bankIndex, int patternIndex) {
         super(machineNode);
         this.name = PatternUtils.toString(bankIndex, patternIndex);
     }
@@ -351,7 +351,7 @@ public class PatternNode extends MachineChannel {
      * @param name The name of the pattern.
      * @param machineIndex The machine's rack index.
      */
-    public PatternNode(MachineNode machineNode, String name) {
+    public PatternNode(Machine machineNode, String name) {
         super(machineNode);
         this.name = name;
     }
@@ -363,7 +363,7 @@ public class PatternNode extends MachineChannel {
      * @param patternIndex The pattern index (0..15).
      * @param machineIndex The machine's rack index.
      */
-    public PatternNode(int bankIndex, int patternIndex, MachineNode machineNode) {
+    public PatternNode(int bankIndex, int patternIndex, Machine machineNode) {
         this.name = PatternUtils.toString(bankIndex, patternIndex);
         setMachineNode(machineNode);
     }

@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EightBitSynthMessage;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 
 /**
@@ -82,7 +82,7 @@ public class ExpressionComponent extends MachineChannel {
     public ExpressionComponent() {
     }
 
-    public ExpressionComponent(MachineNode machineNode) {
+    public ExpressionComponent(Machine machineNode) {
         super(machineNode);
     }
 

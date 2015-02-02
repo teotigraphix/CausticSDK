@@ -27,7 +27,7 @@ import java.util.List;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel;
 
@@ -89,7 +89,7 @@ public class LibraryPatternBank extends LibraryProductItem {
     LibraryPatternBank() {
     }
 
-    public LibraryPatternBank(LibraryPatternBankManifest manifest, MachineNode machineNode) {
+    public LibraryPatternBank(LibraryPatternBankManifest manifest, Machine machineNode) {
         this.manifest = manifest;
         manifest.setMachineType(machineNode.getType());
         this.sequencer = machineNode.getSequencer();

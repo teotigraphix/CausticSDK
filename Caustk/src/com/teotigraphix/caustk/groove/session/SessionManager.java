@@ -27,8 +27,8 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
-import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.RackInstance;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 
 public class SessionManager {
@@ -38,13 +38,13 @@ public class SessionManager {
     //--------------------------------------------------------------------------
 
     @Tag(0)
-    private RackNode rackNode;
+    private RackInstance rackNode;
 
     @Tag(1)
     private SceneManager sceneManager;
 
     @Tag(2)
-    private Map<Integer, MachineNode> machines = new HashMap<Integer, MachineNode>();
+    private Map<Integer, Machine> machines = new HashMap<Integer, Machine>();
 
     @Tag(10)
     private int selectedSceneBankIndex;
@@ -100,7 +100,7 @@ public class SessionManager {
                         getSelectedScene()));
     }
 
-    public RackNode getRackNode() {
+    public RackInstance getRackNode() {
         return rackNode;
     }
 
@@ -108,11 +108,11 @@ public class SessionManager {
         return sceneManager;
     }
 
-    Map<Integer, MachineNode> getMachines() {
+    Map<Integer, Machine> getMachines() {
         return machines;
     }
 
-    MachineNode getMachine(int machineIndex) {
+    Machine getMachine(int machineIndex) {
         return machines.get(machineIndex);
     }
 
@@ -168,7 +168,7 @@ public class SessionManager {
     SessionManager() {
     }
 
-    public SessionManager(RackNode rackNode) {
+    public SessionManager(RackInstance rackNode) {
         this.rackNode = rackNode;
         sceneManager = new SceneManager(this);
     }
@@ -181,7 +181,7 @@ public class SessionManager {
      * @param machineNode
      * @see com.teotigraphix.caustk.groove.session.SessionManager.SessionManagerEventKind#Connect
      */
-    public void connect(MachineNode machineNode) {
+    public void connect(Machine machineNode) {
         CaustkRuntime.getInstance().getLogger().log("SessionManager", "connect() " + machineNode);
         machines.put(machineNode.getIndex(), machineNode);
         // XXX Fix with Color id map        machineNode.setColor(StylesDefault.getMachineColor(machineNode.getType()));
@@ -194,8 +194,8 @@ public class SessionManager {
      * @param machineNode
      * @see com.teotigraphix.caustk.groove.session.SessionManager.SessionManagerEventKind#Disconnect
      */
-    public MachineNode disconnect(MachineNode machineNode) {
-        MachineNode removedMachine = machines.remove(machineNode.getIndex());
+    public Machine disconnect(Machine machineNode) {
+        Machine removedMachine = machines.remove(machineNode.getIndex());
         machineRemoved(removedMachine);
         CaustkRuntime.getInstance().post(
                 new SessionManagerEvent(SessionManagerEventKind.Disconnect, this, machineNode));
@@ -276,11 +276,11 @@ public class SessionManager {
     // Internal :: Methods
     //--------------------------------------------------------------------------
 
-    private void machineAdded(MachineNode machineNode) {
+    private void machineAdded(Machine machineNode) {
         sceneManager.machineAdded(machineNode);
     }
 
-    private void machineRemoved(MachineNode machineNode) {
+    private void machineRemoved(Machine machineNode) {
         sceneManager.machineRemoved(machineNode);
     }
 
@@ -400,11 +400,11 @@ public class SessionManager {
         return 200;
     }
 
-    public List<MachineNode> getChannels() {
-        return new ArrayList<MachineNode>(machines.values());
+    public List<Machine> getChannels() {
+        return new ArrayList<Machine>(machines.values());
     }
 
-    public MachineNode getChannel(int machineIndex) {
+    public Machine getChannel(int machineIndex) {
         return machines.get(machineIndex);
     }
 
@@ -463,7 +463,7 @@ public class SessionManager {
 
         private Clip clip;
 
-        private MachineNode machineNode;
+        private Machine machineNode;
 
         private Scene scene;
 
@@ -479,7 +479,7 @@ public class SessionManager {
             return clip;
         }
 
-        public MachineNode getMachineNode() {
+        public Machine getMachineNode() {
             return machineNode;
         }
 
@@ -505,7 +505,7 @@ public class SessionManager {
         }
 
         public SessionManagerEvent(SessionManagerEventKind kind, SessionManager manager,
-                MachineNode machineNode) {
+                Machine machineNode) {
             this.kind = kind;
             this.manager = manager;
             this.machineNode = machineNode;

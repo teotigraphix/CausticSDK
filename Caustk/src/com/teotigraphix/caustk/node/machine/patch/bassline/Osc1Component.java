@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.core.osc.BasslineMessage.Osc1Waveform;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The bassline oscillator component.
@@ -175,7 +175,7 @@ public class Osc1Component extends MachineChannel {
     public Osc1Component() {
     }
 
-    public Osc1Component(MachineNode machineNode) {
+    public Osc1Component(Machine machineNode) {
         super(machineNode);
     }
 

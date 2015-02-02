@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.machine.patch.modular.ModularBayComponent;
 
 /**
@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.node.machine.patch.modular.ModularBayComponent;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ModularMachine extends MachineNode {
+public class ModularMachine extends Machine {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -60,7 +60,7 @@ public class ModularMachine extends MachineNode {
     public ModularMachine() {
     }
 
-    public ModularMachine(RackNode rackNode, int index, String name) {
+    public ModularMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.Modular, name);
     }
 

@@ -26,7 +26,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The modular synth bay component.
@@ -58,7 +58,7 @@ public class ModularBayComponent extends MachineChannel {
     public ModularBayComponent() {
     }
 
-    public ModularBayComponent(MachineNode machineNode) {
+    public ModularBayComponent(Machine machineNode) {
         super(machineNode);
     }
 
@@ -69,7 +69,7 @@ public class ModularBayComponent extends MachineChannel {
      */
     public ModularComponentBase create(ModularComponentType type, int bay) {
         ModularComponentBase component = null;
-        MachineNode machineNode = getMachineNode();
+        Machine machineNode = getMachineNode();
         int machineIndex = getMachineIndex();
         switch (type) {
 

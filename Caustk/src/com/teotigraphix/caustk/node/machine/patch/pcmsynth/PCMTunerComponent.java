@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.pcmsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
 /**
@@ -156,7 +156,7 @@ public class PCMTunerComponent extends MachineChannel {
     public PCMTunerComponent() {
     }
 
-    public PCMTunerComponent(MachineNode machineNode) {
+    public PCMTunerComponent(Machine machineNode) {
         super(machineNode);
     }
 

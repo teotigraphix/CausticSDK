@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.core.ExceptionUtils;
 
 /**
@@ -128,7 +128,7 @@ public abstract class EffectNode extends MachineChannel {
     public EffectNode() {
     }
 
-    public EffectNode(MachineNode machineNode, int slot) {
+    public EffectNode(Machine machineNode, int slot) {
         super(machineNode);
         this.slot = slot;
         setData(new NodeMetaData(this));

@@ -7,7 +7,7 @@ import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.controller.IFileManager;
 import com.teotigraphix.caustk.gdx.app.controller.IFileModel;
 import com.teotigraphix.caustk.gdx.app.controller.command.ICommandManager;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 
 public abstract class AbstractProjectModelAPI {
 
@@ -41,8 +41,8 @@ public abstract class AbstractProjectModelAPI {
         return projectModel.getProject().getRack();
     }
 
-    protected RackNode getRackNode() {
-        return projectModel.getProject().getRackNode();
+    protected RackInstance getRackInstance() {
+        return projectModel.getProject().getRackInstance();
     }
 
     protected ProjectProperties getProperties() {

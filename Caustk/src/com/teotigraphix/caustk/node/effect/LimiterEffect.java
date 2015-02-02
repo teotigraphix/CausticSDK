@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link LimiterEffect} effect node.
@@ -161,7 +161,7 @@ public class LimiterEffect extends EffectNode {
     public LimiterEffect() {
     }
 
-    public LimiterEffect(MachineNode machineNode, int slot) {
+    public LimiterEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Limiter);
     }

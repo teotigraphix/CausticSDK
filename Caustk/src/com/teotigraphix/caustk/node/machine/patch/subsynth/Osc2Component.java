@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.CentsMode;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 
 /**
@@ -237,7 +237,7 @@ public class Osc2Component extends MachineChannel {
     public Osc2Component() {
     }
 
-    public Osc2Component(MachineNode machineNode) {
+    public Osc2Component(Machine machineNode) {
         super(machineNode);
     }
 

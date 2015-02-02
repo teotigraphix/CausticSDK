@@ -28,22 +28,22 @@ import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.node.NodeBase;
-import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.RackInstance;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
 import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
-import com.teotigraphix.caustk.node.sequencer.SequencerNode;
+import com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel;
 
 /**
- * The {@link ICaustkRack} holds the current {@link RackNode} session state.
+ * The {@link ICaustkRack} holds the current {@link RackInstance} session state.
  * <p>
  * All events dispatched through a {@link NodeBase} uses the rack's
  * {@link #getEventBus()}.
  * <p>
- * The rack is really just a Facade over the {@link RackNode} public API for
+ * The rack is really just a Facade over the {@link RackInstance} public API for
  * ease of access.
  * 
  * @author Michael Schmalle
@@ -52,7 +52,7 @@ import com.teotigraphix.caustk.node.sequencer.SequencerNode;
 public interface ICaustkRack extends ISoundGenerator {
 
     /**
-     * Returns whether the rack has a valid {@link RackNode} backing state.
+     * Returns whether the rack has a valid {@link RackInstance} backing state.
      */
     boolean isLoaded();
 
@@ -69,14 +69,14 @@ public interface ICaustkRack extends ISoundGenerator {
     Project getProject();
 
     /**
-     * Returns the current {@link RackNode} native rack state.
+     * Returns the current {@link RackInstance} native rack state.
      * <p>
      * When listening to the rack's eventBus, there is no need to worry about
      * memory leaks with events because the {@link NodeBase} is not a dispatcher
      * or listener. All views would register the subscribers to the rack's
      * eventBus, which is constant throughout the whole application life cycle.
      */
-    RackNode getRackNode();
+    RackInstance getRackInstance();
 
     String getName();
 
@@ -96,23 +96,23 @@ public interface ICaustkRack extends ISoundGenerator {
 
     boolean contains(int machineIndex);
 
-    Collection<? extends MachineNode> machines();
+    Collection<? extends Machine> machines();
 
-    MachineNode get(int machineIndex);
+    Machine get(int machineIndex);
 
-    SequencerNode getSequencer();
+    MasterSequencerChannel getSequencer();
 
     /**
-     * Fills a {@link RackNode} using the .caustic file loaded an restore() on
+     * Fills a {@link RackInstance} using the .caustic file loaded an restore() on
      * the node structure.
      * <p>
-     * The {@link RackNode} will be populated, the original rack node and state
+     * The {@link RackInstance} will be populated, the original rack node and state
      * will be restored to the rack after the method returns.
      * 
      * @param file The absolute location of the .caustic file to load.
      * @throws java.io.IOException
      */
-    RackNode fill(File file) throws IOException;
+    RackInstance fill(File file) throws IOException;
 
     /**
      * @param group
@@ -131,25 +131,25 @@ public interface ICaustkRack extends ISoundGenerator {
      * @throws CausticException
      * @throws java.io.IOException
      */
-    RackNode fill(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
+    RackInstance fill(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
             boolean importPatterns, boolean importMixer) throws CausticException, IOException;
 
     /**
-     * Restores a {@link RackNode} state, machines, effects etc.
+     * Restores a {@link RackInstance} state, machines, effects etc.
      * 
-     * @param rackNode The {@link RackNode} to restore, this method will fail if
+     * @param rackNode The {@link RackInstance} to restore, this method will fail if
      *            the machines are already native.
      */
-    void restore(RackNode rackNode);
+    void restore(RackInstance rackNode);
 
     /**
-     * Updates the native rack with the {@link RackNode}'s internal state by
+     * Updates the native rack with the {@link RackInstance}'s internal state by
      * sending OSC messages to the core.
      * 
-     * @param rackNode The {@link RackNode} to use as the state to initialize
+     * @param rackNode The {@link RackInstance} to use as the state to initialize
      *            the native rack.
      */
-    void update(RackNode rackNode);
+    void update(RackInstance rackNode);
 
     /**
      * Called when a frame changes in the application, update measure and beat

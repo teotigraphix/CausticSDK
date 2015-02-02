@@ -87,7 +87,7 @@ public class MasterVolumeNode extends MasterChildNode {
     public MasterVolumeNode() {
     }
 
-    public MasterVolumeNode(MasterNode masterNode) {
+    public MasterVolumeNode(MasterChannel masterNode) {
         super(masterNode);
     }
 

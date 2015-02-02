@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine;
 
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 
 /**
  * The Caustic <strong>KSSynth</strong> OSC decorator.
@@ -27,7 +27,7 @@ import com.teotigraphix.caustk.node.RackNode;
  * @author Michael Schmalle
  * @since 3.1
  */
-public class KSSynthMachine extends MachineNode {
+public class KSSynthMachine extends Machine {
 
     //--------------------------------------------------------------------------
     // Constructors
@@ -39,7 +39,7 @@ public class KSSynthMachine extends MachineNode {
     public KSSynthMachine() {
     }
 
-    public KSSynthMachine(RackNode rackNode, int index, String name) {
+    public KSSynthMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.KSSynth, name);
     }
 

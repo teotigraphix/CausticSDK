@@ -27,7 +27,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMOperatorControl;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The fm operators component.
@@ -95,7 +95,7 @@ public class FMOperatorComponent extends MachineChannel {
     public FMOperatorComponent() {
     }
 
-    public FMOperatorComponent(MachineNode machineNode) {
+    public FMOperatorComponent(Machine machineNode) {
         super(machineNode);
     }
 

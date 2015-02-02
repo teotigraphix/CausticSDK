@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.effect;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link AutoWahEffect} effect node.
@@ -189,7 +189,7 @@ public class AutoWahEffect extends EffectNode {
     public AutoWahEffect() {
     }
 
-    public AutoWahEffect(MachineNode machineNode, int slot) {
+    public AutoWahEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Autowah);
     }

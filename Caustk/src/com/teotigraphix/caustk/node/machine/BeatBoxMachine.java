@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.machine.patch.beatbox.WavSamplerComponent;
 
 /**
@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.node.machine.patch.beatbox.WavSamplerComponent;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class BeatBoxMachine extends MachineNode {
+public class BeatBoxMachine extends Machine {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -60,7 +60,7 @@ public class BeatBoxMachine extends MachineNode {
     public BeatBoxMachine() {
     }
 
-    public BeatBoxMachine(RackNode rackNode, int index, String name) {
+    public BeatBoxMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.BeatBox, name);
     }
 

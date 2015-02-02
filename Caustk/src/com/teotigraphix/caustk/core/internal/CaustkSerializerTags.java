@@ -58,7 +58,7 @@ import com.teotigraphix.caustk.groove.session.SceneInfo;
 import com.teotigraphix.caustk.groove.session.SceneManager;
 import com.teotigraphix.caustk.groove.session.SessionManager;
 import com.teotigraphix.caustk.node.NodeMetaData;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.effect.AutoWahEffect;
 import com.teotigraphix.caustk.node.effect.BitcrusherEffect;
 import com.teotigraphix.caustk.node.effect.CabinetSimulatorEffect;
@@ -149,10 +149,10 @@ import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
 import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
-import com.teotigraphix.caustk.node.master.MasterNode;
+import com.teotigraphix.caustk.node.master.MasterChannel;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
-import com.teotigraphix.caustk.node.sequencer.SequencerNode;
+import com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel;
 
 /*
 TaggedFieldSerializer only serializes fields that have a @Tag annotation. 
@@ -201,7 +201,7 @@ public final class CaustkSerializerTags {
         kryo.register(ScaleReference.class, 107);
 
         kryo.register(NodeMetaData.class, 108);
-        kryo.register(RackNode.class, 109);
+        kryo.register(RackInstance.class, 109);
 
         // effects
         kryo.register(EffectType.class, 200);
@@ -230,17 +230,17 @@ public final class CaustkSerializerTags {
         kryo.register(VinylSimulatorEffect.class, 222);
 
         // Main
-        kryo.register(MasterNode.class, 250);
+        kryo.register(MasterChannel.class, 250);
         kryo.register(MasterDelayNode.class, 251);
         kryo.register(MasterReverbNode.class, 252);
         kryo.register(MasterEqualizerNode.class, 253);
         kryo.register(MasterLimiterNode.class, 254);
         kryo.register(MasterVolumeNode.class, 255);
 
-        kryo.register(SequencerNode.class, 256);
-        kryo.register(SequencerNode.SequencerMode.class, 257);
-        kryo.register(SequencerNode.ShuffleMode.class, 258);
-        kryo.register(SequencerNode.SongEndMode.class, 259);
+        kryo.register(MasterSequencerChannel.class, 256);
+        kryo.register(MasterSequencerChannel.SequencerMode.class, 257);
+        kryo.register(MasterSequencerChannel.ShuffleMode.class, 258);
+        kryo.register(MasterSequencerChannel.SongEndMode.class, 259);
 
         kryo.register(PatternNode.class, 260);
         kryo.register(PatternNode.Resolution.class, 261);

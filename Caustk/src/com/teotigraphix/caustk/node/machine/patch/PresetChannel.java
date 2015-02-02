@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 import com.teotigraphix.caustk.utils.node.PresetUtils;
@@ -181,7 +181,7 @@ public class PresetChannel extends MachineChannel {
     public PresetChannel() {
     }
 
-    public PresetChannel(MachineNode machineNode, String path) {
+    public PresetChannel(Machine machineNode, String path) {
         super(machineNode);
         setPath(path);
     }

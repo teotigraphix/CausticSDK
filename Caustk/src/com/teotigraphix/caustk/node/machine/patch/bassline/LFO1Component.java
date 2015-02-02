@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.core.osc.BasslineMessage.LFOTarget;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The bassline lfo component.
@@ -176,7 +176,7 @@ public class LFO1Component extends MachineChannel {
         rate = 0;
     }
 
-    public LFO1Component(MachineNode machineNode) {
+    public LFO1Component(Machine machineNode) {
         super(machineNode);
         rate = 0;
     }

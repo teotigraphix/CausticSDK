@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
 /**
@@ -129,7 +129,7 @@ public class PCMSamplerComponent extends MachineChannel {
     public PCMSamplerComponent() {
     }
 
-    public PCMSamplerComponent(MachineNode machineNode) {
+    public PCMSamplerComponent(Machine machineNode) {
         super(machineNode);
     }
 

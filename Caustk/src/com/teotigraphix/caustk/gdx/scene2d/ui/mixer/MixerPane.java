@@ -30,7 +30,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.gdx.scene2d.ui.UITable;
 import com.teotigraphix.caustk.gdx.scene2d.ui.mixer.MixerPaneItem.MixerPaneItemListener;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class MixerPane extends UITable {
 
@@ -73,8 +73,8 @@ public class MixerPane extends UITable {
         doScroll(bounds);
     }
 
-    public void redraw(Collection<? extends MachineNode> machines) {
-        for (MachineNode machineNode : machines) {
+    public void redraw(Collection<? extends Machine> machines) {
+        for (Machine machineNode : machines) {
             redraw(machineNode);
         }
     }
@@ -88,7 +88,7 @@ public class MixerPane extends UITable {
         }
     }
 
-    public void onMachineSelection(MachineNode machineNode) {
+    public void onMachineSelection(Machine machineNode) {
         for (MixerPaneItem item : mixers) {
             item.setSelected(false);
         }
@@ -141,20 +141,20 @@ public class MixerPane extends UITable {
         scrollPane.scrollTo(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
-    public void _refreshSolo(Collection<? extends MachineNode> machines) {
-        for (MachineNode machineNode : machines) {
+    public void _refreshSolo(Collection<? extends Machine> machines) {
+        for (Machine machineNode : machines) {
             MixerPaneItem item = mixers.get(machineNode.getIndex());
             item.redrawSolo(machineNode);
         }
     }
 
-    private void redraw(MachineNode machineNode) {
+    private void redraw(Machine machineNode) {
         MixerPaneItem item = mixers.get(machineNode.getIndex());
         item.setMachineColor(povider.getItemColor(machineNode.getIndex()));
         item.redraw(machineNode);
         // TODO needs to be moved
         if (povider.hasMaster()) {
-            masterItem.redraw(povider.getRack().getRackNode().getMaster());
+            masterItem.redraw(povider.getRack().getRackInstance().getMaster());
         }
     }
 

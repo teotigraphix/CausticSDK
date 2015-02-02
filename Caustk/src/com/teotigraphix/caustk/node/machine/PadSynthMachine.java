@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.HarmonicsComponent;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO1Component;
 import com.teotigraphix.caustk.node.machine.patch.padsynth.LFO2Component;
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.patch.padsynth.VolumeEnvelopeCompone
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PadSynthMachine extends MachineNode {
+public class PadSynthMachine extends Machine {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -108,7 +108,7 @@ public class PadSynthMachine extends MachineNode {
     public PadSynthMachine() {
     }
 
-    public PadSynthMachine(RackNode rackNode, int index, String name) {
+    public PadSynthMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.PadSynth, name);
     }
 

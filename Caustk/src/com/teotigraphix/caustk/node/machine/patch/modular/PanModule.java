@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class PanModule extends ModularComponentBase {
 
@@ -116,7 +116,7 @@ public class PanModule extends ModularComponentBase {
     public PanModule() {
     }
 
-    public PanModule(MachineNode machineNode, int bay) {
+    public PanModule(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("PanModule");
     }

@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.effect;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EffectControls;
 import com.teotigraphix.caustk.core.osc.EffectsRackMessage.ChorusMode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link ChorusEffect} effect node.
@@ -194,7 +194,7 @@ public class ChorusEffect extends EffectNode {
     public ChorusEffect() {
     }
 
-    public ChorusEffect(MachineNode machineNode, int slot) {
+    public ChorusEffect(Machine machineNode, int slot) {
         super(machineNode, slot);
         setType(EffectType.Chorus);
     }

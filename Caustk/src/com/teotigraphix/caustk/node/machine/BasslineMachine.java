@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.machine.patch.bassline.DistortionComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.FilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.LFO1Component;
@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.machine.patch.bassline.Osc1Component;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class BasslineMachine extends MachineNode {
+public class BasslineMachine extends Machine {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -96,7 +96,7 @@ public class BasslineMachine extends MachineNode {
     public BasslineMachine() {
     }
 
-    public BasslineMachine(RackNode rackNode, int index, String name) {
+    public BasslineMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.Bassline, name);
     }
 

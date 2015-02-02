@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class DADSREnvelope extends ModularComponentBase {
 
@@ -326,7 +326,7 @@ public class DADSREnvelope extends ModularComponentBase {
     public DADSREnvelope() {
     }
 
-    public DADSREnvelope(MachineNode machineNode, int bay) {
+    public DADSREnvelope(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("DADSREnvelope");
     }

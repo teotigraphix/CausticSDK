@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.groove.importer.CausticInstrument;
 import com.teotigraphix.caustk.groove.importer.CausticSound;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.utils.core.SerializeUtils;
 import com.teotigraphix.caustk.utils.core.ZipUncompress;
@@ -61,7 +61,7 @@ public class LibraryInstrumentUtils {
     //--------------------------------------------------------------------------
 
     public static LibraryInstrument createInstrument(LibraryProduct product,
-            MachineNode machineNode, CausticSound causticSound) {
+            Machine machineNode, CausticSound causticSound) {
 
         //------------------------------
 
@@ -95,7 +95,7 @@ public class LibraryInstrumentUtils {
         // the presets directory
         if (item instanceof LibraryInstrument && !(item.getMachineNode() instanceof VocoderMachine)) {
             File presetsDirectory = tempDirectory;
-            MachineNode machineNode = item.getMachineNode();
+            Machine machineNode = item.getMachineNode();
             File file = new File(presetsDirectory, PRESET + "."
                     + machineNode.getType().getExtension());
             FileUtils.writeByteArrayToFile(file, machineNode.getPreset().getRestoredData());

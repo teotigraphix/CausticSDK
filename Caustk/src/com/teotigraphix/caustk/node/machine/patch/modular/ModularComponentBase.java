@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.node.ModularUtils;
 
 public abstract class ModularComponentBase extends MachineChannel implements IModularComponent {
@@ -88,7 +88,7 @@ public abstract class ModularComponentBase extends MachineChannel implements IMo
     public ModularComponentBase() {
     }
 
-    public ModularComponentBase(MachineNode machineNode, int bay) {
+    public ModularComponentBase(Machine machineNode, int bay) {
         super(machineNode);
         this.bay = bay;
         setData(new NodeMetaData(this));

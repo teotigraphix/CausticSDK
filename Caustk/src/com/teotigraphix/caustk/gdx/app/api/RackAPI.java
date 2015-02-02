@@ -8,7 +8,7 @@ import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.AbstractProjectModelAPI;
 import com.teotigraphix.caustk.gdx.app.ProjectModel;
 import com.teotigraphix.caustk.gdx.app.ProjectState;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 
 public class RackAPI extends AbstractProjectModelAPI {
 
@@ -21,8 +21,8 @@ public class RackAPI extends AbstractProjectModelAPI {
     }
 
     @Override
-    public RackNode getRackNode() {
-        return getRuntime().getRack().getRackNode();
+    public RackInstance getRackInstance() {
+        return getRuntime().getRack().getRackInstance();
     }
 
     public EventBus getRackEventBus() {

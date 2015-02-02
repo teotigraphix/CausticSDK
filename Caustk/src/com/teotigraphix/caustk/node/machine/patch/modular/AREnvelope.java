@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public class AREnvelope extends ModularComponentBase {
 
@@ -189,7 +189,7 @@ public class AREnvelope extends ModularComponentBase {
     public AREnvelope() {
     }
 
-    public AREnvelope(MachineNode machineNode, int bay) {
+    public AREnvelope(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("AREnvelope");
     }

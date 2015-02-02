@@ -26,7 +26,7 @@ import android.annotation.SuppressLint;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 public abstract class MixerBase extends ModularComponentBase {
 
@@ -105,7 +105,7 @@ public abstract class MixerBase extends ModularComponentBase {
     public MixerBase() {
     }
 
-    public MixerBase(MachineNode machineNode, int bay) {
+    public MixerBase(Machine machineNode, int bay) {
         super(machineNode, bay);
         setLabel("MixerBase");
     }

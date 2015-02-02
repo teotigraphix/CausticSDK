@@ -26,7 +26,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * The {@link BeatBoxMachine} sampler component.
@@ -56,7 +56,7 @@ public class WavSamplerComponent extends MachineChannel {
     public WavSamplerComponent() {
     }
 
-    public WavSamplerComponent(MachineNode machineNode) {
+    public WavSamplerComponent(Machine machineNode) {
         super(machineNode);
         for (int i = 0; i < NUM_CHANNELS; i++) {
             WavSamplerChannel channel = new WavSamplerChannel(machineNode, i);

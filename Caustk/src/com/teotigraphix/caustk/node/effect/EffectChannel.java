@@ -29,15 +29,15 @@ import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
 import com.teotigraphix.caustk.node.machine.MachineChannel;
-import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.master.MasterNode;
+import com.teotigraphix.caustk.node.machine.Machine;
+import com.teotigraphix.caustk.node.master.MasterChannel;
 
 /**
  * The effect channel node, currently holds 2 slots.
  * 
  * @author Michael Schmalle
  * @since 1.0
- * @see MachineNode#getEffects()
+ * @see Machine#getEffects()
  */
 public class EffectChannel extends MachineChannel {
 
@@ -53,7 +53,7 @@ public class EffectChannel extends MachineChannel {
     private HashMap<Integer, EffectNode> slots = new HashMap<Integer, EffectNode>();
 
     @Tag(101)
-    private MasterNode masterNode;
+    private MasterChannel masterNode;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -92,11 +92,11 @@ public class EffectChannel extends MachineChannel {
     public EffectChannel() {
     }
 
-    public EffectChannel(MachineNode machineNode) {
+    public EffectChannel(Machine machineNode) {
         super(machineNode);
     }
 
-    public EffectChannel(MasterNode masterNode) {
+    public EffectChannel(MasterChannel masterNode) {
         super(null);
         this.masterNode = masterNode;
     }
@@ -133,7 +133,7 @@ public class EffectChannel extends MachineChannel {
         return (T)effectNode;
     }
 
-    public void updateEffects(MachineNode machineNode, EffectNode effect1, EffectNode effect2) {
+    public void updateEffects(Machine machineNode, EffectNode effect1, EffectNode effect2) {
         if (effect1 != null) {
             slots.put(0, effect1);
             effect1.setMachineNode(getMachineNode());

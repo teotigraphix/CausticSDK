@@ -20,7 +20,7 @@
 package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.machine.patch.organ.LeslieComponent;
 
 /**
@@ -29,7 +29,7 @@ import com.teotigraphix.caustk.node.machine.patch.organ.LeslieComponent;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class OrganMachine extends MachineNode {
+public class OrganMachine extends Machine {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -60,7 +60,7 @@ public class OrganMachine extends MachineNode {
     public OrganMachine() {
     }
 
-    public OrganMachine(RackNode rackNode, int index, String name) {
+    public OrganMachine(RackInstance rackNode, int index, String name) {
         super(rackNode, index, MachineType.Organ, name);
     }
 

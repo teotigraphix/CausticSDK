@@ -19,14 +19,14 @@
 
 package com.teotigraphix.caustk.node.machine.patch.modular;
 
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 
 /**
  * @author Michael Schmalle
  */
 public class ModularPanel extends ModularComponentBase {
 
-    public ModularPanel(MachineNode machineNode, int bay) {
+    public ModularPanel(Machine machineNode, int bay) {
         super(machineNode, 16);
     }
 

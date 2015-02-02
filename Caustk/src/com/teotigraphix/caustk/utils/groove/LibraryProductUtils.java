@@ -46,10 +46,10 @@ import com.teotigraphix.caustk.groove.library.LibraryProject;
 import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
-import com.teotigraphix.caustk.node.RackNode;
+import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.effect.EffectNode;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.core.ZipCompress;
 import com.teotigraphix.caustk.utils.core.ZipUncompress;
 
@@ -412,9 +412,9 @@ public class LibraryProductUtils {
         if (!causticFile.exists())
             throw new CausticException(".caustic File does not exist ;" + causticFile);
 
-        RackNode rackNode = CaustkRuntime.getInstance().getRack().fill(causticFile);
+        RackInstance rackNode = CaustkRuntime.getInstance().getRack().fill(causticFile);
 
-        for (MachineNode machineNode : rackNode.getMachines()) {
+        for (Machine machineNode : rackNode.getMachines()) {
             int index = machineNode.getIndex();
             LibrarySound librarySound = fillSound(index, product, libraryGroup, machineNode);
             libraryGroup.addSound(machineNode.getIndex(), librarySound);
@@ -422,7 +422,7 @@ public class LibraryProductUtils {
     }
 
     private static LibrarySound fillSound(int index, LibraryProduct product,
-            LibraryGroup libraryGroup, MachineNode machineNode) {
+            LibraryGroup libraryGroup, Machine machineNode) {
         String groupName = libraryGroup.getDisplayName();
         String displayName = groupName + "-" + machineNode.getName();
         String path = groupName;
@@ -458,7 +458,7 @@ public class LibraryProductUtils {
         return libraryEffect;
     }
 
-    private static LibraryInstrument fillInstrument(MachineNode machineNode,
+    private static LibraryInstrument fillInstrument(Machine machineNode,
             LibraryProduct product, String name, String groupName) {
         String relativePath = groupName;
         LibraryInstrument libraryInstrument = getFactory().getLibraryFactory().createInstrument(
@@ -467,7 +467,7 @@ public class LibraryProductUtils {
         return libraryInstrument;
     }
 
-    private static LibraryPatternBank fillPatternBank(MachineNode machineNode,
+    private static LibraryPatternBank fillPatternBank(Machine machineNode,
             LibraryProduct product, String name, String groupName) {
         String relativePath = groupName;
         LibraryPatternBank libraryPatternBank = getFactory().getLibraryFactory().createPatternBank(

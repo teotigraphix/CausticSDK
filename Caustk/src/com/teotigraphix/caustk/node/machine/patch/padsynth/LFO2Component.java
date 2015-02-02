@@ -19,7 +19,7 @@
 
 package com.teotigraphix.caustk.node.machine.patch.padsynth;
 
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 
 /**
@@ -42,7 +42,7 @@ public class LFO2Component extends LFO1Component {
         super();
     }
 
-    public LFO2Component(MachineNode machineNode) {
+    public LFO2Component(Machine machineNode) {
         super(machineNode);
     }
 }
