@@ -24,7 +24,7 @@ import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
@@ -34,7 +34,7 @@ import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class LFO1Component extends MachineComponent {
+public class LFO1Component extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

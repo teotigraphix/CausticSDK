@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.subsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage.LFO2Target;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 
@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.machine.SubSynthMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class LFO2Component extends MachineComponent {
+public class LFO2Component extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

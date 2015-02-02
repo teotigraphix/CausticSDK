@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.MachineType;
 
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.MachineType;
  * @since 1.0
  * @see MachineNode#getVolume()
  */
-public class VolumeComponent extends MachineComponent {
+public class VolumeChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -95,10 +95,10 @@ public class VolumeComponent extends MachineComponent {
     /**
      * Serialization
      */
-    protected VolumeComponent() {
+    protected VolumeChannel() {
     }
 
-    public VolumeComponent(MachineNode machineNode) {
+    public VolumeChannel(MachineNode machineNode) {
         super(machineNode);
     }
 

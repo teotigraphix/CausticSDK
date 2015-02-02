@@ -33,7 +33,7 @@ public class ClipEntryNode extends NodeBase {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private ClipComponent clipComponent;
+    private ClipChannel clipComponent;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -43,7 +43,7 @@ public class ClipEntryNode extends NodeBase {
     // clipComponent
     //----------------------------------
 
-    public ClipComponent getClipComponent() {
+    public ClipChannel getClipComponent() {
         return clipComponent;
     }
 
@@ -57,7 +57,7 @@ public class ClipEntryNode extends NodeBase {
     public ClipEntryNode() {
     }
 
-    public ClipEntryNode(ClipComponent clipComponent) {
+    public ClipEntryNode(ClipChannel clipComponent) {
         this.clipComponent = clipComponent;
     }
 

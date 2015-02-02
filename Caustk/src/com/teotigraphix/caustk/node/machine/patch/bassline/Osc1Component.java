@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BasslineMessage;
 import com.teotigraphix.caustk.core.osc.BasslineMessage.Osc1Waveform;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see BasslineMachine#getOsc1()
  */
-public class Osc1Component extends MachineComponent {
+public class Osc1Component extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

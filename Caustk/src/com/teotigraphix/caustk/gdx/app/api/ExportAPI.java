@@ -12,7 +12,7 @@ import com.teotigraphix.caustk.gdx.app.ProjectState;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode.ExportLoopMode;
 import com.teotigraphix.caustk.node.sequencer.SequencerNode.ExportType;
 
@@ -53,7 +53,7 @@ public class ExportAPI extends AbstractProjectModelAPI {
         rackNode.getSequencer().clearPatterns();
 
         // add current pattern to song sequencer
-        TrackComponent track = machine.getTrack();
+        TrackChannel track = machine.getTrack();
         track.clearEntries();
 
         track.addEntry(machine.getSequencer().getPattern(bankIndex, patternIndex), 0, numBars);

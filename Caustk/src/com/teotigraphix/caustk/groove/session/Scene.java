@@ -26,7 +26,7 @@ import java.util.Map;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.machine.MachineNode;
-import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 
 public class Scene {
@@ -313,7 +313,7 @@ public class Scene {
         SessionManager sessionManager = sceneManager.getSessionManager();
         if (!sessionManager.isRecording()) {
             for (MachineNode machineNode : getSessionManager().getMachines().values()) {
-                TrackComponent track = machineNode.getTrack();
+                TrackChannel track = machineNode.getTrack();
                 //if (track.isInArrangement()) {
                 queueTrackPlayClip(track);
                 //}
@@ -337,7 +337,7 @@ public class Scene {
         }
     }
 
-    private void queueTrackPlayClip(TrackComponent track) {
+    private void queueTrackPlayClip(TrackChannel track) {
 
         SessionManager sessionManager = sceneManager.getSessionManager();
 

@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.machine.patch.fmsynth;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -30,7 +30,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class LFOComponent extends MachineComponent {
+public class LFOComponent extends MachineChannel {
 
     // LFO_A1, LFO_A2, LFO_A3
     // LFO_F1, LFO_F2, LFO_F3

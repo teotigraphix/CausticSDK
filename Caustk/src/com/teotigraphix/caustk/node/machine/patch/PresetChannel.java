@@ -30,19 +30,19 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 import com.teotigraphix.caustk.utils.node.PresetUtils;
 
 /**
- * The {@link PresetComponent} API wraps machine preset read/write operations.
+ * The {@link PresetChannel} API wraps machine preset read/write operations.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PresetComponent extends MachineComponent {
+public class PresetChannel extends MachineChannel {
 
     private transient byte[] restoredData;
 
@@ -77,7 +77,7 @@ public class PresetComponent extends MachineComponent {
     /**
      * Returns the preset's name.
      * <p>
-     * If this name was restored from the rack, the {@link PresetComponent} will
+     * If this name was restored from the rack, the {@link PresetChannel} will
      * not contain a valid path. If the path is non null, the name will be the
      * file name without extension.
      */
@@ -178,10 +178,10 @@ public class PresetComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public PresetComponent() {
+    public PresetChannel() {
     }
 
-    public PresetComponent(MachineNode machineNode, String path) {
+    public PresetChannel(MachineNode machineNode, String path) {
         super(machineNode);
         setPath(path);
     }

@@ -29,7 +29,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.groove.manifest.LibraryPatternBankManifest;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel;
 
 /**
  * @author Michael Schmalle
@@ -46,7 +46,7 @@ public class LibraryPatternBank extends LibraryProductItem {
 
     //private Map<Integer, Map<Integer, PatternNode>> patterns = new HashMap<Integer, Map<Integer, PatternNode>>();
     @Tag(51)
-    private PatternSequencerComponent sequencer;
+    private SequencerChannel sequencer;
 
     //--------------------------------------------------------------------------
     // Transient :: Variables

@@ -25,7 +25,7 @@ import java.util.TreeMap;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -35,7 +35,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see BeatBoxMachine#getSampler()
  */
-public class WavSamplerComponent extends MachineComponent {
+public class WavSamplerComponent extends MachineChannel {
 
     private static final int NUM_CHANNELS = 8;
 

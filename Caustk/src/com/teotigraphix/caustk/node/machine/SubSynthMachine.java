@@ -21,8 +21,8 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
-import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
+import com.teotigraphix.caustk.node.machine.patch.SynthFilterChannel;
+import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeChannel;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO1Component;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.LFO2Component;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc1Component;
@@ -41,10 +41,10 @@ public class SubSynthMachine extends MachineNode {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private VolumeEnvelopeComponent volumeEnvelope;
+    private VolumeEnvelopeChannel volumeEnvelope;
 
     @Tag(101)
-    private SynthFilterComponent filter;
+    private SynthFilterChannel filter;
 
     @Tag(102)
     private LFO1Component lfo1;
@@ -66,7 +66,7 @@ public class SubSynthMachine extends MachineNode {
     // volumeEnvelope
     //----------------------------------
 
-    public VolumeEnvelopeComponent getVolumeEnvelope() {
+    public VolumeEnvelopeChannel getVolumeEnvelope() {
         return volumeEnvelope;
     }
 
@@ -74,7 +74,7 @@ public class SubSynthMachine extends MachineNode {
     // filter
     //----------------------------------
 
-    public SynthFilterComponent getFilter() {
+    public SynthFilterChannel getFilter() {
         return filter;
     }
 
@@ -131,8 +131,8 @@ public class SubSynthMachine extends MachineNode {
     @Override
     protected void intialize() {
         super.intialize();
-        volumeEnvelope = new VolumeEnvelopeComponent(this);
-        filter = new SynthFilterComponent(this);
+        volumeEnvelope = new VolumeEnvelopeChannel(this);
+        filter = new SynthFilterChannel(this);
         lfo1 = new LFO1Component(this);
         lfo2 = new LFO2Component(this);
         osc1 = new Osc1Component(this);

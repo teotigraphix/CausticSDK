@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.machine.patch;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VolumeMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 
@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.machine.SubSynthMachine;
  * @since 1.0
  * @see SubSynthMachine#getVolumeEnvelope()
  */
-public class VolumeEnvelopeComponent extends MachineComponent {
+public class VolumeEnvelopeChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -179,10 +179,10 @@ public class VolumeEnvelopeComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public VolumeEnvelopeComponent() {
+    public VolumeEnvelopeChannel() {
     }
 
-    public VolumeEnvelopeComponent(MachineNode machineNode) {
+    public VolumeEnvelopeChannel(MachineNode machineNode) {
         super(machineNode);
     }
 

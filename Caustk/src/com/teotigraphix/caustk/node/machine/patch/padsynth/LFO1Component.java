@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.padsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage;
 import com.teotigraphix.caustk.core.osc.PadSynthMessage.LFO1Target;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.PadSynthMachine;
  * @since 1.0
  * @see PadSynthMachine#getLFO1()
  */
-public class LFO1Component extends MachineComponent {
+public class LFO1Component extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

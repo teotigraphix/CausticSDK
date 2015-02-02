@@ -23,7 +23,7 @@ import java.io.File;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.VocoderMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.VocoderMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class VocoderModulatorComponent extends MachineComponent {
+public class VocoderModulatorComponent extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

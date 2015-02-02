@@ -28,7 +28,7 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectsRackControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.master.MasterNode;
 
@@ -39,7 +39,7 @@ import com.teotigraphix.caustk.node.master.MasterNode;
  * @since 1.0
  * @see MachineNode#getEffects()
  */
-public class EffectChannel extends MachineComponent {
+public class EffectChannel extends MachineChannel {
 
     // If machineIndex is -1, this is the master effect channel
 

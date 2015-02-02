@@ -25,7 +25,7 @@ import java.util.Map;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -34,7 +34,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ModularBayComponent extends MachineComponent {
+public class ModularBayComponent extends MachineChannel {
 
     // TODO think about the further impl of ModularBayComponent
     // for now the Modular supports preset loading and dynamic creation but no

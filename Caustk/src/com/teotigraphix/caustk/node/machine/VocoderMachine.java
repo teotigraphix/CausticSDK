@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
+import com.teotigraphix.caustk.node.machine.patch.PresetChannel;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorComponent;
 
@@ -34,7 +34,7 @@ import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorCompon
 public class VocoderMachine extends MachineNode {
 
     @Override
-    public PresetComponent getPreset() {
+    public PresetChannel getPreset() {
         throw new IllegalStateException("Vocoder does not use presets");
     }
 

@@ -13,7 +13,7 @@ import java.util.Map;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
@@ -103,7 +103,7 @@ public final class OSCControlsMap {
         String first = String.valueOf(name.charAt(0)).toUpperCase(Locale.getDefault());
         setterName = "set" + first + setterName;
 
-        MachineComponent machineComponent = null;
+        MachineChannel machineComponent = null;
         if (methodName.equals("volume_out")) {
             machineComponent = machine.getVolume();
         } else if (component.equals("volume")) {

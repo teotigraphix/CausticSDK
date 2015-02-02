@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.pcmsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PCMSamplerChannel extends MachineComponent {
+public class PCMSamplerChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

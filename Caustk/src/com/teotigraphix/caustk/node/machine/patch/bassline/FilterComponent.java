@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.bassline;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FilterMessage;
 import com.teotigraphix.caustk.node.machine.BasslineMachine;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -32,7 +32,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see BasslineMachine#getFilter()
  */
-public class FilterComponent extends MachineComponent {
+public class FilterComponent extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

@@ -29,20 +29,20 @@ import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 /**
  * The {@link PatternNode} holds a bank and pattern position in a
- * {@link PatternSequencerComponent}.
+ * {@link SequencerChannel}.
  * <p>
  * Measure length can be adjusted, notes added/removed, shuffle set.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PatternNode extends MachineComponent {
+public class PatternNode extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -850,7 +850,7 @@ public class PatternNode extends MachineComponent {
      * @author Michael Schmalle
      * @since 1.0
      * @see PatternNode#createNote(float, int, float, float, int)
-     * @see PatternSequencerComponent#updateNote(NoteNode, int, float, float,
+     * @see SequencerChannel#updateNote(NoteNode, int, float, float,
      *      float, int)
      * @see PatternNode#destroyNote(float, int)
      * @see com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl#NoteDataAdd

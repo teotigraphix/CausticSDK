@@ -27,7 +27,7 @@ import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.PlayMode;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
@@ -37,7 +37,7 @@ import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PCMSamplerComponent extends MachineComponent {
+public class PCMSamplerComponent extends MachineChannel {
 
     private static final int NUM_SAMPLER_CHANNELS = 64;
 

@@ -22,22 +22,22 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.groove.session.Clip;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 // TODO Serialization TrackEntryNode
 
 /**
- * A {@link TrackEntryNode} is an entry in a {@link TrackComponent}.
+ * A {@link TrackEntryNode} is an entry in a {@link TrackChannel}.
  * <p>
  * The track entry is a read-only API, if start and end measures are adjusted,
- * the operation is handled in the {@link TrackComponent}.
+ * the operation is handled in the {@link TrackChannel}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class TrackEntryNode extends MachineComponent {
+public class TrackEntryNode extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -229,7 +229,7 @@ public class TrackEntryNode extends MachineComponent {
      * <p>
      * Note: Do not use in normal move operations, this is used with dnd
      * operations where the entry does not represent a real track entry in the
-     * {@link TrackComponent}.
+     * {@link TrackChannel}.
      * 
      * @param startMeasure The new start measure.
      * @param endMeasure The new end measure.

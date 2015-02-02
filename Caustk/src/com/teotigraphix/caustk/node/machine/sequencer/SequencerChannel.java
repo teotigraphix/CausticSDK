@@ -29,18 +29,18 @@ import com.teotigraphix.caustk.core.osc.PatternSequencerMessage;
 import com.teotigraphix.caustk.core.osc.PatternSequencerMessage.PatternSequencerControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 /**
- * The {@link PatternSequencerComponent} manages the {@link PatternNode}s in a
+ * The {@link SequencerChannel} manages the {@link PatternNode}s in a
  * native machine's pattern sequencer.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class PatternSequencerComponent extends MachineComponent {
+public class SequencerChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -101,8 +101,8 @@ public class PatternSequencerComponent extends MachineComponent {
      * 
      * @param bankIndex The bank index (0..3).
      * @param patternIndex The pattern index (0..15).
-     * @see com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent.PatternSequencerNodeBankEvent
-     * @see com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent.PatternSequencerNodePatternEvent
+     * @see com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel.PatternSequencerNodeBankEvent
+     * @see com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel.PatternSequencerNodePatternEvent
      */
     public void setBankPatternIndex(int bankIndex, int patternIndex) {
         selectedBankIndex = bankIndex;
@@ -289,10 +289,10 @@ public class PatternSequencerComponent extends MachineComponent {
     /**
      * Serialization
      */
-    protected PatternSequencerComponent() {
+    protected SequencerChannel() {
     }
 
-    public PatternSequencerComponent(MachineNode machineNode) {
+    public SequencerChannel(MachineNode machineNode) {
         super(machineNode);
         // init these here since the sequencer is being created explicitly
         // not through a restore, here we KNOW that bank and patter are 0 in native
@@ -317,7 +317,7 @@ public class PatternSequencerComponent extends MachineComponent {
      * 
      * @param bankIndex The bank index (0..3).
      * @param patternIndex The pattern index (0..15).
-     * @see com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent.PatternSequencerNodeClearEvent
+     * @see com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel.PatternSequencerNodeClearEvent
      */
     public final PatternNode clearPattern(int bankIndex, int patternIndex) {
         final int index = PatternUtils.getIndex(bankIndex, patternIndex);
@@ -413,7 +413,7 @@ public class PatternSequencerComponent extends MachineComponent {
     //--------------------------------------------------------------------------
 
     /**
-     * Base event for the {@link PatternSequencerComponent}.
+     * Base event for the {@link SequencerChannel}.
      * 
      * @author Michael Schmalle
      * @since 1.0
@@ -427,7 +427,7 @@ public class PatternSequencerComponent extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerComponent#setBankPatternIndex(int, int)
+     * @see SequencerChannel#setBankPatternIndex(int, int)
      */
     public static class PatternSequencerNodeBankEvent extends NodeEvent {
         private int bank;
@@ -446,7 +446,7 @@ public class PatternSequencerComponent extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerComponent#setBankPatternIndex(int, int)
+     * @see SequencerChannel#setBankPatternIndex(int, int)
      */
     public static class PatternSequencerNodePatternEvent extends NodeEvent {
         private int pattern;
@@ -465,7 +465,7 @@ public class PatternSequencerComponent extends MachineComponent {
     /**
      * @author Michael Schmalle
      * @since 1.0
-     * @see PatternSequencerComponent#clearPattern(int, int)
+     * @see SequencerChannel#clearPattern(int, int)
      */
     public static class PatternSequencerNodeClearEvent extends NodeEvent {
         public PatternSequencerNodeClearEvent(NodeBase target, PatternSequencerControl control) {

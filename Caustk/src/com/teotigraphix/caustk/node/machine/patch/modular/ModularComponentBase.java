@@ -25,11 +25,11 @@ import java.util.Collection;
 import com.teotigraphix.caustk.core.osc.ModularMessage;
 import com.teotigraphix.caustk.core.osc.ModularMessage.ModularComponentType;
 import com.teotigraphix.caustk.node.NodeMetaData;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.node.ModularUtils;
 
-public abstract class ModularComponentBase extends MachineComponent implements IModularComponent {
+public abstract class ModularComponentBase extends MachineChannel implements IModularComponent {
 
     @Override
     public Collection<ModularControl> getControls() {

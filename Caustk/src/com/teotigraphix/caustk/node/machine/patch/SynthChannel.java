@@ -23,7 +23,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.machine.BeatBoxMachine;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
@@ -35,7 +35,7 @@ import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
  * @since 1.0
  * @see MachineNode#getSynth()
  */
-public class SynthComponent extends MachineComponent {
+public class SynthChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -102,10 +102,10 @@ public class SynthComponent extends MachineComponent {
     /**
      * Serialization
      */
-    public SynthComponent() {
+    public SynthChannel() {
     }
 
-    public SynthComponent(MachineNode machineNode) {
+    public SynthChannel(MachineNode machineNode) {
         super(machineNode);
     }
 

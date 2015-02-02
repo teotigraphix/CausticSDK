@@ -26,7 +26,7 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 
 public class Clip {
@@ -125,7 +125,7 @@ public class Clip {
                 scene.getMatrixIndex());
     }
 
-    TrackComponent getTrack() {
+    TrackChannel getTrack() {
         return getMachineNode().getTrack();
     }
 
@@ -254,7 +254,7 @@ public class Clip {
         //System.out.println("Clip - current" + currentMeasure);
         // add to sequencer
         if (sessionManager.isRecording()) {
-            TrackComponent track = getTrack();
+            TrackChannel track = getTrack();
             if (!track.isContained(nextMeasure)) {
                 try {
                     TrackEntryNode entry = track.addEntry(getPattern(), nextMeasure, nextMeasure
@@ -271,7 +271,7 @@ public class Clip {
     void commitStop() {
         if (lastState == ClipState.Play) {
             System.out.println("Clean up a playing clip that is being stopped");
-            TrackComponent track = getTrack();
+            TrackChannel track = getTrack();
 
             TrackEntryNode entry = track.getLastEntry();
             SessionManager sessionManager = getScene().getSessionManager();

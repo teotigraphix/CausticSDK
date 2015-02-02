@@ -25,7 +25,7 @@ import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -36,7 +36,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see com.teotigraphix.caustk.node.machine.patch.MixerChannel.MixerChannelChangeEvent
  */
-public class MixerChannel extends MachineComponent {
+public class MixerChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

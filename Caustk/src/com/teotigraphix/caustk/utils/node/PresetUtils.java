@@ -27,11 +27,11 @@ import org.apache.commons.io.FileUtils;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
 import com.teotigraphix.caustk.node.machine.MachineType;
-import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
+import com.teotigraphix.caustk.node.machine.patch.PresetChannel;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 /**
- * {@link PresetComponent} utilities.
+ * {@link PresetChannel} utilities.
  * 
  * @author Michael Schmalle
  * @since 1.0

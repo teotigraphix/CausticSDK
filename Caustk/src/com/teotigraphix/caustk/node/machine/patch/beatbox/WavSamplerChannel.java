@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.machine.patch.beatbox;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.BeatboxMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @since 1.0
  * @see WavSamplerComponent#getChannel(int)
  */
-public class WavSamplerChannel extends MachineComponent {
+public class WavSamplerChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

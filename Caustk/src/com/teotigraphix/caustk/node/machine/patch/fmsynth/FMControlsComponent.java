@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.fmsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMAlgorithm;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class FMControlsComponent extends MachineComponent {
+public class FMControlsComponent extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

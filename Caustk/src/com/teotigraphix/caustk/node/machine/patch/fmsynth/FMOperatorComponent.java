@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage;
 import com.teotigraphix.caustk.core.osc.FMSynthMessage.FMOperatorControl;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 
 /**
@@ -35,7 +35,7 @@ import com.teotigraphix.caustk.node.machine.MachineNode;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class FMOperatorComponent extends MachineComponent {
+public class FMOperatorComponent extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

@@ -21,7 +21,7 @@ package com.teotigraphix.caustk.node.machine.patch.organ;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.OrganMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.OrganMachine;
 
@@ -31,7 +31,7 @@ import com.teotigraphix.caustk.node.machine.OrganMachine;
  * @author Michael Schmalle
  * @since 1.0
  */
-public class LeslieComponent extends MachineComponent {
+public class LeslieComponent extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

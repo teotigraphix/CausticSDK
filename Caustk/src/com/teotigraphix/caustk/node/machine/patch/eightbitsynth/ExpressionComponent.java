@@ -22,7 +22,7 @@ package com.teotigraphix.caustk.node.machine.patch.eightbitsynth;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.EightBitSynthMessage;
 import com.teotigraphix.caustk.node.machine.EightBitSynthMachine;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 
@@ -33,7 +33,7 @@ import com.teotigraphix.caustk.node.machine.PadSynthMachine;
  * @since 1.0
  * @see PadSynthMachine#getLFO1()
  */
-public class ExpressionComponent extends MachineComponent {
+public class ExpressionComponent extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API

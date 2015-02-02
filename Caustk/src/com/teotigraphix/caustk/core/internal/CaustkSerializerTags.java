@@ -90,10 +90,10 @@ import com.teotigraphix.caustk.node.machine.PadSynthMachine;
 import com.teotigraphix.caustk.node.machine.SubSynthMachine;
 import com.teotigraphix.caustk.node.machine.VocoderMachine;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
-import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
-import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
-import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
-import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
+import com.teotigraphix.caustk.node.machine.patch.PresetChannel;
+import com.teotigraphix.caustk.node.machine.patch.SynthChannel;
+import com.teotigraphix.caustk.node.machine.patch.SynthFilterChannel;
+import com.teotigraphix.caustk.node.machine.patch.VolumeChannel;
 import com.teotigraphix.caustk.node.machine.patch.bassline.DistortionComponent;
 import com.teotigraphix.caustk.node.machine.patch.bassline.FilterComponent;
 import com.teotigraphix.caustk.node.machine.patch.beatbox.WavSamplerChannel;
@@ -140,11 +140,11 @@ import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc1Component;
 import com.teotigraphix.caustk.node.machine.patch.subsynth.Osc2Component;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.ModulatorControlsComponent;
 import com.teotigraphix.caustk.node.machine.patch.vocoder.VocoderModulatorComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.ClipComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.ClipChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.NoteNode;
 import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
 import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
@@ -247,14 +247,14 @@ public final class CaustkSerializerTags {
         kryo.register(PatternNode.ShuffleMode.class, 262);
         kryo.register(NoteNode.class, 263);
 
-        kryo.register(VolumeComponent.class, 264);
-        kryo.register(PresetComponent.class, 265);
-        kryo.register(SynthComponent.class, 266);
-        kryo.register(PatternSequencerComponent.class, 267);
+        kryo.register(VolumeChannel.class, 264);
+        kryo.register(PresetChannel.class, 265);
+        kryo.register(SynthChannel.class, 266);
+        kryo.register(SequencerChannel.class, 267);
         kryo.register(MixerChannel.class, 268);
         kryo.register(EffectChannel.class, 269);
-        kryo.register(TrackComponent.class, 270);
-        kryo.register(ClipComponent.class, 271);
+        kryo.register(TrackChannel.class, 270);
+        kryo.register(ClipChannel.class, 271);
         kryo.register(TrackEntryNode.class, 272);
 
         //------------------------------
@@ -364,14 +364,14 @@ public final class CaustkSerializerTags {
         // PCMSynth 701-750
         //------------------------------
 
-        kryo.register(SynthFilterComponent.class, 701);
+        kryo.register(SynthFilterChannel.class, 701);
         kryo.register(FilterType.class, 702);
         kryo.register(com.teotigraphix.caustk.node.machine.patch.pcmsynth.LFO1Component.class, 703);
         kryo.register(com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Target.class, 704);
         kryo.register(LFO1Waveform.class, 705);
         kryo.register(PCMSamplerComponent.class, 706);
         kryo.register(PCMTunerComponent.class, 707);
-        kryo.register(com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent.class, 708);
+        kryo.register(com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeChannel.class, 708);
         kryo.register(PCMSamplerChannel.class, 709);
         kryo.register(PlayMode.class, 710);
 

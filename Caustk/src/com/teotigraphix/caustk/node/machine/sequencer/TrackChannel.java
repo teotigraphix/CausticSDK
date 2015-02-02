@@ -29,19 +29,19 @@ import java.util.TreeMap;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineNode;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 import com.teotigraphix.caustk.utils.node.TrackNodeUtils;
 
 /**
- * A {@link TrackComponent} represents a track in the song sequencer of a
+ * A {@link TrackChannel} represents a track in the song sequencer of a
  * {@link MachineNode}.
  * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class TrackComponent extends MachineComponent {
+public class TrackChannel extends MachineChannel {
 
     //--------------------------------------------------------------------------
     // Serialized API
@@ -63,7 +63,7 @@ public class TrackComponent extends MachineComponent {
 
     /**
      * Returns the number of {@link TrackEntryNode} that exist this
-     * {@link TrackComponent}.
+     * {@link TrackChannel}.
      */
     public int size() {
         return entries.size();
@@ -320,7 +320,7 @@ public class TrackComponent extends MachineComponent {
     }
 
     /**
-     * Adds an existing {@link TrackEntryNode} to the {@link TrackComponent}.
+     * Adds an existing {@link TrackEntryNode} to the {@link TrackChannel}.
      * This may happen during an undo operation, where the track entry existed
      * in this track prior.
      * 
@@ -404,10 +404,10 @@ public class TrackComponent extends MachineComponent {
     /**
      * Serialization
      */
-    protected TrackComponent() {
+    protected TrackChannel() {
     }
 
-    public TrackComponent(MachineNode machineNode) {
+    public TrackChannel(MachineNode machineNode) {
         super(machineNode);
     }
 

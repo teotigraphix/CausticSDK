@@ -23,8 +23,8 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.osc.IMachineControl;
 import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.RackNode;
-import com.teotigraphix.caustk.node.machine.patch.SynthFilterComponent;
-import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeComponent;
+import com.teotigraphix.caustk.node.machine.patch.SynthFilterChannel;
+import com.teotigraphix.caustk.node.machine.patch.VolumeEnvelopeChannel;
 import com.teotigraphix.caustk.node.machine.patch.pcmsynth.LFO1Component;
 import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMSamplerComponent;
 import com.teotigraphix.caustk.node.machine.patch.pcmsynth.PCMTunerComponent;
@@ -42,10 +42,10 @@ public class PCMSynthMachine extends MachineNode {
     //--------------------------------------------------------------------------
 
     @Tag(100)
-    private VolumeEnvelopeComponent volumeEnvelope;
+    private VolumeEnvelopeChannel volumeEnvelope;
 
     @Tag(101)
-    private SynthFilterComponent filter;
+    private SynthFilterChannel filter;
 
     @Tag(102)
     private LFO1Component lfo1;
@@ -64,7 +64,7 @@ public class PCMSynthMachine extends MachineNode {
     // volumeEnvelope
     //----------------------------------
 
-    public VolumeEnvelopeComponent getVolumeEnvelope() {
+    public VolumeEnvelopeChannel getVolumeEnvelope() {
         return volumeEnvelope;
     }
 
@@ -72,7 +72,7 @@ public class PCMSynthMachine extends MachineNode {
     // filter
     //----------------------------------
 
-    public SynthFilterComponent getFilter() {
+    public SynthFilterChannel getFilter() {
         return filter;
     }
 
@@ -125,8 +125,8 @@ public class PCMSynthMachine extends MachineNode {
     @Override
     protected void intialize() {
         super.intialize();
-        volumeEnvelope = new VolumeEnvelopeComponent(this);
-        filter = new SynthFilterComponent(this);
+        volumeEnvelope = new VolumeEnvelopeChannel(this);
+        filter = new SynthFilterChannel(this);
         lfo1 = new LFO1Component(this);
         sampler = new PCMSamplerComponent(this);
         tuner = new PCMTunerComponent(this);

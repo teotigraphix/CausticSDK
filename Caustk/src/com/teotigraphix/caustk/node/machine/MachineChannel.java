@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright 2014 Michael Schmalle - Teoti Graphix, LLC
+// Copyright 2013 Michael Schmalle - Teoti Graphix, LLC
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,54 +17,51 @@
 // mschmalle at teotigraphix dot com
 ////////////////////////////////////////////////////////////////////////////////
 
-package com.teotigraphix.caustk.node.machine.sequencer;
-
-import java.util.TreeMap;
+package com.teotigraphix.caustk.node.machine;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.teotigraphix.caustk.node.machine.MachineComponent;
-import com.teotigraphix.caustk.node.machine.MachineNode;
+import com.teotigraphix.caustk.node.NodeBase;
 
 /**
+ * The {@link MachineChannel} is the base class for all {@link MachineNode}
+ * composite components.
+ * 
  * @author Michael Schmalle
  * @since 1.0
  */
-public class ClipComponent extends MachineComponent {
+public abstract class MachineChannel extends NodeBase {
 
     //--------------------------------------------------------------------------
     // Serialized API
     //--------------------------------------------------------------------------
 
-    // key:0..63, does not relate to the bank/pattern assignment
-    @Tag(100)
-    private TreeMap<Integer, ClipEntryNode> entries = new TreeMap<Integer, ClipEntryNode>();
+    @Tag(50)
+    private MachineNode machineNode;
 
     //--------------------------------------------------------------------------
     // Public Property API
     //--------------------------------------------------------------------------
 
-    //----------------------------------
-    // entries
-    //----------------------------------
+    public MachineNode getMachineNode() {
+        return machineNode;
+    }
+
+    public void setMachineNode(MachineNode machineNode) {
+        this.machineNode = machineNode;
+    }
 
     /**
-     * Returns the number of {@link ClipEntryNode} that exist this
-     * {@link ClipComponent}.
+     * Returns the machine index this component decorates (0..13).
      */
-    public int size() {
-        return entries.size();
+    public final int getMachineIndex() {
+        return machineNode.getIndex();
     }
 
-    public ClipEntryNode getEntry(int index) {
-        return entries.get(index);
-    }
-
-    public ClipEntryNode addEntry() {
-        return null;
-    }
-
-    public ClipEntryNode removeEntry() {
-        return null;
+    /**
+     * Returns the machine type of the parent, may be null if not set.
+     */
+    public MachineType getMachineType() {
+        return machineNode.getType();
     }
 
     //--------------------------------------------------------------------------
@@ -74,30 +71,10 @@ public class ClipComponent extends MachineComponent {
     /**
      * Serialization
      */
-    protected ClipComponent() {
+    protected MachineChannel() {
     }
 
-    public ClipComponent(MachineNode machineNode) {
-        super(machineNode);
-    }
-
-    //--------------------------------------------------------------------------
-    // Overridden Protected :: Methods
-    //--------------------------------------------------------------------------
-
-    @Override
-    protected void createComponents() {
-    }
-
-    @Override
-    protected void destroyComponents() {
-    }
-
-    @Override
-    protected void updateComponents() {
-    }
-
-    @Override
-    protected void restoreComponents() {
+    public MachineChannel(MachineNode machineNode) {
+        this.machineNode = machineNode;
     }
 }

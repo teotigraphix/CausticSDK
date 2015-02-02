@@ -30,12 +30,12 @@ import com.teotigraphix.caustk.node.NodeMetaData;
 import com.teotigraphix.caustk.node.RackNode;
 import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.machine.patch.MixerChannel;
-import com.teotigraphix.caustk.node.machine.patch.PresetComponent;
-import com.teotigraphix.caustk.node.machine.patch.SynthComponent;
-import com.teotigraphix.caustk.node.machine.patch.VolumeComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.ClipComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.PatternSequencerComponent;
-import com.teotigraphix.caustk.node.machine.sequencer.TrackComponent;
+import com.teotigraphix.caustk.node.machine.patch.PresetChannel;
+import com.teotigraphix.caustk.node.machine.patch.SynthChannel;
+import com.teotigraphix.caustk.node.machine.patch.VolumeChannel;
+import com.teotigraphix.caustk.node.machine.sequencer.ClipChannel;
+import com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel;
+import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 
 /**
  * The base node for all {@link MachineNode} subclasses.
@@ -78,16 +78,16 @@ public abstract class MachineNode extends NodeBase {
     private int channelIndex;
 
     @Tag(55)
-    private VolumeComponent volume;
+    private VolumeChannel volume;
 
     @Tag(56)
-    private PresetComponent preset;
+    private PresetChannel preset;
 
     @Tag(57)
-    private SynthComponent synth;
+    private SynthChannel synth;
 
     @Tag(58)
-    private PatternSequencerComponent sequencer;
+    private SequencerChannel sequencer;
 
     @Tag(59)
     private MixerChannel mixer;
@@ -96,10 +96,10 @@ public abstract class MachineNode extends NodeBase {
     private EffectChannel effect;
 
     @Tag(61)
-    private TrackComponent track;
+    private TrackChannel track;
 
     @Tag(62)
-    private ClipComponent clips;
+    private ClipChannel clip;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -202,7 +202,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's preset patch.
      */
-    public PresetComponent getPreset() {
+    public PresetChannel getPreset() {
         return preset;
     }
 
@@ -213,11 +213,11 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's volume out component.
      */
-    public VolumeComponent getVolume() {
+    public VolumeChannel getVolume() {
         return volume;
     }
 
-    protected void setVolume(VolumeComponent volume) {
+    protected void setVolume(VolumeChannel volume) {
         this.volume = volume;
     }
 
@@ -250,7 +250,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's synth to play notes and set polyphony.
      */
-    public SynthComponent getSynth() {
+    public SynthChannel getSynth() {
         return synth;
     }
 
@@ -261,7 +261,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's pattern sequencer.
      */
-    public PatternSequencerComponent getSequencer() {
+    public SequencerChannel getSequencer() {
         return sequencer;
     }
 
@@ -272,7 +272,7 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's track sequencer.
      */
-    public TrackComponent getTrack() {
+    public TrackChannel getTrack() {
         return track;
     }
 
@@ -283,8 +283,8 @@ public abstract class MachineNode extends NodeBase {
     /**
      * The machine's clips sequencer.
      */
-    public ClipComponent getClips() {
-        return clips;
+    public ClipChannel getClips() {
+        return clip;
     }
 
     //--------------------------------------------------------------------------
@@ -354,7 +354,7 @@ public abstract class MachineNode extends NodeBase {
         effect.create();
         sequencer.create();
         track.create();
-        clips.create();
+        clip.create();
     }
 
     @Override
@@ -370,7 +370,7 @@ public abstract class MachineNode extends NodeBase {
         effect.destroy();
         sequencer.destroy();
         track.destroy();
-        clips.destroy();
+        clip.destroy();
     }
 
     @Override
@@ -383,7 +383,7 @@ public abstract class MachineNode extends NodeBase {
         restorePresetProperties();
         sequencer.restore();
         track.restore();
-        clips.restore();
+        clip.restore();
     }
 
     @Override
@@ -398,7 +398,7 @@ public abstract class MachineNode extends NodeBase {
         effect.update();
         sequencer.update();
         track.update();
-        clips.update();
+        clip.update();
     }
 
     //--------------------------------------------------------------------------
@@ -411,7 +411,7 @@ public abstract class MachineNode extends NodeBase {
      * Will restore all composites components with native values, will not
      * update sequencer, mixer etc.
      * <p>
-     * Place any component with a call to {@link MachineComponent#restore()} in
+     * Place any component with a call to {@link MachineChannel#restore()} in
      * this method that's state is bound to the machine's patch sound.
      */
     protected abstract void restorePresetProperties();
@@ -420,14 +420,14 @@ public abstract class MachineNode extends NodeBase {
      * Initializes the machine's composites.
      */
     protected void intialize() {
-        preset = new PresetComponent(this, null);
-        volume = new VolumeComponent(this);
+        preset = new PresetChannel(this, null);
+        volume = new VolumeChannel(this);
         mixer = new MixerChannel(this);
         effect = new EffectChannel(this);
-        synth = new SynthComponent(this);
-        sequencer = new PatternSequencerComponent(this);
-        track = new TrackComponent(this);
-        clips = new ClipComponent(this);
+        synth = new SynthChannel(this);
+        sequencer = new SequencerChannel(this);
+        track = new TrackChannel(this);
+        clip = new ClipChannel(this);
     }
 
     public void updateMixer(MixerChannel mixer) {
@@ -435,7 +435,7 @@ public abstract class MachineNode extends NodeBase {
         this.mixer.update();
     }
 
-    public void updateSequencer(PatternSequencerComponent sequencer) {
+    public void updateSequencer(SequencerChannel sequencer) {
         this.sequencer = sequencer;
         this.sequencer.update();
     }
