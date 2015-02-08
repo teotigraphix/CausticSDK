@@ -37,8 +37,12 @@ public abstract class GrooveBehavior extends CaustkBehavior {
                 if (getScene() != null) {
                     redrawView(event.getKind());
                 } else {
-                    err(getClass().getName(), event.getKind()
-                            + "Failed in GrooveBehavior.onViewManagerEvent(No Scene)");
+                    // XXX This happens when a Scene is disposed and there are
+                    // still Runnable getting executed on the next frame AFTER
+                    // the scene has been deleted
+                    //err(getClass().getName(), event.getKind()
+                    //        + "No Scene, Failed in GrooveBehavior.onViewManagerEvent("
+                    //        + "getScene() == null)");
                 }
             }
         });

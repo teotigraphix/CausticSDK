@@ -47,6 +47,8 @@ public abstract class Scene implements IScene {
     // Private :: Variables
     //--------------------------------------------------------------------------
 
+    private int id;
+
     private boolean initialized = false;
 
     private Color backgroundColor = new Color();
@@ -68,6 +70,14 @@ public abstract class Scene implements IScene {
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
+
+    public int getId() {
+        return id;
+    }
+
+    void setId(int id) {
+        this.id = id;
+    }
 
     //----------------------------------
     // application

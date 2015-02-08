@@ -81,8 +81,10 @@ public interface IProjectModel {
 
     /**
      * Safe to register any API listeners to the global EventBus.
+     * <p>
+     * Called right after Guice has created the injector.
      */
-    void start();
+    void onRegister();
 
     void onEvent(Object kind);
 

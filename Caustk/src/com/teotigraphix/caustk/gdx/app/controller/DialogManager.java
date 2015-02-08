@@ -71,7 +71,7 @@ public class DialogManager implements IDialogManager {
     @Override
     public AlertDialog createAlert(IScene scene, String title, Actor actor) {
         final AlertDialog dialog = new AlertDialog(title, scene.getSkin());
-        dialog.setContent(actor);
+        dialog.getContentTable().add(actor).expand().fill();
         dialog.setMovable(false);
         return dialog;
     }

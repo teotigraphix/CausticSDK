@@ -31,6 +31,8 @@ import com.teotigraphix.caustk.gdx.app.controller.IViewManager;
  */
 public interface ICaustkScene extends IScene {
 
+    int getId();
+
     UIFactory getFactory();
 
     IProjectModel getProjectModel();

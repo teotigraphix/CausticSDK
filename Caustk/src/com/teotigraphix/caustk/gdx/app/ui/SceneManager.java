@@ -21,6 +21,7 @@ package com.teotigraphix.caustk.gdx.app.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
+import com.badlogic.gdx.utils.ObjectMap.Entry;
 import com.teotigraphix.caustk.gdx.app.Application;
 import com.teotigraphix.caustk.gdx.app.IApplication;
 
@@ -50,6 +51,8 @@ public class SceneManager {
 
     private int currentSceneId = -1;
 
+    private boolean disposeCurrentPending;
+
     //--------------------------------------------------------------------------
     // Public API :: Properties
     //--------------------------------------------------------------------------
@@ -66,12 +69,12 @@ public class SceneManager {
      */
     public void setScene(int sceneId) {
         currentSceneId = sceneId;
-        IScene scene = scenes.get(currentSceneId);
-        pendingScene = scene;
-        if (scene == null) {
+        pendingScene = scenes.get(currentSceneId);
+        if (pendingScene == null) {
             Class<? extends IScene> type = sceneTypes.get(currentSceneId);
             try {
                 pendingScene = type.newInstance();
+                ((Scene)pendingScene).setId(sceneId);
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -79,6 +82,11 @@ public class SceneManager {
             }
             scenes.put(currentSceneId, pendingScene);
         }
+    }
+
+    public void setScene(int sceneId, boolean disposeCurrent) {
+        this.disposeCurrentPending = disposeCurrent;
+        setScene(sceneId);
     }
 
     /**
@@ -92,8 +100,8 @@ public class SceneManager {
     /**
      * Sets the current scene.
      * {@link com.teotigraphix.caustk.gdx.app.ui.IScene#hide()} is called on any
-     * old scene, and {@link com.teotigraphix.caustk.gdx.app.ui.IScene#show()} is
-     * called on the new scene, if any.
+     * old scene, and {@link com.teotigraphix.caustk.gdx.app.ui.IScene#show()}
+     * is called on the new scene, if any.
      * 
      * @param scene may be {@code null}
      */
@@ -101,6 +109,11 @@ public class SceneManager {
         IScene oldScene = this.scene;
         if (oldScene != null)
             oldScene.hide();
+
+        if (disposeCurrentPending) {
+            dispose(oldScene);
+            disposeCurrentPending = false;
+        }
 
         this.scene = scene;
 
@@ -139,8 +152,8 @@ public class SceneManager {
     //--------------------------------------------------------------------------
 
     /**
-     * Adds an {@link com.teotigraphix.caustk.gdx.app.ui.IScene} id and type to the
-     * available types in the scene manager.
+     * Adds an {@link com.teotigraphix.caustk.gdx.app.ui.IScene} id and type to
+     * the available types in the scene manager.
      * 
      * @param id the int id of the
      *            {@link com.teotigraphix.caustk.gdx.app.ui.IScene} class type,
@@ -232,17 +245,31 @@ public class SceneManager {
     }
 
     /**
+     * Flushes the scene at sceneId from the scenes map.
+     * 
+     * @param scene The scene to remove from memory.
+     */
+    public void dispose(IScene scene) {
+        if (scene != null) {
+            scene.dispose();
+            scenes.removeValue(scene, true);
+        }
+    }
+
+    /**
      * Flushes all scene instances so when the next scene is set, its a brand
      * new instance with no state.
      */
     public void reset() {
-        for (Object scene : scenes.values) {
-            if (scene != null)
-                ((IScene)scene).dispose();
+        ArrayMap<Integer, IScene> copy = new ArrayMap<Integer, IScene>(scenes);
+        for (Entry<Integer, IScene> entry : copy.entries()) {
+            if (entry != null)
+                entry.value.dispose();
         }
         currentSceneId = -1;
         pendingScene = null;
         scene = null;
         scenes = new ArrayMap<Integer, IScene>();
     }
+
 }

@@ -177,6 +177,10 @@ public abstract class Application implements IApplication {
         getSceneManager().setScene(sceneId);
     }
 
+    public void setScene(int sceneId, boolean disposeCurrent) {
+        getSceneManager().setScene(sceneId, disposeCurrent);
+    }
+
     @Override
     public boolean isCurrentScene(int sceneId) {
         return getSceneManager().isCurrentScene(sceneId);

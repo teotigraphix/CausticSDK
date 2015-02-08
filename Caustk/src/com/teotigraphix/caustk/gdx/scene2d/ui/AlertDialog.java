@@ -23,9 +23,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class AlertDialog extends Dialog {
@@ -40,6 +41,8 @@ public class AlertDialog extends Dialog {
 
     private String buttonStyleName = "default";
 
+    private String title;
+
     public Skin getSkin() {
         return skin;
     }
@@ -53,26 +56,31 @@ public class AlertDialog extends Dialog {
     }
 
     public AlertDialog(String title, Skin skin, String windowStyleName, String buttonStyleName) {
-        super(title, skin, windowStyleName);
+        super("", skin, windowStyleName);
+        this.title = title;
         this.skin = skin;
         this.buttonStyleName = buttonStyleName;
         createChildren();
     }
 
     public AlertDialog(String title, Skin skin) {
-        super(title, skin);
+        super("", skin);
+        this.title = title;
         this.skin = skin;
         createChildren();
     }
 
     public AlertDialog(String title, WindowStyle windowStyle) {
-        super(title, windowStyle);
+        super("", windowStyle);
+        this.title = title;
         createChildren();
     }
 
     protected void createChildren() {
-        // create buttons
-        setTitleAlignment(Align.top);
+        Label label = new Label(title, new LabelStyle(getStyle().titleFont,
+                getStyle().titleFontColor));
+        getContentTable().add(label).pad(4f);
+        getContentTable().row();
 
         okButton = new TextButton("OK", skin, buttonStyleName);
         okButton.addListener(new ClickListener() {
