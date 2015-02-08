@@ -103,11 +103,11 @@ public interface ICaustkRack extends ISoundGenerator {
     MasterSequencerChannel getSequencer();
 
     /**
-     * Fills a {@link RackInstance} using the .caustic file loaded an restore() on
-     * the node structure.
+     * Fills a {@link RackInstance} using the .caustic file loaded an restore()
+     * on the node structure.
      * <p>
-     * The {@link RackInstance} will be populated, the original rack node and state
-     * will be restored to the rack after the method returns.
+     * The {@link RackInstance} will be populated, the original rack node and
+     * state will be restored to the rack after the method returns.
      * 
      * @param file The absolute location of the .caustic file to load.
      * @throws java.io.IOException
@@ -137,8 +137,8 @@ public interface ICaustkRack extends ISoundGenerator {
     /**
      * Restores a {@link RackInstance} state, machines, effects etc.
      * 
-     * @param rackNode The {@link RackInstance} to restore, this method will fail if
-     *            the machines are already native.
+     * @param rackNode The {@link RackInstance} to restore, this method will
+     *            fail if the machines are already native.
      */
     void restore(RackInstance rackNode);
 
@@ -146,8 +146,8 @@ public interface ICaustkRack extends ISoundGenerator {
      * Updates the native rack with the {@link RackInstance}'s internal state by
      * sending OSC messages to the core.
      * 
-     * @param rackNode The {@link RackInstance} to use as the state to initialize
-     *            the native rack.
+     * @param rackNode The {@link RackInstance} to use as the state to
+     *            initialize the native rack.
      */
     void update(RackInstance rackNode);
 
@@ -159,4 +159,6 @@ public interface ICaustkRack extends ISoundGenerator {
      *            frame.
      */
     void frameChanged(float deltaTime);
+
+    void load(File file) throws IOException;
 }

@@ -163,7 +163,7 @@ public class CaustkRuntime implements ICaustkRuntime {
      */
     public static RackInstance createRackNode(CaustkRack rack) {
         RackInstance rackNode = RackNodeUtils.create();
-        rack.setRackNode(rackNode);
+        // XXX rack.setRackNode(rackNode);
         return rackNode;
     }
 

@@ -43,8 +43,8 @@ import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
  * @author Michael Schmalle
  * @since 1.0
  * @see com.teotigraphix.caustk.node.machine.MachineType
- * @see RackInstance#createMachine(int, com.teotigraphix.caustk.node.machine.MachineType,
- *      String)
+ * @see RackInstance#createMachine(int,
+ *      com.teotigraphix.caustk.node.machine.MachineType, String)
  */
 public abstract class Machine extends NodeBase {
 
@@ -451,8 +451,7 @@ public abstract class Machine extends NodeBase {
 
     /**
      * Base event for the
-     * {@link com.teotigraphix.caustk.node.machine.Machine.MachineNodeEvent}
-     * .
+     * {@link com.teotigraphix.caustk.node.machine.Machine.MachineNodeEvent} .
      * 
      * @author Michael Schmalle
      * @since 1.0

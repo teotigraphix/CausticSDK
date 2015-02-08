@@ -53,7 +53,7 @@ public abstract class MachineChannel extends NodeBase {
     /**
      * Returns the machine index this component decorates (0..13).
      */
-    public final int getMachineIndex() {
+    public int getMachineIndex() {
         return machineNode.getIndex();
     }
 

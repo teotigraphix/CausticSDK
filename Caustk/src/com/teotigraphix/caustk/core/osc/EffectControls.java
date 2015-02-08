@@ -261,9 +261,9 @@ public enum EffectControls implements IEffectControl {
     Flanger_Depth("depth", OSCControlKind.Float, 0.1f, 0.95f, 0.25f),
 
     /**
-     * Values <code>0.25..0.8</code>; default <code>0.4</code>
+     * Values <code>0.25..0.9</code>; default <code>0.4</code>
      */
-    Flanger_Feedback("feedback", OSCControlKind.Float, 0.25f, 0.8f, 0.4f),
+    Flanger_Feedback("feedback", OSCControlKind.Float, 0.25f, 0.9f, 0.4f),
 
     /**
      * Values <code>0,1,2,3,4,5,6,7</code>; default <code>0</code>

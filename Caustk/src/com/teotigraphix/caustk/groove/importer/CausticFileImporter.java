@@ -22,6 +22,7 @@ package com.teotigraphix.caustk.groove.importer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.StringReader;
 
 import com.teotigraphix.caustk.utils.groove.LibraryEffectUtils;
 import com.teotigraphix.caustk.utils.groove.LibraryGroupUtils;
@@ -69,4 +70,8 @@ public class CausticFileImporter {
         return (T)xstream.fromXML(new FileReader(manifestFile));
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T fromXMLManifest(String manifestData, Class<T> clazz) throws FileNotFoundException {
+        return (T)xstream.fromXML(new StringReader(manifestData));
+    }
 }

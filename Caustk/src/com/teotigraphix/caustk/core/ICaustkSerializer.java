@@ -20,4 +20,5 @@ public interface ICaustkSerializer {
 
     <T> T fromXMLManifest(File manifestFile, Class<T> clazz) throws FileNotFoundException;
 
+    <T> T fromXMLManifest(String manifestData, Class<T> clazz) throws FileNotFoundException;
 }

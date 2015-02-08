@@ -25,6 +25,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -84,6 +85,7 @@ public abstract class UIFactory {
         initializeListStyle(skin);
         initializePaneStack(skin);
         initializeSlider(skin);
+        initializeProgressBar(skin);
         initializeTextSlider(skin);
         initializeViewStack(skin);
         initializeWindow(skin);
@@ -136,6 +138,21 @@ public abstract class UIFactory {
                 skin.getDrawable(StylesDefault.Slider_background),
                 skin.getDrawable(StylesDefault.Slider_knob));
         skin.add(StylesDefault.Slider_Veritical, verticalStyle);
+        SliderStyle horizontalStyle = new SliderStyle(
+                skin.getDrawable(StylesDefault.Slider_background),
+                skin.getDrawable(StylesDefault.Slider_knob));
+        skin.add(StylesDefault.Slider_Horizontal, horizontalStyle);
+    }
+
+    protected void initializeProgressBar(Skin skin) {
+        ProgressBarStyle verticalStyle = new ProgressBarStyle(
+                skin.getDrawable(StylesDefault.Slider_background),
+                skin.getDrawable(StylesDefault.Slider_knob));
+        skin.add(StylesDefault.ProgressBar_Veritical, verticalStyle);
+        ProgressBarStyle horizontalStyle = new ProgressBarStyle(
+                skin.getDrawable(StylesDefault.Slider_background),
+                skin.getDrawable(StylesDefault.Slider_knob));
+        skin.add(StylesDefault.ProgressBar_Horizontal, horizontalStyle);
     }
 
     protected void initializeFonts(Skin skin) {

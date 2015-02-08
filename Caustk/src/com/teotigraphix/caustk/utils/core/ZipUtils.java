@@ -41,6 +41,15 @@ public final class ZipUtils {
         return uncompress.unzipString(fileToRead);
     }
 
+    /**
+     * Writes a single file to disk from a zip archive, matching on the
+     * entryName.
+     * 
+     * @param archiveFile
+     * @param entryName
+     * @param outputFile
+     * @throws IOException
+     */
     public static void writeZipEntryToFile(File archiveFile, String entryName, File outputFile)
             throws IOException {
         FileInputStream fis = new FileInputStream(archiveFile);

@@ -24,8 +24,8 @@ import com.teotigraphix.caustk.core.osc.PCMSynthMessage;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Target;
 import com.teotigraphix.caustk.core.osc.PCMSynthMessage.LFO1Waveform;
 import com.teotigraphix.caustk.core.osc.SubSynthMessage;
-import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.Machine;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.PCMSynthMachine;
 
 /**
@@ -76,13 +76,13 @@ public class LFO1Component extends MachineChannel {
     }
 
     /**
-     * @param value (1..12)
+     * @param value (0..12)
      * @see com.teotigraphix.caustk.core.osc.PCMSynthMessage#LFO_RATE
      */
     public void setRate(int value) {
         if (value == rate)
             return;
-        if (value < 1 || value > 12)
+        if (value < 0 || value > 12)
             throw newRangeException(PCMSynthMessage.LFO_RATE, "0..12", value);
         rate = value;
         PCMSynthMessage.LFO_RATE.send(getRack(), getMachineIndex(), rate);

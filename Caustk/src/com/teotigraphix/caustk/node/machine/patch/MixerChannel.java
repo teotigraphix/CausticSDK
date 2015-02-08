@@ -25,8 +25,8 @@ import com.teotigraphix.caustk.core.osc.MixerControls;
 import com.teotigraphix.caustk.core.osc.OSCControlsMap;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.Machine;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 
 /**
  * The {@link MixerChannel} manages the machine's main mixer panel controls
@@ -405,6 +405,25 @@ public class MixerChannel extends MachineChannel {
 
     @Override
     protected void destroyComponents() {
+    }
+
+    /**
+     * Updates the current mixer channel with the source, sends native OSC
+     * messages to the core.
+     * 
+     * @param mixer the source mixer to copy values from.
+     */
+    public void update(MixerChannel mixer) {
+        setEqBass(mixer.getEqBass());
+        setEqMid(mixer.getEqMid());
+        setEqHigh(mixer.getEqHigh());
+        setReverbSend(mixer.getReverbSend());
+        setDelaySend(mixer.getDelaySend());
+        setStereoWidth(mixer.getStereoWidth());
+        setPan(mixer.getPan());
+        setMute(mixer.isMute());
+        setSolo(mixer.isSolo());
+        setVolume(mixer.getVolume());
     }
 
     @Override

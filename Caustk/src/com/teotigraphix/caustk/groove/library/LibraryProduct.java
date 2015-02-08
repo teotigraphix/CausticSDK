@@ -21,9 +21,7 @@ package com.teotigraphix.caustk.groove.library;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,8 +32,6 @@ import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 import com.teotigraphix.caustk.groove.manifest.LibraryProductManifest;
-import com.teotigraphix.caustk.utils.groove.LibraryGroupUtils;
-import com.teotigraphix.caustk.utils.groove.LibraryPatternBankUtils;
 import com.teotigraphix.caustk.utils.groove.LibraryProductExportUtils;
 import com.teotigraphix.caustk.utils.groove.LibraryProductUtils;
 
@@ -54,6 +50,18 @@ public class LibraryProduct extends LibraryItem {
 
     @Tag(26)
     private Map<UUID, LibraryItemManifest> map = new HashMap<UUID, LibraryItemManifest>();
+
+    private LibraryProductAccess access;
+
+    public LibraryProductAccess getAccess() {
+        if (access == null)
+            access = new LibraryProductAccess(this);
+        return access;
+    }
+
+    protected Map<UUID, LibraryItemManifest> getMap() {
+        return map;
+    }
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -77,28 +85,6 @@ public class LibraryProduct extends LibraryItem {
      */
     public final File getDirectory() {
         return manifest.getDirectory();
-    }
-
-    //----------------------------------
-    // descriptors
-    //----------------------------------
-
-    /**
-     * Returns a list of {@link LibraryItemManifest} instances that match the
-     * {@link LibraryItemFormat}.
-     * <p>
-     * The list order is not relevant.
-     * 
-     * @param format The format to match manifest instances against.
-     * @return A list of manifests matching the passed format.
-     */
-    public List<LibraryItemManifest> getDescriptors(LibraryItemFormat format) {
-        ArrayList<LibraryItemManifest> result = new ArrayList<LibraryItemManifest>();
-        for (LibraryItemManifest manifest : map.values()) {
-            if (manifest.getFormat() == format)
-                result.add(manifest);
-        }
-        return result;
     }
 
     //--------------------------------------------------------------------------
@@ -138,30 +124,6 @@ public class LibraryProduct extends LibraryItem {
      */
     public final boolean exists() {
         return manifest.exists();
-    }
-
-    //----------------------------------
-    // Load Methods
-    //----------------------------------
-
-    public LibraryGroup loadGroup(LibraryItemManifest manifest) throws CausticException,
-            IOException {
-        File groupArchive = new File(getDirectory(), manifest.getProductPath());
-        File uncompressDirectory = null;
-        LibraryGroup instance = LibraryGroupUtils.importGroup(groupArchive, uncompressDirectory);
-        return instance;
-    }
-
-    public LibraryProductItem createFromManifest(LibraryItemManifest libraryItemManifest)
-            throws CausticException, IOException {
-        File archive = libraryItemManifest.getAbsoluteProductPath(this);
-        if (!archive.exists())
-            throw new IOException("Archive doe snot exist: " + archive);
-        File uncompressDirectory = CaustkRuntime.getInstance().getFactory()
-                .getCacheDirectory("imports/" + UUID.randomUUID());
-        LibraryPatternBank instance = LibraryPatternBankUtils.importPatternBank(
-                uncompressDirectory, archive);
-        return instance;
     }
 
     /**
@@ -228,6 +190,27 @@ public class LibraryProduct extends LibraryItem {
     }
 
     /**
+     * Saves the product item to disk within the product's directory.
+     * 
+     * @param item The product item.
+     * @return
+     * @throws java.io.IOException
+     */
+    public File saveItem(LibraryProductItem item) throws IOException {
+        return LibraryProductUtils.addArchiveToProduct(item, this);
+    }
+
+    /**
+     * Saves the manifest to disk in the root of the product directory.
+     * 
+     * @throws IOException
+     */
+    public void save() throws IOException {
+        CaustkRuntime.getInstance().getRack().getSerializer()
+                .serialize(LibraryProductUtils.toProductBinary(getDirectory()), this);
+    }
+
+    /**
      * Resolves the product item's internal product path.
      * <p>
      * Calculates the path based on the {@link #getDirectory()} and the item's
@@ -241,31 +224,25 @@ public class LibraryProduct extends LibraryItem {
     }
 
     /**
-     * Export product to the .gprod targetArchive
+     * Resolves the product manifest's internal product path.
      * 
-     * @param targetArchive The absolute location of the <code>.gprod</code>
-     *            archive.
-     * @throws java.io.IOException
+     * @param item The product item's manifest.
      */
-    public void exportProduct(File targetArchive) throws IOException {
-        LibraryProductExportUtils.exportProduct(this, targetArchive);
+    public File resolveInternalArchive(LibraryItemManifest manifest) {
+        File archive = new File(getDirectory(), LibraryProductUtils.getProductPath(manifest)
+                .getPath());
+        return archive;
     }
 
     /**
-     * Saves the product item to disk within the product's directory.
+     * Export this product to the .gprod targetArchive
      * 
-     * @param item The product item.
-     * @return
+     * @param targetArchive The absolute location of the <code>.gprod</code>
+     *            archive with extension.
      * @throws java.io.IOException
      */
-    public File saveItem(LibraryProductItem item) throws IOException {
-        return LibraryProductUtils.addArchiveToProduct(item, this);
-    }
-
-    public LibraryGroup createGroup(String path, String displayName, File causticFile) {
-        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory().getLibraryFactory()
-                .createGroup(this, displayName, path);
-        return libraryGroup;
+    public void export(File targetArchive) throws IOException {
+        LibraryProductExportUtils.exportProduct(this, targetArchive);
     }
 
 }

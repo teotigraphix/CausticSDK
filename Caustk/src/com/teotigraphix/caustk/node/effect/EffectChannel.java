@@ -28,8 +28,8 @@ import com.teotigraphix.caustk.core.osc.EffectsRackMessage.EffectsRackControl;
 import com.teotigraphix.caustk.core.osc.IOSCControl;
 import com.teotigraphix.caustk.node.NodeBase;
 import com.teotigraphix.caustk.node.NodeBaseEvents.NodeEvent;
-import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.Machine;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.master.MasterChannel;
 
 /**
@@ -162,6 +162,31 @@ public class EffectChannel extends MachineChannel {
     protected void destroyComponents() {
     }
 
+    /**
+     * Updates this effect channel with the source effect channel calls the
+     * native OSC to create the effects, then updates to core with the source
+     * effect properties.
+     * 
+     * @param effect
+     * @throws CausticException
+     */
+    public void update(EffectChannel effect) throws CausticException {
+        if (effect.containsEffect(0)) {
+            EffectNode effect1 = effect.getEfffect(0);
+            EffectsRackMessage.CREATE.send(getRack(), getMachineIndex(), 0, effect1.getType()
+                    .getValue());
+            slots.put(0, effect1);
+            effect1.update();
+        }
+        if (effect.containsEffect(1)) {
+            EffectNode effect2 = effect.getEfffect(1);
+            EffectsRackMessage.CREATE.send(getRack(), getMachineIndex(), 1, effect2.getType()
+                    .getValue());
+            slots.put(1, effect2);
+            effect2.update();
+        }
+    }
+
     @Override
     protected void updateComponents() {
         for (int i = 0; i < NUM_SLOTS; i++) {
@@ -237,4 +262,5 @@ public class EffectChannel extends MachineChannel {
             this.effectNode = effectNode;
         }
     }
+
 }

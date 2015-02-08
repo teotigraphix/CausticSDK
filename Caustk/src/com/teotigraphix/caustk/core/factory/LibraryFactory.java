@@ -66,7 +66,7 @@ public class LibraryFactory extends CaustkFactoryChildBase {
                 machineNode);
         manifest.setProductId(product.getId());
         LibraryInstrument instrument = new LibraryInstrument(manifest);
-        instrument.setMachineNode(machineNode);
+        instrument.setMachine(machineNode);
         return instrument;
     }
 

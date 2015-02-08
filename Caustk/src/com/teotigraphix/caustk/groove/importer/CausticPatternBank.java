@@ -19,9 +19,28 @@
 
 package com.teotigraphix.caustk.groove.importer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.teotigraphix.caustk.groove.library.LibraryPatternBank;
+import com.teotigraphix.caustk.groove.library.LibraryProductAccess;
+import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 
 public class CausticPatternBank extends CausticItem {
+
+    private transient Collection<PatternNode> patterns = new ArrayList<PatternNode>();
+
+    /**
+     * Returns the patterns for this bank, only populated when deserialized with
+     * {@link LibraryProductAccess#getSounds()}.
+     */
+    public Collection<PatternNode> getPatterns() {
+        return patterns;
+    }
+
+    public void setPatterns(Collection<PatternNode> patterns) {
+        this.patterns = patterns;
+    }
 
     public CausticPatternBank(LibraryPatternBank item) {
         super(item);

@@ -11,6 +11,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.groove.library.LibraryProduct;
+import com.teotigraphix.caustk.groove.library.LibrarySound;
 import com.teotigraphix.caustk.utils.core.SerializeUtils;
 import com.teotigraphix.caustk.utils.core.ZipCompress;
 import com.teotigraphix.caustk.utils.core.ZipUtils;
@@ -27,12 +28,26 @@ public final class LibraryProductExportUtils {
 
     public static LibraryProduct getProductFromArchive(File archiveFile, String entryName,
             File outputFile) throws IOException {
+        // write the bin file to disk 
         ZipUtils.writeZipEntryToFile(archiveFile, entryName, outputFile);
         if (!outputFile.exists())
             throw new IOException("Zip entry failed to write: " + outputFile);
-
+        // deserialize and delete
         LibraryProduct product = CaustkRuntime.getInstance().getRack().getSerializer()
                 .deserialize(outputFile, LibraryProduct.class);
+        outputFile.deleteOnExit();
+        return product;
+    }
+
+    public static LibrarySound getSoundFromArchive(File archiveFile, String entryName,
+            File outputFile) throws IOException {
+        // write the bin file to disk 
+        ZipUtils.writeZipEntryToFile(archiveFile, entryName, outputFile);
+        if (!outputFile.exists())
+            throw new IOException("Zip entry failed to write: " + outputFile);
+        // deserialize and delete
+        LibrarySound product = CaustkRuntime.getInstance().getRack().getSerializer()
+                .deserialize(outputFile, LibrarySound.class);
         outputFile.deleteOnExit();
         return product;
     }

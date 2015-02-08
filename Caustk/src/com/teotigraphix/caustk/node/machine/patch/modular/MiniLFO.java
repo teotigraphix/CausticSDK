@@ -57,6 +57,10 @@ public class MiniLFO extends ModularComponentBase {
     }
 
     public void setWaveForm(WaveForm value) {
+        if (value == null) {
+            System.err.println("NULL MiniLFO.setWaveForm()");
+            return;
+        }
         this.waveForm = value;
         setValue("waveform", value.getValue());
     }

@@ -153,7 +153,7 @@ public class SessionManager {
 
     public void playPosition(int measure) {
         getSceneManager().reset();
-        rackNode.getSequencer().playPosition(measure * 4);
+        rackNode.getSequencer().setPlayPosition(measure * 4);
         onBeatChange(measure, (measure * 4), measure == 0 ? 0 : 12, -1);
         //commitClips();
     }

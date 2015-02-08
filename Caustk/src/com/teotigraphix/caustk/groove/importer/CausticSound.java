@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.groove.importer;
 
 import com.teotigraphix.caustk.groove.library.LibrarySound;
+import com.teotigraphix.caustk.groove.manifest.LibrarySoundManifest;
 
 public class CausticSound extends CausticItem {
 
@@ -30,6 +31,11 @@ public class CausticSound extends CausticItem {
     private CausticInstrument instrument;
 
     private CausticPatternBank patternBank;
+
+    @Override
+    public LibrarySoundManifest getManifest() {
+        return (LibrarySoundManifest)super.getManifest();
+    }
 
     public int getIndex() {
         return index;

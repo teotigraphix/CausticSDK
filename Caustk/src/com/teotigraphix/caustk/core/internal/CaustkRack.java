@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 
@@ -36,7 +35,6 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.ICaustkSerializer;
-import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.groove.importer.CausticFileImporter;
@@ -58,7 +56,6 @@ import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
-import com.teotigraphix.caustk.utils.node.RackNodeUtils;
 
 /**
  * The {@link CaustkRack} holds the current {@link RackInstance} session state.
@@ -82,7 +79,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     private ICaustkSerializer serializer;
 
-    private RackInstance rackNode;
+    //private RackInstance rackInstance;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -90,7 +87,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public final boolean isLoaded() {
-        return rackNode != null;
+        return getRackInstance() != null;
     }
 
     //----------------------------------
@@ -117,19 +114,20 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public final RackInstance getRackInstance() {
-        return rackNode;
+        return project.getRackInstance();
+        //return rackInstance;
     }
 
-    protected void setRackNode(RackInstance rackNode) {
-        if (rackNode == this.rackNode)
-            return;
-        RackInstance oldNode = this.rackNode;
-        if (oldNode != null) {
-            oldNode.destroy();
-        }
-        this.rackNode = rackNode;
-        RackMessage.BLANKRACK.send(this);
-    }
+    //    protected void setRackNode(RackInstance rackNode) {
+    //        if (rackNode == getRackInstance())
+    //            return;
+    //        RackInstance oldNode = getRackInstance();
+    //        if (oldNode != null) {
+    //            oldNode.destroy();
+    //        }
+    //        this.rackInstance = rackNode;
+    //        RackMessage.BLANKRACK.send(this);
+    //    }
 
     //--------------------------------------------------------------------------
     // Public RackNode Facade API
@@ -141,17 +139,17 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public final String getName() {
-        return rackNode.getName();
+        return getRackInstance().getName();
     }
 
     @Override
     public final String getPath() {
-        return rackNode.getPath();
+        return getRackInstance().getPath();
     }
 
     @Override
     public final File getFile() {
-        return rackNode.getAbsoluteFile();
+        return getRackInstance().getAbsoluteFile();
     }
 
     //----------------------------------
@@ -160,27 +158,27 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public final MasterDelayNode getDelay() {
-        return rackNode.getMaster().getDelay();
+        return getRackInstance().getMaster().getDelay();
     }
 
     @Override
     public final MasterReverbNode getReverb() {
-        return rackNode.getMaster().getReverb();
+        return getRackInstance().getMaster().getReverb();
     }
 
     @Override
     public final MasterEqualizerNode getEqualizer() {
-        return rackNode.getMaster().getEqualizer();
+        return getRackInstance().getMaster().getEqualizer();
     }
 
     @Override
     public final MasterLimiterNode getLimiter() {
-        return rackNode.getMaster().getLimiter();
+        return getRackInstance().getMaster().getLimiter();
     }
 
     @Override
     public final MasterVolumeNode getVolume() {
-        return rackNode.getMaster().getVolume();
+        return getRackInstance().getMaster().getVolume();
     }
 
     //----------------------------------
@@ -189,17 +187,17 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public final boolean contains(int machineIndex) {
-        return rackNode.containsMachine(machineIndex);
+        return getRackInstance().containsMachine(machineIndex);
     }
 
     @Override
     public final Collection<? extends Machine> machines() {
-        return rackNode.getMachines();
+        return getRackInstance().getMachines();
     }
 
     @Override
     public final Machine get(int machineIndex) {
-        return rackNode.getMachine(machineIndex);
+        return getRackInstance().getMachine(machineIndex);
     }
 
     //----------------------------------
@@ -208,7 +206,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public final MasterSequencerChannel getSequencer() {
-        return rackNode.getSequencer();
+        return getRackInstance().getSequencer();
     }
 
     //--------------------------------------------------------------------------
@@ -238,25 +236,27 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public RackInstance fill(File file) throws IOException {
-
-        File directory = runtime.getFactory().getCacheDirectory("fills");
-        File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString()
-                .substring(0, 10)
-                + ".caustic");
-        tempCausticSnapshot = getRackInstance().saveSongAs(tempCausticSnapshot);
-        if (!tempCausticSnapshot.exists())
-            throw new IOException("failed to save temp .caustic file in fill()");
-
-        RackInstance oldNode = this.rackNode;
-        RackInstance rackNodeFill = RackNodeUtils.create(file);
-        this.rackNode = rackNodeFill;
-        RackMessage.BLANKRACK.send(this);
-        restore(rackNode); // fill the node
-
-        this.rackNode = oldNode;
-        this.rackNode.loadSong(tempCausticSnapshot);
-
-        return rackNodeFill;
+        // XXX Needs to be fixed
+        //        File directory = runtime.getFactory().getCacheDirectory("fills");
+        //        File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString()
+        //                .substring(0, 10)
+        //                + ".caustic");
+        //        tempCausticSnapshot = getRackInstance().saveSongAs(tempCausticSnapshot);
+        //        if (!tempCausticSnapshot.exists())
+        //            throw new IOException("failed to save temp .caustic file in fill()");
+        //
+        //        RackInstance oldNode = getRackInstance();
+        //        RackInstance rackInstanceTarget = RackNodeUtils.create(file);
+        //        this.rackInstance = rackInstanceTarget;
+        //
+        //        RackMessage.BLANKRACK.send(this);
+        //        restore(rackInstance); // fill the node
+        //
+        //        this.rackInstance = oldNode;
+        //        this.rackInstance.loadSong(tempCausticSnapshot);
+        //
+        //        return rackInstanceTarget;
+        return null;
     }
 
     @Override
@@ -265,8 +265,9 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     @Override
-    public RackInstance fill(LibraryGroup libraryGroup, boolean importPreset, boolean importEffects,
-            boolean importPatterns, boolean importMixer) throws CausticException, IOException {
+    public RackInstance fill(LibraryGroup libraryGroup, boolean importPreset,
+            boolean importEffects, boolean importPatterns, boolean importMixer)
+            throws CausticException, IOException {
         //        RackNode rackNode = create();
         // remove all machines, clear rack
         //        setRackNode(rackNode);
@@ -278,9 +279,9 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
             LibraryPatternBank patternBank = librarySound.getPatternBank();
 
             int index = librarySound.getIndex();
-            MachineType machineType = libraryInstrument.getMachineNode().getType();
-            String machineName = libraryInstrument.getMachineNode().getName();
-            Machine machineNode = rackNode.createMachine(index, machineType, machineName);
+            MachineType machineType = libraryInstrument.getMachine().getType();
+            String machineName = libraryInstrument.getMachine().getName();
+            Machine machineNode = getRackInstance().createMachine(index, machineType, machineName);
 
             //libraryInstrument.setMachineNode(machineNode);
 
@@ -307,7 +308,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
             }
         }
 
-        return rackNode;
+        return getRackInstance();
     }
 
     public void loadPrest(Machine machineNode, LibraryInstrument libraryInstrument)
@@ -321,7 +322,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     public void loadMixerChannel(Machine machineNode, LibraryInstrument libraryInstrument) {
-        MixerChannel oldMixer = libraryInstrument.getMachineNode().getMixer();
+        MixerChannel oldMixer = libraryInstrument.getMachine().getMixer();
         machineNode.updateMixer(oldMixer);
     }
 
@@ -372,7 +373,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     private void setProjectInternal(Project project) {
         this.project = project;
         project.setRack(this);
-        setRackNode(project.getRackInstance());
+        //setRackNode(project.getRackInstance());
     }
 
     @Override
@@ -381,16 +382,27 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
     }
 
     @Override
-    public void restore(RackInstance rackNode) {
+    public void load(File causticFile) throws IOException {
+        // this.rackInstance = RackNodeUtils.create();
+        // RackMessage.BLANKRACK
+        getProject().reset();
+        // RackMessage.LOAD_SONG
+        getRackInstance().loadSong(causticFile);
+
+        getRackInstance().restore();
+    }
+
+    @Override
+    public void restore(RackInstance rackInstance) {
         // will save the state of the native rack into the node
         // this basically takes a snap shot of the native rack
-        setRackNode(rackNode);
-        rackNode.restore();
+        //setRackNode(rackNode);
+        rackInstance.restore();
     }
 
     @Override
     public void update(RackInstance rackNode) {
-        setRackNode(rackNode);
+        //setRackNode(rackNode);
         rackNode.update();
     }
 
@@ -407,12 +419,12 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
             File cacheDirectory = CaustkRuntime.getInstance().getFactory()
                     .getCacheDirectory("temp_presets");
             tempPreset = new File(cacheDirectory, "preset." + machineType.getExtension());
-            byte[] data = libraryInstrument.getMachineNode().getPreset().getRestoredData();
+            byte[] data = libraryInstrument.getMachine().getPreset().getRestoredData();
             if (data != null) {
                 FileUtils.writeByteArrayToFile(tempPreset, data);
             } else {
                 runtime.getLogger().err("CausticRack",
-                        "Could not load preset data for: " + libraryInstrument.getMachineNode());
+                        "Could not load preset data for: " + libraryInstrument.getMachine());
             }
 
         }
@@ -465,6 +477,12 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         public <T> T fromXMLManifest(File manifestFile, Class<T> clazz)
                 throws FileNotFoundException {
             return importer.fromXMLManifest(manifestFile, clazz);
+        }
+
+        @Override
+        public <T> T fromXMLManifest(String manifestData, Class<T> clazz)
+                throws FileNotFoundException {
+            return importer.fromXMLManifest(manifestData, clazz);
         }
 
     }

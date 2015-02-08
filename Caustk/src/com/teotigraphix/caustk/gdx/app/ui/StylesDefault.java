@@ -202,6 +202,21 @@ public class StylesDefault {
     public static final String Slider_knob = "defaults/Slider_knob";
 
     //----------------------------------
+    // ProgressBar
+    //----------------------------------
+
+    /**
+     * Style.
+     */
+    public static final String ProgressBar_Veritical = "default-vertical";
+
+    public static final String ProgressBar_Horizontal = "default-horizontal";
+
+    public static final String ProgressBar_background = "defaults/Slider_background";
+
+    public static final String ProgressBar_knob = "defaults/Slider_knob";
+
+    //----------------------------------
     // TextSlider
     //----------------------------------
 

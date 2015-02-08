@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
+import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.effect.EffectType;
 
 /*
@@ -35,10 +36,22 @@ public class CausticEffect extends CausticItem {
 
     private Map<Integer, CausticEffectType> types = new HashMap<Integer, CausticEffectType>();
 
+    private transient Map<Integer, EffectNode> effects = new HashMap<Integer, EffectNode>();
+
     public EffectType get(int index) {
         if (!types.containsKey(index))
             return null;
         return types.get(index).getType();
+    }
+
+    public EffectNode getEffect(int slot) {
+        return effects.get(slot);
+    }
+
+    public void putEffect(int slot, EffectNode effect) {
+        if (effects == null)
+            effects = new HashMap<Integer, EffectNode>();
+        effects.put(slot, effect);
     }
 
     public CausticEffect(LibraryEffect item) {

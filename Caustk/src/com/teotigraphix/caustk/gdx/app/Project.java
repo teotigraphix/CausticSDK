@@ -28,13 +28,15 @@ import org.apache.commons.io.FilenameUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.node.RackInstance;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 import com.teotigraphix.caustk.utils.node.RackNodeUtils;
 
 /**
- * The project holds the single {@link com.teotigraphix.caustk.node.RackInstance} in
- * the applications current session.
+ * The project holds the single
+ * {@link com.teotigraphix.caustk.node.RackInstance} in the applications current
+ * session.
  */
 public abstract class Project {
 
@@ -235,6 +237,14 @@ public abstract class Project {
     public void save() throws IOException {
         flush();
         rack.getSerializer().serialize(getFile(), this);
+    }
+
+    /**
+     * Resets the project's {@link RackInstance}'s state fully (new reference).
+     */
+    public void reset() {
+        this.rackInstance = RackNodeUtils.create();
+        RackMessage.BLANKRACK.send(getRack());
     }
 
     public void flush() throws IOException {

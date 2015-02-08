@@ -20,14 +20,25 @@
 package com.teotigraphix.caustk.groove.importer;
 
 import com.teotigraphix.caustk.groove.library.LibraryProductItem;
+import com.teotigraphix.caustk.groove.manifest.LibraryItemManifest;
 
 public abstract class CausticItem {
 
     private transient boolean export;
 
+    private transient LibraryItemManifest manifest;
+
     private String path;
 
     private String displayName;
+
+    public LibraryItemManifest getManifest() {
+        return manifest;
+    }
+
+    public void setManifest(LibraryItemManifest manifest) {
+        this.manifest = manifest;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -47,6 +58,7 @@ public abstract class CausticItem {
     }
 
     public CausticItem(LibraryProductItem item) {
+        this.manifest = item.getManifest();
         this.path = item.getRawRelativePath();
         this.displayName = item.getDisplayName();
     }

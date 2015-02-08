@@ -22,8 +22,8 @@ package com.teotigraphix.caustk.node.machine.sequencer;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.groove.session.Clip;
-import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.Machine;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 
 // TODO Serialization TrackEntryNode
@@ -206,6 +206,19 @@ public class TrackEntryNode extends MachineChannel {
         this.numMeasures = numMeasures;
         this.startMeasure = startMeasure;
         this.endMeasure = endMeasure;
+    }
+
+    private int machineIndex;
+
+    @Override
+    public int getMachineIndex() {
+        if (getMachineNode() != null)
+            return super.getMachineIndex();
+        return machineIndex;
+    }
+
+    public void setMachineIndex(int machineIndex) {
+        this.machineIndex = machineIndex;
     }
 
     //--------------------------------------------------------------------------

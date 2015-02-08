@@ -32,8 +32,8 @@ import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 
 /**
- * The {@link MasterSequencerChannel} API manages the song/pattern sequencer and output
- * panel (play/stop/bpm).
+ * The {@link MasterSequencerChannel} API manages the song/pattern sequencer and
+ * output panel (play/stop/bpm).
  * 
  * @author Michael Schmalle
  * @since 1.0
@@ -75,6 +75,13 @@ public class MasterSequencerChannel extends NodeBase {
     //----------------------------------
     // isPlaying
     //----------------------------------
+
+    /**
+     * Returns whether the native sequencer is playing.
+     */
+    public final boolean isPlayingNative() {
+        return OutputPanelMessage.PLAY.query(getRack()) != 0f;
+    }
 
     /**
      * Returns whether the output panel is playing the pattern or song
@@ -277,8 +284,8 @@ public class MasterSequencerChannel extends NodeBase {
      * the machine index.
      * <p>
      * Convenience;
-     * {@link com.teotigraphix.caustk.core.internal.CaustkRack#getRackInstance()} must not be
-     * <code>null</code>.
+     * {@link com.teotigraphix.caustk.core.internal.CaustkRack#getRackInstance()}
+     * must not be <code>null</code>.
      * 
      * @param machineIndex The machine index for the track(0..13).
      */
@@ -392,7 +399,7 @@ public class MasterSequencerChannel extends NodeBase {
      * 
      * @param beat The beat to start playing in the song sequencer.
      */
-    public void playPosition(float beat) {
+    public void setPlayPosition(float beat) {
         SequencerMessage.PLAY_POSITION.send(getRack(), beat);
     }
 

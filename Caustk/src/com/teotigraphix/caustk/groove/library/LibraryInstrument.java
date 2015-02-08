@@ -39,7 +39,7 @@ public class LibraryInstrument extends LibraryProductItem {
     private LibraryInstrumentManifest manifest;
 
     @Tag(51)
-    private Machine machineNode;
+    private Machine machine;
 
     //--------------------------------------------------------------------------
     // Transient :: Variables
@@ -90,14 +90,14 @@ public class LibraryInstrument extends LibraryProductItem {
     // machineNode
     //----------------------------------
 
-    public Machine getMachineNode() {
-        return machineNode;
+    public Machine getMachine() {
+        return machine;
     }
 
-    public void setMachineNode(Machine machineNode) {
-        this.machineNode = machineNode;
-        if (machineNode != null) {
-            machineNode.setRackNode(null);
+    public void setMachine(Machine machine) {
+        this.machine = machine;
+        if (machine != null) {
+            machine.setRackNode(null);
         }
     }
 

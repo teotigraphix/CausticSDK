@@ -93,9 +93,9 @@ public class LibraryInstrumentUtils {
         // XXX construct the archive for the specific node type
         // for now the only special node type is MachineNode that needs
         // the presets directory
-        if (item instanceof LibraryInstrument && !(item.getMachineNode() instanceof VocoderMachine)) {
+        if (item instanceof LibraryInstrument && !(item.getMachine() instanceof VocoderMachine)) {
             File presetsDirectory = tempDirectory;
-            Machine machineNode = item.getMachineNode();
+            Machine machineNode = item.getMachine();
             File file = new File(presetsDirectory, PRESET + "."
                     + machineNode.getType().getExtension());
             FileUtils.writeByteArrayToFile(file, machineNode.getPreset().getRestoredData());
@@ -121,7 +121,7 @@ public class LibraryInstrumentUtils {
         LibraryInstrument libraryInstrument = SerializeUtils.unpack(manifest,
                 LibraryInstrument.class);
 
-        String type = libraryInstrument.getMachineNode().getType().getExtension();
+        String type = libraryInstrument.getMachine().getType().getExtension();
         libraryInstrument.setPendingPresetFile(new File(uncompressDirectory, "preset." + type));
 
         return libraryInstrument;

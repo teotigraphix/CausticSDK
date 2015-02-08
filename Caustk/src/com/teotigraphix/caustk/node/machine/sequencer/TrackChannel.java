@@ -29,8 +29,8 @@ import java.util.TreeMap;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.SequencerMessage;
-import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.Machine;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.utils.node.PatternUtils;
 import com.teotigraphix.caustk.utils.node.TrackNodeUtils;
 
@@ -52,6 +52,9 @@ public class TrackChannel extends MachineChannel {
 
     @Tag(101)
     private boolean inArrangement;
+
+    // XXX Temp for quick deserialization
+    private int machineIndex;
 
     //--------------------------------------------------------------------------
     // Public Property API
@@ -320,9 +323,9 @@ public class TrackChannel extends MachineChannel {
     }
 
     /**
-     * Adds an existing {@link TrackEntryNode} to the {@link TrackChannel}.
-     * This may happen during an undo operation, where the track entry existed
-     * in this track prior.
+     * Adds an existing {@link TrackEntryNode} to the {@link TrackChannel}. This
+     * may happen during an undo operation, where the track entry existed in
+     * this track prior.
      * 
      * @param trackEntry The track entry to add.
      */
@@ -411,6 +414,10 @@ public class TrackChannel extends MachineChannel {
         super(machineNode);
     }
 
+    public TrackChannel(int machineIndex) {
+        this.machineIndex = machineIndex;
+    }
+
     //--------------------------------------------------------------------------
     // Public API :: Methods
     //--------------------------------------------------------------------------
@@ -481,6 +488,13 @@ public class TrackChannel extends MachineChannel {
     }
 
     @Override
+    public int getMachineIndex() {
+        if (getMachineNode() != null)
+            return super.getMachineIndex();
+        return machineIndex;
+    }
+
+    @Override
     protected void restoreComponents() {
         // create TrackEntryNodes for nodes retured.
 
@@ -495,9 +509,14 @@ public class TrackChannel extends MachineChannel {
 
             int numMeasures = PatternUtils.getNumMeasures(getRack(), machineIndex, bankIndex,
                     patternIndex);
-            TrackEntryNode trackEntryNode = new TrackEntryNode(getMachineNode(),
-                    PatternUtils.toString(bankIndex, patternIndex), numMeasures, startMeasure,
-                    endMeasure);
+
+            Machine machineNode = getMachineNode();
+            TrackEntryNode trackEntryNode = new TrackEntryNode(machineNode, PatternUtils.toString(
+                    bankIndex, patternIndex), numMeasures, startMeasure, endMeasure);
+            if (machineNode == null) {
+                trackEntryNode.setMachineIndex(machineIndex);
+            }
+
             entries.put(startMeasure, trackEntryNode);
         }
     }

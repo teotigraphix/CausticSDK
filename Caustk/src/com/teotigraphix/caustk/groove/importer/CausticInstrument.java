@@ -20,14 +20,30 @@
 package com.teotigraphix.caustk.groove.importer;
 
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
+import com.teotigraphix.caustk.groove.library.LibraryProductAccess;
+import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.node.machine.MachineType;
 
 public class CausticInstrument extends CausticItem {
 
     private MachineType type;
 
+    private transient Machine machine;
+
     public MachineType getType() {
         return type;
+    }
+
+    /**
+     * Returns the {@link Machine}, only populated when deserialized with
+     * {@link LibraryProductAccess#getSounds()}.
+     */
+    public Machine getMachine() {
+        return machine;
+    }
+
+    public void setMachine(Machine machine) {
+        this.machine = machine;
     }
 
     public CausticInstrument(LibraryInstrument item) {

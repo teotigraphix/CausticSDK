@@ -30,8 +30,8 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
 import com.teotigraphix.caustk.core.osc.SynthMessage;
-import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.Machine;
+import com.teotigraphix.caustk.node.machine.MachineChannel;
 import com.teotigraphix.caustk.node.machine.MachineType;
 import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 import com.teotigraphix.caustk.utils.node.PresetUtils;
@@ -54,6 +54,17 @@ public class PresetChannel extends MachineChannel {
      */
     public byte[] getRestoredData() {
         return restoredData;
+    }
+
+    /**
+     * Sets the resorted byte array and calls {@link #restorePreset()}.
+     * 
+     * @param preset
+     * @throws CausticException
+     */
+    public void update(PresetChannel preset) throws CausticException {
+        this.restoredData = preset.getRestoredData();
+        restorePreset();
     }
 
     //--------------------------------------------------------------------------
@@ -373,4 +384,5 @@ public class PresetChannel extends MachineChannel {
     public String toString() {
         return getType() + ":" + getName();
     }
+
 }

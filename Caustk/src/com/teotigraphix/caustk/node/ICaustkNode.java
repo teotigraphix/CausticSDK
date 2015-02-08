@@ -57,14 +57,15 @@ public interface ICaustkNode {
     void destroy();
 
     /**
-     * Updates all node components.
+     * Updates the native rack state from the current state of the rack
+     * instance.
      * 
      * @see #updateComponents()
      */
     void update();
 
     /**
-     * Resotres all node components.
+     * Restores all node component states from the native rack state.
      * 
      * @see #restoreComponents()
      */

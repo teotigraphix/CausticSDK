@@ -51,7 +51,7 @@ import com.teotigraphix.caustk.node.effect.EffectChannel;
 import com.teotigraphix.caustk.node.effect.EffectNode;
 import com.teotigraphix.caustk.node.machine.Machine;
 import com.teotigraphix.caustk.utils.core.ZipCompress;
-import com.teotigraphix.caustk.utils.core.ZipUncompress;
+import com.teotigraphix.caustk.utils.core.ZipUtils;
 
 public class LibraryProductUtils {
 
@@ -77,7 +77,7 @@ public class LibraryProductUtils {
         return CaustkRuntime.getInstance().getRack().getSerializer();
     }
 
-    private static File toProductBinary(File productDir) {
+    public static File toProductBinary(File productDir) {
         return new File(productDir, PRODUCT_BIN);
     }
 
@@ -184,28 +184,30 @@ public class LibraryProductUtils {
 
     public static File saveItemAsArchive(LibraryProductItem item, LibraryProduct product,
             File zipFile) throws IOException {
-        File tempDirectory = CaustkRuntime.getInstance().getFactory().getCacheDirectory("extract");
-        FileUtils.forceMkdir(tempDirectory);
+        File extractDir = CaustkRuntime.getInstance().getFactory().getCacheDirectory("extract");
+        File tempDir = new File(extractDir, UUID.randomUUID().toString());
+
+        FileUtils.forceMkdir(tempDir);
 
         switch (item.getFormat()) {
             case Effect:
-                LibraryEffectUtils.serialize((LibraryEffect)item, product, tempDirectory);
+                LibraryEffectUtils.serialize((LibraryEffect)item, product, tempDir);
                 break;
 
             case Instrument:
-                LibraryInstrumentUtils.serialize((LibraryInstrument)item, product, tempDirectory);
+                LibraryInstrumentUtils.serialize((LibraryInstrument)item, product, tempDir);
                 break;
 
             case PatternBank:
-                LibraryPatternBankUtils.serialize((LibraryPatternBank)item, product, tempDirectory);
+                LibraryPatternBankUtils.serialize((LibraryPatternBank)item, product, tempDir);
                 break;
 
             case Sound:
-                LibrarySoundUtils.serialize((LibrarySound)item, product, tempDirectory);
+                LibrarySoundUtils.serialize((LibrarySound)item, product, tempDir);
                 break;
 
             case Group:
-                LibraryGroupUtils.serialize((LibraryGroup)item, product, tempDirectory);
+                LibraryGroupUtils.serialize((LibraryGroup)item, product, tempDir);
                 break;
 
             case Product:
@@ -219,9 +221,9 @@ public class LibraryProductUtils {
 
         }
 
-        ZipCompress compress = new ZipCompress(tempDirectory);
+        ZipCompress compress = new ZipCompress(tempDir);
         compress.zip(zipFile);
-        FileUtils.forceDeleteOnExit(tempDirectory);
+        FileUtils.forceDeleteOnExit(tempDir);
         return zipFile;
     }
 
@@ -326,13 +328,14 @@ public class LibraryProductUtils {
             throws IOException {
         if (!archive.exists())
             throw new IOException("Archive does not exist: " + archive);
-        ZipUncompress uncompress = new ZipUncompress(archive);
-        File uncompressDirectory = CaustkRuntime.getInstance().getFactory()
-                .getCacheDirectory(UUID.randomUUID().toString());
-        uncompress.unzip(uncompressDirectory);
-        File manifestFile = new File(uncompressDirectory, MANIFEST_XML);
-        T instance = getSerializer().fromXMLManifest(manifestFile, clazz);
-        FileUtils.forceDeleteOnExit(uncompressDirectory);
+        //        ZipUncompress uncompress = new ZipUncompress(archive);
+        //        File uncompressDirectory = CaustkRuntime.getInstance().getFactory()
+        //                .getCacheDirectory(UUID.randomUUID().toString());
+        //        uncompress.unzip(uncompressDirectory);
+        //        File manifestFile = new File(uncompressDirectory, MANIFEST_XML);
+        final String xmlData = ZipUtils.readZipString(archive, new File("manifest.xml"));
+        T instance = getSerializer().fromXMLManifest(xmlData, clazz);
+        //        FileUtils.forceDeleteOnExit(uncompressDirectory);
         return instance;
     }
 
@@ -458,8 +461,8 @@ public class LibraryProductUtils {
         return libraryEffect;
     }
 
-    private static LibraryInstrument fillInstrument(Machine machineNode,
-            LibraryProduct product, String name, String groupName) {
+    private static LibraryInstrument fillInstrument(Machine machineNode, LibraryProduct product,
+            String name, String groupName) {
         String relativePath = groupName;
         LibraryInstrument libraryInstrument = getFactory().getLibraryFactory().createInstrument(
                 product, name, relativePath, machineNode);
@@ -467,8 +470,8 @@ public class LibraryProductUtils {
         return libraryInstrument;
     }
 
-    private static LibraryPatternBank fillPatternBank(Machine machineNode,
-            LibraryProduct product, String name, String groupName) {
+    private static LibraryPatternBank fillPatternBank(Machine machineNode, LibraryProduct product,
+            String name, String groupName) {
         String relativePath = groupName;
         LibraryPatternBank libraryPatternBank = getFactory().getLibraryFactory().createPatternBank(
                 product, name, relativePath, machineNode);
@@ -482,13 +485,51 @@ public class LibraryProductUtils {
         // - restore rack
         // - 
 
-        LibraryGroup libraryGroup = product.createGroup(path, displayName, causticFile);
+        LibraryGroup libraryGroup = createGroup(product, path, displayName, causticFile);
         fillGroup(product, libraryGroup, causticFile);
 
         return libraryGroup;
     }
 
+    private static LibraryGroup createGroup(LibraryProduct product, String path,
+            String displayName, File causticFile) {
+        LibraryGroup libraryGroup = CaustkRuntime.getInstance().getFactory().getLibraryFactory()
+                .createGroup(product, displayName, path);
+        return libraryGroup;
+    }
+
     private static ICaustkFactory getFactory() {
         return CaustkRuntime.getInstance().getFactory();
+    }
+
+    //--------------------------------------------------------------------------
+    //
+    //--------------------------------------------------------------------------
+
+    /**
+     * Reads the product.bin state into a new {@link LibraryProduct} instance.
+     * 
+     * @param productDir
+     * @throws IOException
+     */
+    public static LibraryProduct readProduct(File productDir) throws IOException {
+        File state = LibraryProductUtils.toProductBinary(productDir);
+        LibraryProduct product = CaustkRuntime.getInstance().getRack().getSerializer()
+                .deserialize(state, LibraryProduct.class);
+        return product;
+    }
+
+    /**
+     * Returns the absolute product path of the manifest on disk.
+     * 
+     * @param manifest
+     */
+    public static File getProductPath(LibraryItemManifest manifest) {
+        final String fileName = manifest.getName() + "." + manifest.getExtension();
+        final String formatDirectoryName = LibraryProductUtils.toItemBaseDirectoryName(manifest);
+        final File base = manifest.getCalculatedPath() != null ? new File(formatDirectoryName,
+                manifest.getCalculatedPath()) : new File(formatDirectoryName);
+        final File productPath = new File(base, fileName);
+        return productPath;
     }
 }
