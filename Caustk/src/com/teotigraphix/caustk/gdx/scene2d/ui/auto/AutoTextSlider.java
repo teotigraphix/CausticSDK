@@ -23,6 +23,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
 import com.teotigraphix.caustk.gdx.scene2d.ui.TextSlider;
 
 public class AutoTextSlider extends AutomationTableBase {
@@ -50,6 +51,7 @@ public class AutoTextSlider extends AutomationTableBase {
         AutomationItem item = getAutomationItem();
         slider = new TextSlider(item.getLabel(), item.getMin(), item.getMax(), item.getStep(),
                 true, getSkin());
+        slider.create(StylesDefault.TextSlider_Veritical);
         slider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

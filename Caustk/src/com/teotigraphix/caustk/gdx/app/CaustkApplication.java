@@ -56,7 +56,7 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
         ApplicationListener {
 
     public Preferences getGlobalPreferences() {
-        return getPreferenceManager().get("com_teotigraphix_caustk_global");
+        return getPreferenceManager().get("com_teotigraphix_caustk_global_" + getApplicationId());
     }
 
     private static final String TAG = "CaustkApplication";

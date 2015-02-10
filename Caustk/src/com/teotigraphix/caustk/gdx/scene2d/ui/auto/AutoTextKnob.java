@@ -49,6 +49,7 @@ public class AutoTextKnob extends AutomationTableBase {
         AutomationItem item = getAutomationItem();
         knob = new TextKnob(item.getMin(), item.getMax(), 0.01f,
                 item.getControl().getDisplayName(), getSkin(), "default");
+        knob.create();
         knob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

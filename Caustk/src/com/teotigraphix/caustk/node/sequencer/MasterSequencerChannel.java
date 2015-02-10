@@ -83,6 +83,11 @@ public class MasterSequencerChannel extends NodeBase {
         return OutputPanelMessage.PLAY.query(getRack()) != 0f;
     }
 
+    public void pause() {
+        this.playing = false;
+        OutputPanelMessage.PLAY.send(getRack(), 0);
+    }
+
     /**
      * Returns whether the output panel is playing the pattern or song
      * sequencer.

@@ -20,6 +20,7 @@
 package com.teotigraphix.caustk.gdx.scene2d.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.teotigraphix.caustk.gdx.app.ui.StylesDefault;
 
 public class SliderGroup extends UITable {
 
@@ -36,6 +37,7 @@ public class SliderGroup extends UITable {
         for (SliderItem item : items) {
             TextSlider slider = new TextSlider(item.getText(), item.getMin(), item.getMax(),
                     item.getStepSize(), true, getSkin());
+            slider.create(StylesDefault.TextSlider_Veritical);
             add(slider).pad(4f);
         }
     }

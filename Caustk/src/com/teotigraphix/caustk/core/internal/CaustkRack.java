@@ -388,6 +388,15 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         getProject().reset();
         // RackMessage.LOAD_SONG
         getRackInstance().loadSong(causticFile);
+    }
+
+    @Override
+    public void loadAndRestore(File causticFile) throws IOException {
+        // this.rackInstance = RackNodeUtils.create();
+        // RackMessage.BLANKRACK
+        getProject().reset();
+        // RackMessage.LOAD_SONG
+        getRackInstance().loadSong(causticFile);
 
         getRackInstance().restore();
     }

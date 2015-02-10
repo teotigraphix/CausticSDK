@@ -328,6 +328,7 @@ public class MixerPaneItem extends UITable {
 
     private void createFXKnobs(Table parent) {
         widthKnob = new TextKnob(-1f, 1f, 0.01f, "WIDTH", getSkin(), "default");
+        widthKnob.create();
         widthKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -337,6 +338,7 @@ public class MixerPaneItem extends UITable {
         parent.add(widthKnob).padTop(2f);
         parent.row();
         delayKnob = new TextKnob(0f, 1f, 0.01f, "DELAY", getSkin(), "default");
+        delayKnob.create();
         delayKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -346,6 +348,7 @@ public class MixerPaneItem extends UITable {
         parent.add(delayKnob).padTop(2f);
         parent.row();
         reverbKnob = new TextKnob(0f, 0.5f, 0.01f, "REVERB", getSkin(), "default");
+        reverbKnob.create();
         reverbKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -361,6 +364,7 @@ public class MixerPaneItem extends UITable {
 
     private void createEQKnobs(Table parent) {
         highKnob = new TextKnob(-1f, 1f, 0.01f, "HIGH", getSkin(), "default");
+        highKnob.create();
         highKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -370,6 +374,7 @@ public class MixerPaneItem extends UITable {
         parent.add(highKnob).padTop(2f);
         parent.row();
         midKnob = new TextKnob(-1f, 1f, 0.01f, "MID", getSkin(), "default");
+        midKnob.create();
         midKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -379,6 +384,7 @@ public class MixerPaneItem extends UITable {
         parent.add(midKnob).padTop(2f);
         parent.row();
         bassKnob = new TextKnob(-1f, 1f, 0.01f, "BASS", getSkin(), "default");
+        bassKnob.create();
         bassKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -406,6 +412,7 @@ public class MixerPaneItem extends UITable {
         parent.row();
 
         panKnob = new TextKnob(-1f, 1f, 0.01f, "PAN", getSkin(), "default");
+        panKnob.create();
         panKnob.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

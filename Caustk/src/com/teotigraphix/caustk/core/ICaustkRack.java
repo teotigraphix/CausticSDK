@@ -160,5 +160,20 @@ public interface ICaustkRack extends ISoundGenerator {
      */
     void frameChanged(float deltaTime);
 
+    /**
+     * Clears rack, loads native song file, no restore.
+     * 
+     * @param file The absolute .caustic file location.
+     * @throws IOException
+     */
     void load(File file) throws IOException;
+
+    /**
+     * Clears rack, loads native song file and restores the RackInstance.
+     * 
+     * @param file The absolute .caustic file location.
+     * @throws IOException
+     */
+    void loadAndRestore(File file) throws IOException;
+
 }
