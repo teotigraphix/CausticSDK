@@ -26,10 +26,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.google.common.io.Files;
 import com.teotigraphix.caustk.core.CausticError;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.osc.OSCUtils;
@@ -130,8 +130,8 @@ public class RackInstance extends NodeBase {
     //----------------------------------
 
     /**
-     * Returns the {@link com.teotigraphix.caustk.node.master.MasterChannel} of the
-     * rack state.
+     * Returns the {@link com.teotigraphix.caustk.node.master.MasterChannel} of
+     * the rack state.
      */
     public MasterChannel getMaster() {
         return master;
@@ -185,16 +185,15 @@ public class RackInstance extends NodeBase {
     //----------------------------------
 
     /**
-     * Returns the selected
-     * {@link com.teotigraphix.caustk.node.machine.Machine}.
+     * Returns the selected {@link com.teotigraphix.caustk.node.machine.Machine}
+     * .
      */
     public int getSelectedIndex() {
         return selectedIndex;
     }
 
     /**
-     * Sets the selected
-     * {@link com.teotigraphix.caustk.node.machine.Machine}.
+     * Sets the selected {@link com.teotigraphix.caustk.node.machine.Machine}.
      * 
      * @param selectedIndex The new selected machine index.
      * @see com.teotigraphix.caustk.node.RackInstance.RackNodeSelectionEvent
@@ -215,8 +214,7 @@ public class RackInstance extends NodeBase {
     }
 
     /**
-     * Sets the selected
-     * {@link com.teotigraphix.caustk.node.machine.Machine}.
+     * Sets the selected {@link com.teotigraphix.caustk.node.machine.Machine}.
      * 
      * @param machineNode The new selected
      *            {@link com.teotigraphix.caustk.node.machine.Machine}
@@ -229,9 +227,8 @@ public class RackInstance extends NodeBase {
     }
 
     /**
-     * Returns the selected
-     * {@link com.teotigraphix.caustk.node.machine.Machine}, if no
-     * selection, returns <code>null</code>.
+     * Returns the selected {@link com.teotigraphix.caustk.node.machine.Machine}
+     * , if no selection, returns <code>null</code>.
      */
     public Machine getSelectedMachine() {
         return getMachine(selectedIndex);
@@ -285,10 +282,9 @@ public class RackInstance extends NodeBase {
      * @param index The machine index.
      * @param type The machine type.
      * @param name The machine name.
-     * @return A {@link com.teotigraphix.caustk.node.machine.Machine} that
-     *         has been created with
-     *         {@link com.teotigraphix.caustk.node.machine.Machine#create()}
-     *         .
+     * @return A {@link com.teotigraphix.caustk.node.machine.Machine} that has
+     *         been created with
+     *         {@link com.teotigraphix.caustk.node.machine.Machine#create()} .
      * @see com.teotigraphix.caustk.node.machine.Machine#isNative()
      * @throws com.teotigraphix.caustk.core.CausticException machine exists in
      *             rack for index
@@ -306,13 +302,12 @@ public class RackInstance extends NodeBase {
     }
 
     /**
-     * Creates and adds a
-     * {@link com.teotigraphix.caustk.node.machine.Machine} from a value
-     * object.
+     * Creates and adds a {@link com.teotigraphix.caustk.node.machine.Machine}
+     * from a value object.
      * <p>
      * Adds to the {@link #getMachines()} collection and calls
-     * {@link com.teotigraphix.caustk.node.machine.Machine#create()} to
-     * create subcomponents(preset, sequencer etc.).
+     * {@link com.teotigraphix.caustk.node.machine.Machine#create()} to create
+     * subcomponents(preset, sequencer etc.).
      * 
      * @param machineNode The
      *            {@link com.teotigraphix.caustk.node.machine.Machine} value
@@ -328,10 +323,9 @@ public class RackInstance extends NodeBase {
      * Destroys and removes a machine from this node graph.
      * 
      * @param index The machine index.
-     * @return A {@link com.teotigraphix.caustk.node.machine.Machine} that
-     *         has been destroyed with
-     *         {@link com.teotigraphix.caustk.node.machine.Machine#destroy()}
-     *         .
+     * @return A {@link com.teotigraphix.caustk.node.machine.Machine} that has
+     *         been destroyed with
+     *         {@link com.teotigraphix.caustk.node.machine.Machine#destroy()} .
      * @see com.teotigraphix.caustk.node.RackInstance.RackNodDestroyEvent
      */
     @SuppressWarnings("unchecked")
@@ -350,8 +344,8 @@ public class RackInstance extends NodeBase {
     }
 
     /**
-     * Adds a {@link com.teotigraphix.caustk.node.machine.Machine} to the
-     * node graph.
+     * Adds a {@link com.teotigraphix.caustk.node.machine.Machine} to the node
+     * graph.
      * <p>
      * This method does not call
      * {@link com.teotigraphix.caustk.node.machine.Machine#create()}.
@@ -363,8 +357,7 @@ public class RackInstance extends NodeBase {
      * @see com.teotigraphix.caustk.node.machine.Machine#isNative()
      */
     Machine addMachine(int index, MachineType type, String name) {
-        Machine machineNode = getFactory().getNodeFactory().createMachine(this, index, type,
-                name);
+        Machine machineNode = getFactory().getNodeFactory().createMachine(this, index, type, name);
         addMachine(machineNode);
         return machineNode;
     }
@@ -375,12 +368,11 @@ public class RackInstance extends NodeBase {
     }
 
     /**
-     * Removes a {@link com.teotigraphix.caustk.node.machine.Machine} from
-     * the node graph.
+     * Removes a {@link com.teotigraphix.caustk.node.machine.Machine} from the
+     * node graph.
      * 
      * @param index The machine index.
-     * @return A removed
-     *         {@link com.teotigraphix.caustk.node.machine.Machine}.
+     * @return A removed {@link com.teotigraphix.caustk.node.machine.Machine}.
      */
     Machine removeMachine(int index) {
         Machine machineNode = machines.remove(index);
@@ -405,8 +397,7 @@ public class RackInstance extends NodeBase {
         File song = saveSong(file.getName().replace(".caustic", ""));
         if (!file.getParentFile().equals(song.getParentFile())
         /*&& file.getName().equals(song.getName())*/) {
-            FileUtils.copyFileToDirectory(song, file.getParentFile());
-            song.delete();
+            Files.move(song, file.getParentFile());
         }
         return file;
     }
@@ -567,8 +558,7 @@ public class RackInstance extends NodeBase {
             return lastMachineNode;
         }
 
-        public RackNodeSelectionEvent(NodeBase target, Machine machineNode,
-                Machine lastMachineNode) {
+        public RackNodeSelectionEvent(NodeBase target, Machine machineNode, Machine lastMachineNode) {
             super(target, RackControl.SelectionChange, machineNode);
             this.lastMachineNode = lastMachineNode;
         }

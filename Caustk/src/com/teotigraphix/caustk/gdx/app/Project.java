@@ -261,7 +261,8 @@ public abstract class Project {
 
         rackBytes = FileUtils.readFileToByteArray(tempFile);
 
-        FileUtils.deleteQuietly(tempFile);
+        //Files.
+        // XXX Project FIX THIS FileUtils.deleteQuietly(tempFile);
     }
 
     public void delete() throws IOException {
