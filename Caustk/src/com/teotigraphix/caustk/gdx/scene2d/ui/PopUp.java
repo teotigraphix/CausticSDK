@@ -19,20 +19,38 @@
 
 package com.teotigraphix.caustk.gdx.scene2d.ui;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class PopUp extends DialogBase {
 
+    private String title;
+
     public PopUp(String title, Skin skin) {
-        super(title, skin);
+        super("", skin);
+        this.title = title;
+        createChildren();
     }
 
     public PopUp(String title, WindowStyle windowStyle) {
-        super(title, windowStyle);
+        super("", windowStyle);
+        this.title = title;
+        createChildren();
     }
 
     public PopUp(String title, Skin skin, String windowStyleName) {
-        super(title, skin, windowStyleName);
+        super("", skin, windowStyleName);
+        this.title = title;
+        createChildren();
+    }
+
+    protected void createChildren() {
+        debug();
+        Label label = new Label(title, new LabelStyle(getStyle().titleFont,
+                getStyle().titleFontColor));
+        getContentTable().add(label).pad(4f).expandX().fillX();
+        getContentTable().row();
     }
 
 }

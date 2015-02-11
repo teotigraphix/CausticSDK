@@ -66,4 +66,5 @@ public abstract class DialogBase extends Dialog {
     public DialogBase(String title, Skin skin, String windowStyleName) {
         super(title, skin, windowStyleName);
     }
+
 }

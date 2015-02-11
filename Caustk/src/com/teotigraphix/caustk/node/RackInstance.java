@@ -397,7 +397,7 @@ public class RackInstance extends NodeBase {
         File song = saveSong(file.getName().replace(".caustic", ""));
         if (!file.getParentFile().equals(song.getParentFile())
         /*&& file.getName().equals(song.getName())*/) {
-            Files.move(song, file.getParentFile());
+            Files.move(song, file);
         }
         return file;
     }
