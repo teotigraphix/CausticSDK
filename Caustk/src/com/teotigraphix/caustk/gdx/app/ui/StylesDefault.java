@@ -396,6 +396,8 @@ public class StylesDefault {
 
     public static final String MixerPaneItem_outline = "defaults/MixerPaneItem_outline";
 
+    public static final String BackButton_image = "defaults/BackButton_image";
+
     public static Color getMachineColor(MachineType type) {
         switch (type) {
             case Bassline:

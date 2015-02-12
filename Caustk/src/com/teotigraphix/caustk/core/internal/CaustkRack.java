@@ -350,22 +350,28 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
         byte[] data = project.getRackBytes();
 
-        File tempDirectory = RuntimeUtils.getApplicationTempDirectory();
-        File racksDirectory = new File(tempDirectory, "racks");
-        File causticFile = new File(racksDirectory, project.getId().toString() + ".caustic");
-        FileUtils.writeByteArrayToFile(causticFile, data);
+        if (data != null) {
+            File tempDirectory = RuntimeUtils.getApplicationTempDirectory();
+            File racksDirectory = new File(tempDirectory, "racks");
+            File causticFile = new File(racksDirectory, project.getId().toString() + ".caustic");
+            FileUtils.writeByteArrayToFile(causticFile, data);
 
-        if (!causticFile.exists())
-            throw new IOException(".caustic file failed to write in .temp");
+            if (!causticFile.exists())
+                throw new IOException(".caustic file failed to write in .temp");
 
-        setProjectInternal(project);
+            setProjectInternal(project);
 
-        project.getRackInstance().loadSong(causticFile);
+            project.getRackInstance().loadSong(causticFile);
 
-        FileUtils.deleteQuietly(causticFile);
+            FileUtils.deleteQuietly(causticFile);
 
-        if (causticFile.exists())
-            throw new IOException(".caustic file failed to delete in .temp");
+            if (causticFile.exists())
+                throw new IOException(".caustic file failed to delete in .temp");
+        } else {
+            setProjectInternal(project);
+            getApplication().getLogger()
+                    .log("CaustkRack", "setProject(), .caustic bytes not found");
+        }
 
         return project;
     }

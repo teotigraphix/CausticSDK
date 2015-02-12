@@ -144,9 +144,13 @@ public class CausticFile {
     // Constructor
     //--------------------------------------------------------------------------
 
-    public CausticFile(File file) throws FileNotFoundException {
+    /**
+     * Must call {@link #read()}.
+     * 
+     * @param file
+     */
+    public CausticFile(File file) {
         this.file = file;
-        readFile(file);
     }
 
     //--------------------------------------------------------------------------

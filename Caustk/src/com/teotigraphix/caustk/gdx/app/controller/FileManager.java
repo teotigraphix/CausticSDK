@@ -80,13 +80,14 @@ public class FileManager extends ApplicationComponent implements IFileManager {
     private File getStartupProjectFile() {
         String path = getGlobalPreferences().getString(LAST_PROJECT_PATH, null);
         if (path == null)
-            return new File("");
+            return null;
         return new File(path);
     }
 
     @Override
     public void setStartupProject(Project project) {
         getGlobalPreferences().putString(LAST_PROJECT_PATH, project.getFile().getAbsolutePath());
+        getGlobalPreferences().flush();
     }
 
     //--------------------------------------------------------------------------
@@ -130,11 +131,13 @@ public class FileManager extends ApplicationComponent implements IFileManager {
 
         File projectFile = getStartupProjectFile();
 
-        if (!projectFile.exists()) {
+        if (projectFile == null) {
+            err(TAG, "Project file not in global prefs ");
+            project = createProject(new File(getNextProjectName()));
+        } else if (!projectFile.exists()) {
             err(TAG, "Could not load project file " + projectFile.getAbsolutePath());
             // create new Untitled Project
             project = createProject(new File(getNextProjectName()));
-
         } else {
             // load existing
             project = projectFactory.readProject(projectFile, true);
