@@ -19,9 +19,11 @@
 
 package com.teotigraphix.caustk.gdx.app.ui;
 
+import com.badlogic.gdx.Preferences;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.IRackSequencerListener;
+import com.teotigraphix.caustk.gdx.app.CaustkApplication;
 import com.teotigraphix.caustk.gdx.app.IApplicationState;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 import com.teotigraphix.caustk.gdx.app.IProjectModel;
@@ -67,6 +69,10 @@ public abstract class CaustkBehavior extends Behavior {
 
     public IApplicationState getApplicationState() {
         return applicationStateInternal;
+    }
+
+    protected final Preferences getGlobalPreferences() {
+        return ((CaustkApplication)getApplication()).getGlobalPreferences();
     }
 
     protected final IContainerMap getContainerMap() {

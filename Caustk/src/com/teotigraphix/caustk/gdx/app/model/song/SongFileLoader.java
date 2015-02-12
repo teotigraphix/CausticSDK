@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.gdx.app.model.song;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -98,6 +99,12 @@ public class SongFileLoader {
             SongFile songFile = SongFile.create(file);
             songFile.load(collection.getRack());
             collection.getFiles().add(songFile);
+            try {
+                songFile.read();
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
