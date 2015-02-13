@@ -236,7 +236,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public RackInstance fill(File file) throws IOException {
-        // XXX Needs to be fixed
+        // XXX Needs to be fixed This relates the to LibraryitemTest failing
         //        File directory = runtime.getFactory().getCacheDirectory("fills");
         //        File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString()
         //                .substring(0, 10)

@@ -32,6 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.google.inject.Inject;
 import com.teotigraphix.caustk.gdx.app.IProjectModel;
 import com.teotigraphix.caustk.gdx.scene2d.ui.Knob.KnobStyle;
@@ -59,6 +60,24 @@ public abstract class UIFactory {
     @Inject
     private IProjectModel projectModel;
 
+    private Skin skin;
+
+    protected Skin getSkin() {
+        return skin;
+    }
+
+    protected void setSkin(Skin skin) {
+        this.skin = skin;
+    }
+
+    protected final Drawable get(String name) {
+        return getSkin().getDrawable(name);
+    }
+
+    protected final void add(String name, Object resource) {
+        getSkin().add(name, resource);
+    }
+
     protected IProjectModel getProjectModel() {
         return projectModel;
     }
@@ -75,6 +94,8 @@ public abstract class UIFactory {
     //--------------------------------------------------------------------------
 
     public void createDefaults(Skin skin) {
+        this.skin = skin;
+
         initializeFonts(skin);
 
         initializeLabelStyle(skin);
@@ -96,6 +117,8 @@ public abstract class UIFactory {
         initializePatternPane(skin);
         initializeMixerPane(skin);
         initializeKnob(skin);
+
+        this.skin = null;
     }
 
     private void initializeSelectBox(Skin skin) {

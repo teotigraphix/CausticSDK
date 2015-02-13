@@ -2,6 +2,7 @@
 package com.teotigraphix.caustk.gdx.app.model.song;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
@@ -14,7 +15,7 @@ import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.model.ViewModelBase;
 
-public class SongFileCollection {
+public class SongFileCollection implements ISongFileCollection {
 
     //--------------------------------------------------------------------------
     // Private :: Variables
@@ -24,9 +25,9 @@ public class SongFileCollection {
 
     private File sourceDirectory;
 
-    private Array<SongFile> files = new Array<SongFile>();
+    private ArrayList<SongFile> files = new ArrayList<SongFile>();
 
-    private Array<SongFile> selectedFiles = new Array<SongFile>();
+    private ArrayList<SongFile> selectedFiles = new ArrayList<SongFile>();
 
     private ViewModelBase model;
 
@@ -42,7 +43,8 @@ public class SongFileCollection {
         this.sourceDirectory = sourceDirectory;
         if (sourceDirectory != null)
             fillSourceFiles();
-        fire(SongFileCollectionEventKind.SourceDirectoryChange);
+        getEventBus().post(
+                new SongFileCollectionEvent(SongFileCollectionEventKind.SourceDirectoryChange));
     }
 
     private void fillSourceFiles() {
@@ -61,11 +63,17 @@ public class SongFileCollection {
     }
 
     public void setSelectedFiles(Array<SongFile> selectedFiles) {
-        this.selectedFiles = selectedFiles;
-        fire(SongFileCollectionEventKind.SelectedFilesChange);
+
     }
 
-    public Array<SongFile> getFiles() {
+    public void setSelectedFiles(ArrayList<SongFile> selectedFiles) {
+        this.selectedFiles = selectedFiles;
+        getEventBus().post(
+                new SongFileCollectionEvent(SongFileCollectionEventKind.SelectedFilesChange));
+    }
+
+    @Override
+    public Collection<SongFile> getFiles() {
         return files;
     }
 
@@ -73,7 +81,7 @@ public class SongFileCollection {
         loader.load(rawFiles);
     }
 
-    public Array<SongFile> getSelectedFiles() {
+    public ArrayList<SongFile> getSelectedFiles() {
         return selectedFiles;
     }
 
@@ -92,52 +100,26 @@ public class SongFileCollection {
         setSourceDirectory(null);
     }
 
-    void fire(SongFileCollectionEventKind kind) {
-        model.getEventBus().post(new SongFileCollectionEvent(kind));
-    }
-
-    public static enum SongFileCollectionEventKind {
-
-        SourceDirectoryChange,
-
-        SelectedFilesChange,
-
-        FilesChange,
-
-        Action_FileLoadStart,
-
-        Action_FileLoadUpdate,
-
-        Action_FileLoadComplete,
-
-        // FilesRefresh,
-    }
-
-    public static class SongFileCollectionEvent {
-
-        private SongFileCollectionEventKind kind;
-
-        private File file;
-
-        public SongFileCollectionEventKind getKind() {
-            return kind;
-        }
-
-        public SongFileCollectionEvent(SongFileCollectionEventKind kind) {
-            this.kind = kind;
-        }
-
-        public SongFileCollectionEvent(SongFileCollectionEventKind kind, File file) {
-            this.kind = kind;
-            this.file = file;
-        }
-
-        public File getFile() {
-            return file;
-        }
-    }
-
-    EventBus getEventBus() {
+    @Override
+    public EventBus getEventBus() {
         return model.getEventBus();
     }
+
+    @Override
+    public Array<SongFile> getSelectedFilesAsArray() {
+        Array<SongFile> result = new Array<SongFile>();
+        for (SongFile songFile : selectedFiles) {
+            result.add(songFile);
+        }
+        return result;
+    }
+
+    public Array<SongFile> getFilesAsArray() {
+        Array<SongFile> result = new Array<SongFile>();
+        for (SongFile songFile : files) {
+            result.add(songFile);
+        }
+        return result;
+    }
+
 }

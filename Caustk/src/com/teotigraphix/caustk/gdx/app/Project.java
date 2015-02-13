@@ -199,6 +199,15 @@ public abstract class Project {
         this.state = state;
     }
 
+    /**
+     * Used in tests.
+     * 
+     * @param rackInstance
+     */
+    protected void setRackInstance(RackInstance rackInstance) {
+        this.rackInstance = rackInstance;
+    }
+
     //--------------------------------------------------------------------------
     // Constructors
     //--------------------------------------------------------------------------

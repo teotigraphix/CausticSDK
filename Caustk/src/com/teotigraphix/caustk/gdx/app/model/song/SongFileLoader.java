@@ -8,12 +8,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
-import com.teotigraphix.caustk.gdx.app.model.song.SongFileCollection.SongFileCollectionEvent;
-import com.teotigraphix.caustk.gdx.app.model.song.SongFileCollection.SongFileCollectionEventKind;
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.teotigraphix.caustk.core.ICaustkRack;
+import com.teotigraphix.caustk.core.internal.CaustkRuntime;
+import com.teotigraphix.caustk.gdx.app.model.song.ISongFileCollection.SongFileCollectionEvent;
+import com.teotigraphix.caustk.gdx.app.model.song.ISongFileCollection.SongFileCollectionEventKind;
 
 public class SongFileLoader {
 
-    private SongFileCollection collection;
+    @Tag(0)
+    private ISongFileCollection collection;
 
     private Queue<SongFileQueueItem> exportQueue = new LinkedList<SongFileQueueItem>();
 
@@ -23,7 +27,7 @@ public class SongFileLoader {
         return currentExport;
     }
 
-    public SongFileLoader(SongFileCollection collection) {
+    public SongFileLoader(ISongFileCollection collection) {
         this.collection = collection;
     }
 
@@ -39,7 +43,8 @@ public class SongFileLoader {
             exportQueue.add(new SongFileQueueItem(file));
         }
 
-        collection.fire(SongFileCollectionEventKind.Action_FileLoadStart);
+        collection.getEventBus().post(
+                new SongFileCollectionEvent(SongFileCollectionEventKind.Action_FileLoadStart));
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -59,8 +64,11 @@ public class SongFileLoader {
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
-                    collection.fire(SongFileCollectionEventKind.FilesChange);
-                    collection.fire(SongFileCollectionEventKind.Action_FileLoadComplete);
+                    collection.getEventBus().post(
+                            new SongFileCollectionEvent(SongFileCollectionEventKind.FilesChange));
+                    collection.getEventBus().post(
+                            new SongFileCollectionEvent(
+                                    SongFileCollectionEventKind.Action_FileLoadComplete));
                 }
             });
         } else {
@@ -97,7 +105,7 @@ public class SongFileLoader {
 
         void load() {
             SongFile songFile = SongFile.create(file);
-            songFile.load(collection.getRack());
+            songFile.load(getRack());
             collection.getFiles().add(songFile);
             try {
                 songFile.read();
@@ -106,6 +114,10 @@ public class SongFileLoader {
                 e.printStackTrace();
             }
         }
+    }
+
+    ICaustkRack getRack() {
+        return CaustkRuntime.getInstance().getRack();
     }
 
 }
