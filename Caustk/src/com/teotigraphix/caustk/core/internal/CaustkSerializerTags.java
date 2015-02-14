@@ -38,6 +38,8 @@ import com.teotigraphix.caustk.core.osc.SubSynthMessage.Osc2Waveform;
 import com.teotigraphix.caustk.core.osc.VocoderMessage.CarrierOscWaveform;
 import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.gdx.app.ProjectProperties;
+import com.teotigraphix.caustk.gdx.app.model.machine.SongFileMachine;
+import com.teotigraphix.caustk.gdx.app.model.song.SongFile;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -146,10 +148,10 @@ import com.teotigraphix.caustk.node.machine.sequencer.PatternNode;
 import com.teotigraphix.caustk.node.machine.sequencer.SequencerChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackChannel;
 import com.teotigraphix.caustk.node.machine.sequencer.TrackEntryNode;
+import com.teotigraphix.caustk.node.master.MasterChannel;
 import com.teotigraphix.caustk.node.master.MasterDelayNode;
 import com.teotigraphix.caustk.node.master.MasterEqualizerNode;
 import com.teotigraphix.caustk.node.master.MasterLimiterNode;
-import com.teotigraphix.caustk.node.master.MasterChannel;
 import com.teotigraphix.caustk.node.master.MasterReverbNode;
 import com.teotigraphix.caustk.node.master.MasterVolumeNode;
 import com.teotigraphix.caustk.node.sequencer.MasterSequencerChannel;
@@ -428,6 +430,10 @@ public final class CaustkSerializerTags {
 
         kryo.register(ProjectProperties.class, 960);
         //kryo.register(Project.class, 1001);
+
+        kryo.register(SongFile.class, 980);
+        kryo.register(SongFileMachine.class, 981);
+
     }
 
     public static class UUIDSerializer extends Serializer<UUID> {

@@ -29,7 +29,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Collection;
 
+import com.badlogic.gdx.Gdx;
 import com.teotigraphix.caustk.node.machine.MachineType;
 
 /**
@@ -239,7 +241,8 @@ public class RuntimeUtils {
      * not be included, this is added automatically such as
      * <code>subsynth</code> or <code>modular</code>.
      * 
-     * @param machineType The {@link com.teotigraphix.caustk.node.machine.MachineType}.
+     * @param machineType The
+     *            {@link com.teotigraphix.caustk.node.machine.MachineType}.
      * @param nameOrRelativePath The preset name or preset name with relative
      *            path without extension. e.g <code>MyPreset</code>,
      *            <code>sub/dir/MyPreset</code>.
@@ -286,5 +289,52 @@ public class RuntimeUtils {
      */
     public static File getSongFile(String songName) {
         return new File(getSongsDirectory(), songName + CAUSTIC_EXTENSION);
+    }
+
+    /**
+     * Posts a {@link Runnable} on the Gdx UI thread if not null, otherwise just
+     * runs (testing).
+     * 
+     * @param runnable
+     */
+    public static void postRunnable(Runnable runnable) {
+        if (Gdx.app != null)
+            Gdx.app.postRunnable(runnable);
+        else
+            runnable.run();
+    }
+
+    /**
+     * Checks whether the fileOrDirectory is contained within the directories
+     * collection's sourceDirectory tree.
+     * 
+     * @param directories The source directory collection.
+     * @param fileOrDirectory The possible child of the parent directory.
+     */
+    public static boolean directoriesContain(Collection<File> directories, File fileOrDirectory) {
+        if (directories.contains(fileOrDirectory))
+            return true;
+        for (File file : directories) {
+            if (RuntimeUtils.isInSubDirectory(file, fileOrDirectory))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the fileOrDirectory is contained within the
+     * sourceDirectory tree.
+     * 
+     * @param sourceDirectory The parent directory.
+     * @param fileOrDirectory The possible child of the parent directory.
+     */
+    public static boolean isInSubDirectory(File sourceDirectory, File fileOrDirectory) {
+        if (fileOrDirectory == null)
+            return false;
+
+        if (fileOrDirectory.equals(sourceDirectory))
+            return true;
+
+        return isInSubDirectory(sourceDirectory, fileOrDirectory.getParentFile());
     }
 }

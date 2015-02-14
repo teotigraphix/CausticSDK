@@ -10,6 +10,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import android.annotation.SuppressLint;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.CausticFile;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
@@ -36,28 +37,38 @@ public class SongFile extends CausticFile {
      * 
      * 
      */
-
+    @Tag(25)
     private boolean selected;
 
+    @Tag(26)
     private boolean playing;
 
+    @Tag(27)
     long size;
 
+    @Tag(28)
     int bpm;
 
+    @Tag(29)
     int numMeasures;
 
+    @Tag(30)
     private int minutes;
 
+    @Tag(31)
     private int seconds;
 
+    @Tag(32)
     private boolean sequenced;
 
-    private Map<Integer, SongFileMachine> machines;
-
+    @Tag(33)
     private int measureCount;
 
+    @Tag(34)
     private float fbpm;
+
+    @Tag(40)
+    private Map<Integer, SongFileMachine> machines;
 
     public String getDisplayName() {
         return getBaseName() + " - " + getMinutes() + ":" + getSeconds() + " - " + getBpm()
@@ -118,6 +129,9 @@ public class SongFile extends CausticFile {
 
     public int getMeasureCount() {
         return measureCount;
+    }
+
+    SongFile() {
     }
 
     SongFile(File file) {

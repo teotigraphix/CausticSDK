@@ -27,6 +27,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+
 /**
  * Wraps a .caustic {@link java.io.File} and can read or write metadata to the
  * .caustic file.
@@ -37,18 +39,25 @@ public class CausticFile {
 
     private static final String DESC_TAG = "DESC";
 
+    @Tag(0)
     private File file;
 
+    @Tag(1)
     private String artist;
 
+    @Tag(2)
     private String title;
 
+    @Tag(3)
     private String description;
 
+    @Tag(4)
     private String linkText;
 
+    @Tag(5)
     private String linkUrl;
 
+    @Tag(6)
     private boolean hasDescription = false;
 
     //--------------------------------------------------------------------------
@@ -143,6 +152,9 @@ public class CausticFile {
     //--------------------------------------------------------------------------
     // Constructor
     //--------------------------------------------------------------------------
+
+    protected CausticFile() {
+    }
 
     /**
      * Must call {@link #read()}.

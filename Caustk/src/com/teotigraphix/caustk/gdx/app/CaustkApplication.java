@@ -348,17 +348,14 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public void dispose() {
         getLogger().log(TAG, "dispose()");
 
-        try {
-            save();
-        } catch (CausticException e) {
-            getLogger().err(TAG, "Application.dispose() failed", e);
-        }
+        save();
+
         getSceneManager().dispose();
         runtime.getRack().onDestroy();
     }
 
     // From AppModel
-    public void save() throws CausticException {
+    public void save() {
         // Always save preferences
         getPreferenceManager().save();
         if (isDirty()) {

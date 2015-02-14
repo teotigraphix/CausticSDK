@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.model.song.ISongFileCollection.SongFileCollectionEvent;
 import com.teotigraphix.caustk.gdx.app.model.song.ISongFileCollection.SongFileCollectionEventKind;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 public class SongFileLoader {
 
@@ -61,11 +61,11 @@ public class SongFileLoader {
             currentExport = null;
             exportQueue.clear();
             System.out.println("FilesChange");
-            Gdx.app.postRunnable(new Runnable() {
+            RuntimeUtils.postRunnable(new Runnable() {
                 @Override
                 public void run() {
                     collection.getEventBus().post(
-                            new SongFileCollectionEvent(SongFileCollectionEventKind.FilesChange));
+                            new SongFileCollectionEvent(SongFileCollectionEventKind.UI_FilesChange));
                     collection.getEventBus().post(
                             new SongFileCollectionEvent(
                                     SongFileCollectionEventKind.Action_FileLoadComplete));
@@ -87,7 +87,7 @@ public class SongFileLoader {
     private void setCurrentExport(SongFileQueueItem currentExport) {
         this.currentExport = currentExport;
         final File file = currentExport.file;
-        Gdx.app.postRunnable(new Runnable() {
+        RuntimeUtils.postRunnable(new Runnable() {
             @Override
             public void run() {
                 fire(SongFileCollectionEventKind.Action_FileLoadUpdate, file);

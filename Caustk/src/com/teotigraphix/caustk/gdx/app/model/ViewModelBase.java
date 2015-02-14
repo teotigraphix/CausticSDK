@@ -2,7 +2,7 @@
 package com.teotigraphix.caustk.gdx.app.model;
 
 import com.teotigraphix.caustk.gdx.app.ApplicationComponent;
-import com.teotigraphix.caustk.gdx.app.model.song.SongFileCollection;
+import com.teotigraphix.caustk.gdx.app.model.song.ISongFileCollection;
 
 public abstract class ViewModelBase extends ApplicationComponent {
 
@@ -11,6 +11,6 @@ public abstract class ViewModelBase extends ApplicationComponent {
 
     public abstract void reset();
 
-    public abstract SongFileCollection getCollection();
+    public abstract ISongFileCollection getCollection();
 
 }

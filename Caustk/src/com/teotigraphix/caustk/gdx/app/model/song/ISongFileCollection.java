@@ -4,14 +4,21 @@ package com.teotigraphix.caustk.gdx.app.model.song;
 import java.io.File;
 import java.util.Collection;
 
-import com.badlogic.gdx.utils.Array;
 import com.google.common.eventbus.EventBus;
 
 public interface ISongFileCollection {
 
+    Collection<File> getDirectories();
+
     Collection<SongFile> getFiles();
 
-    Array<SongFile> getSelectedFilesAsArray();
+    EventBus getEventBus();
+
+    void addSourceDirectory(File sourceDirectory);
+
+    Collection<SongFile> removedSourceDirectory(File sourceDirectory);
+
+    void reset();
 
     public static enum SongFileCollectionEventKind {
 
@@ -19,7 +26,7 @@ public interface ISongFileCollection {
 
         SelectedFilesChange,
 
-        FilesChange,
+        UI_FilesChange,
 
         Action_FileLoadStart,
 
@@ -27,7 +34,9 @@ public interface ISongFileCollection {
 
         Action_FileLoadComplete,
 
-        // FilesRefresh,
+        SourceDirectoryAdd,
+
+        SourceDirectoryRemove,
     }
 
     public static class SongFileCollectionEvent {
@@ -35,6 +44,16 @@ public interface ISongFileCollection {
         private SongFileCollectionEventKind kind;
 
         private File file;
+
+        private Collection<SongFile> songFiles;
+
+        public File getFile() {
+            return file;
+        }
+
+        public Collection<SongFile> getSongFiles() {
+            return songFiles;
+        }
 
         public SongFileCollectionEventKind getKind() {
             return kind;
@@ -49,10 +68,11 @@ public interface ISongFileCollection {
             this.file = file;
         }
 
-        public File getFile() {
-            return file;
+        public SongFileCollectionEvent(SongFileCollectionEventKind kind,
+                Collection<SongFile> songFiles) {
+            this.kind = kind;
+            this.songFiles = songFiles;
         }
     }
 
-    EventBus getEventBus();
 }

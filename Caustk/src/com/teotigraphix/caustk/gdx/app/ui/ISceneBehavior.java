@@ -40,6 +40,10 @@ public interface ISceneBehavior extends ISceneComponent {
     /**
      * Start is called on the frame when a behavior is enabled just before any
      * of the Update methods is called the first time.
+     * <p>
+     * Called right after the Scene's createUI() has been called. All default
+     * components have been created and the app model is restored, so components
+     * can be populated with restored data.
      */
     void onStart();
 

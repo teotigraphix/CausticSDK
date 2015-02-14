@@ -105,7 +105,6 @@ public class SongFileCollection implements ISongFileCollection {
         return model.getEventBus();
     }
 
-    @Override
     public Array<SongFile> getSelectedFilesAsArray() {
         Array<SongFile> result = new Array<SongFile>();
         for (SongFile songFile : selectedFiles) {
@@ -120,6 +119,24 @@ public class SongFileCollection implements ISongFileCollection {
             result.add(songFile);
         }
         return result;
+    }
+
+    @Override
+    public Collection<File> getDirectories() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void addSourceDirectory(File sourceDirectory) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public Collection<SongFile> removedSourceDirectory(File sourceDirectory) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
