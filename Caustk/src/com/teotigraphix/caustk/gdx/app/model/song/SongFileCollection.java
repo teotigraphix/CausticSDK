@@ -7,13 +7,12 @@ import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 
-import com.badlogic.gdx.utils.Array;
 import com.google.common.eventbus.EventBus;
-import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
-import com.teotigraphix.caustk.gdx.app.model.ViewModelBase;
+import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 
 public class SongFileCollection implements ISongFileCollection {
 
@@ -23,31 +22,101 @@ public class SongFileCollection implements ISongFileCollection {
 
     private SongFileLoader loader;
 
-    private File sourceDirectory;
+    private Collection<SongFile> files = new ArrayList<SongFile>();
 
-    private ArrayList<SongFile> files = new ArrayList<SongFile>();
+    private Collection<SongFileRoot> roots = new ArrayList<SongFileRoot>();
 
-    private ArrayList<SongFile> selectedFiles = new ArrayList<SongFile>();
+    //--------------------------------------------------------------------------
+    // Public API :: Properties
+    //--------------------------------------------------------------------------
 
-    private ViewModelBase model;
+    //----------------------------------
+    // files
+    //----------------------------------
 
-    public File getSourceDirectory() {
-        return sourceDirectory;
+    @Override
+    public Collection<SongFile> getFiles() {
+        return files;
     }
 
-    /**
-     * @param sourceDirectory
-     * @see SongFileCollectionEventKind#SourceDirectoryChange
-     */
-    public void setSourceDirectory(File sourceDirectory) {
-        this.sourceDirectory = sourceDirectory;
-        if (sourceDirectory != null)
-            fillSourceFiles();
-        getEventBus().post(
-                new SongFileCollectionEvent(SongFileCollectionEventKind.SourceDirectoryChange));
+    public void setFiles(Collection<SongFile> files) {
+        this.files = files;
     }
 
-    private void fillSourceFiles() {
+    //----------------------------------
+    // directories
+    //----------------------------------
+
+    @Override
+    public Collection<SongFileRoot> getRoots() {
+        return roots;
+    }
+
+    public void setRoots(Collection<SongFileRoot> directories) {
+        this.roots = directories;
+    }
+
+    //--------------------------------------------------------------------------
+    // Private :: Properties
+    //--------------------------------------------------------------------------
+
+    SongFileLoader getLoader() {
+        return loader;
+    }
+
+    //--------------------------------------------------------------------------
+    // Constructor
+    //--------------------------------------------------------------------------
+
+    public SongFileCollection() {
+        loader = new SongFileLoader(this);
+    }
+
+    //--------------------------------------------------------------------------
+    // Public API :: Methods
+    //--------------------------------------------------------------------------
+
+    @Override
+    public void addSourceDirectory(File sourceDirectory) {
+        Collection<File> collection = internalAddSourceDirectory(sourceDirectory, false, true);
+        if (collection != null) {
+            getEventBus().post(
+                    new SongFileCollectionEvent(SongFileCollectionEventKind.SourceDirectoryAdd,
+                            sourceDirectory));
+        }
+    }
+
+    @Override
+    public Collection<SongFile> removedSourceDirectory(File sourceDirectory) {
+        Collection<SongFile> collection = internalRemoveSourceDirectory(sourceDirectory);
+        if (collection != null) {
+            getEventBus().post(
+                    new SongFileCollectionEvent(SongFileCollectionEventKind.SourceDirectoryRemove,
+                            collection));
+        }
+        return collection;
+    }
+
+    //--------------------------------------------------------------------------
+    // Internal :: Methods
+    //--------------------------------------------------------------------------
+
+    Collection<File> internalAddSourceDirectory(File sourceDirectory, boolean recursive,
+            boolean loadFiles) {
+        if (directoriesContain(roots, sourceDirectory))
+            return null;
+
+        roots.add(new SongFileRoot(sourceDirectory));
+
+        IOFileFilter dirFilter = null;
+        if (recursive)
+            dirFilter = DirectoryFileFilter.DIRECTORY;
+
+        // Shows both files, dirs
+        // FileUtils.listFilesAndDirs(new File(dir), TrueFileFilter.INSTANCE, DirectoryFileFilter.DIRECTORY);
+
+        // Only shows directories and not files
+        // FileUtils.listFilesAndDirs(new File(dir), new NotFileFilter(TrueFileFilter.INSTANCE), DirectoryFileFilter.DIRECTORY)
         Collection<File> collection = FileUtils.listFiles(sourceDirectory, new IOFileFilter() {
             @Override
             public boolean accept(File file, String name) {
@@ -58,85 +127,58 @@ public class SongFileCollection implements ISongFileCollection {
             public boolean accept(File file) {
                 return FilenameUtils.getExtension(file.getName()).endsWith("caustic");
             }
-        }, null);
-        setRawFiles(collection);
+        }, dirFilter);
+
+        if (collection.size() == 0)
+            return null;
+
+        if (loadFiles)
+            loader.load(collection);
+
+        return collection;
     }
 
-    public void setSelectedFiles(Array<SongFile> selectedFiles) {
+    Collection<SongFile> internalRemoveSourceDirectory(File sourceDirectory) {
+        if (!directoriesContain(roots, sourceDirectory))
+            return null;
 
+        ArrayList<SongFile> remove = new ArrayList<SongFile>();
+        for (SongFile file : files) {
+            if (RuntimeUtils.isInSubDirectory(sourceDirectory, file.getFile())) {
+                remove.add(file);
+            }
+        }
+        files.removeAll(remove);
+        roots.remove(getRoot(sourceDirectory));
+        return remove;
     }
 
-    public void setSelectedFiles(ArrayList<SongFile> selectedFiles) {
-        this.selectedFiles = selectedFiles;
-        getEventBus().post(
-                new SongFileCollectionEvent(SongFileCollectionEventKind.SelectedFilesChange));
+    private SongFileRoot getRoot(File directory) {
+        for (SongFileRoot root : roots) {
+            if (root.getFile().equals(directory))
+                return root;
+        }
+        return null;
     }
 
     @Override
-    public Collection<SongFile> getFiles() {
-        return files;
-    }
-
-    void setRawFiles(Collection<File> rawFiles) {
-        loader.load(rawFiles);
-    }
-
-    public ArrayList<SongFile> getSelectedFiles() {
-        return selectedFiles;
-    }
-
-    public SongFileCollection(ViewModelBase model) {
-        this.model = model;
-        loader = new SongFileLoader(this);
-    }
-
-    ICaustkRack getRack() {
-        return CaustkRuntime.getInstance().getRack();
-    }
-
     public void reset() {
-        selectedFiles.clear();
         files.clear();
-        setSourceDirectory(null);
     }
 
     @Override
     public EventBus getEventBus() {
-        return model.getEventBus();
+        return CaustkRuntime.getInstance().getApplication().getEventBus();
     }
 
-    public Array<SongFile> getSelectedFilesAsArray() {
-        Array<SongFile> result = new Array<SongFile>();
-        for (SongFile songFile : selectedFiles) {
-            result.add(songFile);
+    private static boolean directoriesContain(Collection<SongFileRoot> directories,
+            File fileOrDirectory) {
+        if (directories.contains(fileOrDirectory))
+            return true;
+        for (SongFileRoot file : directories) {
+            if (RuntimeUtils.isInSubDirectory(file.getFile(), fileOrDirectory))
+                return true;
         }
-        return result;
+        return false;
     }
-
-    public Array<SongFile> getFilesAsArray() {
-        Array<SongFile> result = new Array<SongFile>();
-        for (SongFile songFile : files) {
-            result.add(songFile);
-        }
-        return result;
-    }
-
-    @Override
-    public Collection<File> getDirectories() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void addSourceDirectory(File sourceDirectory) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public Collection<SongFile> removedSourceDirectory(File sourceDirectory) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

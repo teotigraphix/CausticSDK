@@ -64,18 +64,25 @@ public abstract class ProjectState {
     //--------------------------------------------------------------------------
 
     /**
+     * Called before {@link #create()} and {@link #load()}.
+     * 
      * @see com.teotigraphix.caustk.gdx.app.Project#onInitialize()
      */
     public void initialize() {
     }
 
     /**
+     * Called when a Project is created for the first time or has no rack
+     * bytes(project specific).
+     * 
      * @see com.teotigraphix.caustk.gdx.app.Project#onCreate()
      */
     public void create() {
     }
 
     /**
+     * Called when deserializing a project from disk.
+     * 
      * @see com.teotigraphix.caustk.gdx.app.Project#onLoad()
      */
     public void load() {

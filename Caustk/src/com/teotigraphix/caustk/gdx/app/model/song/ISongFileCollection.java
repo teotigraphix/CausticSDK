@@ -8,7 +8,7 @@ import com.google.common.eventbus.EventBus;
 
 public interface ISongFileCollection {
 
-    Collection<File> getDirectories();
+    Collection<SongFileRoot> getRoots();
 
     Collection<SongFile> getFiles();
 
