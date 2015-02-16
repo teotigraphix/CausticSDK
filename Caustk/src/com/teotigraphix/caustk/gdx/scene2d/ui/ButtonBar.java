@@ -75,6 +75,20 @@ public class ButtonBar extends UITable {
             this.icon = icon;
             this.helpText = helpText;
         }
+
+        public ButtonBarItem(String id, String label) {
+            this.id = id;
+            this.label = label;
+            this.icon = "";
+            this.helpText = "";
+        }
+
+        public ButtonBarItem(String label) {
+            this.id = label;
+            this.label = label;
+            this.icon = "";
+            this.helpText = "";
+        }
     }
 
     public boolean isDisabled() {
@@ -175,7 +189,7 @@ public class ButtonBar extends UITable {
         super.layout();
 
         if (selectedIndex != -1) {
-            ToggleButton button = (ToggleButton)group.getButtons().get(selectedIndex);
+            ToggleButton button = group.getButtons().get(selectedIndex);
             button.setChecked(true, false);
         } else {
             // for (Button button : group.getButtons()) {
@@ -313,7 +327,7 @@ public class ButtonBar extends UITable {
      * @param selected
      */
     public void select(int index, boolean selected) {
-        ToggleButton button = (ToggleButton)group.getButtons().get(index);
+        ToggleButton button = group.getButtons().get(index);
         button.setChecked(selected);
     }
 
@@ -324,7 +338,7 @@ public class ButtonBar extends UITable {
      * @param selected
      */
     public void redrawSelection(int index, boolean selected) {
-        ToggleButton button = (ToggleButton)group.getButtons().get(index);
+        ToggleButton button = group.getButtons().get(index);
         button.setChecked(selected, false);
     }
 

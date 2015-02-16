@@ -16,7 +16,7 @@ public interface ISongFileCollection {
 
     void addSourceDirectory(File sourceDirectory);
 
-    Collection<SongFile> removedSourceDirectory(File sourceDirectory);
+    Collection<SongFile> removeSourceDirectory(File sourceDirectory);
 
     void reset();
 

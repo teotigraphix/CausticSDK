@@ -87,7 +87,7 @@ public class SongFileCollection implements ISongFileCollection {
     }
 
     @Override
-    public Collection<SongFile> removedSourceDirectory(File sourceDirectory) {
+    public Collection<SongFile> removeSourceDirectory(File sourceDirectory) {
         Collection<SongFile> collection = internalRemoveSourceDirectory(sourceDirectory);
         if (collection != null) {
             getEventBus().post(

@@ -129,7 +129,7 @@ public class SongFileCollection_ implements ISongFileCollection {
     }
 
     @Override
-    public Collection<SongFile> removedSourceDirectory(File sourceDirectory) {
+    public Collection<SongFile> removeSourceDirectory(File sourceDirectory) {
         // TODO Auto-generated method stub
         return null;
     }

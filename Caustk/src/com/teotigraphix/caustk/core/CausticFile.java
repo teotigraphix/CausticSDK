@@ -77,6 +77,8 @@ public class CausticFile {
     //----------------------------------
 
     public String getArtist() {
+        if (artist == null || artist.equals(""))
+            return "Untitled";
         return artist;
     }
 
