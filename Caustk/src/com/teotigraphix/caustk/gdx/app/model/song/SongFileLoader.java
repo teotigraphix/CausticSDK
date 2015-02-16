@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.google.common.eventbus.EventBus;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.internal.CaustkRuntime;
 import com.teotigraphix.caustk.gdx.app.model.song.ISongFileCollection.SongFileCollectionEvent;
@@ -17,34 +18,36 @@ import com.teotigraphix.caustk.utils.core.RuntimeUtils;
 public class SongFileLoader {
 
     @Tag(0)
-    private ISongFileCollection collection;
+    private ISongFileCollection _collection;
 
     private Queue<SongFileQueueItem> exportQueue = new LinkedList<SongFileQueueItem>();
 
     private SongFileQueueItem currentExport;
 
+    private EventBus eventBus;
+
     public synchronized SongFileQueueItem getCurrentExport() {
         return currentExport;
     }
 
-    public SongFileLoader(ISongFileCollection collection) {
-        this.collection = collection;
+    public SongFileLoader() {
+        this.eventBus = CaustkRuntime.getInstance().getApplication().getEventBus();
     }
 
-    void load(Collection<File> rawFiles) {
-        load(rawFiles, false);
+    void load(SongFileRoot base, Collection<File> rawFiles) {
+        load(base, rawFiles, false);
     }
 
-    void load(Collection<File> rawFiles, boolean clear) {
+    void load(SongFileRoot root, Collection<File> rawFiles, boolean clear) {
+
         if (clear)
-            collection.getFiles().clear();
+            root.getFiles().clear();
 
         for (File file : rawFiles) {
-            exportQueue.add(new SongFileQueueItem(file));
+            exportQueue.add(new SongFileQueueItem(root, file));
         }
 
-        collection.getEventBus().post(
-                new SongFileCollectionEvent(SongFileCollectionEventKind.Action_FileLoadStart));
+        eventBus.post(new SongFileCollectionEvent(SongFileCollectionEventKind.Action_FileLoadStart));
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -64,11 +67,10 @@ public class SongFileLoader {
             RuntimeUtils.postRunnable(new Runnable() {
                 @Override
                 public void run() {
-                    collection.getEventBus().post(
-                            new SongFileCollectionEvent(SongFileCollectionEventKind.UI_FilesChange));
-                    collection.getEventBus().post(
-                            new SongFileCollectionEvent(
-                                    SongFileCollectionEventKind.Action_FileLoadComplete));
+                    eventBus.post(new SongFileCollectionEvent(
+                            SongFileCollectionEventKind.UI_FilesChange));
+                    eventBus.post(new SongFileCollectionEvent(
+                            SongFileCollectionEventKind.Action_FileLoadComplete));
                 }
             });
         } else {
@@ -81,7 +83,7 @@ public class SongFileLoader {
     }
 
     private void fire(SongFileCollectionEventKind kind, File file) {
-        collection.getEventBus().post(new SongFileCollectionEvent(kind, file));
+        eventBus.post(new SongFileCollectionEvent(kind, file));
     }
 
     private void setCurrentExport(SongFileQueueItem currentExport) {
@@ -99,14 +101,17 @@ public class SongFileLoader {
 
         private File file;
 
-        SongFileQueueItem(File file) {
+        private SongFileRoot root;
+
+        SongFileQueueItem(SongFileRoot root, File file) {
+            this.root = root;
             this.file = file;
         }
 
         void load() {
             SongFile songFile = SongFile.create(file);
             songFile.load(getRack());
-            collection.getFiles().add(songFile);
+            root.getFiles().add(songFile);
             try {
                 songFile.read();
             } catch (FileNotFoundException e) {

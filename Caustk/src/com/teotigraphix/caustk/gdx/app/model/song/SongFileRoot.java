@@ -20,6 +20,10 @@ public class SongFileRoot {
         return file;
     }
 
+    public Collection<SongFile> getFiles() {
+        return files;
+    }
+
     public String getName() {
         return Files.getNameWithoutExtension(file.getAbsolutePath());
     }

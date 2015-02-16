@@ -28,7 +28,7 @@ public class SongFileCollection implements ISongFileCollection {
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
-    //--------------------------------------------------------------------------
+    //-------------------------------------------------------------------------- 
 
     //----------------------------------
     // files
@@ -69,7 +69,7 @@ public class SongFileCollection implements ISongFileCollection {
     //--------------------------------------------------------------------------
 
     public SongFileCollection() {
-        loader = new SongFileLoader(this);
+        loader = new SongFileLoader();
     }
 
     //--------------------------------------------------------------------------
@@ -106,7 +106,8 @@ public class SongFileCollection implements ISongFileCollection {
         if (directoriesContain(roots, sourceDirectory))
             return null;
 
-        roots.add(new SongFileRoot(sourceDirectory));
+        SongFileRoot root = new SongFileRoot(sourceDirectory);
+        roots.add(root);
 
         IOFileFilter dirFilter = null;
         if (recursive)
@@ -133,7 +134,7 @@ public class SongFileCollection implements ISongFileCollection {
             return null;
 
         if (loadFiles)
-            loader.load(collection);
+            loader.load(root, collection);
 
         return collection;
     }

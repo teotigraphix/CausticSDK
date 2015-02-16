@@ -78,7 +78,7 @@ public class SongFileCollection_ implements ISongFileCollection {
     }
 
     void setRawFiles(Collection<File> rawFiles) {
-        loader.load(rawFiles);
+        loader.load(null, rawFiles);
     }
 
     public ArrayList<SongFile> getSelectedFiles() {
@@ -87,7 +87,7 @@ public class SongFileCollection_ implements ISongFileCollection {
 
     public SongFileCollection_(ViewModelBase model) {
         this.model = model;
-        loader = new SongFileLoader(this);
+        loader = new SongFileLoader();
     }
 
     ICaustkRack getRack() {

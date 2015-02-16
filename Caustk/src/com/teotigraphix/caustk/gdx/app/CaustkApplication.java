@@ -28,6 +28,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Preferences;
 import com.esotericsoftware.kryo.KryoException;
 import com.google.inject.AbstractModule;
@@ -122,6 +123,8 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
     protected boolean flushApplicationDirectory;
 
+    protected boolean catchBackKey = false;
+
     public Injector getInjector() {
         return injector;
     }
@@ -210,6 +213,8 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
 
         applicationConfigurator.configure(runtime.getRack().getSerializer().getKryo());
 
+        Gdx.input.setCatchBackKey(catchBackKey);
+
         onRegisterScenes();
         onRegisterModels();
 
@@ -293,6 +298,10 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
     public void render() {
         if (Application.TEST)
             return;
+
+        if (Gdx.input.isButtonPressed(Keys.BACK)) {
+            onBackPressed();
+        }
 
         getSceneManager().preRender();
         if (runtime.getRack().isLoaded()) {
@@ -411,6 +420,12 @@ public abstract class CaustkApplication extends Application implements ICaustkAp
      */
     @Override
     public void onSceneChange(ICaustkScene scene) {
+    }
+
+    /**
+     * Called when the back button is pressed.
+     */
+    protected void onBackPressed() {
     }
 
     private void createGuice() {
