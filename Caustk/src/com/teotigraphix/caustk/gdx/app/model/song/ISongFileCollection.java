@@ -14,7 +14,7 @@ public interface ISongFileCollection {
 
     EventBus getEventBus();
 
-    void addSourceDirectory(File sourceDirectory);
+    void addSourceDirectory(File sourceDirectory, boolean recursive);
 
     Collection<SongFile> removeSourceDirectory(File sourceDirectory);
 
@@ -74,5 +74,4 @@ public interface ISongFileCollection {
             this.songFiles = songFiles;
         }
     }
-
 }

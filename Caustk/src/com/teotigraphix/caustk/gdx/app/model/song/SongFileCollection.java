@@ -77,8 +77,8 @@ public class SongFileCollection implements ISongFileCollection {
     //--------------------------------------------------------------------------
 
     @Override
-    public void addSourceDirectory(File sourceDirectory) {
-        Collection<File> collection = internalAddSourceDirectory(sourceDirectory, false, true);
+    public void addSourceDirectory(File sourceDirectory, boolean recursive) {
+        Collection<File> collection = internalAddSourceDirectory(sourceDirectory, recursive, true);
         if (collection != null) {
             getEventBus().post(
                     new SongFileCollectionEvent(SongFileCollectionEventKind.SourceDirectoryAdd,

@@ -62,8 +62,8 @@ public class ListDialog extends AlertDialog {
         super(title, skin);
     }
 
-    public ListDialog(String title, WindowStyle windowStyle) {
-        super(title, windowStyle);
+    public ListDialog(String title, Skin skin, WindowStyle windowStyle) {
+        super(title, skin, windowStyle);
     }
 
     @Override

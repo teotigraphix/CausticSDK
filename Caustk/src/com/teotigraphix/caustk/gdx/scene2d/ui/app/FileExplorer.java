@@ -19,9 +19,14 @@
 
 package com.teotigraphix.caustk.gdx.scene2d.ui.app;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.teotigraphix.caustk.gdx.scene2d.ui.AlertDialog;
 import com.teotigraphix.caustk.gdx.scene2d.ui.ScrollList;
@@ -52,11 +57,18 @@ public class FileExplorer extends AlertDialog {
         setTitleAlignment(Align.center);
     }
 
+    public FileExplorer(String title, Skin skin, FileExplorerStyle style) {
+        super(title, skin, style);
+        setTitleAlignment(Align.center);
+    }
+
     @Override
     protected void createChildren() {
         super.createChildren();
 
-        statusLabel = new Label("", getSkin(), "FileExplorer.StatusLabel");
+        FileExplorerStyle style = (FileExplorerStyle)getStyle();
+
+        statusLabel = new Label("", style.statusStyle);
         getContentTable().add(statusLabel).expandX().fillX().padLeft(10f).padTop(5f);
 
         getContentTable().row();
@@ -68,6 +80,18 @@ public class FileExplorer extends AlertDialog {
         getContentTable().add(scrollList).expand().fill().pad(4f);
 
         getButtonTable().padBottom(8f);
+
+    }
+
+    public static class FileExplorerStyle extends AlertDialogStyle {
+
+        public LabelStyle statusStyle;
+
+        public ListStyle listStyle;
+
+        public FileExplorerStyle(BitmapFont titleFont, Color titleFontColor, Drawable background) {
+            super(titleFont, titleFontColor, background);
+        }
 
     }
 }

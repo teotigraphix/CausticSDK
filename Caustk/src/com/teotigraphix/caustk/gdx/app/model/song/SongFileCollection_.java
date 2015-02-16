@@ -123,7 +123,7 @@ public class SongFileCollection_ implements ISongFileCollection {
     }
 
     @Override
-    public void addSourceDirectory(File sourceDirectory) {
+    public void addSourceDirectory(File sourceDirectory, boolean recursive) {
         // TODO Auto-generated method stub
 
     }

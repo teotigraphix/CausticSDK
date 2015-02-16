@@ -42,6 +42,8 @@ public interface IFileModel extends IApplicationComponent {
 
     void selectFile(File selectedFile);
 
+    FileRequest getFileRequest();
+
     /**
      * @param fileRequest
      * @see com.teotigraphix.caustk.gdx.controller.IFileModel.OnFileModelEvent#Request

@@ -33,8 +33,8 @@ public class PopUp extends DialogBase {
         createChildren();
     }
 
-    public PopUp(String title, WindowStyle windowStyle) {
-        super("", windowStyle);
+    public PopUp(String title, Skin skin, WindowStyle windowStyle) {
+        super("", skin, windowStyle);
         this.title = title;
         createChildren();
     }

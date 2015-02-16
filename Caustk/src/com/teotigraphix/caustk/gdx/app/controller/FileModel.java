@@ -130,6 +130,10 @@ public class FileModel extends ApplicationComponent implements IFileModel {
     public FileModel() {
     }
 
+    public FileRequest getFileRequest() {
+        return fileRequest;
+    }
+
     private void setFileRequest(FileRequest fileRequest) {
         this.fileRequest = fileRequest;
         setRootDirectory(fileRequest.getRoot());

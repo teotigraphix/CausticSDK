@@ -19,6 +19,8 @@
 
 package com.teotigraphix.caustk.gdx.scene2d.ui;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -26,7 +28,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 public class AlertDialog extends DialogBase {
 
@@ -38,7 +42,7 @@ public class AlertDialog extends DialogBase {
 
     private OnAlertDialogListener listener;
 
-    private String buttonStyleName = "default";
+    private String buttonStyleName;
 
     private String title;
 
@@ -69,8 +73,10 @@ public class AlertDialog extends DialogBase {
         createChildren();
     }
 
-    public AlertDialog(String title, WindowStyle windowStyle) {
-        super("", windowStyle);
+    public AlertDialog(String title, Skin skin, WindowStyle windowStyle) {
+        super("", skin, windowStyle);
+        setSkin(skin);
+        this.skin = skin;
         this.title = title;
         createChildren();
     }
@@ -81,7 +87,13 @@ public class AlertDialog extends DialogBase {
         getContentTable().add(label).pad(4f);
         getContentTable().row();
 
-        okButton = new TextButton("OK", skin, buttonStyleName);
+        TextButtonStyle buttonStyle = null;
+        if (buttonStyleName != null)
+            buttonStyle = getSkin().get(buttonStyleName, TextButtonStyle.class);
+        else
+            buttonStyle = ((AlertDialogStyle)getStyle()).buttonStyle;
+
+        okButton = new TextButton("OK", buttonStyle);
         okButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -91,7 +103,7 @@ public class AlertDialog extends DialogBase {
                 hide();
             }
         });
-        cancelButton = new TextButton("Cancel", skin, buttonStyleName);
+        cancelButton = new TextButton("Cancel", buttonStyle);
         cancelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -146,5 +158,14 @@ public class AlertDialog extends DialogBase {
     } 
        
     */
+
+    public static class AlertDialogStyle extends WindowStyle {
+        public TextButtonStyle buttonStyle;
+
+        public AlertDialogStyle(BitmapFont titleFont, Color titleFontColor, Drawable background) {
+            super(titleFont, titleFontColor, background);
+        }
+
+    }
 
 }
