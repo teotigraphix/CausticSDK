@@ -199,7 +199,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
     }
 
     @SuppressWarnings("unchecked")
-    public void createChildren(Skin skin) {
+    void createChildren(Skin skin) {
         for (Object item : items) {
             String text = item.toString();
             try {
@@ -228,7 +228,7 @@ public class AdvancedList<T extends ListRowRenderer> extends Table {
         return renderers.get(0).getHeight();
     }
 
-    public void addRenderItem(final T item) {
+    void addRenderItem(final T item) {
 
         item.addListener(new ActorGestureListener() {
             @SuppressWarnings("unchecked")
