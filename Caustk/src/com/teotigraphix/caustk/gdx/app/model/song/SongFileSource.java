@@ -8,7 +8,7 @@ import java.util.Collection;
 import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.google.common.io.Files;
 
-public class SongFileRoot {
+public class SongFileSource {
 
     @Tag(0)
     private File file;
@@ -42,10 +42,10 @@ public class SongFileRoot {
         return Files.getNameWithoutExtension(file.getAbsolutePath());
     }
 
-    SongFileRoot() {
+    SongFileSource() {
     }
 
-    public SongFileRoot(File file) {
+    public SongFileSource(File file) {
         this.file = file;
     }
 

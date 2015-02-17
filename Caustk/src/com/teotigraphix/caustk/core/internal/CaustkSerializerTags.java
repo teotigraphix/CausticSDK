@@ -40,7 +40,7 @@ import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.gdx.app.ProjectProperties;
 import com.teotigraphix.caustk.gdx.app.model.machine.SongFileMachine;
 import com.teotigraphix.caustk.gdx.app.model.song.SongFile;
-import com.teotigraphix.caustk.gdx.app.model.song.SongFileRoot;
+import com.teotigraphix.caustk.gdx.app.model.song.SongFileSource;
 import com.teotigraphix.caustk.groove.library.LibraryEffect;
 import com.teotigraphix.caustk.groove.library.LibraryGroup;
 import com.teotigraphix.caustk.groove.library.LibraryInstrument;
@@ -434,7 +434,7 @@ public final class CaustkSerializerTags {
 
         kryo.register(SongFile.class, 980);
         kryo.register(SongFileMachine.class, 981);
-        kryo.register(SongFileRoot.class, 982);
+        kryo.register(SongFileSource.class, 982);
     }
 
     public static class UUIDSerializer extends Serializer<UUID> {

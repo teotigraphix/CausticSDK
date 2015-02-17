@@ -22,9 +22,9 @@ public class SongFileCollection implements ISongFileCollection {
 
     private SongFileLoader loader;
 
-    private Collection<SongFile> files = new ArrayList<SongFile>();
+    //private Collection<SongFile> files = new ArrayList<SongFile>();
 
-    private Collection<SongFileRoot> roots = new ArrayList<SongFileRoot>();
+    private Collection<SongFileSource> sources;
 
     //--------------------------------------------------------------------------
     // Public API :: Properties
@@ -36,11 +36,11 @@ public class SongFileCollection implements ISongFileCollection {
 
     @Override
     public Collection<SongFile> getFiles() {
-        return files;
-    }
-
-    public void setFiles(Collection<SongFile> files) {
-        this.files = files;
+        ArrayList<SongFile> result = new ArrayList<SongFile>();
+        for (SongFileSource source : sources) {
+            result.addAll(source.getFiles());
+        }
+        return result;
     }
 
     //----------------------------------
@@ -48,12 +48,12 @@ public class SongFileCollection implements ISongFileCollection {
     //----------------------------------
 
     @Override
-    public Collection<SongFileRoot> getRoots() {
-        return roots;
+    public Collection<SongFileSource> getSources() {
+        return sources;
     }
 
-    public void setRoots(Collection<SongFileRoot> directories) {
-        this.roots = directories;
+    public void setSources(Collection<SongFileSource> sources) {
+        this.sources = sources;
     }
 
     //--------------------------------------------------------------------------
@@ -77,37 +77,38 @@ public class SongFileCollection implements ISongFileCollection {
     //--------------------------------------------------------------------------
 
     @Override
-    public void addSourceDirectory(File sourceDirectory, boolean recursive) {
-        Collection<File> collection = internalAddSourceDirectory(sourceDirectory, recursive, true);
-        if (collection != null) {
+    public SongFileSource addSourceDirectory(File sourceDirectory, boolean recursive) {
+        SongFileSource source = internalAddSourceDirectory(sourceDirectory, recursive, true);
+        if (source != null) {
             getEventBus().post(
                     new SongFileCollectionEvent(SongFileCollectionEventKind.SourceDirectoryAdd,
                             sourceDirectory));
         }
+        return source;
     }
 
     @Override
-    public Collection<SongFile> removeSourceDirectory(File sourceDirectory) {
-        Collection<SongFile> collection = internalRemoveSourceDirectory(sourceDirectory);
-        if (collection != null) {
+    public SongFileSource removeSourceDirectory(File sourceDirectory) {
+        SongFileSource source = internalRemoveSourceDirectory(sourceDirectory);
+        if (source != null) {
             getEventBus().post(
                     new SongFileCollectionEvent(SongFileCollectionEventKind.SourceDirectoryRemove,
-                            collection));
+                            source.getFiles()));
         }
-        return collection;
+        return source;
     }
 
     //--------------------------------------------------------------------------
     // Internal :: Methods
     //--------------------------------------------------------------------------
 
-    Collection<File> internalAddSourceDirectory(File sourceDirectory, boolean recursive,
+    SongFileSource internalAddSourceDirectory(File sourceDirectory, boolean recursive,
             boolean loadFiles) {
-        if (directoriesContain(roots, sourceDirectory))
+        if (directoriesContain(sources, sourceDirectory))
             return null;
 
-        SongFileRoot root = new SongFileRoot(sourceDirectory);
-        roots.add(root);
+        SongFileSource source = new SongFileSource(sourceDirectory);
+        sources.add(source);
 
         IOFileFilter dirFilter = null;
         if (recursive)
@@ -134,28 +135,29 @@ public class SongFileCollection implements ISongFileCollection {
             return null;
 
         if (loadFiles)
-            loader.load(root, collection);
+            loader.load(source, collection);
 
-        return collection;
+        return source;
     }
 
-    Collection<SongFile> internalRemoveSourceDirectory(File sourceDirectory) {
-        if (!directoriesContain(roots, sourceDirectory))
+    SongFileSource internalRemoveSourceDirectory(File sourceDirectory) {
+        if (!directoriesContain(sources, sourceDirectory))
             return null;
 
-        ArrayList<SongFile> remove = new ArrayList<SongFile>();
-        for (SongFile file : files) {
-            if (RuntimeUtils.isInSubDirectory(sourceDirectory, file.getFile())) {
-                remove.add(file);
-            }
-        }
-        files.removeAll(remove);
-        roots.remove(getRoot(sourceDirectory));
-        return remove;
+        //        ArrayList<SongFile> remove = new ArrayList<SongFile>();
+        //        for (SongFile file : files) {
+        //            if (RuntimeUtils.isInSubDirectory(sourceDirectory, file.getFile())) {
+        //                remove.add(file);
+        //            }
+        //        }
+        //        files.removeAll(remove);
+        SongFileSource source = getSource(sourceDirectory);
+        sources.remove(source);
+        return source;
     }
 
-    private SongFileRoot getRoot(File directory) {
-        for (SongFileRoot root : roots) {
+    private SongFileSource getSource(File directory) {
+        for (SongFileSource root : sources) {
             if (root.getFile().equals(directory))
                 return root;
         }
@@ -164,7 +166,7 @@ public class SongFileCollection implements ISongFileCollection {
 
     @Override
     public void reset() {
-        files.clear();
+        //files.clear();
     }
 
     @Override
@@ -172,11 +174,11 @@ public class SongFileCollection implements ISongFileCollection {
         return CaustkRuntime.getInstance().getApplication().getEventBus();
     }
 
-    private static boolean directoriesContain(Collection<SongFileRoot> directories,
+    private static boolean directoriesContain(Collection<SongFileSource> directories,
             File fileOrDirectory) {
         if (directories.contains(fileOrDirectory))
             return true;
-        for (SongFileRoot file : directories) {
+        for (SongFileSource file : directories) {
             if (RuntimeUtils.isInSubDirectory(file.getFile(), fileOrDirectory))
                 return true;
         }

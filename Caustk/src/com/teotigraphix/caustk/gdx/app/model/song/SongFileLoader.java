@@ -24,30 +24,35 @@ public class SongFileLoader {
 
     private SongFileQueueItem currentExport;
 
-    private EventBus eventBus;
+    private SongFileSource currentSource;
+
+    private EventBus getEventBus() {
+        return CaustkRuntime.getInstance().getApplication().getEventBus();
+    }
 
     public synchronized SongFileQueueItem getCurrentExport() {
         return currentExport;
     }
 
-    public SongFileLoader() {
-        this.eventBus = CaustkRuntime.getInstance().getApplication().getEventBus();
+    SongFileLoader() {
     }
 
-    void load(SongFileRoot base, Collection<File> rawFiles) {
-        load(base, rawFiles, false);
+    void load(SongFileSource source, Collection<File> rawFiles) {
+        load(source, rawFiles, false);
     }
 
-    void load(SongFileRoot root, Collection<File> rawFiles, boolean clear) {
+    void load(SongFileSource source, Collection<File> rawFiles, boolean clear) {
+        this.currentSource = source;
 
         if (clear)
-            root.getFiles().clear();
+            currentSource.getFiles().clear();
 
         for (File file : rawFiles) {
-            exportQueue.add(new SongFileQueueItem(root, file));
+            exportQueue.add(new SongFileQueueItem(currentSource, file));
         }
 
-        eventBus.post(new SongFileCollectionEvent(SongFileCollectionEventKind.Action_FileLoadStart));
+        getEventBus().post(
+                new SongFileCollectionEvent(SongFileCollectionEventKind.Action_FileLoadStart));
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -63,14 +68,18 @@ public class SongFileLoader {
         if (exportQueue.isEmpty()) {
             currentExport = null;
             exportQueue.clear();
-            System.out.println("FilesChange");
+            System.out.println("Action_FileLoadComplete");
             RuntimeUtils.postRunnable(new Runnable() {
                 @Override
                 public void run() {
-                    eventBus.post(new SongFileCollectionEvent(
-                            SongFileCollectionEventKind.UI_FilesChange));
-                    eventBus.post(new SongFileCollectionEvent(
-                            SongFileCollectionEventKind.Action_FileLoadComplete));
+                    getEventBus()
+                            .post(new SongFileCollectionEvent(
+                                    SongFileCollectionEventKind.UI_FilesChange));
+                    getEventBus().post(
+                            new SongFileCollectionEvent(
+                                    SongFileCollectionEventKind.Action_SourceLoadComplete,
+                                    currentSource));
+                    currentSource = null;
                 }
             });
         } else {
@@ -83,7 +92,7 @@ public class SongFileLoader {
     }
 
     private void fire(SongFileCollectionEventKind kind, File file) {
-        eventBus.post(new SongFileCollectionEvent(kind, file));
+        getEventBus().post(new SongFileCollectionEvent(kind, file));
     }
 
     private void setCurrentExport(SongFileQueueItem currentExport) {
@@ -101,9 +110,9 @@ public class SongFileLoader {
 
         private File file;
 
-        private SongFileRoot root;
+        private SongFileSource root;
 
-        SongFileQueueItem(SongFileRoot root, File file) {
+        SongFileQueueItem(SongFileSource root, File file) {
             this.root = root;
             this.file = file;
         }

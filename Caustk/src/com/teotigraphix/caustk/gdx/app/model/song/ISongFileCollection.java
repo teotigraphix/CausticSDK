@@ -8,15 +8,19 @@ import com.google.common.eventbus.EventBus;
 
 public interface ISongFileCollection {
 
-    Collection<SongFileRoot> getRoots();
+    Collection<SongFileSource> getSources();
 
+    /**
+     * Returns all files held in each {@link SongFileSource}, in no particular
+     * order.
+     */
     Collection<SongFile> getFiles();
 
     EventBus getEventBus();
 
-    void addSourceDirectory(File sourceDirectory, boolean recursive);
+    SongFileSource addSourceDirectory(File sourceDirectory, boolean recursive);
 
-    Collection<SongFile> removeSourceDirectory(File sourceDirectory);
+    SongFileSource removeSourceDirectory(File sourceDirectory);
 
     void reset();
 
@@ -32,7 +36,10 @@ public interface ISongFileCollection {
 
         Action_FileLoadUpdate,
 
-        Action_FileLoadComplete,
+        /**
+         * @see SongFileCollectionEvent#getSource()
+         */
+        Action_SourceLoadComplete,
 
         SourceDirectoryAdd,
 
@@ -47,6 +54,8 @@ public interface ISongFileCollection {
 
         private Collection<SongFile> songFiles;
 
+        private SongFileSource source;
+
         public File getFile() {
             return file;
         }
@@ -57,6 +66,10 @@ public interface ISongFileCollection {
 
         public SongFileCollectionEventKind getKind() {
             return kind;
+        }
+
+        public SongFileSource getSource() {
+            return source;
         }
 
         public SongFileCollectionEvent(SongFileCollectionEventKind kind) {
@@ -73,5 +86,11 @@ public interface ISongFileCollection {
             this.kind = kind;
             this.songFiles = songFiles;
         }
+
+        public SongFileCollectionEvent(SongFileCollectionEventKind kind, SongFileSource source) {
+            this.kind = kind;
+            this.source = source;
+        }
     }
+
 }

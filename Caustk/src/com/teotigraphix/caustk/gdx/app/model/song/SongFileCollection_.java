@@ -72,7 +72,6 @@ public class SongFileCollection_ implements ISongFileCollection {
                 new SongFileCollectionEvent(SongFileCollectionEventKind.SelectedFilesChange));
     }
 
-    @Override
     public Collection<SongFile> getFiles() {
         return files;
     }
@@ -123,19 +122,20 @@ public class SongFileCollection_ implements ISongFileCollection {
     }
 
     @Override
-    public void addSourceDirectory(File sourceDirectory, boolean recursive) {
+    public SongFileSource addSourceDirectory(File sourceDirectory, boolean recursive) {
+        return null;
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public Collection<SongFile> removeSourceDirectory(File sourceDirectory) {
+    public SongFileSource removeSourceDirectory(File sourceDirectory) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Collection<SongFileRoot> getRoots() {
+    public Collection<SongFileSource> getSources() {
         // TODO Auto-generated method stub
         return null;
     }
