@@ -2,7 +2,6 @@
 package com.teotigraphix.caustk.gdx.app.model.song;
 
 import java.io.File;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,8 +72,8 @@ public class SongFile extends CausticFile {
 
     public String getDisplayName() {
         return getBaseName() + " - " + getArtist() + " - " + getMinutes() + ":" + getSeconds()
-                + " - " + getBpm() + "bpm - " + humanReadableByteCount(getSize(), false)
-                + new Date(getFile().lastModified());
+                + " - " + getBpm() + "bpm - " + humanReadableByteCount(getSize(), false);
+        //+ new Date(getFile().lastModified());
     }
 
     public String getBaseName() {
