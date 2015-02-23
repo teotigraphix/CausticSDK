@@ -35,6 +35,7 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer;
 import com.teotigraphix.caustk.core.CausticException;
 import com.teotigraphix.caustk.core.ICaustkRack;
 import com.teotigraphix.caustk.core.ICaustkSerializer;
+import com.teotigraphix.caustk.core.osc.RackMessage;
 import com.teotigraphix.caustk.gdx.app.ICaustkApplication;
 import com.teotigraphix.caustk.gdx.app.Project;
 import com.teotigraphix.caustk.groove.importer.CausticFileImporter;
@@ -236,6 +237,14 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
 
     @Override
     public RackInstance fill(File file) throws IOException {
+        RackMessage.BLANKRACK.send(this);
+
+        getRackInstance().reset();
+
+        getRackInstance().loadSong(file);
+
+        restore(getRackInstance());
+
         // XXX Needs to be fixed This relates the to LibraryitemTest failing
         //        File directory = runtime.getFactory().getCacheDirectory("fills");
         //        File tempCausticSnapshot = new File(directory, UUID.randomUUID().toString()
@@ -256,7 +265,7 @@ public class CaustkRack extends CaustkEngine implements ICaustkRack {
         //        this.rackInstance.loadSong(tempCausticSnapshot);
         //
         //        return rackInstanceTarget;
-        return null;
+        return getRackInstance();
     }
 
     @Override

@@ -277,6 +277,20 @@ public class RackInstance extends NodeBase {
     //--------------------------------------------------------------------------
 
     /**
+     * Resets the entire state of the RackInstance.
+     * <p>
+     * New references to master, sequencer and machines. The {@link #create()}
+     * method will then be called.
+     */
+    public void reset() {
+        master = new MasterChannel(this);
+        sequencer = new MasterSequencerChannel(this);
+        machines = new HashMap<Integer, Machine>();
+
+        create();
+    }
+
+    /**
      * Creates and adds a machine to this node graph an native rack.
      * 
      * @param index The machine index.

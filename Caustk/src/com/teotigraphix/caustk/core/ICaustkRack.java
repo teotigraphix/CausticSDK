@@ -103,11 +103,11 @@ public interface ICaustkRack extends ISoundGenerator {
     MasterSequencerChannel getSequencer();
 
     /**
-     * Fills a {@link RackInstance} using the .caustic file loaded an restore()
-     * on the node structure.
+     * Fills the current {@link RackInstance} using the .caustic file loaded and
+     * calls restore() on the node structure.
      * <p>
-     * The {@link RackInstance} will be populated, the original rack node and
-     * state will be restored to the rack after the method returns.
+     * Note: This method is totally destructive and should not be used with an
+     * existing rack state.
      * 
      * @param file The absolute location of the .caustic file to load.
      * @throws java.io.IOException
